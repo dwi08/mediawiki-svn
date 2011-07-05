@@ -1,6 +1,6 @@
 /* JavaScript for SimpleSearch extension */
 
-$( document ).ready( function() {
+jQuery( document ).ready( function( $ ) {
 	
 	// Compatibility map
 	var map = {
