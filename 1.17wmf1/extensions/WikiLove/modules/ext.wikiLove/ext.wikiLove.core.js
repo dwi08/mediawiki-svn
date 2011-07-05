@@ -19,25 +19,29 @@ $.wikiLove = {
 			emailable = $( '#t-emailuser' ).length ? true : false;
 			
 			// Build a type list like this:
-			var $typeList = $( '<ul id="mw-wikilove-types"></ul>' );
-			for( var typeId in options.types ) {
-				var $button = $( '<a href="#"></a>' );
-				var $buttonInside = $( '<div class="mw-wikilove-inside"></div>' );
-				
-				if( typeof options.types[typeId].icon == 'string' ) {
-					$buttonInside.append( '<div class="mw-wikilove-icon-box"><img src="'
-						+ mw.html.escape( options.types[typeId].icon ) + '"/></div>' );
+			var	$typeList = $( '<ul id="mw-wikilove-types"></ul>' ),
+				type;
+			for ( var typeId in options.types ) {
+				type = options.types[typeId];
+				if ( !$.isPlainObject( type ) ) {
+					continue;
 				}
-				else {
+				var	$button = $( '<a href="#"></a>' ),
+					$buttonInside = $( '<div class="mw-wikilove-inside"></div>' );
+				
+				if ( typeof type.icon == 'string' ) {
+					$buttonInside.append( '<div class="mw-wikilove-icon-box"><img src="'
+						+ mw.html.escape( type.icon ) + '"/></div>' );
+				} else {
 					$buttonInside.addClass( 'mw-wikilove-no-icon' );
 				}
 				
-				$buttonInside.append( '<div class="mw-wikilove-link-text">' + options.types[typeId].name + '</div>' );
+				$buttonInside.append( '<div class="mw-wikilove-link-text">' + mw.html.escape( type.name ) + '</div>' );
 				
+				$button.data( 'typeId', typeId );
 				$button.append( '<div class="mw-wikilove-left-cap"></div>');
 				$button.append( $buttonInside );
 				$button.append( '<div class="mw-wikilove-right-cap"></div>');
-				$button.data( 'typeId', typeId );
 				$typeList.append( $( '<li tabindex="0"></li>' ).append( $button ) );
 			}
 			
@@ -284,7 +288,7 @@ $.wikiLove = {
 		var title = $.wikiLove.addFilePrefix( currentTypeOrSubtype.image );
 		var loadingType = currentTypeOrSubtype;
 		$.ajax({
-			url: mw.util.wikiScript( 'api' ),
+			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 			data: {
 				'action'      : 'query',
 				'format'      : 'json',
@@ -429,7 +433,7 @@ $.wikiLove = {
 					$( '#mw-wikilove-preview-spinner' ).fadeIn( 200 );
 					
 					$.ajax( {
-						url: mw.util.wikiScript( 'api' ),
+						url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 						data: {
 							'action': 'query',
 							'format': 'json',
@@ -514,7 +518,9 @@ $.wikiLove = {
 	 */
 	addFilePrefix: function( filename ) {
 		// Can't use mw.Title in 1.17
-		var prefix = filename.split( ':' )[0] || '',
+		var	prefixSplit = filename.split( ':' ),
+			// Make sure the we don't fail in case input is like "File.jpg"
+			prefix = prefixSplit[1] ? prefixSplit[0] : '',
 			normalized = $.trim( prefix ).toLowerCase().replace( /\s/g, '_' );
 		// wgNamespaceIds is missing 'file' in 1.17 on non-English wikis
 		if ( mw.config.get( 'wgNamespaceIds' )[normalized] !== 6 && normalized !== 'file' ) {
@@ -528,7 +534,7 @@ $.wikiLove = {
 	 */
 	logCustomImageUse: function( imageTitle, success ) {
 		$.ajax( {
-			url: mw.util.wikiScript( 'api' ),
+			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 			data: {
 				'action': 'wikiloveimagelog',
 				'image': imageTitle,
@@ -545,7 +551,7 @@ $.wikiLove = {
 	doPreview: function( wikitext ) {
 		$( '#mw-wikilove-preview-spinner' ).fadeIn( 200 );
 		$.ajax({
-			url: mw.util.wikiScript( 'api' ),
+			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 			data: {
 				'action': 'parse',
 				'title': mw.config.get( 'wgPageName' ),
@@ -640,28 +646,27 @@ $.wikiLove = {
 		}
 		
 		$.ajax({
-			url: mw.util.wikiScript( 'api' ),
+			url: mw.config.get( 'wgScriptPath' ) + '/api.php',
 			data: sendData,
 			dataType: 'json',
 			type: 'POST',
 			success: function( data ) {
 				$( '#mw-wikilove-send-spinner' ).fadeOut( 200 );
 				
-				if ( typeof data.error !== 'undefined' ) {
+				if ( data.error !== undefined ) {
 					$.wikiLove.showPreviewError( data.error.info );
 					return;
 				}
 				
-				if ( typeof data.redirect !== 'undefined'
-					&&  data.redirect.pageName == mw.config.get( 'wgPageName' ) ) {
+				if ( data.redirect !== undefined && data.redirect.pageName == mw.config.get( 'wgPageName' ) ) {
 					// unfortunately, when on the talk page we cannot reload and then
 					// jump to the correct section, because when we set the hash (#...)
 					// the page won't reload...
 					window.location.reload();
-				} else {
-					window.location = encodeURI( 
-						mw.config.get( 'wgArticlePath' ).replace( '$1', mw.util.wikiUrlencode( data.redirect.pageName ) ) 
-						+ '#' + data.redirect.fragment );
+				} else { // not on user talk page
+					window.location =  
+						// data.redirect.pageName isn't URL encoded yet, but data.redirect.fragment is already encoded
+						mw.util.wikiGetlink( data.redirect.pageName ) + '#' + data.redirect.fragment;
 				}
 			},
 			error: function() {
@@ -681,7 +686,7 @@ $.wikiLove = {
 		$( '#mw-wikilove-gallery-spinner' ).fadeIn( 200 );
 		$( '#mw-wikilove-gallery-error' ).hide();
 		
-		if( typeof currentTypeOrSubtype.gallery.number == 'undefined'
+		if ( currentTypeOrSubtype.gallery.number === undefined
 		    || currentTypeOrSubtype.gallery.number <= 0
 		) {
 			currentTypeOrSubtype.gallery.number = currentTypeOrSubtype.gallery.imageList.length;
@@ -689,7 +694,7 @@ $.wikiLove = {
 		
 		var titles = '';
 		var imageList = currentTypeOrSubtype.gallery.imageList.slice( 0 );
-		for( var i=0; i<currentTypeOrSubtype.gallery.number; i++ ) {
+		for ( var i=0; i<currentTypeOrSubtype.gallery.number; i++ ) {
 			// get a random image from imageList and add it to the list of titles to be retrieved
 			var id = Math.floor( Math.random() * imageList.length );
 			titles = titles + $.wikiLove.addFilePrefix( imageList[id] ) + '|';
@@ -702,7 +707,7 @@ $.wikiLove = {
 			loadingType = currentTypeOrSubtype,
 			loadingIndex = 0;
 		$.ajax({
-			url: mw.util.wikiScript( 'api' ),
+			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 			data: {
 				'action'      : 'query',
 				'format'      : 'json',
@@ -768,9 +773,14 @@ $.wikiLove = {
 	 * Init function which is called upon page load. Binds the WikiLove icon to opening the dialog.
 	 */
 	init: function() {
-		options = $.wikiLoveOptions;	
-			
-		var $wikiLoveLink = $( '#ca-wikilove' ).find( 'a' );
+		var $wikiLoveLink = $( [] );
+		options = $.wikiLoveOptions;
+		
+		if ( $( '#ca-wikilove' ).length ) {
+			$wikiLoveLink = $( '#ca-wikilove' ).find( 'a' );
+		} else { // legacy skins
+			$wikiLoveLink = $( '#topbar a:contains(' + mw.msg( 'wikilove-tab-text' ) + ')' );
+		}
 		$wikiLoveLink.unbind( 'click' );
 		$wikiLoveLink.click( function( e ) {
 			e.preventDefault();
@@ -795,7 +805,7 @@ $.wikiLove = {
 		$( '#mw-wikilove-gallery-spinner' ).fadeIn( 200 );
 		
 		$.ajax({
-			url: mw.util.wikiScript( 'api' ),
+			url: mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 			data: {
 				'action'      : 'query',
 				'format'      : 'json',
