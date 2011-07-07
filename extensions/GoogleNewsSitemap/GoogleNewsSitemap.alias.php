@@ -27,7 +27,7 @@ $specialPageAliases['arz'] = array(
 
 /** Persian (فارسی) */
 $specialPageAliases['fa'] = array(
-	'GoogleNewsSitemap' => array( 'نقشه_وب‌گاه_گوگل_نیوز' ),
+	'GoogleNewsSitemap' => array( 'نقشه_وب‌گاه_گوگل_نیوز', 'خوراک_اخبار' ),
 );
 
 /** Hungarian (Magyar) */
