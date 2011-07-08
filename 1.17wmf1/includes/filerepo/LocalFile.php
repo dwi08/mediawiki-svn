@@ -670,12 +670,8 @@ class LocalFile extends File {
 				$url = $this->getThumbUrl( $file );
 				$urls[] = $url;
 				wfSuppressWarnings();
-				$res = unlink( "$dir/$file" );
+				unlink( "$dir/$file" );
 				wfRestoreWarnings();
-				if( !$res ) {
-					$err = error_get_last();
-					wfDebugLog( 'purgeThumbnails', __METHOD__ . 'Error deleting' . "$dir/$file: {$err['message']}\n" ); 
-				}
 			}
 		}
 
