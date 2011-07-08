@@ -669,7 +669,13 @@ class LocalFile extends File {
 			if ( strpos( $file, $this->getName() ) !== false ) {
 				$url = $this->getThumbUrl( $file );
 				$urls[] = $url;
-				@unlink( "$dir/$file" );
+				wfSuppressWarnings();
+				$res = unlink( "$dir/$file" );
+				wfRestoreWarnings();
+				if( !$res ) {
+					$err = error_get_last();
+					wfDebugLog( 'purgeThumbnails', __METHOD__ . 'Error deleting' . "$dir/$file: {$err['message']}\n" ); 
+				}
 			}
 		}
 
