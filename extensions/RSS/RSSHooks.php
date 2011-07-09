@@ -19,7 +19,11 @@ class RSSHooks {
 	 * @param $frame Frame parser context
 	 */
 	static function renderRss( $input, $args, $parser, $frame ) {
-		global $wgRSSCacheAge, $wgRSSCacheCompare;
+		global $wgRSSCacheAge, $wgRSSCacheCompare, $wgRSSAllowedFeeds;
+
+		if ( count( $wgRSSAllowedFeeds ) && !in_array( $input, $wgRSSAllowedFeeds ) ) {
+			return wfMsg( 'rss-url-permission' );
+		}
 
 		if ( !Http::isValidURI( $input ) ) {
 			return wfMsg( 'rss-invalid-url', htmlspecialchars( $input ) );
