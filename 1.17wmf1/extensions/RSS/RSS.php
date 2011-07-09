@@ -56,6 +56,8 @@ $wgRSSCacheCompare = false; // Check cached content, if available, against remot
 						   // be made.
 $wgRSSFetchTimeout = 5; // 5 second timeout
 
+$wgRSSAllowedFeeds = array();
+
 // Agent to use for fetching feeds
 $wgRSSUserAgent = 'MediaWikiRSS/0.01 (+http://www.mediawiki.org/wiki/Extension:RSS) / MediaWiki RSS extension';
 

@@ -18,6 +18,7 @@ $messages['en'] = array(
 	'rss-fetch-nourl' => 'Fetch called without a URL!',
 	'rss-invalid-url' => 'Not a valid URL: $1',
 	'rss-parse-error' => 'Error parsing XML for RSS',
+	'rss-url-permission' => 'This URL is not allowed to be included',
 	'rss-item' => '{{RSSPost | title = {{{title}}} | link = {{{link}}} | date = {{{date}}} | author = {{{author}}} }}',
 );
 
