@@ -1462,11 +1462,12 @@ function wfAppendQuery( $url, $query ) {
  * @return string Fully-qualified URL
  */
 function wfExpandUrl( $url ) {
+	global $wgServer;
 	if( substr( $url, 0, 2 ) == '//' ) {
-		global $wgProto;
-		return $wgProto . ':' . $url;
+		$bits = wfParseUrl( $wgServer );
+		$scheme = $bits && $bits['scheme'] !== '' ? $bits['scheme'] : 'http';
+		return $scheme . ':' . $url;
 	} elseif( substr( $url, 0, 1 ) == '/' ) {
-		global $wgServer;
 		return $wgServer . $url;
 	} else {
 		return $url;
@@ -2792,14 +2793,21 @@ function wfMergeErrorArrays( /*...*/ ) {
  * parse_url() work-alike, but non-broken.  Differences:
  *
  * 1) Does not raise warnings on bad URLs (just returns false)
- * 2) Handles protocols that don't use :// (e.g., mailto: and news:) correctly
- * 3) Adds a "delimiter" element to the array, either '://' or ':' (see (2))
+ * 2) Handles protocols that don't use :// (e.g., mailto: and news: , as well as protocol-relative URLs) correctly
+ * 3) Adds a "delimiter" element to the array, either '://', ':' or '//' (see (2))
  *
  * @param $url String: a URL to parse
  * @return Array: bits of the URL in an associative array, per PHP docs
  */
 function wfParseUrl( $url ) {
 	global $wgUrlProtocols; // Allow all protocols defined in DefaultSettings/LocalSettings.php
+
+	// Protocol-relative URLs are handled really badly by parse_url(). It's so bad that the easiest
+	// way to handle them is to just prepend 'http:' and strip the protocol out later
+	$wasRelative = substr( $url, 0, 2 ) == '//';
+	if ( $wasRelative ) {
+		$url = "http:$url";
+	}
 	wfSuppressWarnings();
 	$bits = parse_url( $url );
 	wfRestoreWarnings();
@@ -2822,6 +2830,11 @@ function wfParseUrl( $url ) {
 		return false;
 	}
 
+	// If the URL was protocol-relative, fix scheme and delimiter
+	if ( $wasRelative ) {
+		$bits['scheme'] = '';
+		$bits['delimiter'] = '//';
+	}
 	return $bits;
 }
 
