@@ -15,6 +15,13 @@ class TitleBlacklistHooks {
 	/** getUserPermissionsErrorsExpensive hook */
 	public static function userCan( $title, $user, $action, &$result ) {
 		global $wgTitleBlacklist;
+
+		# Some places check createpage, while others check create.
+		# As it stands, upload does createpage, but normalize both
+		# to the same action, to stop future similar bugs.
+		if( $action === 'createpage' || $action === 'createtalk' ) {
+			$action = 'create';
+		}
 		if( $action == 'create' || $action == 'edit' || $action == 'upload' ) {
 			efInitTitleBlacklist();
 			$blacklisted = $wgTitleBlacklist->userCannot( $title, $user, $action );
