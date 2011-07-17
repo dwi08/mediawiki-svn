@@ -1161,7 +1161,9 @@ window.mediaWiki = new ( function( $ ) {
 window.$j = jQuery;
 
 // Global alias
-window.mw = mediaWiki;
+window.mw = window.mediaWiki;
+GLOBAL.mw = window.mediaWiki;
+GLOBAL.mediaWiki = window.mediaWiki;
 
 /* Auto-register from pre-loaded startup scripts */
 

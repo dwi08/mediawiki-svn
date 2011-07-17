@@ -13,14 +13,14 @@ QUnit.fixurl = function(value) {
 /**
  *  Load TestSwarm agent
  */
-if ( QUnit.urlParams.swarmURL  ) {
+if ( QUnit.urlParams && QUnit.urlParams.swarmURL  ) {
 	document.write("<scr" + "ipt src='" + QUnit.fixurl( 'data/testwarm.inject.js' ) + "'></scr" + "ipt>");
 }
 
 /**
  * Load completenesstest
  */
-if ( QUnit.urlParams.completenesstest ) {
+if ( QUnit.urlParams && QUnit.urlParams.completenesstest ) {
 
 	// Return true to ignore
 	var mwTestIgnore = function( val, tester, funcPath ) {

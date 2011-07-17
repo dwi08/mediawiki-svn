@@ -1,0 +1,11 @@
+{
+	"name": "data",
+	"description": "bootstraper for MediaWiki js tests"
+	"author": "Ashar Voultoiz <hashar@free.fr>",
+	"licenses": [
+		{
+		"type": "GPLv2",
+		"url" : "http://you/now/where/to/find/it"
+		}
+	]
+}

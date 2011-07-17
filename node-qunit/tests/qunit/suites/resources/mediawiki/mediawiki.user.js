@@ -1,3 +1,5 @@
+module = QUnit.module;
+
 module( 'mediawiki.user.js' );
 
 test( '-- Initial check', function() {

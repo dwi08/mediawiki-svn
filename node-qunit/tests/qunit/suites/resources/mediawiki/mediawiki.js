@@ -1,4 +1,4 @@
-module( 'mediawiki.js' );
+QUnit.module( 'mediawiki.js' );
 
 test( '-- Initial check', function() {
 	expect(8);
@@ -68,7 +68,7 @@ test( 'mw.Map', function() {
 	ok( 'anotherGlobalMapChecker' in window, 'new mw.Map( true ) did store its values in the global window object' );
 
 	// Whitelist this global variable for QUnit's 'noglobal' mode
-	if ( QUnit.config.noglobals ) {
+	if ( QUnit.config && QUnit.config.noglobals ) {
 		QUnit.config.pollution.push( 'anotherGlobalMapChecker' );
 	}
 });
@@ -157,7 +157,7 @@ test( 'mw.loader', function() {
 	stop(5000);
 
 	// Extract path
-	var tests_path = rePath.exec( location.href );
+	var tests_path = rePath.exec( document.location.href );
 
 	mw.loader.implement( 'is.awesome', [QUnit.fixurl( tests_path + 'data/defineTestCallback.js')], {}, {} );
 
