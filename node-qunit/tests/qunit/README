@@ -1,0 +1,27 @@
+You will need node.js
+See a basic guide at http://www.mediawiki.org/wiki/User:Hashar/cli-js
+
+To test your setup you can use the dumb suite:
+
+$ cd tests/qunit
+$ node dumb-launch.js
+[OK][dumb-code.js: Really basic example] looks fine
+[OK][dumb-code.js: Really basic example] Variable assignement works
+
+Files: 1
+Tests: 1
+Assertions: 2
+Successes: 2
+Errors: 0
+
+Time: 124 ms
+
+{ files: 1,
+  tests: 1,
+  assertions: 2,
+  errors: 0,
+  success: 2,
+  time: 124 }
+$
+
+Works! :)
