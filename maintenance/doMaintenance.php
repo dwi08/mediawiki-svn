@@ -74,7 +74,7 @@ if ( defined( 'MW_CONFIG_CALLBACK' ) ) {
 		$callback = explode( '::', $callback, 2 );
 	}
 	call_user_func( $callback );
-} elseif ( file_exists( "$IP/wmf-config/wikimedia-mode" ) ) {
+} elseif ( file_exists( "$IP/../wmf-config/wikimedia-mode" ) ) {
 	// Load settings, using wikimedia-mode if needed
 	// Fixme: replace this hack with general farm-friendly code
 	# TODO FIXME! Wikimedia-specific stuff needs to go away to an ext
@@ -83,9 +83,9 @@ if ( defined( 'MW_CONFIG_CALLBACK' ) ) {
 	$wgWikiFarm = true;
 	$cluster = 'pmtpa';
 	require_once( "$IP/includes/SiteConfiguration.php" );
-	require( "$IP/wmf-config/wgConf.php" );
+	require( "$IP/../wmf-config/wgConf.php" );
 	$maintenance->loadWikimediaSettings();
-	require( $IP . '/wmf-config/CommonSettings.php' );
+	require( "$IP/../wmf-config/CommonSettings.php" );
 } else {
 	require_once( $maintenance->loadSettings() );
 }
