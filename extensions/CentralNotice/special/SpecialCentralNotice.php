@@ -57,85 +57,9 @@ class CentralNotice extends SpecialPage {
 		 	// Check authentication token
 		 	if ( $wgUser->matchEditToken( $wgRequest->getVal( 'authtoken' ) ) ) {
 				
-				// Handle removing campaigns
-				$toRemove = $wgRequest->getArray( 'removeNotices' );
-				if ( $toRemove ) {
-					// Remove campaigns in list
-					foreach ( $toRemove as $notice ) {
-						$this->removeNotice( $notice );
-					}
-	
-					// Skip subsequent form handling and show list of campaigns
-					$this->listNotices();
-					$wgOut->addHTML( Xml::closeElement( 'div' ) );
-					return;
-				}
-
-				// Handle locking/unlocking campaigns
-				$lockedNotices = $wgRequest->getArray( 'locked' );
-				if ( $lockedNotices ) {
-					// Build list of campaigns to lock
-					$unlockedNotices = array_diff( $this->getAllCampaignNames(), $lockedNotices );
-
-					// Set locked/unlocked flag accordingly
-					foreach ( $lockedNotices as $notice ) {
-						$this->updateLock( $notice, '1' );
-					}
-					foreach ( $unlockedNotices as $notice ) {
-						$this->updateLock( $notice, '0' );
-					}
-				// Handle updates if no post content came through (all checkboxes unchecked)
-				} elseif ( $method !== 'addNotice' ) {
-					$allNotices = $this->getAllCampaignNames();
-					foreach ( $allNotices as $notice ) {
-						$this->updateLock( $notice, '0' );
-					}
-				}
-
-				// Handle enabling/disabling campaigns
-				$enabledNotices = $wgRequest->getArray( 'enabled' );
-				if ( $enabledNotices ) {
-					// Build list of campaigns to disable
-					$disabledNotices = array_diff( $this->getAllCampaignNames(), $enabledNotices );
-
-					// Set enabled/disabled flag accordingly
-					foreach ( $enabledNotices as $notice ) {
-						$this->updateEnabled( $notice, '1' );
-					}
-					foreach ( $disabledNotices as $notice ) {
-						$this->updateEnabled( $notice, '0' );
-					}
-				// Handle updates if no post content came through (all checkboxes unchecked)
-				} elseif ( $method !== 'addNotice' ) {
-					$allNotices = $this->getAllCampaignNames();
-					foreach ( $allNotices as $notice ) {
-						$this->updateEnabled( $notice, '0' );
-					}
-				}
-
-				// Handle setting preferred campaigns
-				$preferredNotices = $wgRequest->getArray( 'preferred' );
-				if ( $preferredNotices ) {
-					// Build list of campaigns to unset 
-					$unsetNotices = array_diff( $this->getAllCampaignNames(), $preferredNotices );
-
-					// Set flag accordingly
-					foreach ( $preferredNotices as $notice ) {
-						$this->updatePreferred( $notice, '1' );
-					}
-					foreach ( $unsetNotices as $notice ) {
-						$this->updatePreferred( $notice, '0' );
-					}
-				// Handle updates if no post content came through (all checkboxes unchecked)
-				} elseif ( $method !== 'addNotice' ) {
-					$allNotices = $this->getAllCampaignNames();
-					foreach ( $allNotices as $notice ) {
-						$this->updatePreferred( $notice, '0' );
-					}
-				}
-
-				// Handle adding of campaign
+				// Handle adding a campaign
 				if ( $method == 'addNotice' ) {
+				
 					$noticeName        = $wgRequest->getVal( 'noticeName' );
 					$start             = $wgRequest->getArray( 'start' );
 					$projects          = $wgRequest->getArray( 'projects' );
@@ -147,6 +71,99 @@ class CentralNotice extends SpecialPage {
 					} else {
 						$this->addNotice( $noticeName, '0', $start, $projects,
 							$project_languages, $geotargeted, $geo_countries );
+					}
+					
+				// Handle changing settings to existing campaigns
+				} else {
+				
+					// Handle removing campaigns
+					$toRemove = $wgRequest->getArray( 'removeNotices' );
+					if ( $toRemove ) {
+						// Remove campaigns in list
+						foreach ( $toRemove as $notice ) {
+							$this->removeNotice( $notice );
+						}
+					}
+				
+					// Get all the initial campaign settings for logging
+					$allCampaignNames = $this->getAllCampaignNames();
+					$allInitialCampaignSettings = array();
+					foreach ( $allCampaignNames as $campaignName ) {
+						$allInitialCampaignSettings[$campaignName] = CentralNoticeDB::getCampaignSettings( $campaignName, false );
+					}
+	
+					// Handle locking/unlocking campaigns
+					$lockedNotices = $wgRequest->getArray( 'locked' );
+					if ( $lockedNotices ) {
+						// Build list of campaigns to lock
+						$unlockedNotices = array_diff( $this->getAllCampaignNames(), $lockedNotices );
+	
+						// Set locked/unlocked flag accordingly
+						foreach ( $lockedNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'locked', 1 );
+						}
+						foreach ( $unlockedNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'locked', 0 );
+						}
+					// Handle updates if no post content came through (all checkboxes unchecked)
+					} else {
+						$allNotices = $this->getAllCampaignNames();
+						foreach ( $allNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'locked', 0 );
+						}
+					}
+	
+					// Handle enabling/disabling campaigns
+					$enabledNotices = $wgRequest->getArray( 'enabled' );
+					if ( $enabledNotices ) {
+						// Build list of campaigns to disable
+						$disabledNotices = array_diff( $this->getAllCampaignNames(), $enabledNotices );
+	
+						// Set enabled/disabled flag accordingly
+						foreach ( $enabledNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'enabled', 1 );
+						}
+						foreach ( $disabledNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'enabled', 0 );
+						}
+					// Handle updates if no post content came through (all checkboxes unchecked)
+					} else {
+						$allNotices = $this->getAllCampaignNames();
+						foreach ( $allNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'enabled', 0 );
+						}
+					}
+	
+					// Handle setting preferred campaigns
+					$preferredNotices = $wgRequest->getArray( 'preferred' );
+					if ( $preferredNotices ) {
+						// Build list of campaigns to unset 
+						$unsetNotices = array_diff( $this->getAllCampaignNames(), $preferredNotices );
+	
+						// Set flag accordingly
+						foreach ( $preferredNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'preferred', 1 );
+						}
+						foreach ( $unsetNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'preferred', 0 );
+						}
+					// Handle updates if no post content came through (all checkboxes unchecked)
+					} else {
+						$allNotices = $this->getAllCampaignNames();
+						foreach ( $allNotices as $notice ) {
+							$this->setBooleanCampaignSetting( $notice, 'preferred', 0 );
+						}
+					}
+					
+					// Get all the final campaign settings for potential logging
+					foreach ( $allCampaignNames as $campaignName ) {
+						$finalCampaignSettings = CentralNoticeDB::getCampaignSettings( $campaignName, false );
+						$diffs = array_diff_assoc( $allInitialCampaignSettings[$campaignName], $finalCampaignSettings );
+						// If there are changes, log them
+						if ( $diffs ) {
+							$campaignId = CentralNotice::getNoticeId( $campaignName );
+							$this->logCampaignChange( 'modified', $campaignId, $allInitialCampaignSettings[$campaignName], $finalCampaignSettings );
+						}
 					}
 				}
 				
@@ -366,7 +383,7 @@ class CentralNotice extends SpecialPage {
 						'method=listNoticeDetail&notice=' . urlencode( $row->not_name ) );
 
 				// Projects
-				$projects = $this->getNoticeProjects( $row->not_name );
+				$projects = CentralNotice::getNoticeProjects( $row->not_name );
 				$project_count = count( $projects );
 				$projectList = '';
 				if ( $project_count > 1 ) {
@@ -388,7 +405,7 @@ class CentralNotice extends SpecialPage {
 				$fields[] = $projectList;
 
 				// Languages
-				$project_langs = $this->getNoticeLanguages( $row->not_name );
+				$project_langs = CentralNotice::getNoticeLanguages( $row->not_name );
 				$language_count = count( $project_langs );
 				$languageList = '';
 				if ( $language_count > 3 ) {
@@ -539,7 +556,7 @@ class CentralNotice extends SpecialPage {
 			// Countries
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), 
-				Xml::label( wfMsg( 'centralnotice-geotargeted' ), 'geotargeted' ) );
+				Xml::label( wfMsg( 'centralnotice-geo' ), 'geotargeted' ) );
 			$htmlOut .= Xml::tags( 'td', array(), 
 				Xml::check( 'geotargeted', false, 
 					wfArrayMerge( $readonly, array( 'value' => 1, 'id' => 'geotargeted' ) ) ) );
@@ -599,36 +616,38 @@ class CentralNotice extends SpecialPage {
 						}
 					}
 					
+					$initialCampaignSettings = CentralNoticeDB::getCampaignSettings( $notice );
+					
 					// Handle locking/unlocking campaign
 					if ( $wgRequest->getCheck( 'locked' ) ) {
-						$this->updateLock( $notice, '1' );
+						$this->setBooleanCampaignSetting( $notice, 'locked', 1 );
 					} else {
-						$this->updateLock( $notice, 0 );
+						$this->setBooleanCampaignSetting( $notice, 'locked', 0 );
 					}
 					
 					// Handle enabling/disabling campaign
 					if ( $wgRequest->getCheck( 'enabled' ) ) {
-						$this->updateEnabled( $notice, '1' );
+						$this->setBooleanCampaignSetting( $notice, 'enabled', 1 );
 					} else {
-						$this->updateEnabled( $notice, 0 );
+						$this->setBooleanCampaignSetting( $notice, 'enabled', 0 );
 					}
 					
 					// Handle setting campaign to preferred/not preferred
 					if ( $wgRequest->getCheck( 'preferred' ) ) {
-						$this->updatePreferred( $notice, '1' );
+						$this->setBooleanCampaignSetting( $notice, 'preferred', 1 );
 					} else {
-						$this->updatePreferred( $notice, 0 );
+						$this->setBooleanCampaignSetting( $notice, 'preferred', 0 );
 					}
 					
 					// Handle updating geotargeting
 					if ( $wgRequest->getCheck( 'geotargeted' ) ) {
-						$this->updateGeotargeted( $notice, 1 );
+						$this->setBooleanCampaignSetting( $notice, 'geo', 1 );
 						$countries = $wgRequest->getArray( 'geo_countries' );
 						if ( $countries ) {
 							$this->updateCountries( $notice, $countries );
 						}
 					} else {
-						$this->updateGeotargeted( $notice, 0 );
+						$this->setBooleanCampaignSetting( $notice, 'geo', 0 );
 					}
 					
 					// Handle updating the start and end settings
@@ -690,6 +709,10 @@ class CentralNotice extends SpecialPage {
 					if ( $projectLangs ) {
 						$this->updateProjectLanguages( $notice, $projectLangs );
 					}
+					
+					$finalCampaignSettings = CentralNoticeDB::getCampaignSettings( $notice );
+					$campaignId = CentralNotice::getNoticeId( $notice );
+					$this->logCampaignChange( 'modified', $campaignId, $initialCampaignSettings, $finalCampaignSettings );
 					
 					// If there were no errors, reload the page to prevent duplicate form submission
 					if ( !$this->centralNoticeError ) {
@@ -774,25 +797,10 @@ class CentralNotice extends SpecialPage {
 		} else {
 			$readonly = array( 'disabled' => 'disabled' );
 		}
-		$dbr = wfGetDB( DB_SLAVE );
-
-		// Get campaign info from database
-		$row = $dbr->selectRow( 'cn_notices',
-			array(
-				'not_id',
-				'not_name',
-				'not_start',
-				'not_end',
-				'not_enabled',
-				'not_preferred',
-				'not_locked',
-				'not_geo'
-			),
-			array( 'not_name' => $notice ),
-			__METHOD__
-		);
 		
-		if ( $row ) {
+		$campaign = CentralNoticeDB::getCampaignSettings( $notice );
+		
+		if ( $campaign ) {
 		
 			// If there was an error, we'll need to restore the state of the form
 			if ( $wgRequest->wasPosted() ) {
@@ -818,15 +826,15 @@ class CentralNotice extends SpecialPage {
 				$isGeotargeted = $wgRequest->getCheck( 'geotargeted' );
 				$countries = $wgRequest->getArray( 'geo_countries', array() );
 			} else { // Defaults
-				$startTimestamp = $row->not_start;
-				$endTimestamp = $row->not_end;
-				$isEnabled = ( $row->not_enabled == '1' );
-				$isPreferred = ( $row->not_preferred == '1' );
-				$isLocked = ( $row->not_locked == '1' );
-				$noticeProjects = $this->getNoticeProjects( $notice );
-				$noticeLanguages = $this->getNoticeLanguages( $notice );
-				$isGeotargeted = ( $row->not_geo == '1' );
-				$countries = $this->getNoticeCountries( $notice );
+				$startTimestamp = $campaign['start'];
+				$endTimestamp = $campaign['end'];
+				$isEnabled = ( $campaign['enabled'] == '1' );
+				$isPreferred = ( $campaign['preferred'] == '1' );
+				$isLocked = ( $campaign['locked'] == '1' );
+				$noticeProjects = CentralNotice::getNoticeProjects( $notice );
+				$noticeLanguages = CentralNotice::getNoticeLanguages( $notice );
+				$isGeotargeted = ( $campaign['geo'] == '1' );
+				$countries = CentralNotice::getNoticeCountries( $notice );
 			}
 		
 			// Build Html
@@ -872,12 +880,12 @@ class CentralNotice extends SpecialPage {
 			// Countries
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), 
-				Xml::label( wfMsg( 'centralnotice-geotargeted' ), 'geotargeted' ) );
+				Xml::label( wfMsg( 'centralnotice-geo' ), 'geotargeted' ) );
 			$htmlOut .= Xml::tags( 'td', array(), 
 				Xml::check( 'geotargeted', $isGeotargeted, 
 					wfArrayMerge( 
 						$readonly, 
-						array( 'value' => $row->not_name, 'id' => 'geotargeted' ) ) ) );
+						array( 'value' => $notice, 'id' => 'geotargeted' ) ) ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			if ( $isGeotargeted ) {
 				$htmlOut .= Xml::openElement( 'tr', array( 'id'=>'geoMultiSelector' ) );
@@ -896,7 +904,7 @@ class CentralNotice extends SpecialPage {
 			$htmlOut .= Xml::tags( 'td', array(), 
 				Xml::check( 'enabled', $isEnabled, 
 					wfArrayMerge( $readonly, 
-						array( 'value' => $row->not_name, 'id' => 'enabled' ) ) ) );
+						array( 'value' => $notice, 'id' => 'enabled' ) ) ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// Preferred
 			$htmlOut .= Xml::openElement( 'tr' );
@@ -905,7 +913,7 @@ class CentralNotice extends SpecialPage {
 			$htmlOut .= Xml::tags( 'td', array(), 
 				Xml::check( 'preferred', $isPreferred, 
 					wfArrayMerge( $readonly, 
-						array( 'value' => $row->not_name, 'id' => 'preferred' ) ) ) );
+						array( 'value' => $notice, 'id' => 'preferred' ) ) ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// Locked
 			$htmlOut .= Xml::openElement( 'tr' );
@@ -914,7 +922,7 @@ class CentralNotice extends SpecialPage {
 			$htmlOut .= Xml::tags( 'td', array(), 
 				Xml::check( 'locked', $isLocked, 
 					wfArrayMerge( $readonly, 
-						array( 'value' => $row->not_name, 'id' => 'locked' ) ) ) );
+						array( 'value' => $notice, 'id' => 'locked' ) ) ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			if ( $this->editable ) {
 				// Locked
@@ -923,7 +931,7 @@ class CentralNotice extends SpecialPage {
 					Xml::label( wfMsg( 'centralnotice-remove' ), 'remove' ) );
 				$htmlOut .= Xml::tags( 'td', array(), 
 					Xml::check( 'remove', false, 
-						array( 'value' => $row->not_name, 'id' => 'remove' ) ) );
+						array( 'value' => $notice, 'id' => 'remove' ) ) );
 				$htmlOut .= Xml::closeElement( 'tr' );
 			}
 			$htmlOut .= Xml::closeElement( 'table' );
@@ -1074,90 +1082,6 @@ class CentralNotice extends SpecialPage {
 		return $htmlOut;
 	}
 
-	/**
-	 * Lookup function for active banners under a given language/project/location. This function is 
-	 * called by SpecialBannerListLoader::getJsonList() in order to build the banner list JSON for
-	 * each project.
-	 * @return a 2D array of running banners with associated weights and settings
-	 */
-	static function selectNoticeTemplates( $project, $language, $location = null ) {
-		global $wgCentralDBname;
-		
-		$campaigns = array();
-		$dbr = wfGetDB( DB_SLAVE, array(), $wgCentralDBname );
-		$encTimestamp = $dbr->addQuotes( $dbr->timestamp() );
-		
-		// Pull non-geotargeted campaigns
-		$campaignResults1 = $dbr->select(
-			array(
-				'cn_notices',
-				'cn_notice_projects',
-				'cn_notice_languages'
-			),
-			array(
-				'not_id'
-			),
-			array(
-				"not_start <= $encTimestamp",
-				"not_end >= $encTimestamp",
-				'not_enabled = 1', // enabled
-				'not_geo = 0', // not geotargeted
-				'np_notice_id = cn_notices.not_id',
-				'np_project' => $project,
-				'nl_notice_id = cn_notices.not_id',
-				'nl_language' => $language
-			),
-			__METHOD__
-		);
-		foreach ( $campaignResults1 as $row ) {
-			$campaigns[] = $row->not_id;
-		}
-		if ( $location ) {
-		
-			// Normalize location parameter (should be an uppercase 2-letter country code)
-			preg_match( '/[a-zA-Z][a-zA-Z]/', $location, $matches );
-			if ( $matches ) {
-				$location = strtoupper( $matches[0] );
-			
-				// Pull geotargeted campaigns
-				$campaignResults2 = $dbr->select(
-					array(
-						'cn_notices',
-						'cn_notice_projects',
-						'cn_notice_languages',
-						'cn_notice_countries'
-					),
-					array(
-						'not_id'
-					),
-					array(
-						"not_start <= $encTimestamp",
-						"not_end >= $encTimestamp",
-						'not_enabled = 1', // enabled
-						'not_geo = 1', // geotargeted
-						'nc_notice_id = cn_notices.not_id',
-						'nc_country' => $location,
-						'np_notice_id = cn_notices.not_id',
-						'np_project' => $project,
-						'nl_notice_id = cn_notices.not_id',
-						'nl_language' => $language
-					),
-					__METHOD__
-				);
-				foreach ( $campaignResults2 as $row ) {
-					$campaigns[] = $row->not_id;
-				}
-			}
-		}
-		
-		$templates = array();
-		if ( $campaigns ) {
-			// Pull all banners assigned to the campaigns
-			$templates = CentralNoticeDB::selectBannersAssigned( $campaigns );
-		}
-		return $templates;
-	}
-
 	function addNotice( $noticeName, $enabled, $start, $projects, 
 		$project_languages, $geotargeted, $geo_countries ) 
 	{
@@ -1171,6 +1095,7 @@ class CentralNotice extends SpecialPage {
 			$this->showError( 'centralnotice-no-language' );
 			return;
 		} else {
+			if ( !$geo_countries ) $geo_countries = array();
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->begin();
 			$start['hour'] = substr( $start['hour'], 0 , 2 );
@@ -1220,7 +1145,7 @@ class CentralNotice extends SpecialPage {
 			$res = $dbw->insert( 'cn_notice_languages', $insertArray, 
 				__METHOD__, array( 'IGNORE' ) );
 			
-			if ( $geotargeted && $geo_countries ) {
+			if ( $geotargeted ) {
 				// Do multi-row insert for campaign countries
 				$insertArray = array();
 				foreach( $geo_countries as $code ) {
@@ -1235,16 +1160,15 @@ class CentralNotice extends SpecialPage {
 			// Log the creation of the campaign
 			$beginSettings = array();
 			$endSettings = array(
-				'notlog_end_name' => $noticeName,
-				'notlog_end_projects' => implode( ", ", $projects ),
-				'notlog_end_languages' => implode( ", ", $project_languages ),
-				'notlog_end_countries' => implode( ", ", $geo_countries ),
-				'notlog_end_start' => $dbw->timestamp( $startTs ),
-				'notlog_end_end' => $dbw->timestamp( $endTs ),
-				'notlog_end_enabled' => $enabled,
-				'notlog_end_preferred' => 0,
-				'notlog_end_locked' => 0,
-				'notlog_end_geo' => $geotargeted
+				'projects' => implode( ", ", $projects ),
+				'languages' => implode( ", ", $project_languages ),
+				'countries' => implode( ", ", $geo_countries ),
+				'start' => $dbw->timestamp( $startTs ),
+				'end' => $dbw->timestamp( $endTs ),
+				'enabled' => $enabled,
+				'preferred' => 0,
+				'locked' => 0,
+				'geo' => $geotargeted
 			);
 			$this->logCampaignChange( 'created', $not_id, $beginSettings, $endSettings );
 			
@@ -1267,16 +1191,18 @@ class CentralNotice extends SpecialPage {
 			$this->showError( 'centralnotice-notice-is-locked' );
 			return;
 		} else {
+			// Log the removal of the campaign
+			$noticeId = CentralNotice::getNoticeId( $noticeName );
+			$this->logCampaignChange( 'removed', $noticeId );
+			
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->begin();
-			$noticeId = htmlspecialchars( $this->getNoticeId( $noticeName ) );
 			$res = $dbw->delete( 'cn_assignments',  array ( 'not_id' => $noticeId ) );
 			$res = $dbw->delete( 'cn_notices', array ( 'not_name' => $noticeName ) );
 			$res = $dbw->delete( 'cn_notice_languages', array ( 'nl_notice_id' => $noticeId ) );
+			$res = $dbw->delete( 'cn_notice_projects', array ( 'np_notice_id' => $noticeId ) );
+			$res = $dbw->delete( 'cn_notice_countries', array ( 'nc_notice_id' => $noticeId ) );
 			$dbw->commit();
-			
-			// Log the removal of the campaign
-			$this->logCampaignChange( 'removed', $noticeId );
 			
 			return;
 		}
@@ -1286,7 +1212,7 @@ class CentralNotice extends SpecialPage {
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$eNoticeName = htmlspecialchars ( $noticeName );
-		$noticeId = $this->getNoticeId( $eNoticeName );
+		$noticeId = CentralNotice::getNoticeId( $eNoticeName );
 		$templateId = $this->getTemplateId( $templateName );
 		$res = $dbr->select( 'cn_assignments', 'asn_id',
 			array(
@@ -1299,7 +1225,7 @@ class CentralNotice extends SpecialPage {
 		} else {
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->begin();
-			$noticeId = $this->getNoticeId( $eNoticeName );
+			$noticeId = CentralNotice::getNoticeId( $eNoticeName );
 			$res = $dbw->insert( 'cn_assignments',
 				array(
 					'tmp_id' => $templateId,
@@ -1339,7 +1265,7 @@ class CentralNotice extends SpecialPage {
 		return null;
 	}
 	
-	function getNoticeProjects( $noticeName ) {
+	static function getNoticeProjects( $noticeName ) {
 		$dbr = wfGetDB( DB_SLAVE );
 		$eNoticeName = htmlspecialchars( $noticeName );
 		$row = $dbr->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $eNoticeName ) );
@@ -1354,7 +1280,7 @@ class CentralNotice extends SpecialPage {
 		return $projects;
 	}
 
-	function getNoticeLanguages( $noticeName ) {
+	static function getNoticeLanguages( $noticeName ) {
 		$dbr = wfGetDB( DB_SLAVE );
 		$eNoticeName = htmlspecialchars( $noticeName );
 		$row = $dbr->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $eNoticeName ) );
@@ -1369,7 +1295,7 @@ class CentralNotice extends SpecialPage {
 		return $languages;
 	}
 	
-	function getNoticeCountries( $noticeName ) {
+	static function getNoticeCountries( $noticeName ) {
 		$dbr = wfGetDB( DB_SLAVE );
 		$eNoticeName = htmlspecialchars( $noticeName );
 		$row = $dbr->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $eNoticeName ) );
@@ -1384,14 +1310,6 @@ class CentralNotice extends SpecialPage {
 		return $countries;
 	}
 
-	function getNoticeProjectName( $noticeName ) {
-		 $dbr = wfGetDB( DB_SLAVE );
-		 $eNoticeName = htmlspecialchars( $noticeName );
-		 $res = $dbr->select( 'cn_notices', 'not_project', array( 'not_name' => $eNoticeName ) );
-		 $row = $dbr->fetchObject( $res );
-		 return $row->not_project;
-	}
-
 	function getTemplateId( $templateName ) {
 		$dbr = wfGetDB( DB_SLAVE );
 		$templateName = htmlspecialchars ( $templateName );
@@ -1403,7 +1321,7 @@ class CentralNotice extends SpecialPage {
 	function removeTemplateFor( $noticeName, $templateName ) {
 		$dbw = wfGetDB( DB_MASTER );
 		$dbw->begin();
-		$noticeId = $this->getNoticeId( $noticeName );
+		$noticeId = CentralNotice::getNoticeId( $noticeName );
 		$templateId = $this->getTemplateId( $templateName );
 		$dbw->delete( 'cn_assignments', array ( 'tmp_id' => $templateId, 'not_id' => $noticeId ) );
 		$dbw->commit();
@@ -1437,62 +1355,22 @@ class CentralNotice extends SpecialPage {
 			array( 'not_name' => $noticeName )
 		);
 	}
-
-	/**
-	 * Update the enabled/disabled state of a campaign
-	 */
-	private function updateEnabled( $noticeName, $isEnabled ) {
-		if ( !$this->noticeExists( $noticeName ) ) {
-			$this->showError( 'centralnotice-doesnt-exist' );
-		} else {
-			$dbw = wfGetDB( DB_MASTER );
-			$res = $dbw->update( 'cn_notices',
-				array( 'not_enabled' => $isEnabled ),
-				array( 'not_name' => $noticeName )
-			);
-		}
-	}
 	
 	/**
-	 * Update the preferred/not preferred state of a campaign
+	 * Update a boolean setting on a campaign
+	 * @param $noticeName string: Name of the campaign
+	 * @param $settingName string: Name of a boolean setting (enabled, preferred, locked, or geo)
+	 * @param $settingValue boolean: Value to use for the setting
 	 */
-	function updatePreferred( $noticeName, $isPreferred ) {
+	private function setBooleanCampaignSetting( $noticeName, $settingName, $settingValue ) {
 		if ( !$this->noticeExists( $noticeName ) ) {
-			$this->showError( 'centralnotice-doesnt-exist' );
+			// Exit quietly since campaign may have been deleted at the same time.
+			return;
 		} else {
+			$settingName = strtolower( $settingName );
 			$dbw = wfGetDB( DB_MASTER );
 			$res = $dbw->update( 'cn_notices',
-				array( 'not_preferred' => $isPreferred ),
-				array( 'not_name' => $noticeName )
-			);
-		}
-	}
-
-	/**
-	 * Update the geotargeted/not geotargeted state of a campaign
-	 */
-	function updateGeotargeted( $noticeName, $isGeotargeted ) {
-		if ( !$this->noticeExists( $noticeName ) ) {
-			$this->showError( 'centralnotice-doesnt-exist' );
-		} else {
-			$dbw = wfGetDB( DB_MASTER );
-			$res = $dbw->update( 'cn_notices',
-				array( 'not_geo' => $isGeotargeted ),
-				array( 'not_name' => $noticeName )
-			);
-		}
-	}
-
-	/**
-	 * Update the locked/unlocked state of a campaign
-	 */
-	function updateLock( $noticeName, $isLocked ) {
-		if ( !$this->noticeExists( $noticeName ) ) {
-			$this->showError( 'centralnotice-doesnt-exist' );
-		} else {
-			$dbw = wfGetDB( DB_MASTER );
-			$res = $dbw->update( 'cn_notices',
-				array( 'not_locked' => $isLocked ),
+				array( 'not_'.$settingName => $settingValue ),
 				array( 'not_name' => $noticeName )
 			);
 		}
@@ -1500,7 +1378,7 @@ class CentralNotice extends SpecialPage {
 
 	function updateWeight( $noticeName, $templateId, $weight ) {
 		 $dbw = wfGetDB( DB_MASTER );
-		 $noticeId = $this->getNoticeId( $noticeName );
+		 $noticeId = CentralNotice::getNoticeId( $noticeName );
 		 $dbw->update( 'cn_assignments',
 		 	array ( 'tmp_weight' => $weight ),
 		 	array(
@@ -1645,7 +1523,7 @@ class CentralNotice extends SpecialPage {
 		$dbw->begin();
 		
 		// Get the previously assigned projects
-		$oldProjects = $this->getNoticeProjects( $notice );
+		$oldProjects = CentralNotice::getNoticeProjects( $notice );
 		
 		// Get the notice id
 		$row = $dbw->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $notice ) );
@@ -1674,7 +1552,7 @@ class CentralNotice extends SpecialPage {
 		$dbw->begin();
 		
 		// Get the previously assigned languages
-		$oldLanguages = $this->getNoticeLanguages( $notice );
+		$oldLanguages = CentralNotice::getNoticeLanguages( $notice );
 		
 		// Get the notice id
 		$row = $dbw->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $notice ) );
@@ -1702,7 +1580,7 @@ class CentralNotice extends SpecialPage {
 		$dbw = wfGetDB( DB_MASTER );
 		
 		// Get the previously assigned languages
-		$oldCountries = $this->getNoticeCountries( $notice );
+		$oldCountries = CentralNotice::getNoticeCountries( $notice );
 		
 		// Get the notice id
 		$row = $dbw->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $notice ) );
@@ -1801,13 +1679,13 @@ class CentralNotice extends SpecialPage {
 	/**
 	 * Log any changes related to a campaign
 	 * @param $action string: 'created', 'modified', or 'removed'
-	 * @param $campaign integer: id of campaign
+	 * @param $campaignId integer: ID of campaign
 	 * @param $beginSettings array of campaign settings before changes (optional)
 	 * @param $endSettings array of campaign settings after changes (optional)
 	 * @param $beginAssignments array of banner assignments before changes (optional)
 	 * @param $endAssignments array of banner assignments after changes (optional)
 	 */
-	function logCampaignChange( $action, $campaign, $beginSettings = array(), 
+	function logCampaignChange( $action, $campaignId, $beginSettings = array(), 
 		$endSettings = array(), $beginAssignments = array(), $endAssignments = array() )
 	{
 		global $wgUser;
@@ -1818,10 +1696,16 @@ class CentralNotice extends SpecialPage {
 			'notlog_timestamp' => $dbw->timestamp(),
 			'notlog_user_id' => $wgUser->getId(),
 			'notlog_action' => $action,
-			'notlog_not_id' => $campaign
+			'notlog_not_id' => $campaignId,
+			'notlog_not_name' => CentralNotice::getNoticeName( $campaignId )
 		);
 		
-		$log = array_merge($log, $beginSettings, $endSettings);
+		foreach ( $beginSettings as $key => $value ) {
+			$log['notlog_begin_'.$key] = $value;
+		}
+		foreach ( $endSettings as $key => $value ) {
+			$log['notlog_end_'.$key] = $value;
+		}
 		
 		$res = $dbw->insert( 'cn_notice_log', $log );
 		$log_id = $dbw->insertId();
