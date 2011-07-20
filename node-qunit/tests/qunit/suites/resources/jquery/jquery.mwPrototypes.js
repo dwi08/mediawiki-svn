@@ -1,4 +1,4 @@
-module( 'jquery.mwPrototypes.js' );
+QUnit.module( 'jquery.mwPrototypes.js' );
 
 test( 'String functions', function() {
 

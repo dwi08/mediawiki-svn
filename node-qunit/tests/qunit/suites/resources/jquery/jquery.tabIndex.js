@@ -1,4 +1,4 @@
-module( 'jquery.tabIndex.js' );
+QUnit.module( 'jquery.tabIndex.js' );
 
 test( '-- Initial check', function() {
 	expect(2);

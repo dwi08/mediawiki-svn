@@ -1,4 +1,4 @@
-module( 'jquery.autoEllipsis.js' );
+QUnit.module( 'jquery.autoEllipsis.js' );
 
 test( '-- Initial check', function() {
 	expect(1);

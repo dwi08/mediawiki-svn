@@ -1,4 +1,4 @@
-module( 'jquery.localize.js' );
+QUnit.module( 'jquery.localize.js' );
 
 test( '-- Initial check', function() {
 	expect(1);

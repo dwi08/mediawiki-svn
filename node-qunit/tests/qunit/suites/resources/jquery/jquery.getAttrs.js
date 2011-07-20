@@ -1,4 +1,4 @@
-module( 'jquery.getAttrs.js' );
+QUnit.module( 'jquery.getAttrs.js' );
 
 test( '-- Initial check', function() {
 	expect(1);

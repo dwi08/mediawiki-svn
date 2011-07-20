@@ -1,4 +1,4 @@
-module( 'jquery.byteLimit.js' );
+QUnit.module( 'jquery.byteLimit.js' );
 
 test( '-- Initial check', function() {
 	expect(1);

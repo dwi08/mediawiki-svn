@@ -1,4 +1,4 @@
-module( 'mediawiki.util.js' );
+QUnit.module( 'mediawiki.util.js' );
 
 test( '-- Initial check', function() {
 	expect(1);

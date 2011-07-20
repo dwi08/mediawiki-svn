@@ -1,4 +1,4 @@
-module( 'mediawiki.Title.js' );
+QUnit.module( 'mediawiki.Title.js' );
 
 // mw.Title relies on these three config vars
 // Restore them after each test run

@@ -1,6 +1,6 @@
 (function() {
 
-module( 'jquery.tablesorter.test.js' );
+QUnit.module( 'jquery.tablesorter.test.js' );
 
 // setup hack
 mw.config.set('wgMonthNames', window.wgMonthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);

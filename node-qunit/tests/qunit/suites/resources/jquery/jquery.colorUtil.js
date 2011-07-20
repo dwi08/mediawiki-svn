@@ -1,4 +1,4 @@
-module( 'jquery.colorUtil.js' );
+QUnit.module( 'jquery.colorUtil.js' );
 
 test( '-- Initial check', function() {
 	expect(1);

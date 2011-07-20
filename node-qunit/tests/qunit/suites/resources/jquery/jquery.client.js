@@ -1,4 +1,4 @@
-module( 'jquery.client.js' );
+QUnit.module( 'jquery.client.js' );
 
 test( '-- Initial check', function() {
 	expect(1);
