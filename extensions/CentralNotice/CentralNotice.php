@@ -121,9 +121,6 @@ function efCentralNoticeSetup() {
 
 		$wgSpecialPages['BannerAllocation'] = 'SpecialBannerAllocation';
 		$wgAutoloadClasses['SpecialBannerAllocation'] = $specialDir . 'SpecialBannerAllocation.php';
-
-		$wgSpecialPages['CentralNoticeLogs'] = 'SpecialCentralNoticeLogs';
-		$wgAutoloadClasses['SpecialCentralNoticeLogs'] = $specialDir . 'SpecialCentralNoticeLogs.php';
 	}
 }
 
@@ -147,8 +144,6 @@ function efCentralNoticeSchema( $updater = null ) {
 				$base . '/patches/patch-notice_countries.sql' );
 			$wgExtNewTables[] = array( 'cn_notice_projects',
 				$base . '/patches/patch-notice_projects.sql' );
-			$wgExtNewTables[] = array( 'cn_notice_log',
-				$base . '/patches/patch-notice_log.sql' );
 		}
 	} else {
 		if ( $updater->getDB()->getType() == 'mysql' ) {
@@ -166,8 +161,6 @@ function efCentralNoticeSchema( $updater = null ) {
 				$base . '/patches/patch-notice_countries.sql', true ) );
 			$updater->addExtensionUpdate( array( 'addTable', 'cn_notice_projects',
 				$base . '/patches/patch-notice_projects.sql', true ) );
-			$updater->addExtensionUpdate( array( 'addTable', 'cn_notice_log',
-				$base . '/patches/patch-notice_log.sql', true ) );
 		}
 	}
 	return true;
