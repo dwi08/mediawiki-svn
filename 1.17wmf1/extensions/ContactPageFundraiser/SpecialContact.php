@@ -40,20 +40,12 @@ class SpecialContact extends SpecialPage {
 			$nu = User::newFromName( $wgContactUser );
 			$f = new EmailContactForm( $nu );
 
-			$form['fname']     = $wgRequest->getVal('fname');
-			$form['lname']     = $wgRequest->getVal('lname');
-			$form['orgname']   = $wgRequest->getVal('orgname');
-			$form['jobname']   = $wgRequest->getVal('jobname');
-			$form['urlname']   = $wgRequest->getVal('urlname');
+			$form['name']      = $wgRequest->getVal('name');
+			$form['age']       = $wgRequest->getVal('age');
 			$form['email']     = $wgRequest->getVal('email');
-			$form['telephone'] = $wgRequest->getVal('telephone');
-			$form['other']	   = $wgRequest->getVal('other');
-			$form['url']	   = $wgRequest->getVal('url');
-			$form['country']   = $wgRequest->getVal('country');
-			$form['citytown']  = $wgRequest->getVal('city-town');
-			$form['provstat']  = $wgRequest->getVal('prov-state');	
+			$form['location']  = $wgRequest->getVal('location');
 			$form['story']	   = $wgRequest->getVal('story');
-			$form['followup']  = $wgRequest->getVal('follow-up');
+			$form['followup']  = $wgRequest->getVal('followup');
 
 			$text = '';
 			foreach( $form as $key => $value) {
@@ -81,7 +73,7 @@ class SpecialContact extends SpecialPage {
 		if ( "success" == $action ) {
 			wfDebug( "$fname: success.\n" );
 			$f->showSuccess( );
-		} else if ( "submit" == $action && $wgRequest->wasPosted() && $f->hasAllInfo() ) {
+		} elseif ( "submit" == $action && $wgRequest->wasPosted() && $f->hasAllInfo() ) {
 			$token = $wgRequest->getVal( 'wpEditToken' );
 
 			if( $wgUser->isAnon() ) {
@@ -96,7 +88,7 @@ class SpecialContact extends SpecialPage {
 				wfDebug( "$fname: bad token (".($wgUser->isAnon()?'anon':'user')."): $token\n" );
 				$wgOut->addWikiText( wfMsg( 'sessionfailure' ) );
 				$f->showForm();
-			} else if ( !$f->passCaptcha() ) {
+			} elseif ( !$f->passCaptcha() ) {
 				wfDebug( "$fname: captcha failed" );
 				$wgOut->addWikiText( wfMsg( 'contactpage-captcha-failed' ) ); //TODO: provide a message for this!
 				$f->showForm();
@@ -147,7 +139,7 @@ class EmailContactForm {
 			$captcha->action = 'contact';
 		}
 	}
-	
+
 	function setText( $text ) {
 		$this->text = $text;
 	}
@@ -255,7 +247,7 @@ class EmailContactForm {
 
 	function getCaptcha() {
 		global $wgCaptcha;
-		if ( !$this->useCaptcha() ) return ""; 
+		if ( !$this->useCaptcha() ) return "";
 
 		wfSetupSession(); #NOTE: make sure we have a session. May be required for captchas to work.
 
@@ -290,7 +282,7 @@ class EmailContactForm {
 		if ( !$this->fromaddress ) {
 			$from = new MailAddress( $csender, $cname );
 		}
-		else if ( $wgUserEmailUseReplyTo ) {
+		elseif ( $wgUserEmailUseReplyTo ) {
 			$from = new MailAddress( $csender, $cname );
 			$replyto = new MailAddress( $this->fromaddress, $this->fromname );
 		}
@@ -307,7 +299,7 @@ class EmailContactForm {
 		if ( $this->fromname !== "" ) {
 			$subject = wfMsgForContent( "contactpage-subject-and-sender", $subject, $this->fromname );
 		}
-		else if ( $this->fromaddress !== "" ) {
+		elseif ( $this->fromaddress !== "" ) {
 			$subject = wfMsgForContent( "contactpage-subject-and-sender", $subject, $this->fromaddress );
 		}
 
