@@ -48,8 +48,5 @@ mw.user.options.set({"skin": "vector"});
 require( './testrunner.js' );
 require( './defineTestCallback.js' );
 
-require( '../suites/resources/mediawiki/mediawiki.js');
-
-console.warn( "MediaWiki bootstrapping done" );
-
+console.warn( "MediaWiki bootstrapping done." + "\n" );
 
