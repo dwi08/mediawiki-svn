@@ -152,7 +152,7 @@ test( 'mw.loader', function() {
 		"file://path/to/tests/",
 		"Extracting path from local URL (file://) with fragment"
 		);
-
+/*
 	// Asynchronous ahead
 	stop(5000);
 
@@ -172,7 +172,7 @@ test( 'mw.loader', function() {
 		start();
 		ok( false, 'Error callback fired while implementing "is.awesome" module' );
 	});
-
+*/
 });
 
 test( 'mw.loader.bug29107' , function() {
