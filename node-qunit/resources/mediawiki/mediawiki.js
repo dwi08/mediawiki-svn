@@ -1160,10 +1160,11 @@ window.mediaWiki = new ( function( $ ) {
 // Alias $j to jQuery for backwards compatibility
 window.$j = jQuery;
 
-// Global alias
+// Global aliases for browser and nodejs
 window.mw = window.mediaWiki;
-GLOBAL.mw = window.mediaWiki;
-GLOBAL.mediaWiki = window.mediaWiki;
+if( typeof(GLOBAL) !== 'undefined' ) {
+	GLOBAL.mw = window.mediaWiki;
+}
 
 /* Auto-register from pre-loaded startup scripts */
 

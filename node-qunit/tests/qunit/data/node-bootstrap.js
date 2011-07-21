@@ -20,11 +20,12 @@ console.warn( "... Testing jQuery and DOM" );
 console.warn( "Looks good." );
 
 console.warn( "Now really bootstraping ..." );
-GLOBAL.startUp = function() {
-	mw.config = new mw.Map( false );
-}
 
+GLOBAL.startUp = function() {
+	GLOBAL.mw.config = new mw.Map( true );
+}
 require( '../../../resources/mediawiki/mediawiki.js'  );
+GLOBAL.mediaWiki = window.mediaWiki;
 
 require( '../../../resources/jquery/jquery.client.js' );
 require( '../../../resources/mediawiki.page/mediawiki.page.startup.js' );
