@@ -20,6 +20,16 @@ console.warn( "... Testing jQuery and DOM" );
 console.warn( "Looks good." );
 
 console.warn( "Now really bootstraping ..." );
+$( '<h1 id="qunit-header">MediaWiki JavaScript Test Suite</h1>'
+	+ '<h2 id="qunit-banner"></h2>'
+	+ '<div id="qunit-testrunner-toolbar">'
+	+ '<p><a href="http://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing">See testing documentation on mediawiki.org</a></p>'
+	+ '</div>'
+	+ '<h2 id="qunit-userAgent"></h2>'
+	+ '<ol id="qunit-tests"></ol>'
+	+'<!-- Scripts inserting stuff here shall remove it themselfs! -->'
+	+'<div id="content"></div>'
+ ).appendTo( "body" );
 
 GLOBAL.startUp = function() {
 	GLOBAL.mw.config = new mw.Map( true );
