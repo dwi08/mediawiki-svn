@@ -1,10 +1,18 @@
-You will need node.js
-See a basic guide at http://www.mediawiki.org/wiki/User:Hashar/cli-js
+To run this test suite from the commande line, you will need node.js.
+See a basic guide about installing it at:
+ http://www.mediawiki.org/wiki/User:Hashar/cli-js
+
+You will also need the following modules:
+ - jquery
+ - jsdom
+ - qunit
+To be installed with npm (Node Package Manger)
+
 
 To test your setup you can use the dumb suite:
 
 $ cd tests/qunit
-$ node dumb-launch.js
+$ make dumb
 [OK][dumb-code.js: Really basic example] looks fine
 [OK][dumb-code.js: Really basic example] Variable assignement works
 
@@ -25,3 +33,5 @@ Time: 124 ms
 $
 
 Works! :)
+
+Now try out the MediaWiki test suite: make test 
