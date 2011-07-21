@@ -74,8 +74,8 @@ test( 'mw.Map', function() {
 });
 
 test( 'mw.config', function() {
-	expect(1);
-
+	expect(2);
+	ok( mw.config, 'mw.config is defined' );
 	ok( mw.config instanceof mw.Map, 'mw.config instance of mw.Map' );
 });
 
