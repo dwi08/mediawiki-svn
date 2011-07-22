@@ -840,7 +840,9 @@ abstract class Maintenance {
 		ini_set( 'include_path', ".:$IP:$IP/includes:$IP/languages:$IP/maintenance" );
 
 		if ( $lang == 'test' && $site == 'wikipedia' ) {
-			define( 'TESTWIKI', 1 );
+			if ( !defined( 'TESTWIKI' ) ) {
+				define( 'TESTWIKI', 1 );
+			}
 		}
 	}
 
@@ -1149,4 +1151,3 @@ class FakeMaintenance extends Maintenance {
 		return;
 	}
 }
-
