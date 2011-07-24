@@ -3268,8 +3268,9 @@ class Parser {
 				}
 			} elseif ( $title->isTrans() ) {
 				// TODO: Work by Peter17 in progress
-
+				
 				$text = Interwiki::interwikiTransclude( $title );
+				$this->registerDistantTemplate( $title );
 				
 				if ( $text !== false ) {
 					# Preprocess it like a template
@@ -3423,6 +3424,21 @@ class Parser {
 		}
 		return array( $text, $finalTitle );
 	}
+	
+	/**
+	 * Register a distant template as used
+	 */
+	function registerDistantTemplate( $title ) {
+		$templateCb = array( 'Parser', 'distantTemplateCallback' );
+		$stuff = call_user_func( $templateCb, $title, $this );
+		$text = $stuff['text'];
+		$finalTitle = isset( $stuff['finalTitle'] ) ? $stuff['finalTitle'] : $title;
+		if ( isset( $stuff['deps'] ) ) {
+			foreach ( $stuff['deps'] as $dep ) {
+				$this->mOutput->addDistantTemplate( $dep['title'], $dep['page_id'], $dep['rev_id'] );
+			}
+		}
+	}
 
 	/**
 	 * Fetch the unparsed text of a template and register a reference to it.
@@ -3504,6 +3520,22 @@ class Parser {
 			$finalTitle = $title;
 			$title = Title::newFromRedirect( $text );
 		}
+		return array(
+			'text' => $text,
+			'finalTitle' => $finalTitle,
+			'deps' => $deps );
+	}
+
+	static function distantTemplateCallback( $title, $parser=false ) {
+		$text = '';
+		$rev_id = null;
+		$deps[] = array(
+			'title' => $title,
+			'page_id' => $title->getArticleID(),
+			'rev_id' => $rev_id );
+
+		$finalTitle = $title;
+		
 		return array(
 			'text' => $text,
 			'finalTitle' => $finalTitle,

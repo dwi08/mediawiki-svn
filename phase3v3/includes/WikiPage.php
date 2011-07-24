@@ -1571,7 +1571,7 @@ class WikiPage extends Page {
 	public function doDeleteArticle(
 		$reason, $suppress = false, $id = 0, $commit = true, &$error = '', User $user = null
 	) {
-		global $wgDeferredUpdateList, $wgUseTrackbacks, $wgUser;
+		global $wgDeferredUpdateList, $wgUseTrackbacks, $wgUser, $wgEnableInterwikiTemplatesTracking, $wgGlobalDatabase;
 		$user = is_null( $user ) ? $wgUser : $user;
 
 		wfDebug( __METHOD__ . "\n" );
@@ -1673,6 +1673,13 @@ class WikiPage extends Page {
 			$dbw->delete( 'langlinks', array( 'll_from' => $id ) );
 			$dbw->delete( 'iwlinks', array( 'iwl_from' => $id ) );
 			$dbw->delete( 'redirect', array( 'rd_from' => $id ) );
+			if ( $wgGlobalDB ) {
+				$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDB );
+				$dbw2->delete( 'globaltemplatelinks',
+							array(  'gtl_from_wiki' => $wgWikiID,
+									'gtl_from_page' => $id )
+							);
+			}
 		}
 
 		# If using cleanup triggers, we can skip some manual deletes

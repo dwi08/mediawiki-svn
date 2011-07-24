@@ -3132,6 +3132,8 @@ class Title {
 	 * @return Mixed true on success, getUserPermissionsErrors()-like array on failure
 	 */
 	public function moveTo( &$nt, $auth = true, $reason = '', $createRedirect = true ) {
+		global $wgContLang, $wgGlobalDB, $wgWikiID;
+
 		$err = $this->isValidMoveOperation( $nt, $auth, $reason );
 		if ( is_array( $err ) ) {
 			return $err;
@@ -3186,6 +3188,15 @@ class Title {
 					'cl_to' => $catTo ),
 				__METHOD__
 			);
+		}
+			
+		if ( $wgGlobalDB ) {
+			$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDB );
+			$dbw2->update( 'globaltemplatelinks',
+						array(  'gtl_from_namespace' => $nt->getNsText(),
+								'gtl_from_title' => $nt->getText() ),
+						array ( 'gtl_from_page' => $pageid ),
+						__METHOD__ );
 		}
 
 		if ( $protected ) {
@@ -3280,8 +3291,8 @@ class Title {
 	 * @param $createRedirect Bool Whether to leave a redirect at the old title.  Ignored
 	 *   if the user doesn't have the suppressredirect right
 	 */
-	private function moveToInternal( &$nt, $reason = '', $createRedirect = true ) {
-		global $wgUser, $wgContLang;
+	private function moveOverExistingRedirect( &$nt, $reason = '', $createRedirect = true ) {
+		global $wgUseSquid, $wgUser, $wgContLang, $wgWikiID, $wgGlobalDB;
 
 		$moveOverRedirect = $nt->exists();
 
@@ -3333,6 +3344,14 @@ class Title {
 				array( 'rc_timestamp' => $rcts, 'rc_namespace' => $newns, 'rc_title' => $newdbk, 'rc_new' => 1 ),
 				__METHOD__
 			);
+			
+			if ( $wgGlobalDB ) {
+				$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDB );
+				$dbw2->delete( 'globaltemplatelinks',
+							array(  'gtl_from_wiki' => $wgWikiID,
+									'gtl_from_page' => $newid ),
+							__METHOD__ );
+			}
 		}
 
 		# Save a null revision in the page's history notifying of the move
