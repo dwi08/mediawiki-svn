@@ -3051,7 +3051,7 @@ class Parser {
 	 * @private
 	 */
 	function braceSubstitution( $piece, $frame ) {
-		global $wgContLang, $wgNonincludableNamespaces, $wgEnableInterwikiTranscluding, $wgEnableInterwikiTemplatesTracking;
+		global $wgContLang, $wgNonincludableNamespaces;
 		wfProfileIn( __METHOD__ );
 		wfProfileIn( __METHOD__.'-setup' );
 
@@ -3266,14 +3266,10 @@ class Parser {
 					$text = "[[:$titleText]]";
 					$found = true;
 				}
-			} elseif ( $wgEnableInterwikiTranscluding && $title->isTrans() ) {
+			} elseif ( $title->isTrans() ) {
 				// TODO: Work by Peter17 in progress
 
 				$text = Interwiki::interwikiTransclude( $title );
-				
-				if ( $wgEnableInterwikiTemplatesTracking ) {
-					$this->registerDistantTemplate( $title );
-				}
 				
 				if ( $text !== false ) {
 					# Preprocess it like a template
@@ -3433,17 +3429,6 @@ class Parser {
 	 * @param Title $title
 	 * @return mixed string or false
 	 */
-	function registerDistantTemplate( $title ) {
-		$stuff = Parser::distantTemplateCallback( $title, $this );
-		$text = $stuff['text'];
-		$finalTitle = isset( $stuff['finalTitle'] ) ? $stuff['finalTitle'] : $title;
-		if ( isset( $stuff['deps'] ) ) {
-			foreach ( $stuff['deps'] as $dep ) {
-				$this->mOutput->addDistantTemplate( $dep['title'], $dep['page_id'], $dep['rev_id'] );
-			}
-		}
-	}
-
 	function fetchTemplate( $title ) {
 		$rv = $this->fetchTemplateAndTitle( $title );
 		return $rv[0];
