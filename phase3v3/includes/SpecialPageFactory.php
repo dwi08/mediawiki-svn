@@ -126,6 +126,7 @@ class SpecialPageFactory {
 		// Page tools
 		'ComparePages'              => 'SpecialComparePages',
 		'Export'                    => 'SpecialExport',
+		'GlobalFileUsage'           => 'SpecialGlobalFileUsage',
 		'GlobalTemplateUsage'       => 'SpecialGlobalTemplateUsage',
 		'Import'                    => 'SpecialImport',
 		'Undelete'                  => 'SpecialUndelete',
