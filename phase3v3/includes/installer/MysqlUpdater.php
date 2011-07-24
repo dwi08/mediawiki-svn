@@ -183,6 +183,11 @@ class MysqlUpdater extends DatabaseUpdater {
 			array( 'modifyField', 'user_properties', 'up_property', 'patch-up_property.sql' ),
 			array( 'addTable', 'config', 'patch-config.sql' ),
 			array( 'addTable', 'uploadstash', 'patch-uploadstash.sql' ),
+
+			// 1.19
+			array( 'addTable', 'globaltemplatelinks', 'patch-globaltemplatelinks.sql' ),
+			array( 'addTable', 'globalnamespaces', 'patch-globalnamespaces.sql' ),
+			array( 'addTable', 'globalinterwiki', 'patch-globalinterwiki.sql' ),
 		);
 	}
 
