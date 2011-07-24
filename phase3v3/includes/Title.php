@@ -3132,7 +3132,7 @@ class Title {
 	 * @return Mixed true on success, getUserPermissionsErrors()-like array on failure
 	 */
 	public function moveTo( &$nt, $auth = true, $reason = '', $createRedirect = true ) {
-		global $wgContLang, $wgGlobalDB, $wgWikiID;
+		global $wgContLang, $wgEnableInterwikiTemplatesTracking, $wgGlobalDatabase;
 
 		$err = $this->isValidMoveOperation( $nt, $auth, $reason );
 		if ( is_array( $err ) ) {
@@ -3190,8 +3190,8 @@ class Title {
 			);
 		}
 			
-		if ( $wgGlobalDB ) {
-			$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDB );
+		if ( $wgEnableInterwikiTemplatesTracking && $wgGlobalDatabase ) {
+			$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDatabase );
 			$dbw2->update( 'globaltemplatelinks',
 						array(  'gtl_from_namespace' => $nt->getNsText(),
 								'gtl_from_title' => $nt->getText() ),
@@ -3292,7 +3292,7 @@ class Title {
 	 *   if the user doesn't have the suppressredirect right
 	 */
 	private function moveOverExistingRedirect( &$nt, $reason = '', $createRedirect = true ) {
-		global $wgUseSquid, $wgUser, $wgContLang, $wgWikiID, $wgGlobalDB;
+		global $wgUseSquid, $wgUser, $wgContLang, $wgEnableInterwikiTemplatesTracking, $wgGlobalDatabase;
 
 		$moveOverRedirect = $nt->exists();
 
@@ -3345,10 +3345,10 @@ class Title {
 				__METHOD__
 			);
 			
-			if ( $wgGlobalDB ) {
-				$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDB );
+			 if ( $wgEnableInterwikiTemplatesTracking && $wgGlobalDatabase ) {
+				$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDatabase );
 				$dbw2->delete( 'globaltemplatelinks',
-							array(  'gtl_from_wiki' => $wgWikiID,
+							array(  'gtl_from_wiki' => wfGetID(),
 									'gtl_from_page' => $newid ),
 							__METHOD__ );
 			}
