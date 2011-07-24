@@ -1659,12 +1659,6 @@ class Linker {
 
 		$outText = '';
 		if ( count( $templates ) > 0 ) {
-			# Do a batch existence check
-			$batch = new LinkBatch;
-			foreach( $templates as $title ) {
-				$batch->addObj( $title );
-			}
-			$batch->execute();
 
 			# Construct the HTML
 			$outText = '<div class="mw-templatesUsedExplanation">';
