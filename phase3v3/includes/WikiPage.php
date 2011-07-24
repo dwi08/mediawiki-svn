@@ -1571,7 +1571,7 @@ class WikiPage extends Page {
 	public function doDeleteArticle(
 		$reason, $suppress = false, $id = 0, $commit = true, &$error = '', User $user = null
 	) {
-		global $wgDeferredUpdateList, $wgUseTrackbacks, $wgEnableInterwikiTemplatesTracking, $wgGlobalDatabase;
+		global $wgDeferredUpdateList, $wgUseTrackbacks, $wgEnableInterwikiTemplatesTracking, $wgGlobalDatabase, $wgUser;
 		$user = is_null( $user ) ? $wgUser : $user;
 
 		wfDebug( __METHOD__ . "\n" );
@@ -2202,7 +2202,7 @@ class WikiPage extends Page {
 		$title->deleteTitleProtection();
 
 		# Invalidate caches of distant articles which transclude this page
-		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' )
+		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 	}
 
 	/**
@@ -2248,7 +2248,7 @@ class WikiPage extends Page {
 
 		# Image redirects
 		RepoGroup::singleton()->getLocalRepo()->invalidateImageRedirect( $title );
-	
+
 		# Invalidate caches of distant articles which transclude this page
 		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 	}
@@ -2264,7 +2264,7 @@ class WikiPage extends Page {
 
 		// Invalidate caches of articles which include this page
 		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'templatelinks' );
-		
+
 		// Invalidate caches of distant articles which transclude this page
 		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 
@@ -2317,22 +2317,22 @@ class WikiPage extends Page {
 	 */
 	public function getUsedDistantTemplates() {
 		global $wgGlobalDatabase;
-		
+
 		$result = array();
-		
+
 		if ( $wgGlobalDatabase ) {
 			$id = $this->mTitle->getArticleID();
 
 			if ( $id == 0 ) {
 				return array();
 			}
-	
+
 			$dbr = wfGetDB( DB_SLAVE, array(), $wgGlobalDatabase );
 			$res = $dbr->select( 'globaltemplatelinks',
 				array( 'gtl_to_prefix', 'gtl_to_namespace', 'gtl_to_title' ),
 				array( 'gtl_from_wiki' => wfWikiID( ), 'gtl_from_page' => $id ),
 				__METHOD__ );
-	
+
 			if ( $res !== false ) {
 				foreach ( $res as $row ) {
 					$result[] = Title::makeTitle( $row->gtl_to_namespace, $row->gtl_to_title, null, $row->gtl_to_prefix );

@@ -1654,7 +1654,7 @@ class Linker {
 	 * @param $section Boolean: whether this is for a section edit
 	 * @return String: HTML output
 	 */
-	public function formatDistantTemplates( $templates, $preview = false, $section = false ) {
+	public static function formatDistantTemplates( $templates, $preview = false, $section = false ) {
 		wfProfileIn( __METHOD__ );
 
 		$outText = '';
@@ -1673,7 +1673,7 @@ class Linker {
 
 			usort( $templates, array( 'Title', 'compare' ) );
 			foreach ( $templates as $titleObj ) {
-				$outText .= '<li>' . $this->link( $titleObj ) . '</li>';
+				$outText .= '<li>' . self::link( $titleObj ) . '</li>';
 			}
 			$outText .= '</ul>';
 		}

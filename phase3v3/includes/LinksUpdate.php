@@ -153,7 +153,7 @@ class LinksUpdate {
 		$existing = $this->getExistingTemplates();
 		$this->incrTableUpdate( 'templatelinks', 'tl', $this->getTemplateDeletions( $existing ),
 			$this->getTemplateInsertions( $existing ) );
-			
+
 		# Distant template links
 		global $wgGlobalDB;
 		if ( $wgGlobalDB ) {
@@ -383,7 +383,7 @@ class LinksUpdate {
 			$this->mDb->insert( 'globalinterwiki', $insertions['globalinterwiki'], __METHOD__, 'IGNORE' );
 		}
 	}
-	
+
 	/**
 	 * Update a shared table by doing a delete query then an insert query
 	 * @private
@@ -392,7 +392,7 @@ class LinksUpdate {
 
 		global $wgWikiID;
 		global $wgGlobalDB;
-		
+
 		if ( $wgGlobalDB ) {
 			$dbw = wfGetDB( DB_MASTER, array(), $wgGlobalDB );
 			$where = array( "{$prefix}_from_wiki" => $wgWikiID,
@@ -400,14 +400,14 @@ class LinksUpdate {
 					);
 			$baseKey = "{$prefix}_to_wiki";
 			$middleKey = "{$prefix}_to_namespace";
-			
+
 			$clause = $dbw->makeWhereFrom3d( $deletions, $baseKey, $middleKey, "{$prefix}_to_title" );
 			if ( $clause ) {
 				$where[] = $clause;
 			} else {
 				$where = false;
 			}
-			
+
 			if ( $where ) {
 				$dbw->delete( $table, $where, __METHOD__ );
 			}
@@ -457,7 +457,7 @@ class LinksUpdate {
 		}
 		return $arr;
 	}
-	
+
 	/**
 	 * Get an array of distant template insertions. Like getLinkInsertions()
 	 * @private
@@ -467,8 +467,10 @@ class LinksUpdate {
 		$arr = array();
 		foreach( $this->mDistantTemplates as $wikiid => $templatesToNS ) {
 			foreach( $templatesToNS as $ns => $dbkeys ) {
-				$diffs = isset( $existing[$wikiid] ) && isset( $existing[$wikiid][$ns] ) ? array_diff_key( $dbkeys, $existing[$wikiid][$ns] ) : $dbkeys;
-				$interwiki = Interwiki::fetch( $prefix );
+				$diffs = isset( $existing[$wikiid] ) && isset( $existing[$wikiid][$ns] )
+						? array_diff_key( $dbkeys, $existing[$wikiid][$ns] )
+						: $dbkeys;
+				$interwiki = Interwiki::fetch( $wikiid );
 				$wikiid = $interwiki->getWikiID();
 				foreach ( $diffs as $dbk => $id ) {
 					$arr['globaltemplatelinks'][] = array(
@@ -660,7 +662,7 @@ class LinksUpdate {
 		}
 		return $del;
 	}
-	
+
 	/**
 	 * Given an array of existing templates, returns those templates which are not in $this
 	 * and thus should be deleted.
@@ -779,7 +781,7 @@ class LinksUpdate {
 		}
 		return $arr;
 	}
-	
+
 	/**
 	 * Get an array of existing distant templates, as a 3-D array
 	 * @private
@@ -787,7 +789,7 @@ class LinksUpdate {
 	function getDistantExistingTemplates() {
 		global $wgWikiID;
 		global $wgGlobalDB;
-		
+
 		$arr = array();
 		if ( $wgGlobalDB ) {
 			$dbr = wfGetDB( DB_SLAVE, array(), $wgGlobalDB );

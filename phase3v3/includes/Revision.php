@@ -156,27 +156,27 @@ class Revision {
 	}
 
 	/**
-	 * Stores the origin wiki of a revision in case it is a foreign wiki 
+	 * Stores the origin wiki of a revision in case it is a foreign wiki
 	 */
 	function setWikiID( $wikiID ) {
 		$this->mWikiID = $wikiID;
 	}
-	 
+
 	/**
 	 * Load the current revision of a given page of a foreign wiki.
-	 * The WikiID is stored for further use, such as loadText() and getTimestampFromId() 
+	 * The WikiID is stored for further use, such as loadText() and getTimestampFromId()
 	 */
 	public static function loadFromTitleForeignWiki( $wikiID, $title ) {
 		$dbr = wfGetDB( DB_SLAVE, array(), $wikiID );
-		
+
 		$revision = self::loadFromTitle( $dbr, $title );
-		
+
 		if( $revision ) {
 			$revision->setWikiID( $wikiID );
 		}
-		
+
 		return $revision;
-		
+
 	}
 
 	/**
@@ -463,7 +463,7 @@ class Revision {
 			return $this->mTitle;
 		}
 		$dbr = wfGetDB( DB_SLAVE, array(), $this->mWikiID );
-		
+
 		$row = $dbr->selectRow(
 			array( 'page', 'revision' ),
 			array( 'page_namespace', 'page_title' ),
@@ -1081,7 +1081,8 @@ class Revision {
 	 * @return String
 	 */
 	static function getTimestampFromId( $title, $id ) {
-		$dbr = wfGetDB( DB_SLAVE, array(), $this->mWikiID );
+		$wikiId = wfWikiID();
+		$dbr = wfGetDB( DB_SLAVE, array(), $wikiId );
 		// Casting fix for DB2
 		if ( $id == '' ) {
 			$id = 0;
@@ -1091,7 +1092,7 @@ class Revision {
 		$timestamp = $dbr->selectField( 'revision', 'rev_timestamp', $conds, __METHOD__ );
 		if ( $timestamp === false && wfGetLB()->getServerCount() > 1 ) {
 			# Not in slave, try master
-			$dbw = wfGetDB( DB_MASTER, array(), $this->mWikiID );
+			$dbw = wfGetDB( DB_MASTER, array(), $wikiId );
 			$timestamp = $dbw->selectField( 'revision', 'rev_timestamp', $conds, __METHOD__ );
 		}
 		return wfTimestamp( TS_MW, $timestamp );

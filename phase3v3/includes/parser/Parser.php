@@ -3267,14 +3267,14 @@ class Parser {
 					$found = true;
 				}
 			} elseif ( $wgEnableInterwikiTranscluding && $title->isTrans() ) {
-				
+
 				$text = Interwiki::interwikiTransclude( $title );
 				$this->registerDistantTemplate( $title );
-				
+
 				if ( $wgEnableInterwikiTemplatesTracking ) {
 					$this->registerDistantTemplate( $title );
 				}
-				
+
 				if ( $text !== false ) {
 					# Preprocess it like a template
 					$text = $this->preprocessToDom( $text, self::PTD_FOR_INCLUSION );
@@ -3427,26 +3427,9 @@ class Parser {
 		}
 		return array( $text, $finalTitle );
 	}
-	
-	/**
-	 * Register a distant template as used
-	 */
-	function registerDistantTemplate( $title ) {
-		$templateCb = array( 'Parser', 'distantTemplateCallback' );
-		$stuff = call_user_func( $templateCb, $title, $this );
-		$text = $stuff['text'];
-		$finalTitle = isset( $stuff['finalTitle'] ) ? $stuff['finalTitle'] : $title;
-		if ( isset( $stuff['deps'] ) ) {
-			foreach ( $stuff['deps'] as $dep ) {
-				$this->mOutput->addDistantTemplate( $dep['title'], $dep['page_id'], $dep['rev_id'] );
-			}
-		}
-	}
 
 	/**
-	 * Fetch the unparsed text of a template and register a reference to it.
-	 * @param Title $title
-	 * @return mixed string or false
+	 * Register a distant template as used
 	 */
 	function registerDistantTemplate( $title ) {
 		$stuff = Parser::distantTemplateCallback( $title, $this );
@@ -3549,7 +3532,7 @@ class Parser {
 			'rev_id' => $rev_id );
 
 		$finalTitle = $title;
-		
+
 		return array(
 			'text' => $text,
 			'finalTitle' => $finalTitle,
@@ -4137,10 +4120,10 @@ class Parser {
 		# split up and insert constructed headlines
 		$blocks = preg_split( '/<H[1-6].*?' . '>.*?<\/H[1-6]>/i', $text );
 		$i = 0;
-		
+
 		// build an array of document sections
 		$sections = array();
-		foreach ( $blocks as $block ) {			
+		foreach ( $blocks as $block ) {
 			// $head is zero-based, sections aren't.
 			if ( empty( $head[$i - 1] ) ) {
 				$sections[$i] = $block;
@@ -4159,7 +4142,7 @@ class Parser {
 			 * $showEditLinks : boolean describing whether this section has an edit link
 			 */
 			wfRunHooks( 'ParserSectionCreate', array( $this, $i, &$sections[$i], $showEditLink ) );
-		
+
 			$i++;
 		}
 
@@ -4168,9 +4151,9 @@ class Parser {
 			// Top anchor now in skin
 			$sections[0] = $sections[0] . $toc . "\n";
 		}
-		
+
 		$full .= join( '', $sections );
-		
+
 		if ( $this->mForceTocPosition ) {
 			return str_replace( '<!--MWTOC-->', $toc, $full );
 		} else {

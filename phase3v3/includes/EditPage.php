@@ -1320,7 +1320,7 @@ class EditPage {
 	 *     during form output near the top, for captchas and the like.
 	 */
 	function showEditForm( $formCallback=null ) {
-		global $wgOut, $wgUser, $wgTitle, $wgEnableInterwikiTranscluding, $wgEnableInterwikiTemplatesTracking;
+		global $wgOut, $wgUser, $wgEnableInterwikiTranscluding, $wgEnableInterwikiTemplatesTracking;
 
 		wfProfileIn( __METHOD__ );
 
@@ -1354,7 +1354,6 @@ class EditPage {
 			$toolbar = '';
 		}
 
-
 		$wgOut->addHTML( $this->editFormPageTop );
 
 		if ( $wgUser->getOption( 'previewontop' ) ) {
@@ -1365,9 +1364,9 @@ class EditPage {
 
 		$templates = $this->getTemplates();
 		$formattedtemplates = Linker::formatTemplates( $templates, $this->preview, $this->section != '');
-		
+
 		$distantTemplates = $this->getDistantTemplates();
-		$formattedDistantTemplates = $sk->formatDistantTemplates( $distantTemplates, $this->preview, $this->section != '' );
+		$formattedDistantTemplates = Linker::formatDistantTemplates( $distantTemplates, $this->preview, $this->section != '' );
 
 		$hiddencats = $this->mArticle->getHiddenCategories();
 		$formattedhiddencats = Linker::formatHiddenCategories( $hiddencats );
@@ -2137,7 +2136,7 @@ HTML
 			return $this->mArticle->getUsedTemplates();
 		}
 	}
-	
+
 	function getDistantTemplates() {
 		global $wgEnableInterwikiTemplatesTracking;
 		if ( !$wgEnableInterwikiTemplatesTracking ) {
