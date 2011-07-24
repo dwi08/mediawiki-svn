@@ -1026,8 +1026,13 @@ class Title {
 	 * @return String the URL
 	 */
 	public function getInternalURL( $query = '', $variant = false ) {
-		global $wgInternalServer, $wgServer;
-		$server = $wgInternalServer !== false ? $wgInternalServer : $wgServer;
+		if ( $this->isExternal( ) ) {
+			$server = '';
+		} else {
+			global $wgInternalServer, $wgServer;
+			$server = $wgInternalServer !== false ? $wgInternalServer : $wgServer;
+		}
+		
 		$url = $server . $this->getLocalURL( $query, $variant );
 		wfRunHooks( 'GetInternalURL', array( &$this, &$url, $query ) );
 		return $url;

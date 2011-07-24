@@ -3267,7 +3267,6 @@ class Parser {
 					$found = true;
 				}
 			} elseif ( $wgEnableInterwikiTranscluding && $title->isTrans() ) {
-				// TODO: Work by Peter17 in progress
 				
 				$text = Interwiki::interwikiTransclude( $title );
 				$this->registerDistantTemplate( $title );
