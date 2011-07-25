@@ -81,9 +81,9 @@ class CodeRevisionAuthorLink extends CodeRevisionAuthorView {
 				'</div>'
 			);
 		// Unlink an author to a wiki users
-		} else if ( $wgRequest->getVal( 'unlink' ) ) {
+		} elseif ( $wgRequest->getVal( 'unlink' ) ) {
 			if ( !$this->mUser ) {
-				$wgOut->addHTML( wfMsg( 'code-author-orphan' ) );
+				$wgOut->addHTML( wfMsg( 'code-author-orphan', $this->authorLink( $this->mAuthor ) ) );
 				return;
 			}
 			$this->mRepo->unlinkUser( $this->mAuthor );

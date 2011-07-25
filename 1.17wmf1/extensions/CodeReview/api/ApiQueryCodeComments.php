@@ -3,8 +3,6 @@
 /**
  * Created on Oct 29, 2008
  *
- * API for MediaWiki 1.8+
- *
  * Copyright © 2008 Bryan Tong Minh <Bryan.TongMinh@Gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -154,7 +152,7 @@ class ApiQueryCodeComments extends ApiQueryBase {
 	public function getExamples() {
 		return array(
 			'api.php?action=query&list=codecomments&ccrepo=MediaWiki',
-			'api.php?action=query&list=codecomments&ccrepo=MediaWiki&ccprop=timestamp|user|revision|text',
+			'api.php?action=query&list=codecomments&ccrepo=MediaWiki&ccprop=timestamp|user|status|text',
 		);
 	}
 

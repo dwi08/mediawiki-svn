@@ -7,6 +7,10 @@ abstract class SubversionAdaptor {
 	 */
 	protected $mRepoPath;
 
+	/**
+	 * @param $repo string
+	 * @return SubversionAdaptor
+	 */
 	public static function newFromRepo( $repo ) {
 		global $wgSubversionProxy, $wgSubversionProxyTimeout;
 		if ( $wgSubversionProxy ) {
@@ -19,7 +23,7 @@ abstract class SubversionAdaptor {
 	}
 
 	/**
-	 * @param  $repo String Path to SVN Repo
+	 * @param $repo String Path to SVN Repo
 	 */
 	function __construct( $repoPath ) {
 		$this->mRepoPath = $repoPath;
@@ -62,6 +66,15 @@ abstract class SubversionAdaptor {
  * Using the SVN PECL extension...
  */
 class SubversionPecl extends SubversionAdaptor {
+
+	function __construct( $repoPath ) {
+		parent::__construct( $repoPath );
+		global $wgSubversionUser, $wgSubversionPassword;
+		if ( $wgSubversionUser ) {
+			svn_auth_set_parameter( SVN_AUTH_PARAM_DEFAULT_USERNAME, $wgSubversionUser );
+			svn_auth_set_parameter( SVN_AUTH_PARAM_DEFAULT_PASSWORD, $wgSubversionPassword );
+		}
+	}
 
 	/**
 	 * Just return true for now. svn_info() is too slow to be useful...
