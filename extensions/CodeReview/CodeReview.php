@@ -41,7 +41,9 @@ $wgAutoloadClasses['ApiCodeUpdate'] = $dir . 'api/ApiCodeUpdate.php';
 $wgAutoloadClasses['ApiCodeDiff'] = $dir . 'api/ApiCodeDiff.php';
 $wgAutoloadClasses['ApiRevisionUpdate'] = $dir . 'api/ApiRevisionUpdate.php';
 $wgAutoloadClasses['ApiQueryCodeComments'] = $dir . 'api/ApiQueryCodeComments.php';
+$wgAutoloadClasses['ApiQueryCodePaths'] = $dir . 'api/ApiQueryCodePaths.php';
 $wgAutoloadClasses['ApiQueryCodeRevisions'] = $dir . 'api/ApiQueryCodeRevisions.php';
+$wgAutoloadClasses['ApiQueryCodeTags'] = $dir . 'api/ApiQueryCodeTags.php';
 $wgAutoloadClasses['CodeRevisionCommitterApi'] = $dir . 'api/CodeRevisionCommitterApi.php';
 
 $wgAutoloadClasses['SubversionAdaptor'] = $dir . 'backend/Subversion.php';
@@ -79,6 +81,13 @@ $wgAutoloadClasses['CodeView'] = $dir . 'ui/CodeView.php';
 $wgAutoloadClasses['SpecialRepoAdmin'] = $dir . 'ui/SpecialRepoAdmin.php';
 $wgAutoloadClasses['WordCloud'] = $dir . 'ui/WordCloud.php';
 
+$wgAutoloadClasses['SvnRevTablePager'] = $dir . 'ui/CodeRevisionListView.php';
+$wgAutoloadClasses['CodeCommentsTablePager'] = $dir . 'ui/CodeCommentsListView.php';
+$wgAutoloadClasses['SvnRevAuthorTablePager'] = $dir . 'ui/CodeRevisionAuthorView.php';
+$wgAutoloadClasses['SvnRevStatusTablePager'] = $dir . 'ui/CodeRevisionStatusView.php';
+$wgAutoloadClasses['SvnRevTagTablePager'] = $dir . 'ui/CodeRevisionTagView.php';
+$wgAutoloadClasses['CodeStatusChangeTablePager'] = $dir . 'ui/CodeRevisionStatusView.php';
+
 $wgSpecialPages['Code'] = 'SpecialCode';
 $wgSpecialPageGroups['Code'] = 'developer';
 $wgSpecialPages['RepoAdmin'] = 'SpecialRepoAdmin';
@@ -88,7 +97,9 @@ $wgAPIModules['codeupdate'] = 'ApiCodeUpdate';
 $wgAPIModules['codediff'] = 'ApiCodeDiff';
 $wgAPIModules['coderevisionupdate'] ='ApiRevisionUpdate';
 $wgAPIListModules['codecomments'] = 'ApiQueryCodeComments';
+$wgAPIListModules['codepaths'] = 'ApiQueryCodePaths';
 $wgAPIListModules['coderevisions'] = 'ApiQueryCodeRevisions';
+$wgAPIListModules['codetags'] = 'ApiQueryCodeTags';
 
 $wgExtensionMessagesFiles['CodeReview'] = $dir . 'CodeReview.i18n.php';
 $wgExtensionAliasesFiles['CodeReview'] = $dir . 'CodeReview.alias.php';
@@ -142,6 +153,7 @@ $commonModuleInfo = array(
 // Styles and any code common to all Special:Code subviews:
 $wgResourceModules['ext.codereview'] = array(
 	'scripts' => 'ext.codereview.js',
+	'dependencies' => 'jquery.suggestions',
 ) + $commonModuleInfo;
 
 $wgResourceModules['ext.codereview.styles'] = array(
@@ -156,7 +168,16 @@ $wgResourceModules['ext.codereview.loaddiff'] = array(
 // Revision tooltips CodeRevisionView:
 $wgResourceModules['ext.codereview.tooltips'] = array(
 	'scripts' => 'ext.codereview.tooltips.js',
-	'dependencies' => 'jquery.tipsy'
+	'dependencies' => 'jquery.tipsy',
+	'messages' => array_merge( CodeRevision::getPossibleStateMessageKeys(), array( 'code-tooltip-withsummary', 'code-tooltip-withoutsummary' ) ),
+) + $commonModuleInfo;
+
+// Revision 'scapmap':
+$wgResourceModules['ext.codereview.overview'] = array(
+	'scripts' => 'ext.codereview.overview.js',
+	'styles' => 'ext.codereview.overview.css',
+	'dependencies' => 'jquery.tipsy',
+	'messages' => array( 'codereview-overview-title', 'codereview-overview-desc' ),
 ) + $commonModuleInfo;
 
 // If you are running a closed svn, fill the following two lines with the username and password
@@ -183,7 +204,7 @@ $wgCodeReviewMaxDiffSize = 500000;
 
 /**
  * The maximum number of paths that we will perform a diff on.
- * If a revision contains more changed paths than this, we will skip getting the 
+ * If a revision contains more changed paths than this, we will skip getting the
  * diff altogether.
  * May be set to 0 to indicate no limit.
  */
@@ -215,14 +236,13 @@ $wgCodeReviewRepoStatsCacheTime = 6 * 60 * 60; // 6 Hours
 $wgHooks['LoadExtensionSchemaUpdates'][] = 'efCodeReviewSchemaUpdates';
 
 /**
- * @param  $updater DatabaseUpdater
+ * @param $updater DatabaseUpdater
  * @return bool
  */
 function efCodeReviewSchemaUpdates( $updater ) {
 	$base = dirname( __FILE__ );
 	switch ( $updater->getDB()->getType() ) {
 	case 'mysql':
-		$updater->addNewExtension( 'CodeReview', "$base/codereview.sql" );
 		$updater->addExtensionUpdate( array( 'addTable', 'code_rev',
 			"$base/codereview.sql", true ) ); // Initial install tables
 		$updater->addExtensionUpdate( array( 'addField', 'code_rev', 'cr_diff',
@@ -259,15 +279,19 @@ function efCodeReviewSchemaUpdates( $updater ) {
 			$updater->addExtensionUpdate( array( 'modifyField', 'code_prop_changes', 'cpc_attrib',
 				"$base/archives/codereview-cpc_attrib_varchar.sql", true ) );
 		}
+
+		$updater->addExtensionUpdate( array( 'addIndex', 'code_paths', 'repo_path',
+			"$base/archives/codereview-repopath.sql", true ) );
 		break;
 	case 'sqlite':
-		$updater->addNewExtension( 'CodeReview', "$base/codereview.sql" );
 		$updater->addExtensionUpdate( array( 'addTable', 'code_rev', "$base/codereview.sql", true ) );
 		$updater->addExtensionUpdate( array( 'addTable', 'code_signoffs', "$base/archives/code_signoffs.sql", true ) );
 		$updater->addExtensionUpdate( array( 'addField', 'code_signoffs', 'cs_user',
 			"$base/archives/code_signoffs_userid-sqlite.sql", true ) );
 		$updater->addExtensionUpdate( array( 'addField', 'code_signoffs', 'cs_timestamp_struck',
 			"$base/archives/code_signoffs_timestamp_struck.sql", true ) );
+		$updater->addExtensionUpdate( array( 'addIndex', 'code_paths', 'repo_path',
+			"$base/archives/codereview-repopath.sql", true ) );
 		break;
 	case 'postgres':
 		// TODO
@@ -281,5 +305,20 @@ $wgHooks['UnitTestsList'][] = 'efCodeReviewUnitTests';
 
 function efCodeReviewUnitTests( &$files ) {
 	$files[] = dirname( __FILE__ ) . '/tests/CodeReviewTest.php';
+	return true;
+}
+
+# Add global JS vars
+$wgHooks['MakeGlobalVariablesScript'][] = 'efCodeReviewResourceLoaderGlobals';
+
+function efCodeReviewResourceLoaderGlobals( &$values ){
+	# Bleugh, this is horrible
+	global $wgTitle;
+	if( $wgTitle->isSpecial( 'Code' ) ){
+		$bits = explode( '/', $wgTitle->getText() );
+		if( isset( $bits[1] ) ){
+			$values['wgCodeReviewRepository'] = $bits[1];
+		}
+	}
 	return true;
 }

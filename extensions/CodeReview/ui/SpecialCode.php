@@ -26,7 +26,7 @@ class SpecialCode extends SpecialPage {
 		if( $view ) {
 			$view->execute();
 		} else {
-			$wgOut->addWikiText( wfMsg( 'nosuchactiontext' ) );
+			$wgOut->addWikiMsg( 'nosuchactiontext' );
 			$wgOut->returnToMain( null, $this->getTitle() );
 			return;
 		}
@@ -50,94 +50,79 @@ class SpecialCode extends SpecialPage {
 	private function getViewFrom( $subpage ) {
 		global $wgRequest;
 
+		// Defines the classes to use for each view type.
+		// The first class name is used if no additional parameters are provided.
+		// The second, if defined, is used if there is an additional parameter.  If
+		// there is no second class defined, then the first class is used in both 
+		// cases.
+		static $paramClasses 
+			= array(
+				'tag' => array( "CodeTagListView", "CodeRevisionTagView" ),
+				'author' => array( "CodeAuthorListView", "CodeRevisionAuthorView" ),
+				'status' => array( "CodeStatusListView", "CodeRevisionStatusView" ),
+				'comments' => array( "CodeCommentsListView" ),
+				'statuschanges' => array( "CodeStatusChangeListView" ),
+				'releasenotes' => array( "CodeReleaseNotes" ),
+				'stats' => array( "CodeRepoStatsView" ),
+			);
+
 		# Remove stray slashes
 		$subpage = preg_replace( '/\/$/', '', $subpage );
 		if ( $subpage == '' ) {
 			$view = new CodeRepoListView();
 		} else {
 			$params = explode( '/', $subpage );
+
+			$repo = CodeRepository::newFromName( $params[0] );
+			// If a repository was specified, but it does not exist, redirect to the
+			// repository list with an appropriate message.
+			if ( !$repo ) {
+				$view = new CodeRepoListView();
+				global $wgOut;
+				$wgOut->addWikiMsg( 'code-repo-not-found', wfEscapeWikiText( $params[0] ) );
+				return $view;
+			}
+
 			switch( count( $params ) ) {
 			case 1:
-				$view = new CodeRevisionListView( $params[0] );
+				$view = new CodeRevisionListView( $repo );
 				break;
-			case 2:
-				if ( $params[1] === 'tag' ) {
-					$view = new CodeTagListView( $params[0] );
-					break;
-				} elseif ( $params[1] === 'author' ) {
-					$view = new CodeAuthorListView( $params[0] );
-					break;
-				} elseif ( $params[1] === 'stats' ) {
-					$view = new CodeRepoStatsView( $params[0] );
-					break;
-				} elseif ( $params[1] === 'status' ) {
-					$view = new CodeStatusListView( $params[0] );
-					break;
-				} elseif ( $params[1] === 'comments' ) {
-					$view = new CodeCommentsListView( $params[0] );
-					break;
-				} elseif ( $params[1] === 'statuschanges' ) {
-					$view = new CodeStatusChangeListView( $params[0] );
-					break;
-				} elseif ( $params[1] === 'releasenotes' ) {
-					$view = new CodeReleaseNotes( $params[0] );
-					break;
-				} else if ( $wgRequest->wasPosted() && !$wgRequest->getCheck( 'wpPreview' ) ) {
+			case 2:		// drop through...
+			case 3:
+				if ( isset( $paramClasses[$params[1]] ) ) {
+					$row = $paramClasses[$params[1]];
+					if ( isset( $params[2] ) && isset( $row[1] ) ) {
+						$view = new $row[1]( $repo, $params[2] );
+					} else {
+						$view = new $row[0]( $repo );
+					}
+				} elseif ( $wgRequest->wasPosted() && !$wgRequest->getCheck( 'wpPreview' ) ) {
 					# This is not really a view, but we return it nonetheless.
 					# Add any tags, Set status, Adds comments
-					$view = new CodeRevisionCommitter( $params[0], $params[1] );
-					break;
-				} else { // revision details
-					$view = new CodeRevisionView( $params[0], $params[1] );
-					break;
-				}
-			case 3:
-				if ( $params[1] === 'tag' ) {
-					$view = new CodeRevisionTagView( $params[0], $params[2] );
-					break;
-				} elseif ( $params[1] === 'author' ) {
-					$view = new CodeRevisionAuthorView( $params[0], $params[2] );
-					break;
-				} elseif ( $params[1] === 'status' ) {
-					$view = new CodeRevisionStatusView( $params[0], $params[2] );
-					break;
-				} elseif ( $params[1] === 'comments' ) {
-					$view = new CodeCommentsListView( $params[0] );
-					break;
+					$view = new CodeRevisionCommitter( $repo, $params[1] );
+				} elseif ( empty( $params[1] ) ) {
+					$view = new CodeRevisionListView( $repo );
 				} else {
-					# Nonsense parameters, back out
-					if ( empty( $params[1] ) ) {
-						$view = new CodeRevisionListView( $params[0] );
-					} else {
-						$view = new CodeRevisionView( $params[0], $params[1] );
-					}
-					break;
+					$view = new CodeRevisionView( $repo, $params[1] );
 				}
+				break;
 			case 4:
 				if ( $params[1] === 'author' && $params[3] === 'link' ) {
-					$view = new CodeRevisionAuthorLink( $params[0], $params[2] );
+					$view = new CodeRevisionAuthorLink( $repo, $params[2] );
 					break;
 				} elseif ( $params[1] === 'comments' ) {
-					$view = new CodeCommentsAuthorListView( $params[0], $params[3]  );
+					$view = new CodeCommentsAuthorListView( $repo, $params[3]  );
 					break;
 				} elseif ( $params[1] === 'statuschanges' ) {
-					$view = new CodeStatusChangeAuthorListView( $params[0], $params[3] );
+					$view = new CodeStatusChangeAuthorListView( $repo, $params[3] );
 					break;
 				}
 			default:
 				if ( $params[2] == 'reply' ) {
-					$view = new CodeRevisionView( $params[0], $params[1], $params[3] );
+					$view = new CodeRevisionView( $repo, $params[1], $params[3] );
 					break;
 				}
 				return null;
-			}
-
-			// If a repository was specified, but it does not exist, redirect to the
-			// repository list with an appropriate message.
-			if ( !$view->mRepo ) {
-				$view = new CodeRepoListView();
-				global $wgOut;
-				$wgOut->addWikiMsg( 'code-repo-not-found', wfEscapeWikiText( $params[0] ) );
 			}
 		}
 		return $view;

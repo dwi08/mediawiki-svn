@@ -33,14 +33,19 @@ class SvnImport extends Maintenance {
 			}
 		}
 
-		$repo = $this->getArg();
+		$repo = $this->getArg( 0 );
+
 		if ( $repo == "all" ) {
 			$repoList = CodeRepository::getRepoList();
 			foreach ( $repoList as $repoInfo ) {
 				$this->importRepo( $repoInfo->getName(), null, $cacheSize );
 			}
 		} else {
-			$this->importRepo( $repo, $this->getArg( 1 ), $cacheSize );
+			$startRev = null;
+			if ( $this->hasArg( 1 ) ) {
+				$startRev = $this->getArg( 1 );
+			}
+			$this->importRepo( $repo, $startRev, $cacheSize );
 		}
 	}
 
@@ -50,7 +55,8 @@ class SvnImport extends Maintenance {
 	 * @param $start Int Revision to begin the import from (Default: null, means last stored revision);
 	 */
 	private function importRepo( $repoName, $start = null, $cacheSize = 0 ) {
-		global $wgCodeReviewImportBatchSize, $wgCodeReviewMaxDiffPaths;
+		global $wgCodeReviewImportBatchSize;
+		static $adaptorReported = false;
 
 		$repo = CodeRepository::newFromName( $repoName );
 
@@ -60,7 +66,12 @@ class SvnImport extends Maintenance {
 		}
 
 		$svn = SubversionAdaptor::newFromRepo( $repo->getPath() );
-		$this->output( "Using " . get_class($svn). " adaptor\n" );
+		if ( !$adaptorReported ) {
+			$this->output( "Using " . get_class($svn). " adaptor\n" );
+			$adaptorReported = true;
+		}
+
+		$this->output( "IMPORT FROM REPO: $repoName\n" );
 		$lastStoredRev = $repo->getLastStoredRev();
 		$this->output( "Last stored revision: $lastStoredRev\n" );
 
@@ -69,6 +80,7 @@ class SvnImport extends Maintenance {
 		$startTime = microtime( true );
 		$revCount = 0;
 		$start = ( $start !== null ) ? intval( $start ) : $lastStoredRev + 1;
+
 		/*
 		 * FIXME: when importing only a part of a repository, the given path
 		 * might not have been created with revision 1. For example, the
@@ -79,7 +91,7 @@ class SvnImport extends Maintenance {
 			return;
 		}
 
-		$this->output( "Syncing repo $repoName from r$start to HEAD...\n" );
+		$this->output( "Syncing from r$start to HEAD...\n" );
 
 		if ( !$svn->canConnect() ) {
 			$this->error( "Unable to connect to repository." );
@@ -154,25 +166,7 @@ class SvnImport extends Maintenance {
 				$diff = $repo->getDiff( $row->cr_id ); // trigger caching
 				$msg = "Diff r{$row->cr_id} ";
 				if ( is_integer( $diff ) ) {
-					$msg .= "Skipped: ";
-					switch ($diff) {
-						case CodeRepository::DIFFRESULT_BadRevision:
-							$msg .= "Bad revision";
-							break;
-						case CodeRepository::DIFFRESULT_NothingToCompare:
-							$msg .= "Nothing to compare";
-							break;
-						case CodeRepository::DIFFRESULT_TooManyPaths:
-							$msg .= "Too many paths (\$wgCodeReviewMaxDiffPaths = " 
-							      . $wgCodeReviewMaxDiffPaths . ")";
-							break;
-						case CodeRepository::DIFFRESULT_NoDataReturned:
-							$msg .= "No data returned - no diff data, or connection lost.";
-							break;
-						default:
-							$msg .= "Unknown reason!";
-							break;
-					}
+					$msg .= "Skipped: " . CodeRepository::getDiffErrorMessage( $diff );
 				} else {
 					$msg .= "done";
 				}
