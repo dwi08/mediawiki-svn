@@ -2,11 +2,18 @@ To run this test suite from the commande line, you will need node.js.
 See a basic guide about installing it at:
  http://www.mediawiki.org/wiki/User:Hashar/cli-js
 
-You will also need the following modules:
+The following node.js modules are also required and should be installed globally
+with npm (Node Package Manager):
  - jquery
  - jsdom
  - qunit
-To be installed with npm (Node Package Manger)
+
+To install them globally:
+  sudo npm -g install jquery jsdom qunit
+
+Make sure you have a NODE_PATH environnement variable or set it up with
+the correct path. For example:
+  export NODE_PATH="/opt/local/lib/node_modules"
 
 
 To test your setup you can use the dumb suite:
@@ -34,4 +41,4 @@ $
 
 Works! :)
 
-Now try out the MediaWiki test suite: make test 
+Now try out the MediaWiki test suite: make test
