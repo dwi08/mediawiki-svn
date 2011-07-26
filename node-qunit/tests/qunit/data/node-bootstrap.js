@@ -72,7 +72,6 @@ require( '../../../resources/mediawiki.special/mediawiki.special.recentchanges.j
 
 
 require( './testrunner.js' );
-require( './defineTestCallback.js' );
 
 // jQuery might have been extended by the above requires.
 // So we have to reinit the $ shortcut:

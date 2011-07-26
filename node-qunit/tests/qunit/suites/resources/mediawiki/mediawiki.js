@@ -124,12 +124,12 @@ test( 'mw.msg', function() {
 });
 
 test( 'mw.loader', function() {
-	expect(4);
+	expect(5);
 
 	// Regular expression to extract the path for the QUnit tests
 	// Takes into account that tests could be run from a file:// URL
 	// by excluding the 'index.html' part from the URL
-	var rePath = /(?:[^#\?](?!index.html))*\/?/;
+	var rePath = /(?:[^#\?](?!index.html|data\/node-bootstrap.js))*\/?/;
 
 	// Four assertions to test the above regular expression:
 	equal(
@@ -152,17 +152,16 @@ test( 'mw.loader', function() {
 		"file://path/to/tests/",
 		"Extracting path from local URL (file://) with fragment"
 		);
-/* FIXME BROKEN UNDER NODE-QUNIT
 	// Asynchronous ahead
 	stop(5000);
 
+	// FIXME: this test does not work under nodejs qunit
+
 	// Extract path
 	var tests_path = rePath.exec( document.location.href );
-
 	mw.loader.implement( 'is.awesome', [QUnit.fixurl( tests_path + 'data/defineTestCallback.js')], {}, {} );
 
 	mw.loader.using( 'is.awesome', function() {
-
 		// /sample/awesome.js declares the "mw.loader.testCallback" function
 		// which contains a call to start() and ok()
 		mw.loader.testCallback();
@@ -172,11 +171,9 @@ test( 'mw.loader', function() {
 		start();
 		ok( false, 'Error callback fired while implementing "is.awesome" module' );
 	});
-*/
 });
 
 test( 'mw.loader.bug29107' , function() {
-	/* FIXME BROKEN UNDER NODE-QUNIT
 	expect(2);
 
 	// Message doesn't exist already
@@ -194,7 +191,6 @@ test( 'mw.loader.bug29107' , function() {
 		start();
 		ok( false, 'Error callback fired while implementing "bug29107.messages-only" module' );
 	});
-	*/
 });
 
 test( 'mw.html', function() {
