@@ -1267,7 +1267,8 @@ class CentralNotice extends SpecialPage {
 	}
 	
 	static function getNoticeProjects( $noticeName ) {
-		$dbr = wfGetDB( DB_SLAVE );
+		// Read from the master database to avoid concurrency problems
+		$dbr = wfGetDB( DB_MASTER );
 		$eNoticeName = htmlspecialchars( $noticeName );
 		$row = $dbr->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $eNoticeName ) );
 		$projects = array();
@@ -1282,7 +1283,8 @@ class CentralNotice extends SpecialPage {
 	}
 
 	static function getNoticeLanguages( $noticeName ) {
-		$dbr = wfGetDB( DB_SLAVE );
+		// Read from the master database to avoid concurrency problems
+		$dbr = wfGetDB( DB_MASTER );
 		$eNoticeName = htmlspecialchars( $noticeName );
 		$row = $dbr->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $eNoticeName ) );
 		$languages = array();
@@ -1297,7 +1299,8 @@ class CentralNotice extends SpecialPage {
 	}
 	
 	static function getNoticeCountries( $noticeName ) {
-		$dbr = wfGetDB( DB_SLAVE );
+		// Read from the master database to avoid concurrency problems
+		$dbr = wfGetDB( DB_MASTER );
 		$eNoticeName = htmlspecialchars( $noticeName );
 		$row = $dbr->selectRow( 'cn_notices', 'not_id', array( 'not_name' => $eNoticeName ) );
 		$countries = array();
