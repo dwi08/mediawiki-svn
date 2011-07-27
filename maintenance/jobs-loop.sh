@@ -9,17 +9,17 @@ trap 'kill %-; exit' SIGTERM
 #types="htmlCacheUpdate sendMail enotifNotify uploadFromUrl fixDoubleRedirect renameUser"
 types="sendMail enotifNotify uploadFromUrl fixDoubleRedirect"
 
-cd `readlink -f /usr/local/apache/common/php/maintenance`
+cd `readlink -f /usr/local/apache/common/multiversion`
 while [ 1 ];do
 	# Do the prioritised types
 	moreprio=y
 	while [ -n "$moreprio" ] ; do
 		moreprio=
 		for type in $types; do
-			db=`php -n nextJobDB.php --type="$type"`
+			db=`php -n MWScript.php nextJobDB.php --wiki=aawiki --type="$type"`
 			if [ -n "$db" ]; then
 				echo "$db $type"
-				nice -n 20 php runJobs.php --wiki="$db" --procs=5 --type="$type" --maxtime=300 &
+				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=5 --type="$type" --maxtime=300 &
 				wait
 				moreprio=y
 			fi
@@ -27,7 +27,7 @@ while [ 1 ];do
 	done
 
 	# Do the remaining types
-	db=`php -n nextJobDB.php`
+	db=`php -n MWScript.php nextJobDB.php --wiki=aawiki`
 
 	if [ -z "$db" ];then
 		# No jobs to do, wait for a while
@@ -35,8 +35,7 @@ while [ 1 ];do
 		sleep 5
 	else
 		echo "$db"
-		nice -n 20 php runJobs.php --wiki="$db" --procs=5 --maxtime=300 &
+		nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=5 --maxtime=300 &
 		wait
 	fi
 done
-
