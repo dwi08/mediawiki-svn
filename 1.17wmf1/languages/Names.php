@@ -16,6 +16,7 @@
 	'am' => 'አማርኛ',	# Amharic
 	'an' => 'Aragonés',	# Aragonese
 	'ang' => 'Ænglisc',	# Old English (Bug 23283)
+	'anp' => 'अङ्गिका',	# Angika
 	'ar' => 'العربية',	# Arabic
 	'arc' => 'ܐܪܡܝܐ',	# Aramaic
 	'arn' => 'Mapudungun',	# Mapuche, Mapudungu, Araucanian (Araucano)
@@ -36,7 +37,8 @@
 	'be-tarask' => "\xE2\x80\xAAБеларуская (тарашкевіца)\xE2\x80\xAC",	# Belarusian in Taraskievica orthography
 	'be-x-old' => "\xE2\x80\xAAБеларуская (тарашкевіца)\xE2\x80\xAC",	# Belarusian in Taraskievica orthography; compat link
 	'bg' => 'Български',	# Bulgarian
-	'bh' => 'भोजपुरी',	# Bhojpuri
+	'bh' => 'भोजपुरी',	# Bihari marco language. Falls back to Bhojpuri (bho).
+	'bho' => 'भोजपुरी',	# Bhojpuri
 	'bi' => 'Bislama',		# Bislama
 	'bjn' => 'Bahasa Banjar',	# Banjarese
 	'bm' => 'Bamanankan',	# Bambara
@@ -45,6 +47,7 @@
 	'bpy' => 'ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী',	# Bishnupriya Manipuri
 	'bqi' => 'بختياري',	# Bakthiari
 	'br' => 'Brezhoneg',	# Breton
+	'brh' => 'Bráhuí',	# Brahui
 	'bs' => 'Bosanski',		# Bosnian
 	'bug' => 'ᨅᨔ ᨕᨘᨁᨗ',	# Bugis
 	'bxr' => 'Буряад',	# Buryat (Russia)
@@ -76,6 +79,7 @@
 	'de-formal' => "\xE2\x80\xAADeutsch (Sie-Form)\xE2\x80\xAC",		# German - formal address ("Sie")
 	'diq' => 'Zazaki',		# Zazaki
 	'dsb' => 'Dolnoserbski', # Lower Sorbian
+	'dtp' => 'Dusun Bundu-liwan', # Central Dusun
 	'dv' => 'ދިވެހިބަސް',		# Dhivehi
 	'dz' => 'ཇོང་ཁ',		# Bhutani
 	'ee' => 'Eʋegbe',	# Éwé
@@ -144,6 +148,7 @@
 	'it' => 'Italiano',		# Italian
 	'iu' => 'ᐃᓄᒃᑎᑐᑦ/inuktitut',	# Inuktitut (macro language - do no localise, see ike/ikt - falls back to ike-cans)
 	'ja' => '日本語',	# Japanese
+	'jam' => 'Patios',	# Jamaican Creole English
 	'jbo' => 'Lojban',		# Lojban
 	'jut' => 'Jysk',	# Jutish / Jutlandic
 	'jv' => 'Basa Jawa',	# Javanese
@@ -153,6 +158,7 @@
 	'kbd' => 'Къэбэрдеибзэ / Qabardjajəbza',	# Kabardian (multiple scripts - defaults to Cyrillic)
 	'kbd-cyrl' => 'къэбэрдеибзэ',	# Kabardian (Cyrillic)
 	'kg' => 'Kongo',	# Kongo, (FIXME!) should probaly be KiKongo or KiKoongo
+	'khw' => 'کھوار',	# Khowar
 	'ki' => 'Gĩkũyũ',	# Gikuyu
 	'kiu' => 'Kırmancki',	# Kirmanjki
 	'kj' => 'Kwanyama',	# Kwanyama
@@ -173,7 +179,9 @@
 	'krc' => 'Къарачай-Малкъар', # Karachay-Balkar
 	'kri' => 'Krio', # Krio
 	'krj' => 'Kinaray-a', # Kinaray-a
-	'ks' => 'कश्मीरी - (كشميري)',	# Kashmiri
+	'ks' => 'कश्मीरी - (كشميري)',	# Kashmiri (multiple scripts - defaults to Perso-Arabic)
+	'ks-arab' => 'كشميري',	# Kashmiri (Perso-Arabic script)
+	'ks-deva' => 'कश्मीरी',	# Kashmiri (Devanagari script)
 	'ksh' => 'Ripoarisch',	# Ripuarian
 	'ku'  => 'Kurdî',	# Kurdish (multiple scripts - defaults to Latin)
 	'ku-latn' => "\xE2\x80\xAAKurdî (latînî)\xE2\x80\xAC",	# Northern Kurdish (Latin script)
@@ -190,7 +198,7 @@
 	'lg' => 'Luganda',		# Ganda
 	'li' => 'Limburgs',	# Limburgian
 	'lij' => 'Líguru',	# Ligurian
-	'liv' => 'Līvõ kēļ',	# Liv
+	'liv' => 'Līvõ kēļ',	# Livonian
 	'lmo' => 'Lumbaart',	# Lombard
 	'ln' => 'Lingála',		# Lingala
 	'lo' => 'ລາວ',# Laotian
@@ -263,17 +271,18 @@
 	'ps' => 'پښتو',	# Pashto, Northern/Paktu/Pakhtu/Pakhtoo/Afghan/Pakhto/Pashtu/Pushto/Yusufzai Pashto
 	'pt' => 'Português',	# Portuguese
 	'pt-br' => 'Português do Brasil',	# Brazilian Portuguese
-	'qu' => 'Runa Simi',	# Quechua
+	'qu' => 'Runa Simi',	# Southern Quechua
 	'rgn' => 'Rumagnôl',	# Romagnol
 	'rif' => 'Tarifit',	# Tarifit
 	'rm' => 'Rumantsch',	# Raeto-Romance
 	'rmy' => 'Romani',	# Vlax Romany
 	'rn' => 'Kirundi',		# Rundi/Kirundi/Urundi
 	'ro' => 'Română',	# Romanian
-	'roa-rup' => 'Armãneashce', # Aromanian
+	'roa-rup' => 'Armãneashce', # Aromanian (deprecated code, 'rup' exists in ISO 693-3)
 	'roa-tara' => 'Tarandíne',	# Tarantino
 	'ru' => 'Русский',	# Russian
 	'rue' => 'Русиньскый',	# Rusyn
+	'rup' => 'Armãneashce', # Aromanian
 	'ruq' => 'Vlăheşte',	# Megleno-Romanian (multiple scripts - defaults to Latin)
 	'ruq-cyrl' => 'Влахесте',	# Megleno-Romanian (Cyrillic script)
 	# 'ruq-grek' => 'Βλαεστε',	# Megleno-Romanian (Greek script)
@@ -379,3 +388,4 @@
 	'zh-yue' => '粵語',					# Cantonese -- (see bug 8217)
 	'zu' => 'isiZulu'		# Zulu
 );
+
