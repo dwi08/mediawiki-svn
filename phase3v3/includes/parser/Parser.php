@@ -3523,6 +3523,50 @@ class Parser {
 			'deps' => $deps );
 	}
 
+	/**
+	 * Fetch a file and its title and register a reference to it.
+	 * @param Title $title
+	 * @param string $time MW timestamp
+	 * @param string $sha1 base 36 SHA-1
+	 * @return mixed File or false
+	 */
+	function fetchFile( $title, $time = false, $sha1 = false ) {
+		$res = $this->fetchFileAndTitle( $title, $time, $sha1 );
+		return $res[0];
+	}
+
+	/**
+	 * Fetch a file and its title and register a reference to it.
+	 * @param Title $title
+	 * @param string $time MW timestamp
+	 * @param string $sha1 base 36 SHA-1
+	 * @return Array ( File or false, Title of file )
+	 */
+	function fetchFileAndTitle( $title, $time = false, $sha1 = false ) {
+		if ( $time === '0' ) {
+			$file = false; // broken thumbnail forced by hook
+		} elseif ( $sha1 ) { // get by (sha1,timestamp)
+			$file = RepoGroup::singleton()->findFileFromKey( $sha1, array( 'time' => $time ) );
+		} else { // get by (name,timestamp)
+			$file = wfFindFile( $title, array( 'time' => $time ) );
+		}
+		$time = $file ? $file->getTimestamp() : false;
+		$sha1 = $file ? $file->getSha1() : false;
+		# Register the file as a dependency...
+		$this->mOutput->addImage( $title->getDBkey(), $time, $sha1 );
+		if ( $file && !$title->equals( $file->getTitle() ) ) {
+			# Update fetched file title
+			$title = $file->getTitle();
+			if ( is_null( $file->getRedirectedTitle() ) ) {
+				# This file was not a redirect, but the title does not match.
+				# Register under the new name because otherwise the link will
+				# get lost.
+				$this->mOutput->addImage( $title->getDBkey(), $time, $sha1 );
+			}
+		}
+		return array( $file, $title );
+	}
+
 	static function distantTemplateCallback( $title, $parser=false ) {
 		$text = '';
 		$rev_id = null;
