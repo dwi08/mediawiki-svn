@@ -60,6 +60,11 @@ class SqliteUpdater extends DatabaseUpdater {
 			array( 'addIndex', 'user',          'user_email',       'patch-user_email_index.sql' ),
 			array( 'addTable', 'config', 'patch-config.sql' ),
 			array( 'addTable', 'uploadstash', 'patch-uploadstash.sql' ),
+
+			// 1.19
+			array( 'addTable', 'globaltemplatelinks', 'patch-globaltemplatelinks.sql' ),
+			array( 'addTable', 'globalnamespaces', 'patch-globalnamespaces.sql' ),
+			array( 'addTable', 'globalinterwiki', 'patch-globalinterwiki.sql' ),
 		);
 	}
 
