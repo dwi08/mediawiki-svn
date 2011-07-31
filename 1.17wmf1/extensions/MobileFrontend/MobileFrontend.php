@@ -110,7 +110,7 @@ class ExtMobileFrontend {
 		$mobileViewUrl = $wgRequest->getRequestURL();
 		$delimiter = ( strpos( $mobileViewUrl, "?" ) !== false ) ? "&" : "?";
 		$mobileViewUrl .= $delimiter . 'useFormat=mobile';
-		$mobileViewUrl = urlencode( $mobileViewUrl );
+		$mobileViewUrl = htmlspecialchars( $mobileViewUrl );
 		
 		$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>Mobile View</a>");
 		$footerlinks['places'][] = 'mobileview';
