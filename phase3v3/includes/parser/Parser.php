@@ -3131,6 +3131,12 @@ class Parser {
 				$mwMsg = MagicWord::get( 'msg' );
 				$mwMsg->matchStartAndRemove( $part1 );
 			}
+
+			# Check for RAW:
+			$mwRaw = MagicWord::get( 'raw' );
+			if ( $mwRaw->matchStartAndRemove( $part1 ) ) {
+				$forceRawInterwiki = true;
+			}
 		}
 		wfProfileOut( __METHOD__.'-modifiers' );
 
