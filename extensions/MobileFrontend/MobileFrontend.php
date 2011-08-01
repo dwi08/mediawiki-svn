@@ -158,7 +158,6 @@ class ExtMobileFrontend {
 				$wurflManagerFactory = new WURFL_WURFLManagerFactory( $wurflConfig );
 				$wurflManager = $wurflManagerFactory->create();
 				$device = $wurflManager->getDeviceForHttpRequest( $_SERVER );
-				$props = $device->getAllCapabilities();
 				
 				if ( $device->isSpecific() === true ) {
 					$props = $device->getAllCapabilities();
