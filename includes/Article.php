@@ -4566,6 +4566,7 @@ class Article {
 	public function getParserOutput( $oldid = null ) {
 		global $wgEnableParserCache, $wgUser;
 
+		wfProfileIn( __METHOD__ );
 		// Should the parser cache be used?
 		$useParserCache = $wgEnableParserCache &&
 			$wgUser->getStubThreshold() == 0 &&
@@ -4587,10 +4588,11 @@ class Article {
 			// Cache miss; parse and output it.
 			$rev = Revision::newFromTitle( $this->getTitle(), $oldid );
 
-			return $this->getOutputFromWikitext( $rev->getText(), $useParserCache );
-		} else {
-			return $parserOutput;
+			$parserOutput = $this->getOutputFromWikitext( $rev->getText(), $useParserCache );
 		}
+
+		wfProfileOut( __METHOD__ );
+		return $parserOutput;
 	}
 
 	// Deprecated methods
