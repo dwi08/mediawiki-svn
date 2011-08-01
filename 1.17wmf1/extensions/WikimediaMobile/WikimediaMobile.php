@@ -19,7 +19,7 @@ $wgExtensionMessagesFiles['WikimediaMobile'] = $dir . 'WikimediaMobile.i18n.php'
 /**
  * Increment this when the JS file changes
  */
-$wgWikimediaMobileVersion = '8';
+$wgWikimediaMobileVersion = '9';
 
 /**
  * The base URL of the mobile gateway
