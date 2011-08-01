@@ -161,6 +161,7 @@ class ExtMobileFrontend {
 				$props = $device->getAllCapabilities();
 				
 				if ( $device->isSpecific() === true ) {
+					$props = $device->getAllCapabilities();
 					$wgMemc->set( $key, $props, 86400 );
 				} else {
 					$wgMemc->set( $key, "generic", 86400 );
