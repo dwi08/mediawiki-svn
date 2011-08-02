@@ -49,7 +49,7 @@ $wgHooks['OutputPageBeforeHTML'][] = array( &$wgExtMobileFrontend, 'onOutputPage
 $wgHooks['SkinTemplateOutputPageBeforeExec'][] = array( &$wgExtMobileFrontend, 'addMobileFooter' );
 
 class ExtMobileFrontend {
-	const VERSION = '0.5.8';
+	const VERSION = '0.5.10';
 
 	/**
 	 * @var DOMDocument
@@ -116,12 +116,9 @@ class ExtMobileFrontend {
 	public function addMobileFooter( &$obj, &$tpl ) {
 		global $wgRequest;
 		$footerlinks = $tpl->data['footerlinks'];
-		$mobileViewUrl = $wgRequest->getRequestURL();
-		$delimiter = ( strpos( $mobileViewUrl, "?" ) !== false ) ? "&" : "?";
-		$mobileViewUrl .= $delimiter . 'useFormat=mobile';
-		$mobileViewUrl = htmlspecialchars( $mobileViewUrl );
-		
-		$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>Mobile View</a>");
+		$mobileViewUrl = $wgRequest->escapeAppendQuery( 'useFormat=mobile' );
+
+		$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>".wfMsg( 'mobile-frontend-view')."</a>");
 		$footerlinks['places'][] = 'mobileview';
 		$tpl->set('footerlinks', $footerlinks);
 
@@ -207,7 +204,7 @@ class ExtMobileFrontend {
 				$wurflManagerFactory = new WURFL_WURFLManagerFactory( $wurflConfig );
 				$wurflManager = $wurflManagerFactory->create();
 				$device = $wurflManager->getDeviceForHttpRequest( $_SERVER );
-				
+
 				if ( $device->isSpecific() === true ) {
 					$props = $device->getAllCapabilities();
 					$wgMemc->set( $key, $props, 86400 );
@@ -302,7 +299,7 @@ class ExtMobileFrontend {
 	}
 
 	private function disableCaching() {
-		if ( isset( $_SERVER['HTTP_VIA'] ) && 
+		if ( isset( $_SERVER['HTTP_VIA'] ) &&
 			stripos( $_SERVER['HTTP_VIA'], '.wikimedia.org:3128' ) !== false ) {
 			header( 'Cache-Control: no-cache, must-revalidate' );
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -454,7 +451,9 @@ class ExtMobileFrontend {
 	}
 
 	public function DOMParse( $html ) {
-		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");	
+		global $wgSitename;
+
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
 		libxml_use_internal_errors( true );
 		$this->doc = new DOMDocument();
 		$this->doc->loadHTML( '<?xml encoding="UTF-8">' . $html );
