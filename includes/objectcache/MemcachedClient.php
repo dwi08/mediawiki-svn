@@ -959,6 +959,8 @@ class MWMemcached {
 			$this->stats[$cmd] = 1;
 		}
 
+		if ($exp > 2592000 and $exp < 1000000000) $exp = 2592000;
+
 		$flags = 0;
 
 		if ( !is_scalar( $val ) ) {
