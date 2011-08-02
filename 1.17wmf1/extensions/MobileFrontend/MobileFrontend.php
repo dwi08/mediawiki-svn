@@ -45,18 +45,27 @@ $wgAutoloadClasses['CssDetection']	  = $cwd . 'CssDetection.php';
 $wgExtMobileFrontend = new ExtMobileFrontend();
 
 $wgHooks['OutputPageBeforeHTML'][] = array( &$wgExtMobileFrontend, 'onOutputPageBeforeHTML' );
-											
+
 $wgHooks['SkinTemplateOutputPageBeforeExec'][] = array( &$wgExtMobileFrontend, 'addMobileFooter' );
 
 class ExtMobileFrontend {
 	const VERSION = '0.5.8';
 
+	/**
+	 * @var DOMDocument
+	 */
 	private $doc;
 
 	public static $messages = array();
 
 	public $contentFormat = '';
 	public $WMLSectionSeperator = '***************************************************************************';
+
+	/**
+	 * @var Title
+	 */
+	public static $title;
+	public static $htmlTitle;
 	public static $dir;
 	public static $code;
 	public static $device;
@@ -69,7 +78,7 @@ class ExtMobileFrontend {
 	public static $callback;
 	public static $useFormat;
 	public static $disableImages;
-	
+
 	public $itemsToRemove = array(
 		'#contentSub',		  # redirection notice
 		'div.messagebox',	  # cleanup data
@@ -103,9 +112,9 @@ class ExtMobileFrontend {
 		'#ogg_player_1',
 		'.nomobile',
 	);
-	
+
 	public function addMobileFooter( &$obj, &$tpl ) {
-		global $wgRequest; 
+		global $wgRequest;
 		$footerlinks = $tpl->data['footerlinks'];
 		$mobileViewUrl = $wgRequest->getRequestURL();
 		$delimiter = ( strpos( $mobileViewUrl, "?" ) !== false ) ? "&" : "?";
@@ -115,22 +124,22 @@ class ExtMobileFrontend {
 		$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>Mobile View</a>");
 		$footerlinks['places'][] = 'mobileview';
 		$tpl->set('footerlinks', $footerlinks);
-		
-		wfProfileOut(__METHOD__);
+
 		return true;
 	}
 
-	public function onOutputPageBeforeHTML( &$out, &$text ) {
-		global $wgContLang, $wgRequest, $wgMemc;
-
+	public function getMsg() {
+		global $wgUser, $wgContLang;
+		$skin = $wgUser->getSkin();
+		$copyright = $skin->getCopyright();
 		// Need to stash the results of the "wfMsg" call before the Output Buffering handler
 		// because at this point the database connection is shut down, etc.
-		self::$messages['mobile-frontend-show']				  = wfMsg( 'mobile-frontend-show-button' );
-		self::$messages['mobile-frontend-hide']				  = wfMsg( 'mobile-frontend-hide-button' );
+		self::$messages['mobile-frontend-show']			  = wfMsg( 'mobile-frontend-show-button' );
+		self::$messages['mobile-frontend-hide']			  = wfMsg( 'mobile-frontend-hide-button' );
 		self::$messages['mobile-frontend-back-to-top']		  = wfMsg( 'mobile-frontend-back-to-top-of-section' );
-		self::$messages['mobile-frontend-regular-wikipedia']  = wfMsg( 'mobile-frontend-regular-wikipedia' );
+		self::$messages['mobile-frontend-regular-site']		  = wfMsg( 'mobile-frontend-regular-site' );
 		self::$messages['mobile-frontend-perm-stop-redirect'] = wfMsg( 'mobile-frontend-perm-stop-redirect' );
-		self::$messages['mobile-frontend-copyright']		  = wfMsg( 'mobile-frontend-copyright' );
+		self::$messages['mobile-frontend-copyright']		  = $copyright;
 		self::$messages['mobile-frontend-home-button']		  = wfMsg( 'mobile-frontend-home-button' );
 		self::$messages['mobile-frontend-random-button']	  = wfMsg( 'mobile-frontend-random-button' );
 		self::$messages['mobile-frontend-are-you-sure']		  = wfMsg( 'mobile-frontend-are-you-sure' );
@@ -141,15 +150,55 @@ class ExtMobileFrontend {
 		self::$dir = $wgContLang->getDir();
 		self::$code = $wgContLang->getCode();
 
+		self::$mainPageUrl = Title::newMainPage()->getLocalUrl();
+		self::$randomPageUrl = SpecialPage::getTitleFor( 'Randompage' )->getLocalUrl();
+	}
+
+	/**
+	 * @param $out Outputpage
+	 * @param $text String
+	 * @return bool
+	 */
+	public function onOutputPageBeforeHTML( &$out, &$text ) {
+		global $wgContLang, $wgRequest, $wgMemc, $wgUser;
+
+		// The title
+		self::$title = $out->getTitle();
+		self::$htmlTitle = $out->getHTMLTitle();
+
+		// Need to get copyright footer from skin. The footer changes depending
+		// on whether we're using the WikimediaMessages extension or not.
+		//$skin = $wgUser->getSkin();
+		//$copyright = $skin->getCopyright();
+
+		// Need to stash the results of the "wfMsg" call before the Output Buffering handler
+		// because at this point the database connection is shut down, etc.
+		//self::$messages['mobile-frontend-show']			  = wfMsg( 'mobile-frontend-show-button' );
+		//self::$messages['mobile-frontend-hide']			  = wfMsg( 'mobile-frontend-hide-button' );
+		//self::$messages['mobile-frontend-back-to-top']		  = wfMsg( 'mobile-frontend-back-to-top-of-section' );
+		//self::$messages['mobile-frontend-regular-site']		  = wfMsg( 'mobile-frontend-regular-site' );
+		//self::$messages['mobile-frontend-perm-stop-redirect'] = wfMsg( 'mobile-frontend-perm-stop-redirect' );
+		//self::$messages['mobile-frontend-copyright']		  = $copyright;
+		//self::$messages['mobile-frontend-home-button']		  = wfMsg( 'mobile-frontend-home-button' );
+		//self::$messages['mobile-frontend-random-button']	  = wfMsg( 'mobile-frontend-random-button' );
+		//self::$messages['mobile-frontend-are-you-sure']		  = wfMsg( 'mobile-frontend-are-you-sure' );
+		//self::$messages['mobile-frontend-explain-disable']	  = wfMsg( 'mobile-frontend-explain-disable' );
+		//self::$messages['mobile-frontend-disable-button']	  = wfMsg( 'mobile-frontend-disable-button' );
+		//self::$messages['mobile-frontend-back-button']		  = wfMsg( 'mobile-frontend-back-button' );
+
+		//self::$dir = $wgContLang->getDir();
+		//self::$code = $wgContLang->getCode();
+
 		self::$disableImages = $wgRequest->getText( 'disableImages', 0 );
 
-		self::$mainPageUrl = Title::newMainPage()->getFullUrl();
-		self::$randomPageUrl = SpecialPage::getTitleFor( 'Random' )->getFullUrl();
+		//self::$mainPageUrl = Title::newMainPage()->getLocalUrl();
+		//self::$randomPageUrl = SpecialPage::getTitleFor( 'Randompage' )->getLocalUrl();
 		
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		$uAmd5 = md5($userAgent);
 
 		$key = wfMemcKey( 'mobile', 'ua', $uAmd5 );
+
 		try {
 			$props = $wgMemc->get( $key );
 			if ( ! $props ) {
@@ -170,13 +219,13 @@ class ExtMobileFrontend {
 		} catch (Exception $e) {
 			//echo $e->getMessage();
 		}
-		
+
 		// Note: The WebRequest Class calls are made in this block because
-		// since PHP 5.1.x, all objects have their destructors called 
-		// before the output buffer callback function executes. 
+		// since PHP 5.1.x, all objects have their destructors called
+		// before the output buffer callback function executes.
 		// Thus, globalized objects will not be available as expected in the function.
 		// This is stated to be intended behavior, as per the following: [http://bugs.php.net/bug.php?id=40104]
-		
+
 		$mAction = $wgRequest->getText( 'mAction' );
 		self::$useFormat = $wgRequest->getText( 'useFormat' );
 		self::$format = $wgRequest->getText( 'format' );
@@ -194,7 +243,7 @@ class ExtMobileFrontend {
 		} elseif ( self::$device['view_format'] === 'html' ) {
 			$this->contentFormat = 'XHTML';
 		}
-		
+
 		if ( self::$useFormat === 'mobile-wap' ) {
 			$this->contentFormat = 'WML';
 		}
@@ -205,7 +254,7 @@ class ExtMobileFrontend {
 				exit();
 			}
 		}
-		
+
 		// Note: Temporarily disabling this section for trial deployment
 		// if ( is_array($props) &&
 		// 	 $mAction != 'view_normal_site' &&
@@ -213,14 +262,38 @@ class ExtMobileFrontend {
 		// 	 $props['is_tablet'] === 'false' ) {
 		// 	$this->disableCaching();
 		// 	ob_start( array( $this, 'DOMParse' ) );
-		// } elseif (self::$useFormat === 'mobile' || 
+		// } elseif (self::$useFormat === 'mobile' ||
 		// 	  self::$useFormat === 'mobile-wap' ) {
 		// 	$this->disableCaching();
 		// 	ob_start( array( $this, 'DOMParse' ) );
 		// }
 
-		if (self::$useFormat === 'mobile' || 
+		// WURFL documentation: http://wurfl.sourceforge.net/help_doc.php
+		// Determine the kind of markup
+		if( is_array( $props ) && $props['preferred_markup'] ) {
+			//wfDebug( __METHOD__ . ": preferred markup for this device: " . $props['preferred_markup'] );
+			// xhtml/html: html_web_3_2, html_web_4_0
+			// xthml basic/xhtmlmp (wap 2.0): html_wi_w3_xhtmlbasic html_wi_oma_xhtmlmp_1_0
+			// chtml (imode): html_wi_imode_*
+			// wml (wap 1): wml_1_1, wml_1_2, wml_1_3
+		}
+		// WML options that might influence our 'style' of output
+		// $props['access_key_support'] (for creating easy keypad navigation)
+		// $props['softkey_support'] ( for creating your own menu)
+
+		// WAP2/XHTML MP
+		// xhtmlmp_preferred_mime_type ( the mime type with which you should serve your xhtml to this device
+
+		// HTML
+		// $props['pointing_method'] == touchscreen
+		// ajax_support_javascript
+		// html_preferred_dtd
+
+		// Determine
+
+		if (self::$useFormat === 'mobile' ||
 			self::$useFormat === 'mobile-wap' ) {
+				$this->getMsg();
 				$this->disableCaching();
 				ob_start( array( $this, 'DOMParse' ) );
 		}
@@ -241,7 +314,7 @@ class ExtMobileFrontend {
 		if ( $this->contentFormat == 'XHTML' ) {
 			$dir = self::$dir;
 			$code = self::$code;
-			$regularWikipedia = self::$messages['mobile-frontend-regular-wikipedia'];
+			$regularSite = self::$messages['mobile-frontend-regular-site'];
 			$permStopRedirect = self::$messages['mobile-frontend-perm-stop-redirect'];
 			$copyright = self::$messages['mobile-frontend-copyright'];
 			$homeButton = self::$messages['mobile-frontend-home-button'];
@@ -250,6 +323,7 @@ class ExtMobileFrontend {
 			$explainDisable = self::$messages['mobile-frontend-explain-disable'];
 			$disableButton = self::$messages['mobile-frontend-disable-button'];
 			$backButton = self::$messages['mobile-frontend-back-button'];
+			$htmlTitle = $areYouSure;
 			$title = $areYouSure;
 			$cssFileName = ( isset( self::$device['css_file_name'] ) ) ? self::$device['css_file_name'] : 'default';
 			require( 'views/notices/_donate.html.php' );
@@ -260,9 +334,10 @@ class ExtMobileFrontend {
 			require( 'views/layout/application.html.php' );
 			return $applicationHtml;
 		}
+		return '';
 	}
 
-	private function showHideCallbackWML( $matches ) {
+	private function headingTransformCallbackWML( $matches ) {
 		static $headings = 0;
 		++$headings;
 
@@ -274,14 +349,14 @@ class ExtMobileFrontend {
 		return $base;
 	}
 
-	private function showHideCallbackXHTML( $matches ) {
-		
+	private function headingTransformCallbackXHTML( $matches ) {
+
 		if ( isset( $matches[0] ) ) {
 			preg_match('/id="([^"]*)"/', $matches[0], $headlineMatches);
 		}
-		
+
 		$headlineId = ( isset( $headlineMatches[1] ) ) ? $headlineMatches[1] : '';
-		
+
 		static $headings = 0;
 		$show = self::$messages['mobile-frontend-show'];
 		$hide = self::$messages['mobile-frontend-hide'];
@@ -307,8 +382,12 @@ class ExtMobileFrontend {
 		return $base;
 	}
 
-	public function javascriptize( $s ) {
-		$callback = 'showHideCallback';
+	/**
+	 * @param $s string
+	 * @return string
+	 */
+	public function headingTransform( $s ) {
+		$callback = 'headingTransformCallback';
 		$callback .= $this->contentFormat;
 
 		// Closures are a PHP 5.3 feature.
@@ -332,28 +411,29 @@ class ExtMobileFrontend {
 		return $s;
 	}
 
-	private function createWMLCard( $s, $title = '' ) {
+	private function createWMLCard( $s ) {
 		$segments = explode( $this->WMLSectionSeperator, $s );
 		$card = '';
 		$idx = 0;
 		$requestedSegment = self::$requestedSegment;
-		
+		$title = htmlspecialchars( self::$title->getText() );
+
 		$card .= "<card id='{$idx}' title='{$title}'><p>{$segments[$requestedSegment]}</p>";
 		$idx = $requestedSegment + 1;
 		$segmentsCount = count($segments);
-		$card .= $idx . "/" . $segmentsCount;
-		
+		$card .= "<p>" . $idx . "/" . $segmentsCount . "</p>";
+
 		$useFormatParam = ( isset( self::$useFormat ) ) ? '&' . 'useFormat=' . self::$useFormat : '';
 
 		$basePage = htmlspecialchars( $_SERVER['PHP_SELF'] );
 
 		if ( $idx < $segmentsCount ) {
-			$card .= "<p><a href=\"{$basePage}?seg={$idx}{$useFormatParam}\">Continue ...</a></p>";
+			$card .= "<p><a href=\"{$basePage}?seg={$idx}{$useFormatParam}\">" . wfMsg( 'mobile-frontend-wml-continue' ) . "</a></p>";
 		}
 
 		if ( $idx > 1 ) {
 			$back_idx = $requestedSegment - 1;
-			$card .= "<p><a href=\"{$basePage}?seg={$back_idx}{$useFormatParam}\">Back ...</a></p>";
+			$card .= "<p><a href=\"{$basePage}?seg={$back_idx}{$useFormatParam}\">" . wfMsg( 'mobile-frontend-wml-back' ) . "</a></p>";
 		}
 
 		$card .= '</card>';
@@ -385,12 +465,6 @@ class ExtMobileFrontend {
 
 		$itemToRemoveRecords = $this->parseItemsToRemove();
 
-		$titleNode = $this->doc->getElementsByTagName( 'title' );
-
-		if ( $titleNode->length > 0 ) {
-			$title = $titleNode->item( 0 )->nodeValue;
-		}
-
 		// Tags
 
 		// You can't remove DOMNodes from a DOMNodeList as you're iterating
@@ -398,12 +472,15 @@ class ExtMobileFrontend {
 		// iterator on the foreach out of wack and results will be quite
 		// strange. Though, making a queue of items to remove seems to work.
 		// For example:
-		
+
 		if ( self::$disableImages == 1 ) {
 			$itemToRemoveRecords['TAG'][] = "img";
+			$itemToRemoveRecords['TAG'][] = "audio";
+			$itemToRemoveRecords['TAG'][] = "video";
 			$itemToRemoveRecords['CLASS'][] = "thumb tright";
 			$itemToRemoveRecords['CLASS'][] = "thumb tleft";
 			$itemToRemoveRecords['CLASS'][] = "thumbcaption";
+			$itemToRemoveRecords['CLASS'][] = "gallery";
 		}
 
 		$domElemsToRemove = array();
@@ -471,27 +548,40 @@ class ExtMobileFrontend {
 
 		$contentHtml = $this->doc->saveXML( $content, LIBXML_NOEMPTYTAG );
 
-		if ( empty( $title ) ) {
-			$title = 'Wikipedia';
-		}
-
 		$dir = self::$dir;
 		$code = self::$code;
-		$regularWikipedia = self::$messages['mobile-frontend-regular-wikipedia'];
+		$regularSite = self::$messages['mobile-frontend-regular-site'];
 		$permStopRedirect = self::$messages['mobile-frontend-perm-stop-redirect'];
 		$copyright = self::$messages['mobile-frontend-copyright'];
 		$homeButton = self::$messages['mobile-frontend-home-button'];
 		$randomButton = self::$messages['mobile-frontend-random-button'];
+
+		$title = htmlspecialchars( self::$title->getText() );
+		$htmlTitle = htmlspecialchars( self::$htmlTitle );
 
 		$cssFileName = ( isset( self::$device['css_file_name'] ) ) ? self::$device['css_file_name'] : 'default';
 
 		if ( strlen( $contentHtml ) > 4000 && $this->contentFormat == 'XHTML'
 			&& self::$device['supports_javascript'] === true
 			&& empty( self::$search ) ) {
-			$contentHtml =	$this->javascriptize( $contentHtml );
+			$contentHtml =	$this->headingTransform( $contentHtml );
 		} elseif ( $this->contentFormat == 'WML' ) {
-			$contentHtml = $this->javascriptize( $contentHtml );
-			$contentHtml = $this->createWMLCard( $contentHtml, $title );
+			header( 'Content-Type: text/vnd.wap.wml' );
+
+			// TODO: Content transformations required
+			// WML Validator:
+			// http://validator.w3.org
+			//
+			// div -> p
+			// no style, no class, no h1-h6, sup, sub, ol, ul, li etc.
+			// table requires "columns" property
+			// lang and dir officially unsupported (but often work on rtl phones)
+
+			// Add segmentation markers
+			$contentHtml = $this->headingTransform( $contentHtml );
+
+			// Content wrapping
+			$contentHtml = $this->createWMLCard( $contentHtml );
 			require( 'views/layout/application.wml.php' );
 		}
 
@@ -505,7 +595,7 @@ class ExtMobileFrontend {
 			header( 'Content-Type: application/json' );
 			header( 'Content-Disposition: attachment; filename="data.js";' );
 			$json_data = array();
-			$json_data['title'] = $title;
+			$json_data['title'] = self::$title->getText();
 			$json_data['html'] = $contentHtml;
 
 			$json = json_encode( $json_data );
