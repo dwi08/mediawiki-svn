@@ -552,6 +552,8 @@ class WebRequest {
 
 	/**
 	 * Return the request URI with the canonical service and hostname.
+	 * 
+	 * NOTE: This will output a protocol-relative URL if $wgServer is protocol-relative
 	 *
 	 * @return String
 	 */

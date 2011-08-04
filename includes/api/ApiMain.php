@@ -381,15 +381,19 @@ class ApiMain extends ApiBase {
 	}
 
 	protected function sendCacheHeaders() {
+		global $wgUseXVO, $wgOut, $wgVaryOnXFPForAPI;
 		if ( $this->mCacheMode == 'private' ) {
 			header( 'Cache-Control: private' );
 			return;
 		}
 
 		if ( $this->mCacheMode == 'anon-public-user-private' ) {
-			global $wgUseXVO, $wgOut;
-			header( 'Vary: Accept-Encoding, Cookie' );
+			$xfp = $wgVaryOnXFPForAPI ? ', X-Forwarded-Proto' : '';
+			header( 'Vary: Accept-Encoding, Cookie' . $xfp );
 			if ( $wgUseXVO ) {
+				if ( $wgVaryOnXFPForAPI ) {
+					$wgOut->addVaryHeader( 'X-Forwarded-Proto' );
+				}
 				header( $wgOut->getXVO() );
 				if ( $wgOut->haveCacheVaryCookies() ) {
 					// Logged in, mark this request private
@@ -403,6 +407,15 @@ class ApiMain extends ApiBase {
 				header( 'Cache-Control: private' );
 				return;
 			} // else no XVO and anonymous, send public headers below
+		}
+		
+		// Send public headers
+		if ( $wgVaryOnXFPForAPI ) {
+			header( 'Vary: Accept-Encoding, X-Forwarded-Proto' );
+			if ( $wgUseXVO ) {
+				// Bleeeeegh. Our header setting system sucks
+				header( 'X-Vary-Options: Accept-Encoding;list-contains=gzip, X-Forwarded-Proto' );
+			}
 		}
 
 		// If nobody called setCacheMaxAge(), use the (s)maxage parameters
