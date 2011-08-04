@@ -3052,7 +3052,9 @@ class User {
 			str_replace(
 				'$1',
 				"Special:$page/$token",
-				$wgArticlePath ) );
+				$wgArticlePath ),
+			PROTO_HTTP
+		);
 	}
 
 	/**
