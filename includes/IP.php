@@ -183,6 +183,23 @@ class IP {
 		$ip = preg_replace( '/(^|:)0+(' . RE_IPV6_WORD . ')/', '$1$2', $ip );
 		return $ip;
 	}
+	
+	/**
+	 * Given a host name and a port, combine them into host/port string like
+	 * you might find in a URL. If the host contains a colon, wrap it in square
+	 * brackets like in RFC 2732. If the port matches the default port, omit 
+	 * the port specification
+	 */
+	public static function combineHostAndPort( $host, $port, $defaultPort = false ) {
+		if ( strpos( $host, ':' ) !== false ) {
+			$host = "[$host]";
+		}
+		if ( $defaultPort !== false && $port == $defaultPort ) {
+			return $host;
+		} else {
+			return "$host:$port";
+		}
+	}
 
 	/**
 	 * Given an unsigned integer, returns an IPv6 address in octet notation
