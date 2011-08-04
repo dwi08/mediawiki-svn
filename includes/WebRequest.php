@@ -54,6 +54,50 @@ class WebRequest {
 		// We don't use $_REQUEST here to avoid interference from cookies...
 		$this->data = $_POST + $_GET;
 	}
+	
+	/**
+	 * Work out an appropriate URL prefix containing scheme and host, based on
+	 * information detected from $_SERVER
+	 *
+	 * @return string
+	 */
+	public static function detectServer() {
+		list( $proto, $stdPort ) = self::detectProtocolAndStdPort();
+
+		$varNames = array( 'HTTP_HOST', 'SERVER_NAME', 'HOSTNAME', 'SERVER_ADDR' );
+		$host = 'localhost';
+		$port = $stdPort;
+		foreach ( $varNames as $varName ) {
+			if ( !isset( $_SERVER[$varName] ) ) {
+				continue;
+			}
+			$parts = IP::splitHostAndPort( $_SERVER[$varName] );
+			if ( !$parts ) {
+				// Invalid, do not use
+				continue;
+			}
+			$host = $parts[0];
+			if ( $parts[1] === false ) {
+				if ( isset( $_SERVER['SERVER_PORT'] ) ) {
+					$port = $_SERVER['SERVER_PORT'];
+				} // else leave it as $stdPort
+			} else {
+				$port = $parts[1];
+			}
+			break;
+		}
+
+		return $proto . '://' . IP::combineHostAndPort( $host, $port, $stdPort );
+	}
+	
+	public static function detectProtocolAndStdPort() {
+		return ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) ? array( 'https', 443 ) : array( 'http', 80 );
+	}
+	
+	public static function detectProtocol() {
+		list( $proto, $stdPort ) = self::detectProtocolAndStdPort();
+		return $proto;
+	}
 
 	/**
 	 * Check for title, action, and/or variant data in the URL
