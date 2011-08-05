@@ -155,7 +155,7 @@ class SquidUpdate {
 					// Chances are that means it isn't in the cache
 					// Start saving a cached value
 					$add = apc_add( 'squidhtcppurge', 1 );
-					if ( $add === true ) {
+					if ( $add === false ) {
 						wfDebugLog( 'htcp', 'Unable to set value to APC cache' );
 						$id = 0;
 					} else {
