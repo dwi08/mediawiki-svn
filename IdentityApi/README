@@ -1,3 +1,5 @@
+== Notes ==
+
 This extension is experimental. It should not be used by anyone in a production environment.
 
 The purpose of this extension is to act as a sort of identity helper for other non-MediaWiki services that might be
@@ -5,6 +7,16 @@ run in the same hosting environment. An example might be a chat server, where it
 user name on the chat as they do on the wiki (and that users cannot impersonate one another).
 
 This implementation is based on Wikia's Chat module AJAX functions[1], but tries to be more general.
+
+== Caveat ==
+
+This entire extension might be a bad idea, if there is an easier way to do all this with OpenID. It's not clear to me
+yet if we can get something as seamless with OpenID, as easily. At least this is a basis for the kind of communications that
+OpenID will need, we can shoehorn this into the OpenID extension later.
+
+The only reason I'm pushing forward with this now is that we need SOME sort of service to go forward with etherpad and chat
+experiements.
+
 
 -- Neil Kandalgaonkar <neilk@wikimedia.org> 10 Aug 2011
 
