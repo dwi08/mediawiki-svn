@@ -32,17 +32,12 @@ class ApiQueryIdentity extends ApiQueryBase {
 		
 	}
 
-	/**
-	 * ???? do we need this? XSRF? TODO
-	 * Indicates whether this module must be called with a POST request
-	 * @return bool
-	 */
 	public function mustBePosted() {
-		return false;
+		return true;
 	}
 
 	/**
-	 * Probably needed to avoid XSRF -- TODO 
+	 * May be needed to avoid XSRF -- TODO determine if this is needed
 	 * Returns whether this module requires a Token to execute
 	 * @return bool
 	 */
