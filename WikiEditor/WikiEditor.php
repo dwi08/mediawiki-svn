@@ -44,6 +44,9 @@ $wgWikiEditorFeatures = array(
 	// Bare-bones (probably broken) template collapsing
 	'templates' => array( 'global' => false, 'user' => false ),
 
+	// remote editor (may be incompatible with the above)
+	'remote' => array( 'global' => false, 'user' => 'true' ),
+
 );
 
 /* Setup */
@@ -506,6 +509,14 @@ $wgResourceModules += array(
 		'dependencies' => array(
 			'ext.wikiEditor',
 			'ext.wikiEditor.toolbar',
+		)
+	),
+	'ext.wikiEditor.remote' => $wikiEditorTpl + array(
+		'scripts' => '',
+		'dependencies' => array(
+			'ext.wikiEditor',
+			'ext.wikiEditor.toolbar',
+			// JSON?
 		)
 	),
 );

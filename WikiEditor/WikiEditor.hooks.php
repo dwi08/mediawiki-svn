@@ -144,7 +144,7 @@ class WikiEditorHooks {
 		'toc' => array(
 			'preferences' => array(
 				// Ideally this key would be 'wikieditor-toc'
-			 	'usenavigabletoc' => array(
+				'usenavigabletoc' => array(
 					'type' => 'toggle',
 					'label-message' => 'wikieditor-toc-preference',
 					'section' => 'editing/labs',
@@ -157,6 +157,13 @@ class WikiEditorHooks {
 				'ext.wikiEditor.toc',
 			),
 		),
+
+		/* experimental "remote" editor (such as Etherpad) */
+		'remote' => array(
+			'preferences' => array(),
+			'requirements' => array(),
+			'modules' => 'ext.wikiEditor.remote'
+		)
 	);
 	
 	/* Static Methods */
