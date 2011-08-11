@@ -13,6 +13,7 @@ class IdentityApi {
 
 	/**
 	 * Return authentication parameters for currently logged in user, or null
+	 * Side effect: adds other data to memcached, identified via token, so it can be checked by remote service
 	 * @return {Null|Array}  
 	 */
 	public static function getAuthParams() {
