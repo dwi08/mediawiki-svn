@@ -160,8 +160,16 @@ class WikiEditorHooks {
 
 		/* experimental "remote" editor (such as Etherpad) */
 		'remote' => array(
-			'preferences' => array(),
-			'requirements' => array(),
+			'preferences' => array(
+				'useremoteeditor' => array(
+					'type' => 'toggle',
+					'label-message' => 'wikieditor-remote-preference',
+					'section' => 'editing/labs',
+				),	
+			),
+			'requirements' => array(
+				'useremoteeditor' => true
+			),
 			'modules' => 'ext.wikiEditor.remote'
 		)
 	);
@@ -208,7 +216,14 @@ class WikiEditorHooks {
 	 */
 	public static function editPageShowEditFormInitial( &$toolbar ) {
 		global $wgOut;
-		
+
+		if ( isset( $feature['remote'] ) && self::isEnabled( 'remote' ) ) {
+			$params = IdentityApi::getAuthParams();
+			if ( $params !== null ) { 
+				$wgOut->addInlineScript( Skin::makeVariablesScript( $params ) );
+			}
+		}
+	
 		// Add modules for enabled features
 		foreach ( self::$features as $name => $feature ) {
 			if ( isset( $feature['modules'] ) && self::isEnabled( $name ) ) {

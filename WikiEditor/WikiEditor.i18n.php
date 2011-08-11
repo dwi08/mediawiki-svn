@@ -36,6 +36,8 @@ $messages['en'] = array(
 	'wikieditor-publish-dialog-watch' => 'Watch this page',
 	'wikieditor-publish-dialog-publish' => 'Publish',
 	'wikieditor-publish-dialog-goback' => 'Go back',
+	/* Remote Editor */
+	'wikieditor-remote-preference' => 'Use real-time collaboration editor',
 	/* Template Editor */
 	'wikieditor-template-editor-preference' => 'Enable form-based editing of wiki templates',
 	'wikieditor-template-editor-dialog-title' => 'Edit template',
