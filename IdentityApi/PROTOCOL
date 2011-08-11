@@ -43,15 +43,15 @@ Synopsis of how it is intended to be used:
 
 
 	* The Chat service should then use those values to construct its identity verification API call. In particular
-		note that it uses the API URL again.
+		note that it uses the API URL again. Also note that here the arguments are namespaced so we say "idtoken" not "token".
 
 		CHAT SERVICE -> WIKI.
 
 		http://wiki.ivy.local/w/api.php?
 			action = verifyidentity
-			& viuser = Mercury
-			& vitoken=fafa55405eb0e0336d12135f7f14c9df
-			& viextras = cookie|wgServer|wgArticlePath|isLoggedIn|username
+			& iduser = Mercury
+			& idtoken=fafa55405eb0e0336d12135f7f14c9df
+			& idextras = cookie|wgServer|wgArticlePath|isLoggedIn|username
 			& format=json
 
 		The extras are information that this chat server might want to know. They should all be self-explanatory,

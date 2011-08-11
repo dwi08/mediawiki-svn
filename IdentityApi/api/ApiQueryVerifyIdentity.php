@@ -11,7 +11,7 @@
  */
 class ApiQueryVerifyIdentity extends ApiQueryBase {
 	public function __construct( $main, $action ) {
-		parent::__construct( $main, $action, 'vi' );
+		parent::__construct( $main, $action, 'id' );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class ApiQueryVerifyIdentity extends ApiQueryBase {
 	
 	protected function getExamples() {
 		return array (
-			'api.php?action=verifyidentity&viuser=NeilK&vitoken=abcdef123456&viextras=avatarSrc|chat|cookie|isStaff|username',
+			'api.php?action=verifyidentity&iduser=NeilK&idtoken=abcdef123456&idextras=avatarSrc|chat|cookie|isStaff|username',
 		);
 	}
 

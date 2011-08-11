@@ -11,7 +11,7 @@
  */
 class ApiQueryIdentity extends ApiQueryBase {
 	public function __construct( $main, $action ) {
-		parent::__construct( $main, $action, 'vi' );
+		parent::__construct( $main, $action, 'id' );
 	}
 
 	/**
