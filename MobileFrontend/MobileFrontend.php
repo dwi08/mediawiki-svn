@@ -49,7 +49,7 @@ $wgHooks['OutputPageBeforeHTML'][] = array( &$wgExtMobileFrontend, 'onOutputPage
 $wgHooks['SkinTemplateOutputPageBeforeExec'][] = array( &$wgExtMobileFrontend, 'addMobileFooter' );
 
 class ExtMobileFrontend {
-	const VERSION = '0.5.14';
+	const VERSION = '0.5.18';
 
 	/**
 	 * @var DOMDocument
@@ -173,34 +173,6 @@ class ExtMobileFrontend {
 		self::$title = $out->getTitle();
 		self::$htmlTitle = $out->getHTMLTitle();
 
-		// Need to get copyright footer from skin. The footer changes depending
-		// on whether we're using the WikimediaMessages extension or not.
-		//$skin = $wgUser->getSkin();
-		//$copyright = $skin->getCopyright();
-
-		// Need to stash the results of the "wfMsg" call before the Output Buffering handler
-		// because at this point the database connection is shut down, etc.
-		//self::$messages['mobile-frontend-show']			  = wfMsg( 'mobile-frontend-show-button' );
-		//self::$messages['mobile-frontend-hide']			  = wfMsg( 'mobile-frontend-hide-button' );
-		//self::$messages['mobile-frontend-back-to-top']		  = wfMsg( 'mobile-frontend-back-to-top-of-section' );
-		//self::$messages['mobile-frontend-regular-site']		  = wfMsg( 'mobile-frontend-regular-site' );
-		//self::$messages['mobile-frontend-perm-stop-redirect'] = wfMsg( 'mobile-frontend-perm-stop-redirect' );
-		//self::$messages['mobile-frontend-copyright']		  = $copyright;
-		//self::$messages['mobile-frontend-home-button']		  = wfMsg( 'mobile-frontend-home-button' );
-		//self::$messages['mobile-frontend-random-button']	  = wfMsg( 'mobile-frontend-random-button' );
-		//self::$messages['mobile-frontend-are-you-sure']		  = wfMsg( 'mobile-frontend-are-you-sure' );
-		//self::$messages['mobile-frontend-explain-disable']	  = wfMsg( 'mobile-frontend-explain-disable' );
-		//self::$messages['mobile-frontend-disable-button']	  = wfMsg( 'mobile-frontend-disable-button' );
-		//self::$messages['mobile-frontend-back-button']		  = wfMsg( 'mobile-frontend-back-button' );
-
-		//self::$dir = $wgContLang->getDir();
-		//self::$code = $wgContLang->getCode();
-
-		self::$disableImages = $wgRequest->getText( 'disableImages', 0 );
-
-		//self::$mainPageUrl = Title::newMainPage()->getLocalUrl();
-		//self::$randomPageUrl = SpecialPage::getTitleFor( 'Randompage' )->getLocalUrl();
-		
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		$uAmd5 = md5($userAgent);
 
@@ -234,6 +206,8 @@ class ExtMobileFrontend {
 		// This is stated to be intended behavior, as per the following: [http://bugs.php.net/bug.php?id=40104]
 
 		$mAction = $wgRequest->getText( 'mAction' );
+		$action = $wgRequest->getText( 'action' );
+		self::$disableImages = $wgRequest->getText( 'disableImages', 0 );
 		self::$useFormat = $wgRequest->getText( 'useFormat' );
 		self::$format = $wgRequest->getText( 'format' );
 		self::$requestedSegment = $wgRequest->getText( 'seg', 0 );
@@ -277,11 +251,11 @@ class ExtMobileFrontend {
 		}
 		
 		if ( $mAction == 'opt_in_cookie' ) {
-			$wgRequest->response()->setcookie( 'optin', '1' );
+			$this->setOptInOutCookie( '1' );
 		}
 		
 		if ( $mAction == 'opt_out_cookie' ) {
-			$wgRequest->response()->setcookie( 'optin', '' );
+			$this->setOptInOutCookie( '' );
 		}
 
 		// Note: Temporarily disabling this section for trial deployment
@@ -320,17 +294,39 @@ class ExtMobileFrontend {
 
 		// Determine
 		
-		$xDevice = $_SERVER['HTTP_X_DEVICE'];
+		$xDevice = isset( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
 
 		if (self::$useFormat === 'mobile' ||
 			self::$useFormat === 'mobile-wap' ||
-			isset( $xDevice ) ) {
-				$this->getMsg();
-				$this->disableCaching();
-				ob_start( array( $this, 'DOMParse' ) );
+			!empty( $xDevice ) ) {
+				if ( $action !== 'edit' ) {
+					$this->getMsg();
+					$this->disableCaching();
+					ob_start( array( $this, 'DOMParse' ) );
+				}
 		}
 
 		return true;
+	}
+	
+	private function setOptInOutCookie( $value ) {
+		global $wgCookieDomain, $wgRequest;
+		$tempWgCookieDomain = $wgCookieDomain;
+		$wgCookieDomain = $this->getBaseDomain();
+		$wgRequest->response()->setcookie( 'optin', $value );
+		$wgCookieDomain = $tempWgCookieDomain;
+	}
+	
+	private function getBaseDomain() {
+		//Validates value as IP address
+		if( !filter_var( $_SERVER['HTTP_HOST'], FILTER_VALIDATE_IP ) ) {
+			$domainParts = explode( '.', $_SERVER['HTTP_HOST'] );
+			$domainParts = array_reverse( $domainParts );
+			//Although some browsers will accept cookies without the initial ., » RFC 2109 requires it to be included. 
+			return '.' . $domainParts[1] . '.' . $domainParts[0];
+		} else {
+			return $_SERVER['HTTP_HOST'];
+		}
 	}
 
 	private function disableCaching() {
