@@ -1,0 +1,92 @@
+This protocol is based on Wikia's Chat module AJAX functions[1], but tries to be more general and uses the API instead
+of the old-school AJAX functions.
+
+[1] See https://svn.wikia-code.com/wikia/trunk/extensions/wikia/Chat/ChatAjax.class.php
+
+===============================================================
+
+Synopsis of how it is intended to be used:
+
+	* User initiates the other service, for example, a chat server, by pressing some button on a page served by the Wiki.
+
+	* Before launch the chat service, JS on the Wiki page pings the wiki with an identity API request, like so:
+
+		BROWSER -> WIKI
+
+		http://wiki.ivy.local/w/api.php?
+			action = identity
+			& format = json
+
+	* That should return a response like this:
+
+		WIKI -> BROWSER
+
+		{
+			"authentication":
+				{
+					"apiurl":"http:\/\/wiki.ivy.local\/w\/api.php",
+					"username":"Mercury",
+					"token":"fafa55405eb0e0336d12135f7f14c9df"
+				}
+		}
+
+	* Then, launch the Chat service, telling it about the above API results as you create the connection.
+
+		BROWSER -> CHAT SERVICE
+
+		Hi I'd like to use you, and by the way, I'd like to be "Mercury" on this system. Here's an API url and a token
+		you can use to verify me.
+
+	  If the chat service is serving more than one wiki, the chat service should "namespace" this request and username 
+	  by the apiurl. That's what identifies a wiki. So if it's being asked to create the user "Joe", 
+	  internally that should not conflict with another wiki's "Joe" with a different API url.
+
+
+	* The Chat service should then use those values to construct its identity verification API call. In particular
+		note that it uses the API URL again.
+
+		CHAT SERVICE -> WIKI.
+
+		http://wiki.ivy.local/w/api.php?
+			action = verifyidentity
+			& viuser = Mercury
+			& vitoken=fafa55405eb0e0336d12135f7f14c9df
+			& viextras = cookie|wgServer|wgArticlePath|isLoggedIn|username
+			& format=json
+
+		The extras are information that this chat server might want to know. They should all be self-explanatory,
+		except for cookie. That's a copy of the user cookie from when it made its action=identity call. Which totally
+		breaks cookie same-origin policies, but Wikia chat needed this for some reason.
+
+	* The return might look like this:
+
+		WIKI -> CHAT SERVICE
+
+		{ 
+			"authentication" : 
+				{ 
+					"cookie" : 
+						{ 
+							"commonsLoggedOut" : "20110810015020",
+							"commonsToken" : "7509923436bb4c53ef65a93d265d6d62",
+							"commonsUserID" : "30",
+							"commonsUserName" : "Mercury",
+							"commons_session" : "o6rhrf1gupk0skergf7k38hk02",
+							"skiptutorial" : "1",
+							"wikiEditor-0-toolbar-section" : "advanced"
+						},
+					"isLoggedIn" : true,
+					"username" : "Mercury",
+					"verified" : true,
+					"wgArticlePath" : "/wiki/$1",
+					"wgServer" : "http://wiki.ivy.local"
+				} 
+		}
+
+		The most important return value is the "verified": true, which tells the chat service that this user is in fact
+		Mercury from the wiki identified by the API url.
+	
+
+-- Neil Kandalgaonkar <neilk@wikimedia.org> 10 Aug 2011
+
+
