@@ -377,19 +377,19 @@ class LinksUpdate {
 		if ( $where ) {
 			$this->mDb->delete( $table, $where, __METHOD__ );
 		}
+		if ( isset( $insertions['globaltemplatelinks'] ) ) {
+			$this->mDb->insert( 'globaltemplatelinks', $insertions['globaltemplatelinks'], __METHOD__, 'IGNORE' );
+			unset( $insertions['globaltemplatelinks'] );
+		}
+		if ( isset( $insertions['globalnamespaces'] ) ) {
+			$this->mDb->insert( 'globalnamespaces', $insertions['globalnamespaces'], __METHOD__, 'IGNORE' );
+			unset( $insertions['globalnamespaces'] );
+		}
+		if ( isset( $insertions['globalinterwiki'] ) ) {
+			$this->mDb->insert( 'globalinterwiki', $insertions['globalinterwiki'], __METHOD__, 'IGNORE' );
+			unset( $insertions['globalinterwiki'] );
+		}
 		if ( count( $insertions ) ) {
-			if ( isset( $insertions['globaltemplatelinks'] ) ) {
-				$this->mDb->insert( 'globaltemplatelinks', $insertions['globaltemplatelinks'], __METHOD__, 'IGNORE' );
-				unset( $insertions['globaltemplatelinks'] );
-			}
-			if ( isset( $insertions['globalnamespaces'] ) ) {
-				$this->mDb->insert( 'globalnamespaces', $insertions['globalnamespaces'], __METHOD__, 'IGNORE' );
-				unset( $insertions['globalnamespaces'] );
-			}
-			if ( isset( $insertions['globalinterwiki'] ) ) {
-				$this->mDb->insert( 'globalinterwiki', $insertions['globalinterwiki'], __METHOD__, 'IGNORE' );
-				unset( $insertions['globalinterwiki'] );
-			}
 			$this->mDb->insert( $table, $insertions, __METHOD__, 'IGNORE' );
 		}
 	}
