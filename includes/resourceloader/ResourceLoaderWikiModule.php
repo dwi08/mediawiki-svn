@@ -66,7 +66,7 @@ abstract class ResourceLoaderWikiModule extends ResourceLoaderModule {
 				continue;
 			}
 			$title = Title::newFromText( $titleText );
-			if ( !$title ) {
+			if ( !$title || $title->isRedirect() ) {
 				continue;
 			}
 			$script = $this->getContent( $title );
@@ -89,7 +89,7 @@ abstract class ResourceLoaderWikiModule extends ResourceLoaderModule {
 				continue;
 			}
 			$title = Title::newFromText( $titleText );
-			if ( !$title ) {
+			if ( !$title || $title->isRedirect()  ) {
 				continue;
 			}			
 			$media = isset( $options['media'] ) ? $options['media'] : 'all';
