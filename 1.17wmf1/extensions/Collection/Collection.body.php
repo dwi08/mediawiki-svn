@@ -948,11 +948,7 @@ class SpecialCollection extends SpecialPage {
 	}
 
 	function renderCollection( $collection, $referrer, $writer ) {
-		global $wgOut;
-		global $wgContLang;
-		global $wgServer;
-		global $wgScriptPath;
-		global $wgScriptExtension;
+		global $wgOut, $wgContLang, $wgScriptPath, $wgScriptExtension;
 
 		if ( !$writer ) {
 			$writer = 'rl';
@@ -960,7 +956,7 @@ class SpecialCollection extends SpecialPage {
 
 		$response = self::mwServeCommand( 'render', array(
 			'metabook' => $this->buildJSONCollection( $collection ),
-			'base_url' => $wgServer . $wgScriptPath,
+			'base_url' => wfExpandUrl( $wgScriptPath ),
 			'script_extension' => $wgScriptExtension,
 			'template_blacklist' => wfMsgForContent( 'coll-template_blacklist_title' ),
 			'template_exclusion_category' => wfMsgForContent( 'coll-exclusion_category_title' ),
@@ -986,19 +982,14 @@ class SpecialCollection extends SpecialPage {
 	}
 
 	function forceRenderCollection() {
-		global $wgOut;
-		global $wgContLang;
-		global $wgRequest;
-		global $wgServer;
-		global $wgScriptPath;
-		global $wgScriptExtension;
+		global $wgOut, $wgContLang, $wgRequest, $wgScriptPath, $wgScriptExtension;
 
 		$collectionID = $wgRequest->getVal( 'collection_id', '' );
 		$writer = $wgRequest->getVal( 'writer', 'rl' );
 
 		$response = self::mwServeCommand( 'render', array(
 			'collection_id' => $collectionID,
-			'base_url' => $wgServer . $wgScriptPath,
+			'base_url' => wfExpandUrl( $wgScriptPath ),
 			'script_extension' => $wgScriptExtension,
 			'template_blacklist' => wfMsgForContent( 'coll-template_blacklist_title' ),
 			'template_exclusion_category' => wfMsgForContent( 'coll-exclusion_category_title' ),
@@ -1080,7 +1071,7 @@ class SpecialCollection extends SpecialPage {
 			$wgOut->setPageTitle( wfMsg( 'coll-rendering_finished_title' ) );
 
 			$template = new CollectionFinishedTemplate();
-			$template->set( 'download_url', $wgServer . SkinTemplate::makeSpecialUrl( 'Book', 'bookcmd=download&' . $query ) );
+			$template->set( 'download_url', wfExpandUrl( SkinTemplate::makeSpecialUrl( 'Book', 'bookcmd=download&' . $query ) ) );
 			$template->set( 'is_cached', $wgRequest->getVal( 'is_cached' ) );
 			$template->set( 'query', $query );
 			$template->set( 'return_to', $return_to );
@@ -1161,10 +1152,7 @@ class SpecialCollection extends SpecialPage {
 	}
 
 	function postZIP( $collection, $partner ) {
-		global $wgServer;
-		global $wgScriptPath;
-		global $wgScriptExtension;
-		global $wgOut;
+		global $wgScriptPath, $wgScriptExtension, $wgOut;
 
 		if ( !isset( $this->mPODPartners[$partner] ) ) {
 			$wgOut->showErrorPage( 'coll-invalid_podpartner_title', 'coll-invalid_podpartner_msg' );
@@ -1173,7 +1161,7 @@ class SpecialCollection extends SpecialPage {
 
 		$response = self::mwServeCommand( 'zip_post', array(
 			'metabook' => $this->buildJSONCollection( $collection ),
-			'base_url' => $wgServer . $wgScriptPath,
+			'base_url' => wfExpandUrl( $wgScriptPath ),
 			'script_extension' => $wgScriptExtension,
 			'template_blacklist' => wfMsgForContent( 'coll-template_blacklist_title' ),
 			'template_exclusion_category' => wfMsgForContent( 'coll-exclusion_category_title' ),

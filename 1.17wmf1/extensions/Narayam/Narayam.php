@@ -204,13 +204,14 @@ $wgResourceModules['ext.narayam.rules.si-wijesekara'] = $narayamTpl + array(
 	'messages' => array( 'narayam-si-wijesekara' ),
 	'dependencies' => 'ext.narayam.core',
 );
-$wgResourceModules['ext.narayam.rules.ta99'] = $narayamTpl + array(
-	'scripts' => 'ext.narayam.rules.ta99.js',
-	'messages' => array( 'narayam-ta99' ),
-	'dependencies' => 'ext.narayam.core',
-);
 $wgResourceModules['ext.narayam.rules.ta'] = $narayamTpl + array(
 	'scripts' => 'ext.narayam.rules.ta.js',
 	'messages' => array( 'narayam-ta' ),
 	'dependencies' => 'ext.narayam.core',
 );
+$wgResourceModules['ext.narayam.rules.ta99'] = $narayamTpl + array(
+	'scripts' => 'ext.narayam.rules.ta99.js',
+	'messages' => array( 'narayam-ta99' ),
+	'dependencies' => 'ext.narayam.rules.ta', // make sure ta99 loads after ta
+);
+

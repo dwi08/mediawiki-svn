@@ -46,7 +46,7 @@ class ApiQuerySiteMatrix extends ApiQueryBase {
 				if ( $matrix->exist( $lang, $site ) ) {
 					$url = $matrix->getUrl( $lang, $site );
 					$site_out = array(
-						'url' => $url,
+						'url' => wfExpandUrl( $url ),
 						'code' => $site,
 					);
 					if( $matrix->isClosed( $lang, $site ) ) {
@@ -68,7 +68,7 @@ class ApiQuerySiteMatrix extends ApiQueryBase {
 			$url = $matrix->getUrl( $lang, $site );
 
 			$wiki = array();
-			$wiki['url'] = $url;
+			$wiki['url'] = wfExpandUrl( $url );
 			$wiki['code'] = str_replace( '_', '-', $lang ) . ( $site != 'wiki' ? $site : '' );
 
 			if( $matrix->isPrivate( $lang . $site ) ) {
