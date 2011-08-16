@@ -105,8 +105,10 @@ class IdentityApi {
 					break;
 				case 'wgServer':
 					$ret['wgServer'] = $wgServer;
+					break;
 				case 'wgArticlePath':
 					$ret['wgArticlePath'] = $wgArticlePath;
+					break;
 				default:
 					break;
 			}	
