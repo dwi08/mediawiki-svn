@@ -21,7 +21,7 @@ mw.UploadWizardUpload = function( api, filesDiv ) {
 	this.mimetype = undefined;
 	this.extension = undefined;
 
-	this.sessionKey = undefined;
+	this.fileKey = undefined;
 
 	// this should be moved to the interface, if we even keep this
 	this.transportWeight = 1; // default all same
@@ -355,8 +355,8 @@ mw.UploadWizardUpload.prototype = {
 	 */
 	extractUploadInfo: function( resultUpload ) {
 
-		if ( resultUpload.sessionkey ) {
-			this.sessionKey = resultUpload.sessionkey;
+		if ( resultUpload.filekey ) {
+			this.fileKey = resultUpload.filekey;
 		}
 
 		if ( resultUpload.imageinfo ) {
@@ -431,7 +431,7 @@ mw.UploadWizardUpload.prototype = {
 
 		var params = {
 			'prop':	'stashimageinfo',
-			'siisessionkey': _this.sessionKey,
+			'siifilekey': _this.fileKey,
 			'siiprop': props.join( '|' )
 		};
 
