@@ -32,6 +32,13 @@ class UploadFromFile extends UploadBase {
 		# because a post_max_size or upload_max_filesize overflow
 		return true;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getSourceType() {
+		return 'file';
+	}
 	
 	public function verifyUpload() {
 		# Check for a post_max_size or upload_max_size overflow, so that a 

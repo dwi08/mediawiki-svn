@@ -41,16 +41,25 @@ class ApiQueryStashImageInfo extends ApiQueryImageInfo {
 		
 		$result = $this->getResult();
 		
+		if ( !$params['filekey'] && !$params['sessionkey'] ) {
+			$this->dieUsage( "One of filekey or sessionkey must be supplied", 'nofilekey');
+		}
+
+		// Alias sessionkey to filekey, but give an existing filekey precedence.
+		if ( !$params['filekey'] && $params['sessionkey'] ) {
+			$params['filekey'] = $params['sessionkey'];
+		}
+
 		try {
 			$stash = RepoGroup::singleton()->getLocalRepo()->getUploadStash();
-		
-			foreach ( $params['sessionkey'] as $sessionkey ) {	
-				$file = $stash->getFile( $sessionkey );
+
+			foreach ( $params['filekey'] as $filekey ) {
+				$file = $stash->getFile( $filekey );
 				$imageInfo = self::getInfo( $file, $prop, $result, $scale );
 				$result->addValue( array( 'query', $this->getModuleName() ), null, $imageInfo );
 				$result->setIndexedTagName_internal( array( 'query', $this->getModuleName() ), $modulePrefix );
 			}
-
+		//TODO: update exception handling here to understand current getFile exceptions
 		} catch ( UploadStashNotAvailableException $e ) {
 			$this->dieUsage( "Session not available: " . $e->getMessage(), "nosession" );
 		} catch ( UploadStashFileNotFoundException $e ) {
@@ -81,9 +90,13 @@ class ApiQueryStashImageInfo extends ApiQueryImageInfo {
 
 	public function getAllowedParams() {
 		return array(
-			'sessionkey' => array( 
+			'filekey' => array(
 				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_REQUIRED => true,
+				ApiBase::PARAM_DFLT => null
+			),
+			'sessionkey' => array(
+				ApiBase::PARAM_ISMULTI => true,
+				ApiBase::PARAM_DEPRECATED => true,
 				ApiBase::PARAM_DFLT => null
 			),
 			'prop' => array(
@@ -121,7 +134,8 @@ class ApiQueryStashImageInfo extends ApiQueryImageInfo {
 				' metadata     - Lists EXIF metadata for the version of the image',
 				' bitdepth     - Adds the bit depth of the version',
 			),
-			'sessionkey' => 'Session key that identifies a previous upload that was stashed temporarily.',
+			'filekey' => 'Key that identifies a previous upload that was stashed temporarily.',
+			'sessionkey' => 'Alias for filekey, for backward compatibility.',
 			'urlwidth' => "If {$p}prop=url is set, a URL to an image scaled to this width will be returned.",
 			'urlheight' => "Similar to {$p}urlwidth. Cannot be used without {$p}urlwidth"
 		);
@@ -139,8 +153,8 @@ class ApiQueryStashImageInfo extends ApiQueryImageInfo {
 
 	protected function getExamples() {
 		return array(
-			'api.php?action=query&prop=stashimageinfo&siisessionkey=124sd34rsdf567',
-			'api.php?action=query&prop=stashimageinfo&siisessionkey=b34edoe3|bceffd4&siiurlwidth=120&siiprop=url',
+			'api.php?action=query&prop=stashimageinfo&siifilekey=124sd34rsdf567',
+			'api.php?action=query&prop=stashimageinfo&siifilekey=b34edoe3|bceffd4&siiurlwidth=120&siiprop=url',
 		);
 	}
 
