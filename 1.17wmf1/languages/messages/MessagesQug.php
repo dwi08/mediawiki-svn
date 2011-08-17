@@ -8,4 +8,4 @@
  * @file
  */
 
-$fallback = 'es';
+$fallback = 'qu';
