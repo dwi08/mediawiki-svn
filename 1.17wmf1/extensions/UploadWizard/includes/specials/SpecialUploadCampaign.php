@@ -129,8 +129,7 @@ class SpecialUploadCampaign extends FormSpecialPage {
 	}
 	
 	public function onSuccess() {
-		global $wgOut;
-		$wgOut->redirect( SpecialPage::getTitleFor( 'UploadCampaigns' )->getLocalURL() );
+		$this->getOutput()->redirect( SpecialPage::getTitleFor( 'UploadCampaigns' )->getLocalURL() );
 	}
 
 }

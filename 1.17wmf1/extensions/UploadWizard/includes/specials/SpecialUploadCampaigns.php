@@ -40,7 +40,7 @@ class SpecialUploadCampaigns extends SpecialPage {
 	 * @param string $subPage, e.g. the "foo" in Special:UploadCampaigns/foo.
 	 */
 	public function execute( $subPage ) {
-		global $wgRequest, $wgUser, $wgOut;
+		global $wgRequest, $wgUser;
 		
 		$this->setHeaders();
 		$this->outputHeader();
@@ -51,12 +51,12 @@ class SpecialUploadCampaigns extends SpecialPage {
 			if ( $wgRequest->wasPosted()
 				&& $wgUser->matchEditToken( $wgRequest->getVal( 'wpEditToken' ) )
 				&& $wgRequest->getCheck( 'newcampaign' ) ) {
-					$wgOut->redirect( SpecialPage::getTitleFor( 'UploadCampaign', $wgRequest->getVal( 'newcampaign' ) )->getLocalURL() );
+					$this->getOutput()->redirect( SpecialPage::getTitleFor( 'UploadCampaign', $wgRequest->getVal( 'newcampaign' ) )->getLocalURL() );
 			}
 			elseif ( count( $subPage ) == 2 && $subPage[0] == 'del' ) {
 				$campaign = UploadWizardCampaign::newFromName( $subPage[1], false );
 				$campaign->deleteFromDB();
-				$wgOut->redirect( $this->getTitle()->getLocalURL() );
+				$this->getOutput()->redirect( $this->getTitle()->getLocalURL() );
 			}
 			else {
 				$this->displayUploadCamaigns();
@@ -96,8 +96,7 @@ class SpecialUploadCampaigns extends SpecialPage {
 	 * @since 1.2
 	 */
 	protected function displayAddNewControl() {
-		global $wgOut;
-		$out = $wgOut; // $out = $wgOut;
+		$out = $this->getOutput();
 		
 		$out->addHTML( Html::openElement(
 			'form',
@@ -137,8 +136,7 @@ class SpecialUploadCampaigns extends SpecialPage {
 	 * @param ResultWrapper $campaigns
 	 */
 	protected function displayCampaignTable( ResultWrapper $campaigns ) {
-		global $wgOut;
-		$out = $wgOut;
+		$out = $this->getOutput();
 		
 		$out->addHTML( Html::element( 'h2', array(), wfMsg( 'mwe-upwiz-campaigns-existing' ) ) );
 		

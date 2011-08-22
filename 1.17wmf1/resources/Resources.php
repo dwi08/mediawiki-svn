@@ -342,9 +342,6 @@ return array(
 		'dependencies' => array( 'jquery.checkboxShiftClick', 'jquery.client', 'jquery.placeholder' ),
 		'debugScripts' => 'resources/mediawiki.util/mediawiki.util.test.js',
 	),
-	'mediawiki.Uri' => array( 
-		'scripts' => 'resources/mediawiki/mediawiki.uri.js',
-	),
 	'mediawiki.action.history' => array(
 		'scripts' => 'resources/mediawiki.action/mediawiki.action.history.js',
 		'dependencies' => 'mediawiki.legacy.history',
