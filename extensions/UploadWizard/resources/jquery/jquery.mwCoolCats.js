@@ -24,21 +24,14 @@
 		};
 
 		var confirmIt = function() {
-			var buttons = [
-				{
-					text: gM( 'mw-coolcats-confirm-new-cancel' ),
-					click: function() {
-						$( this ).dialog( "close" ); 
-					}
-				},
-				{ 
-					text: gM( 'mw-coolcats-confirm-new-ok' ),
-					click: function() { 
-						insertIt();
-						$( this ).dialog( "close" ); 
-					}
-				}
-			];
+			var buttons = {};
+			buttons[ gM( 'mw-coolcats-confirm-new-cancel' ) ] = function() {
+				$( this ).dialog( "close" ); 
+			};
+			buttons[ gM( 'mw-coolcats-confirm-new-ok' ) ] = function() { 
+				insertIt();
+				$( this ).dialog( "close" ); 
+			};
 			$j( '<div></div>' )
 				.msg( 'mw-coolcats-confirm-new', title.getMainText() )
 				.dialog( {
