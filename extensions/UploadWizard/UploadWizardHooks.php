@@ -26,7 +26,6 @@ class UploadWizardHooks {
 				'mediawiki.language',
 				'mediawiki.Uri',
 				'mediawiki.util',
-				'mediawiki.libs.jpegmeta',
 				'ext.uploadwizard.mediawiki.language.parser',
 			),
 			'scripts' => array(
