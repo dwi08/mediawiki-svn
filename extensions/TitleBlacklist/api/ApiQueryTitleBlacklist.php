@@ -37,8 +37,9 @@ class ApiQueryTitleBlacklist extends ApiQueryBase {
 
 	public function execute() {
 		# get the current user.
-		$context = $this->createContext();
-		$user = $context->getUser();
+		//$context = $this->createContext();
+		//$user = $context->getUser();
+		$user = $GLOBALS['wgUser'];
 		
 		$params = $this->extractRequestParams();
 		$action = $params['action'];
