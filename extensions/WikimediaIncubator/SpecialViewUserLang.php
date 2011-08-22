@@ -7,10 +7,11 @@
  * Based on code from extension LookupUser made by Tim Starling
  *
  * @file
+ * @ingroup SpecialPage
+ * @author Robin Pepermans (SPQRobin)
  */
 
-class SpecialViewUserLang extends SpecialPage
-{
+class SpecialViewUserLang extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'ViewUserLang', 'viewuserlang' );
 	}
@@ -23,7 +24,6 @@ class SpecialViewUserLang extends SpecialPage
 	 */
 	public function execute( $subpage ) {
 		global $wgRequest, $wgUser;
-		
 
 		$this->setHeaders();
 
@@ -67,29 +67,31 @@ class SpecialViewUserLang extends SpecialPage
 	 * @param $target Mixed: user whose language and test wiki we're looking up
 	 */
 	function showInfo( $target ) {
-		global $wgOut, $wmincPref, $wmincProjectSite, $wgUser;
-		$sk = $wgUser->getSkin();
+		global $wgOut, $wmincPref, $wmincProjectSite;
 		$user = User::newFromName( $target );
+		$name = $user->getName();
+		$id = $user->getId();
 		$langNames = Language::getLanguageNames();
-		if ( $user == null || $user->getId() == 0 ) {
+		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker : new Linker;
+		if ( $user == null || $id == 0 ) {
 			// show error if a user with that name does not exist
 			$wgOut->addHTML( Xml::span( wfMsg( 'wminc-userdoesnotexist', $target ), 'error' ) );
 		} else {
 			$userproject = $user->getOption( $wmincPref . '-project' );
+			$userproject = ( $userproject ? $userproject : 'none' );
 			$usercode = $user->getOption( $wmincPref . '-code' );
 			$prefix = IncubatorTest::displayPrefix( $userproject, $usercode );
 			if ( IncubatorTest::isContentProject( $userproject ) ) {
-				$testwiki = $sk->link( Title::newFromText( $prefix ) );
+				$testwiki = $linker->link( Title::newFromText( $prefix ) );
 			} elseif ( $prefix == $wmincProjectSite['short'] ) {
 				$testwiki = htmlspecialchars( $wmincProjectSite['name'] );
 			} else {
 				$testwiki = wfMsgHtml( 'wminc-testwiki-none' );
 			}
-			$name = $user->getName();
 			$wgOut->addHtml(
 				Xml::openElement( 'ul' ) .
 				'<li>' . wfMsgHtml( 'username' ) . ' ' .
-					$sk->userLink( $name, $name ) . $sk->userToolLinks( $name, $name ) . '</li>' .
+					$linker->userLink( $id, $name ) . $linker->userToolLinks( $id, $name, true ) . '</li>' .
 				'<li>' . wfMsgHtml( 'loginlanguagelabel', $langNames[$user->getOption( 'language' )] .
 					' (' . $user->getOption( 'language' ) . ')' ) . '</li>' .
 				'<li>' . wfMsgHtml( 'wminc-testwiki' ) . ' ' . $testwiki . '</li>' .
