@@ -7,31 +7,40 @@ if ( !defined( 'MEDIAWIKI' ) ) { die( "This file is an extension to the MediaWik
  *
  * @file
  * @ingroup Extensions
+ * @author Robin Pepermans (SPQRobin)
  */
 
 $wgExtensionCredits['other'][] = array(
 	'path' => __FILE__,
 	'name' => 'Wikimedia Incubator',
 	'author' => 'SPQRobin',
-	'version' => '3.1.0',
+	'version' => '4.2',
 	'url' => 'http://www.mediawiki.org/wiki/Extension:WikimediaIncubator',
 	'descriptionmsg' => 'wminc-desc',
 );
 
-/* Config */
-$wgGroupPermissions['*']['viewuserlang'] = false;
-$wgGroupPermissions['sysop']['viewuserlang'] = true;
-
 /* General (globals and/or configuration) */
 $wmincPref = 'incubatortestwiki'; // Name of the preference
 $dir = dirname( __FILE__ ) . '/';
-// only one-letter codes can be used for projects
+$wmincScriptDir = $wgExtensionAssetsPath . '/WikimediaIncubator/';
+# only one-letter codes can be used for projects
 $wmincProjects = array(
-	'Wikipedia' => 'p',
-	'Wikibooks' => 'b',
-	'Wiktionary' => 't',
-	'Wikiquote' => 'q',
-	'Wikinews' => 'n',
+	'p' => 'Wikipedia',
+	'b' => 'Wikibooks',
+	't' => 'Wiktionary',
+	'q' => 'Wikiquote',
+	'n' => 'Wikinews',
+);
+# Sister projects is here defined as projects that are not on Incubator
+$wmincSisterProjects = array(
+	's' => 'Wikisource',
+	'v' => 'Wikiversity',
+);
+$wmincMultilingualProjects = array(
+	'meta.wikimedia.org' => 'Meta-Wiki',
+	'commons.wikimedia.org' => 'Wikimedia Commons',
+	'species.wikimedia.org' => 'Wikispecies',
+	'mediawiki.org' => 'MediaWiki',
 );
 $wmincProjectSite = array(
 	'name' => 'Incubator',
@@ -48,7 +57,18 @@ $wmincPseudoCategoryNSes = array(
 	'Incubator', 'Help', 'Users', 'Maintenance', 'Files',
 );
 
+/* Test wiki admin user group */
+$wgGroupPermissions['test-sysop']['delete'] = true;
+$wgGroupPermissions['test-sysop']['undelete'] = true;
+$wgGroupPermissions['test-sysop']['deletedhistory'] = true;
+$wgGroupPermissions['test-sysop']['block'] = true;
+$wgGroupPermissions['test-sysop']['blockemail'] = true;
+$wgGroupPermissions['test-sysop']['rollback'] = true;
+$wgAddGroups['bureaucrat']['test-sysop'] = true;
+$wgRemoveGroups['bureaucrat']['test-sysop'] = true;
+
 $wgExtensionMessagesFiles['WikimediaIncubator'] = $dir . 'WikimediaIncubator.i18n.php';
+$wgExtensionAliasesFiles['WikimediaIncubator'] = $dir . 'WikimediaIncubator.alias.php';
 
 /* Special:ViewUserLang */
 $wgAutoloadClasses['SpecialViewUserLang'] = $dir . 'SpecialViewUserLang.php';
@@ -56,6 +76,8 @@ $wgSpecialPages['ViewUserLang'] = 'SpecialViewUserLang';
 $wgSpecialPageGroups['ViewUserLang'] = 'users';
 $wgAvailableRights[] = 'viewuserlang';
 $wgHooks['ContributionsToolLinks'][] = 'IncubatorTest::efLoadViewUserLangLink';
+$wgGroupPermissions['*']['viewuserlang'] = false;
+$wgGroupPermissions['sysop']['viewuserlang'] = true;
 
 /* TestWiki preference */
 $wgAutoloadClasses['IncubatorTest'] = $dir . 'IncubatorTest.php';
@@ -64,8 +86,12 @@ $wgHooks['MagicWordwgVariableIDs'][] = 'IncubatorTest::magicWordVariable';
 $wgHooks['LanguageGetMagic'][] = 'IncubatorTest::magicWord';
 $wgHooks['ParserGetVariableValueSwitch'][] = 'IncubatorTest::magicWordValue';
 
+/* Special:MyMainPage (depending on your test wiki preference) */
+$wgAutoloadClasses['SpecialMyMainPage'] = $dir . 'SpecialMyMainPage.php';
+$wgSpecialPages['MyMainPage'] = 'SpecialMyMainPage';
+
 /* Create/move page permissions */
-$wgHooks['getUserPermissionsErrors'][] = 'IncubatorTest::checkPrefixCreatePermissions';
+$wgHooks['getUserPermissionsErrors'][] = 'IncubatorTest::onGetUserPermissionsErrors';
 $wgHooks['AbortMove'][] = 'IncubatorTest::checkPrefixMovePermissions';
 
 /* Recent Changes */
@@ -81,3 +107,37 @@ $wgHooks['AddNewAccount'][] = 'AutoTestWiki::onAddNewAccount';
 /* Random page by test */
 $wgAutoloadClasses['SpecialRandomByTest'] = $dir . 'SpecialRandomByTest.php';
 $wgSpecialPages['RandomByTest'] = 'SpecialRandomByTest';
+
+/* support for automatic checking in a list of databases if a wiki exists */
+$wmincExistingWikis = $wgLocalDatabases;
+/* Stupid "wiki" referring to "wikipedia" in WMF config */
+$wmincProjectDatabases = array( 
+	'p' => 'wiki',
+	'b' => 'wikibooks',
+	't' => 'wiktionary',
+	'q' => 'wikiquote',
+	'n' => 'wikinews',
+	's' => 'wikisource',
+	'v' => 'wikiversity',
+);
+# set this to an array or file of closed wikis (like SiteMatrix $wgSiteMatrixClosedSites)
+$wmincClosedWikis = false;
+
+/* Wx/xx[x] info page */
+$wgAutoloadClasses['InfoPage'] = $dir . 'InfoPage.php';
+$wgExtensionMessagesFiles['InfoPage'] = $dir . 'InfoPage.i18n.php';
+$wgHooks['ShowMissingArticle'][] = 'IncubatorTest::onShowMissingArticle';
+$wgHooks['EditFormPreloadText'][] = 'IncubatorTest::onEditFormPreloadText';
+$wgHooks['ArticleFromTitle'][] = 'IncubatorTest::onArticleFromTitle';
+
+$wgResourceModules['WikimediaIncubator.InfoPage'] = array(
+		'styles' => 'InfoPage.css',
+		'localBasePath' => dirname(__FILE__),
+		'remoteExtPath' => 'WikimediaIncubator',
+);
+
+/* Possibility to set a logo per test wiki */
+$wgHooks['BeforePageDisplay'][] = 'IncubatorTest::fnTestWikiLogo';
+
+/* Set page content language depending on the prefix */
+$wgHooks['PageContentLanguage'][] = 'IncubatorTest::onPageContentLanguage';
