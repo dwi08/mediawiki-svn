@@ -57,10 +57,17 @@
 	margin-left:1.6em;
 	margin-right:1.6em;
 }
-#preferences table#cn-campaign-logs {
+#preferences div#cn-log-filters-container {
+	margin: 1em 0;
+}
+#preferences table#cn-campaign-logs, #preferences div#cn-log-filters table {
 	width: auto;
 }
+#preferences div#cn-log-filters table td {
+	padding: 0.5em;
+}
 #preferences table#cn-campaign-logs td.primary {
+	white-space: nowrap;
 	background-color: #F0F0F0;
 }
 #preferences .cn-new-value {
@@ -71,6 +78,12 @@
 }
 #preferences .cn-log-label {
 	font-weight: bold;
+}
+#preferences .cn-filter-buttons {
+	margin-right: 0.5em;
+}
+#preferences #cn-log-switcher label {
+	margin-right: 1em;
 }
 
 /* Vector-specific definitions */

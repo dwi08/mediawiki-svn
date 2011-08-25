@@ -156,11 +156,22 @@ Add one below.',
 	'centralnotice-off' => 'off',
 	'centralnotice-added' => 'Added <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'Removed <span class="cn-old-value">$1</span>',
-	'centralnotice-banners-changed' => 'Banner assignments were changed',
 	'centralnotice-no-assignments' => 'no banners assigned',
 	'centralnotice-talk-link' => 'talk',
 	'centralnotice-user-links' => '$1 ($2)',
 	'centralnotice-log-label' => '<span class="cn-log-label">$1:</span> $2',
+	'centralnotice-campaign-settings' => 'Campaign settings',
+	'centralnotice-banner-settings' => 'Banner settings',
+	'centralnotice-anon' => 'Display to anonymous users',
+	'centralnotice-account' => 'Display to logged in users',
+	'centralnotice-fundraising' => 'Fundraising',
+	'centralnotice-landingpages' => 'Landing pages',
+	'centralnotice-banner-content' => 'Banner content',
+	'centralnotice-banner-content-changed' => 'Changed',
+	'centralnotice-filters' => 'Log filters',
+	'centralnotice-date' => 'Date',
+	'centralnotice-apply-filters' => 'Apply filters',
+	'centralnotice-clear-filters' => 'Clear filters',
 );
 
 /** Message documentation (Message documentation)
@@ -175,6 +186,7 @@ Add one below.',
  * @author Nike
  * @author Purodha
  * @author Raymond
+ * @author Seb35
  * @author Siebrand
  * @author The Evil IP address
  */
@@ -218,6 +230,7 @@ $messages['qqq'] = array(
 	'centralnotice-start-time' => 'Used in Special:CentralNotice. UTC is "[http://en.wikipedia.org/wiki/Coordinated_Universal_Time Coordinated Universal Time]',
 	'centralnotice-end-time' => 'Used in Special:CentralNotice. UTC is "[http://en.wikipedia.org/wiki/Coordinated_Universal_Time Coordinated Universal Time]',
 	'centralnotice-available-templates' => 'Used in Special:NoticeTemplate',
+	'centralnotice-change-lang' => 'Fieldset legend for a language selector, that is used to set a preference for which language to translate to in the translation module of the extension CentralNotice.',
 	'centralnotice-notice-is-locked' => 'Error message displayed in Special:CentralNotice when trying to delete a locked notice',
 	'centralnotice-invalid-date-range' => '{{Identical|Date}}',
 	'centralnotice-no-notices-exist' => 'Used in Special:CentralNotice when there are no notices',
@@ -247,12 +260,23 @@ Maximum length of the message is 5% of the total width of the table.',
 * $2 is the project name for the site (e.g. "wikipedia").
 * $3 is the country code (e.g. "US").',
 	'centralnotice-logs' => 'Label for tab which displays a log of changes',
+	'centralnotice-timestamp' => '{{Identical|Timestamp}}',
 	'centralnotice-user' => '{{Identical|User}}',
 	'centralnotice-action' => '{{Identical|Action}}',
+	'centralnotice-on' => 'indicates a notice is on air',
+	'centralnotice-off' => 'indicates a notice is not on air
+{{Identical|Off}}',
 	'centralnotice-no-assignments' => 'Appears in the middle of a sentence; should be all lower case.',
-	'centralnotice-talk-link' => 'Link for user talk page; should be lower case.',
+	'centralnotice-talk-link' => 'Link for user talk page; should be lower case.
+{{Identical|Talk}}',
 	'centralnotice-user-links' => '$1 is a link to the user page, $2 is a link to the user talk page.',
 	'centralnotice-log-label' => '$1 is a label for a setting, $2 is the value of the setting (or changes to the setting)',
+	'centralnotice-campaign-settings' => 'Label for a radio button',
+	'centralnotice-banner-settings' => 'Label for a radio button',
+	'centralnotice-filters' => 'Label for a set of options that control filtering of logs',
+	'centralnotice-date' => 'Label for a date selection interface',
+	'centralnotice-apply-filters' => 'Label for a submit button',
+	'centralnotice-clear-filters' => 'Label for a submit button. Clear as in reset.',
 );
 
 /** Afrikaans (Afrikaans)
@@ -779,6 +803,7 @@ Nun s'amiesta.",
  * @author PPerviz
  * @author Vago
  * @author Vugar 1981
+ * @author Wertuose
  */
 $messages['az'] = array(
 	'centralnotice' => 'Mərkəzi xəbərdarlıq idarəçisi',
@@ -786,7 +811,7 @@ $messages['az'] = array(
 	'bannerallocation' => 'Mərkəzi xəbərdarlıq idarəçisi',
 	'centralnotice-end-date' => 'Son tarix',
 	'centralnotice-enabled' => 'Effektiv',
-	'centralnotice-modify' => 'Yolla',
+	'centralnotice-modify' => 'Təsdiq et',
 	'centralnotice-preview' => 'Sınaq göstərişi',
 	'centralnotice-remove' => 'Çıxar',
 	'centralnotice-add' => 'Əlavə et',
@@ -968,6 +993,7 @@ $messages['bar'] = array(
 	'centralnotice-translate-to' => 'Ywersetzen auf',
 	'centralnotice-translate' => 'Ywersetzen',
 	'centralnotice-english' => 'Englisch',
+	'centralnotice-logs' => 'Logbiacher',
 );
 
 /** Southern Balochi (بلوچی مکرانی)
@@ -1157,7 +1183,25 @@ $messages['be-tarask'] = array(
 	'centralnotice-timestamp' => 'Дата/час',
 	'centralnotice-user' => 'Удзельнік',
 	'centralnotice-action' => 'Дзеяньне',
-	'centralnotice-changed' => 'Зьмяніць з <span class="cn-old-value">$1</span> на <span class="cn-new-value">$2</span>',
+	'centralnotice-changed' => 'Зьмененае з <span class="cn-old-value">$1</span> на <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'уключыць',
+	'centralnotice-off' => 'выключыць',
+	'centralnotice-added' => 'Дададзенае <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Выдаленае <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'паведамленьні не прызначаныя',
+	'centralnotice-talk-link' => 'абмеркаваньне',
+	'centralnotice-campaign-settings' => 'Налады кампаніі',
+	'centralnotice-banner-settings' => 'Налады паведамленьня',
+	'centralnotice-anon' => 'Паказваць ананімным удзельнікам',
+	'centralnotice-account' => 'Паказваць зарэгістраваным удзельнікам',
+	'centralnotice-fundraising' => 'Збор сродкаў',
+	'centralnotice-landingpages' => 'Прывітальная старонка',
+	'centralnotice-banner-content' => 'Зьмест паведамленьня',
+	'centralnotice-banner-content-changed' => 'Зьменены',
+	'centralnotice-filters' => 'Фільтры журнала',
+	'centralnotice-date' => 'Дата',
+	'centralnotice-apply-filters' => 'Ужыць фільтры',
+	'centralnotice-clear-filters' => 'Ачысьціць фільтры',
 );
 
 /** Bulgarian (Български)
@@ -1242,6 +1286,13 @@ $messages['bg'] = array(
  * @author Ganesh
  */
 $messages['bh'] = array(
+	'centralnotice-edit-template' => 'बैनर सम्पादन',
+);
+
+/** Bhojpuri (भोजपुरी)
+ * @author Ganesh
+ */
+$messages['bho'] = array(
 	'centralnotice-edit-template' => 'बैनर सम्पादन',
 );
 
@@ -1809,6 +1860,11 @@ Afegiu-ne un a continuació.',
 	'centralnotice-documentwrite-error' => "document.write () no pot ser utilitzat dins d'una pancarta
  Veure http://meta.wikimedia.org/wiki/Help:CentralNotice per a més informació.",
 	'centralnotice-preferred' => 'Preferit',
+	'centralnotice-logs' => 'Registres',
+	'centralnotice-view-logs' => 'Vegeu registres',
+	'centralnotice-user' => 'Usuari',
+	'centralnotice-added' => 'Afegit <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Eliminat <span class="cn-old-value">$1</span>',
 );
 
 /** Chechen (Нохчийн)
@@ -1883,6 +1939,7 @@ Také zde můžete přidávat nová či odstraňovat stará.',
 	'centralnotice-list-templates' => 'Seznam šablon',
 	'centralnotice-multiple-projects' => 'více ($1)',
 	'centralnotice-multiple-languages' => 'více ($1)',
+	'centralnotice-multiple-countries' => 'Vícero ($1)',
 	'centralnotice-all-projects' => 'Všechny projekty',
 	'centralnotice-translations' => 'Překlady',
 	'centralnotice-translate-to' => 'Přeložit do jazyka',
@@ -1981,6 +2038,24 @@ Další informace naleznete na stránce http://meta.wikimedia.org/wiki/Help:Cent
 	'centralnotice-preferred' => 'Preferováno',
 	'centralnotice-logs' => 'Protokolovací záznamy',
 	'centralnotice-view-logs' => 'Zobrazit protokolovací záznamy',
+	'centralnotice-timestamp' => 'Datum a čas',
+	'centralnotice-user' => 'Uživatel',
+	'centralnotice-action' => 'Akce',
+	'centralnotice-changed' => 'Změnil z <span class="cn-old-value">$1</span> na <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'zapnuto',
+	'centralnotice-off' => 'vypnuto',
+	'centralnotice-added' => 'Přidal <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Odstranil <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'nepřiděleny žádné bannery',
+	'centralnotice-talk-link' => 'diskuse',
+	'centralnotice-campaign-settings' => 'Nastavení kampaně',
+	'centralnotice-banner-settings' => 'Nastavení banneru',
+	'centralnotice-anon' => 'Zobrazovat anonymním uživatelům',
+	'centralnotice-account' => 'Zobrazovat přihlášeným uživatelům',
+	'centralnotice-fundraising' => 'Fundraising',
+	'centralnotice-landingpages' => 'Cílové stránky',
+	'centralnotice-banner-content' => 'Obsah banneru',
+	'centralnotice-banner-content-changed' => 'Změněno',
 );
 
 /** Welsh (Cymraeg)
@@ -2057,6 +2132,7 @@ Ddim yn tynnu i ffwrdd.",
 	'centralnotice-no-templates' => 'Ni chanfuwyd unrhyw faner. 
 Ychwanegwch rai!',
 	'centralnotice-available-templates' => 'Y baneri sydd ar gael',
+	'centralnotice-change-lang' => 'Newid iaith y cyfieithu',
 	'centralnotice-weights' => 'Pwysau',
 	'centralnotice-notice-is-locked' => "Mae'r hysbysiad wedi ei gloi.
 Ni chaiff ei dynnu i ffwrdd",
@@ -2338,9 +2414,20 @@ Siehe http://meta.wikimedia.org/wiki/Help:CentralNotice für mehr Informationen.
 	'centralnotice-off' => 'aus',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> hinzugefügt',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> entfernt',
-	'centralnotice-banners-changed' => 'Bannerzuordnungen wurden geändert',
 	'centralnotice-no-assignments' => 'keine Banner zugeordnet',
 	'centralnotice-talk-link' => 'Diskussion',
+	'centralnotice-campaign-settings' => 'Kampagneneinstellungen',
+	'centralnotice-banner-settings' => 'Bannereinstellungen',
+	'centralnotice-anon' => 'Anonymen Benutzern anzeigen',
+	'centralnotice-account' => 'Angemeldeten Benutzern anzeigen',
+	'centralnotice-fundraising' => 'Spendenaufruf',
+	'centralnotice-landingpages' => 'Zielseiten',
+	'centralnotice-banner-content' => 'Bannerinhalt',
+	'centralnotice-banner-content-changed' => 'Geändert',
+	'centralnotice-filters' => 'Logbuchfilter',
+	'centralnotice-date' => 'Datum',
+	'centralnotice-apply-filters' => 'Filter anwenden',
+	'centralnotice-clear-filters' => 'Filter aufheben',
 );
 
 /** German (formal address) (‪Deutsch (Sie-Form)‬)
@@ -2868,6 +2955,7 @@ Vidu http://meta.wikimedia.org/wiki/Help:CentralNotic por plia informo.',
 );
 
 /** Spanish (Español)
+ * @author Alhen
  * @author Crazymadlover
  * @author Danke7
  * @author Dferg
@@ -2884,10 +2972,11 @@ Vidu http://meta.wikimedia.org/wiki/Help:CentralNotic por plia informo.',
  */
 $messages['es'] = array(
 	'centralnotice' => 'Sistema de administración de avisos centralizados',
-	'noticetemplate' => 'Administración de avisos centrales',
-	'bannerallocation' => 'Administración de avisos centrales',
-	'right-centralnotice-admin' => 'Gestionar avisos centrales',
-	'action-centralnotice-admin' => 'gestionar avisos centrales',
+	'noticetemplate' => 'Sistema de administración de avisos centralizados',
+	'bannerallocation' => 'Sistema de administración de avisos centralizados',
+	'centralnoticelogs' => 'Sistema de administración de avisos centralizados',
+	'right-centralnotice-admin' => 'Administrar avisos centrales',
+	'action-centralnotice-admin' => 'administrar avisos centrales',
 	'centralnotice-desc' => 'Añade un mensaje central',
 	'centralnotice-summary' => 'Este módulo te permite editar los parámetros actuales de los avisos centrales.
 También puede usarse para añadir o borrar avisos antiguos.',
@@ -2896,14 +2985,14 @@ También puede usarse para añadir o borrar avisos antiguos.',
 	'centralnotice-end-date' => 'Fecha de fin',
 	'centralnotice-enabled' => 'Habilitado',
 	'centralnotice-modify' => 'Enviar',
-	'centralnotice-save-banner' => 'Grabar banner',
+	'centralnotice-save-banner' => 'Grabar anuncio',
 	'centralnotice-preview' => 'Previsualizar',
 	'centralnotice-nopreview' => '(Previsualización no disponible)',
 	'centralnotice-add-new' => 'Añadir un nuevo aviso central',
 	'centralnotice-remove' => 'Quitar',
 	'centralnotice-translate-heading' => 'Traducción para $1',
 	'centralnotice-manage' => 'Gestionar aviso central',
-	'centralnotice-manage-templates' => 'Gestionar banners',
+	'centralnotice-manage-templates' => 'Gestionar anuncios',
 	'centralnotice-add' => 'Añadir',
 	'centralnotice-add-notice' => 'Añadir un aviso',
 	'centralnotice-edit-notice' => 'Editar campaña',
@@ -2912,6 +3001,7 @@ También puede usarse para añadir o borrar avisos antiguos.',
 	'centralnotice-list-templates' => 'Listar plantillas',
 	'centralnotice-multiple-projects' => 'múltiples ($1)',
 	'centralnotice-multiple-languages' => 'múltiples ($1)',
+	'centralnotice-multiple-countries' => 'Múltiple ($1)',
 	'centralnotice-all-projects' => 'Todos los proyectos',
 	'centralnotice-translations' => 'Traducciones',
 	'centralnotice-translate-to' => 'Traducir al',
@@ -2921,7 +3011,7 @@ También puede usarse para añadir o borrar avisos antiguos.',
 	'centralnotice-banner' => 'Banner',
 	'centralnotice-banner-heading' => 'Banner: $1',
 	'centralnotice-templates' => 'Plantillas',
-	'centralnotice-weight' => 'Peso',
+	'centralnotice-weight' => 'Altura',
 	'centralnotice-locked' => 'Bloqueado',
 	'centralnotice-notice' => 'Campaña',
 	'centralnotice-notice-heading' => 'Campaña: $1',
@@ -2946,7 +3036,7 @@ No se borrará.',
 	'centralnotice-min' => 'Minuto',
 	'centralnotice-project-lang' => 'Idioma del proyecto',
 	'centralnotice-select' => 'Seleccionar: $1',
-	'centralnotice-top-ten-languages' => 'Idiomas top 10',
+	'centralnotice-top-ten-languages' => 'Los 10 idiomas más hablados',
 	'centralnotice-project-name' => 'Nombre del proyecto',
 	'centralnotice-start-date' => 'Fecha de inicio',
 	'centralnotice-start-time' => 'Hora de inicio (UTC)',
@@ -3015,6 +3105,29 @@ Añade uno debajo',
 	'centralnotice-documentwrite-error' => 'No se puede usar document.write() dentro de un banner.
 Ve http://meta.wikimedia.org/wiki/Help:CentralNotice para más información.',
 	'centralnotice-preferred' => 'Preferido',
+	'centralnotice-logs' => 'Registros',
+	'centralnotice-view-logs' => 'Ver los registros',
+	'centralnotice-timestamp' => 'Fecha y hora',
+	'centralnotice-user' => 'Usuario',
+	'centralnotice-action' => 'Acción',
+	'centralnotice-changed' => 'Pasó de <span class="cn-old-value">$1</span> a <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'activado',
+	'centralnotice-off' => 'apagado',
+	'centralnotice-added' => 'Añadido <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Eliminado <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'sin anuncios asignados',
+	'centralnotice-talk-link' => 'discusión',
+	'centralnotice-campaign-settings' => 'Configuración de la campaña',
+	'centralnotice-banner-settings' => 'Configuración del anuncio',
+	'centralnotice-anon' => 'Mostrar a usuarios anónimos',
+	'centralnotice-account' => 'Mostrar a usuarios registrados',
+	'centralnotice-fundraising' => 'Recaudación de fondos',
+	'centralnotice-banner-content' => 'Contenido del anuncio',
+	'centralnotice-banner-content-changed' => 'Modificado',
+	'centralnotice-filters' => 'Filtros',
+	'centralnotice-date' => 'Fecha',
+	'centralnotice-apply-filters' => 'Aplicar filtros',
+	'centralnotice-clear-filters' => 'Borrar filtros',
 );
 
 /** Estonian (Eesti)
@@ -3025,6 +3138,7 @@ $messages['et'] = array(
 	'centralnotice' => 'Keskuse teadete haldamine',
 	'noticetemplate' => 'Keskuse teadete haldamine',
 	'bannerallocation' => 'Keskuse teadete haldamine',
+	'centralnoticelogs' => 'Keskuse teadete haldamine',
 	'right-centralnotice-admin' => 'Keskuse teateid hallata',
 	'action-centralnotice-admin' => 'keskuse teateid hallata',
 	'centralnotice-desc' => 'Lisab keskse võrgukohateatesüsteemi.',
@@ -3123,6 +3237,7 @@ Lisa allpool üks.',
 	'centralnotice-banner-logged-in' => 'Sisseloginud kasutajatele',
 	'centralnotice-banner-type' => 'Malli tüüp:',
 	'centralnotice-banner-collapsible' => 'Kokkulükatav',
+	'centralnotice-banner-fundraising' => 'See on korjanduse mall',
 	'centralnotice-geo' => 'Kohamääranguga',
 	'centralnotice-countries' => 'Riigid',
 	'centralnotice-allocation' => 'Ülesseadmine',
@@ -3135,6 +3250,13 @@ Lisa allpool üks.',
 	'centralnotice-allocation-description' => 'Üles seatud mallid maal koodiga $3 ja saidil $1.$2.',
 	'centralnotice-percentage' => 'Protsent',
 	'centralnotice-preferred' => 'Eelistatud',
+	'centralnotice-logs' => 'Logid',
+	'centralnotice-view-logs' => 'Logide vaatamine',
+	'centralnotice-timestamp' => 'Ajatempel',
+	'centralnotice-user' => 'Kasutaja',
+	'centralnotice-action' => 'Toiming',
+	'centralnotice-talk-link' => 'arutelu',
+	'centralnotice-date' => 'Kuupäev',
 );
 
 /** Basque (Euskara)
@@ -3486,13 +3608,16 @@ Sivulla http://meta.wikimedia.org/wiki/Help:CentralNotice on lisätietoja.',
 
 /** French (Français)
  * @author Crochet.david
+ * @author Gomoko
  * @author Grondin
+ * @author Hashar
  * @author IAlex
  * @author Jean-Frédéric
  * @author McDutchie
  * @author Meithal
  * @author Peter17
  * @author PieRRoMaN
+ * @author Seb35
  * @author Sherbrooke
  * @author Urhixidur
  * @author Verdy p
@@ -3528,6 +3653,7 @@ Il peut aussi être utilisé pour ajouter des avis ou en enlever les plus ancien
 	'centralnotice-list-templates' => 'Lister les modèles',
 	'centralnotice-multiple-projects' => 'multiple ($1)',
 	'centralnotice-multiple-languages' => 'multiple ($1)',
+	'centralnotice-multiple-countries' => 'Multiple ($1)',
 	'centralnotice-all-projects' => 'Tous les projets',
 	'centralnotice-translations' => 'Traductions',
 	'centralnotice-translate-to' => 'Traduire en',
@@ -3635,6 +3761,28 @@ Veuillez consulter http://meta.wikimedia.org/wiki/Help:CentralNotice pour plus d
 	'centralnotice-preferred' => 'Préféré',
 	'centralnotice-logs' => 'Journaux',
 	'centralnotice-view-logs' => 'Voir les journaux',
+	'centralnotice-timestamp' => 'Date',
+	'centralnotice-user' => 'Utilisateur',
+	'centralnotice-action' => 'Action',
+	'centralnotice-changed' => 'Changé depuis <span class="cn-old-value">$1</span> vers <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'on',
+	'centralnotice-off' => 'off',
+	'centralnotice-added' => 'A ajouté <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'A retiré <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'aucune bannière assignée',
+	'centralnotice-talk-link' => 'discuter',
+	'centralnotice-campaign-settings' => 'Paramètres de la campagne',
+	'centralnotice-banner-settings' => 'Paramètres de la bannière',
+	'centralnotice-anon' => 'Afficher aux utilisateurs anonymes',
+	'centralnotice-account' => 'Afficher aux utilisateurs connectés',
+	'centralnotice-fundraising' => 'Levée de fonds',
+	'centralnotice-landingpages' => 'Pages de destination',
+	'centralnotice-banner-content' => 'Contenu de la bannière',
+	'centralnotice-banner-content-changed' => 'Changé',
+	'centralnotice-filters' => 'Filtres des journaux',
+	'centralnotice-date' => 'Date',
+	'centralnotice-apply-filters' => 'Appliquer les filtres',
+	'centralnotice-clear-filters' => 'Effacer les filtres',
 );
 
 /** Franco-Provençal (Arpetan)
@@ -3644,6 +3792,7 @@ $messages['frp'] = array(
 	'centralnotice' => 'Administracion des avis centrâls',
 	'noticetemplate' => 'Administracion des avis centrâls',
 	'bannerallocation' => 'Administracion des avis centrâls',
+	'centralnoticelogs' => 'Administracion des avis centrâls',
 	'right-centralnotice-admin' => 'Administrar los avis centrâls',
 	'action-centralnotice-admin' => 'administrar los avis centrâls',
 	'centralnotice-desc' => 'Apond un avis centrâl du seto.',
@@ -3670,6 +3819,7 @@ Pôt asse-ben étre utilisâ por apondre des avis ou ben nen enlevar los ples vi
 	'centralnotice-list-templates' => 'Listar les baniéres',
 	'centralnotice-multiple-projects' => 'un mouél ($1)',
 	'centralnotice-multiple-languages' => 'un mouél ($1)',
+	'centralnotice-multiple-countries' => 'Un mouél ($1)',
 	'centralnotice-all-projects' => 'Tôs los projèts',
 	'centralnotice-translations' => 'Traduccions',
 	'centralnotice-translate-to' => 'Traduire en',
@@ -3758,6 +3908,8 @@ Apondéd-nen ce-desot.',
 	'centralnotice-banner-type' => 'Tipo de baniére :',
 	'centralnotice-banner-hidable' => 'Statica / cachâbla',
 	'centralnotice-banner-collapsible' => 'Rèductibla',
+	'centralnotice-banner-fundraising' => 'O est una baniére de levâ de fonds',
+	'centralnotice-banner-landing-pages' => 'Pâges d’arrevâ (sèparâs per des virgules) :',
 	'centralnotice-geo' => 'G·eolocalisâ',
 	'centralnotice-countries' => 'Payis',
 	'centralnotice-allocation' => 'Alocacion',
@@ -3769,9 +3921,29 @@ Apondéd-nen ce-desot.',
 	'centralnotice-no-allocation' => 'Gins de baniére balyê.',
 	'centralnotice-allocation-description' => 'Alocacion de baniére por $1.$2 en $3 :',
 	'centralnotice-percentage' => 'Porcentâjo',
+	'centralnotice-documentwrite-error' => 'document.write() pôt pas étre utilisâ dens una baniére.
+Volyéd vêre http://meta.wikimedia.org/wiki/Help:CentralNotice por més d’enformacions.',
 	'centralnotice-preferred' => 'Prèferâ',
 	'centralnotice-logs' => 'Jornals',
 	'centralnotice-view-logs' => 'Vêre los jornals',
+	'centralnotice-timestamp' => 'Dâta et hora',
+	'centralnotice-user' => 'Utilisator',
+	'centralnotice-action' => 'Accion',
+	'centralnotice-changed' => 'Changiê dês <span class="cn-old-value">$1</span> vers <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'activâ',
+	'centralnotice-off' => 'dèsactivâ',
+	'centralnotice-added' => 'At apondu <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'At enlevâ <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'gins de baniére assignê',
+	'centralnotice-talk-link' => 'discussion',
+	'centralnotice-campaign-settings' => 'Paramètres de la propaganda',
+	'centralnotice-banner-settings' => 'Paramètres de la baniére',
+	'centralnotice-anon' => 'Fâre vêre ux utilisators pas encartâs',
+	'centralnotice-account' => 'Fâre vêre ux utilisators branchiês',
+	'centralnotice-fundraising' => 'Levâ de fonds',
+	'centralnotice-landingpages' => 'Pâges d’arrevâ',
+	'centralnotice-banner-content' => 'Contegnu de la baniére',
+	'centralnotice-banner-content-changed' => 'Changiê',
 );
 
 /** Irish (Gaeilge)
@@ -3815,6 +3987,7 @@ Tamén pode ser usado para engadir ou eliminar avisos vellos.',
 	'centralnotice-list-templates' => 'Listar os modelos',
 	'centralnotice-multiple-projects' => 'Múltiples ($1)',
 	'centralnotice-multiple-languages' => 'Múltiples ($1)',
+	'centralnotice-multiple-countries' => 'Múltiples ($1)',
 	'centralnotice-all-projects' => 'Todos os proxectos',
 	'centralnotice-translations' => 'Traducións',
 	'centralnotice-translate-to' => 'Traducir ao',
@@ -3922,6 +4095,28 @@ Olle http://meta.wikimedia.org/wiki/Help:CentralNotice para obter máis informac
 	'centralnotice-preferred' => 'Preferido',
 	'centralnotice-logs' => 'Rexistros',
 	'centralnotice-view-logs' => 'Ver os rexistros',
+	'centralnotice-timestamp' => 'Data e hora',
+	'centralnotice-user' => 'Usuario',
+	'centralnotice-action' => 'Acción',
+	'centralnotice-changed' => 'Cambiou de <span class="cn-old-value">$1</span> a <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'activo',
+	'centralnotice-off' => 'inactivo',
+	'centralnotice-added' => 'Engadiu <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Eliminou <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'sen carteis asignados',
+	'centralnotice-talk-link' => 'conversa',
+	'centralnotice-campaign-settings' => 'Configuración da campaña',
+	'centralnotice-banner-settings' => 'Configuración do cartel',
+	'centralnotice-anon' => 'Mostrar aos usuarios anónimos',
+	'centralnotice-account' => 'Mostrar aos usuarios rexistrados',
+	'centralnotice-fundraising' => 'Recadación de fondos',
+	'centralnotice-landingpages' => 'Páxinas de destino',
+	'centralnotice-banner-content' => 'Contido do cartel',
+	'centralnotice-banner-content-changed' => 'Cambiado',
+	'centralnotice-filters' => 'Filtros dos rexistros',
+	'centralnotice-date' => 'Data',
+	'centralnotice-apply-filters' => 'Aplicar os filtros',
+	'centralnotice-clear-filters' => 'Restablecer os filtros',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -4238,9 +4433,20 @@ $messages['he'] = array(
 	'centralnotice-off' => 'כבוי',
 	'centralnotice-added' => 'נוסף: <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'הוסר: <span class="cn-old-value">$1</span>',
-	'centralnotice-banners-changed' => 'הקצאות של כרזות שונו',
 	'centralnotice-no-assignments' => 'לא הוקצו כרזות',
 	'centralnotice-talk-link' => 'שיחה',
+	'centralnotice-campaign-settings' => 'הגדרות מבצע פרסום',
+	'centralnotice-banner-settings' => 'הגדרת כרזה',
+	'centralnotice-anon' => 'להציג למשתמשים אלמוניים',
+	'centralnotice-account' => 'להציג למשתמשים שנכנסו לחשבון',
+	'centralnotice-fundraising' => 'התרמה',
+	'centralnotice-landingpages' => 'דפי נחיתה',
+	'centralnotice-banner-content' => 'תוכן כרזה',
+	'centralnotice-banner-content-changed' => 'השתנה',
+	'centralnotice-filters' => 'מסנני יומנים',
+	'centralnotice-date' => 'תאריך',
+	'centralnotice-apply-filters' => 'החלת מסננים',
+	'centralnotice-clear-filters' => 'ניקוי מסננים',
 );
 
 /** Hindi (हिन्दी)
@@ -4262,6 +4468,7 @@ $messages['hi'] = array(
  * @author Dalibor Bosits
  * @author Ex13
  * @author Herr Mlinka
+ * @author Roberta F.
  * @author SpeedyGonsales
  */
 $messages['hr'] = array(
@@ -4396,6 +4603,7 @@ Dodajte jednu ispod',
 	'centralnotice-documentwrite-error' => 'document.write() ne može se rabiti unutar obavijesti. 
 Pogledajte http://meta.wikimedia.org/wiki/Help:CentralNotice za više informacija.',
 	'centralnotice-preferred' => 'Željeno',
+	'centralnotice-talk-link' => 'razgovor',
 );
 
 /** Upper Sorbian (Hornjoserbsce)
@@ -4824,9 +5032,20 @@ Vide http://meta.wikimedia.org/wiki/Help:CentralNotice pro plus informationes.',
 	'centralnotice-off' => 'inactive',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> addite',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> removite',
-	'centralnotice-banners-changed' => 'Assignationes de bandieras ha essite cambiate',
 	'centralnotice-no-assignments' => 'nulle bandieras assignate',
 	'centralnotice-talk-link' => 'discussion',
+	'centralnotice-campaign-settings' => 'Configurationes del campania',
+	'centralnotice-banner-settings' => 'Configurationes del bandiera',
+	'centralnotice-anon' => 'Monstrar a usatores anonyme',
+	'centralnotice-account' => 'Monstrar a usatores authenticate',
+	'centralnotice-fundraising' => 'Collecta de fundos',
+	'centralnotice-landingpages' => 'Paginas de arrivata',
+	'centralnotice-banner-content' => 'Contento de bandiera',
+	'centralnotice-banner-content-changed' => 'Cambiate',
+	'centralnotice-filters' => 'Filtros de registro',
+	'centralnotice-date' => 'Data',
+	'centralnotice-apply-filters' => 'Applicar filtros',
+	'centralnotice-clear-filters' => 'Rader filtros',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -4969,6 +5188,14 @@ Tambahkan di bawah ini.',
 	'centralnotice-documentwrite-error' => 'document.write() tidak dapat digunakan di dalam pengumuman.
 Lihat http://meta.wikimedia.org/wiki/Help:CentralNotice untuk informasi lebih lanjut.',
 	'centralnotice-preferred' => 'Preferensi',
+	'centralnotice-fundraising' => 'Penggalangan dana',
+	'centralnotice-landingpages' => 'Halaman arahan',
+	'centralnotice-banner-content' => 'Konten spanduk',
+	'centralnotice-banner-content-changed' => 'Diubah',
+	'centralnotice-filters' => 'Penyaring log',
+	'centralnotice-date' => 'Tanggal',
+	'centralnotice-apply-filters' => 'Terapkan penyaring',
+	'centralnotice-clear-filters' => 'Hapus penyaring',
 );
 
 /** Igbo (Igbo)
@@ -5309,6 +5536,11 @@ $messages['ja'] = array(
 	'centralnotice-documentwrite-error' => 'テンプレート内で、document.write()を使うことはできません。
 詳細については、 http://meta.wikimedia.org/wiki/Help:CentralNotice を参照してください。',
 	'centralnotice-preferred' => '優先',
+	'centralnotice-logs' => '記録',
+	'centralnotice-view-logs' => '記録を閲覧',
+	'centralnotice-timestamp' => 'タイムスタンプ',
+	'centralnotice-user' => '利用者',
+	'centralnotice-action' => '操作',
 );
 
 /** Jutish (Jysk)
@@ -5519,6 +5751,10 @@ $messages['ka'] = array(
 	'centralnotice-documentwrite-error' => 'document.write() არ შეიძლება გამოყენებული იქნას ბანერის შიგნით. 
 იხილეთ http://meta.wikimedia.org/wiki/Help:CentralNotice მეტი ინფორმაციისათვის.',
 	'centralnotice-preferred' => 'პრივილეგირებული',
+	'centralnotice-logs' => 'ჟურნალები',
+	'centralnotice-view-logs' => 'ჟურნალების ნახვა',
+	'centralnotice-user' => 'მომხმარებელი',
+	'centralnotice-talk-link' => 'განხილვა',
 );
 
 /** Khmer (ភាសាខ្មែរ)
@@ -5912,7 +6148,6 @@ Loor op http://meta.wikimedia.org/wiki/Help:CentralNotice wann De mieh weße wel
 	'centralnotice-off' => 'uß',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> dobei jedonn.',
 	'centralnotice-removed' => '<span class="cn-new-value">$1</span> fott jenumme.',
-	'centralnotice-banners-changed' => 'Banner_Schablohne woodte anders udder neu zohjedeilt',
 	'centralnotice-no-assignments' => 'Kein Banner_Schablohne zohjedeilt',
 	'centralnotice-talk-link' => 'klaafe',
 );
@@ -6077,6 +6312,7 @@ Setzt eng hei ënnendrënner bäi.',
 	'centralnotice-banner-hidable' => 'Statesch/Ka verstoppt ginn',
 	'centralnotice-banner-collapsible' => 'Aklappbar',
 	'centralnotice-banner-fundraising' => "Dëst ass e Banner vun enger Campagne fir Don'en ze sammelen",
+	'centralnotice-banner-landing-pages' => 'Zilsäiten (mat Kommae getrennt):',
 	'centralnotice-geo' => 'Geografesch geziilt',
 	'centralnotice-countries' => 'Länner',
 	'centralnotice-allocation' => 'Dispositioun',
@@ -6101,6 +6337,15 @@ Kuckt http://meta.wikimedia.org/wiki/Help:CentralNotice fir méi Informatiounen.
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> derbäigesat',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> ewechgeholl',
 	'centralnotice-talk-link' => 'Diskussioun',
+	'centralnotice-anon' => 'Anonyme Benotzer weisen',
+	'centralnotice-account' => 'Ageloggte Benotzer weisen',
+	'centralnotice-fundraising' => 'Spendenopruff',
+	'centralnotice-landingpages' => 'Zilsäiten',
+	'centralnotice-banner-content-changed' => 'Geännert',
+	'centralnotice-filters' => 'Logbuch vun de Filteren',
+	'centralnotice-date' => 'Datum',
+	'centralnotice-apply-filters' => 'Filteren uwenden',
+	'centralnotice-clear-filters' => 'Filteren eidel maachen',
 );
 
 /** Lingua Franca Nova (Lingua Franca Nova)
@@ -6386,7 +6631,7 @@ $messages['lv'] = array(
  */
 $messages['mg'] = array(
 	'centralnotice' => "Fandrindàn'ny toerana fampandrenesana",
-	'noticetemplate' => "Endrin'ny toerana fampandrenesana",
+	'noticetemplate' => "Fandrindrana ny renitoeran'ny filazana",
 	'action-centralnotice-admin' => "mikojakoja n'io hafatra io",
 	'centralnotice-desc' => "Manampy toerana fampandrenesana amin'ilay tranonkala",
 	'centralnotice-query' => 'Ovay ny fampandrenesana misy ankehitriny',
@@ -6407,7 +6652,7 @@ $messages['mg'] = array(
 	'centralnotice-translate-to' => "Dikao amin'ny",
 	'centralnotice-translate' => 'Dikao',
 	'centralnotice-english' => 'Anglisy',
-	'centralnotice-banner-name' => "Anaran'ilay endrika",
+	'centralnotice-banner-name' => "Anaran'ilay baniera :",
 	'centralnotice-templates' => 'Endrika',
 	'centralnotice-weight' => 'Lanja',
 	'centralnotice-locked' => 'Voaaro/voasakana',
@@ -6592,9 +6837,20 @@ $messages['mk'] = array(
 	'centralnotice-off' => 'искл',
 	'centralnotice-added' => 'Додадено <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'Отстрането <span class="cn-old-value">$1</span>',
-	'centralnotice-banners-changed' => 'Задавањата на плакатите се изменети',
 	'centralnotice-no-assignments' => 'нема зададено плакати',
 	'centralnotice-talk-link' => 'разговор',
+	'centralnotice-campaign-settings' => 'Поставки за кампања',
+	'centralnotice-banner-settings' => 'Поставки за плакат',
+	'centralnotice-anon' => 'Прикажувај на анонимни корисници',
+	'centralnotice-account' => 'Прикажувај на најавени корисници',
+	'centralnotice-fundraising' => 'Прибирање средства',
+	'centralnotice-landingpages' => 'Целни страници',
+	'centralnotice-banner-content' => 'Содржина на плакатот',
+	'centralnotice-banner-content-changed' => 'Изменето',
+	'centralnotice-filters' => 'Филтри на дневникот',
+	'centralnotice-date' => 'Датум',
+	'centralnotice-apply-filters' => 'Примени филтри',
+	'centralnotice-clear-filters' => 'Исчисти филтри',
 );
 
 /** Malayalam (മലയാളം)
@@ -6612,20 +6868,20 @@ $messages['ml'] = array(
 	'centralnotice-summary' => 'തയ്യാറാക്കപ്പെട്ട കേന്ദ്രീകൃത അറിയിപ്പുകൾ തിരുത്താൻ ഈ ഘടകം താങ്കളെ പ്രാപ്തമാക്കുന്നു.
 പഴയ അറിയിപ്പുകൾ കൂട്ടിച്ചേർക്കാനോ നീക്കം ചെയ്യാനോ വേണ്ടിയും ഇതുപയോഗിക്കാവുന്നതാണ്.',
 	'centralnotice-query' => 'ഇപ്പോഴുള്ള അറിയിപ്പുകളിൽ മാറ്റം വരുത്തുക',
-	'centralnotice-notice-name' => 'അറിയിപ്പിന്റെ പേര്',
+	'centralnotice-notice-name' => 'മേളയുടെ പേര്',
 	'centralnotice-end-date' => 'അവസാനിക്കുന്ന തീയതി',
 	'centralnotice-enabled' => 'സജ്ജമാക്കിയിരിക്കുന്നു',
 	'centralnotice-modify' => 'സമർപ്പിക്കുക',
 	'centralnotice-save-banner' => 'എഴുത്തുപട്ട സേവ് ചെയ്യുക',
 	'centralnotice-preview' => 'എങ്ങനെയുണ്ടെന്നു കാണുക',
 	'centralnotice-nopreview' => '(പ്രിവ്യൂ ലഭ്യമല്ല)',
-	'centralnotice-add-new' => 'പുതിയൊരു കേന്ദ്രീകൃത അറിയിപ്പ് ചേർക്കുക',
+	'centralnotice-add-new' => 'പുതിയൊരു മേള ചേർക്കുക',
 	'centralnotice-remove' => 'നീക്കം ചെയ്യുക',
 	'centralnotice-translate-heading' => '$1 എന്നതിനുള്ള തർജ്ജമ',
 	'centralnotice-manage' => 'കേന്ദ്രീകൃത അറിയിപ്പ് കൈകാര്യം ചെയ്യുക',
 	'centralnotice-manage-templates' => 'എഴുത്തുപട്ടകൾ കൈകാര്യം ചെയ്യുക',
 	'centralnotice-add' => 'കൂട്ടിച്ചേർക്കുക',
-	'centralnotice-add-notice' => 'ഒരു അറിയിപ്പ് കൂട്ടിച്ചേർക്കുക',
+	'centralnotice-add-notice' => 'ഒരു മേള കൂട്ടിച്ചേർക്കുക',
 	'centralnotice-edit-notice' => 'പ്രചാരണപ്രവർത്തനം തിരുത്തുക',
 	'centralnotice-add-template' => 'ഫലകം കൂട്ടിച്ചേർക്കുക',
 	'centralnotice-show-notices' => 'അറിയിപ്പുകൾ പ്രദർശിപ്പിക്കുക',
@@ -6748,6 +7004,13 @@ $messages['ml'] = array(
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> കൂട്ടിച്ചേർത്തിരിക്കുന്നു',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> നീക്കം ചെയ്തിരിക്കുന്നു',
 	'centralnotice-talk-link' => 'സംവാദം',
+	'centralnotice-campaign-settings' => 'മേളയുടെ സജ്ജീകരണങ്ങൾ',
+	'centralnotice-anon' => 'അജ്ഞാത ഉപയോക്താക്കൾക്കായി പ്രദർശിപ്പിക്കുക',
+	'centralnotice-account' => 'പ്രവേശിച്ചിട്ടുള്ള ഉപയോക്താക്കൾക്കായി പ്രദർശിപ്പിക്കുക',
+	'centralnotice-banner-content-changed' => 'മാറ്റിയിരിക്കുന്നു',
+	'centralnotice-date' => 'തീയതി',
+	'centralnotice-apply-filters' => 'അരിപ്പകൾ പ്രയോഗിക്കുക',
+	'centralnotice-clear-filters' => 'അരിപ്പ ശുദ്ധമാക്കുക',
 );
 
 /** Mongolian (Монгол)
@@ -6768,16 +7031,25 @@ $messages['mr'] = array(
 	'action-centralnotice-admin' => 'मध्यवर्ती सूचनांचे प्रबंधन करा',
 	'centralnotice-desc' => 'संकेतस्थळाचा मध्यवर्ती सूचना फलक',
 	'centralnotice-end-date' => 'अंतिम दिनांक',
+	'centralnotice-modify' => 'पाठवा',
+	'centralnotice-preview' => 'झलक',
 	'centralnotice-add-new' => 'नव्या मोहीमेची सुरूवात करा',
 	'centralnotice-translate-heading' => '$1 चे भाषांतर',
 	'centralnotice-manage' => 'मोहीम हाताळा',
+	'centralnotice-add' => 'वाढवा',
 	'centralnotice-add-notice' => 'नव्या मोहीमेची भर घाला',
 	'centralnotice-add-template' => 'नविन मथळा लावा',
+	'centralnotice-all-projects' => 'सर्व प्रकल्प',
 	'centralnotice-translations' => 'भाषांतरे',
 	'centralnotice-translate-to' => 'या भाषेत भाषांतर करा',
+	'centralnotice-translate' => 'भाषांतर करा',
+	'centralnotice-english' => 'इंग्लिश',
 	'centralnotice-banner-name' => 'मथळ्याचे नाव',
 	'centralnotice-day' => 'दिनांक',
+	'centralnotice-year' => 'वर्ष',
+	'centralnotice-month' => 'महिना',
 	'centralnotice-hours' => 'तास',
+	'centralnotice-min' => 'मिनीट',
 	'centralnotice-project-lang' => 'प्रकल्प भाषा',
 	'centralnotice-project-name' => 'प्रकल्पाचे नाव',
 	'centralnotice-start-date' => 'सुरूवात दिनांक',
@@ -6800,8 +7072,15 @@ $messages['mr'] = array(
 	'centralnotice-message-not-set' => 'संदेश स्थापित केलेला नाही',
 	'centralnotice-clone' => 'कृत्तक (क्लोन)',
 	'centralnotice-clone-notice' => 'मुखशीर्षकाची(बॅनरची प्रत बनवा)',
+	'centralnotice-clone-name' => 'नाव:',
 	'centralnotice-preview-all-template-translations' => 'मुखशीर्षकांच्या सर्व उपलब्ध भाषांतराची झलक पहा',
+	'centralnotice-languages' => 'भाषा',
+	'centralnotice-projects' => 'प्रकल्प',
+	'centralnotice-country' => 'देश',
+	'centralnotice-percentage' => 'टक्केवारी',
 	'centralnotice-preferred' => 'प्राधान्य',
+	'centralnotice-user' => 'सदस्य',
+	'centralnotice-action' => 'क्रिया',
 );
 
 /** Malay (Bahasa Melayu)
@@ -6948,9 +7227,20 @@ Rujuk http://meta.wikimedia.org/wiki/Help:CentralNotice untuk maklumat lanjut.',
 	'centralnotice-off' => 'tutup',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> ditambahkan',
 	'centralnotice-removed' => '<span class="cn-new-value">$1</span> dibuang',
-	'centralnotice-banners-changed' => 'Peruntukan sepanduk diubah',
 	'centralnotice-no-assignments' => 'tiada sepanduk yang diberikan',
 	'centralnotice-talk-link' => 'bincang',
+	'centralnotice-campaign-settings' => 'Tetapan kempen',
+	'centralnotice-banner-settings' => 'Tetapan sepanduk',
+	'centralnotice-anon' => 'Paparkan kepada pengguna tanpa nama',
+	'centralnotice-account' => 'Paparkan kepada pengguna yang log masuk',
+	'centralnotice-fundraising' => 'Pendermaan',
+	'centralnotice-landingpages' => 'Laman pendaratan',
+	'centralnotice-banner-content' => 'Kandungan sepanduk',
+	'centralnotice-banner-content-changed' => 'Diubah',
+	'centralnotice-filters' => 'Penapis log',
+	'centralnotice-date' => 'Tarikh',
+	'centralnotice-apply-filters' => 'Gunakan penapis',
+	'centralnotice-clear-filters' => 'Kosongkan penapis',
 );
 
 /** Maltese (Malti)
@@ -7102,15 +7392,16 @@ Kannst ünnen een tofögen',
  * @author Servien
  */
 $messages['nds-nl'] = array(
-	'centralnotice-desc' => 'Voeg een centrale mededeling an de webstee toe',
+	'centralnotice-desc' => 'Zet n sentrale mededeling op de webstee',
 	'centralnotice-translate-heading' => 'Vertaling veur $1',
-	'centralnotice-add' => 'Toevoegen',
-	'centralnotice-add-template' => 'Mal toevoegen',
+	'centralnotice-add' => 'Derbie doon',
+	'centralnotice-add-template' => 'Mal derbie doon',
 	'centralnotice-translations' => 'Vertalingen',
-	'centralnotice-change-lang' => 'Taal dee-j vertalen willen wiezigen',
+	'centralnotice-change-lang' => "Taal die'j vertalen willen wiezigen",
 );
 
 /** Nepali (नेपाली)
+ * @author Bhawani Gautam
  * @author Bhawani Gautam Rhk
  */
 $messages['ne'] = array(
@@ -7137,6 +7428,7 @@ $messages['ne'] = array(
 );
 
 /** Dutch (Nederlands)
+ * @author McDutchie
  * @author Romaine
  * @author SPQRobin
  * @author Siebrand
@@ -7290,9 +7582,20 @@ Zie http://meta.wikimedia.org/wiki/Help:CentralNotice voor meer informatie.',
 	'centralnotice-off' => 'af',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> toegevoegd',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> verwijderd',
-	'centralnotice-banners-changed' => 'Bannertoewijzingen zijn gewijzigd',
 	'centralnotice-no-assignments' => 'geen banners toegewezen',
 	'centralnotice-talk-link' => 'overleg',
+	'centralnotice-campaign-settings' => 'Campagne-instellingen',
+	'centralnotice-banner-settings' => 'Bannerinstellingen',
+	'centralnotice-anon' => 'Weergeven voor anonieme gebruikers',
+	'centralnotice-account' => 'Weergeven voor aangemelde gebruikers',
+	'centralnotice-fundraising' => 'Fondsenwerving',
+	'centralnotice-landingpages' => "Ingangspagina's",
+	'centralnotice-banner-content' => 'Bannerinhoud',
+	'centralnotice-banner-content-changed' => 'Gewijzigd',
+	'centralnotice-filters' => 'Logboekfilters',
+	'centralnotice-date' => 'Datum',
+	'centralnotice-apply-filters' => 'Filters toepassen',
+	'centralnotice-clear-filters' => 'Filters verwijderen',
 );
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
@@ -7379,6 +7682,7 @@ Denne handlinga kan ikkje bli omgjort.',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+ * @author Event
  * @author Harald Khan
  * @author Jon Harald Søby
  * @author Laaknor
@@ -7414,6 +7718,7 @@ Den kan også bli brukt for å legge til eller fjerne gamle meldinger.',
 	'centralnotice-list-templates' => 'Vis maler',
 	'centralnotice-multiple-projects' => 'flere ($1)',
 	'centralnotice-multiple-languages' => 'flere ($1)',
+	'centralnotice-multiple-countries' => 'Multippel ($1)',
 	'centralnotice-all-projects' => 'Alle prosjekter',
 	'centralnotice-translations' => 'Oversettelser',
 	'centralnotice-translate-to' => 'Oversett til',
@@ -7502,6 +7807,9 @@ Legg til en under',
 	'centralnotice-banner-type' => 'Banner type:',
 	'centralnotice-banner-hidable' => 'Statisk/skjulbar',
 	'centralnotice-banner-collapsible' => 'Sammenleggbar',
+	'centralnotice-banner-fundraising' => 'Dette er et banner for pengeinnsamling',
+	'centralnotice-banner-fundraising-help' => 'Opprett en ankertag til bannerkroppen med id="cn_fundraising_link" og legg inn en eller flere mottakssider under, f. eks. "Jimmyappell". Det opprettes automatisk en href for lenken.',
+	'centralnotice-banner-landing-pages' => 'Mottakssider (kommaseparert):',
 	'centralnotice-geo' => 'Geografisk målrettet',
 	'centralnotice-countries' => 'Land',
 	'centralnotice-allocation' => 'Tildeling',
@@ -7516,6 +7824,28 @@ Legg til en under',
 	'centralnotice-documentwrite-error' => 'document.write() kan ikke brukes i et banner.
 Se http://meta.wikimedia.org/wiki/Help:CentralNotice for mer informasjon.',
 	'centralnotice-preferred' => 'Foretrukket',
+	'centralnotice-logs' => 'Logger',
+	'centralnotice-view-logs' => 'Vis logger',
+	'centralnotice-timestamp' => 'Tidsstempel',
+	'centralnotice-user' => 'Bruker',
+	'centralnotice-action' => 'Handling',
+	'centralnotice-changed' => 'Endret fra <span class="cn-old-value">$1</span> til <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'på',
+	'centralnotice-off' => 'av',
+	'centralnotice-added' => 'Lagt til <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Fjernet <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'Ingen bannere tilordnet',
+	'centralnotice-talk-link' => 'snakke',
+	'centralnotice-campaign-settings' => 'Kampanjeinnstillinger',
+	'centralnotice-banner-settings' => 'Bannerinnstillinger',
+	'centralnotice-anon' => 'Angi til anonyme brukere',
+	'centralnotice-account' => 'Angi til innloggede brukere',
+	'centralnotice-fundraising' => 'Pengeinnsamling',
+	'centralnotice-banner-content' => 'Bannerinnhold',
+	'centralnotice-banner-content-changed' => 'Endret',
+	'centralnotice-date' => 'Dato',
+	'centralnotice-apply-filters' => 'Bruk filtre',
+	'centralnotice-clear-filters' => 'Nullstill filtre',
 );
 
 /** Occitan (Occitan)
@@ -7629,14 +7959,17 @@ $messages['or'] = array(
 	'centralnotice-project-name' => 'ପ୍ରକଳ୍ପ ନାଆଁ',
 	'centralnotice-start-date' => 'ଆରମ୍ଭ ତାରିଖ',
 	'centralnotice-number-uses' => 'ବ୍ୟବହାର',
+	'centralnotice-settings' => 'ବିନ୍ୟାସ',
 	'centralnotice-clone-name' => 'ନାମ:',
 	'centralnotice-banner-logged-in' => 'ଲଗଇନ କରିଥିବା ଇଉଜରମାନେ',
 	'centralnotice-banner-type' => 'ବ୍ୟାନର ପ୍ରକାର',
 	'centralnotice-languages' => 'ଭାଷା',
 	'centralnotice-projects' => 'ପ୍ରକଳ୍ପ',
+	'centralnotice-user' => 'ବ୍ୟବାହାରକାରୀ',
+	'centralnotice-action' => 'କାମ',
 );
 
-/** Ossetic (Иронау)
+/** Ossetic (Ирон)
  * @author Amikeco
  */
 $messages['os'] = array(
@@ -7808,7 +8141,7 @@ Więcej informacji odnajdziesz na stronie http://meta.wikimedia.org/wiki/Help:Ce
 	'centralnotice-preferred' => 'Preferowany',
 	'centralnotice-logs' => 'Rejestr operacji',
 	'centralnotice-view-logs' => 'Rejestr odsłon',
-	'centralnotice-timestamp' => 'Data i czas',
+	'centralnotice-timestamp' => 'Sygnatura czasowa',
 	'centralnotice-user' => 'Użytkownik',
 	'centralnotice-action' => 'Akcja',
 	'centralnotice-changed' => 'Zmieniono z <span class="cn-old-value">$1</span> na <span class="cn-new-value">$2</span>',
@@ -7816,9 +8149,20 @@ Więcej informacji odnajdziesz na stronie http://meta.wikimedia.org/wiki/Help:Ce
 	'centralnotice-off' => 'wyłączone',
 	'centralnotice-added' => 'Dodano <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'Usunięto <span class="cn-old-value">$1</span>',
-	'centralnotice-banners-changed' => 'Zmieniono przydział banera',
 	'centralnotice-no-assignments' => 'brak przydzielonych banerów',
 	'centralnotice-talk-link' => 'dyskusja',
+	'centralnotice-campaign-settings' => 'Ustawienia kampanii',
+	'centralnotice-banner-settings' => 'Ustawienia banera',
+	'centralnotice-anon' => 'Wyświetlaj niezalogowanym użytkownikom',
+	'centralnotice-account' => 'Wyświetlaj użytkownikom zalogowanym',
+	'centralnotice-fundraising' => 'Pozyskiwanie funduszy',
+	'centralnotice-landingpages' => 'Strona powitalna',
+	'centralnotice-banner-content' => 'Treść banera',
+	'centralnotice-banner-content-changed' => 'Zmieniono',
+	'centralnotice-filters' => 'Dzienniki filtrów',
+	'centralnotice-date' => 'Data',
+	'centralnotice-apply-filters' => 'Zastosuj filtry',
+	'centralnotice-clear-filters' => 'Wyczyść filtry',
 );
 
 /** Piedmontese (Piemontèis)
@@ -7957,6 +8301,138 @@ Ch'a na gionta un-a sì-sota.",
 	'centralnotice-documentwrite-error' => "document.write() a peul pa esse dovrà ant un tilèt.
 ch'a lesa http://meta.wikimedia.org/wiki/Help:CentralNotice për savèjne ëd pi.",
 	'centralnotice-preferred' => 'Mè gust',
+);
+
+/** Western Punjabi (پنجابی)
+ * @author Khalid Mahmood
+ */
+$messages['pnb'] = array(
+	'centralnotice' => 'سینٹرل نوٹس ایڈمن',
+	'noticetemplate' => 'سینٹرل نوٹس ایڈمن',
+	'bannerallocation' => 'سینٹرل نوٹس ایڈمن',
+	'centralnoticelogs' => 'سینٹرل نوٹس ایڈمن',
+	'right-centralnotice-admin' => 'سینٹرل نوٹس سنبھالو',
+	'action-centralnotice-admin' => 'سینٹرل نوٹس سنبھالو',
+	'centralnotice-query' => 'ہن والے کم تبدیل کرو',
+	'centralnotice-notice-name' => 'کم دا ناں',
+	'centralnotice-end-date' => 'انت تریخ',
+	'centralnotice-enabled' => 'قابل',
+	'centralnotice-modify' => 'پیجو',
+	'centralnotice-preview' => 'وکھاؤ',
+	'centralnotice-nopreview' => '(کچا کم نئیں ویکھ سکدے او)',
+	'centralnotice-add-new' => 'نواں کم جوڑو',
+	'centralnotice-remove' => 'پرے کرو',
+	'centralnotice-translate-heading' => '$1 دا التھن',
+	'centralnotice-manage' => 'کماں نوں ترتیب دیو',
+	'centralnotice-manage-templates' => 'نشاناں نوں ترتیب دیو',
+	'centralnotice-add' => 'جوڑو',
+	'centralnotice-add-notice' => 'اک  کم  جوڑو',
+	'centralnotice-edit-notice' => 'کم چ تبدیلی لیاؤ',
+	'centralnotice-add-template' => 'نشان جوڑو',
+	'centralnotice-show-notices' => 'کم دسو',
+	'centralnotice-list-templates' => 'نشان لسٹ',
+	'centralnotice-multiple-projects' => 'کافی سارے ($1)',
+	'centralnotice-multiple-languages' => 'کافی سارے ($1)',
+	'centralnotice-multiple-countries' => 'کافی سارے ($1)',
+	'centralnotice-all-projects' => 'سارے ویونت',
+	'centralnotice-translations' => 'بولی وٹاندرے',
+	'centralnotice-translate-to' => 'التھاؤ',
+	'centralnotice-translate' => 'التھاؤ',
+	'centralnotice-english' => 'انگریزی',
+	'centralnotice-banner-name' => 'نشان ناں:',
+	'centralnotice-banner' => 'نشان',
+	'centralnotice-templates' => 'نشان',
+	'centralnotice-weight' => 'جوکھ',
+	'centralnotice-locked' => 'تالا',
+	'centralnotice-notice' => 'کم',
+	'centralnotice-notice-heading' => 'کم: $1',
+	'centralnotice-notices' => 'کم',
+	'centralnotice-notice-exists' => 'کم پہلے توں اے ہیگا اے۔ تبدیلی نئیں۔',
+	'centralnotice-no-language' => 'کم لئی کوئی بولی نئیں چنی گئی۔ کوئی تبدیلی نئیں۔',
+	'centralnotice-no-project' => 'کم لئی کوئی ویونت نئیں چنی گئی۔ کوئی تبدیلی نئیں۔',
+	'centralnotice-template-exists' => 'نشان پہلے توں ہیگا اے۔
+ہور نئیں جوڑنا۔',
+	'centralnotice-notice-doesnt-exist' => 'کم ہے ای نئیں۔',
+	'centralnotice-remove-notice-doesnt-exist' => 'کم ہے ای نئیں۔  ہٹان دی لوڑ نئیں۔',
+	'centralnotice-banner-doesnt-exist' => 'نشان ہے ای نئیں۔',
+	'centralnotice-template-still-bound' => 'نشان کم نال اے۔ نئیں ہٹا ریا۔',
+	'centralnotice-template-body' => 'نشان :',
+	'centralnotice-day' => 'دن',
+	'centralnotice-year' => 'ورھ',
+	'centralnotice-month' => 'معینہ',
+	'centralnotice-hours' => 'کینٹہ',
+	'centralnotice-min' => 'منٹ',
+	'centralnotice-project-lang' => 'ویونت بولی',
+	'centralnotice-select' => 'چنو: $1',
+	'centralnotice-top-ten-languages' => 'وڈیاں دس بولیاں',
+	'centralnotice-project-name' => 'ویونت ناں',
+	'centralnotice-start-date' => 'ٹرن دیہاڑہ',
+	'centralnotice-start-time' => 'ٹرن دا ویلا (UTC)',
+	'centralnotice-end-time' => 'مکن دا ویلا (UTC)',
+	'centralnotice-assigned-templates' => 'دتے گۓ نشان',
+	'centralnotice-no-templates' => 'کوئی نشان نئیں لبیا۔ کوئی جورو !',
+	'centralnotice-no-templates-assigned' => 'کم نال کوئی نشان نئیں جڑیا۔ کوئی جورو !',
+	'centralnotice-available-templates' => 'کول ہیگے نشان',
+	'centralnotice-template-already-exists' => 'نشان پہلے ای کم نال جڑیا اے۔
+ہور نئیں جوڑنا۔',
+	'centralnotice-preview-template' => 'نشان ویکھو',
+	'centralnotice-change-lang' => 'التھن والی بولی بدلو',
+	'centralnotice-weights' => 'جوکھ',
+	'centralnotice-notice-is-locked' => 'کم نوں تالا لکیا اے۔ ہٹانا نئیں۔',
+	'centralnotice-overlap' => 'اے کم کسے اور کم دے ویلے دے اتے آندا اے۔
+کوئی تبدیلی نئیں ہوۓ گی۔',
+	'centralnotice-invalid-date-range' => 'مکیا تریخ ویلا۔
+نواں نئیں کر رۓ۔',
+	'centralnotice-confirm-delete' => 'توانوں یقین اے کے تسی اس شے نوں مٹانا چاندے اوہ؟
+اے کم واپس نئیں لیا جا سکگے گا۔',
+	'centralnotice-no-notices-exist' => 'کوئی کم نئیں ہیگا۔
+اک تھلے جوڑو۔',
+	'centralnotice-number-uses' => 'ورتن',
+	'centralnotice-settings' => 'سیٹنکز',
+	'centralnotice-edit-template' => 'نشان بدلو',
+	'centralnotice-message' => 'سنیعہ',
+	'centralnotice-message-not-set' => 'سنیعہ تیار نئیں',
+	'centralnotice-clone' => 'کلون',
+	'centralnotice-clone-notice' => 'نشان دی کاپی بناؤ',
+	'centralnotice-clone-name' => 'ناں:',
+	'centralnotice-insert' => 'پاؤ: $1',
+	'centralnotice-hide-button' => 'جوڑ لکاؤ',
+	'centralnotice-collapse-button' => 'جوڑ توڑو',
+	'centralnotice-expand-button' => 'جوڑ ودھاؤ',
+	'centralnotice-close-button' => 'بٹن بند کرو',
+	'centralnotice-donate-button' => 'بٹن دیو',
+	'centralnotice-expanded-banner' => 'وڈا کیتا گیا نشان',
+	'centralnotice-collapsed-banner' => 'مکے نشان',
+	'centralnotice-banner-anonymous' => 'گمنام ورتن والے',
+	'centralnotice-banner-logged-in' => 'لاکان ہوۓ ورتن والے',
+	'centralnotice-banner-type' => 'نشان دی ٹائپ',
+	'centralnotice-banner-fundraising' => 'اے فنڈ کٹھا کرن والا نشان اے',
+	'centralnotice-countries' => 'دیس',
+	'centralnotice-languages' => 'بولیاں',
+	'centralnotice-projects' => 'ویونت',
+	'centralnotice-country' => 'دیس',
+	'centralnotice-no-allocation' => 'کوئی نشان نئیں دتا گیا',
+	'centralnotice-percentage' => '٪',
+	'centralnotice-preferred' => 'چونواں',
+	'centralnotice-logs' => 'لاگز',
+	'centralnotice-view-logs' => 'لاگز ویکھو',
+	'centralnotice-timestamp' => 'ویلے دی مہر',
+	'centralnotice-user' => 'ورتن والا',
+	'centralnotice-action' => 'کم',
+	'centralnotice-off' => 'بند',
+	'centralnotice-no-assignments' => 'کوئی نشان نئیں دتا گیا',
+	'centralnotice-talk-link' => 'گل بات',
+	'centralnotice-campaign-settings' => 'کم دی ترتیب',
+	'centralnotice-banner-settings' => 'نشان سیٹنگ',
+	'centralnotice-anon' => 'گم نام ورتن والیاں اگے رکھو',
+	'centralnotice-account' => 'لاگان ہوۓ ورتن والیاں اگے رکھو',
+	'centralnotice-fundraising' => 'چندہ کٹھا کرنا',
+	'centralnotice-banner-content' => 'نشان دا مال',
+	'centralnotice-banner-content-changed' => 'بدلیا',
+	'centralnotice-filters' => 'لاگ نتارے',
+	'centralnotice-date' => 'تریخ',
+	'centralnotice-apply-filters' => 'نتارے چلاؤ',
+	'centralnotice-clear-filters' => 'نتارے صاف کرو',
 );
 
 /** Pontic (Ποντιακά)
@@ -8132,7 +8608,7 @@ Adicione um, abaixo.',
 	'centralnotice-translate-button' => 'Ajudar a traduzir link',
 	'centralnotice-donate-button' => 'Botão Donativo',
 	'centralnotice-expanded-banner' => 'Modelo expandido',
-	'centralnotice-collapsed-banner' => 'Modelo colapsado',
+	'centralnotice-collapsed-banner' => 'Modelo recolhido',
 	'centralnotice-banner-display' => 'Apresentar a:',
 	'centralnotice-banner-anonymous' => 'Utilizadores anónimos',
 	'centralnotice-banner-logged-in' => 'Utilizadores autenticados',
@@ -8166,9 +8642,16 @@ Para mais informações, consulte http://meta.wikimedia.org/wiki/Help:CentralNot
 	'centralnotice-off' => 'inactivo',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> foi adicionado',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> foi removido',
-	'centralnotice-banners-changed' => 'As atribuições de modelos foram alteradas',
 	'centralnotice-no-assignments' => 'não há modelos atribuídos',
 	'centralnotice-talk-link' => 'discussão',
+	'centralnotice-campaign-settings' => 'Configurações do aviso',
+	'centralnotice-banner-settings' => 'Configurações do modelo',
+	'centralnotice-anon' => 'Apresentar a utilizadores anónimos',
+	'centralnotice-account' => 'Apresentar a utilizadores autenticados',
+	'centralnotice-fundraising' => 'Angariação de fundos',
+	'centralnotice-landingpages' => 'Páginas de chegada',
+	'centralnotice-banner-content' => 'Conteúdo do modelo',
+	'centralnotice-banner-content-changed' => 'Alterações',
 );
 
 /** Brazilian Portuguese (Português do Brasil)
@@ -8324,7 +8807,6 @@ Para mais informações, consulte http://meta.wikimedia.org/wiki/Help:CentralNot
 	'centralnotice-off' => 'inativo',
 	'centralnotice-added' => '<span class="cn-new-value">$1</span> foi adicionado',
 	'centralnotice-removed' => '<span class="cn-old-value">$1</span> foi removido',
-	'centralnotice-banners-changed' => 'As atribuições do banner foram alteradas',
 	'centralnotice-no-assignments' => 'não há banners atribuídos',
 	'centralnotice-talk-link' => 'discussão',
 );
@@ -8749,6 +9231,8 @@ Scaffáne une aqquà d'abbasce.",
 	'centralnotice-documentwrite-error' => "document.write() non ge pò essere ausate jndr'à 'nu banner.
 Vide http://meta.wikimedia.org/wiki/Help:CentralNotice pe cchiù 'mbormaziune.",
 	'centralnotice-preferred' => 'Preferite',
+	'centralnotice-user' => 'Utende',
+	'centralnotice-action' => 'Azione',
 );
 
 /** Russian (Русский)
@@ -8758,6 +9242,7 @@ Vide http://meta.wikimedia.org/wiki/Help:CentralNotice pe cchiù 'mbormaziune.",
  * @author G0rn
  * @author MaxSem
  * @author Rubin
+ * @author Sabbah
  * @author Александр Сигачёв
  */
 $messages['ru'] = array(
@@ -8791,6 +9276,7 @@ $messages['ru'] = array(
 	'centralnotice-list-templates' => 'Вывести список шаблонов',
 	'centralnotice-multiple-projects' => 'несколько ($1)',
 	'centralnotice-multiple-languages' => 'несколько ($1)',
+	'centralnotice-multiple-countries' => 'Несколько ($1)',
 	'centralnotice-all-projects' => 'Все проекты',
 	'centralnotice-translations' => 'Переводы',
 	'centralnotice-translate-to' => 'Перевод на',
@@ -8901,6 +9387,25 @@ $messages['ru'] = array(
 	'centralnotice-timestamp' => 'Дата/время',
 	'centralnotice-user' => 'Участник',
 	'centralnotice-action' => 'Действие',
+	'centralnotice-changed' => 'Изменено с <span class="cn-old-value">$1</span> на <span class="cn-new-value">$2</span>',
+	'centralnotice-on' => 'вкл',
+	'centralnotice-off' => 'откл',
+	'centralnotice-added' => 'Добавлено <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Удалено <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'баннеры не назначены',
+	'centralnotice-talk-link' => 'обсуждение',
+	'centralnotice-campaign-settings' => 'Настройки кампании',
+	'centralnotice-banner-settings' => 'Настройки баннера',
+	'centralnotice-anon' => 'Показывать анонимным пользователям',
+	'centralnotice-account' => 'Показывать представившимся участникам',
+	'centralnotice-fundraising' => 'Сбор средств',
+	'centralnotice-landingpages' => 'Целевые страницы',
+	'centralnotice-banner-content' => 'Содержание баннера',
+	'centralnotice-banner-content-changed' => 'Изменено',
+	'centralnotice-filters' => 'Фильтры журналов',
+	'centralnotice-date' => 'Дата',
+	'centralnotice-apply-filters' => 'Применить фильтры',
+	'centralnotice-clear-filters' => 'Очистить фильтры',
 );
 
 /** Rusyn (Русиньскый)
@@ -9034,7 +9539,7 @@ $messages['rue'] = array(
 	'centralnotice-preferred' => 'Префероване',
 );
 
-/** Yakut (Саха тыла)
+/** Sakha (Саха тыла)
  * @author HalanTul
  */
 $messages['sah'] = array(
@@ -9068,6 +9573,7 @@ $messages['sah'] = array(
 	'centralnotice-list-templates' => 'Халыыптар тиһиктэрэ',
 	'centralnotice-multiple-projects' => 'хас да ($1)',
 	'centralnotice-multiple-languages' => 'хас да ($1)',
+	'centralnotice-multiple-countries' => 'Хас да ($1)',
 	'centralnotice-all-projects' => 'Бары бырайыактар',
 	'centralnotice-translations' => 'Тылбаастар',
 	'centralnotice-translate-to' => 'Манна тылбаас',
@@ -9157,6 +9663,7 @@ $messages['sah'] = array(
 	'centralnotice-banner-hidable' => 'Статическэй / Кистэниллэр',
 	'centralnotice-banner-collapsible' => 'Кыччатыллар',
 	'centralnotice-banner-fundraising' => 'Харчы хомуйуу бааннера',
+	'centralnotice-banner-landing-pages' => 'Сорук-сирэйдэр (соппутуой нөҥүө):',
 	'centralnotice-geo' => 'Сиргэ баайыы',
 	'centralnotice-countries' => 'Дойдулар',
 	'centralnotice-allocation' => 'Тарҕаныыта',
@@ -9173,6 +9680,27 @@ $messages['sah'] = array(
 	'centralnotice-preferred' => 'Бэрт буолуо этэ',
 	'centralnotice-logs' => 'Сурунааллар',
 	'centralnotice-view-logs' => 'Сурунааллары көрүү',
+	'centralnotice-timestamp' => 'Дьыла/кэмэ',
+	'centralnotice-user' => 'Кыттааччы',
+	'centralnotice-action' => 'Дьайыы',
+	'centralnotice-on' => 'хлб',
+	'centralnotice-off' => 'араар',
+	'centralnotice-added' => 'Эбиллибит <span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => 'Сотуллубут <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'баннердара суох',
+	'centralnotice-talk-link' => 'ырытыы',
+	'centralnotice-campaign-settings' => 'Хампаанньа туруоруулара',
+	'centralnotice-banner-settings' => 'Баннер туруоруулара',
+	'centralnotice-anon' => 'Анонимнарга көрдөр',
+	'centralnotice-account' => 'Ааттарын эппит кытааччыларга көрдөр',
+	'centralnotice-fundraising' => 'Үп хомуйуу',
+	'centralnotice-landingpages' => 'Сорук сирэйдэр',
+	'centralnotice-banner-content' => 'Баннер иһинээҕитэ',
+	'centralnotice-banner-content-changed' => 'Уларытылынна',
+	'centralnotice-filters' => 'Сурунаал сиидэлэрэ',
+	'centralnotice-date' => 'Күнэ-дьыла',
+	'centralnotice-apply-filters' => 'Бары сиидэлэр',
+	'centralnotice-clear-filters' => 'Сиидэлэри уһул',
 );
 
 /** Sicilian (Sicilianu)
@@ -9682,9 +10210,20 @@ Oglejte si http://meta.wikimedia.org/wiki/Help:CentralNotice za več informacij.
 	'centralnotice-off' => 'izklopljeno',
 	'centralnotice-added' => 'Dodano <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'Odstranjeno <span class="cn-old-value">$1</span>',
-	'centralnotice-banners-changed' => 'Naloge pasice so spremenjene',
 	'centralnotice-no-assignments' => 'ni dodeljenih pasic',
 	'centralnotice-talk-link' => 'pogovor',
+	'centralnotice-campaign-settings' => 'Nastavitve kampanje',
+	'centralnotice-banner-settings' => 'Nastavitve pasice',
+	'centralnotice-anon' => 'Prikaži brezimnim uporabnikom',
+	'centralnotice-account' => 'Prikaži prijavljenim uporabnikom',
+	'centralnotice-fundraising' => 'Zbiranje sredstev',
+	'centralnotice-landingpages' => 'Ciljne strani',
+	'centralnotice-banner-content' => 'Vsebina pasice',
+	'centralnotice-banner-content-changed' => 'Spremenjeno',
+	'centralnotice-filters' => 'Filtri dnevnikov',
+	'centralnotice-date' => 'Datum',
+	'centralnotice-apply-filters' => 'Uveljavi filtre',
+	'centralnotice-clear-filters' => 'Počisti filtre',
 );
 
 /** Albanian (Shqip)
@@ -10071,9 +10610,11 @@ $messages['su'] = array(
  * @author Boivie
  * @author Cohan
  * @author Fluff
+ * @author Knuckles
  * @author Lejonel
  * @author Lokal Profil
  * @author M.M.S.
+ * @author MagnusA
  * @author Najami
  * @author Tobulos1
  * @author WikiPhoenix
@@ -10082,7 +10623,8 @@ $messages['sv'] = array(
 	'centralnotice' => 'Centralmeddelande-administration',
 	'noticetemplate' => 'Administration för Centralmeddelandemall',
 	'bannerallocation' => 'Administraton av centralmeddelande',
-	'right-centralnotice-admin' => 'Hantera centralmeddelanden',
+	'centralnoticelogs' => 'Administration av centralmeddelande',
+	'right-centralnotice-admin' => 'Hantera centrala meddelanden',
 	'action-centralnotice-admin' => 'hantera centralmeddelanden',
 	'centralnotice-desc' => 'Lägger till en central sitenotice',
 	'centralnotice-summary' => 'Denna modul låter dig redigera din nuvarande uppsättning centralmeddelanden.
@@ -10108,6 +10650,7 @@ Den kan också användas för att lägga till eller ta bort gamla meddelanden.',
 	'centralnotice-list-templates' => 'Lista mallar',
 	'centralnotice-multiple-projects' => 'flera ($1)',
 	'centralnotice-multiple-languages' => 'flera ($1)',
+	'centralnotice-multiple-countries' => 'Flera ($1)',
 	'centralnotice-all-projects' => 'Alla projekt',
 	'centralnotice-translations' => 'Översättningar',
 	'centralnotice-translate-to' => 'Översätt till',
@@ -10196,6 +10739,9 @@ Lägg till ett nedan',
 	'centralnotice-banner-type' => 'Bannertyp:',
 	'centralnotice-banner-hidable' => 'Statisk/gömbar',
 	'centralnotice-banner-collapsible' => 'Hopfällbar',
+	'centralnotice-banner-fundraising' => 'Detta är en insamlingsbanner',
+	'centralnotice-banner-fundraising-help' => 'Skapa ett ankartagg i banners body med id = "cn_fundraising_link" och skriv in en eller flera målsidor nedan, till exempel "JimmyAppeal01". Länkens href kommer att skapas automatiskt.',
+	'centralnotice-banner-landing-pages' => 'Målsidor (kommaseparerade):',
 	'centralnotice-geo' => 'Geografiskt fokuserat',
 	'centralnotice-countries' => 'Länder',
 	'centralnotice-allocation' => 'Tilldelning',
@@ -10215,14 +10761,30 @@ Se http://meta.wikimedia.org/wiki/Help:CentralNotice för mer information.',
 	'centralnotice-timestamp' => 'Tidsstämpel',
 	'centralnotice-user' => 'Användare',
 	'centralnotice-action' => 'Åtgärd',
+	'centralnotice-changed' => 'Ändrad från <span class="cn-old-value">$1</span> till <span class="cn-new-value">$2</span>',
 	'centralnotice-on' => 'på',
 	'centralnotice-off' => 'av',
 	'centralnotice-added' => 'Lade till <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'Tog bort <span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => 'inga banners tilldelade',
+	'centralnotice-talk-link' => 'diskussion',
+	'centralnotice-campaign-settings' => 'Kampanjinställningar',
+	'centralnotice-banner-settings' => 'Banner-inställningar',
+	'centralnotice-anon' => 'Visa för anonyma användare',
+	'centralnotice-account' => 'Visa för inloggade användare',
+	'centralnotice-fundraising' => 'Insamling',
+	'centralnotice-landingpages' => 'Målsidor',
+	'centralnotice-banner-content' => 'Banner-innehåll',
+	'centralnotice-banner-content-changed' => 'Ändrad',
+	'centralnotice-filters' => 'Logga filter',
+	'centralnotice-date' => 'Datum',
+	'centralnotice-apply-filters' => 'Tillämpa filter',
+	'centralnotice-clear-filters' => 'Rensa filter',
 );
 
 /** Swahili (Kiswahili)
  * @author Ikiwaner
+ * @author Lloffiwr
  */
 $messages['sw'] = array(
 	'centralnotice-modify' => 'Wasilisha',
@@ -10234,6 +10796,7 @@ $messages['sw'] = array(
 	'centralnotice-month' => 'Mwezi',
 	'centralnotice-hours' => 'Saa',
 	'centralnotice-min' => 'Dakika',
+	'centralnotice-change-lang' => 'Badili lugha ya tafsiri',
 	'centralnotice-message' => 'Ujumbe',
 	'centralnotice-clone-name' => 'Jina:',
 );
@@ -10414,6 +10977,8 @@ $messages['te'] = array(
 	'centralnotice-percentage' => 'శాతం',
 	'centralnotice-documentwrite-error' => 'బ్యానరు లోపల document.write() వాడజాలరు.
 మరింత సమాచారం కోసం http://meta.wikimedia.org/wiki/Help:CentralNotice చూడండి.',
+	'centralnotice-user' => 'వాడుకరి',
+	'centralnotice-action' => 'చర్య',
 );
 
 /** Tetum (Tetun)
@@ -11263,6 +11828,7 @@ $messages['udm'] = array(
  * @author Aleksandrit
  * @author Alex Khimich
  * @author Arturyatsko
+ * @author Dim Grits
  * @author NickK
  * @author Riwnodennyk
  * @author Ytsukeng Fyvaprol
@@ -11400,6 +11966,8 @@ $messages['uk'] = array(
 	'centralnotice-documentwrite-error' => 'document.write() не може бути використана в банері. 
 Дивіться http://meta.wikimedia.org/wiki/Help:CentralNotice для отримання додаткової інформації.',
 	'centralnotice-preferred' => 'Бажано',
+	'centralnotice-logs' => 'Журнали',
+	'centralnotice-talk-link' => 'обговорення',
 );
 
 /** Vèneto (Vèneto)
@@ -11747,9 +12315,20 @@ Xem thêm chi tiết tại http://meta.wikimedia.org/wiki/Help:CentralNotice .',
 	'centralnotice-off' => 'tắt',
 	'centralnotice-added' => 'Thêm <span class="cn-new-value">$1</span>',
 	'centralnotice-removed' => 'Gỡ <span class="cn-old-value">$1</span>',
-	'centralnotice-banners-changed' => 'Đã thay đổi các chỉ định biểu ngữ',
 	'centralnotice-no-assignments' => 'không chỉ định biểu ngữ',
 	'centralnotice-talk-link' => 'thảo luận',
+	'centralnotice-campaign-settings' => 'Thiết lập thông báo chung',
+	'centralnotice-banner-settings' => 'Thiết lập biểu ngữ',
+	'centralnotice-anon' => 'Hiện cho người dùng không đăng nhập',
+	'centralnotice-account' => 'Hiện cho thành viên đăng nhập',
+	'centralnotice-fundraising' => 'Gây quỹ',
+	'centralnotice-landingpages' => 'Trang giới thiệu',
+	'centralnotice-banner-content' => 'Nội dung biểu ngữ',
+	'centralnotice-banner-content-changed' => 'Thay đổi',
+	'centralnotice-filters' => 'Bộ lọc nhật trình',
+	'centralnotice-date' => 'Ngày tháng',
+	'centralnotice-apply-filters' => 'Áp dụng bộ lọc',
+	'centralnotice-clear-filters' => 'Đặt lại bộ lọc',
 );
 
 /** Volapük (Volapük)
@@ -11809,6 +12388,7 @@ $messages['yi'] = array(
 	'centralnotice' => 'צענטראַלע מעלדונג פֿאַרוואַטונג',
 	'noticetemplate' => 'צענטראַלע מעלדונג פֿאַרוואַטונג',
 	'bannerallocation' => 'צענטראַלע מעלדונג פֿאַרוואַטונג',
+	'centralnoticelogs' => ' צענטראלע מעלדונג פֿארוואלטונג',
 	'right-centralnotice-admin' => 'פֿאַרוואַלטן צענטראַלע מעלדונגען',
 	'action-centralnotice-admin' => 'פֿאַרוואַלטן צענטראַלע מעלדונגען',
 	'centralnotice-desc' => 'לייגט צו א צענטראַלע מעלדונג',
@@ -11835,6 +12415,7 @@ $messages['yi'] = array(
 	'centralnotice-list-templates' => 'אויסרעכענען פֿאָנעס',
 	'centralnotice-multiple-projects' => 'מערערע ($1)',
 	'centralnotice-multiple-languages' => 'מערערע ($1)',
+	'centralnotice-multiple-countries' => 'מערערע ($1)',
 	'centralnotice-all-projects' => 'אַלע פראיעקטן',
 	'centralnotice-translations' => 'פֿאַרטייטשונגען',
 	'centralnotice-translate-to' => 'פֿאַרטייטשן אויף',
@@ -11849,6 +12430,19 @@ $messages['yi'] = array(
 	'centralnotice-notice' => 'מעלדונג',
 	'centralnotice-notice-heading' => 'מעלדונג: $1',
 	'centralnotice-notices' => 'נאטיצן',
+	'centralnotice-notice-exists' => 'מעלדונג שוין פֿאראן.
+מען וועט נישט צולייגן.',
+	'centralnotice-no-language' => 'קיין שפראך נישט  אויסגעקליבן פֿאר דער אקציע.',
+	'centralnotice-no-project' => 'קיין פראיעקט נישט אויסגעקליבן פֿאר דער אקציע.',
+	'centralnotice-template-exists' => 'מעלדונג שוין פֿאראן.
+מען וועט נישט צולייגן.',
+	'centralnotice-notice-doesnt-exist' => 'מעלדונג נישט פאראן.',
+	'centralnotice-remove-notice-doesnt-exist' => 'מעלדונג נישט פאראן.
+נישטא וואס אראפצונעמען.',
+	'centralnotice-banner-doesnt-exist' => 'פֿאנע נישט פֿאַראַן.',
+	'centralnotice-template-still-bound' => 'פאנע נאך פארבונדען מיט א מעלדונג.
+מען וועט נישט אראפנעמען.',
+	'centralnotice-template-body' => 'פאנע טעקסט:',
 	'centralnotice-day' => 'טאג',
 	'centralnotice-year' => 'יאר',
 	'centralnotice-month' => 'מאנאט',
@@ -11861,6 +12455,8 @@ $messages['yi'] = array(
 	'centralnotice-start-date' => 'אָנהייב דאַטע',
 	'centralnotice-start-time' => 'אָנהייב צייַט (UTC)',
 	'centralnotice-end-time' => 'סוף צייַט (UTC)',
+	'centralnotice-no-templates' => 'נישט געטראפן קיין פאנעס.
+לייגט צו!',
 	'centralnotice-number-uses' => 'ניצונגען',
 	'centralnotice-clone-name' => 'נאָמען',
 	'centralnotice-languages' => 'שפּראַכן',
@@ -11931,6 +12527,7 @@ $messages['zh-hans'] = array(
 	'centralnotice' => '中央通告管理',
 	'noticetemplate' => '中央通告管理',
 	'bannerallocation' => 'Central notice admin',
+	'centralnoticelogs' => '中央通告管理',
 	'right-centralnotice-admin' => '管理中央通告',
 	'action-centralnotice-admin' => '管理中央通告',
 	'centralnotice-desc' => '在页面的顶部增加統一的公告栏位',
@@ -11957,6 +12554,7 @@ $messages['zh-hans'] = array(
 	'centralnotice-list-templates' => '列出模板',
 	'centralnotice-multiple-projects' => '较多($1)',
 	'centralnotice-multiple-languages' => '较多($1)',
+	'centralnotice-multiple-countries' => '多条（$1）',
 	'centralnotice-all-projects' => '所有项目',
 	'centralnotice-translations' => '翻译',
 	'centralnotice-translate-to' => '翻译到',
@@ -12046,6 +12644,7 @@ $messages['zh-hans'] = array(
 	'centralnotice-banner-hidable' => '静态/可隐藏',
 	'centralnotice-banner-collapsible' => '可收缩',
 	'centralnotice-banner-fundraising' => '这是一个筹款横幅',
+	'centralnotice-banner-fundraising-help' => '在横幅体内创建id="cn_fundraising_link"的锚点标记，并在下方输入一个或多个目标页面，例如“吉米的请求01”。程序会自动构造链接的href属性。',
 	'centralnotice-banner-landing-pages' => '登录页（逗号分隔）：',
 	'centralnotice-geo' => '已地理定位的',
 	'centralnotice-countries' => '国家',
@@ -12061,6 +12660,30 @@ $messages['zh-hans'] = array(
 	'centralnotice-documentwrite-error' => 'document.write() 不能在横幅中使用。
 更多信息请参见 http://meta.wikimedia.org/wiki/Help:CentralNotice 。',
 	'centralnotice-preferred' => '偏好的',
+	'centralnotice-logs' => '日志',
+	'centralnotice-view-logs' => '查看日志',
+	'centralnotice-timestamp' => '时间戳',
+	'centralnotice-user' => '用户',
+	'centralnotice-action' => '操作',
+	'centralnotice-changed' => '已从<span class="cn-old-value">$1</span>改为<span class="cn-new-value">$2</span>',
+	'centralnotice-on' => '打开',
+	'centralnotice-off' => '关闭',
+	'centralnotice-added' => '已添加<span class="cn-new-value">$1</span>',
+	'centralnotice-removed' => '已移除<span class="cn-old-value">$1</span>',
+	'centralnotice-no-assignments' => '没有已分配的横幅',
+	'centralnotice-talk-link' => '讨论',
+	'centralnotice-campaign-settings' => '活动设置',
+	'centralnotice-banner-settings' => '横幅设置',
+	'centralnotice-anon' => '向匿名用户展示',
+	'centralnotice-account' => '向已登录用户展示',
+	'centralnotice-fundraising' => '筹款',
+	'centralnotice-landingpages' => '目标页面',
+	'centralnotice-banner-content' => '横幅内容',
+	'centralnotice-banner-content-changed' => '已更改',
+	'centralnotice-filters' => '日志筛选器',
+	'centralnotice-date' => '日期',
+	'centralnotice-apply-filters' => '应用筛选器',
+	'centralnotice-clear-filters' => '清除筛选器',
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)

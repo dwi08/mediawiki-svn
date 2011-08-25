@@ -1,4 +1,4 @@
-function toggleDisplay( logId ) {
+function toggleLogDisplay( logId ) {
 	var thisCollapsed = document.getElementById( 'cn-collapsed-'+logId );
 	var thisUncollapsed = document.getElementById( 'cn-uncollapsed-'+logId );
 	var thisDetails = document.getElementById( 'cn-log-details-'+logId );
@@ -11,6 +11,24 @@ function toggleDisplay( logId ) {
 		thisUncollapsed.style.display = "block";
 		thisDetails.style.display = "table-row";
 	}
+}
+function toggleFilterDisplay() {
+	var thisCollapsed = document.getElementById( 'cn-collapsed-filter-arrow' );
+	var thisUncollapsed = document.getElementById( 'cn-uncollapsed-filter-arrow' );
+	var thisFilters = document.getElementById( 'cn-log-filters' );
+	if ( thisCollapsed.style.display == "none" ) {
+		thisUncollapsed.style.display = "none";
+		thisCollapsed.style.display = "inline-block";
+		thisFilters.style.display = "none";
+	} else {
+		thisCollapsed.style.display = "none";
+		thisUncollapsed.style.display = "inline-block";
+		thisFilters.style.display = "block";
+	}
+}
+function switchLogs( baseUrl, logType ) {
+	encodeURIComponent( logType );
+	window.location = baseUrl + '?log=' + logType;
 }
 function selectProjects( selectAll ) {
 	var selectBox = document.getElementById('projects[]');
@@ -41,7 +59,11 @@ function insertButton( buttonType ) {
 	var bannerField = document.getElementById('templateBody');
 	switch( buttonType ) {
 		case 'close': // Insert close button
-			var buttonValue = '<a href="#" onclick="toggleNotice();return false"><img border="0" src="'+stylepath+'/common/images/closewindow.png" alt="Close" /></a>';
+			if ( $( '#fundraising' ).is( ':checked' ) ) {
+				var buttonValue = '<a href="#" onclick="hideBanner(\'fundraising\');return false;"><img border="0" src="'+stylepath+'/common/images/closewindow.png" alt="Close" /></a>';
+			} else {
+				var buttonValue = '<a href="#" onclick="hideBanner();return false;"><img border="0" src="'+stylepath+'/common/images/closewindow.png" alt="Close" /></a>';
+			}
 			break;
 	}
 	if (document.selection) {
