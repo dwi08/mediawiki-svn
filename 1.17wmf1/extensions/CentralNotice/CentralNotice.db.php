@@ -5,6 +5,9 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit( 1 );
 }
 
+/**
+ * Static methods that retrieve information from the database.
+ */
 class CentralNoticeDB {
 
 	/* Functions */
@@ -166,7 +169,7 @@ class CentralNoticeDB {
 			$campaign['languages'] = implode( ", ", $languages );
 			$campaign['countries'] = implode( ", ", $geo_countries );
 			
-			$bannersIn = CentralNoticeDB::getCampaignBanners( $row->not_id );
+			$bannersIn = CentralNoticeDB::getCampaignBanners( $row->not_id, true );
 			$bannersOut = array();
 			// All we want are the banner names and weights
 			foreach ( $bannersIn as $key => $row ) {
@@ -182,15 +185,21 @@ class CentralNoticeDB {
 
 	/*
 	 * Given one or more campaign ids, return all banners bound to them
-	 * @param $campaigns An array of id numbers
+	 * @param $campaigns array of id numbers
+	 * @param $logging boolean whether or not request is for logging (optional)
 	 * @return a 2D array of banners with associated weights and settings
 	 */
-	static function getCampaignBanners( $campaigns ) {
+	static function getCampaignBanners( $campaigns, $logging = false ) {
 		global $wgCentralDBname;
 		
-		$dbr = wfGetDB( DB_SLAVE, array(), $wgCentralDBname );
+		// If logging, read from the master database to avoid concurrency problems
+		if ( $logging ) {
+			$dbr = wfGetDB( DB_MASTER, array(), $wgCentralDBname );
+		} else {
+			$dbr = wfGetDB( DB_SLAVE, array(), $wgCentralDBname );
+		}
 
-		$templates = array();
+		$banners = array();
 
 		if ( $campaigns ) {
 			$res = $dbr->select(
@@ -217,18 +226,53 @@ class CentralNoticeDB {
 			);
 
 			foreach ( $res as $row ) {
-				$templates[] = array(
-					'name' => $row->tmp_name,
-					'weight' => intval( $row->tmp_weight ),
-					'display_anon' => intval( $row->tmp_display_anon ),
-					'display_account' => intval( $row->tmp_display_account ),
-					'fundraising' => intval( $row->tmp_fundraising ),
-					'landing_pages' => $row->tmp_landing_pages,
-					'campaign' => $row->not_name
+				$banners[] = array(
+					'name' => $row->tmp_name, // name of the banner
+					'weight' => intval( $row->tmp_weight ), // weight assigned to the banner
+					'display_anon' => intval( $row->tmp_display_anon ), // display to anonymous users?
+					'display_account' => intval( $row->tmp_display_account ), // display to logged in users?
+					'fundraising' => intval( $row->tmp_fundraising ), // fundraising banner?
+					'landing_pages' => $row->tmp_landing_pages, // landing pages to link to
+					'campaign' => $row->not_name // campaign the banner is assigned to
 				);
 			}
 		}
-		return $templates;
+		return $banners;
+	}
+	
+	/**
+	 * Return settings for a banner
+	 * @param $bannerName string name of banner
+	 * @return an array of banner settings
+	 */
+	static function getBannerSettings( $bannerName ) {
+		global $wgCentralDBname;
+		
+		$banner = array();
+		
+		$dbr = wfGetDB( DB_SLAVE, array(), $wgCentralDBname );
+		
+		$row = $dbr->selectRow( 'cn_templates',
+			array(
+				'tmp_display_anon',
+				'tmp_display_account',
+				'tmp_fundraising',
+				'tmp_landing_pages'
+			),
+			array( 'tmp_name' => $bannerName ),
+			__METHOD__
+		);
+		
+		if ( $row ) {
+			$banner = array(
+				'anon' => $row->tmp_display_anon,
+				'account' => $row->tmp_display_account,
+				'fundraising' => $row->tmp_fundraising,
+				'landingpages' => $row->tmp_landing_pages
+			);
+		}
+		
+		return $banner;
 	}
 	
 	/**
@@ -307,12 +351,23 @@ class CentralNoticeDB {
 			}
 		}
 		
-		$templates = array();
+		$banners = array();
 		if ( $campaigns ) {
 			// Pull all banners assigned to the campaigns
-			$templates = CentralNoticeDB::getCampaignBanners( $campaigns );
+			$banners = CentralNoticeDB::getCampaignBanners( $campaigns );
 		}
-		return $templates;
+		return $banners;
+	}
+	
+	/*
+	 * See if a given campaign exists in the database
+	 */
+	public static function campaignExists( $campaignName ) {
+		 global $wgCentralDBname;
+		 $dbr = wfGetDB( DB_SLAVE, array(), $wgCentralDBname );
+
+		 $eCampaignName = htmlspecialchars( $campaignName );
+		 return (bool)$dbr->selectRow( 'cn_notices', 'not_name', array( 'not_name' => $eCampaignName ) );
 	}
 	
 	/*
