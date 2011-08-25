@@ -187,7 +187,11 @@ abstract class File {
 	 * @return String
 	 */
 	public function getFullUrl() {
-		return wfExpandUrl( $this->getUrl() );
+		return wfExpandUrl( $this->getUrl(), PROTO_RELATIVE );
+	}
+	
+	public function getCanonicalUrl() {
+		return wfExpandUrl( $this->getUrl(), PROTO_CANONICAL );
 	}
 
 	function getViewURL() {

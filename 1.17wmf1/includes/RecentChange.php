@@ -614,7 +614,8 @@ class RecentChange {
 	}
 
 	public function getIRCLine() {
-		global $wgUseRCPatrol, $wgUseNPPatrol, $wgRC2UDPInterwikiPrefix, $wgLocalInterwiki;
+		global $wgUseRCPatrol, $wgUseNPPatrol, $wgRC2UDPInterwikiPrefix, $wgLocalInterwiki,
+			$wgCanonicalServer, $wgScript;
 
 		// FIXME: Would be good to replace these 2 extract() calls with something more explicit
 		// e.g. list ($rc_type, $rc_id) = array_values ($this->mAttribs); [or something like that]
@@ -632,21 +633,18 @@ class RecentChange {
 		if( $rc_type == RC_LOG ) {
 			$url = '';
 		} else {
+			$url = $wgCanonicalServer . $wgScript;
 			if( $rc_type == RC_NEW ) {
-				$url = "oldid=$rc_this_oldid";
+				$query = "?oldid=$rc_this_oldid";
 			} else {
-				$url = "diff=$rc_this_oldid&oldid=$rc_last_oldid";
+				$query = "?diff=$rc_this_oldid&oldid=$rc_last_oldid";
 			}
 			if( $wgUseRCPatrol || ($rc_type == RC_NEW && $wgUseNPPatrol) ) {
-				$url .= "&rcid=$rc_id";
+				$query .= "&rcid=$rc_id";
 			}
-			// XXX: *HACK* this should use getFullURL(), hacked for SSL madness --brion 2005-12-26
-			// XXX: *HACK^2* the preg_replace() undoes much of what getInternalURL() does, but we 
-			// XXX: need to call it so that URL paths on the Wikimedia secure server can be fixed
-			// XXX: by a custom GetInternalURL hook --vyznev 2008-12-10
-			// XXX: Also, getInternalUrl() may return a protocol-relative URL.
-			// XXX: In that case, expand it to an HTTP URL, even if this is an HTTPS request --catrope 2011-08-17
-			$url = preg_replace( '/title=[^&]*&/', '', wfExpandUrl( $titleObj->getInternalURL( $url ), PROTO_HTTP ) );
+			// HACK: We need this hook for WMF's secure server setup
+			wfRunHooks( 'IRCLineURL', array( &$url, &$query ) );
+			$url .= $query;
 		}
 
 		if( isset( $oldSize ) && isset( $newSize ) ) {

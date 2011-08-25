@@ -405,7 +405,7 @@ class XmlDumpWriter {
 	}
 
 	function homelink() {
-		return Xml::element( 'base', array(), Title::newMainPage()->getFullUrl() );
+		return Xml::element( 'base', array(), Title::newMainPage()->getCanonicalUrl() );
 	}
 
 	function caseSetting() {
@@ -616,7 +616,7 @@ class XmlDumpWriter {
 			$this->writeContributor( $file->getUser( 'id' ), $file->getUser( 'text' ) ) .
 			"      " . Xml::elementClean( 'comment', null, $file->getDescription() ) . "\n" .
 			"      " . Xml::element( 'filename', null, $file->getName() ) . "\n" .
-			"      " . Xml::element( 'src', null, $file->getFullUrl() ) . "\n" .
+			"      " . Xml::element( 'src', null, $file->getCanonicalUrl() ) . "\n" .
 			"      " . Xml::element( 'size', null, $file->getSize() ) . "\n" .
 			"    </upload>\n";
 	}

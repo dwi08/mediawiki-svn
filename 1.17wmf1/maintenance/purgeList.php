@@ -40,7 +40,7 @@ class PurgeList extends Maintenance {
 			} elseif ( $page !== '' ) {
 				$title = Title::newFromText( $page );
 				if ( $title ) {
-					$url = $title->getFullUrl();
+					$url = $title->getInternalUrl();
 					$this->output( "$url\n" );
 					$urls[] = $url;
 					if ( $this->getOption( 'purge' ) ) {

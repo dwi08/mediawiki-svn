@@ -1649,7 +1649,7 @@ class OutputPage {
 		wfProfileIn( __METHOD__ );
 		if ( $this->mRedirect != '' ) {
 			# Standards require redirect URLs to be absolute
-			$this->mRedirect = wfExpandUrl( $this->mRedirect );
+			$this->mRedirect = wfExpandUrl( $this->mRedirect, PROTO_CURRENT );
 			if( $this->mRedirectCode == '301' || $this->mRedirectCode == '303' ) {
 				if( !$wgDebugRedirects ) {
 					$message = self::getStatusMessage( $this->mRedirectCode );

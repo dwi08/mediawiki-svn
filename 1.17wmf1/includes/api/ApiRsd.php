@@ -97,7 +97,7 @@ class ApiRsd extends ApiBase {
 		$apis = array(
 			'MediaWiki' => array(
 				// The API link is required for all RSD API entries.
-				'apiLink' => wfExpandUrl( wfScript( 'api' ) ),
+				'apiLink' => wfExpandUrl( wfScript( 'api' ), PROTO_CURRENT ),
 
 				// Docs link is optional, but recommended.
 				'docs' => 'http://mediawiki.org/wiki/API',

@@ -434,13 +434,13 @@ class SearchEngine {
 	 * @return String
 	 */
 	public static function getOpenSearchTemplate() {
-		global $wgOpenSearchTemplate, $wgServer, $wgScriptPath;
+		global $wgOpenSearchTemplate, $wgCanonicalServer, $wgScriptPath;
 		if ( $wgOpenSearchTemplate )	{
 			return $wgOpenSearchTemplate;
 		} else {
 			$ns = implode( '|', SearchEngine::defaultNamespaces() );
 			if ( !$ns ) $ns = "0";
-			return $wgServer . $wgScriptPath . '/api.php?action=opensearch&search={searchTerms}&namespace=' . $ns;
+			return $wgCanonicalServer . $wgScriptPath . '/api.php?action=opensearch&search={searchTerms}&namespace=' . $ns;
 		}
 	}
 

@@ -974,11 +974,22 @@ class Title {
 	public function escapeFullURL( $query = '' ) {
 		return htmlspecialchars( $this->getFullURL( $query ) );
 	}
+	
+	/**
+	 * HTML-escaped version of getCanonicalURL()
+	 */
+	public function escapeCanonicalURL( $query = '', $variant = false ) {
+		return htmlspecialchars( $this->getCanonicalURL( $query, $variant ) );
+	}
 
 	/**
 	 * Get the URL form for an internal link.
 	 * - Used in various Squid-related code, in case we have a different
 	 * internal hostname for the server from the exposed one.
+	 * 
+	 * This uses $wgInternalServer to qualify the path, or $wgServer
+	 * if $wgInternalServer is not set. If the server variable used is
+	 * protocol-relative, the URL will be expanded to http://
 	 *
 	 * @param $query \type{\string} an optional query string
 	 * @param $variant \type{\string} language variant of url (for sr, zh..)
@@ -987,8 +998,24 @@ class Title {
 	public function getInternalURL( $query = '', $variant = false ) {
 		global $wgInternalServer, $wgServer;
 		$server = $wgInternalServer !== false ? $wgInternalServer : $wgServer;
-		$url = $server . $this->getLocalURL( $query, $variant );
+		$url = wfExpandUrl( $server . $this->getLocalURL( $query, $variant ), PROTO_HTTP );
 		wfRunHooks( 'GetInternalURL', array( &$this, &$url, $query ) );
+		return $url;
+	}
+
+	/**
+	 * Get the URL for a canonical link, for use in things like IRC and
+	 * e-mail notifications. Uses $wgCanonicalServer and the
+	 * GetCanonicalURL hook.
+	 * 
+	 * @param $query string An optional query string
+	 * @param $variant string Language variant of URL (for sr, zh, ...)
+	 * @return string The URL
+	 */
+	public function getCanonicalURL( $query = '', $variant = false ) {
+		global $wgCanonicalServer;
+		$url = $wgCanonicalServer . $this->getLocalURL( $query, $variant );
+		wfRunHooks( 'GetCanonicalURL', array( &$this, &$url, $query ) );
 		return $url;
 	}
 

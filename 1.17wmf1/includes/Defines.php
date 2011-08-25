@@ -255,3 +255,12 @@ define( 'APCOND_IPINRANGE', 6 );
 define( 'APCOND_AGE_FROM_EDIT', 7 );
 define( 'APCOND_BLOCKED', 8 );
 /**@}*/
+
+/**
+ * Protocol constants for wfExpandUrl()
+ */
+define( 'PROTO_HTTP', 'http://' );
+define( 'PROTO_HTTPS', 'https://' );
+define( 'PROTO_RELATIVE', '//' );
+define( 'PROTO_CURRENT', null );
+define( 'PROTO_CANONICAL', 1 );

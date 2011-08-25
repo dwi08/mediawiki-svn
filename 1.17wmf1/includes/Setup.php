@@ -191,6 +191,12 @@ require_once( "$IP/includes/Namespace.php" );
 require_once( "$IP/includes/ProxyTools.php" );
 require_once( "$IP/includes/ImageFunctions.php" );
 wfProfileOut( $fname.'-includes' );
+
+# Now that GlobalFunctions is loaded, set the default for $wgCanonicalServer 
+if ( $wgCanonicalServer === false ) { 
+        $wgCanonicalServer = wfExpandUrl( $wgServer, PROTO_HTTP ); 
+}
+
 wfProfileIn( $fname.'-misc1' );
 
 # Raise the memory limit if it's too low

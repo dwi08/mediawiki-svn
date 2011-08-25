@@ -29,7 +29,7 @@ class ExternalEdit {
 	}
 
 	function edit() {
-		global $wgOut, $wgScript, $wgScriptPath, $wgServer, $wgLang;
+		global $wgOut, $wgScript, $wgScriptPath, $wgCanonicalServer, $wgLang;
 		$wgOut->disable();
 		$name=$this->mTitle->getText();
 		$pos=strrpos($name,".")+1;
@@ -41,14 +41,14 @@ class ExternalEdit {
 		# details.
 		if(!isset($this->mMode)) {
 			$type="Edit text";
-			$url=$this->mTitle->getFullURL("action=edit&internaledit=true");
+			$url=$this->mTitle->getCanonicalURL("action=edit&internaledit=true");
 			# *.wiki file extension is used by some editors for syntax
 			# highlighting, so we follow that convention
 			$extension="wiki";
 		} elseif($this->mMode=="file") {
 			$type="Edit file";
 			$image = wfLocalFile( $this->mTitle );
-			$url = $image->getFullURL();
+			$url = $image->getCanonicalURL();
 			$extension=substr($name, $pos);
 		}
 		$special=$wgLang->getNsText(NS_SPECIAL);
@@ -56,8 +56,8 @@ class ExternalEdit {
 [Process]
 Type=$type
 Engine=MediaWiki
-Script={$wgServer}{$wgScript}
-Server={$wgServer}
+Script={$wgCanonicalServer}{$wgScript}
+Server={$wgCanonicalServer}
 Path={$wgScriptPath}
 Special namespace=$special
 

@@ -72,7 +72,7 @@ class FileRevertForm {
 				$wgOut->addHTML( wfMsgExt( 'filerevert-success', 'parse', $this->title->getText(),
 					$wgLang->date( $this->getTimestamp(), true ),
 					$wgLang->time( $this->getTimestamp(), true ),
-					wfExpandUrl( $this->file->getArchiveUrl( $this->archiveName ) ) ) );
+					wfExpandUrl( $this->file->getArchiveUrl( $this->archiveName ), PROTO_CURRENT ) ) );
 				$wgOut->returnToMain( false, $this->title );
 			} else {
 				$wgOut->addWikiText( $status->getWikiText() );
@@ -96,7 +96,7 @@ class FileRevertForm {
 		$form .= '<fieldset><legend>' . wfMsgHtml( 'filerevert-legend' ) . '</legend>';
 		$form .= wfMsgExt( 'filerevert-intro', 'parse', $this->title->getText(),
 			$wgLang->date( $timestamp, true ), $wgLang->time( $timestamp, true ),
-			wfExpandUrl( $this->file->getArchiveUrl( $this->archiveName ) ) );
+			wfExpandUrl( $this->file->getArchiveUrl( $this->archiveName ), PROTO_CURRENT ) );
 		$form .= '<p>' . Xml::inputLabel( wfMsg( 'filerevert-comment' ), 'wpComment', 'wpComment',
 			60, wfMsgForContent( 'filerevert-defaultcomment',
 			$wgContLang->date( $timestamp, false, false ), $wgContLang->time( $timestamp, false, false ) ) ) . '</p>';
