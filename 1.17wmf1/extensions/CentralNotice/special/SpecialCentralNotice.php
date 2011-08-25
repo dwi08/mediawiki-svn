@@ -240,38 +240,47 @@ class CentralNotice extends SpecialPage {
 		return Xml::tags( 'tr', $attribs, implode( "\n", $cells ) ) . "\n";
 	}
 
-	function dateSelector( $prefix, $timestamp = null ) {
-		if ( $this->editable ) {
-			// Default ranges...
-			$years = range( 2008, 2014 );
-			$months = range( 1, 12 );
-			$months = array_map( array( $this, 'addZero' ), $months );
-			$days = range( 1 , 31 );
-			$days = array_map( array( $this, 'addZero' ), $days );
-	
-			// Normalize timestamp format. If no timestamp passed, defaults to now.
-			$ts = wfTimestamp( TS_MW, $timestamp );
+	public static function dateSelector( $prefix, $editable, $timestamp = null ) {
+		if ( $editable ) {
+			$dateRanges = CentralNotice::getDateRanges();
+
+			// Normalize timestamp format. If no timestamp is passed, default to now. If -1 is 
+			// passed, set no defaults.
+			if ( $timestamp === -1 ) {
+				$ts = '00000000';
+			} else {
+				$ts = wfTimestamp( TS_MW, $timestamp );
+			}
 			
 			$fields = array(
-				array( "month", "centralnotice-month", $months, substr( $ts, 4, 2 ) ),
-				array( "day",   "centralnotice-day",   $days,   substr( $ts, 6, 2 ) ),
-				array( "year",  "centralnotice-year",  $years,  substr( $ts, 0, 4 ) ),
+				array( "month", "centralnotice-month", $dateRanges['months'], substr( $ts, 4, 2 ) ),
+				array( "day",   "centralnotice-day",   $dateRanges['days'],   substr( $ts, 6, 2 ) ),
+				array( "year",  "centralnotice-year",  $dateRanges['years'],  substr( $ts, 0, 4 ) ),
 			);
 	
-			return $this->createSelector( $prefix, $fields );
+			return CentralNotice::createSelector( $prefix, $fields );
 		} else {
 			global $wgLang;
 			return $wgLang->date( $timestamp );
 		}
 	}
+	
+	/*
+	 * Get date ranges for use in date selectors
+	 * @return array of ranges for months, days, and years (padded with zeros)
+	 */
+	public static function getDateRanges() {
+		$dateRanges = array();
+		$dateRanges['years'] = range( 2011, date("Y") );
+		$dateRanges['months'] = CentralNotice::paddedRange( 1, 12 );
+		$dateRanges['days'] = CentralNotice::paddedRange( 1, 31 );
+		return $dateRanges;
+	}
 
-	function timeSelector( $prefix, $timestamp = null ) {
-		if ( $this->editable ) {
-			// Default ranges...
-			$minutes = range( 0, 59 ); // formerly in 15-minute increments
-			$minutes = array_map( array( $this, 'addZero' ), $minutes );
-			$hours = range( 0 , 23 );
-			$hours = array_map( array( $this, 'addZero' ), $hours );
+	public static function timeSelector( $prefix, $editable, $timestamp = null ) {
+		if ( $editable ) {
+			$minutes = CentralNotice::paddedRange( 0, 59 );
+			$hours = CentralNotice::paddedRange( 0 , 23 );
 	
 			// Normalize timestamp format...
 			$ts = wfTimestamp( TS_MW, $timestamp );
@@ -281,7 +290,7 @@ class CentralNotice extends SpecialPage {
 				array( "min",  "centralnotice-min",   $minutes, substr( $ts, 10, 2 ) ),
 			);
 	
-			return $this->createSelector( $prefix, $fields );
+			return CentralNotice::createSelector( $prefix, $fields );
 		} else {
 			global $wgLang;
 			return $wgLang->time( $timestamp );
@@ -290,15 +299,15 @@ class CentralNotice extends SpecialPage {
 
 	/**
 	 * Build a set of select lists. Used by dateSelector and timeSelector.
-	 * @param $prefix string
-	 * @param $fields array
+	 * @param $prefix string to identify selector set, for example, 'start' or 'end'
+	 * @param $fields array of select lists to build
 	 */	
-	private function createSelector( $prefix, $fields ) {
+	public static function createSelector( $prefix, $fields ) {
 		$out = '';
 		foreach ( $fields as $data ) {
 			list( $field, $label, $set, $current ) = $data;
 			$out .= Xml::listDropDown( "{$prefix}[{$field}]",
-				$this->dropDownList( wfMsg( $label ), $set ),
+				CentralNotice::dropDownList( wfMsg( $label ), $set ),
 				'',
 				$current );
 		}
@@ -533,12 +542,12 @@ class CentralNotice extends SpecialPage {
 			// Start Date
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), wfMsgHtml( 'centralnotice-start-date' ) );
-			$htmlOut .= Xml::tags( 'td', array(), $this->dateSelector( 'start', $startTimestamp ) );
+			$htmlOut .= Xml::tags( 'td', array(), $this->dateSelector( 'start', $this->editable, $startTimestamp ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// Start Time
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), wfMsgHtml( 'centralnotice-start-time' ) );
-			$htmlOut .= Xml::tags( 'td', array(), $this->timeSelector( 'start', $startTimestamp ) );
+			$htmlOut .= Xml::tags( 'td', array(), $this->timeSelector( 'start', $this->editable, $startTimestamp ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// Project
 			$htmlOut .= Xml::openElement( 'tr' );
@@ -846,22 +855,22 @@ class CentralNotice extends SpecialPage {
 			// Start Date
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), wfMsgHtml( 'centralnotice-start-date' ) );
-			$htmlOut .= Xml::tags( 'td', array(), $this->dateSelector( 'start', $startTimestamp ) );
+			$htmlOut .= Xml::tags( 'td', array(), $this->dateSelector( 'start', $this->editable, $startTimestamp ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// Start Time
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), wfMsgHtml( 'centralnotice-start-time' ) );
-			$htmlOut .= Xml::tags( 'td', array(), $this->timeSelector( 'start', $startTimestamp ) );
+			$htmlOut .= Xml::tags( 'td', array(), $this->timeSelector( 'start', $this->editable, $startTimestamp ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// End Date
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), wfMsgHtml( 'centralnotice-end-date' ) );
-			$htmlOut .= Xml::tags( 'td', array(), $this->dateSelector( 'end', $endTimestamp ) );
+			$htmlOut .= Xml::tags( 'td', array(), $this->dateSelector( 'end', $this->editable, $endTimestamp ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// End Time
 			$htmlOut .= Xml::openElement( 'tr' );
 			$htmlOut .= Xml::tags( 'td', array(), wfMsgHtml( 'centralnotice-end-time' ) );
-			$htmlOut .= Xml::tags( 'td', array(), $this->timeSelector( 'end', $endTimestamp ) );
+			$htmlOut .= Xml::tags( 'td', array(), $this->timeSelector( 'end', $this->editable, $endTimestamp ) );
 			$htmlOut .= Xml::closeElement( 'tr' );
 			// Project
 			$htmlOut .= Xml::openElement( 'tr' );
@@ -1208,7 +1217,10 @@ class CentralNotice extends SpecialPage {
 		}
 	}
 
-	function addTemplateTo( $noticeName, $templateName, $weight ) {
+	/**
+	 * Assign a banner to a campaign at a certain weight
+	 */
+	public function addTemplateTo( $noticeName, $templateName, $weight ) {
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$eNoticeName = htmlspecialchars ( $noticeName );
@@ -1322,7 +1334,10 @@ class CentralNotice extends SpecialPage {
 		return $row->tmp_id;
 	}
 
-	function removeTemplateFor( $noticeName, $templateName ) {
+	/**
+	 * Remove a banner assignment from a campaign
+	 */
+	public function removeTemplateFor( $noticeName, $templateName ) {
 		$dbw = wfGetDB( DB_MASTER );
 		$dbw->begin();
 		$noticeId = CentralNotice::getNoticeId( $noticeName );
@@ -1624,15 +1639,16 @@ class CentralNotice extends SpecialPage {
 		}
 		return $dropDown;
 	}
-
-	function addZero( $text ) {
-		// Prepend a 0 for text needing it
-		if ( strlen( $text ) == 1 ) {
-			$text = "0{$text}";
-		}
-		return $text;
-	}
 	
+	public static function paddedRange( $begin, $end ) {
+		$unpaddedRange = range( $begin, $end );
+		$paddedRange = array();
+		foreach ( $unpaddedRange as $number ) {
+			$paddedRange[] = sprintf( "%02d", $number ); // pad number with 0 if needed
+		}
+		return $paddedRange;
+	}
+
 	function showError( $message ) {
 		global $wgOut;
 		$wgOut->wrapWikiMsg( "<div class='cn-error'>\n$1\n</div>", $message );
@@ -1714,125 +1730,5 @@ class CentralNotice extends SpecialPage {
 		$res = $dbw->insert( 'cn_notice_log', $log );
 		$log_id = $dbw->insertId();
 		return $log_id;
-	}
-}
-
-class CentralNoticePager extends TemplatePager {
-	var $viewPage, $special;
-	var $editable;
-
-	function __construct( $special ) {
-		parent::__construct( $special );
-	}
-	
-	/**
-	 * Pull banners from the database
-	 */
-	function getQueryInfo() {
-		$notice = $this->mRequest->getVal( 'notice' );
-		$noticeId = CentralNotice::getNoticeId( $notice );
-		if ( $noticeId ) {
-			// Return all the banners not already assigned to the current campaign
-			return array(
-				'tables' => array( 'cn_assignments', 'cn_templates' ),
-				'fields' => array( 'cn_templates.tmp_name', 'cn_templates.tmp_id' ),
-				'conds' => array( 'cn_assignments.tmp_id IS NULL' ),
-				'join_conds' => array(
-					'cn_assignments' => array( 
-						'LEFT JOIN',
-						"cn_assignments.tmp_id = cn_templates.tmp_id " . 
-						"AND cn_assignments.not_id = $noticeId"
-					)
-				)
-			);
-		} else {
-			// Return all the banners in the database
-			return array(
-				'tables' => 'cn_templates',
-				'fields' => array( 'tmp_name', 'tmp_id' ),
-			);
-		}
-	}
-	
-	/**
-	 * Generate the content of each table row (1 row = 1 banner)
-	 */
-	function formatRow( $row ) {
-	
-		// Begin banner row
-		$htmlOut = Xml::openElement( 'tr' );
-		
-		if ( $this->editable ) {
-			// Add box
-			$htmlOut .= Xml::tags( 'td', array( 'valign' => 'top' ),
-				Xml::check( 'addTemplates[]', '', array ( 'value' => $row->tmp_name ) )
-			);
-			// Weight select
-			$htmlOut .= Xml::tags( 'td', array( 'valign' => 'top' ),
-				Xml::listDropDown( "weight[$row->tmp_id]",
-					CentralNotice::dropDownList( 
-						wfMsg( 'centralnotice-weight' ), range ( 0, 100, 5 ) 
-					) ,
-					'',
-					'25',
-					'',
-					'' )
-			);
-		}
-		
-		// Link and Preview
-		$render = new SpecialBannerLoader();
-		$render->siteName = 'Wikipedia';
-		$render->language = $this->mRequest->getVal( 'wpUserLanguage' );
-		try { 
-			$preview = $render->getHtmlNotice( $row->tmp_name );
-		} catch ( SpecialBannerLoaderException $e ) {
-			$preview = wfMsg( 'centralnotice-nopreview' );
-		}
-		$htmlOut .= Xml::tags( 'td', array( 'valign' => 'top' ),
-			$this->getSkin()->makeLinkObj( $this->viewPage,
-				htmlspecialchars( $row->tmp_name ),
-				'template=' . urlencode( $row->tmp_name ) ) .
-			Xml::fieldset( wfMsg( 'centralnotice-preview' ),
-				$preview,
-				array( 'class' => 'cn-bannerpreview')
-			)
-		);
-		
-		// End banner row
-		$htmlOut .= Xml::closeElement( 'tr' );
-		
-		return $htmlOut;
-	}
-	
-	/**
-	 * Specify table headers
-	 */
-	function getStartBody() {
-		$htmlOut = '';
-		$htmlOut .= Xml::openElement( 'table', array( 'cellpadding' => 9 ) );
-		$htmlOut .= Xml::openElement( 'tr' );
-		if ( $this->editable ) {
-			$htmlOut .= Xml::element( 'th', array( 'align' => 'left', 'width' => '5%' ),
-				 wfMsg ( "centralnotice-add" )
-			);
-			$htmlOut .= Xml::element( 'th', array( 'align' => 'left', 'width' => '5%' ),
-				 wfMsg ( "centralnotice-weight" )
-			);
-		}
-		$htmlOut .= Xml::element( 'th', array( 'align' => 'left' ),
-			wfMsg ( 'centralnotice-templates' )
-		);
-		$htmlOut .= Xml::closeElement( 'tr' );
-		return $htmlOut;
-	}
-	
-	/**
-	 * Close table
-	 */
-	function getEndBody() {
-		$htmlOut = '';
-		$htmlOut .= Xml::closeElement( 'table' );
-		return $htmlOut;
 	}
 }
