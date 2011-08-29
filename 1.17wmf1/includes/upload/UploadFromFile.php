@@ -45,11 +45,10 @@ class UploadFromFile extends UploadBase {
 		# proper error can be shown to the user
 		if ( is_null( $this->mTempPath ) || $this->isEmptyFile() ) {
 			if ( $this->mUpload->isIniSizeOverflow() ) {
-				global $wgMaxUploadSize;
 				return array( 
 					'status' => self::FILE_TOO_LARGE,
 					'max' => min( 
-						$wgMaxUploadSize, 
+						self::getMaxUploadSize( $this->getSourceType() ), 
 						wfShorthandToInteger( ini_get( 'upload_max_filesize' ) ), 
 						wfShorthandToInteger( ini_get( 'post_max_size' ) )
 					),

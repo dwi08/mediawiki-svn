@@ -23,6 +23,8 @@ MediaWiki 1.17 is shipping with a completely redesigned installer to fix
 a lot of outstanding bugs, cleanup the code quality, and make it easier to
 use. Notably, you can now run upgrades from the web without having to move
 LocalSettings.php. The specific bugs are listed below in the general notes.
+* $wgMaxUploadSize may now be set to an array to specify the upload size limit 
+  per upload type.
 
 === Configuration changes in 1.17 ===
 * DatabaseFunctions.php that was needed for compatibility with pre-1.3

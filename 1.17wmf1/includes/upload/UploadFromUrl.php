@@ -81,6 +81,7 @@ class UploadFromUrl extends UploadBase {
 			&& $wgUser->isAllowed( 'upload_by_url' );
 	}
 
+	public function getSourceType() { return 'url'; }
 
 	public function fetchFile() {
 		if ( !Http::isValidURI( $this->mUrl ) ) {

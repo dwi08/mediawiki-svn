@@ -135,6 +135,14 @@ abstract class UploadBase {
 	}
 
 	public function __construct() {}
+	
+	/**
+	 * Returns the upload type. Should be overridden by child classes
+	 * 
+	 * @since 1.18
+	 * @return string 
+	 */
+	public function getSourceType() { return null; }
 
 	/**
 	 * Initialize the path information
@@ -219,11 +227,11 @@ abstract class UploadBase {
 		/**
 		 * Honor $wgMaxUploadSize
 		 */
-		global $wgMaxUploadSize;
-		if( $this->mFileSize > $wgMaxUploadSize ) {
+		$maxSize = self::getMaxUploadSize( $this->getSourceType() );
+		if( $this->mFileSize > $maxSize ) {
 			return array( 
 				'status' => self::FILE_TOO_LARGE,
-				'max' => $wgMaxUploadSize,
+				'max' => $maxSize,
 			);
 		}
 
@@ -1229,5 +1237,20 @@ abstract class UploadBase {
 		$code = $error['status'];
 		unset( $code['status'] );
 		return Status::newFatal( $this->getVerificationErrorCode( $code ), $error );
+	}
+	
+	public static function getMaxUploadSize( $forType = null ) {
+		global $wgMaxUploadSize;
+		
+		if ( is_array( $wgMaxUploadSize ) ) {
+			if ( !is_null( $forType) && isset( $wgMaxUploadSize[$forType] ) ) {
+				return $wgMaxUploadSize[$forType];
+			} else {
+				return $wgMaxUploadSize['*'];
+			}
+		} else {
+			return intval( $wgMaxUploadSize );
+		}
+		
 	}
 }

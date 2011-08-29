@@ -70,6 +70,8 @@ class UploadFromStash extends UploadBase {
 		$this->mVirtualTempPath = $metadata['us_path'];
 		$this->mFileProps = $this->stash->getFileProps( $key );
 		$this->mSourceType = $metadata['us_source_type'];
+			$this->mSourceType = isset( $sessionData['mSourceType'] ) ?
+				$sessionData['mSourceType'] : null;
 	}
 
 	public function initializeFromRequest( &$request ) {
@@ -80,6 +82,10 @@ class UploadFromStash extends UploadBase {
 		$desiredDestName = $request->getText( 'wpDestFile', $request->getText( 'wpUploadFile', $request->getText( 'filename' ) ) );
 
 		return $this->initialize( $fileKey, $desiredDestName );
+	}
+
+	public function getSourceType() { 
+		return $this->mSourceType; 
 	}
 
 	/**
