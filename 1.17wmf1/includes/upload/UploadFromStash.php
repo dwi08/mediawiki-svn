@@ -92,20 +92,20 @@ class UploadFromStash extends UploadBase {
 
 
 	/**
-	 * There is no need to stash the image twice
+	 * Stash the file.
 	 */
 	public function stashFile() {
-		if ( $this->mLocalFile ) {
-			return $this->mLocalFile;
-		}
-		return parent::stashFile();
+		// replace mLocalFile with an instance of UploadStashFile, which adds some methods
+		// that are useful for stashed files.
+		$this->mLocalFile = parent::stashFile();
+		return $this->mLocalFile;
 	}
 
 	/**
-	 * Alias for stashFile
+	 * This should return the key instead of the UploadStashFile instance, for backward compatibility.
 	 */
 	public function stashSession() {
-		return $this->stashFile();
+		return $this->stashFile()->getFileKey();
 	}
 
 	/**
