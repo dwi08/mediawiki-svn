@@ -283,25 +283,118 @@ class FatalError extends MWException {
 }
 
 /**
+ * An error page which can definitely be safely rendered using the OutputPage
  * @ingroup Exception
  */
 class ErrorPageError extends MWException {
-	public $title, $msg;
+	public $title, $msg, $params;
 
 	/**
 	 * Note: these arguments are keys into wfMsg(), not text!
 	 */
-	function __construct( $title, $msg ) {
+	function __construct( $title, $msg, $params = null ) {
 		$this->title = $title;
 		$this->msg = $msg;
-		parent::__construct( wfMsg( $msg ) );
+		$this->params = $params;
+
+		if( $msg instanceof Message ){
+			parent::__construct( $msg );
+		} else {
+			parent::__construct( wfMsg( $msg ) );
+		}
 	}
 
 	function report() {
 		global $wgOut;
 
-		$wgOut->showErrorPage( $this->title, $this->msg );
+		if ( $wgOut->getTitle() ) {
+			$wgOut->debug( 'Original title: ' . $wgOut->getTitle()->getPrefixedText() . "\n" );
+		}
+		$wgOut->setPageTitle( wfMsg( $this->title ) );
+		$wgOut->setHTMLTitle( wfMsg( 'errorpagetitle' ) );
+		$wgOut->setRobotPolicy( 'noindex,nofollow' );
+		$wgOut->setArticleRelated( false );
+		$wgOut->enableClientCache( false );
+		$wgOut->mRedirect = '';
+		$wgOut->clearHTML();
+
+		if( $this->msg instanceof Message ){
+			$wgOut->addHTML( $this->msg->parse() );
+		} else {
+			$wgOut->addWikiMsgArray( $this->msg, $this->params );
+		}
+
+		$wgOut->returnToMain();
 		$wgOut->output();
+	}
+}
+
+/**
+ * Show an error when a user tries to do something they do not have the necessary
+ * permissions for.
+ * @ingroup Exception
+ */
+class PermissionsError extends ErrorPageError {
+	public $permission;
+
+	function __construct( $permission ) {
+		global $wgLang;
+
+		$this->permission = $permission;
+
+		$groups = array_map(
+			array( 'User', 'makeGroupLinkWiki' ),
+			User::getGroupsWithPermission( $this->permission )
+		);
+
+		if( $groups ) {
+			parent::__construct(
+				'badaccess',
+				'badaccess-groups',
+				array(
+					$wgLang->commaList( $groups ),
+					count( $groups )
+				)
+			);
+		} else {
+			parent::__construct(
+				'badaccess',
+				'badaccess-group0'
+			);
+		}
+	}
+}
+
+/**
+ * Show an error when the wiki is locked/read-only and the user tries to do
+ * something that requires write access
+ * @ingroup Exception
+ */
+class ReadOnlyError extends ErrorPageError {
+	public function __construct(){
+		parent::__construct(
+			'readonly',
+			'readonlytext',
+			wfReadOnlyReason()
+		);
+	}
+}
+
+/**
+ * Show an error when the user hits a rate limit
+ * @ingroup Exception
+ */
+class ThrottledError extends ErrorPageError {
+	public function __construct(){
+		parent::__construct(
+			'actionthrottled',
+			'actionthrottledtext'
+		);
+	}
+	public function report(){
+		global $wgOut;
+		$wgOut->setStatusCode( 503 );
+		return parent::report();
 	}
 }
 
