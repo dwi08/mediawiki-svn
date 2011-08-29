@@ -1,6 +1,6 @@
 <?php
 
-abstract class PayflowProGateway_Form {
+abstract class Gateway_Form {
 
 	/**
 	 * Defines if we are in test mode

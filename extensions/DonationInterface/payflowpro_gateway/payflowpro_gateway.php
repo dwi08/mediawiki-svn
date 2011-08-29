@@ -21,6 +21,7 @@ $wgExtensionCredits['specialpage'][] = array(
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['PayflowProGateway'] = $dir . 'payflowpro_gateway.body.php';
+
 $wgAutoloadClasses[ 'PayflowProGateway_Form' ] = $dir . 'forms/Form.php';
 $wgAutoloadClasses[ 'PayflowProGateway_Form_OneStepTwoColumn' ] = $dir . 'forms/OneStepTwoColumn.php';
 $wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumn' ] = $dir . 'forms/TwoStepTwoColumn.php';
@@ -40,6 +41,7 @@ $wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnPremium' ] = $dir . 
 $wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnPremiumUS' ] = $dir . 'forms/TwoStepTwoColumnPremiumUS.php';
 $wgAutoloadClasses[ 'PayflowProGateway_Form_RapidHtml' ] = $dir . 'forms/RapidHtml.php';
 $wgAutoloadClasses[ 'PayflowProGateway_Form_SingleColumn' ] = $dir . 'forms/SingleColumn.php';
+
 $wgExtensionMessagesFiles['PayflowProGateway'] = $dir . 'payflowpro_gateway.i18n.php';
 $wgExtensionMessagesFiles['PayflowProGatewayCountries'] = $dir . 'payflowpro_gateway.countries.i18n.php';
 $wgExtensionMessagesFiles['PayflowProGatewayUSStates'] = $dir . 'payflowpro_gateway.us-states.i18n.php';
@@ -211,8 +213,8 @@ function pfpGatewayValue( &$values ) {
  *  Hook to supply the page address of the payment gateway
  *
  * The user will redirected here with supplied data with input data appended (GET).
- * For example, if $url[$key] = index.php?title=Special:PayflowPro
- * the result might look like this: http://www.yourdomain.com/index.php?title=Special:PayflowPro&amount=75.00&currency_code=USD&payment_method=payflow
+ * For example, if $url[$key] = index.php?title=Special:PayflowProGateway
+ * the result might look like this: http://www.yourdomain.com/index.php?title=Special:PayflowProGateway&amount=75.00&currency_code=USD&payment_method=payflow
  */
 function pfpGatewayPage( &$url ) {
 	global $wgScript;
