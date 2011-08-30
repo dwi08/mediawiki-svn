@@ -104,6 +104,17 @@ EOT;
 		// track the number of attempts the user has made
 		$numAttempt = $wgRequest->getVal( 'numAttempt', 0 );
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		// Get array of default account values necessary for Payflow
 //		require_once( 'includes/payflowUser.inc' );
 
@@ -150,29 +161,17 @@ EOT;
 
 		// Populate form data
 //		$data = $this->fnGetFormData( $amount, $numAttempt, $token, $payflow_data['order_id'], $payflow_data['i_order_id'] );
+
+		
+		
+		
+		
+		
+		
+		
 		$data = $this->fnGetFormData( $amount, $numAttempt, null, null, null );
 
-					
-		//This is just me screwing around. 
-		$dir = dirname( __FILE__ ) . '/';
-		require_once($dir . 'globalcollect.adapter.php');
-		$adapter = new GlobalCollectAdapter($data);
-		error_log(print_r($data, true));
-		error_log($adapter->buildRequestXML( 'INSERT_ORDERWITHPAYMENT' ));
-		//$wgOut->addHTML('<pre>' . $adapter->buildRequestXML( 'INSERT_ORDERWITHPAYMENT' ) . '</pre>');
 		
-		
-		/**
-		 *  handle PayPal redirection
-		 *
-		 *  if paypal redirection is enabled ($wgPayflowGatewayPaypalURL must be defined)
-		 *  and the PaypalRedirect form value must be true
-		 */
-		if ( $wgRequest->getText( 'PaypalRedirect', 0 ) ) {
-			$this->paypalRedirect( $data );
-			return;
-		}
-
 		// dispatch forms/handling
 //		if ( $token_match ) {
 			if ( $data['payment_method'] == 'processed' ) {
@@ -187,40 +186,55 @@ EOT;
 					$this->fnPayflowDisplayForm( $data, $this->errors );
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
-					self::log( $data[ 'order_id' ] . " Preparing to query MaxMind" );
-					wfRunHooks( 'PayflowGatewayValidate', array( &$this, &$data ) );
-					self::log( $data[ 'order_id' ] . ' Finished querying Maxmind' );
-
-					// if the transaction was flagged for review
-					if ( $this->action == 'review' ) {
-						// expose a hook for external handling of trxns flagged for review
-						wfRunHooks( 'PayflowGatewayReview', array( &$this, &$data ));
-					}
-
-					// if the transaction was flagged to be 'challenged'
-					if ( $this->action == 'challenge' ) {
-						// expose a hook for external handling of trxns flagged for challenge (eg captcha)
-						wfRunHooks( 'PayflowGatewayChallenge', array( &$this, &$data ) );
-					}
-
-					// if the transaction was flagged for rejection
-					if ( $this->action == 'reject' ) {
-						// expose a hook for external handling of trxns flagged for rejection
-						wfRunHooks( 'PayflowGatewayReject', array( &$this, &$data ) );
-
-						$this->fnPayflowDisplayDeclinedResults( '' );
-						$this->fnPayflowUnsetEditToken();
-					}
-
-					// if the transaction was flagged for processing
-					if ( $this->action == 'process' ) {
-						// expose a hook for external handling of trxns ready for processing
-						wfRunHooks( 'PayflowGatewayProcess', array( &$this, &$data ) );
-						$this->fnGlobalCollectProcessTransaction( $data, $payflow_data );
-					}
-
-					// expose a hook for any post processing
-					wfRunHooks( 'PayflowGatewayPostProcess', array( &$this, &$data ) );
+					
+					
+					
+					//This is just me screwing around. 
+					$dir = dirname( __FILE__ ) . '/';
+					require_once($dir . 'globalcollect.adapter.php');
+					$adapter = new GlobalCollectAdapter($data);
+					self::log("Data used for adapter init: " . print_r($data, true));
+					$result = $adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+					//$result = $adapter->do_transaction( 'TEST_CONNECTION' );
+					
+					$wgOut->addHTML($result['message']);
+		
+		
+					
+//					self::log( $data[ 'order_id' ] . " Preparing to query MaxMind" );
+//					wfRunHooks( 'PayflowGatewayValidate', array( &$this, &$data ) );
+//					self::log( $data[ 'order_id' ] . ' Finished querying Maxmind' );
+//
+//					// if the transaction was flagged for review
+//					if ( $this->action == 'review' ) {
+//						// expose a hook for external handling of trxns flagged for review
+//						wfRunHooks( 'PayflowGatewayReview', array( &$this, &$data ));
+//					}
+//
+//					// if the transaction was flagged to be 'challenged'
+//					if ( $this->action == 'challenge' ) {
+//						// expose a hook for external handling of trxns flagged for challenge (eg captcha)
+//						wfRunHooks( 'PayflowGatewayChallenge', array( &$this, &$data ) );
+//					}
+//
+//					// if the transaction was flagged for rejection
+//					if ( $this->action == 'reject' ) {
+//						// expose a hook for external handling of trxns flagged for rejection
+//						wfRunHooks( 'PayflowGatewayReject', array( &$this, &$data ) );
+//
+//						$this->fnPayflowDisplayDeclinedResults( '' );
+//						$this->fnPayflowUnsetEditToken();
+//					}
+//
+//					// if the transaction was flagged for processing
+//					if ( $this->action == 'process' ) {
+//						// expose a hook for external handling of trxns ready for processing
+//						wfRunHooks( 'PayflowGatewayProcess', array( &$this, &$data ) );
+//						$this->fnGlobalCollectProcessTransaction( $data, $payflow_data );
+//					}
+//
+//					// expose a hook for any post processing
+//					wfRunHooks( 'PayflowGatewayPostProcess', array( &$this, &$data ) );
 				}
 			} else {
 				// Display form for the first time
@@ -361,119 +375,12 @@ EOT;
 		} elseif ( preg_match( '/^6(?:011|5[0-9]{2})[0-9]{12}$/', $data[ 'card_num' ] ) ) { // discover
 			$data[ 'card' ] = 'discover';
 		} else { // an invalid credit card number was entered
-			$error_result = '1';
-			$error[ 'card_num' ] = wfMsg( 'globalcollect_gateway-error-msg-card-num' );
+		//TODO: Make sure this is uncommented when you commit for reals! 
+			//$error_result = '1';
+			//$error[ 'card_num' ] = wfMsg( 'globalcollect_gateway-error-msg-card-num' );
 		}
 		
 		return $error_result;
-	}
-
-	/**
-	 * Sends a name-value pair string to Payflow gateway
-	 *
-	 * @param $data Array: array of user input
-	 * @param $payflow_data Array: array of necessary Payflow variables to
-	 * 						include in string (i.e. Vendor, password)
-	 */
-	private function fnGlobalCollectProcessTransaction( $data, $payflow_data ) {
-		global $wgOut, $wgDonationTestingMode, $wgPayflowGatewayUseHTTPProxy, $wgPayflowGatewayHTTPProxy, $wgGlobalCollectTimeout;
-
-		// update contribution tracking
-		$this->updateContributionTracking( $data, defined( 'OWA' ) );
-
-		// create payflow query string, include string lengths
-		$queryArray = array(
-			'TRXTYPE' => $payflow_data['trxtype'],
-			'TENDER'  => $payflow_data['tender'],
-			'USER'  => $payflow_data['user'],
-			'VENDOR' => $payflow_data['vendor'],
-			'PARTNER' => $payflow_data['partner'],
-			'PWD' => $payflow_data['password'],
-			'ACCT'  => $data['card_num'],
-			'EXPDATE' => $data['expiration'],
-			'AMT' => $data['amount'],
-			'FIRSTNAME' => $data['fname'],
-			'LASTNAME' => $data['lname'],
-			'STREET' => $data['street'],
-			'CITY' => $data['city'],
-			'STATE' => $data['state'],
-			'COUNTRY' => $data['country'],
-			'ZIP' => $data['zip'],
-			'INVNUM' => $data['order_id'],
-			'CVV2' => $data['cvv'],
-			'CURRENCY' => $data['currency'],
-			'VERBOSITY' => $payflow_data['verbosity'],
-			'CUSTIP' => $payflow_data['user_ip'],
-		);
-
-		foreach ( $queryArray as $name => $value ) {
-			$query[] = $name . '[' . strlen( $value ) . ']=' . $value;
-		}
-
-		$queryString = implode( '&', $query );
-
-		$payflow_query = $queryString;
-
-		// assign header data necessary for the curl_setopt() function
-		$user_agent = Http::userAgent();
-		$headers[] = 'Content-Type: text/namevalue';
-		$headers[] = 'Content-Length : ' . strlen( $payflow_query );
-		$headers[] = 'X-VPS-Client-Timeout: 45';
-		$headers[] = 'X-VPS-Request-ID:' . $data['order_id'];
-		$ch = curl_init();
-		$paypalPostTo = isset ( $wgDonationTestingMode ) ? 'testingurl' : 'paypalurl';
-		curl_setopt( $ch, CURLOPT_URL, $payflow_data[ $paypalPostTo ] );
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $ch, CURLOPT_USERAGENT, $user_agent );
-		curl_setopt( $ch, CURLOPT_HEADER, 1 );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $ch, CURLOPT_TIMEOUT, $wgGlobalCollectTimeout );
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 0 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, $payflow_query );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST,  2 );
-		curl_setopt( $ch, CURLOPT_FORBID_REUSE, true );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
-
-		// set proxy settings if necessary
-		if ( $wgPayflowGatewayUseHTTPProxy ) {
-			curl_setopt( $ch, CURLOPT_HTTPPROXYTUNNEL, 1 );
-			curl_setopt( $ch, CURLOPT_PROXY, $wgPayflowGatewayHTTPProxy );
-		}
-
-		// As suggested in the PayPal developer forum sample code, try more than once to get a response
-		// in case there is a general network issue
-		$i = 1;
-
-		while ( $i++ <= 3 ) {
-			self::log( $data[ 'order_id' ] . ' Preparing to send transaction to GlobalCollect' );
-			$result = curl_exec( $ch );
-			$headers = curl_getinfo( $ch );
-
-			if ( $headers['http_code'] != 200 && $headers['http_code'] != 403 ) {
-				self::log( $data[ 'order_id' ] . ' Failed sending transaction to GlobalCollect, retrying' );
-				sleep( 1 );
-			} elseif ( $headers['http_code'] == 200 || $headers['http_code'] == 403 ) {
-				self::log( $data[ 'order_id' ] . ' Finished sending transaction to GlobalCollect' );
-				break;
-			}
-		}
-
-		if ( $headers['http_code'] != 200 ) {
-			$wgOut->addHTML( '<h3>No response from credit card processor.  Please try again later!</h3><p>' );
-			$when = time();
-			self::log( $data[ 'order_id' ] . ' No response from credit card processor: ' . curl_error( $ch ) );
-			curl_close( $ch );
-			return;
-		}
-
-		curl_close( $ch );
-
-		// get result string
-		$result = strstr( $result, 'RESULT' );
-
-		// parse string and display results to the user
-		$this->fnPayflowGetResults( $data, $result );
 	}
 
 	/**
@@ -1294,10 +1201,10 @@ EOT;
 	}
 	
 	public static function log( $msg, $identifier='globalcollect_gateway', $log_level=LOG_INFO ) {
-		global $wgPayflowGatewayUseSyslog;
+		global $wgGlobalCollectGatewayUseSyslog;
 		
 		// if we're not using the syslog facility, use wfDebugLog
-		if ( !$wgPayflowGatewayUseSyslog ) {
+		if ( !$wgGlobalCollectGatewayUseSyslog ) {
 			wfDebugLog( $identifier, $msg );
 			return;
 		}

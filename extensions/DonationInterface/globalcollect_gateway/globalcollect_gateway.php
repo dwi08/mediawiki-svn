@@ -18,6 +18,8 @@ $wgExtensionCredits['specialpage'][] = array(
         'url' => 'http://www.mediawiki.org/wiki/Extension:GlobalCollectGateway',
 );
 
+$wgGlobalCollectGatewayUseSyslog = false;
+
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
@@ -50,15 +52,15 @@ $wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
 
 // set defaults, these should be assigned in LocalSettings.php
 $wgGlobalCollectURL = 'https://ps.gcsip.nl/wdl/wdl';
-//$wgGlobalCollectTestingURL = 'https://pilot-globalcollect.paypal.com'; // GlobalCollect testing URL
+$wgGlobalCollectTestingURL = 'https://'; // GlobalCollect testing URL
 
 $wgGlobalCollectMerchantID = ''; // GlobalCollect ID
 
 // a boolean to determine if we're in testing mode
 $wgGlobalCollectGatewayTest = FALSE;
 
-// timeout in seconds for communicating with paypal
-$wgGlobalCollectTimeout = 5;
+// timeout in seconds for communicating with [gateway]
+$wgGlobalCollectTimeout = 2;
 
 /**
  * The default form to use
@@ -129,13 +131,6 @@ $wgGlobalCollectHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * @var string
  */
 $wgGlobalCollectAllowedHtmlForms = array(	$wgGlobalCollectHtmlFormDir . "/demo.html" );
-
-/**
- * Configure GlobalCollectproGateway to use syslog for log messages rather than wfDebugLog
- * 
- * @var bool
- */
-$wgGlobalCollectGatewayUseSyslog = false;
 
 /**
  * Configure price cieling and floor for valid contribution amount.  Values 
