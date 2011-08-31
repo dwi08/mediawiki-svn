@@ -40,7 +40,7 @@ class CodeReviewTest extends PHPUnit_Framework_TestCase {
 		
 		// $this->assertEquals( '', $formatter->link( '' ) );
 	}
-}
+
 	public function testCommentCanonicalUrl() {
 		# Fixture:
 		$repo = $this->createRepo();
