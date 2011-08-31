@@ -3034,7 +3034,7 @@ class User {
 
 	/**
 	 * Internal function to format the e-mail validation/invalidation URLs.
-	 * This uses $wgArticlePath directly as a quickie hack to use the
+	 * This uses a quickie hack to use the
 	 * hardcoded English names of the Special: pages, for ASCII safety.
 	 *
 	 * @note Since these URLs get dropped directly into emails, using the
@@ -3047,14 +3047,9 @@ class User {
 	 * @return \string Formatted URL
 	 */
 	protected function getTokenUrl( $page, $token ) {
-		global $wgCanonicalServer, $wgArticlePath;
-		
-		return $wgCanonicalServer .
-			str_replace(
-				'$1',
-				"Special:$page/$token",
-				$wgArticlePath
-			);
+		// Hack to bypass localization of 'Special:'
+		$title = Title::makeTitle( NS_MAIN, "Special:$page/$token" );
+		return $title->getCanonicalUrl();
 	}
 
 	/**
