@@ -53,7 +53,8 @@ class SpecialUploadCampaigns extends SpecialPage {
 				&& $wgRequest->getCheck( 'newcampaign' ) ) {
 					$wgOut->redirect( SpecialPage::getTitleFor( 'UploadCampaign', $wgRequest->getVal( 'newcampaign' ) )->getLocalURL() );
 			}
-			elseif ( count( $subPage ) == 2 && $subPage[0] == 'del' ) {
+			elseif ( count( $subPage ) == 2 && $subPage[0] == 'del'
+				&& $wgUser->matchEditToken( $wgRequest->getVal( 'wpEditToken' ) ) ) {
 				$campaign = UploadWizardCampaign::newFromName( $subPage[1], false );
 				$campaign->deleteFromDB();
 				$wgOut->redirect( $this->getTitle()->getLocalURL() );
@@ -144,17 +145,22 @@ class SpecialUploadCampaigns extends SpecialPage {
 		
 		$out->addHTML( Xml::openElement(
 			'table',
-			array( 'class' => 'wikitable', 'style' => 'width:400px' )
+			array( 'class' => 'wikitable sortable', 'style' => 'width:400px' )
 		) );
 		
 		$out->addHTML( 
-			'<tr>' .
+			'<thead><tr>' .
 				Html::element( 'th', array(), wfMsg( 'mwe-upwiz-campaigns-name' ) ) .
 				Html::element( 'th', array(), wfMsg( 'mwe-upwiz-campaigns-status' ) ) .
 				Html::element( 'th', array(), wfMsg( 'mwe-upwiz-campaigns-edit' ) ) .
 				Html::element( 'th', array(), wfMsg( 'mwe-upwiz-campaigns-delete' ) ) .
-			'</tr>'
+			'</tr></thead>'
 		);
+		
+		$out->addHTML( '<tbody>' );
+		
+		global $wgUser;
+		$editToken = array( 'wpEditToken' => $wgUser->editToken() );
 		
 		foreach ( $campaigns as $campaign ) {
 			$out->addHTML(
@@ -182,7 +188,7 @@ class SpecialUploadCampaigns extends SpecialPage {
 						Html::element( 
 							'a',
 							array(
-								'href' => SpecialPage::getTitleFor( 'UploadCampaigns', 'del/' . $campaign->campaign_name )->getLocalURL(),
+								'href' => SpecialPage::getTitleFor( 'UploadCampaigns', 'del/' . $campaign->campaign_name )->getLocalURL( $editToken ),
 								'onclick' => 'return confirm( "' . wfMsg( 'mwe-upwiz-campaigns-confdel' ) . '" )'
 							),
 							wfMsg( 'mwe-upwiz-campaigns-delete' )
@@ -192,6 +198,7 @@ class SpecialUploadCampaigns extends SpecialPage {
 			);
 		}
 		
+		$out->addHTML( '</tbody>' );
 		$out->addHTML( '</table>' );
 	}	
 
