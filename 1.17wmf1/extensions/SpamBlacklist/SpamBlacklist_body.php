@@ -36,7 +36,7 @@ class SpamBlacklist {
 			}
 		}
 
-		$thisHttp = $title->getFullUrl( 'action=raw' );
+		$thisHttp = wfExpandUrl( $title->getFullUrl( 'action=raw' ), PROTO_HTTP );
 		$thisHttpRegex = '/^' . preg_quote( $thisHttp, '/' ) . '(?:&.*)?$/';
 
 		foreach( $this->files as $fileName ) {

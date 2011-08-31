@@ -131,7 +131,7 @@ class SiteMatrix {
 		global $wgConf;
 		$dbname = $minor . $major;
 		$minor = str_replace( '_', '-', $minor );
-		return $wgConf->get( 'wgServer', $dbname, $major,
+		return $wgConf->get( 'wgCanonicalServer', $dbname, $major,
 			array( 'lang' => $minor, 'site' => $major ) );
 	}
 
