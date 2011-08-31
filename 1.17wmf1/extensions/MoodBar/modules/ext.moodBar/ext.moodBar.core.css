@@ -1,12 +1,14 @@
 /* Overlay styling */
 #mw-moodBar-overlayWrap {
 	position: absolute;
-	top: 4em;
+	top: 3.5em;
 	left: 10.2em;
 	min-width: 100px;
 	min-height: 100px;
 	background: #fafafa;
 	border: 1px solid #0645ad;
+	-moz-border-radius: 40px;
+	-webkit-border-radius: 40px;
 	border-radius: 40px;
 	box-shadow: 7px 7px 15px rgba(0, 0, 0, 0.5);
 	display: none;
@@ -14,10 +16,21 @@
 
 #mw-moodBar-overlay {
 	margin: 22px 22px;
+	position: relative;
+}
+
+#mw-moodBar-pokey {
+	position: absolute;
+	top: -59px;
+	left: 14px;
+	/* @embed */
+	background: transparent url(images/pokey.png) center top no-repeat;
+	width: 49px;
+	height: 37px;
 }
 
 .mw-moodBar-overlayTitle {
-	font-weight: bold;
+	font-size: 16px;
 	white-space: nowrap;
 }
 
@@ -51,9 +64,13 @@
 	font-size: 12px;
 }
 
-.mw-moodBar-form,
+
 .mw-moodBar-overlayWhatContent {
 	display: none;
+	overflow: hidden;
+}
+
+.mw-moodBar-form {
 	overflow: hidden;
 }
 
@@ -64,7 +81,7 @@
 }
 
 .mw-moodBar-formTitle {
-	font-size: 18px;
+	font-size: 16px;
 }
 
 .mw-moodBar-formInput {
