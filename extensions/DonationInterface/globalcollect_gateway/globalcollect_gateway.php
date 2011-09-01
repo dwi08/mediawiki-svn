@@ -2,20 +2,20 @@
 
 # Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
 if ( !defined( 'MEDIAWIKI' ) ) {
-        echo <<<EOT
+	echo <<<EOT
 To install GlobalCollect Gateway extension, put the following line in LocalSettings.php:
 require_once( "\$IP/extensions/globalcollect_gateway/globalcollect_gateway.php" );
 EOT;
-        exit( 1 );
+	exit( 1 );
 }
 
 // Extension credits that will show up on Special:Version
 $wgExtensionCredits['specialpage'][] = array(
-        'name' => 'GlobalCollect Gateway',
-        'author' => 'Four Kitchens',
-        'version' => '1.0.0',
-        'descriptionmsg' => 'globalcollect_gateway-desc',
-        'url' => 'http://www.mediawiki.org/wiki/Extension:GlobalCollectGateway',
+	'name' => 'GlobalCollect Gateway',
+	'author' => 'Four Kitchens',
+	'version' => '1.0.0',
+	'descriptionmsg' => 'globalcollect_gateway-desc',
+	'url' => 'http://www.mediawiki.org/wiki/Extension:GlobalCollectGateway',
 );
 
 $wgGlobalCollectGatewayUseSyslog = false;
@@ -48,14 +48,11 @@ $wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $dir . '../payflowpr
 $wgExtensionAliasesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.alias.php';
 $wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
 //$wgAjaxExportList[] = "fnGlobalCollectofofWork";
-
-
 // set defaults, these should be assigned in LocalSettings.php
 $wgGlobalCollectURL = 'https://ps.gcsip.nl/wdl/wdl';
 $wgGlobalCollectTestingURL = 'https://'; // GlobalCollect testing URL
 
 $wgGlobalCollectMerchantID = ''; // GlobalCollect ID
-
 // a boolean to determine if we're in testing mode
 $wgGlobalCollectGatewayTest = FALSE;
 
@@ -130,7 +127,7 @@ $wgGlobalCollectHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgGlobalCollectAllowedHtmlForms = array(	$wgGlobalCollectHtmlFormDir . "/demo.html" );
+$wgGlobalCollectAllowedHtmlForms = array( $wgGlobalCollectHtmlFormDir . "/demo.html" );
 
 /**
  * Configure price cieling and floor for valid contribution amount.  Values 

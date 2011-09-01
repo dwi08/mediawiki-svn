@@ -2,26 +2,26 @@
 
 # Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
 if ( !defined( 'MEDIAWIKI' ) ) {
-        echo <<<EOT
+	echo <<<EOT
 To install the DontaionInterface extension, put the following line in LocalSettings.php:
 require_once( "\$IP/extensions/DonationInterface/donationinterface.php" );
 EOT;
-        exit( 1 );
+	exit( 1 );
 }
 
 // Extension credits that will show up on Special:Version
 $wgExtensionCredits['specialpage'][] = array(
-        'name' => 'Donation Interface',
-        'author' => 'Katie Horn',
-        'version' => '1.0.0',
-        'descriptionmsg' => 'donationinterface-desc',
-        'url' => 'http://www.mediawiki.org/wiki/Extension:DonationInterface',
+	'name' => 'Donation Interface',
+	'author' => 'Katie Horn',
+	'version' => '1.0.0',
+	'descriptionmsg' => 'donationinterface-desc',
+	'url' => 'http://www.mediawiki.org/wiki/Extension:DonationInterface',
 );
 
 //This is going to be a little funky. 
 //Override this in LocalSettings.php BEFORE you include this file, if you want 
 //to disable gateways.
-if (!isset($wgDonationInterfaceEnabledGateways)){
+if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
 	$wgDonationInterfaceEnabledGateways = array(
 		'paypal',
 		'payflowpro',
@@ -33,54 +33,37 @@ $donationinterface_dir = dirname( __FILE__ ) . '/';
 
 require_once( $donationinterface_dir . 'donate_interface/donate_interface.php' );
 
-foreach ($wgDonationInterfaceEnabledGateways as $gateway){
+foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
 	//include 'em
 	require_once( $donationinterface_dir . $gateway . '_gateway/' . $gateway . '_gateway.php' );
 }
 
 //load all possible form classes
-$wgAutoloadClasses[ 'Gateway_Form' ] = $donationinterface_dir . 'gateway_forms/Form.php';
-$wgAutoloadClasses[ 'Gateway_Form_OneStepTwoColumn' ] = $donationinterface_dir . 'gateway_forms/OneStepTwoColumn.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumn' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumn.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnPayPal' ] = $donationinterface_dir . 'gateway_forms/TwoColumnPayPal.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter2' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter2.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter3' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter3.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter4' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter4.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter5' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter5.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter6' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter6.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoColumnLetter7' ] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter7.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumnLetter' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetter.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumnLetterCA' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetterCA.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumnLetter2' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetter2.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumnLetter3' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetter3.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumnPremium' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnPremium.php';
-$wgAutoloadClasses[ 'Gateway_Form_TwoStepTwoColumnPremiumUS' ] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnPremiumUS.php';
-$wgAutoloadClasses[ 'Gateway_Form_RapidHtml' ] = $donationinterface_dir . 'gateway_forms/RapidHtml.php';
-$wgAutoloadClasses[ 'Gateway_Form_SingleColumn' ] = $donationinterface_dir . 'gateway_forms/SingleColumn.php';
+$wgAutoloadClasses['Gateway_Form'] = $donationinterface_dir . 'gateway_forms/Form.php';
+$wgAutoloadClasses['Gateway_Form_OneStepTwoColumn'] = $donationinterface_dir . 'gateway_forms/OneStepTwoColumn.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumn'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumn.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnPayPal'] = $donationinterface_dir . 'gateway_forms/TwoColumnPayPal.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter2'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter2.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter3'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter3.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter4'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter4.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter5'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter5.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter6'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter6.php';
+$wgAutoloadClasses['Gateway_Form_TwoColumnLetter7'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter7.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnLetter'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetter.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnLetterCA'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetterCA.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnLetter2'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetter2.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnLetter3'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnLetter3.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnPremium'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnPremium.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnPremiumUS'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumnPremiumUS.php';
+$wgAutoloadClasses['Gateway_Form_RapidHtml'] = $donationinterface_dir . 'gateway_forms/RapidHtml.php';
+$wgAutoloadClasses['Gateway_Form_SingleColumn'] = $donationinterface_dir . 'gateway_forms/SingleColumn.php';
 
-
-
-
-
-
-
-
-
-
-
-
-//$wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
-//$wgExtensionMessagesFiles['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.i18n.php';
-//$wgExtensionAliasesFiles['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.alias.php';
-//$wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
-//$wgAjaxExportList[] = "fnGlobalCollectofofWork";
 
 
 // set defaults, these should be assigned in LocalSettings.php
 //$wgGlobalCollectURL = 'https://globalcollect.paypal.com';
 //$wgGlobalCollectTestingURL = 'https://pilot-globalcollect.paypal.com'; // Payflow testing URL
-
 //$wgGlobalCollectGatewayCSSVersion = 1;
 //
 //$wgGlobalCollectPartnerID = ''; // PayPal or original authorized reseller
@@ -167,7 +150,7 @@ $wgPayflowHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgPayflowAllowedHtmlForms = array(	$wgPayflowHtmlFormDir . "/demo.html" );
+$wgPayflowAllowedHtmlForms = array( $wgPayflowHtmlFormDir . "/demo.html" );
 
 /**
  * Configure PayflowproGateway to use syslog for log messages rather than wfDebugLog

@@ -2,45 +2,45 @@
 
 # Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
 if ( !defined( 'MEDIAWIKI' ) ) {
-        echo <<<EOT
+	echo <<<EOT
 To install PayflowPro Gateway extension, put the following line in LocalSettings.php:
 require_once( "\$IP/extensions/payflowpro_gateway/payflowpro_gateway.php" );
 EOT;
-        exit( 1 );
+	exit( 1 );
 }
 
 // Extension credits that will show up on Special:Version
 $wgExtensionCredits['specialpage'][] = array(
-        'name' => 'PayflowPro Gateway',
-        'author' => 'Four Kitchens',
-        'version' => '1.0.0',
-        'descriptionmsg' => 'payflowpro_gateway-desc',
-        'url' => 'http://www.mediawiki.org/wiki/Extension:PayflowProGateway',
+	'name' => 'PayflowPro Gateway',
+	'author' => 'Four Kitchens',
+	'version' => '1.0.0',
+	'descriptionmsg' => 'payflowpro_gateway-desc',
+	'url' => 'http://www.mediawiki.org/wiki/Extension:PayflowProGateway',
 );
 
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['PayflowProGateway'] = $dir . 'payflowpro_gateway.body.php';
 
-$wgAutoloadClasses[ 'PayflowProGateway_Form' ] = $dir . 'forms/Form.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_OneStepTwoColumn' ] = $dir . 'forms/OneStepTwoColumn.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumn' ] = $dir . 'forms/TwoStepTwoColumn.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnPayPal' ] = $dir . 'forms/TwoColumnPayPal.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter' ] = $dir . 'forms/TwoColumnLetter.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter2' ] = $dir . 'forms/TwoColumnLetter2.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter3' ] = $dir . 'forms/TwoColumnLetter3.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter4' ] = $dir . 'forms/TwoColumnLetter4.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter5' ] = $dir . 'forms/TwoColumnLetter5.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter6' ] = $dir . 'forms/TwoColumnLetter6.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoColumnLetter7' ] = $dir . 'forms/TwoColumnLetter7.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnLetter' ] = $dir . 'forms/TwoStepTwoColumnLetter.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnLetterCA' ] = $dir . 'forms/TwoStepTwoColumnLetterCA.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnLetter2' ] = $dir . 'forms/TwoStepTwoColumnLetter2.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnLetter3' ] = $dir . 'forms/TwoStepTwoColumnLetter3.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnPremium' ] = $dir . 'forms/TwoStepTwoColumnPremium.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_TwoStepTwoColumnPremiumUS' ] = $dir . 'forms/TwoStepTwoColumnPremiumUS.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_RapidHtml' ] = $dir . 'forms/RapidHtml.php';
-$wgAutoloadClasses[ 'PayflowProGateway_Form_SingleColumn' ] = $dir . 'forms/SingleColumn.php';
+$wgAutoloadClasses['PayflowProGateway_Form'] = $dir . 'forms/Form.php';
+$wgAutoloadClasses['PayflowProGateway_Form_OneStepTwoColumn'] = $dir . 'forms/OneStepTwoColumn.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumn'] = $dir . 'forms/TwoStepTwoColumn.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnPayPal'] = $dir . 'forms/TwoColumnPayPal.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter'] = $dir . 'forms/TwoColumnLetter.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter2'] = $dir . 'forms/TwoColumnLetter2.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter3'] = $dir . 'forms/TwoColumnLetter3.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter4'] = $dir . 'forms/TwoColumnLetter4.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter5'] = $dir . 'forms/TwoColumnLetter5.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter6'] = $dir . 'forms/TwoColumnLetter6.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter7'] = $dir . 'forms/TwoColumnLetter7.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter'] = $dir . 'forms/TwoStepTwoColumnLetter.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetterCA'] = $dir . 'forms/TwoStepTwoColumnLetterCA.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter2'] = $dir . 'forms/TwoStepTwoColumnLetter2.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter3'] = $dir . 'forms/TwoStepTwoColumnLetter3.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnPremium'] = $dir . 'forms/TwoStepTwoColumnPremium.php';
+$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnPremiumUS'] = $dir . 'forms/TwoStepTwoColumnPremiumUS.php';
+$wgAutoloadClasses['PayflowProGateway_Form_RapidHtml'] = $dir . 'forms/RapidHtml.php';
+$wgAutoloadClasses['PayflowProGateway_Form_SingleColumn'] = $dir . 'forms/SingleColumn.php';
 
 $wgExtensionMessagesFiles['PayflowProGateway'] = $dir . 'payflowpro_gateway.i18n.php';
 $wgExtensionMessagesFiles['PayflowProGatewayCountries'] = $dir . 'payflowpro_gateway.countries.i18n.php';
@@ -60,7 +60,6 @@ $wgPayflowProPartnerID = ''; // PayPal or original authorized reseller
 $wgPayflowProVendorID = ''; // paypal merchant login ID
 $wgPayflowProUserID = ''; // if one or more users are set up, authorized user ID, else same as VENDOR
 $wgPayflowProPassword = ''; // merchant login password
-
 // a boolean to determine if we're in testing mode
 $wgPayflowGatewayTest = FALSE;
 
@@ -140,7 +139,7 @@ $wgPayflowHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgPayflowAllowedHtmlForms = array(	$wgPayflowHtmlFormDir . "/demo.html" );
+$wgPayflowAllowedHtmlForms = array( $wgPayflowHtmlFormDir . "/demo.html" );
 
 /**
  * Configure PayflowproGateway to use syslog for log messages rather than wfDebugLog
@@ -166,8 +165,8 @@ $wgHooks['DonationInterface_Value'][] = 'pfpGatewayValue';
 $wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
 
 // enable the API
-$wgAPIModules[ 'pfp' ] = 'ApiPayflowProGateway';
-$wgAutoloadClasses[ 'ApiPayflowProGateway' ] = $dir . 'api_payflowpro_gateway.php';
+$wgAPIModules['pfp'] = 'ApiPayflowProGateway';
+$wgAutoloadClasses['ApiPayflowProGateway'] = $dir . 'api_payflowpro_gateway.php';
 
 function payflowGatewayConnection() {
 	global $wgPayflowGatewayDBserver, $wgPayflowGatewayDBname;
@@ -176,12 +175,12 @@ function payflowGatewayConnection() {
 	static $db;
 
 	if ( !$db ) {
-			$db = new DatabaseMysql(
-					$wgPayflowGatewayDBserver,
-					$wgPayflowGatewayDBuser,
-					$wgPayflowGatewayDBpassword,
-					$wgPayflowGatewayDBname );
-					$db->query( "SET names utf8" );
+		$db = new DatabaseMysql(
+				$wgPayflowGatewayDBserver,
+				$wgPayflowGatewayDBuser,
+				$wgPayflowGatewayDBpassword,
+				$wgPayflowGatewayDBname );
+		$db->query( "SET names utf8" );
 	}
 
 	return $db;
@@ -193,17 +192,17 @@ function payflowGatewayConnection() {
  */
 function pfpGatewayValue( &$values ) {
 	$values['payflow'] = array(
-			'gateway' => 'payflow',
-			'display_name' => 'Credit Card',
-			'form_value' => 'payflow',
-			'currencies' => array(
-					'GBP' => 'GBP: British Pound',
-					'EUR' => 'EUR: Euro',
-					'USD' => 'USD: U.S. Dollar',
-					'AUD' => 'AUD: Australian Dollar',
-					'CAD' => 'CAD: Canadian Dollar',
-					'JPY' => 'JPY: Japanese Yen',
-			),
+		'gateway' => 'payflow',
+		'display_name' => 'Credit Card',
+		'form_value' => 'payflow',
+		'currencies' => array(
+			'GBP' => 'GBP: British Pound',
+			'EUR' => 'EUR: Euro',
+			'USD' => 'USD: U.S. Dollar',
+			'AUD' => 'AUD: Australian Dollar',
+			'CAD' => 'CAD: Canadian Dollar',
+			'JPY' => 'JPY: Japanese Yen',
+		),
 	);
 
 	return true;
