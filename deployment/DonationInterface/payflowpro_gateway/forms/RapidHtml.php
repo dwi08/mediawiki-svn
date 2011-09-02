@@ -52,6 +52,10 @@ class PayflowProGateway_Form_RapidHtml extends PayflowProGateway_Form {
 		'@gateway', // => 'payflowpro', // this may need to become dynamic in the future
 		'@owa_session', // => $wgRequest->getText( 'owa_session', null ),
 		'@owa_ref', // => $owa_ref,
+		// Not actually data tokens, but available to you in html form:
+		// @captcha -> the captcha form
+		// @script_path -> maps to $wgScriptPath 
+		// @action -> generate correct form action for this form
 	);
 	
 	/**
@@ -77,16 +81,15 @@ class PayflowProGateway_Form_RapidHtml extends PayflowProGateway_Form {
 	
 	public function __construct( &$form_data, &$form_errors ) {
 		global $wgRequest;
-
 		parent::__construct( $form_data, $form_errors );
-		
+
 		$this->loadValidateJs();
 		
 		// set html-escaped filename.
 		$this->set_html_file_path( htmlspecialchars( $wgRequest->getText( 'ffname', 'default' )));
 		
 		// fix general form error messages so it's not an array of msgs
-		if ( count( $form_errors[ 'general' ] )) {
+		if ( is_array( $form_errors[ 'general' ] ) && count( $form_errors[ 'general' ] )) {
 			$general_errors = "";
 			foreach ( $form_errors[ 'general' ] as $general_error ) {
 				$general_errors .= "<p class='creditcard'>$general_error</p>";
@@ -118,14 +121,37 @@ class PayflowProGateway_Form_RapidHtml extends PayflowProGateway_Form {
 	 * @return string The HTML form with real data in it
 	 */
 	public function add_data( $html ) {
-		// replace data
-		$form = str_replace( $this->data_tokens, $this->form_data, $html );
+		global $wgScriptPath;
 
+		/**
+		 * This is a hack and should be replaced with something more performant.
+		 */
+		$form = $html;
+		
+		// handle form action
+		$form = str_replace( "@action", $this->getNoCacheAction(), $form );
+
+		// replace data
+		foreach ( $this->data_tokens as $token ) {
+			$key = substr( $token, 1, strlen( $token )); //get the token string w/o the '@'
+			if ( $key == 'emailAdd' ) $key = 'email';
+			if ( $key == 'currency_code' ) $key = 'currency';
+			if ( array_key_exists( $key, $this->form_data )) {
+				$replace = $this->form_data[ $key ];
+			} else {
+				$replace = '';
+			}
+			$form = str_replace( $token, $replace, $form );
+		}
+		
 		// replace errors
 		$form = str_replace( $this->error_tokens, $this->form_errors, $form );
 
 		// handle captcha
 		$form = str_replace( "@captcha", $this->getCaptchaHtml(), $form );
+		
+		// handle script path
+		$form = str_replace( "@script_path", $wgScriptPath, $form );
 		
 		$form = $this->fix_dropdowns( $form );
 		
