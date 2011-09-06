@@ -277,18 +277,12 @@ class SMGeoCoordsValue extends SMWDataValue {
 	 * @since 0.6
 	 */
 	public function getShortWikiText( $linked = null ) {
-		if ( $this->isValid() && ( $linked !== null ) && ( $linked !== false ) ) {
-			SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-			
-			// TODO: fix lang keys so they include the space and coordinates.
-			
-			return '<span class="smwttinline">' . htmlspecialchars( $this->m_caption ) . '<span class="smwttcontent">' .
-		        htmlspecialchars ( wfMsgForContent( 'maps-latitude' ) . ' ' . $this->coordinateSet['lat'] ) . '<br />' .
-		        htmlspecialchars ( wfMsgForContent( 'maps-longitude' ) . ' ' . $this->coordinateSet['lon'] ) .
-		        '</span></span>';
+		if ( !$this->isValid() ) {
+			return $this->getErrorText();
 		}
 		else {
-			return htmlspecialchars( $this->m_caption );
+			global $smgQPCoodFormat, $smgQPCoodDirectional;
+			return MapsCoordinateParser::formatCoordinates( $this->coordinateSet, $smgQPCoodFormat, $smgQPCoodDirectional );
 		}
 	}
 	
@@ -307,12 +301,18 @@ class SMGeoCoordsValue extends SMWDataValue {
 	 * @since 0.6
 	 */
 	public function getLongWikiText( $linked = null ) {
-		if ( !$this->isValid() ) {
-			return $this->getErrorText();
+		if ( $this->isValid() && ( $linked !== null ) && ( $linked !== false ) ) {
+			SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
+			
+			// TODO: fix lang keys so they include the space and coordinates.
+			
+			return '<span class="smwttinline">' . htmlspecialchars( $this->m_caption ) . '<span class="smwttcontent">' .
+		        htmlspecialchars ( wfMsgForContent( 'maps-latitude' ) . ' ' . $this->coordinateSet['lat'] ) . '<br />' .
+		        htmlspecialchars ( wfMsgForContent( 'maps-longitude' ) . ' ' . $this->coordinateSet['lon'] ) .
+		        '</span></span>';
 		}
 		else {
-			global $smgQPCoodFormat, $smgQPCoodDirectional;
-			return MapsCoordinateParser::formatCoordinates( $this->coordinateSet, $smgQPCoodFormat, $smgQPCoodDirectional );
+			return htmlspecialchars( $this->m_caption );
 		}
 	}
 

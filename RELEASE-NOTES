@@ -10,6 +10,7 @@ http://www.mediawiki.org/wiki/Extension:Semantic_Maps/Version_history#Semantic_M
 === Semantic Maps 0.7.8 ===
 
 * Fixed PostGres support for distance queries.
+* Switched around getShort and getLong Wiki/HTML text methods in the geocoords DV.
 
 === Semantic Maps 0.7.7 ===
 (2011-06-15)
