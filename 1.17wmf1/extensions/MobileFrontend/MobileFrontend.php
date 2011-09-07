@@ -65,7 +65,7 @@ $wgMFRemovableClasses = array(
 );
 
 class ExtMobileFrontend {
-	const VERSION = '0.5.51';
+	const VERSION = '0.5.60';
 
 	/**
 	 * @var DOMDocument
@@ -103,6 +103,7 @@ class ExtMobileFrontend {
 	public static $disableMobileSiteURL;
 	public static $viewNormalSiteURL;
 	public static $currentURL;
+	public static $displayNoticeId;
 	
 	public static $messageKeys = array( 
 		'mobile-frontend-show-button',
@@ -132,6 +133,16 @@ class ExtMobileFrontend {
 		'mobile-frontend-enable-images',
 		'mobile-frontend-featured-article',
 		'mobile-frontend-news-items',
+		'mobile-frontend-leave-feedback-title',
+		'mobile-frontend-leave-feedback-notice',
+		'mobile-frontend-leave-feedback-subject',
+		'mobile-frontend-leave-feedback-message',
+		'mobile-frontend-leave-feedback-cancel',
+		'mobile-frontend-leave-feedback-submit',
+		'mobile-frontend-leave-feedback-link-text',
+		'mobile-frontend-leave-feedback',
+		'mobile-frontend-feedback-page',
+		'mobile-frontend-leave-feedback-thanks',
 	);
 
 	public $itemsToRemove = array(
@@ -198,7 +209,16 @@ class ExtMobileFrontend {
 		self::$messages['mobile-frontend-copyright'] = $copyright;
 	
 		foreach ( self::$messageKeys as $messageKey ) {
-			self::$messages[$messageKey] = wfMsg( $messageKey );
+			
+			if ( $messageKey == 'mobile-frontend-leave-feedback-notice' ) {
+				$linkText = wfMsg( 'mobile-frontend-leave-feedback-link-text' );
+				$linkTarget = wfMsgNoTrans( 'mobile-frontend-feedback-page' );
+				self::$messages[$messageKey] = wfMsgExt( $messageKey, array( 'replaceafter' ), Html::element( 'a', array( 'href' => Title::newFromText( $linkTarget )->getFullURL(), 'target' => '_blank' ), $linkText ) );
+			} elseif ( $messageKey == 'mobile-frontend-feedback-page' ) {
+				self::$messages[$messageKey] = wfMsgNoTrans( $messageKey );
+			} else {
+				self::$messages[$messageKey] = wfMsg( $messageKey );
+			}
 		}
 
 		self::$dir = $wgContLang->getDir();
@@ -262,6 +282,7 @@ class ExtMobileFrontend {
 		$action = $wgRequest->getText( 'action' );
 		self::$disableImages = $wgRequest->getText( 'disableImages', 0 );
 		self::$enableImages = $wgRequest->getText( 'enableImages', 0 );
+		self::$displayNoticeId = $wgRequest->getText( 'noticeid', '' );
 
 		if ( self::$disableImages == 1 ) {
 			$wgRequest->response()->setcookie( 'disableImages', 1 );
@@ -315,6 +336,37 @@ class ExtMobileFrontend {
 
 		if ( self::$useFormat === 'mobile-wap' ) {
 			$this->contentFormat = 'WML';
+		}
+		
+		if ( $mobileAction == 'leave_feedback' ) {
+			echo $this->renderLeaveFeedbackXHTML();
+			wfProfileOut( __METHOD__ );
+			exit();
+		}
+
+		if ( $mobileAction == 'leave_feedback_post' ) {
+			
+			$this->getMsg();
+			
+			$subject = $wgRequest->getText( 'subject', '' );
+			$message = $wgRequest->getText( 'message', '' );
+			$token = $wgRequest->getText( 'edittoken', '' );
+			
+			$title = Title::newFromText( self::$messages['mobile-frontend-feedback-page'] );
+			
+			if ( $title->userCan( 'edit' ) &&
+			 	!$wgUser->isBlockedFrom( $title ) &&
+			 	$wgUser->matchEditToken( $token ) ) {
+				$article = new Article( $title, 0 );
+				$rawtext = $article->getRawText();
+				$rawtext .= "\n== {$subject} == \n {$message} ~~~~ \n <small>User agent: {$userAgent}</small> ";
+				$article->doEdit( $rawtext, '' );
+			}
+			
+			$location = str_replace( '&mobileaction=leave_feedback_post', '', $wgRequest->getFullRequestURL() . '&noticeid=1' );
+			$wgRequest->response()->header( 'Location: ' . $location );
+			wfProfileOut( __METHOD__ );
+			exit();
 		}
 
 		if ( $mobileAction == 'disable_mobile_site' ) {
@@ -436,6 +488,34 @@ class ExtMobileFrontend {
 			$wgOut->addVaryHeader( 'X-Device' );
 		}
 		wfProfileOut( __METHOD__ );
+	}
+	
+	private function renderLeaveFeedbackXHTML() {
+		global $wgRequest, $wgUser;
+		wfProfileIn( __METHOD__ );
+		if ( $this->contentFormat == 'XHTML' ) {
+			$this->getMsg();
+			$editToken = $wgUser->editToken();
+			
+			$htmlTitle = self::$messages['mobile-frontend-leave-feedback'];
+			$title = self::$messages['mobile-frontend-leave-feedback-title'];
+			$notice = self::$messages['mobile-frontend-leave-feedback-notice'];
+			$subject = self::$messages['mobile-frontend-leave-feedback-subject'];
+			$message = self::$messages['mobile-frontend-leave-feedback-message'];
+			$cancel = self::$messages['mobile-frontend-leave-feedback-cancel'];
+			$submit = self::$messages['mobile-frontend-leave-feedback-submit'];
+			
+			$feedbackPostURL = str_replace( '&mobileaction=leave_feedback', '', $wgRequest->getFullRequestURL() ) . '&mobileaction=leave_feedback_post';
+			require( 'views/layout/_search_webkit.html.php' );
+			require( 'views/layout/_footmenu_default.html.php' );
+			require( 'views/information/leave_feedback.html.php' );
+			$contentHtml = $leaveFeedbackHtml;
+			require( 'views/layout/application.html.php' );
+			wfProfileOut( __METHOD__ );
+			return $applicationHtml;
+		}
+		wfProfileOut( __METHOD__ );
+		return '';
 	}
 
 	private function renderOptInMobileSiteXHTML() {
@@ -663,6 +743,11 @@ class ExtMobileFrontend {
 		
 		$featuredArticle = $this->mainPage->getElementById( 'mp-tfa' );
 		$newsItems = $this->mainPage->getElementById( 'mp-itn' );
+		
+		$xpath = new DOMXpath( $this->mainPage );
+		$elements = $xpath->query( '//*[starts-with(@id, "mp-")]' );
+		
+		$commonAttributes = array('mp-tfa', 'mp-itn');
 
 		$content = $this->mainPage->createElement( 'div' );
 		$content->setAttribute( 'id', 'main_box' );
@@ -679,12 +764,24 @@ class ExtMobileFrontend {
 			$content->appendChild( $newsItems );
 		}
 		
+		foreach ( $elements as $element ) {
+			if ( $element->hasAttribute( 'id' ) ) {
+				$id = $element->getAttribute( 'id' );
+				if ( !in_array( $id, $commonAttributes ) ) {
+					$elementTitle = $element->hasAttribute( 'title' ) ? $element->getAttribute( 'title' ) : '';
+					$h2UnknownMobileSection = $this->mainPage->createElement( 'h2', $elementTitle );
+					$content->appendChild( $h2UnknownMobileSection );
+					$content->appendChild( $element );
+				}
+			}
+		}
+		
 		$contentHtml = $this->mainPage->saveXML( $content, LIBXML_NOEMPTYTAG );
 		wfProfileOut( __METHOD__ );
 		return $contentHtml;
 	}
 
-	public function DOMParse( $html ) {
+	public function DOMParse( $html ) {		
 		global $wgSitename;
 		wfProfileIn( __METHOD__ );
 		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
@@ -790,7 +887,7 @@ class ExtMobileFrontend {
 
 		if ( strlen( $contentHtml ) > 4000 && $this->contentFormat == 'XHTML'
 			&& self::$device['supports_javascript'] === true
-			&& empty( self::$search ) ) {
+			&& empty( self::$search ) && !self::$isMainPage ) {
 			$contentHtml =	$this->headingTransform( $contentHtml );
 		} elseif ( $this->contentFormat == 'WML' ) {
 			header( 'Content-Type: text/vnd.wap.wml' );
@@ -813,6 +910,13 @@ class ExtMobileFrontend {
 		}
 
 		if ( $this->contentFormat == 'XHTML' && self::$format != 'json' ) {
+			if ( !empty( self::$displayNoticeId ) ) {
+				$noticePagePath = 'views/notices/notice_' . intval( self::$displayNoticeId ) . '.html.php';
+				if ( file_exists( dirname(__FILE__) . '/' . $noticePagePath ) ) {
+					require( $noticePagePath );
+				}
+			}
+			
 			//header( 'Content-Type: application/xhtml+xml; charset=utf-8' );
 			require( 'views/layout/_search_webkit.html.php' );
 			require( 'views/layout/_footmenu_default.html.php' );
