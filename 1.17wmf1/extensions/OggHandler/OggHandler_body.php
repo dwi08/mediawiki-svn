@@ -515,8 +515,7 @@ class OggTransformOutput extends MediaTransformOutput {
 		OggTransformOutput::$serial++;
 
 		if ( substr( $this->videoUrl, 0, 4 ) != 'http' ) {
-			global $wgServer;
-			$url = $wgServer . $this->videoUrl;
+			$url = wfExpandUrl( $this->videoUrl, PROTO_CURRENT );
 		} else {
 			$url = $this->videoUrl;
 		}
