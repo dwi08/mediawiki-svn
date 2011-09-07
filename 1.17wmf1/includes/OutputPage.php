@@ -2669,9 +2669,10 @@ class OutputPage {
 
 			if ( $wgOverrideSiteFeed ) {
 				foreach ( $wgOverrideSiteFeed as $type => $feedUrl ) {
+					// Note, this->feedLink escapes the url.
 					$tags[] = $this->feedLink(
 						$type,
-						htmlspecialchars( $feedUrl ),
+						$feedUrl,
 						wfMsg( "site-{$type}-feed", $wgSitename )
 					);
 				}
