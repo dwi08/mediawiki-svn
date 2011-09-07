@@ -4,6 +4,9 @@ table#donation_amount {
 	border-collapse:collapse;
 	width: 394px;
 }
+table#donation_amount td {
+	border:1px solid #AAAAAA;
+}
 table#donation_amount td.amount_header {
 	background-color:#eef2f7;
 	font-size:90%;
@@ -25,8 +28,9 @@ div#payflowpro_gateway-donate-submessage {
 	line-height: 120%;
 }
 #payflow-table-donor td.label, #payflow-table-comment td.label, #payflow-table-cc td.label {
-	padding-right:0.5em;
+	padding-right: 0.5em;
 	width: 100px;
+	white-space: nowrap;
 }
 input#city {
 	width: 130px;
@@ -34,7 +38,9 @@ input#city {
 input#zip {
 	width: 55px;
 }
-
+input.hasplaceholder {
+	color: rgb(153, 153, 153);
+}
 .payflow-cc-form-section {
         float: none;
         margin-right: 0em;

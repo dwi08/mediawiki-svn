@@ -55,14 +55,42 @@ No processors are available.',
  * @author EugeneZelenko
  * @author Fryed-peach
  * @author Hamilton Abreu
+ * @author Jsoby
  * @author Siebrand
  */
 $messages['qqq'] = array(
 	'donate_interface' => '{{Identical|Support Wikimedia}}',
 	'donate_interface-desc' => '{{desc}}',
+	'donate_interface-intro' => 'Message shown above the donate field prompting that tells people what to do.',
+	'donate_interface-amount' => 'Shown above the field where you choose the amoun you want to donate.',
+	'donate_interface-other-amount' => 'Field shown before the field where you input a custom amount to donate (not one of the preset amounts).',
 	'donate_interface-currency' => '{{Identical|Currency}}',
+	'donate_interface-gateway' => 'Shown where you choose to pay with PayPal, credit card or another method.',
 	'donate_interface-submit-button' => '{{Identical|Donate}}',
+	'donate_interface-comment-message' => 'Shown before the box where you can input a custom message together with your donation.',
 	'donate_interface-comment-label' => '{{Identical|Comment}}',
+	'donate_interface-anon-message' => 'Next to check box.',
+	'donate_interface-email-agreement' => 'Next to check box.',
+	'donate_interface-comment-title' => 'Next to check box; whether the comment shall be publically viewable or not.',
+	'donate_interface-amount-error' => 'Error prompt if an invalid amount is entered (e.g. if the amount has letters in it).',
+	'donate_interface-processing-error' => 'Error message.',
+	'donate_interface-GBP' => 'Used in drop-down field for currency.',
+	'donate_interface-EUR' => 'Used in drop-down field for currency.',
+	'donate_interface-USD' => 'Used in drop-down field for currency.',
+	'donate_interface-AUD' => 'Used in drop-down field for currency.',
+	'donate_interface-CAD' => 'Used in drop-down field for currency.',
+	'donate_interface-CHF' => 'Used in drop-down field for currency.',
+	'donate_interface-CZK' => 'Used in drop-down field for currency.',
+	'donate_interface-DKK' => 'Used in drop-down field for currency.',
+	'donate_interface-HKD' => 'Used in drop-down field for currency.',
+	'donate_interface-HUF' => 'Used in drop-down field for currency.',
+	'donate_interface-JPY' => 'Used in drop-down field for currency.',
+	'donate_interface-NZD' => 'Used in drop-down field for currency.',
+	'donate_interface-NOK' => 'Used in drop-down field for currency.',
+	'donate_interface-PLN' => 'Used in drop-down field for currency.',
+	'donate_interface-SGD' => 'Used in drop-down field for currency.',
+	'donate_interface-SEK' => 'Used in drop-down field for currency.',
+	'donate_interface-ILS' => 'Used in drop-down field for currency.',
 );
 
 /** Afrikaans (Afrikaans)
@@ -119,6 +147,7 @@ $messages['anp'] = array(
 );
 
 /** Arabic (العربية)
+ * @author Meno25
  * @author OsamaK
  * @author ترجمان05
  */
@@ -134,7 +163,7 @@ $messages['ar'] = array(
 	'donate_interface-comment-message' => 'هل لديك رأي تريد مشاركته من العالم؟ اكتب ما يصل إلى 200 حرف هنا:',
 	'donate_interface-comment-label' => 'التعليق:',
 	'donate_interface-anon-message' => 'الرجاء سرد اسمي (بجانب تعليقي) في قائمة المتبرعين العلنية.',
-	'donate_interface-email-agreement' => 'أوافق على استلام أخبار من فترة إلى أخرى من مؤسسة ويكيميديا.',
+	'donate_interface-email-agreement' => 'أوافق على استلام رسائل من فترة إلى أخرى من مؤسسة ويكيميديا.',
 	'donate_interface-comment-title' => 'تعليق علني',
 	'donate_interface-amount-error' => '**من فضلك أدخل مقدارًا صالحًا**',
 	'donate_interface-processing-error' => 'ثمة خطأ أثناء معالجة طلبك. لا معالج متوفر.',
@@ -738,7 +767,17 @@ $messages['dsb'] = array(
  */
 $messages['el'] = array(
 	'donate_interface' => 'Υποστηρίξτε το Wikimedia',
+	'donate_interface-intro' => 'Παρακαλώ επιλέξτε μια μέθοδο πληρωμής, το ποσό και το νόμισμα.',
+	'donate_interface-amount' => 'Ποσό δωρεάς:',
+	'donate_interface-other-amount' => 'Άλλο ποσό',
 	'donate_interface-currency' => 'Νόμισμα:',
+	'donate_interface-gateway' => 'Μέθοδος πληρωμής:',
+	'donate_interface-submit-button' => 'Δωρήστε',
+	'donate_interface-comment-message' => 'Έχετε μια σκέψη να μοιραστείτε με τον κόσμο; Αναπτύξτε την με έως 200 ​​χαρακτήρες εδώ:',
+	'donate_interface-comment-label' => 'Σχόλιο:',
+	'donate_interface-anon-message' => 'Παρακαλείσθε να αναφέρετε το όνομά μου (δίπλα στο σχόλιο μου) στη δημόσια λίστα δωρητών.',
+	'donate_interface-email-agreement' => 'Συμφωνώ να λαμβάνω περιστασιακά ενημερώσεις μέσω e-mail από το Ίδρυμα Wikimedia.',
+	'donate_interface-comment-title' => 'Δημόσιο σχόλιο',
 	'donate_interface-amount-error' => '** Παρακαλώ εισάγετε έγκυρο ποσό **',
 	'donate_interface-GBP' => 'GBP: Βρετανική λίρα',
 	'donate_interface-EUR' => 'EUR: Ευρώ',
@@ -749,7 +788,14 @@ $messages['el'] = array(
 	'donate_interface-CZK' => 'CZK: Κορώνα Τσεχίας',
 	'donate_interface-DKK' => 'DKK: Κορόνα Δανίας',
 	'donate_interface-HKD' => 'HKD: Δολάριο Χονγκ Κονγκ',
+	'donate_interface-HUF' => 'HUF: Φιορίνι Ουγγαρίας',
 	'donate_interface-JPY' => 'JPY: Ιαπωνικό Γεν',
+	'donate_interface-NZD' => 'NZD: Δολάριο Νέας Ζηλανδίας',
+	'donate_interface-NOK' => 'ΝΟΚ: Κορόνα Νορβηγίας',
+	'donate_interface-PLN' => 'PLN: Ζλότι Πολωνίας',
+	'donate_interface-SGD' => 'SGD: Δολάριο Σιγκαπούρης',
+	'donate_interface-SEK' => 'SEK: Κορώνα Σουηδίας',
+	'donate_interface-ILS' => 'ILS: Ισραηλίτικο Σέκελ',
 );
 
 /** Esperanto (Esperanto)
@@ -1030,14 +1076,21 @@ Aucun processeur n’est disponible.',
  */
 $messages['frp'] = array(
 	'donate_interface' => 'Sotegnir Wikimedia',
+	'donate_interface-desc' => 'Pâge d’atèrrissâjo por los dons qu’apond los modulos de payement.',
+	'donate_interface-intro' => 'Volyéd chouèsir un moyen de payement, un montent et una monéya.',
 	'donate_interface-amount' => 'Montent du don :',
 	'donate_interface-other-amount' => 'Ôtro montent',
 	'donate_interface-currency' => 'Monéya :',
 	'donate_interface-gateway' => 'Moyen de payement :',
 	'donate_interface-submit-button' => 'Balyér',
+	'donate_interface-comment-message' => 'Vos souhètâd transmetre una pensâ u mondo ? Notâd tant qu’a 200 caractèros ce-aprés :',
 	'donate_interface-comment-label' => 'Comentèro :',
+	'donate_interface-anon-message' => 'Volyéd listar mon nom (aprés mon comentèro) dens la lista publica ux donators.',
+	'donate_interface-email-agreement' => 'J’accèpte de recêvre a l’ocasion des mèssâjos de la pârt de la Wikimedia Foundation.',
 	'donate_interface-comment-title' => 'Comentèro publico',
 	'donate_interface-amount-error' => '**Volyéd buchiér un montent valido**',
+	'donate_interface-processing-error' => 'Una èrror est arrevâ pendent lo trètament de voutra requéta.
+Nion procèssor est disponiblo.',
 	'donate_interface-GBP' => 'GBP : livra stèrlingue',
 	'donate_interface-EUR' => 'EUR : erô',
 	'donate_interface-USD' => 'USD : dolar amèriquen',
@@ -2487,14 +2540,21 @@ $messages['ru'] = array(
  */
 $messages['rue'] = array(
 	'donate_interface' => 'Підпора фонду Вікімедія',
+	'donate_interface-desc' => 'Цїлёва сторінка про приспівателїв, зєдночуюча інтерфейс ку платобным картам',
+	'donate_interface-intro' => 'Звольте собі способ плачіня, суму і валуту.',
 	'donate_interface-amount' => 'Сума приспевку:',
 	'donate_interface-other-amount' => 'Інша сума',
 	'donate_interface-currency' => 'Валута',
 	'donate_interface-gateway' => 'Способ платбы:',
 	'donate_interface-submit-button' => 'Пожертвовати',
+	'donate_interface-comment-message' => 'Хочете ся подїлити о даяку ідею зо світом? Напиште гев до 200 сімболів:',
 	'donate_interface-comment-label' => 'Коментарь:',
+	'donate_interface-anon-message' => 'Зазначте моє імя (вєдно з моїм коментарём) на публічнім списку донорів.',
+	'donate_interface-email-agreement' => 'Я згоден даколи обтримати новинкы з Фонду Вікімедія',
 	'donate_interface-comment-title' => 'Публічный коментарь',
 	'donate_interface-amount-error' => '**Просиме, задайте правилну суму**',
+	'donate_interface-processing-error' => 'Почас спрацованя вашого приспевку дішло ку хыбі.
+Не є доступный жаден платобный процесор.',
 	'donate_interface-GBP' => 'GBP: Брітаньска лібра',
 	'donate_interface-EUR' => 'EUR: Евро',
 	'donate_interface-USD' => 'USD: долар США',
@@ -2663,15 +2723,38 @@ Na voljo ni nobenega obdelovalca.',
 	'donate_interface-ILS' => 'ILS: izraelski šekel',
 );
 
-/** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
+ * @author Rancher
  * @author Михајло Анђелковић
  */
 $messages['sr-ec'] = array(
+	'donate_interface' => 'Подржите Викимедију',
+	'donate_interface-intro' => 'Изаберите начин плаћања, износ и валуту.',
+	'donate_interface-amount' => 'Износ прилога:',
+	'donate_interface-other-amount' => 'Други износ',
+	'donate_interface-currency' => 'Валута:',
+	'donate_interface-gateway' => 'Начин плаћања:',
+	'donate_interface-submit-button' => 'Приложи',
+	'donate_interface-comment-label' => 'Коментар:',
+	'donate_interface-comment-title' => 'Јавни коментар',
+	'donate_interface-amount-error' => '**Унесите исправан износ**',
+	'donate_interface-GBP' => 'GBP: британска фунта',
 	'donate_interface-EUR' => 'EUR: Евро',
 	'donate_interface-USD' => 'USD: Амерички долар',
 	'donate_interface-AUD' => 'AUD: Аустралијски долар',
 	'donate_interface-CAD' => 'CAD: Канадски долар',
+	'donate_interface-CHF' => 'CHF: швајцарски франак',
+	'donate_interface-CZK' => 'CZK: чешка круна',
+	'donate_interface-DKK' => 'DKK: данска круна',
+	'donate_interface-HKD' => 'HKD: хонгконшки долар',
+	'donate_interface-HUF' => 'HUF: мађарска форинта',
 	'donate_interface-JPY' => 'JPY: Јапански јен',
+	'donate_interface-NZD' => 'NZD: новозеландски долар',
+	'donate_interface-NOK' => 'NOK: норвешка круна',
+	'donate_interface-PLN' => 'PLN: пољска злота',
+	'donate_interface-SGD' => 'SGD: сигнапурски долар',
+	'donate_interface-SEK' => 'SEK: шведска круна',
+	'donate_interface-ILS' => 'ILS: израелски шекел',
 );
 
 /** Serbian Latin ekavian (‪Srpski (latinica)‬) */
@@ -2740,7 +2823,7 @@ $messages['sw'] = array(
 	'donate_interface-comment-message' => 'Una maoni unayotaka kugawana na dunia? Andika herufi hadi 200 hapa:',
 	'donate_interface-comment-label' => 'Maoni:',
 	'donate_interface-anon-message' => 'Tafadhali andika jina langu (kando ya maoni yangu) katika orodha ya wachangiaji inayotolewa kwa watu wote.',
-	'donate_interface-email-agreement' => 'Nakubali nipokee taarifa mara kwa mara kutoka Wikimedia Foundation.',
+	'donate_interface-email-agreement' => 'Nakubali nipokee taarifa mara kwa mara kwa barua pepe kutoka Wikimedia Foundation.',
 	'donate_interface-comment-title' => 'Maoni ya umma',
 	'donate_interface-amount-error' => '**Tafadhali ingiza kiasi halali**',
 	'donate_interface-processing-error' => 'Kumetokea hitilafu wakati wa uchakataji wa ombi lako.
@@ -3200,6 +3283,7 @@ $messages['zh-hans'] = array(
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
+ * @author Anakmalaysia
  * @author Horacewai2
  * @author Liangent
  * @author Pbdragonwang
@@ -3216,7 +3300,7 @@ $messages['zh-hant'] = array(
 	'donate_interface-comment-message' => '有想法希望與世界分享？請在此填寫不超過200字的評論：',
 	'donate_interface-comment-label' => '評論：',
 	'donate_interface-anon-message' => '請在我的評論邊上附上我的名字。',
-	'donate_interface-email-agreement' => '我同意收到維基媒體基金會不定期的最新訊息。',
+	'donate_interface-email-agreement' => '我同意接收來自維基媒體基金會偶爾的電子郵件更新。',
 	'donate_interface-comment-title' => '公開的評論',
 	'donate_interface-amount-error' => '**請輸入有效的數額**',
 	'donate_interface-processing-error' => '處理您的請求時出錯了。沒有可用的處理器。',
