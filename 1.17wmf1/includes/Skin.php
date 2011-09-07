@@ -939,7 +939,7 @@ class Skin extends Linker {
 
 	/** @return string Retrievied from HTML text */
 	function printSource() {
-		$url = htmlspecialchars( $this->mTitle->getFullURL() );
+		$url = htmlspecialchars( $this->mTitle->getCanonicalURL() );
 		return wfMsg( 'retrievedfrom', '<a href="' . $url . '">' . $url . '</a>' );
 	}
 
