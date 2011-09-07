@@ -42,6 +42,10 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	public function __construct() {
 		parent::__construct( 'GlobalCollectGateway' );
 		$this->errors = $this->getPossibleErrors();
+		
+		$dir = dirname( __FILE__ ) . '/';
+		require_once($dir . 'globalcollect.adapter.php');
+		$this->adapter = new GlobalCollectAdapter();
 	}
 
 	/**
@@ -51,8 +55,7 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	 */
 	public function execute( $par ) {
 		global $wgRequest, $wgOut, $wgScriptPath,
-			$wgPayFlowProGatewayCSSVersion,
-			$wgPayflowGatewaySalt;
+			$wgPayFlowProGatewayCSSVersion;
 
 		$wgOut->addExtensionStyle(
 			"{$wgScriptPath}/extensions/DonationInterface/gateway_forms/css/gateway.css?284" .
@@ -88,96 +91,19 @@ jQuery(document).ready(function() {
 EOT;
         $wgOut->addHeadItem( 'logolinkoverride', $js );
 
-		// find out if amount was a radio button or textbox, set amount
-		if ( isset( $_REQUEST['amount'] ) && preg_match( '/^\d+(\.(\d+)?)?$/', $wgRequest->getText( 'amount' ) ) ) {
-			$amount = $wgRequest->getText( 'amount' );
-		} elseif ( isset( $_REQUEST['amountGiven'] ) && preg_match( '/^\d+(\.(\d+)?)?$/', $wgRequest->getText( 'amountGiven' ) ) ) {
-			$amount = number_format( $wgRequest->getText( 'amountGiven' ), 2, '.', '' );
-		} elseif ( isset( $_REQUEST['amount'] ) ) {
-			$amount = '0.00';
-		} elseif ( $wgRequest->getText( 'amount' ) == '-1' ) {
-			$amount = $wgRequest->getText( 'amountOther' );
-		} else {
-			$amount = '0.00';
-		}
-
-		// track the number of attempts the user has made
-		$numAttempt = $wgRequest->getVal( 'numAttempt', 0 );
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		// Get array of default account values necessary for Payflow
-//		require_once( 'includes/payflowUser.inc' );
-
-//		$payflow_data = payflowUser();
-
-		// make a log entry if the user has submitted the cc form
-//		if ( $wgRequest->wasPosted() && $wgRequest->getText( 'process', 0 )) {
-//			self::log( $payflow_data[ 'order_id' ] . " Transaction initiated." );			
-//		} else {
-//			self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Initial credit card form request.", 'globalcollect_gateway', LOG_DEBUG );
-//		}
-
-		// if _cache_ is requested by the user, do not set a session/token; dynamic data will be loaded via ajax
-//		if ( $wgRequest->getText( '_cache_', false ) ) {
-//			self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Cache requested", 'globalcollect_gateway', LOG_DEBUG );
-//			$cache = true;
-//			$token = '';
-//			$token_match = false;
-//
-//			// if we have squid caching enabled, set the maxage
-//			global $wgUseSquid, $wgPayflowSMaxAge;
-//			if ( $wgUseSquid ) {
-//				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Setting s-max-age: " . $wgPayflowSMaxAge, 'globalcollect_gateway', LOG_DEBUG );
-//				$wgOut->setSquidMaxage( $wgPayflowSMaxAge );	
-//			}
-//		} else {
-//			$cache = false;
-//
-//			// establish the edit token to prevent csrf
-//			$token = self::fnPayflowEditToken( $wgPayflowGatewaySalt );
-//			
-//			self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " fnPayflowEditToken: " . $token, 'globalcollect_gateway', LOG_DEBUG );
-//			
-//			// match token
-//			$token_check = ( $wgRequest->getText( 'token' ) ) ? $wgRequest->getText( 'token' ) : $token;
-//			$token_match = $this->fnPayflowMatchEditToken( $token_check, $wgPayflowGatewaySalt );
-//			if ( $wgRequest->wasPosted() ) {
-//				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Submitted edit token: " . $wgRequest->getText( 'token', 'None' ), 'globalcollect_gateway', LOG_DEBUG);
-//				self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Token match: " . ($token_match ? 'true' : 'false' ), 'globalcollect_gateway', LOG_DEBUG );
-//			}
-//		}
-
-		$this->setHeaders();
-
-		// Populate form data
-//		$data = $this->fnGetFormData( $amount, $numAttempt, $token, $payflow_data['order_id'], $payflow_data['i_order_id'] );
-
-		
-		
-		
-		
-		
-		
-		
-		$data = $this->fnGetFormData( $amount, $numAttempt, null, null, null );
-
+		$this->setHeaders();	
+	
+		//TODO: This is short-circuiting what I really want to do here. 
+		//so stop it. 
+		$data = $this->adapter->getData();
 		
 		// dispatch forms/handling
-//		if ( $token_match ) {
-			if ( $data['payment_method'] == 'processed' ) {
+		if ( $this->adapter->checkTokens() ) {
+			if ( $this->adapter->posted && $data['payment_method'] == 'processed' ) {
+				$this->adapter->log("Posted and processed.");
 				
 				// increase the count of attempts
-				++$data['numAttempt'];
+				//++$data['numAttempt'];
 
 				// Check form for errors and redisplay with messages
 				$form_errors = $this->fnPayflowValidateForm( $data, $this->errors );
@@ -189,15 +115,26 @@ EOT;
 					
 					
 					
-					//This is just me screwing around. 
-					$dir = dirname( __FILE__ ) . '/';
-					require_once($dir . 'globalcollect.adapter.php');
-					$adapter = new GlobalCollectAdapter($data);
-					self::log("Data used for adapter init: " . print_r($data, true));
-					$result = $adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
-					//$result = $adapter->do_transaction( 'TEST_CONNECTION' );
+
+					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+					//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
 					
 					$wgOut->addHTML($result['message']);
+					if (!empty($result['errors'])){
+						$wgOut->addHTML("<ul>");
+						foreach ($result['errors'] as $code => $value){
+							$wgOut->addHTML("<li>Error $code: $value");
+						}
+						$wgOut->addHTML("</ul>");
+					}
+					
+					if (!empty($result['data'])){
+						$wgOut->addHTML("<ul>");
+						foreach ($result['data'] as $key => $value){
+							$wgOut->addHTML("<li>$key: $value");
+						}
+						$wgOut->addHTML("</ul>");
+					}
 		
 		
 					
@@ -238,16 +175,18 @@ EOT;
 				}
 			} else {
 				// Display form for the first time
+				$adapter::log("Not posted, or not processed. Showing the form for the first time.");
 				$this->fnPayflowDisplayForm( $data, $this->errors );
 			}		
-//		} else {
-//			if ( !$cache ) {
-//				// if we're not caching, there's a token mismatch
-//				$this->errors['general']['token-mismatch'] = wfMsg( 'globalcollect_gateway-token-mismatch' );
-//			}
-//			$this->fnPayflowDisplayForm( $data, $this->errors );
-//		}
+		} else {
+			if ( !$adapter->isCache() ) {
+				// if we're not caching, there's a token mismatch
+				$this->errors['general']['token-mismatch'] = wfMsg( 'globalcollect_gateway-token-mismatch' );
+			}
+			$this->fnPayflowDisplayForm( $data, $this->errors );
+		}
 	}
+	
 
 	/**
 	 * Build and display form to user
@@ -261,7 +200,7 @@ EOT;
 		global $wgOut, $wgRequest;
 
 		// save contrib tracking id early to track abondonment
-		if ( $data[ 'numAttempt' ] == '0' && ( !$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) {
+		if ( !empty($data) && ( $data[ 'numAttempt' ] == '0' && ( !$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) ) {
 			$tracked = $this->fnPayflowSaveContributionTracking( $data );
 			if ( !$tracked ) {
 				$when = time();
@@ -282,14 +221,14 @@ EOT;
 	 */
 	public function setFormClass( $class_name = NULL ) {
 		if ( !$class_name ) {
-			global $wgRequest, $wgPayflowGatewayDefaultForm;
-			$form_class = $wgRequest->getText( 'form_name', $wgPayflowGatewayDefaultForm );
+			global $wgRequest, $wgPayflowProGatewayDefaultForm;
+			$form_class = $wgRequest->getText( 'form_name', $wgPayflowProGatewayDefaultForm );
 
 			// make sure our form class exists before going on, if not try loading default form class
 			$class_name = "Gateway_Form_" . $form_class;
 			if ( !class_exists( $class_name ) ) {
 				$class_name_orig = $class_name;
-				$class_name = "Gateway_Form_" . $wgPayflowGatewayDefaultForm;
+				$class_name = "Gateway_Form_" . $wgPayflowProGatewayDefaultForm;
 				if ( !class_exists( $class_name ) ) {
 					throw new MWException( 'Could not load form ' . $class_name_orig . ' nor default form ' . $class_name );
 				}
@@ -316,7 +255,7 @@ EOT;
 	 * Checks posted form data for errors and returns array of messages
 	 */
 	private function fnPayflowValidateForm( &$data, &$error ) {
-		global $wgPayflowPriceFloor, $wgPayflowPriceCieling;
+		global $wgPayflowProGatewayPriceFloor, $wgPayflowProGatewayPriceCeiling;
 		
 		// begin with no errors
 		$error_result = '0';
@@ -350,8 +289,8 @@ EOT;
 
 		// check amount
 		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data[ 'amount' ] ) || 
-			( (float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) < (float) $wgPayflowPriceFloor || 
-				(float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) > (float) $wgPayflowPriceCieling ) ) {
+			( (float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) < (float) $wgPayflowProGatewayPriceFloor || 
+				(float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) > (float) $wgPayflowProGatewayPriceCeiling ) ) {
 			$error['invalidamount'] = wfMsg( 'globalcollect_gateway-error-msg-invalid-amount' );
 			$error_result = '1';
 		}
@@ -641,397 +580,6 @@ EOT;
 		$this->fnPayflowUnsetEditToken();
 	}
 
-	/**
-	 * Determine proper opt-out settings for contribution tracking
-	 *
-	 * because the form elements for comment anonymization and email opt-out
-	 * are backwards (they are really opt-in) relative to contribution_tracking
-	 * (which is opt-out), we need to reverse the values
-	 */
-	public static function determineOptOut( $data ) {
-		$optout[ 'optout' ] = ( isset( $data[ 'email-opt' ] ) && $data[ 'email-opt' ] == "1" ) ? '0' : '1';
-		$optout[ 'anonymous' ] = ( isset( $data[ 'comment-option' ] ) && $data[ 'comment-option' ] == "1" ) ? '0' : '1';
-		return $optout;
-	}
-
-	function fnPayflowSaveContributionTracking( &$data ) {
-		// determine opt-out settings
-		$optout = self::determineOptOut( $data );
-
-		$tracked_contribution = array(
-			'note' => $data['comment'],
-			'referrer' => $data['referrer'],
-			'anonymous' => $optout[ 'anonymous' ],
-			'utm_source' => $data['utm_source'],
-			'utm_medium' => $data['utm_medium'],
-			'utm_campaign' => $data['utm_campaign'],
-			'optout' => $optout[ 'optout' ],
-			'language' => $data['language'],
-			'ts' => '',
-		);
-
-		// insert tracking data and get the tracking id
-		$data['contribution_tracking_id'] = self::insertContributionTracking( $tracked_contribution );
-
-		if ( !$data[ 'contribution_tracking_id' ] ) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Insert a record into the contribution_tracking table
-	 *
-	 * @param array $tracking_data The array of tracking data to insert to contribution_tracking
-	 * 	NOTE: this should probably be run thru self::cleanTrackingData to ensure data integrity
-	 * @return mixed Contribution tracking ID or false on failure
-	 */
-	public static function insertContributionTracking( $tracking_data ) {
-		$db = payflowGatewayConnection();
-
-		if ( !$db ) { return false; }
-
-		// set the time stamp if it's not already set
-		if ( !isset( $tracking_data[ 'ts' ] ) || !strlen( $tracking_data[ 'ts' ] ) ) {
-			$tracking_data[ 'ts' ] = $db->timestamp();
-		}
-
-		// Store the contribution data
-		if ( $db->insert( 'contribution_tracking', $tracking_data ) ) {
-		 	return $db->insertId();
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Clean array of tracking data to contain valid fields
-	 *
-	 * Compares tracking data array to list of valid tracking fields and
-	 * removes any extra tracking fields/data.  Also sets empty values to
-	 * 'null' values.
-	 * @param array $tracking_data
-	 * @param bool $clean_opouts If true, form opt-out values will be run through $this->determineOptOut
-	 * 	for cleanup.
-	 */
-	public static function cleanTrackingData( $tracking_data, $clean_optouts = false ) {
-		// clean up the optout values if necessary
-		if ( $clean_optouts ) {
-			$optouts = self::determineOptOut( $tracking_data );
-			$tracking_data[ 'optout' ] = $optouts[ 'optout' ];
-			$tracking_data[ 'anonymous' ] = $optouts[ 'anonymous' ];
-		}
-
-		// define valid tracking fields
-		$tracking_fields = array(
-			'note',
-			'referrer',
-			'anonymous',
-			'utm_source',
-			'utm_medium',
-			'utm_campaign',
-			'optout',
-			'language',
-			'ts'
-		);
-
-		// loop through tracking data and clean it up
-		foreach ( $tracking_data as $key => $value ) {
-			// Make sure we only have valid fields
-			if ( !in_array( $key, $tracking_fields ) ) {
-				unset( $tracking_data[ $key ] );
-			}
-
-			// Make all empty strings NULL
-			if ( !strlen( $value ) ) {
-				$tracking_data[$key] = null;
-			}
-		}
-
-		return $tracking_data;
-	}
-
-	function fnPayflowReturnCurrencies() {
-
-		$payflowCurrencies = array(
-			'GBP' => 'GBP: British Pound',
-			'EUR' => 'EUR: Euro',
-			'USD' => 'USD: U.S. Dollar',
-			'AUD' => 'AUD: Australian Dollar',
-			'CAD' => 'CAD: Canadian Dollar',
-			'JPY' => 'JPY: Japanese Yen',
-		);
-
-		return $payflowCurrencies;
-	}
-
-	/**
-	 * Establish an 'edit' token to help prevent CSRF, etc
-	 *
-	 * We use this in place of $wgUser->editToken() b/c currently
-	 * $wgUser->editToken() is broken (apparently by design) for
-	 * anonymous users.  Using $wgUser->editToken() currently exposes
-	 * a security risk for non-authenticated users.  Until this is
-	 * resolved in $wgUser, we'll use our own methods for token
-	 * handling.
-	 *
-	 * @var mixed $salt
-	 * @return string
-	 */
-	public static function fnPayflowEditToken( $salt = '' ) {
-
-		// make sure we have a session open for tracking a CSRF-prevention token
-		self::fnPayflowEnsureSession();
-
-		if ( !isset( $_SESSION[ 'payflowEditToken' ] ) ) {
-			// generate unsalted token to place in the session
-			$token = self::fnPayflowGenerateToken();
-			$_SESSION[ 'payflowEditToken' ] = $token;
-		} else {
-			$token = $_SESSION[ 'payflowEditToken' ];
-		}
-
-		if ( is_array( $salt ) ) {
-			$salt = implode( "|", $salt );
-		}
-		return md5( $token . $salt ) . EDIT_TOKEN_SUFFIX;
-	}
-
-	/**
-	 * Generate a token string
-	 *
-	 * @var mixed $salt
-	 * @return string
-	 */
-	public static function fnPayflowGenerateToken( $salt = '' ) {
-		$token = dechex( mt_rand() ) . dechex( mt_rand() );
-		return md5( $token . $salt );
-	}
-
-	/**
-	 * Determine the validity of a token
-	 *
-	 * @var string $val
-	 * @var mixed $salt
-	 * @return bool
-	 */
-	function fnPayflowMatchEditToken( $val, $salt = '' ) {
-		// fetch a salted version of the session token
-		$sessionToken = self::fnPayflowEditToken( $salt );
-		if ( $val != $sessionToken ) {
-			wfDebug( "PayflowproGateway::fnPayflowMatchEditToken: broken session data\n" );
-		}
-		return $val == $sessionToken;
-	}
-
-	/**
-	 * Unset the payflow edit token from a user's session
-	 */
-	function fnPayflowUnsetEditToken() {
-		unset( $_SESSION[ 'payflowEditToken' ] );
-	}
-
-	/**
-	 * Ensure that we have a session set for the current user
-	 *
-	 * If we do not have a session set for the current user,
-	 * start the session.
-	 */
-	public static function fnPayflowEnsureSession() {
-		// if the session is already started, do nothing
-		if ( session_id() ) return;
-
-		// otherwise, fire it up using global mw function wfSetupSession
-		wfSetupSession();
-	}
-
-
-/**
-	 * Fetches ID for reference URL for OWA tracking
-	 * 
-	 * In the event that the URL is not already in the database, insert it
-	 * and return it's id.  Otehrewise, just return its id.
-	 * @param string $ref The reference URL
-	 * @return int The id for the reference URL - 0 if not found
-	 */
-	function get_owa_ref_id( $ref ) {
-		if ( !defined( 'OWA' ) ) {
-			return 0;
-		}
-		// Replication lag means sometimes a new event will not exist in the table yet
-		$dbw = payflowGatewayConnection();
-		$id_num = $dbw->selectField(
-			'contribution_tracking_owa_ref',
-			'id',
-			array( 'url' => $ref ),
-			__METHOD__
-		);
-		// Once we're on mysql 5, we can use replace() instead of this selectField --> insert or update hooey
-		if ( $id_num === false ) {
-			$dbw->insert(
-				'contribution_tracking_owa_ref',
-				array( 'url' => (string) $ref ),
-				__METHOD__
-			);
-			$id_num = $dbw->insertId();
-		}
-		return $id_num === false ? 0 : $id_num;
-	}
-
-	/**
-	 * Populate the $data array for the credit card form
-	 *
-	 * Provides a way to prepopulate the form with test data using $wgPayflowGatewayTest
-	 * @return array
-	 */
-	public function fnGetFormData( $amount, $numAttempt, $token, $order_id, $i_order_id=0 ) {
-		global $wgPayflowGatewayTest, $wgRequest;
-
-		// fetch ID for the url reference for OWA tracking
-		$owa_ref = $wgRequest->getText( 'owa_ref', null );
-		if( $owa_ref != null  && !is_numeric( $owa_ref )){
-			$owa_ref = $this->get_owa_ref_id( $owa_ref );
-		}
-
-		// if we're in testing mode and an action hasn't yet be specified, prepopulate the form
-		if ( !$wgRequest->getText( 'action', false ) && !$wgRequest->getText( 'process', 0 ) && $wgPayflowGatewayTest ) {
-			// define arrays of cc's and cc #s for random selection
-			$cards = array( 'american' );
-			$card_nums = array(
-				'american' => array(
-					378282246310005
-				),
-			);
-
-			// randomly select a credit card
-			$card_index = array_rand( $cards );
-
-			// randomly select a credit card #
-			$card_num_index = array_rand( $card_nums[ $cards[ $card_index ]] );
-
-			$data = array(
-				'amount' => ( $amount != "0.00" ) ? $amount : "35",
-				'amountOther' => '',
-				'email' => 'test@example.com',
-				'fname' => 'Tester',
-				'mname' => 'T.',
-				'lname' => 'Testington',
-				'street' => '548 Market St.',
-				'city' => 'San Francisco',
-				'state' => 'CA',
-				'zip' => '94104',
-				'country' => 'US',
-				'fname2' => 'Testy',
-				'lname2' => 'Testerson',
-				'street2' => '123 Telegraph Ave.',
-				'city2' => 'Berkeley',
-				'state2' => 'CA',
-				'zip2' => '94703',
-				'country2' => 'US',
-				'size' => 'small',
-				'premium_language' => 'es',
-				'card_num' => $card_nums[ $cards[ $card_index ]][ $card_num_index ],
-				'card' => $cards[ $card_index ],
-				'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
-				'cvv' => '001',
-				'currency' => 'USD',
-				'payment_method' => $wgRequest->getText( 'payment_method' ),
-				'order_id' => $order_id,
-				'i_order_id' => $i_order_id,
-				'numAttempt' => $numAttempt,
-				'referrer' => 'http://www.baz.test.com/index.php?action=foo&action=bar',
-				'utm_source' => self::getUtmSource(),
-				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
-				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
-				'language' => 'en',
-				'comment-option' => $wgRequest->getText( 'comment-option' ),
-				'comment' => $wgRequest->getText( 'comment' ),
-				'email-opt' => $wgRequest->getText( 'email-opt' ),
-				'test_string' => $wgRequest->getText( 'process' ),
-				'token' => $token,
-				'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
-				'data_hash' => $wgRequest->getText( 'data_hash' ),
-				'action' => $wgRequest->getText( 'action' ),
-				'gateway' => 'globalcollect',
-				'owa_session' => $wgRequest->getText( 'owa_session', null ),
-				'owa_ref' => $owa_ref,
-			);
-		} else {
-			$data = array(
-				'amount' => $amount,
-				'amountOther' => $wgRequest->getText( 'amountOther' ),
-				'email' => $wgRequest->getText( 'emailAdd' ),
-				'fname' => $wgRequest->getText( 'fname' ),
-				'mname' => $wgRequest->getText( 'mname' ),
-				'lname' => $wgRequest->getText( 'lname' ),
-				'street' => $wgRequest->getText( 'street' ),
-				'city' => $wgRequest->getText( 'city' ),
-				'state' => $wgRequest->getText( 'state' ),
-				'zip' => $wgRequest->getText( 'zip' ),
-				'country' => $wgRequest->getText( 'country' ),
-				'fname2' => $wgRequest->getText( 'fname' ),
-				'lname2' => $wgRequest->getText( 'lname' ),
-				'street2' => $wgRequest->getText( 'street' ),
-				'city2' => $wgRequest->getText( 'city' ),
-				'state2' => $wgRequest->getText( 'state' ),
-				'zip2' => $wgRequest->getText( 'zip' ),
-				/**
-				 * For legacy reasons, we might get a 0-length string passed into the form for country2.  If this happens, we need to set country2
-				 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
-				 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
-				 */
-				'country2' => ( strlen( $wgRequest->getText( 'country2' ))) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
-				'size' => $wgRequest->getText( 'size' ),
-				'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
-				'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
-				'card' => $wgRequest->getText( 'card' ),
-				'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
-				'cvv' => $wgRequest->getText( 'cvv' ),
-				'currency' => $wgRequest->getText( 'currency_code' ),
-				'payment_method' => $wgRequest->getText( 'payment_method' ),
-				'order_id' => $order_id,
-				'i_order_id' => $i_order_id,
-				'numAttempt' => $numAttempt,
-				'referrer' => ( $wgRequest->getVal( 'referrer' ) ) ? $wgRequest->getVal( 'referrer' ) : $wgRequest->getHeader( 'referer' ),
-				'utm_source' => self::getUtmSource(),
-				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
-				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
-				// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
-				'language' => $wgRequest->getText( 'uselang', $wgRequest->getText( 'language' ) ),
-				'comment-option' => $wgRequest->getText( 'comment-option' ),
-				'comment' => $wgRequest->getText( 'comment' ),
-				'email-opt' => $wgRequest->getText( 'email-opt' ),
-				'test_string' => $wgRequest->getText( 'process' ), // for showing payflow string during testing
-				'token' => $token,
-				'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
-				'data_hash' => $wgRequest->getText( 'data_hash' ),
-				'action' => $wgRequest->getText( 'action' ),
-				'gateway' => 'globalcollect', // this may need to become dynamic in the future
-				'owa_session' => $wgRequest->getText( 'owa_session', null ),
-				'owa_ref' => $owa_ref,
-			);
-		}
-		
-		// sanitize user input
-		array_walk( $data, array( $this, 'sanitizeInput' ) );
-
-		return $data;
-	}
-
-	/**
-	 * Sanitize user input
-	 * 
-	 * Intended to be used with something like array_walk
-	 * 
-	 * @param $value The value of the array
-	 * @param $key The key of the array
-	 * @param $flags The flag constant for htmlspecialchars
-	 * @param $double_encode Whether or not to double-encode strings
-	 */
-	public function sanitizeInput( &$value, $key, $flags=ENT_COMPAT, $double_encode=false ) {
-		$value = htmlspecialchars( $value, $flags, 'UTF-8', $double_encode );
-	}
-	
 	public function getPossibleErrors() {
 		return array(
 			'general' => '',
@@ -1051,120 +599,6 @@ EOT;
 		);
 	}
 
-	/**
-	 * Get the utm_source string
-	 *
-	 * Checks to see if the utm_source is set properly for the credit card
-	 * form including any cc form variants (identified by utm_source_id).  If
-	 * anything cc form related is out of place for the utm_source, this
-	 * will fix it.
-	 *
-	 * the utm_source is structured as: banner.landing_page.payment_instrument
-	 *
-	 * @param string $utm_source The utm_source for tracking - if not passed directly,
-	 * 	we try to figure it out from the request object
-	 * @param int $utm_source_id The utm_source_id for tracking - if not passed directly,
-	 * 	we try to figure it out from the request object
-	 * @return string The full utm_source
-	 */
-	public static function getUtmSource( $utm_source = null, $utm_source_id = null ) {
-		global $wgRequest;
-
-		/**
-		 * fetch whatever was passed in as the utm_source
-		 *
-		 * if utm_source was not passed in as a param, we try to divine it from
-		 * the request.  if it's not set there, no big deal, we'll just be
-		 * missing some tracking data.
-		 */
-		if ( is_null( $utm_source ) ) {
-			$utm_source = $wgRequest->getText( 'utm_source' );
-		}
-
-		/**
-		 * if we have a utm_source_id, then the user is on a single-step credit card form.
-		 * if that's the case, we treat the single-step credit card form as a landing page,
-		 * which we label as cc#, where # = the utm_source_id
-		 */
-		if ( is_null( $utm_source_id ) ) {
-			$utm_source_id = $wgRequest->getVal( 'utm_source_id', 0 );
-		}
-
-		// this is how the CC portion of the utm_source should be defined
-		$correct_cc_source = ( $utm_source_id ) ? 'cc' . $utm_source_id . '.cc' : 'cc';
-
-		// check to see if the utm_source is already correct - if so, return
-		if ( preg_match( '/' . str_replace( ".", "\.", $correct_cc_source ) . '$/', $utm_source ) ) {
-			return $utm_source;
-		}
-
-		// split the utm_source into its parts for easier manipulation
-		$source_parts = explode( ".", $utm_source );
-
-		// if there are no sourceparts element, then the banner portion of the string needs to be set.
-		// since we don't know what it is, set it to an empty string
-		if ( !count( $source_parts ) ) $source_parts[0] = '';
-
-		// if the utm_source_id is set, set the landing page portion of the string to cc#
-		$source_parts[1] = ( $utm_source_id ) ? 'cc' . $utm_source_id : ( isset( $source_parts[1] ) ? $source_parts[1] : '' );
-
-		// the payment instrument portion should always be 'cc' if this method is being accessed
-		$source_parts[2] = 'cc';
-
-		// return a reconstructed string
-		return implode( ".", $source_parts );
-	}
-
-	/**
-	 * Update contribution_tracking table
-	 *
-	 * @param array $data Form data
-	 * @param bool $force If set to true, will ensure that contribution tracking is updated
-	 */
-	public function updateContributionTracking( &$data, $force = false ) {
-		// ony update contrib tracking if we're coming from a single-step landing page
-		// which we know with cc# in utm_source or if force=true or if contribution_tracking_id is not set
-		if ( !$force &&
-				!preg_match( "/cc[0-9]/", $data[ 'utm_source' ] ) &&
-				is_numeric( $data[ 'contribution_tracking_id' ] ) ) {
-			return;
-		}
-
-
-		// determine opt-out settings
-		$optout = self::determineOptOut( $data );
-
-		$db = payflowGatewayConnection();
-
-		if ( !$db ) { return true ; }
-
-		$tracked_contribution = array(
-			'note' => $data['comment'],
-			'referrer' => $data['referrer'],
-			'anonymous' => $optout[ 'anonymous' ],
-			'utm_source' => $data['utm_source'],
-			'utm_medium' => $data['utm_medium'],
-			'utm_campaign' => $data['utm_campaign'],
-			'owa_session' => $data['owa_session'],
-			'owa_ref' => $data['owa_ref'],
-			'optout' => $optout[ 'optout' ],
-			'language' => $data['language'],
-		);
-
-		// Make all empty strings NULL
-		foreach ( $tracked_contribution as $key => $value ) {
-			if ( $value === '' ) {
-				$tracked_contribution[$key] = null;
-			}
-		}
-
-		// if contrib tracking id is not already set, we need to insert the data, otherwise update
-		if ( !$data[ 'contribution_tracking_id' ] ) {
-			$data[ 'contribution_tracking_id' ] = $this->insertContributionTracking( $tracked_contribution );
-		} else {
-			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $data[ 'contribution_tracking_id' ] ) );
-		}
-	}
 
 	/**
 	 * Handle redirection of form content to PayPal
@@ -1175,10 +609,10 @@ EOT;
 	 *  This would make this a lot less hack-ish
 	 */
 	public function paypalRedirect( &$data ) {
-		global $wgPayflowGatewayPaypalURL, $wgOut;
+		global $wgPayflowProGatewayPaypalURL, $wgOut;
 
 		// if we don't have a URL enabled throw a graceful error to the user
-		if ( !strlen( $wgPayflowGatewayPaypalURL ) ) {
+		if ( !strlen( $wgPayflowProGatewayPaypalURL ) ) {
 			$this->errors['general'][ 'nopaypal' ] = wfMsg( 'payflow_gateway-error-msg-nopaypal' );
 			return;
 		}
@@ -1194,10 +628,10 @@ EOT;
 		 */
 		$this->updateContributionTracking( $data, true );
 
-		$wgPayflowGatewayPaypalURL .= "/" . $data[ 'language' ] . "?gateway=paypal";
+		$wgPayflowProGatewayPaypalURL .= "/" . $data[ 'language' ] . "?gateway=paypal";
 		
 		// submit the data to the paypal redirect URL
-		$wgOut->redirect( $wgPayflowGatewayPaypalURL . '&' . http_build_query( $data ) );
+		$wgOut->redirect( $wgPayflowProGatewayPaypalURL . '&' . http_build_query( $data ) );
 	}
 	
 	public static function log( $msg, $identifier='globalcollect_gateway', $log_level=LOG_INFO ) {

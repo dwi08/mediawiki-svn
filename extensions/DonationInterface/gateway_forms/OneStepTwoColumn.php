@@ -192,14 +192,14 @@ EOT;
 	}
 
 	protected function generateBannerHeader() {
-		global $wgPayflowGatewayHeader, $wgOut, $wgRequest;
+		global $wgPayflowProGatewayHeader, $wgOut, $wgRequest;
 		$template = '';
 
 		// intro text
 		if ( $wgRequest->getText( 'masthead', false ) ) {
 			$template = $wgOut->parse( '{{' . $wgRequest->getText( 'masthead' ) . '/' . $this->form_data[ 'language' ] . '}}' );
-		} elseif ( $wgPayflowGatewayHeader ) {
-			$header = str_replace( '@language', $this->form_data[ 'language' ], $wgPayflowGatewayHeader );
+		} elseif ( $wgPayflowProGatewayHeader ) {
+			$header = str_replace( '@language', $this->form_data[ 'language' ], $wgPayflowProGatewayHeader );
 			$template = $wgOut->parse( $header );
 		}
 

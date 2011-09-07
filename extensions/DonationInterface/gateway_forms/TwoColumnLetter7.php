@@ -192,7 +192,7 @@ EOT;
 	}
 
 	protected function generateBillingFields() {
-		global $wgScriptPath, $wgPayflowGatewayPaypalURL, $wgRequest;
+		global $wgScriptPath, $wgPayflowProGatewayPaypalURL, $wgRequest;
 		$scriptPath = "$wgScriptPath/extensions/DonationInterface/payflowpro_gateway/includes";
 
 		$form = '';

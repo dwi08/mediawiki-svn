@@ -58,7 +58,7 @@ class Gateway_Form_TwoColumnPayPal extends Gateway_Form_OneStepTwoColumn {
 	}
 
 	protected function generatePersonalFields() {
-		global $wgPayflowGatewayPaypalURL;
+		global $wgPayflowProGatewayPaypalURL;
 		$form = '';
 
 		// name
@@ -83,7 +83,7 @@ class Gateway_Form_TwoColumnPayPal extends Gateway_Form_OneStepTwoColumn {
 		$form .= $this->getAmountField();
 
 		// PayPal button
-		if ( strlen( $wgPayflowGatewayPaypalURL ) ) {
+		if ( strlen( $wgPayflowProGatewayPaypalURL ) ) {
 			$form .= $this->getPaypalButton();
 		}
 

@@ -23,25 +23,6 @@ $wgGlobalCollectGatewayUseSyslog = false;
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form' ] = $dir . 'forms/Form.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_OneStepTwoColumn' ] = $dir . 'forms/OneStepTwoColumn.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumn' ] = $dir . 'forms/TwoStepTwoColumn.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnPayPal' ] = $dir . 'forms/TwoColumnPayPal.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter' ] = $dir . 'forms/TwoColumnLetter.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter2' ] = $dir . 'forms/TwoColumnLetter2.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter3' ] = $dir . 'forms/TwoColumnLetter3.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter4' ] = $dir . 'forms/TwoColumnLetter4.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter5' ] = $dir . 'forms/TwoColumnLetter5.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter6' ] = $dir . 'forms/TwoColumnLetter6.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoColumnLetter7' ] = $dir . 'forms/TwoColumnLetter7.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumnLetter' ] = $dir . 'forms/TwoStepTwoColumnLetter.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumnLetterCA' ] = $dir . 'forms/TwoStepTwoColumnLetterCA.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumnLetter2' ] = $dir . 'forms/TwoStepTwoColumnLetter2.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumnLetter3' ] = $dir . 'forms/TwoStepTwoColumnLetter3.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumnPremium' ] = $dir . 'forms/TwoStepTwoColumnPremium.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_TwoStepTwoColumnPremiumUS' ] = $dir . 'forms/TwoStepTwoColumnPremiumUS.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_RapidHtml' ] = $dir . 'forms/RapidHtml.php';
-//$wgAutoloadClasses[ 'GlobalCollectGateway_Form_SingleColumn' ] = $dir . 'forms/SingleColumn.php';
 $wgExtensionMessagesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.i18n.php';
 $wgExtensionMessagesFiles['GlobalCollectGatewayCountries'] = $dir . '../payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
 $wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $dir . '../payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
@@ -49,15 +30,15 @@ $wgExtensionAliasesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway
 $wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
 //$wgAjaxExportList[] = "fnGlobalCollectofofWork";
 // set defaults, these should be assigned in LocalSettings.php
-$wgGlobalCollectURL = 'https://ps.gcsip.nl/wdl/wdl';
-$wgGlobalCollectTestingURL = 'https://'; // GlobalCollect testing URL
+$wgGlobalCollectGatewayURL = 'https://ps.gcsip.nl/wdl/wdl';
+$wgGlobalCollectGatewayTestingURL = 'https://'; // GlobalCollect testing URL
 
-$wgGlobalCollectMerchantID = ''; // GlobalCollect ID
+$wgGlobalCollectGatewayMerchantID = ''; // GlobalCollect ID
 // a boolean to determine if we're in testing mode
 $wgGlobalCollectGatewayTest = FALSE;
 
 // timeout in seconds for communicating with [gateway]
-$wgGlobalCollectTimeout = 2;
+$wgGlobalCollectGatewayTimeout = 2;
 
 /**
  * The default form to use
@@ -112,13 +93,13 @@ $wgGlobalCollectGatewayHTTPProxy = '';
  * the s-max-age for cached requests.
  * @var int Time in seconds
  */
-$wgGlobalCollectSMaxAge = 6000;
+$wgGlobalCollectGatewaySMaxAge = 6000;
 
 /**
  * Directory for HTML forms (used by RapidHtml form class)
  * @var string
  */
-$wgGlobalCollectHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
+$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
 
 /**
  * An array of allowed HTML forms.
@@ -127,11 +108,11 @@ $wgGlobalCollectHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgGlobalCollectAllowedHtmlForms = array( $wgGlobalCollectHtmlFormDir . "/demo.html" );
+$wgGlobalCollectGatewayAllowedHtmlForms = array( $wgGlobalCollectGatewayHtmlFormDir . "/demo.html" );
 
 /**
  * Configure price cieling and floor for valid contribution amount.  Values 
  * should be in USD.
  */
-$wgGlobalCollectPriceFloor = '1.00';
-$wgGlobalCollectPriceCieling = '10000.00';
+$wgGlobalCollectGatewayPriceFloor = '1.00';
+$wgGlobalCollectGatewayPriceCieling = '10000.00';

@@ -50,9 +50,9 @@ abstract class Gateway_Form {
 	abstract function getForm();
 
 	public function __construct( &$data, &$error ) {
-		global $wgPayflowGatewayTest, $wgOut;
+		global $wgDonationInterfaceTest, $wgOut;
 
-		$this->test = $wgPayflowGatewayTest;
+		$this->test = $wgDonationInterfaceTest;
 		$this->form_data =& $data;
 		$this->form_errors =& $error;
 
@@ -410,15 +410,15 @@ abstract class Gateway_Form {
 	}
 
 	protected function generateBannerHeader() {
-		global $wgPayflowGatewayHeader, $wgOut, $wgRequest;
+		global $wgPayflowProGatewayHeader, $wgOut, $wgRequest;
 
 		$template = '';
 
 		// intro text
 		if ( $wgRequest->getText( 'masthead', false ) ) {
 			$template = $wgOut->parse( '{{' . $wgRequest->getText( 'masthead' ) . '/' . $this->form_data[ 'language' ] . '}}' );
-		} elseif ( $wgPayflowGatewayHeader ) {
-			$header = str_replace( '@language', $this->form_data[ 'language' ], $wgPayflowGatewayHeader );
+		} elseif ( $wgPayflowProGatewayHeader ) {
+			$header = str_replace( '@language', $this->form_data[ 'language' ], $wgPayflowProGatewayHeader );
 			$template = $wgOut->parse( $header );
 		}
 
@@ -468,8 +468,8 @@ abstract class Gateway_Form {
 	}
 
 	protected function getCardnumberField() {
-		global $wgPayflowGatewayTest;
-		$card_num = ( $wgPayflowGatewayTest ) ? $this->form_data[ 'card_num' ] : '';
+		global $wgDonationInterfaceTest;
+		$card_num = ( $wgDonationInterfaceTest ) ? $this->form_data[ 'card_num' ] : '';
 		$form = '';
 		if ( $this->form_errors['card_num'] ) {
 			$form .= '<tr>';
@@ -490,8 +490,8 @@ abstract class Gateway_Form {
 	}
 
 	protected function getCvvField() {
-		global $wgPayflowGatewayTest;
-		$cvv = ( $wgPayflowGatewayTest ) ? $this->form_data[ 'cvv' ] : '';
+		global $wgDonationInterfaceTest;
+		$cvv = ( $wgDonationInterfaceTest ) ? $this->form_data[ 'cvv' ] : '';
 
 		$form = '<tr>';
 		$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['cvv'] . '</span></td>';
@@ -685,14 +685,14 @@ abstract class Gateway_Form {
 	 * For displaying when a user does not have Javascript enabled in their browser.
 	 */
 	protected function getNoScript() {
-		global $wgPayflowGatewayNoScriptRedirect;
+		global $wgPayflowProGatewayNoScriptRedirect;
 
 		$form = '<noscript>';
 		$form .= '<div id="noscript">';
 		$form .= '<p id="noscript-msg">' . wfMsg( 'payflowpro_gateway-noscript-msg' ) . '</p>';
-		if ( $wgPayflowGatewayNoScriptRedirect ) {
+		if ( $wgPayflowProGatewayNoScriptRedirect ) {
 			$form .= '<p id="noscript-redirect-msg">' . wfMsg( 'payflowpro_gateway-noscript-redirect-msg' ) . '</p>';
-			$form .= '<p id="noscript-redirect-link"><a href="' . $wgPayflowGatewayNoScriptRedirect . '">' . $wgPayflowGatewayNoScriptRedirect . '</a></p>';
+			$form .= '<p id="noscript-redirect-link"><a href="' . $wgPayflowProGatewayNoScriptRedirect . '">' . $wgPayflowProGatewayNoScriptRedirect . '</a></p>';
 		}
 		$form .= '</div>';
 		$form .= '</noscript>';

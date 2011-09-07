@@ -34,8 +34,8 @@ $wgPayflowRecaptchaTimeout = 2;
  * 
  * Default to settings in PayflowPro Gateway
  */
-$wgPayflowRecaptchaUseHTTPProxy = $wgPayflowGatewayUseHTTPProxy;
-$wgPayflowRecaptchaHTTPProxy = $wgPayflowGatewayHTTPProxy;
+$wgPayflowRecaptchaUseHTTPProxy = $wgPayflowProGatewayUseHTTPProxy;
+$wgPayflowRecaptchaHTTPProxy = $wgPayflowProGatewayHTTPProxy;
 
 /**
  * Use SSL to communicate with reCaptcha

@@ -4,17 +4,33 @@ interface GatewayType {
 	//all the particulars of the child classes. Aaaaall.
 
 	/**
-	 * return either 'xml' or 'namevalue', depending on the gateway's web API 
+	 * Take the entire response string, and strip everything we don't care about.
+	 * For instance: If it's XML, we only want correctly-formatted XML. Headers must be killed off. 
+	 * return a string.
 	 */
-	function getCommunicationType();
-
+	function getFormattedResponse( $rawResponse );
+	
 	/**
-	 * Pretty sure it's not worth it to even try to abstract this.
-	 * ...hm. Too general? I'm thinking "maybe". 
-	 * Actually: Yes. So...
-	 * TODO: Get way more specific here. 
+	 * Parse the response to get the status. Not sure if this should return a bool, or something more... telling.
 	 */
-	function parseXMLResponse( $rawResponse );
+	function getResponseStatus( $response );
+	
+	/**
+	 * Parse the response to get the errors in a format we can log and otherwise deal with.
+	 * return a key/value array of codes (if they exist) and messages. 
+	 */
+	function getResponseErrors( $response );
+	
+	/**
+	 * Harvest the data we need back from the gateway. 
+	 * return a key/value array
+	 */
+	function getResponseData( $response );
+	
+	/**
+	 * Anything we need to do to the data coming in, before we send it off. 
+	 */
+	function stageData();
 }
 
 abstract class GatewayAdapter implements GatewayType {
@@ -28,8 +44,46 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $postdata;
 	protected $postdatadefaults;
 	protected $xmlDoc;
+	protected $dataObj;
 
-	const logidentifier = 'donation_gateway';
+	const gatewayname = 'Donation Gateway';
+	const identifier = 'donation';
+	const communicationtype = 'xml'; //this needs to be either 'xml' or 'namevalue'
+	const globalprefix = 'wgDonationGateway'; //...for example. 
+	
+	function __construct(){
+		$dir = dirname( __FILE__ ) . '/';
+		require_once( $dir . '../gateway_common/DonationData.php' );
+		$this->dataObj = new DonationData(get_called_class());
+		
+		$this->postdata = $this->dataObj->getData();
+		self::log("Back in the Gateway Adapter: " . print_r($this->postdata, true));
+		//TODO: Fix this a bit. 
+		$this->posted = $this->dataObj->wasPosted();
+		$this->stageData();
+	}
+	
+	function checkTokens(){
+		return $this->dataObj->checkTokens();
+	}
+	
+	function getData(){
+		return $this->postdata;
+	}
+	
+	function isCache(){
+		return $this->dataObj->isCache();
+	}
+	
+	static function getGlobal($varname){
+		static $gotten = array(); //cache. 
+		$globalname = self::getGlobalPrefix() . $varname;
+		if (!array_key_exists($globalname, $gotten)){
+			global $$globalname;
+			$gotten[$globalname] = $$globalname;
+		}
+		return $gotten[$globalname];
+	}
 
 	function getValue( $gateway_field_name ) {
 		if ( empty( $this->transactions ) ) {
@@ -40,10 +94,12 @@ abstract class GatewayAdapter implements GatewayType {
 		$transaction = $this->currentTransaction();
 
 		//If there's a hard-coded value in the transaction definition, use that.
-		if ( array_key_exists( $transaction, $this->transactions ) && is_array( $this->transactions[$transaction] ) &&
-			array_key_exists( 'values', $this->transactions[$transaction] ) &&
-			array_key_exists( $gateway_field_name, $this->transactions[$transaction]['values'] ) ) {
-			return $this->transactions[$transaction]['values'][$gateway_field_name];
+		if (!empty($transaction)){
+			if ( array_key_exists( $transaction, $this->transactions ) && is_array( $this->transactions[$transaction] ) &&
+				array_key_exists( 'values', $this->transactions[$transaction] ) &&
+				array_key_exists( $gateway_field_name, $this->transactions[$transaction]['values'] ) ) {
+				return $this->transactions[$transaction]['values'][$gateway_field_name];
+			}
 		}
 
 		//if it's account info, use that.
@@ -112,53 +168,74 @@ abstract class GatewayAdapter implements GatewayType {
 
 	function do_transaction( $transaction ) {
 		$this->currentTransaction( $transaction );
+		//update the contribution tracking data
+		$this->dataObj->updateContributionTracking(defined( 'OWA' ));
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$xml = $this->buildRequestXML();
-			$response = $this->curl_transaction( $xml );
+			$returned = $this->curl_transaction( $xml );
 			//put the response in a universal form, and return it. 
 		}
-
+		
+		if ( $this->getCommunicationType() === 'namevalue' ) {
+			$namevalue = $this->postdata;
+			$returned = $this->curl_transaction( $namevalue );
+			//put the response in a universal form, and return it. 
+		}
+		
+		self::log("RETURNED FROM CURL:" . print_r($returned, true));		
+		if ($returned['result'] === false){ //couldn't make contact. Bail.
+			return $returned;
+		}
+		
+		//get the status of the response
+		$formatted = $this->getFormattedResponse($returned['result']);
+		$returned['status'] = $this->getResponseStatus($formatted);
+		
+		//get errors
+		$returned['errors'] = $this->getResponseErrors($formatted);
+		
+		//if we're still okay (hey, even if we're not), get relevent dataz.
+		$returned['data'] = $this->getResponseData($formatted);
+	
 		//TODO: Actually pull these from somewhere legit. 
-		if ( $response['status'] === true ) {
-			$response['message'] = "$transaction Transaction Successful!";
-		} elseif ( $response['status'] === false ) {
-			$response['message'] = "$transaction Transaction FAILED!";
+		if ( $returned['status'] === true ) {
+			$returned['message'] = "$transaction Transaction Successful!";
+		} elseif ( $returned['status'] === false ) {
+			$returned['message'] = "$transaction Transaction FAILED!";
 		} else {
-			$response['message'] = "$transaction Transaction... weird. I have no idea what happened there.";
+			$returned['message'] = "$transaction Transaction... weird. I have no idea what happened there.";
 		}
 
-		return $response;
+		return $returned;
 
 		//speaking of universal form: 
 		//$result['status'] = something I wish could be boiled down to a bool, but that's way too optimistic, I think.
 		//$result['message'] = whatever we want to display back? 
-		//$result['errors'][]['code'] = their error code
-		//$result['errors'][]['value'] = Error message
-		//$result['return'][$whatever] = values they pass back to us for whatever reason. We might... log it, or pieces of it, or something? 
+		//$result['errors']['code']['message'] = 
+		//$result['data'][$whatever] = values they pass back to us for whatever reason. We might... log it, or pieces of it, or something? 
 	}
 
 	function getCurlBaseOpts() {
 		//I chose to return this as a function so it's easy to override. 
 		//TODO: probably this for all the junk I currently have stashed in the constructor.
 		//...maybe. 
-		global $wgGlobalCollectTimeout, $wgPayflowGatewayUseHTTPProxy;
 		$opts = array(
 			CURLOPT_URL => $this->url,
-			//CURLOPT_USERAGENT => Http::userAgent(),
+			CURLOPT_USERAGENT => Http::userAgent(),
 			CURLOPT_HEADER => 1,
 			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_TIMEOUT => $wgGlobalCollectTimeout,
-			//CURLOPT_FOLLOWLOCATION => 0,
-			//CURLOPT_SSL_VERIFYPEER => 0,
-			//CURLOPT_SSL_VERIFYHOST => 2,
-			//CURLOPT_FORBID_REUSE => true,
+			CURLOPT_TIMEOUT => self::getGlobal('Timeout'),
+			CURLOPT_FOLLOWLOCATION => 0,
+			CURLOPT_SSL_VERIFYPEER => 0,
+			CURLOPT_SSL_VERIFYHOST => 2,
+			CURLOPT_FORBID_REUSE => true,
 			CURLOPT_POST => 1,
 		);
 
 		// set proxy settings if necessary
-		if ( $wgPayflowGatewayUseHTTPProxy ) {
+		if ( self::getGlobal('UseHTTPProxy') ) {
 			$opts[CURLOPT_HTTPPROXYTUNNEL] = 1;
-			$opts[CURLOPT_PROXY] = $wgPayflowGatewayHTTPProxy;
+			$opts[CURLOPT_PROXY] = self::getGlobal('UseHTTPProxy');
 		}
 		return $opts;
 	}
@@ -166,8 +243,8 @@ abstract class GatewayAdapter implements GatewayType {
 	function getCurlBaseHeaders() {
 		$headers = array(
 			'Content-Type: text/' . $this->getCommunicationType() . '; charset=utf-8',
-			//	'X-VPS-Client-Timeout: 45',
-			//	'X-VPS-Request-ID:' . $this->postdatadefaults['order_id'],
+			'X-VPS-Client-Timeout: 45',
+			'X-VPS-Request-ID:' . $this->postdatadefaults['order_id'],
 		);
 		return $headers;
 	}
@@ -189,9 +266,6 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @param $data String: The exact thing we want to send.
 	 */
 	protected function curl_transaction( $data ) {
-		global $wgOut; //TODO: Uhm, this shouldn't touch the view. Something further upstream should decide what to do with this. 
-		// TODO: This, but way before we get here. 
-		//$this->updateContributionTracking( $data, defined( 'OWA' ) );
 		// assign header data necessary for the curl_setopt() function
 
 		$ch = curl_init();
@@ -216,15 +290,15 @@ abstract class GatewayAdapter implements GatewayType {
 		$return = array( );
 
 		while ( $i++ <= 3 ) {
-			self::log( $this->postdatadefaults['order_id'] . ' Preparing to send transaction to GlobalCollect' );
+			self::log( $this->postdatadefaults['order_id'] . ' Preparing to send transaction to ' . self::getGatewayName());
 			$return['result'] = curl_exec( $ch );
 			$return['headers'] = curl_getinfo( $ch );
 
 			if ( $return['headers']['http_code'] != 200 && $return['headers']['http_code'] != 403 ) {
-				self::log( $this->postdatadefaults['order_id'] . ' Failed sending transaction to GlobalCollect, retrying' );
+				self::log( $this->postdatadefaults['order_id'] . ' Failed sending transaction to ' . self::getGatewayName() . ', retrying' );
 				sleep( 1 );
 			} elseif ( $return['headers']['http_code'] == 200 || $return['headers']['http_code'] == 403 ) {
-				self::log( $this->postdatadefaults['order_id'] . ' Finished sending transaction to GlobalCollect' );
+				self::log( $this->postdatadefaults['order_id'] . ' Finished sending transaction to ' . self::getGatewayName());
 				break;
 			}
 		}
@@ -232,33 +306,20 @@ abstract class GatewayAdapter implements GatewayType {
 		if ( $return['headers']['http_code'] != 200 ) {
 			$return['result'] = false;
 			//TODO: i18n here! 
-			$return['message'] = 'No response from credit card processor.  Please try again later!';
+			$return['message'] = 'No response from ' . self::getGatewayName() . '.  Please try again later!';
 			$when = time();
-			self::log( $this->postdatadefaults['order_id'] . ' No response from credit card processor: ' . curl_error( $ch ) );
+			self::log( $this->postdatadefaults['order_id'] . ' No response from ' . self::getGatewayName() . ': ' . curl_error( $ch ) );
 			curl_close( $ch );
 			return $return;
 		}
 
 		curl_close( $ch );
-		self::log( "Results: " . print_r( $return['result'], true ) );
-
-//		if ($this->getCommunicationType() === 'namevalue'){
-//			$return['result'] = strstr( $return['result'], 'RESULT' );
-//			//TODO: Finish this for namevalue. 
-//		}
-		if ( $this->getCommunicationType() === 'xml' ) {
-			//$return['result'] = $this->stripResponseHeaders($return['result']);
-			$return['status'] = $this->parseXMLResponse( $return['result'] );
-		}
 
 		return $return;
 
-		// parse string and display results to the user
-		//TODO: NO NO NO. NO DISPLAY HERE. 
-		//$this->fnPayflowGetResults( $data, $return['result'] );
 	}
 
-	function stripResponseHeaders( $rawResponse ) {
+	function stripXMLResponseHeaders( $rawResponse ) {
 		$xmlStart = strpos( $rawResponse, '<?xml' );
 		if ( $xmlStart == false ) { //I totally saw this happen one time. No XML, just <RESPONSE>...
 			$xmlStart = strpos( $rawResponse, '<RESPONSE' );
@@ -272,12 +333,10 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 
 	public static function log( $msg, $log_level=LOG_INFO ) {
-		global $wgGlobalCollectGatewayUseSyslog;
-		$c = get_called_class();
-		$identifier = $c::logidentifier;
+		$identifier = self::getIdentifier() . "_gateway";
 
 		// if we're not using the syslog facility, use wfDebugLog
-		if ( !$wgGlobalCollectGatewayUseSyslog ) {
+		if ( !self::getGlobal( 'UseSyslog' ) ) {
 			wfDebugLog( $identifier, $msg );
 			return;
 		}
@@ -286,57 +345,6 @@ abstract class GatewayAdapter implements GatewayType {
 		openlog( $identifier, LOG_ODELAY, LOG_SYSLOG );
 		syslog( $log_level, $msg );
 		closelog();
-	}
-
-	//_______________________________________________________________
-	//copied from  payflowpro_gateway/includes/payflowUser.inc
-
-	/**
-	 * Fetch and return the 'order_id' for a transaction
-	 * 
-	 * Since transactions to PayPal are initially matched internally on their end
-	 * with the 'order_id' field, but we don't actually care what the order id is,
-	 * we generate a sufficiently random number to avoid duplication. 
-	 * 
-	 * We go ahead and always generate a random order id becuse if PayPal detects
-	 * the same order_id more than once, it considers the request a duplicate, even
-	 * if the data is completely different.
-	 * 
-	 * @return int
-	 */
-	function getOrderId() {
-		return $this->generateOrderId();
-	}
-
-	/**
-	 * Generate an internal order id
-	 * 
-	 * This is only used internally for tracking a user's 'session' with the credit
-	 * card form.  I mean 'session' in the sense of the moment a credit card page
-	 * is loaded for the first time (nothing posted to it - a discrete donation 
-	 * session) as opposed to the $_SESSION - as the $_SESSION id could potentially
-	 * not change between contribution attempts.
-	 */
-	function getInternalOrderId() {
-		global $wgRequest;
-
-		// is an order_id already set?
-		//TODO: Change all these to look instead at $this->postdata... I think.
-		$i_order_id = $wgRequest->getText( 'i_order_id', 0 );
-
-		// if the form was not just posted OR there's no order_id set, generate one.
-		if ( !$wgRequest->wasPosted() || !$i_order_id ) {
-			$i_order_id = $this->generateOrderId();
-		}
-
-		return $i_order_id;
-	}
-
-	/**
-	 * Generate an order id
-	 */
-	function generateOrderId() {
-		return ( double ) microtime() * 1000000 . mt_rand( 1000, 9999 );
 	}
 
 	//To avoid reinventing the wheel: taken from http://recursive-design.com/blog/2007/04/05/format-xml-with-php/
@@ -375,6 +383,25 @@ abstract class GatewayAdapter implements GatewayType {
 		endwhile;
 
 		return $result;
+	}
+	
+	static function getCommunicationType() {
+		$c = get_called_class();
+		return $c::communicationtype;
+	}
+	
+	static function getGatewayName() {
+		$c = get_called_class();
+		return $c::gatewayname;
+	}
+	
+	static function getGlobalPrefix() {
+		$c = get_called_class();
+		return $c::globalprefix;
+	}
+	static function getIdentifier() {
+		$c = get_called_class();
+		return $c::identifier;
 	}
 
 }

@@ -21,26 +21,26 @@ $wgExtensionCredits['specialpage'][] = array(
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['PayflowProGateway'] = $dir . 'payflowpro_gateway.body.php';
-
-$wgAutoloadClasses['PayflowProGateway_Form'] = $dir . 'forms/Form.php';
-$wgAutoloadClasses['PayflowProGateway_Form_OneStepTwoColumn'] = $dir . 'forms/OneStepTwoColumn.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumn'] = $dir . 'forms/TwoStepTwoColumn.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnPayPal'] = $dir . 'forms/TwoColumnPayPal.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter'] = $dir . 'forms/TwoColumnLetter.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter2'] = $dir . 'forms/TwoColumnLetter2.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter3'] = $dir . 'forms/TwoColumnLetter3.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter4'] = $dir . 'forms/TwoColumnLetter4.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter5'] = $dir . 'forms/TwoColumnLetter5.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter6'] = $dir . 'forms/TwoColumnLetter6.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter7'] = $dir . 'forms/TwoColumnLetter7.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter'] = $dir . 'forms/TwoStepTwoColumnLetter.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetterCA'] = $dir . 'forms/TwoStepTwoColumnLetterCA.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter2'] = $dir . 'forms/TwoStepTwoColumnLetter2.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter3'] = $dir . 'forms/TwoStepTwoColumnLetter3.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnPremium'] = $dir . 'forms/TwoStepTwoColumnPremium.php';
-$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnPremiumUS'] = $dir . 'forms/TwoStepTwoColumnPremiumUS.php';
-$wgAutoloadClasses['PayflowProGateway_Form_RapidHtml'] = $dir . 'forms/RapidHtml.php';
-$wgAutoloadClasses['PayflowProGateway_Form_SingleColumn'] = $dir . 'forms/SingleColumn.php';
+//
+//$wgAutoloadClasses['PayflowProGateway_Form'] = $dir . 'forms/Form.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_OneStepTwoColumn'] = $dir . 'forms/OneStepTwoColumn.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumn'] = $dir . 'forms/TwoStepTwoColumn.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnPayPal'] = $dir . 'forms/TwoColumnPayPal.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter'] = $dir . 'forms/TwoColumnLetter.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter2'] = $dir . 'forms/TwoColumnLetter2.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter3'] = $dir . 'forms/TwoColumnLetter3.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter4'] = $dir . 'forms/TwoColumnLetter4.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter5'] = $dir . 'forms/TwoColumnLetter5.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter6'] = $dir . 'forms/TwoColumnLetter6.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoColumnLetter7'] = $dir . 'forms/TwoColumnLetter7.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter'] = $dir . 'forms/TwoStepTwoColumnLetter.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetterCA'] = $dir . 'forms/TwoStepTwoColumnLetterCA.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter2'] = $dir . 'forms/TwoStepTwoColumnLetter2.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnLetter3'] = $dir . 'forms/TwoStepTwoColumnLetter3.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnPremium'] = $dir . 'forms/TwoStepTwoColumnPremium.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_TwoStepTwoColumnPremiumUS'] = $dir . 'forms/TwoStepTwoColumnPremiumUS.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_RapidHtml'] = $dir . 'forms/RapidHtml.php';
+//$wgAutoloadClasses['PayflowProGateway_Form_SingleColumn'] = $dir . 'forms/SingleColumn.php';
 
 $wgExtensionMessagesFiles['PayflowProGateway'] = $dir . 'payflowpro_gateway.i18n.php';
 $wgExtensionMessagesFiles['PayflowProGatewayCountries'] = $dir . 'payflowpro_gateway.countries.i18n.php';
@@ -61,15 +61,15 @@ $wgPayflowProVendorID = ''; // paypal merchant login ID
 $wgPayflowProUserID = ''; // if one or more users are set up, authorized user ID, else same as VENDOR
 $wgPayflowProPassword = ''; // merchant login password
 // a boolean to determine if we're in testing mode
-$wgPayflowGatewayTest = FALSE;
+$wgPayflowProGatewayTest = FALSE;
 
 // timeout in seconds for communicating with paypal
-$wgPayflowProTimeout = 5;
+$wgPayflowProGatewayTimeout = 5;
 
 /**
  * The default form to use
  */
-$wgPayflowGatewayDefaultForm = 'TwoStepTwoColumn';
+$wgPayflowProGatewayDefaultForm = 'TwoStepTwoColumn';
 
 /**
  * A string or array of strings for making tokens more secure
@@ -78,12 +78,12 @@ $wgPayflowGatewayDefaultForm = 'TwoStepTwoColumn';
  * potentially leave you and your users vulnerable to CSRF or other forms of
  * attack.
  */
-$wgPayflowGatewaySalt = $wgSecretKey;
+$wgPayflowProGatewaySalt = $wgSecretKey;
 
-$wgPayflowGatewayDBserver = $wgDBserver;
-$wgPayflowGatewayDBname = $wgDBname;
-$wgPayflowGatewayDBuser = $wgDBuser;
-$wgPayflowGatewayDBpassword = $wgDBpassword;
+$wgPayflowProGatewayDBserver = $wgDBserver;
+$wgPayflowProGatewayDBname = $wgDBname;
+$wgPayflowProGatewayDBuser = $wgDBuser;
+$wgPayflowProGatewayDBpassword = $wgDBpassword;
 
 /**
  * A string that can contain wikitext to display at the head of the credit card form
@@ -92,30 +92,30 @@ $wgPayflowGatewayDBpassword = $wgDBpassword;
  * You can use '@language' as a placeholder token to extract the user's language.
  *
  */
-$wgPayflowGatewayHeader = NULL;
+$wgPayflowProGatewayHeader = NULL;
 
 /**
  * A string containing full URL for Javascript-disabled credit card form redirect
  */
-$wgPayflowGatewayNoScriptRedirect = null;
+$wgPayflowProGatewayNoScriptRedirect = null;
 
 /**
  * Proxy settings
  *
  * If you need to use an HTTP proxy for outgoing traffic,
- * set wgPayflowGatweayUseHTTPProxy=TRUE and set $wgPayflowGatewayHTTPProxy
+ * set wgPayflowGatweayUseHTTPProxy=TRUE and set $wgPayflowProGatewayHTTPProxy
  * to the proxy desination.
  *  eg:
- *  $wgPayflowGatewayUseHTTPProxy=TRUE;
- *  $wgPayflowGatewayHTTPProxy='192.168.1.1:3128'
+ *  $wgPayflowProGatewayUseHTTPProxy=TRUE;
+ *  $wgPayflowProGatewayHTTPProxy='192.168.1.1:3128'
  */
-$wgPayflowGatewayUseHTTPProxy = FALSE;
-$wgPayflowGatewayHTTPProxy = '';
+$wgPayflowProGatewayUseHTTPProxy = FALSE;
+$wgPayflowProGatewayHTTPProxy = '';
 
 /**
  * The URL to redirect a transaction to PayPal
  */
-$wgPayflowGatewayPaypalURL = '';
+$wgPayflowProGatewayPaypalURL = '';
 
 /**
  * Set the max-age value for Squid
@@ -124,13 +124,13 @@ $wgPayflowGatewayPaypalURL = '';
  * the s-max-age for cached requests.
  * @var int Time in seconds
  */
-$wgPayflowSMaxAge = 6000;
+$wgPayflowProGatewaySMaxAge = 6000;
 
 /**
  * Directory for HTML forms (used by RapidHtml form class)
  * @var string
  */
-$wgPayflowHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
+$wgPayflowProGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
 
 /**
  * An array of allowed HTML forms.
@@ -139,21 +139,21 @@ $wgPayflowHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgPayflowAllowedHtmlForms = array( $wgPayflowHtmlFormDir . "/demo.html" );
+$wgPayflowProGatewayAllowedHtmlForms = array( $wgPayflowProGatewayHtmlFormDir . "/demo.html" );
 
 /**
  * Configure PayflowproGateway to use syslog for log messages rather than wfDebugLog
  * 
  * @var bool
  */
-$wgPayflowGatewayUseSyslog = false;
+$wgPayflowProGatewayUseSyslog = false;
 
 /**
  * Configure price cieling and floor for valid contribution amount.  Values 
  * should be in USD.
  */
-$wgPayflowPriceFloor = '1.00';
-$wgPayflowPriceCieling = '10000.00';
+$wgPayflowProGatewayPriceFloor = '1.00';
+$wgPayflowProGatewayPriceCeiling = '10000.00';
 
 /**
  * Hooks required to interface with the donation extension (include <donate> on page)
@@ -168,23 +168,6 @@ $wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
 $wgAPIModules['pfp'] = 'ApiPayflowProGateway';
 $wgAutoloadClasses['ApiPayflowProGateway'] = $dir . 'api_payflowpro_gateway.php';
 
-function payflowGatewayConnection() {
-	global $wgPayflowGatewayDBserver, $wgPayflowGatewayDBname;
-	global $wgPayflowGatewayDBuser, $wgPayflowGatewayDBpassword;
-
-	static $db;
-
-	if ( !$db ) {
-		$db = new DatabaseMysql(
-				$wgPayflowGatewayDBserver,
-				$wgPayflowGatewayDBuser,
-				$wgPayflowGatewayDBpassword,
-				$wgPayflowGatewayDBname );
-		$db->query( "SET names utf8" );
-	}
-
-	return $db;
-}
 
 /**
  * Hook to register form value and display name of this gateway

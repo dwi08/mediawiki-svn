@@ -120,7 +120,7 @@ class ApiPayflowProGateway extends ApiBase {
 	 * elements.
 	 */
 	protected function dispatch_get_required_dynamic_form_elements( $params ) {
-		global $wgPayflowGatewaySalt;
+		global $wgPayflowProGatewaySalt;
 
 		// fetch the order_id
 		require_once( 'includes/payflowUser.inc' );
@@ -128,7 +128,7 @@ class ApiPayflowProGateway extends ApiBase {
 		$order_id = $payflow_data[ 'order_id' ];
 
 		// fetch the CSRF prevention token and set it if it's not already set
-		$token = PayflowProGateway::fnPayflowEditToken( $wgPayflowGatewaySalt );
+		$token = PayflowProGateway::fnPayflowEditToken( $wgPayflowProGatewaySalt );
 
 		/**
 		 * retrieve and unpack the json encoded string of tracking data

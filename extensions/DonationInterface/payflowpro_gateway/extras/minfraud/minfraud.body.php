@@ -157,7 +157,7 @@ class PayflowProGateway_Extras_MinFraud extends PayflowProGateway_Extras {
 	 * @return array containing hash for minfraud query
 	 */
 	public function build_query( array $data ) {
-		global $wgPayflowGatewayTest;
+		global $wgDonationInterfaceTest;
 
 		// mapping of data keys -> minfraud array keys
 		$map = array(
@@ -175,7 +175,7 @@ class PayflowProGateway_Extras_MinFraud extends PayflowProGateway_Extras {
 		$minfraud_array[ "license_key" ] = $this->minfraud_license_key;
 
 		// user's IP address
-		$minfraud_array[ "i" ] = ( $wgPayflowGatewayTest ) ? '12.12.12.12' : wfGetIP();
+		$minfraud_array[ "i" ] = ( $wgDonationInterfaceTest ) ? '12.12.12.12' : wfGetIP();
 
 		// user's user agent
 		global $wgRequest;

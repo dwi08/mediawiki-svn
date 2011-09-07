@@ -52,7 +52,7 @@ class PayflowProGateway extends UnlistedSpecialPage {
 	public function execute( $par ) {
 		global $wgRequest, $wgOut, $wgScriptPath,
 			$wgPayFlowProGatewayCSSVersion,
-			$wgPayflowGatewaySalt;
+			$wgPayflowProGatewaySalt;
 
 		$wgOut->addExtensionStyle(
 			"{$wgScriptPath}/extensions/DonationInterface/payflowpro_gateway/payflowpro_gateway.css?284" .
@@ -104,11 +104,6 @@ EOT;
 		// track the number of attempts the user has made
 		$numAttempt = $wgRequest->getVal( 'numAttempt', 0 );
 
-		// Get array of default account values necessary for Payflow
-		require_once( 'includes/payflowUser.inc' );
-
-		$payflow_data = payflowUser();
-
 		// make a log entry if the user has submitted the cc form
 		if ( $wgRequest->wasPosted() && $wgRequest->getText( 'process', 0 )) {
 			self::log( $payflow_data[ 'order_id' ] . " Transaction initiated." );			
@@ -124,22 +119,22 @@ EOT;
 			$token_match = false;
 
 			// if we have squid caching enabled, set the maxage
-			global $wgUseSquid, $wgPayflowSMaxAge;
+			global $wgUseSquid, $wgPayflowProSMaxAge;
 			if ( $wgUseSquid ) {
-				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Setting s-max-age: " . $wgPayflowSMaxAge, 'payflowpro_gateway', LOG_DEBUG );
-				$wgOut->setSquidMaxage( $wgPayflowSMaxAge );	
+				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Setting s-max-age: " . $wgPayflowProSMaxAge, 'payflowpro_gateway', LOG_DEBUG );
+				$wgOut->setSquidMaxage( $wgPayflowProSMaxAge );	
 			}
 		} else {
 			$cache = false;
 
 			// establish the edit token to prevent csrf
-			$token = self::fnPayflowEditToken( $wgPayflowGatewaySalt );
+			$token = self::fnPayflowEditToken( $wgPayflowProGatewaySalt );
 			
 			self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " fnPayflowEditToken: " . $token, 'payflowpro_gateway', LOG_DEBUG );
 			
 			// match token
 			$token_check = ( $wgRequest->getText( 'token' ) ) ? $wgRequest->getText( 'token' ) : $token;
-			$token_match = $this->fnPayflowMatchEditToken( $token_check, $wgPayflowGatewaySalt );
+			$token_match = $this->fnPayflowMatchEditToken( $token_check, $wgPayflowProGatewaySalt );
 			if ( $wgRequest->wasPosted() ) {
 				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Submitted edit token: " . $wgRequest->getText( 'token', 'None' ), 'payflowpro_gateway', LOG_DEBUG);
 				self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Token match: " . ($token_match ? 'true' : 'false' ), 'payflowpro_gateway', LOG_DEBUG );
@@ -154,7 +149,7 @@ EOT;
 		/**
 		 *  handle PayPal redirection
 		 *
-		 *  if paypal redirection is enabled ($wgPayflowGatewayPaypalURL must be defined)
+		 *  if paypal redirection is enabled ($wgPayflowProGatewayPaypalURL must be defined)
 		 *  and the PaypalRedirect form value must be true
 		 */
 		if ( $wgRequest->getText( 'PaypalRedirect', 0 ) ) {
@@ -257,14 +252,14 @@ EOT;
 	 */
 	public function setFormClass( $class_name = NULL ) {
 		if ( !$class_name ) {
-			global $wgRequest, $wgPayflowGatewayDefaultForm;
-			$form_class = $wgRequest->getText( 'form_name', $wgPayflowGatewayDefaultForm );
+			global $wgRequest, $wgPayflowProGatewayDefaultForm;
+			$form_class = $wgRequest->getText( 'form_name', $wgPayflowProGatewayDefaultForm );
 
 			// make sure our form class exists before going on, if not try loading default form class
-			$class_name = "PayflowProGateway_Form_" . $form_class;
+			$class_name = "Gateway_Form_" . $form_class;
 			if ( !class_exists( $class_name ) ) {
 				$class_name_orig = $class_name;
-				$class_name = "PayflowProGateway_Form_" . $wgPayflowGatewayDefaultForm;
+				$class_name = "Gateway_Form_" . $wgPayflowProGatewayDefaultForm;
 				if ( !class_exists( $class_name ) ) {
 					throw new MWException( 'Could not load form ' . $class_name_orig . ' nor default form ' . $class_name );
 				}
@@ -291,7 +286,7 @@ EOT;
 	 * Checks posted form data for errors and returns array of messages
 	 */
 	private function fnPayflowValidateForm( &$data, &$error ) {
-		global $wgPayflowPriceFloor, $wgPayflowPriceCieling;
+		global $wgPayflowProGatewayPriceFloor, $wgPayflowProGatewayPriceCeiling;
 		
 		// begin with no errors
 		$error_result = '0';
@@ -325,8 +320,8 @@ EOT;
 
 		// check amount
 		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data[ 'amount' ] ) || 
-			( (float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) < (float) $wgPayflowPriceFloor || 
-				(float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) > (float) $wgPayflowPriceCieling ) ) {
+			( (float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) < (float) $wgPayflowProGatewayPriceFloor || 
+				(float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) > (float) $wgPayflowProGatewayPriceCeiling ) ) {
 			$error['invalidamount'] = wfMsg( 'payflowpro_gateway-error-msg-invalid-amount' );
 			$error_result = '1';
 		}
@@ -365,7 +360,7 @@ EOT;
 	 * 						include in string (i.e. Vendor, password)
 	 */
 	private function fnPayflowProcessTransaction( $data, $payflow_data ) {
-		global $wgOut, $wgDonationTestingMode, $wgPayflowGatewayUseHTTPProxy, $wgPayflowGatewayHTTPProxy, $wgPayflowProTimeout;
+		global $wgOut, $wgDonationTestingMode, $wgPayflowProGatewayUseHTTPProxy, $wgPayflowProGatewayHTTPProxy, $wgPayflowProTimeout;
 
 		// update contribution tracking
 		$this->updateContributionTracking( $data, defined( 'OWA' ) );
@@ -425,9 +420,9 @@ EOT;
 		curl_setopt( $ch, CURLOPT_POST, 1 );
 
 		// set proxy settings if necessary
-		if ( $wgPayflowGatewayUseHTTPProxy ) {
+		if ( $wgPayflowProGatewayUseHTTPProxy ) {
 			curl_setopt( $ch, CURLOPT_HTTPPROXYTUNNEL, 1 );
-			curl_setopt( $ch, CURLOPT_PROXY, $wgPayflowGatewayHTTPProxy );
+			curl_setopt( $ch, CURLOPT_PROXY, $wgPayflowProGatewayHTTPProxy );
 		}
 
 		// As suggested in the PayPal developer forum sample code, try more than once to get a response
@@ -769,7 +764,7 @@ EOT;
 	 * @return mixed Contribution tracking ID or false on failure
 	 */
 	public static function insertContributionTracking( $tracking_data ) {
-		$db = payflowGatewayConnection();
+		$db = ContributionTrackingProcessor::contributionTrackingConnection();
 
 		if ( !$db ) { return false; }
 
@@ -831,20 +826,6 @@ EOT;
 		}
 
 		return $tracking_data;
-	}
-
-	function fnPayflowReturnCurrencies() {
-
-		$payflowCurrencies = array(
-			'GBP' => 'GBP: British Pound',
-			'EUR' => 'EUR: Euro',
-			'USD' => 'USD: U.S. Dollar',
-			'AUD' => 'AUD: Australian Dollar',
-			'CAD' => 'CAD: Canadian Dollar',
-			'JPY' => 'JPY: Japanese Yen',
-		);
-
-		return $payflowCurrencies;
 	}
 
 	/**
@@ -927,47 +908,14 @@ EOT;
 		wfSetupSession();
 	}
 
-
-/**
-	 * Fetches ID for reference URL for OWA tracking
-	 * 
-	 * In the event that the URL is not already in the database, insert it
-	 * and return it's id.  Otehrewise, just return its id.
-	 * @param string $ref The reference URL
-	 * @return int The id for the reference URL - 0 if not found
-	 */
-	function get_owa_ref_id( $ref ) {
-		if ( !defined( 'OWA' ) ) {
-			return 0;
-		}
-		// Replication lag means sometimes a new event will not exist in the table yet
-		$dbw = payflowGatewayConnection();
-		$id_num = $dbw->selectField(
-			'contribution_tracking_owa_ref',
-			'id',
-			array( 'url' => $ref ),
-			__METHOD__
-		);
-		// Once we're on mysql 5, we can use replace() instead of this selectField --> insert or update hooey
-		if ( $id_num === false ) {
-			$dbw->insert(
-				'contribution_tracking_owa_ref',
-				array( 'url' => (string) $ref ),
-				__METHOD__
-			);
-			$id_num = $dbw->insertId();
-		}
-		return $id_num === false ? 0 : $id_num;
-	}
-
 	/**
 	 * Populate the $data array for the credit card form
 	 *
-	 * Provides a way to prepopulate the form with test data using $wgPayflowGatewayTest
+	 * Provides a way to prepopulate the form with test data using $wgDonationInterfaceTest
 	 * @return array
 	 */
 	public function fnGetFormData( $amount, $numAttempt, $token, $order_id, $i_order_id=0 ) {
-		global $wgPayflowGatewayTest, $wgRequest;
+		global $wgDonationInterfaceTest, $wgRequest;
 
 		// fetch ID for the url reference for OWA tracking
 		$owa_ref = $wgRequest->getText( 'owa_ref', null );
@@ -976,7 +924,7 @@ EOT;
 		}
 
 		// if we're in testing mode and an action hasn't yet be specified, prepopulate the form
-		if ( !$wgRequest->getText( 'action', false ) && !$wgRequest->getText( 'process', 0 ) && $wgPayflowGatewayTest ) {
+		if ( !$wgRequest->getText( 'action', false ) && !$wgRequest->getText( 'process', 0 ) && $wgDonationInterfaceTest ) {
 			// define arrays of cc's and cc #s for random selection
 			$cards = array( 'american' );
 			$card_nums = array(
@@ -1257,10 +1205,10 @@ EOT;
 	 *  This would make this a lot less hack-ish
 	 */
 	public function paypalRedirect( &$data ) {
-		global $wgPayflowGatewayPaypalURL, $wgOut;
+		global $wgPayflowProGatewayPaypalURL, $wgOut;
 
 		// if we don't have a URL enabled throw a graceful error to the user
-		if ( !strlen( $wgPayflowGatewayPaypalURL ) ) {
+		if ( !strlen( $wgPayflowProGatewayPaypalURL ) ) {
 			$this->errors['general'][ 'nopaypal' ] = wfMsg( 'payflow_gateway-error-msg-nopaypal' );
 			return;
 		}
@@ -1276,10 +1224,10 @@ EOT;
 		 */
 		$this->updateContributionTracking( $data, true );
 
-		$wgPayflowGatewayPaypalURL .= "/" . $data[ 'language' ] . "?gateway=paypal";
+		$wgPayflowProGatewayPaypalURL .= "/" . $data[ 'language' ] . "?gateway=paypal";
 		
 		// submit the data to the paypal redirect URL
-		$wgOut->redirect( $wgPayflowGatewayPaypalURL . '&' . http_build_query( $data ) );
+		$wgOut->redirect( $wgPayflowProGatewayPaypalURL . '&' . http_build_query( $data ) );
 	}
 	
 	public static function log( $msg, $identifier='payflowpro_gateway', $log_level=LOG_INFO ) {

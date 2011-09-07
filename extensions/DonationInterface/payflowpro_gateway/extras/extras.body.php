@@ -83,8 +83,8 @@ abstract class PayflowProGateway_Extras {
 	 * @return string The hash of the data
 	 */
 	public function generate_hash( $data ) {
-		global $wgPayflowGatewaySalt;
-		return hash( "sha512", $wgPayflowGatewaySalt . $data );
+		global $wgPayflowProGatewaySalt;
+		return hash( "sha512", $wgPayflowProGatewaySalt . $data );
 	}
 
 	/**

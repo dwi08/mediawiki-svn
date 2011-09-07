@@ -162,21 +162,21 @@ class minfraudTest extends PHPUnit_Framework_TestCase
 	}
 
 	public function testGenerateHash() {
-		global $wgPayflowGatewaySalt;
-		$wgPayflowGatewaySalt = 'salt';
+		global $wgPayflowProGatewaySalt;
+		$wgPayflowProGatewaySalt = 'salt';
 		$this->assertEquals( '5a9ee1e4a15adbf03b3ef9f7baa6caffa9f6bcd72c736498f045c073e57753e7b244bc97fe82b075eabd80778a4d56eb14406e9a1ac4b13737b2c3fd8c3717e8', $this->fixture->generate_hash( 'foo' ) );
 	}
 
 	public function testCompareHash() {
-		global $wgPayflowGatewaySalt;
-		$wgPayflowGatewaySalt = 'salt';
+		global $wgPayflowProGatewaySalt;
+		$wgPayflowProGatewaySalt = 'salt';
 		$this->assertTrue( $this->fixture->compare_hash( '5a9ee1e4a15adbf03b3ef9f7baa6caffa9f6bcd72c736498f045c073e57753e7b244bc97fe82b075eabd80778a4d56eb14406e9a1ac4b13737b2c3fd8c3717e8', 'foo' ) );
 		$this->assertFalse( $this->fixture->compare_hash( '5a9ee1e4a15adbf03b3ef9f7baa6caffa9f6bcd72c736498f045c073e57753e7b244bc97fe82b075eabd80778a4d56eb14406e9a1ac4b13737b2c3fd8c3717e8', 'bar' ) );
 	}
 
 	public function testBypassMinfraud() {
-		global $wgPayflowGatewaySalt;
-		$wgPayflowGatewaySalt = 'salt';
+		global $wgPayflowProGatewaySalt;
+		$wgPayflowProGatewaySalt = 'salt';
 		$data = array(
 			'action' => '4bd7857c851039d1e07a434800fe752c6bd99aec61c325aef460441be1b95c3ab5236e43c8d06f41d77715dbd3cf94e679b86422ec3204f00ad433501e5005e9',
 			'data_hash' => '029ef6f5c2a165215b5a92ff1a194e4a6de8c668d6193582da42713f119c1b07d8358b5cd94a3bd51c9aa50709c8533295215ce3cce8c2b61e69078d789bc3f3',

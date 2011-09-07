@@ -82,7 +82,7 @@ class Gateway_Form_TwoColumnLetter3 extends Gateway_Form_OneStepTwoColumn {
 	}
 
 	protected function generateBillingFields() {
-		global $wgScriptPath, $wgPayflowGatewayPaypalURL, $wgRequest;
+		global $wgScriptPath, $wgPayflowProGatewayPaypalURL, $wgRequest;
 		$scriptPath = "$wgScriptPath/extensions/DonationInterface/payflowpro_gateway/includes";
 
 		$form = '';
@@ -107,7 +107,7 @@ class Gateway_Form_TwoColumnLetter3 extends Gateway_Form_OneStepTwoColumn {
 		if ( !$this->paypal ) {
 			// PayPal button
 			// make sure we have a paypal url set to redirect the user to before displaying the button
-			if ( strlen( $wgPayflowGatewayPaypalURL ) ) {
+			if ( strlen( $wgPayflowProGatewayPaypalURL ) ) {
 				$form .= '<tr>';
 				$form .= '<td class="label"></td>';
 				$form .= '<td>';
