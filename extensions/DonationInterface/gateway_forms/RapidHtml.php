@@ -227,10 +227,10 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 	 * @param string $file_name
 	 */
 	public function set_html_file_path( $file_name ) {
-		global $wgPayflowProHtmlFormDir, $wgPayflowProGatewayAllowedHtmlForms;
-
+	 	global $wgGlobalCollectGatewayHtmlFormDir, $wgGlobalCollectGatewayAllowedHtmlForms;
+		
 		// Get the dirname - the "/." helps ensure we get a consistent path name with no trailing slash
-		$html_dir = dirname( $wgPayflowProHtmlFormDir . "/." );
+		$html_dir = dirname( $wgGlobalCollectGatewayHtmlFormDir . "/." );
 		
 		if ( !is_dir( $html_dir )) {
 			throw new MWException( 'Requested form directory does not exist.' );
@@ -243,7 +243,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		$full_path = $html_dir . '/' . $file_name . '.html';
 		
 		// ensure that the full file path is actually whitelisted and exists
-		if ( !in_array( $full_path, $wgPayflowProGatewayAllowedHtmlForms ) || !file_exists( $full_path ) ) {
+		if ( !in_array( $full_path, $wgGlobalCollectGatewayAllowedHtmlForms ) || !file_exists( $full_path ) ) {
 			throw new MWException( 'Requested an unavailable or non-existent form.' );
 		}
 		

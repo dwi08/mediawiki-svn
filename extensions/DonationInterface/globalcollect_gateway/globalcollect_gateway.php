@@ -99,7 +99,7 @@ $wgGlobalCollectGatewaySMaxAge = 6000;
  * Directory for HTML forms (used by RapidHtml form class)
  * @var string
  */
-$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
+$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/../gateway_forms/html";
 
 /**
  * An array of allowed HTML forms.

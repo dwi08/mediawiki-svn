@@ -359,7 +359,7 @@ EOT;
 	}
 	
 	public function generateStateDropdown() {
-		require_once( dirname( __FILE__ ) . '/../includes/stateAbbreviations.inc' );
+		require_once( dirname( __FILE__ ) . '/includes/stateAbbreviations.inc' );
 
 		$states = statesMenuXML();
 
