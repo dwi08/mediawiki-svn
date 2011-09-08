@@ -407,7 +407,7 @@ class MessageCache {
 		$this->unlock($cacheKey);
 
 		// Also delete cached sidebar... just in case it is affected
-		global $parserMemc;
+		global $wgMemc;
 		$codes = array( $code );
 		if ( $code === 'en'  ) {
 			// Delete all sidebars, like for example on action=purge on the
@@ -417,7 +417,7 @@ class MessageCache {
 
 		foreach ( $codes as $code ) {
 			$sidebarKey = wfMemcKey( 'sidebar', $code );
-			$parserMemc->delete( $sidebarKey );
+			$wgMemc->delete( $sidebarKey );
 		}
 		
 		// Update the message in the message blob store
