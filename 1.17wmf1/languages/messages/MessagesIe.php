@@ -90,7 +90,6 @@ $specialPageAliases = array(
 	'Newimages'                 => array( 'Nov_files', 'Nov_figuras' ),
 	'Newpages'                  => array( 'Nov_págines' ),
 	'PasswordReset'             => array( 'Recomensar_parol-clave' ),
-	'PermanentLink'             => array( 'Catenun_permanen' ),
 	'Popularpages'              => array( 'Págines_populari' ),
 	'Preferences'               => array( 'Preferenties' ),
 	'Prefixindex'               => array( 'Index_de_prefixe' ),
