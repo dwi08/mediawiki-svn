@@ -4,44 +4,34 @@ $dir = dirname( __FILE__ ) . '/';
 require_once( $dir . '../gateway_common/gateway.adapter.php' );
 
 class GlobalCollectAdapter extends GatewayAdapter {
-	//Contains the map of THEIR var names, to OURS.
-	//I'd have gone the other way, but we'd run into 1:many pretty quick. 
-
 	const gatewayname = 'Global Collect';
 	const identifier = 'globalcollect';
 	const communicationtype = 'xml';
 	const globalprefix = 'wgGlobalCollectGateway';
 
 	/**
-	 * Anything we need to do to the data coming in, before we send it off. 
+	 * stageData should alter the postdata array in all ways necessary in preparation for
+	 * communication with the gateway. 
 	 */
 	function stageData(){
-		//TODO: Make a Thing in which we do things like this. 
 		$this->postdata['amount'] = $this->postdata['amount'] * 100;
 	}
 	
+
 	function __construct( ) {
 		$this->classlocation = __FILE__;
-		
 		parent::__construct();
-
-		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
-		$returnto = $returnTitle->getFullURL();
-
-		//this DEFINITELY needs to be defined in the parent class, and contain everything anybody might want to know.
-		$this->postdatadefaults = array(
-			'order_id' => '112358' . rand(),
-			'amount' => '11.38',
-			'currency' => 'USD',
-			'language' => 'en',
-			'country' => 'US',
-			'returnto' => $returnto,
-			'user_ip' => ( self::getGlobal('Test') ) ? '12.12.12.12' : wfGetIP(), // current user's IP address
+	}
+	
+	function defineAccountInfo(){
+		$this->accountInfo = array(
+			'MERCHANTID' => self::getGlobal('MerchantID'),
+			//'IPADDRESS' => '', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm. 
+			'VERSION' => "1.0",
 		);
-
-
-		///ehh. Most of this should be broken up into functions for the sake of readibility. 
-
+	}
+	
+	function defineVarMap(){
 		$this->var_map = array(
 			'ORDERID' => 'order_id',
 			'AMOUNT' => 'amount',
@@ -49,124 +39,73 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'LANGUAGECODE' => 'language',
 			'COUNTRYCODE' => 'country',
 			'MERCHANTREFERENCE' => 'order_id',
-			'RETURNURL' => 'returnto', //I think. It might not even BE here yet. Boo-urns. 
+			'RETURNURL' => 'returnto', //TODO: Fund out where the returnto URL is supposed to be coming from. 
 			'IPADDRESS' => 'user_ip', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm.
 		);
-
+	}
+	
+	function defineReturnValueMap(){
 		$this->return_value_map = array(
 			'OK' => true,
 			'NOK' => false,
 		);
-
-		global $wgDonationInterfaceTest; //this is so the forms can see it. 
-		if ( !self::getGlobal('Test') ) {
-			$this->url = self::getGlobal('URL');
-			$wgDonationInterfaceTest = false;
-		} else {
-			$this->url = self::getGlobal('TestingURL');
-			$wgDonationInterfaceTest = true;
-		}
-
-		$this->accountInfo = array(
-			'MERCHANTID' => self::getGlobal('MerchantID'),
-			//'IPADDRESS' => '', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm. 
-			'VERSION' => "1.0",
-		);
-
-		//oof. This is getting a little long and unwieldy. Maybe we should build it. Or maybe that sucks. I can't tell yet.
-		/* General idea here:
-		 * This bad boy will (probably) contain the structure of all possible transactions as defined by the gateway. 
-		 * First array key: Some way for us to id the transaction. Doesn't actually have to be the gateway's name for it, but
-		 * I'm starting with that.
-		 * Second array key: 
-		 * 		'structure' contains the layout of that transaction.
-		 * 		'defaults' contains default values for the leaf 'values' 
-		 * 		I could put a 'type' in here, but I think we can assume that if 'structure' is multi-layer, we're XML.
-		 * Array "leaves" in 'structure' will be assigned a value according to the var_map, and the posted data. 
-		 * 	There should also be a mechanism for assigning defaults, but I'm not entirely sure what that would look like quite yet...
-		 * 
-		 */
-		$this->transactions = array(
-			'INSERT_ORDERWITHPAYMENT' => array(
-				'request' => array(
-					'REQUEST' => array(
-						'ACTION',
-						'META' => array(
-							'MERCHANTID',
-//							'IPADDRESS',
-							'VERSION'
+	}
+	
+	function defineTransactions(){
+		$this->transactions = array();
+		
+		$this->transactions['INSERT_ORDERWITHPAYMENT'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
+						// 'IPADDRESS',
+						'VERSION'
+					),
+					'PARAMS' => array(
+						'ORDER' => array(
+							'ORDERID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'MERCHANTREFERENCE'
 						),
-						'PARAMS' => array(
-							'ORDER' => array(
-								'ORDERID',
-								'AMOUNT',
-								'CURRENCYCODE',
-								'LANGUAGECODE',
-								'COUNTRYCODE',
-								'MERCHANTREFERENCE'
-							),
-							'PAYMENT' => array(
-								'PAYMENTPRODUCTID',
-								'AMOUNT',
-								'CURRENCYCODE',
-								'LANGUAGECODE',
-								'COUNTRYCODE',
-								'HOSTEDINDICATOR',
-								'RETURNURL',
-							)
+						'PAYMENT' => array(
+							'PAYMENTPRODUCTID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'HOSTEDINDICATOR',
+							'RETURNURL',
 						)
 					)
-				),
-				'values' => array(
-					'ACTION' => 'INSERT_ORDERWITHPAYMENT',
-					'HOSTEDINDICATOR' => '1',
-					'PAYMENTPRODUCTID' => '3',
-				),
-				'result' => array( //just like the rest: This is still in flux. But the idea here is that this is the sctucture you'd scan for. 
-					'RESULT' => 'value'
-				),
-				'result_errors' => array(
-					'ERROR' => array(
-						'CODE' => 'value', //as opposed to "attribute", which would imply that it belongs to the parent...
-						'MESSAGE' => 'value',
-					)
-				),
-				'result_data' => array(
-					'ROW' => array(
-					//uhh... presumably we'd look for some Stuff in here. 
-					)
 				)
 			),
-			'TEST_CONNECTION' => array(
-				'request' => array(
-					'REQUEST' => array(
-						'ACTION',
-						'META' => array(
-							'MERCHANTID',
+			'values' => array(
+				'ACTION' => 'INSERT_ORDERWITHPAYMENT',
+				'HOSTEDINDICATOR' => '1',
+				'PAYMENTPRODUCTID' => '3',
+			),
+		);
+		
+		$this->transactions['TEST_CONNECTION'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
 //							'IPADDRESS',
-							'VERSION'
-						),
-						'PARAMS' => array( )
-					)
-				),
-				'values' => array(
-					'ACTION' => 'TEST_CONNECTION'
-				),
-				'result' => array( //just like the rest: This is still in flux. But the idea here is that this is the sctucture you'd scan for. 
-					'RESULT' => 'value'
-				),
-				'result_errors' => array(
-					'ERROR' => array(
-						'CODE' => 'value', //as opposed to "attribute", which would imply that it belongs to the parent...
-						'MESSAGE' => 'value',
-					)
-				),
-				'result_data' => array(
-					'ROW' => array(
-					//uhh... presumably we'd look for some Stuff in here. 
-					)
+						'VERSION'
+					),
+					'PARAMS' => array( )
 				)
 			),
+			'values' => array(
+				'ACTION' => 'TEST_CONNECTION'
+			)
 		);
 	}
 
@@ -238,6 +177,10 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		}
 		self::log( "Returned Data: " . print_r($data, true));
 		return $data;
+	}
+	
+	function processResponse( $response ) {
+		//TODO: Stuff. 
 	}
 
 }

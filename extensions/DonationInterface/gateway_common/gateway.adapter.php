@@ -28,9 +28,49 @@ interface GatewayType {
 	function getResponseData( $response );
 	
 	/**
+	 * Actually do... stuff. Here. 
+	 * TODO: Better comment. 
+	 * Process the entire response gott'd by the last four functions. 
+	 */
+	function processResponse( $response );
+	
+	/**
 	 * Anything we need to do to the data coming in, before we send it off. 
 	 */
 	function stageData();
+	
+	/**
+	 * defineTransactions will define the $transactions array. 
+	 * The array will contain everything we need to know about the request structure for all the transactions we care about, 
+	 * for the current gateway. 
+	 * First array key: Some way for us to id the transaction. Doesn't actually have to be the gateway's name for it, but I'm going with that until I have a reason not to. 
+	 * Second array key: 
+	 * 		'request' contains the structure of that request. Leaves in the array tree will eventually be mapped to actual values of ours, 
+	 *		according to the precidence established in the getValue function. 
+	 * 		'values' contains default values for the transaction. Things that are typically not overridden should go here. 
+	 */
+	function defineTransactions();
+	
+	/**
+	 * defineVarMap needs to set up the $var_map array. 
+	 * Keys = the name (or node name) value in the gateway transaction
+	 * Values = the mediawiki field name for the corresponding piece of data. 
+	 */
+	function defineVarMap();
+	
+	/**
+	 * defineAccountInfo needs to set up the $accountInfo array. 
+	 * Keys = the name (or node name) value in the gateway transaction
+	 * Values = The actual values for those keys. Probably have to access a global or two. (use getGlobal()!) 
+	 */
+	function defineAccountInfo();
+	
+	/**
+	 * defineReturnValueMap sets up the $return_value_map array.
+	 * Keys = The different constants that may be contained as values in the gateway's response.
+	 * Values = what that string constant means to mediawiki. 
+	 */
+	function defineReturnValueMap();
 }
 
 abstract class GatewayAdapter implements GatewayType {
@@ -41,26 +81,64 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $accountInfo;
 	protected $url;
 	protected $transactions;
+	protected $return_value_map;
 	protected $postdata;
 	protected $postdatadefaults;
 	protected $xmlDoc;
 	protected $dataObj;
 
+	//ALL OF THESE need to be redefined in the children. Much voodoo depends on the accuracy of these constants. 
 	const gatewayname = 'Donation Gateway';
 	const identifier = 'donation';
 	const communicationtype = 'xml'; //this needs to be either 'xml' or 'namevalue'
 	const globalprefix = 'wgDonationGateway'; //...for example. 
 	
 	function __construct(){
+
 		$dir = dirname( __FILE__ ) . '/';
 		require_once( $dir . '../gateway_common/DonationData.php' );
 		$this->dataObj = new DonationData(get_called_class());
 		
 		$this->postdata = $this->dataObj->getData();
-		self::log("Back in the Gateway Adapter: " . print_r($this->postdata, true));
 		//TODO: Fix this a bit. 
 		$this->posted = $this->dataObj->wasPosted();
+		
+		global $wgDonationInterfaceTest; //this is so the forms can see it. 
+		//TODO: Alter the forms so they don't need the global?
+		if ( !self::getGlobal('Test') ) {
+			$this->url = self::getGlobal('URL');
+			$wgDonationInterfaceTest = false;
+		} else {
+			$this->url = self::getGlobal('TestingURL');
+			$wgDonationInterfaceTest = true;
+		}
+		
+		$this->setPostDefaults();
+		$this->defineTransactions();
+		$this->defineVarMap();
+		$this->defineAccountInfo();
+		$this->defineReturnValueMap();
+		
+		
 		$this->stageData();
+	}
+	
+	/**
+	 * Override this in children if you want different defaults. 
+	 */
+	function setPostDefaults(){
+		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
+		$returnto = $returnTitle->getFullURL();
+		
+		$this->postdatadefaults = array(
+			'order_id' => '112358' . rand(),
+			'amount' => '11.38',
+			'currency' => 'USD',
+			'language' => 'en',
+			'country' => 'US',
+			'returnto' => $returnto,
+			'user_ip' => ( self::getGlobal('Test') ) ? '12.12.12.12' : wfGetIP(), // current user's IP address
+		);
 	}
 	
 	function checkTokens(){
@@ -196,6 +274,8 @@ abstract class GatewayAdapter implements GatewayType {
 		
 		//if we're still okay (hey, even if we're not), get relevent dataz.
 		$returned['data'] = $this->getResponseData($formatted);
+		
+		$this->processResponse($returned);
 	
 		//TODO: Actually pull these from somewhere legit. 
 		if ( $returned['status'] === true ) {
@@ -306,6 +386,7 @@ abstract class GatewayAdapter implements GatewayType {
 		if ( $return['headers']['http_code'] != 200 ) {
 			$return['result'] = false;
 			//TODO: i18n here! 
+			//TODO: But also, fire off some kind of "No response from the gateway" thing to somebody so we know right away. 
 			$return['message'] = 'No response from ' . self::getGatewayName() . '.  Please try again later!';
 			$when = time();
 			self::log( $this->postdatadefaults['order_id'] . ' No response from ' . self::getGatewayName() . ': ' . curl_error( $ch ) );

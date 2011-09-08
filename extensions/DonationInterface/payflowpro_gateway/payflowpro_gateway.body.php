@@ -100,6 +100,11 @@ EOT;
 		} else {
 			$amount = '0.00';
 		}
+		
+		// Get array of default account values necessary for Payflow
+		require_once( 'includes/payflowUser.inc' );
+
+		$payflow_data = payflowUser();
 
 		// track the number of attempts the user has made
 		$numAttempt = $wgRequest->getVal( 'numAttempt', 0 );

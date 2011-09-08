@@ -175,11 +175,11 @@ EOT;
 				}
 			} else {
 				// Display form for the first time
-				$adapter::log("Not posted, or not processed. Showing the form for the first time.");
+				$this->adapter->log("Not posted, or not processed. Showing the form for the first time.");
 				$this->fnPayflowDisplayForm( $data, $this->errors );
 			}		
 		} else {
-			if ( !$adapter->isCache() ) {
+			if ( !$this->adapter->isCache() ) {
 				// if we're not caching, there's a token mismatch
 				$this->errors['general']['token-mismatch'] = wfMsg( 'globalcollect_gateway-token-mismatch' );
 			}
@@ -200,13 +200,13 @@ EOT;
 		global $wgOut, $wgRequest;
 
 		// save contrib tracking id early to track abondonment
-		if ( !empty($data) && ( $data[ 'numAttempt' ] == '0' && ( !$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) ) {
-			$tracked = $this->fnPayflowSaveContributionTracking( $data );
-			if ( !$tracked ) {
-				$when = time();
-				self::log( $data[ 'order_id' ] . ' Unable to save data to the contribution_tracking table ' . $when );
-			}
-		}
+//		if ( !empty($data) && ( $data[ 'numAttempt' ] == '0' && ( !$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) ) {
+//			$tracked = $this->fnPayflowSaveContributionTracking( $data );
+//			if ( !$tracked ) {
+//				$when = time();
+//				self::log( $data[ 'order_id' ] . ' Unable to save data to the contribution_tracking table ' . $when );
+//			}
+//		}
 
 		$form_class = $this->getFormClass();
 		$form_obj = new $form_class( $data, $error );
