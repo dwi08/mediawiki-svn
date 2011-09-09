@@ -770,6 +770,26 @@ window.mediaWiki = new ( function( $ ) {
 			return sorted;
 		}
 
+		/**
+		 * Adds a script tag to the body, either using document.write or low-level DOM manipulation,
+		 * depending on whether document-ready has occured yet.
+		 */
+		function addScript( src ) {
+			if ( ready ) {
+				// jQuery's getScript method is NOT better than doing this the old-fassioned way
+				// because jQuery will eval the script's code, and errors will not have sane
+				// line numbers.
+				var script = document.createElement( 'script' );
+				script.setAttribute( 'src', src );
+				script.setAttribute( 'type', 'text/javascript' );
+				document.body.appendChild( script );
+			} else {
+				document.write( mw.html.element(
+					'script', { 'type': 'text/javascript', 'src': src }, ''
+				) );
+			}
+		}
+
 		/* Public Methods */
 
 		/**
@@ -834,21 +854,11 @@ window.mediaWiki = new ( function( $ ) {
 				batch = [];
 				// Asynchronously append a script tag to the end of the body
 				function request() {
-					var html = '';
 					for ( var r = 0; r < requests.length; r++ ) {
 						requests[r] = sortQuery( requests[r] );
-						// Build out the HTML
 						var src = mediaWiki.config.get( 'wgLoadScript' ) + '?' + $.param( requests[r] );
-						html += mediaWiki.html.element( 'script',
-							{ type: 'text/javascript', src: src }, '' );
+						addScript( src );
 					}
-					return html;
-				}
-				// Load asynchronously after doumument ready
-				if ( ready ) {
-					setTimeout( function() { $( 'body' ).append( request() ); }, 0 )
-				} else {
-					document.write( request() );
 				}
 			}
 		};
@@ -1011,13 +1021,7 @@ window.mediaWiki = new ( function( $ ) {
 							.attr( 'href', modules ) );
 						return true;
 					} else if ( type === 'text/javascript' || typeof type === 'undefined' ) {
-						var script = mediaWiki.html.element( 'script',
-							{ type: 'text/javascript', src: modules }, '' );
-						if ( ready ) {
-							$( 'body' ).append( script );
-						} else {
-							document.write( script );
-						}
+						addScript( modules );
 						return true;
 					}
 					// Unknown type
@@ -1176,7 +1180,6 @@ window.mediaWiki = new ( function( $ ) {
 			return s;
 		};
 	} )();
-
 
 	/* Extension points */
 
