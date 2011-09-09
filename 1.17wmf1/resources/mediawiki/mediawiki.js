@@ -54,6 +54,22 @@ jQuery.extend({
 });
 
 /*
+ * Workaround for API hits with protocol-relative URLs on IE 7 and jQuery 1.4
+ */
+(function(jQuery) {
+	var origAjax = jQuery.ajax;
+	jQuery.ajax = function(origSettings) {
+		var settings = jQuery.extend({}, origSettings);
+		if ('url' in settings && settings.url.substring(0, 2) == '//' && typeof window.location == "object" && 'protocol' in window.location) {
+			// IE 7's XMLHTTPRequest gets confused by protocol-relative links.
+			// Resolve it for the poor dears!
+			settings.url = window.location.protocol + settings.url;
+		}
+		return origAjax(settings);
+	};
+})(jQuery);
+
+/*
  * Core MediaWiki JavaScript Library
  */
 
