@@ -118,7 +118,7 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->defineAccountInfo();
 		$this->defineReturnValueMap();
 		
-		
+		$this->displaydata = $this->postdata;
 		$this->stageData();
 	}
 	
@@ -146,6 +146,9 @@ abstract class GatewayAdapter implements GatewayType {
 	
 	function getData(){
 		return $this->postdata;
+	}
+	function getDisplayData(){
+		return $this->displaydata;
 	}
 	
 	function isCache(){

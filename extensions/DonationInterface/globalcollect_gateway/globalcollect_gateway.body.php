@@ -95,7 +95,7 @@ EOT;
 	
 		//TODO: This is short-circuiting what I really want to do here. 
 		//so stop it. 
-		$data = $this->adapter->getData();
+		$data = $this->adapter->getDisplayData();
 		
 		// dispatch forms/handling
 		if ( $this->adapter->checkTokens() ) {
