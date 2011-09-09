@@ -157,7 +157,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				}
 			}
 			$errors[$code] = $message;
-			self::log( "ON NOES! ERRORS: " . print_r($errors, true) );
 		}
 		return $errors;
 	}

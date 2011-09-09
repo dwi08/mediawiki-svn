@@ -14,40 +14,64 @@
  * @group Gateways
  * @author Katie Horn <khorn@wikimedia.org>
  */
-class DonationInterfaceTest extends MediaWikiTestCase {
+class GatewayAdapterTest extends MediaWikiTestCase {
 
 	function testbuildRequestXML() {
 		$gateway = new TestAdapter();
 		$gateway->publicCurrentTransaction( 'Test1' );
 		$built = $gateway->buildRequestXML();
 		$expected = '<?xml version="1.0"?>' . "\n";
-		$expected .= '<XML><REQUEST><ACTION>Donate</ACTION><ACCOUNT><MERCHANTID>128</MERCHANTID><PASSWORD>k4ftw</PASSWORD><VERSION>3.2</VERSION><RETURNURL>http://localhost/index.php/Donate-thanks/en</RETURNURL></ACCOUNT><DONATION><DONOR> </DONOR><AMOUNT>0</AMOUNT><CURRENCYCODE>USD</CURRENCYCODE><LANGUAGECODE>en</LANGUAGECODE><COUNTRYCODE>US</COUNTRYCODE></DONATION></REQUEST></XML>' . "\n";
+		$expected .= '<XML><REQUEST><ACTION>Donate</ACTION><ACCOUNT><MERCHANTID>128</MERCHANTID><PASSWORD>k4ftw</PASSWORD><VERSION>3.2</VERSION><RETURNURL>http://localhost/index.php/Donate-thanks/en</RETURNURL></ACCOUNT><DONATION><DONOR>Tester Testington</DONOR><AMOUNT>35000</AMOUNT><CURRENCYCODE>USD</CURRENCYCODE><LANGUAGECODE>en</LANGUAGECODE><COUNTRYCODE>US</COUNTRYCODE></DONATION></REQUEST></XML>' . "\n";
 		$this->assertEquals($built, $expected, "The constructed XML for transaction type Test1 does not match our expected.");
 		
 	}
 	
-	function testParseResponseXML() {
-		$gateway = new TestAdapter();
-		$returned = $gateway->do_transaction( 'Test2' );
+	function testParseResponseStatusXML() {
 		
+		$returned = $this->getTestGatewayTransactionTest2Results();
+		$this->assertEquals($returned['status'], true, "Status should be true at this point.");
+	}
+	
+	function testParseResponseErrorsXML() {
+		
+		$returned = $this->getTestGatewayTransactionTest2Results();
 		$expected_errors = array(
 			128 => "Your shoe's untied...",
 			45 => "Low clearance!"
 		);
+		$this->assertEquals($returned['errors'], $expected_errors, "Expected errors were not found.");
+				
+	}
+	
+	function testParseResponseDataXML() {
 		
+		$returned = $this->getTestGatewayTransactionTest2Results();
 		$expected_data = array(
 			'thing' => 'stuff',
 			'otherthing' => 12,
 		);
-		
-		$this->assertEquals($returned['status'], true, "Status should be true at this point.");
-		
-		$this->assertEquals($returned['errors'], $expected_errors, "Expected errors were not found.");
-		
 		$this->assertEquals($returned['data'], $expected_data, "Expected data was not found.");
+				
+	}
+	
+	function testResponseMessage() {
 		
+		$returned = $this->getTestGatewayTransactionTest2Results();
 		$this->assertEquals($returned['message'], "Test2 Transaction Successful!", "Expected message was not returned.");
 				
+	}
+	
+	function testGetGlobal(){
+		$gateway = new TestAdapter();
+		$found = $gateway::getGlobal("TestVar");
+		$expected = "Hi there!";
+		$this->assertEquals($found, $expected, "getGlobal is not functioning properly.");
+	}
+	
+	
+	function getTestGatewayTransactionTest2Results(){
+		$gateway = new TestAdapter();
+		return $gateway->do_transaction( 'Test2' );
 	}
 
 }
@@ -68,7 +92,8 @@ class TestAdapter extends GatewayAdapter {
 	}
 	
 	function __construct( ) {
-		global $wgTestAdapterGatewayTestVar, $wgTestAdapterGatewayUseSyslog;
+		global $wgTestAdapterGatewayTestVar, $wgTestAdapterGatewayUseSyslog, $wgTestAdapterGatewayTest;
+		$wgTestAdapterGatewayTest = true;
 		$wgTestAdapterGatewayTestVar = "Hi there!";
 		$wgTestAdapterGatewayUseSyslog = true;
 		$this->classlocation = __FILE__;
@@ -142,7 +167,6 @@ class TestAdapter extends GatewayAdapter {
 				'ACTION' => 'Donate2',
 			),
 		);
-		self::log(print_r($this->transactions, true));
 	}
 
 	/**
@@ -193,7 +217,6 @@ class TestAdapter extends GatewayAdapter {
 				}
 			}
 			$errors[$code] = $message;
-			self::log( "ON NOES! ERRORS: " . print_r($errors, true) );
 		}
 		return $errors;
 	}

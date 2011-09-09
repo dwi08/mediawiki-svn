@@ -21,6 +21,7 @@ $wgExtensionCredits['specialpage'][] = array(
 //This is going to be a little funky. 
 //Override this in LocalSettings.php BEFORE you include this file, if you want 
 //to disable gateways.
+//TODO: Unfunktify, if you have a better idea here for auto-loading the classes after LocalSettings.php runs all the way. 
 if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
 	$wgDonationInterfaceEnabledGateways = array(
 		'paypal',
@@ -70,3 +71,12 @@ $wgDonationInterfaceTest = false;
  */
 //$wgHooks['DonationInterface_Value'][] = 'pfpGatewayValue';
 //$wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
+
+# Unit tests
+$wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
+
+function efDonationInterfaceUnitTests( &$files ) {
+	$files[] = dirname( __FILE__ ) . '/tests/GatewayAdapterTest.php';
+	$files[] = dirname( __FILE__ ) . '/tests/DonationDataTest.php';
+	return true;
+}

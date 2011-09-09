@@ -11,12 +11,12 @@ class DonationData {
 	
 	public $boss;
 	
-	function __construct($owning_class){
+	function __construct($owning_class, $test = false, $testdata = false){
 		//TODO: Actually think about this bit.
 		// ...and keep in mind we can re-populate if it's a test or whatever. (But that may not be a good idea either)
 		//maybe we should just explicitly pass in where we get the data from. (Test, post, API...)
 		$this->boss = $owning_class;
-		$this->populateData();
+		$this->populateData($test, $testdata);
 	}
 	
 	function populateData($test = false, $testdata = false){
@@ -24,11 +24,10 @@ class DonationData {
 		//TODO: Uh, the API should probably be able to get in this far, too... and have its own populate function. 
 		//Maybe check for the boss class...
 		if ($test){
-			$this->populateData_Test($testdata = false);
+			$this->populateData_Test($testdata);
 		} else {
 			$this->populateData_Form();
 		}
-		//TODO: Unit test the goodness out of this thing. 
 		$this->doCacheStuff();
 		
 		
@@ -43,7 +42,6 @@ class DonationData {
 			$this->saveContributionTracking();
 		}
 		
-		self::log("FORM DATA OBJECT: Data has been populated! " . print_r($this->normalized, true));
 	}
 	
 	function getData(){
@@ -75,7 +73,7 @@ class DonationData {
 			global $wgRequest; //TODO: ARRRGHARGHARGH. That is all.
 
 			$this->normalized = array(
-				'amount' => ( $amount != "0.00" ) ? $amount : "35",
+				'amount' => "35",
 				'amountOther' => '',
 				'email' => 'test@example.com',
 				'fname' => 'Tester',
@@ -101,9 +99,9 @@ class DonationData {
 				'cvv' => '001',
 				'currency' => 'USD',
 				'payment_method' => $wgRequest->getText( 'payment_method' ),
-				'order_id' => $order_id,
-				'i_order_id' => $i_order_id,
-				'numAttempt' => $numAttempt,
+				'order_id' => '1234567890',
+				'i_order_id' => '1234567890',
+				'numAttempt' => 0,
 				'referrer' => 'http://www.baz.test.com/index.php?action=foo&action=bar',
 				'utm_source' => self::getUtmSource(),
 				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
@@ -113,13 +111,13 @@ class DonationData {
 				'comment' => $wgRequest->getText( 'comment' ),
 				'email-opt' => $wgRequest->getText( 'email-opt' ),
 				'test_string' => $wgRequest->getText( 'process' ),
-				'token' => $token,
+				'token' => '',
 				'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
 				'data_hash' => $wgRequest->getText( 'data_hash' ),
 				'action' => $wgRequest->getText( 'action' ),
 				'gateway' => 'payflowpro',
 				'owa_session' => $wgRequest->getText( 'owa_session', null ),
-				'owa_ref' => $owa_ref,
+				'owa_ref' => 'http://localhost/defaultTestData',
 			);
 		}
 	}
@@ -214,18 +212,6 @@ class DonationData {
 	}
 	
 	function setNormalizedAmount(){
-//		// find out if amount was a radio button or textbox, set amount
-//		if ( isset( $_REQUEST['amount'] ) && preg_match( '/^\d+(\.(\d+)?)?$/', $wgRequest->getText( 'amount' ) ) ) {
-//			$amount = $wgRequest->getText( 'amount' );
-//		} elseif ( isset( $_REQUEST['amountGiven'] ) && preg_match( '/^\d+(\.(\d+)?)?$/', $wgRequest->getText( 'amountGiven' ) ) ) {
-//			$amount = number_format( $wgRequest->getText( 'amountGiven' ), 2, '.', '' );
-//		} elseif ( isset( $_REQUEST['amount'] ) ) {
-//			$amount = '0.00';
-//		} elseif ( $wgRequest->getText( 'amount' ) == '-1' ) {
-//			$amount = $wgRequest->getText( 'amountOther' );
-//		} else {
-//			$amount = '0.00';
-//		}
 		
 		if (!($this->isSomething('amount')) || !(preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal('amount') ) )){
 			if ($this->isSomething('amountGiven') && preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal('amountGiven') ) ){
@@ -255,13 +241,7 @@ class DonationData {
 		
 		if (!$this->isSomething('i_order_id')){	
 			$this->setVal('i_order_id', $this->generateOrderId());
-		}
-		
-		//TODO: Take this out when you know it's okay. 
-		//In fact: TODO: Clean up the logs all over. 
-		
-		$this->log("Internal Order ID = " . $this->getVal('i_order_id'));
-		
+		}		
 	}
 	
 	/**
@@ -318,12 +298,14 @@ class DonationData {
 
 			// if we have squid caching enabled, set the maxage
 			global $wgUseSquid, $wgOut;
-			$g = $this->boss; //the 'g' is for "Gateway"!
-			$maxAge = $g::getGlobal('SMaxAge');
+			if (class_exists($this->boss)){
+				$g = $this->boss; //the 'g' is for "Gateway"!
+				$maxAge = $g::getGlobal('SMaxAge');
 
-			if ( $wgUseSquid ) {
-				self::log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Setting s-max-age: ' . $maxAge, LOG_DEBUG );
-				$wgOut->setSquidMaxage( $maxAge );	
+				if ( $wgUseSquid ) {
+					self::log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Setting s-max-age: ' . $maxAge, LOG_DEBUG );
+					$wgOut->setSquidMaxage( $maxAge );	
+				}
 			}
 		} else {
 			$this->cache = false; //TODO: Kill this one in the face, too. (see above) 
@@ -354,8 +336,12 @@ class DonationData {
 		// make sure we have a session open for tracking a CSRF-prevention token
 		self::ensureSession();
 		
-		$g = $this->boss;
-		$gateway_ident = $g::getIdentifier();
+		if (class_exists($this->boss)){
+			$g = $this->boss;
+			$gateway_ident = $g::getIdentifier();
+		} else {
+			$gateway_ident = 'DonationData';
+		}
 
 		if ( !isset( $_SESSION[ $gateway_ident . 'EditToken' ] ) ) {
 			// generate unsalted token to place in the session
@@ -404,8 +390,12 @@ class DonationData {
 	 * Unset the payflow edit token from a user's session
 	 */
 	function unsetEditToken() {
-		$g = $this->boss;
-		$gateway_ident = $g::getIdentifier();
+		if (class_exists($this->boss)){
+			$g = $this->boss;
+			$gateway_ident = $g::getIdentifier();
+		} else {
+			$gateway_ident = "DonationData";
+		}
 		unset( $_SESSION[ $gateway_ident . 'EditToken' ] );
 	}
 
@@ -427,9 +417,12 @@ class DonationData {
 		static $match = null;
 		
 		if ($match === null) {
-			
-			$g = $this->boss;
-			$salt = $g::getGlobal('Salt');
+			if (class_exists($this->boss)){
+				$g = $this->boss;
+				$salt = $g::getGlobal('Salt');
+			} else {
+				$salt = 'gotToBeInAUnitTest';
+			}
 			
 			// establish the edit token to prevent csrf
 			$token = $this->getEditToken( $salt );
@@ -452,10 +445,8 @@ class DonationData {
 	function wasPosted(){
 		//TODO: Get rid of these log statements. 
 		if ( $this->isSomething('posted') ){
-			$this->log("Posted = '" . $this->getVal('posted') . "'");
 			return true;
 		}
-		$this->log("We were NOT Posted.");
 		return false;
 	}
 

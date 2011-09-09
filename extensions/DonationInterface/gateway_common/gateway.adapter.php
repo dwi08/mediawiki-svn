@@ -94,15 +94,6 @@ abstract class GatewayAdapter implements GatewayType {
 	const globalprefix = 'wgDonationGateway'; //...for example. 
 	
 	function __construct(){
-
-		$dir = dirname( __FILE__ ) . '/';
-		require_once( $dir . '../gateway_common/DonationData.php' );
-		$this->dataObj = new DonationData(get_called_class());
-		
-		$this->postdata = $this->dataObj->getData();
-		//TODO: Fix this a bit. 
-		$this->posted = $this->dataObj->wasPosted();
-		
 		global $wgDonationInterfaceTest; //this is so the forms can see it. 
 		//TODO: Alter the forms so they don't need the global?
 		if ( !self::getGlobal('Test') ) {
@@ -112,6 +103,14 @@ abstract class GatewayAdapter implements GatewayType {
 			$this->url = self::getGlobal('TestingURL');
 			$wgDonationInterfaceTest = true;
 		}
+
+		$dir = dirname( __FILE__ ) . '/';
+		require_once( $dir . '../gateway_common/DonationData.php' );
+		$this->dataObj = new DonationData(get_called_class(), $wgDonationInterfaceTest);
+		
+		$this->postdata = $this->dataObj->getData();
+		//TODO: Fix this a bit. 
+		$this->posted = $this->dataObj->wasPosted();
 		
 		$this->setPostDefaults();
 		$this->defineTransactions();
@@ -480,6 +479,7 @@ abstract class GatewayAdapter implements GatewayType {
 		$c = get_called_class();
 		return $c::globalprefix;
 	}
+	
 	static function getIdentifier() {
 		$c = get_called_class();
 		return $c::identifier;
