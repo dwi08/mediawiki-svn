@@ -54,11 +54,11 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	 * @param $par Mixed: parameter passed to the page or null
 	 */
 	public function execute( $par ) {
-		global $wgRequest, $wgOut, $wgScriptPath,
+		global $wgRequest, $wgOut, $wgExtensionAssetsPath,
 			$wgPayFlowProGatewayCSSVersion;
 
 		$wgOut->addExtensionStyle(
-			"{$wgScriptPath}/extensions/DonationInterface/gateway_forms/css/gateway.css?284" .
+			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
 			$wgPayFlowProGatewayCSSVersion );
 
 		$scriptVars = array(
@@ -73,6 +73,7 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 			'globalcollectGatewayErrorMsgState' => wfMsg( 'globalcollect_gateway-error-msg-state' ),
 			'globalcollectGatewayErrorMsgZip' => wfMsg( 'globalcollect_gateway-error-msg-zip' ),
 			'globalcollectGatewayErrorMsgCountry' => wfMsg( 'globalcollect_gateway-error-msg-country' ),
+			'globalcollectGatewayErrorMsgCardType' => wfMsg( 'globalcollect_gateway-error-msg-card_type' ),
 			'globalcollectGatewayErrorMsgCardNum' => wfMsg( 'globalcollect_gateway-error-msg-card_num' ),
 			'globalcollectGatewayErrorMsgExpiration' => wfMsg( 'globalcollect_gateway-error-msg-expiration' ),
 			'globalcollectGatewayErrorMsgCvv' => wfMsg( 'globalcollect_gateway-error-msg-cvv' ),
@@ -586,7 +587,7 @@ EOT;
 			'retryMsg' => '',
 			'invalidamount' => '',
 			'card_num' => '',
-			'card' => '',
+			'card_type' => '',
 			'cvv' => '',
 			'fname' => '',
 			'lname' => '',
