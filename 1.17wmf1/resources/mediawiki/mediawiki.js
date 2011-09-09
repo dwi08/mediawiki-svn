@@ -853,12 +853,10 @@ window.mediaWiki = new ( function( $ ) {
 				// include modules which are already loaded
 				batch = [];
 				// Asynchronously append a script tag to the end of the body
-				function request() {
-					for ( var r = 0; r < requests.length; r++ ) {
-						requests[r] = sortQuery( requests[r] );
-						var src = mediaWiki.config.get( 'wgLoadScript' ) + '?' + $.param( requests[r] );
-						addScript( src );
-					}
+				for ( var r = 0; r < requests.length; r++ ) {
+					requests[r] = sortQuery( requests[r] );
+					var src = mediaWiki.config.get( 'wgLoadScript' ) + '?' + $.param( requests[r] );
+					addScript( src );
 				}
 			}
 		};
