@@ -223,9 +223,9 @@ EOT;
 			$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['card_num'] . '</span></td>';
 			$form .= '</tr>';
 		}
-		if ( $this->form_errors['card'] ) {
+		if ( $this->form_errors['card_type'] ) {
 			$form .= '<tr>';
-			$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['card'] . '</span></td>';
+			$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['card_type'] . '</span></td>';
 			$form .= '</tr>';
 		}
 		$form .= '<tr>';

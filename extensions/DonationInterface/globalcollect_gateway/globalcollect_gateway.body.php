@@ -62,22 +62,22 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 			$wgPayFlowProGatewayCSSVersion );
 
 		$scriptVars = array(
-			'globalcollectGatewayErrorMsgJs' => wfMsg( 'globalcollect_gateway-error-msg-js' ),
-			'globalcollectGatewayErrorMsgEmail' => wfMsg( 'globalcollect_gateway-error-msg-email' ),
-			'globalcollectGatewayErrorMsgAmount' => wfMsg( 'globalcollect_gateway-error-msg-amount' ),
-			'globalcollectGatewayErrorMsgEmailAdd' => wfMsg( 'globalcollect_gateway-error-msg-emailAdd' ),
-			'globalcollectGatewayErrorMsgFname' => wfMsg( 'globalcollect_gateway-error-msg-fname' ),
-			'globalcollectGatewayErrorMsgLname' => wfMsg( 'globalcollect_gateway-error-msg-lname' ),
-			'globalcollectGatewayErrorMsgStreet' => wfMsg( 'globalcollect_gateway-error-msg-street' ),
-			'globalcollectGatewayErrorMsgCity' => wfMsg( 'globalcollect_gateway-error-msg-city' ),
-			'globalcollectGatewayErrorMsgState' => wfMsg( 'globalcollect_gateway-error-msg-state' ),
-			'globalcollectGatewayErrorMsgZip' => wfMsg( 'globalcollect_gateway-error-msg-zip' ),
-			'globalcollectGatewayErrorMsgCountry' => wfMsg( 'globalcollect_gateway-error-msg-country' ),
-			'globalcollectGatewayErrorMsgCardType' => wfMsg( 'globalcollect_gateway-error-msg-card_type' ),
-			'globalcollectGatewayErrorMsgCardNum' => wfMsg( 'globalcollect_gateway-error-msg-card_num' ),
-			'globalcollectGatewayErrorMsgExpiration' => wfMsg( 'globalcollect_gateway-error-msg-expiration' ),
-			'globalcollectGatewayErrorMsgCvv' => wfMsg( 'globalcollect_gateway-error-msg-cvv' ),
-			'globalcollectGatewayCVVExplain' => wfMsg( 'globalcollect_gateway-cvv-explain' ),
+			'globalcollectGatewayErrorMsgJs' => wfMsg( 'payflowpro_gateway-error-msg-js' ),
+			'globalcollectGatewayErrorMsgEmail' => wfMsg( 'payflowpro_gateway-error-msg-email' ),
+			'globalcollectGatewayErrorMsgAmount' => wfMsg( 'payflowpro_gateway-error-msg-amount' ),
+			'globalcollectGatewayErrorMsgEmailAdd' => wfMsg( 'payflowpro_gateway-error-msg-emailAdd' ),
+			'globalcollectGatewayErrorMsgFname' => wfMsg( 'payflowpro_gateway-error-msg-fname' ),
+			'globalcollectGatewayErrorMsgLname' => wfMsg( 'payflowpro_gateway-error-msg-lname' ),
+			'globalcollectGatewayErrorMsgStreet' => wfMsg( 'payflowpro_gateway-error-msg-street' ),
+			'globalcollectGatewayErrorMsgCity' => wfMsg( 'payflowpro_gateway-error-msg-city' ),
+			'globalcollectGatewayErrorMsgState' => wfMsg( 'payflowpro_gateway-error-msg-state' ),
+			'globalcollectGatewayErrorMsgZip' => wfMsg( 'payflowpro_gateway-error-msg-zip' ),
+			'globalcollectGatewayErrorMsgCountry' => wfMsg( 'payflowpro_gateway-error-msg-country' ),
+			'globalcollectGatewayErrorMsgCardType' => wfMsg( 'payflowpro_gateway-error-msg-card_type' ),
+			'globalcollectGatewayErrorMsgCardNum' => wfMsg( 'payflowpro_gateway-error-msg-card_num' ),
+			'globalcollectGatewayErrorMsgExpiration' => wfMsg( 'payflowpro_gateway-error-msg-expiration' ),
+			'globalcollectGatewayErrorMsgCvv' => wfMsg( 'payflowpro_gateway-error-msg-cvv' ),
+			'globalcollectGatewayCVVExplain' => wfMsg( 'payflowpro_gateway-cvv-explain' ),
 		);
 
 		$wgOut->addScript( Skin::makeVariablesScript( $scriptVars ) );
@@ -182,7 +182,7 @@ EOT;
 		} else {
 			if ( !$this->adapter->isCache() ) {
 				// if we're not caching, there's a token mismatch
-				$this->errors['general']['token-mismatch'] = wfMsg( 'globalcollect_gateway-token-mismatch' );
+				$this->errors['general']['token-mismatch'] = wfMsg( 'payflowpro_gateway-token-mismatch' );
 			}
 			$this->fnPayflowDisplayForm( $data, $this->errors );
 		}
@@ -264,17 +264,17 @@ EOT;
 		// create the human-speak message for required fields
 		// does not include fields that are not required
 		$msg = array(
-			'amount' => wfMsg( 'globalcollect_gateway-error-msg-amount' ),
-			'emailAdd' => wfMsg( 'globalcollect_gateway-error-msg-emailAdd' ),
-			'fname' => wfMsg( 'globalcollect_gateway-error-msg-fname' ),
-			'lname' => wfMsg( 'globalcollect_gateway-error-msg-lname' ),
-			'street' => wfMsg( 'globalcollect_gateway-error-msg-street' ),
-			'city' => wfMsg( 'globalcollect_gateway-error-msg-city' ),
-			'state' => wfMsg( 'globalcollect_gateway-error-msg-state' ),
-			'zip' => wfMsg( 'globalcollect_gateway-error-msg-zip' ),
-			'card_num' => wfMsg( 'globalcollect_gateway-error-msg-card_num' ),
-			'expiration' => wfMsg( 'globalcollect_gateway-error-msg-expiration' ),
-			'cvv' => wfMsg( 'globalcollect_gateway-error-msg-cvv' ),
+			'amount' => wfMsg( 'payflowpro_gateway-error-msg-amount' ),
+			'emailAdd' => wfMsg( 'payflowpro_gateway-error-msg-emailAdd' ),
+			'fname' => wfMsg( 'payflowpro_gateway-error-msg-fname' ),
+			'lname' => wfMsg( 'payflowpro_gateway-error-msg-lname' ),
+			'street' => wfMsg( 'payflowpro_gateway-error-msg-street' ),
+			'city' => wfMsg( 'payflowpro_gateway-error-msg-city' ),
+			'state' => wfMsg( 'payflowpro_gateway-error-msg-state' ),
+			'zip' => wfMsg( 'payflowpro_gateway-error-msg-zip' ),
+			'card_num' => wfMsg( 'payflowpro_gateway-error-msg-card_num' ),
+			'expiration' => wfMsg( 'payflowpro_gateway-error-msg-expiration' ),
+			'cvv' => wfMsg( 'payflowpro_gateway-error-msg-cvv' ),
 		);
 
 		// find all empty fields and create message
@@ -282,7 +282,7 @@ EOT;
 			if ( $value == '' || ($key == 'state' && $value == 'YY' )) {
 				// ignore fields that are not required
 				if ( isset( $msg[$key] ) ) {
-					$error[$key] = "**" . wfMsg( 'globalcollect_gateway-error-msg', $msg[$key] ) . "**<br />";
+					$error[$key] = "**" . wfMsg( 'payflowpro_gateway-error-msg', $msg[$key] ) . "**<br />";
 					$error_result = '1';
 				}
 			}
@@ -292,7 +292,7 @@ EOT;
 		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data[ 'amount' ] ) || 
 			( (float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) < (float) $wgPayflowProGatewayPriceFloor || 
 				(float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) > (float) $wgPayflowProGatewayPriceCeiling ) ) {
-			$error['invalidamount'] = wfMsg( 'globalcollect_gateway-error-msg-invalid-amount' );
+			$error['invalidamount'] = wfMsg( 'payflowpro_gateway-error-msg-invalid-amount' );
 			$error_result = '1';
 		}
 
@@ -301,7 +301,7 @@ EOT;
 
 		// create error message (supercedes empty field message)
 		if ( !$isEmail ) {
-			$error['emailAdd'] = wfMsg( 'globalcollect_gateway-error-msg-email' );
+			$error['emailAdd'] = wfMsg( 'payflowpro_gateway-error-msg-email' );
 			$error_result = '1';
 		}
 
@@ -317,7 +317,7 @@ EOT;
 		} else { // an invalid credit card number was entered
 		//TODO: Make sure this is uncommented when you commit for reals! 
 			//$error_result = '1';
-			//$error[ 'card_num' ] = wfMsg( 'globalcollect_gateway-error-msg-card-num' );
+			//$error[ 'card_num' ] = wfMsg( 'payflowpro_gateway-error-msg-card-num' );
 		}
 		
 		return $error_result;

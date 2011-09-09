@@ -190,7 +190,7 @@ abstract class Gateway_Form {
 		// generate  a dropdown opt for each card
 		foreach ( $available_cards as $value => $card_name ) {
 			// only load the card value if we're in testing mode
-			$selected = ( $value == $this->form_data[ 'card' ] && $this->test ) ? true : false;
+			$selected = ( $value == $this->form_data[ 'card_type' ] && $this->test ) ? true : false;
 			$card_options .= Xml::option( $card_name, $value, $selected );
 		}
 
@@ -198,8 +198,8 @@ abstract class Gateway_Form {
 		$card_menu = Xml::openElement(
 			'select',
 			array(
-				'name' => 'card',
-				'id' => 'card'
+				'name' => 'card_type',
+				'id' => 'card_type'
 			) );
 		$card_menu .= $card_options;
 		$card_menu .= Xml::closeElement( 'select' );
@@ -476,9 +476,9 @@ abstract class Gateway_Form {
 			$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['card_num'] . '</span></td>';
 			$form .= '</tr>';
 		}
-		if ( $this->form_errors['card'] ) {
+		if ( $this->form_errors['card_type'] ) {
 			$form .= '<tr>';
-			$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['card'] . '</span></td>';
+			$form .= '<td colspan=2><span class="creditcard-error-msg">' . $this->form_errors['card_type'] . '</span></td>';
 			$form .= '</tr>';
 		}
 		$form .= '<tr>';
@@ -637,7 +637,7 @@ abstract class Gateway_Form {
 
 	protected function getCreditCardTypeField() {
 		$form = '<tr>';
-		$form .= '<td class="label">' . Xml::label( wfMsg( 'payflowpro_gateway-donor-card' ), 'card' ) . '</td>';
+		$form .= '<td class="label">' . Xml::label( wfMsg( 'payflowpro_gateway-donor-card' ), 'card_type' ) . '</td>';
 		$form .= '<td>' . $this->generateCardDropdown() . '</td>';
 		$form .= '</tr>';
 		return $form;
