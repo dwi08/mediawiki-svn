@@ -191,10 +191,13 @@ class HTMLCacheUpdate
 		}
 
 		# Update squid
+		# Disable this as a temporary measure per private-l post -- TS
+		/*
 		if ( $wgUseSquid ) {
 			$u = SquidUpdate::newFromTitles( $titleArray );
 			$u->doUpdate();
 		}
+		 */
 
 		# Update file cache
 		if  ( $wgUseFileCache ) {
