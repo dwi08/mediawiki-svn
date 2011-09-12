@@ -72,7 +72,7 @@ function wfThumbMain() {
 	} else if ( $isTemp ) {
 		// Dirty, horrible, evil hack. We need to create a repo with the right zone paths for this to work
 		$localRepo = RepoGroup::singleton()->getLocalRepo();
-		$repo = new FSRepo( array( 'directory' => $localRepo->getZonePath( 'temp' ), 'url' => $localRepo->getZoneUrl( 'temp' ), 'thumbPath'=> $localRepo->getZonePath( 'thumb' ) . '/temp', 'thumbUrl' => $localRepo->getZoneUrl( 'thumb' ) . '/temp' ) );
+		$repo = new FSRepo( array( 'directory' => $localRepo->getZonePath( 'temp' ), 'url' => $localRepo->getZoneUrl( 'temp' ), 'thumbDir'=> $localRepo->getZonePath( 'thumb' ) . '/temp', 'thumbUrl' => $localRepo->getZoneUrl( 'thumb' ) . '/temp' ) );
 		// $fileName can be like timestamp!name , strip the timestamp! part
 		$parts = explode( '!', $fileName, 2 );
 		$strippedName = isset( $parts[1] ) ? $parts[1] : $fileName;
