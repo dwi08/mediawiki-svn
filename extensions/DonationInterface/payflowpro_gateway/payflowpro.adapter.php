@@ -1,44 +1,31 @@
 <?php
 
-$dir = dirname( __FILE__ ) . '/';
-require_once( $dir . '../gateway_common/gateway.adapter.php' );
-
 class PayflowProAdapter extends GatewayAdapter {
 	//Contains the map of THEIR var names, to OURS.
 	//I'd have gone the other way, but we'd run into 1:many pretty quick. 
 
-	const gatewayname = 'Payflow Pro';
-	const logidentifier = 'payflowpro_gateway';
-	const communicationtype = 'namevalue';
-	const globalprefix = 'wgPayflowProGateway';
+	const GATEWAY_NAME = 'Payflow Pro';
+	const IDENTIFIER = 'payflowpro_gateway';
+	const COMMUNICATION_TYPE = 'namevalue';
+	const GLOBAL_PREFIX = 'wgPayflowProGateway';
 
-	function __construct( $data ) {
+	/**
+	 * stageData should alter the postdata array in all ways necessary in preparation for
+	 * communication with the gateway. 
+	 */
+	function stageData() {
+		
+	}
 
-		$this->postdata = $data;
-
-		//TODO: Make a Thing in which we do things like this. 
-		$this->postdata['amount'] = $this->postdata['amount'] * 100;
-
-
-		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
-		$returnto = $returnTitle->getFullURL();
-
-		//this DEFINITELY needs to be defined in the parent class, and contain everything anybody might want to know.
-		$this->postdatadefaults = array(
-			'order_id' => '112358' . rand(),
-			'amount' => '11.38',
-			'currency' => 'USD',
-			'language' => 'en',
-			'country' => 'US',
-			'returnto' => $returnto,
-			'user_ip' => ( self::getGlobal('Test') ) ? '12.12.12.12' : wfGetIP(), // current user's IP address
-			'order_id' => $this->getOrderId(),
-			'i_order_id' => $this->getInternalOrderId(),
+	function defineAccountInfo() {
+		$this->accountInfo = array(
+			'MERCHANTID' => self::getGlobal( 'MerchantID' ),
+			//'IPADDRESS' => '', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm. 
+			'VERSION' => "1.0",
 		);
+	}
 
-
-		///ehh. Most of this should be broken up into functions for the sake of readibility. 
-
+	function defineVarMap() {
 		$this->var_map = array(
 			'ORDERID' => 'order_id',
 			'AMOUNT' => 'amount',
@@ -49,121 +36,70 @@ class PayflowProAdapter extends GatewayAdapter {
 			'RETURNURL' => 'returnto', //I think. It might not even BE here yet. Boo-urns. 
 			'IPADDRESS' => 'user_ip', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm.
 		);
+	}
 
+	function defineReturnValueMap() {
 		$this->return_value_map = array(
 			'OK' => true,
 			'NOK' => false,
 		);
+	}
 
-		global $wgDonationInterfaceTest; //this is so the forms can see it. 
-		if ( !self::getGlobal('Test') ) {
-			$this->url = self::getGlobal('URL');
-			$wgDonationInterfaceTest = false;
-		} else {
-			$this->url = self::getGlobal('TestingURL');
-			$wgDonationInterfaceTest = true;
-		}
+	function defineTransactions() {
+		$this->transactions = array( );
 
-		$this->accountInfo = array(
-			'MERCHANTID' => self::getGlobal('MerchantID'),
-			//'IPADDRESS' => '', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm. 
-			'VERSION' => "1.0",
-		);
-
-		//oof. This is getting a little long and unwieldy. Maybe we should build it. Or maybe that sucks. I can't tell yet.
-		/* General idea here:
-		 * This bad boy will (probably) contain the structure of all possible transactions as defined by the gateway. 
-		 * First array key: Some way for us to id the transaction. Doesn't actually have to be the gateway's name for it, but
-		 * I'm starting with that.
-		 * Second array key: 
-		 * 		'structure' contains the layout of that transaction.
-		 * 		'defaults' contains default values for the leaf 'values' 
-		 * 		I could put a 'type' in here, but I think we can assume that if 'structure' is multi-layer, we're XML.
-		 * Array "leaves" in 'structure' will be assigned a value according to the var_map, and the posted data. 
-		 * 	There should also be a mechanism for assigning defaults, but I'm not entirely sure what that would look like quite yet...
-		 * 
-		 */
-		$this->transactions = array(
-			'INSERT_ORDERWITHPAYMENT' => array(
-				'request' => array(
-					'REQUEST' => array(
-						'ACTION',
-						'META' => array(
-							'MERCHANTID',
-//							'IPADDRESS',
-							'VERSION'
+		$this->transactions['INSERT_ORDERWITHPAYMENT'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
+						// 'IPADDRESS',
+						'VERSION'
+					),
+					'PARAMS' => array(
+						'ORDER' => array(
+							'ORDERID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'MERCHANTREFERENCE'
 						),
-						'PARAMS' => array(
-							'ORDER' => array(
-								'ORDERID',
-								'AMOUNT',
-								'CURRENCYCODE',
-								'LANGUAGECODE',
-								'COUNTRYCODE',
-								'MERCHANTREFERENCE'
-							),
-							'PAYMENT' => array(
-								'PAYMENTPRODUCTID',
-								'AMOUNT',
-								'CURRENCYCODE',
-								'LANGUAGECODE',
-								'COUNTRYCODE',
-								'HOSTEDINDICATOR',
-								'RETURNURL',
-							)
+						'PAYMENT' => array(
+							'PAYMENTPRODUCTID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'HOSTEDINDICATOR',
+							'RETURNURL',
 						)
 					)
-				),
-				'values' => array(
-					'ACTION' => 'INSERT_ORDERWITHPAYMENT',
-					'HOSTEDINDICATOR' => '1',
-					'PAYMENTPRODUCTID' => '3',
-				),
-				'result' => array( //just like the rest: This is still in flux. But the idea here is that this is the sctucture you'd scan for. 
-					'RESULT' => 'value'
-				),
-				'result_errors' => array(
-					'ERROR' => array(
-						'CODE' => 'value', //as opposed to "attribute", which would imply that it belongs to the parent...
-						'MESSAGE' => 'value',
-					)
-				),
-				'result_data' => array(
-					'ROW' => array(
-					//uhh... presumably we'd look for some Stuff in here. 
-					)
 				)
 			),
-			'TEST_CONNECTION' => array(
-				'request' => array(
-					'REQUEST' => array(
-						'ACTION',
-						'META' => array(
-							'MERCHANTID',
+			'values' => array(
+				'ACTION' => 'INSERT_ORDERWITHPAYMENT',
+				'HOSTEDINDICATOR' => '1',
+				'PAYMENTPRODUCTID' => '3',
+			),
+		);
+
+		$this->transactions['TEST_CONNECTION'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
 //							'IPADDRESS',
-							'VERSION'
-						),
-						'PARAMS' => array( )
-					)
-				),
-				'values' => array(
-					'ACTION' => 'TEST_CONNECTION'
-				),
-				'result' => array( //just like the rest: This is still in flux. But the idea here is that this is the sctucture you'd scan for. 
-					'RESULT' => 'value'
-				),
-				'result_errors' => array(
-					'ERROR' => array(
-						'CODE' => 'value', //as opposed to "attribute", which would imply that it belongs to the parent...
-						'MESSAGE' => 'value',
-					)
-				),
-				'result_data' => array(
-					'ROW' => array(
-					//uhh... presumably we'd look for some Stuff in here. 
-					)
+						'VERSION'
+					),
+					'PARAMS' => array( )
 				)
 			),
+			'values' => array(
+				'ACTION' => 'TEST_CONNECTION'
+			)
 		);
 	}
 
@@ -176,10 +112,10 @@ class PayflowProAdapter extends GatewayAdapter {
 		}
 
 		//TODO: Actually pull these status messages from somewhere legit. 
-		if ( $response['result'] !== false ){
+		if ( $response['result'] !== false ) {
 			//now, parse the thing. 
-			
-			
+
+
 			if ( $response['status'] === true ) {
 				$response['message'] = "$transaction Transaction Successful!";
 			} elseif ( $response['status'] === false ) {
@@ -204,27 +140,51 @@ class PayflowProAdapter extends GatewayAdapter {
 	 * For instance: If it's XML, we only want correctly-formatted XML. Headers must be killed off. 
 	 * return a string.
 	 */
-	function getTrimmedResponse( $rawResponse ){}
-	
+	function getTrimmedResponse( $rawResponse ) {
+		
+	}
+
 	/**
 	 * Parse the response to get the status. Not sure if this should return a bool, or something more... telling.
 	 */
-	function getResponseStatus( $response ){}
-	
+	function getResponseStatus( $response ) {
+		
+	}
+
 	/**
 	 * Parse the response to get the errors in a format we can log and otherwise deal with.
 	 * return a key/value array of codes (if they exist) and messages. 
 	 */
-	function getResponseErrors( $response ){}
-	
+	function getResponseErrors( $response ) {
+		
+	}
+
 	/**
 	 * Harvest the data we need back from the gateway. 
 	 * return a key/value array
 	 */
-	function getResponseData( $response ){}
-	
-	
-	
+	function getResponseData( $response ) {
+		
+	}
+
+	/**
+	 * Take the entire response string, and strip everything we don't care about.
+	 * For instance: If it's XML, we only want correctly-formatted XML. Headers must be killed off. 
+	 * return a string.
+	 */
+	function getFormattedResponse( $rawResponse ) {
+		
+	}
+
+	/**
+	 * Actually do... stuff. Here. 
+	 * TODO: Better comment. 
+	 * Process the entire response gott'd by the last four functions. 
+	 */
+	function processResponse( $response ) {
+		
+	}
+
 	function parseXMLResponse( $rawResponse ) {
 		//TODO: Something.
 		$rawXML = $this->stripResponseHeaders( $rawResponse );

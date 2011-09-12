@@ -1,7 +1,7 @@
 <?php
 
 class Gateway_Form_TwoStepTwoColumnPremiumUS extends Gateway_Form_TwoStepTwoColumn {
-	public function __construct( &$form_data, &$form_errors ) {
+	public function __construct( &$form_data, &$form_errors, &$gateway ) {
 		global $wgScriptPath;
 
 		// set the path to css, before the parent constructor is called, checking to make sure some child class hasn't already set this
@@ -9,7 +9,7 @@ class Gateway_Form_TwoStepTwoColumnPremiumUS extends Gateway_Form_TwoStepTwoColu
 			$this->setStylePath( $wgScriptPath . '/extensions/DonationInterface/payflowpro_gateway/forms/css/TwoStepTwoColumnPremiumUS.css' );
 		}
 
-		parent::__construct( $form_data, $form_errors );
+		parent::__construct( $form_data, $form_errors, $gateway );
 	}
 	
 	public function loadPlaceholders() {

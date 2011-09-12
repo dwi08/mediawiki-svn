@@ -20,7 +20,7 @@ class PayflowProGateway extends UnlistedSpecialPage {
 	 * Holds the PayflowPro response from a transaction
 	 * @var array
 	 */
-	public $payflow_response = array();
+	public $payflow_response = array( );
 
 	/**
 	 * A container for the form class
@@ -34,7 +34,7 @@ class PayflowProGateway extends UnlistedSpecialPage {
 	 * An array of form errors
 	 * @var array
 	 */
-	public $errors = array();
+	public $errors = array( );
 
 	/**
 	 * Constructor - set up the new special page
@@ -42,6 +42,8 @@ class PayflowProGateway extends UnlistedSpecialPage {
 	public function __construct() {
 		parent::__construct( 'PayflowProGateway' );
 		$this->errors = $this->getPossibleErrors();
+
+		$this->adapter = new PayflowProAdapter();
 	}
 
 	/**
@@ -51,8 +53,8 @@ class PayflowProGateway extends UnlistedSpecialPage {
 	 */
 	public function execute( $par ) {
 		global $wgRequest, $wgOut, $wgScriptPath,
-			$wgPayFlowProGatewayCSSVersion,
-			$wgPayflowProGatewaySalt;
+		$wgPayFlowProGatewayCSSVersion,
+		$wgPayflowProGatewaySalt;
 
 		$wgOut->addExtensionStyle(
 			"{$wgScriptPath}/extensions/DonationInterface/payflowpro_gateway/payflowpro_gateway.css?284" .
@@ -80,14 +82,14 @@ class PayflowProGateway extends UnlistedSpecialPage {
 		$wgOut->addScript( Skin::makeVariablesScript( $scriptVars ) );
 
 		// @fixme can this be moved into the form generators?
-		 $js = <<<EOT
+		$js = <<<EOT
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	jQuery("div#p-logo a").attr("href","#");
 });
 </script>
 EOT;
-        $wgOut->addHeadItem( 'logolinkoverride', $js );
+		$wgOut->addHeadItem( 'logolinkoverride', $js );
 
 		// find out if amount was a radio button or textbox, set amount
 		if ( isset( $_REQUEST['amount'] ) && preg_match( '/^\d+(\.(\d+)?)?$/', $wgRequest->getText( 'amount' ) ) ) {
@@ -101,7 +103,7 @@ EOT;
 		} else {
 			$amount = '0.00';
 		}
-		
+
 		// Get array of default account values necessary for Payflow
 		require_once( 'includes/payflowUser.inc' );
 
@@ -111,15 +113,15 @@ EOT;
 		$numAttempt = $wgRequest->getVal( 'numAttempt', 0 );
 
 		// make a log entry if the user has submitted the cc form
-		if ( $wgRequest->wasPosted() && $wgRequest->getText( 'process', 0 )) {
-			self::log( $payflow_data[ 'order_id' ] . " Transaction initiated." );			
+		if ( $wgRequest->wasPosted() && $wgRequest->getText( 'process', 0 ) ) {
+			self::log( $payflow_data['order_id'] . " Transaction initiated." );
 		} else {
-			self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Initial credit card form request.", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $payflow_data['order_id'] . " " . $payflow_data['i_order_id'] . " Initial credit card form request.", 'payflowpro_gateway', LOG_DEBUG );
 		}
 
 		// if _cache_ is requested by the user, do not set a session/token; dynamic data will be loaded via ajax
 		if ( $wgRequest->getText( '_cache_', false ) ) {
-			self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Cache requested", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $payflow_data['order_id'] . " " . $payflow_data['i_order_id'] . " Cache requested", 'payflowpro_gateway', LOG_DEBUG );
 			$cache = true;
 			$token = '';
 			$token_match = false;
@@ -127,23 +129,23 @@ EOT;
 			// if we have squid caching enabled, set the maxage
 			global $wgUseSquid, $wgPayflowProSMaxAge;
 			if ( $wgUseSquid ) {
-				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Setting s-max-age: " . $wgPayflowProSMaxAge, 'payflowpro_gateway', LOG_DEBUG );
-				$wgOut->setSquidMaxage( $wgPayflowProSMaxAge );	
+				self::log( $payflow_data['order_id'] . " " . $payflow_data['i_order_id'] . " Setting s-max-age: " . $wgPayflowProSMaxAge, 'payflowpro_gateway', LOG_DEBUG );
+				$wgOut->setSquidMaxage( $wgPayflowProSMaxAge );
 			}
 		} else {
 			$cache = false;
 
 			// establish the edit token to prevent csrf
 			$token = self::fnPayflowEditToken( $wgPayflowProGatewaySalt );
-			
-			self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " fnPayflowEditToken: " . $token, 'payflowpro_gateway', LOG_DEBUG );
-			
+
+			self::log( $payflow_data['order_id'] . " " . $payflow_data['i_order_id'] . " fnPayflowEditToken: " . $token, 'payflowpro_gateway', LOG_DEBUG );
+
 			// match token
 			$token_check = ( $wgRequest->getText( 'token' ) ) ? $wgRequest->getText( 'token' ) : $token;
 			$token_match = $this->fnPayflowMatchEditToken( $token_check, $wgPayflowProGatewaySalt );
 			if ( $wgRequest->wasPosted() ) {
-				self::log( $payflow_data[ 'order_id' ] .  " " . $payflow_data[ 'i_order_id' ] . " Submitted edit token: " . $wgRequest->getText( 'token', 'None' ), 'payflowpro_gateway', LOG_DEBUG);
-				self::log( $payflow_data[ 'order_id' ] . " " . $payflow_data[ 'i_order_id' ] . " Token match: " . ($token_match ? 'true' : 'false' ), 'payflowpro_gateway', LOG_DEBUG );
+				self::log( $payflow_data['order_id'] . " " . $payflow_data['i_order_id'] . " Submitted edit token: " . $wgRequest->getText( 'token', 'None' ), 'payflowpro_gateway', LOG_DEBUG );
+				self::log( $payflow_data['order_id'] . " " . $payflow_data['i_order_id'] . " Token match: " . ($token_match ? 'true' : 'false' ), 'payflowpro_gateway', LOG_DEBUG );
 			}
 		}
 
@@ -166,7 +168,7 @@ EOT;
 		// dispatch forms/handling
 		if ( $token_match ) {
 			if ( $data['payment_method'] == 'processed' ) {
-				
+
 				// increase the count of attempts
 				++$data['numAttempt'];
 
@@ -177,14 +179,14 @@ EOT;
 					$this->fnPayflowDisplayForm( $data, $this->errors );
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
-					self::log( $data[ 'order_id' ] . " Preparing to query MaxMind" );
+					self::log( $data['order_id'] . " Preparing to query MaxMind" );
 					wfRunHooks( 'PayflowGatewayValidate', array( &$this, &$data ) );
-					self::log( $data[ 'order_id' ] . ' Finished querying Maxmind' );
+					self::log( $data['order_id'] . ' Finished querying Maxmind' );
 
 					// if the transaction was flagged for review
 					if ( $this->action == 'review' ) {
 						// expose a hook for external handling of trxns flagged for review
-						wfRunHooks( 'PayflowGatewayReview', array( &$this, &$data ));
+						wfRunHooks( 'PayflowGatewayReview', array( &$this, &$data ) );
 					}
 
 					// if the transaction was flagged to be 'challenged'
@@ -237,16 +239,16 @@ EOT;
 		global $wgOut, $wgRequest;
 
 		// save contrib tracking id early to track abondonment
-		if ( $data[ 'numAttempt' ] == '0' && ( !$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) {
+		if ( $data['numAttempt'] == '0' && (!$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) {
 			$tracked = $this->fnPayflowSaveContributionTracking( $data );
 			if ( !$tracked ) {
 				$when = time();
-				self::log( $data[ 'order_id' ] . ' Unable to save data to the contribution_tracking table ' . $when );
+				self::log( $data['order_id'] . ' Unable to save data to the contribution_tracking table ' . $when );
 			}
 		}
 
 		$form_class = $this->getFormClass();
-		$form_obj = new $form_class( $data, $error );
+		$form_obj = new $form_class( $data, $error, $this->adapter );
 		$form = $form_obj->getForm();
 		$wgOut->addHTML( $form );
 	}
@@ -281,7 +283,7 @@ EOT;
 	 * Using logic in setFormClass()
 	 * @return string
 	 */
-	public function getFormClass( ) {
+	public function getFormClass() {
 		if ( !isset( $this->form_class ) ) {
 			$this->setFormClass();
 		}
@@ -293,7 +295,7 @@ EOT;
 	 */
 	private function fnPayflowValidateForm( &$data, &$error ) {
 		global $wgPayflowProGatewayPriceFloor, $wgPayflowProGatewayPriceCeiling;
-		
+
 		// begin with no errors
 		$error_result = '0';
 
@@ -315,7 +317,7 @@ EOT;
 
 		// find all empty fields and create message
 		foreach ( $data as $key => $value ) {
-			if ( $value == '' || ($key == 'state' && $value == 'YY' )) {
+			if ( $value == '' || ($key == 'state' && $value == 'YY' ) ) {
 				// ignore fields that are not required
 				if ( isset( $msg[$key] ) ) {
 					$error[$key] = "**" . wfMsg( 'payflowpro_gateway-error-msg', $msg[$key] ) . "**<br />";
@@ -325,9 +327,9 @@ EOT;
 		}
 
 		// check amount
-		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data[ 'amount' ] ) || 
-			( (float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) < (float) $wgPayflowProGatewayPriceFloor || 
-				(float) $this->convert_to_usd( $data[ 'currency' ], $data[ 'amount' ] ) > (float) $wgPayflowProGatewayPriceCeiling ) ) {
+		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data['amount'] ) ||
+			( ( float ) $this->convert_to_usd( $data['currency'], $data['amount'] ) < ( float ) $wgPayflowProGatewayPriceFloor ||
+			( float ) $this->convert_to_usd( $data['currency'], $data['amount'] ) > ( float ) $wgPayflowProGatewayPriceCeiling ) ) {
 			$error['invalidamount'] = wfMsg( 'payflowpro_gateway-error-msg-invalid-amount' );
 			$error_result = '1';
 		}
@@ -342,19 +344,19 @@ EOT;
 		}
 
 		// validate that credit card number entered is correct and set the card type
-		if ( preg_match( '/^3[47][0-9]{13}$/', $data[ 'card_num' ] ) ) { // american express
-			$data[ 'card' ] = 'american';
-		} elseif ( preg_match( '/^5[1-5][0-9]{14}$/', $data[ 'card_num' ] ) ) { //	mastercard
-			$data[ 'card' ] = 'mastercard';
-		} elseif ( preg_match( '/^4[0-9]{12}(?:[0-9]{3})?$/', $data[ 'card_num' ] ) ) {// visa
-			$data[ 'card' ] = 'visa';
-		} elseif ( preg_match( '/^6(?:011|5[0-9]{2})[0-9]{12}$/', $data[ 'card_num' ] ) ) { // discover
-			$data[ 'card' ] = 'discover';
+		if ( preg_match( '/^3[47][0-9]{13}$/', $data['card_num'] ) ) { // american express
+			$data['card'] = 'american';
+		} elseif ( preg_match( '/^5[1-5][0-9]{14}$/', $data['card_num'] ) ) { //	mastercard
+			$data['card'] = 'mastercard';
+		} elseif ( preg_match( '/^4[0-9]{12}(?:[0-9]{3})?$/', $data['card_num'] ) ) {// visa
+			$data['card'] = 'visa';
+		} elseif ( preg_match( '/^6(?:011|5[0-9]{2})[0-9]{12}$/', $data['card_num'] ) ) { // discover
+			$data['card'] = 'discover';
 		} else { // an invalid credit card number was entered
 			$error_result = '1';
-			$error[ 'card_num' ] = wfMsg( 'payflowpro_gateway-error-msg-card-num' );
+			$error['card_num'] = wfMsg( 'payflowpro_gateway-error-msg-card-num' );
 		}
-		
+
 		return $error_result;
 	}
 
@@ -374,12 +376,12 @@ EOT;
 		// create payflow query string, include string lengths
 		$queryArray = array(
 			'TRXTYPE' => $payflow_data['trxtype'],
-			'TENDER'  => $payflow_data['tender'],
-			'USER'  => $payflow_data['user'],
+			'TENDER' => $payflow_data['tender'],
+			'USER' => $payflow_data['user'],
 			'VENDOR' => $payflow_data['vendor'],
 			'PARTNER' => $payflow_data['partner'],
 			'PWD' => $payflow_data['password'],
-			'ACCT'  => $data['card_num'],
+			'ACCT' => $data['card_num'],
 			'EXPDATE' => $data['expiration'],
 			'AMT' => $data['amount'],
 			'FIRSTNAME' => $data['fname'],
@@ -411,8 +413,8 @@ EOT;
 		$headers[] = 'X-VPS-Client-Timeout: 45';
 		$headers[] = 'X-VPS-Request-ID:' . $data['order_id'];
 		$ch = curl_init();
-		$paypalPostTo = isset ( $wgDonationTestingMode ) ? 'testingurl' : 'paypalurl';
-		curl_setopt( $ch, CURLOPT_URL, $payflow_data[ $paypalPostTo ] );
+		$paypalPostTo = isset( $wgDonationTestingMode ) ? 'testingurl' : 'paypalurl';
+		curl_setopt( $ch, CURLOPT_URL, $payflow_data[$paypalPostTo] );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch, CURLOPT_USERAGENT, $user_agent );
 		curl_setopt( $ch, CURLOPT_HEADER, 1 );
@@ -421,7 +423,7 @@ EOT;
 		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 0 );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $payflow_query );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST,  2 );
+		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 2 );
 		curl_setopt( $ch, CURLOPT_FORBID_REUSE, true );
 		curl_setopt( $ch, CURLOPT_POST, 1 );
 
@@ -436,15 +438,15 @@ EOT;
 		$i = 1;
 
 		while ( $i++ <= 3 ) {
-			self::log( $data[ 'order_id' ] . ' Preparing to send transaction to PayflowPro' );
+			self::log( $data['order_id'] . ' Preparing to send transaction to PayflowPro' );
 			$result = curl_exec( $ch );
 			$headers = curl_getinfo( $ch );
 
 			if ( $headers['http_code'] != 200 && $headers['http_code'] != 403 ) {
-				self::log( $data[ 'order_id' ] . ' Failed sending transaction to PayflowPro, retrying' );
+				self::log( $data['order_id'] . ' Failed sending transaction to PayflowPro, retrying' );
 				sleep( 1 );
 			} elseif ( $headers['http_code'] == 200 || $headers['http_code'] == 403 ) {
-				self::log( $data[ 'order_id' ] . ' Finished sending transaction to PayflowPro' );
+				self::log( $data['order_id'] . ' Finished sending transaction to PayflowPro' );
 				break;
 			}
 		}
@@ -452,7 +454,7 @@ EOT;
 		if ( $headers['http_code'] != 200 ) {
 			$wgOut->addHTML( '<h3>No response from credit card processor.  Please try again later!</h3><p>' );
 			$when = time();
-			self::log( $data[ 'order_id' ] . ' No response from credit card processor: ' . curl_error( $ch ) );
+			self::log( $data['order_id'] . ' No response from credit card processor: ' . curl_error( $ch ) );
 			curl_close( $ch );
 			return;
 		}
@@ -476,18 +478,18 @@ EOT;
 	 */
 	private function fnPayflowGetResults( $data, $result ) {
 		// prepare NVP response for sorting and outputting
-		$responseArray = array();
+		$responseArray = array( );
 
 		/**
 		 * The result response string looks like:
-		 *	RESULT=7&PNREF=E79P2C651DC2&RESPMSG=Field format error&HOSTCODE=10747&DUPLICATE=1
+		 * 	RESULT=7&PNREF=E79P2C651DC2&RESPMSG=Field format error&HOSTCODE=10747&DUPLICATE=1
 		 * We want to turn this into an array of key value pairs, so explode on '&' and then
 		 * split up the resulting strings into $key => $value
 		 */
 		$result_arr = explode( "&", $result );
 		foreach ( $result_arr as $result_pair ) {
 			list( $key, $value ) = preg_split( "/=/", $result_pair );
-			$responseArray[ $key ] = $value;
+			$responseArray[$key] = $value;
 		}
 
 		// store the response array as an object property for easy retrival/manipulation elsewhere
@@ -503,33 +505,34 @@ EOT;
 		// interpret result code, return
 		// approved (1), denied (2), try again (3), general error (4)
 		$errorCode = $this->fnPayflowGetResponseMsg( $resultCode, $responseMsg );
-		
+
 		// log that the transaction is essentially complete
-		self::log( $data[ 'order_id' ] . " Transaction complete." );
-		
+		self::log( $data['order_id'] . " Transaction complete." );
+
 		// if approved, display results and send transaction to the queue
 		if ( $errorCode == '1' ) {
-			self::log( $data[ 'order_id' ] . " " . $data[ 'i_order_id' ] . " Transaction approved.", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $data['order_id'] . " " . $data['i_order_id'] . " Transaction approved.", 'payflowpro_gateway', LOG_DEBUG );
 			$this->fnPayflowDisplayApprovedResults( $data, $responseArray, $responseMsg );
 			// give user a second chance to enter incorrect data
 		} elseif ( ( $errorCode == '3' ) && ( $data['numAttempt'] < '5' ) ) {
-			self::log( $data[ 'order_id' ] . " " . $data[ 'i_order_id' ] . " Transaction unsuccessful (invalid info).", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $data['order_id'] . " " . $data['i_order_id'] . " Transaction unsuccessful (invalid info).", 'payflowpro_gateway', LOG_DEBUG );
 			// pass responseMsg as an array key as required by displayForm
 			$this->errors['retryMsg'] = $responseMsg;
 			$this->fnPayflowDisplayForm( $data, $this->errors );
 			// if declined or if user has already made two attempts, decline
 		} elseif ( ( $errorCode == '2' ) || ( $data['numAttempt'] >= '3' ) ) {
-			self::log( $data[ 'order_id' ] . " " . $data[ 'i_order_id' ] . " Transaction declined.", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $data['order_id'] . " " . $data['i_order_id'] . " Transaction declined.", 'payflowpro_gateway', LOG_DEBUG );
 			$this->fnPayflowDisplayDeclinedResults( $responseMsg );
 		} elseif ( ( $errorCode == '4' ) ) {
-			self::log( $data[ 'order_id' ] . " " . $data[ 'i_order_id' ] . " Transaction unsuccessful.", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $data['order_id'] . " " . $data['i_order_id'] . " Transaction unsuccessful.", 'payflowpro_gateway', LOG_DEBUG );
 			$this->fnPayflowDisplayOtherResults( $responseMsg );
 		} elseif ( ( $errorCode == '5' ) ) {
-			self::log( $data[ 'order_id' ] . " " . $data[ 'i_order_id' ] . " Transaction pending.", 'payflowpro_gateway', LOG_DEBUG );
+			self::log( $data['order_id'] . " " . $data['i_order_id'] . " Transaction pending.", 'payflowpro_gateway', LOG_DEBUG );
 			$this->fnPayflowDisplayPending( $data, $responseArray, $responseMsg );
 		}
+	}
 
-	}// end display results
+// end display results
 
 	/**
 	 * Interpret response code, return
@@ -541,7 +544,7 @@ EOT;
 	function fnPayflowGetResponseMsg( $resultCode, &$responseMsg ) {
 		$responseMsg = wfMsg( 'payflowpro_gateway-response-default' );
 
-		switch( $resultCode ) {
+		switch ( $resultCode ) {
 			case '0':
 				$responseMsg = wfMsg( 'payflowpro_gateway-response-0' );
 				$errorCode = '1';
@@ -600,25 +603,25 @@ EOT;
 	 */
 	public function prepareStompTransaction( $data, $responseArray, $responseMsg ) {
 		$countries = $this->getCountries();
-		
-		$transaction = array();
+
+		$transaction = array( );
 
 		// include response message
 		$transaction['response'] = $responseMsg;
-		
+
 		// include date
 		$transaction['date'] = time();
-		
+
 		// put all data into one array
 		$optout = $this->determineOptOut( $data );
-		$data[ 'anonymous' ] = $optout[ 'anonymous' ];
-		$data[ 'optout' ] = $optout[ 'optout' ];
-		
+		$data['anonymous'] = $optout['anonymous'];
+		$data['optout'] = $optout['optout'];
+
 		$transaction += array_merge( $data, $responseArray );
-		
+
 		return $transaction;
 	}
-	
+
 	/**
 	 * Fetch an array of country abbrevs => country names
 	 */
@@ -626,7 +629,7 @@ EOT;
 		require_once( 'includes/countryCodes.inc' );
 		return countryCodes();
 	}
-	
+
 	/**
 	 * Display response message to user with submitted user-supplied data
 	 *
@@ -732,8 +735,8 @@ EOT;
 	 * (which is opt-out), we need to reverse the values
 	 */
 	public static function determineOptOut( $data ) {
-		$optout[ 'optout' ] = ( isset( $data[ 'email-opt' ] ) && $data[ 'email-opt' ] == "1" ) ? '0' : '1';
-		$optout[ 'anonymous' ] = ( isset( $data[ 'comment-option' ] ) && $data[ 'comment-option' ] == "1" ) ? '0' : '1';
+		$optout['optout'] = ( isset( $data['email-opt'] ) && $data['email-opt'] == "1" ) ? '0' : '1';
+		$optout['anonymous'] = ( isset( $data['comment-option'] ) && $data['comment-option'] == "1" ) ? '0' : '1';
 		return $optout;
 	}
 
@@ -744,11 +747,11 @@ EOT;
 		$tracked_contribution = array(
 			'note' => $data['comment'],
 			'referrer' => $data['referrer'],
-			'anonymous' => $optout[ 'anonymous' ],
+			'anonymous' => $optout['anonymous'],
 			'utm_source' => $data['utm_source'],
 			'utm_medium' => $data['utm_medium'],
 			'utm_campaign' => $data['utm_campaign'],
-			'optout' => $optout[ 'optout' ],
+			'optout' => $optout['optout'],
 			'language' => $data['language'],
 			'ts' => '',
 		);
@@ -756,7 +759,7 @@ EOT;
 		// insert tracking data and get the tracking id
 		$data['contribution_tracking_id'] = self::insertContributionTracking( $tracked_contribution );
 
-		if ( !$data[ 'contribution_tracking_id' ] ) {
+		if ( !$data['contribution_tracking_id'] ) {
 			return false;
 		}
 		return true;
@@ -772,16 +775,18 @@ EOT;
 	public static function insertContributionTracking( $tracking_data ) {
 		$db = ContributionTrackingProcessor::contributionTrackingConnection();
 
-		if ( !$db ) { return false; }
+		if ( !$db ) {
+			return false;
+		}
 
 		// set the time stamp if it's not already set
-		if ( !isset( $tracking_data[ 'ts' ] ) || !strlen( $tracking_data[ 'ts' ] ) ) {
-			$tracking_data[ 'ts' ] = $db->timestamp();
+		if ( !isset( $tracking_data['ts'] ) || !strlen( $tracking_data['ts'] ) ) {
+			$tracking_data['ts'] = $db->timestamp();
 		}
 
 		// Store the contribution data
 		if ( $db->insert( 'contribution_tracking', $tracking_data ) ) {
-		 	return $db->insertId();
+			return $db->insertId();
 		} else {
 			return false;
 		}
@@ -801,8 +806,8 @@ EOT;
 		// clean up the optout values if necessary
 		if ( $clean_optouts ) {
 			$optouts = self::determineOptOut( $tracking_data );
-			$tracking_data[ 'optout' ] = $optouts[ 'optout' ];
-			$tracking_data[ 'anonymous' ] = $optouts[ 'anonymous' ];
+			$tracking_data['optout'] = $optouts['optout'];
+			$tracking_data['anonymous'] = $optouts['anonymous'];
 		}
 
 		// define valid tracking fields
@@ -822,7 +827,7 @@ EOT;
 		foreach ( $tracking_data as $key => $value ) {
 			// Make sure we only have valid fields
 			if ( !in_array( $key, $tracking_fields ) ) {
-				unset( $tracking_data[ $key ] );
+				unset( $tracking_data[$key] );
 			}
 
 			// Make all empty strings NULL
@@ -852,12 +857,12 @@ EOT;
 		// make sure we have a session open for tracking a CSRF-prevention token
 		self::fnPayflowEnsureSession();
 
-		if ( !isset( $_SESSION[ 'payflowEditToken' ] ) ) {
+		if ( !isset( $_SESSION['payflowEditToken'] ) ) {
 			// generate unsalted token to place in the session
 			$token = self::fnPayflowGenerateToken();
-			$_SESSION[ 'payflowEditToken' ] = $token;
+			$_SESSION['payflowEditToken'] = $token;
 		} else {
-			$token = $_SESSION[ 'payflowEditToken' ];
+			$token = $_SESSION['payflowEditToken'];
 		}
 
 		if ( is_array( $salt ) ) {
@@ -897,7 +902,7 @@ EOT;
 	 * Unset the payflow edit token from a user's session
 	 */
 	function fnPayflowUnsetEditToken() {
-		unset( $_SESSION[ 'payflowEditToken' ] );
+		unset( $_SESSION['payflowEditToken'] );
 	}
 
 	/**
@@ -908,7 +913,8 @@ EOT;
 	 */
 	public static function fnPayflowEnsureSession() {
 		// if the session is already started, do nothing
-		if ( session_id() ) return;
+		if ( session_id() )
+			return;
 
 		// otherwise, fire it up using global mw function wfSetupSession
 		wfSetupSession();
@@ -925,7 +931,7 @@ EOT;
 
 		// fetch ID for the url reference for OWA tracking
 		$owa_ref = $wgRequest->getText( 'owa_ref', null );
-		if( $owa_ref != null  && !is_numeric( $owa_ref )){
+		if ( $owa_ref != null && !is_numeric( $owa_ref ) ) {
 			$owa_ref = $this->get_owa_ref_id( $owa_ref );
 		}
 
@@ -943,7 +949,7 @@ EOT;
 			$card_index = array_rand( $cards );
 
 			// randomly select a credit card #
-			$card_num_index = array_rand( $card_nums[ $cards[ $card_index ]] );
+			$card_num_index = array_rand( $card_nums[$cards[$card_index]] );
 
 			$data = array(
 				'amount' => ( $amount != "0.00" ) ? $amount : "35",
@@ -966,8 +972,8 @@ EOT;
 				'country2' => 'US',
 				'size' => 'small',
 				'premium_language' => 'es',
-				'card_num' => $card_nums[ $cards[ $card_index ]][ $card_num_index ],
-				'card_type' => $cards[ $card_index ],
+				'card_num' => $card_nums[$cards[$card_index]][$card_num_index],
+				'card_type' => $cards[$card_index],
 				'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
 				'cvv' => '001',
 				'currency' => 'USD',
@@ -1016,7 +1022,7 @@ EOT;
 				 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
 				 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
 				 */
-				'country2' => ( strlen( $wgRequest->getText( 'country2' ))) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
+				'country2' => ( strlen( $wgRequest->getText( 'country2' ) )) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
 				'size' => $wgRequest->getText( 'size' ),
 				'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
 				'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
@@ -1047,7 +1053,7 @@ EOT;
 				'owa_ref' => $owa_ref,
 			);
 		}
-		
+
 		// sanitize user input
 		array_walk( $data, array( $this, 'sanitizeInput' ) );
 
@@ -1067,7 +1073,7 @@ EOT;
 	public function sanitizeInput( &$value, $key, $flags=ENT_COMPAT, $double_encode=false ) {
 		$value = htmlspecialchars( $value, $flags, 'UTF-8', $double_encode );
 	}
-	
+
 	public function getPossibleErrors() {
 		return array(
 			'general' => '',
@@ -1139,7 +1145,8 @@ EOT;
 
 		// if there are no sourceparts element, then the banner portion of the string needs to be set.
 		// since we don't know what it is, set it to an empty string
-		if ( !count( $source_parts ) ) $source_parts[0] = '';
+		if ( !count( $source_parts ) )
+			$source_parts[0] = '';
 
 		// if the utm_source_id is set, set the landing page portion of the string to cc#
 		$source_parts[1] = ( $utm_source_id ) ? 'cc' . $utm_source_id : ( isset( $source_parts[1] ) ? $source_parts[1] : '' );
@@ -1161,8 +1168,8 @@ EOT;
 		// ony update contrib tracking if we're coming from a single-step landing page
 		// which we know with cc# in utm_source or if force=true or if contribution_tracking_id is not set
 		if ( !$force &&
-				!preg_match( "/cc[0-9]/", $data[ 'utm_source' ] ) &&
-				is_numeric( $data[ 'contribution_tracking_id' ] ) ) {
+			!preg_match( "/cc[0-9]/", $data['utm_source'] ) &&
+			is_numeric( $data['contribution_tracking_id'] ) ) {
 			return;
 		}
 
@@ -1172,18 +1179,20 @@ EOT;
 
 		$db = payflowGatewayConnection();
 
-		if ( !$db ) { return true ; }
+		if ( !$db ) {
+			return true;
+		}
 
 		$tracked_contribution = array(
 			'note' => $data['comment'],
 			'referrer' => $data['referrer'],
-			'anonymous' => $optout[ 'anonymous' ],
+			'anonymous' => $optout['anonymous'],
 			'utm_source' => $data['utm_source'],
 			'utm_medium' => $data['utm_medium'],
 			'utm_campaign' => $data['utm_campaign'],
 			'owa_session' => $data['owa_session'],
 			'owa_ref' => $data['owa_ref'],
-			'optout' => $optout[ 'optout' ],
+			'optout' => $optout['optout'],
 			'language' => $data['language'],
 		);
 
@@ -1195,10 +1204,10 @@ EOT;
 		}
 
 		// if contrib tracking id is not already set, we need to insert the data, otherwise update
-		if ( !$data[ 'contribution_tracking_id' ] ) {
-			$data[ 'contribution_tracking_id' ] = $this->insertContributionTracking( $tracked_contribution );
+		if ( !$data['contribution_tracking_id'] ) {
+			$data['contribution_tracking_id'] = $this->insertContributionTracking( $tracked_contribution );
 		} else {
-			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $data[ 'contribution_tracking_id' ] ) );
+			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $data['contribution_tracking_id'] ) );
 		}
 	}
 
@@ -1215,42 +1224,42 @@ EOT;
 
 		// if we don't have a URL enabled throw a graceful error to the user
 		if ( !strlen( $wgPayflowProGatewayPaypalURL ) ) {
-			$this->errors['general'][ 'nopaypal' ] = wfMsg( 'payflow_gateway-error-msg-nopaypal' );
+			$this->errors['general']['nopaypal'] = wfMsg( 'payflow_gateway-error-msg-nopaypal' );
 			return;
 		}
 
 		// update the utm source to set the payment instrument to pp rather than cc
-		$utm_source_parts = explode( ".", $data[ 'utm_source' ] );
+		$utm_source_parts = explode( ".", $data['utm_source'] );
 		$utm_source_parts[2] = 'pp';
-		$data[ 'utm_source' ] = implode( ".", $utm_source_parts );
-		$data[ 'gateway' ] = 'paypal';
-		$data[ 'currency_code' ] = $data[ 'currency' ];
+		$data['utm_source'] = implode( ".", $utm_source_parts );
+		$data['gateway'] = 'paypal';
+		$data['currency_code'] = $data['currency'];
 		/**
 		 * update contribution tracking
 		 */
 		$this->updateContributionTracking( $data, true );
 
-		$wgPayflowProGatewayPaypalURL .= "/" . $data[ 'language' ] . "?gateway=paypal";
-		
+		$wgPayflowProGatewayPaypalURL .= "/" . $data['language'] . "?gateway=paypal";
+
 		// submit the data to the paypal redirect URL
 		$wgOut->redirect( $wgPayflowProGatewayPaypalURL . '&' . http_build_query( $data ) );
 	}
-	
+
 	public static function log( $msg, $identifier='payflowpro_gateway', $log_level=LOG_INFO ) {
 		global $wgPayflowGatewayUseSyslog;
-		
+
 		// if we're not using the syslog facility, use wfDebugLog
 		if ( !$wgPayflowGatewayUseSyslog ) {
 			wfDebugLog( $identifier, $msg );
 			return;
 		}
-		
+
 		// otherwise, use syslogging
 		openlog( $identifier, LOG_ODELAY, LOG_SYSLOG );
 		syslog( $log_level, $msg );
-		closelog();	
+		closelog();
 	}
-	
+
 	/**
 	 * Convert an amount for a particular currency to an amount in USD
 	 * 
@@ -1325,7 +1334,10 @@ EOT;
 				$usd_amount = $amount;
 				break;
 		}
-		
+
 		return $usd_amount;
 	}
-} // end class
+
+}
+
+// end class

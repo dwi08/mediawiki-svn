@@ -81,10 +81,10 @@ require_once( $dir . '../gateway_common/gateway.adapter.php' );
 
 class TestAdapter extends GatewayAdapter {
 
-	const gatewayname = 'Test Gateway';
-	const identifier = 'testgateway';
-	const communicationtype = 'xml';
-	const globalprefix = 'wgTestAdapterGateway';
+	const GATEWAY_NAME = 'Test Gateway';
+	const IDENTIFIER = 'testgateway';
+	const COMMUNICATION_TYPE = 'xml';
+	const GLOBAL_PREFIX = 'wgTestAdapterGateway';
 
 	function stageData(){
 		$this->postdata['amount'] = $this->postdata['amount'] * 1000;
@@ -96,7 +96,6 @@ class TestAdapter extends GatewayAdapter {
 		$wgTestAdapterGatewayTest = true;
 		$wgTestAdapterGatewayTestVar = "Hi there!";
 		$wgTestAdapterGatewayUseSyslog = true;
-		$this->classlocation = __FILE__;
 		parent::__construct();
 		
 	}

@@ -23,6 +23,7 @@ $wgGlobalCollectGatewayUseSyslog = false;
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
+$wgAutoloadClasses['GlobalCollectAdapter'] = $dir . 'globalcollect.adapter.php';
 $wgExtensionMessagesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.i18n.php';
 $wgExtensionMessagesFiles['GlobalCollectGatewayCountries'] = $dir . '../payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
 $wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $dir . '../payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
@@ -54,10 +55,6 @@ $wgGlobalCollectGatewayDefaultForm = 'TwoStepTwoColumn';
  */
 $wgGlobalCollectGatewaySalt = $wgSecretKey;
 
-$wgGlobalCollectGatewayDBserver = $wgDBserver;
-$wgGlobalCollectGatewayDBname = $wgDBname;
-$wgGlobalCollectGatewayDBuser = $wgDBuser;
-$wgGlobalCollectGatewayDBpassword = $wgDBpassword;
 
 /**
  * A string that can contain wikitext to display at the head of the credit card form
@@ -99,7 +96,7 @@ $wgGlobalCollectGatewaySMaxAge = 6000;
  * Directory for HTML forms (used by RapidHtml form class)
  * @var string
  */
-$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/../gateway_forms/html";
+$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
 
 /**
  * An array of allowed HTML forms.
@@ -108,7 +105,7 @@ $wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/../gateway_forms/ht
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgGlobalCollectGatewayAllowedHtmlForms = array( $wgGlobalCollectGatewayHtmlFormDir . "/demo.html" );
+$wgGlobalCollectGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
 
 /**
  * Configure price cieling and floor for valid contribution amount.  Values 

@@ -3,10 +3,10 @@
 class Gateway_Form_OneStepTwoColumn extends Gateway_Form {
 	public $paypal = false; // true for paypal only version
 
-	public function __construct( &$form_data, &$form_errors ) {
+	public function __construct( &$form_data, &$form_errors, &$gateway ) {
 		global $wgOut;
 
-		parent::__construct( $form_data, $form_errors );
+		parent::__construct( $form_data, $form_errors, $gateway );
 
 		// update the list of hidden fields we need to use in this form.
 		$this->updateHiddenFields();

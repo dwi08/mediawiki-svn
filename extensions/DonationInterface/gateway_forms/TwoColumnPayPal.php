@@ -1,8 +1,8 @@
 <?php
 
 class Gateway_Form_TwoColumnPayPal extends Gateway_Form_OneStepTwoColumn {
-	public function __construct( &$form_data, &$form_errors ) {
-		parent::__construct( $form_data, $form_errors );
+	public function __construct( &$form_data, &$form_errors, &$gateway ) {
+		parent::__construct( $form_data, $form_errors, $gateway );
 	}
 
 	public function generateFormStart() {

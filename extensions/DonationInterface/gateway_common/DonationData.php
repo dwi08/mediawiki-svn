@@ -6,54 +6,52 @@
  * @author khorn
  */
 class DonationData {
-	
-	protected $normalized = array();
-	
+
+	protected $normalized = array( );
 	public $boss;
-	
-	function __construct($owning_class, $test = false, $testdata = false){
+
+	function __construct( $owning_class, $test = false, $testdata = false ) {
 		//TODO: Actually think about this bit.
 		// ...and keep in mind we can re-populate if it's a test or whatever. (But that may not be a good idea either)
 		//maybe we should just explicitly pass in where we get the data from. (Test, post, API...)
 		$this->boss = $owning_class;
-		$this->populateData($test, $testdata);
+		$this->populateData( $test, $testdata );
 	}
-	
-	function populateData($test = false, $testdata = false){
-		$this->normalized = array();
+
+	function populateData( $test = false, $testdata = false ) {
+		$this->normalized = array( );
 		//TODO: Uh, the API should probably be able to get in this far, too... and have its own populate function. 
 		//Maybe check for the boss class...
-		if ($test){
-			$this->populateData_Test($testdata);
+		if ( $test ) {
+			$this->populateData_Test( $testdata );
 		} else {
 			$this->populateData_Form();
 		}
 		$this->doCacheStuff();
-		
-		
-		if (!empty($this->normalized)){
+
+
+		if ( !empty( $this->normalized ) ) {
 			$this->setNormalizedAmount();
 			$this->setNormalizedOrderIDs();
 			$this->setGateway();
 			array_walk( $this->normalized, array( $this, 'sanitizeInput' ) );
 		}
 		//TODO: determine if _nocache_ is still a thing anywhere.
-		if ( !empty($this->normalized) && ( $this->getVal('numAttempt') == '0' && (( !$this->getVal('utm_source_id') == false ) || $this->getVal('_nocache_') == 'true' ) )) {
+		if ( !empty( $this->normalized ) && ( $this->getVal( 'numAttempt' ) == '0' && ((!$this->getVal( 'utm_source_id' ) == false ) || $this->getVal( '_nocache_' ) == 'true' ) ) ) {
 			$this->saveContributionTracking();
 		}
-		
 	}
-	
-	function getData(){
+
+	function getData() {
 		return $this->normalized;
 	}
-	
-	function isCache(){
+
+	function isCache() {
 		return $this->cache;
 	}
-	
-	function populateData_Test($testdata = false){
-		if (is_array($testdata)){
+
+	function populateData_Test( $testdata = false ) {
+		if ( is_array( $testdata ) ) {
 			$this->normalized = $testdata;
 		} else {
 			// define arrays of cc's and cc #s for random selection
@@ -68,8 +66,8 @@ class DonationData {
 			$card_index = array_rand( $cards );
 
 			// randomly select a credit card #
-			$card_num_index = array_rand( $card_nums[ $cards[ $card_index ]] );
-			
+			$card_num_index = array_rand( $card_nums[$cards[$card_index]] );
+
 			global $wgRequest; //TODO: ARRRGHARGHARGH. That is all.
 
 			$this->normalized = array(
@@ -93,8 +91,8 @@ class DonationData {
 				'country2' => 'US',
 				'size' => 'small',
 				'premium_language' => 'es',
-				'card_num' => $card_nums[ $cards[ $card_index ]][ $card_num_index ],
-				'card' => $cards[ $card_index ],
+				'card_num' => $card_nums[$cards[$card_index]][$card_num_index],
+				'card_type' => $cards[$card_index],
 				'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
 				'cvv' => '001',
 				'currency' => 'USD',
@@ -121,8 +119,8 @@ class DonationData {
 			);
 		}
 	}
-	
-	function populateData_Form(){
+
+	function populateData_Form() {
 		global $wgRequest; //I'll let you have this one, because it makes sense. 
 		$this->normalized = array(
 			'posted' => 'true', //moderately sneaky. 
@@ -149,11 +147,11 @@ class DonationData {
 			 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
 			 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
 			 */
-			'country2' => ( strlen( $wgRequest->getText( 'country2' ))) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
+			'country2' => ( strlen( $wgRequest->getText( 'country2' ) )) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
 			'size' => $wgRequest->getText( 'size' ),
 			'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
 			'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
-			'card' => $wgRequest->getText( 'card' ),
+			'card_type' => $wgRequest->getText( 'card' ),
 			'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
 			'cvv' => $wgRequest->getText( 'cvv' ),
 			'currency' => $wgRequest->getText( 'currency_code' ),
@@ -180,82 +178,81 @@ class DonationData {
 			'owa_session' => $wgRequest->getText( 'owa_session', null ),
 			'owa_ref' => $wgRequest->getText( 'owa_ref', null ),
 		);
-		if (!$wgRequest->wasPosted()){
-			$this->setVal('posted', false);
-		}  
+		if ( !$wgRequest->wasPosted() ) {
+			$this->setVal( 'posted', false );
+		}
 	}
-	
-	function isSomething($key){
-		if (array_key_exists($key, $this->normalized) && !empty($this->normalized[$key])){
+
+	function isSomething( $key ) {
+		if ( array_key_exists( $key, $this->normalized ) && !empty( $this->normalized[$key] ) ) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	function getVal($key){
-		if ($this->isSomething($key)){
+
+	function getVal( $key ) {
+		if ( $this->isSomething( $key ) ) {
 			return $this->normalized[$key];
 		} else {
 			return null;
 		}
 	}
-	
-	function setVal($key, $val){
+
+	function setVal( $key, $val ) {
 		$this->normalized[$key] = $val;
 	}
-	
-	function expunge($key){ 
-		if (array_key_exists($key, $this->normalized)){
-			unset($this->normalized[$key]);
+
+	function expunge( $key ) {
+		if ( array_key_exists( $key, $this->normalized ) ) {
+			unset( $this->normalized[$key] );
 		}
 	}
-	
-	function setNormalizedAmount(){
-		
-		if (!($this->isSomething('amount')) || !(preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal('amount') ) )){
-			if ($this->isSomething('amountGiven') && preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal('amountGiven') ) ){
-				$this->setVal('amount', number_format( $this->getVal('amountGiven'), 2, '.', '' ));
-			} elseif ($this->isSomething('amount') && $this->getVal('amount') == '-1'){
-				$this->setVal('amount', $this->getVal('amountOther'));
+
+	function setNormalizedAmount() {
+
+		if ( !($this->isSomething( 'amount' )) || !(preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal( 'amount' ) ) ) ) {
+			if ( $this->isSomething( 'amountGiven' ) && preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal( 'amountGiven' ) ) ) {
+				$this->setVal( 'amount', number_format( $this->getVal( 'amountGiven' ), 2, '.', '' ) );
+			} elseif ( $this->isSomething( 'amount' ) && $this->getVal( 'amount' ) == '-1' ) {
+				$this->setVal( 'amount', $this->getVal( 'amountOther' ) );
 			} else {
-				$this->setVal('amount', '0.00');
+				$this->setVal( 'amount', '0.00' );
 			}
 		}
-		
-		$this->expunge('amountGiven');
-		$this->expunge('amountOther');
+
+		$this->expunge( 'amountGiven' );
+		$this->expunge( 'amountOther' );
 	}
-	
-	function setOwaRefId(){
+
+	function setOwaRefId() {
 		//Our data should already be pulled and whatever. 
-		if( $this->isSomething( 'owa_ref' ) && !is_numeric( $this->normalized['owa_ref'] )){
+		if ( $this->isSomething( 'owa_ref' ) && !is_numeric( $this->normalized['owa_ref'] ) ) {
 			$owa_ref = $this->get_owa_ref_id( $owa_ref );
 		}
 	}
-	
-	function setNormalizedOrderIDs(){
+
+	function setNormalizedOrderIDs() {
 		//basically, we need a new order_id every time we come through here, but if there's an internal already there, 
 		//we want to use that one internally. So. 
-		$this->setVal('order_id', $this->generateOrderId());
-		
-		if (!$this->isSomething('i_order_id')){	
-			$this->setVal('i_order_id', $this->generateOrderId());
-		}		
+		$this->setVal( 'order_id', $this->generateOrderId() );
+
+		if ( !$this->isSomething( 'i_order_id' ) ) {
+			$this->setVal( 'i_order_id', $this->generateOrderId() );
+		}
 	}
-	
+
 	/**
 	 * Generate an order id exactly once for this go-round. 
 	 */
 	function generateOrderId() {
 		static $order_id = null;
-		if ($order_id === null){
+		if ( $order_id === null ) {
 			$order_id = ( double ) microtime() * 1000000 . mt_rand( 1000, 9999 );
 		}
 		return $order_id;
 	}
-	
-	
+
 	/**
 	 * Sanitize user input
 	 * 
@@ -269,27 +266,27 @@ class DonationData {
 	public function sanitizeInput( &$value, $key, $flags=ENT_COMPAT, $double_encode=false ) {
 		$value = htmlspecialchars( $value, $flags, 'UTF-8', $double_encode );
 	}
-	
-	function log($message, $log_level=LOG_INFO){
-		if (class_exists($this->boss)){
+
+	function log( $message, $log_level=LOG_INFO ) {
+		if ( class_exists( $this->boss ) ) {
 			$c = $this->boss;
-			$c::log($message, $log_level);
+			$c::log( $message, $log_level );
 		}
 	}
-	
-	function setGateway(){
+
+	function setGateway() {
 		//TODO: Hum. If we have some other gateway in the form data, should we go crazy here? (Probably)
-		if (class_exists($this->boss)){
+		if ( class_exists( $this->boss ) ) {
 			$c = $this->boss;
 			$gateway = $c::getIdentifier();
-			$this->setVal('gateway', $gateway);
-		} 
+			$this->setVal( 'gateway', $gateway );
+		}
 	}
-	
-	function doCacheStuff(){
+
+	function doCacheStuff() {
 		//TODO: Wow, name.  
 		global $wgRequest;
-		
+
 		// if _cache_ is requested by the user, do not set a session/token; dynamic data will be loaded via ajax
 		if ( $this->isSomething( '_cache_' ) ) {
 			self::log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Cache requested', LOG_DEBUG );
@@ -298,26 +295,25 @@ class DonationData {
 
 			// if we have squid caching enabled, set the maxage
 			global $wgUseSquid, $wgOut;
-			if (class_exists($this->boss)){
+			if ( class_exists( $this->boss ) ) {
 				$g = $this->boss; //the 'g' is for "Gateway"!
-				$maxAge = $g::getGlobal('SMaxAge');
+				$maxAge = $g::getGlobal( 'SMaxAge' );
 
 				if ( $wgUseSquid ) {
 					self::log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Setting s-max-age: ' . $maxAge, LOG_DEBUG );
-					$wgOut->setSquidMaxage( $maxAge );	
+					$wgOut->setSquidMaxage( $maxAge );
 				}
 			}
 		} else {
 			$this->cache = false; //TODO: Kill this one in the face, too. (see above) 
 		}
 	}
-	
-	function getAnnoyingOrderIDLogLinePrefix(){
+
+	function getAnnoyingOrderIDLogLinePrefix() {
 		//TODO: ...aww. But it's so descriptive. 
-		return $this->getVal( 'order_id' ) .  ' ' . $this->getVal( 'i_order_id' ) . ': ';
+		return $this->getVal( 'order_id' ) . ' ' . $this->getVal( 'i_order_id' ) . ': ';
 	}
-	
-	
+
 	/**
 	 * Establish an 'edit' token to help prevent CSRF, etc
 	 *
@@ -335,20 +331,20 @@ class DonationData {
 
 		// make sure we have a session open for tracking a CSRF-prevention token
 		self::ensureSession();
-		
-		if (class_exists($this->boss)){
+
+		if ( class_exists( $this->boss ) ) {
 			$g = $this->boss;
 			$gateway_ident = $g::getIdentifier();
 		} else {
 			$gateway_ident = 'DonationData';
 		}
 
-		if ( !isset( $_SESSION[ $gateway_ident . 'EditToken' ] ) ) {
+		if ( !isset( $_SESSION[$gateway_ident . 'EditToken'] ) ) {
 			// generate unsalted token to place in the session
 			$token = self::generateToken();
-			$_SESSION[ $gateway_ident . 'EditToken' ] = $token;
+			$_SESSION[$gateway_ident . 'EditToken'] = $token;
 		} else {
-			$token = $_SESSION[ $gateway_ident . 'EditToken' ];
+			$token = $_SESSION[$gateway_ident . 'EditToken'];
 		}
 
 		if ( is_array( $salt ) ) {
@@ -381,8 +377,8 @@ class DonationData {
 		if ( $val != $sessionToken ) {
 			wfDebug( "DonationData::matchEditToken: broken session data\n" );
 		}
-		$this->log("Val = $val");
-		$this->log("Session Token = $sessionToken");
+		$this->log( "Val = $val" );
+		$this->log( "Session Token = $sessionToken" );
 		return $val == $sessionToken;
 	}
 
@@ -390,13 +386,13 @@ class DonationData {
 	 * Unset the payflow edit token from a user's session
 	 */
 	function unsetEditToken() {
-		if (class_exists($this->boss)){
+		if ( class_exists( $this->boss ) ) {
 			$g = $this->boss;
 			$gateway_ident = $g::getIdentifier();
 		} else {
 			$gateway_ident = "DonationData";
 		}
-		unset( $_SESSION[ $gateway_ident . 'EditToken' ] );
+		unset( $_SESSION[$gateway_ident . 'EditToken'] );
 	}
 
 	/**
@@ -407,52 +403,49 @@ class DonationData {
 	 */
 	public static function ensureSession() {
 		// if the session is already started, do nothing
-		if ( session_id() ) return;
+		if ( session_id() )
+			return;
 
 		// otherwise, fire it up using global mw function wfSetupSession
 		wfSetupSession();
 	}
-	
+
 	public function checkTokens() {
 		static $match = null;
-		
-		if ($match === null) {
-			if (class_exists($this->boss)){
+
+		if ( $match === null ) {
+			if ( class_exists( $this->boss ) ) {
 				$g = $this->boss;
-				$salt = $g::getGlobal('Salt');
+				$salt = $g::getGlobal( 'Salt' );
 			} else {
 				$salt = 'gotToBeInAUnitTest';
 			}
-			
+
 			// establish the edit token to prevent csrf
 			$token = $this->getEditToken( $salt );
-			
+
 			$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' editToken: ' . $token, LOG_DEBUG );
-			
+
 			// match token
 			$token_check = ( $this->isSomething( 'token' ) ) ? $this->getVal( 'token' ) : $token; //TODO: does this suck as much as it looks like it does? 
 			$match = $this->matchEditToken( $token_check, $salt );
 			if ( $this->wasPosted() ) {
-				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Submitted edit token: ' . $this->getVal( 'token' ), LOG_DEBUG);
+				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Submitted edit token: ' . $this->getVal( 'token' ), LOG_DEBUG );
 				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Token match: ' . ($match ? 'true' : 'false' ), LOG_DEBUG );
 			}
-			
 		}
-		
+
 		return $match;
 	}
-	
-	function wasPosted(){
+
+	function wasPosted() {
 		//TODO: Get rid of these log statements. 
-		if ( $this->isSomething('posted') ){
+		if ( $this->isSomething( 'posted' ) ) {
 			return true;
 		}
 		return false;
 	}
 
-	
-	
-	
 	/**
 	 * Get the utm_source string
 	 *
@@ -505,7 +498,8 @@ class DonationData {
 
 		// if there are no sourceparts element, then the banner portion of the string needs to be set.
 		// since we don't know what it is, set it to an empty string
-		if ( !count( $source_parts ) ) $source_parts[0] = '';
+		if ( !count( $source_parts ) )
+			$source_parts[0] = '';
 
 		// if the utm_source_id is set, set the landing page portion of the string to cc#
 		$source_parts[1] = ( $utm_source_id ) ? 'cc' . $utm_source_id : ( isset( $source_parts[1] ) ? $source_parts[1] : '' );
@@ -516,8 +510,7 @@ class DonationData {
 		// return a reconstructed string
 		return implode( ".", $source_parts );
 	}
-	
-	
+
 	/**
 	 * Determine proper opt-out settings for contribution tracking
 	 *
@@ -526,11 +519,10 @@ class DonationData {
 	 * (which is opt-out), we need to reverse the values
 	 */
 	public function getOptOuts() {
-		$optout[ 'optout' ] = ( $this->isSomething('email-opt') && $this->getVal('email-opt') == "1" ) ? '0' : '1';
-		$optout[ 'anonymous' ] = ( $this->isSomething('comment-option') && $this->getVal('comment-option') == "1" ) ? '0' : '1';
+		$optout['optout'] = ( $this->isSomething( 'email-opt' ) && $this->getVal( 'email-opt' ) == "1" ) ? '0' : '1';
+		$optout['anonymous'] = ( $this->isSomething( 'comment-option' ) && $this->getVal( 'comment-option' ) == "1" ) ? '0' : '1';
 		return $optout;
 	}
-	
 
 	/**
 	 * Clean array of tracking data to contain valid fields
@@ -555,34 +547,34 @@ class DonationData {
 			'ts'
 		);
 
-		foreach ($tracking_fields as $value){
-			if ($this->isSomething($value)){
-				$tracking_data[$value] = $this->getVal($value);
+		foreach ( $tracking_fields as $value ) {
+			if ( $this->isSomething( $value ) ) {
+				$tracking_data[$value] = $this->getVal( $value );
 			} else {
 				$tracking_data[$value] = null;
 			}
 		}
-		
+
 		// clean up the optout values if necessary
 		if ( $clean_optouts ) {
 			$optouts = $this->getOptOuts();
-			$tracking_data[ 'optout' ] = $optouts[ 'optout' ];
-			$tracking_data[ 'anonymous' ] = $optouts[ 'anonymous' ];
+			$tracking_data['optout'] = $optouts['optout'];
+			$tracking_data['anonymous'] = $optouts['anonymous'];
 		}
 
 		return $tracking_data;
 	}
-	
+
 	//if ( !empty($data) && ( $data[ 'numAttempt' ] == '0' && ( !$wgRequest->getText( 'utm_source_id', false ) || $wgRequest->getText( '_nocache_' ) == 'true' ) ) ) {
 	//so, basically, if this is the first attempt. This seems to get called nowhere else. 
 	function saveContributionTracking() {
 
-		$tracked_contribution = $this->getCleanTrackingData(true);
+		$tracked_contribution = $this->getCleanTrackingData( true );
 
 		// insert tracking data and get the tracking id
 		$result = self::insertContributionTracking( $tracked_contribution );
-		
-		$this->setVal('contribution_tracking_id', $result);
+
+		$this->setVal( 'contribution_tracking_id', $result );
 
 		if ( !$result ) {
 			return false;
@@ -599,22 +591,23 @@ class DonationData {
 	public static function insertContributionTracking( $tracking_data ) {
 		$db = ContributionTrackingProcessor::contributionTrackingConnection();
 
-		if ( !$db ) { return false; }
+		if ( !$db ) {
+			return false;
+		}
 
 		// set the time stamp if it's not already set
-		if ( !isset( $tracking_data[ 'ts' ] ) || !strlen( $tracking_data[ 'ts' ] ) ) {
-			$tracking_data[ 'ts' ] = $db->timestamp();
+		if ( !isset( $tracking_data['ts'] ) || !strlen( $tracking_data['ts'] ) ) {
+			$tracking_data['ts'] = $db->timestamp();
 		}
 
 		// Store the contribution data
 		if ( $db->insert( 'contribution_tracking', $tracking_data ) ) {
-		 	return $db->insertId();
+			return $db->insertId();
 		} else {
 			return false;
 		}
 	}
-	
-	
+
 	/**
 	 * Update contribution_tracking table
 	 *
@@ -629,25 +622,27 @@ class DonationData {
 		// ony update contrib tracking if we're coming from a single-step landing page
 		// which we know with cc# in utm_source or if force=true or if contribution_tracking_id is not set
 		if ( !$force &&
-				!preg_match( "/cc[0-9]/", $this->getVal('utm_source') ) &&
-				is_numeric( $this->getVal('contribution_tracking_id') ) ) {
+			!preg_match( "/cc[0-9]/", $this->getVal( 'utm_source' ) ) &&
+			is_numeric( $this->getVal( 'contribution_tracking_id' ) ) ) {
 			return;
 		}
 
 		$db = ContributionTrackingProcessor::contributionTrackingConnection();
 
-		if ( !$db ) { return true ; }  ///wait, what? TODO: This line was straight copied from the _gateway.body. Find out if there's a good reason we're not returning false here.
+		if ( !$db ) {
+			return true;
+		}  ///wait, what? TODO: This line was straight copied from the _gateway.body. Find out if there's a good reason we're not returning false here.
 
-		$tracked_contribution = $this->getCleanTrackingData(true);
+		$tracked_contribution = $this->getCleanTrackingData( true );
 
 		// if contrib tracking id is not already set, we need to insert the data, otherwise update
-		if ( !$this->getVal('contribution_tracking_id') ) {
-			$this->setVal('contribution_tracking_id', $this->insertContributionTracking( $tracked_contribution ));
+		if ( !$this->getVal( 'contribution_tracking_id' ) ) {
+			$this->setVal( 'contribution_tracking_id', $this->insertContributionTracking( $tracked_contribution ) );
 		} else {
-			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $this->getVal('contribution_tracking_id') ) );
+			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $this->getVal( 'contribution_tracking_id' ) ) );
 		}
 	}
-	
+
 }
 
 ?>

@@ -1,13 +1,13 @@
 <?php
 
 class Gateway_Form_RapidHtml extends Gateway_Form {
-	
+
 	/**
 	 * Full path of HTML form to load
 	 * @var string
 	 */
 	protected $html_file_path = '';
-	
+
 	/**
 	 * Tokens used in HTML form for data replacement
 	 * 
@@ -57,7 +57,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		// @script_path -> maps to $wgScriptPath 
 		// @action -> generate correct form action for this form
 	);
-	
+
 	/**
 	 * Error field names used as tokens
 	 * @var array
@@ -78,26 +78,26 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		'#zip',
 		'#emailAdd',
 	);
-	
-	public function __construct( &$form_data, &$form_errors ) {
+
+	public function __construct( &$form_data, &$form_errors, &$gateway ) {
 		global $wgRequest;
-		parent::__construct( $form_data, $form_errors );
+		parent::__construct( $form_data, $form_errors, $gateway );
 
 		$this->loadValidateJs();
-		
+
 		// set html-escaped filename.
-		$this->set_html_file_path( htmlspecialchars( $wgRequest->getText( 'ffname', 'default' )));
-		
+		$this->set_html_file_path( htmlspecialchars( $wgRequest->getText( 'ffname', 'default' ) ) );
+
 		// fix general form error messages so it's not an array of msgs
-		if ( is_array( $form_errors[ 'general' ] ) && count( $form_errors[ 'general' ] )) {
+		if ( is_array( $form_errors['general'] ) && count( $form_errors['general'] ) ) {
 			$general_errors = "";
-			foreach ( $form_errors[ 'general' ] as $general_error ) {
+			foreach ( $form_errors['general'] as $general_error ) {
 				$general_errors .= "<p class='creditcard'>$general_error</p>";
 			}
-			$form_errors[ 'general' ] = $general_errors;
+			$form_errors['general'] = $general_errors;
 		}
 	}
-	
+
 	/**
 	 * Return the HTML form with data added
 	 */
@@ -105,7 +105,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		$html = $this->load_html();
 		return $this->add_data( $html );
 	}
-	
+
 	/**
 	 * Load the HTML form from a file into a string
 	 * @return string
@@ -113,7 +113,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 	public function load_html() {
 		return file_get_contents( $this->html_file_path );
 	}
-	
+
 	/**
 	 * Add data into the HTML form
 	 * 
@@ -127,34 +127,36 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		 * This is a hack and should be replaced with something more performant.
 		 */
 		$form = $html;
-		
+
 		// handle form action
 		$form = str_replace( "@action", $this->getNoCacheAction(), $form );
 
 		// replace data
 		foreach ( $this->data_tokens as $token ) {
-			$key = substr( $token, 1, strlen( $token )); //get the token string w/o the '@'
-			if ( $key == 'emailAdd' ) $key = 'email';
-			if ( $key == 'currency_code' ) $key = 'currency';
-			if ( array_key_exists( $key, $this->form_data )) {
-				$replace = $this->form_data[ $key ];
+			$key = substr( $token, 1, strlen( $token ) ); //get the token string w/o the '@'
+			if ( $key == 'emailAdd' )
+				$key = 'email';
+			if ( $key == 'currency_code' )
+				$key = 'currency';
+			if ( array_key_exists( $key, $this->form_data ) ) {
+				$replace = $this->form_data[$key];
 			} else {
 				$replace = '';
 			}
 			$form = str_replace( $token, $replace, $form );
 		}
-		
+
 		// replace errors
 		$form = str_replace( $this->error_tokens, $this->form_errors, $form );
 
 		// handle captcha
 		$form = str_replace( "@captcha", $this->getCaptchaHtml(), $form );
-		
+
 		// handle script path
 		$form = str_replace( "@script_path", $wgScriptPath, $form );
-		
+
 		$form = $this->fix_dropdowns( $form );
-		
+
 		return $form;
 	}
 
@@ -170,83 +172,77 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		// currency code
 		$start = strpos( $html, 'name="currency_code"' );
 		if ( $start ) {
-			$currency_code = $this->form_data[ 'currency' ];
+			$currency_code = $this->form_data['currency'];
 			$end = strpos( $html, '</select>', $start );
-			$str = substr( $html, $start, ( $end - $start ));
+			$str = substr( $html, $start, ( $end - $start ) );
 			$str = str_replace( 'value="' . $currency_code . '"', 'value="' . $currency_code . '" selected="selected"', $str );
-			$html = substr_replace( $html, $str, $start, $end-$start );
+			$html = substr_replace( $html, $str, $start, $end - $start );
 		}
-		
+
 		// mos
-		$month = substr( $this->form_data[ 'expiration' ], 0, 2 );
+		$month = substr( $this->form_data['expiration'], 0, 2 );
 		$start = strpos( $html, 'name="mos"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
-			$str = substr( $html, $start, ( $end - $start ));
+			$str = substr( $html, $start, ( $end - $start ) );
 			$str = str_replace( 'value="' . $month . '"', 'value="' . $month . '" selected="selected"', $str );
-			$html = substr_replace( $html, $str, $start, $end-$start );
+			$html = substr_replace( $html, $str, $start, $end - $start );
 		}
-		
+
 		// year
-		$year = substr( $this->form_data[ 'expiration' ], 2, 2 );
+		$year = substr( $this->form_data['expiration'], 2, 2 );
 		$start = strpos( $html, 'name="year"' );
-		if ( $start ) {	
+		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
-			$str = substr( $html, $start, ( $end - $start ));
+			$str = substr( $html, $start, ( $end - $start ) );
 			// dbl extra huge hack alert!  note the '20' prefix...
 			$str = str_replace( 'value="20' . $year . '"', 'value="20' . $year . '" selected="selected"', $str );
-			$html = substr_replace( $html, $str, $start, $end-$start );
+			$html = substr_replace( $html, $str, $start, $end - $start );
 		}
-		
+
 		// state
-		$state = $this->form_data[ 'state' ];
+		$state = $this->form_data['state'];
 		$start = strpos( $html, 'name="state"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
-			$str = substr( $html, $start, ( $end - $start ));
+			$str = substr( $html, $start, ( $end - $start ) );
 			$str = str_replace( 'value="' . $state . '"', 'value="' . $state . '" selected="selected"', $str );
-			$html = substr_replace( $html, $str, $start, $end-$start );
+			$html = substr_replace( $html, $str, $start, $end - $start );
 		}
-		
+
 		//country
-		$country = $this->form_data[ 'country' ];
+		$country = $this->form_data['country'];
 		$start = strpos( $html, 'name="country"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
-			$str = substr( $html, $start, ( $end - $start ));
+			$str = substr( $html, $start, ( $end - $start ) );
 			$str = str_replace( 'value="' . $country . '"', 'value="' . $country . '" selected="selected"', $str );
-			$html = substr_replace( $html, $str, $start, $end-$start );
+			$html = substr_replace( $html, $str, $start, $end - $start );
 		}
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * Validate and set the path to the HTML file
 	 * 
 	 * @param string $file_name
 	 */
 	public function set_html_file_path( $file_name ) {
-	 	global $wgGlobalCollectGatewayHtmlFormDir, $wgGlobalCollectGatewayAllowedHtmlForms;
-		
-		// Get the dirname - the "/." helps ensure we get a consistent path name with no trailing slash
-		$html_dir = dirname( $wgGlobalCollectGatewayHtmlFormDir . "/." );
-		
-		if ( !is_dir( $html_dir )) {
-			throw new MWException( 'Requested form directory does not exist.' );
-		}
-		
-		// make sure our file name is clean - strip extension and any other cruft like relpaths, dirs, etc
-		$file_info = pathinfo( $file_name );
-		$file_name = $file_info[ 'filename' ];
-		
-		$full_path = $html_dir . '/' . $file_name . '.html';
-		
-		// ensure that the full file path is actually whitelisted and exists
-		if ( !in_array( $full_path, $wgGlobalCollectGatewayAllowedHtmlForms ) || !file_exists( $full_path ) ) {
+		global $wgDonationInterfaceHtmlFormDir;
+
+		$g = $this->gateway;
+		$gatewayFormDir = $g::getGlobal( 'HtmlFormDir' );
+		$allowedForms = $g::getGlobal( 'AllowedHtmlForms' );
+
+		if ( !array_key_exists( $file_name, $allowedForms ) ||
+			((strpos( $allowedForms[$file_name], $gatewayFormDir ) === false) && (strpos( $allowedForms[$file_name], $wgDonationInterfaceHtmlFormDir ) === false)) ||
+			(!file_exists( $allowedForms[$file_name] )) ) {
+
 			throw new MWException( 'Requested an unavailable or non-existent form.' );
 		}
-		
-		$this->html_file_path = $full_path;
+
+		$this->html_file_path = $allowedForms[$file_name];
 	}
+
 }

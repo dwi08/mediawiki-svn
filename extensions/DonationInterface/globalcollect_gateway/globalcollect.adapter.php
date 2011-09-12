@@ -1,37 +1,28 @@
 <?php
 
-$dir = dirname( __FILE__ ) . '/';
-require_once( $dir . '../gateway_common/gateway.adapter.php' );
-
 class GlobalCollectAdapter extends GatewayAdapter {
-	const gatewayname = 'Global Collect';
-	const identifier = 'globalcollect';
-	const communicationtype = 'xml';
-	const globalprefix = 'wgGlobalCollectGateway';
+	const GATEWAY_NAME = 'Global Collect';
+	const IDENTIFIER = 'globalcollect';
+	const COMMUNICATION_TYPE = 'xml';
+	const GLOBAL_PREFIX = 'wgGlobalCollectGateway';
 
 	/**
 	 * stageData should alter the postdata array in all ways necessary in preparation for
 	 * communication with the gateway. 
 	 */
-	function stageData(){
+	function stageData() {
 		$this->postdata['amount'] = $this->postdata['amount'] * 100;
 	}
-	
 
-	function __construct( ) {
-		$this->classlocation = __FILE__;
-		parent::__construct();
-	}
-	
-	function defineAccountInfo(){
+	function defineAccountInfo() {
 		$this->accountInfo = array(
-			'MERCHANTID' => self::getGlobal('MerchantID'),
+			'MERCHANTID' => self::getGlobal( 'MerchantID' ),
 			//'IPADDRESS' => '', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm. 
 			'VERSION' => "1.0",
 		);
 	}
-	
-	function defineVarMap(){
+
+	function defineVarMap() {
 		$this->var_map = array(
 			'ORDERID' => 'order_id',
 			'AMOUNT' => 'amount',
@@ -43,17 +34,17 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'IPADDRESS' => 'user_ip', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm.
 		);
 	}
-	
-	function defineReturnValueMap(){
+
+	function defineReturnValueMap() {
 		$this->return_value_map = array(
 			'OK' => true,
 			'NOK' => false,
 		);
 	}
-	
-	function defineTransactions(){
-		$this->transactions = array();
-		
+
+	function defineTransactions() {
+		$this->transactions = array( );
+
 		$this->transactions['INSERT_ORDERWITHPAYMENT'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -90,7 +81,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				'PAYMENTPRODUCTID' => '3',
 			),
 		);
-		
+
 		$this->transactions['TEST_CONNECTION'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -114,19 +105,19 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 * For instance: If it's XML, we only want correctly-formatted XML. Headers must be killed off. 
 	 * return a string.
 	 */
-	function getFormattedResponse( $rawResponse ){
-		$xmlString = $this->stripXMLResponseHeaders($rawResponse);
+	function getFormattedResponse( $rawResponse ) {
+		$xmlString = $this->stripXMLResponseHeaders( $rawResponse );
 		$displayXML = $this->formatXmlString( $xmlString );
 		$realXML = new DomDocument( '1.0' );
 		self::log( "Here is the Raw XML: " . $displayXML ); //I am apparently a huge fibber.
 		$realXML->loadXML( trim( $xmlString ) );
 		return $realXML;
 	}
-	
+
 	/**
 	 * Parse the response to get the status. Not sure if this should return a bool, or something more... telling.
 	 */
-	function getResponseStatus( $response ){
+	function getResponseStatus( $response ) {
 
 		$aok = true;
 
@@ -135,24 +126,24 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				$aok = false;
 			}
 		}
-		
-		return $aok;		
+
+		return $aok;
 	}
-	
+
 	/**
 	 * Parse the response to get the errors in a format we can log and otherwise deal with.
 	 * return a key/value array of codes (if they exist) and messages. 
 	 */
-	function getResponseErrors( $response ){
-		$errors = array();
+	function getResponseErrors( $response ) {
+		$errors = array( );
 		foreach ( $response->getElementsByTagName( 'ERROR' ) as $node ) {
 			$code = '';
 			$message = '';
 			foreach ( $node->childNodes as $childnode ) {
-				if ($childnode->nodeName === "CODE"){
+				if ( $childnode->nodeName === "CODE" ) {
 					$code = $childnode->nodeValue;
 				}
-				if ($childnode->nodeName === "MESSAGE"){
+				if ( $childnode->nodeName === "MESSAGE" ) {
 					$message = $childnode->nodeValue;
 				}
 			}
@@ -160,24 +151,24 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		}
 		return $errors;
 	}
-	
+
 	/**
 	 * Harvest the data we need back from the gateway. 
 	 * return a key/value array
 	 */
-	function getResponseData( $response ){
-		$data = array();
+	function getResponseData( $response ) {
+		$data = array( );
 		foreach ( $response->getElementsByTagName( 'ROW' ) as $node ) {
 			foreach ( $node->childNodes as $childnode ) {
-				if (trim($childnode->nodeValue) != ''){
+				if ( trim( $childnode->nodeValue ) != '' ) {
 					$data[$childnode->nodeName] = $childnode->nodeValue;
 				}
 			}
 		}
-		self::log( "Returned Data: " . print_r($data, true));
+		self::log( "Returned Data: " . print_r( $data, true ) );
 		return $data;
 	}
-	
+
 	function processResponse( $response ) {
 		//TODO: Stuff. 
 	}

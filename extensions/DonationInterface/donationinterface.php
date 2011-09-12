@@ -18,26 +18,20 @@ $wgExtensionCredits['specialpage'][] = array(
 	'url' => 'http://www.mediawiki.org/wiki/Extension:DonationInterface',
 );
 
-//This is going to be a little funky. 
-//Override this in LocalSettings.php BEFORE you include this file, if you want 
-//to disable gateways.
-//TODO: Unfunktify, if you have a better idea here for auto-loading the classes after LocalSettings.php runs all the way. 
-if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
-	$wgDonationInterfaceEnabledGateways = array(
-		'paypal',
-		'payflowpro',
-		'globalcollect'
-	);
-}
-
 $donationinterface_dir = dirname( __FILE__ ) . '/';
 
 require_once( $donationinterface_dir . 'donate_interface/donate_interface.php' );
 
-foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
-	//include 'em
-	require_once( $donationinterface_dir . $gateway . '_gateway/' . $gateway . '_gateway.php' );
-}
+
+/**
+ * Global form dir and whitelist
+ */
+$wgDonationInterfaceHtmlFormDir = dirname( __FILE__ ) . "/gateway_forms/html";
+//ffname is the $key from now on. 
+$wgDonationInterfaceAllowedHtmlForms = array(
+	'demo' => $wgDonationInterfaceHtmlFormDir . "/demo.html",
+	'globalcollect_test' => $wgDonationInterfaceHtmlFormDir . "/globalcollect_test.html",
+);
 
 //load all possible form classes
 $wgAutoloadClasses['Gateway_Form'] = $donationinterface_dir . 'gateway_forms/Form.php';
@@ -60,8 +54,29 @@ $wgAutoloadClasses['Gateway_Form_TwoStepTwoColumnPremiumUS'] = $donationinterfac
 $wgAutoloadClasses['Gateway_Form_RapidHtml'] = $donationinterface_dir . 'gateway_forms/RapidHtml.php';
 $wgAutoloadClasses['Gateway_Form_SingleColumn'] = $donationinterface_dir . 'gateway_forms/SingleColumn.php';
 
+
+$wgAutoloadClasses['DonationData'] = $donationinterface_dir . 'gateway_common/DonationData.php';
+$wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/gateway.adapter.php';
+
 //THE GATEWAYS WILL RESET THIS when they are instantiated. You can override it, but it won't stick around that way. 
 $wgDonationInterfaceTest = false;
+
+//This is going to be a little funky. 
+//Override this in LocalSettings.php BEFORE you include this file, if you want 
+//to disable gateways.
+//TODO: Unfunktify, if you have a better idea here for auto-loading the classes after LocalSettings.php runs all the way. 
+if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
+	$wgDonationInterfaceEnabledGateways = array(
+		'paypal',
+		'payflowpro',
+		'globalcollect'
+	);
+}
+
+foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
+	//include 'em
+	require_once( $donationinterface_dir . $gateway . '_gateway/' . $gateway . '_gateway.php' );
+}
 
 /**
  * Hooks required to interface with the donation extension (include <donate> on page)
@@ -71,7 +86,6 @@ $wgDonationInterfaceTest = false;
  */
 //$wgHooks['DonationInterface_Value'][] = 'pfpGatewayValue';
 //$wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
-
 # Unit tests
 $wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
 

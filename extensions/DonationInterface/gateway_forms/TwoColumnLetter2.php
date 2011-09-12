@@ -3,7 +3,7 @@
 class Gateway_Form_TwoColumnLetter2 extends Gateway_Form_OneStepTwoColumn {
 	public $paypal = false; // true for paypal only version
 
-	public function __construct( &$form_data, &$form_errors ) {
+	public function __construct( &$form_data, &$form_errors, &$gateway ) {
 		global $wgScriptPath;
 
 		// set the path to css, before the parent constructor is called, checking to make sure some child class hasn't already set this
@@ -11,7 +11,7 @@ class Gateway_Form_TwoColumnLetter2 extends Gateway_Form_OneStepTwoColumn {
 			$this->setStylePath( $wgScriptPath . '/extensions/DonationInterface/payflowpro_gateway/forms/css/TwoColumnLetter.css' );
 		}
 
-		parent::__construct( $form_data, $form_errors );
+		parent::__construct( $form_data, $form_errors, $gateway );
 	}
 
 	public function generateFormStart() {
