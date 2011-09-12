@@ -208,7 +208,7 @@
 		});
 
 		this.getWikiText = function() {
-			var wikiText = _getCats().map( function() { return '[[' + this.getMainText() + ']]'; } )
+			var wikiText = _getCats().map( function() { return '[[Category:' + this.getMainText() + ']]'; } )
 							.toArray()
 							.join( "\n" );
 
