@@ -209,7 +209,7 @@ function efCategoryTreeSetHooks( $parser ) {
  * namely, only providing the mode name or number.
  * This loads CategoryTreeFunctions.php and calls CategoryTree::ajax()
  */
-function efCategoryTreeAjaxWrapper( $category, $options, $enc = '' ) {
+function efCategoryTreeAjaxWrapper( $category, $options = array(), $enc = '' ) {
 	global $wgCategoryTreeHTTPCache, $wgSquidMaxage, $wgUseSquid;
 
 	if ( is_string( $options ) ) {
