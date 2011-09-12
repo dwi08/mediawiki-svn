@@ -836,14 +836,13 @@ class Linker {
 	 * @param $userText String: user name in database
 	 * @return String: HTML fragment
 	 */
-
 	public static function userLink( $userId, $userText ) {
 		if ( $userId == 0 ) {
 			$page = SpecialPage::getTitleFor( 'Contributions', $userText );
 		} else {
 			$page = Title::makeTitle( NS_USER, $userText );
 		}
-		return $this->link( $page, htmlspecialchars( $userText ), array( 'class' => 'mw-userlink' ) );
+		return self::link( $page, htmlspecialchars( $userText ), array( 'class' => 'mw-userlink' ) );
 	}
 
 	/**
