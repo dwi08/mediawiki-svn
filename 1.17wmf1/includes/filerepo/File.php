@@ -801,7 +801,7 @@ abstract class File {
 	}
 
 	/**
-	 * Get the path of the archive directory, or a particular file if $suffix is specified */
+	 * Get the path of the archive directory, or a particular file if $suffix is specified
 	 *
 	 * @param $suffix bool|string if not false, the name of an archived file.
 	 *
