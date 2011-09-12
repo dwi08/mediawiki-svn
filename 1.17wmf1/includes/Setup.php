@@ -342,11 +342,11 @@ if( !wfIniGetBool( 'session.auto_start' ) )
 
 if( !defined( 'MW_NO_SESSION' ) && !$wgCommandLineMode ) {
 	if( $wgRequest->checkSessionCookie() || isset( $_COOKIE[$wgCookiePrefix.'Token'] ) ) {
-		wfIncrStats( 'request_with_session' );
+		#wfIncrStats( 'request_with_session' );
 		wfSetupSession();
 		$wgSessionStarted = true;
 	} else {
-		wfIncrStats( 'request_without_session' );
+		#wfIncrStats( 'request_without_session' );
 		$wgSessionStarted = false;
 	}
 }
@@ -361,7 +361,11 @@ $wgRequest->interpolateTitle();
 $wgUser = $wgCommandLineMode ? new User : User::newFromSession();
 $wgLang = new StubUserLang;
 $wgOut = new StubObject( 'wgOut', 'OutputPage' );
-$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
+
+#$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
+# Live hack to clear up profiling -- TS
+$class = $wgParserConf['class'];
+$wgParser = new $class( $wgParserConf );
 
 $wgMessageCache = new StubObject( 'wgMessageCache', 'MessageCache',
 	array( $messageMemc, $wgUseDatabaseMessages, $wgMsgCacheExpiry ) );
