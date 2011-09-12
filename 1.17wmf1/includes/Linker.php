@@ -14,7 +14,6 @@ class Linker {
 	 * Flags for userToolLinks()
 	 */
 	const TOOL_LINKS_NOBLOCK = 1;
-	const TOOL_LINKS_EMAIL   = 2;
 
 	function __construct() {}
 
@@ -835,14 +834,15 @@ class Linker {
 	 * @param $userId   Integer: user id in database.
 	 * @param $userText String: user name in database
 	 * @return String: HTML fragment
+	 * @private
 	 */
-	public static function userLink( $userId, $userText ) {
+	function userLink( $userId, $userText ) {
 		if ( $userId == 0 ) {
 			$page = SpecialPage::getTitleFor( 'Contributions', $userText );
 		} else {
 			$page = Title::makeTitle( NS_USER, $userText );
 		}
-		return self::link( $page, htmlspecialchars( $userText ), array( 'class' => 'mw-userlink' ) );
+		return $this->link( $page, htmlspecialchars( $userText ), array( 'class' => 'mw-userlink' ) );
 	}
 
 	/**
@@ -852,15 +852,14 @@ class Linker {
 	 * @param $userText String: user name or IP address
 	 * @param $redContribsWhenNoEdits Boolean: should the contributions link be
 	 *        red if the user has no edits?
-	 * @param $flags Integer: customisation flags (e.g. Linker::TOOL_LINKS_NOBLOCK and Linker::TOOL_LINKS_EMAIL)
+	 * @param $flags Integer: customisation flags (e.g. self::TOOL_LINKS_NOBLOCK)
 	 * @param $edits Integer: user edit count (optional, for performance)
 	 * @return String: HTML fragment
 	 */
 	public function userToolLinks( $userId, $userText, $redContribsWhenNoEdits = false, $flags = 0, $edits = null ) {
 		global $wgUser, $wgDisableAnonTalk, $wgSysopUserBans, $wgLang;
 		$talkable = !( $wgDisableAnonTalk && 0 == $userId );
-		$blockable = !( $flags & self::TOOL_LINKS_NOBLOCK );
-		$addEmailLink = $flags & self::TOOL_LINKS_EMAIL && $userId;
+		$blockable = ( $wgSysopUserBans || 0 == $userId ) && !$flags & self::TOOL_LINKS_NOBLOCK;
 
 		$items = array();
 		if ( $talkable ) {
@@ -881,10 +880,6 @@ class Linker {
 		}
 		if ( $blockable && $wgUser->isAllowed( 'block' ) ) {
 			$items[] = $this->blockLink( $userId, $userText );
-		}
-
-		if ( $addEmailLink && $wgUser->canSendEmail() ) {
-			$items[] = self::emailLink( $userId, $userText );
 		}
 
 		if ( $items ) {
@@ -909,8 +904,9 @@ class Linker {
 	 * @param $userId Integer: user id in database.
 	 * @param $userText String: user name in database.
 	 * @return String: HTML fragment with user talk link
+	 * @private
 	 */
-	public static function userTalkLink( $userId, $userText ) {
+	function userTalkLink( $userId, $userText ) {
 		$userTalkPage = Title::makeTitle( NS_USER_TALK, $userText );
 		$userTalkLink = $this->link( $userTalkPage, wfMsgHtml( 'talkpagelinktext' ) );
 		return $userTalkLink;
@@ -920,23 +916,12 @@ class Linker {
 	 * @param $userId Integer: userid
 	 * @param $userText String: user name in database.
 	 * @return String: HTML fragment with block link
+	 * @private
 	 */
-
-	public static function blockLink( $userId, $userText ) {
-		$blockPage = SpecialPage::getTitleFor( 'Block', $userText );
-		$blockLink = self::link( $blockPage, wfMsgHtml( 'blocklink' ) );
+	function blockLink( $userId, $userText ) {
+		$blockPage = SpecialPage::getTitleFor( 'Blockip', $userText );
+		$blockLink = $this->link( $blockPage, wfMsgHtml( 'blocklink' ) );
 		return $blockLink;
-	}
-
-	/**
-	 * @param $userId Integer: userid
-	 * @param $userText String: user name in database.
-	 * @return String: HTML fragment with e-mail user link
-	 */
-	public static function emailLink( $userId, $userText ) {
-		$emailPage = SpecialPage::getTitleFor( 'Emailuser', $userText );
-		$emailLink = self::link( $emailPage, wfMsgHtml( 'emaillink' ) );
-		return $emailLink;
 	}
 
 	/**

@@ -19,12 +19,7 @@ class CodeRevisionAuthorView extends CodeRevisionListView {
 
 		return wfMsgHtml( 'code-author-haslink',
 			$this->skin->userLink( $this->mUser->getId(), $this->mUser->getName() ) .
-			$this->skin->userToolLinks(
-				$this->mUser->getId(),
-				$this->mUser->getName(),
-				false, /* default for redContribsWhenNoEdits */
-				Linker::TOOL_LINKS_EMAIL /* Add "send e-mail" link */
-			) );
+			$this->skin->userToolLinks( $this->mUser->getId(), $this->mUser->getName() ) );
 	}
 
 	function execute() {
