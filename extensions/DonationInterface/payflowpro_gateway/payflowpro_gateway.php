@@ -174,7 +174,7 @@ function pfpGatewayValue( &$values ) {
 /**
  *  Hook to supply the page address of the payment gateway
  *
- * The user will redirected here with supplied data with input data appended (GET).
+ * The user will be redirected here with supplied data with input data appended (GET).
  * For example, if $url[$key] = index.php?title=Special:PayflowProGateway
  * the result might look like this: http://www.yourdomain.com/index.php?title=Special:PayflowProGateway&amount=75.00&currency_code=USD&payment_method=payflow
  */

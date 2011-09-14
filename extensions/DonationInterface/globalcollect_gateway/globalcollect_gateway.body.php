@@ -20,7 +20,7 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	 * Holds the GlobalCollect response from a transaction
 	 * @var array
 	 */
-	public $payflow_response = array( );
+	public $payflow_response = array();
 
 	/**
 	 * A container for the form class
@@ -34,7 +34,7 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	 * An array of form errors
 	 * @var array
 	 */
-	public $errors = array( );
+	public $errors = array();
 
 	/**
 	 * Constructor - set up the new special page
@@ -53,7 +53,7 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	 */
 	public function execute( $par ) {
 		global $wgRequest, $wgOut, $wgExtensionAssetsPath,
-		$wgPayFlowProGatewayCSSVersion;
+			$wgPayFlowProGatewayCSSVersion;
 
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
@@ -80,6 +80,7 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 
 		$wgOut->addScript( Skin::makeVariablesScript( $scriptVars ) );
 
+		// Make the wiki logo not clickable.
 		// @fixme can this be moved into the form generators?
 		$js = <<<EOT
 <script type="text/javascript">
@@ -89,9 +90,9 @@ jQuery(document).ready(function() {
 </script>
 EOT;
 		$wgOut->addHeadItem( 'logolinkoverride', $js );
-
+		
 		$this->setHeaders();
-
+		
 		//TODO: This is short-circuiting what I really want to do here. 
 		//so stop it. 
 		$data = $this->adapter->getDisplayData();
@@ -99,13 +100,16 @@ EOT;
 		// dispatch forms/handling
 		if ( $this->adapter->checkTokens() ) {
 			if ( $this->adapter->posted && $data['payment_method'] == 'processed' ) {
-				$this->adapter->log( "Posted and processed." );
+				// The form was submitted and the payment method has been set
+				$this->adapter->log("Form posted and payment method set.");
 
 				// increase the count of attempts
 				//++$data['numAttempt'];
-				// Check form for errors and redisplay with messages
+
+				// Check form for errors
 				$form_errors = $this->fnPayflowValidateForm( $data, $this->errors );
 
+				// If there were errors, redisplay form, otherwise proceed to next step
 				if ( $form_errors ) {
 					$this->fnPayflowDisplayForm( $data, $this->errors );
 				} else { // The submitted form data is valid, so process it
@@ -113,23 +117,42 @@ EOT;
 					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
 					//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
 
-					$wgOut->addHTML( $result['message'] );
-					if ( !empty( $result['errors'] ) ) {
-						$wgOut->addHTML( "<ul>" );
-						foreach ( $result['errors'] as $code => $value ) {
-							$wgOut->addHTML( "<li>Error $code: $value" );
+					if (!empty($result['errors'])){
+						$wgOut->addHTML("<ul>");
+						foreach ($result['errors'] as $code => $value){
+							$wgOut->addHTML("<li>Error $code: $value");
 						}
-						$wgOut->addHTML( "</ul>" );
+						$wgOut->addHTML("</ul>");
 					}
-
-					if ( !empty( $result['data'] ) ) {
-						$wgOut->addHTML( "<ul>" );
-						foreach ( $result['data'] as $key => $value ) {
-							$wgOut->addHTML( "<li>$key: $value" );
+					
+					if (!empty($result['data'])){
+						// Create new page here with iframe.
+						$paymentFrame = Xml::openElement( 'iframe',
+							array(
+								'id' => 'globalcollectframe',
+								'name' => 'globalcollectframe',
+								'width' => '680',
+								'height' => '300',
+								'frameborder' => '0',
+								'style' => 'display:block;',
+								'src' => $result['data']['FORMACTION']
+							)
+						);
+						$paymentFrame .= Xml::closeElement( 'iframe' );
+						
+						$wgOut->addHTML( $paymentFrame );
+					}
+					
+					/*
+					$wgOut->addHTML($result['message']);
+					if (!empty($result['data'])){
+						$wgOut->addHTML("<ul>");
+						foreach ($result['data'] as $key => $value){
+							$wgOut->addHTML("<li>$key: $value");
 						}
-						$wgOut->addHTML( "</ul>" );
+						$wgOut->addHTML("</ul>");
 					}
-
+					*/
 
 
 //					self::log( $data[ 'order_id' ] . " Preparing to query MaxMind" );
@@ -325,7 +348,7 @@ EOT;
 	 */
 	private function fnPayflowGetResults( $data, $result ) {
 		// prepare NVP response for sorting and outputting
-		$responseArray = array( );
+		$responseArray = array();
 
 		/**
 		 * The result response string looks like:
@@ -451,7 +474,7 @@ EOT;
 	public function prepareStompTransaction( $data, $responseArray, $responseMsg ) {
 		$countries = $this->getCountries();
 
-		$transaction = array( );
+		$transaction = array();
 
 		// include response message
 		$transaction['response'] = $responseMsg;
