@@ -13,7 +13,13 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	function stageData() {
 		$this->postdata['amount'] = $this->postdata['amount'] * 100;
 		
-		switch ( $this->postdata['card_type'] ) {
+		$card_type = '';
+		if (array_key_exists('card_type', $this->postdata)){
+			$card_type = $this->postdata['card_type'];
+		} else {
+			$card_type = $this->postdatadefaults['card_type'];
+		}
+		switch ( $card_type ) {
 			case 'visa':
 				$this->postdata['card_type'] = 1;
 				break;
