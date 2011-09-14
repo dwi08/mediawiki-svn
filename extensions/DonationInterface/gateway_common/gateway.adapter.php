@@ -135,6 +135,7 @@ abstract class GatewayAdapter implements GatewayType {
 			'country' => 'US',
 			'returnto' => $returnto,
 			'user_ip' => ( self::getGlobal( 'Test' ) ) ? '12.12.12.12' : wfGetIP(), // current user's IP address
+			'card_type' => 'visa',
 		);
 	}
 

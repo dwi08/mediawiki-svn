@@ -31,6 +31,15 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->postdata['expiry'] = $this->postdata['expiration']; //. ($this->postdata['year'] % 100);
 		$this->postdata['card_num'] = str_replace(' ', '', $this->postdata['card_num']);
 		
+		$returnto = '';
+		if (array_key_exists('returnto', $this->postdata)){
+			$returnto = $this->postdata['returnto'];
+		} else {
+			$returnto = $this->postdatadefaults['returnto'];
+		}
+		
+		$this->postdata['returnto'] = $returnto . "?order_id=" . $this->postdata['order_id'];
+		
 	}
 
 	function defineAccountInfo() {
@@ -101,9 +110,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 							'COUNTRYCODE',
 							'HOSTEDINDICATOR',
 							'RETURNURL',
-							'CVV',
-							'EXPIRYDATE',
-							'CREDITCARDNUMBER',
+//							'CVV',
+//							'EXPIRYDATE',
+//							'CREDITCARDNUMBER',
 							'FIRSTNAME',
 							'SURNAME',
 							'STREET',
