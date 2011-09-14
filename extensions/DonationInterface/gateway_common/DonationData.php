@@ -151,7 +151,7 @@ class DonationData {
 			'size' => $wgRequest->getText( 'size' ),
 			'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
 			'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
-			'card_type' => $wgRequest->getText( 'card' ),
+			'card_type' => $wgRequest->getText( 'card_type' ),
 			'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
 			'cvv' => $wgRequest->getText( 'cvv' ),
 			'currency' => $wgRequest->getText( 'currency_code' ),

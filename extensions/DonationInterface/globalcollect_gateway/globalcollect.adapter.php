@@ -12,6 +12,25 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 */
 	function stageData() {
 		$this->postdata['amount'] = $this->postdata['amount'] * 100;
+		
+		switch ( $this->postdata['card_type'] ) {
+			case 'visa':
+				$this->postdata['card_type'] = 1;
+				break;
+			case 'mastercard':
+				$this->postdata['card_type'] = 3;
+				break;
+			case 'american':
+				$this->postdata['card_type'] = 2;
+				break;
+			case 'discover':
+				$this->postdata['card_type'] = 128;
+				break;
+		}
+		
+		$this->postdata['expiry'] = $this->postdata['expiration']; //. ($this->postdata['year'] % 100);
+		$this->postdata['card_num'] = str_replace(' ', '', $this->postdata['card_num']);
+		
 	}
 
 	function defineAccountInfo() {
@@ -32,6 +51,17 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'MERCHANTREFERENCE' => 'order_id',
 			'RETURNURL' => 'returnto', //TODO: Fund out where the returnto URL is supposed to be coming from. 
 			'IPADDRESS' => 'user_ip', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm.
+			'PAYMENTPRODUCTID' => 'card_type',
+			'CVV' => 'cvv',
+			'EXPIRYDATE' => 'expiry',
+			'CREDITCARDNUMBER' => 'card_num', 
+			'FIRSTNAME' => 'fname',
+			'SURNAME' => 'lname',
+			'STREET' => 'street',
+			'CITY' => 'city',
+			'STATE' => 'state',
+			'ZIP' => 'zip',
+			'EMAIL' => 'email',
 		);
 	}
 
@@ -71,14 +101,23 @@ class GlobalCollectAdapter extends GatewayAdapter {
 							'COUNTRYCODE',
 							'HOSTEDINDICATOR',
 							'RETURNURL',
+							'CVV',
+							'EXPIRYDATE',
+							'CREDITCARDNUMBER',
+							'FIRSTNAME',
+							'SURNAME',
+							'STREET',
+							'CITY',
+							'STATE',
+							'ZIP',
+							'EMAIL',
 						)
 					)
 				)
 			),
 			'values' => array(
 				'ACTION' => 'INSERT_ORDERWITHPAYMENT',
-				'HOSTEDINDICATOR' => '1',
-				'PAYMENTPRODUCTID' => '3',
+				'HOSTEDINDICATOR' => '1'
 			),
 		);
 
@@ -165,6 +204,24 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				}
 			}
 		}
+		
+		foreach ( $response->getElementsByTagName( 'ORDER' ) as $node ) {
+			foreach ( $node->childNodes as $childnode ) {
+				if ( trim( $childnode->nodeValue ) != '' ) {
+					$data['RequestOrder-' . $childnode->nodeName] = $childnode->nodeValue;
+				}
+			}
+		}
+		
+		foreach ( $response->getElementsByTagName( 'PAYMENT' ) as $node ) {
+			foreach ( $node->childNodes as $childnode ) {
+				if ( trim( $childnode->nodeValue ) != '' ) {
+					$data['RequestPayment-' . $childnode->nodeName] = $childnode->nodeValue;
+				}
+			}
+		}
+		
+		
 		self::log( "Returned Data: " . print_r( $data, true ) );
 		return $data;
 	}

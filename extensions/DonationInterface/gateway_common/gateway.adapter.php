@@ -164,7 +164,7 @@ abstract class GatewayAdapter implements GatewayType {
 		return $gotten[$globalname];
 	}
 
-	function getValue( $gateway_field_name ) {
+	function getValue( $gateway_field_name, $token = false ) {
 		if ( empty( $this->transactions ) ) {
 			//TODO: These dies should all just throw fatal errors instead. 
 			die( 'Transactions structure is empty! Aborting.' );
@@ -190,6 +190,9 @@ abstract class GatewayAdapter implements GatewayType {
 
 		//If there's a value in the post data (name-translated by the var_map), use that.
 		if ( array_key_exists( $gateway_field_name, $this->var_map ) ) {
+			if ($token === true){ //we just want the field name to use, so short-circuit all that mess. 
+				return '@' . $this->var_map[$gateway_field_name];
+			}
 			if ( array_key_exists( $this->var_map[$gateway_field_name], $this->postdata ) &&
 				$this->postdata[$this->var_map[$gateway_field_name]] !== '' ) {
 				//if it was sent, use that. 
@@ -217,19 +220,19 @@ abstract class GatewayAdapter implements GatewayType {
 		return $this->xmlDoc->saveXML();
 	}
 
-	function buildTransactionNodes( $structure, &$node ) {
+	function buildTransactionNodes( $structure, &$node, $js = false ) {
 		$transaction = $this->currentTransaction();
 
 		if ( !is_array( $structure ) ) { //this is a weird case that shouldn't ever happen. I'm just being... thorough. But, yeah: It's like... the base-1 case. 
-			$this->appendNodeIfValue( $structure, $node );
+			$this->appendNodeIfValue( $structure, $node, $js );
 		} else {
 			foreach ( $structure as $key => $value ) {
 				if ( !is_array( $value ) ) {
 					//do not use $key. $key is meaningless in this case.			
-					$this->appendNodeIfValue( $value, $node );
+					$this->appendNodeIfValue( $value, $node, $js );
 				} else {
 					$keynode = $this->xmlDoc->createElement( $key );
-					$this->buildTransactionNodes( $value, $keynode );
+					$this->buildTransactionNodes( $value, $keynode, $js );
 					$node->appendChild( $keynode );
 				}
 			}
@@ -237,30 +240,55 @@ abstract class GatewayAdapter implements GatewayType {
 		//not actually returning anything. It's all side-effects. Because I suck like that. 
 	}
 
-	function appendNodeIfValue( $value, &$node ) {
-		$nodevalue = $this->getValue( $value );
+	function appendNodeIfValue( $value, &$node, $js = false ) {
+		$nodevalue = $this->getValue( $value, $js );
 		if ( $nodevalue !== '' && $nodevalue !== false ) {
 			$temp = $this->xmlDoc->createElement( $value, $nodevalue );
 			$node->appendChild( $temp );
 		}
 	}
+	
+	//TODO: You can actually take this out if we never ever want to use ajax for a gateway. 
+	function buildTransactionFormat($transaction){
+		$this->currentTransaction( $transaction );
+		$this->xmlDoc = new DomDocument( '1.0' );
+		$node = $this->xmlDoc->createElement( 'XML' );
 
+		$structure = $this->transactions[$this->currentTransaction()]['request'];
+
+		$this->buildTransactionNodes( $structure, $node, true );
+		$this->xmlDoc->appendChild( $node );
+		$xml = $this->xmlDoc->saveXML();
+		$xmlStart = strpos($xml, "<XML>");
+		self::log("XML START" . $xmlStart);
+		$xml = substr( $xml, $xmlStart );
+		self::log("XML stubby thing..." . $xml);
+		
+		return $xml;
+	}
+	
 	function do_transaction( $transaction ) {
 		$this->currentTransaction( $transaction );
 		//update the contribution tracking data
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
+			$this->getStopwatch(__FUNCTION__);
 			$xml = $this->buildRequestXML();
+			$this->saveCommunicationStats("-BuildingRequestXML");
+			$this->getStopwatch(__FUNCTION__, true);
 			$returned = $this->curl_transaction( $xml );
+			$this->saveCommunicationStats();
 			//put the response in a universal form, and return it. 
 		}
 
 		if ( $this->getCommunicationType() === 'namevalue' ) {
 			$namevalue = $this->postdata;
+			$this->getStopwatch(__FUNCTION__);
 			$returned = $this->curl_transaction( $namevalue );
+			$this->saveCommunicationStats();
 			//put the response in a universal form, and return it. 
 		}
-
+		
 		self::log( "RETURNED FROM CURL:" . print_r( $returned, true ) );
 		if ( $returned['result'] === false ) { //couldn't make contact. Bail.
 			return $returned;
@@ -484,6 +512,34 @@ abstract class GatewayAdapter implements GatewayType {
 	static function getIdentifier() {
 		$c = get_called_class();
 		return $c::IDENTIFIER;
+	}
+	
+	public function getStopwatch($string, $reset = false){
+		static $start = null;
+		$now = microtime(true);
+
+		if ($start == null || $reset === true){
+			$start = $now;
+		}
+		$clock = round($now - $start, 4);
+		self::log("\nClock at $string: $clock ($now)");
+		return $clock;
+	}
+	
+	function saveCommunicationStats( $additional = '' ) { //easier than looking at logs...
+		$params = array();
+		if (self::getGlobal('SaveCommStats')){ //TODO: I should do this for real at some point. 
+			$db = ContributionTrackingProcessor::contributionTrackingConnection();
+			$params['contribution_id'] = $this->dataObj->getVal( 'contribution_tracking_id' );
+			$params['ts'] = $db->timestamp();
+			$params['duration'] = $this->getStopwatch(__FUNCTION__);
+			$params['gateway'] = self::getGatewayName() . $additional;
+
+			//can we check to see if the table exists? Bah, I should almost certianly do this Fer Reals. 
+
+			$db->insert( 'communication_stats', $params );
+		}
+
 	}
 
 }
