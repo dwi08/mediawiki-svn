@@ -137,6 +137,7 @@ class MediaWiki {
 		$output = $this->context->getOutput();
 		$user = $this->context->getUser();
 
+		// @fixme Move this to PageView; Implement in basic since this applies to most pages (though there may be some exceptions)
 		if ( $request->getVal( 'printable' ) === 'yes' ) {
 			$output->setPrintable();
 		}
@@ -217,30 +218,40 @@ class MediaWiki {
 			}
 		// Special pages
 		} elseif ( NS_SPECIAL == $title->getNamespace() ) {
+			// @todo @fixme SpecialPage should be a PageView and handled with the rest of the PageView code
 			$pageView = true;
 			// Actions that need to be made when we have a special pages
 			SpecialPageFactory::executePath( $title, $this->context );
 		} else {
-			// ...otherwise treat it as an article view. The article
-			// may be a redirect to another article or URL.
-			$article = $this->initializeArticle();
-			if ( is_object( $article ) ) {
+			$view = PageView::factory( $this->context );
+			if ( is_object( $view ) ) {
 				$pageView = true;
-				/**
-				 * $wgArticle is deprecated, do not use it. This will possibly be removed
-				 * entirely in 1.20 or 1.21
-				 * @deprecated since 1.18
-				 */
-				global $wgArticle;
-				$wgArticle = $article;
-
-				$this->performAction( $article );
-			} elseif ( is_string( $article ) ) {
-				$output->redirect( $article );
+				$view->render();
 			} else {
 				wfProfileOut( __METHOD__ );
-				throw new MWException( "Shouldn't happen: MediaWiki::initializeArticle() returned neither an object nor a URL" );
+				throw new MWException( "Shouldn't happen: PageView::newFromContext did not return an object" );
 			}
+			
+#			// ...otherwise treat it as an article view. The article
+#			// may be a redirect to another article or URL.
+#			$article = $this->initializeArticle();
+#			if ( is_object( $article ) ) {
+#				$pageView = true;
+#				/**
+#				 * $wgArticle is deprecated, do not use it. This will possibly be removed
+#				 * entirely in 1.20 or 1.21
+#				 * @deprecated since 1.18
+#				 */
+#				global $wgArticle;
+#				$wgArticle = $article;
+#
+#				$this->performAction( $article );
+#			} elseif ( is_string( $article ) ) {
+#				$output->redirect( $article );
+#			} else {
+#				wfProfileOut( __METHOD__ );
+#				throw new MWException( "Shouldn't happen: MediaWiki::initializeArticle() returned neither an object nor a URL" );
+#			}
 		}
 
 		if ( $pageView ) {

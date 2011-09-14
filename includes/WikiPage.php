@@ -2562,7 +2562,7 @@ class WikiPage extends Page {
 	 * @return mixed ParserOptions object or boolean false
 	 */
 	public function getParserOptions( $canonical = false ) {
-		global $wgUser, $wgLanguageCode;
+		global $wgUser, $wgLanguageCode; // @fixme Eliminate $wgUser
 
 		if ( !$this->mParserOptions || $canonical ) {
 			$user = !$canonical ? $wgUser : new User;

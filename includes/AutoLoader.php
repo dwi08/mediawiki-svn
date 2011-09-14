@@ -271,6 +271,10 @@ $wgAutoloadLocalClasses = array(
 	'UnwatchAction' => 'includes/actions/WatchAction.php',
 	'WatchAction' => 'includes/actions/WatchAction.php',
 
+	# includes/view
+	'PageView' => 'includes/view/PageView.php',
+	'ArticlePageView' => 'includes/view/ArticlePageView.php',
+
 	# includes/api
 	'ApiBase' => 'includes/api/ApiBase.php',
 	'ApiBlock' => 'includes/api/ApiBlock.php',
