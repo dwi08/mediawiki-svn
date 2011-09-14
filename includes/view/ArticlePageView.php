@@ -30,6 +30,42 @@ class ArticlePageView extends PageView {
 	}
 
 	/**
+	 * Sets $this->mRedirectUrl to a correct URL if the query parameters are incorrect
+	 *
+	 * @return int The old id for the request
+	 */
+	public function getOldIDFromRequest() {
+		$this->mRedirectUrl = false;
+
+		$request = $this->getRequest();
+
+		$oldid = $request->getVal( 'oldid' );
+
+		if ( isset( $oldid ) ) {
+			$oldid = intval( $oldid );
+			if ( $rRequest->getVal( 'direction' ) == 'next' ) {
+				$nextid = $this->getTitle()->getNextRevisionID( $oldid );
+				if ( $nextid ) {
+					$oldid = $nextid;
+				} else {
+					$this->mRedirectUrl = $this->getTitle()->getFullURL( 'redirect=no' );
+				}
+			} elseif ( $request->getVal( 'direction' ) == 'prev' ) {
+				$previd = $this->getTitle()->getPreviousRevisionID( $oldid );
+				if ( $previd ) {
+					$oldid = $previd;
+				}
+			}
+		}
+
+		if ( !$oldid ) {
+			$oldid = 0;
+		}
+
+		return $oldid;
+	}
+
+	/**
 	 * Get the robot policy to be used for the current view
 	 * @return Array the policy that should be set
 	 */
@@ -128,42 +164,6 @@ class ArticlePageView extends PageView {
 		}
 
 		return $arr;
-	}
-
-	/**
-	 * Sets $this->mRedirectUrl to a correct URL if the query parameters are incorrect
-	 *
-	 * @return int The old id for the request
-	 */
-	public function getOldIDFromRequest() {
-		$this->mRedirectUrl = false;
-
-		$request = $this->getRequest();
-
-		$oldid = $request->getVal( 'oldid' );
-
-		if ( isset( $oldid ) ) {
-			$oldid = intval( $oldid );
-			if ( $rRequest->getVal( 'direction' ) == 'next' ) {
-				$nextid = $this->getTitle()->getNextRevisionID( $oldid );
-				if ( $nextid ) {
-					$oldid = $nextid;
-				} else {
-					$this->mRedirectUrl = $this->getTitle()->getFullURL( 'redirect=no' );
-				}
-			} elseif ( $request->getVal( 'direction' ) == 'prev' ) {
-				$previd = $this->getTitle()->getPreviousRevisionID( $oldid );
-				if ( $previd ) {
-					$oldid = $previd;
-				}
-			}
-		}
-
-		if ( !$oldid ) {
-			$oldid = 0;
-		}
-
-		return $oldid;
 	}
 
 	/** PageView render and sub-areas of the rendering process **/
