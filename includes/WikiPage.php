@@ -79,17 +79,16 @@ class WikiPage extends Page {
 	/**
 	 * Constructor from a page id
 	 *
-	 * Always override this for all subclasses (until we use PHP with LSB)
-	 *
 	 * @param $id Int article ID to load
 	 *
 	 * @return WikiPage
 	 */
 	public static function newFromID( $id ) {
 		$t = Title::newFromID( $id );
-		# @todo FIXME: Doesn't inherit right
-		return $t == null ? null : new self( $t );
-		# return $t == null ? null : new static( $t ); // PHP 5.3
+		if ( $t ) {
+			return self::factory( $t );
+		}
+		return null;
 	}
 
 	/**
@@ -97,6 +96,8 @@ class WikiPage extends Page {
 	 * Classes listed here will be used instead of the default one when
 	 * (and only when) $wgActions[$action] === true. This allows subclasses
 	 * to override the default behavior.
+	 *
+	 * @todo: move this UI stuff somewhere else
 	 *
 	 * @return Array
 	 */
@@ -1293,6 +1294,8 @@ class WikiPage extends Page {
 
 	/**
 	 * Update the article's restriction field, and leave a log entry.
+	 *
+	 * @todo: seperate the business/permission stuff out from backend code
 	 *
 	 * @param $limit Array: set of restriction keys
 	 * @param $reason String
