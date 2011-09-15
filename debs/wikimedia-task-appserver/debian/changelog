@@ -1,3 +1,9 @@
+wikimedia-task-appserver (1.51) hardy-wikimedia; urgency=low
+
+  * Added scripts to create MediaWiki fingerprints. Used for checking if installations are synced.
+
+ -- Aaron Schulz <aschulz@wikimedia.org>  Thu, 15 Sep 2011 19:45:54 +0000
+
 wikimedia-task-appserver (1.50) hardy-wikimedia; urgency=medium
 
   * Removed damaging quotes around for loop array (only worked when there was one item)
