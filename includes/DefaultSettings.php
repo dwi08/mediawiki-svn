@@ -2478,7 +2478,10 @@ $wgResourceModules = array();
  * ResourceLoader::__construct() so that it cannot be unset.
  *
  * Example:
- *   $wgResourceLoaderSources['foo'] = array( 'loadScript' => 'http://example.org/w/load.php' );
+ *   $wgResourceLoaderSources['foo'] = array(
+ *       'loadScript' => 'http://example.org/w/load.php',
+ *       'apiScript' => 'http://example.org/w/api.php'
+ *   );
  */
 $wgResourceLoaderSources = array();
 
@@ -4038,6 +4041,13 @@ $wgShowHostnames = false;
  * conditions and for deprecated functions.
  */
 $wgDevelopmentWarnings = false;
+
+/**
+ * Release limitation to wfDeprecated warnings, if set to a release number
+ * development warnings will not be generated for deprecations added in releases
+ * after the limit.
+ */
+$wgDeprecationReleaseLimit = false;
 
 /** Only record profiling info for pages that took longer than this */
 $wgProfileLimit = 0.0;

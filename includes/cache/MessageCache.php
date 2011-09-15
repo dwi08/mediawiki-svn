@@ -584,6 +584,11 @@ class MessageCache {
 	function get( $key, $useDB = true, $langcode = true, $isFullKey = false ) {
 		global $wgLanguageCode, $wgContLang;
 
+		if ( is_int( $key ) ) {
+			// "Non-string key given" exception sometimes happens for numerical strings that become ints somewhere on their way here
+			$key = strval( $key );
+		}
+
 		if ( !is_string( $key ) ) {
 			throw new MWException( 'Non-string key given' );
 		}
@@ -961,4 +966,25 @@ class MessageCache {
 		return array_keys( $list );
 	}
 
+	/**
+	 * Get all message keys stored in the message cache for a given language.
+	 * If $code is the content language code, this will return all message keys
+	 * for which MediaWiki:msgkey exists. If $code is another language code, this
+	 * will ONLY return message keys for which MediaWiki:msgkey/$code exists.
+	 * @param $code string
+	 * @return array of message keys (strings)
+	 */
+	public function getAllMessageKeys( $code ) {
+		global $wgContLang;
+		$this->load( $code );
+		if ( !isset( $this->mCache[$code] ) ) {
+			// Apparently load() failed
+			return null;
+		}
+		$cache = $this->mCache[$code]; // Copy the cache
+		unset( $cache['VERSION'] ); // Remove the VERSION key
+		$cache = array_diff( $cache, array( '!NONEXISTENT' ) ); // Remove any !NONEXISTENT keys
+		// Keys may appear with a capital first letter. lcfirst them.
+		return array_map( array( $wgContLang, 'lcfirst' ), array_keys( $cache ) );
+	}
 }

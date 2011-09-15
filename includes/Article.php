@@ -24,7 +24,7 @@ class Article extends Page {
 	 */
 
 	/**
-	 * @var RequestContext
+	 * @var IContextSource
 	 */
 	protected $mContext;
 
@@ -89,10 +89,10 @@ class Article extends Page {
 	 * Create an Article object of the appropriate class for the given page.
 	 *
 	 * @param $title Title
-	 * @param $context RequestContext
+	 * @param $context IContextSource
 	 * @return Article object
 	 */
-	public static function newFromTitle( $title, RequestContext $context ) {
+	public static function newFromTitle( $title, IContextSource $context ) {
 		if ( NS_MEDIA == $title->getNamespace() ) {
 			// FIXME: where should this go?
 			$title = Title::makeTitle( NS_FILE, $title->getDBkey() );
@@ -1047,7 +1047,7 @@ class Article extends Page {
 	/**
 	 * Sets the context this Article is executed in
 	 *
-	 * @param $context RequestContext
+	 * @param $context IContextSource
 	 * @since 1.18
 	 */
 	public function setContext( $context ) {
@@ -1057,11 +1057,11 @@ class Article extends Page {
 	/**
 	 * Gets the context this Article is executed in
 	 *
-	 * @return RequestContext
+	 * @return IContextSource
 	 * @since 1.18
 	 */
 	public function getContext() {
-		if ( $this->mContext instanceof RequestContext ) {
+		if ( $this->mContext instanceof IContextSource ) {
 			return $this->mContext;
 		} else {
 			wfDebug( __METHOD__ . " called and \$mContext is null. Return RequestContext::getMain(); for sanity\n" );
