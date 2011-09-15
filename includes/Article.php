@@ -187,11 +187,13 @@ class Article extends Page {
 	}
 
 	public function getOldID() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function getOldIDFromRequest() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**
@@ -308,7 +310,8 @@ class Article extends Page {
 	 * page of the given title.
 	 */
 	public function view() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**
@@ -364,95 +367,57 @@ class Article extends Page {
 	}
 
 	public function getRobotPolicy( $action ) {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
+	/**
+	 * @see OutputPage::formatRobotPolicy
+	 * @deprecated
+	 */
 	public static function formatRobotPolicy( $policy ) {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		return OutputPage::formatRobotPolicy( $policy );
 	}
 
 	public function showRedirectedFromHeader() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function showNamespaceHeader() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function showViewFooter() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function showPatrolFooter() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function showMissingArticle() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function showDeletedRevisionHeader() {
-		throw MWException(__METHOD__ . " moved to PageView." );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
-	/**
-	 * Execute the uncached parse for action=view
-	 */
 	public function doViewParse() {
-		global $wgOut;
-
-		$oldid = $this->getOldID();
-		$parserOptions = $this->mPage->getParserOptions();
-
-		# Render printable version, use printable version cache
-		$parserOptions->setIsPrintable( $wgOut->isPrintable() );
-
-		# Don't show section-edit links on old revisions... this way lies madness.
-		if ( !$this->isCurrent() || $wgOut->isPrintable() || !$this->getTitle()->quickUserCan( 'edit' ) ) {
-			$parserOptions->setEditSection( false );
-		}
-
-		$useParserCache = $this->useParserCache( $oldid );
-		$this->outputWikiText( $this->getContent(), $useParserCache, $parserOptions );
-
-		return true;
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		return OutputPage::formatRobotPolicy( $policy );
 	}
 
-	/**
-	 * Try to fetch an expired entry from the parser cache. If it is present,
-	 * output it and return true. If it is not present, output nothing and
-	 * return false. This is used as a callback function for
-	 * PoolCounter::executeProtected().
-	 *
-	 * @return boolean
-	 */
 	public function tryDirtyCache() {
-		global $wgOut;
-		$parserCache = ParserCache::singleton();
-		$options = $this->mPage->getParserOptions();
-
-		if ( $wgOut->isPrintable() ) {
-			$options->setIsPrintable( true );
-			$options->setEditSection( false );
-		}
-
-		$output = $parserCache->getDirty( $this, $options );
-
-		if ( $output ) {
-			wfDebug( __METHOD__ . ": sending dirty output\n" );
-			wfDebugLog( 'dirty', "dirty output " . $parserCache->getKey( $this, $options ) . "\n" );
-			$wgOut->setSquidMaxage( 0 );
-			$this->mParserOutput = $output;
-			$wgOut->addParserOutput( $output );
-			$wgOut->addHTML( "<!-- parser cache is expired, sending anyway due to pool overload-->\n" );
-
-			return true;
-		} else {
-			wfDebugLog( 'dirty', "dirty missing\n" );
-			wfDebug( __METHOD__ . ": no dirty cache\n" );
-
-			return false;
-		}
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		return OutputPage::formatRobotPolicy( $policy );
 	}
 
 	/**
@@ -948,149 +913,9 @@ class Article extends Page {
 		}
 	}
 
-	/**
-	 * Generate the navigation links when browsing through an article revisions
-	 * It shows the information as:
-	 *   Revision as of \<date\>; view current revision
-	 *   \<- Previous version | Next Version -\>
-	 *
-	 * @param $oldid String: revision ID of this article revision
-	 */
 	public function setOldSubtitle( $oldid = 0 ) {
-		global $wgLang, $wgOut, $wgUser, $wgRequest;
-
-		if ( !wfRunHooks( 'DisplayOldSubtitle', array( &$this, &$oldid ) ) ) {
-			return;
-		}
-
-		$unhide = $wgRequest->getInt( 'unhide' ) == 1;
-
-		# Cascade unhide param in links for easy deletion browsing
-		$extraParams = array();
-		if ( $wgRequest->getVal( 'unhide' ) ) {
-			$extraParams['unhide'] = 1;
-		}
-
-		$revision = Revision::newFromId( $oldid );
-		$timestamp = $revision->getTimestamp();
-
-		$current = ( $oldid == $this->mPage->getLatest() );
-		$td = $wgLang->timeanddate( $timestamp, true );
-		$tddate = $wgLang->date( $timestamp, true );
-		$tdtime = $wgLang->time( $timestamp, true );
-
-		$lnk = $current
-			? wfMsgHtml( 'currentrevisionlink' )
-			: Linker::link(
-				$this->getTitle(),
-				wfMsgHtml( 'currentrevisionlink' ),
-				array(),
-				$extraParams,
-				array( 'known', 'noclasses' )
-			);
-		$curdiff = $current
-			? wfMsgHtml( 'diff' )
-			: Linker::link(
-				$this->getTitle(),
-				wfMsgHtml( 'diff' ),
-				array(),
-				array(
-					'diff' => 'cur',
-					'oldid' => $oldid
-				) + $extraParams,
-				array( 'known', 'noclasses' )
-			);
-		$prev = $this->getTitle()->getPreviousRevisionID( $oldid ) ;
-		$prevlink = $prev
-			? Linker::link(
-				$this->getTitle(),
-				wfMsgHtml( 'previousrevision' ),
-				array(),
-				array(
-					'direction' => 'prev',
-					'oldid' => $oldid
-				) + $extraParams,
-				array( 'known', 'noclasses' )
-			)
-			: wfMsgHtml( 'previousrevision' );
-		$prevdiff = $prev
-			? Linker::link(
-				$this->getTitle(),
-				wfMsgHtml( 'diff' ),
-				array(),
-				array(
-					'diff' => 'prev',
-					'oldid' => $oldid
-				) + $extraParams,
-				array( 'known', 'noclasses' )
-			)
-			: wfMsgHtml( 'diff' );
-		$nextlink = $current
-			? wfMsgHtml( 'nextrevision' )
-			: Linker::link(
-				$this->getTitle(),
-				wfMsgHtml( 'nextrevision' ),
-				array(),
-				array(
-					'direction' => 'next',
-					'oldid' => $oldid
-				) + $extraParams,
-				array( 'known', 'noclasses' )
-			);
-		$nextdiff = $current
-			? wfMsgHtml( 'diff' )
-			: Linker::link(
-				$this->getTitle(),
-				wfMsgHtml( 'diff' ),
-				array(),
-				array(
-					'diff' => 'next',
-					'oldid' => $oldid
-				) + $extraParams,
-				array( 'known', 'noclasses' )
-			);
-
-		$cdel = '';
-
-		// User can delete revisions or view deleted revisions...
-		$canHide = $wgUser->isAllowed( 'deleterevision' );
-		if ( $canHide || ( $revision->getVisibility() && $wgUser->isAllowed( 'deletedhistory' ) ) ) {
-			if ( !$revision->userCan( Revision::DELETED_RESTRICTED ) ) {
-				$cdel = Linker::revDeleteLinkDisabled( $canHide ); // rev was hidden from Sysops
-			} else {
-				$query = array(
-					'type'   => 'revision',
-					'target' => $this->getTitle()->getPrefixedDbkey(),
-					'ids'    => $oldid
-				);
-				$cdel = Linker::revDeleteLink( $query, $revision->isDeleted( File::DELETED_RESTRICTED ), $canHide );
-			}
-			$cdel .= ' ';
-		}
-
-		# Show user links if allowed to see them. If hidden, then show them only if requested...
-		$userlinks = Linker::revUserTools( $revision, !$unhide );
-
-		$infomsg = $current && !wfMessage( 'revision-info-current' )->isDisabled()
-			? 'revision-info-current'
-			: 'revision-info';
-
-		$r = "\n\t\t\t\t<div id=\"mw-{$infomsg}\">" .
-			wfMsgExt(
-				$infomsg,
-				array( 'parseinline', 'replaceafter' ),
-				$td,
-				$userlinks,
-				$revision->getID(),
-				$tddate,
-				$tdtime,
-				$revision->getUser()
-			) .
-			"</div>\n" .
-			"\n\t\t\t\t<div id=\"mw-revision-nav\">" . $cdel . wfMsgExt( 'revision-nav', array( 'escapenoentities', 'parsemag', 'replaceafter' ),
-			$prevdiff, $prevlink, $lnk, $curdiff, $nextlink, $nextdiff ) . "</div>\n\t\t\t";
-
-		$wgOut->setSubtitle( $r );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		return OutputPage::formatRobotPolicy( $policy );
 	}
 
 	/* Caching functions */
@@ -1148,23 +973,9 @@ class Article extends Page {
 
 	/**#@-*/
 
-	/**
-	 * Add the primary page-view wikitext to the output buffer
-	 * Saves the text into the parser cache if possible.
-	 * Updates templatelinks if it is out of date.
-	 *
-	 * @param $text String
-	 * @param $cache Boolean
-	 * @param $parserOptions mixed ParserOptions object, or boolean false
-	 */
 	public function outputWikiText( $text, $cache = true, $parserOptions = false ) {
-		global $wgOut;
-
-		$this->mParserOutput = $this->getOutputFromWikitext( $text, $cache, $parserOptions );
-
-		$this->doCascadeProtectionUpdates( $this->mParserOutput );
-
-		$wgOut->addParserOutput( $this->mParserOutput );
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		return OutputPage::formatRobotPolicy( $policy );
 	}
 
 	/**
@@ -1220,51 +1031,9 @@ class Article extends Page {
 		return $output;
 	}
 
-	/**
-	 * This does all the heavy lifting for outputWikitext, except it returns the parser
-	 * output instead of sending it straight to $wgOut. Makes things nice and simple for,
-	 * say, embedding thread pages within a discussion system (LiquidThreads)
-	 *
-	 * @param $text string
-	 * @param $cache boolean
-	 * @param $parserOptions parsing options, defaults to false
-	 * @return ParserOutput
-	 */
 	public function getOutputFromWikitext( $text, $cache = true, $parserOptions = false ) {
-		global $wgParser, $wgEnableParserCache, $wgUseFileCache;
-
-		if ( !$parserOptions ) {
-			$parserOptions = $this->mPage->getParserOptions();
-		}
-
-		$time = - wfTime();
-		$this->mParserOutput = $wgParser->parse( $text, $this->getTitle(),
-			$parserOptions, true, true, $this->getRevIdFetched() );
-		$time += wfTime();
-
-		# Timing hack
-		if ( $time > 3 ) {
-			wfDebugLog( 'slow-parse', sprintf( "%-5.2f %s", $time,
-				$this->getTitle()->getPrefixedDBkey() ) );
-		}
-
-		if ( $wgEnableParserCache && $cache && $this->mParserOutput->isCacheable() ) {
-			$parserCache = ParserCache::singleton();
-			$parserCache->save( $this->mParserOutput, $this, $parserOptions );
-		}
-
-		// Make sure file cache is not used on uncacheable content.
-		// Output that has magic words in it can still use the parser cache
-		// (if enabled), though it will generally expire sooner.
-		if ( !$this->mParserOutput->isCacheable() || $this->mParserOutput->containsOldMagic() ) {
-			$wgUseFileCache = false;
-		}
-
-		if ( $this->isCurrent() ) {
-			$this->mPage->doCascadeProtectionUpdates( $this->mParserOutput );
-		}
-
-		return $this->mParserOutput;
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		return OutputPage::formatRobotPolicy( $policy );
 	}
 
 	/**
@@ -1388,58 +1157,3 @@ class Article extends Page {
 	// ******
 }
 
-class PoolWorkArticleView extends PoolCounterWork {
-
-	/**
-	 * @var Article
-	 */
-	private $mArticle;
-
-	function __construct( $article, $key, $useParserCache, $parserOptions ) {
-		parent::__construct( 'ArticleView', $key );
-		$this->mArticle = $article;
-		$this->cacheable = $useParserCache;
-		$this->parserOptions = $parserOptions;
-	}
-
-	function doWork() {
-		return $this->mArticle->doViewParse();
-	}
-
-	function getCachedWork() {
-		global $wgOut;
-
-		$parserCache = ParserCache::singleton();
-		$this->mArticle->mParserOutput = $parserCache->get( $this->mArticle, $this->parserOptions );
-
-		if ( $this->mArticle->mParserOutput !== false ) {
-			wfDebug( __METHOD__ . ": showing contents parsed by someone else\n" );
-			$wgOut->addParserOutput( $this->mArticle->mParserOutput );
-			# Ensure that UI elements requiring revision ID have
-			# the correct version information.
-			$wgOut->setRevisionId( $this->mArticle->getLatest() );
-			return true;
-		}
-		return false;
-	}
-
-	function fallback() {
-		return $this->mArticle->tryDirtyCache();
-	}
-
-	/**
-	 * @param $status Status
-	 */
-	function error( $status ) {
-		global $wgOut;
-
-		$wgOut->clearHTML(); // for release() errors
-		$wgOut->enableClientCache( false );
-		$wgOut->setRobotPolicy( 'noindex,nofollow' );
-
-		$errortext = $status->getWikiText( false, 'view-pool-error' );
-		$wgOut->addWikiText( '<div class="errorbox">' . $errortext . '</div>' );
-
-		return false;
-	}
-}

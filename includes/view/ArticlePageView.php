@@ -2,39 +2,24 @@
 
 class ArticlePageView extends PageView {
 
-	private $mOldId, $mRedirectedFrom, $mRedirectUrl, $mPage, $mParserOutput;
+	protected $mRedirectedFrom, $mRedirectUrl, $mParserOutput;
+	private $mOldId, $mRevision, $mPage;
 
 	function getTabs() {
 	}
 
 	/** **/
 
-	public function getPage() {
-		if ( is_null( $this->mPage ) ) {
-			$this->mPage = WikiPage::factory( $this->getTitle() );
-		}
-		return $this->mPage;
-	}
-
 	/**
-	 * @return int The oldid of the article that is to be shown, 0 for the
-	 *             current revision
+	 * Prepare the oldid, make any possible title changes based on it, and set the
+	 * redirect url if needed.
 	 */
-	public function getOldID() {
-		// @fixme Merge getOldID and getOldIDFromRequest together for PageView
-		if ( is_null( $this->mOldId ) ) {
-			$this->mOldId = $this->getOldIDFromRequest();
+	protected function prepareTitleAndRevision() {
+		if ( !is_null($this->mOldId) && !is_null($this->mRedirectUrl) ) {
+			// If oldid, redirecturl, and page are ready exit
+			return;
 		}
-
-		return $this->mOldId;
-	}
-
-	/**
-	 * Sets $this->mRedirectUrl to a correct URL if the query parameters are incorrect
-	 *
-	 * @return int The old id for the request
-	 */
-	public function getOldIDFromRequest() {
+		
 		$this->mRedirectUrl = false;
 
 		$request = $this->getRequest();
@@ -43,7 +28,7 @@ class ArticlePageView extends PageView {
 
 		if ( isset( $oldid ) ) {
 			$oldid = intval( $oldid );
-			if ( $rRequest->getVal( 'direction' ) == 'next' ) {
+			if ( $request->getVal( 'direction' ) == 'next' ) {
 				$nextid = $this->getTitle()->getNextRevisionID( $oldid );
 				if ( $nextid ) {
 					$oldid = $nextid;
@@ -62,7 +47,99 @@ class ArticlePageView extends PageView {
 			$oldid = 0;
 		}
 
-		return $oldid;
+		$this->mOldId = $oldid;
+
+		if ( $this->mOldId ) {
+			// Preload the revision on an &oldid= to see if we need to use a different title
+			// We may not need the Revision instance for parser cached current pages so
+			// We don't load the revision yet for those
+			# Fixme WikiPage actually holds latest rev information perhaps we shouldn't preload the revision instance
+			$rev = Revision::newFromId( $this->mOldId );
+			if ( $rev ) {
+				$this->mRevision = $rev;
+				if ( $this->getTitle()->getArticleID() != $rev->getPage() ) {
+					$this->setTitle( $rev->getTitle() );
+				}
+			} else {
+				// Make note that there was no revision found so we don't double-query for a nonexistant rev
+				$this->mRevision = false;
+			}
+		}
+
+	}
+
+	/**
+	 * Returns a WikiPage instance that can be used for this PageView
+	 * @return WikiPage
+	 */ 
+	public function getPage() {
+		if ( is_null( $this->mPage ) ) {
+			$this->prepareTitleAndRevision();
+			$this->mPage = WikiPage::factory( $this->getTitle() );
+		}
+		return $this->mPage;
+	}
+
+	/**
+	 * Sets $this->mRedirectUrl to a correct URL if the query parameters are incorrect
+	 * @return int The oldid of the article that is to be shown, 0 for the
+	 *             current revision
+	 */
+	public function getOldID() {
+		if ( is_null( $this->mOldId ) ) {
+			$this->prepareTitleAndRevision();
+		}
+		return $this->mOldId;
+	}
+
+	/**
+	 * Returns true if we are looking at the latest revision for a page
+	 * Returns true if $oldid is 0 or oldid refers to the latest revision
+	 * Note that this returns true for nonexistant pages unlike Article::isCurrent did
+	 * @return bool
+	 */
+	public function isLatest() {
+		$oldid = $this->getOldID();
+		return !$oldid || !$this->mRevision || $this->mRevision->isCurrent();
+	}
+
+	/**
+	 * Returns true if the currently-referenced revision is the current edit
+	 * to this page (and it exists).
+	 * @return bool
+	 */
+	public function isCurrent() {
+		# If no oldid, this is the current version.
+		if ( $this->getOldID() == 0 ) {
+			return true;
+		}
+
+		return $this->getPage()->exists() && $this->getPage()->getLatest() == $this->getOldID();
+	}
+
+	/**
+	 * Returns a revision instance for the oldid or current page we are displaying
+	 * @return Revision
+	 * @fixme Article::fetchContent had a lot of wfDebug calls we should replicate
+	 */
+	public function getRevision() {
+		# getOldID calls prepareTitleAndRevision which may preload mRevision so
+		# we call this here instead of when we try to create a rev
+		$oldid = $this->getOldID();
+		if ( is_null($this->mRevision) ) {
+			if ( !$oldid || $oldid == $this->getPage()->getLatest() ) {
+				# WikiPage caches a revision on it's own, query from there for
+				# the latest revision to avoid double loading from the database
+				$this->mRevision = $this->getPage()->getRevision();
+			} else {
+				$this->mRevision = Revision::newFromID( $oldid );
+			}
+			if ( is_null($this->mRevision) ) {
+				# If revision was not loaded set mRevision to false to avoid double-querying the database
+				$this->mRevision = false;
+			}
+		}
+		return $this->mRevision;
 	}
 
 	/**
@@ -108,13 +185,13 @@ class ArticlePageView extends PageView {
 		}
 
 		# Otherwise, construct the policy based on the various config variables.
-		$policy = self::formatRobotPolicy( $wgDefaultRobotPolicy );
+		$policy = OutputPage::formatRobotPolicy( $wgDefaultRobotPolicy );
 
 		if ( isset( $wgNamespaceRobotPolicies[$ns] ) ) {
 			# Honour customised robot policies for this namespace
 			$policy = array_merge(
 				$policy,
-				self::formatRobotPolicy( $wgNamespaceRobotPolicies[$ns] )
+				OutputPage::formatRobotPolicy( $wgNamespaceRobotPolicies[$ns] )
 			);
 		}
 		if ( $this->getTitle()->canUseNoindex() && is_object( $this->mParserOutput ) && $this->mParserOutput->getIndexPolicy() ) {
@@ -130,40 +207,11 @@ class ArticlePageView extends PageView {
 			# (bug 14900) site config can override user-defined __INDEX__ or __NOINDEX__
 			$policy = array_merge(
 				$policy,
-				self::formatRobotPolicy( $wgArticleRobotPolicies[$this->getTitle()->getPrefixedText()] )
+				OutputPage::formatRobotPolicy( $wgArticleRobotPolicies[$this->getTitle()->getPrefixedText()] )
 			);
 		}
 
 		return $policy;
-	}
-
-	/**
-	 * Converts a String robot policy into an associative array, to allow
-	 * merging of several policies using array_merge().
-	 * @param $policy Mixed, returns empty array on null/false/'', transparent
-	 *            to already-converted arrays, converts String.
-	 * @return Array: 'index' => <indexpolicy>, 'follow' => <followpolicy>
-	 */
-	public static function formatRobotPolicy( $policy ) {
-		if ( is_array( $policy ) ) {
-			return $policy;
-		} elseif ( !$policy ) {
-			return array();
-		}
-
-		$policy = explode( ',', $policy );
-		$policy = array_map( 'trim', $policy );
-
-		$arr = array();
-		foreach ( $policy as $var ) {
-			if ( in_array( $var, array( 'index', 'noindex' ) ) ) {
-				$arr['index'] = $var;
-			} elseif ( in_array( $var, array( 'follow', 'nofollow' ) ) ) {
-				$arr['follow'] = $var;
-			}
-		}
-
-		return $arr;
 	}
 
 	/** PageView render and sub-areas of the rendering process **/
@@ -178,8 +226,8 @@ class ArticlePageView extends PageView {
 		$out = $this->getOutput();
 		$user = $this->getUser();
 
-		# Get variables from query string
-		$oldid = $this->getOldID();
+		// Prepare some info we might need, this will set mRedirectUrl if needed
+		$this->prepareTitleAndRevision();
 
 		# getOldID may want us to redirect somewhere else
 		if ( $this->mRedirectUrl ) {
@@ -190,12 +238,22 @@ class ArticlePageView extends PageView {
 			return;
 		}
 
+		# Ensure that the user has the rights to read this page
+		if ( !$this->getTitle()->userCanRead() ) {
+			$out->loginToUse();
+			$out->output();
+			$out->disable();
+			wfProfileOut( __METHOD__ );
+			return;
+		}
+
 		# Set page title (may be overridden by DISPLAYTITLE)
 		$out->setPageTitle( $this->getTitle()->getPrefixedText() );
 
 		# If we got diff in the query, we want to see a diff page instead of the article.
 		if ( $request->getCheck( 'diff' ) ) {
 			wfDebug( __METHOD__ . ": showing diff page\n" );
+			// @fixme DifferenceEngine shouldn't be rendering anything other than the diff, we should handle diffonly ourselves
 			$this->showDiffPage();
 			wfProfileOut( __METHOD__ );
 
@@ -218,7 +276,12 @@ class ArticlePageView extends PageView {
 			$parserOptions->setEditSection( false );
 		}
 
+		# Get variables from query string
+		$oldid = $this->getOldID();
+
 		# Try client and file cache
+		# @fixme: We can't return file cached content for a permalink to the current
+		#         revision, however we CAN return a 304 for the current revision's permalink
 		if ( $oldid === 0 && $this->getPage()->checkTouched() ) {
 			if ( $wgUseETag ) {
 				$out->setETag( $parserCache->getETag( $this->getPage(), $parserOptions ) );
@@ -247,7 +310,7 @@ class ArticlePageView extends PageView {
 		}
 
 		# Should the parser cache be used?
-		$useParserCache = $this->getPage()->isParserCacheUsed( $user, $oldid );
+		$useParserCache = $this->getPage()->isParserCacheUsed( $user ) && $this->isCurrent();
 		wfDebug( __METHOD__ . ' using parser cache: ' . ( $useParserCache ? 'yes' : 'no' ) . "\n" );
 		if ( $user->getStubThreshold() ) {
 			wfIncrStats( 'pcache_miss_stub' );
@@ -256,122 +319,109 @@ class ArticlePageView extends PageView {
 		$wasRedirected = $this->showRedirectedFromHeader();
 		$this->showNamespaceHeader();
 
-		# Iterate through the possible ways of constructing the output text.
-		# Keep going until $outputDone is set, or we run out of things to do.
-		$pass = 0;
 		$outputDone = false;
 		$this->mParserOutput = false;
 
-		while ( !$outputDone && ++$pass ) {
-			switch( $pass ) {
-				case 1:
-					wfRunHooks( 'ArticleViewHeader', array( &$this, &$outputDone, &$useParserCache ) ); // @fixme
-					break;
-				case 2:
-					# Try the parser cache
-					if ( $useParserCache ) {
-						$this->mParserOutput = $parserCache->get( $this->getPage(), $parserOptions );
+		wfRunHooks( 'ArticleViewHeader', array( &$this, &$outputDone, &$useParserCache ) ); // @fixme
 
-						if ( $this->mParserOutput !== false ) {
-							wfDebug( __METHOD__ . ": showing parser cache contents\n" );
-							$out->addParserOutput( $this->mParserOutput );
-							# Ensure that UI elements requiring revision ID have
-							# the correct version information.
-							$out->setRevisionId( $this->getPage()->getLatest() );
-							$outputDone = true;
-							# Preload timestamp to avoid a DB hit
-							if ( isset( $this->mParserOutput->mTimestamp ) ) {
-								$this->getPage()->setTimestamp( $this->mParserOutput->mTimestamp );
-							}
-						}
-					}
-					break;
-				case 3:
-					$text = $this->getContent();
-					if ( $text === false || $this->getPage()->getID() == 0 ) {
-						wfDebug( __METHOD__ . ": showing missing article\n" );
-						$this->showMissingArticle();
-						wfProfileOut( __METHOD__ );
-						return;
-					}
+		# Try the parser cache for page output
+		if ( !$outputDone && $useParserCache ) {
+			$this->mParserOutput = $parserCache->get( $this->getPage(), $parserOptions );
 
-					# Another whitelist check in case oldid is altering the title
-					if ( !$this->getTitle()->userCanRead() ) {
-						wfDebug( __METHOD__ . ": denied on secondary read check\n" );
-						$out->loginToUse();
-						$out->output();
-						$out->disable();
-						wfProfileOut( __METHOD__ );
-						return;
-					}
+			if ( $this->mParserOutput !== false ) {
+				wfDebug( __METHOD__ . ": showing parser cache contents\n" );
+				$out->addParserOutput( $this->mParserOutput );
+				# Ensure that UI elements requiring revision ID have
+				# the correct version information.
+				$out->setRevisionId( $this->getPage()->getLatest() );
+				$outputDone = true;
+				# Preload timestamp to avoid a DB hit
+				if ( isset( $this->mParserOutput->mTimestamp ) ) {
+					$this->getPage()->setTimestamp( $this->mParserOutput->mTimestamp );
+				}
+			}
+		}
 
-					# Are we looking at an old revision
-					if ( $oldid && !is_null( $this->mRevision ) ) {
-						$this->setOldSubtitle( $oldid );
+		# At this point if we haven't found anything in any cache see if the page
+		# even exists, if not show a missing article page
+		if ( !$outputDone && $this->getPage()->getID() == 0 ) {
+			wfDebug( __METHOD__ . ": showing missing article\n" );
+			$this->showMissingArticle();
+			wfProfileOut( __METHOD__ );
+			return;
+		}
 
-						if ( !$this->showDeletedRevisionHeader() ) {
-							wfDebug( __METHOD__ . ": cannot view deleted revision\n" );
-							wfProfileOut( __METHOD__ );
-							return;
-						}
+		# Fetch the content and see if there is any specialty page handling to do instead of parsing
+		if ( !$outputDone ) {
+			$rev = $this->getRevision();
+			
+			if ( $rev ) {
+				$text = $rev->getText( Revision::FOR_THIS_USER ); // Loads if user is allowed
+			} else {
+				$text = false;
+			}
+			
+			wfRunHooks( 'ArticleAfterFetchContent', array( &$this, &$text ) ); // @fixme
+			
+			# Check if the text is false, this can happen due to slow slaves (bad oldids too?)
+			if ( $text === false ) {
+				wfDebug( __METHOD__ . ": showing missing article due to false return from revision text\n" );
+				$this->showMissingArticle();
+				wfProfileOut( __METHOD__ );
+				return;
+			}
 
-						# If this "old" version is the current, then try the parser cache...
-						if ( $oldid === $this->getPage()->getLatest() && $this->getPage()->isParserCacheUsed( $user, false ) ) {
-							$this->mParserOutput = $parserCache->get( $this->getPage(), $parserOptions );
-							if ( $this->mParserOutput ) {
-								wfDebug( __METHOD__ . ": showing parser cache for current rev permalink\n" );
-								$out->addParserOutput( $this->mParserOutput );
-								$out->setRevisionId( $this->getPage()->getLatest() );
-								$outputDone = true;
-								break;
-							}
-						}
-					}
+			# Ensure that UI elements requiring revision ID have
+			# the correct version information.
+			$out->setRevisionId( $rev->getId() );
 
-					# Ensure that UI elements requiring revision ID have
-					# the correct version information.
-					$out->setRevisionId( $this->getRevIdFetched() );
+			# Pages containing custom CSS or JavaScript get special treatment
+			if ( $this->getTitle()->isCssOrJsPage() || $this->getTitle()->isCssJsSubpage() ) {
+				wfDebug( __METHOD__ . ": showing CSS/JS source\n" );
+				$this->showCssOrJsPage();
+				$outputDone = true;
+			} elseif( !wfRunHooks( 'ArticleViewCustom', array( $text, $this->getTitle(), $out ) ) ) { // @fixme
+				# Allow extensions do their own custom view for certain pages
+				$outputDone = true;
+			} else {
+				$rt = Title::newFromRedirectArray( $text );
+				if ( $rt ) {
+					wfDebug( __METHOD__ . ": showing redirect=no page\n" );
+					# Viewing a redirect page (e.g. with parameter redirect=no)
+					# Don't append the subtitle if this was an old revision
+					$out->addHTML( $this->viewRedirect( $rt, !$wasRedirected && $this->isCurrent() ) );
+					# Parse just to get categories, displaytitle, etc.
+					$this->mParserOutput = $wgParser->parse( $text, $this->getTitle(), $parserOptions );
+					$out->addParserOutputNoText( $this->mParserOutput );
+					$outputDone = true;
+				}
+			}
+		}
 
-					# Pages containing custom CSS or JavaScript get special treatment
-					if ( $this->getTitle()->isCssOrJsPage() || $this->getTitle()->isCssJsSubpage() ) {
-						wfDebug( __METHOD__ . ": showing CSS/JS source\n" );
-						$this->showCssOrJsPage();
-						$outputDone = true;
-					} elseif( !wfRunHooks( 'ArticleViewCustom', array( $this->mContent, $this->getTitle(), $out ) ) ) { // @fixme
-						# Allow extensions do their own custom view for certain pages
-						$outputDone = true;
-					} else {
-						$rt = Title::newFromRedirectArray( $text );
-						if ( $rt ) {
-							wfDebug( __METHOD__ . ": showing redirect=no page\n" );
-							# Viewing a redirect page (e.g. with parameter redirect=no)
-							# Don't append the subtitle if this was an old revision
-							$out->addHTML( $this->viewRedirect( $rt, !$wasRedirected && $this->isCurrent() ) );
-							# Parse just to get categories, displaytitle, etc.
-							$this->mParserOutput = $wgParser->parse( $text, $this->getTitle(), $parserOptions );
-							$out->addParserOutputNoText( $this->mParserOutput );
-							$outputDone = true;
-						}
-					}
-					break;
-				case 4:
-					# Run the parse, protected by a pool counter
-					wfDebug( __METHOD__ . ": doing uncached parse\n" );
+		# Run the parse, protected by a pool counter
+		if ( !$outputDone ) {
+			wfDebug( __METHOD__ . ": doing uncached parse\n" );
 
-					$key = $parserCache->getKey( $this->getPage(), $parserOptions );
-					$poolArticleView = new PoolWorkArticleView( $this, $key, $useParserCache, $parserOptions ); // @fixme
+			$key = $parserCache->getKey( $this->getPage(), $parserOptions );
+			$poolArticleView = new PoolWorkArticleView( $this, $key, $useParserCache, $parserOptions, $text );
 
-					if ( !$poolArticleView->execute() ) {
-						# Connection or timeout error
-						wfProfileOut( __METHOD__ );
-						return;
-					} else {
-						$outputDone = true;
-					}
-					break;
-				# Should be unreachable, but just in case...
-				default:
-					break 2;
+			if ( !$poolArticleView->execute() ) {
+				# Connection or timeout error
+				wfProfileOut( __METHOD__ );
+				return;
+			} else {
+				$outputDone = true;
+			}
+		}
+
+		# Are we looking at an old revision
+		if ( $oldid ) {
+			$this->setOldSubtitle();
+
+			if ( !$this->showDeletedRevisionHeader() ) {
+				wfDebug( __METHOD__ . ": cannot view deleted revision\n" );
+				wfProfileOut( __METHOD__ );
+				return;
 			}
 		}
 
@@ -441,6 +491,7 @@ class ArticlePageView extends PageView {
 					$out->addInlineScript( "redirectToFragment(\"$fragment\");" );
 				}
 
+				// @fixme Always set a canonical that takes $wgCanonicalServer into account
 				// Add a <link rel="canonical"> tag
 				$out->addLink( array( 'rel' => 'canonical',
 					'href' => $this->getTitle()->getLocalURL() )
@@ -620,13 +671,13 @@ class ArticlePageView extends PageView {
 	public function showDeletedRevisionHeader() {
 		$out = $this->getOutput();
 
-		if ( !$this->mRevision->isDeleted( Revision::DELETED_TEXT ) ) {
+		if ( !$this->getRevision()->isDeleted( Revision::DELETED_TEXT ) ) {
 			// Not deleted
 			return true;
 		}
 
 		// If the user is not allowed to see it...
-		if ( !$this->mRevision->userCan( Revision::DELETED_TEXT ) ) {
+		if ( !$this->getRevision()->userCan( Revision::DELETED_TEXT ) ) {
 			$out->wrapWikiMsg( "<div class='mw-warning plainlinks'>\n$1\n</div>\n",
 				'rev-deleted-text-permission' );
 
@@ -636,7 +687,7 @@ class ArticlePageView extends PageView {
 			# Give explanation and add a link to view the revision...
 			$oldid = intval( $this->getOldID() );
 			$link = $this->getTitle()->getFullUrl( "oldid={$oldid}&unhide=1" );
-			$msg = $this->mRevision->isDeleted( Revision::DELETED_RESTRICTED ) ?
+			$msg = $this->getRevision()->isDeleted( Revision::DELETED_RESTRICTED ) ?
 				'rev-suppressed-text-unhide' : 'rev-deleted-text-unhide';
 			$out->wrapWikiMsg( "<div class='mw-warning plainlinks'>\n$1\n</div>\n",
 				array( $msg, $link ) );
@@ -644,7 +695,7 @@ class ArticlePageView extends PageView {
 			return false;
 		// We are allowed to see...
 		} else {
-			$msg = $this->mRevision->isDeleted( Revision::DELETED_RESTRICTED ) ?
+			$msg = $this->getRevision()->isDeleted( Revision::DELETED_RESTRICTED ) ?
 				'rev-suppressed-text-view' : 'rev-deleted-text-view';
 			$out->wrapWikiMsg( "<div class='mw-warning plainlinks'>\n$1\n</div>\n", $msg );
 
@@ -652,5 +703,327 @@ class ArticlePageView extends PageView {
 		}
 	}
 
+	/**
+	 * Generate the navigation links when browsing through an article revisions
+	 * It shows the information as:
+	 *   Revision as of \<date\>; view current revision
+	 *   \<- Previous version | Next Version -\>
+	 */
+	public function setOldSubtitle() {
+		if ( !wfRunHooks( 'DisplayOldSubtitle', array( &$this, &$oldid ) ) ) {
+			return;
+		}
+
+		$request = $this->getRequest();
+		$lang = $this->getLang();
+
+		$unhide = $request->getInt( 'unhide' ) == 1;
+
+		# Cascade unhide param in links for easy deletion browsing
+		$extraParams = array();
+		if ( $request->getVal( 'unhide' ) ) {
+			$extraParams['unhide'] = 1;
+		}
+
+		$revision = $this->getRevision();
+		$timestamp = $revision->getTimestamp();
+
+		$current = $this->isCurrent();
+		$td = $lang->timeanddate( $timestamp, true );
+		$tddate = $lang->date( $timestamp, true );
+		$tdtime = $lang->time( $timestamp, true );
+
+		$lnk = $current
+			? wfMsgHtml( 'currentrevisionlink' )
+			: Linker::link(
+				$this->getTitle(),
+				wfMsgHtml( 'currentrevisionlink' ),
+				array(),
+				$extraParams,
+				array( 'known', 'noclasses' )
+			);
+		$curdiff = $current
+			? wfMsgHtml( 'diff' )
+			: Linker::link(
+				$this->getTitle(),
+				wfMsgHtml( 'diff' ),
+				array(),
+				array(
+					'diff' => 'cur',
+					'oldid' => $this->getOldID()
+				) + $extraParams,
+				array( 'known', 'noclasses' )
+			);
+		$prev = $this->getTitle()->getPreviousRevisionID( $this->getOldID() ) ;
+		$prevlink = $prev
+			? Linker::link(
+				$this->getTitle(),
+				wfMsgHtml( 'previousrevision' ),
+				array(),
+				array(
+					'direction' => 'prev',
+					'oldid' => $this->getOldID()
+				) + $extraParams,
+				array( 'known', 'noclasses' )
+			)
+			: wfMsgHtml( 'previousrevision' );
+		$prevdiff = $prev
+			? Linker::link(
+				$this->getTitle(),
+				wfMsgHtml( 'diff' ),
+				array(),
+				array(
+					'diff' => 'prev',
+					'oldid' => $this->getOldID()
+				) + $extraParams,
+				array( 'known', 'noclasses' )
+			)
+			: wfMsgHtml( 'diff' );
+		$nextlink = $current
+			? wfMsgHtml( 'nextrevision' )
+			: Linker::link(
+				$this->getTitle(),
+				wfMsgHtml( 'nextrevision' ),
+				array(),
+				array(
+					'direction' => 'next',
+					'oldid' => $this->getOldID()
+				) + $extraParams,
+				array( 'known', 'noclasses' )
+			);
+		$nextdiff = $current
+			? wfMsgHtml( 'diff' )
+			: Linker::link(
+				$this->getTitle(),
+				wfMsgHtml( 'diff' ),
+				array(),
+				array(
+					'diff' => 'next',
+					'oldid' => $this->getOldID()
+				) + $extraParams,
+				array( 'known', 'noclasses' )
+			);
+
+		$cdel = '';
+
+		// User can delete revisions or view deleted revisions...
+		$canHide = $this->getUser()->isAllowed( 'deleterevision' );
+		if ( $canHide || ( $revision->getVisibility() && $this->getUser()->isAllowed( 'deletedhistory' ) ) ) {
+			if ( !$revision->userCan( Revision::DELETED_RESTRICTED ) ) {
+				$cdel = Linker::revDeleteLinkDisabled( $canHide ); // rev was hidden from Sysops
+			} else {
+				$query = array(
+					'type'   => 'revision',
+					'target' => $this->getTitle()->getPrefixedDbkey(),
+					'ids'    => $this->getOldID()
+				);
+				$cdel = Linker::revDeleteLink( $query, $revision->isDeleted( File::DELETED_RESTRICTED ), $canHide );
+			}
+			$cdel .= ' ';
+		}
+
+		# Show user links if allowed to see them. If hidden, then show them only if requested...
+		$userlinks = Linker::revUserTools( $revision, !$unhide );
+
+		$infomsg = $current && !wfMessage( 'revision-info-current' )->isDisabled()
+			? 'revision-info-current'
+			: 'revision-info';
+
+		$r = "\n\t\t\t\t<div id=\"mw-{$infomsg}\">" .
+			wfMsgExt(
+				$infomsg,
+				array( 'parseinline', 'replaceafter' ),
+				$td,
+				$userlinks,
+				$revision->getID(),
+				$tddate,
+				$tdtime,
+				$revision->getUser()
+			) .
+			"</div>\n" .
+			"\n\t\t\t\t<div id=\"mw-revision-nav\">" . $cdel . wfMsgExt( 'revision-nav', array( 'escapenoentities', 'parsemag', 'replaceafter' ),
+			$prevdiff, $prevlink, $lnk, $curdiff, $nextlink, $nextdiff ) . "</div>\n\t\t\t";
+
+		$this->getOutput()->setSubtitle( $r );
+	}
+
+	/** Code called by PoolWorkArticleView **/
+
+	/**
+	 * Execute the uncached parse for action=view
+	 */
+	public function doViewParse( $text ) {
+		$oldid = $this->getOldID();
+		$parserOptions = $this->getPage()->getParserOptions();
+
+		# Render printable version, use printable version cache
+		$parserOptions->setIsPrintable( $this->getOutput()->isPrintable() );
+
+		# Don't show section-edit links on old revisions... this way lies madness.
+		if ( !$this->isCurrent() || $this->getOutput() || !$this->getTitle()->quickUserCan( 'edit' ) ) {
+			$parserOptions->setEditSection( false );
+		}
+
+		$useParserCache = $this->getPage()->isParserCacheUsed( $this->getUser() ) && $this->isCurrent();
+		$this->outputWikiText( $text, $useParserCache, $parserOptions );
+
+		return true;
+	}
+
+	/**
+	 * Add the primary page-view wikitext to the output buffer
+	 * Saves the text into the parser cache if possible.
+	 * Updates templatelinks if it is out of date.
+	 *
+	 * @param $text String
+	 * @param $cache Boolean
+	 * @param $parserOptions mixed ParserOptions object, or boolean false
+	 */
+	public function outputWikiText( $text, $cache = true, $parserOptions = false ) {
+		$this->mParserOutput = $this->getOutputFromWikitext( $text, $cache, $parserOptions );
+
+		$this->doCascadeProtectionUpdates( $this->mParserOutput );
+
+		$this->getOutput()->addParserOutput( $this->mParserOutput );
+	}
+
+	/**
+	 * This does all the heavy lifting for outputWikitext, except it returns the parser
+	 * output instead of sending it straight to OutputPage. Makes things nice and simple for,
+	 * say, embedding thread pages within a discussion system (LiquidThreads)
+	 *
+	 * @param $text string
+	 * @param $cache boolean
+	 * @param $parserOptions parsing options, defaults to false
+	 * @return ParserOutput
+	 */
+	public function getOutputFromWikitext( $text, $cache = true, $parserOptions = false ) {
+		global $wgParser, $wgEnableParserCache, $wgUseFileCache;
+
+		if ( !$parserOptions ) {
+			$parserOptions = $this->mPage->getParserOptions();
+		}
+
+		$time = - wfTime();
+		$this->mParserOutput = $wgParser->parse( $text, $this->getTitle(),
+			$parserOptions, true, true, $this->getRevision()->getId() );
+		$time += wfTime();
+
+		# Timing hack
+		if ( $time > 3 ) {
+			wfDebugLog( 'slow-parse', sprintf( "%-5.2f %s", $time,
+				$this->getTitle()->getPrefixedDBkey() ) );
+		}
+
+		if ( $wgEnableParserCache && $cache && $this->mParserOutput->isCacheable() ) {
+			$parserCache = ParserCache::singleton();
+			$parserCache->save( $this->mParserOutput, $this->getPage(), $parserOptions );
+		}
+
+		// Make sure file cache is not used on uncacheable content.
+		// Output that has magic words in it can still use the parser cache
+		// (if enabled), though it will generally expire sooner.
+		if ( !$this->mParserOutput->isCacheable() || $this->mParserOutput->containsOldMagic() ) {
+			$wgUseFileCache = false;
+		}
+
+		if ( $this->isCurrent() ) {
+			$this->mPage->doCascadeProtectionUpdates( $this->mParserOutput );
+		}
+
+		return $this->mParserOutput;
+	}
+
+	/**
+	 * Try to fetch an expired entry from the parser cache. If it is present,
+	 * output it and return true. If it is not present, output nothing and
+	 * return false. This is used as a callback function for
+	 * PoolCounter::executeProtected().
+	 *
+	 * @return boolean
+	 */
+	public function tryDirtyCache() {
+		$out = $this->getOutput();
+		$parserCache = ParserCache::singleton();
+		$options = $this->mPage->getParserOptions();
+
+		if ( $out->isPrintable() ) {
+			$options->setIsPrintable( true );
+			$options->setEditSection( false );
+		}
+
+		$output = $parserCache->getDirty( $this, $options );
+
+		if ( $output ) {
+			wfDebug( __METHOD__ . ": sending dirty output\n" );
+			wfDebugLog( 'dirty', "dirty output " . $parserCache->getKey( $this, $options ) . "\n" );
+			$out->setSquidMaxage( 0 );
+			$this->mParserOutput = $output;
+			$out->addParserOutput( $output );
+			$out->addHTML( "<!-- parser cache is expired, sending anyway due to pool overload-->\n" );
+
+			return true;
+		} else {
+			wfDebugLog( 'dirty', "dirty missing\n" );
+			wfDebug( __METHOD__ . ": no dirty cache\n" );
+
+			return false;
+		}
+	}
 }
 
+class PoolWorkArticleView extends PoolCounterWork {
+
+	/**
+	 * @var PageView
+	 */
+	private $view;
+
+	function __construct( $view, $key, $useParserCache, $parserOptions, $text ) {
+		parent::__construct( 'ArticleView', $key );
+		$this->view = $view;
+		$this->cacheable = $useParserCache;
+		$this->parserOptions = $parserOptions;
+		$this->text = $text;
+	}
+
+	function doWork() {
+		return $this->view->doViewParse( $this->text );
+	}
+
+	function getCachedWork() {
+		$parserCache = ParserCache::singleton();
+		$this->view->mParserOutput = $parserCache->get( $this->mArticle, $this->parserOptions );
+
+		if ( $this->mArticle->mParserOutput !== false ) {
+			wfDebug( __METHOD__ . ": showing contents parsed by someone else\n" );
+			$out = $this->view->getOutput();
+			$out->addParserOutput( $this->view->mParserOutput );
+			# Ensure that UI elements requiring revision ID have
+			# the correct version information.
+			$out->setRevisionId( $this->view->getPage()->getLatest() );
+			return true;
+		}
+		return false;
+	}
+
+	function fallback() {
+		return $this->view->tryDirtyCache();
+	}
+
+	/**
+	 * @param $status Status
+	 */
+	function error( $status ) {
+		$out = $this->view->getOutput();
+
+		$out->clearHTML(); // for release() errors
+		$out->enableClientCache( false );
+		$out->setRobotPolicy( 'noindex,nofollow' );
+
+		$errortext = $status->getWikiText( false, 'view-pool-error' );
+		$out->addWikiText( '<div class="errorbox">' . $errortext . '</div>' );
+
+		return false;
+	}
+}

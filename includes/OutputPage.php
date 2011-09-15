@@ -682,6 +682,35 @@ class OutputPage extends ContextSource {
 	}
 
 	/**
+	 * Converts a String robot policy into an associative array, to allow
+	 * merging of several policies using array_merge().
+	 * @param $policy Mixed, returns empty array on null/false/'', transparent
+	 *            to already-converted arrays, converts String.
+	 * @return Array: 'index' => <indexpolicy>, 'follow' => <followpolicy>
+	 */
+	public static function formatRobotPolicy( $policy ) {
+		if ( is_array( $policy ) ) {
+			return $policy;
+		} elseif ( !$policy ) {
+			return array();
+		}
+
+		$policy = explode( ',', $policy );
+		$policy = array_map( 'trim', $policy );
+
+		$arr = array();
+		foreach ( $policy as $var ) {
+			if ( in_array( $var, array( 'index', 'noindex' ) ) ) {
+				$arr['index'] = $var;
+			} elseif ( in_array( $var, array( 'follow', 'nofollow' ) ) ) {
+				$arr['follow'] = $var;
+			}
+		}
+
+		return $arr;
+	}
+
+	/**
 	 * Set the robot policy for the page: <http://www.robotstxt.org/meta.html>
 	 *
 	 * @param $policy String: the literal string to output as the contents of
@@ -690,7 +719,7 @@ class OutputPage extends ContextSource {
 	 * @return null
 	 */
 	public function setRobotPolicy( $policy ) {
-		$policy = Article::formatRobotPolicy( $policy );
+		$policy = self::formatRobotPolicy( $policy );
 
 		if( isset( $policy['index'] ) ) {
 			$this->setIndexPolicy( $policy['index'] );

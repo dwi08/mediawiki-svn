@@ -274,6 +274,7 @@ $wgAutoloadLocalClasses = array(
 	# includes/view
 	'PageView' => 'includes/view/PageView.php',
 	'ArticlePageView' => 'includes/view/ArticlePageView.php',
+	'PoolWorkArticleView' => 'includes/view/ArticlePageView.php',
 
 	# includes/api
 	'ApiBase' => 'includes/api/ApiBase.php',

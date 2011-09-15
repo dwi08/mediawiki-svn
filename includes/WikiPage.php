@@ -710,7 +710,7 @@ class WikiPage extends Page {
 	 * @param $user User The relevant user
 	 * @return boolean
 	 */
-	public function isParserCacheUsed( User $user, $oldid ) {
+	public function isParserCacheUsed( User $user, $oldid=false ) {
 		global $wgEnableParserCache;
 
 		return $wgEnableParserCache
