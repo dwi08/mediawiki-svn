@@ -177,8 +177,13 @@ class LqtHooks {
 		$attribs = array();
 		$attribs['ThreadSubject'] = $thread->subject();
 		if ( $thread->hasSuperThread() ) {
-			$attribs['ThreadParent'] = $thread->superThread()->title()->getPrefixedText();
-			$attribs['ThreadAncestor'] = $thread->topmostThread()->title()->getPrefixedText();
+			# HACK: This was throwing fatals during XML dumps on the cluster
+			if ( $thread->superThread() && $thread->superThread()->title() ) {
+				$attribs['ThreadParent'] = $thread->superThread()->title()->getPrefixedText();
+			}
+			if ( $thread->topmostThread() && $thread->topmostThread()->title() ) {
+				$attribs['ThreadAncestor'] = $thread->topmostThread()->title()->getPrefixedText();
+			}
 		}
 		$attribs['ThreadPage'] = $thread->getTitle()->getPrefixedText();
 		$attribs['ThreadID'] = $thread->id();
@@ -226,6 +231,11 @@ class LqtHooks {
 		}
 
 		$thread = Threads::withRoot( new Article( $title ) );
+		# HACK: The following lines were throwing fatals on the cluster
+		if ( !$thread ) {
+			return true;
+		}
+
 		$text = $thread->subject();
 
 		$title = clone $thread->topmostThread()->title();
