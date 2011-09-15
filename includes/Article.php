@@ -127,6 +127,14 @@ class Article extends Page {
 	}
 
 	/**
+	 * Get the WikiPage used here
+	 * @return WikiPage
+	 */
+	public function getPage() {
+		return $this->mPage;
+	}
+
+	/**
 	 * Get the title object of the article
 	 * @return Title object of this page
 	 */

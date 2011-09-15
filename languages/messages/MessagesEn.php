@@ -390,6 +390,7 @@ $specialPageAliases = array(
 	'Fewestrevisions'           => array( 'FewestRevisions' ),
 	'FileDuplicateSearch'       => array( 'FileDuplicateSearch' ),
 	'Filepath'                  => array( 'FilePath' ),
+	'History'                   => array( 'History' ),
 	'Import'                    => array( 'Import' ),
 	'Invalidateemail'           => array( 'InvalidateEmail' ),
 	'BlockList'                 => array( 'BlockList', 'ListBlocks', 'IPBlockList' ),
