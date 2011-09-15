@@ -3,46 +3,52 @@
 require( dirname( __FILE__ ) . '/../cli.inc' );
 
 $spConf = array(
-	'numCandidates' => 18,
-	'baseId' => 17,
-	'basePage' => 'Board elections/2009/Vote interface',
+	'numCandidates' => 19,
+	'baseId' => 200,
+	'basePage' => 'Board elections/2011/Vote interface',
 	'langs' => array(
 		'ar',
+		'bar',
+		'bg',
 		'bn',
 		'ca',
-		'cs',
 		'da',
 		'de',
+		'diq',
 		'el',
 		'en',
 		'eo',
 		'es',
+		'fa',
 		'fi',
 		'fr',
 		'gl',
-		'hi',
-		'hr',
-		'hu',
-		'ia',
+		'he',
+		'hy',
 		'id',
+		'is',
 		'it',
 		'ja',
-		'jv',
 		'ko',
-		'ksh',
+		'lb',
+		'lt',
 		'ms',
 		'nb',
 		'nl',
-		'oc',
 		'pl',
 		'pt',
-		'pt-br',
+		'ro',
 		'ru',
+		'si',
 		'sk',
+		'sl',
+		'sq',
 		'sv',
 		'tr',
 		'uk',
 		'vi',
+		'yi',
+		'yue',
 		'zh-hans',
 		'zh-hant',
 	)
@@ -52,18 +58,20 @@ $header = <<<EOT
 <SecurePoll>
 <election>
 <configuration>
-<title>Wikimedia Board of Trustees Election, 2009</title>
+<title>Wikimedia Board of Trustees Election, 2011</title>
 <ballot>preferential</ballot>
 <tally>schulze</tally>
 <primaryLang>en</primaryLang>
-<startDate>2009-07-28T12:00:00Z</startDate>
-<endDate>2009-08-10T23:59:59Z</endDate>
+<startDate>2011-05-28T12:00:00Z</startDate>
+<endDate>2011-06-12T23:59:59Z</endDate>
 <auth>remote-mw</auth>
 <id>{$spConf['baseId']}</id>
-<property name="admins">Tim Starling|Philippe|Werdna|Daniel|Yann|Mardetanha</property>
+<property name="admins">Tim Starling|Philippe_(WMF)|Werdna</property>
 <property name="not-blocked">1</property>
+<property name="not-centrally-blocked">1</property>
+<property name="central-block-threshold">2</property>
 <property name="not-bot">1</property>
-<property name="need-list">board-vote-2009</property>
+<property name="need-list">board-vote-2011</property>
 <property name="encrypt-type">gpg</property>
 <property name="remote-mw-script-path">https://secure.wikimedia.org/\$site/\$lang/w</property>
 <property name="shuffle-options">1</property>
