@@ -710,7 +710,7 @@ class ArticlePageView extends PageView {
 	 *   \<- Previous version | Next Version -\>
 	 */
 	public function setOldSubtitle() {
-		if ( !wfRunHooks( 'DisplayOldSubtitle', array( &$this, &$oldid ) ) ) {
+		if ( !wfRunHooks( 'DisplayOldSubtitle', array( &$this, &$oldid ) ) ) { // @fixme
 			return;
 		}
 
@@ -882,7 +882,7 @@ class ArticlePageView extends PageView {
 	public function outputWikiText( $text, $cache = true, $parserOptions = false ) {
 		$this->mParserOutput = $this->getOutputFromWikitext( $text, $cache, $parserOptions );
 
-		$this->doCascadeProtectionUpdates( $this->mParserOutput );
+		$this->getPage()->doCascadeProtectionUpdates( $this->mParserOutput );
 
 		$this->getOutput()->addParserOutput( $this->mParserOutput );
 	}
@@ -901,7 +901,7 @@ class ArticlePageView extends PageView {
 		global $wgParser, $wgEnableParserCache, $wgUseFileCache;
 
 		if ( !$parserOptions ) {
-			$parserOptions = $this->mPage->getParserOptions();
+			$parserOptions = $this->getPage()->getParserOptions();
 		}
 
 		$time = - wfTime();
@@ -928,7 +928,7 @@ class ArticlePageView extends PageView {
 		}
 
 		if ( $this->isCurrent() ) {
-			$this->mPage->doCascadeProtectionUpdates( $this->mParserOutput );
+			$this->getPage()->doCascadeProtectionUpdates( $this->mParserOutput );
 		}
 
 		return $this->mParserOutput;
@@ -945,7 +945,7 @@ class ArticlePageView extends PageView {
 	public function tryDirtyCache() {
 		$out = $this->getOutput();
 		$parserCache = ParserCache::singleton();
-		$options = $this->mPage->getParserOptions();
+		$options = $this->getPage()->getParserOptions();
 
 		if ( $out->isPrintable() ) {
 			$options->setIsPrintable( true );
