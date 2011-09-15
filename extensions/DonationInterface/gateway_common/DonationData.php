@@ -235,6 +235,15 @@ class DonationData {
 	function setNormalizedOrderIDs() {
 		//basically, we need a new order_id every time we come through here, but if there's an internal already there, 
 		//we want to use that one internally. So. 
+		
+		//Exception: If we pass in an order ID in the querystring: Don't mess with it. 
+		//TODO: I'm pretty sure I'm not supposed to do this directly. 
+		if (array_key_exists('order_id', $_GET)){
+			$this->setVal( 'order_id', $_GET['order_id'] );
+			$this->setVal( 'i_order_id', $_GET['order_id'] );
+			return;
+		}
+		
 		$this->setVal( 'order_id', $this->generateOrderId() );
 
 		if ( !$this->isSomething( 'i_order_id' ) ) {

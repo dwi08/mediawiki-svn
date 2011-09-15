@@ -117,21 +117,9 @@ EOT;
 					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
 					//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
 					
-					$wgOut->addHTML( $result['message'] );
-					if ( !empty( $result['errors'] ) ) {
-						$wgOut->addHTML( "<ul>" );
-						foreach ( $result['errors'] as $code => $value ) {
-							$wgOut->addHTML( "<li>Error $code: $value" );
-						}
-						$wgOut->addHTML( "</ul>" );
-					}
+					$this->displayResultsForDebug($result);
 
 					if ( !empty( $result['data'] ) ) {
-						$wgOut->addHTML( "<ul>" );
-						foreach ( $result['data'] as $key => $value ) {
-							$wgOut->addHTML( "<li>$key: $value" );
-						}
-						$wgOut->addHTML( "</ul>" );
 						
 						if (array_key_exists('FORMACTION', $result['data'])){
 							$paymentFrame = Xml::openElement( 'iframe',
@@ -191,6 +179,13 @@ EOT;
 				}
 			} else {
 				// Display form for the first time
+				$oid = $wgRequest->getText( 'order_id' );
+				if ($oid && !empty($oid)){
+					$wgOut->addHTML("<pre>CAME BACK FROM SOMETHING.</pre>");
+					$result = $this->adapter->do_transaction( 'GET_ORDERSTATUS' );
+					$this->displayResultsForDebug($result);
+					
+				}
 				$this->adapter->log( "Not posted, or not processed. Showing the form for the first time." );
 				$this->fnPayflowDisplayForm( $data, $this->errors );
 			}
@@ -200,6 +195,37 @@ EOT;
 				$this->errors['general']['token-mismatch'] = wfMsg( 'payflowpro_gateway-token-mismatch' );
 			}
 			$this->fnPayflowDisplayForm( $data, $this->errors );
+		}
+	}
+	
+	function displayResultsForDebug($results){
+		global $wgOut;
+		$wgOut->addHTML( $results['message'] );
+		
+		if ( !empty( $results['errors'] ) ) {
+			$wgOut->addHTML( "<ul>" );
+			foreach ( $results['errors'] as $code => $value ) {
+				$wgOut->addHTML( "<li>Error $code: $value" );
+			}
+			$wgOut->addHTML( "</ul>" );
+		}
+					
+		if ( !empty( $results['data'] ) ) {
+			$wgOut->addHTML( "<ul>" );
+			foreach ( $results['data'] as $key => $value ) {
+				if (is_array($value)){
+					$wgOut->addHTML( "<li>$key:<ul>" );
+					foreach ($value as $key2 => $val2){
+						$wgOut->addHTML( "<li>$key2: $val2" );
+					}
+					$wgOut->addHTML( "</ul>" );
+				} else {
+					$wgOut->addHTML( "<li>$key: $value" );
+				}
+			}
+			$wgOut->addHTML( "</ul>" );
+		} else {
+			$wgOut->addHTML("Empty Results");
 		}
 	}
 

@@ -125,6 +125,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	function setPostDefaults() {
 		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
+//		$returnTitle = Title::newFromText( 'Special:GlobalCollectGateway' );
 		$returnto = $returnTitle->getFullURL();
 
 		$this->postdatadefaults = array(
@@ -275,10 +276,8 @@ abstract class GatewayAdapter implements GatewayType {
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$this->getStopwatch(__FUNCTION__);
 			$xml = $this->buildRequestXML();
-			$this->saveCommunicationStats("-BuildingRequestXML");
-			$this->getStopwatch(__FUNCTION__, true);
+			$this->saveCommunicationStats(__FUNCTION__, "Building Request XML", "Transaction  = $transaction");
 			$returned = $this->curl_transaction( $xml );
-			$this->saveCommunicationStats();
 			//put the response in a universal form, and return it. 
 		}
 
@@ -377,7 +376,8 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	protected function curl_transaction( $data ) {
 		// assign header data necessary for the curl_setopt() function
-
+		$this->getStopwatch(__FUNCTION__, true);
+		
 		$ch = curl_init();
 
 		$headers = $this->getCurlBaseHeaders();
@@ -413,6 +413,8 @@ abstract class GatewayAdapter implements GatewayType {
 			}
 		}
 
+		$this->saveCommunicationStats(__FUNCTION__, $this->currentTransaction(), "Request:" . print_r($data, true) . "\nResponse" . print_r($return, true));
+		
 		if ( $return['headers']['http_code'] != 200 ) {
 			$return['result'] = false;
 			//TODO: i18n here! 
@@ -527,20 +529,41 @@ abstract class GatewayAdapter implements GatewayType {
 		return $clock;
 	}
 	
-	function saveCommunicationStats( $additional = '' ) { //easier than looking at logs...
+	/**
+	 *
+	 * @param type $function
+	 * @param type $additional
+	 * @param type $vars 
+	 */
+	function saveCommunicationStats( $function = '', $additional = '', $vars = '' ) { //easier than looking at logs...
 		$params = array();
 		if (self::getGlobal('SaveCommStats')){ //TODO: I should do this for real at some point. 
 			$db = ContributionTrackingProcessor::contributionTrackingConnection();
 			$params['contribution_id'] = $this->dataObj->getVal( 'contribution_tracking_id' );
 			$params['ts'] = $db->timestamp();
 			$params['duration'] = $this->getStopwatch(__FUNCTION__);
-			$params['gateway'] = self::getGatewayName() . $additional;
+			$params['gateway'] = self::getGatewayName();
+			$params['function'] = $function;
+			$params['vars'] = $vars;
+			$params['additional'] = $additional;
 
 			//can we check to see if the table exists? Bah, I should almost certianly do this Fer Reals. 
 
 			$db->insert( 'communication_stats', $params );
 		}
 
+	}
+	
+	function xmlChildrenToArray($xml, $nodename){
+		$data = array();
+		foreach ( $xml->getElementsByTagName( $nodename ) as $node ) {
+			foreach ( $node->childNodes as $childnode ) {
+				if ( trim( $childnode->nodeValue ) != '' ) {
+					$data[$childnode->nodeName] = $childnode->nodeValue;
+				}
+			}
+		}
+		return $data;
 	}
 
 }

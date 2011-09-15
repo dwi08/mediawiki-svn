@@ -14,11 +14,12 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->postdata['amount'] = $this->postdata['amount'] * 100;
 		
 		$card_type = '';
-		if (array_key_exists('card_type', $this->postdata)){
+		if (array_key_exists('card_type', $this->postdata) && !empty($this->postdata['card_type'])){
 			$card_type = $this->postdata['card_type'];
 		} else {
 			$card_type = $this->postdatadefaults['card_type'];
 		}
+		
 		switch ( $card_type ) {
 			case 'visa':
 				$this->postdata['card_type'] = 1;
@@ -152,6 +153,28 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				'ACTION' => 'TEST_CONNECTION'
 			)
 		);
+
+		$this->transactions['GET_ORDERSTATUS'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
+//						'IPADDRESS',
+						'VERSION'
+					),
+					'PARAMS' => array(
+						'ORDER' => array(
+							'ORDERID',
+						),
+					)
+				)
+			),
+			'values' => array(
+				'ACTION' => 'GET_ORDERSTATUS',
+				'VERSION' => '2.0'
+			)
+		);
 	}
 
 	/**
@@ -212,28 +235,19 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 */
 	function getResponseData( $response ) {
 		$data = array( );
-		foreach ( $response->getElementsByTagName( 'ROW' ) as $node ) {
-			foreach ( $node->childNodes as $childnode ) {
-				if ( trim( $childnode->nodeValue ) != '' ) {
-					$data[$childnode->nodeName] = $childnode->nodeValue;
-				}
-			}
-		}
 		
-		foreach ( $response->getElementsByTagName( 'ORDER' ) as $node ) {
-			foreach ( $node->childNodes as $childnode ) {
-				if ( trim( $childnode->nodeValue ) != '' ) {
-					$data['RequestOrder-' . $childnode->nodeName] = $childnode->nodeValue;
-				}
-			}
-		}
-		
-		foreach ( $response->getElementsByTagName( 'PAYMENT' ) as $node ) {
-			foreach ( $node->childNodes as $childnode ) {
-				if ( trim( $childnode->nodeValue ) != '' ) {
-					$data['RequestPayment-' . $childnode->nodeName] = $childnode->nodeValue;
-				}
-			}
+		$transaction = $this->currentTransaction();
+
+		switch ( $transaction ) {
+			case 'INSERT_ORDERWITHPAYMENT':
+				$data = $this->xmlChildrenToArray($response, 'ROW');
+				$data['ORDER'] = $this->xmlChildrenToArray($response, 'ORDER');
+				$data['PAYMENT'] = $this->xmlChildrenToArray($response, 'PAYMENT');
+				break;
+			case 'GET_ORDERSTATUS':
+				$data = $this->xmlChildrenToArray($response, 'STATUS');
+				$data['ORDER'] = $this->xmlChildrenToArray($response, 'ORDER');
+				break;
 		}
 		
 		
