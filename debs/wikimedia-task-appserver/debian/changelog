@@ -14,7 +14,7 @@ wikimedia-task-appserver (1.49) hardy-wikimedia; urgency=low
   * Added mwdeploy privilege separation.
   * Merged sync-common and scap-1
 
- -- Aaron Schulz <aschulz@wikimedia.org> Tue, 06 Sep 2011 18:42:59 -0700
+ -- Aaron Schulz <aschulz@wikimedia.org>  Tue, 06 Sep 2011 18:42:59 -0700
 
 wikimedia-task-appserver (1.48) hardy-wikimedia; urgency=low
 
