@@ -124,8 +124,8 @@ abstract class GatewayAdapter implements GatewayType {
 	 * Override this in children if you want different defaults. 
 	 */
 	function setPostDefaults() {
-		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
-//		$returnTitle = Title::newFromText( 'Special:GlobalCollectGateway' );
+//		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
+		$returnTitle = Title::newFromText( 'Special:GlobalCollectGatewayResult' );
 		$returnto = $returnTitle->getFullURL();
 
 		$this->postdatadefaults = array(
@@ -192,7 +192,7 @@ abstract class GatewayAdapter implements GatewayType {
 
 		//If there's a value in the post data (name-translated by the var_map), use that.
 		if ( array_key_exists( $gateway_field_name, $this->var_map ) ) {
-			if ($token === true){ //we just want the field name to use, so short-circuit all that mess. 
+			if ( $token === true ) { //we just want the field name to use, so short-circuit all that mess. 
 				return '@' . $this->var_map[$gateway_field_name];
 			}
 			if ( array_key_exists( $this->var_map[$gateway_field_name], $this->postdata ) &&
@@ -249,9 +249,9 @@ abstract class GatewayAdapter implements GatewayType {
 			$node->appendChild( $temp );
 		}
 	}
-	
+
 	//TODO: You can actually take this out if we never ever want to use ajax for a gateway. 
-	function buildTransactionFormat($transaction){
+	function buildTransactionFormat( $transaction ) {
 		$this->currentTransaction( $transaction );
 		$this->xmlDoc = new DomDocument( '1.0' );
 		$node = $this->xmlDoc->createElement( 'XML' );
@@ -261,34 +261,34 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->buildTransactionNodes( $structure, $node, true );
 		$this->xmlDoc->appendChild( $node );
 		$xml = $this->xmlDoc->saveXML();
-		$xmlStart = strpos($xml, "<XML>");
-		self::log("XML START" . $xmlStart);
+		$xmlStart = strpos( $xml, "<XML>" );
+		self::log( "XML START" . $xmlStart );
 		$xml = substr( $xml, $xmlStart );
-		self::log("XML stubby thing..." . $xml);
-		
+		self::log( "XML stubby thing..." . $xml );
+
 		return $xml;
 	}
-	
+
 	function do_transaction( $transaction ) {
 		$this->currentTransaction( $transaction );
 		//update the contribution tracking data
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
-			$this->getStopwatch(__FUNCTION__);
+			$this->getStopwatch( "buildRequestXML" );
 			$xml = $this->buildRequestXML();
-			$this->saveCommunicationStats(__FUNCTION__, "Building Request XML", "Transaction  = $transaction");
+			$this->saveCommunicationStats( "buildRequestXML", $transaction );
 			$returned = $this->curl_transaction( $xml );
 			//put the response in a universal form, and return it. 
 		}
 
 		if ( $this->getCommunicationType() === 'namevalue' ) {
 			$namevalue = $this->postdata;
-			$this->getStopwatch(__FUNCTION__);
+			$this->getStopwatch( __FUNCTION__ );
 			$returned = $this->curl_transaction( $namevalue );
 			$this->saveCommunicationStats();
 			//put the response in a universal form, and return it. 
 		}
-		
+
 		self::log( "RETURNED FROM CURL:" . print_r( $returned, true ) );
 		if ( $returned['result'] === false ) { //couldn't make contact. Bail.
 			return $returned;
@@ -376,8 +376,8 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	protected function curl_transaction( $data ) {
 		// assign header data necessary for the curl_setopt() function
-		$this->getStopwatch(__FUNCTION__, true);
-		
+		$this->getStopwatch( __FUNCTION__, true );
+
 		$ch = curl_init();
 
 		$headers = $this->getCurlBaseHeaders();
@@ -413,8 +413,8 @@ abstract class GatewayAdapter implements GatewayType {
 			}
 		}
 
-		$this->saveCommunicationStats(__FUNCTION__, $this->currentTransaction(), "Request:" . print_r($data, true) . "\nResponse" . print_r($return, true));
-		
+		$this->saveCommunicationStats( __FUNCTION__, $this->currentTransaction(), "Request:" . print_r( $data, true ) . "\nResponse" . print_r( $return, true ) );
+
 		if ( $return['headers']['http_code'] != 200 ) {
 			$return['result'] = false;
 			//TODO: i18n here! 
@@ -516,19 +516,19 @@ abstract class GatewayAdapter implements GatewayType {
 		$c = get_called_class();
 		return $c::IDENTIFIER;
 	}
-	
-	public function getStopwatch($string, $reset = false){
-		static $start = null;
-		$now = microtime(true);
 
-		if ($start == null || $reset === true){
+	public function getStopwatch( $string, $reset = false ) {
+		static $start = null;
+		$now = microtime( true );
+
+		if ( $start == null || $reset === true ) {
 			$start = $now;
 		}
-		$clock = round($now - $start, 4);
-		self::log("\nClock at $string: $clock ($now)");
+		$clock = round( $now - $start, 4 );
+		self::log( "\nClock at $string: $clock ($now)" );
 		return $clock;
 	}
-	
+
 	/**
 	 *
 	 * @param type $function
@@ -536,12 +536,12 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @param type $vars 
 	 */
 	function saveCommunicationStats( $function = '', $additional = '', $vars = '' ) { //easier than looking at logs...
-		$params = array();
-		if (self::getGlobal('SaveCommStats')){ //TODO: I should do this for real at some point. 
+		$params = array( );
+		if ( self::getGlobal( 'SaveCommStats' ) ) { //TODO: I should do this for real at some point. 
 			$db = ContributionTrackingProcessor::contributionTrackingConnection();
 			$params['contribution_id'] = $this->dataObj->getVal( 'contribution_tracking_id' );
 			$params['ts'] = $db->timestamp();
-			$params['duration'] = $this->getStopwatch(__FUNCTION__);
+			$params['duration'] = $this->getStopwatch( __FUNCTION__ );
 			$params['gateway'] = self::getGatewayName();
 			$params['function'] = $function;
 			$params['vars'] = $vars;
@@ -551,11 +551,10 @@ abstract class GatewayAdapter implements GatewayType {
 
 			$db->insert( 'communication_stats', $params );
 		}
-
 	}
-	
-	function xmlChildrenToArray($xml, $nodename){
-		$data = array();
+
+	function xmlChildrenToArray( $xml, $nodename ) {
+		$data = array( );
 		foreach ( $xml->getElementsByTagName( $nodename ) as $node ) {
 			foreach ( $node->childNodes as $childnode ) {
 				if ( trim( $childnode->nodeValue ) != '' ) {
@@ -564,6 +563,61 @@ abstract class GatewayAdapter implements GatewayType {
 			}
 		}
 		return $data;
+	}
+
+	/**
+	 * DO NOT DEFINE OVERLAPPING RANGES!
+	 * TODO: Make sure it won't let you add overlapping ranges. That would probably necessitate the sort moving to here, too.
+	 * @param type $transaction
+	 * @param type $key
+	 * @param type $action
+	 * @param type $lower
+	 * @param type $upper 
+	 */
+	function addCodeRange( $transaction, $key, $action, $lower, $upper = null ) {
+		if ( $upper === null ) {
+			$this->return_value_map[$transaction][$key][$lower] = $action;
+		} else {
+			$this->return_value_map[$transaction][$key][$upper] = array( 'action' => $action, 'lower' => $lower );
+		}
+	}
+
+	function findCodeAction( $transaction, $key, $code ) {
+		$this->getStopwatch( __FUNCTION__, true );
+		if ( !array_key_exists( $transaction, $this->return_value_map ) || !array_key_exists( $key, $this->return_value_map[$transaction] ) ) {
+			return null;
+		}
+		if ( !is_array( $this->return_value_map[$transaction][$key] ) ) {
+			return null;
+		}
+		//sort the array so we can do this quickly. 
+		ksort( $this->return_value_map[$transaction][$key], SORT_NUMERIC );
+
+		$ranges = $this->return_value_map[$transaction][$key];
+		//so, you have a code, which is a number. You also have a numerically sorted array.
+		//loop through until you find an upper >= your code.
+		//make sure it's in the range, and return the action. 
+		foreach ( $ranges as $upper => $val ) {
+			if ( $upper >= $code ) { //you've arrived. It's either here or it's nowhere.
+				if ( is_array( $val ) ) {
+					if ( $val['lower'] <= $code ) {
+						$this->saveCommunicationStats( __FUNCTION__, $transaction, "code = $code" );
+						return $val['action'];
+					} else {
+						return null;
+					}
+				} else {
+					if ( $upper === $code ) {
+						$this->saveCommunicationStats( __FUNCTION__, $transaction, "code = $code" );
+						return $val;
+					} else {
+						return null;
+					}
+				}
+			}
+		}
+		//if we walk straight off the end...
+		return null;
 	}
 
 }

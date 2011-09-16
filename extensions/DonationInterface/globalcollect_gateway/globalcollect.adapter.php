@@ -12,14 +12,14 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 */
 	function stageData() {
 		$this->postdata['amount'] = $this->postdata['amount'] * 100;
-		
+
 		$card_type = '';
-		if (array_key_exists('card_type', $this->postdata) && !empty($this->postdata['card_type'])){
+		if ( array_key_exists( 'card_type', $this->postdata ) && !empty( $this->postdata['card_type'] ) ) {
 			$card_type = $this->postdata['card_type'];
 		} else {
 			$card_type = $this->postdatadefaults['card_type'];
 		}
-		
+
 		switch ( $card_type ) {
 			case 'visa':
 				$this->postdata['card_type'] = 1;
@@ -34,19 +34,18 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				$this->postdata['card_type'] = 128;
 				break;
 		}
-		
+
 		$this->postdata['expiry'] = $this->postdata['expiration']; //. ($this->postdata['year'] % 100);
-		$this->postdata['card_num'] = str_replace(' ', '', $this->postdata['card_num']);
-		
+		$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
+
 		$returnto = '';
-		if (array_key_exists('returnto', $this->postdata)){
+		if ( array_key_exists( 'returnto', $this->postdata ) ) {
 			$returnto = $this->postdata['returnto'];
 		} else {
 			$returnto = $this->postdatadefaults['returnto'];
 		}
-		
+
 		$this->postdata['returnto'] = $returnto . "?order_id=" . $this->postdata['order_id'];
-		
 	}
 
 	function defineAccountInfo() {
@@ -70,7 +69,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'PAYMENTPRODUCTID' => 'card_type',
 			'CVV' => 'cvv',
 			'EXPIRYDATE' => 'expiry',
-			'CREDITCARDNUMBER' => 'card_num', 
+			'CREDITCARDNUMBER' => 'card_num',
 			'FIRSTNAME' => 'fname',
 			'SURNAME' => 'lname',
 			'STREET' => 'street',
@@ -86,6 +85,19 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'OK' => true,
 			'NOK' => false,
 		);
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 0, 70 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 100, 180 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 200 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 220, 280 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 300 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 310, 350 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'revised', 400 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending_poke', 525 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 550, 850 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 900 ); //There's two 900s in the doc. The heck? 
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 950, 975 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'complete', 1000, 1050 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 1100, 99999 );
 	}
 
 	function defineTransactions() {
@@ -235,22 +247,23 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 */
 	function getResponseData( $response ) {
 		$data = array( );
-		
+
 		$transaction = $this->currentTransaction();
 
 		switch ( $transaction ) {
 			case 'INSERT_ORDERWITHPAYMENT':
-				$data = $this->xmlChildrenToArray($response, 'ROW');
-				$data['ORDER'] = $this->xmlChildrenToArray($response, 'ORDER');
-				$data['PAYMENT'] = $this->xmlChildrenToArray($response, 'PAYMENT');
+				$data = $this->xmlChildrenToArray( $response, 'ROW' );
+				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
+				$data['PAYMENT'] = $this->xmlChildrenToArray( $response, 'PAYMENT' );
 				break;
 			case 'GET_ORDERSTATUS':
-				$data = $this->xmlChildrenToArray($response, 'STATUS');
-				$data['ORDER'] = $this->xmlChildrenToArray($response, 'ORDER');
+				$data = $this->xmlChildrenToArray( $response, 'STATUS' );
+				$data['WMF_TRANSLATEDCODE'] = $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $data['STATUSID'] );
+				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
 				break;
 		}
-		
-		
+
+
 		self::log( "Returned Data: " . print_r( $data, true ) );
 		return $data;
 	}

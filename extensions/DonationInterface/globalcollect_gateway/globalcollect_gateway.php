@@ -23,12 +23,14 @@ $wgGlobalCollectGatewayUseSyslog = false;
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
 $wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
+$wgAutoloadClasses['GlobalCollectGatewayResult'] = $dir . 'globalcollect_resultswitcher.body.php';
 $wgAutoloadClasses['GlobalCollectAdapter'] = $dir . 'globalcollect.adapter.php';
 $wgExtensionMessagesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.i18n.php';
 $wgExtensionMessagesFiles['GlobalCollectGatewayCountries'] = $dir . '../payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
 $wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $dir . '../payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
 $wgExtensionAliasesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.alias.php';
 $wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
+$wgSpecialPages['GlobalCollectGatewayResult'] = 'GlobalCollectGatewayResult';
 //$wgAjaxExportList[] = "fnGlobalCollectofofWork";
 // set defaults, these should be assigned in LocalSettings.php
 $wgGlobalCollectGatewayURL = 'https://ps.gcsip.nl/wdl/wdl';

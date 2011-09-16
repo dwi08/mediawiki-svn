@@ -89,16 +89,16 @@ foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
 # Unit tests
 $wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
 
-//
-//// Resource modules
-//$wgResourceTemplate = array(
-//	'localBasePath' => $donationinterface_dir . 'modules',
-//	'remoteExtPath' => 'DonationInterface/modules',
-//);
-//$wgResourceModules['jquery.donationInterface'] = array(
-//	'scripts' => 'jquery.donationInterface.js',
-//	'dependencies' => 'jquery.json',
-//) + $wgResourceTemplate;
+
+// Resource modules
+$wgResourceTemplate = array(
+	'localBasePath' => $donationinterface_dir . 'modules',
+	'remoteExtPath' => 'DonationInterface/modules',
+);
+$wgResourceModules['iframe.liberator'] = array(
+	'scripts' => 'iframe.liberator.js',
+	'position' => 'top'
+) + $wgResourceTemplate;
 
 function efDonationInterfaceUnitTests( &$files ) {
 	$files[] = dirname( __FILE__ ) . '/tests/GatewayAdapterTest.php';
