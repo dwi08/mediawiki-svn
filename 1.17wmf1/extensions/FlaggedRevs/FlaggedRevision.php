@@ -310,6 +310,10 @@ class FlaggedRevision {
 			'fr_img_timestamp' => $dbw->timestampOrNull( $this->getFileTimestamp() ),
 			'fr_img_sha1'      => $this->getFileSha1()
 		);
+		# Intermediate code for wmf schema change
+		if ( $dbw->fieldExists( 'flaggedrevs', 'fr_rev_timestamp' ) ) {
+			$revRow['fr_rev_timestamp'] = $dbw->timestamp( $this->getRevTimestamp() );
+		}
 		# Update flagged revisions table
 		$dbw->replace( 'flaggedrevs',
 			array( array( 'fr_page_id', 'fr_rev_id' ) ), $revRow, __METHOD__ );
