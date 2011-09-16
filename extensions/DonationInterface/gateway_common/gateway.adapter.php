@@ -619,5 +619,9 @@ abstract class GatewayAdapter implements GatewayType {
 		//if we walk straight off the end...
 		return null;
 	}
+	
+	function addDonorDataToSession(){
+		$this->dataObj->addDonorDataToSession();
+	}
 
 }

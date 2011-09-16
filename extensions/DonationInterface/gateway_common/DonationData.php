@@ -651,6 +651,28 @@ class DonationData {
 			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $this->getVal( 'contribution_tracking_id' ) ) );
 		}
 	}
+	
+	public function addDonorDataToSession(){
+		self::ensureSession();
+		$donordata = array(
+			'email',
+			'fname',
+			'mname',
+			'lname',
+			'street',
+			'city',
+			'state',
+			'zip',
+			'country',
+		);
+		
+		foreach ($donordata as $item){
+			if ($this->isSomething($item)){
+				$_SESSION['Donor'][$item] = $this->getVal($item);
+			}
+		}
+		
+	}
 
 }
 

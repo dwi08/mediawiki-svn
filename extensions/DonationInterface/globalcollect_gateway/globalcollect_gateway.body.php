@@ -115,6 +115,7 @@ EOT;
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
 					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+					$this->adapter->addDonorDataToSession();
 					//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
 					
 					$this->displayResultsForDebug($result);
@@ -226,6 +227,15 @@ EOT;
 			$wgOut->addHTML( "</ul>" );
 		} else {
 			$wgOut->addHTML("Empty Results");
+		}
+		if (array_key_exists('Donor', $_SESSION)){
+			$wgOut->addHTML("Session Donor Vars:<ul>");
+			foreach ($_SESSION['Donor'] as $key=>$val){
+				$wgOut->addHTML( "<li>$key: $val" );
+			}
+			$wgOut->addHTML("</ul>");
+		} else {
+			$wgOut->addHTML("No Session Donor Vars:<ul>");
 		}
 	}
 
