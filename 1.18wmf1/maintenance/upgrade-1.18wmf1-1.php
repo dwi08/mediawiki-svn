@@ -74,7 +74,7 @@ function upgradeWiki( $db ) {
 	if ( isFlaggedRevsWiki( $wiki ) ) {
 		echo " FlaggedRevs";
 		sourceUpgradeFile( $db, dirname(__FILE__).'/../extensions/FlaggedRevs/schema/mysql/' . 
-			'patch-fr_page_rev-index.sql' );
+			'patch-fr_page_rev-index-wmf1.8.sql' );
 	}
 
 	if ( $db->fieldExists( 'article_feedback', 'aa_page_id' ) ) {
