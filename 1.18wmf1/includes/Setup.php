@@ -416,11 +416,11 @@ if ( !wfIniGetBool( 'session.auto_start' ) ) {
 
 if ( !defined( 'MW_NO_SESSION' ) && !$wgCommandLineMode ) {
 	if ( $wgRequest->checkSessionCookie() || isset( $_COOKIE[$wgCookiePrefix . 'Token'] ) ) {
-		wfIncrStats( 'request_with_session' );
+		# wfIncrStats( 'request_with_session' );
 		wfSetupSession();
 		$wgSessionStarted = true;
 	} else {
-		wfIncrStats( 'request_without_session' );
+		# wfIncrStats( 'request_without_session' );
 		$wgSessionStarted = false;
 	}
 }
@@ -449,7 +449,10 @@ $wgOut = RequestContext::getMain()->getOutput(); # BackCompat
 /**
  * @var Parser
  */
-$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
+#$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
+# Live hack to clear up profiling -- TS
+$class = $wgParserConf['class'];
+$wgParser = new $class( $wgParserConf );
 
 if ( !is_object( $wgAuth ) ) {
 	$wgAuth = new StubObject( 'wgAuth', 'AuthPlugin' );
