@@ -41,8 +41,18 @@ class GlobalCollectGatewayResult extends UnlistedSpecialPage {
 		global $wgRequest, $wgOut, $wgExtensionAssetsPath,
 		$wgPayFlowProGatewayCSSVersion;
 
-		$wgOut->allowClickjacking();
-		$wgOut->addModules( 'iframe.liberator' );
+		$referrer = $wgRequest->getHeader( 'referer' );
+		
+		global $wgServer;
+		//TODO: Whitelist! We only want to do this for servers we are configured to like!
+		//I didn't do this already, because this may turn out to be backwards anyway. It might be good to do the work in the iframe, 
+		//and then pop out. Maybe. We're probably going to have to test it a couple different ways, for user experience. 
+		//However, we're _definitely_ going to need to pop out _before_ we redirect to the thank you or fail pages. 
+		if ( strpos( $referrer, $wgServer ) === false ) { 
+			$wgOut->allowClickjacking();
+			$wgOut->addModules( 'iframe.liberator' );
+			return;
+		}
 
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
@@ -55,9 +65,42 @@ class GlobalCollectGatewayResult extends UnlistedSpecialPage {
 		if ( $this->adapter->checkTokens() ) {
 			// Display form for the first time
 			$oid = $wgRequest->getText( 'order_id' );
-			if ( $oid && !empty( $oid ) ) {
-				$result = $this->adapter->do_transaction( 'GET_ORDERSTATUS' );
+			$adapter_oid = $this->adapter->getData();
+			$adapter_oid = $adapter_oid['order_id'];
+			if ( $oid && !empty( $oid ) && $oid === $adapter_oid ) {
+				if ( !array_key_exists( 'order_status', $_SESSION ) || !array_key_exists( $oid, $_SESSION['order_status'] ) ) {
+					$_SESSION['order_status'][$oid] = $this->adapter->do_transaction( 'GET_ORDERSTATUS' );
+					$_SESSION['order_status'][$oid]['data']['count'] = 0;
+				} else {
+					$_SESSION['order_status'][$oid]['data']['count'] = $_SESSION['order_status'][$oid]['data']['count'] + 1;
+				}
+				$result = $_SESSION['order_status'][$oid];
 				$this->displayResultsForDebug( $result );
+				//do the switching between the... stuff. 
+
+				switch ( $result['data']['WMF_STATUS'] ) {
+					case 'complete':
+						$wgOut->addHTML( "Add successful stomp message, go to the thank you page..." );
+						$go = $this->adapter->getThankYouPage();
+						break;
+					case 'pending':
+						$wgOut->addHTML( "Add pending stomp message, go to the thank you page..." );
+						$go = $this->adapter->getThankYouPage();
+						break;
+					case 'pending-poke':
+						$wgOut->addHTML( "Add pending stomp message, go to the thank you page, add some indicator that we need to do something." );
+						$go = $this->adapter->getThankYouPage();
+						break;
+					case 'failed':
+						$wgOut->addHTML( "Toss it, go to fail page..." );
+						$go = $this->adapter->getFailPage();
+						break;
+				}
+				
+				//TODO: Save your user session data before you get here...
+				$this->adapter->unsetAllGatewaySessionData();
+				$wgOut->addHTML( "<br>Redirecting to page $go" );
+				$wgOut->redirect( $go );
 			}
 			$this->adapter->log( "Not posted, or not processed. Showing the form for the first time." );
 		} else {
@@ -97,14 +140,14 @@ class GlobalCollectGatewayResult extends UnlistedSpecialPage {
 		} else {
 			$wgOut->addHTML( "Empty Results" );
 		}
-		if (array_key_exists('Donor', $_SESSION)){
-			$wgOut->addHTML("Session Donor Vars:<ul>");
-			foreach ($_SESSION['Donor'] as $key=>$val){
+		if ( array_key_exists( 'Donor', $_SESSION ) ) {
+			$wgOut->addHTML( "Session Donor Vars:<ul>" );
+			foreach ( $_SESSION['Donor'] as $key => $val ) {
 				$wgOut->addHTML( "<li>$key: $val" );
 			}
-			$wgOut->addHTML("</ul>");
+			$wgOut->addHTML( "</ul>" );
 		} else {
-			$wgOut->addHTML("No Session Donor Vars:<ul>");
+			$wgOut->addHTML( "No Session Donor Vars:<ul>" );
 		}
 	}
 

@@ -61,6 +61,13 @@ $wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/
 //THE GATEWAYS WILL RESET THIS when they are instantiated. You can override it, but it won't stick around that way. 
 $wgDonationInterfaceTest = false;
 
+
+/**
+ * Default Thank You and Fail pages for all of donationinterface - language will be calc'd and appended at runtime. 
+ */
+$wgDonationInterfaceThankYouPage = 'Donate-thanks';
+$wgDonationInterfaceFailPage = 'Donate-error';
+
 //This is going to be a little funky. 
 //Override this in LocalSettings.php BEFORE you include this file, if you want 
 //to disable gateways.
@@ -98,7 +105,7 @@ $wgResourceTemplate = array(
 $wgResourceModules['iframe.liberator'] = array(
 	'scripts' => 'iframe.liberator.js',
 	'position' => 'top'
-) + $wgResourceTemplate;
+	) + $wgResourceTemplate;
 
 function efDonationInterfaceUnitTests( &$files ) {
 	$files[] = dirname( __FILE__ ) . '/tests/GatewayAdapterTest.php';

@@ -124,7 +124,6 @@ abstract class GatewayAdapter implements GatewayType {
 	 * Override this in children if you want different defaults. 
 	 */
 	function setPostDefaults() {
-//		$returnTitle = Title::newFromText( 'Donate-thanks/en' );
 		$returnTitle = Title::newFromText( 'Special:GlobalCollectGatewayResult' );
 		$returnto = $returnTitle->getFullURL();
 
@@ -138,6 +137,24 @@ abstract class GatewayAdapter implements GatewayType {
 			'user_ip' => ( self::getGlobal( 'Test' ) ) ? '12.12.12.12' : wfGetIP(), // current user's IP address
 			'card_type' => 'visa',
 		);
+	}
+
+	function getThankYouPage() {
+		global $wgLang;
+		$language = $wgLang->getCode();
+		$page = self::getGlobal( "ThankYouPage" ) . "/$language";
+		$returnTitle = Title::newFromText( $page );
+		$returnto = $returnTitle->getFullURL();
+		return $returnto;
+	}
+
+	function getFailPage() {
+		global $wgLang;
+		$language = $wgLang->getCode();
+		$page = self::getGlobal( "FailPage" ) . "/$language";
+		$returnTitle = Title::newFromText( $page );
+		$returnto = $returnTitle->getFullURL();
+		return $returnto;
 	}
 
 	function checkTokens() {
@@ -619,9 +636,13 @@ abstract class GatewayAdapter implements GatewayType {
 		//if we walk straight off the end...
 		return null;
 	}
-	
-	function addDonorDataToSession(){
+
+	function addDonorDataToSession() {
 		$this->dataObj->addDonorDataToSession();
+	}
+
+	function unsetAllGatewaySessionData() {
+		$this->dataObj->unsetAllDDSessionData();
 	}
 
 }

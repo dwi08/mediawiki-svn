@@ -145,7 +145,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			),
 			'values' => array(
 				'ACTION' => 'INSERT_ORDERWITHPAYMENT',
-				'HOSTEDINDICATOR' => '1'
+				'HOSTEDINDICATOR' => '1',
+			//'PAYMENTPRODUCTID' => '11',
 			),
 		);
 
@@ -258,7 +259,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				break;
 			case 'GET_ORDERSTATUS':
 				$data = $this->xmlChildrenToArray( $response, 'STATUS' );
-				$data['WMF_TRANSLATEDCODE'] = $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $data['STATUSID'] );
+				$data['WMF_STATUS'] = $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $data['STATUSID'] );
 				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
 				break;
 		}

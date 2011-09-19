@@ -114,4 +114,10 @@ $wgGlobalCollectGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
  * should be in USD.
  */
 $wgGlobalCollectGatewayPriceFloor = '1.00';
-$wgGlobalCollectGatewayPriceCieling = '10000.00';
+$wgGlobalCollectGatewayPriceCeiling = '10000.00';
+
+/**
+ * Thank You & Fail pages. 
+ */
+$wgGlobalCollectGatewayThankYouPage = $wgDonationInterfaceThankYouPage;
+$wgGlobalCollectGatewayFailPage = $wgDonationInterfaceFailPage;
