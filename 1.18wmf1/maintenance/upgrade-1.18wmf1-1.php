@@ -60,14 +60,14 @@ function upgradeWiki( $db ) {
 
 	$upgradeLogRow = $db->selectRow( 'updatelog',
 		'ul_key',
-		array( 'ul_key' => '1.18wmf1-final' ),
+		array( 'ul_key' => '1.18wmf1-1' ),
 		__FUNCTION__ );
 	if ( $upgradeLogRow ) {
 		echo $db->getDBname() . ": already done\n";
 		return;
 	}
 
-	echo "$server $wiki 1.18wmf1-final";
+	echo "$server $wiki 1.18wmf1-1";
 
 	sourceUpgradeFile( $db, dirname( __FILE__ ) .'/schema-changes-1.18wmf1-1.sql' );
 	
@@ -83,7 +83,7 @@ function upgradeWiki( $db ) {
 	}
 
 	$db->insert( 'updatelog', 
-		array( 'ul_key' => '1.18wmf1-final' ),
+		array( 'ul_key' => '1.18wmf1-1' ),
 		__FUNCTION__ );
 	echo " ok\n";
 }
