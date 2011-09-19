@@ -14,26 +14,26 @@ $host = @$_SERVER['HTTP_HOST'];
 ) {*/
 if ( @$_SERVER['REQUEST_URI'] == '/w/index.php?title=United_States&action=submit' ) {
 	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
-	$wgProfiler = new ProfilerSimpleUDP;
+	$wgProfiler = new ProfilerSimpleUDP( array() );
 	$wgProfiler->setProfileID( 'bigpage' );
 } elseif (@defined($_REQUEST['forceprofile'])) {
     require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleText.php' );
-    $wgProfiler = new ProfilerSimpleText;
+    $wgProfiler = new ProfilerSimpleText( array() );
     $wgProfiler->setProfileID( 'forced' );
 } elseif (@defined($_REQUEST['forcetrace'])) {
     require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleTrace.php' );
-    $wgProfiler = new ProfilerSimpleTrace;
+    $wgProfiler = new ProfilerSimpleTrace( array() );
 } elseif ( strpos( @$_SERVER['REQUEST_URI'], '/w/thumb.php' ) !== false ) {
   	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
-	$wgProfiler = new ProfilerSimpleUDP;
+	$wgProfiler = new ProfilerSimpleUDP( array() );
 	$wgProfiler->setProfileID( 'thumb' );
 } elseif ( $host == 'test2.wikipedia.org' ) {
   	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
-	$wgProfiler = new ProfilerSimpleUDP;
+	$wgProfiler = new ProfilerSimpleUDP( array() );
 	$wgProfiler->setProfileID( 'test2' );
 } elseif ( !( $rand % 50 ) ) {
   	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
-	$wgProfiler = new ProfilerSimpleUDP;
+	$wgProfiler = new ProfilerSimpleUDP( array() );
 	/*
 	if ( $host == 'en.wikipedia.org' ) {
 		$wgProfiler->setProfileID( 'enwiki' );
@@ -55,7 +55,7 @@ if ( @$_SERVER['REQUEST_URI'] == '/w/index.php?title=United_States&action=submit
 }
 elseif ( defined( 'MW_FORCE_PROFILE' ) ) {
 	require_once( dirname(__FILE__).'/includes/profiler/Profiler.php' );
-	$wgProfiler = new Profiler;
+	$wgProfiler = new Profiler( array() );
 } else {
 	require_once( dirname(__FILE__).'/includes/profiler/ProfilerStub.php' );
 }
