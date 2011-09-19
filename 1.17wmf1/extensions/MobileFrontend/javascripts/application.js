@@ -1,32 +1,3 @@
-var search = document.getElementById( 'search' );
-var clearSearch = document.getElementById( 'clearsearch' );
-
-initClearSearchLink();
-
-function initClearSearchLink() {
-    clearSearch.setAttribute( 'title','Clear' );
-    clearSearch.addEventListener( 'mousedown', clearSearchBox, true );
-    search.addEventListener( 'keyup', _handleClearSearchLink, false );
-}
-
-function _handleClearSearchLink() {
-    if ( clearSearch ) {
-    	if ( search.value.length > 0 ) {
-        	clearSearch.style.display = 'block';
-        } else {
-        	clearSearch.style.display = 'none';
-        }
-	}
-}
-
-function clearSearchBox( event ) {
-    search.value = '';
-    clearSearch.style.display = 'none';
-	if ( event ) {
-		event.preventDefault();
-	}
-}
-
 // I don't think this makes sense. Loading this here means that this button 
 // won't function until the page is loaded. It would probably be an 
 // improvement to just attach an onclick straight into the html.
