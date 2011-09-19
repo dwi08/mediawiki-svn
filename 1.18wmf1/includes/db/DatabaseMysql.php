@@ -110,6 +110,7 @@ class DatabaseMysql extends DatabaseBase {
 		}
 
 		if ( $success ) {
+			/*
 			$version = $this->getServerVersion();
 			if ( version_compare( $version, '4.1' ) >= 0 ) {
 				// Tell the server we're communicating with it in UTF-8.
@@ -127,6 +128,7 @@ class DatabaseMysql extends DatabaseBase {
 					$this->query( "SET sql_mode = $mode", __METHOD__ );
 				}
 			}
+			 */
 
 			// Turn off strict mode if it is on
 		} else {
