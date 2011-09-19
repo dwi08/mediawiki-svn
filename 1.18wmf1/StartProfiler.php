@@ -13,26 +13,26 @@ $host = @$_SERVER['HTTP_HOST'];
      ( !($rand % 10) && $host == 'ja.wikipedia.org' )
 ) {*/
 if ( @$_SERVER['REQUEST_URI'] == '/w/index.php?title=United_States&action=submit' ) {
-	require_once( dirname(__FILE__).'/includes/ProfilerSimpleUDP.php' );
+	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
 	$wgProfiler = new ProfilerSimpleUDP;
 	$wgProfiler->setProfileID( 'bigpage' );
 } elseif (@defined($_REQUEST['forceprofile'])) {
-    require_once( dirname(__FILE__).'/includes/ProfilerSimpleText.php' );
+    require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleText.php' );
     $wgProfiler = new ProfilerSimpleText;
     $wgProfiler->setProfileID( 'forced' );
 } elseif (@defined($_REQUEST['forcetrace'])) {
-    require_once( dirname(__FILE__).'/includes/ProfilerSimpleTrace.php' );
+    require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleTrace.php' );
     $wgProfiler = new ProfilerSimpleTrace;
 } elseif ( strpos( @$_SERVER['REQUEST_URI'], '/w/thumb.php' ) !== false ) {
-  	require_once( dirname(__FILE__).'/includes/ProfilerSimpleUDP.php' );
+  	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
 	$wgProfiler = new ProfilerSimpleUDP;
 	$wgProfiler->setProfileID( 'thumb' );
 } elseif ( $host == 'test2.wikipedia.org' ) {
-  	require_once( dirname(__FILE__).'/includes/ProfilerSimpleUDP.php' );
+  	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
 	$wgProfiler = new ProfilerSimpleUDP;
 	$wgProfiler->setProfileID( 'test2' );
 } elseif ( !( $rand % 50 ) ) {
-  	require_once( dirname(__FILE__).'/includes/ProfilerSimpleUDP.php' );
+  	require_once( dirname(__FILE__).'/includes/profiler/ProfilerSimpleUDP.php' );
 	$wgProfiler = new ProfilerSimpleUDP;
 	/*
 	if ( $host == 'en.wikipedia.org' ) {
@@ -54,10 +54,10 @@ if ( @$_SERVER['REQUEST_URI'] == '/w/index.php?title=United_States&action=submit
 	#$wgProfiler->setMinimum(5 /* seconds */);
 }
 elseif ( defined( 'MW_FORCE_PROFILE' ) ) {
-	require_once( dirname(__FILE__).'/includes/Profiler.php' );
+	require_once( dirname(__FILE__).'/includes/profiler/Profiler.php' );
 	$wgProfiler = new Profiler;
 } else {
-	require_once( dirname(__FILE__).'/includes/ProfilerStub.php' );
+	require_once( dirname(__FILE__).'/includes/profiler/ProfilerStub.php' );
 }
 
 
