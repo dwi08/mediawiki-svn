@@ -1064,6 +1064,11 @@ window.mediaWiki = new ( function( $ ) {
 			return null;
 		};
 
+		/**
+		 * For backwards-compatibility with Squid-cached pages. Loads mw.user
+		 */
+		this.go = function() { mw.loader.load( 'mediawiki.user' ); };
+
 		/* Cache document ready status */
 
 		$(document).ready( function() { ready = true; } );
