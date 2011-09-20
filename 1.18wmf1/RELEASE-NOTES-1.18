@@ -210,6 +210,7 @@ production.
   them (i.e. with array_keys) to get a list of all preferences, then 
   $wgDefaultUserOptions should no longer be used as it will contain those set via
   User:getDefaultOptions().
+* (bug 30722) Add a new collation that sorts categories in ascii sort order.
 
 === Bug fixes in 1.18 ===
 * mw.util.getScript has been implemented (like wfScript in GlobalFunctions.php)
