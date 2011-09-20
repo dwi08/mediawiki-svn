@@ -72,11 +72,23 @@ encapsulateSelection: function( options ) {
 		} else if ( this.selectionStart || this.selectionStart == '0' ) {
 			// Mozilla/Opera
 			$(this).focus();
+			if ( options.selectionStart !== undefined ) {
+				$(this).textSelection( 'setSelection', { 'start': options.selectionStart, 'end': options.selectionEnd } );
+			}
+			
 			var selText = $(this).textSelection( 'getSelection' );
 			var startPos = this.selectionStart;
 			var endPos = this.selectionEnd;
 			var scrollTop = this.scrollTop;
 			checkSelectedText();
+			if ( options.selectionStart !== undefined
+					&& endPos - startPos != options.selectionEnd - options.selectionStart )
+			{
+				// This means there is a difference in the selection range returned by browser and what we passed.
+				// This happens for Chrome in the case of composite characters. Ref bug #30130
+				// Set the startPos to the correct position.
+				startPos = options.selectionStart;
+			}
 			if ( options.ownline ) {
 				if ( startPos != 0 && this.value.charAt( startPos - 1 ) != "\n" ) {
 					options.pre = "\n" + options.pre;
@@ -108,6 +120,10 @@ encapsulateSelection: function( options ) {
 			if ( context ) {
 				context.fn.restoreCursorAndScrollTop();
 			}
+			if ( options.selectionStart !== undefined ) {
+				$(this).textSelection( 'setSelection', { 'start': options.selectionStart, 'end': options.selectionEnd } );
+			}
+			
 			var selText = $(this).textSelection( 'getSelection' );
 			var scrollTop = this.scrollTop;
 			var range = document.selection.createRange();
@@ -366,7 +382,9 @@ scrollToCaretPosition: function( options ) {
 				'post': '', // Text to insert after the cursor/selection
 				'ownline': false, // Put the inserted text on a line of its own
 				'replace': false, // If there is a selection, replace it with peri instead of leaving it alone
-				'selectPeri': true // Select the peri text if it was inserted (but not if there was a selection and replace==false)
+				'selectPeri': true, // Select the peri text if it was inserted (but not if there was a selection and replace==false)
+				'selectionStart': undefined, // Position to start selection at
+				'selectionEnd': undefined // Position to end selection at. Defaults to start
 			}, options );
 			break;
 		case 'getCaretPosition':
