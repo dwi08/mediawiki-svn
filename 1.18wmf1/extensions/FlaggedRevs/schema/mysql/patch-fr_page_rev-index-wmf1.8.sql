@@ -4,7 +4,11 @@ ALTER TABLE /*_*/flaggedrevs
   DROP PRIMARY KEY;
 
 -- Take the first row of any duplicates on new key
+-- Must disable fast index creation as a workaround to 
+-- http://bugs.mysql.com/bug.php?id=40344
+set session old_alter_table=1;
 ALTER IGNORE TABLE /*_*/flaggedrevs ADD PRIMARY KEY (fr_rev_id);
+set session old_alter_table=0;
 
 CREATE INDEX /*i*/page_rev ON /*_*/flaggedrevs (fr_page_id,fr_rev_id);
 CREATE INDEX /*i*/page_time ON /*_*/flaggedrevs (fr_page_id,fr_rev_timestamp);
