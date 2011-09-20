@@ -35,7 +35,7 @@ updateOrientation();
 window.scrollTo( 0, 1 );
 
 // This is a global. I don't know why.
-decode = document.getElementById( 'search' );
+decode = document.getElementById( 'searchField' );
 decode.value = unescape( decode.value );
 decode = document.getElementsByTagName( 'title' )[0];
 decode.innerHTML = unescape( decode.innerHTML );
