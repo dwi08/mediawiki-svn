@@ -644,7 +644,6 @@ class SkinTemplate extends Skin {
 				),
 				'active' => false
 			);
-//var_dump( $personal_urls ); die();
 		} else {
 			global $wgUser;
 			$useCombinedLoginLink = $this->useCombinedLoginLink();
