@@ -1198,6 +1198,10 @@ class OutputPage {
 		$this->mNoGallery = $parserOutput->getNoGallery();
 		$this->mHeadItems = array_merge( $this->mHeadItems, $parserOutput->getHeadItems() );
 		$this->addModules( $parserOutput->getModules() );
+		$this->addModuleScripts( $parserOutput->getModuleScripts() );
+		$this->addModuleStyles( $parserOutput->getModuleStyles() );
+		$this->addModuleMessages( $parserOutput->getModuleMessages() );
+
 		// Versioning...
 		foreach ( (array)$parserOutput->mTemplateIds as $ns => $dbks ) {
 			if ( isset( $this->mTemplateIds[$ns] ) ) {
