@@ -29,8 +29,18 @@ class ExternalStoreDB {
 	 * @return DatabaseBase object
 	 */
 	function &getSlave( $cluster ) {
+		global $wgDefaultExternalStore;
+
 		$wiki = isset($this->mParams['wiki']) ? $this->mParams['wiki'] : false;
 		$lb =& $this->getLoadBalancer( $cluster );
+			
+		if ( !in_array( "DB://".$cluster, $wgDefaultExternalStore ) ) { 
+				wfDebug( "read only external store" );
+				$lb->allowLagged(true);
+		} else {
+				wfDebug( "writable external store" );
+		}
+
 		return $lb->getConnection( DB_SLAVE, array(), $wiki );
 	}
 
