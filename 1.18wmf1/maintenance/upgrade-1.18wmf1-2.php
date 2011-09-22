@@ -1,6 +1,7 @@
 <?php
 
 require( dirname( __FILE__ ) . '/commandLine.inc' );
+require( dirname( __FILE__ ) . '/../../wmf-config/InitialiseSettings.php' );
 
 doAllSchemaChanges();
 
@@ -55,21 +56,22 @@ function doAllSchemaChanges() {
 }
 
 function upgradeWiki( $db ) {
+	global $wgConf;
 	$wiki = $db->getDBname();
 	$server = $db->getServer();
 
 	$upgradeLogRow = $db->selectRow( 'updatelog',
 		'ul_key',
-		array( 'ul_key' => '1.18wmf1-2' ),
+		array( 'ul_key' => '1.18wmf1-lt' ),
 		__FUNCTION__ );
 	if ( $upgradeLogRow ) {
 		echo $db->getDBname() . ": already done\n";
 		return;
-	}
+    } 
 
-	echo "$server $wiki 1.18wmf1-2";
+	echo "$server $wiki 1.18wmf1-lt";
 	
-	if ( $wgConf->get( 'wmgUseLiquidThreads', $wiki ) ) {
+	if ( $wgConf->get( 'wmgUseLiquidThreads', $wiki ) && $wiki != "test2wiki") {
 		echo " liquidthreads";
 		sourceUpgradeFile( $db, dirname( __FILE__ ) .'/ums_conversation.sql' );
 	} else {
@@ -77,9 +79,9 @@ function upgradeWiki( $db ) {
 	}
 	
 	$db->insert( 'updatelog', 
-		array( 'ul_key' => '1.18wmf1-2' ),
+		array( 'ul_key' => '1.18wmf1-lt' ),
 		__FUNCTION__ );
-	echo " ok\n";
+    echo " ok\n"; 
 
 }
 
