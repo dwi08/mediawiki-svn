@@ -238,8 +238,9 @@ class SpamBlacklist {
 			}
 
 			# Do the match
-			wfDebugLog( 'SpamBlacklist', "Checking text against " . count( $blacklists ) .
-				" regexes: " . implode( ', ', $blacklists ) . "\n" );
+			# Disabled, causes UDP errors --aaron 9/22/11
+			#wfDebugLog( 'SpamBlacklist', "Checking text against " . count( $blacklists ) .
+			#	" regexes: " . implode( ', ', $blacklists ) . "\n" );
 			$retVal = false;
 			foreach( $blacklists as $regex ) {
 				wfSuppressWarnings();
@@ -525,4 +526,3 @@ class SpamRegexBatch {
 		}
 	}
 }
-
