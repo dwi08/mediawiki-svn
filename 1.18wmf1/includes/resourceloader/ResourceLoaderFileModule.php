@@ -150,10 +150,10 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 	{
 		global $IP, $wgScriptPath, $wgResourceBasePath;
 		$this->localBasePath = $localBasePath === null ? $IP : $localBasePath;
-		if ( $wgResourceBasePath !== null ) {
-			$this->remoteBasePath = $wgResourceBasePath;
+		if ( $remoteBasePath !== null ) {
+			$this->remoteBasePath = $remoteBasePath;
 		} else {
-			$this->remoteBasePath = $remoteBasePath === null ? $wgScriptPath : $remoteBasePath;
+			$this->remoteBasePath = $wgResourceBasePath === null ? $wgScriptPath : $wgResourceBasePath;
 		}
 
 		if ( isset( $options['remoteExtPath'] ) ) {
