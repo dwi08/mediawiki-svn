@@ -530,14 +530,16 @@ class DonationData {
 	 * are backwards (they are really opt-in) relative to contribution_tracking
 	 * (which is opt-out), we need to reverse the values
 	 */
-	function setNormalizedOptOuts() {
+	function setNormalizedOptOuts( $prune = false ) {
 		$optout['optout'] = ( $this->isSomething( 'email-opt' ) && $this->getVal( 'email-opt' ) == "1" ) ? '0' : '1';
 		$optout['anonymous'] = ( $this->isSomething( 'comment-option' ) && $this->getVal( 'comment-option' ) == "1" ) ? '0' : '1';
 		foreach ( $optout as $thing => $stuff ) {
 			$this->setVal( $thing, $stuff );
 		}
-		$this->expunge( 'email-opt' );
-		$this->expunge( 'comment-option' );
+		if ( $prune ) {
+			$this->expunge( 'email-opt' );
+			$this->expunge( 'comment-option' );
+		}
 	}
 
 	/**
