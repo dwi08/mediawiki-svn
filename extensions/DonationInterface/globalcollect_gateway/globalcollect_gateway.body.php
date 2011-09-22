@@ -54,6 +54,8 @@ class GlobalCollectGateway extends UnlistedSpecialPage {
 	public function execute( $par ) {
 		global $wgRequest, $wgOut, $wgExtensionAssetsPath,
 		$wgPayFlowProGatewayCSSVersion;
+		
+		$wgOut->allowClickjacking();
 
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
