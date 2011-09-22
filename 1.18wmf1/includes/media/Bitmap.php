@@ -223,13 +223,6 @@ class BitmapHandler extends ImageHandler {
 		} else {
 			$scaler = 'client';
 		}
-
-		if ( $scaler != 'client' && $dstPath ) {
-			if ( !wfMkdirParents( dirname( $dstPath ) ) ) {
-				# Unable to create a path for the thumbnail
-				return 'client';
-			}
-		}
 		return $scaler;
 	}
 
