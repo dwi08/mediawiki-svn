@@ -21,6 +21,7 @@ $wgExtensionCredits['specialpage'][] = array(
 $donationinterface_dir = dirname( __FILE__ ) . '/';
 
 require_once( $donationinterface_dir . 'donate_interface/donate_interface.php' );
+require_once( $donationinterface_dir . 'activemq_stomp/activemq_stomp.php' );
 
 
 /**

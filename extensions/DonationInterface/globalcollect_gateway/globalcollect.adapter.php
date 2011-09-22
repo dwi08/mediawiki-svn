@@ -6,48 +6,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	const COMMUNICATION_TYPE = 'xml';
 	const GLOBAL_PREFIX = 'wgGlobalCollectGateway';
 
-	/**
-	 * stageData should alter the postdata array in all ways necessary in preparation for
-	 * communication with the gateway. 
-	 */
-	function stageData() {
-		$this->postdata['amount'] = $this->postdata['amount'] * 100;
-
-		$card_type = '';
-		if ( array_key_exists( 'card_type', $this->postdata ) && !empty( $this->postdata['card_type'] ) ) {
-			$card_type = $this->postdata['card_type'];
-		} else {
-			$card_type = $this->postdatadefaults['card_type'];
-		}
-
-		switch ( $card_type ) {
-			case 'visa':
-				$this->postdata['card_type'] = 1;
-				break;
-			case 'mastercard':
-				$this->postdata['card_type'] = 3;
-				break;
-			case 'american':
-				$this->postdata['card_type'] = 2;
-				break;
-			case 'discover':
-				$this->postdata['card_type'] = 128;
-				break;
-		}
-
-		$this->postdata['expiry'] = $this->postdata['expiration']; //. ($this->postdata['year'] % 100);
-		$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
-
-		$returnto = '';
-		if ( array_key_exists( 'returnto', $this->postdata ) ) {
-			$returnto = $this->postdata['returnto'];
-		} else {
-			$returnto = $this->postdatadefaults['returnto'];
-		}
-
-		$this->postdata['returnto'] = $returnto . "?order_id=" . $this->postdata['order_id'];
-	}
-
 	function defineAccountInfo() {
 		$this->accountInfo = array(
 			'MERCHANTID' => self::getGlobal( 'MerchantID' ),
@@ -68,7 +26,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'IPADDRESS' => 'user_ip', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm.
 			'PAYMENTPRODUCTID' => 'card_type',
 			'CVV' => 'cvv',
-			'EXPIRYDATE' => 'expiry',
+			'EXPIRYDATE' => 'expiration',
 			'CREDITCARDNUMBER' => 'card_num',
 			'FIRSTNAME' => 'fname',
 			'SURNAME' => 'lname',
@@ -271,6 +229,60 @@ class GlobalCollectAdapter extends GatewayAdapter {
 
 	function processResponse( $response ) {
 		//TODO: Stuff. 
+	}
+
+	function defineStagedVars() {
+		//OUR field names. 
+		$this->staged_vars = array(
+			'amount',
+			'card_type',
+			'card_num',
+			'returnto',
+			'order_id', //This may or may not oughta-be-here...
+		);
+	}
+
+	protected function stage_amount( $type = 'request' ) {
+		switch ( $type ) {
+			case 'request':
+				$this->postdata['amount'] = $this->postdata['amount'] * 100;
+				break;
+			case 'response':
+				$this->postdata['amount'] = $this->postdata['amount'] / 100;
+				break;
+		}
+	}
+
+	protected function stage_card_type( $type = 'request' ) {
+
+		$types = array(
+			'visa' => '1',
+			'mastercard' => '3',
+			'american' => '2',
+			'discover' => '128'
+		);
+
+		if ( $type === 'response' ) {
+			$types = array_flip( $types );
+		}
+
+		if ( array_key_exists( $this->postdata['card_type'], $types ) ) {
+			$this->postdata['card_type'] = $types[$this->postdata['card_type']];
+		} else {
+			//$this->postdata['card_type'] = '';
+			//iono: maybe nothing? 
+		}
+	}
+
+	protected function stage_card_num( $type = 'request' ) {
+		//I realize that the $type isn't used. Voodoo.
+		$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
+	}
+
+	protected function stage_returnto( $type = 'request' ) {
+		if ( $type === 'request' ) {
+			$this->postdata['returnto'] = $this->postdata['returnto'] . "?order_id=" . $this->postdata['order_id'];
+		}
 	}
 
 }

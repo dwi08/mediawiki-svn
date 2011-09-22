@@ -35,9 +35,10 @@ interface GatewayType {
 	function processResponse( $response );
 
 	/**
-	 * Anything we need to do to the data coming in, before we send it off. 
+	 * Should be a list of our variables that need special staging. 
+	 * Define $this->staged_vars
 	 */
-	function stageData();
+	function defineStagedVars();
 
 	/**
 	 * defineTransactions will define the $transactions array. 
@@ -643,6 +644,86 @@ abstract class GatewayAdapter implements GatewayType {
 
 	function unsetAllGatewaySessionData() {
 		$this->dataObj->unsetAllDDSessionData();
+	}
+
+	function doStompTransaction( $responseArray, $responseMsg, $status, $useSession = false ) {
+		$hook = '';
+		switch ( $status ) {
+			case 'complete':
+				$hook = 'gwStomp';
+				break;
+			case 'pending':
+			case 'pending-poke':
+				$hook = 'gwPendingStomp';
+				break;
+		}
+		if ( $hook === '' ) {
+			return;
+		}
+
+		foreach ( $responseArray as $key => $val ) {
+			if ( array_key_exists( $key, $this->var_map ) ) {
+				$responseArray[$this->var_map[$key]] = $val;
+				unset( $responseArray[$key] );
+			}
+		}
+
+		//Gah. I might want to move all this data prep business upstream more than somewhat. 
+		//...but that's for later. 
+		// Add the session vars to the data object
+		if ( $useSession ) {
+			$this->dataObj->populateDonorFromSession();
+		}
+
+		// Add our response vars to the data object. 
+		$this->dataObj->addData( $responseArray );
+
+		// refresh our data
+		$this->postdata = $this->dataObj->getData();
+
+		// stage the gateway data
+		$this->stageData( 'response' );
+
+		// send the thing.
+		$transaction = array(
+			'response' => $responseMsg,
+			'date' => time(),
+		);
+		$transaction += $this->getData();
+
+		self::log( "Intended STOMP transaction: " . print_r( $transaction, true ) );
+
+		wfRunHooks( $hook, array( $transaction ) );
+	}
+
+	function smooshVarsForStaging() {
+
+		foreach ( $this->staged_vars as $field ) {
+			if ( !array_key_exists( $field, $this->postdata ) || empty( $this->postdata[$field] ) ) {
+				if ( array_key_exists( $field, $this->postdatadefaults ) ) {
+					$this->postdata[$field] = $this->postdatadefaults[$field];
+				}
+			}
+			//what do we do in the event that we're still nothing? (just move on.)
+		}
+	}
+
+	/**
+	 *
+	 * @param type $type Whatever types of staging you feel like having in your child class. 
+	 * ...but usually request and response. I think. 
+	 */
+	function stageData( $type = 'request' ) {
+		$this->defineStagedVars();
+		$this->smooshVarsForStaging(); //yup, we do need to do this seperately. 
+		//If we tried to piggyback off the same loop, all the vars wouldn't be ready, and some staging functions will require 
+		//multiple variables.
+		foreach ( $this->staged_vars as $field ) {
+			$function_name = 'stage_' . $field;
+			if ( method_exists( $this, $function_name ) ) {
+				$this->{$function_name}( $type );
+			}
+		}
 	}
 
 }

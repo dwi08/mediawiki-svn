@@ -29,13 +29,8 @@ class DonationData {
 		}
 		$this->doCacheStuff();
 
+		$this->normalizeAndSanitize();
 
-		if ( !empty( $this->normalized ) ) {
-			$this->setNormalizedAmount();
-			$this->setNormalizedOrderIDs();
-			$this->setGateway();
-			array_walk( $this->normalized, array( $this, 'sanitizeInput' ) );
-		}
 		//TODO: determine if _nocache_ is still a thing anywhere.
 		if ( !empty( $this->normalized ) && ( $this->getVal( 'numAttempt' ) == '0' && ((!$this->getVal( 'utm_source_id' ) == false ) || $this->getVal( '_nocache_' ) == 'true' ) ) ) {
 			$this->saveContributionTracking();
@@ -209,6 +204,16 @@ class DonationData {
 		}
 	}
 
+	function normalizeAndSanitize() {
+		if ( !empty( $this->normalized ) ) {
+			$this->setNormalizedAmount();
+			$this->setNormalizedOrderIDs();
+			$this->setGateway();
+			$this->setNormalizedOptOuts();
+			array_walk( $this->normalized, array( $this, 'sanitizeInput' ) );
+		}
+	}
+
 	function setNormalizedAmount() {
 
 		if ( !($this->isSomething( 'amount' )) || !(preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal( 'amount' ) ) ) ) {
@@ -244,7 +249,6 @@ class DonationData {
 		}
 
 		$this->setVal( 'order_id', $this->generateOrderId() );
-
 		if ( !$this->isSomething( 'i_order_id' ) ) {
 			$this->setVal( 'i_order_id', $this->generateOrderId() );
 		}
@@ -526,10 +530,14 @@ class DonationData {
 	 * are backwards (they are really opt-in) relative to contribution_tracking
 	 * (which is opt-out), we need to reverse the values
 	 */
-	public function getOptOuts() {
+	function setNormalizedOptOuts() {
 		$optout['optout'] = ( $this->isSomething( 'email-opt' ) && $this->getVal( 'email-opt' ) == "1" ) ? '0' : '1';
 		$optout['anonymous'] = ( $this->isSomething( 'comment-option' ) && $this->getVal( 'comment-option' ) == "1" ) ? '0' : '1';
-		return $optout;
+		foreach ( $optout as $thing => $stuff ) {
+			$this->setVal( $thing, $stuff );
+		}
+		$this->expunge( 'email-opt' );
+		$this->expunge( 'comment-option' );
 	}
 
 	/**
@@ -540,7 +548,7 @@ class DonationData {
 	 * 'null' values.
 	 * @param bool $clean_opouts 
 	 */
-	public function getCleanTrackingData( $clean_optouts = false ) {
+	public function getCleanTrackingData() {
 
 		// define valid tracking fields
 		$tracking_fields = array(
@@ -563,13 +571,6 @@ class DonationData {
 			}
 		}
 
-		// clean up the optout values if necessary
-		if ( $clean_optouts ) {
-			$optouts = $this->getOptOuts();
-			$tracking_data['optout'] = $optouts['optout'];
-			$tracking_data['anonymous'] = $optouts['anonymous'];
-		}
-
 		return $tracking_data;
 	}
 
@@ -577,7 +578,7 @@ class DonationData {
 	//so, basically, if this is the first attempt. This seems to get called nowhere else. 
 	function saveContributionTracking() {
 
-		$tracked_contribution = $this->getCleanTrackingData( true );
+		$tracked_contribution = $this->getCleanTrackingData();
 
 		// insert tracking data and get the tracking id
 		$result = self::insertContributionTracking( $tracked_contribution );
@@ -641,7 +642,7 @@ class DonationData {
 			return true;
 		}  ///wait, what? TODO: This line was straight copied from the _gateway.body. Find out if there's a good reason we're not returning false here.
 
-		$tracked_contribution = $this->getCleanTrackingData( true );
+		$tracked_contribution = $this->getCleanTrackingData();
 
 		// if contrib tracking id is not already set, we need to insert the data, otherwise update
 		if ( !$this->getVal( 'contribution_tracking_id' ) ) {
@@ -673,6 +674,12 @@ class DonationData {
 		}
 	}
 
+	public function populateDonorFromSession() {
+		if ( array_key_exists( 'Donor', $_SESSION ) ) {
+			$this->addData( $_SESSION['Donor'] );
+		}
+	}
+
 	/**
 	 * TODO: Consider putting all the session data for a gateway under something like 
 	 * $_SESSION[$gateway_identifier]
@@ -681,6 +688,17 @@ class DonationData {
 	public function unsetAllDDSessionData() {
 		unset( $_SESSION['Donor'] );
 		$this->unsetEditToken();
+	}
+
+	public function addData( $newdata ) {
+		if ( is_array( $newdata ) && !empty( $newdata ) ) {
+			foreach ( $newdata as $key => $val ) {
+				if ( !is_array( $val ) ) {
+					$this->setVal( $key, $val );
+				}
+			}
+		}
+		$this->normalizeAndSanitize();
 	}
 
 }

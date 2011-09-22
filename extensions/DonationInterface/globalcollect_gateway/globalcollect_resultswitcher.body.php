@@ -42,13 +42,13 @@ class GlobalCollectGatewayResult extends UnlistedSpecialPage {
 		$wgPayFlowProGatewayCSSVersion;
 
 		$referrer = $wgRequest->getHeader( 'referer' );
-		
+
 		global $wgServer;
 		//TODO: Whitelist! We only want to do this for servers we are configured to like!
 		//I didn't do this already, because this may turn out to be backwards anyway. It might be good to do the work in the iframe, 
 		//and then pop out. Maybe. We're probably going to have to test it a couple different ways, for user experience. 
 		//However, we're _definitely_ going to need to pop out _before_ we redirect to the thank you or fail pages. 
-		if ( strpos( $referrer, $wgServer ) === false ) { 
+		if ( strpos( $referrer, $wgServer ) === false ) {
 			$wgOut->allowClickjacking();
 			$wgOut->addModules( 'iframe.liberator' );
 			return;
@@ -96,8 +96,8 @@ class GlobalCollectGatewayResult extends UnlistedSpecialPage {
 						$go = $this->adapter->getFailPage();
 						break;
 				}
-				
-				//TODO: Save your user session data before you get here...
+				$this->adapter->doStompTransaction( $result['data'], $result['message'], $result['data']['WMF_STATUS'], true );
+
 				$this->adapter->unsetAllGatewaySessionData();
 				$wgOut->addHTML( "<br>Redirecting to page $go" );
 				$wgOut->redirect( $go );

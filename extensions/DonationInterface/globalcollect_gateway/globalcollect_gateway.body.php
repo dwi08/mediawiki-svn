@@ -103,11 +103,10 @@ EOT;
 		if ( $this->adapter->checkTokens() ) {
 			if ( $this->adapter->posted && $data['payment_method'] == 'processed' ) {
 				// The form was submitted and the payment method has been set
-				$this->adapter->log("Form posted and payment method set.");
+				$this->adapter->log( "Form posted and payment method set." );
 
 				// increase the count of attempts
 				//++$data['numAttempt'];
-
 				// Check form for errors
 				$form_errors = $this->fnPayflowValidateForm( $data, $this->errors );
 
@@ -119,14 +118,13 @@ EOT;
 					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
 					$this->adapter->addDonorDataToSession();
 					//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
-					
-					$this->displayResultsForDebug($result);
+
+					$this->displayResultsForDebug( $result );
 
 					if ( !empty( $result['data'] ) ) {
-						
-						if (array_key_exists('FORMACTION', $result['data'])){
-							$paymentFrame = Xml::openElement( 'iframe',
-								array(
+
+						if ( array_key_exists( 'FORMACTION', $result['data'] ) ) {
+							$paymentFrame = Xml::openElement( 'iframe', array(
 									'id' => 'globalcollectframe',
 									'name' => 'globalcollectframe',
 									'width' => '680',
@@ -134,12 +132,11 @@ EOT;
 									'frameborder' => '0',
 									'style' => 'display:block;',
 									'src' => $result['data']['FORMACTION']
-								)
+									)
 							);
 							$paymentFrame .= Xml::closeElement( 'iframe' );
 
 							$wgOut->addHTML( $paymentFrame );
-						
 						}
 					}
 
@@ -183,11 +180,10 @@ EOT;
 			} else {
 				// Display form for the first time
 				$oid = $wgRequest->getText( 'order_id' );
-				if ($oid && !empty($oid)){
-					$wgOut->addHTML("<pre>CAME BACK FROM SOMETHING.</pre>");
+				if ( $oid && !empty( $oid ) ) {
+					$wgOut->addHTML( "<pre>CAME BACK FROM SOMETHING.</pre>" );
 					$result = $this->adapter->do_transaction( 'GET_ORDERSTATUS' );
-					$this->displayResultsForDebug($result);
-					
+					$this->displayResultsForDebug( $result );
 				}
 				$this->adapter->log( "Not posted, or not processed. Showing the form for the first time." );
 				$this->fnPayflowDisplayForm( $data, $this->errors );
@@ -200,11 +196,11 @@ EOT;
 			$this->fnPayflowDisplayForm( $data, $this->errors );
 		}
 	}
-	
-	function displayResultsForDebug($results){
+
+	function displayResultsForDebug( $results ) {
 		global $wgOut;
 		$wgOut->addHTML( $results['message'] );
-		
+
 		if ( !empty( $results['errors'] ) ) {
 			$wgOut->addHTML( "<ul>" );
 			foreach ( $results['errors'] as $code => $value ) {
@@ -212,13 +208,13 @@ EOT;
 			}
 			$wgOut->addHTML( "</ul>" );
 		}
-					
+
 		if ( !empty( $results['data'] ) ) {
 			$wgOut->addHTML( "<ul>" );
 			foreach ( $results['data'] as $key => $value ) {
-				if (is_array($value)){
+				if ( is_array( $value ) ) {
 					$wgOut->addHTML( "<li>$key:<ul>" );
-					foreach ($value as $key2 => $val2){
+					foreach ( $value as $key2 => $val2 ) {
 						$wgOut->addHTML( "<li>$key2: $val2" );
 					}
 					$wgOut->addHTML( "</ul>" );
@@ -228,16 +224,16 @@ EOT;
 			}
 			$wgOut->addHTML( "</ul>" );
 		} else {
-			$wgOut->addHTML("Empty Results");
+			$wgOut->addHTML( "Empty Results" );
 		}
-		if (array_key_exists('Donor', $_SESSION)){
-			$wgOut->addHTML("Session Donor Vars:<ul>");
-			foreach ($_SESSION['Donor'] as $key=>$val){
+		if ( array_key_exists( 'Donor', $_SESSION ) ) {
+			$wgOut->addHTML( "Session Donor Vars:<ul>" );
+			foreach ( $_SESSION['Donor'] as $key => $val ) {
 				$wgOut->addHTML( "<li>$key: $val" );
 			}
-			$wgOut->addHTML("</ul>");
+			$wgOut->addHTML( "</ul>" );
 		} else {
-			$wgOut->addHTML("No Session Donor Vars:<ul>");
+			$wgOut->addHTML( "No Session Donor Vars:<ul>" );
 		}
 	}
 
@@ -509,8 +505,6 @@ EOT;
 	 * @return array
 	 */
 	public function prepareStompTransaction( $data, $responseArray, $responseMsg ) {
-		$countries = $this->getCountries();
-
 		$transaction = array( );
 
 		// include response message
