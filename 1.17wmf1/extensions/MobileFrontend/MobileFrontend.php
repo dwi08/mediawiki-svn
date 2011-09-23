@@ -49,6 +49,15 @@ $wgAutoloadClasses['CssDetection']	  = $cwd . 'CssDetection.php';
  */
 $wgMobileFrontendLogo = false;
 
+$wgMobileDomain = '.m.';
+
+/**
+ * URL for script used to disable mobile site
+ * (protocol, host, optional port; path portion)
+ *
+ * e.g., http://en.wikipedia.org/w/mobileRedirect.php
+ */
+$wgMobileRedirectFormAction = false;
 
 $wgExtMobileFrontend = new ExtMobileFrontend();
 
@@ -56,6 +65,8 @@ $wgHooks['BeforePageDisplay'][] = array( &$wgExtMobileFrontend, 'beforePageDispl
 
 $wgHooks['SkinTemplateOutputPageBeforeExec'][] = array( &$wgExtMobileFrontend, 'addMobileFooter' );
 $wgExtensionFunctions[] = array( &$wgExtMobileFrontend, 'setDefaultLogo' );
+
+$wgHooks['TestCanonicalRedirect'][] = array( &$wgExtMobileFrontend, 'testCanonicalRedirect' );
 
 /**
  * Make the classes stripped from page content configurable. Each item will
@@ -73,7 +84,7 @@ function efExtMobileFrontendUnitTests( &$files ) {
 }
 
 class ExtMobileFrontend {
-	const VERSION = '0.5.63';
+	const VERSION = '0.5.68';
 
 	/**
 	 * @var DOMDocument
@@ -113,6 +124,7 @@ class ExtMobileFrontend {
 	public static $currentURL;
 	public static $displayNoticeId;
 	public static $leaveFeedbackURL;
+	public static $mobileRedirectFormAction;
 	
 	public static $messageKeys = array( 
 		'mobile-frontend-show-button',
@@ -186,22 +198,34 @@ class ExtMobileFrontend {
 		'#ogg_player_1',
 		'.nomobile',
 	);
+	
+	public function testCanonicalRedirect( $request, $title, $output ) {
+		global $wgMobileDomain;
+		$host = $request->getHeader( 'HOST' );
+		return !( stristr( $host, $wgMobileDomain ) !== false );
+	}
 
 	public function addMobileFooter( &$obj, &$tpl ) {
 		global $wgRequest;
 		wfProfileIn( __METHOD__ );
-		$footerlinks = $tpl->data['footerlinks'];
-		$mobileViewUrl = $wgRequest->escapeAppendQuery( 'useformat=mobile' );
 
-		$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>".wfMsg( 'mobile-frontend-view')."</a>");
-		$footerlinks['places'][] = 'mobileview';
-		$tpl->set('footerlinks', $footerlinks);
+		$title = $obj->getTitle();
+		$isSpecial = $title->isSpecialPage();
+		
+		if ( ! $isSpecial ) {
+			$footerlinks = $tpl->data['footerlinks'];
+			$mobileViewUrl = $wgRequest->escapeAppendQuery( 'useformat=mobile' );
+
+			$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>".wfMsg( 'mobile-frontend-view')."</a>");
+			$footerlinks['places'][] = 'mobileview';
+			$tpl->set('footerlinks', $footerlinks);
+		}
 		wfProfileOut( __METHOD__ );
 		return true;
 	}
 
 	public function getMsg() {
-		global $wgUser, $wgContLang, $wgRequest;
+		global $wgUser, $wgContLang, $wgRequest, $wgServer, $wgMobileRedirectFormAction, $wgMobileDomain;
 		wfProfileIn( __METHOD__ );
 		
 		self::$disableImagesURL = $wgRequest->escapeAppendQuery( 'disableImages=1' );
@@ -233,6 +257,9 @@ class ExtMobileFrontend {
 
 		self::$dir = $wgContLang->getDir();
 		self::$code = $wgContLang->getCode();
+		
+		$nonMobileServerBaseURL = str_replace( $wgMobileDomain, '.', $wgServer );
+		self::$mobileRedirectFormAction = ( $wgMobileRedirectFormAction !== false ) ? $wgMobileRedirectFormAction : "{$nonMobileServerBaseURL}/w/mobileRedirect.php";
 
 		self::$mainPageUrl = Title::newMainPage()->getLocalUrl();
 		self::$randomPageUrl = $this->getRelativeURL( SpecialPage::getTitleFor( 'Randompage' )->getLocalUrl() );
