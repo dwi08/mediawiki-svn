@@ -84,7 +84,7 @@ function efExtMobileFrontendUnitTests( &$files ) {
 }
 
 class ExtMobileFrontend {
-	const VERSION = '0.5.68';
+	const VERSION = '0.5.70';
 
 	/**
 	 * @var DOMDocument
@@ -200,9 +200,12 @@ class ExtMobileFrontend {
 	);
 	
 	public function testCanonicalRedirect( $request, $title, $output ) {
-		global $wgMobileDomain;
-		$host = $request->getHeader( 'HOST' );
-		return !( stristr( $host, $wgMobileDomain ) !== false );
+		$xDevice = isset( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
+		if ( empty( $xDevice ) ) {
+			return true; // Let the redirect happen
+		} else {
+			return false; // Prevent the redirect from occuring
+		}
 	}
 
 	public function addMobileFooter( &$obj, &$tpl ) {
@@ -216,7 +219,7 @@ class ExtMobileFrontend {
 			$footerlinks = $tpl->data['footerlinks'];
 			$mobileViewUrl = $wgRequest->escapeAppendQuery( 'useformat=mobile' );
 
-			$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>".wfMsg( 'mobile-frontend-view')."</a>");
+			$tpl->set('mobileview', "<a href='{$mobileViewUrl}'>" . wfMsg( 'mobile-frontend-view' ) . "</a>");
 			$footerlinks['places'][] = 'mobileview';
 			$tpl->set('footerlinks', $footerlinks);
 		}
