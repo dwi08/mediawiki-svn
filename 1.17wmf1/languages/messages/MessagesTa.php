@@ -1716,10 +1716,10 @@ $NEWPAGE
 
 --
 உங்கள் கவனிப்புப் பட்டியல் அமைவுகளை மாற்ற
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 பின்னூட்டம், மேலதிக உதவிகளுக்கு:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'பக்கத்தை நீக்கு',

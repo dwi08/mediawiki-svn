@@ -2186,13 +2186,13 @@ Você pode também reativar as notificações para todas as suas páginas vigiad
 
 --
 Para alterar as configurações de sua lista de páginas vigiadas, visite
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Para retirar esta página de sua lista de páginas vigiadas, visite
 $UNWATCHURL
 
 Comentários e assistência:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Eliminar página',

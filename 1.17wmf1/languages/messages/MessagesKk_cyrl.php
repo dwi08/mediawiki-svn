@@ -1820,7 +1820,7 @@ $NEWPAGE
 
 ----
 Бақылау тізіміңіздің баптаулырын өзгерту үшін, мында келіп-кетіңіз:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Сын-пікір беру және былайғы жәрдем алу үшін:
 {{fullurl:{{{{ns:mediawiki}}:Helppage}}}}',

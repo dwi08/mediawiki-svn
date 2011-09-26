@@ -2183,13 +2183,13 @@ Nu veți mai primi notificări în cazul unor viitoare modificări în afara caz
 
 --
 Pentru a modifica preferințele listei de urmărire vizitați
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Pentru a nu mai urmări pagina vizitați
 $UNWATCHURL
 
 Asistență și suport:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Șterge pagina',

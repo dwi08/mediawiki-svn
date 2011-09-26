@@ -1492,10 +1492,10 @@ Nel chascu en que nu vesitis el artículu, nu se te hazrán mas notificacionis. 
 
 --
 Pa hazel chambus ena tu lista e seguimientu, vesita
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Ayua la Güiquipeya:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Esborral páhina',

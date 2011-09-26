@@ -1720,7 +1720,7 @@ $NEWPAGE
 --
 
 আপনার নজরতালিকা সেটিংস পরিবর্তন করতে চাইলে এখানে যান:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 
 নজরতালিকা থেকে কোন পাতা অপসারণ করতে চাইলে এখানে যান:
@@ -1728,7 +1728,7 @@ $UNWATCHURL
 
 
 প্রতিক্রিয়া জানাতে ও আরও সহযোগিতার জন্য:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'পাতাটি মুছে ফেলা হোক',

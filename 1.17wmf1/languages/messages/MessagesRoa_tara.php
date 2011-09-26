@@ -1956,13 +1956,13 @@ Tu puè pure azzerà \'a spunde de le notifiche pe tutte le pàggene condrollete
 
 --
 Pe cangià le \'mbostaziune d\'a liste de le pàggene condrollete tue, vè vide
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Pe scangellà \'a pàgene da \'a liste de le pàggene condrollate, vè vide
 $UNWATCHURL
 
 Segnalaziune e otre assistenze:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => "Scangille 'a pàgene",

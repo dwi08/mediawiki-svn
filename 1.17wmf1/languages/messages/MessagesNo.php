@@ -2101,13 +2101,13 @@ Med vennlig hilsen,
 
 --
 For å endre innstillingene i overvåkningslisten din, besøk
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 For å slette siden fra overvåkningslisten din, besøk
 $UNWATCHURL
 
 Tilbakemeldinger og videre assistanse:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Slett side',

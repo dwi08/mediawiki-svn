@@ -931,10 +931,10 @@ Foddee shiu aajeshaghey bratteeyn ny fograghyn ry hoi dagh duillag er dty rolley
 
 --
 Dys kiartee dty rolley arrey y chaghlaa, cur keayrt er
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Aaveaghey as cooney s\'odjey:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'            => 'Scryss y duillag',

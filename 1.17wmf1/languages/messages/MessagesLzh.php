@@ -1793,11 +1793,11 @@ $NEWPAGE
 {{SITENAME}}敬上
 
 --
-欲更哨令，惠訪{{fullurl:{{#special:Watchlist}}/edit}}
+欲更哨令，惠訪{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 欲刪之頁，惠訪$UNWATCHURL
 
-饋助之，惠訪{{fullurl:{{MediaWiki:Helppage}}}}',
+饋助之，惠訪{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => '刪頁',

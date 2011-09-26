@@ -2101,13 +2101,13 @@ Na spisku nadzorov lahko tudi ponastavite zastavice obveščanj za vse spremljan
 
 --
 Za spremembo nastavitev spiska nadzorov obiščite
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Za odstranitev strani z vašega spiska nadzorov obiščite
 $UNWATCHURL
 
 Povratna sporočila in pomoč:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Briši stran',

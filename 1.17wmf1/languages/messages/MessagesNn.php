@@ -2095,13 +2095,13 @@ Du kan også tilbakestille endringsmeldingsstatus for alle sidene på overvaking
 
 --
 For å endre innstillingane for overvakingslista di, gå til
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 For hjelp og meir informasjon:
 $UNWATCHURL
 
 Tilbakemeldingar og anna hjelp:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Slett sida',

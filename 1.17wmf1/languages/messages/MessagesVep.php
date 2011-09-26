@@ -1689,13 +1689,13 @@ Tö voižit mugažo saubata tedotusiden opcii kaikiden lehtpoliden täht teiden 
 
 --
 Miše toižetada teiden kaclendnimikirjutesen järgendused, mängat tänna:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Miše čuta lehtpol\' teiden kaclendnimikirjutesespäi, mängat tänna:
 $UNWATCHURL
 
 Pid\'oitelend da joksii abu:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => "Čuta lehtpol' poiš",

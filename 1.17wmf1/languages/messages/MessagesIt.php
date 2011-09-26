@@ -2093,7 +2093,7 @@ Non verranno inviate altre notifiche in caso di ulteriori cambiamenti, a meno ch
 
 --
 Per modificare le impostazioni della lista degli osservati speciali, visita
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Per cancellare la pagina della lista degli osservati speciali, visita
 $UNWATCHURL

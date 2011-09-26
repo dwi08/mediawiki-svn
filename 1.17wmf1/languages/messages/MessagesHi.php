@@ -1938,10 +1938,10 @@ $NEWPAGE
 --
 ध्यानसूची के जमाव को बदलने के लिए यहाँ जाएँ
 
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 राय देने या अधिक मदद पाने के लिए:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'पन्ना हटायें',

@@ -2247,13 +2247,13 @@ $NEWPAGE
 
 --
 За да ги промените нагодувањата на списокот на набљудувања, посетете ја страницата
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 За да ја избришете страницата од списокот на набљудувања, посетете ја страницата
 $UNWATCHURL
 
 Повратни информации и помош:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Избриши страница',

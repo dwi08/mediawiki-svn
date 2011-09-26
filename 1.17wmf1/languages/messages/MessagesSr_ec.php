@@ -2115,13 +2115,13 @@ $NEWPAGE
 
 --
 Да бисте променили подешавања везана за списак надгледања, посетите
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Да бисте уклонили ову страну са Вашег списка надгледања, посетите
 $UNWATCHURL
 
 Подршка и даља помоћ:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Обриши страницу',

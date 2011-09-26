@@ -2161,13 +2161,13 @@ Anda juga dapat menset ulang tanda pemberitahuan untuk semua halaman pantauan an
 
 --
 Untuk mengubah preferensi daftar pantauan anda, kunjungi
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Untuk menghapus halaman dari daftar pantauan anda, kunjungi
 $UNWATCHURL
 
 Umpan balik dan bantuan lebih lanjut:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Hapus halaman',

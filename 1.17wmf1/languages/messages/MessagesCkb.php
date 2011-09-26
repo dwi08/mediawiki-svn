@@ -1952,13 +1952,13 @@ $NEWPAGE
              بە سوپاسەوە، سیستەمی ڕاگەیاندنی {{SITENAME}}
 --
 بۆ گۆڕینی تەنزیماتی لیستی چاودێرییەکانت، سەربدە لە
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 بۆ لابردنی پەڕەکە لە لیستی چاودێرییەکانت، سەربدە لە
 $UNWATCHURL
 
 رێنوێنیی زۆرتر و دەربڕینی بیروڕا:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'پەڕە بسڕەوەو',

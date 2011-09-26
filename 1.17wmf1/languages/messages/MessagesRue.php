@@ -1889,13 +1889,13 @@ $NEWPAGE
 
 --
 Наставлїня слїдованых сторінок можете змінити на
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Сторінку можете із своїх слїдованых вырядити на
 $UNWATCHURL
 
 Порада і контакты
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Змазати сторінку',

@@ -2228,13 +2228,13 @@ Pode também reactivar as notificações para todas as suas páginas vigiadas na
 
 --
 Para alterar as suas preferências da lista de páginas vigiadas, visite
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Para retirar a página da sua lista de páginas vigiadas, visite
 $UNWATCHURL
 
 Contacto e assistência:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Eliminar página',

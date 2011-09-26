@@ -2145,13 +2145,13 @@ Groeten van \'t {{SITENAME}}-waorschuwingssysteem.
 
 --
 Je kunnen de instellingen van joew volglieste wiezigen op:
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Je kunnen de pagina van joew volglieste ofhaolen deur op de volgende verwiezing te klikken:
 $UNWATCHURL
 
 Opmarkingen en veerdere hulpe:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Vortdoon',

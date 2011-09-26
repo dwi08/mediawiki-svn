@@ -2164,14 +2164,14 @@ $NEWPAGE
 
 --
 ដើម្បីផ្លាស់ប្តូរការកំណត់បញ្ជីតាមដានរបស់អ្នក, សូមចូលមើល
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 
 ដើម្បីដកទំព័រចេញពីបញ្ជីតាមដានរបស់អ្នក, សូមចូលមើល
 $UNWATCHURL
 
 មតិ​យោបល់​និងជំនួយបន្ថែម ៖
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'លុបទំព័រចោល',

@@ -2287,12 +2287,12 @@ $NEWPAGE
                          {{SITENAME}}通知システム
 
 --
-ウォッチリストの設定は、{{fullurl:{{#special:Watchlist}}/edit}}で変更できます。
+ウォッチリストの設定は、{{canonicalurl:{{#special:Watchlist}}/edit}}で変更できます。
 
 このページをウォッチリストから除去するには$UNWATCHURLをご覧ください。
 
 ご意見、お問い合わせ：
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'ページを削除',

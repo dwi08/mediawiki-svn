@@ -1809,11 +1809,11 @@ $NEWPAGE
              Сістэма апавяшчэнняў {{SITENAME}}
 
 --
-Настаўленні спісу назіранага: {{fullurl:{{#special:Watchlist}}/edit}}
+Настаўленні спісу назіранага: {{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Выняцце старонкі з ліку назіраных: $UNWATCHURL
 
-Зваротная сувязь і далейшая дапамога: {{fullurl:{{MediaWiki:Helppage}}}}',
+Зваротная сувязь і далейшая дапамога: {{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Сцерці старонку',

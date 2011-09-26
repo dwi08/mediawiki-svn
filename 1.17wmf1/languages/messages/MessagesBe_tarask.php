@@ -2132,7 +2132,7 @@ $NEWPAGE
 $UNWATCHURL
 
 Зваротная сувязь і дапамога:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Выдаліць старонку',

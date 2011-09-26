@@ -2175,13 +2175,13 @@ $NEWPAGE
 
 --
 Изменить настройки вашего списка наблюдения
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Удалить страницы из вашего списка наблюдения
 $UNWATCHURL
 
 Обратная связь и помощь
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Удалить страницу',

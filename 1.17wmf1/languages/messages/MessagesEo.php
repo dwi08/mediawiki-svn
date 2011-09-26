@@ -2180,13 +2180,13 @@ Ne estos aliaj avertoj kaze de sekvaj ŝanĝoj krom se vi vizitus la paĝon. Vi 
 
 --
 Por ŝanĝi la elektojn de via atentaro, bonvolu viziti
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Por forigi la paĝon el via atentaro, bonvolu viziti
 $UNWATCHURL
 
 Por viaj reagoj kaj por obteni plian helpon:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Forigi paĝon',

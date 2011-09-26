@@ -2214,13 +2214,13 @@ Tο σύστημα ειδοποίησης του εγχειρήματος {{SITE
 
 --
 Για να αλλάξετε τις προτιμήσεις της λίστας παρακολούθησής σας, ακολουθήστε το σύνδεσμο:
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Για να διαγράψετε την σελίδα από την λίστα παρακολούθησής σας:
 $UNWATCHURL
 
 Ερωτήσεις και περισσότερες πληροφορίες:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Διαγραφή σελίδας',

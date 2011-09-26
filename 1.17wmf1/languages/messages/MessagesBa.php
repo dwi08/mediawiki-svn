@@ -1920,13 +1920,13 @@ $NEWPAGE
 --
 
 Күҙәтеү исемлеге көйләүҙәрен үҙгәртергә:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Битте һеҙҙең күҙәтеү исемлегенән юйырға
 $UNWATCHURL
 
 Кире бәйләнеш һәм ярҙам:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Битте юйырға',

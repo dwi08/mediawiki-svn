@@ -2136,13 +2136,13 @@ Podètz tanben reïnicializar las bandièras de notificacion per totas las pagin
 
 --
 Per modificar los paramètres de vòstra lista de seguiment, visitatz
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Per suprimir la pagina de vòstra lista de seguiment, visitatz
 $UNWATCHURL
 
 Retorn e assisténcia :
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Suprimir la pagina',

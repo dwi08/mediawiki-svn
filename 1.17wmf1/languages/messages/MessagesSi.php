@@ -2134,13 +2134,13 @@ $NEWPAGE
 
 --
 ඔබගේ මුරලැයිස්තු පරිස්ථිතීන් වෙනස්කිරීම සඳහා
-{{fullurl:{{#special:Watchlist}}/edit}} වෙත පිවිසෙන්න
+{{canonicalurl:{{#special:Watchlist}}/edit}} වෙත පිවිසෙන්න
 
 ඔබගේ මුරලැයිස්තුවෙන් පිටුව මකා දැමීම සඳහා වූ
 $UNWATCHURL වෙත පිවිසෙන්න
 
 ප්‍රතිපෝෂණය හා වැඩිමනත්  සහාය:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'පිටුව මකා දමන්න',

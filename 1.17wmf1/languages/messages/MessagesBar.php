@@ -851,7 +851,7 @@ Zusammenfassung vom Bearbeiter: $PAGESUMMARY $PAGEMINOREDIT
 Es wern solang koae weitern Benachrichtigungsmails gsendt, bis Sie de Seitn wieder besuacht ham. Auf Eanana Beobachtungsseitn kinnans S\' alle Benachrichtigungsmarker zsamm zrucksetzen.
              Eana {{SITENAME}} Benachrichtigungssystem
 --
-Um die Einstellungen Ihrer Beobachtungslistn anzupassen bsuachans bitte: {{fullurl:Special:Watchlist/edit}}',
+Um die Einstellungen Ihrer Beobachtungslistn anzupassen bsuachans bitte: {{canonicalurl:Special:Watchlist/edit}}',
 
 # Delete
 'deletepage'            => 'Seitn löschen',

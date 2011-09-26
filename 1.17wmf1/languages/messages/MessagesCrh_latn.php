@@ -1486,13 +1486,13 @@ Bu saifeni ziyaret etmeseñiz, birev onı bir daa deñiştirse de, iç bir tenbi
 
 --
 Közetüv cedveli sazlamalarını deñiştirmek içün:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Saifeni közetüv cedvelinden yoq etmek içün:
 $UNWATCHURL
 
 Yardım ve teklifler içün:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'            => 'Saifeni yoq et',

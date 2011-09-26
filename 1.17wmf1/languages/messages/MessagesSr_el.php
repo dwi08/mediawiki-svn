@@ -1976,13 +1976,13 @@ Takođe možete da resetujete zastavice za obaveštenja za sve vaše nadgledane 
 
 --
 Da biste promenili podešavanja vezana za spisak nadgledanja, posetite
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Da biste uklonili ovu stranu sa Vašeg spiska nadgledanja, posetite
 $UNWATCHURL
 
 Podrška i dalja pomoć:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Obriši stranicu',

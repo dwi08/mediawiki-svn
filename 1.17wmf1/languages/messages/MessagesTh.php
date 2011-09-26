@@ -2017,13 +2017,13 @@ $NEWPAGE
 
 --
 ถ้าต้องการเปลี่ยนแปลงรายการเฝ้าดู กรุณาไปที่:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 ถ้าต้องการลบหน้านี้จากรายการเฝ้าดู กรุณาไปที่:
 $UNWATCHURL
 
 ถ้าต้องการความช่วยเหลือเพิ่มเติม กรุณาไปที่:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'ลบหน้า',
