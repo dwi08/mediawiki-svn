@@ -494,7 +494,6 @@ class ApiUpload extends ApiBase {
 
 	public function getPossibleErrors() {
 		return array_merge( parent::getPossibleErrors(),
-			$this->getRequireOnlyOneParameterErrorMessages( array( 'filekey', 'file', 'url', 'statuskey' ) ),
 			array(
 				array( 'uploaddisabled' ),
 				array( 'invalid-file-key' ),
