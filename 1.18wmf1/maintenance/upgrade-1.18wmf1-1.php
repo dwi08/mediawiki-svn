@@ -55,9 +55,11 @@ class SchemaMigration extends Maintenance {
                 foreach ( $wikisBySection[$section] as $wiki ) {
                     $db->selectDB( $wiki );
                     $this->upgradeWiki( $db );
-                    while ( $db->getLag() > 10 ) {
-                        echo "Waiting for $server to catch up to master.\n";
-                        sleep( 60 );
+                    if ( !$this->getOption( 'secondary' ) ) { 
+                        while ( $db->getLag() > 10 ) {
+                            echo "Waiting for $server to catch up to master.\n";
+                            sleep( 60 );
+                        }
                     }
                 }
             }
