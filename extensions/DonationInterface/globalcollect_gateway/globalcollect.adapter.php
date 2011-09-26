@@ -61,6 +61,53 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	function defineTransactions() {
 		$this->transactions = array( );
 
+		$this->transactions['BANK_TRANSFER'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
+						// 'IPADDRESS',
+						'VERSION'
+					),
+					'PARAMS' => array(
+						'ORDER' => array(
+							'ORDERID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'MERCHANTREFERENCE'
+						),
+						'PAYMENT' => array(
+							'PAYMENTPRODUCTID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'HOSTEDINDICATOR',
+							'RETURNURL',
+//							'CVV',
+//							'EXPIRYDATE',
+//							'CREDITCARDNUMBER',
+							'FIRSTNAME',
+							'SURNAME',
+							'STREET',
+							'CITY',
+							'STATE',
+							'ZIP',
+							'EMAIL',
+						)
+					)
+				)
+			),
+			'values' => array(
+				'ACTION' => 'BANK_TRANSFER',
+				'HOSTEDINDICATOR' => '1',
+			//'PAYMENTPRODUCTID' => '11',
+			),
+		);
+
 		$this->transactions['INSERT_ORDERWITHPAYMENT'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -210,6 +257,11 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$transaction = $this->currentTransaction();
 
 		switch ( $transaction ) {
+			case 'BANK_TRANSFER':
+				$data = $this->xmlChildrenToArray( $response, 'ROW' );
+				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
+				$data['PAYMENT'] = $this->xmlChildrenToArray( $response, 'PAYMENT' );
+				break;
 			case 'INSERT_ORDERWITHPAYMENT':
 				$data = $this->xmlChildrenToArray( $response, 'ROW' );
 				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
