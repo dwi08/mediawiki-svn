@@ -2758,7 +2758,7 @@ You could also reset the notification flags for all your watched pages on your w
 			 Your friendly {{SITENAME}} notification system
 
 --
-To change your email notification settings, visit
+To change your e-mail notification settings, visit
 {{canonicalurl:{{#special:Preferences}}}}
 
 To change your watchlist settings, visit
