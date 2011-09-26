@@ -130,7 +130,7 @@ $wgPayflowProGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
 $wgPayflowProGatewayUseSyslog = false;
 
 /**
- * Configure price cieling and floor for valid contribution amount.  Values 
+ * Configure price ceiling and floor for valid contribution amount.  Values 
  * should be in USD.
  */
 $wgPayflowProGatewayPriceFloor = '1.00';
