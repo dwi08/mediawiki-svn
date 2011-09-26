@@ -356,6 +356,13 @@ return array(
 	'mediawiki.action.view.rightClickEdit' => array(
 		'scripts' => 'resources/mediawiki.action/mediawiki.action.view.rightClickEdit.js',
 	),
+	'mediawiki.page.startup' => array(
+		'scripts' => 'resources/mediawiki.page/mediawiki.page.startup.js',
+		'dependencies' => array(
+			'jquery.client',
+		),
+		'position' => 'top',
+	),
 	'mediawiki.special.preferences' => array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.preferences.js',
 		'styles' => 'resources/mediawiki.special/mediawiki.special.preferences.css',

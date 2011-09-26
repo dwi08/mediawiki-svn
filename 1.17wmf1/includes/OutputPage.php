@@ -1686,6 +1686,7 @@ class OutputPage {
 		// Add base resources
 		$this->addModules( array( 'mediawiki.legacy.wikibits' ) );
 		$this->addModules( array( 'mediawiki.util' ) );
+		$this->addModules( array( 'mediawiki.page.startup' ) );
 
 		// Add various resources if required
 		if ( $wgUseAjax ) {
@@ -2261,7 +2262,7 @@ class OutputPage {
 		$sk->setupUserCss( $this );
 
 		$lang = wfUILang();
-		$ret = Html::htmlHeader( array( 'lang' => $lang->getCode(), 'dir' => $lang->getDir() ) );
+		$ret = Html::htmlHeader( array( 'lang' => $lang->getCode(), 'dir' => $lang->getDir(), 'class' => 'client-nojs' ) );
 
 		if ( $this->getHTMLTitle() == '' ) {
 			$this->setHTMLTitle( wfMsg( 'pagetitle', $this->getPageTitle() ) );

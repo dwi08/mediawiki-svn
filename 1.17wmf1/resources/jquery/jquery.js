@@ -6237,4 +6237,16 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 // Expose jQuery to the global object
 window.jQuery = window.$ = jQuery;
 
+// HACK
+jQuery.fn.prop = jQuery.fn.attr;
+var oldData = jQuery.fn.data;
+jQuery.fn.data = function( key, value ) {
+	if ( value === undefined ) {
+		return this.attr( 'data-' + key ) || oldData( key, value );
+	} else {
+		return oldData( key, value );
+	}
+};
+
+
 })(window);
