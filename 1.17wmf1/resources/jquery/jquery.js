@@ -6242,9 +6242,9 @@ jQuery.fn.prop = jQuery.fn.attr;
 var oldData = jQuery.fn.data;
 jQuery.fn.data = function( key, value ) {
 	if ( value === undefined ) {
-		return this.attr( 'data-' + key ) || oldData( key, value );
+		return this.attr( 'data-' + key ) || oldData.apply( this, [key, value] );
 	} else {
-		return oldData( key, value );
+		return oldData.apply( this, [key, value] );
 	}
 };
 
