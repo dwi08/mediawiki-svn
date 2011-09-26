@@ -2560,12 +2560,56 @@ class Language {
 
 	/**
 	 * Adds commas to a given number
-	 *
+	 * @since 1.19
 	 * @param $_ mixed
 	 * @return string
 	 */
 	function commafy( $_ ) {
-		return strrev( (string)preg_replace( '/(\d{3})(?=\d)(?!\d*\.)/', '$1,', strrev( $_ ) ) );
+		$digitGroupingPattern = $this->digitGroupingPattern();
+		
+		if ( !$digitGroupingPattern || $digitGroupingPattern === "###,###,###" ) {
+			//default grouping is at thousands,  use the same for ###,###,### pattern too.
+			return strrev( (string)preg_replace( '/(\d{3})(?=\d)(?!\d*\.)/', '$1,', strrev( $_ ) ) );
+		}
+		else {
+			// Ref: http://cldr.unicode.org/translation/number-patterns
+			$numberpart = array();
+			$decimalpart = array();
+			$numMatches = preg_match_all( "/(#+)/", $digitGroupingPattern, $matches );
+			preg_match( "/\d+/", $_, $numberpart );
+			preg_match( "/\.\d*/", $_, $decimalpart );
+			$groupedNumber = ( count( $decimalpart ) > 0 ) ? $decimalpart[0]:"";
+			if ( $groupedNumber  === $_){
+			    //the string does not have any number part. Eg: .12345
+			    return $groupedNumber;
+			}
+			$start = $end = strlen( $numberpart[0] );
+			while ( $start > 0 )
+			{
+			    $match = $matches[0][$numMatches -1] ;
+			    $matchLen = strlen( $match );
+			    $start = $end - $matchLen;
+			    if ( $start < 0 ) {
+				$start = 0;
+			    }
+			    $groupedNumber = substr( $_ , $start, $end -$start ) . $groupedNumber ;
+			    $end = $start;
+			    if ( $numMatches > 1 ) {
+				// use the last pattern for the rest of the number
+				$numMatches--;
+			    }
+			    if ( $start > 0 ) {
+				$groupedNumber = "," . $groupedNumber;
+			    }
+			}
+			return $groupedNumber;
+		}
+	}
+	/**
+	 * @return String
+	 */
+	function digitGroupingPattern() {
+		return self::$dataCache->getItem( $this->mCode, 'digitGroupingPattern' );
 	}
 
 	/**
@@ -3427,18 +3471,34 @@ class Language {
 	/**
 	 * @todo Document
 	 * @param $seconds int|float
-	 * @param $format String Optional, one of ("avoidseconds","avoidminutes"):
-	 *		"avoidseconds" - don't mention seconds if $seconds >= 1 hour
-	 *		"avoidminutes" - don't mention seconds/minutes if $seconds > 48 hours
+	 * @param $format Array Optional
+	 *		If $format['avoid'] == 'avoidseconds' - don't mention seconds if $seconds >= 1 hour
+	 *		If $format['avoid'] == 'avoidminutes' - don't mention seconds/minutes if $seconds > 48 hours
+	 *		If $format['noabbrevs'] is true - use 'seconds' and friends instead of 'seconds-abbrev' and friends
+	 *		For backwards compatibility, $format may also be one of the strings 'avoidseconds' or 'avoidminutes'
 	 * @return string
 	 */
-	function formatTimePeriod( $seconds, $format = false ) {
+	function formatTimePeriod( $seconds, $format = array() ) {
+		if ( !is_array( $format ) ) {
+			$format = array( 'avoid' => $format, 'noabbrevs' => false ); // For backwards compatibility
+		}
+		if ( !isset( $format['avoid'] ) ) {
+			$format['avoid'] = false;
+		}
+		if ( !isset( $format['noabbrevs' ] ) ) {
+			$format['noabbrevs'] = false;
+		}
+		$secondsMsg = wfMessage( $format['noabbrevs'] ? 'seconds' : 'seconds-abbrev' )->inLanguage( $this );
+		$minutesMsg = wfMessage( $format['noabbrevs'] ? 'minutes' : 'minutes-abbrev' )->inLanguage( $this );
+		$hoursMsg = wfMessage( $format['noabbrevs'] ? 'hours' : 'hours-abbrev' )->inLanguage( $this );
+		$daysMsg = wfMessage( $format['noabbrevs'] ? 'days' : 'days-abbrev' )->inLanguage( $this );
+		
 		if ( round( $seconds * 10 ) < 100 ) {
 			$s = $this->formatNum( sprintf( "%.1f", round( $seconds * 10 ) / 10 ) );
-			$s .= $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $secondsMsg->params( $s )->text();
 		} elseif ( round( $seconds ) < 60 ) {
 			$s = $this->formatNum( round( $seconds ) );
-			$s .= $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $secondsMsg->params( $s )->text();
 		} elseif ( round( $seconds ) < 3600 ) {
 			$minutes = floor( $seconds / 60 );
 			$secondsPart = round( fmod( $seconds, 60 ) );
@@ -3446,9 +3506,9 @@ class Language {
 				$secondsPart = 0;
 				$minutes++;
 			}
-			$s = $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' );
+			$s = $minutesMsg->params( $this->formatNum( $minutes ) )->text();
 			$s .= ' ';
-			$s .= $this->formatNum( $secondsPart ) . $this->getMessageFromDB( 'seconds-abbrev' );
+			$s .= $secondsMsg->params( $this->formatNum( $secondsPart ) )->text();
 		} elseif ( round( $seconds ) <= 2*86400 ) {
 			$hours = floor( $seconds / 3600 );
 			$minutes = floor( ( $seconds - $hours * 3600 ) / 60 );
@@ -3461,25 +3521,24 @@ class Language {
 				$minutes = 0;
 				$hours++;
 			}
-			$s = $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' );
+			$s = $hoursMsg->params( $this->formatNum( $hours ) )->text();
 			$s .= ' ';
-			$s .= $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' );
-			if ( !in_array( $format, array( 'avoidseconds', 'avoidminutes' ) ) ) {
-				$s .= ' ' . $this->formatNum( $secondsPart ) .
-					$this->getMessageFromDB( 'seconds-abbrev' );
+			$s .= $minutesMsg->params( $this->formatNum( $minutes ) )->text();
+			if ( !in_array( $format['avoid'], array( 'avoidseconds', 'avoidminutes' ) ) ) {
+				$s .= ' ' . $secondsMsg->params( $this->formatNum( $secondsPart ) )->text();
 			}
 		} else {
 			$days = floor( $seconds / 86400 );
-			if ( $format === 'avoidminutes' ) {
+			if ( $format['avoid'] === 'avoidminutes' ) {
 				$hours = round( ( $seconds - $days * 86400 ) / 3600 );
 				if ( $hours == 24 ) {
 					$hours = 0;
 					$days++;
 				}
-				$s = $this->formatNum( $days ) . $this->getMessageFromDB( 'days-abbrev' );
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
 				$s .= ' ';
-				$s .= $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' );
-			} elseif ( $format === 'avoidseconds' ) {
+				$s .= $hoursMsg->params( $this->formatNum( $hours ) )->text();
+			} elseif ( $format['avoid'] === 'avoidseconds' ) {
 				$hours = floor( ( $seconds - $days * 86400 ) / 3600 );
 				$minutes = round( ( $seconds - $days * 86400 - $hours * 3600 ) / 60 );
 				if ( $minutes == 60 ) {
@@ -3490,13 +3549,13 @@ class Language {
 					$hours = 0;
 					$days++;
 				}
-				$s = $this->formatNum( $days ) . $this->getMessageFromDB( 'days-abbrev' );
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
 				$s .= ' ';
-				$s .= $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' );
+				$s .= $hoursMsg->params( $this->formatNum( $hours ) )->text();
 				$s .= ' ';
-				$s .= $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' );
+				$s .= $minutesMsg->params( $this->formatNum( $minutes ) )->text();
 			} else {
-				$s = $this->formatNum( $days ) . $this->getMessageFromDB( 'days-abbrev' );
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
 				$s .= ' ';
 				$s .= $this->formatTimePeriod( $seconds - $days * 86400, $format );
 			}
