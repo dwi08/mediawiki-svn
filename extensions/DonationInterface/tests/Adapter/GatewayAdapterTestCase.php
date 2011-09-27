@@ -39,7 +39,10 @@ require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'DonationInt
  */
 class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterfaceTestCase {
 
-	function testbuildRequestXML() {
+	/**
+	 *
+	 */
+	public function testbuildRequestXML() {
 		$gateway = new TestAdapter();
 		$gateway->publicCurrentTransaction( 'Test1' );
 		$built = $gateway->buildRequestXML();
@@ -49,13 +52,19 @@ class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterface
 		
 	}
 	
-	function testParseResponseStatusXML() {
+	/**
+	 *
+	 */
+	public function testParseResponseStatusXML() {
 		
 		$returned = $this->getTestGatewayTransactionTest2Results();
 		$this->assertEquals($returned['status'], true, "Status should be true at this point.");
 	}
 	
-	function testParseResponseErrorsXML() {
+	/**
+	 *
+	 */
+	public function testParseResponseErrorsXML() {
 		
 		$returned = $this->getTestGatewayTransactionTest2Results();
 		$expected_errors = array(
@@ -66,7 +75,10 @@ class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterface
 				
 	}
 	
-	function testParseResponseDataXML() {
+	/**
+	 *
+	 */
+	public function testParseResponseDataXML() {
 		
 		$returned = $this->getTestGatewayTransactionTest2Results();
 		$expected_data = array(
@@ -77,14 +89,20 @@ class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterface
 				
 	}
 	
-	function testResponseMessage() {
+	/**
+	 *
+	 */
+	public function testResponseMessage() {
 		
 		$returned = $this->getTestGatewayTransactionTest2Results();
 		$this->assertEquals($returned['message'], "Test2 Transaction Successful!", "Expected message was not returned.");
 				
 	}
 	
-	function testGetGlobal(){
+	/**
+	 *
+	 */
+	public function testGetGlobal(){
 		$gateway = new TestAdapter();
 		$found = $gateway::getGlobal("TestVar");
 		$expected = "Hi there!";
@@ -92,13 +110,19 @@ class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterface
 	}
 	
 	
-	function getTestGatewayTransactionTest2Results(){
+	/**
+	 *
+	 */
+	public function getTestGatewayTransactionTest2Results(){
 		$gateway = new TestAdapter();
 		return $gateway->do_transaction( 'Test2' );
 	}
 
 }
 
+/**
+ * Test Adapter
+ */
 class TestAdapter extends GatewayAdapter {
 
 	const GATEWAY_NAME = 'Test Gateway';
@@ -106,12 +130,18 @@ class TestAdapter extends GatewayAdapter {
 	const COMMUNICATION_TYPE = 'xml';
 	const GLOBAL_PREFIX = 'wgTestAdapterGateway';
 
-	function stageData( $type = 'request' ){
+	/**
+	 *
+	 */
+	public function stageData( $type = 'request' ){
 		$this->postdata['amount'] = $this->postdata['amount'] * 1000;
 		$this->postdata['name'] = $this->postdata['fname'] . " " . $this->postdata['lname'];
 	}
 	
-	function __construct( ) {
+	/**
+	 *
+	 */
+	public function __construct( ) {
 		global $wgTestAdapterGatewayTestVar, $wgTestAdapterGatewayUseSyslog, $wgTestAdapterGatewayTest;
 		$wgTestAdapterGatewayTest = true;
 		$wgTestAdapterGatewayTestVar = "Hi there!";
@@ -120,7 +150,10 @@ class TestAdapter extends GatewayAdapter {
 		
 	}
 	
-	function defineAccountInfo(){
+	/**
+	 *
+	 */
+	public function defineAccountInfo(){
 		$this->accountInfo = array(
 			'MERCHANTID' => '128',
 			'PASSWORD' => 'k4ftw',
@@ -129,10 +162,16 @@ class TestAdapter extends GatewayAdapter {
 		);
 	}
 	
-	function defineStagedVars(){
+	/**
+	 *
+	 */
+	public function defineStagedVars(){
 	}
 	
-	function defineVarMap(){
+	/**
+	 *
+	 */
+	public function defineVarMap(){
 		$this->var_map = array(
 			'DONOR' => 'name',
 			'AMOUNT' => 'amount',
@@ -144,14 +183,20 @@ class TestAdapter extends GatewayAdapter {
 		);
 	}
 	
-	function defineReturnValueMap(){
+	/**
+	 *
+	 */
+	public function defineReturnValueMap(){
 		$this->return_value_map = array(
 			'AOK' => true,
 			'WRONG' => false,
 		);
 	}
 	
-	function defineTransactions(){
+	/**
+	 *
+	 */
+	public function defineTransactions(){
 		$this->transactions = array();
 		
 		$this->transactions['Test1'] = array(
@@ -196,7 +241,7 @@ class TestAdapter extends GatewayAdapter {
 	 * For instance: If it's XML, we only want correctly-formatted XML. Headers must be killed off. 
 	 * return a string.
 	 */
-	function getFormattedResponse( $rawResponse ){
+	public function getFormattedResponse( $rawResponse ){
 		$xmlString = $this->stripXMLResponseHeaders($rawResponse);
 		$displayXML = $this->formatXmlString( $xmlString );
 		$realXML = new DomDocument( '1.0' );
@@ -208,7 +253,7 @@ class TestAdapter extends GatewayAdapter {
 	/**
 	 * Parse the response to get the status. Not sure if this should return a bool, or something more... telling.
 	 */
-	function getResponseStatus( $response ){
+	public function getResponseStatus( $response ){
 
 		$aok = true;
 
@@ -225,7 +270,7 @@ class TestAdapter extends GatewayAdapter {
 	 * Parse the response to get the errors in a format we can log and otherwise deal with.
 	 * return a key/value array of codes (if they exist) and messages. 
 	 */
-	function getResponseErrors( $response ){
+	public function getResponseErrors( $response ){
 		$errors = array();
 		foreach ( $response->getElementsByTagName( 'warning' ) as $node ) {
 			$code = '';
@@ -247,7 +292,7 @@ class TestAdapter extends GatewayAdapter {
 	 * Harvest the data we need back from the gateway. 
 	 * return a key/value array
 	 */
-	function getResponseData( $response ){
+	public function getResponseData( $response ){
 		$data = array();
 		foreach ( $response->getElementsByTagName( 'ImportantData' ) as $node ) {
 			foreach ( $node->childNodes as $childnode ) {
@@ -260,19 +305,18 @@ class TestAdapter extends GatewayAdapter {
 		return $data;
 	}
 	
-	function processResponse( $response ) {
+	public function processResponse( $response ) {
 		//TODO: Stuff. 
 	}
 	
-	function publicCurrentTransaction( $transaction = '' ){
+	public function publicCurrentTransaction( $transaction = '' ){
 		$this->currentTransaction( $transaction );
 	}
 	
-	function curl_transaction($data) {
+	public function curl_transaction($data) {
 		$data = "";
 		$data['result'] = 'BLAH BLAH BLAH BLAH whatever something blah blah<?xml version="1.0"?>' . "\n" . '<XML><Response><Status>AOK</Status><ImportantData><thing>stuff</thing><otherthing>12</otherthing></ImportantData><errorswarnings><warning><code>128</code><message>Your shoe\'s untied...</message></warning><warning><code>45</code><message>Low clearance!</message></warning></errorswarnings></Response></XML>';
 		return $data;
 	}
 }
 
-?>
