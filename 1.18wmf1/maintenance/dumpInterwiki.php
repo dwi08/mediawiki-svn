@@ -132,7 +132,7 @@ class DumpInterwiki extends Maintenance {
 				$prefix = str_replace( ' ', '_', $prefix );
 
 				$url = $matches[2];
-				if ( preg_match( '/(wikipedia|wiktionary|wikisource|wikiquote|wikibooks|wikimedia)\.org/', $url ) ) {
+				if ( preg_match( '/(wikipedia|wiktionary|wikisource|wikiquote|wikibooks|wikimedia|wikinews|wikiversity|wikimediafoundation|mediawiki)\.org/', $url ) ) {
 					if ( $this->hasOption( 'protocolrelative' ) ) {
 						if ( substr( $url, 0, 5 ) == 'http:' ) {
 							$url = substr( $url, 5 );
