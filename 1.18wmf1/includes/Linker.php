@@ -828,7 +828,7 @@ class Linker {
 	 * @param $time string: MW timestamp of file creation time
 	 * @return String: HTML
 	 */
-	public static function makeMediaLinkObj( $title, $text = '', $time = false ) {
+	public static function makeMediaLinkObj( Title $title, $text = '', $time = false ) {
 		$img = wfFindFile( $title, array( 'time' => $time ) );
 		return self::makeMediaLinkFile( $title, $img, $text );
 	}
