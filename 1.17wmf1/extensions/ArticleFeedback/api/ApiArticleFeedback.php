@@ -164,6 +164,13 @@ class ApiArticleFeedback extends ApiBase {
 	 */
 	private function insertRevisionRating( $pageId, $revisionId, $lastRevision, $ratingId, $updateAddition, $thisRating, $lastRating ) {
 		$dbw = wfGetDB( DB_MASTER );
+		
+		// Fix previous logic bug: if the revision IDs of the previous and current ratings are NOT the same,
+		// set $lastRating to zero. Otherwise we will try to adjust instead of add, which may result in negative
+		// values and wrap-arounds and all that sort of nastiness.
+		if ( $revisionId != $lastRevision ) {
+			$lastRating = 0;
+		}
 
 		// Try to insert a new "totals" row for this page,rev,rating set
 		$dbw->insert(
@@ -182,7 +189,8 @@ class ApiArticleFeedback extends ApiBase {
 		// If that succeded in inserting a row, then we are for sure rating a previously unrated
 		// revision, and we need to add more information about this rating to the new "totals" row,
 		// as well as remove the previous rating values from the previous "totals" row
-		if ( $dbw->affectedRows() ) {
+		// HACK: This behavior is stupid, don't do this
+		if ( $dbw->affectedRows() && false ) {
 			// If there was a previous rating, there should be a "totals" row for it's revision
 			if ( $lastRating ) {
 				// Deduct the previous rating values from the previous "totals" row
