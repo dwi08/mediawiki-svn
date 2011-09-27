@@ -1,4 +1,27 @@
 <?php
+/**
+ * Wikimedia Foundation
+ *
+ * LICENSE
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @since		r98249
+ * @author Katie Horn <khorn@wikimedia.org>
+ */
+
+/**
+ * @see DonationInterfaceTestCase
+ */
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'DonationInterfaceTestCase.php';
 
 /**
  * @group Fundraising
@@ -6,11 +29,12 @@
  * @group Gateways
  * @author Katie Horn <khorn@wikimedia.org>
  */
-$dir = dirname( __FILE__ ) . '/';
-require_once( $dir . '../gateway_common/DonationData.php' );
-class DonationDataTest extends MediaWikiTestCase {
+class DonationInterface_DonationDataTestCase extends DonationInterfaceTestCase {
 	
-	function __construct(){
+	/**
+	 *
+	 */
+	public function __construct(){
 		parent::__construct();
 		$this->testData = array(
 			'amount' => '128',
@@ -60,7 +84,10 @@ class DonationDataTest extends MediaWikiTestCase {
 	}
 	
 	
-	function testConstruct(){
+	/**
+	 *
+	 */
+	public function testConstruct(){
 		$ddObj = new DonationData(''); //as if we were posted.
 		$returned = $ddObj->getData();
 		$expected = array(  'posted' => '',
@@ -113,7 +140,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertEquals($returned, $expected, "Staged post data does not match expected (largely empty).");
 	}
 	
-	function testConstructAsTest(){
+	/**
+	 *
+	 */
+	public function testConstructAsTest(){
 		$ddObj = new DonationData('', true); //test mode from the start, no data
 		$returned = $ddObj->getData();
 		$expected = array(
@@ -166,7 +196,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertEquals($expected, $returned, "Staged default test data does not match expected.");
 	}
 	
-	function testRepopulate(){
+	/**
+	 *
+	 */
+	public function testRepopulate(){
 		$expected = $this->testData;
 		//just unset a handfull... doesn't matter what, really. 
 		unset($expected['comment-option']);
@@ -182,7 +215,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertEquals($returned, $expected, "The forced test data did not populate as expected.");
 	}
 	
-	function testIsSomething(){
+	/**
+	 *
+	 */
+	public function testIsSomething(){
 		$data = $this->testData;
 		unset($data['zip']);
 		$ddObj = new DonationData('', true, $data); 
@@ -190,7 +226,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertEquals($ddObj->isSomething('lname'), true, "Lname should currently be something.");
 	}
 	
-	function testGetVal(){
+	/**
+	 *
+	 */
+	public function testGetVal(){
 		$data = $this->testData;
 		unset($data['zip']);
 		$ddObj = new DonationData('', true, $data);
@@ -198,7 +237,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertEquals($ddObj->getVal('lname'), 'McTestingyou', "Lname should currently be 'McTestingyou'.");
 	}
 	
-	function testSetNormalizedAmount_amtGiven() {
+	/**
+	 *
+	 */
+	public function testSetNormalizedAmount_amtGiven() {
 		$data = $this->testData;
 		$data['amount'] = 'this is not a number';
 		$data['amountGiven'] = 42.50;
@@ -209,7 +251,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertTrue(!(array_key_exists('amountGiven', $returned)), "amountGiven should have been removed from the data");
 	}
 	
-	function testSetNormalizedAmount_amount() {
+	/**
+	 *
+	 */
+	public function testSetNormalizedAmount_amount() {
 		$data = $this->testData;
 		$data['amount'] = 88.15;
 		$data['amountGiven'] = 42.50;
@@ -220,7 +265,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertTrue(!(array_key_exists('amountGiven', $returned)), "amountGiven should have been removed from the data");
 	}
 	
-	function testSetNormalizedAmount_neagtiveAmount() {
+	/**
+	 *
+	 */
+	public function testSetNormalizedAmount_neagtiveAmount() {
 		$data = $this->testData;
 		$data['amount'] = -1;
 		$data['amountOther'] = 3.25;
@@ -231,7 +279,10 @@ class DonationDataTest extends MediaWikiTestCase {
 		$this->assertTrue(!(array_key_exists('amountOther', $returned)), "amountOther should have been removed from the data");
 	}
 	
-	function testSetNormalizedAmount_noGoodAmount() {
+	/**
+	 *
+	 */
+	public function testSetNormalizedAmount_noGoodAmount() {
 		$data = $this->testData;
 		$data['amount'] = 'splunge';
 		$data['amountGiven'] = 'wombat';
@@ -272,4 +323,4 @@ class DonationDataTest extends MediaWikiTestCase {
 	*/
 }
 
-?>
+

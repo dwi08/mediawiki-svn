@@ -22,6 +22,7 @@
  * @see DonationInterface_Adapter_AllTests
  */
 require_once 'Adapter/AllTests.php';
+require_once 'DonationDataTestCase.php';
 
 /**
  * AllTests
@@ -50,6 +51,7 @@ class DonationInterface_AllTests
 		$suite = new PHPUnit_Framework_TestSuite( 'Donation Interface Suite' );
 
 		$suite->addTestSuite( 'DonationInterface_Adapter_AllTests' );
+		$suite->addTestSuite( 'DonationInterface_DonationDataTestCase' );
 		//$suite->addTest(DonationInterface_Adapter_AllTests::suite());
 
 		return $suite;
