@@ -22,7 +22,7 @@
 /**
  * @see DonationInterface_Adapter_ServerTestCase
  */
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'ServerTestCase.php';
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'GatewayAdapterTestCase.php';
 
 /**
  * AllTests
@@ -52,7 +52,7 @@ class DonationInterface_Adapter_AllTests
 	{
 		$suite = new PHPUnit_Framework_TestSuite( 'Donation Interface - Adapter Suite' );
 
-		//$suite->addTestSuite( 'DonationInterface_Adapter_ServerTestCase' );                                                             
+		$suite->addTestSuite( 'DonationInterface_Adapter_GatewayAdapterTestCase' );                                                             
 
 		return $suite;
 	}

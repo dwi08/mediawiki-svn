@@ -1,4 +1,27 @@
 <?php
+/**
+ * Wikimedia Foundation
+ *
+ * LICENSE
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * @since		r98249
+ * @author Katie Horn <khorn@wikimedia.org>
+ */
+
+/**
+ * @see DonationInterfaceTestCase
+ */
+require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'DonationInterfaceTestCase.php';
 
 /**
  * TODO: Something. 
@@ -12,16 +35,16 @@
  * @group Fundraising
  * @group Splunge
  * @group Gateways
- * @author Katie Horn <khorn@wikimedia.org>
+ * @group DonationInterface
  */
-class GatewayAdapterTest extends MediaWikiTestCase {
+class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterfaceTestCase {
 
 	function testbuildRequestXML() {
 		$gateway = new TestAdapter();
 		$gateway->publicCurrentTransaction( 'Test1' );
 		$built = $gateway->buildRequestXML();
 		$expected = '<?xml version="1.0"?>' . "\n";
-		$expected .= '<XML><REQUEST><ACTION>Donate</ACTION><ACCOUNT><MERCHANTID>128</MERCHANTID><PASSWORD>k4ftw</PASSWORD><VERSION>3.2</VERSION><RETURNURL>http://localhost/index.php/Donate-thanks/en</RETURNURL></ACCOUNT><DONATION><DONOR>Tester Testington</DONOR><AMOUNT>35000</AMOUNT><CURRENCYCODE>USD</CURRENCYCODE><LANGUAGECODE>en</LANGUAGECODE><COUNTRYCODE>US</COUNTRYCODE></DONATION></REQUEST></XML>' . "\n";
+		$expected .= '<XML><REQUEST><ACTION>Donate</ACTION><ACCOUNT><MERCHANTID>128</MERCHANTID><PASSWORD>k4ftw</PASSWORD><VERSION>3.2</VERSION><RETURNURL>http://' . TESTS_HOSTNAME . '/index.php/Donate-thanks/en</RETURNURL></ACCOUNT><DONATION><DONOR>Tester Testington</DONOR><AMOUNT>35000</AMOUNT><CURRENCYCODE>USD</CURRENCYCODE><LANGUAGECODE>en</LANGUAGECODE><COUNTRYCODE>US</COUNTRYCODE></DONATION></REQUEST></XML>' . "\n";
 		$this->assertEquals($built, $expected, "The constructed XML for transaction type Test1 does not match our expected.");
 		
 	}
@@ -76,9 +99,6 @@ class GatewayAdapterTest extends MediaWikiTestCase {
 
 }
 
-$dir = dirname( __FILE__ ) . '/';
-require_once( $dir . '../gateway_common/gateway.adapter.php' );
-
 class TestAdapter extends GatewayAdapter {
 
 	const GATEWAY_NAME = 'Test Gateway';
@@ -86,7 +106,7 @@ class TestAdapter extends GatewayAdapter {
 	const COMMUNICATION_TYPE = 'xml';
 	const GLOBAL_PREFIX = 'wgTestAdapterGateway';
 
-	function stageData(){
+	function stageData( $type = 'request' ){
 		$this->postdata['amount'] = $this->postdata['amount'] * 1000;
 		$this->postdata['name'] = $this->postdata['fname'] . " " . $this->postdata['lname'];
 	}
@@ -107,6 +127,9 @@ class TestAdapter extends GatewayAdapter {
 			//'IPADDRESS' => '', //TODO: Not sure if this should be OUR ip, or the user's ip. Hurm. 
 			'VERSION' => "3.2",
 		);
+	}
+	
+	function defineStagedVars(){
 	}
 	
 	function defineVarMap(){

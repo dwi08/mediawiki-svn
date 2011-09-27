@@ -35,3 +35,10 @@ if ( !defined( 'PHPUNIT_MAIN_METHOD' ) ) {
 	define( 'TESTS_MESSAGE_NOT_IMPLEMENTED', 'Not implemented yet!' );
 }
 
+/**
+ * TESTS_HOSTNAME
+ *
+ * The hostname for the system
+ */
+define( 'TESTS_HOSTNAME', 'localhost' );
+

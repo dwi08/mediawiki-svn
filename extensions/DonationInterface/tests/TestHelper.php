@@ -43,6 +43,11 @@ error_reporting( E_ALL | E_STRICT );
  */
 require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'gateway_common/DonationData.php';
 
+/**
+ * @see GatewayAdapter
+ */
+require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'gateway_common/gateway.adapter.php';
+
 
 /*
  * Load the user-defined test configuration file, if it exists; otherwise, load
