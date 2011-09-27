@@ -162,8 +162,12 @@ abstract class GatewayAdapter implements GatewayType {
 		return $this->dataObj->checkTokens();
 	}
 
-	function getData() {
-		return $this->postdata;
+	function getData( $val = '' ) {
+		if ( empty( $val ) ) {
+			return $this->postdata;
+		} else {
+			return $this->postdata[$val];
+		}
 	}
 
 	function getDisplayData() {
@@ -724,6 +728,31 @@ abstract class GatewayAdapter implements GatewayType {
 				$this->{$function_name}( $type );
 			}
 		}
+	}
+
+	function getPaypalRedirectURL() {
+		global $wgDonationInterfacePaypalURL;
+
+		$utm_source = $this->getData( 'utm_source' );
+
+		// update the utm source to set the payment instrument to pp rather than cc
+		$utm_source_parts = explode( ".", $utm_source );
+		$utm_source_parts[2] = 'pp';
+		$data['utm_source'] = implode( ".", $utm_source_parts );
+		$data['gateway'] = 'paypal';
+		$data['currency_code'] = $data['currency'];
+
+		// Add our response vars to the data object. 
+		$this->dataObj->addData( $data );
+		// refresh our data
+		$this->postdata = $this->dataObj->getData();
+
+		//update contribution tracking
+		$this->dataObj->updateContributionTracking( true );
+
+		$ret = $wgDonationInterfacePaypalURL . "/" . $this->postdata['language'] . "?gateway=paypal&" . http_build_query( $this->postdata );
+		self::log( $ret );
+		return $ret;
 	}
 
 }

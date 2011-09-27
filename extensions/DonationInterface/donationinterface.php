@@ -58,6 +58,7 @@ $wgAutoloadClasses['Gateway_Form_SingleColumn'] = $donationinterface_dir . 'gate
 
 $wgAutoloadClasses['DonationData'] = $donationinterface_dir . 'gateway_common/DonationData.php';
 $wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/gateway.adapter.php';
+$wgAutoloadClasses['GatewayForm'] = $donationinterface_dir . 'gateway_common/GatewayForm.php';
 
 //THE GATEWAYS WILL RESET THIS when they are instantiated. You can override it, but it won't stick around that way. 
 $wgDonationInterfaceTest = false;
@@ -107,6 +108,12 @@ $wgResourceModules['iframe.liberator'] = array(
 	'scripts' => 'iframe.liberator.js',
 	'position' => 'top'
 	) + $wgResourceTemplate;
+
+
+/**
+ * The URL to redirect a transaction to PayPal
+ */
+$wgDonationInterfacePaypalURL = '';
 
 function efDonationInterfaceUnitTests( &$files ) {
 	$files[] = dirname( __FILE__ ) . '/tests/GatewayAdapterTest.php';

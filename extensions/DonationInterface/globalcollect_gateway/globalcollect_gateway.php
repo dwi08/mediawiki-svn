@@ -36,6 +36,8 @@ $wgSpecialPages['GlobalCollectGatewayResult'] = 'GlobalCollectGatewayResult';
 $wgGlobalCollectGatewayURL = 'https://ps.gcsip.nl/wdl/wdl';
 $wgGlobalCollectGatewayTestingURL = 'https://'; // GlobalCollect testing URL
 
+$wgGlobalCollectGatewayCSSVersion = 1;
+
 $wgGlobalCollectGatewayMerchantID = ''; // GlobalCollect ID
 // a boolean to determine if we're in testing mode
 $wgGlobalCollectGatewayTest = FALSE;

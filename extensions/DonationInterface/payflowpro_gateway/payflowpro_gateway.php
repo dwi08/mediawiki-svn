@@ -94,11 +94,6 @@ $wgPayflowProGatewayUseHTTPProxy = FALSE;
 $wgPayflowProGatewayHTTPProxy = '';
 
 /**
- * The URL to redirect a transaction to PayPal
- */
-$wgPayflowProGatewayPaypalURL = '';
-
-/**
  * Set the max-age value for Squid
  *
  * If you have Squid enabled for caching, use this variable to configure

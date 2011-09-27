@@ -628,7 +628,6 @@ class DonationData {
 	//Looks like two places: Either right before a paypal redirect (if that's still a thing) or 
 	//just prior to curling something up to some server somewhere. 
 	//I took care of the one just prior to curling. 
-	//TODO: Determine if that paypal redirect is still a thing or not. 
 	public function updateContributionTracking( $force = false ) {
 		// ony update contrib tracking if we're coming from a single-step landing page
 		// which we know with cc# in utm_source or if force=true or if contribution_tracking_id is not set
