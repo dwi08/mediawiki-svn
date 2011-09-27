@@ -14,11 +14,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
- *
- * @category	UnitTesting
- * @package		Fundraising_QueueHandling
- * @license		http://www.gnu.org/copyleft/gpl.html GNU GENERAL PUBLIC LICENSE
- * @since		r462
+ * @since		r98249
  * @author		Jeremy Postlethwaite <jpostlethwaite@wikimedia.org>
  */
 
