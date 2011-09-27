@@ -3,7 +3,7 @@
  * Extra to expose a recaptcha for 'challenged' transactions
  *
  * To install:
- *      require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/recaptcha/recaptcha.php"
+ *      require_once( "$IP/extensions/DonationInterface/extras/recaptcha/recaptcha.php"
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {

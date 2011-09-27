@@ -3,7 +3,7 @@
  * An abstract class and set up for payflowpro gateway 'extras'
  *
  * To install:
- *      require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/extras.php"
+ *      require_once( "$IP/extensions/DonationInterface/extras/extras.php"
  * Note: This should be specified in LocalSettings.php BEFORE requiring any of the other 'extras'
  */
 

@@ -5,7 +5,7 @@
  * @fixme Class/file names should likely change to reflect change in purpose...
  *
  * To install:
- *      require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/conversion_log/conversion_log.php"
+ *      require_once( "$IP/extensions/DonationInterface/extras/conversion_log/conversion_log.php"
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {

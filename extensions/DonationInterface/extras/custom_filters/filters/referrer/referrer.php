@@ -3,7 +3,7 @@
  * Provides a method for filtering transactions based on referrer
  *
  * To install:
- *   require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/custom_filters/filters/referrer/referrer.php" );
+ *   require_once( "$IP/extensions/DonationInterface/extras/custom_filters/filters/referrer/referrer.php" );
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {

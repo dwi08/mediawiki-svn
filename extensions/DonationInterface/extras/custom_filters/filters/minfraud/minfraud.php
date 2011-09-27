@@ -12,7 +12,7 @@
  * $wgMinFraudStandalone = TRUE
  *
  * To install:
- *   require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/custom_filters/filters/minfraud.php" );
+ *   require_once( "$IP/extensions/DonationInterface/extras/custom_filters/filters/minfraud.php" );
  */
 
  $wgExtensionCredits['payflowprogateway_extras_customfilters_minfraud'][] = array(

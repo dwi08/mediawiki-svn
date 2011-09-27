@@ -3,7 +3,7 @@
  * Provides a method for filtering transactions based on source
  *
  * To install:
- *   require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/custom_filters/filters/source/source.php" );
+ *   require_once( "$IP/extensions/DonationInterface/extras/custom_filters/filters/source/source.php" );
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {

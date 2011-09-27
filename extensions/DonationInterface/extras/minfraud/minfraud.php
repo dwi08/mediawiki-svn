@@ -5,7 +5,7 @@
  * For more details on minFraud, go: http://www.maxmind.com/app/minfraud
  *
  * To install:
- *      require_once( "$IP/extensions/DonationInterface/payflowpro_gateway/extras/minfraud/minfraud.php" );
+ *      require_once( "$IP/extensions/DonationInterface/extras/minfraud/minfraud.php" );
  *
  */
 
