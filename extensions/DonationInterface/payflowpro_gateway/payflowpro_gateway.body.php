@@ -59,6 +59,9 @@ class PayflowProGateway extends UnlistedSpecialPage {
 		$wgOut->addExtensionStyle(
 			"{$wgScriptPath}/extensions/DonationInterface/payflowpro_gateway/payflowpro_gateway.css?284" .
 			$wgPayFlowProGatewayCSSVersion );
+			
+		// Hide unneeded interface elements
+		$wgOut->addModules( 'donationInterface.skinOverride' );
 
 		$scriptVars = array(
 			'payflowproGatewayErrorMsgJs' => wfMsg( 'payflowpro_gateway-error-msg-js' ),
