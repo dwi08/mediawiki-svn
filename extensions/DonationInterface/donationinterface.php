@@ -109,7 +109,7 @@ $wgResourceModules['iframe.liberator'] = array(
 	'position' => 'top'
 	) + $wgResourceTemplate;
 $wgResourceModules['donationInterface.skinOverride'] = array(
-	'scripts' => 'skinOverride.css',
+	'styles' => 'skinOverride.css',
 	'position' => 'top'
 	) + $wgResourceTemplate;
 
