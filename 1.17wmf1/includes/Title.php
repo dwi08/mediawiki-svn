@@ -918,6 +918,12 @@ class Title {
 			if ( $wgRequest->getVal( 'action' ) == 'render' ) {
 				$url = $wgServer . $url;
 			}
+			
+			// HACK for iOS issue: expand URLs to absolute in API action=parse
+			// See http://lists.wikimedia.org/pipermail/mediawiki-api/2011-September/002361.html for details
+			if ( $wgRequest->getVal( 'action' ) == 'parse' ) {
+				$url = wfExpandUrl( $url, PROTO_CANONICAL );
+			}
 		}
 		wfRunHooks( 'GetLocalURL', array( &$this, &$url, $query ) );
 		return $url;
