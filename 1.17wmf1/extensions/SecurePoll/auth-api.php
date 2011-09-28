@@ -1,4 +1,6 @@
 <?php
+// FIXME AWFUL HACK
+require( "/usr/local/apache/common-local/multiversion/MWVersion.php" );
 
 $IP = getenv( 'MW_INSTALL_PATH' );
 if ( strval( $IP ) === '' ) {
@@ -9,7 +11,7 @@ if ( !file_exists( "$IP/includes/WebStart.php" ) ) {
 }
 chdir( $IP );
 
-require( "$IP/includes/WebStart.php" );
+require( getMediaWiki("includes/WebStart.php") );
 
 if ( !class_exists( 'SecurePoll_RemoteMWAuth' ) ) {
 	header( 'HTTP/1.1 500 Internal Server Error' );
