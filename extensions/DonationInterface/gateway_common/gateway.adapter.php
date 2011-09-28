@@ -233,6 +233,26 @@ abstract class GatewayAdapter implements GatewayType {
 		die( "getValue found NOTHING for $gateway_field_name, $transaction." );
 	}
 
+	function buildRequestNameValueString() {
+		$structure = $this->transactions[$this->currentTransaction()]['request'];
+		if ( !is_array( $structure ) ) {
+			return '';
+		}
+
+		$queryvals = array( );
+
+		//we are going to assume a flat array, because... namevalue. 
+		foreach ( $structure as $fieldname ) {
+			$fieldvalue = $this->getValue( $fieldname );
+			if ( $fieldvalue !== '' && $fieldvalue !== false ) {
+				$queryvals[] = $fieldname . '[' . strlen( $fieldvalue ) . ']=' . $fieldvalue;
+			}
+		}
+
+		$ret = implode( '&', $queryvals );
+		return $ret;
+	}
+
 	function buildRequestXML() {
 		$this->xmlDoc = new DomDocument( '1.0' );
 		$node = $this->xmlDoc->createElement( 'XML' );
@@ -305,9 +325,11 @@ abstract class GatewayAdapter implements GatewayType {
 
 		if ( $this->getCommunicationType() === 'namevalue' ) {
 			$namevalue = $this->postdata;
-			$this->getStopwatch( __FUNCTION__ );
-			$returned = $this->curl_transaction( $namevalue );
-			$this->saveCommunicationStats();
+			//buildRequestNameValueString()
+			$this->getStopwatch( "buildRequestNameValueString" );
+			$namevalstring = $this->buildRequestNameValueString();
+			$this->saveCommunicationStats( "buildRequestNameValueString", $transaction );
+			$returned = $this->curl_transaction( $namevalstring );
 			//put the response in a universal form, and return it. 
 		}
 
@@ -405,7 +427,11 @@ abstract class GatewayAdapter implements GatewayType {
 		$headers = $this->getCurlBaseHeaders();
 		$headers[] = 'Content-Length: ' . strlen( $data );
 
-		self::log( "Sending Data: " . $this->formatXmlString( $data ) );
+		if ( $this->getCommunicationType() === 'xml' ) {
+			self::log( "Sending Data: " . $this->formatXmlString( $data ) );
+		} else {
+			self::log( "Sending Data: " . $data );
+		}
 
 		$curl_opts = $this->getCurlBaseOpts();
 		$curl_opts[CURLOPT_HTTPHEADER] = $headers;
@@ -464,6 +490,11 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 		$justXML = substr( $rawResponse, $xmlStart );
 		return $justXML;
+	}
+
+	function stripNameValueResponseHeaders( $rawResponse ) {
+		$result = strstr( $rawResponse, 'RESULT' );
+		return $result;
 	}
 
 	public static function log( $msg, $log_level=LOG_INFO ) {
