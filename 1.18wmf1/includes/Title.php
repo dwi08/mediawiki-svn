@@ -855,7 +855,7 @@ class Title {
 
 			// Ugly quick hack to avoid duplicate prefixes (bug 4571 etc)
 			// Correct fix would be to move the prepending elsewhere.
-			if ( $wgRequest->getVal( 'action' ) != 'render' ) {
+			if ( $wgRequest->getVal( 'action' ) != 'render' && $wgRequest->getVal( 'action' ) != 'parse' ) {
 				$url = $wgServer . $url;
 			}
 		} else {
