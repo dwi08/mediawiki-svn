@@ -85,7 +85,12 @@ class DonationInterface_DonationDataTestCase extends DonationInterfaceTestCase {
 	
 	
 	/**
-	 *
+	 * @covers DonationData::__construct
+	 * @covers DonationData::getData
+	 * @covers DonationData::populateData
+	 * @covers DonationData::doCacheStuff
+	 * @covers DonationData::normalizeAndSanitize
+	 * @covers DonationData::getVal
 	 */
 	public function testConstruct(){
 		$ddObj = new DonationData(''); //as if we were posted.

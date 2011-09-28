@@ -22,13 +22,13 @@
 /**
  * @see DonationInterface_Adapter_ServerTestCase
  */
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'GatewayAdapterTestCase.php';
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'GlobalCollect/AllTests.php';
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'BankTransferTestCase.php';
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'GlobalCollectTestCase.php';
 
 /**
  * AllTests
  */
-class DonationInterface_Adapter_AllTests
+class DonationInterface_Adapter_GlobalCollect_AllTests
 {
 
 	/**
@@ -53,8 +53,8 @@ class DonationInterface_Adapter_AllTests
 	{
 		$suite = new PHPUnit_Framework_TestSuite( 'Donation Interface - Adapter Suite' );
 
-		$suite->addTestSuite( 'DonationInterface_Adapter_GatewayAdapterTestCase' );                                                             
-		$suite->addTestSuite( 'DonationInterface_Adapter_GlobalCollect_AllTests' );                                                             
+		$suite->addTestSuite( 'DonationInterface_Adapter_GlobalCollect_BankTransferTestCase' );                                                             
+		$suite->addTestSuite( 'DonationInterface_Adapter_GlobalCollect_BankTransferTestCase' );                                                             
 
 		return $suite;
 	}

@@ -41,6 +41,10 @@ class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterface
 
 	/**
 	 *
+	 * @covers GatewayAdapter::__construct
+	 * @covers GatewayAdapter::defineVarMap
+	 * @covers GatewayAdapter::defineReturnValueMap
+	 * @covers GatewayAdapter::defineTransactions
 	 */
 	public function testbuildRequestXML() {
 		$gateway = new TestAdapter();
