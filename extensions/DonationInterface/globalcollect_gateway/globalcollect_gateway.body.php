@@ -13,6 +13,11 @@ class GlobalCollectGateway extends GatewayForm {
 	/**
 	 * Show the special page
 	 *
+	 * @todo
+	 * - Add transaction type handler
+	 * - What should a failure on transaction_type issues do? log & message client 
+	 * - Set up BANK_TRANSFER: Story #308
+	 *
 	 * @param $par Mixed: parameter passed to the page or null
 	 */
 	public function execute( $par ) {
@@ -56,7 +61,24 @@ EOT;
 		//TODO: This is short-circuiting what I really want to do here. 
 		//so stop it. 
 		$data = $this->adapter->getDisplayData();
-
+		
+		/*
+		 * The $transactionType should default to false.
+		 *
+		 * This is being introduced after INSERT_ORDERWITHPAYMENT was built.
+		 * Until all INSERT_ORDERWITHPAYMENT can be set in the proper forms, it
+		 * will be set as the default.
+		 */
+		$transactionType = false;
+		$transactionType = 'INSERT_ORDERWITHPAYMENT';
+		$data['transaction_type'] = isset( $data['transaction_type'] ) ? $data['transaction_type'] : $transactionType;
+		$this->adapter->setTransactionType( $data['transaction_type'] );
+		unset( $transactionType );
+		
+		$this->adapter->log( '$transactionType: Default is set to: INSERT_ORDERWITHPAYMENT, this is a temporary hack for backwards compatibility.' );
+		$this->adapter->log( 'Setting transaction type: ' . (string) $data['transaction_type'] );
+		
+		
 		// dispatch forms/handling
 		if ( $this->adapter->checkTokens() ) {
 			if ( $this->adapter->posted && $data['payment_method'] == 'processed' ) {
@@ -66,39 +88,50 @@ EOT;
 				// increase the count of attempts
 				//++$data['numAttempt'];
 				// Check form for errors
-				$form_errors = $this->fnValidateForm( $data, $this->errors );
+				
+				$options = array();
+				switch ( $this->adapter->getTransactionType() ) {
+					
+					case 'BANK_TRANSFER':
+						$options['creditCard'] = false;
+						break;
+					
+					case 'INSERT_ORDERWITHPAYMENT':
+						$options['creditCard'] = true;
+						break;
+						
+					default:
+						$options['creditCard'] = true;
+				}
+				
+				$form_errors = $this->validateForm( $data, $this->errors, $options );
+				unset( $options );
+
+				//$form_errors = $this->fnValidateForm( $data, $this->errors );
 
 				// If there were errors, redisplay form, otherwise proceed to next step
 				if ( $form_errors ) {
+
 					$this->displayForm( $data, $this->errors );
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
-					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
-					$this->adapter->addDonorDataToSession();
-					//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
 
-					$this->displayResultsForDebug( $result );
-
-					if ( !empty( $result['data'] ) ) {
-
-						if ( array_key_exists( 'FORMACTION', $result['data'] ) ) {
-							$paymentFrame = Xml::openElement( 'iframe', array(
-									'id' => 'globalcollectframe',
-									'name' => 'globalcollectframe',
-									'width' => '680',
-									'height' => '300',
-									'frameborder' => '0',
-									'style' => 'display:block;',
-									'src' => $result['data']['FORMACTION']
-									)
-							);
-							$paymentFrame .= Xml::closeElement( 'iframe' );
-
-							$wgOut->addHTML( $paymentFrame );
-						}
+					// Execute the proper transaction code:
+					switch ( $this->adapter->getTransactionType() ) {
+						
+						case 'BANK_TRANSFER':
+							$this->executeBankTransfer( $wgOut );
+							break;
+						
+						case 'INSERT_ORDERWITHPAYMENT':
+							$this->executeInsertOrderWithPayment( $wgOut );
+							break;
+							
+						default:
+							
+							$message = 'The transaction type [ ' . $this->adapter->getTransactionType() . ' ] was not found.'; 
+							throw new Exception( $message );
 					}
-
-
 
 //					self::log( $data[ 'order_id' ] . " Preparing to query MaxMind" );
 //					wfRunHooks( 'PayflowGatewayValidate', array( &$this, &$data ) );
@@ -155,6 +188,52 @@ EOT;
 		}
 	}
 
+	/**
+	 * Execute BANK_TRANSFER
+	 *
+	 * @param OutputPage $wgOut
+	 */
+	public function executeBankTransfer( &$wgOut ) {
+
+		$result = $this->adapter->do_transaction( 'BANK_TRANSFER' );
+		$this->adapter->addDonorDataToSession();
+
+		$this->displayResultsForDebug( $result );
+	}
+
+	/**
+	 * Execute INSERT_ORDERWITHPAYMENT
+	 *
+	 * @param OutputPage $wgOut
+	 */
+	public function executeInsertOrderWithPayment( &$wgOut ) {
+
+		$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+		$this->adapter->addDonorDataToSession();
+		//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
+
+		$this->displayResultsForDebug( $result );
+
+		if ( !empty( $result['data'] ) ) {
+
+			if ( array_key_exists( 'FORMACTION', $result['data'] ) ) {
+				$paymentFrame = Xml::openElement( 'iframe', array(
+						'id' => 'globalcollectframe',
+						'name' => 'globalcollectframe',
+						'width' => '680',
+						'height' => '300',
+						'frameborder' => '0',
+						'style' => 'display:block;',
+						'src' => $result['data']['FORMACTION']
+						)
+				);
+				$paymentFrame .= Xml::closeElement( 'iframe' );
+
+				$wgOut->addHTML( $paymentFrame );
+			}
+		}
+	}
+	
 	/**
 	 * Interpret response code, return
 	 * 1 if approved
