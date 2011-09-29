@@ -10,20 +10,20 @@ class DonationData {
 	protected $normalized = array( );
 	public $boss;
 
-	function __construct( $owning_class, $test = false, $testdata = false ) {
+	function __construct( $owning_class, $test = false, $data = false ) {
 		//TODO: Actually think about this bit.
 		// ...and keep in mind we can re-populate if it's a test or whatever. (But that may not be a good idea either)
 		//maybe we should just explicitly pass in where we get the data from. (Test, post, API...)
 		$this->boss = $owning_class;
-		$this->populateData( $test, $testdata );
+		$this->populateData( $test, $data );
 	}
 
-	function populateData( $test = false, $testdata = false ) {
+	function populateData( $test = false, $data = false ) {
 		$this->normalized = array( );
-		//TODO: Uh, the API should probably be able to get in this far, too... and have its own populate function. 
-		//Maybe check for the boss class...
 		if ( $test ) {
-			$this->populateData_Test( $testdata );
+			$this->populateData_Test( $data );
+		} else if ( $this->boss == 'DonationApi' ) {
+			$this->populateData_Api( $data );
 		} else {
 			$this->populateData_Form();
 		}
@@ -152,7 +152,7 @@ class DonationData {
 			'currency' => $wgRequest->getText( 'currency_code' ),
 			'payment_method' => $wgRequest->getText( 'payment_method' ),
 			'order_id' => $wgRequest->getText( 'order_id', null ), //as far as I know, this won't actually ever pull anything back.
-			'i_order_id' => $wgRequest->getText( 'i_order_id', null ),
+			'i_order_id' => $wgRequest->getText( 'i_order_id', null ), //internal id for each contribution attempt
 			'numAttempt' => $wgRequest->getVal( 'numAttempt', 0 ),
 			'referrer' => ( $wgRequest->getVal( 'referrer' ) ) ? $wgRequest->getVal( 'referrer' ) : $wgRequest->getHeader( 'referer' ),
 			'utm_source' => self::getUtmSource(), //TODO: yes. That.
@@ -176,6 +176,66 @@ class DonationData {
 		if ( !$wgRequest->wasPosted() ) {
 			$this->setVal( 'posted', false );
 		}
+	}
+	
+	function populateData_Api( $data ) {
+		global $wgRequest;
+		$this->normalized = array(
+			// Do we need 'posted' here?
+			'amount' => $data['amount'],
+			'amountGiven' => $data['amountGiven'],
+			'amountOther' => $data['amountOther'],
+			'email' => $data['email'],
+			'fname' => $data['fname'],
+			'mname' => $data['mname'],
+			'lname' => $data['lname'],
+			'street' =>$data['street'],
+			'city' => $data['city'],
+			'state' => $data['state'],
+			'zip' => $data['zip'],
+			'country' => $data['country'],
+			'fname2' => $data['fname'],
+			'lname2' => $data['lname'],
+			'street2' => $data['street'],
+			'city2' => $data['city'],
+			'state2' => $data['state'],
+			'zip2' => $data['zip'],
+			/**
+			 * For legacy reasons, we might get a 0-length string passed into the form for country2.  If this happens, we need to set country2
+			 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
+			 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
+			 */
+			'country2' => ( strlen( $data['country2'] ) ) ? $data['country2'] : $data['country'],
+			'size' => $data['size'],
+			'premium_language' => ( $data['premium_language'] ) ? $data['premium_language'] : 'en',
+			'card_num' => str_replace( ' ', '', $data['card_num'] ),
+			'card_type' => $data['card_type'],
+			'expiration' => $data['mos'] . substr( $data['year'], 2, 2 ),
+			'cvv' => $data['cvv'],
+			'currency' => $data['currency_code'],
+			'payment_method' => $data['payment_method'],
+			'order_id' => $data['order_id'], //as far as I know, this won't actually ever pull anything back.
+			'i_order_id' => $data['i_order_id'], //internal id for each contribution attempt
+			'numAttempt' => $data['numAttempt'],
+			'referrer' => $data['referrer'] ? $data['referrer'] : $wgRequest->getHeader( 'referer' ),
+			'utm_source' => self::getUtmSource( $data['$utm_source'], $data['$utm_source_id'] ),
+			'utm_medium' => $data['utm_medium'],
+			'utm_campaign' => $data['utm_campaign'],
+			// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
+			'language' => ( $data['uselang'] ) ? $data['uselang'] : $data['language'],
+			'comment-option' => $data['comment-option'],
+			'comment' => $data['comment'],
+			'email-opt' => $data['email-opt'],
+			'test_string' => $data['process'], // for showing payflow string during testing
+			'_cache_' => $data['_cache_'],
+			'token' => $data['token'],
+			'contribution_tracking_id' => $data['contribution_tracking_id'],
+			'data_hash' => $data['data_hash'],
+			'action' => $data['action'],
+			'gateway' => $data['gateway'], //likely to be reset shortly by setGateway();
+			'owa_session' => $data['owa_session'],
+			'owa_ref' => $data['owa_ref'],
+		);
 	}
 
 	function isSomething( $key ) {
@@ -288,10 +348,14 @@ class DonationData {
 
 	function setGateway() {
 		//TODO: Hum. If we have some other gateway in the form data, should we go crazy here? (Probably)
-		if ( class_exists( $this->boss ) ) {
-			$c = $this->boss;
-			$gateway = $c::getIdentifier();
-			$this->setVal( 'gateway', $gateway );
+		if ( $this->boss == 'DonationApi' ) {
+			$this->setVal( 'gateway', $this->normalized['gateway'] );
+		} else {
+			if ( class_exists( $this->boss ) ) {
+				$c = $this->boss;
+				$gateway = $c::getIdentifier();
+				$this->setVal( 'gateway', $gateway );
+			}
 		}
 	}
 

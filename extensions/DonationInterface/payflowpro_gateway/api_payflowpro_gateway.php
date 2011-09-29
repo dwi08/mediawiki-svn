@@ -1,6 +1,7 @@
 <?php
 /**
  * PayflowPro Gateway API extension
+ * Call with api.php?action=pfp
  */
 
 class ApiPayflowProGateway extends ApiBase {

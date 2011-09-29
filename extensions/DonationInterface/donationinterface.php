@@ -59,6 +59,7 @@ $wgAutoloadClasses['Gateway_Form_SingleColumn'] = $donationinterface_dir . 'gate
 $wgAutoloadClasses['DonationData'] = $donationinterface_dir . 'gateway_common/DonationData.php';
 $wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/gateway.adapter.php';
 $wgAutoloadClasses['GatewayForm'] = $donationinterface_dir . 'gateway_common/GatewayForm.php';
+$wgAutoloadClasses['DonationApi'] = $donationinterface_dir . 'gateway_common/donation.api.php';
 
 //THE GATEWAYS WILL RESET THIS when they are instantiated. You can override it, but it won't stick around that way. 
 $wgDonationInterfaceTest = false;
@@ -98,6 +99,8 @@ foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
 # Unit tests
 $wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
 
+// enable the API
+$wgAPIModules['donate'] = 'DonationApi';
 
 // Resource modules
 $wgResourceTemplate = array(
