@@ -125,7 +125,7 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @param array	$error	Reference to the error messages of the form
 	 * @param array	$options
 	 *   OPTIONAL - You may require certain field groups to be validated
-	 *   - address - Validates: street, city,, state, zip 
+	 *   - address - Validates: street, city, state, zip 
 	 *   - amount - Validates: amount
 	 *   - creditCard - Validates: card_num, cvv, expiration and sets the card
 	 *   - email - Validates: email - NOTE: part of this validation is disabled
