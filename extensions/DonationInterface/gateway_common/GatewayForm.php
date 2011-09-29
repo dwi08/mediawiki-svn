@@ -128,7 +128,7 @@ class GatewayForm extends UnlistedSpecialPage {
 	 *   - address - Validates: street, city, state, zip 
 	 *   - amount - Validates: amount
 	 *   - creditCard - Validates: card_num, cvv, expiration and sets the card
-	 *   - email - Validates: email - NOTE: part of this validation is disabled
+	 *   - email - Validates: email
 	 *   - name - Validates: fname, lname
 	 *
 	 * @return 0|1	Returns 0 on success and 1 on failure
@@ -304,10 +304,6 @@ class GatewayForm extends UnlistedSpecialPage {
 	/**
 	 * Validates an email address.
 	 *
-	 * @todo
-	 * - is this a bug? isEmail -> email :: This is fixed in this method.
-	 *
-	 * 
 	 * @param array	$data	Reference to the data of the form
 	 * @param array	$error	Reference to the error messages of the form
 	 *
@@ -317,20 +313,20 @@ class GatewayForm extends UnlistedSpecialPage {
 		
 		if ( empty( $data['email'] ) ) {
 
-			$error['email'] = "**" . wfMsg( $gateway_identifier . '_gateway-error-emailAdd' ) . "**<br />";
+			$error['email'] = wfMsg( $gateway_identifier . '_gateway-error-email-empty' );
 
 			$this->setValidateFormResult( false );
 		}
 		
-//		// is email address valid?
-//		$isEmail = User::isValidEmailAddr( $data['emailAdd'] );
-//
-//		// create error message (supercedes empty field message)
-//		if ( !$isEmail ) {
-//			$error['emailAdd'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-email' );
-//
-//			$this->setValidateFormResult( false );
-//		}
+		// is email address valid?
+		$isEmail = User::isValidEmailAddr( $data['email'] );
+
+		// create error message (supercedes empty field message)
+		if ( !$isEmail ) {
+			$error['email'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-email' );
+
+			$this->setValidateFormResult( false );
+		}
 	}
 
 	/**
