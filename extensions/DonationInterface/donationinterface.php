@@ -37,6 +37,7 @@ $wgDonationInterfaceAllowedHtmlForms = array(
 //load all possible form classes
 $wgAutoloadClasses['Gateway_Form'] = $donationinterface_dir . 'gateway_forms/Form.php';
 $wgAutoloadClasses['Gateway_Form_OneStepTwoColumn'] = $donationinterface_dir . 'gateway_forms/OneStepTwoColumn.php';
+$wgAutoloadClasses['Gateway_Form_TwoStepAmount'] = $donationinterface_dir . 'gateway_forms/TwoStepAmount.php';
 $wgAutoloadClasses['Gateway_Form_TwoStepTwoColumn'] = $donationinterface_dir . 'gateway_forms/TwoStepTwoColumn.php';
 $wgAutoloadClasses['Gateway_Form_TwoColumnPayPal'] = $donationinterface_dir . 'gateway_forms/TwoColumnPayPal.php';
 $wgAutoloadClasses['Gateway_Form_TwoColumnLetter'] = $donationinterface_dir . 'gateway_forms/TwoColumnLetter.php';
@@ -123,7 +124,6 @@ $wgResourceModules['donationInterface.skinOverride'] = array(
 $wgDonationInterfacePaypalURL = '';
 
 function efDonationInterfaceUnitTests( &$files ) {
-	$files[] = dirname( __FILE__ ) . '/tests/GatewayAdapterTest.php';
-	$files[] = dirname( __FILE__ ) . '/tests/DonationDataTest.php';
+	//$files[] = dirname( __FILE__ ) . '/tests/AllTests.php';
 	return true;
 }
