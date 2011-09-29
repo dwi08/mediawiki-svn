@@ -82,6 +82,16 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $accountInfo;
 	protected $url;
 	protected $transactions;
+	
+	/**
+	 * $transaction_type will be set in the GatewayForm::execute()
+	 *
+	 * @var string|false
+	 *
+	 * @see GatewayForm::execute()
+	 */
+	protected $transaction_type = false;
+	
 	protected $return_value_map;
 	protected $postdata;
 	protected $postdatadefaults;
@@ -94,7 +104,7 @@ abstract class GatewayAdapter implements GatewayType {
 	const COMMUNICATION_TYPE = 'xml'; //this needs to be either 'xml' or 'namevalue'
 	const GLOBAL_PREFIX = 'wgDonationGateway'; //...for example. 
 
-	function __construct() {
+	public function __construct() {
 		global $wgDonationInterfaceTest; //this is so the forms can see it. 
 		//TODO: Alter the forms so they don't need the global?
 		if ( !self::getGlobal( 'Test' ) ) {
@@ -786,4 +796,25 @@ abstract class GatewayAdapter implements GatewayType {
 		return $ret;
 	}
 
+	/**
+	 * Get the transaction type
+	 *
+	 * @return string|false
+	 */
+	public function getTransactionType() {
+		
+		return $this->transaction_type;
+	}
+
+	/**
+	 * Set the transaction type
+	 *
+	 * @param string|false $transaction_type
+	 */
+	public function setTransactionType( $transaction_type ) {
+		
+		$transaction_type = empty( $transaction_type ) ? false : $transaction_type;
+		
+		$this->transaction_type = $transaction_type;
+	}
 }
