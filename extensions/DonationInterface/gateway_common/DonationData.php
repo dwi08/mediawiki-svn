@@ -111,6 +111,7 @@ class DonationData {
 				'gateway' => 'payflowpro',
 				'owa_session' => $wgRequest->getText( 'owa_session', null ),
 				'owa_ref' => 'http://localhost/defaultTestData',
+				'transaction_type' => '', // Used by GlobalCollect for payment types
 			);
 		}
 	}
@@ -172,6 +173,7 @@ class DonationData {
 			'gateway' => $wgRequest->getText( 'gateway' ), //likely to be reset shortly by setGateway();
 			'owa_session' => $wgRequest->getText( 'owa_session', null ),
 			'owa_ref' => $wgRequest->getText( 'owa_ref', null ),
+			'transaction_type' => $wgRequest->getText( 'transaction_type', null ), // Used by GlobalCollect for payment types
 		);
 		if ( !$wgRequest->wasPosted() ) {
 			$this->setVal( 'posted', false );
@@ -235,6 +237,7 @@ class DonationData {
 			'gateway' => $data['gateway'], //likely to be reset shortly by setGateway();
 			'owa_session' => $data['owa_session'],
 			'owa_ref' => $data['owa_ref'],
+			'transaction_type' => $data['transaction_type'], // Used by GlobalCollect for payment types
 		);
 	}
 
