@@ -30,6 +30,14 @@ class GatewayForm extends UnlistedSpecialPage {
 	 */
 	public $errors = array( );
 
+	/**
+	 * The form is assumed to be successful. Errors in the form must set this to
+	 * false.
+	 *
+	 * @var boolean
+	 */
+	public $validateFormResult = true;
+
 	function __construct() {
 		$me = get_called_class();
 		parent::__construct( $me );
@@ -108,6 +116,241 @@ class GatewayForm extends UnlistedSpecialPage {
 		return $error_result;
 	}
 
+	/**
+	 * Checks posted form data for errors and returns array of messages
+	 *
+	 * This is update to GatewayForm::fnValidateForm().
+	 *
+	 * @param array	$data	Reference to the data of the form
+	 * @param array	$error	Reference to the error messages of the form
+	 *
+	 * @return 0|1	Returns 0 on success and 1 on failure
+	 *
+	 * @see GatewayForm::fnValidateForm()
+	 */
+	public function validateForm( &$data, &$error, $options = array() ) {
+
+		extract( $options );
+		
+		// Set which items will be validated
+		$address	= isset( $address )		? (boolean) $address	: true ;
+		$amount		= isset( $amount )		? (boolean) $amount		: true ;
+		$creditCard	= isset( $creditCard )	? (boolean) $creditCard	: false ;
+		$email		= isset( $email )		? (boolean) $email		: true ;
+		$name		= isset( $name )		? (boolean) $name		: true ;
+
+		// These are set in the order they will most likely appear on the form.
+		
+		if ( $name ) {
+			$this->validateName( $data, $error );
+		}
+
+		if ( $address ) {
+			$this->validateAddress( $data, $error );
+		}
+
+		if ( $amount ) {
+			$this->validateAmount( $data, $error );
+		}
+
+		if ( $email ) {
+		$this->validateEmail( $data, $error );
+		}
+
+		if ( $creditCard ) {
+			$this->validateCreditCard( $data, $error );
+		}
+
+		/*
+		 * $error_result would return 0 on success, 1 on failure.
+		 *
+		 * This is done for backward compatibility.
+		 */
+		return $this->getValidateFormResult() ? 0 : 1 ;
+	}
+	
+	/**
+	 * Validates the address
+	 *
+	 * @param array	$data	Reference to the data of the form
+	 * @param array	$error	Reference to the error messages of the form
+	 *
+	 * @see GatewayForm::validateForm()
+	 */
+	public function validateAddress( &$data, &$error ) {
+		
+		if ( empty( $data['street'] ) ) {
+			
+			$error['street'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-street' );
+			
+			$this->setValidateFormResult( false );
+		}
+		
+		if ( empty( $data['city'] ) ) {
+			
+			$error['city'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-city' );
+			
+			$this->setValidateFormResult( false );
+		}
+		
+		if ( empty( $data['state'] ) ) {
+			
+			$error['state'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-state' );
+			
+			$this->setValidateFormResult( false );
+		}
+		
+		if ( empty( $data['zip'] ) ) {
+			
+			$error['zip'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-zip' );
+			
+			$this->setValidateFormResult( false );
+		}
+	}
+
+	/**
+	 * Validates the amount contributed
+	 *
+	 * @param array	$data	Reference to the data of the form
+	 * @param array	$error	Reference to the error messages of the form
+	 *
+	 * @see GatewayForm::validateForm()
+	 */
+	public function validateAmount( &$data, &$error ) {
+		
+		if ( empty( $data['amount'] ) ) {
+			
+			$error['amount'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-amount' );
+			
+			$this->setValidateFormResult( false );
+		}
+		
+		// check amount
+		$priceFloor = $this->adapter->getGlobal( 'PriceFloor' );
+		$priceCeiling = $this->adapter->getGlobal( 'PriceCeiling' );
+		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data['amount'] ) ||
+			( ( float ) $this->convert_to_usd( $data['currency'], $data['amount'] ) < ( float ) $priceFloor ||
+			( float ) $this->convert_to_usd( $data['currency'], $data['amount'] ) > ( float ) $priceCeiling ) ) {
+
+			$error['invalidamount'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-invalid-amount' );
+
+			$this->setValidateFormResult( false );
+		}
+	}
+
+	/**
+	 * Validates a credit card
+	 *
+	 * @param array	$data	Reference to the data of the form
+	 * @param array	$error	Reference to the error messages of the form
+	 *
+	 * @see GatewayForm::validateForm()
+	 */
+	public function validateCreditCard( &$data, &$error ) {
+		
+		if ( empty( $data['card_num'] ) ) {
+
+			$error['card_num'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-card_num' );
+
+			$this->setValidateFormResult( false );
+		}
+		
+		if ( empty( $data['cvv'] ) ) {
+
+			$error['cvv'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-cvv' );
+
+			$this->setValidateFormResult( false );
+		}
+		
+		if ( empty( $data['expiration'] ) ) {
+
+			$error['expiration'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-expiration' );
+
+			$this->setValidateFormResult( false );
+		}
+		
+		// validate that credit card number entered is correct and set the card type
+		if ( preg_match( '/^3[47][0-9]{13}$/', $data['card_num'] ) ) { // american express
+
+			$data['card'] = 'american';
+
+		} elseif ( preg_match( '/^5[1-5][0-9]{14}$/', $data['card_num'] ) ) { //	mastercard
+
+			$data['card'] = 'mastercard';
+
+		} elseif ( preg_match( '/^4[0-9]{12}(?:[0-9]{3})?$/', $data['card_num'] ) ) {// visa
+
+			$data['card'] = 'visa';
+
+		} elseif ( preg_match( '/^6(?:011|5[0-9]{2})[0-9]{12}$/', $data['card_num'] ) ) { // discover
+
+			$data['card'] = 'discover';
+
+		} else { // an invalid credit card number was entered
+
+			$error[ 'card_num' ] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-card-num' );
+
+			$this->setValidateFormResult( false );
+		}
+	}
+
+	/**
+	 * Validates an email address.
+	 *
+	 * @todo
+	 * - is this a bug? isEmail -> email :: This is fixed in this method.
+	 *
+	 * 
+	 * @param array	$data	Reference to the data of the form
+	 * @param array	$error	Reference to the error messages of the form
+	 *
+	 * @see GatewayForm::validateForm()
+	 */
+	public function validateEmail( &$data, &$error ) {
+		
+		if ( empty( $data['email'] ) ) {
+
+			$error['email'] = "**" . wfMsg( $gateway_identifier . '_gateway-error-emailAdd' ) . "**<br />";
+
+			$this->setValidateFormResult( false );
+		}
+		
+//		// is email address valid?
+//		$isEmail = User::isValidEmailAddr( $data['emailAdd'] );
+//
+//		// create error message (supercedes empty field message)
+//		if ( !$isEmail ) {
+//			$error['emailAdd'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-email' );
+//
+//			$this->setValidateFormResult( false );
+//		}
+	}
+
+	/**
+	 * Validates the name
+	 *
+	 * @param array	$data	Reference to the data of the form
+	 * @param array	$error	Reference to the error messages of the form
+	 *
+	 * @see GatewayForm::validateForm()
+	 */
+	public function validateName( &$data, &$error ) {
+		
+		if ( empty( $data['fname'] ) ) {
+			
+			$error['fname'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-fname' );
+			
+			$this->setValidateFormResult( false );
+		}
+		
+		if ( empty( $data['lname'] ) ) {
+			
+			$error['lname'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-lname' );
+			
+			$this->setValidateFormResult( false );
+		}
+	}
+	
 	/**
 	 * Build and display form to user
 	 *
@@ -323,6 +566,26 @@ class GatewayForm extends UnlistedSpecialPage {
 		}
 		// submit the data to the paypal redirect URL
 		$wgOut->redirect( $this->adapter->getPaypalRedirectURL() );
+	}
+
+	/**
+	 * Get validate form result
+	 *
+	 * @return boolean
+	 */
+	public function getValidateFormResult() {
+		
+		return (boolean) $this->validateFormResult;
+	}
+
+	/**
+	 * Set validate form result
+	 *
+	 * @param boolean $validateFormResult
+	 */
+	public function setValidateFormResult( $validateFormResult ) {
+		
+		$this->validateFormResult = empty( $validateFormResult ) ? false : (boolean) $validateFormResult;
 	}
 
 }
