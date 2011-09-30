@@ -160,7 +160,7 @@ class GlobalCollectGatewayResult extends UnlistedSpecialPage {
 	 * @return array
 	 */
 	public function prepareStompTransaction( $data, $responseArray, $responseMsg ) {
-		$countries = $this->getCountries();
+		$countries = GatewayForm::getCountries();
 
 		$transaction = array( );
 

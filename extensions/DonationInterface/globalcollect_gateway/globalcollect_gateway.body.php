@@ -85,8 +85,6 @@ EOT;
 				// The form was submitted and the payment method has been set
 				$this->adapter->log( "Form posted and payment method set." );
 
-				// increase the count of attempts
-				//++$data['numAttempt'];
 				// Check form for errors
 				
 				$options = array();
@@ -133,40 +131,9 @@ EOT;
 							throw new Exception( $message );
 					}
 
-//					self::log( $data[ 'order_id' ] . " Preparing to query MaxMind" );
-//					wfRunHooks( 'PayflowGatewayValidate', array( &$this, &$data ) );
-//					self::log( $data[ 'order_id' ] . ' Finished querying Maxmind' );
-//
-//					// if the transaction was flagged for review
-//					if ( $this->action == 'review' ) {
-//						// expose a hook for external handling of trxns flagged for review
-//						wfRunHooks( 'PayflowGatewayReview', array( &$this, &$data ));
-//					}
-//
-//					// if the transaction was flagged to be 'challenged'
-//					if ( $this->action == 'challenge' ) {
-//						// expose a hook for external handling of trxns flagged for challenge (eg captcha)
-//						wfRunHooks( 'PayflowGatewayChallenge', array( &$this, &$data ) );
-//					}
-//
-//					// if the transaction was flagged for rejection
-//					if ( $this->action == 'reject' ) {
-//						// expose a hook for external handling of trxns flagged for rejection
-//						wfRunHooks( 'PayflowGatewayReject', array( &$this, &$data ) );
-//
-//						$this->fnPayflowDisplayDeclinedResults( '' );
-//						$this->fnPayflowUnsetEditToken();
-//					}
-//
-//					// if the transaction was flagged for processing
-//					if ( $this->action == 'process' ) {
-//						// expose a hook for external handling of trxns ready for processing
-//						wfRunHooks( 'PayflowGatewayProcess', array( &$this, &$data ) );
-//						$this->fnGlobalCollectProcessTransaction( $data, $payflow_data );
-//					}
-//
-//					// expose a hook for any post processing
-//					wfRunHooks( 'PayflowGatewayPostProcess', array( &$this, &$data ) );
+
+					//TODO: add all the hooks back in. 
+
 				}
 			} else {
 				// Display form for the first time

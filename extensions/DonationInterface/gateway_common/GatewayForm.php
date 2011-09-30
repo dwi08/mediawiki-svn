@@ -29,6 +29,7 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @var array
 	 */
 	public $errors = array( );
+	public $adapter; //the adapter goes here.  
 
 	/**
 	 * The form is assumed to be successful. Errors in the form must set this to
@@ -113,6 +114,7 @@ class GatewayForm extends UnlistedSpecialPage {
 			//$error[ 'card_num' ] = wfMsg( $gateway_identifier . '_gateway-error-msg-card-num' );
 		}
 
+		$this->adapter->setValidationErrors( $error );
 		return $error_result;
 	}
 
@@ -393,6 +395,9 @@ class GatewayForm extends UnlistedSpecialPage {
 			}
 		}
 		$this->form_class = $class_name;
+
+		//this should... maybe replace the other thing? I need it in the adapter so reCaptcha can get to it. 
+		$this->adapter->setFormClass( $class_name );
 	}
 
 	/**
@@ -569,6 +574,16 @@ class GatewayForm extends UnlistedSpecialPage {
 		}
 		// submit the data to the paypal redirect URL
 		$wgOut->redirect( $this->adapter->getPaypalRedirectURL() );
+	}
+	
+	
+	/**
+	 * Fetch the array of iso country codes => country names
+	 * @return array
+	 */
+	public static function getCountries() {
+		require_once( dirname( __FILE__ ) . '/../gateway_forms/includes/countryCodes.inc' );
+		return countryCodes();
 	}
 
 	/**

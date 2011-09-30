@@ -769,6 +769,31 @@ class DonationData {
 		$this->normalizeAndSanitize();
 	}
 
+	public function incrementNumAttempt() {
+		if ( $this->isSomething( 'numAttempt' ) ) {
+			$attempts = $this->getVal( 'numAttempt' );
+			if ( is_numeric( $attempts ) ) {
+				$this->setVal( 'numAttempt', $attempts + 1 );
+			} else {
+				//assume garbage = 0, so...
+				$this->setVal( 'numAttempt', 1 );
+			}
+		}
+	}
+
+	public function decrementNumAttempt() {
+		//minfraud...
+		if ( $this->isSomething( 'numAttempt' ) ) {
+			$attempts = $this->getVal( 'numAttempt' );
+			if ( is_numeric( $attempts ) ) {
+				$this->setVal( 'numAttempt', $attempts - 1 );
+			} else {
+				//I guess...
+				$this->setVal( 'numAttempt', 0 );
+			}
+		}
+	}
+
 }
 
 ?>

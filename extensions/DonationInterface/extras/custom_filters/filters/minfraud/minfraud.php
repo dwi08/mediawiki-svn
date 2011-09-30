@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Custom filter using minFraud
  *
@@ -14,12 +15,11 @@
  * To install:
  *   require_once( "$IP/extensions/DonationInterface/extras/custom_filters/filters/minfraud.php" );
  */
-
- $wgExtensionCredits['payflowprogateway_extras_customfilters_minfraud'][] = array(
-    'name' => 'minfraud custom filter',
+$wgExtensionCredits['gateway_extras_customfilters_minfraud'][] = array(
+	'name' => 'minfraud custom filter',
 	'author' => 'Arthur Richards',
 	'url' => '',
-	'description' => 'This extension uses the MaxMind minFraud service as a validator for the Payflow Pro gateway via custom filters.'
+	'description' => 'This extension uses the MaxMind minFraud service as a validator for the gateway via custom filters.'
 );
 
 /**
@@ -36,11 +36,12 @@
 $wgMinFraudStandalone = FALSE;
 
 $dir = dirname( __FILE__ ) . "/";
-$wgAutoloadClasses['PayflowProGateway_Extras_MinFraud'] = $dir . "../../../minfraud/minfraud.body.php";
-$wgAutoloadClasses['PayflowProGateway_Extras_CustomFilters_MinFraud'] = $dir . "minfraud.body.php";
+$wgAutoloadClasses['Gateway_Extras_MinFraud'] = $dir . "../../../minfraud/minfraud.body.php";
+$wgAutoloadClasses['Gateway_Extras_CustomFilters_MinFraud'] = $dir . "minfraud.body.php";
 $wgExtensionFunctions[] = 'efCustomFiltersMinFraudSetup';
 
 function efCustomFiltersMinFraudSetup() {
 	global $wgMinFraudStandalone, $wgHooks;
-	if ( !$wgMinFraudStandalone ) $wgHooks[ 'PayflowGatewayCustomFilter' ][] = array( "PayflowProGateway_Extras_CustomFilters_MinFraud::onFilter" );
+	if ( !$wgMinFraudStandalone )
+		$wgHooks['GatewayCustomFilter'][] = array( "Gateway_Extras_CustomFilters_MinFraud::onFilter" );
 }

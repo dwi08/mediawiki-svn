@@ -22,7 +22,7 @@ class PayflowProGateway extends GatewayForm {
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
 			$CSSVersion );
-			
+
 		// Hide unneeded interface elements
 		$wgOut->addModules( 'donationInterface.skinOverride' );
 
@@ -63,8 +63,6 @@ EOT;
 				// The form was submitted and the payment method has been set
 				$this->adapter->log( "Form posted and payment method set." );
 
-				// increase the count of attempts
-				//++$data['numAttempt'];
 				// Check form for errors
 				$form_errors = $this->fnValidateForm( $data, $this->errors );
 
@@ -74,25 +72,25 @@ EOT;
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
 					self::log( $data['order_id'] . " Preparing to query MaxMind" );
-					wfRunHooks( 'PayflowGatewayValidate', array( &$this, &$data ) );
+					wfRunHooks( 'GatewayValidate', array( &$this->adapter ) );
 					self::log( $data['order_id'] . ' Finished querying Maxmind' );
 
 					// if the transaction was flagged for review
 					if ( $this->action == 'review' ) {
 						// expose a hook for external handling of trxns flagged for review
-						wfRunHooks( 'PayflowGatewayReview', array( &$this, &$data ) );
+						wfRunHooks( 'GatewayReview', array( &$this->adapter ) );
 					}
 
 					// if the transaction was flagged to be 'challenged'
 					if ( $this->action == 'challenge' ) {
 						// expose a hook for external handling of trxns flagged for challenge (eg captcha)
-						wfRunHooks( 'PayflowGatewayChallenge', array( &$this, &$data ) );
+						wfRunHooks( 'GatewayChallenge', array( &$this->adapter ) );
 					}
 
 					// if the transaction was flagged for rejection
 					if ( $this->action == 'reject' ) {
 						// expose a hook for external handling of trxns flagged for rejection
-						wfRunHooks( 'PayflowGatewayReject', array( &$this, &$data ) );
+						wfRunHooks( 'GatewayReject', array( &$this->adapter ) );
 
 						$this->fnPayflowDisplayDeclinedResults( '' );
 						$this->fnPayflowUnsetEditToken();
@@ -101,12 +99,12 @@ EOT;
 					// if the transaction was flagged for processing
 					if ( $this->action == 'process' ) {
 						// expose a hook for external handling of trxns ready for processing
-						wfRunHooks( 'PayflowGatewayProcess', array( &$this, &$data ) );
+						wfRunHooks( 'GatewayProcess', array( &$this->adapter ) );
 						$this->fnPayflowProcessTransaction( $data, $payflow_data );
 					}
 
 					// expose a hook for any post processing
-					wfRunHooks( 'PayflowGatewayPostProcess', array( &$this, &$data ) );
+					wfRunHooks( 'GatewayPostProcess', array( &$this->adapter ) );
 				}
 			} else {
 				// Display form for the first time
@@ -380,7 +378,7 @@ EOT;
 			$wgOut->addHTML( '<h3 class="response_message">' . $responseMsg . '</h3>' );
 
 			// translate country code into text
-			$countries = $this->getCountries();
+			$countries = GatewayForm::getCountries();
 
 			$rows = array(
 				'title' => array( wfMsg( 'payflowpro_gateway-post-transaction' ) ),

@@ -1,19 +1,36 @@
 <?php
-/**
- * An abstract class for payflowpro gateway 'extras'
- */
 
-abstract class PayflowProGateway_Extras {
+/**
+ * An abstract class for gateway 'extras'
+ */
+abstract class Gateway_Extras {
+
 	/**
 	 * File handle for log file
 	 * @var public
 	 */
 	public $log_fh = NULL;
+	public $gateway_adapter;
 
-	public function __construct() {
-		global $wgPayflowGatewayLog;
+	public function __construct( &$gateway_adapter ) {
+		$this->gateway_adapter = &$gateway_adapter;
+
+		$extrasLog = $this->getGlobal( 'ExtrasLog' );
 		// prepare the log file if the user has specified one
-		if ( strlen( $wgPayflowGatewayLog ) > 0 ) $this->prepare_log_file( $wgPayflowGatewayLog );
+		if ( strlen( $extrasLog ) > 0 )
+			$this->prepare_log_file( $extrasLog );
+	}
+
+	function getGlobal( $varname ) {
+		//basically, if the global is defined in the adapter, use the overridden value.
+		//otherwise, grab the default. 
+		$ret = $this->gateway_adapter->getGlobal( $varname );
+		if ( empty( $ret ) ) {
+			$globalname = 'wgDonationInterface' . $varname;
+			global $$globalname;
+			$ret = $$globalname;
+		}
+		return $ret;
 	}
 
 	/**
@@ -25,19 +42,16 @@ abstract class PayflowProGateway_Extras {
 	 * @param string path to log file
 	 */
 	protected function prepare_log_file( $log_file ) {
-		
+
 		if ( strtolower( $log_file ) == "syslog" ) {
 
-			$this->log_fh = 'syslog';	
-		
-		} elseif( is_file( $log_file )) {
-			
+			$this->log_fh = 'syslog';
+		} elseif ( is_file( $log_file ) ) {
+
 			$this->log_fh = fopen( $log_file, 'a+' );
-		
 		} else {
 
 			$this->log_fh = null;
-			
 		}
 	}
 
@@ -54,26 +68,20 @@ abstract class PayflowProGateway_Extras {
 			echo "what log file?";
 			return;
 		}
-		
+
 		// format the message
 		$msg = '"' . date( 'c' ) . '"';
 		$msg .= "\t" . '"' . $id . '"';
 		$msg .= "\t" . '"' . $status . '"';
 		$msg .= "\t" . $data . "\n";
-		
+
 		// write to the log
 		if ( $this->log_fh == 'syslog' ) { //use syslog facility
 			// replace tabs with spaces - maybe do this universally?  cuz who needs tabs.
 			$msg = str_replace( "\t", " ", $msg );
-					
-			openlog( "payflowpro_gateway_trxn", LOG_ODELAY, LOG_SYSLOG );
-			syslog( $log_level, $msg );
-			closelog();	
-			
+			$this->gateway_adapter->log( $msg, $log_level, '_trxn' );
 		} else { //write to file
-			
 			fwrite( $this->log_fh, $msg );
-		
 		}
 	}
 
@@ -83,8 +91,8 @@ abstract class PayflowProGateway_Extras {
 	 * @return string The hash of the data
 	 */
 	public function generate_hash( $data ) {
-		global $wgPayflowProGatewaySalt;
-		return hash( "sha512", $wgPayflowProGatewaySalt . $data );
+		$salt = $this->getGlobal( 'Salt' );
+		return hash( "sha512", $salt . $data );
 	}
 
 	/**
@@ -105,6 +113,8 @@ abstract class PayflowProGateway_Extras {
 	 * Close the open log file handler if it's open
 	 */
 	public function __destruct() {
-		if ( is_resource( $this->log_fh ) ) fclose( $this->log_fh );
+		if ( is_resource( $this->log_fh ) )
+			fclose( $this->log_fh );
 	}
+
 }

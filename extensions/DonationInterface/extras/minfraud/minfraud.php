@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Validates a transaction against MaxMind's minFraud service
  *
@@ -8,16 +9,15 @@
  *      require_once( "$IP/extensions/DonationInterface/extras/minfraud/minfraud.php" );
  *
  */
-
 if ( !defined( 'MEDIAWIKI' ) ) {
-	die( "This file is part of the MinFraud for PayflowPro Gateway extension. It is not a valid entry point.\n" );
+	die( "This file is part of the MinFraud for Gateway extension. It is not a valid entry point.\n" );
 }
 
-$wgExtensionCredits['payflowprogateway_extras_minfraud'][] = array(
+$wgExtensionCredits['gateway_extras_minfraud'][] = array(
 	'name' => 'minfraud',
 	'author' => 'Arthur Richards',
 	'url' => '',
-	'description' => 'This extension uses the MaxMind minFraud service as a validator for the Payflow Pro gateway.'
+	'description' => 'This extension uses the MaxMind minFraud service as a validator for the gateway.'
 );
 
 /**
@@ -32,9 +32,9 @@ $wgMinFraudLicenseKey = '';
  * The value for one of these keys is an array representing the lower
  * and upper bounds for that action.  For instance,
  *   $wgMinFraudActionRagnes = array(
- *		'process' => array( 0, 100)
- *		...
- *	);
+ * 		'process' => array( 0, 100)
+ * 		...
+ * 	);
  * means that any transaction with a risk score greather than or equal
  * to 0 and less than or equal to 100 will be given the 'process' action.
  *
@@ -55,7 +55,7 @@ $wgMinFraudTimeout = 2;
  * Define whether or not to run minFraud in stand alone mode
  *
  * If this is set to run in standalone, these scripts will be
- * accessed directly via the "PayflowGatewayValidate" hook.
+ * accessed directly via the "GatewayValidate" hook.
  * You may not want to run this in standalone mode if you prefer
  * to use this in conjunction with Custom Filters.  This has the
  * advantage of sharing minFraud info with other filters.
@@ -63,12 +63,13 @@ $wgMinFraudTimeout = 2;
 $wgMinFraudStandalone = TRUE;
 
 $dir = dirname( __FILE__ ) . "/";
-$wgAutoloadClasses['PayflowProGateway_Extras_MinFraud'] = $dir . "minfraud.body.php";
+$wgAutoloadClasses['Gateway_Extras_MinFraud'] = $dir . "minfraud.body.php";
 
 $wgExtensionFunctions[] = 'efMinFraudSetup';
 
 function efMinFraudSetup() {
-	// if we're in standalone mode, use the PayflowGatewayValidate hook
+	// if we're in standalone mode, use the GatewayValidate hook
 	global $wgMinFraudStandalone, $wgHooks;
-	if ( $wgMinFraudStandalone ) $wgHooks["PayflowGatewayValidate"][] = array( 'PayflowProGateway_Extras_MinFraud::onValidate' );
+	if ( $wgMinFraudStandalone )
+		$wgHooks["GatewayValidate"][] = array( 'Gateway_Extras_MinFraud::onValidate' );
 }

@@ -123,15 +123,6 @@ abstract class Gateway_Form {
 	}
 
 	/**
-	 * Fetch the array of iso country codes => country names
-	 * @return array
-	 */
-	public function getCountries() {
-		require_once( dirname( __FILE__ ) . '/includes/countryCodes.inc' );
-		return countryCodes();
-	}
-
-	/**
 	 * Generate the menu select of countries
 	 * @fixme It would be great if we could default the country to the user's locale
 	 * @fixme We should also do a locale-based asort on the country dropdown
@@ -142,7 +133,7 @@ abstract class Gateway_Form {
 		$country_options = '';
 
 		// create a new array of countries with potentially translated country names for alphabetizing later
-		foreach ( $this->getCountries() as $iso_value => $full_name ) {
+		foreach ( GatewayForm::getCountries() as $iso_value => $full_name ) {
 			$countries[$iso_value] = wfMsg( 'payflowpro_gateway-country-dropdown-' . $iso_value );
 		}
 

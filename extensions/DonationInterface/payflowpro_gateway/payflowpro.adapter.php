@@ -104,7 +104,7 @@ class PayflowProAdapter extends GatewayAdapter {
 			$responseArray[$key] = $value;
 		}
 
-		self::log( "Here is the response as an array: " . print_r( $responseArray, true ) ); //I am apparently a huge fibber.
+		self::log( "Here is the response as an array: " . print_r( $responseArray, true ) );
 		return $responseArray;
 	}
 
@@ -121,8 +121,11 @@ class PayflowProAdapter extends GatewayAdapter {
 	}
 
 	/**
-	 * Parse the response to get the errors in a format we can log and otherwise deal with.
-	 * return a key/value array of codes (if they exist) and messages. 
+	 * Interpret response code, return
+	 * 1 if approved
+	 * 2 if declined
+	 * 3 if invalid data was submitted by user
+	 * 4 all other errors
 	 */
 	function getResponseErrors( $response ) {
 
@@ -188,7 +191,8 @@ class PayflowProAdapter extends GatewayAdapter {
 	 * Process the entire response gott'd by the last four functions. 
 	 */
 	function processResponse( $response ) {
-		
+		//set the transaction result message
+		$this->setTransactionResult( $response['RESPMSG'], 'txn_message' );
 	}
 
 	function defineStagedVars() {

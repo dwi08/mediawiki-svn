@@ -97,6 +97,9 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $postdatadefaults;
 	protected $xmlDoc;
 	protected $dataObj;
+	protected $transaction_results;
+	protected $form_class;
+	protected $validation_errors;
 
 	//ALL OF THESE need to be redefined in the children. Much voodoo depends on the accuracy of these constants. 
 	const GATEWAY_NAME = 'Donation Gateway';
@@ -176,7 +179,11 @@ abstract class GatewayAdapter implements GatewayType {
 		if ( empty( $val ) ) {
 			return $this->postdata;
 		} else {
-			return $this->postdata[$val];
+			if ( array_key_exists( $val, $this->postdata ) ) {
+				return $this->postdata[$val];
+			} else {
+				return null;
+			}
 		}
 	}
 
@@ -324,12 +331,13 @@ abstract class GatewayAdapter implements GatewayType {
 	function do_transaction( $transaction ) {
 		$this->currentTransaction( $transaction );
 		//update the contribution tracking data
+		$this->incrementNumAttempt();
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$this->getStopwatch( "buildRequestXML" );
 			$xml = $this->buildRequestXML();
 			$this->saveCommunicationStats( "buildRequestXML", $transaction );
-			$returned = $this->curl_transaction( $xml );
+			$txn_ok = $this->curl_transaction( $xml );
 			//put the response in a universal form, and return it. 
 		}
 
@@ -339,37 +347,45 @@ abstract class GatewayAdapter implements GatewayType {
 			$this->getStopwatch( "buildRequestNameValueString" );
 			$namevalstring = $this->buildRequestNameValueString();
 			$this->saveCommunicationStats( "buildRequestNameValueString", $transaction );
-			$returned = $this->curl_transaction( $namevalstring );
+			$txn_ok = $this->curl_transaction( $namevalstring );
 			//put the response in a universal form, and return it. 
 		}
 
-		self::log( "RETURNED FROM CURL:" . print_r( $returned, true ) );
-		if ( $returned['result'] === false ) { //couldn't make contact. Bail.
-			return $returned;
+		if ( $txn_ok === false ) { //nothing to process, so we have to build it manually
+			self::log( "Transaction Communication failed" . print_r( $this->getTransactionAllResults(), true ) );
+			return array(
+				'status' => false,
+				'message' => "$transaction Communication Failed!",
+				'errors' => array(
+					'1000000' => 'communication failure' //...stupid code.
+				),
+			);
 		}
 
-		//get the status of the response
-		$formatted = $this->getFormattedResponse( $returned['result'] );
-		$returned['status'] = $this->getResponseStatus( $formatted );
+		self::log( "RETURNED FROM CURL:" . print_r( $this->getTransactionAllResults(), true ) );
 
-		//get errors
-		$returned['errors'] = $this->getResponseErrors( $formatted );
+		//set the status of the response
+		$formatted = $this->getFormattedResponse( $this->getTransactionRawResponse() );
+		$this->setTransactionResult( $this->getResponseStatus( $formatted ), 'status' );
+
+		//set errors
+		$this->setTransactionResult( $this->getResponseErrors( $formatted ), 'errors' );
 
 		//if we're still okay (hey, even if we're not), get relevent dataz.
-		$returned['data'] = $this->getResponseData( $formatted );
+		$this->setTransactionResult( $this->getResponseData( $formatted ), 'data' );
 
-		$this->processResponse( $returned );
+		$this->processResponse( $formatted );
 
 		//TODO: Actually pull these from somewhere legit. 
-		if ( $returned['status'] === true ) {
-			$returned['message'] = "$transaction Transaction Successful!";
-		} elseif ( $returned['status'] === false ) {
-			$returned['message'] = "$transaction Transaction FAILED!";
+		if ( $this->getTransactionStatus() === true ) {
+			$this->setTransactionResult( "$transaction Transaction Successful!", 'message' );
+		} elseif ( $this->getTransactionStatus() === false ) {
+			$this->setTransactionResult( "$transaction Transaction FAILED!", 'message' );
 		} else {
-			$returned['message'] = "$transaction Transaction... weird. I have no idea what happened there.";
+			$this->setTransactionResult( "$transaction Transaction... weird. I have no idea what happened there.", 'message' );
 		}
 
-		return $returned;
+		return $this->getTransactionAllResults();
 
 		//speaking of universal form: 
 		//$result['status'] = something I wish could be boiled down to a bool, but that's way too optimistic, I think.
@@ -398,7 +414,7 @@ abstract class GatewayAdapter implements GatewayType {
 		// set proxy settings if necessary
 		if ( self::getGlobal( 'UseHTTPProxy' ) ) {
 			$opts[CURLOPT_HTTPPROXYTUNNEL] = 1;
-			$opts[CURLOPT_PROXY] = self::getGlobal( 'UseHTTPProxy' );
+			$opts[CURLOPT_PROXY] = self::getGlobal( 'HTTPProxy' );
 		}
 		return $opts;
 	}
@@ -455,38 +471,39 @@ abstract class GatewayAdapter implements GatewayType {
 		// in case there is a general network issue
 		$i = 1;
 
-		$return = array( );
+		$results = array( );
 
 		while ( $i++ <= 3 ) {
 			self::log( $this->postdatadefaults['order_id'] . ' Preparing to send transaction to ' . self::getGatewayName() );
-			$return['result'] = curl_exec( $ch );
-			$return['headers'] = curl_getinfo( $ch );
+			$results['result'] = curl_exec( $ch );
+			$results['headers'] = curl_getinfo( $ch );
 
-			if ( $return['headers']['http_code'] != 200 && $return['headers']['http_code'] != 403 ) {
+			if ( $results['headers']['http_code'] != 200 && $results['headers']['http_code'] != 403 ) {
 				self::log( $this->postdatadefaults['order_id'] . ' Failed sending transaction to ' . self::getGatewayName() . ', retrying' );
 				sleep( 1 );
-			} elseif ( $return['headers']['http_code'] == 200 || $return['headers']['http_code'] == 403 ) {
+			} elseif ( $results['headers']['http_code'] == 200 || $results['headers']['http_code'] == 403 ) {
 				self::log( $this->postdatadefaults['order_id'] . ' Finished sending transaction to ' . self::getGatewayName() );
 				break;
 			}
 		}
 
-		$this->saveCommunicationStats( __FUNCTION__, $this->currentTransaction(), "Request:" . print_r( $data, true ) . "\nResponse" . print_r( $return, true ) );
+		$this->saveCommunicationStats( __FUNCTION__, $this->currentTransaction(), "Request:" . print_r( $data, true ) . "\nResponse" . print_r( $results, true ) );
 
-		if ( $return['headers']['http_code'] != 200 ) {
-			$return['result'] = false;
+		if ( $results['headers']['http_code'] != 200 ) {
+			$results['result'] = false;
 			//TODO: i18n here! 
 			//TODO: But also, fire off some kind of "No response from the gateway" thing to somebody so we know right away. 
-			$return['message'] = 'No response from ' . self::getGatewayName() . '.  Please try again later!';
+			$results['message'] = 'No response from ' . self::getGatewayName() . '.  Please try again later!';
 			$when = time();
 			self::log( $this->postdatadefaults['order_id'] . ' No response from ' . self::getGatewayName() . ': ' . curl_error( $ch ) );
 			curl_close( $ch );
-			return $return;
+			return false;
 		}
 
 		curl_close( $ch );
 
-		return $return;
+		$this->setTransactionResult( $results );
+		return true;
 	}
 
 	function stripXMLResponseHeaders( $rawResponse ) {
@@ -499,16 +516,18 @@ abstract class GatewayAdapter implements GatewayType {
 			return false;
 		}
 		$justXML = substr( $rawResponse, $xmlStart );
+		$this->setTransactionResult( $justXML, 'unparsed_data' );
 		return $justXML;
 	}
 
 	function stripNameValueResponseHeaders( $rawResponse ) {
 		$result = strstr( $rawResponse, 'RESULT' );
+		$this->setTransactionResult( $result, 'unparsed_data' );
 		return $result;
 	}
 
-	public static function log( $msg, $log_level=LOG_INFO ) {
-		$identifier = self::getIdentifier() . "_gateway";
+	public static function log( $msg, $log_level=LOG_INFO, $log_id_suffix = '' ) {
+		$identifier = self::getIdentifier() . "_gateway" . $log_id_suffix;
 
 		// if we're not using the syslog facility, use wfDebugLog
 		if ( !self::getGlobal( 'UseSyslog' ) ) {
@@ -817,4 +836,101 @@ abstract class GatewayAdapter implements GatewayType {
 		
 		$this->transaction_type = $transaction_type;
 	}
+	
+	public function getTransactionAllResults() {
+		if ( !empty( $this->transaction_results ) && is_array( $this->transaction_results ) ) {
+			return $this->transaction_results;
+		} else {
+			return false;
+		}
+	}
+
+	public function setTransactionResult( $value, $key = false ) {
+		if ( $key === false ) {
+			$this->transaction_results = $value;
+		} else {
+			$this->transaction_results[$key] = $value;
+		}
+	}
+
+	public function getTransactionRawResponse() {
+		if ( array_key_exists( 'result', $this->transaction_results ) ) {
+			return $this->transaction_results['result'];
+		} else {
+			return false;
+		}
+	}
+
+	public function getTransactionStatus() {
+		if ( array_key_exists( 'status', $this->transaction_results ) ) {
+			return $this->transaction_results['status'];
+		} else {
+			return false;
+		}
+	}
+
+	public function getTransactionMessage() {
+		if ( array_key_exists( 'txn_message', $this->transaction_results ) ) {
+			return $this->transaction_results['txn_message'];
+		} else {
+			return false;
+		}
+	}
+
+	public function getTransactionData() {  //this is the FORMATTED data returned from the reply. 
+		if ( array_key_exists( 'data', $this->transaction_results ) ) {
+			return $this->transaction_results['data'];
+		} else {
+			return false;
+		}
+	}
+
+	public function setFormClass( $formClassName ) {
+		//I'm adding this because Captcha needs it, and we're gonna fire the hook inside. Nothing else really needs it as far as I know.
+		$this->form_class = $formClassName;
+	}
+
+	public function getFormClass() {
+		if ( isset( $this->form_class ) && class_exists( $this->form_class ) ) {
+			return $this->form_class;
+		} else {
+			return false;
+		}
+	}
+
+	public function getGatewayAdapterClass() {
+		return get_called_class();
+	}
+
+	public function setValidationErrors( $errors ) {
+		$this->validation_errors = $errors;
+	}
+
+	public function getValidationErrors() {
+		if ( !empty( $this->validation_errors ) ) {
+			return $this->validation_errors;
+		} else {
+			return false;
+		}
+	}
+
+	public function incrementNumAttempt() {
+		$this->dataObj->incrementNumAttempt();
+	}
+
+	public function setHash( $hashval ) {
+		$this->dataObj->setVal( 'data_hash', $hashval );
+	}
+
+	public function unsetHash() {
+		$this->dataObj->expunge( 'data_hash' );
+	}
+
+	public function setActionHash( $hashval ) {
+		$this->dataObj->setVal( 'action', $hashval );
+	}
+
+	public function unsetActionHash() {
+		$this->dataObj->expunge( 'action' );
+	}	
 }
