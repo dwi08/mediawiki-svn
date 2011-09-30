@@ -1837,7 +1837,7 @@ $NEWPAGE
 
 ----
 باقىلاۋ ٴتىزىمىڭىزدىڭ باپتاۋلىرىن وزگەرتۋ ٴۇشىن, مىندا كەلىپ-كەتىڭىز:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 سىن-پىكىر بەرۋ جانە بىلايعى جاردەم الۋ ٴۇشىن:
 {{fullurl:{{{{ns:mediawiki}}:Helppage}}}}',

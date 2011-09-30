@@ -211,8 +211,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Vis antal brugere, der overvåger',
 'tog-oldsig'                  => 'Forhåndsvisning af nuværende signatur',
 'tog-fancysig'                => 'Behandl signatur som wikitekst uden automatisk henvisning',
-'tog-externaleditor'          => 'Brug ekstern editor automatisk (kun for rutinerede brugere, da det kræver særlige indstillinger på din computer. [http://www.mediawiki.org/wiki/Manual:External_editors Flere oplysninger.])',
-'tog-externaldiff'            => 'Brug ekstern forskelsvisning automatisk (kun for rutinerede brugere, da det kræver særlige indstillinger på din computer. [http://www.mediawiki.org/wiki/Manual:External_editors Flere oplysninger.])',
+'tog-externaleditor'          => 'Brug ekstern editor automatisk',
+'tog-externaldiff'            => 'Brug ekstern forskelsvisning automatisk',
 'tog-showjumplinks'           => 'Vis tilgængeligheds-henvisninger',
 'tog-uselivepreview'          => 'Brug automatisk forhåndsvisning (JavaScript) (eksperimentel)',
 'tog-forceeditsummary'        => 'Advar mig hvis jeg ikke udfylder beskrivelsesfeltet',
@@ -612,7 +612,6 @@ Kontrollér stavemåden, eller [[Special:UserLogin/signup|opret en ny konto]].',
 'wrongpasswordempty'         => 'Du glemte at indtaste password. Prøv igen.',
 'passwordtooshort'           => 'Adgangskoden skal mindst være på $1 {{PLURAL:$1|tegn|tegn}}.',
 'password-name-match'        => 'Kodeordet må ikke være det samme som brugernavnet.',
-'password-login-forbidden'   => 'Brugen af dette brugernavn og adgangskode er blevet forbudt.',
 'mailmypassword'             => 'Send nyt password',
 'passwordremindertitle'      => 'Nyt password til {{SITENAME}}',
 'passwordremindertext'       => 'Nogen (sandsynligvis dig, fra IP-adressen $1)
@@ -925,7 +924,7 @@ version, (forrige) = forskel til den forrige version, M = mindre ændring',
 'history-feed-empty'          => 'Den ønskede side findes ikke. Måske er den slettet eller flyttet. [[Special:Search|Gennesøg]] {{SITENAME}} efter passende nye sider.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(redigeringsbeskrivelsen er fjernet)',
+'rev-deleted-comment'         => '(kommentar fjernet)',
 'rev-deleted-user'            => '(brugernavn fjernet)',
 'rev-deleted-event'           => '(loghandling fjernet)',
 'rev-deleted-user-contribs'   => '[brugernavn eller IP-adresse er fjernet - redigeringer er skjult fra bidragene]',
@@ -1167,9 +1166,9 @@ Du kan prøve at bruge \"all:\" som præfiks for at søge i alt indhold (inkl. d
 'prefs-rc'                      => 'Seneste ændringer',
 'prefs-watchlist'               => 'Overvågningsliste',
 'prefs-watchlist-days'          => 'Antal dage, som overvågningslisten standardmæssigt skal omfatte:',
-'prefs-watchlist-days-max'      => 'Maks. 7 dage',
+'prefs-watchlist-days-max'      => '(maks. 7 dage)',
 'prefs-watchlist-edits'         => 'Antal redigeringer der vises i udvidet overvågningsliste:',
-'prefs-watchlist-edits-max'     => 'Maks. 1000',
+'prefs-watchlist-edits-max'     => '(maks. 1000)',
 'prefs-watchlist-token'         => 'Overvågningslistenøgle:',
 'prefs-misc'                    => 'Forskelligt',
 'prefs-resetpass'               => 'Skift adgangskode',
@@ -1237,7 +1236,7 @@ Det kan ikke gøres om.',
 'yournick'                      => 'Signatur:',
 'prefs-help-signature'          => 'Kommentarer på diskussionssider bør signeres med "<nowiki>~~~~</nowiki>" som vil blive konverteret til din signatur og et tidsstempel.',
 'badsig'                        => 'Syntaksen i underskriften er ugyldig; kontroller venligst den brugte HTML.',
-'badsiglength'                  => 'Din signatur er for lang. Den må højst indeholde {{PLURAL:$1|}}$1 tegn.',
+'badsiglength'                  => 'Din sigantur er for lang. Den må højst indeholde {{PLURAL:$1|}}$1 tegn.',
 'yourgender'                    => 'Køn:',
 'gender-unknown'                => 'Uspecificeret',
 'gender-male'                   => 'Mand',
@@ -1265,7 +1264,6 @@ Du kan også vælge at lade andre brugere kontakte dig gennem din bruger- eller 
 'prefs-diffs'                   => 'Forskelle',
 
 # User preference: e-mail validation using jQuery
-'email-address-validity-valid'   => 'E-mailadressen ser ud til at være gyldig',
 'email-address-validity-invalid' => 'Indtast en gyldig e-mail adresse',
 
 # User rights
@@ -1286,7 +1284,7 @@ Du kan også vælge at lade andre brugere kontakte dig gennem din bruger- eller 
 'userrights-no-interwiki'      => 'Du kan ikke ændre brugerrettigheder på andre wikier.',
 'userrights-nodatabase'        => 'Databasen $1 eksisterer ikke lokalt.',
 'userrights-nologin'           => 'Du skal [[Special:UserLogin|logge på]] med en administrativ konto, før du kan ændre brugerettigheder.',
-'userrights-notallowed'        => 'Din konto har ikke adgang til at ændre brugerrettigheder.',
+'userrights-notallowed'        => 'Din konto har ikke andgang til at ændre brugerrettigheder.',
 'userrights-changeable-col'    => 'Redigerbare grupper',
 'userrights-unchangeable-col'  => 'Uredigerbare grupper',
 
@@ -1375,6 +1373,7 @@ Du kan også vælge at lade andre brugere kontakte dig gennem din bruger- eller 
 'right-reset-passwords'       => 'Ændre andre brugeres adgangskode',
 'right-override-export-depth' => 'Eksportere sider inkl. henviste sider op til en dybde på 5',
 'right-sendemail'             => 'Sende e-mail til andre brugere',
+'right-disableaccount'        => 'Deaktivere konti',
 
 # User rights log
 'rightslog'      => 'Rettighedslog',
@@ -1512,7 +1511,7 @@ Brug en henvisning af en de følgende typer for at bruge en fil på en side:
 'filename-tooshort'           => 'Filnavnet er for kort.',
 'filetype-banned'             => 'Denne type fil er ikke tilladt',
 'verification-error'          => 'Denne fil bestod ikke fil verifikationen.',
-'hookaborted'                 => 'Ændringen du forsøgte at gøre blev afbrudt af en udvidelses hook.',
+'hookaborted'                 => '↓ Ændringen du forsøgte at gøre blev afbrudt af en udvidelses hook.',
 'illegal-filename'            => 'Filnavnet er ikke tilladt.',
 'overwrite'                   => 'Overskrivning af en eksisterende fil er ikke tilladt.',
 'unknown-error'               => 'En ukendt fejl opstod.',
@@ -1544,7 +1543,7 @@ Hvis du fortsat vil lægge filen op, bedes du gå tilbage og bruge et nyt navn.
 Hvis du fortsat vil lægge filen op, bedes du gå tilbage og bruge et nyt navn.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Denne fil er en bublet af {{PLURAL:$1|den nedenstående fil|de nedenstående $1 filer}}:',
-'file-deleted-duplicate'      => 'En fil identisk med denne fil ([[:$1]]) er tidligere blevet slettet. Du bør tjekke den fils sletningshistorik før du prøver at genoplægge den.',
+'file-deleted-duplicate'      => 'En fil identisk med denne fil ([[$1]]) er tidligere blevet slettet. Du bør tjekke den fils sletningshistorik før du prøver at genoplægge den.',
 'uploadwarning'               => 'Advarsel',
 'uploadwarning-text'          => 'Vær venlig at ændre filbeskrivelsen nedenfor og prøv igen.',
 'savefile'                    => 'Gem fil',
@@ -1592,23 +1591,22 @@ Informer venligst en [[Special:ListUsers/sysop|systemadministrator]].',
 'upload-http-error'         => 'Der opstod en HTTP-fejl: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Adgang nægtet',
-'img-auth-nopathinfo'       => 'PATH_INFO mangler.
+'img-auth-accessdenied' => 'Adgang nægtet',
+'img-auth-nopathinfo'   => 'PATH_INFO mangler.
 Din server er ikke sat op til at give denne information.
 Den bruger måske CGI og understøtter ikke img_auth.
 Se http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Den ønskede sti er ikke i det opsatte oplægningskatalog.',
-'img-auth-badtitle'         => 'Kan ikke lave en gyldig titel ud fra "$1".',
-'img-auth-nologinnWL'       => 'Du er ikke logget ind, og "$1" er ikke på hvidlisten.',
-'img-auth-nofile'           => 'Filen "$1" findes ikke.',
-'img-auth-isdir'            => 'Du forsøger at få adgang til kataloget "$1".
+'img-auth-notindir'     => 'Den ønskede sti er ikke i det opsatte oplægningskatalog.',
+'img-auth-badtitle'     => 'Kan ikke lave en gyldig titel ud fra "$1".',
+'img-auth-nologinnWL'   => 'Du er ikke logget ind, og "$1" er ikke på hvidlisten.',
+'img-auth-nofile'       => 'Filen "$1" findes ikke.',
+'img-auth-isdir'        => 'Du forsøger at få adgang til kataloget "$1".
 Kun adgang til filer tillades.',
-'img-auth-streaming'        => 'Sender "$1".',
-'img-auth-public'           => "img_auth.php's funktion er at sende filer fra en privat wiki.
+'img-auth-streaming'    => 'Sender "$1".',
+'img-auth-public'       => "img_auth.php's funktion er at sende filer fra en privat wiki.
 Denne wiki er konfigureret som en offentlig wiki.
 For optimal sikkerhed er img_auth.php deaktiveret.",
-'img-auth-noread'           => 'Brugeren har ikke rettigheder til at læse "$1".',
-'img-auth-bad-query-string' => 'URL-adressen har en ugyldig forespørgselsstreng.',
+'img-auth-noread'       => 'Brugeren har ikke rettigheder til at læse "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'Ugyldig webadresse: $1',
@@ -2040,17 +2038,14 @@ På din overvågningsliste kan du også nulstille alle markeringer på de sider,
              Med venlig hilsen {{SITENAME}}s informationssystem
 
 --
-For at ændre dine indstillinger for e-mail-notifikationer, besøg
-{{fullurl:{{#special:Preferences}}}}
-
 For at ændre indstillingerne for din overvågningsliste, besøg
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 For at slette siden fra din overvågningsliste, besøg
 $UNWATCHURL
 
 Tilbagemelding og yderligere hjælp:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Slet side',
@@ -2081,7 +2076,7 @@ Bekræft venligst at du virkelig vil gøre dette, at du forstår konsekvenserne,
 ** Efter forfatters ønske
 ** Overtrædelse af ophavsret
 ** Hærværk',
-'delete-edit-reasonlist' => 'Rediger sletningsårsager',
+'delete-edit-reasonlist' => 'Rediger sletningsårsagerrette',
 'delete-toobig'          => 'Denne side har en stor historik, over {{PLURAL:$1|en version|$1 versioner}}. Sletning af sådanne sider er begrænset blevet for at forhindre utilsigtet forstyrrelse af {{SITENAME}}.',
 'delete-warning-toobig'  => 'Denne side har en stor historik, over {{PLURAL:$1|en version|$1 versioner}} versioner, slettes den kan det forstyrre driften af {{SITENAME}}, gå forsigtigt frem.',
 
@@ -2314,7 +2309,7 @@ Se [[Special:IPBlockList|IP-blokeringslisten]] for alle blokeringer.',
 'ipusubmit'                       => 'Ophæv blokeringen',
 'unblocked'                       => '[[User:$1|$1]] blev frigivet',
 'unblocked-id'                    => 'Blokering $1 er blevet fjernet',
-'ipblocklist'                     => 'Blokerede brugere',
+'ipblocklist'                     => 'Blokerede IP-adresser og brugernavne',
 'ipblocklist-legend'              => 'Find en blokeret bruger',
 'ipblocklist-username'            => 'Brugernavn eller IP-adresse:',
 'ipblocklist-sh-userblocks'       => '$1 blokeringer af kontoer',
@@ -2541,7 +2536,7 @@ Alle Transwiki import-aktioner protokolleres i [[Special:Log/import|import-logge
 'import-interwiki-namespace' => 'Importer til navnerum:',
 'import-upload-filename'     => 'Filnavn:',
 'import-comment'             => 'Kommentar:',
-'importtext'                 => "Eksportér filen fra kilde-wiki'en ved hjælp af [[Special:Export|eksporterings værktøjet]], gem den på din harddisk og upload den her.",
+'importtext'                 => "Eksportér filen fra kilde-wiki'en ved hjælp af værktøjet Special:Export, gem den på din harddisk og læg den op her.",
 'importstart'                => 'Importerer sider …',
 'import-revision-count'      => '– {{PLURAL:$1|1 version|$1 versioner}}',
 'importnopages'              => 'Ingen sider fundet til import.',
@@ -2836,8 +2831,8 @@ Kun indholdet af lister (linjer startende med *) bliver brugt. Den første henvi
 'exif-colorspace'                  => 'Farverum',
 'exif-componentsconfiguration'     => 'Betydning af enkelte komponenter',
 'exif-compressedbitsperpixel'      => 'Komprimerede bits pr. pixel',
-'exif-pixelydimension'             => 'Billedbredde',
-'exif-pixelxdimension'             => 'Billedhøjde',
+'exif-pixelydimension'             => 'Gyldig billedbredde',
+'exif-pixelxdimension'             => 'Gyldig billedhøjde',
 'exif-makernote'                   => 'Producentnotits',
 'exif-usercomment'                 => 'Brugerkommentarer',
 'exif-relatedsoundfile'            => 'Tilhørende lydfil',
@@ -2853,9 +2848,9 @@ Kun indholdet af lister (linjer startende med *) bliver brugt. Den første henvi
 'exif-spectralsensitivity'         => 'Spectral sensitivitet',
 'exif-isospeedratings'             => 'Film- eller sensorfølsomhed (ISO)',
 'exif-oecf'                        => 'Optoelektronisk omregningsfaktor',
-'exif-shutterspeedvalue'           => 'APEX lukkerhastighed',
-'exif-aperturevalue'               => 'APEX blændeåbning',
-'exif-brightnessvalue'             => 'APEX lysstyrke',
+'exif-shutterspeedvalue'           => 'Belysningstidsværdi',
+'exif-aperturevalue'               => 'Blændeværdi',
+'exif-brightnessvalue'             => 'Lyshedsværdi',
 'exif-exposurebiasvalue'           => 'Belysningsindstilling',
 'exif-maxaperturevalue'            => 'Største blænde',
 'exif-subjectdistance'             => 'Afstand',
@@ -2919,7 +2914,6 @@ Kun indholdet af lister (linjer startende med *) bliver brugt. Den første henvi
 'exif-gpsareainformation'          => 'GPS-områdets navn',
 'exif-gpsdatestamp'                => 'GPS-dato',
 'exif-gpsdifferential'             => 'GPS-differentialkorrektur',
-'exif-objectname'                  => 'Kort titel',
 
 # EXIF attributes
 'exif-compression-1' => 'Ukomprimeret',
@@ -3000,8 +2994,6 @@ Kun indholdet af lister (linjer startende med *) bliver brugt. Den første henvi
 'exif-sensingmethod-5' => 'Farvesekventiel områdesensor',
 'exif-sensingmethod-7' => 'Triliniær sensor',
 'exif-sensingmethod-8' => 'Farvesekventiel liniarsensor',
-
-'exif-filesource-3' => 'Digitalt stillbilledekamera',
 
 'exif-scenetype-1' => 'Normal',
 
@@ -3088,7 +3080,7 @@ Kun indholdet af lister (linjer startende med *) bliver brugt. Den første henvi
 'confirmemail_oncreate'     => 'En bekræftelseskode er sendt til din e-mail-adresse. Denne kode skal ikke bruges til anmeldelsen, den kræves dog til aktiveringen af e-mail-funktionerne indenfor Wikien.',
 'confirmemail_sendfailed'   => 'Bekræftelsesmailen kunne ikke afsendes. Kontroller at e-mail-adressen er korrekt.
 
-Svarbesked fra mailserveren: $1',
+Rückmeldung des Mailservers: $1',
 'confirmemail_invalid'      => 'Ugyldig bekræftelseskode. Kodens gyldighed er muligvis udløbet.',
 'confirmemail_needlogin'    => 'Du skal $1 for at bekræfte e-mail-adressen.',
 'confirmemail_success'      => 'E-mail-adressen er nu bekræftet. Du kan nu logge på.',
@@ -3118,20 +3110,6 @@ Hvis denne konto *ikke* tilhører dig, bedes du åbne følgende link, for at afb
 $5
 
 Denne bekræftelseskode udløber $4',
-'confirmemail_body_set'     => 'En person, sandsynligvis dig, har fra IP-adressen $1,
-angivet denne e-mail-adresse til kontoen "$2" på {{SITENAME}}.
-
-For at bekræfte, at denne konto virkelig tilhører dig og genaktivere
-e-mail-funktioner på {{SITENAME}}, åbn dette link i din browser:
-
-$3
-
-Hvis kontoen ikke *ikke* tilhører dig, så følg dette link
-for at annullere e-mail-adressens bekræftelse:
-
-$5
-
-Denne bekræftelseskode vil udløbe den $4.',
 'confirmemail_invalidated'  => 'E-mail-bekræftelse afvist',
 'invalidateemail'           => 'Cancel e-mail confirmation',
 
@@ -3223,7 +3201,7 @@ Du kan også [[Special:Watchlist/edit|bruge standard editoren]].',
 'watchlisttools-raw'  => 'Rediger rå overvågningsliste',
 
 # Core parser functions
-'unknown_extension_tag' => 'Ukendt tag "$1"',
+'unknown_extension_tag' => 'Unknown extension tag "$1"',
 'duplicate-defaultsort' => 'Advarsel: Standardsorteringsnøglen "$2" tilsidesætter den tidligere sorteringsnøgle "$1".',
 
 # Special:Version
@@ -3355,5 +3333,18 @@ Denne side oplister de tags som programmet kan mærke en redigering med, og dere
 # SQLite database support
 'sqlite-has-fts' => '$1 med fuld-tekst søgnings support',
 'sqlite-no-fts'  => '$1 uden fuld-tekst søgnings support',
+
+# Special:DisableAccount
+'disableaccount'             => 'Deaktivere en brugerkonto',
+'disableaccount-user'        => 'Brugernavn:',
+'disableaccount-reason'      => 'Begrundelse:',
+'disableaccount-confirm'     => "Deaktiver denne brugerkonto.
+Denne bruger vil ikke være i stand til at logge ind, nulstille sit password eller modtage emailnotifikationer.
+Hvis brugeren er logget ind et sted, vil vedkommende blive logget ud øjeblikkeligt.
+''Bemærk at deaktivering af en konto ikke kan fortrydes uden systemadministrators indgriben.''",
+'disableaccount-mustconfirm' => 'Du skal bekræfte, at du ønsker at deaktivere denne konto.',
+'disableaccount-nosuchuser'  => 'Brugerkontoen "$1" findes ikke.',
+'disableaccount-success'     => 'Brugerkontoen "$1" er blevet permanent deaktiveret.',
+'disableaccount-logentry'    => 'deaktiverede brugerkontoen [[$1]] permanent',
 
 );

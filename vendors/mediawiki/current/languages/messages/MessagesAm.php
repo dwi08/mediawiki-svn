@@ -283,7 +283,7 @@ $1',
 'helppage'             => 'Help:ይዞታ',
 'mainpage'             => 'ዋናው ገጽ',
 'mainpage-description' => 'ዋና ገጽ',
-'policy-url'           => 'Project:መመሪያዎች',
+'policy-url'           => 'Project:መርመርያዎች',
 'portal'               => 'የኅብረተሠቡ መረዳጃ',
 'portal-url'           => 'Project:የኅብረተሠብ መረዳጃ',
 'privacy'              => 'መተዳደሪያ ደንብ',
@@ -477,7 +477,6 @@ $2",
 'resetpass_forbidden'       => 'በ{{SITENAME}} የመግቢያ ቃል መቀየር አይቻልም።',
 'resetpass-no-info'         => 'ይህንን ገጽ በቀጥታ ለማግኘት አስቀድሞ መግባት ያስፈልጋል።',
 'resetpass-submit-loggedin' => 'ቃልዎ ይቀየር',
-'resetpass-submit-cancel'   => 'ይቅር',
 'resetpass-wrong-oldpass'   => 'ጊዜያዊው ወይም ያሁኑኑ መግቢያ ቃል አይስማማም።
 ምናልባት መግቢያ ቃልዎን መቀይሩ ተከናወነ፣ ወይም አዲስ ጊዜያዊ መግቢያ ቃልን ጠየቁ።',
 'resetpass-temp-password'   => 'ኅላፊ (ጊዜያዊ) መግቢያ ቃል፦',
@@ -1060,7 +1059,7 @@ $1ን ወይም ማንም ሌላ [[{{MediaWiki:Grouppage-sysop}}|መጋቢ]] ስ
 'fileexists-forbidden'        => 'በዚህ ስም የሚኖር ፋይል ገና አለ፤ እባክዎ ተመልሰው ይህን ፋይል በአዲስ ስም ስር ይልኩት። [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'ይህ ስም ያለበት ፋይል አሁን በጋራ ፋይል ምንጭ ይኖራል፤ እባክዎ ተመልሰው ፋይሉን በሌላ ስም ስር ይላኩት። [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'ይህ ፋይል {{PLURAL:$1|የሚከተለው ፋኡል|የሚከተሉት ፋይሎች}} ቅጂ ነው፦',
-'file-deleted-duplicate'      => 'ለዚህ ፋይል አንድ ቅጂ የሆነ ፋይል ([[:$1]]) ቀድሞ ጠፍቷል። እንደገና ሳይልኩት እባክዎ የዚያውን ፋይል መጥፋት ታሪክ ይመለከቱ።',
+'file-deleted-duplicate'      => 'ለዚህ ፋይል አንድ ቅጂ የሆነ ፋይል ([[$1]]) ቀድሞ ጠፍቷል። እንደገና ሳይልኩት እባክዎ የዚያውን ፋይል መጥፋት ታሪክ ይመለከቱ።',
 'uploadwarning'               => 'የመላክ ማስጠንቀቂያ',
 'savefile'                    => 'ፋይሉ ለመቆጠብ',
 'uploadedimage'               => '«[[$1]]» ላከ',
@@ -1427,10 +1426,10 @@ $NEWPAGE
              ከክብር ጋር፣ የ{{SITENAME}} ኢሜል-ማስታወቂያ መርሃግብር።
 
 --
-የሚከታተሉት ገጾች ዝርዝር ለመቀየር፣ {{fullurl:{{#special:Watchlist}}/edit}} ይጎበኙ።
+የሚከታተሉት ገጾች ዝርዝር ለመቀየር፣ {{canonicalurl:{{#special:Watchlist}}/edit}} ይጎበኙ።
 
 በተጨማሪ ለመረዳት፦
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'ገጹ ይጥፋ',

@@ -197,16 +197,6 @@ if ( !function_exists( 'istainted' ) ) {
 	define( 'TC_PCRE', 1 );
 	define( 'TC_SELF', 1 );
 }
-
-// array_fill_keys() was only added in 5.2, but people use it anyway
-// add a back-compat layer for 5.1. See bug 27781
-if( !function_exists( 'array_fill_keys' ) ) {
-	function array_fill_keys( $keys, $value ) {
-		return array_combine( $keys, array_fill( 0, count( $keys ), $value ) );
-	}
-}
-
-
 /// @endcond
 
 
@@ -450,12 +440,21 @@ function wfErrorLog( $text, $file ) {
 		} else {
 			throw new MWException( __METHOD__ . ': Invalid UDP specification' );
 		}
+
 		// Clean it up for the multiplexer
 		if ( strval( $prefix ) !== '' ) {
 			$text = preg_replace( '/^/m', $prefix . ' ', $text );
+
+			// Limit to 64KB
+			if ( strlen( $text ) > 65534 ) {
+				$text = substr( $text, 0, 65534 );
+			}
+
 			if ( substr( $text, -1 ) != "\n" ) {
 				$text .= "\n";
 			}
+		} elseif ( strlen( $text ) > 65535 ) {
+			$text = substr( $text, 0, 65535 );
 		}
 
 		$sock = socket_create( $domain, SOCK_DGRAM, SOL_UDP );
@@ -1454,21 +1453,58 @@ function wfAppendQuery( $url, $query ) {
 
 /**
  * Expand a potentially local URL to a fully-qualified URL.  Assumes $wgServer
- * and $wgProto are correct.
+ * is correct.
+ * 
+ * The meaning of the PROTO_* constants is as follows:
+ * PROTO_HTTP: Output a URL starting with http://
+ * PROTO_HTTPS: Output a URL starting with https://
+ * PROTO_RELATIVE: Output a URL starting with // (protocol-relative URL)
+ * PROTO_CURRENT: Output a URL starting with either http:// or https:// , depending on which protocol was used for the current incoming request
+ * PROTO_CANONICAL: For URLs without a domain, like /w/index.php , use $wgCanonicalServer. For protocol-relative URLs, use the protocol of $wgCanonicalServer
+ * PROTO_INTERNAL: Like PROTO_CANONICAL, but uses $wgInternalServer instead of $wgCanonicalServer
  *
  * @todo this won't work with current-path-relative URLs
  * like "subdir/foo.html", etc.
  *
  * @param $url String: either fully-qualified or a local path + query
+ * @param $defaultProto Mixed: one of the PROTO_* constants. Determines the protocol to use if $url or $wgServer is protocol-relative
  * @return string Fully-qualified URL
  */
-function wfExpandUrl( $url ) {
+function wfExpandUrl( $url, $defaultProto = PROTO_CURRENT ) {
+	global $wgServer, $wgCanonicalServer, $wgInternalServer;
+	$serverUrl = $wgServer;
+	if ( $defaultProto === PROTO_CANONICAL ) {
+		$serverUrl = $wgCanonicalServer;
+	}
+	// Make $wgInternalServer fall back to $wgServer if not set
+	if ( $defaultProto === PROTO_INTERNAL && $wgInternalServer !== false ) {
+		$serverUrl = $wgInternalServer;
+	}
+	if ( $defaultProto === PROTO_CURRENT ) {
+		$defaultProto = WebRequest::detectProtocol() . '://';
+	}
+	
+	// Analyze $serverUrl to obtain its protocol
+	$bits = wfParseUrl( $serverUrl );
+	$serverHasProto = $bits && $bits['scheme'] != '';
+	
+	if ( $defaultProto === PROTO_CANONICAL || $defaultProto === PROTO_INTERNAL ) {
+		if ( $serverHasProto ) {
+			$defaultProto = $bits['scheme'] . '://';
+		} else {
+			// $wgCanonicalServer or $wgInternalServer doesn't have a protocol. This really isn't supposed to happen
+			// Fall back to HTTP in this ridiculous case
+			$defaultProto = PROTO_HTTP;
+		}
+	}
+
+	$defaultProtoWithoutSlashes = substr( $defaultProto, 0, -2 );
+	
 	if( substr( $url, 0, 2 ) == '//' ) {
-		global $wgProto;
-		return $wgProto . ':' . $url;
+		return $defaultProtoWithoutSlashes . $url;
 	} elseif( substr( $url, 0, 1 ) == '/' ) {
-		global $wgServer;
-		return $wgServer . $url;
+		// If $serverUrl is protocol-relative, prepend $defaultProtoWithoutSlashes, otherwise leave it alone
+		return ( $serverHasProto ? '' : $defaultProtoWithoutSlashes ) . $serverUrl . $url;
 	} else {
 		return $url;
 	}
@@ -1750,13 +1786,7 @@ function wfResetOutputBuffers( $resetGzipEncoding = true ) {
 			if( $status['name'] == 'ob_gzhandler' ) {
 				// Reset the 'Content-Encoding' field set by this handler
 				// so we can start fresh.
-				if ( function_exists( 'header_remove' ) ) {
-					// Available since PHP 5.3.0
-					header_remove( 'Content-Encoding' );
-				} else {
-					// We need to provide a valid content-coding. See bug 28069
-					header( 'Content-Encoding: identity' );
-				}
+				header( 'Content-Encoding:' );
 				break;
 			}
 		}
@@ -2154,7 +2184,7 @@ function swap( &$x, &$y ) {
 }
 
 function wfGetCachedNotice( $name ) {
-	global $wgOut, $wgRenderHashAppend, $parserMemc;
+	global $wgOut, $wgRenderHashAppend, $wgMemc;
 	$fname = 'wfGetCachedNotice';
 	wfProfileIn( $fname );
 
@@ -2178,7 +2208,7 @@ function wfGetCachedNotice( $name ) {
 
 	// Use the extra hash appender to let eg SSL variants separately cache.
 	$key = wfMemcKey( $name . $wgRenderHashAppend );
-	$cachedNotice = $parserMemc->get( $key );
+	$cachedNotice = $wgMemc->get( $key );
 	if( is_array( $cachedNotice ) ) {
 		if( md5( $notice ) == $cachedNotice['hash'] ) {
 			$notice = $cachedNotice['html'];
@@ -2192,7 +2222,7 @@ function wfGetCachedNotice( $name ) {
 	if( $needParse ) {
 		if( is_object( $wgOut ) ) {
 			$parsed = $wgOut->parse( $notice );
-			$parserMemc->set( $key, array( 'html' => $parsed, 'hash' => md5( $notice ) ), 600 );
+			$wgMemc->set( $key, array( 'html' => $parsed, 'hash' => md5( $notice ) ), 600 );
 			$notice = $parsed;
 		} else {
 			wfDebug( 'wfGetCachedNotice called for ' . $name . ' with no $wgOut available' . "\n" );
@@ -2329,15 +2359,20 @@ function wfMkdirParents( $dir, $mode = null, $caller = null ) {
 /**
  * Increment a statistics counter
  */
-function wfIncrStats( $key ) {
+function wfIncrStats( $key, $count = 1 ) {
 	global $wgStatsMethod;
 
+	$count = intval( $count );
+
 	if( $wgStatsMethod == 'udp' ) {
-		global $wgUDPProfilerHost, $wgUDPProfilerPort, $wgDBname;
+		global $wgUDPProfilerHost, $wgUDPProfilerPort, $wgDBname, $wgAggregateStatsID;
 		static $socket;
+
+		$id = $wgAggregateStatsID !== false ? $wgAggregateStatsID : $wgDBname;
+
 		if ( !$socket ) {
 			$socket = socket_create( AF_INET, SOCK_DGRAM, SOL_UDP );
-			$statline = "stats/{$wgDBname} - 1 1 1 1 1 -total\n";
+			$statline = "stats/{$id} - {$count} 1 1 1 1 -total\n";
 			socket_sendto(
 				$socket,
 				$statline,
@@ -2347,7 +2382,7 @@ function wfIncrStats( $key ) {
 				$wgUDPProfilerPort
 			);
 		}
-		$statline = "stats/{$wgDBname} - 1 1 1 1 1 {$key}\n";
+		$statline = "stats/{$id} - {$count} 1 1 1 1 {$key}\n";
 		wfSuppressWarnings();
 		socket_sendto(
 			$socket,
@@ -2361,8 +2396,8 @@ function wfIncrStats( $key ) {
 	} elseif( $wgStatsMethod == 'cache' ) {
 		global $wgMemc;
 		$key = wfMemcKey( 'stats', $key );
-		if ( is_null( $wgMemc->incr( $key ) ) ) {
-			$wgMemc->add( $key, 1 );
+		if ( is_null( $wgMemc->incr( $key, $count ) ) ) {
+			$wgMemc->add( $key, $count );
 		}
 	} else {
 		// Disabled
@@ -2439,14 +2474,18 @@ function wfSpecialList( $page, $details ) {
 /**
  * Returns a regular expression of url protocols
  *
+ * @param $includeProtocolRelative bool If false, remove '//' from the returned protocol list.
+ *        DO NOT USE this directy, use wfUrlProtocolsWithoutProtRel() instead
  * @return String
  */
-function wfUrlProtocols() {
+function wfUrlProtocols( $includeProtocolRelative = true ) {
 	global $wgUrlProtocols;
 
-	static $retval = null;
-	if ( !is_null( $retval ) ) {
-		return $retval;
+	// Cache return values separately based on $includeProtocolRelative
+	static $withProtRel = null, $withoutProtRel = null;
+	$cachedValue = $includeProtocolRelative ? $withProtRel : $withoutProtRel;
+	if ( !is_null( $cachedValue ) ) {
+		return $cachedValue;
 	}
 
 	// Support old-style $wgUrlProtocols strings, for backwards compatibility
@@ -2454,14 +2493,37 @@ function wfUrlProtocols() {
 	if ( is_array( $wgUrlProtocols ) ) {
 		$protocols = array();
 		foreach ( $wgUrlProtocols as $protocol ) {
-			$protocols[] = preg_quote( $protocol, '/' );
+			// Filter out '//' if !$includeProtocolRelative
+			if ( $includeProtocolRelative || $protocol !== '//' ) {
+				$protocols[] = preg_quote( $protocol, '/' );
+			}
 		}
 
 		$retval = implode( '|', $protocols );
 	} else {
+		// Ignore $includeProtocolRelative in this case
+		// This case exists for pre-1.6 compatibility, and we can safely assume
+		// that '//' won't appear in a pre-1.6 config because protocol-relative
+		// URLs weren't supported until 1.18
 		$retval = $wgUrlProtocols;
 	}
+	
+	// Cache return value
+	if ( $includeProtocolRelative ) {
+		$withProtRel = $retval;
+	} else {
+		$withoutProtRel = $retval;
+	}
 	return $retval;
+}
+
+/**
+ * Like wfUrlProtocols(), but excludes '//' from the protocol list. Use this if
+ * you need a regex that matches all URL protocols but does not match protocol-
+ * relative URLs
+ */
+function wfUrlProtocolsWithoutProtRel() {
+	return wfUrlProtocols( false );
 }
 
 /**
@@ -2794,14 +2856,21 @@ function wfMergeErrorArrays( /*...*/ ) {
  * parse_url() work-alike, but non-broken.  Differences:
  *
  * 1) Does not raise warnings on bad URLs (just returns false)
- * 2) Handles protocols that don't use :// (e.g., mailto: and news:) correctly
- * 3) Adds a "delimiter" element to the array, either '://' or ':' (see (2))
+ * 2) Handles protocols that don't use :// (e.g., mailto: and news: , as well as protocol-relative URLs) correctly
+ * 3) Adds a "delimiter" element to the array, either '://', ':' or '//' (see (2))
  *
  * @param $url String: a URL to parse
  * @return Array: bits of the URL in an associative array, per PHP docs
  */
 function wfParseUrl( $url ) {
 	global $wgUrlProtocols; // Allow all protocols defined in DefaultSettings/LocalSettings.php
+
+	// Protocol-relative URLs are handled really badly by parse_url(). It's so bad that the easiest
+	// way to handle them is to just prepend 'http:' and strip the protocol out later
+	$wasRelative = substr( $url, 0, 2 ) == '//';
+	if ( $wasRelative ) {
+		$url = "http:$url";
+	}
 	wfSuppressWarnings();
 	$bits = parse_url( $url );
 	wfRestoreWarnings();
@@ -2824,6 +2893,11 @@ function wfParseUrl( $url ) {
 		return false;
 	}
 
+	// If the URL was protocol-relative, fix scheme and delimiter
+	if ( $wasRelative ) {
+		$bits['scheme'] = '';
+		$bits['delimiter'] = '//';
+	}
 	return $bits;
 }
 
@@ -3427,6 +3501,22 @@ function wfWaitForSlaves( $maxLag, $wiki = false ) {
 }
 
 /**
+ * Modern version of wfWaitForSlaves(). Instead of looking at replication lag
+ * and waiting for it to go down, this waits for the slaves to catch up to the
+ * master position. This is much better for lag control than wfWaitForSlaves()
+ */
+function wfWaitForSlaves_masterPos() {
+	$lb = wfGetLB();
+	// bug 27975 - Don't try to wait for slaves if there are none
+	// Prevents permission error when getting master position
+	if ( $lb->getServerCount() > 1 ) {
+		$dbw = $lb->getConnection( DB_MASTER );
+		$pos = $dbw->getMasterPos();
+		$lb->waitForAll( $pos );
+	}
+}
+
+/**
  * Used to be used for outputting text in the installer/updater
  * @deprecated Warnings in 1.19, removal in 1.20
  */
@@ -3617,3 +3707,33 @@ function wfArrayMap( $function, $input ) {
 	}
 	return $ret;
 }
+
+
+/**
+ * Get a cache object.
+ * @param $inputType Cache type, one the the CACHE_* constants.
+ *
+ * @return BagOStuff
+ */
+function wfGetCache( $inputType ) {
+	return ObjectCache::getInstance( $inputType );
+}
+
+/** Get the main cache object */
+function wfGetMainCache() {
+	global $wgMainCacheType;
+	return ObjectCache::getInstance( $wgMainCacheType );
+}
+
+/** Get the cache object used by the message cache */
+function wfGetMessageCacheStorage() {
+	global $wgMessageCacheType;
+	return ObjectCache::getInstance( $wgMessageCacheType );
+}
+
+/** Get the cache object used by the parser cache */
+function wfGetParserCacheStorage() {
+	global $wgParserCacheType;
+	return ObjectCache::getInstance( $wgParserCacheType );
+}
+

@@ -90,7 +90,7 @@ class ApiQueryLangLinks extends ApiQueryBase {
 			if ( $params['url'] ) {
 				$title = Title::newFromText( "{$row->ll_lang}:{$row->ll_title}" );
 				if ( $title ) {
-					$entry['url'] = $title->getFullURL();
+					$entry['url'] = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
 				}
 			}
 			ApiResult::setContent( $entry, $row->ll_title );
@@ -146,6 +146,6 @@ class ApiQueryLangLinks extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryLangLinks.php 77660 2010-12-03 14:44:07Z catrope $';
+		return __CLASS__ . ': $Id: ApiQueryLangLinks.php 95505 2011-08-25 19:32:37Z catrope $';
 	}
 }

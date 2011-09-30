@@ -31,6 +31,8 @@ class CoreParserFunctions {
 		$parser->setFunctionHook( 'localurle',        array( __CLASS__, 'localurle'        ), SFH_NO_HASH );
 		$parser->setFunctionHook( 'fullurl',          array( __CLASS__, 'fullurl'          ), SFH_NO_HASH );
 		$parser->setFunctionHook( 'fullurle',         array( __CLASS__, 'fullurle'         ), SFH_NO_HASH );
+		$parser->setFunctionHook( 'canonicalurl',     array( __CLASS__, 'canonicalurl'     ), SFH_NO_HASH );
+		$parser->setFunctionHook( 'canonicalurle',    array( __CLASS__, 'canonicalurle'    ), SFH_NO_HASH );
 		$parser->setFunctionHook( 'formatnum',        array( __CLASS__, 'formatnum'        ), SFH_NO_HASH );
 		$parser->setFunctionHook( 'grammar',          array( __CLASS__, 'grammar'          ), SFH_NO_HASH );
 		$parser->setFunctionHook( 'gender',           array( __CLASS__, 'gender'           ), SFH_NO_HASH );
@@ -194,6 +196,8 @@ class CoreParserFunctions {
 	static function localurle( $parser, $s = '', $arg = null ) { return self::urlFunction( 'escapeLocalURL', $s, $arg ); }
 	static function fullurl( $parser, $s = '', $arg = null ) { return self::urlFunction( 'getFullURL', $s, $arg ); }
 	static function fullurle( $parser, $s = '', $arg = null ) { return self::urlFunction( 'escapeFullURL', $s, $arg ); }
+	static function canonicalurl( $parser, $s = '', $arg = null ) { return self::urlFunction( 'getCanonicalURL', $s, $arg ); }
+	static function canonicalurle( $parser, $s = '', $arg = null ) { return self::urlFunction( 'escapeCanonicalURL', $s, $arg ); }
 
 	static function urlFunction( $func, $s = '', $arg = null ) {
 		$title = Title::newFromText( $s );
@@ -616,11 +620,41 @@ class CoreParserFunctions {
 				'</span>' );
 	}
 
-	public static function filepath( $parser, $name='', $option='' ) {
+	// Usage {{filepath|300}}, {{filepath|nowiki}}, {{filepath|nowiki|300}} or {{filepath|300|nowiki}}
+	public static function filepath( $parser, $name='', $argA='', $argB='' ) {
 		$file = wfFindFile( $name );
-		if( $file ) {
+		$size = '';
+		$argA_int = intval( $argA );
+		$argB_int = intval( $argB );
+
+		if ( $argB_int > 0 ) {
+			// {{filepath: | option | size }}
+			$size = $argB_int;
+			$option = $argA;
+
+		} elseif ( $argA_int > 0 ) {
+			// {{filepath: | size [|option] }}
+			$size = $argA_int;
+			$option = $argB;
+
+		} else {
+			// {{filepath: [|option] }}
+			$option = $argA;
+		}
+
+		if ( $file ) {
 			$url = $file->getFullUrl();
-			if( $option == 'nowiki' ) {
+
+			// If a size is requested...			
+			if ( is_integer( $size ) ) {
+				$mto = $file->transform( array( 'width' => $size ) );
+				// ... and we can
+				if ( $mto && !$mto->isError() ) {
+					// ... change the URL to point to a thumbnail.
+					$url = wfExpandUrl( $mto->getUrl(), PROTO_RELATIVE );
+				}
+			}
+			if ( $option == 'nowiki' ) {
 				return array( $url, 'nowiki' => true );
 			}
 			return $url;

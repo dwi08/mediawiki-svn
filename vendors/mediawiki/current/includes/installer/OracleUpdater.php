@@ -8,7 +8,7 @@
 
 /**
  * Class for handling updates to Oracle databases.
- *
+ * 
  * @ingroup Deployment
  * @since 1.17
  */
@@ -20,7 +20,6 @@ class OracleUpdater extends DatabaseUpdater {
 			array( 'doFKRenameDeferr' ),
 			array( 'doFunctions17' ),
 			array( 'doSchemaUpgrade17' ),
-			array( 'doInsertPage0' ),
 		);
 	}
 
@@ -73,7 +72,7 @@ class OracleUpdater extends DatabaseUpdater {
 	protected function doSchemaUpgrade17() {
 		$this->output( "Updating schema to 17 ... " );
 		// check if iwlinks table exists which was added in 1.17
-		if ( $this->db->tableExists( $this->db->tableName( 'iwlinks' ) ) ) {
+		if ( $this->db->tableExists( trim( $this->db->tableName( 'iwlinks' ) ) ) ) {
 			$this->output( "schema seem to be up to date.\n" );
 			return;
 		}
@@ -82,32 +81,11 @@ class OracleUpdater extends DatabaseUpdater {
 	}
 
 	/**
-	 * Insert page (page_id = 0) to prevent FK constraint violation
-	 */
-	protected function doInsertPage0() {
-		$this->output( "Inserting page 0 if missing ... " );
-		$row = array(
-			'page_id' => 0,
-			'page_namespace' => 0,
-  			'page_title' => ' ',
-			'page_counter' => 0,
-			'page_is_redirect' => 0,
-			'page_is_new' => 0,
-			'page_random' => 0,
-			'page_touched' => $this->db->timestamp(),
-			'page_latest' => 0,
-			'page_len' => 0
-		);
-		$this->db->insert( 'page', $row, 'OracleUpdater:doInserPage0', array( 'IGNORE' ) );
-		$this->output( "ok\n" );
-	}
-
-	/**
 	 * Overload: after this action field info table has to be rebuilt
 	 */
-	public function doUpdates( $what = array( 'core', 'extensions', 'purge' ) ) {
-		parent::doUpdates( $what );
-
+	public function doUpdates( $purge = true ) {
+		parent::doUpdates();
+		
 		$this->db->query( 'BEGIN fill_wiki_info; END;' );
 	}
 

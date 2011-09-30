@@ -863,7 +863,7 @@ Legenda: (akt) = rozdźěl k tuchwilnej wersiji, (posl) = rozdźěl k předchadn
 'history-feed-empty'          => 'Strona, kotruž sy požadał, njeeksistuje. Bu snano z wikija wotstronjena abo přesunjena. Móžeš tu [[Special:Search|w {{SITENAME}}]] za stronami z podobnym titulom pytać.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(Zjeće wotstronjene)',
+'rev-deleted-comment'         => '(komentar wotstronjeny)',
 'rev-deleted-user'            => '(wužiwarske mjeno wotstronjene)',
 'rev-deleted-event'           => '(Protokolowa akcija bu wotstronjena)',
 'rev-deleted-user-contribs'   => '[wužiwarske mjeno wotstronjene abo IP-adresa wotstronjena - změna mjez přinoškami schowana]',
@@ -1100,9 +1100,9 @@ Spytaj swoje naprašowanje z prefiksom ''all:'' wužiwać, zo by wšón wobsah (
 'prefs-rc'                      => 'Aktualne změny',
 'prefs-watchlist'               => 'Wobkedźbowanki',
 'prefs-watchlist-days'          => 'Ličba dnjow, kotrež maja so we wobkedźbowankach pokazać:',
-'prefs-watchlist-days-max'      => 'Maksimalnje 7 dnjow',
+'prefs-watchlist-days-max'      => '(maksimalnje 7 dnjow)',
 'prefs-watchlist-edits'         => 'Ličba změnow, kotrež maja so we wobkedźbowankach pokazać:',
-'prefs-watchlist-edits-max'     => 'Maksimalna ličba: 1000',
+'prefs-watchlist-edits-max'     => '(maksimalna ličba: 1000)',
 'prefs-watchlist-token'         => 'Marka wobkedźbowankow:',
 'prefs-misc'                    => 'Wšelake nastajenja',
 'prefs-resetpass'               => 'Hesło změnić',
@@ -1307,6 +1307,7 @@ Smě mjenje hač $1 {{PLURAL:$1|znamješko|znamješce|znamješka|znamješkow}} d
 'right-reset-passwords'       => 'Hesła druhich wužiwarjow wróćo stajić',
 'right-override-export-depth' => 'Strony inkluziwnje wotkazanych stronow hač do hłubokosće 5 eksportować',
 'right-sendemail'             => 'Druhim wužiwarjam e-mejl pósłać',
+'right-disableaccount'        => 'Konta znjemóžnić',
 
 # User rights log
 'rightslog'      => 'Protokol zrjadowanja wužiwarskich prawow',
@@ -1480,7 +1481,7 @@ Jeli maš tutón wobraz z połnym rozeznaćom, nahraj tutón, hewak změń proš
 'fileexists-forbidden'        => 'Dataja z tutym mjenom hižo eksistuje a njeda so přepisać. Jeli hišće chceš swoju dataju nahrać, dźi  prošu wróćo a wuž nowe mjeno. [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Dataja z tutym mjenom hižo eksistuje w zhromadnej chowarni. Jeli hišće chceš swoju dataju nahrać,  dźi prošu wróćo a wužij nowe mjeno. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Tuta dataja je duplikat {{PLURAL:$1|slědowaceje dataje|slědowaceju datajow|slědowacych datajow|slědowacych datajow}}:',
-'file-deleted-duplicate'      => 'Dataja, kotraž je identiska z tutej dataju ([[:$1]]), je so prjedy zničiła. Ty měł stawizny zničenja tuteje dataje přepruwować, prjedy pokročuješ z jeje zasonahrawanjom.',
+'file-deleted-duplicate'      => 'Dataja, kotraž je identiska z tutej dataju ([[$1]]), je so prjedy zničiła. Ty měł stawizny zničenja tuteje dataje přepruwować, prjedy pokročuješ z jeje zasonahrawanjom.',
 'uploadwarning'               => 'Warnowanje',
 'uploadwarning-text'          => 'Prošu změń slědowace datajowe wopisanje a spytaj hišće raz.',
 'savefile'                    => 'Dataju składować',
@@ -1986,14 +1987,14 @@ Móžeš tež zdźělenske marki za wšě swoje wobkedźbowane strony we swojich
 
 --
 Zo by nastajenja twojich wobkedźbowankow změnił, wopytaj
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Zo by stronu ze swojich wobkedźbowankow zhašał, wopytaj
 $UNWATCHURL
 
 
 Wotmołwy a dalša pomoc:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Stronu zhašeć',
@@ -2249,7 +2250,7 @@ Najnowši zapisk w protokolu blokowanjow so deleka jako referenca podawa:',
 'ipusubmit'                       => 'Tute blokěrowanje skónčić',
 'unblocked'                       => 'Blokowanje wužiwarja [[User:$1|$1]] bu zběhnjene',
 'unblocked-id'                    => 'Blokowanje ID $1 bu zběhnjene.',
-'ipblocklist'                     => 'Zablokowani wužiwarjo',
+'ipblocklist'                     => 'Zablokowane IP-adresy a wužiwarske mjena',
 'ipblocklist-legend'              => 'Pytanje za zablokowanym wužiwarjom',
 'ipblocklist-username'            => 'Wužiwarske mjeno abo IP-adresa:',
 'ipblocklist-sh-userblocks'       => '$1 kontowe zablokowanja',
@@ -2475,7 +2476,7 @@ W poslednim padźe móžeš tež wotkaz wužiwać, na př. „[[{{#Special:Expor
 'import-interwiki-namespace' => 'Cilowy mjenowy rum:',
 'import-upload-filename'     => 'Datajowe mjeno:',
 'import-comment'             => 'Přičina:',
-'importtext'                 => 'Prošu eksportuj dataju ze žórłoweho wikija z pomocu funkcije [[Special:Export|Strony eksportować]]. Składuj ju na swojim ličaku a nahraj ju tu.',
+'importtext'                 => 'Prošu eksportuj dataju ze žórłoweho wikija z pomocu [[Special:Export|Strony eksportować]]. Składuj ju na swojim ličaku a nahraj ju sem.',
 'importstart'                => 'Importuju…',
 'import-revision-count'      => '$1 {{PLURAL:$1|wersija|wersiji|wersije|wersijow}}',
 'importnopages'              => 'Žane strony za importowanje.',
@@ -2765,8 +2766,8 @@ Nasledne wotkazy na samsnej lince definuja wuwzaća, hdźež so wobraz smě naje
 'exif-colorspace'                  => 'Barbny rum',
 'exif-componentsconfiguration'     => 'Woznam kóždeje komponenty',
 'exif-compressedbitsperpixel'      => 'Modus wobrazoweje kompresije',
-'exif-pixelydimension'             => 'Šěrokosć wobraza',
-'exif-pixelxdimension'             => 'Wysokosć wobraza',
+'exif-pixelydimension'             => 'Płaćiwa šěrokosć wobraza',
+'exif-pixelxdimension'             => 'Płaćiwa wysokosć wobraza',
 'exif-makernote'                   => 'Přispomnjenki zhotowjerja',
 'exif-usercomment'                 => 'Přispomjenja wužiwarja',
 'exif-relatedsoundfile'            => 'Zwjazana zynkowa dataja',
@@ -2782,9 +2783,9 @@ Nasledne wotkazy na samsnej lince definuja wuwzaća, hdźež so wobraz smě naje
 'exif-spectralsensitivity'         => 'Spektralna cutliwosć',
 'exif-isospeedratings'             => 'Cutliwosć filma abo sensora (ISO)',
 'exif-oecf'                        => 'Optoelektroniski přeličenski faktor (OECF)',
-'exif-shutterspeedvalue'           => 'Čas zasłonoweje zawěrki APEX',
-'exif-aperturevalue'               => 'Zasłonowa šěrokosć APEX',
-'exif-brightnessvalue'             => 'APEX-swětłosć',
+'exif-shutterspeedvalue'           => 'Naswětlenski čas',
+'exif-aperturevalue'               => 'Zasłona',
+'exif-brightnessvalue'             => 'Swětłosć',
 'exif-exposurebiasvalue'           => 'Naswětlenska korektura',
 'exif-maxaperturevalue'            => 'Najwjetša zasłona',
 'exif-subjectdistance'             => 'Zdalenje k předmjetej',
@@ -2848,7 +2849,6 @@ Nasledne wotkazy na samsnej lince definuja wuwzaća, hdźež so wobraz smě naje
 'exif-gpsareainformation'          => 'Mjeno wobwoda GPS',
 'exif-gpsdatestamp'                => 'Datum GPS',
 'exif-gpsdifferential'             => 'Diferencialna korektura GPS',
-'exif-objectname'                  => 'Krótki titul',
 
 # EXIF attributes
 'exif-compression-1' => 'Njekomprimowany',
@@ -3282,5 +3282,18 @@ Zapodaj datajowe mjeno '''bjez''' prefiksa \"{{ns:file}}:\".",
 # SQLite database support
 'sqlite-has-fts' => '$1 połnotekstowe pytanje podpěruje.',
 'sqlite-no-fts'  => '$1 połnotekstowe pytanje njepodpěruje',
+
+# Special:DisableAccount
+'disableaccount'             => 'Wužiwarske konto znjemóžnić',
+'disableaccount-user'        => 'Wužiwarske mjeno:',
+'disableaccount-reason'      => 'Přičina:',
+'disableaccount-confirm'     => "Znjemóžń tute wužiwarske konto.
+Wužiwar njemóže so přizjewić, swoje hesło wróćo stajić abo e-mejlowe zdźělenki dóstać.
+Jeli wužiwar je tuchwilu druhdźe přizjewjeny, budźe so hnydom wotzjewjeć.
+''Wobkedźbuj, zo znjemóžnjenje konta njeje rewersibelne bjez zapřimowanja systemoweho administratora.''",
+'disableaccount-mustconfirm' => 'Dyrbiš wobkrućić, zo chceš tute konto znjemóžnić.',
+'disableaccount-nosuchuser'  => 'Wužiwarske konto "$1" njeeksistuje.',
+'disableaccount-success'     => 'Wužiwarske konto "$1" bu na přeco znjemóžnjene.',
+'disableaccount-logentry'    => 'je wužiwarske konto [[$1]] na přeco znjemóžnił',
 
 );

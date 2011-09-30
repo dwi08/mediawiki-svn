@@ -369,10 +369,16 @@ class HTMLForm {
 	 * @return String wrapped HTML.
 	 */
 	function wrapForm( $html ) {
+		global $wgUserLanguage;
 
 		# Include a <fieldset> wrapper for style, if requested.
 		if ( $this->mWrapperLegend !== false ) {
-			$html = Xml::fieldset( $this->mWrapperLegend, $html );
+			if ( is_a( $this->mWrapperLegend, 'Message' ) ) { 
+				$legend = $this->mWrapperLegend->toString();
+			} else {
+				$legend = $this->mWrapperLegend;
+			}
+			$html = Xml::fieldset( $legend, $html );
 		}
 		# Use multipart/form-data
 		$encType = $this->mUseMultipart

@@ -208,7 +208,8 @@ class MediaWiki {
 		// Redirect loops, no title in URL, $wgUsePathInfo URLs, and URLs with a variant
 		} else if ( $action == 'view' && !$request->wasPosted()
 			&& ( $request->getVal( 'title' ) === null || $title->getPrefixedDBKey() != $request->getVal( 'title' ) )
-			&& !count( array_diff( array_keys( $request->getValues() ), array( 'action', 'title' ) ) ) )
+			&& !count( array_diff( array_keys( $request->getValues() ), array( 'action', 'title' ) ) )
+			&& wfRunHooks( 'TestCanonicalRedirect', array( $request, $title, $output ) ) )
 		{
 			if ( $title->getNamespace() == NS_SPECIAL ) {
 				list( $name, $subpage ) = SpecialPage::resolveAliasWithSubpage( $title->getDBkey() );
@@ -216,7 +217,7 @@ class MediaWiki {
 					$title = SpecialPage::getTitleFor( $name, $subpage );
 				}
 			}
-			$targetUrl = $title->getFullURL();
+			$targetUrl = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
 			// Redirect to canonical url, make it a 301 to allow caching
 			if( $targetUrl == $request->getFullRequestURL() ) {
 				$message = "Redirect loop detected!\n\n" .
@@ -373,6 +374,13 @@ class MediaWiki {
 		$output->output();
 		// Do any deferred jobs
 		wfDoUpdates( true );
+		// Close the session so that jobs don't access the current session
+		/**
+		 * WMF PATCH: removed, causes bug 27891.
+		 * Removing this here without taking other steps probably breaks 
+		 * $wgAllowCopyUploads.
+		 * session_write_close();
+		 */
 		$this->doJobs();
 		wfProfileOut( __METHOD__ );
 	}

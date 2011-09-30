@@ -286,7 +286,7 @@ class ApiQueryImageInfo extends ApiQueryBase {
 			if ( !is_null( $scale ) && !$file->isOld() ) {
 				$mto = $file->transform( array( 'width' => $scale['width'], 'height' => $scale['height'] ) );
 				if ( $mto && !$mto->isError() ) {
-					$vals['thumburl'] = wfExpandUrl( $mto->getUrl() );
+					$vals['thumburl'] = wfExpandUrl( $mto->getUrl(), PROTO_CURRENT );
 
 					// bug 23834 - If the URL's are the same, we haven't resized it, so shouldn't give the wanted
 					// thumbnail sizes for the thumbnail actual size
@@ -308,8 +308,8 @@ class ApiQueryImageInfo extends ApiQueryBase {
 					$vals['thumberror'] = $mto->toText();
 				}
 			}
-			$vals['url'] = $file->getFullURL();
-			$vals['descriptionurl'] = wfExpandUrl( $file->getDescriptionUrl() );
+			$vals['url'] = wfExpandUrl( $file->getFullURL(), PROTO_CURRENT );
+			$vals['descriptionurl'] = wfExpandUrl( $file->getDescriptionUrl(), PROTO_CURRENT );
 		}
 		
 		if ( $sha1 ) {
@@ -475,6 +475,6 @@ class ApiQueryImageInfo extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryImageInfo.php 85435 2011-04-05 14:00:08Z demon $';
+		return __CLASS__ . ': $Id: ApiQueryImageInfo.php 95668 2011-08-29 15:42:14Z neilk $';
 	}
 }

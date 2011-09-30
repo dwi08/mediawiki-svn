@@ -11,7 +11,7 @@ require_once( dirname(__FILE__) . '/../../maintenance/Maintenance.php' );
 /*
  * Class for handling database updates. Roughly based off of updaters.inc, with
  * a few improvements :)
- *
+ * 
  * @ingroup Deployment
  * @since 1.17
  */
@@ -24,17 +24,7 @@ abstract class DatabaseUpdater {
 	 */
 	protected $updates = array();
 
-	/**
-	 * List of extension-provided database updates
-	 * @var array
-	 */
 	protected $extensionUpdates = array();
-
-	/**
-	 * Used to hold schema files during installation process
-	 * @var array
-	 */
-	protected $newExtensions = array();
 
 	/**
 	 * Handle to the database subclass
@@ -55,8 +45,12 @@ abstract class DatabaseUpdater {
 	 * @param $db DatabaseBase object to perform updates on
 	 * @param $shared bool Whether to perform updates on shared tables
 	 * @param $maintenance Maintenance Maintenance object which created us
+	 *
+	 * @todo FIXME: Make $wgDatabase go away.
 	 */
 	protected function __construct( DatabaseBase &$db, $shared, Maintenance $maintenance = null ) {
+		global $wgDatabase;
+		$wgDatabase = $db;
 		$this->db = $db;
 		$this->db->setFlag( DBO_DDLMODE ); // For Oracle's handling of schema files
 		$this->shared = $shared;
@@ -66,7 +60,6 @@ abstract class DatabaseUpdater {
 			$this->maintenance = new FakeMaintenance;
 		}
 		$this->initOldGlobals();
-		$this->loadExtensions();
 		wfRunHooks( 'LoadExtensionSchemaUpdates', array( $this ) );
 	}
 
@@ -88,32 +81,6 @@ abstract class DatabaseUpdater {
 		$wgExtModifiedFields = array(); // table, index, dir
 	}
 
-	/**
-	 * Loads LocalSettings.php, if needed, and initialises everything needed for LoadExtensionSchemaUpdates hook
-	 */
-	private function loadExtensions() {
-		if ( !defined( 'MEDIAWIKI_INSTALL' ) ) {
-			return; // already loaded
-		}
-		$vars = Installer::getExistingLocalSettings();
-		if ( !$vars ) {
-			return; // no LocalSettings found
-		}
-		if ( !isset( $vars['wgHooks'] ) && !isset( $vars['wgHooks']['LoadExtensionSchemaUpdates'] ) ) {
-			return;
-		}
-		global $wgHooks, $wgAutoloadClasses;
-		$wgHooks['LoadExtensionSchemaUpdates'] = $vars['wgHooks']['LoadExtensionSchemaUpdates'];
-		$wgAutoloadClasses = $wgAutoloadClasses + $vars['wgAutoloadClasses'];
-	}
-
-	/**
-	 * @throws MWException
-	 * @param DatabaseBase $db
-	 * @param bool $shared
-	 * @param null $maintenance
-	 * @return DatabaseUpdater
-	 */
 	public static function newForDB( &$db, $shared = false, $maintenance = null ) {
 		$type = $db->getType();
 		if( in_array( $type, Installer::getDBTypes() ) ) {
@@ -127,7 +94,7 @@ abstract class DatabaseUpdater {
 	/**
 	 * Get a database connection to run updates
 	 *
-	 * @return DatabaseBase
+	 * @return DatabasBase object
 	 */
 	public function getDB() {
 		return $this->db;
@@ -176,23 +143,6 @@ abstract class DatabaseUpdater {
 	}
 
 	/**
-	 * Add a brand new extension to MediaWiki. Used during the initial install
-	 * @param $ext String Name of extension
-	 * @param $sqlPath String Full path to the schema file
-	 */
-	public function addNewExtension( $ext, $sqlPath ) {
-		$this->newExtensions[ strtolower( $ext ) ] = $sqlPath;
-	}
-
-	/**
-	 * Get the list of extensions that registered a schema with our DB type
-	 * @return array
-	 */
-	public function getNewExtensions() {
-		return $this->newExtensions;
-	}
-
-	/**
 	 * Get the list of extension-defined updates
 	 *
 	 * @return Array
@@ -208,28 +158,21 @@ abstract class DatabaseUpdater {
 	/**
 	 * Do all the updates
 	 *
-	 * @param $what Array: what updates to perform
+	 * @param $purge Boolean: whether to clear the objectcache table after updates
 	 */
-	public function doUpdates( $what = array( 'core', 'extensions', 'purge' ) ) {
+	public function doUpdates( $purge = true ) {
 		global $wgVersion;
 
-		$what = array_flip( $what );
-		if ( isset( $what['core'] ) ) {
-			$this->runUpdates( $this->getCoreUpdateList(), false );
-		}
-		if ( isset( $what['extensions'] ) ) {
-			$this->runUpdates( $this->getOldGlobalUpdates(), false );
-			$this->runUpdates( $this->getExtensionUpdates(), true );
-		}
+		$this->runUpdates( $this->getCoreUpdateList(), false );
+		$this->runUpdates( $this->getOldGlobalUpdates(), false );
+		$this->runUpdates( $this->getExtensionUpdates(), true );
 
 		$this->setAppliedUpdates( $wgVersion, $this->updates );
 
-		if( isset( $what['purge'] ) ) {
+		if( $purge ) {
 			$this->purgeCache();
 		}
-		if ( isset( $what['core'] ) ) {
-			$this->checkStats();
-		}
+		$this->checkStats();
 	}
 
 	/**
@@ -513,21 +456,6 @@ abstract class DatabaseUpdater {
 			);
 		}
 		$this->output( "...ss_active_users user count set...\n" );
-	}
-
-	protected function doLogUsertextPopulation() {
-		if ( $this->updateRowExists( 'populate log_usertext' ) ) {
-			$this->output( "...log_user_text field already populated.\n" );
-			return;
-		}
-
-		$this->output(
-			"Populating log_user_text field, printing progress markers. For large\n" .
-			"databases, you may want to hit Ctrl-C and do this manually with\n" .
-			"maintenance/populateLogUsertext.php.\n" );
-		$task = new PopulateLogUsertext();
-		$task->execute();
-		$this->output( "Done populating log_user_text field.\n" );
 	}
 
 	protected function doLogSearchPopulation() {

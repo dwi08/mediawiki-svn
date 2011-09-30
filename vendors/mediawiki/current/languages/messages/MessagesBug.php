@@ -29,30 +29,30 @@ $messages = array(
 'thu'           => 'Kam',
 'fri'           => 'Jum',
 'sat'           => 'Sat',
-'january'       => 'Januari',
-'february'      => 'Fébruari',
-'march'         => "Maré'",
-'april'         => 'April',
-'may_long'      => 'Méi',
-'june'          => 'Juni',
-'july'          => 'Juli',
-'august'        => "Ogoso'",
-'september'     => 'September',
-'october'       => 'Oktober',
-'november'      => 'November',
-'december'      => 'Désémber',
-'january-gen'   => 'Januari',
-'february-gen'  => 'Fébruari',
-'march-gen'     => "Maré'",
-'april-gen'     => 'April',
-'may-gen'       => 'Méi',
-'june-gen'      => 'Juni',
-'july-gen'      => 'Juli',
-'august-gen'    => "Ogoso'",
-'september-gen' => 'September',
-'october-gen'   => 'Oktober',
-'november-gen'  => 'November',
-'december-gen'  => 'Désémber',
+'january'       => 'Uléŋ 1',
+'february'      => 'ᨙᨄᨅᨛᨑᨘᨕᨑᨗ',
+'march'         => 'ᨆᨙᨑ',
+'april'         => 'ᨕᨄᨛᨑᨗᨒᨗ',
+'may_long'      => 'ᨙᨆᨕᨗ',
+'june'          => 'ᨍᨘᨊᨗ',
+'july'          => 'ᨍᨘᨒᨗ',
+'august'        => 'ᨕᨁᨘᨔᨘᨈᨘᨔᨘ',
+'september'     => 'ᨙᨔᨙᨈᨇᨛᨑᨛ',
+'october'       => 'ᨕᨚᨀᨛᨈᨚᨅᨛᨑᨛ',
+'november'      => 'Uleŋ 11',
+'december'      => 'ᨉᨗᨙᨔᨇᨛᨑᨛ',
+'january-gen'   => 'Uleŋ 1',
+'february-gen'  => 'Uleŋ 2',
+'march-gen'     => 'Uleŋ 3',
+'april-gen'     => 'Uleŋ 4',
+'may-gen'       => 'Uleŋ 5',
+'june-gen'      => 'Uleŋ 6',
+'july-gen'      => 'Uleŋ 7',
+'august-gen'    => 'Uleŋ 8',
+'september-gen' => 'Uleŋ 9',
+'october-gen'   => 'Uleŋ 10',
+'november-gen'  => 'Uleŋ 11',
+'december-gen'  => 'Uleŋ 12',
 
 # Categories related messages
 'category_header' => 'Leppa rilaleŋ kategori "$1"',
@@ -78,14 +78,7 @@ $messages = array(
 'faq'            => 'FAQ',
 'faqpage'        => 'Project:FAQ',
 
-# Vector skin
-'vector-action-move'     => "Paléccé'",
-'vector-view-create'     => 'Ebbu',
-'vector-view-edit'       => 'Padéccéng',
-'vector-view-view'       => 'Baca',
-'vector-view-viewsource' => 'Ita sumber',
-
-'errorpagetitle'   => 'Asalaŋ',
+'errorpagetitle'   => 'Éro',
 'returnto'         => 'Lisu ri $1.',
 'tagline'          => 'Polé {{SITENAME}}',
 'help'             => 'Paŋinriŋ',
@@ -146,13 +139,12 @@ $messages = array(
 'viewsourceold'   => 'ita sumber',
 'editlink'        => 'padécéŋ',
 'viewsourcelink'  => 'ita sumber',
-'editsectionhint' => 'Padécéŋ kajuru: $1',
 
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => 'Leppa',
 'nstab-user'      => 'Leppa papaké',
 'nstab-media'     => 'Leppa média',
-'nstab-special'   => 'Leppa spésiala',
+'nstab-special'   => 'Spésiala',
 'nstab-project'   => 'Proyek',
 'nstab-image'     => 'Rapang',
 'nstab-mediawiki' => 'Pappaseŋ',
@@ -179,7 +171,7 @@ $messages = array(
 
 # Login and logout pages
 'yourname'                => 'Aseŋ papaké:',
-'yourpassword'            => 'Adacili:',
+'yourpassword'            => 'Pasewodo:',
 'login'                   => 'log attama',
 'nav-login-createaccount' => 'Log attama / ebbu akun',
 'userlogin'               => 'Log attama / ebbu akun',
@@ -192,7 +184,7 @@ $messages = array(
 'gotaccount'              => "Purani eŋka akun? '''$1'''.",
 'gotaccountlink'          => 'Log attama',
 'loginerror'              => 'Éro log attama',
-'mailmypassword'          => 'E-mail adacili baru',
+'mailmypassword'          => 'E-mail pasewodo baru',
 
 # Password reset dialog
 'oldpassword' => 'Pasewodo matoa:',
@@ -250,7 +242,6 @@ $messages = array(
 'searchsubtitleinvalid' => "Massappa iko '''$1'''",
 'viewprevnext'          => 'Ita ($1 {{int:pipe-separator}} $2) ($3)',
 'searchhelp-url'        => 'Help:Lise',
-'search-result-size'    => '$1 ({{PLURAL:$2|1 ada|$2 ada}})',
 'search-redirect'       => '(redirect $1)',
 
 # Quickbar
@@ -353,7 +344,7 @@ $messages = array(
 'allpages'          => 'Maneng halamang',
 'alphaindexline'    => '$1 ri $2',
 'allpagesfrom'      => 'Mappaitang halamang-halamang rimulai:',
-'allarticles'       => 'Sininna leppa',
+'allarticles'       => 'Maneŋ leppa',
 'allinnamespace'    => 'Maneŋ leppa (namespace $1)',
 'allnotinnamespace' => 'Maneŋ leppa (tania rilaleŋ namespace $1)',
 'allpagesnext'      => 'Selanjutnya',
@@ -370,8 +361,6 @@ Halamang bicara éréngé gabungan halamang bicara pada wettu depan didaftarkan 
 éréngé halamang akan wessi '''umpek''' ri [[Special:RecentChanges|daftar pinra tanappa]] barak lebih lemmak ita.
 
 Apak ida ronnak mappedde halamang édé ri daftar jagaan, klik \"Mangedda jaga\" pada kolom ri sedde.",
-'watch'          => 'Ampi',
-'unwatch'        => 'Tenriampi',
 
 # Delete
 'actioncomplete' => 'Proses makkapo',
@@ -386,7 +375,7 @@ Apak ida ronnak mappedde halamang édé ri daftar jagaan, klik \"Mangedda jaga\"
 'sp-contributions-talk' => 'Bicara',
 
 # What links here
-'whatlinkshere'          => 'Pranala ri leppa iyéwé',
+'whatlinkshere'          => 'Pranala ri halamang édé',
 'whatlinkshere-page'     => 'Leppa:',
 'whatlinkshere-backlink' => '← $1',
 'whatlinkshere-links'    => '← liŋke',
@@ -397,9 +386,9 @@ Apak ida ronnak mappedde halamang édé ri daftar jagaan, klik \"Mangedda jaga\"
 'contribslink'       => 'kontrib',
 
 # Move page
-'articleexists'             => 'Leppa béla ida pile ni ujuk, a dek essa.
+'articleexists'             => 'Halamang béla ida pile ni ujuk, a dek essa.
 Silakan pile aseng laing.',
-'1movedto2'                 => '[[$1]] léccé lao [[$2]]',
+'1movedto2'                 => '[[$1]] ésuk ri [[$2]]',
 '1movedto2_redir'           => '[[$1]] rileccé lao ri[[$2]] paké redirect',
 'movelogpage'               => 'Log leccé',
 'movereason'                => 'Saba:',
@@ -419,16 +408,15 @@ Eloko peddéï supaya weddiŋi mapalecé?',
 'allmessagescurrent' => 'Teks kokkoro',
 
 # Tooltip help for the actions
-'tooltip-pt-userpage'      => "Leppa papaké iya'",
-'tooltip-pt-mytalk'        => "Leppa bicara iya'",
-'tooltip-pt-preferences'   => "Preferencena iya'",
-'tooltip-pt-logout'        => 'Log maessu',
-'tooltip-ca-talk'          => 'Pabicarana iyé leppa',
-'tooltip-ca-move'          => 'Paléccé leppa édé',
-'tooltip-search'           => 'Sappa ri {{SITENAME}}',
-'tooltip-search-go'        => 'Lao ri leppa aseŋna pappada iyyé rekko eŋkaï',
-'tooltip-n-mainpage'       => 'Lao ri Leppa Indoë',
-'tooltip-ca-nstab-special' => "Iyanaéwé séuwa leppa spésiala', dé'na idi' ullé padécéŋiki",
+'tooltip-pt-userpage'    => "Leppa papaké iya'",
+'tooltip-pt-mytalk'      => "Leppa bicara iya'",
+'tooltip-pt-preferences' => "Preferencena iya'",
+'tooltip-pt-logout'      => 'Log maessu',
+'tooltip-ca-talk'        => 'Appabicaranna iyé leppa',
+'tooltip-ca-move'        => 'Paléccé leppa édé',
+'tooltip-search'         => 'Sappa ri {{SITENAME}}',
+'tooltip-search-go'      => 'Lao ri leppa aseŋna pappada iyyé rekko eŋkaï',
+'tooltip-n-mainpage'     => 'Lao ri Leppa Indoë',
 
 # Attribution
 'anonymous' => 'Pabbuak anonim {{SITENAME}}',

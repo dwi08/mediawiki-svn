@@ -49,9 +49,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Wis di tål foon wåchende brükere',
 'tog-oldsig'                  => 'Forbekiik foon e aktuäle signatuur:',
 'tog-fancysig'                => 'Signatuur behoonle ås wikitäkst',
-'tog-externaleditor'          => 'Gewöönlik äksterne ediitor for färsjoonsunerschiise brüke (bloot for ekspärte, deer mönje spetsjäle önjstalinge aw di äine kompjuuter fornümen wårde
-[http://www.mediawiki.org/wiki/Manual:External_editors Mör informatsjoone.])',
-'tog-externaldiff'            => 'Gewöönlik äkstern program for färsjoonsunerschiise brüke (bloot for ekspärte, deer mönje spetsjäle önjstalinge aw di äine kompjuuter fornümen wårde[http://www.mediawiki.org/wiki/Manual:External_editors Mör informatsjoone.])',
+'tog-externaleditor'          => 'Gewöönlik äksterne ediitor for färsjoonsunerschiise brüke (bloot for ekspärte, deer mönje spetsjäle önjstalinge aw di äine kompjuuter fornümen wårde)',
+'tog-externaldiff'            => 'Gewöönlik äkstern program for färsjoonsunerschiise brüke (bloot for ekspärte, deer mönje spetsjäle önjstalinge aw di äine kompjuuter fornümen wårde)',
 'tog-showjumplinks'           => '"Schafte tu"-ferbininge aktiwiire',
 'tog-uselivepreview'          => 'Live-forbekiik ferwiinje (brükt JavaScript) (äksperimentäl)',
 'tog-forceeditsummary'        => 'Woorschoue, wan bai dåt spiikern jü tuhuupefooting breecht',
@@ -141,7 +140,7 @@ $messages = array(
 'category-subcat-count-limited'  => 'Jüdeer kategorii önjthålt füliende {{PLURAL:$1|unerkategorii|$1 unerkategoriie}}:',
 'category-article-count'         => '{{PLURAL:$2|Jüdeer kategorii önjthålt füliende sid:|{{PLURAL:$1|Füliende sid as iinj foon inåål $2 side önj jüdeer kategorii:|Deer wårde $1 foon inåål $2 side önj jüdeer kategorii wised:}}}}',
 'category-article-count-limited' => 'Füliende {{PLURAL:$1|sid as|$1 side san}} önj jüheer kategorii önjthülen:',
-'category-file-count'            => '{{PLURAL:$2|Jüdeer kategorii önjthålt füliende dootäi:|{{PLURAL:$1|Füliende dootäi as iinj foon inåål $2 side önj jüdeer kategorii:|Deer wårde $1 foon inåål $2 dootäie önj jüdeer kategorii wised:}}}}',
+'category-file-count'            => '↓ {{PLURAL:$2|Jüdeer kategorii önjthålt füliende dootäi:|{{PLURAL:$1|Füliende dootäi as iinj foon inåål $2 side önj jüdeer kategorii:|Deer wårde $1 foon inåål $2 dootäie önj jüdeer kategorii wised:}}}}',
 'category-file-count-limited'    => 'Füliende {{PLURAL:$1|Dootäi as|$1 Dootäie san}} önj jüdeer kategorii önjthülen:',
 'listingcontinuesabbrev'         => '(fortseeting)',
 'index-category'                 => 'Indisiirde side',
@@ -477,7 +476,7 @@ Mälde wi önj eefter dü jü füngen heest.',
 Iir en E-mail foon oudere brükere ouer jü E-mail-funksjoon emfångd wårde koon, mötj jü adräs än har wörklike tuhiirihäid tu dåtheer brükerkonto jarst bestääsied wårde. Wees sü gödj än befülie da haanewisinge önj di bestääsiings-E-mail.',
 'throttled-mailpassword'     => 'Deer wörd önj da leeste {{PLURAL:$1|stün|$1 stüne}} ål en nai pååsuurd önjfrååged. Am en misbrük foon jüdeer funksjoon tu ferhanren, koon bloot {{PLURAL:$1|iinjsen pro stün|åle $1 stüne}} en nai pååsuurd önjfrååged wårde.',
 'mailerror'                  => 'Fäägel bai dåt siinjen foon e E-mail: $1',
-'acct_creation_throttle_hit' => 'Besäkere foon j"heer Wiki, da din IP-adräse brüke, heewe önj e leeste däi {{PLURAL:$1|1 benutserkonto|$1 benutzerkonte}} mååged, wat jü maksimool tuleet tål önj jüdeer tidperioode as.
+'acct_creation_throttle_hit' => '↓ Besäkere foon j"heer Wiki, da din IP-adräse brüke, heewe önj e leeste däi {{PLURAL:$1|1 benutserkonto|$1 benutzerkonte}} mååged, wat jü maksimool tuleet tål önj jüdeer tidperioode as.
 
 Besäkere, da iüheer IP-adräse brüke, koone tu jü tutids niinj benutserkonte mör mrstellen.',
 'emailauthenticated'         => 'Din E-mail-adräs word di $2 am e klook $3 bestääsied.',
@@ -706,7 +705,7 @@ Grün foon jü späre: ''$2''",
 'history-feed-empty'          => 'Jü önjfordied sid bestoont ai. Flicht wörd jü sleeked unti ferschääwen.  [[Special:Search|Döörsäk]] {{SITENAME}} aw pååsende naie side.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(Tuhuupefooting wächnümen)',
+'rev-deleted-comment'         => '(Beårbingskomäntoor wächnümen)',
 'rev-deleted-user'            => '(Brükernoome wächhååld)',
 'rev-deleted-event'           => '(Logbökaksjoon wächhååld)',
 'rev-deleted-user-contribs'   => '[Benjüternoome unti IP-adräs wächhååld - beårbing üt baidråge ferstäägen]',
@@ -854,8 +853,6 @@ Stal sääker, dåt jü färsjoonshistoori foon en sid histoorisch koräkt as.',
 'searchhelp-url'                 => 'Help:Inhåltsfertiiknis',
 'searchprofile-articles'         => 'Artiikle',
 'searchprofile-project'          => 'Heelp än Prujäktside',
-'searchprofile-images'           => 'Multimedia',
-'searchprofile-advanced'         => 'Ütwided',
 'searchprofile-articles-tooltip' => 'Säk önj $1',
 'searchprofile-project-tooltip'  => 'Säk önj $1',
 'searchprofile-advanced-tooltip' => 'Onj mör noomerüme säke',
@@ -894,40 +891,12 @@ Stal sääker, dåt jü färsjoonshistoori foon en sid histoorisch koräkt as.',
 'qbsettings-none' => 'Niinj',
 
 # Preferences page
-'preferences'                 => 'Önjstalinge',
-'mypreferences'               => 'Önjstalinge',
-'prefsnologin'                => 'Ai önjmälded',
-'changepassword'              => 'Pååsuurd änre',
-'skin-preview'                => 'Forlök',
-'prefs-math'                  => 'TeX',
-'prefs-personal'              => 'Brüker dooten',
-'prefs-rc'                    => 'Leeste änringe',
-'prefs-watchlist-days-max'    => 'Ai lunger as 7 deege',
-'prefs-watchlist-edits-max'   => 'Ai mör as 1000',
-'prefs-misc'                  => 'Dit än dat',
-'prefs-resetpass'             => 'Pååsuurd änre',
-'saveprefs'                   => 'Önjstalinge sääkere',
-'localtime'                   => 'lokaal tid',
-'timezoneregion-africa'       => 'Afrikaa',
-'timezoneregion-america'      => 'Ameerikaa',
-'timezoneregion-antarctica'   => 'Antarktikaa',
-'timezoneregion-arctic'       => 'Arktis',
-'timezoneregion-asia'         => 'Aasien',
-'timezoneregion-australia'    => 'Austraalien',
-'timezoneregion-europe'       => 'Euroopa',
-'allowemail'                  => 'E-Mail foon oudere brükere tulätje',
-'prefs-searchoptions'         => 'Säkmöölikhäide',
-'prefs-namespaces'            => 'Noomerüme',
-'defaultns'                   => 'Ouers säk önj jüheer noomerüme:',
-'default'                     => 'Forinstaling',
-'prefs-files'                 => 'Dååtäie',
-'email'                       => 'e-mail',
-'prefs-signature'             => 'Signatuur',
-'prefs-advancedediting'       => 'Ütwided möölikhäide',
-'prefs-advancedrc'            => 'Ütwided möölikhäide',
-'prefs-advancedrendering'     => 'Ütwided möölikhäide',
-'prefs-advancedsearchoptions' => 'Ütwided möölikhäide',
-'prefs-advancedwatchlist'     => 'Ütwided möölikhäide',
+'preferences'         => 'Önjstalinge',
+'mypreferences'       => 'Önjstalinge',
+'allowemail'          => 'E-Mail foon oudere brükere tulätje',
+'prefs-searchoptions' => 'Säkmöölikhäide',
+'prefs-namespaces'    => 'Noomerüme',
+'defaultns'           => 'Ouers säk önj jüheer noomerüme:',
 
 # Groups
 'group-user'       => 'Brükere',
@@ -1169,7 +1138,7 @@ Wan dü jü sid wider foon din eefterkiikliste wächhååle mååst, klik aw jü
 # Block/unblock
 'blockip'                         => 'IP-adräs/brüker späre',
 'ipboptions'                      => '2 stüne:2 hours,1 däi:1 day,3 deege:3 days,1 wääg:1 week,2 wääge:2 weeks,1 moune:1 month,3 moune:3 months,6 moune:6 months,1 iir:1 year,suner iinje:infinite',
-'ipblocklist'                     => 'Spärd brükere',
+'ipblocklist'                     => 'Spärd IP-adräse än brükernoome',
 'expiringblock'                   => 'iinjet aw e $1 am e klook $2',
 'blocklink'                       => 'späre',
 'unblocklink'                     => 'frijeewe',
@@ -1357,14 +1326,7 @@ Deeraw föliende sidelinke önj dåtseelwi ra definiire ütnååme, önj di kont
 'watchlisttools-edit' => 'normåål beårbe',
 'watchlisttools-raw'  => 'Listeformoot beårbe (import/äksport)',
 
-# Special:Version
-'version-software'         => 'Instaliird software',
-'version-software-version' => 'Färsjoon',
-
 # Special:SpecialPages
 'specialpages' => 'Spetsjåålside',
-
-# HTML forms
-'htmlform-selectorother-other' => 'Oudere',
 
 );

@@ -23,13 +23,12 @@
  */
 abstract class Installer {
 
-	// This is the absolute minimum PHP version we can support
-	const MINIMUM_PHP_VERSION = '5.2.3';
-
 	/**
+	 * TODO: make protected?
+	 *
 	 * @var array
 	 */
-	protected $settings;
+	public $settings;
 
 	/**
 	 * Cached DB installer instances, access using getDBInstaller().
@@ -102,11 +101,10 @@ abstract class Installer {
 		'envCheckExtension',
 		'envCheckShellLocale',
 		'envCheckUploadsDirectory',
-		'envCheckLibicu',
-		'envCheckSuhosinMaxValueLength',
+		'envCheckLibicu'
 	);
 
-	/**
+		/**
 	 * MediaWiki configuration globals that will eventually be passed through
 	 * to LocalSettings.php. The names only are given here, the defaults
 	 * typically come from DefaultSettings.php.
@@ -141,7 +139,6 @@ abstract class Installer {
 		'wgUseInstantCommons',
 		'wgUpgradeKey',
 		'wgDefaultSkin',
-		'wgResourceLoaderMaxQueryLength',
 	);
 
 	/**
@@ -160,6 +157,7 @@ abstract class Installer {
 		'_UpgradeDone' => false,
 		'_InstallDone' => false,
 		'_Caches' => array(),
+		'_InstallUser' => 'root',
 		'_InstallPassword' => '',
 		'_SameAccount' => true,
 		'_CreateDBAccount' => false,
@@ -244,10 +242,6 @@ abstract class Installer {
 			'url' => 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
 			'icon' => '{$wgStylePath}/common/images/cc-by-nc-sa.png',
 		),
-		'cc-0' => array(
-			'url' => 'https://creativecommons.org/publicdomain/zero/1.0/',
-			'icon' => '{$wgStylePath}/common/images/cc-0.png',
-		),
 		'pd' => array(
 			'url' => 'http://creativecommons.org/licenses/publicdomain/',
 			'icon' => '{$wgStylePath}/common/images/public-domain.png',
@@ -296,11 +290,6 @@ abstract class Installer {
 	public abstract function showMessage( $msg /*, ... */ );
 
 	/**
-	 * Same as showMessage(), but for displaying errors
-	 */
-	public abstract function showError( $msg /*, ... */ );
-
-	/**
 	 * Show a message to the installing user by using a Status object
 	 * @param $status Status
 	 */
@@ -322,6 +311,9 @@ abstract class Installer {
 
 		// Having a user with id = 0 safeguards us from DB access via User::loadOptions().
 		$wgUser = User::newFromId( 0 );
+
+		// Set our custom <doclink> hook.
+		$wgHooks['ParserFirstCallInit'][] = array( $this, 'registerDocLink' );
 
 		$this->settings = $this->internalDefaults;
 
@@ -373,21 +365,14 @@ abstract class Installer {
 	 * @return Status
 	 */
 	public function doEnvironmentChecks() {
-		$phpVersion = phpversion();
-		if( version_compare( $phpVersion, self::MINIMUM_PHP_VERSION, '>=' ) ) {
-			$this->showMessage( 'config-env-php', $phpVersion );
-			$good = true;
-		} else {
-			$this->showMessage( 'config-env-php-toolow', $phpVersion, self::MINIMUM_PHP_VERSION );
-			$good = false;
-		}
+		$this->showMessage( 'config-env-php', phpversion() );
 
-		if( $good ) {
-			foreach ( $this->envChecks as $check ) {
-				$status = $this->$check();
-				if ( $status === false ) {
-					$good = false;
-				}
+		$good = true;
+
+		foreach ( $this->envChecks as $check ) {
+			$status = $this->$check();
+			if ( $status === false ) {
+				$good = false;
 			}
 		}
 
@@ -447,12 +432,12 @@ abstract class Installer {
 	}
 
 	/**
-	 * Determine if LocalSettings.php exists. If it does, return its variables,
+	 * Determine if LocalSettings.php exists. If it does, return its variables, 
 	 * merged with those from AdminSettings.php, as an array.
 	 *
 	 * @return Array
 	 */
-	public static function getExistingLocalSettings() {
+	public function getExistingLocalSettings() {
 		global $IP;
 
 		wfSuppressWarnings();
@@ -502,7 +487,7 @@ abstract class Installer {
 	 * On POSIX systems return the primary group of the webserver we're running under.
 	 * On other systems just returns null.
 	 *
-	 * This is used to advice the user that he should chgrp his mw-config/data/images directory as the
+	 * This is used to advice the user that he should chgrp his config/data/images directory as the
 	 * webserver user before he can install.
 	 *
 	 * Public because SqliteInstaller needs it, and doesn't subclass Installer.
@@ -568,28 +553,23 @@ abstract class Installer {
 	public function restoreLinkPopups() {
 		global $wgExternalLinkTarget;
 		$this->parserOptions->setExternalLinkTarget( $wgExternalLinkTarget );
-	}
+	}	
 
 	/**
-	 * Install step which adds a row to the site_stats table with appropriate
-	 * initial values.
+	 * TODO: document
+	 *
+	 * @param $installer DatabaseInstaller
+	 *
+	 * @return Status
 	 */
-	public function populateSiteStats( DatabaseInstaller $installer ) {
-		$status = $installer->getConnection();
-		if ( !$status->isOK() ) {
-			return $status;
+	public function installTables( DatabaseInstaller &$installer ) {
+		$status = $installer->createTables();
+
+		if( $status->isOK() ) {
+			LBFactory::enableBackend();
 		}
-		$status->value->insert( 'site_stats', array(
-			'ss_row_id' => 1,
-			'ss_total_views' => 0,
-			'ss_total_edits' => 0,
-			'ss_good_articles' => 0,
-			'ss_total_pages' => 0,
-			'ss_users' => 0,
-			'ss_admins' => 0,
-			'ss_images' => 0 ),
-			__METHOD__, 'IGNORE' );
-		return Status::newGood();
+		
+		return $status;
 	}
 
 	/**
@@ -610,6 +590,7 @@ abstract class Installer {
 		global $wgLang;
 
 		$compiledDBs = array();
+		$goodNames = array();
 		$allNames = array();
 
 		foreach ( self::getDBTypes() as $name ) {
@@ -618,22 +599,26 @@ abstract class Installer {
 
 			if ( $db->isCompiled() ) {
 				$compiledDBs[] = $name;
+				$goodNames[] = $readableName;
 			}
+
 			$allNames[] = $readableName;
 		}
 
 		$this->setVar( '_CompiledDBs', $compiledDBs );
 
 		if ( !$compiledDBs ) {
-			$this->showError( 'config-no-db', $wgLang->commaList( $allNames ) );
+			$this->showMessage( 'config-no-db' );
 			// FIXME: this only works for the web installer!
+			$this->showHelpBox( 'config-no-db-help', $wgLang->commaList( $allNames ) );
 			return false;
 		}
 
 		// Check for FTS3 full-text search module
 		$sqlite = $this->getDBInstaller( 'sqlite' );
 		if ( $sqlite->isCompiled() ) {
-			if( DatabaseSqlite::getFulltextSearchModule() != 'FTS3' ) {
+			$db = new DatabaseSqliteStandalone( ':memory:' );
+			if( $db->getFulltextSearchModule() != 'FTS3' ) {
 				$this->showMessage( 'config-no-fts3' );
 			}
 		}
@@ -654,7 +639,7 @@ abstract class Installer {
 	protected function envCheckBrokenXML() {
 		$test = new PhpXmlBugTester();
 		if ( !$test->ok ) {
-			$this->showError( 'config-brokenlibxml' );
+			$this->showMessage( 'config-brokenlibxml' );
 			return false;
 		}
 	}
@@ -667,7 +652,7 @@ abstract class Installer {
 		$test = new PhpRefCallBugTester;
 		$test->execute();
 		if ( !$test->ok ) {
-			$this->showError( 'config-using531', phpversion() );
+			$this->showMessage( 'config-using531' );
 			return false;
 		}
 	}
@@ -677,7 +662,7 @@ abstract class Installer {
 	 */
 	protected function envCheckMagicQuotes() {
 		if( wfIniGetBool( "magic_quotes_runtime" ) ) {
-			$this->showError( 'config-magic-quotes-runtime' );
+			$this->showMessage( 'config-magic-quotes-runtime' );
 			return false;
 		}
 	}
@@ -687,7 +672,7 @@ abstract class Installer {
 	 */
 	protected function envCheckMagicSybase() {
 		if ( wfIniGetBool( 'magic_quotes_sybase' ) ) {
-			$this->showError( 'config-magic-quotes-sybase' );
+			$this->showMessage( 'config-magic-quotes-sybase' );
 			return false;
 		}
 	}
@@ -697,7 +682,7 @@ abstract class Installer {
 	 */
 	protected function envCheckMbstring() {
 		if ( wfIniGetBool( 'mbstring.func_overload' ) ) {
-			$this->showError( 'config-mbstring' );
+			$this->showMessage( 'config-mbstring' );
 			return false;
 		}
 	}
@@ -707,7 +692,7 @@ abstract class Installer {
 	 */
 	protected function envCheckZE1() {
 		if ( wfIniGetBool( 'zend.ze1_compatibility_mode' ) ) {
-			$this->showError( 'config-ze1' );
+			$this->showMessage( 'config-ze1' );
 			return false;
 		}
 	}
@@ -727,7 +712,7 @@ abstract class Installer {
 	 */
 	protected function envCheckXML() {
 		if ( !function_exists( "utf8_encode" ) ) {
-			$this->showError( 'config-xml-bad' );
+			$this->showMessage( 'config-xml-bad' );
 			return false;
 		}
 	}
@@ -737,14 +722,14 @@ abstract class Installer {
 	 */
 	protected function envCheckPCRE() {
 		if ( !function_exists( 'preg_match' ) ) {
-			$this->showError( 'config-pcre' );
+			$this->showMessage( 'config-pcre' );
 			return false;
 		}
 		wfSuppressWarnings();
-		$regexd = preg_replace( '/[\x{0430}-\x{04FF}]/iu', '', '-АБВГД-' );
+		$regexd = preg_replace( '/[\x{0400}-\x{04FF}]/u', '', '-АБВГД-' );
 		wfRestoreWarnings();
 		if ( $regexd != '--' ) {
-			$this->showError( 'config-pcre-no-utf8' );
+			$this->showMessage( 'config-pcre-no-utf8' );
 			return false;
 		}
 	}
@@ -817,7 +802,6 @@ abstract class Installer {
 		$names = array( wfIsWindows() ? 'convert.exe' : 'convert' );
 		$convert = self::locateExecutableInDefaultPaths( $names, array( '$1 -version', 'ImageMagick' ) );
 
-		$this->setVar( 'wgImageMagickConvertCommand', '' );
 		if ( $convert ) {
 			$this->setVar( 'wgImageMagickConvertCommand', $convert );
 			$this->showMessage( 'config-imagemagick', $convert );
@@ -826,7 +810,7 @@ abstract class Installer {
 			$this->showMessage( 'config-gd' );
 			return true;
 		} else {
-			$this->showMessage( 'config-no-scaling' );
+			$this->showMessage( 'no-scaling' );
 		}
 	}
 
@@ -850,11 +834,11 @@ abstract class Installer {
 			// Some kind soul has set it for us already (e.g. debconf)
 			return true;
 		} else {
-			$this->showError( 'config-no-uri' );
+			$this->showMessage( 'config-no-uri' );
 			return false;
 		}
 
-		$uri = preg_replace( '{^(.*)/(mw-)?config.*$}', '$1', $path );
+		$uri = preg_replace( '{^(.*)/config.*$}', '$1', $path );
 		$this->setVar( 'wgScriptPath', $uri );
 	}
 
@@ -959,21 +943,6 @@ abstract class Installer {
 		} else {
 			$this->showMessage( 'config-uploads-not-safe', $dir );
 		}
-	}
-
-	/**
-	 * Checks if suhosin.get.max_value_length is set, and if so, sets
-	 * $wgResourceLoaderMaxQueryLength to that value in the generated
-	 * LocalSettings file
-	 */
-	protected function envCheckSuhosinMaxValueLength() {
-		$maxValueLength = ini_get( 'suhosin.get.max_value_length' );
-		if ( $maxValueLength > 0 ) {
-			$this->showMessage( 'config-suhosin-max-value-length', $maxValueLength );
-		} else {
-			$maxValueLength = -1;
-		}
-		$this->setVar( 'wgResourceLoaderMaxQueryLength', $maxValueLength );
 	}
 
 	/**
@@ -1142,13 +1111,7 @@ abstract class Installer {
 					break;
 				}
 
-				try {
-					$text = Http::get( $url . $file, array( 'timeout' => 3 ) );
-				}
-				catch( MWException $e ) {
-					// Http::get throws with allow_url_fopen = false and no curl extension.
-					$text = null;
-				}
+				$text = Http::get( $url . $file );
 				unlink( $dir . $file );
 
 				if ( $text == 'exec' ) {
@@ -1164,11 +1127,33 @@ abstract class Installer {
 	}
 
 	/**
+	 * Register tag hook below.
+	 *
+	 * @todo Move this to WebInstaller with the two things below?
+	 *
+	 * @param $parser Parser
+	 */
+	public function registerDocLink( Parser &$parser ) {
+		$parser->setHook( 'doclink', array( $this, 'docLink' ) );
+		return true;
+	}
+
+	/**
 	 * ParserOptions are constructed before we determined the language, so fix it
 	 */
 	public function setParserLanguage( $lang ) {
 		$this->parserOptions->setTargetLanguage( $lang );
 		$this->parserOptions->setUserLang( $lang->getCode() );
+	}
+
+	/**
+	 * Extension tag hook for a documentation link.
+	 */
+	public function docLink( $linkText, $attribs, $parser ) {
+		$url = $this->getDocUrl( $attribs['href'] );
+		return '<a href="' . htmlspecialchars( $url ) . '">' .
+			htmlspecialchars( $linkText ) .
+			'</a>';
 	}
 
 	/**
@@ -1208,31 +1193,12 @@ abstract class Installer {
 	 * @return Status
 	 */
 	protected function includeExtensions() {
-		global $IP;
 		$exts = $this->getVar( '_Extensions' );
-		$IP = $this->getVar( 'IP' );
-
-		/**
-		 * We need to include DefaultSettings before including extensions to avoid
-		 * warnings about unset variables. However, the only thing we really
-		 * want here is $wgHooks['LoadExtensionSchemaUpdates']. This won't work
-		 * if the extension has hidden hook registration in $wgExtensionFunctions,
-		 * but we're not opening that can of worms
-		 * @see https://bugzilla.wikimedia.org/show_bug.cgi?id=26857
-		 */
-		global $wgAutoloadClasses;
-		require( "$IP/includes/DefaultSettings.php" );
+		$path = $this->getVar( 'IP' ) . '/extensions';
 
 		foreach( $exts as $e ) {
-   			require_once( $IP . '/extensions' . "/$e/$e.php" );
+			require( "$path/$e/$e.php" );
 		}
-
-		$hooksWeWant = isset( $wgHooks['LoadExtensionSchemaUpdates'] ) ?
-			$wgHooks['LoadExtensionSchemaUpdates'] : array();
-
-		// Unset everyone else's hooks. Lord knows what someone might be doing
-		// in ParserFirstCallInit (see bug 27171)
-		$GLOBALS['wgHooks'] = array( 'LoadExtensionSchemaUpdates' => $hooksWeWant );
 
 		return Status::newGood();
 	}
@@ -1249,13 +1215,13 @@ abstract class Installer {
 	 * @param $installer DatabaseInstaller so we can make callbacks
 	 * @return array
 	 */
-	protected function getInstallSteps( DatabaseInstaller $installer ) {
+	protected function getInstallSteps( DatabaseInstaller &$installer ) {
 		$coreInstallSteps = array(
 			array( 'name' => 'database',   'callback' => array( $installer, 'setupDatabase' ) ),
-			array( 'name' => 'tables',     'callback' => array( $installer, 'createTables' ) ),
+			array( 'name' => 'tables',     'callback' => array( $this, 'installTables' ) ),
 			array( 'name' => 'interwiki',  'callback' => array( $installer, 'populateInterwikiTable' ) ),
-			array( 'name' => 'stats',      'callback' => array( $this, 'populateSiteStats' ) ),
-			array( 'name' => 'keys',       'callback' => array( $this, 'generateKeys' ) ),
+			array( 'name' => 'secretkey',  'callback' => array( $this, 'generateSecretKey' ) ),
+			array( 'name' => 'upgradekey', 'callback' => array( $this, 'generateUpgradeKey' ) ),
 			array( 'name' => 'sysop',      'callback' => array( $this, 'createSysop' ) ),
 			array( 'name' => 'mainpage',   'callback' => array( $this, 'createMainpage' ) ),
 		);
@@ -1285,10 +1251,6 @@ abstract class Installer {
 			array_unshift( $this->installSteps,
 				array( 'name' => 'extensions', 'callback' => array( $this, 'includeExtensions' ) )
 			);
-			$this->installSteps[] = array(
-				'name' => 'extension-tables',
-				'callback' => array( $installer, 'createExtensionTables' )
-			);
 		}
 		return $this->installSteps;
 	}
@@ -1296,8 +1258,8 @@ abstract class Installer {
 	/**
 	 * Actually perform the installation.
 	 *
-	 * @param $startCB Array A callback array for the beginning of each step
-	 * @param $endCB Array A callback array for the end of each step
+	 * @param $startCB A callback array for the beginning of each step
+	 * @param $endCB A callback array for the end of each step
 	 *
 	 * @return Array of Status objects
 	 */
@@ -1311,10 +1273,10 @@ abstract class Installer {
 			call_user_func_array( $startCB, array( $name ) );
 
 			// Perform the callback step
-			$status = call_user_func( $stepObj['callback'], $installer );
+			$status = call_user_func_array( $stepObj['callback'], array( &$installer ) );
 
 			// Output and save the results
-			call_user_func( $endCB, $name, $status );
+			call_user_func_array( $endCB, array( $name, $status ) );
 			$installResults[$name] = $status;
 
 			// If we've hit some sort of fatal, we need to bail.
@@ -1335,52 +1297,56 @@ abstract class Installer {
 	 *
 	 * @return Status
 	 */
-	public function generateKeys() {
-		$keys = array( 'wgSecretKey' => 64 );
-		if ( strval( $this->getVar( 'wgUpgradeKey' ) ) === '' ) {
-			$keys['wgUpgradeKey'] = 16;
-		}
-		return $this->doGenerateKeys( $keys );
+	protected function generateSecretKey() {
+		return $this->generateSecret( 'wgSecretKey' );
 	}
 
 	/**
-	 * Generate a secret value for variables using either
-	 * /dev/urandom or mt_rand(). Produce a warning in the later case.
+	 * Generate a secret value for a variable using either
+	 * /dev/urandom or mt_rand() Produce a warning in the later case.
 	 *
-	 * @param $keys Array
 	 * @return Status
 	 */
-	protected function doGenerateKeys( $keys ) {
+	protected function generateSecret( $secretName, $length = 64 ) {
+		if ( wfIsWindows() ) {
+			$file = null;
+		} else {
+			wfSuppressWarnings();
+			$file = fopen( "/dev/urandom", "r" );
+			wfRestoreWarnings();
+		}
+
 		$status = Status::newGood();
 
-		wfSuppressWarnings();
-		$file = fopen( "/dev/urandom", "r" );
-		wfRestoreWarnings();
-
-		foreach ( $keys as $name => $length ) {
-			if ( $file ) {
-					$secretKey = bin2hex( fread( $file, $length / 2 ) );
-			} else {
-				$secretKey = '';
-
-				for ( $i = 0; $i < $length / 8; $i++ ) {
-					$secretKey .= dechex( mt_rand( 0, 0x7fffffff ) );
-				}
-			}
-
-			$this->setVar( $name, $secretKey );
-		}
-
 		if ( $file ) {
+			$secretKey = bin2hex( fread( $file, $length / 2 ) );
 			fclose( $file );
 		} else {
-			$names = array_keys ( $keys );
-			$names = preg_replace( '/^(.*)$/', '\$$1', $names );
-			global $wgLang;
-			$status->warning( 'config-insecure-keys', $wgLang->listToText( $names ), count( $names ) );
+			$secretKey = '';
+
+			for ( $i = 0; $i < $length / 8; $i++ ) {
+				$secretKey .= dechex( mt_rand( 0, 0x7fffffff ) );
+			}
+
+			$status->warning( 'config-insecure-secret', '$' . $secretName );
 		}
 
+		$this->setVar( $secretName, $secretKey );
+
 		return $status;
+	}
+
+	/**
+	 * Generate a default $wgUpgradeKey. Will warn if we had to use
+	 * mt_rand() instead of /dev/urandom
+	 *
+	 * @return Status
+	 */
+	public function generateUpgradeKey() {
+		if ( strval( $this->getVar( 'wgUpgradeKey' ) ) === '' ) {
+			return $this->generateSecret( 'wgUpgradeKey', 16 );
+		}
+		return Status::newGood();
 	}
 
 	/**
@@ -1412,10 +1378,6 @@ abstract class Installer {
 				$user->setEmail( $this->getVar( '_AdminEmail' ) );
 			}
 			$user->saveSettings();
-
-			// Update user count
-			$ssUpdate = new SiteStatsUpdate( 0, 0, 0, 0, 1 );
-			$ssUpdate->doUpdate();
 		}
 		$status = Status::newGood();
 
@@ -1441,10 +1403,9 @@ abstract class Installer {
 			$params['language'] = $myLang;
 		}
 
-		$res = MWHttpRequest::factory( $this->mediaWikiAnnounceUrl,
-			array( 'method' => 'POST', 'postData' => $params ) )->execute();
-		if( !$res->isOK() ) {
-			$s->warning( 'config-install-subscribe-fail', $res->getMessage() );
+		$res = Http::post( $this->mediaWikiAnnounceUrl, array( 'postData' => $params ) );
+		if( !$res ) {
+			$s->warning( 'config-install-subscribe-fail' );
 		}
 	}
 
@@ -1453,7 +1414,7 @@ abstract class Installer {
 	 *
 	 * @return Status
 	 */
-	protected function createMainpage( DatabaseInstaller $installer ) {
+	protected function createMainpage( DatabaseInstaller &$installer ) {
 		$status = Status::newGood();
 		try {
 			$article = new Article( Title::newMainPage() );
@@ -1462,7 +1423,7 @@ abstract class Installer {
 								'',
 								EDIT_NEW,
 								false,
-								User::newFromName( 'MediaWiki default' ) );
+								User::newFromName( 'MediaWiki Default' ) );
 		} catch (MWException $e) {
 			//using raw, because $wgShowExceptionDetails can not be set yet
 			$status->fatal( 'config-install-mainpage-failed', $e->getMessage() );

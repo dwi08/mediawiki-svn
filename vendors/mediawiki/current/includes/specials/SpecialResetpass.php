@@ -208,11 +208,21 @@ class SpecialResetpass extends SpecialPage {
 			throw new PasswordError( wfMsg( 'badretype' ) );
 		}
 
+		$throttleCount = LoginForm::incLoginThrottle( $this->mUserName );
+		if ( $throttleCount === true ) {
+			throw new PasswordError( wfMsg( 'login-throttled' ) );
+		}
+
 		if( !$user->checkTemporaryPassword($this->mOldpass) && !$user->checkPassword($this->mOldpass) ) {
 			wfRunHooks( 'PrefsPasswordAudit', array( $user, $newpass, 'wrongpassword' ) );
 			throw new PasswordError( wfMsg( 'resetpass-wrong-oldpass' ) );
 		}
-		
+
+		// Please reset throttle for successful logins, thanks!
+		if ( $throttleCount ) {
+			LoginForm::clearLoginThrottle( $this->mUserName );
+		}
+
 		try {
 			$user->setPassword( $this->mNewpass );
 			wfRunHooks( 'PrefsPasswordAudit', array( $user, $newpass, 'success' ) );

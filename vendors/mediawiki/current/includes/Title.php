@@ -273,12 +273,11 @@ class Title {
 	 * @param $ns \type{\int} the namespace of the article
 	 * @param $title \type{\string} the unprefixed database key form
 	 * @param $fragment \type{\string} The link fragment (after the "#")
-	 * @param $interwiki \type{\string} The interwiki prefix
 	 * @return \type{Title} the new object
 	 */
-	public static function &makeTitle( $ns, $title, $fragment = '', $interwiki = '' ) {
+	public static function &makeTitle( $ns, $title, $fragment = '' ) {
 		$t = new Title();
-		$t->mInterwiki = $interwiki;
+		$t->mInterwiki = '';
 		$t->mFragment = $fragment;
 		$t->mNamespace = $ns = intval( $ns );
 		$t->mDbkeyform = str_replace( ' ', '_', $title );
@@ -296,12 +295,11 @@ class Title {
 	 * @param $ns \type{\int} the namespace of the article
 	 * @param $title \type{\string} the database key form
 	 * @param $fragment \type{\string} The link fragment (after the "#")
-	 * @param $interwiki \type{\string} The interwiki prefix
 	 * @return \type{Title} the new object, or NULL on an error
 	 */
-	public static function makeTitleSafe( $ns, $title, $fragment = '', $interwiki = '' ) {
+	public static function makeTitleSafe( $ns, $title, $fragment = '' ) {
 		$t = new Title();
-		$t->mDbkeyform = Title::makeName( $ns, $title, $fragment, $interwiki );
+		$t->mDbkeyform = Title::makeName( $ns, $title, $fragment );
 		if ( $t->secureAndSplit() ) {
 			return $t;
 		} else {
@@ -499,17 +497,13 @@ class Title {
 	 * @param $ns \type{\int} numerical representation of the namespace
 	 * @param $title \type{\string} the DB key form the title
 	 * @param $fragment \type{\string} The link fragment (after the "#")
-	 * @param $interwiki \type{\string} The interwiki prefix
 	 * @return \type{\string} the prefixed form of the title
 	 */
-	public static function makeName( $ns, $title, $fragment = '', $interwiki = '' ) {
+	public static function makeName( $ns, $title, $fragment = '' ) {
 		global $wgContLang;
 
 		$namespace = $wgContLang->getNsText( $ns );
 		$name = $namespace == '' ? $title : "$namespace:$title";
-		if ( strval( $interwiki ) != '' ) {
-			$name = "$interwiki:$name";
-		}
 		if ( strval( $fragment ) != '' ) {
 			$name .= '#' . $fragment;
 		}
@@ -827,7 +821,7 @@ class Title {
 
 			// Ugly quick hack to avoid duplicate prefixes (bug 4571 etc)
 			// Correct fix would be to move the prepending elsewhere.
-			if ( $wgRequest->getVal( 'action' ) != 'render' ) {
+			if ( $wgRequest->getVal( 'action' ) != 'render' && $wgRequest->getVal( 'action' ) != 'parse' ) {
 				$url = $wgServer . $url;
 			}
 		} else {
@@ -846,7 +840,7 @@ class Title {
 		# Finally, add the fragment.
 		$url .= $this->getFragmentForURL();
 
-		wfRunHooks( 'GetFullURL', array( &$this, &$url, $query ) );
+		wfRunHooks( 'GetFullURL', array( &$this, &$url, $query, $variant ) );
 		return $url;
 	}
 
@@ -924,6 +918,12 @@ class Title {
 			if ( $wgRequest->getVal( 'action' ) == 'render' ) {
 				$url = $wgServer . $url;
 			}
+			
+			// HACK for iOS issue: expand URLs to absolute in API action=parse
+			// See http://lists.wikimedia.org/pipermail/mediawiki-api/2011-September/002361.html for details
+			if ( $wgRequest->getVal( 'action' ) == 'parse' ) {
+				$url = wfExpandUrl( $url, PROTO_CANONICAL );
+			}
 		}
 		wfRunHooks( 'GetLocalURL', array( &$this, &$url, $query ) );
 		return $url;
@@ -980,20 +980,50 @@ class Title {
 	public function escapeFullURL( $query = '' ) {
 		return htmlspecialchars( $this->getFullURL( $query ) );
 	}
+	
+	/**
+	 * HTML-escaped version of getCanonicalURL()
+	 */
+	public function escapeCanonicalURL( $query = '', $variant = false ) {
+		return htmlspecialchars( $this->getCanonicalURL( $query, $variant ) );
+	}
 
 	/**
 	 * Get the URL form for an internal link.
 	 * - Used in various Squid-related code, in case we have a different
 	 * internal hostname for the server from the exposed one.
+	 * 
+	 * This uses $wgInternalServer to qualify the path, or $wgServer
+	 * if $wgInternalServer is not set. If the server variable used is
+	 * protocol-relative, the URL will be expanded to http://
 	 *
 	 * @param $query \type{\string} an optional query string
 	 * @param $variant \type{\string} language variant of url (for sr, zh..)
 	 * @return \type{\string} the URL
 	 */
 	public function getInternalURL( $query = '', $variant = false ) {
-		global $wgInternalServer;
-		$url = $wgInternalServer . $this->getLocalURL( $query, $variant );
-		wfRunHooks( 'GetInternalURL', array( &$this, &$url, $query ) );
+		global $wgInternalServer, $wgServer;
+		$server = $wgInternalServer !== false ? $wgInternalServer : $wgServer;
+		$url = wfExpandUrl( $server . $this->getLocalURL( $query, $variant ), PROTO_HTTP );
+		wfRunHooks( 'GetInternalURL', array( &$this, &$url, $query, $variant ) );
+		return $url;
+	}
+
+	/**
+	 * Get the URL for a canonical link, for use in things like IRC and
+	 * e-mail notifications. Uses $wgCanonicalServer and the
+	 * GetCanonicalURL hook.
+	 * 
+	 * NOTE: Unlike getInternalURL(), the canonical URL includes the fragment
+	 * 
+	 * @param $query string An optional query string
+	 * @param $variant string Language variant of URL (for sr, zh, ...)
+	 * @return string The URL
+	 */
+	public function getCanonicalURL( $query = '', $variant = false ) {
+		global $wgCanonicalServer;
+		$url = wfExpandUrl( $this->getLocalURL( $query, $variant ) . $this->getFragmentForURL(), PROTO_CANONICAL );
+		wfRunHooks( 'GetCanonicalURL', array( &$this, &$url, $query, $variant ) );
 		return $url;
 	}
 
@@ -3106,19 +3136,26 @@ class Title {
 
 		// Refresh the sortkey for this row.  Be careful to avoid resetting
 		// cl_timestamp, which may disturb time-based lists on some sites.
-		$prefix = $dbw->selectField(
+		$prefixes = $dbw->select(
 			'categorylinks',
-			'cl_sortkey_prefix',
+			array( 'cl_sortkey_prefix', 'cl_to' ),
 			array( 'cl_from' => $pageid ),
 			__METHOD__
 		);
-		$dbw->update( 'categorylinks',
-			array(
-				'cl_sortkey' => Collation::singleton()->getSortKey( 
-					$nt->getCategorySortkey( $prefix ) ),
-				'cl_timestamp=cl_timestamp' ),
-			array( 'cl_from' => $pageid ),
-			__METHOD__ );
+		foreach ( $prefixes as $prefixRow ) {
+			$prefix = $prefixRow->cl_sortkey_prefix;
+			$catTo = $prefixRow->cl_to;
+			$dbw->update( 'categorylinks',
+				array(
+					'cl_sortkey' => Collation::singleton()->getSortKey(
+						$nt->getCategorySortkey( $prefix ) ),
+					'cl_timestamp=cl_timestamp' ),
+				array(
+					'cl_from' => $pageid,
+					'cl_to' => $catTo ),
+				__METHOD__
+			);
+		}
 
 		if ( $protected ) {
 			# Protect the redirect title as the title used to be...
@@ -4198,10 +4235,6 @@ class Title {
 		}
 		
 		wfRunHooks( 'TitleGetRestrictionTypes', array( $this, &$types ) );
-		
-		wfDebug( __METHOD__ . ': applicable restriction types for ' . 
-			$this->getPrefixedText() . ' are ' . implode( ',', $types ) );
-
 		return $types;
 	}
 	/**

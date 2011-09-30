@@ -66,7 +66,7 @@ abstract class ResourceLoaderWikiModule extends ResourceLoaderModule {
 				continue;
 			}
 			$title = Title::newFromText( $titleText );
-			if ( !$title ) {
+			if ( !$title || $title->isRedirect() ) {
 				continue;
 			}
 			$script = $this->getContent( $title );
@@ -89,7 +89,7 @@ abstract class ResourceLoaderWikiModule extends ResourceLoaderModule {
 				continue;
 			}
 			$title = Title::newFromText( $titleText );
-			if ( !$title ) {
+			if ( !$title || $title->isRedirect()  ) {
 				continue;
 			}			
 			$media = isset( $options['media'] ) ? $options['media'] : 'all';
@@ -123,16 +123,6 @@ abstract class ResourceLoaderWikiModule extends ResourceLoaderModule {
 	
 	public function isKnownEmpty( ResourceLoaderContext $context ) {
 		return count( $this->getTitleMtimes( $context ) ) == 0;
-	}
-	
-	/**
-	 * @param $context ResourceLoaderContext
-	 * @return bool
-	 */
-	public function getFlip( $context ) {
-		global $wgContLang;
-
-		return $wgContLang->getDir() !== $context->getDirection();
 	}
 	
 	/**

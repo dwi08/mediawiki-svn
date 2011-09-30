@@ -946,7 +946,7 @@ Morda je bila izbrisana iz wikija ali pa jo je kdo preimenoval.
 Prosimo, poskusite [[Special:Search|poiskati v wikiju]] ustrezajoče nove strani.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(povzetek urejanja je odstranjen)',
+'rev-deleted-comment'         => '(pripomba je bila odstranjena)',
 'rev-deleted-user'            => '(uporabniško ime je bilo odstranjeno)',
 'rev-deleted-event'           => '(dnevniški vnos je odstranjen)',
 'rev-deleted-user-contribs'   => '[uporabniško ime ali IP naslov odstranjeni - urajenje skrito v prispevkih]',
@@ -1399,6 +1399,7 @@ Poleg tega vpisan e-poštni naslov omogoča drugim, da vam lahko pošiljajo elek
 'right-reset-passwords'       => 'Ponastavljanje gesla drugih uporabnikov',
 'right-override-export-depth' => 'Izvoz strani, vključno s povezaimi straneh do globine 5',
 'right-sendemail'             => 'Pošiljanje e-pošte drugim uporabnikom',
+'right-disableaccount'        => 'Onemogočanje računov',
 
 # User rights log
 'rightslog'      => 'Dnevnik uporabniških pravic',
@@ -1542,7 +1543,7 @@ Za grafični pogled obiščite [[Special:NewFiles|galerijo novih datotek]].',
 'hookaborted'                 => 'Spremembo, ki ste jo poskušali narediti, je prekinila razširitev.',
 'illegal-filename'            => 'Ime datoteke ni dovoljeno',
 'overwrite'                   => 'Prepisovanje obstoječe datoteke ni dovoljeno',
-'unknown-error'               => 'Prišlo je do neznane napake.',
+'unknown-error'               => 'Prišlo je do neznane napake',
 'tmp-create-error'            => 'Začasne datoteke ni bilo mogoče ustvariti',
 'tmp-write-error'             => 'Napaka pri pisanju začasne datoteke',
 'large-file'                  => 'Priporočeno je, da datoteke niso večje od $1; ta datoteka je $2.',
@@ -1573,7 +1574,7 @@ Izgleda, da je to pomanjšana slika ''(thumbnail)''.
 Prosimo, vrnite se in naložite svojo datoteko pod drugim imenom.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ta datoteka je dvojnik {{PLURAL:$1|naslednje datoteke|naslednjih datotek}}:',
-'file-deleted-duplicate'      => 'Datoteka je identična tej ([[:$1]]), ki je bila predhodno izbrisana.
+'file-deleted-duplicate'      => 'Datoteka je identična tej ([[$1]]), ki je bila predhodno izbrisana.
 Preverite zgodovino brisanja datoteke, preden jo ponovno naložite.',
 'uploadwarning'               => 'Opozorilo!',
 'uploadwarning-text'          => 'Prosimo, spremenite opis datoteke spodaj in poskusite ponovno.',
@@ -1641,23 +1642,22 @@ Prosimo, preverite veljavnost in dostopnost naslova URL ter poskusite ponovno.
 'upload-http-error'         => 'Prišlo je do napake HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Dostop zavrnjen',
-'img-auth-nopathinfo'       => 'Manjka PATH_INFO.
+'img-auth-accessdenied' => 'Dostop zavrnjen',
+'img-auth-nopathinfo'   => 'Manjka PATH_INFO.
 Vaš strežnik ne poda te informacije.
 Morda temelji na CGI in ne more podpirati img_auth.
 Oglejte si http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Zahtevana pot ni v konfigurirani mapi za nalaganje.',
-'img-auth-badtitle'         => 'Ni mogoče sestaviti veljavnega naslova iz »$1«.',
-'img-auth-nologinnWL'       => 'Niste prijavljeni in »$1« ni na seznamu dovoljenih datotek.',
-'img-auth-nofile'           => 'Datoteka »$1« ne obstaja.',
-'img-auth-isdir'            => 'Poskušate dostopati do mape »$1«.
+'img-auth-notindir'     => 'Zahtevana pot ni v konfigurirani mapi za nalaganje.',
+'img-auth-badtitle'     => 'Ni mogoče sestaviti veljavnega naslova iz »$1«.',
+'img-auth-nologinnWL'   => 'Niste prijavljeni in »$1« ni na seznamu dovoljenih datotek.',
+'img-auth-nofile'       => 'Datoteka »$1« ne obstaja.',
+'img-auth-isdir'        => 'Poskušate dostopati do mape »$1«.
 Dovoljeno je samo dostopanje do datotek.',
-'img-auth-streaming'        => 'Pretakanje »$1«.',
-'img-auth-public'           => 'Funkcija img_auth.php je izvoz datotek iz zasebnega wikija.
+'img-auth-streaming'    => 'Pretakanje »$1«.',
+'img-auth-public'       => 'Funkcija img_auth.php je izvoz datotek iz zasebnega wikija.
 Ta wiki je konfiguriran kot javni wiki.
 Za optimalno varnost je img_auth.php onemogočen.',
-'img-auth-noread'           => 'Uporabnik nima dostopa za branje »$1«.',
-'img-auth-bad-query-string' => 'URL ima neveljavni niz poizvedbe.',
+'img-auth-noread'       => 'Uporabnik nima dostopa za branje »$1«.',
 
 # HTTP errors
 'http-invalid-url'      => 'Napačen URL: $1',
@@ -2100,17 +2100,14 @@ Na spisku nadzorov lahko tudi ponastavite zastavice obveščanj za vse spremljan
              Vaš opozorilni sistem {{GRAMMAR:rodilnik|{{SITENAME}}}}
 
 --
-Za spremembo nastavitev e-poštnih obvestil obiščite
-{{fullurl:{{#special:Preferences}}}}
-
 Za spremembo nastavitev spiska nadzorov obiščite
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Za odstranitev strani z vašega spiska nadzorov obiščite
 $UNWATCHURL
 
 Povratna sporočila in pomoč:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Briši stran',
@@ -2385,7 +2382,7 @@ Oglejte si [[Special:IPBlockList|seznam blokiranih IP-naslovov]] za pregled blok
 'ipusubmit'                       => 'Odstrani blokado',
 'unblocked'                       => '[[User:$1|$1]] je bil odblokiran',
 'unblocked-id'                    => 'Blokada $1 je odstranjena',
-'ipblocklist'                     => 'Blokirani uporabniki',
+'ipblocklist'                     => 'Seznam blokiranih IP-naslovov in uporabniških imen',
 'ipblocklist-legend'              => 'Najdi blokiranega uporabnika',
 'ipblocklist-username'            => 'Uporabniško ime ali IP-naslov:',
 'ipblocklist-sh-userblocks'       => '$1 blokade računov',
@@ -2635,7 +2632,7 @@ Vsi uvozi med wikiji so zabeleženi v [[Special:Log/import|dnevniku uvozov]].',
 'import-interwiki-namespace' => 'Prenesi strani v imenski prostor:',
 'import-upload-filename'     => 'Ime datoteke:',
 'import-comment'             => 'Komentar:',
-'importtext'                 => 'Prosimo, izvozite datoteko z izvornega wikija s pomočjo [[Special:Export|orodja za izvoz]].
+'importtext'                 => 'Prosimo, izvozite datoteko iz izvornega wikija s pomočjo [[Special:Export|orodja za izvoz]].
 Shranite jo na vaš računalnik in naložite tukaj.',
 'importstart'                => 'Uvažam strani ...',
 'import-revision-count'      => '$1 {{PLURAL:$1|redakcija|redakciji|redakcije|redakcij|redakcij}}',
@@ -2836,7 +2833,7 @@ Z njenim zagonom lahko ogrozite vaš sistem.",
 'widthheight'          => '$1&nbsp;×&nbsp;$2',
 'widthheightpage'      => '$1 × $2, $3 {{PLURAL:$3|stran|strani}}',
 'file-info'            => 'Velikost datoteke: $1, MIME-vrsta: <code>$2</code>',
-'file-info-size'       => '$1 × $2 točk, velikost datoteke: $3, vrsta MIME: $4',
+'file-info-size'       => '$1 × $2 točk, velikost datoteke: $3, MIME-vrsta: $4',
 'file-nohires'         => '<small>Slika višje ločljivosti ni na voljo.</small>',
 'svg-long-desc'        => 'datoteka SVG, v izvirniku $1 × $2 slikovnih točk, velikost datoteke: $3',
 'show-big-image'       => 'Slika v višji ločljivosti',
@@ -2920,8 +2917,8 @@ Druga bodo po privzetem skrita.
 'exif-colorspace'                  => 'Barvni prostor',
 'exif-componentsconfiguration'     => 'Pomen posameznih gradnikov',
 'exif-compressedbitsperpixel'      => 'Velikost točke po stiskanju (v bitih)',
-'exif-pixelydimension'             => 'Širina slike',
-'exif-pixelxdimension'             => 'Višina slike',
+'exif-pixelydimension'             => 'Veljavna širina slike',
+'exif-pixelxdimension'             => 'Veljavna višina slike',
 'exif-makernote'                   => 'Opombe proizvajalca',
 'exif-usercomment'                 => 'Uporabniške pripombe',
 'exif-relatedsoundfile'            => 'Pripadajoča zvočna datoteka',
@@ -2937,9 +2934,9 @@ Druga bodo po privzetem skrita.
 'exif-spectralsensitivity'         => 'Spektralna občutljivost',
 'exif-isospeedratings'             => 'Občutljivost filma ali tipala (ISO)',
 'exif-oecf'                        => 'Optoelektronski pretvorbeni faktor',
-'exif-shutterspeedvalue'           => 'Hitrost zaklopa APEX',
-'exif-aperturevalue'               => 'Zaslonka APEX',
-'exif-brightnessvalue'             => 'Svetlost APEX',
+'exif-shutterspeedvalue'           => 'Hitrost zaklopa',
+'exif-aperturevalue'               => 'Zaslonka',
+'exif-brightnessvalue'             => 'Svetlost',
 'exif-exposurebiasvalue'           => 'Popravek osvetlitve',
 'exif-maxaperturevalue'            => 'Največja vrednost zaslonke',
 'exif-subjectdistance'             => 'Oddaljenost predmeta',
@@ -3003,7 +3000,6 @@ Druga bodo po privzetem skrita.
 'exif-gpsareainformation'          => 'Ime GPS-območja',
 'exif-gpsdatestamp'                => 'GPS-datum',
 'exif-gpsdifferential'             => 'Diferencialni popravek GPS',
-'exif-objectname'                  => 'Kratek naslov',
 
 # EXIF attributes
 'exif-compression-1' => 'Nestisnjeno',
@@ -3087,8 +3083,6 @@ Druga bodo po privzetem skrita.
 'exif-sensingmethod-5' => 'Zaporedno barvno ploskovno tipalo',
 'exif-sensingmethod-7' => 'Trikratno tipalo',
 'exif-sensingmethod-8' => 'Zaporedno barvno črtno tipalo',
-
-'exif-filesource-3' => 'Digitalni fotoaparat',
 
 'exif-scenetype-1' => 'Neposredno fotografirana slika',
 
@@ -3452,5 +3446,18 @@ Ta stran se sooča s tehničnimi težavami.',
 # SQLite database support
 'sqlite-has-fts' => '$1 s podporo iskanju polnih besedil',
 'sqlite-no-fts'  => '$1 brez podpore iskanju polnih besedil',
+
+# Special:DisableAccount
+'disableaccount'             => 'Onemogoči uporabniški račun',
+'disableaccount-user'        => 'Uporabniško ime:',
+'disableaccount-reason'      => 'Razlog:',
+'disableaccount-confirm'     => "Onemogočite ta uporabniški račun.
+Uporabnik se ne bo mogel prijaviti, ponastaviti svojega gesla ali prejemati e-poštnih obvestil.
+Če je uporabnik trenutno kjer koli prijavljen, bo nemudoma odjavljen.
+''Pomnite, da povrnitev onemogočitve računa ni mogoča brez posredovanja sistemskega upravljavca.''",
+'disableaccount-mustconfirm' => 'Potrditi morate, da želite onemogočiti ta račun.',
+'disableaccount-nosuchuser'  => 'Uporabniški račun »$1« ne obstaja.',
+'disableaccount-success'     => 'Uporabniški račun »$1« je trajno onemogočen.',
+'disableaccount-logentry'    => 'je trajno onemogočil(-a) uporabniški račun [[$1]]',
 
 );

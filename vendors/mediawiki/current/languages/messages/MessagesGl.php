@@ -618,7 +618,7 @@ Non esqueza personalizar as súas [[Special:Preferences|preferencias de {{SITENA
 'externaldberror'            => 'Ou ben se produciu un erro da base de datos na autenticación externa ou ben non se lle permite actualizar a súa conta externa.',
 'login'                      => 'Acceder ao sistema',
 'nav-login-createaccount'    => 'Rexistro',
-'loginprompt'                => 'Debe habilitar as cookies para acceder a {{SITENAME}}.',
+'loginprompt'                => "Debe habilitar as ''cookies'' para acceder a {{SITENAME}}.",
 'userlogin'                  => 'Rexistro',
 'userloginnocreate'          => 'Rexistro',
 'logout'                     => 'Saír ao anonimato',
@@ -690,7 +690,7 @@ Como resultado, os visitantes que usen este enderezo IP non poden crear máis co
 'invalidemailaddress'        => 'Non se pode aceptar o enderezo de correo electrónico porque semella ter un formato incorrecto.
 Insira un enderezo cun formato válido ou baleire ese campo.',
 'accountcreated'             => 'Conta creada',
-'accountcreatedtext'         => 'Creouse a conta de usuario para "$1".',
+'accountcreatedtext'         => 'A conta de usuario para $1 foi creada.',
 'createaccount-title'        => 'Creación dunha conta para {{SITENAME}}',
 'createaccount-text'         => 'Alguén creou unha conta chamada "$2" para o seu enderezo de correo electrónico en {{SITENAME}} ($4), e con contrasinal "$3".
 Debe acceder ao sistema e mudar o contrasinal agora.
@@ -755,7 +755,7 @@ Pode ser que xa cambiase o seu contrasinal ou que solicitase un novo contrasinal
 'showpreview'                      => 'Mostrar a vista previa',
 'showlivepreview'                  => 'Vista previa',
 'showdiff'                         => 'Mostrar os cambios',
-'anoneditwarning'                  => "'''Aviso:''' Non accedeu ao sistema.
+'anoneditwarning'                  => "'''Aviso:''' non accedeu ao sistema.
 O seu enderezo IP quedará rexistrado no historial de revisións desta páxina.",
 'anonpreviewwarning'               => "''Non accedeu ao sistema. Se garda a páxina, o seu enderezo IP quedará rexistrado no historial de edicións.''",
 'missingsummary'                   => "'''Aviso:''' esqueceu incluír o texto do campo resumo.
@@ -872,8 +872,8 @@ Pode mesturar os seus cambios co texto existente.
 'storedversion'                    => 'Versión gardada',
 'nonunicodebrowser'                => "'''ATENCIÓN: o seu navegador non soporta Unicode.'''
 Existe unha solución que lle permite editar páxinas con seguridade: os caracteres non incluídos no ASCII aparecerán na caixa de edición como códigos hexadecimais.",
-'editingold'                       => "'''Atención: Está editando unha revisión vella desta páxina.'''
-Se a garda, perderanse os cambios realizados tras esta revisión.",
+'editingold'                       => "'''ATENCIÓN: está editando unha revisión non actualizada desta páxina.
+Se a garda, perderanse os cambios realizados tras esta revisión.'''",
 'yourdiff'                         => 'Diferenzas',
 'copyrightwarning'                 => "Por favor, teña en conta que todas as contribucións a {{SITENAME}} considéranse publicadas baixo a $2 (vexa $1 para máis detalles). Se non quere que o que escriba se edite sen piedade e se redistribúa sen límites, entón non o envíe aquí.<br />
 Ao mesmo tempo, prométanos que o que escribiu é da súa autoría ou que está copiado dun recurso do dominio público ou que permite unha liberdade semellante.
@@ -987,7 +987,7 @@ Puido borrarse ou moverse a outro nome.
 Probe a [[Special:Search|buscar no wiki]] para atopar as páxinas relacionadas.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(resumo de edición eliminado)',
+'rev-deleted-comment'         => '(comentario eliminado)',
 'rev-deleted-user'            => '(nome de usuario eliminado)',
 'rev-deleted-event'           => '(rexistro de evento eliminado)',
 'rev-deleted-user-contribs'   => '[nome de usuario ou enderezo IP eliminado; edición agochada das contribucións]',
@@ -1134,8 +1134,8 @@ Asegúrese de que esta modificación da páxina mantén a continuidade históric
 'compareselectedversions'  => 'Comparar as versións seleccionadas',
 'showhideselectedversions' => 'Mostrar/Agochar as versións seleccionadas',
 'editundo'                 => 'desfacer',
-'diff-multi'               => '(Non se {{PLURAL:$1|mostra unha revisión|mostran $1 revisións}} do historial {{PLURAL:$1|feita|feitas}} por {{PLURAL:$2|un usuario|$2 usuarios}}.)',
-'diff-multi-manyusers'     => '(Non se {{PLURAL:$1|mostra unha revisión|mostran $1 revisións}} do historial {{PLURAL:$1|feita|feitas}} por máis {{PLURAL:$2|dun usuario|de $2 usuarios}}.)',
+'diff-multi'               => '(Non se {{PLURAL:$1|mostra unha revisión|mostran $1 revisións}} do historial {{PLURAL:$2|feita por un usuario|feitas por $2 usuarios}}.)',
+'diff-multi-manyusers'     => '(Non se {{PLURAL:$1|mostra unha revisión|mostran $1 revisións}} do historial {{PLURAL:$2|feita por máis dun usuario|feitas por máis de $2 usuarios}}.)',
 
 # Search results
 'searchresults'                    => 'Resultados da procura',
@@ -1228,9 +1228,9 @@ Note que os seus índices do contido de {{SITENAME}} poden estar desactualizados
 'prefs-rc'                      => 'Cambios recentes',
 'prefs-watchlist'               => 'Lista de vixilancia',
 'prefs-watchlist-days'          => 'Días para amosar na lista de vixilancia:',
-'prefs-watchlist-days-max'      => 'Máximo 7 días',
+'prefs-watchlist-days-max'      => '(máximo 7 días)',
 'prefs-watchlist-edits'         => 'Número de edicións para mostrar na lista de vixilancia completa:',
-'prefs-watchlist-edits-max'     => 'Número máximo: 1000',
+'prefs-watchlist-edits-max'     => '(número máximo: 1000)',
 'prefs-watchlist-token'         => 'Pase para a lista de vixilancia:',
 'prefs-misc'                    => 'Preferencias varias',
 'prefs-resetpass'               => 'Cambiar o contrasinal',
@@ -1373,7 +1373,7 @@ Tamén pode deixar que outras persoas se poñan en contacto con vostede desde a 
 'grouppage-bot'           => '{{ns:project}}:Bots',
 'grouppage-sysop'         => '{{ns:project}}:Administradores',
 'grouppage-bureaucrat'    => '{{ns:project}}:Burócratas',
-'grouppage-suppress'      => '{{ns:project}}:Supervisores',
+'grouppage-suppress'      => '{{ns:project}}:Supervisor',
 
 # Rights
 'right-read'                  => 'Ler páxinas',
@@ -1436,6 +1436,7 @@ Tamén pode deixar que outras persoas se poñan en contacto con vostede desde a 
 'right-reset-passwords'       => 'Restablecer os contrasinais doutros usuarios',
 'right-override-export-depth' => 'Exportar páxinas incluíndo as páxinas ligadas ata unha profundidade de 5',
 'right-sendemail'             => 'Enviar correos electrónicos a outros usuarios',
+'right-disableaccount'        => 'Desactivar contas',
 
 # User rights log
 'rightslog'      => 'Rexistro de dereitos de usuario',
@@ -1483,7 +1484,7 @@ Tamén pode deixar que outras persoas se poñan en contacto con vostede desde a 
 'nchanges'                          => '$1 {{PLURAL:$1|cambio|cambios}}',
 'recentchanges'                     => 'Cambios recentes',
 'recentchanges-legend'              => 'Opcións dos cambios',
-'recentchangestext'                 => 'Siga, nesta páxina, as modificacións máis recentes no wiki.',
+'recentchangestext'                 => 'Sigue, nesta páxina, as modificacións máis recentes no wiki.',
 'recentchanges-feed-description'    => 'Siga os cambios máis recentes deste wiki nesta fonte de novas.',
 'recentchanges-label-newpage'       => 'Esta edición creou unha nova páxina',
 'recentchanges-label-minor'         => 'Esta é unha edición pequena',
@@ -1611,7 +1612,7 @@ Se aínda quere cargar o seu ficheiro, por favor, retroceda e use un novo nome. 
 Se aínda quere cargar o seu ficheiro, volva atrás e use outro nome.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Este ficheiro é un duplicado {{PLURAL:$1|do seguinte|dos seguintes}}:',
-'file-deleted-duplicate'      => 'Un ficheiro idéntico a este ("[[:$1]]") foi borrado previamente. Debería comprobar o historial de borrados do ficheiro antes de proceder a cargalo de novo.',
+'file-deleted-duplicate'      => 'Un ficheiro idéntico a este ("[[$1]]") foi borrado previamente. Debería comprobar o historial de borrados do ficheiro antes de proceder a cargalo de novo.',
 'uploadwarning'               => 'Advertencia ao cargar o ficheiro',
 'uploadwarning-text'          => 'Por favor, modifique a descrición do ficheiro e inténteo de novo.',
 'savefile'                    => 'Gardar o ficheiro',
@@ -1677,23 +1678,22 @@ Se o problema persiste contacte cun [[Special:ListUsers/sysop|administrador]] do
 'upload-http-error'         => 'Produciuse un erro HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Acceso rexeitado',
-'img-auth-nopathinfo'       => 'Falta a PATH_INFO.
+'img-auth-accessdenied' => 'Acceso rexeitado',
+'img-auth-nopathinfo'   => 'Falta a PATH_INFO.
 O seu servidor non está configurado para pasar esta información.
 Pode ser que estea baseado en CGI e non puidese soportar img_auth.
 Olle http://www.mediawiki.org/wiki/Manual:Image_Authorization para obter máis información.',
-'img-auth-notindir'         => 'A ruta solicitada non está no directorio de carga configurado.',
-'img-auth-badtitle'         => 'Non é posible construír un título válido a partir de "$1".',
-'img-auth-nologinnWL'       => 'Non accedeu ao sistema e "$1" non está na lista de branca.',
-'img-auth-nofile'           => 'O ficheiro "$1" non existe.',
-'img-auth-isdir'            => 'Está intentando acceder ao directorio "$1".
+'img-auth-notindir'     => 'A ruta solicitada non está no directorio de carga configurado.',
+'img-auth-badtitle'     => 'Non é posible construír un título válido a partir de "$1".',
+'img-auth-nologinnWL'   => 'Non accedeu ao sistema e "$1" non está na lista de branca.',
+'img-auth-nofile'       => 'O ficheiro "$1" non existe.',
+'img-auth-isdir'        => 'Está intentando acceder ao directorio "$1".
 Só se permite o acceso ao ficheiro.',
-'img-auth-streaming'        => 'Secuenciando "$1".',
-'img-auth-public'           => 'A función de img_auth.php é para ficheiros de saída desde un wiki privado.
+'img-auth-streaming'    => 'Secuenciando "$1".',
+'img-auth-public'       => 'A función de img_auth.php é para ficheiros de saída desde un wiki privado.
 Este wiki está configurado como público.
 Para unha seguridade óptima, img_auth.php está desactivado.',
-'img-auth-noread'           => 'O usuario non ten acceso á lectura de "$1".',
-'img-auth-bad-query-string' => 'O enderezo URL ten unha secuencia de consulta incorrecta.',
+'img-auth-noread'       => 'O usuario non ten acceso á lectura de "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'URL non válido: $1',
@@ -1771,7 +1771,6 @@ A descrición da [$2 páxina de descrición do ficheiro] móstrase a continuaci�
 'uploadnewversion-linktext' => 'Cargar unha nova versión deste ficheiro',
 'shared-repo-from'          => 'de $1',
 'shared-repo'               => 'repositorio compartido',
-'filepage.css'              => '/** O CSS que se coloque aquí será incluído na páxina de descrición do ficheiro, así como nos wikis de clientes estranxeiros */',
 
 # File reversion
 'filerevert'                => 'Desfacer $1',
@@ -2134,18 +2133,14 @@ Pode borrar os indicadores de aviso de notificación para o conxunto das páxina
              O sistema de aviso de {{SITENAME}}
 
 --
-Para cambiar as notificacións por correo electrónico, visite
-{{fullurl:{{#special:Preferences}}}}
-
-
 Para cambiar a súa lista de vixilancia, visite
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Para borrar a páxina da súa lista de vixilancia, visite
 $UNWATCHURL
 
 Axuda:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Borrar a páxina',
@@ -2370,7 +2365,7 @@ Velaquí está a última entrada do rexistro de bloqueos, por se quere consultal
 'whatlinkshere-filters'    => 'Filtros',
 
 # Block/unblock
-'blockip'                         => 'Bloquear o usuario',
+'blockip'                         => 'Bloquear este usuario',
 'blockip-title'                   => 'Bloquear un usuario',
 'blockip-legend'                  => 'Bloquear un usuario',
 'blockiptext'                     => 'Use o seguinte formulario para bloquear o acceso de escritura desde un enderezo IP ou para bloquear un usuario específico.
@@ -2416,12 +2411,12 @@ Olle a [[Special:IPBlockList|lista de enderezos IP e usuarios bloqueados]] para 
 'ipusubmit'                       => 'Retirar este bloqueo',
 'unblocked'                       => '"[[User:$1|$1]]" foi desbloqueado',
 'unblocked-id'                    => 'O bloqueo $1 foi eliminado',
-'ipblocklist'                     => 'Usuarios bloqueados',
+'ipblocklist'                     => 'Enderezos IP e usuarios bloqueados',
 'ipblocklist-legend'              => 'Buscar un usuario bloqueado',
 'ipblocklist-username'            => 'Nome de usuario ou enderezo IP:',
-'ipblocklist-sh-userblocks'       => '$1 os bloqueos de contas',
+'ipblocklist-sh-userblocks'       => '$1 as contas bloqueadas',
 'ipblocklist-sh-tempblocks'       => '$1 os bloqueos temporais',
-'ipblocklist-sh-addressblocks'    => '$1 os bloqueos a enderezos IP únicos',
+'ipblocklist-sh-addressblocks'    => '$1 os bloqueos únicos a enderezos IP',
 'ipblocklist-submit'              => 'Procurar',
 'ipblocklist-localblock'          => 'Bloqueo local',
 'ipblocklist-otherblocks'         => '{{PLURAL:$1|Outro bloqueo|Outros bloqueos}}',
@@ -2700,7 +2695,7 @@ Gárdeo no seu disco duro e cárgueo aquí.',
 'tooltip-pt-mytalk'               => 'A súa páxina de conversa',
 'tooltip-pt-anontalk'             => 'Conversa acerca de edicións feitas desde este enderezo IP',
 'tooltip-pt-preferences'          => 'As miñas preferencias',
-'tooltip-pt-watchlist'            => 'A lista de páxinas cuxas modificacións está a seguir',
+'tooltip-pt-watchlist'            => 'Lista de páxinas cuxas modificacións estou a seguir',
 'tooltip-pt-mycontris'            => 'Lista das súas contribucións',
 'tooltip-pt-login'                => 'Recoméndaselle que acceda ao sistema, porén, non é obrigatorio.',
 'tooltip-pt-anonlogin'            => 'Recoméndaselle rexistrarse, se ben non é obrigatorio.',
@@ -2752,7 +2747,7 @@ Gárdeo no seu disco duro e cárgueo aquí.',
 'tooltip-save'                    => 'Gravar os seus cambios',
 'tooltip-preview'                 => 'Vista previa dos seus cambios; por favor, úsea antes de gravalos!',
 'tooltip-diff'                    => 'Mostrar os cambios que fixo no texto',
-'tooltip-compareselectedversions' => 'Ver as diferenzas entre dúas versións seleccionadas desta páxina',
+'tooltip-compareselectedversions' => 'Ver as diferenzas entre as dúas versións seleccionadas desta páxina',
 'tooltip-watch'                   => 'Engadir esta páxina á súa lista de vixilancia [alt-w]',
 'tooltip-recreate'                => 'Recrear a páxina a pesar de que foi borrada',
 'tooltip-upload'                  => 'Comezar a enviar',
@@ -2790,7 +2785,7 @@ Gárdeo no seu disco duro e cárgueo aquí.',
 # Metadata
 'nodublincore'      => 'A opción de metadatos RDF do Dublin Core está desactivada neste servidor.',
 'nocreativecommons' => 'A opción de metadatos Creative Commons RDF está desactivada neste servidor.',
-'notacceptable'     => 'O servidor do wiki non pode fornecer os datos nun formato que o seu cliente poida ler.',
+'notacceptable'     => 'O servidor wiki non pode fornecer datos nun formato que o seu cliente poida ler.',
 
 # Attribution
 'anonymous'        => '{{PLURAL:$1|Usuario anónimo|Usuarios anónimos}} de {{SITENAME}}',
@@ -2975,8 +2970,8 @@ Os demais agocharanse por omisión.
 'exif-colorspace'                  => 'Espazo de cor',
 'exif-componentsconfiguration'     => 'Significado de cada compoñente',
 'exif-compressedbitsperpixel'      => 'Modo de compresión da imaxe',
-'exif-pixelydimension'             => 'Ancho da imaxe',
-'exif-pixelxdimension'             => 'Altura da imaxe',
+'exif-pixelydimension'             => 'Ancho de imaxe válido',
+'exif-pixelxdimension'             => 'Altura de imaxe válida',
 'exif-makernote'                   => 'Notas do fabricante',
 'exif-usercomment'                 => 'Comentarios do usuario',
 'exif-relatedsoundfile'            => 'Ficheiro de son relacionado',
@@ -2992,9 +2987,9 @@ Os demais agocharanse por omisión.
 'exif-spectralsensitivity'         => 'Sensibilidade espectral',
 'exif-isospeedratings'             => 'Relación da velocidade ISO',
 'exif-oecf'                        => 'Factor de conversión optoelectrónica',
-'exif-shutterspeedvalue'           => 'Velocidade de obturación APEX',
-'exif-aperturevalue'               => 'Apertura APEX',
-'exif-brightnessvalue'             => 'Brillo APEX',
+'exif-shutterspeedvalue'           => 'Velocidade de obturación electrónica',
+'exif-aperturevalue'               => 'Apertura',
+'exif-brightnessvalue'             => 'Brillo',
 'exif-exposurebiasvalue'           => 'Corrección da exposición',
 'exif-maxaperturevalue'            => 'Máxima apertura do diafragma',
 'exif-subjectdistance'             => 'Distancia do suxeito',
@@ -3058,7 +3053,6 @@ Os demais agocharanse por omisión.
 'exif-gpsareainformation'          => 'Nome da área GPS',
 'exif-gpsdatestamp'                => 'Data do GPS',
 'exif-gpsdifferential'             => 'Corrección diferencial do GPS',
-'exif-objectname'                  => 'Título curto',
 
 # EXIF attributes
 'exif-compression-1' => 'Sen comprimir',
@@ -3139,8 +3133,6 @@ Os demais agocharanse por omisión.
 'exif-sensingmethod-5' => 'Sensor secuencial da área de cor',
 'exif-sensingmethod-7' => 'Sensor trilineal',
 'exif-sensingmethod-8' => 'Sensor secuencial da liña de cor',
-
-'exif-filesource-3' => 'Cámara fotográfica dixital',
 
 'exif-scenetype-1' => 'Unha imaxe fotografada directamente',
 
@@ -3243,8 +3235,8 @@ Pode ser que caducase.',
 'confirmemail_body'         => 'Alguén, probablemente vostede, desde o enderezo IP $1,
 rexistrou a conta "$2" con este enderezo de correo electrónico en {{SITENAME}}.
 
-Para confirmar que realmente esta conta lle pertence a vostede e activar
-as características do correo electrónico en {{SITENAME}}, abra esta ligazón no seu navegador:
+Para confirmar que esta conta realmente lle pertence e así poder activar
+as funcións de correo electrónico en {{SITENAME}}, abra esta ligazón no seu navegador:
 
 $3
 
@@ -3253,35 +3245,21 @@ para cancelar a confirmación do enderezo de correo electrónico:
 
 $5
 
-O código de confirmación caduca o $6 ás $7.',
+Este código de confirmación caducará o $6 ás $7.',
 'confirmemail_body_changed' => 'Alguén, probablemente vostede, desde o enderezo IP $1,
 cambiou o enderezo de correo electrónico da conta "$2" a estoutro en {{SITENAME}}.
 
-Para confirmar que realmente esta conta lle pertence a vostede e reactivar
-as características do correo electrónico en {{SITENAME}}, abra esta ligazón no seu navegador:
+Para confirmar que esta conta realmente lle pertence e así poder reactivar
+as funcións do correo electrónico en {{SITENAME}}, abra esta ligazón no seu navegador:
 
 $3
 
-Se a conta *non* é súa, siga estoutra ligazón
+Se a conta *non* lle pertence siga estoutra ligazón
 para cancelar a confirmación do enderezo de correo electrónico:
 
 $5
 
-O código de confirmación caduca o $6 ás $7.',
-'confirmemail_body_set'     => 'Alguén, probablemente vostede, desde o enderezo IP $1,
-estableceu este enderezo de correo electrónico como o da conta "$2" en {{SITENAME}}.
-
-Para confirmar que realmente esta conta lle pertence a vostede e reactivar
-as características do correo electrónico en {{SITENAME}}, abra esta ligazón no seu navegador:
-
-$3
-
-Se a conta *non* é súa, siga estoutra ligazón
-para cancelar a confirmación do enderezo de correo electrónico:
-
-$5
-
-O código de confirmación caduca o $6 ás $7.',
+Este código de confirmación caducará o $4.',
 'confirmemail_invalidated'  => 'A confirmación do enderezo de correo electrónico foi cancelada',
 'invalidateemail'           => 'Cancelar a confirmación do correo electrónico',
 
@@ -3332,9 +3310,6 @@ Por favor, confirme que realmente quere recrear esta páxina.",
 'autosumm-replace' => 'O contido da páxina foi substituído por "$1"',
 'autoredircomment' => 'Redirixida cara a "[[$1]]"',
 'autosumm-new'     => 'Nova páxina: "$1"',
-
-# Size units
-'size-kilobytes' => '$1 kB',
 
 # Live preview
 'livepreview-loading' => 'Cargando...',
@@ -3505,5 +3480,18 @@ Introduza o nome do ficheiro sen o prefixo "{{ns:file}}:".',
 # SQLite database support
 'sqlite-has-fts' => '$1 con soporte para procuras de texto completo',
 'sqlite-no-fts'  => '$1 sen soporte para procuras de texto completo',
+
+# Special:DisableAccount
+'disableaccount'             => 'Desactivar unha conta de usuario',
+'disableaccount-user'        => 'Nome de usuario:',
+'disableaccount-reason'      => 'Motivo:',
+'disableaccount-confirm'     => "Desactivar esta conta de usuario.
+O usuario non poderá acceder ao sistema, restablecer o contrasinal ou recibir notificacións por correo electrónico.
+Se o usuario está conectado, sairá ao anonimato inmediatamente.
+''Teña en conta que a desactivación dunha conta non é reversible sen a intervención dun administrador do sistema.''",
+'disableaccount-mustconfirm' => 'Ten que confirmar que quere desactivar esta conta.',
+'disableaccount-nosuchuser'  => 'A conta de usuario "$1" non existe.',
+'disableaccount-success'     => 'Esta conta de usuario, "$1", foi desactivada permanentemente.',
+'disableaccount-logentry'    => 'desactivou permanentemente a conta de usuario "[[$1]]"',
 
 );

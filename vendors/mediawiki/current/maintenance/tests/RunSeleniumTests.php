@@ -140,9 +140,9 @@ class SeleniumTester extends Maintenance {
 	public function execute() {
 		global $wgServer, $wgScriptPath, $wgHooks;
 
-		$seleniumSettings = array();
-		$seleniumBrowsers = array();
-		$seleniumTestSuites = array();
+		$seleniumSettings;
+		$seleniumBrowsers;
+		$seleniumTestSuites;
 
 		$configFile = $this->getOption( 'seleniumConfig', '' );
 		if ( strlen( $configFile ) > 0 ) {

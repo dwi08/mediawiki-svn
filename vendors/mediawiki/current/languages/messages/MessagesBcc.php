@@ -7,7 +7,6 @@
  * @ingroup Language
  * @file
  *
- * @author Huji
  * @author Mostafadaneshvar
  * @author ZxxZxxZ
  */
@@ -528,7 +527,7 @@ $2',
 'yourname'                   => 'نام کاربری',
 'yourpassword'               => 'کلمه رمز',
 'yourpasswordagain'          => 'کلمه رمز دگه نویس',
-'remembermypassword'         => 'می ورودءَ ته ای کامپیوتر بدار (په $1 {{PLURAL:$1|روچ|روچ}})',
+'remembermypassword'         => '↓ می ورودءَ ته ای کامپیوتر بدار (په $1 {{PLURAL:$1|روچ|روچ}})',
 'yourdomainname'             => 'شمی دامین',
 'externaldberror'            => 'یک حطا دیتابیس تصدیق هویت دراییگی هست یا شما را اجازت نیست وتی حساب درایی په روچ کنیت.',
 'login'                      => 'ورود',
@@ -1400,7 +1399,7 @@ $1",
 'fileexists-shared-forbidden' => 'یک فایلی گون ای نام الان ته منبع مشترک فایل هستن.
 لطفا برگردیت و ای فایل گون نوکین نامی آپلود کنیت.[[File:$1|انگشتی|مرکز|$1]]',
 'file-exists-duplicate'       => 'ای فایل کپیء چه جهلیگین  {{PLURAL:$1|فایل|فایلان}}:',
-'file-deleted-duplicate'      => 'یک فایلی په داب ای فایل ([[:$1]]) پیسرتر حذف بوتگت. شما بایدن تاریح حذف آ فایلء دگه بچاریت',
+'file-deleted-duplicate'      => 'یک فایلی په داب ای فایل ([[$1]]) پیسرتر حذف بوتگت. شما بایدن تاریح حذف آ فایلء دگه بچاریت',
 'uploadwarning'               => 'هوژاری آپلود',
 'savefile'                    => 'ذخیره فایل',
 'uploadedimage'               => 'اپلود بوت "[[$1]]"',
@@ -1491,8 +1490,8 @@ PICT # misc.
 'filehist-current'          => 'هنو',
 'filehist-datetime'         => 'تاریح/زمان',
 'filehist-thumb'            => 'بند انگشت',
-'filehist-thumbtext'        => 'بندانگشتی از نسخهٔ مورخ $1',
-'filehist-nothumb'          => 'فاقد بندانگشتی',
+'filehist-thumbtext'        => 'بند انگشتی عکس چه $1',
+'filehist-nothumb'          => 'بی بند انگشتی',
 'filehist-user'             => 'کاربر',
 'filehist-dimensions'       => 'جنبه یان',
 'filehist-filesize'         => 'اندازه فایل',
@@ -1863,10 +1862,10 @@ $NEWPAGE
 
 --
 په عوض کتن تنظیمات وتی لیست چارگ،به چار
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 نظرات و گیشترین کمک:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'حذف صفحه',

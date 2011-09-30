@@ -579,13 +579,10 @@ class User {
 			return false;
 		}
 
-		// Preg yells if you try to give it an empty string
-		if( $wgInvalidUsernameCharacters ) {
-			if( preg_match( '/[' . preg_quote( $wgInvalidUsernameCharacters, '/' ) . ']/', $name ) ) {
-				wfDebugLog( 'username', __METHOD__ .
-					": '$name' invalid due to wgInvalidUsernameCharacters" );
-				return false;
-			}
+		if( preg_match( '/[' . preg_quote( $wgInvalidUsernameCharacters, '/' ) . ']/', $name ) ) {
+			wfDebugLog( 'username', __METHOD__ .
+				": '$name' invalid due to wgInvalidUsernameCharacters" );
+			return false;
 		}
 
 		return self::isUsableName( $name );
@@ -3037,7 +3034,7 @@ class User {
 
 	/**
 	 * Internal function to format the e-mail validation/invalidation URLs.
-	 * This uses $wgArticlePath directly as a quickie hack to use the
+	 * This uses a quickie hack to use the
 	 * hardcoded English names of the Special: pages, for ASCII safety.
 	 *
 	 * @note Since these URLs get dropped directly into emails, using the
@@ -3050,12 +3047,9 @@ class User {
 	 * @return \string Formatted URL
 	 */
 	protected function getTokenUrl( $page, $token ) {
-		global $wgArticlePath;
-		return wfExpandUrl(
-			str_replace(
-				'$1',
-				"Special:$page/$token",
-				$wgArticlePath ) );
+		// Hack to bypass localization of 'Special:'
+		$title = Title::makeTitle( NS_MAIN, "Special:$page/$token" );
+		return $title->getCanonicalUrl();
 	}
 
 	/**
@@ -3639,8 +3633,8 @@ class User {
 	 * Used by things like CentralAuth and perhaps other authplugins.
 	 */
 	public function addNewUserLogEntryAutoCreate() {
-		global $wgNewUserLog, $wgLogAutocreatedAccounts;
-		if( !$wgNewUserLog || !$wgLogAutocreatedAccounts ) {
+		global $wgNewUserLog;
+		if( !$wgNewUserLog ) {
 			return true; // disabled
 		}
 		$log = new LogPage( 'newusers', false );
@@ -3785,93 +3779,5 @@ class User {
 		*/
 
 		return $ret;
-	}
-
-	/**
-	 * Format the user message using a hook, a template, or, failing these, a static format.
-	 * @param $subject   String the subject of the message
-	 * @param $text      String the content of the message
-	 * @param $signature String the signature, if provided.
-	 */
-	static protected function formatUserMessage( $subject, $text, $signature ) {
-		if ( wfRunHooks( 'FormatUserMessage',
-				array( $subject, &$text, $signature ) ) ) {
-
-			$signature = empty($signature) ? "~~~~~" : "{$signature} ~~~~~";
-
-			$template = Title::newFromText( wfMsgForContent( 'usermessage-template' ) );
-			if ( !$template
-					|| $template->getNamespace() !== NS_TEMPLATE
-					|| !$template->exists() ) {
-				$text = "\n== $subject ==\n\n$text\n\n-- $signature";
-			} else {
-				$text = '{{'. $template->getText()
-					. " | subject=$subject | body=$text | signature=$signature }}";
-			}
-		}
-
-		return $text;
-	}
-
-	/**
-	 * Leave a user a message
-	 * @param $subject String the subject of the message
-	 * @param $text String the message to leave
-	 * @param $signature String Text to leave in the signature
-	 * @param $summary String the summary for this change, defaults to
-	 *                        "Leave system message."
-	 * @param $editor User The user leaving the message, defaults to
-	 *                        "{{MediaWiki:usermessage-editor}}"
-	 * @param $flags Int default edit flags
-	 *
-	 * @return boolean true if it was successful
-	 */
-	public function leaveUserMessage( $subject, $text, $signature = "",
-			$summary = null, $editor = null, $flags = 0 ) {
-		if ( !isset( $summary ) ) {
-			$summary = wfMsgForContent( 'usermessage-summary' );
-		}
-
-		if ( !isset( $editor ) ) {
-			$editor = User::newFromName( wfMsgForContent( 'usermessage-editor' ) );
-			if ( !$editor->isLoggedIn() ) {
-				$editor->addToDatabase();
-			}
-		}
-
-		$article = new Article( $this->getTalkPage() );
-		wfRunHooks( 'SetupUserMessageArticle',
-			array( $this, &$article, $subject, $text, $signature, $summary, $editor ) );
-
-
-		$text = self::formatUserMessage( $subject, $text, $signature );
-		$flags = $article->checkFlags( $flags );
-
-		if ( $flags & EDIT_UPDATE ) {
-			$text = $article->getContent() . $text;
-		}
-
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->begin();
-
-		try {
-			$status = $article->doEdit( $text, $summary, $flags, false, $editor );
-		} catch ( DBQueryError $e ) {
-			$status = Status::newFatal("DB Error");
-		}
-
-		if ( $status->isGood() ) {
-			// Set newtalk with the right user ID
-			$this->setNewtalk( true );
-			wfRunHooks( 'AfterUserMessage',
-				array( $this, $article, $summary, $text, $signature, $summary, $editor ) );
-			$dbw->commit();
-		} else {
-			// The article was concurrently created
-			wfDebug( __METHOD__ . ": Error ".$status->getWikiText() );
-			$dbw->rollback();
-		}
-
-		return $status->isGood();
 	}
 }

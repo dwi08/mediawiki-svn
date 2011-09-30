@@ -302,13 +302,13 @@ $messages = array(
 'tog-hidepatrolled'           => 'Kaŝi patrolitajn redaktojn en lastaj ŝanĝoj',
 'tog-newpageshidepatrolled'   => 'Kaŝi patrolitajn paĝojn de listo de novaj paĝoj',
 'tog-extendwatchlist'         => 'Etendi la atentaron por montri ĉiujn ŝanĝojn, ne nur la plej lastajn',
-'tog-usenewrc'                => 'Uzi progresan "Lastaj ŝanĝoj" (bezonas JavaSkripton)',
+'tog-usenewrc'                => 'Uzi progresan "Lastaj Ŝanĝoj" (bezonas JavaSkripton)',
 'tog-numberheadings'          => 'Aŭtomate numerigi sekciojn',
 'tog-showtoolbar'             => 'Montri eldonilaron',
 'tog-editondblclick'          => 'Redakti per duobla alklako (JavaScript)',
 'tog-editsection'             => 'Montri [redakti]-ligilojn por sekcioj',
 'tog-editsectiononrightclick' => 'Ŝalti sekcian redaktadon per dekstra musklako de sekciaj titoloj (kun JavaScript)',
-'tog-showtoc'                 => 'Montri enhavliston (por paĝoj kun pli ol 3 sekcioj)',
+'tog-showtoc'                 => 'Montri liston de enhavoj (por paĝojn kun pli ol 3 sekciojn)',
 'tog-rememberpassword'        => 'Memori mian ensalutadon ĉe ĉi tiu retumilo (daŭrante maksimume $1 {{PLURAL:$1|tagon|tagojn}})',
 'tog-watchcreations'          => 'Aldoni de mi kreitajn paĝojn al mia atentaro',
 'tog-watchdefault'            => 'Aldoni al mia atentaro paĝojn redaktitajn de mi',
@@ -565,7 +565,7 @@ $1',
 'ok'                      => 'Ek!',
 'retrievedfrom'           => 'Elŝutita el  "$1"',
 'youhavenewmessages'      => 'Por vi estas $1 ($2).',
-'newmessageslink'         => 'novaj mesaĝoj',
+'newmessageslink'         => 'nova mesaĝo',
 'newmessagesdifflink'     => 'ŝanĝoj kompare kun antaŭlasta versio',
 'youhavenewmessagesmulti' => 'Vi havas novajn mesaĝojn ĉe $1',
 'editsection'             => 'redakti',
@@ -1134,7 +1134,7 @@ $1",
 'revdel-restore-visible'      => 'videblaj revizioj',
 'pagehist'                    => 'Paĝa historio',
 'deletedhist'                 => 'Forigita historio',
-'revdelete-content'           => 'enhavon',
+'revdelete-content'           => 'enhavo',
 'revdelete-summary'           => 'redakti resumon',
 'revdelete-uname'             => 'salutnomo',
 'revdelete-restricted'        => 'aplikis limojn al administrantoj',
@@ -1298,9 +1298,9 @@ indekso pro troŝarĝita servilo. Intertempe, vi povas serĉi per <i>guglo</i> a
 'prefs-rc'                      => 'Lastaj ŝanĝoj',
 'prefs-watchlist'               => 'Atentaro',
 'prefs-watchlist-days'          => 'Kiom da tagoj montriĝu en la atentaro:',
-'prefs-watchlist-days-max'      => 'Maksimume 7 tagoj',
+'prefs-watchlist-days-max'      => '(maksimume 7 tagoj)',
 'prefs-watchlist-edits'         => 'Maksimuma nombro de ŝanĝoj montrendaj en ekspandita atentaro:',
-'prefs-watchlist-edits-max'     => 'Maksimuma nombro: 1000',
+'prefs-watchlist-edits-max'     => '(maksimuma nombro: 1000)',
 'prefs-watchlist-token'         => 'Atentara ĵetono:',
 'prefs-misc'                    => 'Miksitaĵoj',
 'prefs-resetpass'               => 'Ŝanĝi pasvorton',
@@ -1465,7 +1465,7 @@ Vi povas ankaŭ elekti permesigi aliaj uzantoj kontakti vin per via uzanto-paĝo
 'right-purge'                 => 'Refreŝigi la retejan kaŝmemoron por paĝo sen konfirma paĝo',
 'right-autoconfirmed'         => 'Redakti duone protektitajn paĝojn',
 'right-bot'                   => 'Traktiĝi kiel aŭtomata procezo',
-'right-nominornewtalk'        => 'Fari etajn redaktojn en diskuto-paĝoj sen kaŭzi atentigon pri novaj mesaĝoj',
+'right-nominornewtalk'        => 'Ne kaŭzi etajn redaktojn en diskuto-paĝoj sproni la inviton por novaj mesaĝoj',
 'right-apihighlimits'         => 'Utiligu pli altajn limojn por API informmendoj',
 'right-writeapi'              => 'Uzi la API por modifi la vikion',
 'right-delete'                => 'Forigi paĝojn',
@@ -1506,6 +1506,7 @@ Vi povas ankaŭ elekti permesigi aliaj uzantoj kontakti vin per via uzanto-paĝo
 'right-reset-passwords'       => 'Reŝanĝi pasvortojn de aliaj uzantoj',
 'right-override-export-depth' => 'Eksporti paĝojn inkluzivante ligitajn paĝojn ĝis profundeco de 5',
 'right-sendemail'             => 'Sendi retpoŝton al aliaj uzantoj',
+'right-disableaccount'        => 'Malŝalti kontojn',
 
 # User rights log
 'rightslog'      => 'Protokolo de uzanto-rajtoj',
@@ -1678,7 +1679,7 @@ Se vi ankoraŭ volas alŝuti vian dosieron, bonvolu reprovi kun nova nomo.
 'fileexists-shared-forbidden' => 'Dosiero kun ĉi tia nomo jam ekzistas en la komuna dosierujo.
 Se vi ankoraŭ volas alŝuti vian dosieron, bonvolu retroigi kaj uzi novan nomon.[[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ĉi tiu dosiero estas duplikato de la {{PLURAL:$1|jena dosiero|jenaj dosieroj}}:',
-'file-deleted-duplicate'      => 'Duplikata dosiero de ĉi tiu dosiero ([[:$1]]) estis antaŭe forigita. Vi legu la forigan historion de tiu dosiero antaŭ provi realŝuti ĝin.',
+'file-deleted-duplicate'      => 'Duplikata dosiero de ĉi tiu dosiero ([[$1]]) estis antaŭe forigita. Vi legu la forigan historion de tiu dosiero antaŭ provi realŝuti ĝin.',
 'uploadwarning'               => 'Alŝuta averto',
 'uploadwarning-text'          => 'Bonvolu ŝanĝi la dosieran priskribon kaj reprovi.',
 'savefile'                    => 'Konservi dosieron',
@@ -1727,23 +1728,22 @@ Se la problemo kontinuas, kontaku [[Special:ListUsers/sysop|sisteman administran
 'upload-http-error'         => 'HTTP-eraro okazis: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Atingo malpermisita',
-'img-auth-nopathinfo'       => 'Mankas PATH_INFO. (Informo pri dosiervojo.)
+'img-auth-accessdenied' => 'Atingo malpermisita',
+'img-auth-nopathinfo'   => 'Mankas PATH_INFO. (Informo pri dosiervojo.)
 Via servilo ne estas konfigurita por sendi ĉi tiun informon.
 Eble ĝi estas CGI-bazita kaj ne subtenas img_auth.
 Vidu http://www.mediawiki.org/wiki/Manual:Image_Authorization. (angle)',
-'img-auth-notindir'         => 'Petita vojo ne estas en la konfigurita alŝuta dosierujo.',
-'img-auth-badtitle'         => 'Ne povas konstrui validan titolon de "$1".',
-'img-auth-nologinnWL'       => 'Vi ne estas ensalutita kaj "$1" ne estas en la blankalisto.',
-'img-auth-nofile'           => 'Dosiero "$1" ne ekzistas.',
-'img-auth-isdir'            => 'Vi provas atingi dosierujon "$1".
+'img-auth-notindir'     => 'Petita vojo ne estas en la konfigurita alŝuta dosierujo.',
+'img-auth-badtitle'     => 'Ne povas konstrui validan titolon de "$1".',
+'img-auth-nologinnWL'   => 'Vi ne estas ensalutita kaj "$1" ne estas en la blankalisto.',
+'img-auth-nofile'       => 'Dosiero "$1" ne ekzistas.',
+'img-auth-isdir'        => 'Vi provas atingi dosierujon "$1".
 Nur dosiera atingo estas permesita.',
-'img-auth-streaming'        => 'Elsendfluante "$1".',
-'img-auth-public'           => 'La funkcio de img_auth.php estas eligi dosierojn de privata vikio.
+'img-auth-streaming'    => 'Elsendfluante "$1".',
+'img-auth-public'       => 'La funkcio de img_auth.php estas eligi dosierojn de privata vikio.
 Ĉi tiu vikio estas konfigurita kiel publika vikio.
 Por optimuma sekureco, img_auth.php estas malŝalta.',
-'img-auth-noread'           => 'Uzanto ne havas atingon por legi "$1".',
-'img-auth-bad-query-string' => 'La URL-o havas malvalidan mendan signoĉenon.',
+'img-auth-noread'       => 'Uzanto ne havas atingon por legi "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'Malvalida URL-o: $1',
@@ -1761,8 +1761,8 @@ Por optimuma sekureco, img_auth.php estas malŝalta.',
 'upload-curl-error28'      => 'Tempolimo de alŝuto atingita',
 'upload-curl-error28-text' => 'La retejo atendas tro sen respondo. Bonvolu verigi ke la retejo ankoraŭ funkcias kaj reprovi. Vi eble volus trovi dum malpli okupa tempo.',
 
-'license'            => 'Permesiloj:',
-'license-header'     => 'Permesiloj:',
+'license'            => 'Licencado:',
+'license-header'     => 'Licencado:',
 'nolicense'          => 'Neniu elektita',
 'license-nopreview'  => '(Antaŭvido ne montrebla)',
 'upload_source_url'  => ' (valida, publike atingebla URL-o)',
@@ -1785,7 +1785,7 @@ Klaku la kolumnan titolon por ŝanĝi la direkton de ordigo.',
 
 # File description page
 'file-anchor-link'          => 'Dosiero',
-'filehist'                  => 'Dosiera historio',
+'filehist'                  => 'Historio de dosiero',
 'filehist-help'             => 'Klaku daton/tempon por rigardi la dosieron kiel ĝin ŝajnitan tiame.',
 'filehist-deleteall'        => 'forigi ĉiujn',
 'filehist-deleteone'        => 'forigi',
@@ -2180,13 +2180,13 @@ Ne estos aliaj avertoj kaze de sekvaj ŝanĝoj krom se vi vizitus la paĝon. Vi 
 
 --
 Por ŝanĝi la elektojn de via atentaro, bonvolu viziti
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Por forigi la paĝon el via atentaro, bonvolu viziti
 $UNWATCHURL
 
 Por viaj reagoj kaj por obteni plian helpon:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Forigi paĝon',
@@ -2451,12 +2451,12 @@ forbarita IP-adreso/nomo la povon enskribi en la vikio.',
 'ipusubmit'                       => 'Forigi ĉi tiun forbaron',
 'unblocked'                       => '[[User:$1|$1]] estas restarigita.',
 'unblocked-id'                    => 'Forbaro $1 estas forigita.',
-'ipblocklist'                     => 'Forbaritaj uzantoj',
+'ipblocklist'                     => 'Forbaritaj IP-adresoj kaj salutnomoj',
 'ipblocklist-legend'              => 'Trovi forbaritan uzanton.',
 'ipblocklist-username'            => 'Salutnomo aŭ IP-adreso:',
 'ipblocklist-sh-userblocks'       => '$1 kontaj forbaroj',
 'ipblocklist-sh-tempblocks'       => '$1 provizoraj forbaroj',
-'ipblocklist-sh-addressblocks'    => '$1 unuopaj IP-adresaj forbaroj',
+'ipblocklist-sh-addressblocks'    => '$1 unuopaj IP-adresaj foraroj',
 'ipblocklist-submit'              => 'Serĉi',
 'ipblocklist-localblock'          => 'Loka forbaro',
 'ipblocklist-otherblocks'         => '{{PLURAL:$1|Alia forbaro|Aliaj forbaroj}}',
@@ -2700,7 +2700,7 @@ Datoj de versioj kaj nomoj de redaktantoj estos preservitaj.
 'import-interwiki-namespace' => 'Cela nomspaco:',
 'import-upload-filename'     => 'Dosiernomo:',
 'import-comment'             => 'Komento:',
-'importtext'                 => 'Bonvolu eksporti la dosieron el la fonta vikio per la [[Special:Export|eksportilo]]. Konservu ĝin sur via persona komputilo kaj poste alŝutu ĝin tien ĉi.',
+'importtext'                 => 'Bonvole eksportu la dosieron el la fonta vikio per la ilo Speciala:Export, konservu ĝin sur via disko kaj poste alŝutu ĝin tien ĉi.',
 'importstart'                => 'Importante paĝojn...',
 'import-revision-count'      => '$1 {{PLURAL:$1|versio|versioj}}',
 'importnopages'              => 'Neniu paĝo por importi.',
@@ -2895,7 +2895,8 @@ $1',
 'nextdiff'     => 'Pli nova redakto →',
 
 # Media information
-'mediawarning'         => "'''Atenton!''': Ĉi tiu dosiero eble enhavas malican kodadon, per ĝia ruligo via sistemo povus endanĝeriĝi.",
+'mediawarning'         => "'''Warning''': This file type may contain malicious code.
+By executing it, your system may be compromised.",
 'imagemaxsize'         => "Limo por bildoj:<br />''(por dosieraj priskribo-paĝoj)''",
 'thumbsize'            => 'Grandeco de bildetoj:',
 'widthheightpage'      => '$1×$2, $3 {{PLURAL:$3|paĝo|paĝoj}}',
@@ -2981,8 +2982,8 @@ Sekvaj ligilo en la sama linio estas konsiderata kiel esceptoj (paĝoj kiel la b
 'exif-colorspace'                  => 'Kolor-spaco',
 'exif-componentsconfiguration'     => 'Signifo de ĉiu kompono',
 'exif-compressedbitsperpixel'      => 'Reĝimo de bilda densigado',
-'exif-pixelydimension'             => 'Larĝeco de bildo',
-'exif-pixelxdimension'             => 'Alteco de bildo',
+'exif-pixelydimension'             => 'Valida larĝeco de bildo',
+'exif-pixelxdimension'             => 'Valida alteco de bildo',
 'exif-makernote'                   => 'Notoj de fabrikejo',
 'exif-usercomment'                 => 'Komentoj de uzanto',
 'exif-relatedsoundfile'            => 'Rilata son-dosiero',
@@ -2998,9 +2999,9 @@ Sekvaj ligilo en la sama linio estas konsiderata kiel esceptoj (paĝoj kiel la b
 'exif-spectralsensitivity'         => 'Spektruma sensemo',
 'exif-isospeedratings'             => 'ISO sentiveco',
 'exif-oecf'                        => 'Optikelektronika konverada faktoro',
-'exif-shutterspeedvalue'           => 'APEX-Rapido de obturatoro',
-'exif-aperturevalue'               => 'APEX-Aperturo',
-'exif-brightnessvalue'             => 'APEX-Heleco',
+'exif-shutterspeedvalue'           => 'Rapido de obturatoro',
+'exif-aperturevalue'               => 'Aperturo',
+'exif-brightnessvalue'             => 'Heleco',
 'exif-exposurebiasvalue'           => 'Ekspona emo',
 'exif-maxaperturevalue'            => 'Maksimuma pejzaĝa diafragmo',
 'exif-subjectdistance'             => 'Distanco de subjekto',
@@ -3064,7 +3065,6 @@ Sekvaj ligilo en la sama linio estas konsiderata kiel esceptoj (paĝoj kiel la b
 'exif-gpsareainformation'          => 'Nomo de GPS areo',
 'exif-gpsdatestamp'                => 'GPS dato',
 'exif-gpsdifferential'             => 'GPS diferenca korektado',
-'exif-objectname'                  => 'Mallonga titolo',
 
 # EXIF attributes
 'exif-compression-1' => 'Nedensigita',
@@ -3145,8 +3145,6 @@ Sekvaj ligilo en la sama linio estas konsiderata kiel esceptoj (paĝoj kiel la b
 'exif-sensingmethod-5' => 'Sensilo de laŭvicaj zonaj koloroj',
 'exif-sensingmethod-7' => 'Trilinia sensilo',
 'exif-sensingmethod-8' => 'Sensilo de laŭvicaj liniaj koloroj',
-
-'exif-filesource-3' => 'Cifereca senmova fotilo',
 
 'exif-scenetype-1' => 'Rekte fotita bildo',
 
@@ -3301,7 +3299,7 @@ $1',
 
 # Delete conflict
 'deletedwhileediting' => "'''Averto''': Ĉi tiu paĝo estis forigita post vi ekredaktis!",
-'confirmrecreate'     => "Uzanto [[User:$1|$1]] ([[User talk:$1|diskuto]]) forigis ĉi tiun paĝon post vi ekredaktis ĝin kun kialo:
+'confirmrecreate'     => "Uzanto [[User:$1|$1]] ([[User talk:$1|diskuto]]) forigis ĉi paĝon post vi ekredaktis ĝin kun kialo:
 : ''$2''
 Bonvolu konfirmi ke vi ja volas rekrei la paĝon.",
 'recreate'            => 'Rekrei',
@@ -3502,5 +3500,17 @@ Enigu la dosiernomon sen la "{{ns:file}}:" prefikso.',
 # SQLite database support
 'sqlite-has-fts' => '$1 kun tut-teksta subteno',
 'sqlite-no-fts'  => '$1 sen tut-teksta subteno',
+
+# Special:DisableAccount
+'disableaccount'             => 'Malŝalti konton de uzanto',
+'disableaccount-user'        => 'Salutnomo:',
+'disableaccount-reason'      => 'Kialo:',
+'disableaccount-confirm'     => "La uzulo ne povos saluti, reagordi sian pasvorton aŭ ricevi perretpoŝtajn sciigojn.
+Se la uzulo nun estas salutinta ie ajn, li estas tuj malsalutigitota.
+''Konsciu ke malvalidigo de uzulkonto ne estas malfarebla sen helpo de sistemestro.'''",
+'disableaccount-mustconfirm' => 'Vi devas konfirmi ke vi volas malŝalti ĉi tiun konton.',
+'disableaccount-nosuchuser'  => 'La salutnomo "$1" ne ekzistas.',
+'disableaccount-success'     => 'La konto de uzanto "$1" estis ĉiame malŝaltis.',
+'disableaccount-logentry'    => 'ĉiame malŝaltis paĝon de uzanto [[$1]]',
 
 );

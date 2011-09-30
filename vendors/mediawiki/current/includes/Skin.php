@@ -224,7 +224,7 @@ class Skin extends Linker {
 			$out->addLink( array(
 				'rel' => 'EditURI',
 				'type' => 'application/rsd+xml',
-				'href' => wfExpandUrl( wfAppendQuery( wfScript( 'api' ), array( 'action' => 'rsd' ) ) ),
+				'href' => wfExpandUrl( wfAppendQuery( wfScript( 'api' ), array( 'action' => 'rsd' ) ), PROTO_RELATIVE ),
 			) );
 		}
 
@@ -422,7 +422,7 @@ class Skin extends Linker {
 	 * You will only be adding bloat to the page and causing page caches to have to be purged on configuration changes.
 	 */
 	static function makeGlobalVariablesScript( $skinName ) {
-		global $wgTitle, $wgUser, $wgRequest, $wgArticle, $wgOut, $wgUseAjax, $wgEnableMWSuggest;
+		global $wgTitle, $wgUser, $wgRequest, $wgArticle, $wgOut, $wgRestrictionTypes, $wgUseAjax, $wgEnableMWSuggest, $wgContLang;
 		
 		$ns = $wgTitle->getNamespace();
 		$nsname = MWNamespace::exists( $ns ) ? MWNamespace::getCanonicalName( $ns ) : $wgTitle->getNsText();
@@ -442,6 +442,9 @@ class Skin extends Linker {
 			'wgCategories' => $wgOut->getCategories(),
 			'wgBreakFrames' => $wgOut->getFrameOptions() == 'DENY',
 		);
+		if ( $wgContLang->hasVariants() ) {
+			$vars['wgUserVariant'] = $wgContLang->getPreferredVariant();
+		}
 		foreach ( $wgTitle->getRestrictionTypes() as $type ) {
 			$vars['wgRestriction' . ucfirst( $type )] = $wgTitle->getRestrictions( $type );
 		}
@@ -925,7 +928,10 @@ class Skin extends Linker {
 	 * @return String HTML-wrapped JS code to be put before </body>
 	 */
 	function bottomScripts( $out ) {
-		$bottomScriptText = "\n" . $out->getHeadScripts( $this );
+		// TODO and the suckage continues. This function is really just a wrapper around
+		// OutputPage::getBottomScripts() which takes a Skin param. This should be cleaned
+		// up at some point
+		$bottomScriptText = $out->getBottomScripts( $this );
 		wfRunHooks( 'SkinAfterBottomScripts', array( $this, &$bottomScriptText ) );
 
 		return $bottomScriptText;
@@ -933,7 +939,7 @@ class Skin extends Linker {
 
 	/** @return string Retrievied from HTML text */
 	function printSource() {
-		$url = htmlspecialchars( $this->mTitle->getFullURL() );
+		$url = htmlspecialchars( $this->mTitle->getCanonicalURL() );
 		return wfMsg( 'retrievedfrom', '<a href="' . $url . '">' . $url . '</a>' );
 	}
 
@@ -2175,14 +2181,14 @@ class Skin extends Linker {
 	 * @return array
 	 */
 	function buildSidebar() {
-		global $parserMemc, $wgEnableSidebarCache, $wgSidebarCacheExpiry;
+		global $wgMemc, $wgEnableSidebarCache, $wgSidebarCacheExpiry;
 		global $wgLang;
 		wfProfileIn( __METHOD__ );
 
 		$key = wfMemcKey( 'sidebar', $wgLang->getCode() );
 
 		if ( $wgEnableSidebarCache ) {
-			$cachedsidebar = $parserMemc->get( $key );
+			$cachedsidebar = $wgMemc->get( $key );
 			if ( $cachedsidebar ) {
 				wfProfileOut( __METHOD__ );
 				return $cachedsidebar;
@@ -2194,7 +2200,7 @@ class Skin extends Linker {
 
 		wfRunHooks( 'SkinBuildSidebar', array( $this, &$bar ) );
 		if ( $wgEnableSidebarCache ) {
-			$parserMemc->set( $key, $bar, $wgSidebarCacheExpiry );
+			$wgMemc->set( $key, $bar, $wgSidebarCacheExpiry );
 		}
 
 		wfProfileOut( __METHOD__ );

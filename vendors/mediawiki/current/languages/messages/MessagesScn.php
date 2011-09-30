@@ -1050,7 +1050,7 @@ S'havi accirtari ca la cuntinuità storica di la pàggina nun veni altirata.",
 'prefs-rc'                      => 'Ùrtimi canciamenti',
 'prefs-watchlist'               => 'Ossirvati spiciali',
 'prefs-watchlist-days'          => "Nùmmiru di jorna ammustrati nta l'ossirvati spiciali:",
-'prefs-watchlist-days-max'      => 'Non cchiossai di 7 jorna',
+'prefs-watchlist-days-max'      => '(Non cchiossai di 7 jorna)',
 'prefs-watchlist-edits'         => 'Nùmmaru di canciamenti a ammustrari cu li funzioni avanzati:',
 'prefs-watchlist-edits-max'     => '(nùmmaru màssimu: 1000)',
 'prefs-watchlist-token'         => 'Token lista taliata mia',
@@ -1389,7 +1389,7 @@ Siddu si disponi dâ mmàggini ntâ risuluzzioni urigginali, si prega di carric�
 'fileexists-forbidden'        => "Nu file cu stu nomu asisti già e nun pò essiri sovrascrittu. Turnari n'arreri e canciari lu nomu cu lu quali carricari lu file. [[File:$1|thumb|center|$1]]",
 'fileexists-shared-forbidden' => "Nu file cu stu nomu asisti già nta l'archiviu dî risursi multimidiali cundivisi. Siddu voi ancora carricari lu file, pi favuri torna n'arreri e cancia lu nomu ca voi dari a lu file. [[File:$1|thumb|center|$1]]",
 'file-exists-duplicate'       => 'Stu file è na copia duppiuni {{PLURAL:$1|dû|dî}} file ccà di sècutu:',
-'file-deleted-duplicate'      => "Nu file lu stissu comu a chistu file ([[:$1]]) vinni scanciallatu prima di ora. S'aviss'a cuntrullari la stòria e lu picchì dâ scancillazzioni dû file prima di ri-caricàrilu.",
+'file-deleted-duplicate'      => "Nu file lu stissu comu a chistu file ([[$1]]) vinni scanciallatu prima di ora. S'aviss'a cuntrullari la stòria e lu picchì dâ scancillazzioni dû file prima di ri-caricàrilu.",
 'uploadwarning'               => 'Avvisu di Upload',
 'uploadwarning-text'          => 'Cancia cà sutta la discrizzioni di lu file e prova arré',
 'savefile'                    => 'Sarva file',
@@ -1844,10 +1844,10 @@ Nun vèninu mannati àutri canciamenti \'n caso di ultiriuri canciamenti, a menu
 
 --
 Pi mudificari li mpustazzioni dâ lista di l\'ussirvati spiciali, vìsita
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Pi dari lu tò feedback e arricèviri ultiriuri assistenza:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Elìmina la pàggina',

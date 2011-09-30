@@ -3,6 +3,20 @@
  */
 ( function( $ ) {
 $.fn.textSelection = function( command, options ) {
+
+/**
+ * Helper function to get an IE TextRange object for an element
+ */
+function rangeForElementIE( e ) {
+	if ( e.nodeName.toLowerCase() == 'input' ) {
+		return e.createTextRange();
+	} else {
+		var sel = document.body.createTextRange();
+		sel.moveToElementText( e );
+		return sel;
+	}
+}
+
 var fn = {
 /**
  * Get the contents of the textarea
@@ -58,11 +72,23 @@ encapsulateSelection: function( options ) {
 		} else if ( this.selectionStart || this.selectionStart == '0' ) {
 			// Mozilla/Opera
 			$(this).focus();
+			if ( options.selectionStart !== undefined ) {
+				$(this).textSelection( 'setSelection', { 'start': options.selectionStart, 'end': options.selectionEnd } );
+			}
+			
 			var selText = $(this).textSelection( 'getSelection' );
 			var startPos = this.selectionStart;
 			var endPos = this.selectionEnd;
 			var scrollTop = this.scrollTop;
 			checkSelectedText();
+			if ( options.selectionStart !== undefined
+					&& endPos - startPos != options.selectionEnd - options.selectionStart )
+			{
+				// This means there is a difference in the selection range returned by browser and what we passed.
+				// This happens for Chrome in the case of composite characters. Ref bug #30130
+				// Set the startPos to the correct position.
+				startPos = options.selectionStart;
+			}
 			if ( options.ownline ) {
 				if ( startPos != 0 && this.value.charAt( startPos - 1 ) != "\n" ) {
 					options.pre = "\n" + options.pre;
@@ -94,6 +120,10 @@ encapsulateSelection: function( options ) {
 			if ( context ) {
 				context.fn.restoreCursorAndScrollTop();
 			}
+			if ( options.selectionStart !== undefined ) {
+				$(this).textSelection( 'setSelection', { 'start': options.selectionStart, 'end': options.selectionEnd } );
+			}
+			
 			var selText = $(this).textSelection( 'getSelection' );
 			var scrollTop = this.scrollTop;
 			var range = document.selection.createRange();
@@ -148,15 +178,11 @@ encapsulateSelection: function( options ) {
 			// Create range containing text in the selection
 			var periRange = document.selection.createRange().duplicate();
 			// Create range containing text before the selection
-			var preRange = document.body.createTextRange();
-			// Select all the text
-			preRange.moveToElementText(e);
+			var preRange = rangeForElementIE( e );
 			// Move the end where we need it
 			preRange.setEndPoint("EndToStart", periRange);
 			// Create range containing text after the selection
-			var postRange = document.body.createTextRange();
-			// Select all the text
-			postRange.moveToElementText(e);
+			var postRange = rangeForElementIE( e );
 			// Move the start where we need it
 			postRange.setEndPoint("StartToEnd", periRange);
 			// Load the text values we need to compare
@@ -233,8 +259,7 @@ setSelection: function( options ) {
 				this.selectionEnd = options.end;
 			}
 		} else if ( document.body.createTextRange ) {
-			var selection = document.body.createTextRange();
-			selection.moveToElementText( this );
+			var selection = rangeForElementIE( this );
 			var length = this.value.length;
 			// IE doesn't count \n when computing the offset, so we won't either
 			var newLines = this.value.match( /\n/g );
@@ -357,7 +382,9 @@ scrollToCaretPosition: function( options ) {
 				'post': '', // Text to insert after the cursor/selection
 				'ownline': false, // Put the inserted text on a line of its own
 				'replace': false, // If there is a selection, replace it with peri instead of leaving it alone
-				'selectPeri': true // Select the peri text if it was inserted (but not if there was a selection and replace==false)
+				'selectPeri': true, // Select the peri text if it was inserted (but not if there was a selection and replace==false)
+				'selectionStart': undefined, // Position to start selection at
+				'selectionEnd': undefined // Position to end selection at. Defaults to start
 			}, options );
 			break;
 		case 'getCaretPosition':

@@ -1011,7 +1011,7 @@ Bitte priefe '''<tt>[[:$1]]</tt>''', wenn du dir ne secher biest, ob du se ände
 'file-thumbnail-no'          => "Dar Dateinoame beginnt miet '''<tt>$1</tt>'''. Dies deutet uff a Bild verringerter Griße ''(thumbnail)'' hin.
 Bitte priefe, ob du doas Bild ei voller Ufflesung vorliegen host und loade dieses under damm Originalnoama huch.",
 'file-exists-duplicate'      => 'Diese Datei ies a Duplikat dar fulgenda {{PLURAL:$1|Datei|$1 Dateien}}:',
-'file-deleted-duplicate'     => 'Anne identische Datei dieser Datei ([[:$1]]) wurde frieher geläscht. Ieberpriefe doas Läsch-Logbuch, bevor du se huchlädst.',
+'file-deleted-duplicate'     => 'Anne identische Datei dieser Datei ([[$1]]) wurde frieher geläscht. Ieberpriefe doas Läsch-Logbuch, bevor du se huchlädst.',
 'uploadedimage'              => 'hoot „[[$1]]“ huchgeloada',
 'overwroteimage'             => 'hoot anne neue Version vu „[[$1]]“ huchgeloada',
 'uploaddisabled'             => 'Huchlada deaktiviert',
@@ -1392,9 +1392,9 @@ Is waan sulange kenne wettera Benachrichtigungs-E-Mails gesendet, bis du de Seyt
              Dei freindliches {{SITENAME}}-Benoachrichtigungssystem
 
 --
-Im de Einstellunga denner Beobachtungsliste oazupoaßa, besiche: {{fullurl:{{#special:Watchlist}}/edit}}
+Im de Einstellunga denner Beobachtungsliste oazupoaßa, besiche: {{canonicalurl:{{#special:Watchlist}}/edit}}
 
-Rickmeldungen und wettere Helfe: {{fullurl:{{MediaWiki:Helppage}}}}',
+Rickmeldungen und wettere Helfe: {{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Seyte läscha',

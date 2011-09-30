@@ -35,6 +35,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
  * @ingroup API
  */
 class ApiQueryAllUsers extends ApiQueryBase {
+
 	public function __construct( $query, $moduleName ) {
 		parent::__construct( $query, $moduleName, 'au' );
 	}
@@ -51,7 +52,7 @@ class ApiQueryAllUsers extends ApiQueryBase {
 			$fld_groups = isset( $prop['groups'] );
 			$fld_registration = isset( $prop['registration'] );
 		} else {
-			$fld_blockinfo = $fld_editcount = $fld_groups = $fld_registration = $fld_rights = false;
+			$fld_blockinfo = $fld_editcount = $fld_groups = $fld_registration = false;
 		}
 
 		$limit = $params['limit'];
@@ -156,8 +157,8 @@ class ApiQueryAllUsers extends ApiQueryBase {
 					'name' => $lastUser,
 					'userid' => $row->user_id,
 				);
-				if ( $fld_blockinfo && !is_null( $row->blocker_name ) ) {
-					$lastUserData['blockedby'] = $row->blocker_name;
+				if ( $fld_blockinfo && !is_null( $row->ipb_by_text ) ) {
+					$lastUserData['blockedby'] = $row->ipb_by_text;
 					$lastUserData['blockreason'] = $row->ipb_reason;
 				}
 				if ( $row->ipb_deleted ) {
@@ -260,6 +261,6 @@ class ApiQueryAllUsers extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryAllUsers.php 85354 2011-04-04 18:25:31Z demon $';
+		return __CLASS__ . ': $Id: ApiQueryAllUsers.php 87162 2011-04-30 11:44:14Z catrope $';
 	}
 }

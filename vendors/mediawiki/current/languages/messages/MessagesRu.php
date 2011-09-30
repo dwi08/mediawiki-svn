@@ -41,7 +41,6 @@
  * @author Sk
  * @author TarzanASG
  * @author Temuri rajavi
- * @author Vago
  * @author VasilievVV
  * @author Ytsukeng Fyvaprol
  * @author Александр Сигачёв
@@ -462,8 +461,8 @@ $messages = array(
 'searchbutton'      => 'Найти',
 'go'                => 'Перейти',
 'searcharticle'     => 'Перейти',
-'history'           => 'история',
-'history_short'     => 'история',
+'history'           => 'История',
+'history_short'     => 'История',
 'updatedmarker'     => 'обновлено после моего последнего посещения',
 'info_short'        => 'Информация',
 'printableversion'  => 'Версия для печати',
@@ -483,7 +482,7 @@ $messages = array(
 'unprotectthispage' => 'Снять защиту',
 'newpage'           => 'Новая страница',
 'talkpage'          => 'Обсудить эту страницу',
-'talkpagelinktext'  => 'обсуждение',
+'talkpagelinktext'  => 'Обсуждение',
 'specialpage'       => 'Служебная страница',
 'personaltools'     => 'Личные инструменты',
 'postcomment'       => 'Новый раздел',
@@ -1040,7 +1039,7 @@ $3 указал следующую причину: ''$2''",
 Попробуйте [[Special:Search|найти в вики]] похожие страницы.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(описание правки удалено)',
+'rev-deleted-comment'         => '(комментарий удалён)',
 'rev-deleted-user'            => '(имя автора стёрто)',
 'rev-deleted-event'           => '(запись удалена)',
 'rev-deleted-user-contribs'   => '[имя участника или IP-адрес удалёны — правка скрыта со страницы вклада]',
@@ -1238,7 +1237,7 @@ $1",
 'searcheverything-enable'          => 'Поиск по всем пространствам имён',
 'searchrelated'                    => 'связанный',
 'searchall'                        => 'все',
-'showingresults'                   => "Ниже показаны до {{PLURAL:$1|'''1''' результат |'''$1''' результаты}}, начиная с #'''$2'''.",
+'showingresults'                   => 'Ниже {{PLURAL:$1|показан|показаны|показаны}} <strong>$1</strong> {{PLURAL:$1|результат|результата|результатов}}, начиная с №&nbsp;<strong>$2</strong>.',
 'showingresultsnum'                => 'Ниже {{PLURAL:$3|показан|показаны|показаны}} <strong>$3</strong> {{PLURAL:$3|результат|результата|результатов}}, начиная с №&nbsp;<strong>$2</strong>.',
 'showingresultsheader'             => "{{PLURAL:$5|Результат '''$1''' из '''$3'''|Результаты '''$1 — $2''' из '''$3'''}} для '''$4'''",
 'nonefound'                        => "'''Замечание.''' По умолчанию поиск производится не во всех пространствах имён. Используйте приставку ''all:'', чтобы искать во всех пространствах имён (включая обсуждения участников, шаблоны и пр.), или укажите требуемое пространство имён.",
@@ -1278,9 +1277,9 @@ $1",
 'prefs-rc'                      => 'Свежие правки',
 'prefs-watchlist'               => 'Список наблюдения',
 'prefs-watchlist-days'          => 'Количество дней:',
-'prefs-watchlist-days-max'      => 'Не более 7 дней',
+'prefs-watchlist-days-max'      => '(не более 7 дней)',
 'prefs-watchlist-edits'         => 'Максимальное количество правок, отображаемых в расширенном списке наблюдения:',
-'prefs-watchlist-edits-max'     => 'Не более: 1000',
+'prefs-watchlist-edits-max'     => '(не более 1000)',
 'prefs-watchlist-token'         => 'Токен списка наблюдения:',
 'prefs-misc'                    => 'Другие настройки',
 'prefs-resetpass'               => 'Изменить пароль',
@@ -1488,6 +1487,7 @@ $1",
 'right-reset-passwords'       => 'сбрасывание паролей других участников',
 'right-override-export-depth' => 'экспортирование страниц, включая связанные страницы с глубиной до 5',
 'right-sendemail'             => 'отправлять электронную почту другим участникам',
+'right-disableaccount'        => 'отключить учётные записи',
 
 # User rights log
 'rightslog'      => 'Журнал прав участника',
@@ -1596,7 +1596,7 @@ $1",
 
 Для включения файла в статью вы можете использовать строки вида:
 * '''<tt><nowiki>[[</nowiki>{{ns:file}}<nowiki>:File.jpg]]</nowiki></tt>''' для вставки полной версии файла;
-* '''<tt><nowiki>[[</nowiki>{{ns:file}}<nowiki>:File.png|200px|thumb|left|описание]]</nowiki></tt>''' для вставки уменьшенной до 200 пикселов по ширине версии файла слева от текста с выводом под ним указанного описания;
+* '''<tt><nowiki>[[</nowiki>{{ns:file}}<nowiki>:File.png|200px|thumb|left|описание]]</nowiki></tt>''' для вставки уменьшенной до 200 пикселей по ширине версии файла слева от текста с выводом под ним указанного описания;
 * '''<tt><nowiki>[[</nowiki>{{ns:media}}<nowiki>:File.ogg]]</nowiki></tt>''' для вставки ссылки на файл, без отображения его содержимого на странице.",
 'upload-permitted'            => 'Разрешённые типы файлов: $1.',
 'upload-preferred'            => 'Предпочтительные типы файлов: $1.',
@@ -1660,7 +1660,7 @@ $1",
 'fileexists-shared-forbidden' => 'Файл с этим именем уже существует в общем хранилище файлов.
 Если вы всё-таки хотите загрузить этот файл, пожалуйста, вернитесь назад и измените имя файла. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Этот файл является дубликатом {{PLURAL:$1|следующего файла|следующих файлов}}:',
-'file-deleted-duplicate'      => 'Подобный файл ([[:$1]]) уже удалялся. Пожалуйста, ознакомьтесь с историей удаления файла, прежде чем загружать его снова.',
+'file-deleted-duplicate'      => 'Подобный файл ([[$1]]) уже удалялся. Пожалуйста, ознакомьтесь с историей удаления файла, прежде чем загружать его снова.',
 'uploadwarning'               => 'Предупреждение',
 'uploadwarning-text'          => 'Пожалуйста, измените представленное ниже описание файла и попробуйте ещё раз.',
 'savefile'                    => 'Записать файл',
@@ -1722,23 +1722,22 @@ $1',
 'upload-http-error'         => 'Произошла ошибка HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Доступ запрещён',
-'img-auth-nopathinfo'       => 'Отсутствует PATH_INFO.
+'img-auth-accessdenied' => 'Доступ запрещён',
+'img-auth-nopathinfo'   => 'Отсутствует PATH_INFO.
 Ваш сервер не настроен, для передачи этих сведений.
 Возможно, он работает на основе CGI и не поддерживает img_auth.
 См. http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Запрашиваемый путь не относится к настроенной папке загрузок.',
-'img-auth-badtitle'         => 'Невозможно построить правильный заголовок из «$1».',
-'img-auth-nologinnWL'       => 'Вы не вошли в систему, а «$1» не входит в белый список.',
-'img-auth-nofile'           => 'Файл «$1» не существует.',
-'img-auth-isdir'            => 'Вы пытаетесь получить доступ к каталогу «$1».
+'img-auth-notindir'     => 'Запрашиваемый путь не относится к настроенной папке загрузок.',
+'img-auth-badtitle'     => 'Невозможно построить правильный заголовок из «$1».',
+'img-auth-nologinnWL'   => 'Вы не вошли в систему, а «$1» не входит в белый список.',
+'img-auth-nofile'       => 'Файл «$1» не существует.',
+'img-auth-isdir'        => 'Вы пытаетесь получить доступ к каталогу «$1».
 Разрешён только доступ к файлам.',
-'img-auth-streaming'        => 'Потоковая передача «$1».',
-'img-auth-public'           => 'Назначением img_auth.php является вывод файлов из закрытой вики.
+'img-auth-streaming'    => 'Потоковая передача «$1».',
+'img-auth-public'       => 'Назначением img_auth.php является вывод файлов из закрытой вики.
 Эта вики настроена как общедоступная.
 Для оптимизации безопасности img_auth.php отключена.',
-'img-auth-noread'           => 'Участник не имеет доступа на чтение к «$1».',
-'img-auth-bad-query-string' => 'URL-адрес содержит неправильную строку запроса.',
+'img-auth-noread'       => 'Участник не имеет доступа на чтение к «$1».',
 
 # HTTP errors
 'http-invalid-url'      => 'Ошибочный URL: $1',
@@ -2175,17 +2174,14 @@ $NEWPAGE
              Система оповещения {{grammar:genitive|{{SITENAME}}}}
 
 --
-Изменение настройки уведомлений
-{{fullurl:{{#special:Preferences}}}}
-
-Изменение настройки вашего списка наблюдения
-{{fullurl:{{#special:Watchlist}}/edit}}
+Изменить настройки вашего списка наблюдения
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Удалить страницы из вашего списка наблюдения
 $UNWATCHURL
 
 Обратная связь и помощь
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Удалить страницу',
@@ -2250,7 +2246,7 @@ $UNWATCHURL
 'protectlogtext'              => 'Ниже приведён журнал установок и снятий защиты со статей. Вы можете также просмотреть [[Special:ProtectedPages|список страниц, которые в данный момент защищены]].',
 'protectedarticle'            => 'защищена страница «[[$1]]»',
 'modifiedarticleprotection'   => 'изменён уровень защиты страницы «[[$1]]»',
-'unprotectedarticle'          => 'снята защита с «[[$1]]»',
+'unprotectedarticle'          => 'снята защита со страницы «[[$1]]»',
 'movedarticleprotection'      => 'перенёс настройки защиты с «[[$2]]» на «[[$1]]»',
 'protect-title'               => 'Установка уровня защиты для «$1»',
 'prot_1movedto2'              => '«[[$1]]» переименована в «[[$2]]»',
@@ -2331,7 +2327,7 @@ $UNWATCHURL
 'undeletereset'                => 'Очистить',
 'undeleteinvert'               => 'Обратить выделение',
 'undeletecomment'              => 'Причина:',
-'undeletedarticle'             => 'восстановил «[[$1]]»',
+'undeletedarticle'             => 'восстановлена «[[$1]]»',
 'undeletedrevisions'           => '$1 {{PLURAL:$1|изменение|изменения|изменений}} восстановлено',
 'undeletedrevisions-files'     => '$1 {{PLURAL:$1|версия|версии|версий}} и $2 {{PLURAL:$2|файл|файла|файлов}} восстановлено',
 'undeletedfiles'               => '$1 {{PLURAL:$1|файл восстановлен|файла восстановлено|файлов восстановлено}}',
@@ -2384,7 +2380,7 @@ $1',
 Ниже приведена последняя запись из журнала блокировок:',
 'sp-contributions-search'              => 'Поиск вклада',
 'sp-contributions-username'            => 'IP-адрес или имя участника:',
-'sp-contributions-toponly'             => 'Показывать только правки, являющиеся последними версиями',
+'sp-contributions-toponly'             => 'Показывать только последние версии',
 'sp-contributions-submit'              => 'Найти',
 
 # What links here
@@ -2434,7 +2430,7 @@ $1',
 'ipbother'                        => 'Другое время:',
 'ipboptions'                      => '2 часа:2 hours,1 день:1 day,3 дня:3 days,1 неделя:1 week,2 недели:2 weeks,1 месяц:1 month,3 месяца:3 months,6 месяцев:6 months,1 год:1 year,бессрочно:infinite',
 'ipbotheroption'                  => 'другое',
-'ipbotherreason'                  => 'Другая причина / дополнение:',
+'ipbotherreason'                  => 'Другая причина/дополнение:',
 'ipbhidename'                     => 'Скрыть имя участника из правок и списков',
 'ipbwatchuser'                    => 'Добавить в список наблюдения личную страницу участника и его страницу обсуждения',
 'ipballowusertalk'                => 'Разрешить участнику править свою страницу обсуждения во время блокировки',
@@ -2453,7 +2449,7 @@ $1',
 'ipusubmit'                       => 'Снять эту блокировку',
 'unblocked'                       => '[[User:$1|$1]] разблокирован.',
 'unblocked-id'                    => 'Блокировка $1 была снята',
-'ipblocklist'                     => 'Заблокированные участники',
+'ipblocklist'                     => 'Заблокированные IP-адреса и учётные записи',
 'ipblocklist-legend'              => 'Поиск заблокированного участника',
 'ipblocklist-username'            => 'Имя участника или IP-адрес:',
 'ipblocklist-sh-userblocks'       => '$1 блокировки учётных записей',
@@ -2603,8 +2599,8 @@ $1',
 'movepage-page-moved'          => 'Страница $1 была переименована в $2.',
 'movepage-page-unmoved'        => 'Страница $1 не может быть переименована в $2.',
 'movepage-max-pages'           => '$1 {{PLURAL:$1|страница была переименована|страницы было переименовано|страниц было переименовано}} — это максимум, больше страниц нельзя переименовать автоматически.',
-'1movedto2'                    => 'переименовал [[$1]] в [[$2]]',
-'1movedto2_redir'              => 'переименовал [[$1]] в [[$2]] поверх перенаправления',
+'1movedto2'                    => 'переименовал «[[$1]]» в «[[$2]]»',
+'1movedto2_redir'              => '«[[$1]]» переименована в «[[$2]]» поверх перенаправления',
 'move-redirect-suppressed'     => 'перенаправление подавлено',
 'movelogpage'                  => 'Журнал переименований',
 'movelogpagetext'              => 'Ниже представлен список переименованных страниц.',
@@ -2922,7 +2918,7 @@ $1',
 'file-nohires'         => '<small>Нет версии с большим разрешением.</small>',
 'svg-long-desc'        => 'SVG-файл, номинально $1 × $2 пикселов, размер файла: $3',
 'show-big-image'       => 'Изображение в более высоком разрешении',
-'show-big-image-thumb' => '<small>Размер при предпросмотре: $1 × $2 {{PLURAL:$2|пиксел|пиксела|пикселов}}</small>',
+'show-big-image-thumb' => '<small>Размер при предпросмотре: $1 × $2 пикселов</small>',
 'file-info-gif-looped' => 'закольцованный',
 'file-info-gif-frames' => '$1 {{PLURAL:$1|фрейм|фрейма|фреймов}}',
 'file-info-png-looped' => 'закольцованный',
@@ -3004,8 +3000,8 @@ $1',
 'exif-colorspace'                  => 'Цветовое пространство',
 'exif-componentsconfiguration'     => 'Конфигурация цветовых компонентов',
 'exif-compressedbitsperpixel'      => 'Глубина цвета после сжатия',
-'exif-pixelydimension'             => 'Ширина изображения',
-'exif-pixelxdimension'             => 'Высота изображения',
+'exif-pixelydimension'             => 'Полная высота изображения',
+'exif-pixelxdimension'             => 'Полная ширина изображения',
 'exif-makernote'                   => 'Дополнительные данные производителя',
 'exif-usercomment'                 => 'Дополнительный комментарий',
 'exif-relatedsoundfile'            => 'Файл звукового комментария',
@@ -3021,9 +3017,9 @@ $1',
 'exif-spectralsensitivity'         => 'Спектральная чувствительность',
 'exif-isospeedratings'             => 'Светочувствительность ISO',
 'exif-oecf'                        => 'OECF (коэффициент оптоэлектрического преобразования)',
-'exif-shutterspeedvalue'           => 'Выдержка в APEX',
-'exif-aperturevalue'               => 'Диафрагма в APEX',
-'exif-brightnessvalue'             => 'Яркость в APEX',
+'exif-shutterspeedvalue'           => 'Выдержка',
+'exif-aperturevalue'               => 'Диафрагма',
+'exif-brightnessvalue'             => 'Яркость',
 'exif-exposurebiasvalue'           => 'Компенсация экспозиции',
 'exif-maxaperturevalue'            => 'Минимальное число диафрагмы',
 'exif-subjectdistance'             => 'Расстояние до объекта',
@@ -3088,7 +3084,6 @@ $1',
 'exif-gpsareainformation'          => 'Название области GPS',
 'exif-gpsdatestamp'                => 'Дата',
 'exif-gpsdifferential'             => 'Дифференциальная поправка',
-'exif-objectname'                  => 'Краткое название',
 
 # EXIF attributes
 'exif-compression-1' => 'Несжатый',
@@ -3504,7 +3499,7 @@ MediaWiki распространяется в надежде, что она бу
 'fileduplicatesearch-legend'   => 'Поиск дубликатов',
 'fileduplicatesearch-filename' => 'Имя файла:',
 'fileduplicatesearch-submit'   => 'Найти',
-'fileduplicatesearch-info'     => '$1 × $2 {{PLURAL:$2|пиксел|пиксела|пикселов}}<br />Размер файла: $3<br />MIME-тип: $4',
+'fileduplicatesearch-info'     => '$1 × $2 пикселов<br />Размер файла: $3<br />MIME-тип: $4',
 'fileduplicatesearch-result-1' => 'Файл «$1» не имеет идентичных дубликатов.',
 'fileduplicatesearch-result-n' => 'Файл «$1» имеет $2 {{PLURAL:$2|идентичный дубликат|идентичных дубликата|идентичных дубликатов}}.',
 
@@ -3586,5 +3581,18 @@ MediaWiki распространяется в надежде, что она бу
 # SQLite database support
 'sqlite-has-fts' => '$1 с поддержкой полнотекстового поиска',
 'sqlite-no-fts'  => '$1 без поддержки полнотекстового поиска',
+
+# Special:DisableAccount
+'disableaccount'             => 'Отключение учётной записи участника',
+'disableaccount-user'        => 'Имя участника:',
+'disableaccount-reason'      => 'Причина:',
+'disableaccount-confirm'     => "Отключение этой учетной записи участника. 
+Участник не сможет войти в систему, сбросить свой пароль, получать уведомления по электронной почте. 
+Если участник в данный момент уже совершил вход в систему, то его сеанс будет немедленно прерван.
+''Обратите внимание, что отключение учётной записи нельзя отменить без вмешательства системного администратора.''",
+'disableaccount-mustconfirm' => 'Вы должны подтвердить, что вы хотите отключить эту учётную запись.',
+'disableaccount-nosuchuser'  => 'Не существует учетной записи участника «$1».',
+'disableaccount-success'     => 'Учетная запись участника «$1» была отключена навсегда.',
+'disableaccount-logentry'    => 'навсегда отключил учётную запись [[$1]]',
 
 );

@@ -7,7 +7,6 @@
  * @ingroup Language
  * @file
  *
- * @author Amire80
  * @author Chavash
  * @author FLAGELLVM DEI
  * @author PCode
@@ -238,7 +237,7 @@ $messages = array(
 'viewhelppage'      => 'Справка страницине пăх',
 'categorypage'      => 'Категори страницине пăх',
 'viewtalkpage'      => 'Сӳтсе явнине тишкер',
-'otherlanguages'    => 'Урăх чĕлхесем',
+'otherlanguages'    => 'Урăх чěлхесем',
 'redirectedfrom'    => '($1 çинчен куçарнă)',
 'redirectpagesub'   => 'Куçаракан страница',
 'lastmodifiedat'    => 'Ку страницăна юлашки улăштарнă вăхăт: $2, $1.',
@@ -893,9 +892,6 @@ $1 хутшăнакан патне, е ытти [[{{MediaWiki:Grouppage-sysop}}|
 Also see [[Special:WantedCategories|wanted categories]].',
 'special-categories-sort-count' => 'шучĕ тăрăх йĕркеле',
 'special-categories-sort-abc'   => 'алфавит тăрăх йĕркеле',
-
-# Special:DeletedContributions
-'deletedcontributions' => 'Тулашран тунă ӳсĕм',
 
 # Special:ListUsers
 'listusers-submit'   => 'Кăтарт',

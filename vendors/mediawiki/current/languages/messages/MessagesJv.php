@@ -76,10 +76,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Tuduhna cacahé pangawas',
 'tog-oldsig'                  => 'Pratayang tapak asta sing ana:',
 'tog-fancysig'                => 'Anggepen tapak asta minangka teks wiki (tanpa pranala otomatis)',
-'tog-externaleditor'          => 'Pigunakaken program pangolah tembung jawi (namung tumrap ahli, perlu pangaturan mligi ing komputer panjenengan. 
-[http://www.mediawiki.org/wiki/Manual:External_editors Informasi sajangkepipun].)',
-'tog-externaldiff'            => 'Pigunakaken diff eksternal sacara bektan (namung tumrap para ahli, perlu pangaturan mligi ing komputer panjenengan.
-[http://www.mediawiki.org/wiki/Manual:External_editors Informasi sajangkepipun].)',
+'tog-externaleditor'          => 'Nganggoa program pangolah tembung jaba (external wordprocessor)',
+'tog-externaldiff'            => 'Nganggoa program njaba kanggo mirsani prabédan suntingan',
 'tog-showjumplinks'           => 'Aktifna pranala pambiyantu "langsung menyang"',
 'tog-uselivepreview'          => 'Nganggoa pratayang langsung (JavaScript) (eksperimental)',
 'tog-forceeditsummary'        => 'Élingna aku menawa kothak ringkesan suntingan isih kosong',
@@ -429,10 +427,10 @@ Alesané yaiku ''$2''.",
 'virus-unknownscanner' => 'Antivirus ora ditepungi:',
 
 # Login and logout pages
-'logouttext'                 => "'''Panjenengan sampun medal (oncat) saking sistem.'''
+'logouttext'                 => "'''Panjenengan wis metu (oncat) saka cathetan sistem.'''
 
-Panjenengan saged migunakaken {{SITENAME}} kanthi anonim, utawi panjenengan saged [[Special:UserLogin|mlebet malih]] minangka pangangge ingkang sami utawi pangangge sanes.
-Supados dipunmangertosi bilih wonten kaca ingkang nedahaken manawi panjenengan taksih mlebet log ngantos panjenengan mbusak singgahan ing panjelajah web panjenengan.",
+Panjenengan bisa migunakaké {{SITENAME}} kanthi anonim, utawa panjenengan bisa mlebu manèh .
+Supaya dimangertèni bilih ana kaca sing isih nganggo panjenengan kacathet ing sistém amerga panjenengan durung mbusak <em>cache</em> ''browser'' panjenengan.",
 'welcomecreation'            => '== Sugeng rawuh, $1! ==
 
 Akun panjenengan wis kacipta. Aja lali nata konfigurasi [[Special:Preferences|preferensi {{SITENAME}}]] panjenengan.',
@@ -976,9 +974,9 @@ Gunakna tombol radio kanggo nggabungaké révisi-révisi sing digawé sadurungé
 'prefs-rc'                      => 'Owah-owahan pungkasan',
 'prefs-watchlist'               => 'Dhaftar pangawasan',
 'prefs-watchlist-days'          => 'Cacahé dina sing dituduhaké ing dhaftar pangawasan:',
-'prefs-watchlist-days-max'      => 'Maksimum 7 dina',
+'prefs-watchlist-days-max'      => '(maksimum 7 dina)',
 'prefs-watchlist-edits'         => 'Cacahé suntingan maksimum sing dituduhaké ing dhaftar pangawasan sing luwih jangkep:',
-'prefs-watchlist-edits-max'     => 'Gunggung maksimum: 1000',
+'prefs-watchlist-edits-max'     => '(gunggung maksimum: 1000)',
 'prefs-watchlist-token'         => 'Token pantauan:',
 'prefs-misc'                    => 'Liya-liya',
 'prefs-resetpass'               => 'Ganti tembung sandi',
@@ -1327,7 +1325,7 @@ mbalik lan gunakna jeneng liya.
 'fileexists-shared-forbidden' => 'Wis ana berkas liyané mawa jeneng sing padha ing gudhang berkas sing dianggo bebarengan.
 Yèn isih ngersakaké ngunggahaké, mangga berkas diunggahaké manèh mawa jeneng liya. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Berkas iki duplikat utawa padha karo {{PLURAL:$1|berkas|berkas-berkas}} ing ngisor:',
-'file-deleted-duplicate'      => 'Sawijining berkas persis berkas iki ([[:$1]]) wis tau dibusak. Mangga panjenengan priksani sajarah pambusakan berkas kasebut sadurungé nerusaké ngunggahaké berkas kuwi manèh.',
+'file-deleted-duplicate'      => 'Sawijining berkas persis berkas iki ([[$1]]) wis tau dibusak. Mangga panjenengan priksani sajarah pambusakan berkas kasebut sadurungé nerusaké ngunggahaké berkas kuwi manèh.',
 'uploadwarning'               => 'Pèngetan pangunggahan berkas',
 'savefile'                    => 'Simpen berkas',
 'uploadedimage'               => 'gambar "[[$1]]" kaunggahaké',
@@ -1791,10 +1789,10 @@ Kita ora bakal ngandhani manèh yèn diowahi manèh, kejaba panjenengan wis mirs
 
 --
 Kanggo ngowahi préferènsi ing daftar pangawasan panjenengan, mangga mirsani
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Umpan balik lan pitulung sabanjuré:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Busak kaca',
@@ -3007,5 +3005,10 @@ Katrangan tampilan:
 'htmlform-submit'              => 'Kirim',
 'htmlform-reset'               => 'Batalna pangowahan',
 'htmlform-selectorother-other' => 'Liya',
+
+# Special:DisableAccount
+'disableaccount'        => 'Nonaktifaké akun panganggo',
+'disableaccount-user'   => 'Jeneng panganggo:',
+'disableaccount-reason' => 'Alesan:',
 
 );

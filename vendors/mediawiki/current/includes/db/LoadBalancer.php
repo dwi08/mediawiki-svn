@@ -347,7 +347,7 @@ class LoadBalancer {
 		wfProfileIn( __METHOD__ );
 		$this->mWaitForPos = $pos;
 		for ( $i = 1; $i < count( $this->mServers ); $i++ ) {
-			$this->doWait( $i );
+			$this->doWait( $i , true );
 		}
 		wfProfileOut( __METHOD__ );
 	}
@@ -368,12 +368,20 @@ class LoadBalancer {
 	/**
 	 * Wait for a given slave to catch up to the master pos stored in $this
 	 */
-	function doWait( $index ) {
+	function doWait( $index, $open = false ) {
 		# Find a connection to wait on
 		$conn = $this->getAnyOpenConnection( $index );
 		if ( !$conn ) {
-			wfDebug( __METHOD__ . ": no connection open\n" );
-			return false;
+			if ( !$open ) {
+				wfDebug( __METHOD__ . ": no connection open\n" );
+				return false;
+			} else {
+				$conn = $this->openConnection( $index );
+				if ( !$conn ) {
+					wfDebug( __METHOD__ . ": failed to open connection\n" );
+					return false;
+				}
+			}
 		}
 
 		wfDebug( __METHOD__.": Waiting for slave #$index to catch up...\n" );
@@ -633,17 +641,18 @@ class LoadBalancer {
 			throw new MWException( 'You must update your load-balancing configuration. See DefaultSettings.php entry for $wgDBservers.' );
 		}
 
-		$host = $server['host'];
-		$dbname = $server['dbname'];
-
+		extract( $server );
 		if ( $dbNameOverride !== false ) {
-			$server['dbname'] = $dbname = $dbNameOverride;
+			$dbname = $dbNameOverride;
 		}
+
+		# Get class for this database type
+		$class = DatabaseBase::classFromType( $type );
 
 		# Create object
 		wfDebug( "Connecting to $host $dbname...\n" );
 		try {
-			$db = DatabaseBase::newFromType( $server['type'], $server );
+			$db = new $class( $host, $user, $password, $dbname, $flags );
 		} catch ( DBConnectionError $e ) {
 			// FIXME: This is probably the ugliest thing I have ever done to 
 			// PHP. I'm half-expecting it to segfault, just out of disgust. -- TS
@@ -669,7 +678,7 @@ class LoadBalancer {
 
 		if ( !is_object( $conn ) ) {
 			// No last connection, probably due to all servers being too busy
-			wfLogDBError( "LB failure with no last connection\n" );
+			wfLogDBError( "LB failure with no last connection. Connection error: {$this->mLastError}\n" );
 			$conn = new Database;
 			// If all servers were busy, mLastError will contain something sensible
 			throw new DBConnectionError( $conn, $this->mLastError );

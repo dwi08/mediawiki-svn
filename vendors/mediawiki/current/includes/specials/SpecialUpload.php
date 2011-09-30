@@ -445,7 +445,7 @@ class SpecialUpload extends SpecialPage {
 		}
 		
 		// Verify permissions for this title
-		$permErrors = $this->mUpload->verifyPermissions( $wgUser );
+		$permErrors = $this->mUpload->verifyTitlePermissions( $wgUser );
 		if( $permErrors !== true ) {
 			$code = array_shift( $permErrors[0] );
 			$this->showRecoverableUploadError( wfMsgExt( $code,
@@ -812,7 +812,6 @@ class UploadForm extends HTMLForm {
 	 */
 	protected function getSourceSection() {
 		global $wgLang, $wgUser, $wgRequest;
-		global $wgMaxUploadSize;
 
 		if ( $this->mSessionKey ) {
 			return array(
@@ -855,7 +854,7 @@ class UploadForm extends HTMLForm {
 						wfShorthandToInteger( min( 
 							wfShorthandToInteger(
 								ini_get( 'upload_max_filesize' )
-							), $wgMaxUploadSize
+							), UploadBase::getMaxUploadSize( 'file' )
 						) )
 					)
 				) . ' ' . wfMsgHtml( 'upload_source_file' ),
@@ -871,7 +870,7 @@ class UploadForm extends HTMLForm {
 				'radio' => &$radio,
 				'help' => wfMsgExt( 'upload-maxfilesize',
 						array( 'parseinline', 'escapenoentities' ),
-						$wgLang->formatSize( $wgMaxUploadSize )
+						$wgLang->formatSize( UploadBase::getMaxUploadSize( 'url' ) )
 					) . ' ' . wfMsgHtml( 'upload_source_url' ),
 				'checked' => $selectedSourceType == 'url',
 			);

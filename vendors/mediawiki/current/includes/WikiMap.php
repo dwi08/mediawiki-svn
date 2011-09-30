@@ -18,7 +18,7 @@ class WikiMap {
 
 		list( $major, $minor ) = $wgConf->siteFromDB( $wikiID );
 		if( isset( $major ) ) {
-			$server = $wgConf->get( 'wgServer', $wikiID, $major,
+			$server = $wgConf->get( 'wgCanonicalServer', $wikiID, $major,
 				array( 'lang' => $minor, 'site' => $major ) );
 			$path = $wgConf->get( 'wgArticlePath', $wikiID, $major,
 				array( 'lang' => $minor, 'site' => $major ) );
@@ -132,11 +132,13 @@ class WikiReference {
 	 */
 	public function getDisplayName() {
 		$url = $this->getUrl( '' );
-		$url = preg_replace( '!^https?://!', '', $url );
-		$url = preg_replace( '!/index\.php(\?title=|/)$!', '/', $url );
-		$url = preg_replace( '!/wiki/$!', '/', $url );
-		$url = preg_replace( '!/$!', '', $url );
-		return $url;
+		$parsed = wfParseUrl( $url );
+		if ( $parsed ) {
+			return $parsed['host'];
+		} else {
+			// Invalid URL. There's no sane thing to do here, so just return it
+			return $url;
+		}
 	}
 
 	/**

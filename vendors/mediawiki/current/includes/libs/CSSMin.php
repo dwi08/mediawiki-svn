@@ -131,7 +131,7 @@ class CSSMin {
 			// to absolute URLs but otherwise left alone
 			if ( $match['file'][0] !== '' && $match['file'][0][0] === '/' ) {
 				// Replace the file path with an expanded URL
-				$source = substr_replace( $source, wfExpandUrl( $match['file'][0] ),
+				$source = substr_replace( $source, wfExpandUrl( $match['file'][0], PROTO_RELATIVE ),
 					$match['file'][1], strlen( $match['file'][0] )
 				);
 				// Move the offset to the end of the match, leaving it alone

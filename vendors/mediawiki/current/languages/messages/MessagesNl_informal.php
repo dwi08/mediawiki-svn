@@ -7,7 +7,6 @@
  * @ingroup Language
  * @file
  *
- * @author MarkvA
  * @author Siebrand
  * @author Tedjuh10
  */
@@ -352,7 +351,7 @@ Upload je bestand onder een andere naam.
 'fileexists-shared-forbidden' => 'Er bestaat al een bestand met deze naam bij de gedeelte bestanden.
 Als je het bestand alsnog wilt uploaden, ga dan terug en kies een andere naam.
 [[File:$1|thumb|center|$1]]',
-'file-deleted-duplicate'      => 'Een bestand dat identiek is aan dit bestand ([[:$1]]) is voorheen verwijderd.
+'file-deleted-duplicate'      => 'Een bestand dat identiek is aan dit bestand ([[$1]]) is voorheen verwijderd.
 Raadpleeg het verwijderingslogboek voordat je verder gaat.',
 'uploadfromurl-queued'        => 'Je upload is in de wachtrij geplaatst.',
 'filewasdeleted'              => 'Er is eerder een bestand met deze naam verwijderd.
@@ -447,13 +446,13 @@ Tenzij je deze pagina bezoekt, komen er geen verdere berichten. Op je volglijst 
 
 --
 Je kunt je volglijstinstellingen wijzigen op:
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Je kunt de pagina van uw volglijst verwijderen via de volgende verwijzing:
 $UNWATCHURL
 
 Feedback en andere assistentie:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'historywarning'    => "'''Waarschuwing:''' de pagina die je wilt verwijderen heeft ongeveer $1 {{PLURAL:$1|versie|versies}}:",

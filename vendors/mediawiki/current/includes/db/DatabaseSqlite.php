@@ -24,14 +24,12 @@ class DatabaseSqlite extends DatabaseBase {
 	 * Parameters $server, $user and $password are not used.
 	 */
 	function __construct( $server = false, $user = false, $password = false, $dbName = false, $flags = 0 ) {
+		global $wgSharedDB;
+		$this->mFlags = $flags;
 		$this->mName = $dbName;
-		parent::__construct( $server, $user, $password, $dbName, $flags );
-		// parent doesn't open when $user is false, but we can work with $dbName
-		if( !$user && $dbName ) {
-			global $wgSharedDB;
-			if( $this->open( $server, $user, $password, $dbName ) && $wgSharedDB ) {
-				$this->attachDatabase( $wgSharedDB );
-			}
+
+		if ( $this->open( $server, $user, $password, $dbName ) && $wgSharedDB ) {
+			$this->attachDatabase( $wgSharedDB );
 		}
 	}
 
@@ -134,20 +132,19 @@ class DatabaseSqlite extends DatabaseBase {
 	 * Returns version of currently supported SQLite fulltext search module or false if none present.
 	 * @return String
 	 */
-	static function getFulltextSearchModule() {
+	function getFulltextSearchModule() {
 		static $cachedResult = null;
 		if ( $cachedResult !== null ) {
 			return $cachedResult;
 		}
 		$cachedResult = false;
 		$table = 'dummy_search_test';
-		
-		$db = new DatabaseSqliteStandalone( ':memory:' );
+		$this->query( "DROP TABLE IF EXISTS $table", __METHOD__ );
 
-		if ( $db->query( "CREATE VIRTUAL TABLE $table USING FTS3(dummy_field)", __METHOD__, true ) ) {
+		if ( $this->query( "CREATE VIRTUAL TABLE $table USING FTS3(dummy_field)", __METHOD__, true ) ) {
+			$this->query( "DROP TABLE IF EXISTS $table", __METHOD__ );
 			$cachedResult = 'FTS3';
 		}
-		$db->close();
 		return $cachedResult;
 	}
 
@@ -469,7 +466,7 @@ class DatabaseSqlite extends DatabaseBase {
 	 * @return string User-friendly database information
 	 */
 	public function getServerInfo() {
-		return wfMsg( self::getFulltextSearchModule() ? 'sqlite-has-fts' : 'sqlite-no-fts', $this->getServerVersion() );
+		return wfMsg( $this->getFulltextSearchModule() ? 'sqlite-has-fts' : 'sqlite-no-fts', $this->getServerVersion() );
 	}
 
 	/**
@@ -585,8 +582,6 @@ class DatabaseSqlite extends DatabaseBase {
 			$s = preg_replace( '/\bauto_increment\b/i', 'AUTOINCREMENT', $s );
 			// No explicit options
 			$s = preg_replace( '/\)[^);]*(;?)\s*$/', ')\1', $s );
-			// AUTOINCREMENT should immedidately follow PRIMARY KEY
-			$s = preg_replace( '/primary key (.*?) autoincrement/i', 'PRIMARY KEY AUTOINCREMENT $1', $s );
 		} elseif ( preg_match( '/^\s*CREATE (\s*(?:UNIQUE|FULLTEXT)\s+)?INDEX/i', $s ) ) {
 			// No truncated indexes
 			$s = preg_replace( '/\(\d+\)/', '', $s );

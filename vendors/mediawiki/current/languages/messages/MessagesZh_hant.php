@@ -8,7 +8,6 @@
  * @file
  *
  * @author Alexsh
- * @author Andrew971218
  * @author Bencmq
  * @author FireJackey
  * @author Frankou
@@ -938,9 +937,9 @@ $2',
 嘗試[[Special:Search|搜索本站]]獲得相關的新建頁面。',
 
 # Revision deletion
-'rev-deleted-comment'         => '（編輯摘要已除）',
+'rev-deleted-comment'         => '（註釋已移除）',
 'rev-deleted-user'            => '（用戶名已移除）',
-'rev-deleted-event'           => '（日誌已除）',
+'rev-deleted-event'           => '（日誌動作已移除）',
 'rev-deleted-user-contribs'   => '[用戶名或IP地址已移除 - 從貢獻中隱藏編輯]',
 'rev-deleted-text-permission' => "該頁面修訂已被'''刪除'''。
 在[{{fullurl:{{#Special:Log}}/delete|page={{PAGENAMEE}}}} 刪除日誌]中可以找到詳細的訊息。",
@@ -1002,7 +1001,7 @@ $2',
 'revdelete-unsuppress'        => '在已恢復的修訂中移除限制',
 'revdelete-log'               => '理由：',
 'revdelete-submit'            => '應用於選取的{{PLURAL:$1|修訂}}',
-'revdelete-logentry'          => '已更改「[[$1]]」之修訂可見度',
+'revdelete-logentry'          => '「[[$1]]」的修訂可見性已更改',
 'logdelete-logentry'          => '「[[$1]]」的事件可見性已更改',
 'revdelete-success'           => "'''修訂的可見性已經成功更新。'''",
 'revdelete-failure'           => "'''修訂的可見性無法更新：'''
@@ -1379,6 +1378,7 @@ $1",
 'right-reset-passwords'       => '重設其他用戶的密碼',
 'right-override-export-depth' => '匯出含有五層深度連結頁面之頁面',
 'right-sendemail'             => '發電子郵件給其他用戶',
+'right-disableaccount'        => '禁用帳號',
 
 # User rights log
 'rightslog'      => '用戶權限日誌',
@@ -1545,7 +1545,7 @@ $1",
 'fileexists-shared-forbidden' => '在共享檔案庫中已存在此名稱的檔案。
 如果{{GENDER:|你|妳|你}}仍然想去上載它的話，請返回並用一個新的名稱來上傳此檔案。[[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => '這個檔案是跟以下的{{PLURAL:$1|一|多}}個檔案重覆:',
-'file-deleted-duplicate'      => '一個相同名稱的檔案 （[[:$1]]） 在先前刪除過。您應該在重新上傳之前檢查一下該檔案之刪除紀錄。',
+'file-deleted-duplicate'      => '一個相同名稱的檔案 （[[$1]]） 在先前刪除過。您應該在重新上傳之前檢查一下該檔案之刪除紀錄。',
 'uploadwarning'               => '上載警告',
 'uploadwarning-text'          => '請修改以下的檔案描述並重試。',
 'savefile'                    => '保存檔案',
@@ -1593,23 +1593,22 @@ $1',
 'upload-http-error'         => '已發生一個HTTP錯誤：$1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => '拒絕存取',
-'img-auth-nopathinfo'       => 'PATH_INFO遺失。
+'img-auth-accessdenied' => '拒絕存取',
+'img-auth-nopathinfo'   => 'PATH_INFO遺失。
 您的伺服器還沒有設定這個資料。
 它可能是以CGI為本，不支援img_auth。
 參閱http://www.mediawiki.org/wiki/Manual:Image_Authorization。',
-'img-auth-notindir'         => '所請求的路徑不在已經設定的上載目錄。',
-'img-auth-badtitle'         => '不能夠由"$1"建立一個有效標題。',
-'img-auth-nologinnWL'       => '您而家並未登入，"$1"不在白名單上。',
-'img-auth-nofile'           => '檔案"$1"不存在。',
-'img-auth-isdir'            => '您嘗試過存取一個目錄"$1"。
+'img-auth-notindir'     => '所請求的路徑不在已經設定的上載目錄。',
+'img-auth-badtitle'     => '不能夠由"$1"建立一個有效標題。',
+'img-auth-nologinnWL'   => '您而家並未登入，"$1"不在白名單上。',
+'img-auth-nofile'       => '檔案"$1"不存在。',
+'img-auth-isdir'        => '您嘗試過存取一個目錄"$1"。
 只是可以存取檔案。',
-'img-auth-streaming'        => '串流中"$1"。',
-'img-auth-public'           => 'img_auth.php的功能是由一個公共wiki中輸出檔案。
+'img-auth-streaming'    => '串流中"$1"。',
+'img-auth-public'       => 'img_auth.php的功能是由一個公共wiki中輸出檔案。
 這個wiki是已經設定做一個公共wiki。
 基於保安最佳化，img_auth.php已經停用。',
-'img-auth-noread'           => '用戶無存取權去讀"$1"。',
-'img-auth-bad-query-string' => 'URL有一個無效的查詢字符串',
+'img-auth-noread'       => '用戶無存取權去讀"$1"。',
 
 # HTTP errors
 'http-invalid-url'      => '無效的URL：$1',
@@ -2052,13 +2051,13 @@ $NEWPAGE
 
 --
 要改變您的監視列表設定，請參閱
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 要刪除您監視清單中的該頁面，請參閱
 $UNWATCHURL
 
 回饋和進一步的幫助:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => '刪除頁面',
@@ -2120,7 +2119,7 @@ $UNWATCHURL
 'modifiedarticleprotection'   => '已經更改「[[$1]]」的保護等級',
 'unprotectedarticle'          => '已解除保護"[[$1]]"',
 'movedarticleprotection'      => '已將「[[$2]]」的保護設定移動至「[[$1]]」',
-'protect-title'               => '更改「$1」的保護等級',
+'protect-title'               => '正在更改「$1」的保護等級',
 'prot_1movedto2'              => '[[$1]]移動到[[$2]]',
 'protect-legend'              => '確認保護',
 'protectcomment'              => '理由：',
@@ -2142,7 +2141,7 @@ $UNWATCHURL
 'protect-level-sysop'         => '僅操作員',
 'protect-summary-cascade'     => '連鎖',
 'protect-expiring'            => '終止於 $1 （UTC）',
-'protect-expiry-indefinite'   => '永久',
+'protect-expiry-indefinite'   => '無期',
 'protect-cascade'             => '保護本頁中包含的頁面 （連鎖保護）',
 'protect-cantedit'            => '您無法更改這個頁面的保護等級，因為您沒有權限去編輯它。',
 'protect-othertime'           => '其它時間:',
@@ -2232,7 +2231,7 @@ $1',
 'mycontris'           => '我的貢獻',
 'contribsub2'         => '$1的貢獻 （$2）',
 'nocontribs'          => '沒有找到符合特徵的更改。',
-'uctop'               => '(最新修改)',
+'uctop'               => '（最新修改）',
 'month'               => '從該月份 （或更早）:',
 'year'                => '從該年份 （或更早）:',
 
@@ -2320,7 +2319,7 @@ $1',
 'ipusubmit'                       => '移除這個封鎖',
 'unblocked'                       => '[[User:$1|$1]] 的封禁已經解除。',
 'unblocked-id'                    => '封禁 $1 已經被移除',
-'ipblocklist'                     => '被封用戶列表',
+'ipblocklist'                     => '被封IP地址列表',
 'ipblocklist-legend'              => '搜尋一位已經被查封的用戶',
 'ipblocklist-username'            => '用戶名稱或IP地址:',
 'ipblocklist-sh-userblocks'       => '$1賬戶封鎖',
@@ -2348,10 +2347,10 @@ $1被封禁的理由是“$2”',
 'blocklogpage'                    => '查封日誌',
 'blocklog-showlog'                => '這位用戶曾經被封鎖過。在下列提供封鎖記錄以便參考：',
 'blocklog-showsuppresslog'        => '這位用戶曾經被封鎖和隱藏過。在下列提供廢止記錄以便參考：',
-'blocklogentry'                   => '已封禁“[[$1]]” $3而終止時間為$2',
+'blocklogentry'                   => '“[[$1]]”已被查封，終止時間為$2 $3',
 'reblock-logentry'                => '更改[[$1]]的封禁設定時間 $2 $3',
 'blocklogtext'                    => '這是關於用戶封禁和解除封禁操作的記錄。被自動封禁的IP地址沒有被列出。請參閱[[Special:IPBlockList|被查封的IP地址和用戶列表]]。',
-'unblocklogentry'                 => '已解封 $1',
+'unblocklogentry'                 => '$1已被解封',
 'block-log-flags-anononly'        => '僅限匿名用戶',
 'block-log-flags-nocreate'        => '建立帳號已禁用',
 'block-log-flags-noautoblock'     => '停用自動封禁',
@@ -2568,8 +2567,8 @@ $1已經被封鎖。您是否想更改這個設定？',
 'import-interwiki-namespace' => '目的名字空間:',
 'import-upload-filename'     => '檔案名稱：',
 'import-comment'             => '註解:',
-'importtext'                 => '請使用[[Special:Export|匯出功能]]從來源維基匯出檔案，
-儲存到您的電腦中並上傳到這裡。',
+'importtext'                 => '請使用[[Special:Export|匯出功能]]從來源 wiki 匯出檔案，
+儲存到您的磁片並上傳到這裡。',
 'importstart'                => '正在匯入頁面...',
 'import-revision-count'      => '$1個修訂',
 'importnopages'              => '沒有匯入的頁面。',
@@ -2891,8 +2890,8 @@ Variants for Chinese language
 'exif-colorspace'                  => '顏色空間',
 'exif-componentsconfiguration'     => '每分量含義',
 'exif-compressedbitsperpixel'      => '圖片壓縮模式',
-'exif-pixelydimension'             => '圖片寬度',
-'exif-pixelxdimension'             => '圖片高度',
+'exif-pixelydimension'             => '有效圖片寬度',
+'exif-pixelxdimension'             => '有效圖片高度',
 'exif-makernote'                   => '製造商註釋',
 'exif-usercomment'                 => '用戶註釋',
 'exif-relatedsoundfile'            => '相關的音頻檔案',
@@ -2908,9 +2907,9 @@ Variants for Chinese language
 'exif-spectralsensitivity'         => '感光',
 'exif-isospeedratings'             => 'ISO 速率',
 'exif-oecf'                        => '光電轉換因子',
-'exif-shutterspeedvalue'           => 'APEX快門速度',
-'exif-aperturevalue'               => 'APEX光圈',
-'exif-brightnessvalue'             => 'APEX亮度',
+'exif-shutterspeedvalue'           => '快門速度',
+'exif-aperturevalue'               => '光圈',
+'exif-brightnessvalue'             => '亮度',
 'exif-exposurebiasvalue'           => '曝光補償',
 'exif-maxaperturevalue'            => '最大陸地光圈',
 'exif-subjectdistance'             => '物距',
@@ -2974,7 +2973,6 @@ Variants for Chinese language
 'exif-gpsareainformation'          => 'GPS 區域名稱',
 'exif-gpsdatestamp'                => 'GPS 日期',
 'exif-gpsdifferential'             => 'GPS 差動修正',
-'exif-objectname'                  => '簡稱',
 
 # EXIF attributes
 'exif-compression-1' => '未壓縮',
@@ -3055,8 +3053,6 @@ Variants for Chinese language
 'exif-sensingmethod-5' => '連續彩色區域傳感器',
 'exif-sensingmethod-7' => '三線傳感器',
 'exif-sensingmethod-8' => '連續彩色線性傳感器',
-
-'exif-filesource-3' => '數碼相機',
 
 'exif-scenetype-1' => '直接照像圖片',
 
@@ -3415,5 +3411,17 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 # SQLite database support
 'sqlite-has-fts' => '帶全文搜尋的版本$1',
 'sqlite-no-fts'  => '不帶全文搜尋的版本$1',
+
+# Special:DisableAccount
+'disableaccount'             => '禁用用戶賬戶',
+'disableaccount-user'        => '用戶名：',
+'disableaccount-reason'      => '理由：',
+'disableaccount-confirm'     => "禁用此使用者帳號。
+該使用者將無法登入、重設其密碼或收到電子郵件通知。如果用戶目前仍保持登入，其帳號將會被強制登出。
+''留意若無系統管理員的干預，被禁用的帳號不可重新啟用。''",
+'disableaccount-mustconfirm' => '請確認您的確要禁用此賬戶。',
+'disableaccount-nosuchuser'  => '用戶賬戶「$1」不存在。',
+'disableaccount-success'     => '用戶賬戶「$1」已被永久禁用。',
+'disableaccount-logentry'    => '永久禁用用戶賬戶[[$1]]',
 
 );

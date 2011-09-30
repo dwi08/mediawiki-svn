@@ -39,7 +39,6 @@
  * @author Wong128hk
  * @author Xiaomingyan
  * @author Yfdyh000
- * @author 阿pp
  */
 
 $fallback8bitEncoding = 'windows-936';
@@ -172,7 +171,6 @@ $specialPageAliases = array(
 	'Mytalk'                    => array( '我的讨论页' ),
 	'Mycontributions'           => array( '我的贡献' ),
 	'Myuploads'                 => array( '我的上传' ),
-	'PermanentLink'             => array( '永久链接' ),
 	'Listadmins'                => array( '管理员列表' ),
 	'Listbots'                  => array( '机器人列表' ),
 	'Popularpages'              => array( '热点页面' ),
@@ -249,7 +247,7 @@ $messages = array(
 'tog-enotifwatchlistpages'    => '当我的监视列表中的页面改变时发送电子邮件通知我',
 'tog-enotifusertalkpages'     => '当我的讨论页更改时发送电子邮件通知我',
 'tog-enotifminoredits'        => '当页面有小修改时也发送电子邮件通知我',
-'tog-enotifrevealaddr'        => '在通知电子邮件中显示我的电子邮件地址',
+'tog-enotifrevealaddr'        => '在通知电子邮件列表中显示我的电子邮件地址',
 'tog-shownumberswatching'     => '显示监视此页的用户数',
 'tog-oldsig'                  => '原签名预览：',
 'tog-fancysig'                => '将签名以wiki文本对待（不产生自动链接）',
@@ -665,7 +663,7 @@ $2',
 'noemailcreate'              => '您需要提供一个有效的电子邮件地址',
 'passwordsent'               => '用户"$1"的新密码已经寄往所登记的电子邮件地址。
 请在收到后再登录。',
-'blocked-mailpassword'       => '您的IP地址已被禁止编辑，同时为了防止密码恢复功能被滥用，亦已禁用该功能。',
+'blocked-mailpassword'       => '您的IP地址处于查封状态而不允许编辑，为了安全起见，密码恢复功能已被禁用。',
 'eauthentsent'               => '一封确认信已经发送到推荐的地址。在发送其它邮件到此账户前，您必须首先依照这封信中的指导确认这个电子邮箱真实有效。',
 'throttled-mailpassword'     => '密码提醒已在最近$1小时内发送。为了安全起见，在每$1小时内只能发送一个密码提醒。',
 'mailerror'                  => '发送邮件错误：$1',
@@ -681,7 +679,7 @@ $2',
 'createaccount-text'         => '有人在{{SITENAME}}中利用您的邮箱创建了一个名为 "$2" 的新帐户（$4），密码是 "$3" 。您应该立即登录并更改密码。
 
 如果该账户创建错误的话，您可以忽略此信息。',
-'usernamehasherror'          => '用户名中不可包含哈希（hash）字符',
+'usernamehasherror'          => '用户名称不可以包含切细字符',
 'login-throttled'            => '您已经尝试多次的登录动作。
 请稍等多一会再试。',
 'loginlanguagelabel'         => '语言：$1',
@@ -692,19 +690,21 @@ $2',
 
 # Password reset dialog
 'resetpass'                 => '更改密码',
-'resetpass_announce'        => '您是通过发送到电子邮箱的临时密码登录的。要完成登录，请设定一个新的密码：',
+'resetpass_announce'        => '您是通过一个临时的发送到邮件中的代码登录的。要完成登录，您必须在这里设定一个新密码：',
 'resetpass_text'            => '<!-- 在此处添加文本 -->',
 'resetpass_header'          => '更改账户密码',
 'oldpassword'               => '旧密码：',
 'newpassword'               => '新密码：',
 'retypenew'                 => '确认密码：',
 'resetpass_submit'          => '设定密码并登录',
-'resetpass_success'         => '您已经修改了您的密码！正在为您登录……',
+'resetpass_success'         => '您的密码已经被成功更改！
+现在正为您登录...',
 'resetpass_forbidden'       => '无法更改密码',
 'resetpass-no-info'         => '您必须登录后直接进入这个页面。',
 'resetpass-submit-loggedin' => '更改密码',
 'resetpass-submit-cancel'   => '取消',
-'resetpass-wrong-oldpass'   => '临时密码或当前密码无效。您可能已经更改了您的密码，或者请求了新的临时密码。',
+'resetpass-wrong-oldpass'   => '无效的临时或现有的密码。
+您可能已成功地更改了您的密码，或者已经请求一个新的临时密码。',
 'resetpass-temp-password'   => '临时密码：',
 
 # Edit page toolbar
@@ -745,25 +745,33 @@ $2',
 'missingcommentheader'             => "'''提示：''' 您没有为此评论提供一个标题。如果您再次单击“{{int:savearticle}}”，您的编辑将不带标题保存。",
 'summary-preview'                  => '摘要预览：',
 'subject-preview'                  => '标题预览：',
-'blockedtitle'                     => '用户被封禁',
-'blockedtext'                      => "'''您的用户名或IP地址已被封禁。'''
+'blockedtitle'                     => '用户被查封',
+'blockedtext'                      => "你的用户名或IP地址已经被$1查封。
 
-此次封禁操作由$1完成，封禁原因为''$2''。
+这次查封是由$1所封的。当中的原因是''$2''。
 
-* 起始时间：$8
-* 终止时间：$6
-* 拟封禁对象：$7
+* 这次查封开始的时间是：$8
+* 这次查封到期的时间是：$6
+* 对于被查封者：$7
 
-您可以联系$1或其他的[[{{MediaWiki:Grouppage-sysop}}|管理员]]讨论此次封禁。若您已在[[Special:Preferences|帐号设置]]中配置了一个有效的电子邮件地址，且未被封禁电子邮件功能，则您可通过“发送电子邮件给这位用户”功能来联络相关管理员。您当前的IP地址是$3，此次封禁的ID为#$5。请在您的查询中注明上述所有信息。",
-'autoblockedtext'                  => "您的IP地址因与另一位已封禁用户相同而被自动封禁，该用户是由$1封禁的。封禁原因如下：
+你可以联络$1或者其他的[[{{MediaWiki:Grouppage-sysop}}|管理员]]，讨论这次查封。
+除非你已经在你的[[Special:Preferences|帐号参数设置]]中设置了一个有效的电子邮件地址，否则你是不能使用「电邮这位用户」的功能。当设置定了一个有效的电子邮件地址后，这个功能是不会封锁的。
+
+你的IP地址是$3，而该查封ID是 #$5。 请在你的查询中注明以上所有的资料。",
+'autoblockedtext'                  => "你的IP地址已经被自动查封，由于先前的另一位用户被$1所查封。
+而查封的原因是：
 
 :''$2''
 
-* 起始时间：$8
-* 终止时间：$6
-* 拟封禁对象：$7
+* 这次查封的开始时间是：$8
+* 这次查封的到期时间是：$6
+* 对于被查封者：$7
 
-您可以联系$1或其他的[[{{MediaWiki:Grouppage-sysop}}|管理员]]讨论此次封禁。若您已在[[Special:Preferences|帐号设置]]中配置了一个有效的电子邮件地址，且未被封禁电子邮件功能，则您可通过“发送电子邮件给这位用户”功能来联络相关管理员。您当前的IP地址是$3，此次封禁的ID为#$5。请在您的查询中注明上述所有信息。",
+你可以联络$1或者其他的[[{{MediaWiki:Grouppage-sysop}}|管理员]]，讨论这次查封。
+
+除非你已经在你的[[Special:Preferences|帐号参数设置]]中设置了一个有效的电子邮件地址，否则你是不能使用「电邮这位用户」的功能。当设置定了一个有效的电子邮件地址后，这个功能是不会封锁的。
+
+您现时正在使用的 IP 地址是 $3，查封ID是 #$5。 請在你的查詢中註明以上所有的資料。",
 'blockednoreason'                  => '无给出原因',
 'blockedoriginalsource'            => "以下是'''$1'''的源码：",
 'blockededitsource'                => "你对'''$1'''进行'''编辑'''的文字如下:",
@@ -943,7 +951,7 @@ $2',
 尝试[[Special:Search|搜索本站]]获得相关的新建页面。',
 
 # Revision deletion
-'rev-deleted-comment'         => '（编辑删除摘要）',
+'rev-deleted-comment'         => '（注释已移除）',
 'rev-deleted-user'            => '（用户名已移除）',
 'rev-deleted-event'           => '（日志动作已移除）',
 'rev-deleted-user-contribs'   => '[用户名或IP地址已移除 - 从贡献中隐藏编辑]',
@@ -1382,6 +1390,7 @@ $1",
 'right-reset-passwords'       => '重设其他用户的密码',
 'right-override-export-depth' => '导出含有五层深度链接页面之页面',
 'right-sendemail'             => '发电子邮件给其他用户',
+'right-disableaccount'        => '禁用账户',
 
 # User rights log
 'rightslog'      => '用户权限日志',
@@ -1549,7 +1558,7 @@ $1",
 'fileexists-shared-forbidden' => '在共享文件库中已存在此名称的文件。
 如果你仍然想去上传它的话，请返回并用一个新的名称来上传此文件。[[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => '这个文件与以下{{PLURAL:$1|一|多}}个文件重复：',
-'file-deleted-duplicate'      => '一个相同名称的文件 （[[:$1]]） 在先前删除过。您应该在重新上传之前检查一下该文件之删除纪录。',
+'file-deleted-duplicate'      => '一个相同名称的文件 （[[$1]]） 在先前删除过。您应该在重新上传之前检查一下该文件之删除纪录。',
 'uploadwarning'               => '上传警告',
 'uploadwarning-text'          => '请修改以下的文件描述并重试。',
 'savefile'                    => '保存文件',
@@ -1597,17 +1606,16 @@ $1',
 'upload-http-error'         => '发生HTTP错误：$1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => '拒绝访问',
-'img-auth-nopathinfo'       => 'PATH_INFO遗失。您的服务器尚未设置传送该信息。它可能是基于CGI的，因而不支持img_auth。参见http://www.mediawiki.org/wiki/Manual:Image_Authorization<nowiki></nowiki>。',
-'img-auth-notindir'         => '在已设置的上传目录中找不到请求的路径。',
-'img-auth-badtitle'         => '无法为“$1”创建合法的标题。',
-'img-auth-nologinnWL'       => '您尚未登录，且“$1”不在白名单上。',
-'img-auth-nofile'           => '文件“$1”不存在。',
-'img-auth-isdir'            => '您正试图访问目录“$1”。您只能访问文件。',
-'img-auth-streaming'        => '流式化“$1”中。',
-'img-auth-public'           => 'img_auth.php的功能是从私有wiki输出文件。但本wiki已被设置为公共wiki。出于安全考虑，img_auth.php已被停用。',
-'img-auth-noread'           => '用户无权读取“$1”。',
-'img-auth-bad-query-string' => 'URL 有一个无效的查询字符串。',
+'img-auth-accessdenied' => '拒绝访问',
+'img-auth-nopathinfo'   => 'PATH_INFO遗失。您的服务器尚未设置传送该信息。它可能是基于CGI的，因而不支持img_auth。参见http://www.mediawiki.org/wiki/Manual:Image_Authorization<nowiki></nowiki>。',
+'img-auth-notindir'     => '在已设置的上传目录中找不到请求的路径。',
+'img-auth-badtitle'     => '无法为“$1”创建合法的标题。',
+'img-auth-nologinnWL'   => '您尚未登录，且“$1”不在白名单上。',
+'img-auth-nofile'       => '文件“$1”不存在。',
+'img-auth-isdir'        => '您正试图访问目录“$1”。您只能访问文件。',
+'img-auth-streaming'    => '流式化“$1”中。',
+'img-auth-public'       => 'img_auth.php的功能是从私有wiki输出文件。但本wiki已被设置为公共wiki。出于安全考虑，img_auth.php已被停用。',
+'img-auth-noread'       => '用户无权读取“$1”。',
 
 # HTTP errors
 'http-invalid-url'      => '无效URL：$1',
@@ -2050,13 +2058,13 @@ $NEWPAGE
 
 --
 要改变您的监视列表设置，请访问
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 要删除您监视列表中的该页面，请访问
 $UNWATCHURL
 
 反馈和进一步的帮助:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => '删除页面',
@@ -2127,9 +2135,12 @@ $UNWATCHURL
 'protect_expiry_old'          => '终止时间已过去。',
 'protect-unchain-permissions' => '解除锁定更多的保护选项',
 'protect-text'                => '你可以在这里浏览和修改对页面<strong><nowiki>$1</nowiki></strong>的保护级别。',
-'protect-locked-blocked'      => "您不能在被封禁时更改保护级别。以下是页面'''$1'''的当前设置：",
-'protect-locked-dblock'       => "您不能在数据库锁定时更改保护级别。以下是页面'''$1'''的当前设置：",
-'protect-locked-access'       => "您的帐户没有足够的权限去更改保护级别。以下是页面'''$1'''的当前设置：",
+'protect-locked-blocked'      => '您不能在被查封时更改保护级别。
+以下是<strong>$1</strong>现时的保护级别：',
+'protect-locked-dblock'       => '在数据库被锁定时无法更改保护级别。
+以下是<strong>$1</strong>现时的保护级别：',
+'protect-locked-access'       => '您的帐户权限不能修改保护级别。
+以下是<strong>$1</strong>现时的保护级别：',
 'protect-cascadeon'           => '以下的{{PLURAL:$1|一个|多个}}页面包含  本页面的同时，启动了连锁保护，因此本页面目前也被保护，未能编辑。您可以设置本页面的保护级别，但这并不会对连锁保护有所影响。',
 'protect-default'             => '容许所有用户',
 'protect-fallback'            => '需要“$1”的许可',
@@ -2227,7 +2238,7 @@ $1',
 'mycontris'           => '贡献',
 'contribsub2'         => '$1的贡献 （$2）',
 'nocontribs'          => '没有找到符合特征的更改。',
-'uctop'               => '(最新修改)',
+'uctop'               => '（最新修改）',
 'month'               => '从该月份 （或更早）：',
 'year'                => '从该年份 （或更早）：',
 
@@ -2291,8 +2302,8 @@ $1',
 'ipbanononly'                     => '仅阻止匿名用户',
 'ipbcreateaccount'                => '阻止创建新账号',
 'ipbemailban'                     => '阻止用户发送电邮',
-'ipbenableautoblock'              => '自动封禁该用户最后使用的IP地址，以及他们随后试图用于编辑的所有IP地址',
-'ipbsubmit'                       => '封禁该用户',
+'ipbenableautoblock'              => '自动查封此用户最后所用的IP地址，以及后来试图编辑所用的所有地址',
+'ipbsubmit'                       => '查封该地址',
 'ipbother'                        => '其它时间：',
 'ipboptions'                      => '2小时:2 hours,1天:1 day,3天:3 days,1周:1 week,2周:2 weeks,1个月:1 month,3个月:3 months,6个月:6 months,1年:1 year,永久:infinite',
 'ipbotheroption'                  => '其他',
@@ -2315,7 +2326,7 @@ $1',
 'ipusubmit'                       => '解除此封禁',
 'unblocked'                       => '[[User:$1|$1]]已经被解封',
 'unblocked-id'                    => '封禁$1已被解除',
-'ipblocklist'                     => '被阻止的用户',
+'ipblocklist'                     => '已封禁IP地址和用户名',
 'ipblocklist-legend'              => '查找已封禁用户',
 'ipblocklist-username'            => '用户名或IP地址：',
 'ipblocklist-sh-userblocks'       => '$1账户封禁',
@@ -2346,7 +2357,7 @@ $1被封禁的理由是：“$2”',
 'blocklogentry'                   => '[[$1]]已被封禁，终止时间为$2 $3',
 'reblock-logentry'                => '更改[[$1]]的封禁终止时间 $2 $3',
 'blocklogtext'                    => '此处给出了封禁和解封用户的操作日志，被自动封禁的IP地址不在此表。请查看[[Special:IPBlockList|封禁列表]]获知当前被封禁的用户和IP地址。',
-'unblocklogentry'                 => '已解封 $1',
+'unblocklogentry'                 => '$1已被解除封禁',
 'block-log-flags-anononly'        => '仅限匿名用户',
 'block-log-flags-nocreate'        => '创建账户已禁用',
 'block-log-flags-noautoblock'     => '禁用自动封禁',
@@ -2557,7 +2568,7 @@ $1已被封禁。您是否想更改封禁设置？',
 'import-upload-filename'     => '文件名：',
 'import-comment'             => '注释：',
 'importtext'                 => '请使用[[Special:Export|导出功能]]从源 wiki 导出文件，
-保存到您的电脑并上传到这里。',
+保存到您的磁盘并上传到这里。',
 'importstart'                => '页面导入中……',
 'import-revision-count'      => '$1个修订',
 'importnopages'              => '没有导入的页面。',
@@ -2886,8 +2897,8 @@ Variants for Chinese language
 'exif-colorspace'                  => '颜色空间',
 'exif-componentsconfiguration'     => '每分量含义',
 'exif-compressedbitsperpixel'      => '图像压缩模式',
-'exif-pixelydimension'             => '图像宽度',
-'exif-pixelxdimension'             => '图像高度',
+'exif-pixelydimension'             => '有效图像宽度',
+'exif-pixelxdimension'             => '有效图像高度',
 'exif-makernote'                   => '制造商注释',
 'exif-usercomment'                 => '用户注释',
 'exif-relatedsoundfile'            => '相关的音频文件',
@@ -2903,9 +2914,9 @@ Variants for Chinese language
 'exif-spectralsensitivity'         => '感光',
 'exif-isospeedratings'             => 'ISO速率',
 'exif-oecf'                        => '光电转换因子',
-'exif-shutterspeedvalue'           => 'APEX 快门速度',
-'exif-aperturevalue'               => '根尖孔',
-'exif-brightnessvalue'             => 'APEX 亮度',
+'exif-shutterspeedvalue'           => '快门速度',
+'exif-aperturevalue'               => '光圈',
+'exif-brightnessvalue'             => '亮度',
 'exif-exposurebiasvalue'           => '曝光补偿',
 'exif-maxaperturevalue'            => '最大陆地光圈',
 'exif-subjectdistance'             => '物距',
@@ -2969,7 +2980,6 @@ Variants for Chinese language
 'exif-gpsareainformation'          => 'GPS区域名称',
 'exif-gpsdatestamp'                => 'GPS日期',
 'exif-gpsdifferential'             => 'GPS差动修正',
-'exif-objectname'                  => '简称',
 
 # EXIF attributes
 'exif-compression-1' => '未压缩',
@@ -3051,8 +3061,6 @@ Variants for Chinese language
 'exif-sensingmethod-5' => '连续彩色区域传感器',
 'exif-sensingmethod-7' => '三线传感器',
 'exif-sensingmethod-8' => '连续彩色线性传感器',
-
-'exif-filesource-3' => '数码相机',
 
 'exif-scenetype-1' => '直接照像图片',
 
@@ -3149,44 +3157,46 @@ Variants for Chinese language
 'confirmemail_loggedin'     => '您的邮箱地址现在已被确认。',
 'confirmemail_error'        => '你的确认过程发生错误。',
 'confirmemail_subject'      => '{{SITENAME}}邮箱地址确认',
-'confirmemail_body'         => '来自IP地址$1的用户（可能是您）在{{SITENAME}}上创建了账户“$2”，并提交了您
-的电子邮箱地址。
+'confirmemail_body'         => '来自IP地址$1的用户（可能是您）在{{SITENAME}}上创建了账户“$2”，并提交了您的电子邮箱地址。
 
-请确认这个账户是属于您的，并同时激活在{{SITENAME}}上的电子邮件功能。请在浏
-览器中打开下面的链接：
+请确认这个账户是属于您的，并同时激活在{{SITENAME}}上的
+电子邮件功能。请在浏览器中打开下面的链接：
 
 $3
 
-如果您*未曾*注册账户，请打开下面的链接去取消电子邮件确认：
+如果您*未曾*注册账户，
+请打开下面的链接去取消电子邮件确认：
 
 $5
 
 确认码会在$4过期。',
-'confirmemail_body_changed' => '拥有IP地址$1的用户（可能是您）在{{SITENAME}}更改了账户“$2”的电子邮箱地址。
+'confirmemail_body_changed' => '拥有IP地址$1的用户（可能是您）在{{SITENAME}}更改了账户"$2"的电子邮箱地址。
 
-请确认这个账户是属于您的，并同时重新激活在{{SITENAME}}上的电子邮件功能。请
-在浏览器中打开下面的链接：
+请确认这个账户是属于您的，并同时重新激活在{{SITENAME}}上的
+电子邮件功能。请在浏览器中打开下面的链接：
 
 $3
 
-如果这个账户*不是*属于您的，请打开下面的链接去取消电子邮件确认：
+如果这个账户*不是*属于您的，
+请打开下面的链接去取消电子邮件确认：
 
 $5
 
 确认码会在$4过期。',
-'confirmemail_body_set'     => '拥有IP地址$1的用户（可能是您）在{{SITENAME}}将账户“$2”的电子邮箱地址设置
-到了这个电子邮件地址。
+'confirmemail_body_set'     => '有人，可能是您，来自IP地址$1，
+已设置的帐户"$2"这个地址{{SITENAME}}网站名称电邮地址。
 
-请确认这个账户是属于您的，并同时重新激活在{{SITENAME}}上的电子邮件功能。请
-在浏览器中打开下面的链接：
+为了确认这个帐号确实属于自己的，重新激活
+电子邮件功能于{{SITENAME}}网站名称，在浏览器中打开这个链接：
 
 $3
 
-如果这个账户*不是*属于您的，请打开下面的链接去取消电子邮件确认：
+如果该帐户不*不*属于你，请点击此链接
+取消电子邮件地址确认：
 
 $5
 
-确认码会在$4过期。',
+这个确认码会在$4时过期。',
 'confirmemail_invalidated'  => '电邮地址确认已取消',
 'invalidateemail'           => '取消电邮确认',
 
@@ -3393,19 +3403,19 @@ MediaWiki是基于使用目的而加以发布，然而不负任何担保责任�
 'dberr-header'      => '本wiki出现了问题',
 'dberr-problems'    => '抱歉！
 本网站出现了一些技术问题。',
-'dberr-again'       => '请等待几分钟后重试。',
+'dberr-again'       => '请尝试等待数分钟后，然后再试。',
 'dberr-info'        => '（无法连接到数据库服务器：$1）',
-'dberr-usegoogle'   => '在此期间您可以尝试用Google来搜索。',
+'dberr-usegoogle'   => '在此时您可以尝试通过Google搜索。',
 'dberr-outofdate'   => '须注意他们索引出来的内容可能不是最新的。',
 'dberr-cachederror' => '这是所请求页面的缓存副本，可能不是最新的。',
 
 # HTML forms
 'htmlform-invalid-input'       => '您输入的内容存在问题',
-'htmlform-select-badoption'    => '您指定的值不是有效选项。',
-'htmlform-int-invalid'         => '您指定的值不是整数。',
-'htmlform-float-invalid'       => '您指定的值不是数字。',
-'htmlform-int-toolow'          => '您指定的值小于最小值$1',
-'htmlform-int-toohigh'         => '您指定的值大于最大值$1',
+'htmlform-select-badoption'    => '您所指定的值不是有效的选项。',
+'htmlform-int-invalid'         => '您所指定的值不是一个整数。',
+'htmlform-float-invalid'       => '您所指定的值不是一个数字。',
+'htmlform-int-toolow'          => '您所指定的值低于最小值$1',
+'htmlform-int-toohigh'         => '您所指定的值高于最大值$1',
 'htmlform-required'            => '本值必填',
 'htmlform-submit'              => '提交',
 'htmlform-reset'               => '撤销更改',
@@ -3414,5 +3424,17 @@ MediaWiki是基于使用目的而加以发布，然而不负任何担保责任�
 # SQLite database support
 'sqlite-has-fts' => '带全文搜索的版本$1',
 'sqlite-no-fts'  => '不带全文搜索的版本$1',
+
+# Special:DisableAccount
+'disableaccount'             => '禁用用户账户',
+'disableaccount-user'        => '用户名：',
+'disableaccount-reason'      => '理由：',
+'disableaccount-confirm'     => "禁用此用户账户。
+该用户将无法登录、重置其密码或收到电子邮件通知。如果用户当前仍保持登录，其账户将被强制退出。
+''留意若无系统管理员的干预，被禁用的账户不可重新启用。''",
+'disableaccount-mustconfirm' => '请确认您的确要禁用此账户。',
+'disableaccount-nosuchuser'  => '用户账户“$1”不存在。',
+'disableaccount-success'     => '用户账户“$1”已被永久禁用。',
+'disableaccount-logentry'    => '永久禁用用户账户[[$1]]',
 
 );

@@ -148,10 +148,25 @@ class SquidUpdate {
 				}
 				$url = SquidUpdate::expand( $url );
 
+				// Try and incremement value in APC cache
+				$id = apc_inc( 'squidhtcppurge' );
+				if ( $id === false ) {
+					// If false, means it didn't work
+					// Chances are that means it isn't in the cache
+					// Start saving a cached value
+					$add = apc_add( 'squidhtcppurge', 1 );
+					if ( $add === false ) {
+						wfDebugLog( 'htcp', 'Unable to set value to APC cache' );
+						$id = 0;
+					} else {
+						$id = $add;
+					}
+				}
+
 				// Construct a minimal HTCP request diagram
 				// as per RFC 2756
 				// Opcode 'CLR', no response desired, no auth
-				$htcpTransID = rand();
+				$htcpTransID = $id;
 
 				$htcpSpecifier = pack( 'na4na*na8n',
 					4, 'HEAD', strlen( $url ), $url,
@@ -193,10 +208,6 @@ class SquidUpdate {
 	 * @return string
 	 */
 	static function expand( $url ) {
-		global $wgInternalServer;
-		if( $url != '' && $url{0} == '/' ) {
-			return $wgInternalServer . $url;
-		}
-		return $url;
+		return wfExpandUrl( $url, PROTO_INTERNAL );
 	}
 }

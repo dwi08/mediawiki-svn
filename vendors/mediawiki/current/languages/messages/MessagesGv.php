@@ -33,43 +33,36 @@ $namespaceNames = array(
 
 $messages = array(
 # User preference toggles
-'tog-underline'              => 'Cur linnaghyn fo chianglaghyn:',
-'tog-highlightbroken'        => 'Croo kianglaghyn brisht <a href="" class="new">myr shoh</a> (aght elley: myr shoh<a href="" class="internal">?</a>).',
-'tog-justify'                => 'Cur meeryn ayns un linney',
-'tog-hideminor'              => "Follee myn-arraghyn ayns caghlaaghyn s'noa",
-'tog-hidepatrolled'          => "Follee arraghyn er nyn scrutaghey ayns caghlaaghyn s'noa",
-'tog-newpageshidepatrolled'  => "Follee duillagyn er nyn scrutaghey 'sy rolley duillagyn noa",
-'tog-numberheadings'         => 'Cur earrooyn gyn smooinaght er kione-linnaghyn',
-'tog-showtoolbar'            => 'Taishbynee barr greieyn (ta feme ec er JavaScript)',
-'tog-editondblclick'         => 'Reagh duillagyn lesh crig dooblit (ta feme ec er JavaScript)',
-'tog-rememberpassword'       => 'Cooinnee my fys loggal stiagh er y cho-earrooder shoh (rish wheesh as $1 {{PLURAL:$1|laa|laa|laa|laaghyn}})',
-'tog-watchcreations'         => 'Cur duillagyn ta crooit aym lesh my rolley arrey',
-'tog-watchdefault'           => 'Cur duillagyn ta reaghit aym lesh my rolley arrey',
-'tog-watchmoves'             => 'Cur duillagyn ta scughit aym lesh my rolley arrey',
-'tog-watchdeletion'          => 'Cur duillagyn ta scryssit aym lesh my rolley arrey',
-'tog-minordefault'           => 'Myr roie-hoieaghey, cowree dagh arraghey myr myn-arraghey',
-'tog-previewontop'           => 'Taishbyney roie-haishbynys roish y rheynn reaghee',
-'tog-previewonfirst'         => 'Taishbyney roie-haishbynys ec y chied reaghey',
-'tog-enotifusertalkpages'    => 'Cur post-l dou my vees y duillag ymmydeyr aym caghlaa',
-'tog-enotifminoredits'       => 'Cur dou post-l er myn-arraghey duillagyn chammah',
-'tog-shownumberswatching'    => 'Taishbynee quoid dy ymmydeyryn ta freill arrey er',
-'tog-oldsig'                 => "Roie-haishbynys jeh'n screeuys t'ayn hannah:",
-'tog-fancysig'               => 'Gra dy vel y screeuys myr wikiteks (gyn kiangley seyr-obbragh)',
-'tog-watchlisthideown'       => 'Follee my arraghyn hene er my rolley arrey',
-'tog-watchlisthidebots'      => 'Follee arraghyn botyn er my rolley arrey',
-'tog-watchlisthideminor'     => 'Follee myn-arraghyn er my rolley arrey',
-'tog-watchlisthidepatrolled' => 'Follee arraghyn er nyn scrutaghey er my rolley arrey',
-'tog-ccmeonemails'           => 'Cur coip dou jeh dagh post-l verrym da ymmydeyr elley',
-'tog-showhiddencats'         => 'Taishbynee ronnaghyn follit',
+'tog-underline'             => 'Cur linnaghyn fo chianglaghyn:',
+'tog-highlightbroken'       => 'Croo kianglaghyn brisht <a href="" class="new">myr shoh</a> (aght elley: myr shoh<a href="" class="internal">?</a>).',
+'tog-justify'               => 'Cur meeryn ayns un linney',
+'tog-hideminor'             => "Follaghey myn-arraghyn ayns caghlaaghyn s'noa",
+'tog-hidepatrolled'         => "Follaghey arraghyn er nyn scrutaghey ayns caghlaaghyn s'noa",
+'tog-newpageshidepatrolled' => "Follaghey duillagyn er nyn scrutaghey 'sy rolley duillagyn noa",
+'tog-numberheadings'        => 'Cur earrooyn gyn smooinaght er kione-linnaghyn',
+'tog-showtoolbar'           => 'Taishbyney barr greieyn (ta feme ec er JavaScript)',
+'tog-editondblclick'        => 'Reaghey duillagyn lesh crig dooblit (ta feme ec er JavaScript)',
+'tog-rememberpassword'      => 'Cooinnee my fys loggal stiagh er y cho-earrooder shoh (rish wheesh as $1 {{PLURAL:$1|laa|laa|laa|laaghyn}})',
+'tog-watchcreations'        => 'Cur duillagyn ta crooit aym lesh my rolley arrey',
+'tog-watchdefault'          => 'Cur duillagyn ta reaghit aym lesh my rolley arrey',
+'tog-watchmoves'            => 'Cur duillagyn ta scughit aym lesh my rolley arrey',
+'tog-watchdeletion'         => 'Cur duillagyn ta scryssit aym lesh my rolley arrey',
+'tog-minordefault'          => 'Myr roie-hoieaghey, cowraghey dagh reaghey myr myn-reaghey',
+'tog-previewontop'          => 'Taishbyney roie-haishbynys roish y chishtey reaghey',
+'tog-previewonfirst'        => 'Taishbyney roie-haishbynys ec y chied reaghey',
+'tog-enotifusertalkpages'   => 'Cur post-l dou my vees y duillag ymmydeyr aym caghlaa',
+'tog-enotifminoredits'      => 'Cur dou post-l er myn-arraghey duillagyn chammah',
+'tog-shownumberswatching'   => 'Taishbyney quoid dy ymmydeyryn ta freill arrey er',
+'tog-oldsig'                => "Roie-haishbynys jeh'n screeuys t'ayn hannah:",
+'tog-fancysig'              => 'Gra dy vel y screeuys myr wikiteks (gyn kiangley seyr-obbragh)',
+'tog-showhiddencats'        => 'Taishbyney ronnaghyn follit',
 
-'underline-always'  => 'Dagh keayrt',
-'underline-never'   => 'Ny jean eh arragh',
+'underline-always'  => 'Rieau',
+'underline-never'   => 'Dy bragh',
 'underline-default' => 'Rere roie-hoiaghey y yeeagheyder',
 
 # Font style option in Special:Preferences
-'editfont-style'     => 'Sorçh clou yn rheynn reaghee',
 'editfont-default'   => 'Rere roie-hoiaghey y yeeagheyder',
-'editfont-monospace' => 'Clou un-lheead',
 'editfont-sansserif' => 'Clou gyn trasnane',
 'editfont-serif'     => 'Clou lesh trasnane',
 
@@ -85,8 +78,8 @@ $messages = array(
 'mon'           => 'Lune',
 'tue'           => 'Mayrt',
 'wed'           => 'Crean',
-'thu'           => 'Dein',
-'fri'           => 'Hein',
+'thu'           => 'Jerd',
+'fri'           => 'Eney',
 'sat'           => 'Sarn',
 'january'       => 'Jerrey Geuree',
 'february'      => 'Toshiaght Arree',
@@ -139,8 +132,6 @@ $messages = array(
 'category-article-count-limited' => "Ta{{PLURAL:$1|'n $1 duillag|'n $1 duillag|'n $1 ghuillag| ny $1 duillagyn}} heese 'sy ronney shoh.",
 'category-file-count-limited'    => "Ta{{PLURAL:$1|'n $1 coadan|'n $1 choadan|'n $1 choadan| ny $1 coadanyn}} heese 'sy ronney shoh.",
 'listingcontinuesabbrev'         => 'tooil.',
-'index-category'                 => 'Duillagyn er ayndagh',
-'noindex-category'               => 'Duillagyn nagh vel er ayndagh',
 
 'mainpagetext' => "'''Ta MediaWiki currit stiagh nish.'''",
 
@@ -178,7 +169,6 @@ $messages = array(
 'vector-view-history'      => 'Jeeagh er shennaghys',
 'vector-view-view'         => 'Lhaih',
 'vector-view-viewsource'   => 'Jeeagh er bun',
-'actions'                  => 'Obbraghyn',
 'namespaces'               => 'Reamyssyn',
 
 'errorpagetitle'    => 'Marranys',
@@ -233,7 +223,6 @@ $messages = array(
 'jumpto'            => 'Gow gys:',
 'jumptonavigation'  => 'stiureydys',
 'jumptosearch'      => 'ronsaghey',
-'pool-errorunknown' => 'Doilleeid gyn enney er',
 
 # All link text and link target definitions of links into project namespace that get used by other message strings, with the exception of user group pages (see grouppage) and the disambiguation template definition (see disambiguations).
 'aboutsite'            => 'Mychione {{SITENAME}}',
@@ -291,7 +280,6 @@ $messages = array(
 'nstab-category'  => 'Ronney',
 
 # Main script and global functions
-'nosuchaction'      => 'Cha nel lheid yn obbyr ayn',
 'nosuchspecialpage' => 'Cha nel y duillag er lheh shoh ayn',
 
 # General errors
@@ -340,10 +328,8 @@ Ny jean jarrood dty [[Special:Preferences|{{SITENAME}} hosheeaghtyn]] y arraghey
 'gotaccount'                 => "Vel coontys ayd hannah? '''$1'''.",
 'gotaccountlink'             => 'Log stiagh',
 'createaccountmail'          => 'er post-L',
-'createaccountreason'        => 'Fa:',
 'loginerror'                 => 'Marranys log stiagh',
 'createaccounterror'         => 'Cha dod shin croo coontys: $1',
-'noname'                     => 'Cha honree uss ennym ymmydeyr fondagh',
 'loginsuccesstitle'          => "T'ou loggalt stiagh",
 'loginsuccess'               => "'''T'ou loggit stiagh ayns {{SITENAME}} myr \"\$1\".'''",
 'nosuchuser'                 => 'Cha nel ymmydeyr lesh yn ennym "$1".<br />
@@ -357,12 +343,10 @@ Aascreeu, my sailliu.",
 'mailmypassword'             => "Cur dou m'ockle arrey er post-L",
 'passwordremindertitle'      => 'Fockle arrey noa shallidagh gys {{SITENAME}}',
 'noemail'                    => 'Cha nel enmys post-L recortyssit da\'n ymmydeyr "$1".',
-'noemailcreate'              => 'Shegin dhyt enmys post-l fondagh y honraghey',
 'passwordsent'               => 'Va fockle arrey noa currit da enmys post-L ta recortyssit da "$1".<br />
 Tra t\'eh ayd, log stiagh my sailliu.',
 'acct_creation_throttle_hit' => "Va {{PLURAL:$1|1 choontys|$1 coontyssyn}} crooit ec keayrtee da'n wiki shoh lesh yn enmys IP ayd 'sy laa ain, as cha nel ny smoo coontyssyn y chroo lhiggalagh.<br />
 Myr eiyrtys, cha nod keayrtee lesh yn enmys IP shoh ny smoo coontyssyn noa y chroo nish.",
-'emailconfirmlink'           => 'Shickyree yn enmys post-l ayd',
 'accountcreated'             => 'Coontys crooit',
 'accountcreatedtext'         => 'Ta coontys ymmydeyr da $1 crooit.',
 'createaccount-title'        => 'Coontys crooit dy {{SITENAME}}',
@@ -502,9 +486,7 @@ Ogher: '''({{int:cur}})''' = anchaslyssyn rish y lhieggan t'ayn nish,
 'rev-deleted-comment'  => '(cohaggloo scughit)',
 'rev-deleted-user'     => '(ennym yn ymmydeyr scughit)',
 'rev-delundel'         => 'taishbyney/follaghey',
-'rev-showdeleted'      => 'taishbyney',
 'revdelete-hide-image' => 'Cummal y choadan y ollaghey',
-'revdelete-log'        => 'Fa:',
 'revdel-restore'       => 'ceaghley leayrid',
 'pagehist'             => 'Shennaghys y duillag',
 'deletedhist'          => 'Shennaghys scryssit',
@@ -519,7 +501,6 @@ Ogher: '''({{int:cur}})''' = anchaslyssyn rish y lhieggan t'ayn nish,
 'mergehistory-submit'      => 'Aavriwnyssyn y chochiangley',
 'mergehistory-autocomment' => 'Ta [[:$1]] cochianglit stiagh ayns [[:$2]]',
 'mergehistory-comment'     => 'Ta [[:$1]] cochianglit stiagh ayns [[:$2]]: $3',
-'mergehistory-reason'      => 'Fa:',
 
 # Merge log
 'revertmerge' => 'Jee-vestey',
@@ -605,7 +586,7 @@ My t'ou uss son ronsaghey dagh cooid (as shen goaill stiagh duillagyn resooney, 
 'timezoneregion-indian'     => 'Y Keayn Injinagh',
 'timezoneregion-pacific'    => 'Y Keayn Sheealtagh',
 'prefs-searchoptions'       => 'Ronsaghey',
-'default'                   => 'roie-chiartagh',
+'default'                   => 'loght',
 'prefs-files'               => 'Coadanyn',
 'youremail'                 => 'Post-L:',
 'username'                  => "Dt'ennym ymmydeyr:",
@@ -751,7 +732,7 @@ Ta duillagyn er [[Special:Watchlist|dty rolley arrey]] ayns '''clou trome'''.",
 'uploadnewversion-linktext' => "Laad neese lhieggan noa jeh'n choadan shoh",
 
 # File reversion
-'filerevert-comment' => 'Fa:',
+'filerevert-comment' => 'Cohaggloo:',
 
 # File deletion
 'filedelete'                  => 'Scryss $1',
@@ -950,10 +931,10 @@ Foddee shiu aajeshaghey bratteeyn ny fograghyn ry hoi dagh duillag er dty rolley
 
 --
 Dys kiartee dty rolley arrey y chaghlaa, cur keayrt er
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Aaveaghey as cooney s\'odjey:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'            => 'Scryss y duillag',
@@ -962,7 +943,7 @@ Aaveaghey as cooney s\'odjey:
 'exblank'               => "va'n duillag follym",
 'delete-confirm'        => 'Scryss "$1"',
 'delete-legend'         => 'Scryss',
-'historywarning'        => 'Raaue: Ta shennaghys ec y duillag ta shiu er-chee scryssey magh, as mysh $1 {{PLURAL:$1|caghlaa|chaghlaa|chaghlaa|caghlaaghyn}} er:',
+'historywarning'        => 'Raaue: Ta shennaghys ec y duillag ta shiu er-chee scryssey magh:',
 'confirmdeletetext'     => 'Ta shiu er-çhee scryssey magh duillag myrane lesh y shennaghys eck.<br />
 Feeraghey dy vel eh y çhalee ayd eh y yannoo, dy vel ny scanshyn toiggit ayd, as dy vel oo jannoo eh ayns coardailys rish [[{{MediaWiki:Policy-url}}|y pholasee]].',
 'actioncomplete'        => 'Obbraghey creaghnit',
@@ -1024,7 +1005,7 @@ Shoh ny reaghaghyn roie da'n duillag '''$1''':",
 'undeletebtn'            => 'Cur er ash',
 'undeletelink'           => 'jeeagh/cur er ash',
 'undeletereset'          => 'Aahoiaghey',
-'undeletecomment'        => 'Fa:',
+'undeletecomment'        => 'Cohaggloo:',
 'undeletedarticle'       => '"[[$1]]" aahoiaghit',
 'undelete-search-box'    => 'Duillagyn scrysst y ronsaghey',
 'undelete-search-submit' => 'Ronsaghey',
@@ -1095,7 +1076,7 @@ Shoh ny reaghaghyn roie da'n duillag '''$1''':",
 'ipbotheroption'           => 'elley',
 'ipbotherreason'           => 'Fa elley/tooilley:',
 'badipaddress'             => 'Enmys IP gyn vree',
-'ipblocklist'              => 'Ymmydeyryn fo ghlass',
+'ipblocklist'              => 'Rolley enmyssyn IP as enmyn ymmydeyr fo ghlass',
 'ipblocklist-username'     => 'Ennym ymmydeyr ny enmys IP:',
 'ipblocklist-submit'       => 'Ronsaghey',
 'blocklistline'            => '$1, $3 er ny g(h)lassey magh ec $2 ($4)',

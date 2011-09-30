@@ -51,7 +51,7 @@
  *                                 '127.0.0.1:10020'),
  *              'debug'   => false,
  *              'compress_threshold' => 10240,
- *              'persistant' => true));
+ *              'persistent' => true));
  *
  * $mc->add('key', array('some', 'array'));
  * $mc->replace('key', 'some random string');
@@ -158,12 +158,12 @@ class MWMemcached {
 	var $_compress_threshold;
 
 	/**
-	 * Are we using persistant links?
+	 * Are we using persistent links?
 	 *
 	 * @var     boolean
 	 * @access  private
 	 */
-	var $_persistant;
+	var $_persistent;
 
 	/**
 	 * If only using one server; contains ip:port to connect to
@@ -245,12 +245,11 @@ class MWMemcached {
 	 * @return  mixed
 	 */
 	public function __construct( $args ) {
-		global $wgMemCachedTimeout;
 		$this->set_servers( isset( $args['servers'] ) ? $args['servers'] : array() );
 		$this->_debug = isset( $args['debug'] ) ? $args['debug'] : false;
 		$this->stats = array();
 		$this->_compress_threshold = isset( $args['compress_threshold'] ) ? $args['compress_threshold'] : 0;
-		$this->_persistant = isset( $args['persistant'] ) ? $args['persistant'] : false;
+		$this->_persistent = isset( $args['persistent'] ) ? $args['persistent'] : false;
 		$this->_compress_enable = true;
 		$this->_have_zlib = function_exists( 'gzcompress' );
 
@@ -258,9 +257,9 @@ class MWMemcached {
 		$this->_host_dead = array();
 
 		$this->_timeout_seconds = 0;
-		$this->_timeout_microseconds = $wgMemCachedTimeout;
+		$this->_timeout_microseconds = isset( $args['timeout'] ) ? $args['timeout'] : 100000;
 
-		$this->_connect_timeout = 0.01;
+		$this->_connect_timeout = isset( $args['connect_timeout'] ) ? $args['connect_timeout'] : 0.1;
 		$this->_connect_attempts = 2;
 	}
 
@@ -433,7 +432,11 @@ class MWMemcached {
 		}
 
 		wfProfileOut( __METHOD__ );
-		return @$val[$key];
+		if ( isset( $val[$key] ) ) {
+			return $val[$key];
+		} else {
+			return false;
+		}
 	}
 
 	// }}}
@@ -695,7 +698,7 @@ class MWMemcached {
 		$errno = $errstr = null;
 		for( $i = 0; !$sock && $i < $this->_connect_attempts; $i++ ) {
 			wfSuppressWarnings();
-			if ( $this->_persistant == 1 ) {
+			if ( $this->_persistent == 1 ) {
 				$sock = pfsockopen( $ip, $port, $errno, $errstr, $timeout );
 			} else {
 				$sock = fsockopen( $ip, $port, $errno, $errstr, $timeout );
@@ -862,7 +865,17 @@ class MWMemcached {
 	function _load_items( $sock, &$ret ) {
 		while ( 1 ) {
 			$decl = fgets( $sock );
-			if ( $decl == "END\r\n" ) {
+			if ( $decl === false ) {
+				// PATCH: log timeout errors -- TS
+				$info = stream_get_meta_data( $sock );
+				if ( $info['timed_out'] ) {
+					wfDebugLog( 'memcached', "timeout\n" );
+				} else {
+					wfDebugLog( 'memcached', "read error\n" );
+				}
+				$this->_close_sock( $sock );
+				return false;
+			} elseif ( $decl == "END\r\n" ) {
 				return true;
 			} elseif ( preg_match( '/^VALUE (\S+) (\d+) (\d+)\r\n$/', $decl, $match ) ) {
 				list( $rkey, $flags, $len ) = array( $match[1], $match[2], $match[3] );
@@ -945,6 +958,8 @@ class MWMemcached {
 		} else {
 			$this->stats[$cmd] = 1;
 		}
+
+		if ($exp > 2592000 and $exp < 1000000000) $exp = 2592000;
 
 		$flags = 0;
 

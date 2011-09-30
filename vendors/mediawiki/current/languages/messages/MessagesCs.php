@@ -783,7 +783,7 @@ Nezapomeňte si upravit své [[Special:Preferences|nastavení {{grammar:2sg|{{SI
 'password-login-forbidden'   => 'Použití tohoto uživatelského jména a hesla byla zakázáno.',
 'mailmypassword'             => 'Poslat e-mailem nové heslo',
 'passwordremindertitle'      => 'Nové dočasné heslo na {{grammar:4sg|{{SITENAME}}}}',
-'passwordremindertext'       => 'Někdo (patrně vy, z IP adresy $1) požádal, abychom o nové heslo
+'passwordremindertext'       => 'Někdo (patrně Vy, z IP adresy $1) požádal, abychom Vám poslali nové heslo
 pro přihlášení do {{grammar:2sg|{{SITENAME}}}} ($4). Uživateli „$2“ bylo
 proto nastaveno dočasné heslo „$3“. Pokud jste to byl(a) vy, můžete se
 nyní přihlásit a zvolit si nové heslo. Platnost tohoto dočasného hesla
@@ -1086,7 +1086,7 @@ Mohla být smazána či přejmenována.
 Zkuste [[Special:Search|hledání]].',
 
 # Revision deletion
-'rev-deleted-comment'         => '(shrnutí editace odstraněno)',
+'rev-deleted-comment'         => '(komentář odstraněn)',
 'rev-deleted-user'            => '(uživatelské jméno odstraněno)',
 'rev-deleted-event'           => '(záznam odstraněn)',
 'rev-deleted-user-contribs'   => '[uživatelské jméno nebo IP adresa odstraněny – editace v příspěvcích skryta]',
@@ -1326,9 +1326,9 @@ Pokud na začátek dotazu přidáte ''all:'', bude se hledat všude (včetně di
 'prefs-rc'                      => 'Poslední změny',
 'prefs-watchlist'               => 'Sledované stránky',
 'prefs-watchlist-days'          => 'Počet dní zobrazených ve sledovaných stránkách:',
-'prefs-watchlist-days-max'      => 'Maximálně 7 dní',
+'prefs-watchlist-days-max'      => '(maximálně 7 dní)',
 'prefs-watchlist-edits'         => 'Počet editací zobrazených ve zdokonalených sledovaných stránkách:',
-'prefs-watchlist-edits-max'     => 'Maximum: 1000',
+'prefs-watchlist-edits-max'     => '(maximum: 1000)',
 'prefs-watchlist-token'         => 'Klíč k seznamu sledovaných stránek:',
 'prefs-misc'                    => 'Různé',
 'prefs-resetpass'               => 'Změnit heslo',
@@ -1533,6 +1533,7 @@ Také můžete dovolit ostatním uživatelům vás prostřednictvím uživatelsk
 'right-reset-passwords'       => 'Nastavování hesel jiným uživatelům',
 'right-override-export-depth' => 'Exportovat stránky včetně odkazovaných stránek až do hloubky 5',
 'right-sendemail'             => 'Odesílání e-mailů ostatním uživatelům',
+'right-disableaccount'        => 'Deaktivování účtů',
 
 # User rights log
 'rightslog'      => 'Kniha práv uživatelů',
@@ -1591,7 +1592,7 @@ Také můžete dovolit ostatním uživatelům vás prostřednictvím uživatelsk
 'rclistfrom'                        => 'Ukázat nové změny, počínaje od $1',
 'rcshowhideminor'                   => '$1 malé editace',
 'rcshowhidebots'                    => '$1 roboty',
-'rcshowhideliu'                     => '$1 registrované uživatele',
+'rcshowhideliu'                     => '$1 přihlášené uživatele',
 'rcshowhideanons'                   => '$1 anonymní uživatele',
 'rcshowhidepatr'                    => '$1 prověřené editace',
 'rcshowhidemine'                    => '$1 moje editace',
@@ -1616,7 +1617,7 @@ $3',
 'recentchangeslinked-feed'     => 'Související změny',
 'recentchangeslinked-toolbox'  => 'Související změny',
 'recentchangeslinked-title'    => 'Související změny pro stránku "$1"',
-'recentchangeslinked-noresult' => 'V zadaném období nebyly na odkazovaných stránkách provedeny žádné změny.',
+'recentchangeslinked-noresult' => 'V zadaném období nebyly na odkazovaných stránkách žádné změny.',
 'recentchangeslinked-summary'  => "Níže je seznam nedávných změn stránek odkazovaných ze zadané stránky (nebo patřících do dané kategorie). Vaše [[Special:Watchlist|sledované stránky]] jsou '''zvýrazněny'''.",
 'recentchangeslinked-page'     => 'Název stránky:',
 'recentchangeslinked-to'       => 'Zobrazit změny na stránkách odkazujících na zadanou stránku',
@@ -1698,7 +1699,7 @@ Pokud chcete přesto soubor načíst, vraťte se a zvolte jiný název.
 [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Soubor s tímto názvem již existuje ve sdíleném úložišti. Pokud přesto chcete váš soubor načíst, vraťte se a zvolte jiný název. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Tento soubor je duplikát {{PLURAL:$1|následujícího souboru|následujících souborů}}:',
-'file-deleted-duplicate'      => 'Identický soubor k tomuto ([[:$1]]) byl již dříve smazán. Před tím, než soubor znovu nahrajete, byste měli zkontrolovat záznamy o předchozím smazání.',
+'file-deleted-duplicate'      => 'Identický soubor k tomuto ([[$1]]) byl již dříve smazán. Před tím, než soubor znovu nahrajete, byste měli zkontrolovat záznamy o předchozím smazání.',
 'uploadwarning'               => 'Upozornění k načítání',
 'uploadwarning-text'          => 'Prosíme, upravte popis souboru níže a zkuste to znovu.',
 'savefile'                    => 'Uložit soubor',
@@ -1760,23 +1761,22 @@ Kontaktuje prosím [[Special:ListUsers/sysop|správce]].',
 'upload-http-error'         => 'Došlo k chybě HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Přístup odepřen',
-'img-auth-nopathinfo'       => 'Chybí PATH_INFO.
+'img-auth-accessdenied' => 'Přístup odepřen',
+'img-auth-nopathinfo'   => 'Chybí PATH_INFO.
 Váš server není nastaven tak, aby poskytoval tuto informaci.
 Možná funguje pomocí CGI a img_auth na něm nemůže fungovat.
 Vizte http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Požadovaná cesta nespadá pod nakonfigurovaný adresář s načtenými soubory.',
-'img-auth-badtitle'         => 'Z „$1“ nelze vytvořit platný název stránky.',
-'img-auth-nologinnWL'       => 'Nejste přihlášen(a) a „$1“ není na bílé listině.',
-'img-auth-nofile'           => 'Soubor „$1“ neexistuje.',
-'img-auth-isdir'            => 'Pokoušíte se zobrazit adresář „$1“.
+'img-auth-notindir'     => 'Požadovaná cesta nespadá pod nakonfigurovaný adresář s načtenými soubory.',
+'img-auth-badtitle'     => 'Z „$1“ nelze vytvořit platný název stránky.',
+'img-auth-nologinnWL'   => 'Nejste přihlášen(a) a „$1“ není na bílé listině.',
+'img-auth-nofile'       => 'Soubor „$1“ neexistuje.',
+'img-auth-isdir'        => 'Pokoušíte se zobrazit adresář „$1“.
 Dovolen je pouze přístup k souborům.',
-'img-auth-streaming'        => 'Přenáší se „$1“.',
-'img-auth-public'           => 'Pomocí img_auth.php se poskytují soubory na soukromých wiki.
+'img-auth-streaming'    => 'Přenáší se „$1“.',
+'img-auth-public'       => 'Pomocí img_auth.php se poskytují soubory na soukromých wiki.
 Tato wiki je nastavena jako veřejná.
 Z bezpečnostních důvodů je img_auth.php vypnuto.',
-'img-auth-noread'           => 'Uživatel nemá oprávnění ke čtení „$1“.',
-'img-auth-bad-query-string' => 'URL obsahuje neplatný dotaz.',
+'img-auth-noread'       => 'Uživatel nemá oprávnění ke čtení „$1“.',
 
 # HTTP errors
 'http-invalid-url'      => 'Neplatné URL: $1',
@@ -2204,23 +2204,19 @@ Uživatele, který změnu provedl, můžete kontaktovat:
 e-mailem: $PAGEEDITOR_EMAIL
 na wiki: $PAGEEDITOR_WIKI
 
-Dokud stránku nenavštívíte, nebudou vám zasílána další oznámení o změnách této stránky.
-Případně si můžete vynulovat příznaky ve svém seznamu sledovaných stránek.
+Dokud stránku nenavštívíte, nebudou vám zasílána další oznámení o změnách této stránky, případně si můžete vynulovat příznaky ve svém seznamu sledovaných stránek.
 
 	S pozdravem váš zasílač hlášení {{grammar:2sg|{{SITENAME}}}}
 
 --
-Změnit nastavení e-mailových oznámení můžete na
-{{fullurl:{{#special:Preferences}}}}
-
 Nastavení sledovaných stránek může změnit na
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Stránku můžete ze svých sledovaných vyřadit na
 $UNWATCHURL
 
 Rady a kontakt:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Smazat stránku',
@@ -2477,7 +2473,7 @@ Můžete si prohlédnout [[Special:IPBlockList|seznam zablokovaných uživatelů
 'ipusubmit'                       => 'Odblokovat',
 'unblocked'                       => '{{GENDER:$1|||Uživatel}} [[User:$1|$1]] {{GENDER:$1|byl odblokován|byla odblokována|byl odblokován}}',
 'unblocked-id'                    => 'Blok $1 byl zrušen',
-'ipblocklist'                     => 'Zablokovaní uživatelé',
+'ipblocklist'                     => 'Blokované IP adresy a uživatelská jména',
 'ipblocklist-legend'              => 'Hledat zablokovaného uživatele',
 'ipblocklist-username'            => 'Jméno nebo IP adresa:',
 'ipblocklist-sh-userblocks'       => '$1 zablokované účty',
@@ -2509,7 +2505,7 @@ Zde je pro přehled zobrazen výpis z knihy zablokování:',
 'reblock-logentry'                => 'mění nastavení bloku „[[$1]]“ s časem vypršení $2 $3',
 'blocklogtext'                    => 'Toto je kniha úkonů blokování a odblokování uživatelů. Automaticky blokované IP adresy nejsou vypsány. Podívejte se na [[Special:IPBlockList|seznam blokování IP]] s výčtem aktuálních zákazů a blokování.',
 'unblocklogentry'                 => 'odblokovává „$1“',
-'block-log-flags-anononly'        => 'pouze anonymní uživatelé',
+'block-log-flags-anononly'        => 'jen nepřihl.',
 'block-log-flags-nocreate'        => 'vytváření účtů zablokováno',
 'block-log-flags-noautoblock'     => 'automatické blokování vypnuto',
 'block-log-flags-noemail'         => 'e-maily zablokovány',
@@ -2709,8 +2705,7 @@ Pokud si přejete přispívat k lokalizaci softwaru MediaWiki, navštivte [http:
 'import-interwiki-namespace' => 'Cílový jmenný prostor:',
 'import-upload-filename'     => 'Jméno souboru:',
 'import-comment'             => 'Zdůvodnění:',
-'importtext'                 => 'Prosím exportujte soubor ze zdrojové wiki pomocí [[Special:Export|exportního nástroje]].
-Uložte jej na svůj disk a nahrajte ho sem.',
+'importtext'                 => 'Prosím exportujte soubor ze zdrojové wiki pomocí nástroje [[Special:Export|{{ns:special}}:Export]], uložte jej na svůj disk a nahrajte ho sem.',
 'importstart'                => 'Stránky se importují…',
 'import-revision-count'      => '$1 {{PLURAL:$1|revize|revize|revizí}}',
 'importnopages'              => 'Není co importovat.',
@@ -3018,8 +3013,8 @@ Obsahuje pouze seznam s odrážkami (řádka začíná s *). První odkaz na ř�
 'exif-colorspace'                  => 'Barevný prostor',
 'exif-componentsconfiguration'     => 'Význam jednotlivých složek',
 'exif-compressedbitsperpixel'      => 'Komprimační režim',
-'exif-pixelydimension'             => 'Šířka obrázku',
-'exif-pixelxdimension'             => 'Výška obrázku',
+'exif-pixelydimension'             => 'Platná šířka obrazu',
+'exif-pixelxdimension'             => 'Platná výška obrazu',
 'exif-makernote'                   => 'Poznámky výrobce',
 'exif-usercomment'                 => 'Uživatelské poznámky',
 'exif-relatedsoundfile'            => 'Související zvukový soubor',
@@ -3035,9 +3030,9 @@ Obsahuje pouze seznam s odrážkami (řádka začíná s *). První odkaz na ř�
 'exif-spectralsensitivity'         => 'Spektrální citlivost',
 'exif-isospeedratings'             => 'Nastavení ISO citlivosti',
 'exif-oecf'                        => 'Optoelektronická převodní funkce (OECF)',
-'exif-shutterspeedvalue'           => 'Expoziční čas (APEX)',
-'exif-aperturevalue'               => 'Clona (APEX)',
-'exif-brightnessvalue'             => 'Jas (APEX)',
+'exif-shutterspeedvalue'           => 'Rychlost závěrky',
+'exif-aperturevalue'               => 'Clona',
+'exif-brightnessvalue'             => 'Světlost',
 'exif-exposurebiasvalue'           => 'Změna expozice',
 'exif-maxaperturevalue'            => 'Nejmenší clona',
 'exif-subjectdistance'             => 'Vzdálenost k předmětu',
@@ -3101,7 +3096,6 @@ Obsahuje pouze seznam s odrážkami (řádka začíná s *). První odkaz na ř�
 'exif-gpsareainformation'          => 'Označení GPS oblasti',
 'exif-gpsdatestamp'                => 'Datum podle GPS',
 'exif-gpsdifferential'             => 'Diferenciální korekce GPS',
-'exif-objectname'                  => 'Krátký název',
 
 # EXIF attributes
 'exif-compression-1' => 'Nekomprimovaný',
@@ -3357,8 +3351,8 @@ Opravdu si přejete znovu tuto stránku založit?',
 'imgmultigoto'     => 'Jít na stranu $1',
 
 # Table pager
-'ascending_abbrev'         => 'vzest.',
-'descending_abbrev'        => 'sest.',
+'ascending_abbrev'         => 'vzestupně',
+'descending_abbrev'        => 'sestupně',
 'table_pager_next'         => 'Následující stránka',
 'table_pager_prev'         => 'Předchozí stránka',
 'table_pager_first'        => 'První stránka',
@@ -3599,5 +3593,18 @@ Zadejte jméno souboru bez označení "{{ns:file}}:".',
 # SQLite database support
 'sqlite-has-fts' => '$1 s podporou plnotextového vyhledávání',
 'sqlite-no-fts'  => '$1 bez podpory plnotextového vyhledávání',
+
+# Special:DisableAccount
+'disableaccount'             => 'Deaktivace uživatelského účtu',
+'disableaccount-user'        => 'Uživatelské jméno:',
+'disableaccount-reason'      => 'Důvod:',
+'disableaccount-confirm'     => "Deaktivovat tento uživatelský účet.
+Uživatel se nebude moci přihlásit, požádat o nové heslo, ani dostávat e-mailové notifikace.
+Pokud je uživatel kdekoli přihlášen, bude okamžitě odhlášen.
+''Uvědomte si, že deaktivaci účtu nelze vrátit zpět bez pomoci systémového administrátora.''",
+'disableaccount-mustconfirm' => 'Musíte potvrdit, že si přejete deaktivovat tento účet.',
+'disableaccount-nosuchuser'  => 'Uživatelský účet „$1“ neexistuje.',
+'disableaccount-success'     => 'Uživatelský účet „$1“ byl natrvalo deaktivován.',
+'disableaccount-logentry'    => 'natrvalo deaktivoval uživatelský účet [[$1]]',
 
 );

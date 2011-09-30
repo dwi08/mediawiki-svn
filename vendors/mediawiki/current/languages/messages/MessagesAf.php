@@ -236,8 +236,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Wys die aantal gebruikers wat dophou',
 'tog-oldsig'                  => 'Voorskou van bestaande handtekening:',
 'tog-fancysig'                => 'Hanteer handtekening as wikiteks (sonder outomatiese skakels)',
-'tog-externaleditor'          => "Gebruik outomaties 'n eksterne redigeringsprogram (net vir kundiges - benodig spesiale verstellings op u rekenaar. [http://www.mediawiki.org/wiki/Manual:External_editors Meer inligting.])",
-'tog-externaldiff'            => "Gebruik outomaties 'n eksterne vergelykingsprogram (net vir kundiges - benodig spesiale verstellings op u rekenaar)",
+'tog-externaleditor'          => "Gebruik outomaties 'n eksterne redigeringsprogram",
+'tog-externaldiff'            => "Gebruik 'n eksterne vergelykingsprogram (net vir deskundiges - benodig spesiale verstellings op u rekenaar)",
 'tog-showjumplinks'           => 'Wys "spring na"-skakels vir toeganklikheid',
 'tog-uselivepreview'          => 'Gebruik lewendige voorskou (JavaScript) (eksperimenteel)',
 'tog-forceeditsummary'        => "Let my daarop as ek nie 'n opsomming van my wysiging gee nie",
@@ -485,7 +485,7 @@ $1",
 'toc'                     => 'Inhoud',
 'showtoc'                 => 'wys',
 'hidetoc'                 => 'versteek',
-'thisisdeleted'           => 'Wys of herstel $1?',
+'thisisdeleted'           => 'Bekyk of herstel $1?',
 'viewdeleted'             => 'Bekyk $1?',
 'restorelink'             => '{{PLURAL:$1|die geskrapte wysiging|$1 geskrapte wysigings}}',
 'feedlinks'               => 'Voer:',
@@ -884,10 +884,10 @@ U kan slegs bestaande bladsye wysig, of u kan [[Special:UserLogin|aanteken of re
 'permissionserrors'                => 'Toestemmings Foute',
 'permissionserrorstext'            => 'U het nie toestemming om hierdie te doen nie, om die volgende {{PLURAL:$1|rede|redes}}:',
 'permissionserrorstext-withaction' => 'U het geen regte om $2, vir die volgende {{PLURAL:$1|rede|redes}}:',
-'recreate-moveddeleted-warn'       => "'''Waarskuwing: U herskep 'n bladsy wat vantevore verwyder is.'''
+'recreate-moveddeleted-warn'       => "'''Waarskuwing: U skep 'n bladsy wat vantevore verwyder was.'''
 
-U moet besluit of dit wys is om voort te gaan om aan hierdie bladsy te werk.
-Die skrap- en skuiflogboeke vir die bladsy word vir u gerief hier onder vertoon:",
+U moet besluit of dit wys is om voort te gaan en aan die bladsy te werk.
+Die verwyderingslogboek vir die blad word hier onder vertoon vir u gerief:",
 'moveddeleted-notice'              => 'Hierdie bladsy is verwyder.
 Die skrap- en skuif-logboeke word hieronder ter inligting weergegee.',
 'log-fulllog'                      => 'Wys volledige logboek',
@@ -961,7 +961,7 @@ Dit was moontlik geskrap of geskuif.
 [[Special:Search|Deursoek die wiki]] vir relevante bladsye.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(opmerking verwyder)',
+'rev-deleted-comment'         => '(opsomming geskrap)',
 'rev-deleted-user'            => '(gebruikersnaam geskrap)',
 'rev-deleted-event'           => '(stawingsaksie verwyder)',
 'rev-deleted-user-contribs'   => '[gebruikersnaam of IP-adres is verwyder - wysiging versteek in bydraes]',
@@ -1311,7 +1311,7 @@ U kan ook besluit om e-pos te ontvang as ander gebruikers u gebruikers- of bespr
 'userrights-user-editname'     => 'Voer gebruikersnaam in:',
 'editusergroup'                => 'Wysig gebruikersgroepe',
 'editinguser'                  => "Besig om gebruikersregte van gebruiker '''[[User:$1|$1]]''' ([[User talk:$1|{{int:talkpagelinktext}}]]{{int:pipe-separator}}[[Special:Contributions/$1|{{int:contribslink}}]]) te wysig",
-'userrights-editusergroup'     => 'Wysig gebruikersgroepe',
+'userrights-editusergroup'     => 'wysig gebruikersgroepe',
 'saveusergroups'               => 'Stoor gebruikersgroepe',
 'userrights-groupsmember'      => 'Lid van:',
 'userrights-groupsmember-auto' => 'Implisiete lid van:',
@@ -1412,6 +1412,7 @@ U kan ook besluit om e-pos te ontvang as ander gebruikers u gebruikers- of bespr
 'right-reset-passwords'       => 'Herstel ander gebruikers se wagwoorde',
 'right-override-export-depth' => "Eksporteer bladsye insluitend geskakelde bladsye tot 'n diepte van 5",
 'right-sendemail'             => 'Stuur e-pos aan ander gebruikers',
+'right-disableaccount'        => 'Deaktiveer gebruikers',
 
 # User rights log
 'rightslog'      => 'Gebruikersregtelogboek',
@@ -1595,7 +1596,7 @@ As u steeds die lêer wil oplaai, gebruik asseblief 'n ander naam.
 Indien u die lêer nog wil oplaai, gaan asseblief terug en kies 'n ander naam.
 [[File:$1|thumb|center|$1]]",
 'file-exists-duplicate'       => "Die lêer is 'n duplikaat van die volgende {{PLURAL:$1|lêer|lêers}}:",
-'file-deleted-duplicate'      => "'n Lêer identies aan dié een ([[:$1]]) was al voorheen geskrap. <br />
+'file-deleted-duplicate'      => "'n Lêer identies aan dié een ([[$1]]) was al voorheen geskrap. <br />
 Dit word aanbeveel dat u die lêer se skrapgeskiedenis besigtig voor u poog om dit weer op te laai.",
 'uploadwarning'               => 'Laaiwaarskuwing',
 'uploadwarning-text'          => 'Verander die onderstaande lêerbeskrywing en probeer dan weer.',
@@ -1650,23 +1651,22 @@ As daar steeds probleme is, kontak 'n [[Special:ListUsers/sysop|administrateur]]
 'upload-http-error'         => "'n HTTP-fout het voorgekom: $1",
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Toegang geweier',
-'img-auth-nopathinfo'       => 'PATH_INFO word vermis.
+'img-auth-accessdenied' => 'Toegang geweier',
+'img-auth-nopathinfo'   => 'PATH_INFO word vermis.
 U bediener is nie ingestel om hierdie inligting deur te stuur nie.
 Miskien gebruik dit CGI, waartydens img_auth nie ondersteun word nie.
 Sien http://www.mediawiki.org/wiki/Manual:Image_Authorization vir meer inligting.',
-'img-auth-notindir'         => 'Die aangevraagde pad is nie die ingestelde oplaaigids nie.',
-'img-auth-badtitle'         => 'Dit was nie moontlik om \'n geldige bladsynaam van "$1" te maak nie.',
-'img-auth-nologinnWL'       => 'U is nie aangeteken en "$1" is nie op die witlys nie.',
-'img-auth-nofile'           => 'Lêer "$1" bestaan nie.',
-'img-auth-isdir'            => 'U probeer om toegang na gids "$1" te kry.
+'img-auth-notindir'     => 'Die aangevraagde pad is nie die ingestelde oplaaigids nie.',
+'img-auth-badtitle'     => 'Dit was nie moontlik om \'n geldige bladsynaam van "$1" te maak nie.',
+'img-auth-nologinnWL'   => 'U is nie aangeteken en "$1" is nie op die witlys nie.',
+'img-auth-nofile'       => 'Lêer "$1" bestaan nie.',
+'img-auth-isdir'        => 'U probeer om toegang na gids "$1" te kry.
 Slegs toegang tot lêers word toegelaat.',
-'img-auth-streaming'        => 'Besig met die stoom van "$1".',
-'img-auth-public'           => "Die doel van img_auth.php is die afvoer van lêers vanaf 'n privaat wiki.
+'img-auth-streaming'    => 'Besig met die stoom van "$1".',
+'img-auth-public'       => "Die doel van img_auth.php is die afvoer van lêers vanaf 'n privaat wiki.
 Hierdie wiki is opgestel as 'n publieke wiki.
 Vir veiligheidsredes is img_auth.php gedeaktiveer.",
-'img-auth-noread'           => 'Gebruiker het nie toegang om "$1" te lees nie.',
-'img-auth-bad-query-string' => 'Die URL het \'n ongeldige navraagstring ("query string").',
+'img-auth-noread'       => 'Gebruiker het nie toegang om "$1" te lees nie.',
 
 # HTTP errors
 'http-invalid-url'      => 'Ongeldige URL: $1',
@@ -2108,13 +2108,13 @@ U kan ook die waarskuwingsvlag op u dophoulys verstel.
 
 --
 U kan u dophoulys wysig by:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Om die bladsy vanaf u dophoulys te verwyder, besoek:
 $UNWATCHURL
 
 Terugvoer en verdere bystand:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Skrap bladsy',
@@ -2237,7 +2237,7 @@ Hier is die huidige verstellings vir bladsy '''$1''':",
 
 # Undelete
 'undelete'                     => 'Besigtig geskrapte bladsye',
-'undeletepage'                 => 'Kyk na en herstel geskrapte bladsye',
+'undeletepage'                 => 'Bekyk en herstel geskrapte bladsye',
 'undeletepagetitle'            => "'''Hier onder is die verwyderde weergawes van [[:$1]]'''.",
 'viewdeletedpage'              => 'Bekyk geskrapte bladsye',
 'undeletepagetext'             => 'Die volgende {{PLURAL:$1|bladsy|$1 bladsye}} is geskrap, maar is nog in die argief en kan teruggeplaas word. Die argief van geskrapte blaaie kan periodiek skoongemaak word.',
@@ -2258,7 +2258,7 @@ Die verwyderde inhoud is slegs vir administrateurs sigbaar.',
 U mag moontlik 'n foutiewe skakel hê, of die weergawe is reeds herstel of uit die argief verwyder.",
 'undelete-nodiff'              => 'Geen vorige wysigings gevind.',
 'undeletebtn'                  => 'Plaas terug',
-'undeletelink'                 => 'wys/herstel',
+'undeletelink'                 => 'bekyk/herstel',
 'undeleteviewlink'             => 'bekyk',
 'undeletereset'                => 'Herinstel',
 'undeleteinvert'               => 'Omgekeerde seleksie',
@@ -2632,8 +2632,7 @@ Alle transwiki-laaie word opgeteken in die [[Special:Log/import|invoer-logboek]]
 'import-interwiki-namespace' => 'Doelnaamruimte:',
 'import-upload-filename'     => 'Lêernaam:',
 'import-comment'             => 'Opmerking:',
-'importtext'                 => 'Gebruik die [[Special:Export|eksport-funksie]] van die wiki waar die inligting vandaan kom.
-Stoor die afvoer op u eie rekenaar, en laai dit hier op.',
+'importtext'                 => 'Gebruik asseblief die [[Special:Export|eksport-funksie]] van die wiki waar die inligting vandaan kom, stoor die afvoer op u rekenaar, en laai dan hier op.',
 'importstart'                => 'Importeer bladsye...',
 'import-revision-count'      => '$1 {{PLURAL:$1|weergawe|weergawes}}',
 'importnopages'              => 'Geen bladsye om te importeer nie.',
@@ -2922,8 +2921,8 @@ Ander velde sal versteek wees.
 'exif-colorspace'                  => 'Kleurruimte',
 'exif-componentsconfiguration'     => 'Betekenis van elke komponent',
 'exif-compressedbitsperpixel'      => 'Beeldkompressiemetode',
-'exif-pixelydimension'             => 'Beeldwydte',
-'exif-pixelxdimension'             => 'Beeldhoogte',
+'exif-pixelydimension'             => 'Bruikbare beeldbreedte',
+'exif-pixelxdimension'             => 'Bruikbare beeldhoogte',
 'exif-makernote'                   => 'Notas van vervaardiger',
 'exif-usercomment'                 => 'Opmerkings',
 'exif-relatedsoundfile'            => 'Verwante klanklêer',
@@ -3005,7 +3004,6 @@ Ander velde sal versteek wees.
 'exif-gpsareainformation'          => 'Naam van GPS-gebied',
 'exif-gpsdatestamp'                => 'GPS-datum',
 'exif-gpsdifferential'             => 'Differensiële GPS-korreksie',
-'exif-objectname'                  => 'Kort titel',
 
 # EXIF attributes
 'exif-compression-1' => 'Ongekompakteerd',
@@ -3086,8 +3084,6 @@ Ander velde sal versteek wees.
 'exif-sensingmethod-5' => 'Kleurvolgende gebiedssensor',
 'exif-sensingmethod-7' => 'Drielynige sensor',
 'exif-sensingmethod-8' => 'Kleurvolgende lynsensor',
-
-'exif-filesource-3' => 'Digitale fotokamera',
 
 'exif-scenetype-1' => "'n Direk gefotografeerde beeld",
 
@@ -3200,18 +3196,6 @@ Hierdie bevestigingkode verval om $4.',
 het die e-posadres van rekening "$2" na hierdie adres op {{SITENAME}} verander.
 
 Om te bevestig dat hierdie adres werklik aan u behoort, en die e-pos-funksies op {{SITENAME}} te aktiveer, maak hierdie skakel in u blaaier oop:
-
-$3
-
-Indien die rekening *nie* aan u behoort nie, volg hierdie skakel om die bevestiging te kanselleer:
-
-$5
-
-Die bevestigingskode sal om $4 verval.',
-'confirmemail_body_set'     => 'Iemand, waarskynlik u vanaf IP-adres $1
-het die e-posadres van rekening "$2" na hierdie adres op {{SITENAME}} verander.
-
-Om te bevestig dat hierdie adres werklik aan u behoort, en die e-pos-funksies op {{SITENAME}} te heraktiveer, maak hierdie skakel in u blaaier oop:
 
 $3
 
@@ -3447,5 +3431,18 @@ Verskaf die lêernaam sonder die "{{ns:file}}:" voorvoegsel.',
 # SQLite database support
 'sqlite-has-fts' => 'Weergawe $1 met ondersteuning vir vol-teks soektogte ("full-text search")',
 'sqlite-no-fts'  => 'Weergawe $1 sonder ondersteuning vir vol-teks soektogte ("full-text search")',
+
+# Special:DisableAccount
+'disableaccount'             => "Deaktiveer 'n gebruiker",
+'disableaccount-user'        => 'Gebruikernaam:',
+'disableaccount-reason'      => 'Rede:',
+'disableaccount-confirm'     => "Deaktiveer hierdie gebruiker.
+Die gebruiker sal nie langer kan aanmeld, sy wagwoord herstel, of e-pos ontvang nie.
+As die gebruiker tans aangeteken is, sal hy onmiddellik uitgeteken word.
+''Let daarop die aksie nie sonder die hulp van 'n administrateur omgekeer kan word nie.''",
+'disableaccount-mustconfirm' => 'U moet bevestig dat u hierdie gebruiker wil deaktiveer.',
+'disableaccount-nosuchuser'  => 'Die gebruiker "$1" bestaan nie.',
+'disableaccount-success'     => 'Die gebruiker "$1" is permanent gedeaktiveer.',
+'disableaccount-logentry'    => 'het die gebruiker [[$1]] permanent gedeaktiveer',
 
 );

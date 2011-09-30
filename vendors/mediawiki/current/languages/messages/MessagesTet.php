@@ -77,7 +77,7 @@ $messages = array(
 'tog-justify'            => 'Justifika parágrafu sira',
 'tog-hideminor'          => "Lá'os hatudu muda ki-ki'ik iha mudansa foufoun sira",
 'tog-usenewrc'           => 'Uza lista "Mudansa foufoun sira" di\'ak liu (JavaScript)',
-'tog-showtoolbar'        => 'Hatudu kaixa edita (presiza JavaScript)',
+'tog-showtoolbar'        => 'Hatudu kaixa edita (JavaScript)',
 'tog-watchcreations'     => "Hateke pájina sira-ne'ebé ha'u kria",
 'tog-watchdefault'       => "Hateke pájina sira-ne'ebé ha'u edita",
 'tog-watchmoves'         => "Hateke pájina sira-ne'ebé ha'u book",
@@ -145,7 +145,7 @@ $messages = array(
 'dec'           => 'Dez.',
 
 # Categories related messages
-'pagecategories'         => '{{PLURAL:$1|Kategoria|Kategoria}}',
+'pagecategories'         => '{{PLURAL:$1|Kategoría|Kategoría}}',
 'category_header'        => 'Artigu iha kategoría "$1"',
 'subcategories'          => 'Sub-kategoria sira',
 'category-empty'         => "''Kategoria ne'e agora la iha pájina sira.''",
@@ -171,9 +171,7 @@ $messages = array(
 'faqpage'        => 'Project:FAQ',
 
 # Vector skin
-'vector-view-create'  => 'Kria',
-'vector-view-edit'    => 'Edita',
-'vector-view-history' => 'Haree istória',
+'vector-view-edit' => 'Edita',
 
 'errorpagetitle'    => 'Sala',
 'returnto'          => 'Fali ba $1.',
@@ -197,7 +195,7 @@ $messages = array(
 'deletethispage'    => "Halakon pájina ne'e",
 'undelete_short'    => 'Restaurar {{PLURAL:$1|versaun ida|versaun $1}}',
 'protect'           => 'Proteje',
-'protect_change'    => 'muda',
+'protect_change'    => 'filak',
 'protectthispage'   => "Proteje pájina ne'e",
 'unprotect'         => 'La proteje',
 'unprotectthispage' => "La proteje pájina ne'e",
@@ -216,7 +214,7 @@ $messages = array(
 'categorypage'      => 'Haree pájina kategoría nian',
 'viewtalkpage'      => 'Haree diskusaun',
 'otherlanguages'    => 'Iha lian seluk',
-'lastmodifiedat'    => "Mudansa ba dala ikus pájina ne'e nian iha $1, $2.",
+'lastmodifiedat'    => "Ema ruma filak ikus pájina ne'e iha $1, $2.",
 'protectedpage'     => 'Pájina maka ema ruma proteje tiha',
 'jumpto'            => 'Bá:',
 'jumptonavigation'  => 'hatudu-dalan',
@@ -241,9 +239,9 @@ $messages = array(
 'privacy'              => 'Polítika privasidade nian',
 'privacypage'          => 'Project:Polítika privasidade nian',
 
-'badaccess'        => 'Ita la iha permisaun...',
+'badaccess'        => 'Sala priviléjiu nian',
 'badaccess-group0' => "Ó la bele halo ne'e.",
-'badaccess-groups' => "De'it uza-na'in sira-ne'ebé iha {{PLURAL:$2|grupu|grupu ida husi}} $1 bele halo ne'e.",
+'badaccess-groups' => "Ba halo ne'e tenke iha {{PLURAL:$2|lubu|lubu ida husi}} $1.",
 
 'versionrequired'     => 'Presiza MediaWiki versaun $1',
 'versionrequiredtext' => "Presiza MediaWiki versaun $1 ba uza pájina ne'e. Haree [[Special:Version|pájina versaun]].",
@@ -296,8 +294,8 @@ Lista ida pájina espesiál nian [[Special:SpecialPages|iha ne'e]].",
 
 # Login and logout pages
 'welcomecreation'         => "== Loron di'ak, $1! ==
-Agora Ita iha konta iha ne'e.
-La haluha muda Ita-nia [[Special:Preferences|preferénsia]].",
+Ó kria konta ó-nia.
+La haluha filak ó-nia [[Special:Preferences|preferénsia]].",
 'yourname'                => "Naran uza-na'in:",
 'login'                   => 'Log in',
 'nav-login-createaccount' => 'Log in / kriar konta ida',
@@ -321,40 +319,34 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'resetpass_text' => "<!-- Hakerek testu iha ne'e -->",
 
 # Edit page toolbar
-'link_tip'       => 'Ligasaun ba laran',
-'extlink_sample' => "http://www.example.com ligasaun ba li'ur",
-'extlink_tip'    => "Ligasaun ba li'ur (tau tan http://)",
-'image_sample'   => 'Ezemplu.jpg',
-'media_sample'   => 'Ezemplu.ogg',
-'sig_tip'        => 'Ita-nia asinatura ho data/oras',
+'link_tip'     => 'Ligasaun ba laran',
+'extlink_tip'  => "Ligasaun ba li'ur (tau tan http://)",
+'image_sample' => 'Ezemplu.jpg',
+'media_sample' => 'Ezemplu.ogg',
 
 # Edit pages
-'summary'                          => 'Rezumu:',
-'minoredit'                        => "Ne'e muda ki'ik",
-'watchthis'                        => "Hateke pájina ne'e",
-'savearticle'                      => 'Muda pájina',
-'showdiff'                         => 'Hatudu diferensa sira',
-'anoneditwarning'                  => 'Ó lá\'os "log-in" iha momentu.',
-'blockedtitle'                     => "Uza-na'in la bele edita (blokeiu)",
-'blockednoreason'                  => 'laiha motivu',
-'whitelistedittext'                => 'Ó tenke $1 ba edita pájina sira.',
-'loginreqpagetext'                 => 'Ó tenke $1 ba haree pájina seluk.',
-'newarticle'                       => '(Foun)',
-'noarticletext'                    => "Iha momentu lá'os testu iha pájina ne'e, bele [[Special:Search/{{PAGENAME}}|buka naran pájina nian]] iha pájina seluk, <span class=\"plainlinks\">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} search the related logs], ka [{{fullurl:{{FULLPAGENAME}}|action=edit}} edita pájina ne'e]</span>.",
-'previewnote'                      => "'''Ne'e de'it pájina ba kontrola; Ita-nia mudansa la armazenadu seidauk!'''",
-'editing'                          => 'Edita $1',
-'editingsection'                   => 'Edita $1 (seksaun)',
-'editingcomment'                   => 'Edita $1 (seksaun foun)',
-'yourtext'                         => 'Ó-nia testu',
-'yourdiff'                         => 'Diferensa sira',
-'template-protected'               => '(proteje tiha)',
-'template-semiprotected'           => '(proteje tiha balun)',
-'hiddencategories'                 => "Pájina ne'e iha {{PLURAL:$1|kategoria ida-ne'ebé subar|kategoria $1 sira-ne'ebé subar}}:",
-'nocreatetext'                     => "Ó la bele kria pájina foun iha {{SITENAME}}.
+'minoredit'              => "Ne'e muda ki'ik",
+'watchthis'              => "Hateke pájina ne'e",
+'savearticle'            => 'Filak pájina',
+'showdiff'               => 'Hatudu diferensa sira',
+'anoneditwarning'        => 'Ó lá\'os "log-in" iha momentu.',
+'blockedtitle'           => "Uza-na'in la bele edita (blokeiu)",
+'blockednoreason'        => 'laiha motivu',
+'whitelistedittext'      => 'Ó tenke $1 ba edita pájina sira.',
+'loginreqpagetext'       => 'Ó tenke $1 ba haree pájina seluk.',
+'newarticle'             => '(Foun)',
+'noarticletext'          => "Iha momentu lá'os testu iha pájina ne'e, bele [[Special:Search/{{PAGENAME}}|buka naran pájina nian]] iha pájina seluk, <span class=\"plainlinks\">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} search the related logs], ka [{{fullurl:{{FULLPAGENAME}}|action=edit}} edita pájina ne'e]</span>.",
+'editing'                => 'Edita $1',
+'editingsection'         => 'Edita $1 (seksaun)',
+'editingcomment'         => 'Edita $1 (seksaun foun)',
+'yourtext'               => 'Ó-nia testu',
+'yourdiff'               => 'Diferensa sira',
+'template-protected'     => '(proteje tiha)',
+'template-semiprotected' => '(proteje tiha balun)',
+'nocreatetext'           => "Ó la bele kria pájina foun iha {{SITENAME}}.
 Ó bele edita pájina sira-ne'ebé {{SITENAME}} iha ona ka [[Special:UserLogin|log in ka kria konta uza-na'in]].",
-'nocreate-loggedin'                => 'Ó la bele kria pájina foun.',
-'permissionserrorstext'            => "Ó la bele halo ne'e; {{PLURAL:$1|motivu|motivu sira}}:",
-'permissionserrorstext-withaction' => 'Ita la bele $2. {{PLURAL:$1|Razaun|Razaun sira}}:',
+'nocreate-loggedin'      => 'Ó la bele kria pájina foun.',
+'permissionserrorstext'  => "Ó la bele halo ne'e; {{PLURAL:$1|motivu|motivu sira}}:",
 
 # Account creation failure
 'cantcreateaccounttitle' => "La bele registrar uza-na'in",
@@ -378,33 +370,25 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'history-feed-item-nocomment' => '$1 iha $2',
 
 # Revision deletion
-'rev-delundel'               => 'hatudu/subar',
-'revisiondelete'             => 'Halakon/restaurar versaun',
-'revdelete-show-file-submit' => 'Sin',
-'revdelete-hide-user'        => "Subar naran edita-na'in/IP",
-'revdelete-radio-set'        => 'Sin',
-'revdelete-radio-unset'      => 'Lae',
-'revdelete-uname'            => "naran uza-na'in",
-'revdelete-hid'              => 'subar $1',
-'revdelete-edit-reasonlist'  => 'Edita lista motivu nian',
+'rev-delundel'              => 'hatudu/subar',
+'revisiondelete'            => 'Halakon/restaurar versaun',
+'revdelete-hide-user'       => "Subar naran edita-na'in/IP",
+'revdelete-edit-reasonlist' => 'Edita lista motivu nian',
 
 # Diffs
 'lineno' => 'Liña $1:',
 
 # Search results
-'searchsubtitleinvalid'     => "Ita buka tiha ona '''$1'''",
 'prevn'                     => 'molok {{PLURAL:$1|$1}}',
 'nextn'                     => 'oinmai {{PLURAL:$1|$1}}',
 'viewprevnext'              => 'Haree ($1 {{int:pipe-separator}} $2) ($3)',
 'search-result-size'        => '$1 ({{PLURAL:$2|liafuan ida|liafuan $2}})',
-'search-section'            => '(seksaun $1)',
 'search-interwiki-caption'  => 'Projetu seluseluk sira',
 'search-mwsuggest-enabled'  => 'fó sujestaun',
 'search-mwsuggest-disabled' => 'la hatudu sujestaun',
 'searchall'                 => 'hotu',
 'powersearch'               => 'Buka',
 'powersearch-field'         => 'Buka',
-'powersearch-toggleall'     => 'Hotu',
 
 # Preferences page
 'preferences'               => 'Preferénsia',
@@ -473,9 +457,9 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'right-userrights-interwiki' => "Edita priviléjiu uza-na'in iha wiki seluk sira",
 
 # User rights log
-'rightslog'      => "Lista mudansa priviléjiu uza-na'in",
-'rightslogtext'  => "Ne'e lista mudansa priviléjiu uza-na'in sira nian.",
-'rightslogentry' => 'muda grupu $1 nian husi $2 ba $3',
+'rightslog'      => "Lista filak priviléjiu uza-na'in",
+'rightslogtext'  => "Ne'e lista ba filak lubu uza-na'in.",
+'rightslogentry' => 'filak lubu $1 nian husi $2 ba $3',
 'rightsnone'     => '(mamuk)',
 
 # Associated actions - in the sentence "You do not have permission to X"
@@ -491,21 +475,20 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'action-userrights-interwiki' => "edita priviléjiu uza-na'in iha wiki seluk sira",
 
 # Recent changes
-'nchanges'           => '$1 {{PLURAL:$1|diferensa|diferensa}}',
-'recentchanges'      => 'Mudansa foufoun sira',
-'rcshowhideminor'    => "$1 muda ki-ki'ik",
-'rcshowhidebots'     => '$1 bot sira',
-'rcshowhideliu'      => '$1 ema rejista',
-'rcshowhideanons'    => '$1 ema anónimu',
-'rcshowhidemine'     => "$1 ha'u-nia edita",
-'diff'               => 'diferensa',
-'hist'               => 'istória',
-'hide'               => 'Hamsumik',
-'show'               => 'Hatudu',
-'minoreditletter'    => 'k',
-'newpageletter'      => 'F',
-'boteditletter'      => 'b',
-'rc-enhanced-expand' => 'Hatudu detalle (presiza JavaScript)',
+'nchanges'        => '$1 {{PLURAL:$1|diferensa|diferensa}}',
+'recentchanges'   => 'Mudansa foufoun sira',
+'rcshowhideminor' => "$1 muda ki-ki'ik",
+'rcshowhidebots'  => '$1 bot sira',
+'rcshowhideliu'   => '$1 ema rejista',
+'rcshowhideanons' => '$1 ema anónimu',
+'rcshowhidemine'  => "$1 ha'u-nia edita",
+'diff'            => 'diferensa',
+'hist'            => 'istória',
+'hide'            => 'Hamsumik',
+'show'            => 'Hatudu',
+'minoreditletter' => 'k',
+'newpageletter'   => 'F',
+'boteditletter'   => 'b',
 
 # Recent changes linked
 'recentchangeslinked'         => 'Muda sira',
@@ -515,10 +498,9 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'recentchangeslinked-page'    => 'Naran pájina nian:',
 
 # Upload
-'upload'            => 'Tau iha arkivu laran',
-'uploadbtn'         => 'Tau iha arkivu laran',
-'fileuploadsummary' => 'Rezumu:',
-'watchthisupload'   => "Hateke pájina ne'e",
+'upload'          => 'Tau iha arkivu laran',
+'uploadbtn'       => 'Tau iha arkivu laran',
+'watchthisupload' => "Hateke pájina ne'e",
 
 'license'        => 'Lisensa:',
 'license-header' => 'Lisensa:',
@@ -552,7 +534,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'randompage' => 'Pájina ruma',
 
 # Statistics
-'statistics' => 'Estatístika',
+'statistics' => 'Estátistika',
 
 'brokenredirects-edit'   => 'edita',
 'brokenredirects-delete' => 'halakon',
@@ -565,7 +547,6 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'nmembers'          => '$1 {{PLURAL:$1|membru|membru}}',
 'nrevisions'        => '$1 {{PLURAL:$1|versaun|versaun}}',
 'unusedcategories'  => "Kategoria sira-ne'ebé la uza",
-'prefixindex'       => 'Pájina hotu ho prefiksu',
 'shortpages'        => 'Pájina badak',
 'longpages'         => 'Pájina naruk',
 'listusers'         => "Lista uza-na'in",
@@ -625,16 +606,15 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'emailsend'       => 'Haruka',
 
 # Watchlist
-'watchlist'         => "Ha'u-nia lista hateke",
-'mywatchlist'       => "Ha'u-nia lista hateke",
-'addedwatch'        => 'tau tan tiha ba lista hateke',
-'removedwatch'      => 'La hateke pájina ona',
-'removedwatchtext'  => 'La hateke pájina "[[:$1]]" ona (haree [[Special:Watchlist|"lista hateke"]]).',
-'watch'             => 'Hateke',
-'watchthispage'     => "Hateke pájina ne'e",
-'unwatch'           => 'La hateke ona',
-'watchlist-details' => '{{PLURAL:$1|Pájina ida (1)|Pájina $1}} iha Ita-nia "lista hateke" (la ho pájina diskusaun).',
-'wlshowlast'        => 'Hatudu $1 hora $2 loron ikus $3',
+'watchlist'        => "Ha'u-nia lista hateke",
+'mywatchlist'      => "Ha'u-nia lista hateke",
+'addedwatch'       => 'tau tan tiha ba lista hateke',
+'removedwatch'     => 'La hateke pájina ona',
+'removedwatchtext' => 'La hateke pájina "[[:$1]]" ona.',
+'watch'            => 'Hateke',
+'watchthispage'    => "Hateke pájina ne'e",
+'unwatch'          => 'La hateke ona',
+'wlshowlast'       => 'Hatudu $1 hora $2 loron ikus $3',
 
 # Displayed when you click the "watch" button and it is in the process of watching
 'watching'   => 'Hateke...',
@@ -642,9 +622,8 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 
 'enotif_newpagetext'           => "Ne'e pájina foun.",
 'enotif_impersonal_salutation' => "Uza-na'in {{SITENAME}} nian",
-'changed'                      => 'muda ona',
-'created'                      => 'kria ona',
-'enotif_subject'               => '$PAGEEDITOR $CHANGEDORCREATED pájina $PAGETITLE iha {{SITENAME}}',
+'changed'                      => 'filak',
+'created'                      => 'kria',
 
 # Delete
 'deletepage'             => 'Halakon pájina',
@@ -652,7 +631,6 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'excontentauthor'        => "testu iha pájina: '$1' (no ema ida de'it ne'ebé kontribui '[[Special:Contributions/$2|$2]]')",
 'exblank'                => 'pájina mamuk',
 'delete-legend'          => 'Halakon',
-'actioncomplete'         => 'operasaun remata',
 'deletedarticle'         => 'halakon "[[$1]]"',
 'dellogpage'             => 'Lista halakon',
 'deletionlog'            => 'lista halakon',
@@ -676,7 +654,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'protect-otherreason'         => 'Motivu seluk/ida tan:',
 'protect-otherreason-op'      => 'Motivu seluk',
 'protect-edit-reasonlist'     => 'Edita lista motivu nian',
-'protect-expiry-options'      => '1 oras:1 hour,1 loron:1 day,1 semana:1 week,2 semana:2 weeks,1 fulan:1 month,3 fulan:3 months,6 fulan:6 months,1 tinan:1 year,infinite:infinite',
+'protect-expiry-options'      => '1 hour:1 hours,1 loron:1 day,1 semana:1 week,2 semana:2 weeks,1 fulan:1 month,3 fulan:3 months,6 fulan:6 months,1 tinan:1 year,infinite:infinite',
 'restriction-type'            => 'Permisaun:',
 
 # Restrictions (nouns)
@@ -685,28 +663,24 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'restriction-create' => 'Kria',
 
 # Undelete
-'undelete'                  => 'Haree pájina halakon tiha',
-'undeletebtn'               => 'Restaurar',
-'undeletelink'              => 'lee/restaurar',
-'undeleteviewlink'          => 'haree',
-'undeletecomment'           => 'Razaun:',
-'undeletedarticle'          => 'restaurar "[[$1]]"',
-'undeletedrevisions'        => 'restaurar {{PLURAL:$1|versaun|versaun}} $1',
-'undelete-search-submit'    => 'Buka',
-'undelete-show-file-submit' => 'Sin',
+'undelete'               => 'Haree pájina halakon tiha',
+'undeletebtn'            => 'Restaurar',
+'undeletelink'           => 'lee/restaurar',
+'undeletecomment'        => 'Razaun:',
+'undeletedarticle'       => 'restaurar "[[$1]]"',
+'undeletedrevisions'     => 'restaurar {{PLURAL:$1|versaun|versaun}} $1',
+'undelete-search-submit' => 'Buka',
 
 # Namespace form on various pages
 'namespace'      => 'Espasu pájina nian:',
 'blanknamespace' => '(Prinsipál)',
 
 # Contributions
-'contributions'       => "Kontribuisaun uza-na'in",
-'contributions-title' => 'Kontribuisaun "$1" nian',
-'mycontris'           => "Ha'u-nia kontribuisaun",
-'contribsub2'         => 'Ba $1 ($2)',
-'uctop'               => '(versaun atuál)',
-'month'               => 'Fulan (ho molok):',
-'year'                => 'Tinan (ho molok):',
+'contributions' => "Kontribuisaun uza-na'in",
+'mycontris'     => "Ha'u-nia kontribuisaun",
+'uctop'         => '(versaun atuál)',
+'month'         => 'Fulan (ho molok):',
+'year'          => 'Tinan (ho molok):',
 
 'sp-contributions-newbies'  => "Hatudu de'it kontribuisaun uza-na'in foun sira-nia",
 'sp-contributions-talk'     => 'diskusaun',
@@ -719,32 +693,30 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'whatlinkshere-title'     => 'Pájina sira ne\'ebé bá "$1".',
 'whatlinkshere-page'      => 'Pájina:',
 'linkshere'               => "Pájina sira ne'e link ba '''[[:$1]]''':",
-'isimage'                 => 'ligasaun ba imajen ida',
 'whatlinkshere-prev'      => '{{PLURAL:$1|oinmai|oinmai $1}}',
 'whatlinkshere-next'      => '{{PLURAL:$1|molok|molok $1}}',
 'whatlinkshere-links'     => '← ligasaun',
 'whatlinkshere-hidelinks' => '$1 ligasaun',
 
 # Block/unblock
-'blockip'                  => "Blokeiu uza-na'in",
-'blockip-legend'           => "Blokeiu uza-na'in",
-'ipaddress'                => 'Diresaun IP:',
-'ipbreason'                => 'Motivu:',
-'ipbreasonotherlist'       => 'Motivu seluk',
-'ipbsubmit'                => "Blokeiu uza-na'in ne'e",
-'ipbother'                 => 'Tempu seluk:',
-'ipboptions'               => '2 hours:2 hours,1 loron:1 day,3 Loron:3 days,1 semana:1 week,2 semana:2 weeks,1 fulan:1 month,3 fulan:3 months,6 fulan:6 months,1 tinan:1 year,infinite:infinite',
-'ipbotheroption'           => 'seluk',
-'ipblocklist'              => "Uza-na'in sira-ne'ebé la bele edita",
-'ipblocklist-username'     => "Naran uza-na'in ka IP:",
-'ipblocklist-submit'       => 'Buka',
-'anononlyblock'            => "ema anónimu de'it",
-'blocklink'                => 'blokeiu',
-'unblocklink'              => 'la blokeiu',
-'contribslink'             => 'kontribuisaun',
-'block-log-flags-nocreate' => 'la bele kria konta foun',
-'block-log-flags-noemail'  => 'korreiu eletróniku blokeiu',
-'ipb_already_blocked'      => 'Ema ruma blokeiu "$1" tiha ona',
+'blockip'                 => "Blokeiu uza-na'in",
+'blockip-legend'          => "Blokeiu uza-na'in",
+'ipaddress'               => 'Diresaun IP:',
+'ipbreason'               => 'Motivu:',
+'ipbreasonotherlist'      => 'Motivu seluk',
+'ipbsubmit'               => "Blokeiu uza-na'in ne'e",
+'ipbother'                => 'Tempu seluk:',
+'ipboptions'              => '2 hours:2 hours,1 loron:1 day,3 Loron:3 days,1 semana:1 week,2 semana:2 weeks,1 fulan:1 month,3 fulan:3 months,6 fulan:6 months,1 tinan:1 year,infinite:infinite',
+'ipbotheroption'          => 'seluk',
+'ipblocklist'             => 'Ema anónimu no rejista maka la bele edita',
+'ipblocklist-username'    => "Naran uza-na'in ka IP:",
+'ipblocklist-submit'      => 'Buka',
+'anononlyblock'           => "ema anónimu de'it",
+'blocklink'               => 'blokeiu',
+'unblocklink'             => 'la blokeiu',
+'contribslink'            => 'kontribuisaun',
+'block-log-flags-noemail' => 'korreiu eletróniku blokeiu',
+'ipb_already_blocked'     => 'Ema ruma blokeiu "$1" tiha ona',
 
 # Move page
 'move-page'               => 'Book $1',
@@ -766,18 +738,13 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'export'        => 'Esporta pájina sira',
 'export-submit' => 'Esporta',
 'export-addcat' => 'Tau tan',
-'export-addns'  => 'Tau tan',
 
 # Namespace 8 related
-'allmessagesname'        => 'Naran',
-'allmessagescurrent'     => 'Testu atuál',
-'allmessages-filter-all' => 'Hotu',
-'allmessages-language'   => 'Lian:',
+'allmessagesname'    => 'Naran',
+'allmessagescurrent' => 'Testu atuál',
 
 # Special:Import
-'import-interwiki-submit' => 'Importa',
-'import-comment'          => 'Komentáriu:',
-'import-revision-count'   => '{{PLURAL:$1|versaun ida|versaun $1}}',
+'import-comment' => 'Komentáriu:',
 
 # Import log
 'import-logentry-interwiki-detail' => '$1 {{PLURAL:$1|versaun|versaun}} husi $2',
@@ -790,17 +757,15 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'tooltip-pt-login'               => 'Ami rekomenda identifikasaun ("log in"), maibé Ita-Boot la presiza halo ne\'e',
 'tooltip-pt-logout'              => 'Husik',
 'tooltip-ca-talk'                => 'Diskusaun kona-ba konteúdu pájina nian',
-'tooltip-ca-edit'                => "Ita bele edita pájina ne'e. Please use the preview button before saving.",
+'tooltip-ca-edit'                => "Ó bele filak pájina ne'e. Please use the preview button before saving.",
 'tooltip-ca-addsection'          => 'Tau tan seksaun foun ida.',
 'tooltip-ca-viewsource'          => "Ema ruma proteje tiha pájina ne'e.
 Ó bele lee testu.",
 'tooltip-ca-protect'             => "Proteje pájina ne'e",
 'tooltip-ca-delete'              => "Halakon pájina ne'e",
 'tooltip-ca-move'                => "Book pájina ne'e",
-'tooltip-ca-watch'               => 'Tau pájina ne\'e ba Ita-nia "lista hateke"',
-'tooltip-ca-unwatch'             => 'Hasai pájina ne\'e husi Ita-nia "lista hateke"',
+'tooltip-ca-watch'               => "Tau tan pájina ne'e ba ó-nia lista hateke",
 'tooltip-search'                 => 'Buka iha {{SITENAME}}',
-'tooltip-search-go'              => "Bá pájina ho naran ne'e (se iha)",
 'tooltip-p-logo'                 => 'Pájina Mahuluk',
 'tooltip-n-mainpage'             => 'Vizita Pájina Mahuluk',
 'tooltip-n-mainpage-description' => 'Vizita Pájina Mahuluk',
@@ -814,18 +779,15 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'tooltip-t-upload'               => 'Tau iha arkivu laran',
 'tooltip-t-specialpages'         => 'Lista pájina espesiál hotu nian',
 'tooltip-t-print'                => "Versaun pájina ne'e nian ba imprime/prin",
-'tooltip-ca-nstab-main'          => 'Haree konteúdu pájina nian',
 'tooltip-ca-nstab-user'          => "Haree pájina uza-na'in",
 'tooltip-ca-nstab-special'       => "Ne'e pájina espesiál – Ita la bele edita",
 'tooltip-ca-nstab-project'       => 'Haree pájina projetu nian',
 'tooltip-ca-nstab-category'      => 'Lee pájina kategoria',
 'tooltip-minoredit'              => "Marka ne'e hanesan muda ki'ik",
-'tooltip-watch'                  => 'Tau pájina ne\'e ba Ita-nia "lista hateke"',
+'tooltip-watch'                  => "Tau tan pájina ne'e ba ó-nia lista hateke",
 
 # Attribution
-'siteuser'         => "uza-na'in {{SITENAME}} nian $1",
-'lastmodifiedatby' => "Pájina ne'e $3 mak muda ba dala ikus iha $1, $2.",
-'siteusers'        => "{{PLURAL:$2|uza-na'in|uza-na'in}} {{SITENAME}} nian $1",
+'lastmodifiedatby' => "$3 filak ikus pájina ne'e iha $1, $2.",
 
 # Skin names
 'skinname-standard'    => 'Klásiku',
@@ -845,15 +807,9 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'ilsubmit'     => 'Buka',
 
 # EXIF tags
-'exif-make'   => 'Fabrikante kámara nian',
-'exif-model'  => 'Kámara',
 'exif-artist' => 'Autór',
-'exif-flash'  => 'Flax',
 
 'exif-meteringmode-255' => 'Seluk',
-
-# Pseudotags used for GPSSpeedRef
-'exif-gpsspeed-k' => 'km iha oras',
 
 # External editor support
 'edit-externally-help' => "(Haree [http://www.mediawiki.org/wiki/Manual:External_editors iha ne'e] ba informasaun barak liu)",
@@ -864,7 +820,6 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'watchlistall2'    => 'hotu',
 'namespacesall'    => 'hotu',
 'monthsall'        => 'hotu',
-'limitall'         => 'hotu',
 
 # action=purge
 'confirm_purge_button' => 'OK',
@@ -884,7 +839,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'autosumm-new' => "Pájina foun: '$1'",
 
 # Watchlist editor
-'watchlistedit-normal-title' => 'Edita lista hateke',
+'watchlistedit-normal-title' => 'Filak lista hateke',
 'watchlistedit-raw-titles'   => 'Títulu sira:',
 'watchlistedit-raw-added'    => '{{PLURAL:$1|Títulu ida|Títulu $1}} tau tan tiha:',
 'watchlistedit-raw-removed'  => '{{PLURAL:$1|Títulu ida|Títulu $1}} hasai tiha:',
@@ -901,9 +856,6 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'version-software-product' => 'Produtu',
 'version-software-version' => 'Versaun',
 
-# Special:FilePath
-'filepath-submit' => 'Bá',
-
 # Special:FileDuplicateSearch
 'fileduplicatesearch-submit' => 'Buka',
 
@@ -917,18 +869,5 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 
 # Special:BlankPage
 'blankpage' => 'Pájina mamuk',
-
-# Special:Tags
-'tags-edit' => 'edita',
-
-# Special:ComparePages
-'compare-page1'  => 'Pájina 1',
-'compare-page2'  => 'Pájina 2',
-'compare-rev1'   => 'Versaun 1',
-'compare-rev2'   => 'Versaun 2',
-'compare-submit' => 'Halo komparasaun',
-
-# Database error messages
-'dberr-header' => "Wiki ne'e iha problema",
 
 );

@@ -530,7 +530,7 @@ $1',
 'policy-url'           => 'Project:Pravila',
 'portal'               => 'Portal zajednice',
 'portal-url'           => 'Project:Portal_zajednice',
-'privacy'              => 'Politika privatnosti',
+'privacy'              => 'Pravila o anonimnosti',
 'privacypage'          => 'Project:Pravila o anonimnosti',
 
 'badaccess'        => 'Greška pri odobrenju',
@@ -1050,7 +1050,7 @@ Moguće da je izbrisana sa wikija, ili preimenovana.
 Pokušajte [[Special:Search|pretražiti wiki]] za slične stranice.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(sažetak izmjene uklonjen)',
+'rev-deleted-comment'         => '(komentar uklonjen)',
 'rev-deleted-user'            => '(korisničko ime uklonjeno)',
 'rev-deleted-event'           => '(stavka zapisa obrisana)',
 'rev-deleted-user-contribs'   => '[korisničko ime ili IP adresa uklonjeni - izmjena sakrivena u spisku doprinosa]',
@@ -1288,9 +1288,9 @@ Pokušajte u Vaš upit uključiti prefiks ''all:'' da bi ste pretražili sav sad
 'prefs-rc'                      => 'Podešavanja nedavnih izmjena',
 'prefs-watchlist'               => 'Moji praćeni članci',
 'prefs-watchlist-days'          => 'Broj dana za prikaz u spisku praćenja:',
-'prefs-watchlist-days-max'      => 'Najviše 7 dana',
+'prefs-watchlist-days-max'      => '(najviše 7 dana)',
 'prefs-watchlist-edits'         => 'Najveći broj izmjena za prikaz u proširenom spisku praćenja:',
-'prefs-watchlist-edits-max'     => 'Najveći broj: 1000',
+'prefs-watchlist-edits-max'     => '(najveći broj: 1000)',
 'prefs-watchlist-token'         => 'Token spiska za praćenje:',
 'prefs-misc'                    => 'Ostala podešavanja',
 'prefs-resetpass'               => 'Promijeni šifru',
@@ -1498,6 +1498,7 @@ Također omogućuje drugim korisnicima da vas kontaktiraju preko Vaše korisnič
 'right-reset-passwords'       => 'Resetuje šifre drugih korisnika',
 'right-override-export-depth' => 'Izvoz stranica uključujući povezane stranice do dubine od 5 linkova',
 'right-sendemail'             => 'Slanje e-maila drugim korisnicima',
+'right-disableaccount'        => 'Onemogućavanje računa',
 
 # User rights log
 'rightslog'      => 'Zapisnik korisničkih prava',
@@ -1668,7 +1669,7 @@ Ako imate ovu sliku u punoj rezoluciji, postavite nju; ili promijenite naslov ov
 Ako i dalje želite da postavite ovu datoteku, molimo Vas da se vratite i pošaljete ovu datoteku pod novim imenom. [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Datoteka sa ovim imenom već postoji u zajedničkoj ostavi; molimo Vas da se vratite i pošaljete ovu datoteku pod novim imenom. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ova datoteka je dvojnik {{PLURAL:$1|slijedećoj datoteci|slijedećim datotekama}}:',
-'file-deleted-duplicate'      => 'Datoteka koje je identična ovoj datoteci ([[:$1]]) je ranije bila obrisana. Trebate provjeriti historiju brisanja te datoteke prije nego što nastavite sa njenim ponovnim postavljanjem.',
+'file-deleted-duplicate'      => 'Datoteka koje je identična ovoj datoteci ([[$1]]) je ranije bila obrisana. Trebate provjeriti historiju brisanja te datoteke prije nego što nastavite sa njenim ponovnim postavljanjem.',
 'uploadwarning'               => 'Upozorenje pri slanju',
 'uploadwarning-text'          => 'Molimo izmijeniti opis datoteke ispod i pokušajte kasnije.',
 'savefile'                    => 'Sačuvaj datoteku',
@@ -1734,23 +1735,22 @@ Ako se problem ne riješi, kontaktirajte [[Special:ListUsers/sysop|administrator
 'upload-http-error'         => 'Desila se HTTP greška: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Pristup onemogućen',
-'img-auth-nopathinfo'       => 'Nedostaje PATH_INFO.
+'img-auth-accessdenied' => 'Pristup onemogućen',
+'img-auth-nopathinfo'   => 'Nedostaje PATH_INFO.
 Vaš server nije postavljen da daje ovu informaciju.
 On je zasnovan na CGI i ne može podržavati img_auth.
 Pogledajte http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Zahtjevana putanje nije u direktorijumu podešenom za postavljanje.',
-'img-auth-badtitle'         => 'Ne mogu napraviti valjani naslov iz "$1".',
-'img-auth-nologinnWL'       => 'Niste prijavljeni i "$1" nije na spisku dozvoljenih.',
-'img-auth-nofile'           => 'Datoteka "$1" ne postoji.',
-'img-auth-isdir'            => 'Pokušavate pristupiti direktorijumu "$1".
+'img-auth-notindir'     => 'Zahtjevana putanje nije u direktorijumu podešenom za postavljanje.',
+'img-auth-badtitle'     => 'Ne mogu napraviti valjani naslov iz "$1".',
+'img-auth-nologinnWL'   => 'Niste prijavljeni i "$1" nije na spisku dozvoljenih.',
+'img-auth-nofile'       => 'Datoteka "$1" ne postoji.',
+'img-auth-isdir'        => 'Pokušavate pristupiti direktorijumu "$1".
 Dozvoljen je samo pristup datotekama.',
-'img-auth-streaming'        => 'Tok "$1".',
-'img-auth-public'           => 'Funkcija img_auth.php služi za izlaz datoteka sa privatnih wikija.
+'img-auth-streaming'    => 'Tok "$1".',
+'img-auth-public'       => 'Funkcija img_auth.php služi za izlaz datoteka sa privatnih wikija.
 Ova wiki je postavljena kao javna wiki.
 Za optimalnu sigurnost, img_auth.php je onemogućena.',
-'img-auth-noread'           => 'Korisnik nema pristup za čitanje "$1".',
-'img-auth-bad-query-string' => 'URL ima nevaljan izraz upita.',
+'img-auth-noread'       => 'Korisnik nema pristup za čitanje "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'Nevaljan URL: $1',
@@ -2179,34 +2179,31 @@ Ako kasnije želite da uklonite stranicu sa vašeg spiska praćenih članaka, kl
 'enotif_anon_editor'           => 'anonimni korisnik $1',
 'enotif_body'                  => 'Poštovani $WATCHINGUSERNAME,
 
-
-Stranica {{SITENAME}} sa naslovom $PAGETITLE je bila $CHANGEDORCREATED dana $PAGEEDITDATE od strane $PAGEEDITOR, pogledajte $PAGETITLE_URL za trenutnu reviziju.
+{{SITENAME}} strana $PAGETITLE je bila $CHANGEDORCREATED $PAGEEDITDATE od strane $PAGEEDITOR,
+pogledajte $PAGETITLE_URL za trenutnu verziju.
 
 $NEWPAGE
 
-Sažetak urednika: $PAGESUMMARY $PAGEMINOREDIT
+Sažetak editora: $PAGESUMMARY $PAGEMINOREDIT
 
-Kontaktirajte urednika:
-mail: $PAGEEDITOR_EMAIL
+Kontaktirajte editora:
+pošta: $PAGEEDITOR_EMAIL
 wiki: $PAGEEDITOR_WIKI
 
-Neće biti drugih obavještenja u slučaju daljnjih izmjena osima ako posjetite stranicu.
-Također možete poništiti oznake obavijesti za sve praćene stranice koje imate na vašem spisku praćenja.
+Neće biti drugih obaviještenja u slučaju daljih izmjena ukoliko ne posjetite ovu stranu.
+Također možete da resetujete zastavice za obaviještenja za sve Vaše praćene stranice na vašem spisku praćenih članaka.
 
-             Vaš prijateljski {{SITENAME}} sistem obavještavanja
+             Vaš prijateljski {{SITENAME}} sistem obaviještavanja
 
 --
-Za promjenu vaših postavki e-mail obavijesti, posjetite
-{{fullurl:{{#special:Preferences}}}}
+Da promjenite podešavanja vezana za spisak praćenih članaka posjetite
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
-Za promjenu postavki vašeg praćenja, posjetite
-{{fullurl:{{#special:Watchlist}}/edit}}
-
-Da obrišete stranicu sa vašeg spiska praćenja, posjetite
+Da obrišete stranicu iz Vašeg spiska praćenja posjetite
 $UNWATCHURL
 
-Povratne informacije i daljnja pomoć:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+Fidbek i dalja pomoć:
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Obrišite stranicu',
@@ -2476,7 +2473,7 @@ ili korisničkom imenu.',
 'ipusubmit'                       => 'Ukloni ovu blokadu',
 'unblocked'                       => '[[User:$1|$1]] je deblokiran',
 'unblocked-id'                    => 'Blokada ID oznake $1 je uklonjena',
-'ipblocklist'                     => 'Blokirani korisnici',
+'ipblocklist'                     => 'Spisak blokiranih IP adresa i korisničkih imena',
 'ipblocklist-legend'              => 'Traži blokiranog korisnika',
 'ipblocklist-username'            => 'Korisničko ime ili IP adresa:',
 'ipblocklist-sh-userblocks'       => '$1 blokade računa',
@@ -2732,7 +2729,7 @@ Sve akcije pri međuwiki uvozu će biti zapisane u [[Special:Log/import|zapisu u
 'import-interwiki-namespace' => 'Odredišni imenski prostor:',
 'import-upload-filename'     => 'Naziv datoteke:',
 'import-comment'             => 'Komentar:',
-'importtext'                 => 'Molimo Vas da izvezete datoteku iz izvornog wikija koristeći [[Special:Export|alat za izvoz]].
+'importtext'                 => 'Molimo Vas da izvezete datoteku iz izvornog wikija koristeći [[Special:Export|izvoz]].
 Sačuvajte je na Vašem računaru i pošaljite ovdje.',
 'importstart'                => 'Uvoz stranica...',
 'import-revision-count'      => '$1 {{PLURAL:$1|revizija|revizije|revizija}}',
@@ -3044,8 +3041,8 @@ Svi drugi linkovi u istoj liniji se smatraju izuzecima, npr. kod stranica gdje s
 'exif-colorspace'                  => 'Prostor boje',
 'exif-componentsconfiguration'     => 'Značenje svake komponente',
 'exif-compressedbitsperpixel'      => 'Način kompresije slike',
-'exif-pixelydimension'             => 'Širina slike',
-'exif-pixelxdimension'             => 'Visina slike',
+'exif-pixelydimension'             => 'Određena širina slike',
+'exif-pixelxdimension'             => 'Određena visina slike',
 'exif-makernote'                   => 'Bilješke proizvođača',
 'exif-usercomment'                 => 'Korisnički komentari',
 'exif-relatedsoundfile'            => 'Povezana zvučna datoteka',
@@ -3061,9 +3058,9 @@ Svi drugi linkovi u istoj liniji se smatraju izuzecima, npr. kod stranica gdje s
 'exif-spectralsensitivity'         => 'Spektralna osjetljivost',
 'exif-isospeedratings'             => 'Rejting ISO brzine',
 'exif-oecf'                        => 'Optoelektronski faktor konvezije',
-'exif-shutterspeedvalue'           => 'Brzina APEX okidača',
-'exif-aperturevalue'               => 'APEX otvor',
-'exif-brightnessvalue'             => 'APEX osvijetljenost',
+'exif-shutterspeedvalue'           => 'Brzina okidača',
+'exif-aperturevalue'               => 'Otvor blende',
+'exif-brightnessvalue'             => 'Osvijetljenost',
 'exif-exposurebiasvalue'           => 'Kompozicija ekspozicije',
 'exif-maxaperturevalue'            => 'Najveći broj otvora blende',
 'exif-subjectdistance'             => 'Udaljenost objekta',
@@ -3127,7 +3124,6 @@ Svi drugi linkovi u istoj liniji se smatraju izuzecima, npr. kod stranica gdje s
 'exif-gpsareainformation'          => 'Naziv GPS područja',
 'exif-gpsdatestamp'                => 'GPS datum',
 'exif-gpsdifferential'             => 'GPS diferencijalna korekcija',
-'exif-objectname'                  => 'Kratki naslov',
 
 # EXIF attributes
 'exif-compression-1' => 'Nekompresovano',
@@ -3213,7 +3209,7 @@ Svi drugi linkovi u istoj liniji se smatraju izuzecima, npr. kod stranica gdje s
 'exif-sensingmethod-7' => 'Trilinearni senzor',
 'exif-sensingmethod-8' => 'Sekvencijalni senzor boje linija',
 
-'exif-filesource-3' => 'Digitalna kamera',
+'exif-filesource-3' => 'DSC',
 
 'exif-scenetype-1' => 'Direktno fotografisana slika',
 
@@ -3321,18 +3317,6 @@ $5
 Ovaj kod za potvrdu će isteći u $4.',
 'confirmemail_body_changed' => 'Neko, vjerovatno Vi, je sa IP adrese $1
 je promijenio adresu e-pošte računa "$2" na ovu adresu za {{SITENAME}}.
-
-Da potvrdite da ovaj nalog stvarno pripada Vama i da reaktivirate mogućnosti e-pošte na {{SITENAME}}, otvorite ovaj link u Vašem pregledniku:
-
-$3
-
-Ako ovaj račun *ne* pripada Vama, pratite ovaj link da prekinete odobravanje adrese e-pošte:
-
-$5
-
-Ovaj kod za potvrdu će isteći u $4.',
-'confirmemail_body_set'     => 'Neko, vjerovatno Vi, je sa IP adrese $1
-je postavio adresu e-pošte računa "$2" na ovu adresu za {{SITENAME}}.
 
 Da potvrdite da ovaj nalog stvarno pripada Vama i da reaktivirate mogućnosti e-pošte na {{SITENAME}}, otvorite ovaj link u Vašem pregledniku:
 
@@ -3633,5 +3617,18 @@ Unesite ime datoteke bez "{{ns:file}}:" prefiksa.',
 # SQLite database support
 'sqlite-has-fts' => '$1 sa podrškom pretrage cijelog teksta',
 'sqlite-no-fts'  => '$1 bez podrške pretrage cijelog teksta',
+
+# Special:DisableAccount
+'disableaccount'             => 'Onemogućavanje korisničkog računa',
+'disableaccount-user'        => 'Korisničko ime:',
+'disableaccount-reason'      => 'Razlog:',
+'disableaccount-confirm'     => "Onemogući ovaj korisnički račun.
+Korisnik se neće moći prijaviti, staviti novu šifru ili primati obavještenja putem e-maila.
+Ako je korisnik negdje u međuvremenu prijavljen, bit će automatski odmah odjavljen.
+''Zapamtite da se onemogućavanje računa ne može poništiti bez intervencije sistemskog administratora.''",
+'disableaccount-mustconfirm' => 'Morate potvrditi da želite onemogućiti ovaj račun.',
+'disableaccount-nosuchuser'  => 'Korisnički račun "$1" ne postoji.',
+'disableaccount-success'     => 'Korisnički račun "$1" je trajno onemogućen.',
+'disableaccount-logentry'    => 'zauvijek je onemogućen korisnički račun [[$1]]',
 
 );

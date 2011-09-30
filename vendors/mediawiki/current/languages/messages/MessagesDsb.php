@@ -883,7 +883,7 @@ Snaź jo se z wiki wulašował abo hynac pómjenił.
 [[Special:Search|Pśepytaj]] {{SITENAME}} za relewantnymi bokami.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(Zespominanje wulašowane)',
+'rev-deleted-comment'         => '(Komentar wulašowany)',
 'rev-deleted-user'            => '(Wužywarske mě wulašowane)',
 'rev-deleted-event'           => '(protokolowa akcija wulašowana)',
 'rev-deleted-user-contribs'   => '[wužywarske mě wótpórane abo IP-adresa wótpórana - změna mjez pśinoskami schowana]',
@@ -1118,9 +1118,9 @@ Zaruc, až historija wersijow nastawka jo njepśetergnjona.',
 'prefs-rc'                      => 'Aktualne změny',
 'prefs-watchlist'               => 'Wobglědowańka',
 'prefs-watchlist-days'          => 'Licba dnjow, kenž maju se we wobglědowańce pokazaś:',
-'prefs-watchlist-days-max'      => 'Maksimalnje 7 dnjow',
+'prefs-watchlist-days-max'      => '(maksimalnje 7 dnjow)',
 'prefs-watchlist-edits'         => 'Maksimalna licba změnow, kótarež maju se w rozšyrjonej wobglědowańce pokazaś:',
-'prefs-watchlist-edits-max'     => 'Maksimalna licba: 1000',
+'prefs-watchlist-edits-max'     => '(maksimalna licba: 1000)',
 'prefs-watchlist-token'         => 'Marka wobglědowańki:',
 'prefs-misc'                    => 'Wšake nastajenja',
 'prefs-resetpass'               => 'Gronidło změniś',
@@ -1324,6 +1324,7 @@ Móžoš toś ten bok wužywaś, aby slědk stajił swóje nastajenja na standar
 'right-reset-passwords'       => 'Gronidła drugich wužywarjow slědk stajiś',
 'right-override-export-depth' => 'Boki inkluziwnje wótkazanych bokow až do dłyma 5 eksportěrowaś',
 'right-sendemail'             => 'Drugim wužywarjam e-mail pósłaś',
+'right-disableaccount'        => 'Konta znjemóžniś',
 
 # User rights log
 'rightslog'      => 'Protokol wužywarskich pšawow',
@@ -1493,7 +1494,7 @@ Jolic maš toś ten wobraz w połnem rozeznaśu, nagraj jen, howac změń pšosy
 'fileexists-shared-forbidden' => 'Dataja z toś tym mjenim južo eksistěrujo w zgromadnej chowarni. Jolic hyšći coš nagraś swóju dataju, źi pšosym slědk a wužyj nowe mě.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Toś ta dataja jo duplikat {{PLURAL:$1|slědujuceje dataje|slědujuceju datajow|slědujucych datajow|slědujucych datajow}}:',
-'file-deleted-duplicate'      => 'Dataja, kótaraž jo identiska z toś teju dataju ([[:$1]]) jo se pjerwjej wulašowała. Ty měł stawizny wulašowanja toś teje dataje pśeglědaś, pjerwjej až pokšacujoš z jeje zasejnagrawanjom.',
+'file-deleted-duplicate'      => 'Dataja, kótaraž jo identiska z toś teju dataju ([[$1]]) jo se pjerwjej wulašowała. Ty měł stawizny wulašowanja toś teje dataje pśeglědaś, pjerwjej až pokšacujoš z jeje zasejnagrawanjom.',
 'uploadwarning'               => 'Warnowanje',
 'uploadwarning-text'          => 'Pšosym změń slědujuce datajowe wopisanje a wopytaj hyšći raz.',
 'savefile'                    => 'Dataju składowaś',
@@ -2001,13 +2002,13 @@ Móźoś teke chórgojcki powěźeńkow za wšykne twóje wobglědowane boki.
              Twój pśijaśelny powěsćowy system {{SITENAME}}
 --
 Aby nastajenja twójeje wobglědowańki změnił, woglědaj:
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Aby se bok z twójeje wobglědowańki wulašował, woglědaj se
 $UNWATCHURL
 
 Pšašanja a dalšna pomoc:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Bok wulašowaś',
@@ -2361,17 +2362,6 @@ Sy zagronity, až wótkaze wjedu tam, źož maju wjasć.
 '''WARNOWANJE!'''
 To móžo byś drastiska a njewocakowana změna za popularny bok;
 pšosym zawěsć, až konsekwency rozmijoš, nježli až pókšacujoš.",
-'movepagetext-noredirectfixer' => "Z pomocu slědujucego formulara móžoš bok pśemjenjowaś, pśi comž se jogo wersije k nowemu mjenjoju pśesuwaju.
-Stary titel wordujo dalejpósrědnjeński bok k nowemu titeloju.
-Móžoš awtomatiski aktualizěrowaś dalejposrědkowanja, kótarež pokazuju na originalny titel.
-Jolic njocoš, pśeglědaj za [[Special:DoubleRedirects|dwójnymi]] abo [[Special:BrokenRedirects|defektnymi daleposrědkowanjami]].
-Sy zagronity, až wótkaze wjedu tam, źož maju wjasć.
-
-Źiwaj na to, až se bok '''nje'''pśesuwa, jolic jo južo bok z nowym titelom, snaźkuli jo prozny abo dalejpósrědnjenje a njama stare wobźěłane wersije. To ma groniś, až móžoš bok zasej slědk pśemjenjowaś, jolic cyniš zmólku, a njemóžoš eksistěrujucy bok pśepisaś.
-
-'''WARNOWANJE!'''
-To móžo byś drastiska a njewocakowana změna za popularny bok;
-pšosym źiwaj na to, až rozumijoš konsekwency, nježli až pókšacujoš.",
 'movepagetalktext'             => "Pśisłušny diskusijny bok se sobu pśesunjo, '''ale nic gaž:'''
 * eksistěrujo južo diskusijny bok z toś tym mjenim, abo gaž
 * wótwólijoš toś tu funkciju.
@@ -2875,7 +2865,6 @@ Slědujuce wótkaze w tej samej smužce se za wuwześa naglědaju, w kótarychž
 'exif-gpsareainformation'          => 'Mě wobcerka GPS',
 'exif-gpsdatestamp'                => 'Datum GPS',
 'exif-gpsdifferential'             => 'Diferencialna korektura GPS',
-'exif-objectname'                  => 'Krotki titel',
 
 # EXIF attributes
 'exif-compression-1' => 'Njekompriměrowany',
@@ -3208,11 +3197,6 @@ Móžoš teke [[Special:Watchlist/edit|standardny wobźěłowański bok wužywa�
 'version-license'                  => 'Licenca',
 'version-poweredby-credits'        => "Toś ten wiki spěchujo se wót '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'         => 'druge',
-'version-license-info'             => 'MediaWiki jo licha softwara: móžoš ju pód wuměnjenjami licence GNU General Public License, wózjawjeneje wót załožby Free Software Foundation, rozdźěliś a/abo změniś: pak pód wersiju 2 licence pak pód někakeju pózdźejšeju wersiju.
-
-MediaWiki rozdźěla se w naźeji, až buźo wužitny, ale BŹEZ GARANTIJE: samo bźez wopśimjoneje garantije PŚEDAWAJOBNOSĆI abo PŚIGÓDNOSĆI ZA WĚSTY ZAMĚR. Glědaj GNU general Public License za dalšne drobnostki.
-
-Ty by dejał [{{SERVER}}{{SCRIPTPATH}}/COPYING kopiju licence GNU General Public License] gromaźe z toś tym programom dostanu měś: jolic nic, napiš do załožby Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA abo [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html pśecytaj ju online].',
 'version-software'                 => 'Instalěrowana software',
 'version-software-product'         => 'Produkt',
 'version-software-version'         => 'Wersija',
@@ -3315,5 +3299,18 @@ Zapódaj datajowe mě bźez prefiksa "{{ns:file}}:".',
 # SQLite database support
 'sqlite-has-fts' => 'Wersija $1 z pódpěru za połnotekstowe pytanje',
 'sqlite-no-fts'  => 'Wersija $1 bźez pódpěry za połnotekstowe pytanje',
+
+# Special:DisableAccount
+'disableaccount'             => 'Wužywarske konto znjemóžniś',
+'disableaccount-user'        => 'Wužywarske mě:',
+'disableaccount-reason'      => 'Pśicyna:',
+'disableaccount-confirm'     => "Znjemóžni toś to wužywarske konto.
+Wužywaŕ njamóžo se pśizjawiś, jogo gronidło slědk stajiś abo e-mailowe powěźeńki dostaś.
+Jolic wužywaŕ jo tuchylu hynźi pśizjawjony, buźo se ned wótzjawiś.
+''Źiwaj na to, až znjemóžnjanje konto njejo rewersibelne bźez zapśimowanja systemowego administratora.''",
+'disableaccount-mustconfirm' => 'Musyš wobkšuśiś, až coš toś to konto znjemóžniś.',
+'disableaccount-nosuchuser'  => 'Wužywaŕ konto "$1" njeeksistěrujo.',
+'disableaccount-success'     => 'Wužywarske konto "$1" jo se na pśecej znjemóžniło.',
+'disableaccount-logentry'    => 'jo wužywarske konto [[$1]] na pśecej znjemóžnił',
 
 );

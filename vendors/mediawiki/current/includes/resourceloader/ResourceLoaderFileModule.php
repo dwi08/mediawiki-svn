@@ -78,6 +78,8 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 	protected $messages = array();
 	/** String: Name of group to load this module in */
 	protected $group;
+	/** String: Position on the page to load this module at */
+	protected $position = 'bottom';
 	/** Boolean: Link to raw files in debug mode */
 	protected $debugRaw = true;
 	/**
@@ -137,6 +139,8 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 	 * 		'messages' => [array of message key strings],
 	 * 		// Group which this module should be loaded together with
 	 * 		'group' => [group name string],
+	 * 		// Position on the page to load this module at
+	 * 		'position' => ['bottom' (default) or 'top']
 	 * 	)
 	 */
 	public function __construct( $options = array(), $localBasePath = null, 
@@ -187,6 +191,7 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 					break;
 				// Single strings
 				case 'group':
+				case 'position':
 				case 'localBasePath':
 				case 'remoteBasePath':
 					$this->{$member} = (string) $option;
@@ -197,8 +202,9 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 					break;
 			}
 		}
-		// Make sure the remote base path is a complete valid url
-		$this->remoteBasePath = wfExpandUrl( $this->remoteBasePath );
+		// Make sure the remote base path is a complete valid URL,
+		// but possibly protocol-relative to avoid cache pollution
+		$this->remoteBasePath = wfExpandUrl( $this->remoteBasePath, PROTO_RELATIVE );
 	}
 
 	/**
@@ -263,7 +269,7 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 		// Collect referenced files
 		$this->localFileRefs = array_unique( $this->localFileRefs );
 		// If the list has been modified since last time we cached it, update the cache
-		if ( $this->localFileRefs !== $this->getFileDependencies( $context->getSkin() ) ) {
+		if ( $this->localFileRefs !== $this->getFileDependencies( $context->getSkin() ) && !wfReadOnly() ) {
 			$dbw = wfGetDB( DB_MASTER );
 			$dbw->replace( 'module_deps',
 				array( array( 'md_module', 'md_skin' ) ), array(
@@ -292,6 +298,10 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 	 */
 	public function getGroup() {
 		return $this->group;
+	}
+	
+	public function getPosition() {
+		return $this->position;
 	}
 
 	/**

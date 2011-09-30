@@ -784,9 +784,6 @@ $user: The user who is trying to email another user.
 $editToken: The user's edit token.
 &$hookErr: Out-param for the error. Passed as the parameters to OutputPage::showErrorPage.
 
-'ExtensionTypes': called when generating the extensions credits, use this to change the tables headers
-&$extTypes: associative array of extensions types
-
 'FetchChangesList': When fetching the ChangesList derivative for
 a particular user
 &$user: User the list is being fetched for
@@ -1115,7 +1112,7 @@ $variableIDs: array of strings
 'MakeGlobalVariablesScript': called right before Skin::makeVariablesScript
 is executed. Ideally, this hook should only be used to add variables that
 depend on the current page/request; static configuration should be added
-through ResourceLoaderGetConfigVars instead.
+through ResourceLoaderConfigVars instead.
 &$vars: variable (or multiple variables) to be added into the output
 	of Skin::makeVariablesScript
 
@@ -1370,7 +1367,7 @@ loader request or generating HTML output.
 'RecentChange_save': called at the end of RecentChange::save()
 $recentChange: RecentChange object
 
-'ResourceLoaderGetConfigVars': called at the end of
+'ResourceLoaderConfigVars': called at the end of
 ResourceLoaderStartUpModule::getConfig(). Use this to export static
 configuration variables to JavaScript. Things that depend on the current
 page/request state must be added through MakeGlobalVariablesScript instead.
@@ -1650,6 +1647,11 @@ $extTypes: associative array of extensions types
 &$join_conds: join conditions for the tables
 &$fields: array of query fields
 
+'TestCanonicalRedirect': called when about to force a redirect to a canonical URL for a title when we have no other parameters on the URL. Gives a chance for extensions that alter page view behavior radically to abort that redirect or handle it manually.
+$request: WebRequest
+$title: Title of the currently found title obj
+$output: OutputPage object
+
 'TitleArrayFromResult': called when creating an TitleArray object from a
 database result
 &$titleArray: set this to an object to override the default object returned
@@ -1675,6 +1677,9 @@ $rev: revision (object) that will be viewed
 		 your own actions)
 $action: action name
 $article: article "acted on"
+
+'UnitTestsList': Called when building a list of files with PHPUnit tests
+&$files: list of files
 
 'UnwatchArticle': before a watch is removed from an article
 $user: user watching

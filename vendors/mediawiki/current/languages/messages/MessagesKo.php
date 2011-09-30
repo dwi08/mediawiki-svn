@@ -11,7 +11,6 @@
  * @author Devunt
  * @author Ficell
  * @author Gapo
- * @author Gjue
  * @author IRTC1015
  * @author ITurtle
  * @author Klutzy
@@ -293,7 +292,7 @@ $dateFormats = array(
 
 $messages = array(
 # User preference toggles
-'tog-underline'               => '링크 걸기:',
+'tog-underline'               => '링크에 밑줄치기:',
 'tog-highlightbroken'         => '없는 문서로 연결된 링크를 <a href="" class="new">이렇게</a> 보이기 (선택하지 않으면 이렇게<a href="" class="internal">?</a> 보임)',
 'tog-justify'                 => '문단 정렬하기',
 'tog-hideminor'               => '사소한 편집을 최근 바뀜에서 숨기기',
@@ -448,7 +447,7 @@ $messages = array(
 'qbpageinfo'     => '문서 정보',
 'qbmyoptions'    => '내 문서',
 'qbspecialpages' => '특수 문서',
-'faq'            => '자주 묻는 질문',
+'faq'            => 'FAQ',
 'faqpage'        => 'Project:FAQ',
 
 # Vector skin
@@ -1267,9 +1266,9 @@ $1",
 'prefs-rc'                      => '최근 바뀜',
 'prefs-watchlist'               => '주시문서 목록',
 'prefs-watchlist-days'          => '주시문서 목록에서 볼 날짜 수:',
-'prefs-watchlist-days-max'      => '최대 7일',
+'prefs-watchlist-days-max'      => '(최대 7일)',
 'prefs-watchlist-edits'         => '주시문서 목록에서 볼 편집 수:',
-'prefs-watchlist-edits-max'     => '최대 개수: 1000',
+'prefs-watchlist-edits-max'     => '(최대 1000개)',
 'prefs-watchlist-token'         => '주시문서 토큰:',
 'prefs-misc'                    => '기타',
 'prefs-resetpass'               => '비밀번호 바꾸기',
@@ -1473,6 +1472,7 @@ $1",
 'right-reset-passwords'       => '다른 사용자의 비밀번호를 변경',
 'right-override-export-depth' => '5단계로 링크된 문서를 포함하여 문서를 내보내기',
 'right-sendemail'             => '다른 사용자에게 이메일 보내기',
+'right-disableaccount'        => '계정을 비활성화하기',
 
 # User rights log
 'rightslog'      => '사용자 권한 기록',
@@ -1644,7 +1644,7 @@ $1",
 'fileexists-shared-forbidden' => '같은 이름의 파일이 이미 위키미디어 공용에 있습니다.
 파일을 업로드하길 원하신다면 뒤로 돌아가서 다른 이름으로 시도해 주시기 바랍니다. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => '{{PLURAL:$1}}현재 올리고 있는 파일이 아래 파일과 중복됩니다:',
-'file-deleted-duplicate'      => '이 파일과 같은 파일 ([[:$1]])이 이전에 삭제된 적이 있습니다. 파일을 다시 올리기 전에 문서의 삭제 기록을 확인해 주시기 바랍니다.',
+'file-deleted-duplicate'      => '이 파일과 같은 파일 ([[$1]])이 이전에 삭제된 적이 있습니다. 파일을 다시 올리기 전에 문서의 삭제 기록을 확인해 주시기 바랍니다.',
 'uploadwarning'               => '올리기 경고',
 'uploadwarning-text'          => '아래의 파일 설명을 수정하고 다시 시도해 주세요.',
 'savefile'                    => '파일 저장',
@@ -1707,21 +1707,20 @@ $1',
 'upload-http-error'         => 'HTTP 오류 발생: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => '접근 거부됨',
-'img-auth-nopathinfo'       => 'PATH_INFO 가 빠졌습니다.
+'img-auth-accessdenied' => '접근 거부됨',
+'img-auth-nopathinfo'   => 'PATH_INFO 가 빠졌습니다.
 서버에 이 정보가 설정되어 있지 않습니다.
 CGI 기반이거나 img_auth 를 지원하지 않을 수 있습니다.
 http://www.mediawiki.org/wiki/Manual:Image_Authorization 를 참고하세요.',
-'img-auth-notindir'         => '요청한 경로가 설정한 업로드 디렉토리에 없습니다.',
-'img-auth-badtitle'         => '"$1"에서 바른 제목을 만들 수 없습니다.',
-'img-auth-nologinnWL'       => '당신은 로그인하지 않았으며 "$1" 파일은 화이트리스트에 존재하지 않습니다.',
-'img-auth-nofile'           => '"$1" 파일이 없습니다.',
-'img-auth-isdir'            => '"$1" 디렉토리에 접근을 시도했습니다.
+'img-auth-notindir'     => '요청한 경로가 설정한 업로드 디렉토리에 없습니다.',
+'img-auth-badtitle'     => '"$1"에서 바른 제목을 만들 수 없습니다.',
+'img-auth-nologinnWL'   => '당신은 로그인하지 않았으며 "$1" 파일은 화이트리스트에 존재하지 않습니다.',
+'img-auth-nofile'       => '"$1" 파일이 없습니다.',
+'img-auth-isdir'        => '"$1" 디렉토리에 접근을 시도했습니다.
 파일에만 접근할 수 있습니다.',
-'img-auth-streaming'        => '‘$1’ 파일을 전송하는 중입니다.',
-'img-auth-public'           => 'img_auth.php는 개인 위키 파일을 외부 사이트로 전송하는 기능입니다. 이 기능은 기본적으로 공개적인 위키에서 사용하도록 설계되어 있으며, 보안적인 문제로 기본적으로 img_auth.php 기능은 비활성화되어 있습니다.',
-'img-auth-noread'           => '‘$1’ 파일을 볼 권한이 없습니다.',
-'img-auth-bad-query-string' => 'URL에 잘못된 쿼리 문자열이 있습니다.',
+'img-auth-streaming'    => '‘$1’ 파일을 전송하는 중입니다.',
+'img-auth-public'       => 'img_auth.php는 개인 위키 파일을 외부 사이트로 전송하는 기능입니다. 이 기능은 기본적으로 공개적인 위키에서 사용하도록 설계되어 있으며, 보안적인 문제로 기본적으로 img_auth.php 기능은 비활성화되어 있습니다.',
+'img-auth-noread'       => '‘$1’ 파일을 볼 권한이 없습니다.',
 
 # HTTP errors
 'http-invalid-url'      => '잘못된 URL: $1',
@@ -2160,17 +2159,14 @@ $NEWPAGE
              {{SITENAME}} 알림 시스템
 
 --
-이메일 알림 설정을 바꾸시려면 이곳을 방문해주세요:
-{{fullurl:{{#special:Preferences}}}}
-
 주시문서 설정을 바꾸려면 다음을 사용하세요:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 주시문서에서 이 문서를 지우려면 이곳을 방문해주세요:
 $UNWATCHURL
 
 도움을 얻거나 피드백 하기:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => '문서 삭제하기',
@@ -2434,7 +2430,7 @@ $1',
 'ipusubmit'                       => '차단 해제',
 'unblocked'                       => '[[User:$1|$1]] 사용자 차단 해제됨',
 'unblocked-id'                    => '차단 $1 해제됨',
-'ipblocklist'                     => '현재 차단된 IP 주소/사용자 이름',
+'ipblocklist'                     => '차단 중인 IP 주소와 계정 이름',
 'ipblocklist-legend'              => '차단 중인 사용자 찾기',
 'ipblocklist-username'            => '계정 이름/IP 주소:',
 'ipblocklist-sh-userblocks'       => '계정 차단을 $1',
@@ -2536,7 +2532,7 @@ $1 사용자는 이미 차단되었습니다. 차단 설정을 바꾸시겠습�
 이동하기 전에, 이 문서를 이동해도 문제가 없다는 것을 확인해주세요.",
 'movepagetext-noredirectfixer' => "이 양식을 이용해 문서의 이름을 바꾸고 문서의 모든 역사를 옮길 것입니다.
 이전의 제목은 새 제목으로 넘겨줄 것입니다.
-[[Special:DoubleRedirects|이중 넘겨주기]]나 [[Special:BrokenRedirects|끊긴 넘겨주기]]가 있는지 확인해주십시오.
+[[Special:DoubleRedirects|이중 넘겨주기]]나 [[Special:BrokenRedirects|끊긴 넘겨주기]]가 잇는지 확인해주십시오.
 당신은 넘겨주기 링크가 제대로 향하고 있는지 확인하여야 합니다.
 
 참고로 새 제목을 가진 문서가 이미 있다면 다음 경우에 해당하지 않으면 이 문서는 옮겨지지 '''않을''' 것입니다.
@@ -2546,7 +2542,7 @@ $1 사용자는 이미 차단되었습니다. 차단 설정을 바꾸시겠습�
 이는 당신이 실수로 문서를 옮겼을 때 되돌릴 수 있으며 이미 있는 문서를 덮어쓸 수 없음을 의미합니다.
 
 '''경고!'''
-방문 수나 이 문서를 향하는 링크가 많은 문서일 경우 심각한 문제를 초래할 수 있습니다.
+방문 수나 이 문서를 향하는 링크가 많은 문서일 경우 심각한 문제를 초래할 수 잇습니다.
 문서를 이동하기 전에 이러한 행동이 초래할 수 있는 결과에 대해 숙지하시기 바랍니다.",
 'movepagetalktext'             => "딸린 토론 문서도 자동으로 이동합니다. 하지만 다음의 경우는 '''이동하지 않습니다''':
 * 이동할 이름으로 된 문서가 이미 있는 경우
@@ -2678,8 +2674,7 @@ $1 사용자는 이미 차단되었습니다. 차단 설정을 바꾸시겠습�
 'import-interwiki-namespace' => '새 이름공간:',
 'import-upload-filename'     => '파일 이름:',
 'import-comment'             => '이유:',
-'importtext'                 => '원본 위키에서 [[Special:Export|내보내기]] 기능을 사용해 파일을 내려받으십시오.
-그리고 당신의 컴퓨터에 저장해 둔 후 여기에 올려주세요.',
+'importtext'                 => '원본 위키에서 [[Special:Export|내보내기]] 기능을 사용해 파일을 내려받아서 여기에 올려주세요.',
 'importstart'                => '문서를 가져오는 중...',
 'import-revision-count'      => '판 $1개',
 'importnopages'              => '가져올 문서가 없습니다.',
@@ -3069,7 +3064,6 @@ Variants for Chinese language
 'exif-gpsareainformation'          => 'GPS 구역 이름',
 'exif-gpsdatestamp'                => 'GPS 날짜',
 'exif-gpsdifferential'             => 'GPS 차이 보정',
-'exif-objectname'                  => '짧은 제목',
 
 # EXIF attributes
 'exif-compression-1' => '압축되지 않음',
@@ -3297,9 +3291,9 @@ $1',
 
 # Delete conflict
 'deletedwhileediting' => "'''주의''': 당신이 이 문서를 편집하던 중에 이 문서가 삭제되었습니다.",
-'confirmrecreate'     => '[[User:$1|$1]] 사용자([[User talk:$1|토론]])가 당신의 편집 도중 문서를 삭제했습니다. 삭제 이유는 다음과 같습니다:
+'confirmrecreate'     => '[[User:$1|$1]]([[User talk:$1|토론]]) 사용자가 당신의 편집 도중 문서를 지웠습니다. 삭제 이유는 다음과 같습니다:
 : $2
-문서를 다시 생성해야 하는지 확인해주세요.',
+문서를 다시 되살릴 필요가 있는지를 확인해주세요.',
 'recreate'            => '새로 만들기',
 
 # action=purge
@@ -3500,5 +3494,18 @@ $1',
 # SQLite database support
 'sqlite-has-fts' => '$1 (본문 전체 검색)',
 'sqlite-no-fts'  => '$1 (본문은 검색에서 제외)',
+
+# Special:DisableAccount
+'disableaccount'             => '계정을 비활성화하기',
+'disableaccount-user'        => '계정 이름:',
+'disableaccount-reason'      => '이유:',
+'disableaccount-confirm'     => "사용자 계정을 비활성화합니다.
+이 사용자는 로그인하거나 비밀번호를 바꿀 수 없고 이메일 알림을 받을 수 없습니다.
+만약 이 사용자가 로그인되어 있다면, 즉시 로그아웃될 것이니다.
+'''계정을 비활성화하는 것은 시스템 관리자의 도움 없이는 되돌릴 수 없습니다.'''",
+'disableaccount-mustconfirm' => '이 계정을 비활성화할 것인지 반드시 확인하여야 합니다.',
+'disableaccount-nosuchuser'  => '계정 "$1"이 존재하지 않습니다.',
+'disableaccount-success'     => '계정 "$1"이 영구히 비활성화되었습니다.',
+'disableaccount-logentry'    => '사용자 계정 [[$1]]을 영구히 비활성화함',
 
 );

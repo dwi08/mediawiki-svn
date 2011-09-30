@@ -472,10 +472,6 @@ class ApiQuery extends ApiBase {
 				}
 			}
 		}
-		// only export when there are titles
-		if ( !count( $exportTitles ) ) {
-			return;
-		}
 
 		$exporter = new WikiExporter( $this->getDB() );
 		// WikiExporter writes to stdout, so catch its
@@ -691,7 +687,7 @@ class ApiQuery extends ApiBase {
 	public function getVersion() {
 		$psModule = new ApiPageSet( $this );
 		$vers = array();
-		$vers[] = __CLASS__ . ': $Id: ApiQuery.php 80897 2011-01-24 18:57:42Z catrope $';
+		$vers[] = __CLASS__ . ': $Id: ApiQuery.php 91479 2011-07-05 19:43:02Z reedy $';
 		$vers[] = $psModule->getVersion();
 		return $vers;
 	}

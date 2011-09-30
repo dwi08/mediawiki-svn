@@ -263,30 +263,30 @@ $messages = array(
 'thu'           => 'Enj',
 'fri'           => 'Pre',
 'sat'           => 'Shtu',
-'january'       => 'janar',
-'february'      => 'shkurt',
-'march'         => 'mars',
-'april'         => 'prill',
-'may_long'      => 'maj',
-'june'          => 'qershor',
-'july'          => 'korrik',
-'august'        => 'gusht',
-'september'     => 'shtator',
-'october'       => 'tetor',
-'november'      => 'nëntor',
-'december'      => 'dhjetor',
-'january-gen'   => 'janar',
-'february-gen'  => 'shkurt',
-'march-gen'     => 'mars',
-'april-gen'     => 'prill',
-'may-gen'       => 'maj',
-'june-gen'      => 'qershor',
-'july-gen'      => 'korrik',
-'august-gen'    => 'gusht',
-'september-gen' => 'shtator',
-'october-gen'   => 'tetor',
-'november-gen'  => 'nëntor',
-'december-gen'  => 'dhjetor',
+'january'       => 'Janar',
+'february'      => 'Shkurt',
+'march'         => 'Mars',
+'april'         => 'Prill',
+'may_long'      => 'Maj',
+'june'          => 'Qershor',
+'july'          => 'Korrik',
+'august'        => 'Gusht',
+'september'     => 'Shtator',
+'october'       => 'Tetor',
+'november'      => 'Nëntor',
+'december'      => 'Dhjetor',
+'january-gen'   => 'Janar',
+'february-gen'  => 'Shkurt',
+'march-gen'     => 'Mars',
+'april-gen'     => 'Prill',
+'may-gen'       => 'Maj',
+'june-gen'      => 'Qershor',
+'july-gen'      => 'Korrik',
+'august-gen'    => 'Gusht',
+'september-gen' => 'Shtator',
+'october-gen'   => 'Tetor',
+'november-gen'  => 'Nëntor',
+'december-gen'  => 'Dhjetor',
 'jan'           => 'Jan',
 'feb'           => 'Shku',
 'mar'           => 'Mar',
@@ -440,8 +440,8 @@ $1',
 'edithelp'             => 'Ndihmë për redaktim',
 'edithelppage'         => 'Help:Si redaktohet një faqe',
 'helppage'             => 'Help:Ndihmë',
-'mainpage'             => 'Faqja kryesore',
-'mainpage-description' => 'Faqja kryesore',
+'mainpage'             => 'Faqja Kryesore',
+'mainpage-description' => 'Faqja Kryesore',
 'policy-url'           => 'Project:Rregullat',
 'portal'               => 'Wikiportal',
 'portal-url'           => 'Project:Wikiportal',
@@ -1162,7 +1162,7 @@ Kini kujdes se përdorimi i lidhjeve të shfletimit do të ndryshojë përzgjedh
 'prefs-rc'                      => 'Ndryshime së fundmi',
 'prefs-watchlist'               => 'Lista mbikqyrëse',
 'prefs-watchlist-days'          => 'Numri i ditëve të treguara tek lista mbikqyrëse:',
-'prefs-watchlist-days-max'      => 'Maksimum 7 ditë',
+'prefs-watchlist-days-max'      => '(maksimum 7 ditë)',
 'prefs-watchlist-edits'         => 'Numri i redaktimeve të treguara tek lista mbikqyrëse e zgjeruar:',
 'prefs-watchlist-edits-max'     => '(numri maksimal: 1000)',
 'prefs-watchlist-token'         => 'Lista mbikqyrëse shenjë:',
@@ -1370,6 +1370,7 @@ Kjo informatë është publike.',
 'right-reset-passwords'       => 'Rivendos fjalëkalimet e përdoruesit të tjerë',
 'right-override-export-depth' => 'Eksoprto faqet duke përfshirë e lidhura deri në një thellësi prej 5',
 'right-sendemail'             => 'Dërgo e-mail tek përdoruesit e tjerë',
+'right-disableaccount'        => 'Çaktivizo llogaritë',
 
 # User rights log
 'rightslog'      => 'Regjistri i privilegjeve',
@@ -1542,7 +1543,7 @@ Nëse keni këtë figurë me madhësi të plotë ju lutem të ngarkoni atë, pë
 'fileexists-shared-forbidden' => 'Ekziston një skedë me të njëjtin emër në magazinën e përbashkët. Ju lutem kthehuni mbrapsht dhe ngarkojeni këtë skedë me një emër të ri. 
  [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Kjo skedë është dyfish i {{PLURAL:$1|skedës|skedave}} në vijim:',
-'file-deleted-duplicate'      => 'Një skedë identike më këtë skedë ([[:$1]]) është grisur më përpara.
+'file-deleted-duplicate'      => 'Një skedë identike më këtë skedë ([[$1]]) është grisur më përpara.
 Ju duhet të kontrolloni historikun e grisjes të asaj skede përpara se ta ri-ngarkoni atë.',
 'uploadwarning'               => 'Kujdes dhënie',
 'uploadwarning-text'          => 'Ju lutemi modifikoni përshkrimin e skedës dhe provojen përsëri.',
@@ -2050,7 +2051,7 @@ Nuk do të ketë njoftime të tjera për ndryshimet e ardhshme përveç nëse e 
              Miku juaj njoftues nga {{SITENAME}}
 
 --
-Për të ndryshuar parapëlqimet e mbikqyrjes shikoni {{fullurl:Special:Watchlist/edit}}
+Për të ndryshuar parapëlqimet e mbikqyrjes shikoni {{canonicalurl:Special:Watchlist/edit}}
 
 Për të larguar faqen nga lista juaj mbikqyrëse, shikoni 
 $UNWATCHURL
@@ -2073,7 +2074,7 @@ Për të na dhënë përshtypjet tuaja ose për ndihmë të mëtejshme:
 'actioncomplete'         => 'Veprimi u krye',
 'actionfailed'           => 'Veprimi dështoi',
 'deletedtext'            => '"<nowiki>$1</nowiki>" është grisur nga regjistri. Shikoni $2 për një pasqyrë të grisjeve së fundmi.',
-'deletedarticle'         => 'grisi "[[$1]]"',
+'deletedarticle'         => 'u gris "[[$1]]"',
 'suppressedarticle'      => '"[[$1]]" i shtypur',
 'dellogpage'             => 'Regjistri i grisjeve',
 'dellogpagetext'         => 'Më poshtë është një listë e grisjeve më të fundit.',
@@ -2116,9 +2117,9 @@ Redaktimi i fundit është bërë nga [[User:$3|$3]] ([[User talk:$3|diskuto]]{{
 'protectlogpage'              => 'Regjistri i mbrojtjeve',
 'protectlogtext'              => 'Më poshtë është lista e kyçjeve dhe çkyçjeve të faqes.
 Shih listën e [[Special:ProtectedPages|faqeve të mbrojtura]] nga lista e mbrojtjeve të faqeve tani në veprim.',
-'protectedarticle'            => 'mbrojti [[$1]]',
+'protectedarticle'            => 'u mbrojt [[$1]]',
 'modifiedarticleprotection'   => 'u ndryshua mbrojtja e faqes "[[$1]]"',
-'unprotectedarticle'          => 'liroi [[$1]]',
+'unprotectedarticle'          => 'u lirua [[$1]]',
 'movedarticleprotection'      => 'u bartën të dhënat e mbrojtjes nga "[[$2]]" në "[[$1]]"',
 'protect-title'               => 'Ndryshoni nivelin e mbrojtjes së "$1"',
 'prot_1movedto2'              => '[[$1]] u zhvendos tek [[$2]]',
@@ -2937,7 +2938,6 @@ Të tjerat do të fshihen.
 'exif-gpsareainformation'          => 'Emri i zonës GPS',
 'exif-gpsdatestamp'                => 'E dhënë GPS',
 'exif-gpsdifferential'             => 'Korrigjim diferencial i GPS',
-'exif-objectname'                  => 'Titull i shkurtër',
 
 # EXIF attributes
 'exif-compression-1' => 'E pangjeshur',
@@ -3374,5 +3374,18 @@ Kjo faqe është duke përjetuar vështirësi teknike.',
 # SQLite database support
 'sqlite-has-fts' => '$1 me mbështetje të kërkimit me teskt të plotë',
 'sqlite-no-fts'  => '$1 pa mbështetje të kërkimit me teskt të plotë',
+
+# Special:DisableAccount
+'disableaccount'             => 'Çaktiviyoni një llogari përdoruesi',
+'disableaccount-user'        => 'Përdoruesi:',
+'disableaccount-reason'      => 'Arsyeja:',
+'disableaccount-confirm'     => "Çaktivizoni këtë llogari të përdorusit.
+Përdoruesi nuk do të mund të identifikohet, të rivendosë fjalëkalimin e tij, ose të marrë njoftime me e-mail.
+Nëse përdoruesi është aktualisht i identifikuar ndokund, ai do të dalë menjëherë.
+''Vini re se çaktivizimi i jë llogarie nuk mund të kthehet pa ndërhyrjen e një administratori të sistemit.''",
+'disableaccount-mustconfirm' => 'Ju duhet të konfirmoni që dëshironi ta çaktivizoni këtë llogari.',
+'disableaccount-nosuchuser'  => 'Llogaria e përdoruesit "$1" nuk ekziston.',
+'disableaccount-success'     => 'Llogaria e përdoruesit "$1" është çaktiviyuar përgjithmonë.',
+'disableaccount-logentry'    => 'u çaktivizua përgjithmonë llogaria e përdoruesit [[$1]]',
 
 );

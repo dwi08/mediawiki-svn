@@ -5,15 +5,15 @@
  * @file
  * @ingroup Deployment
  */
-
+ 
 /**
  * Class for handling updates to Sqlite databases.
- *
+ * 
  * @ingroup Deployment
  * @since 1.17
  */
 class SqliteUpdater extends DatabaseUpdater {
-
+	
 	protected function getCoreUpdateList() {
 		return array(
 			// 1.14
@@ -30,9 +30,8 @@ class SqliteUpdater extends DatabaseUpdater {
 			// 1.16
 			array( 'addTable', 'user_properties',                   'patch-user_properties.sql' ),
 			array( 'addTable', 'log_search',                        'patch-log_search.sql' ),
-			array( 'addField', 'logging',       'log_user_text',    'patch-log_user_text.sql' ),
-			array( 'doLogUsertextPopulation' ), # listed separately from the previous update because 1.16 was released without this update
 			array( 'doLogSearchPopulation' ),
+			array( 'addField', 'logging',       'log_user_text',    'patch-log_user_text.sql' ),
 			array( 'addTable', 'l10n_cache',                        'patch-l10n_cache.sql' ),
 			array( 'addTable', 'external_user',                     'patch-external_user.sql' ),
 			array( 'addIndex', 'log_search',    'ls_field_val',     'patch-log_search-rename-index.sql' ),
@@ -52,6 +51,7 @@ class SqliteUpdater extends DatabaseUpdater {
 			array( 'doCollationUpdate' ),
 			array( 'addTable', 'msg_resource',                      'patch-msg_resource.sql' ),
 			array( 'addTable', 'module_deps',                       'patch-module_deps.sql' ),
+			array( 'addTable', 'uploadstash', 'patch-uploadstash.sql' ),
 		);
 	}
 
@@ -67,7 +67,7 @@ class SqliteUpdater extends DatabaseUpdater {
 	}
 
 	protected function sqliteSetupSearchindex() {
-		$module = DatabaseSqlite::getFulltextSearchModule();
+		$module = $this->db->getFulltextSearchModule();
 		$fts3tTable = $this->updateRowExists( 'fts3' );
 		if ( $fts3tTable &&  !$module ) {
 			$this->output( '...PHP is missing FTS3 support, downgrading tables...' );

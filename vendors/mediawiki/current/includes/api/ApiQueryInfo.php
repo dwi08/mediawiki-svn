@@ -353,8 +353,8 @@ class ApiQueryInfo extends ApiQueryBase {
 		}
 
 		if ( $this->fld_url ) {
-			$pageInfo['fullurl'] = $title->getFullURL();
-			$pageInfo['editurl'] = $title->getFullURL( 'action=edit' );
+			$pageInfo['fullurl'] = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
+			$pageInfo['editurl'] = wfExpandUrl( $title->getFullURL( 'action=edit' ), PROTO_CURRENT );
 		}
 		if ( $this->fld_readable && $title->userCanRead() ) {
 			$pageInfo['readable'] = '';
@@ -701,6 +701,6 @@ class ApiQueryInfo extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryInfo.php 78439 2010-12-15 14:23:46Z catrope $';
+		return __CLASS__ . ': $Id: ApiQueryInfo.php 95505 2011-08-25 19:32:37Z catrope $';
 	}
 }

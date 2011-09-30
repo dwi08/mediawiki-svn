@@ -11,7 +11,6 @@
  */
 class ParserCache {
 	private $mMemc;
-	const try116cache = false; /* Only useful $wgParserCacheExpireTime after updating to 1.17 */
 
 	/**
 	 * Get an instance of this object
@@ -43,7 +42,7 @@ class ParserCache {
 
 		// idhash seem to mean 'page id' + 'rendering hash' (r3710)
 		$pageid = $article->getID();
-		$renderkey = (int)($wgRequest->getVal('action') == 'render');
+		$renderkey = (int)($wgRequest->getVal('action') == 'render') + 4*(int)($wgRequest->getVal('action') == 'parse');
 
 		$key = wfMemcKey( 'pcache', 'idhash', "{$pageid}-{$renderkey}!{$hash}" );
 		return $key;
@@ -104,9 +103,8 @@ class ParserCache {
 			$usedOptions = $optionsKey->mUsedOptions;
 			wfDebug( "Parser cache options found.\n" );
 		} else {
-			if ( !$useOutdated && !self::try116cache ) {
-				return false;
-			}
+			# TODO: Fail here $wgParserCacheExpireTime after deployment unless $useOutdated
+
 			$usedOptions = ParserOptions::legacyOptions();
 		}
 
@@ -137,11 +135,6 @@ class ParserCache {
 		}
 
 		$value = $this->mMemc->get( $parserOutputKey );
-		if ( self::try116cache && !$value && strpos( $value, '*' ) !== -1 ) {
-			wfDebug( "New format parser cache miss.\n" );
-			$parserOutputKey = $this->getParserOutputKey( $article, $popts->optionsHash( ParserOptions::legacyOptions() ) );
-			$value = $this->mMemc->get( $parserOutputKey );
-		}
 		if ( !$value ) {
 			wfDebug( "Parser cache miss.\n" );
 			wfIncrStats( "pcache_miss_absent" );
@@ -162,6 +155,30 @@ class ParserCache {
 			}
 			wfIncrStats( "pcache_hit" );
 		}
+
+		// WMF logging hack for bug 27891 -- TS
+		if ( session_id() && substr( session_id(), 0, 1 ) === '0' ) {
+			$info = array(
+				'title' => $article->getTitle()->getPrefixedDBkey(),
+				'key' => $parserOutputKey,
+				'mod-time' => $value->mTimestamp,
+			);
+			if ( isset( $_SESSION['wmfLastSaveInfo'] ) ) {
+				$lastInfo = $_SESSION['wmfLastSaveInfo'];
+				if ( $lastInfo['title'] == $info['title'] 
+					&& $lastInfo['mod-time'] !== $info['mod-time']
+					&& ( strpos( @$_SERVER['HTTP_REFERER'], 'action=submit' ) !== false ) )
+				{
+					wfDebugLog( 'bug-27891', 
+						"User: " . $GLOBALS['wgUser']->getName() . ', ' .
+						"Session: " . session_id() . ', ' .
+						print_r( compact( 'lastInfo', 'info' ), true ) .
+						"\n" );
+				}
+			}
+		}
+		// End hack
+
 
 		wfProfileOut( __METHOD__ );
 		return $value;
@@ -195,7 +212,35 @@ class ParserCache {
 			$this->mMemc->set( $parserOutputKey, $parserOutput, $expire );
 
 			// ...and its pointer
-			$this->mMemc->set( $this->getOptionsKey( $article ), $optionsKey, $expire );
+			$optionsKeyString = $this->getOptionsKey( $article );
+			$this->mMemc->set( $optionsKeyString, $optionsKey, $expire );
+
+			// WMF logging hack for bug 27891 -- TS
+			if ( session_id() && substr( session_id(), 0, 1 ) === '0' ) {
+				$info = array(
+					'title' => $article->getTitle()->getPrefixedDBkey(),
+					'key' => $parserOutputKey,
+					'optionsKey' => $optionsKeyString,
+					'now' => $now,
+					'mod-time' => $parserOutput->mTimestamp,
+				);
+				if ( $GLOBALS['wgRequest']->getVal( 'action' ) == 'submit' ) {
+					$_SESSION['wmfLastSaveInfo'] = $info;
+				} elseif ( isset( $_SESSION['wmfLastSaveInfo'] ) ) {
+					$lastInfo = $_SESSION['wmfLastSaveInfo'];
+					if ( $lastInfo['title'] == $info['title']
+						&& ( strpos( @$_SERVER['HTTP_REFERER'], 'action=submit' ) !== false ) )
+					{
+						wfDebugLog( 'bug-27891', 
+							"User: " . $GLOBALS['wgUser']->getName() . ', ' .
+							"Session: " . session_id() . ', ' .
+							print_r( compact( 'lastInfo', 'info' ), true ) .
+							"\n" );
+					}
+				}
+			}
+			// End hack
+
 		} else {
 			wfDebug( "Parser output was marked as uncacheable and has not been saved.\n" );
 		}

@@ -75,6 +75,7 @@ class ApiQueryExternalLinks extends ApiQueryBase {
 				break;
 			}
 			$entry = array();
+			// We *could* run this through wfExpandUrl() but I think it's better to output the link verbatim, even if it's protocol-relative --Roan
 			ApiResult::setContent( $entry, $row->el_to );
 			$fit = $this->addPageSubItem( $row->el_from, $entry );
 			if ( !$fit ) {
@@ -120,6 +121,6 @@ class ApiQueryExternalLinks extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryExternalLinks.php 70647 2010-08-07 19:59:42Z ialex $';
+		return __CLASS__ . ': $Id: ApiQueryExternalLinks.php 92172 2011-07-14 17:48:25Z catrope $';
 	}
 }

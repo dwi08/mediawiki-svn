@@ -265,7 +265,7 @@ See <a href='http://www.mediawiki.org/wiki/API'>complete documentation</a>, or
 		// encode all comments or tags as safe blue strings
 		$text = preg_replace( '/\&lt;(!--.*?--|.*?)\&gt;/', '<span style="color:blue;">&lt;\1&gt;</span>', $text );
 		// identify URLs
-		$protos = implode( "|", $wgUrlProtocols );
+		$protos = wfUrlProtocolsWithoutProtRel();
 		// This regex hacks around bug 13218 (&quot; included in the URL)
 		$text = preg_replace( "#(($protos).*?)(&quot;)?([ \\'\"<>\n]|&lt;|&gt;|&quot;)#", '<a href="\\1">\\1</a>\\3\\4', $text );
 		// identify requests to api.php
@@ -299,7 +299,7 @@ See <a href='http://www.mediawiki.org/wiki/API'>complete documentation</a>, or
 	}
 
 	public static function getBaseVersion() {
-		return __CLASS__ . ': $Id: ApiFormatBase.php 75970 2010-11-04 00:55:30Z reedy $';
+		return __CLASS__ . ': $Id: ApiFormatBase.php 95668 2011-08-29 15:42:14Z neilk $';
 	}
 }
 
@@ -368,6 +368,6 @@ class ApiFormatFeedWrapper extends ApiFormatBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiFormatBase.php 75970 2010-11-04 00:55:30Z reedy $';
+		return __CLASS__ . ': $Id: ApiFormatBase.php 95668 2011-08-29 15:42:14Z neilk $';
 	}
 }

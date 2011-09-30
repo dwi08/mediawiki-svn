@@ -14,7 +14,7 @@ jQuery.extend({
 		return str.substr( 0, 1 ).toUpperCase() + str.substr( 1, str.length );
 	},
 	escapeRE : function( str ) {
-		return str.replace ( /([\\{}()\|.?*+-^$\[\]])/g, "\\$1" );
+		return str.replace ( /([\\{}()|.?*+\-^$\[\]])/g, "\\$1" );
 	},
 	isEmpty : function( v ) {
 		var key;
@@ -52,6 +52,22 @@ jQuery.extend({
 		return true;
 	}
 });
+
+/*
+ * Workaround for API hits with protocol-relative URLs on IE 7 and jQuery 1.4
+ */
+(function(jQuery) {
+	var origAjax = jQuery.ajax;
+	jQuery.ajax = function(origSettings) {
+		var settings = jQuery.extend({}, origSettings);
+		if ('url' in settings && settings.url.substring(0, 2) == '//' && typeof window.location == "object" && 'protocol' in window.location) {
+			// IE 7's XMLHTTPRequest gets confused by protocol-relative links.
+			// Resolve it for the poor dears!
+			settings.url = window.location.protocol + settings.url;
+		}
+		return origAjax(settings);
+	};
+})(jQuery);
 
 /*
  * Core MediaWiki JavaScript Library
@@ -134,7 +150,7 @@ window.mediaWiki = new ( function( $ ) {
 	 * @return boolean Existence of key(s)
 	 */
 	Map.prototype.exists = function( selection ) {
-		if ( typeof keys === 'object' ) {
+		if ( typeof selection === 'object' ) {
 			for ( var s = 0; s < selection.length; s++ ) {
 				if ( !( selection[s] in this.values ) ) {
 					return false;
@@ -225,11 +241,18 @@ window.mediaWiki = new ( function( $ ) {
 	 * User object
 	 */
 	function User() {
+
+		/* Private Members */
+
+		var that = this;
+
+		/* Public Members */
+
 		this.options = new Map();
 
 		/* Public Methods */
 
-		/*
+		/**
 		 * Generates a random user session ID (32 alpha-numeric characters).
 		 * 
 		 * This information would potentially be stored in a cookie to identify a user during a
@@ -247,7 +270,7 @@ window.mediaWiki = new ( function( $ ) {
 			return id;
 		}
 
-		/*
+		/**
 		 * Gets the current user's name.
 		 * 
 		 * @return mixed user name string or null if users is anonymous
@@ -256,7 +279,16 @@ window.mediaWiki = new ( function( $ ) {
 			return mediaWiki.config.get( 'wgUserName' );
 		};
 
-		/*
+		/**
+		 * Checks if the current user is anonymous.
+		 * 
+		 * @return boolean
+		 */
+		this.anonymous = function() {
+			return that.name() ? false : true;
+		};
+
+		/**
 		 * Gets a random session ID automatically generated and kept in a cookie.
 		 * 
 		 * This ID is ephemeral for everyone, staying in their browser only until they close
@@ -277,7 +309,7 @@ window.mediaWiki = new ( function( $ ) {
 			return sessionId;
 		};
 
-		/*
+		/**
 		 * Gets the current user's name or a random ID automatically generated and kept in a cookie.
 		 * 
 		 * This ID is persistent for anonymous users, staying in their browser up to 1 year. The
@@ -302,6 +334,84 @@ window.mediaWiki = new ( function( $ ) {
 			// Set cookie if not set, or renew it if already set
 			$.cookie( 'mediaWiki.user.id', id, { 'expires': 365, 'path': '/' } );
 			return id;
+		};
+
+		/**
+		 * Gets the user's bucket, placing them in one at random based on set odds if needed.
+		 * 
+		 * @param key String: Name of bucket
+		 * @param options Object: Bucket configuration options
+		 * @param options.buckets Object: List of bucket-name/relative-probability pairs (required,
+		 * must have at least one pair)
+		 * @param options.version Number: Version of bucket test, changing this forces rebucketing
+		 * (optional, default: 0)
+		 * @param options.tracked Boolean: Track the event of bucketing through the API module of
+		 * the ClickTracking extension (optional, default: false)
+		 * @param options.expires Number: Length of time (in days) until the user gets rebucketed
+		 * (optional, default: 30)
+		 * @return String: Bucket name - the randomly chosen key of the options.buckets object
+		 * 
+		 * @example
+		 *     mw.user.bucket( 'test', {
+		 *         'buckets': { 'ignored': 50, 'control': 25, 'test': 25 },
+		 *         'version': 1,
+		 *         'tracked': true,
+		 *         'expires': 7
+		 *     } );
+		 */
+		this.bucket = function( key, options ) {
+			options = $.extend( {
+				'buckets': {},
+				'version': 0,
+				'tracked': false,
+				'expires': 30
+			}, options || {} );
+			var cookie = $.cookie( 'mediaWiki.user.bucket:' + key );
+			var bucket = null;
+			var version = 0;
+			// Bucket information is stored as 2 integers, together as version:bucket like: "1:2"
+			if ( typeof cookie === 'string' && cookie.length > 2 && cookie.indexOf( ':' ) > 0 ) {
+				var parts = cookie.split( ':' );
+				if ( parts.length > 1 && parts[0] == options.version ) {
+					version = Number( parts[0] );
+					bucket = String( parts[1] );
+				}
+			}
+			if ( bucket === null ) {
+				if ( !$.isPlainObject( options.buckets ) ) {
+					throw 'Invalid buckets error. Object expected for options.buckets.';
+				}
+				version = Number( options.version );
+				// Find range
+				var range = 0;
+				for ( var k in options.buckets ) {
+					range += options.buckets[k];
+				}
+				// Select random value within range
+				var rand = Math.random() * range;
+				// Determine which bucket the value landed in
+				var total = 0;
+				for ( var k in options.buckets ) {
+					bucket = k;
+					total += options.buckets[k];
+					if ( total >= rand ) {
+						break;
+					}
+				}
+				if ( options.tracked ) {
+					mw.loader.using( 'jquery.clickTracking', function() {
+						$.trackAction(
+							'mediaWiki.user.bucket:' + key + '@' + version + ':' + bucket
+						);
+					} );
+				}
+				$.cookie(
+					'mediaWiki.user.bucket:' + key,
+					version + ':' + bucket,
+					{ 'path': '/', 'expires': Number( options.expires ) }
+				);
+			}
+			return bucket;
 		};
 	}
 
@@ -675,20 +785,26 @@ window.mediaWiki = new ( function( $ ) {
 			}
 			return sorted;
 		}
-		
+
 		/**
-		 * Converts a module map of the form { foo: [ 'bar', 'baz' ], bar: [ 'baz, 'quux' ] }
-		 * to a query string of the form foo.bar,baz|bar.baz,quux
+		 * Adds a script tag to the body, either using document.write or low-level DOM manipulation,
+		 * depending on whether document-ready has occured yet.
 		 */
-		function buildModulesString( moduleMap ) {
-			var arr = [];
-			for ( var prefix in moduleMap ) {
-				var p = prefix === '' ? '' : prefix + '.';
-				arr.push( p + moduleMap[prefix].join( ',' ) );
+		function addScript( src ) {
+			if ( ready ) {
+				// jQuery's getScript method is NOT better than doing this the old-fassioned way
+				// because jQuery will eval the script's code, and errors will not have sane
+				// line numbers.
+				var script = document.createElement( 'script' );
+				script.setAttribute( 'src', src );
+				script.setAttribute( 'type', 'text/javascript' );
+				document.body.appendChild( script );
+			} else {
+				document.write( mw.html.element(
+					'script', { 'type': 'text/javascript', 'src': src }, ''
+				) );
 			}
-			return arr.join( '|' );
 		}
-		
 
 		/* Public Methods */
 
@@ -742,44 +858,9 @@ window.mediaWiki = new ( function( $ ) {
 							version = registry[groups[group][g]].version;
 						}
 					}
-					var reqBase = $.extend( { 'version': formatVersionNumber( version ) }, base );
-					var reqBaseLength = $.param( reqBase ).length;
-					var reqs = [];
-					var limit = mw.config.get( 'wgResourceLoaderMaxQueryLength', -1 );
-					// We may need to split up the request to honor the query string length limit
-					// So build it piece by piece
-					var l = reqBaseLength + 9; // '&modules='.length == 9
-					var r = 0;
-					reqs[0] = {}; // { prefix: [ suffixes ] }
-					for ( var i = 0; i < groups[group].length; i++ ) {
-						// Determine how many bytes this module would add to the query string
-						var lastDotIndex = groups[group][i].lastIndexOf( '.' );
-						// Note that these substr() calls work even if lastDotIndex == -1
-						var prefix = groups[group][i].substr( 0, lastDotIndex );
-						var suffix = groups[group][i].substr( lastDotIndex + 1 );
-						var bytesAdded = prefix in reqs[r] ?
-							suffix.length + 3 : // '%2C'.length == 3
-							groups[group][i].length + 3; // '%7C'.length == 3
-						
-						// If the request would become too long, create a new one,
-						// but don't create empty requests
-						if ( limit > 0 &&  reqs[r] != {} && l + bytesAdded > limit ) {
-							// This request would become too long, create a new one
-							r++;
-							reqs[r] = {};
-							l = reqBaseLength + 9;
-						}
-						if ( !( prefix in reqs[r] ) ) {
-							reqs[r][prefix] = [];
-						}
-						reqs[r][prefix].push( suffix );
-						l += bytesAdded;
-					}
-					for ( var r = 0; r < reqs.length; r++ ) {
-						requests[requests.length] = $.extend(
-							{ 'modules': buildModulesString( reqs[r] ) }, reqBase
-						);
-					}
+					requests[requests.length] = $.extend(
+						{ 'modules': groups[group].join( '|' ).replace( /\./g, '!' ), 'version': formatVersionNumber( version ) }, base
+					);
 				}
 				// Clear the batch - this MUST happen before we append the
 				// script element to the body or it's possible that the script
@@ -788,22 +869,10 @@ window.mediaWiki = new ( function( $ ) {
 				// include modules which are already loaded
 				batch = [];
 				// Asynchronously append a script tag to the end of the body
-				function request() {
-					var html = '';
-					for ( var r = 0; r < requests.length; r++ ) {
-						requests[r] = sortQuery( requests[r] );
-						// Build out the HTML
-						var src = mediaWiki.config.get( 'wgLoadScript' ) + '?' + $.param( requests[r] );
-						html += mediaWiki.html.element( 'script',
-							{ type: 'text/javascript', src: src }, '' );
-					}
-					return html;
-				}
-				// Load asynchronously after doumument ready
-				if ( ready ) {
-					setTimeout( function() { $( 'body' ).append( request() ); }, 0 )
-				} else {
-					document.write( request() );
+				for ( var r = 0; r < requests.length; r++ ) {
+					requests[r] = sortQuery( requests[r] );
+					var src = mediaWiki.config.get( 'wgLoadScript' ) + '?' + $.param( requests[r] );
+					addScript( src );
 				}
 			}
 		};
@@ -959,20 +1028,14 @@ window.mediaWiki = new ( function( $ ) {
 			// Allow calling with an external script or single dependency as a string
 			if ( typeof modules === 'string' ) {
 				// Support adding arbitrary external scripts
-				if ( modules.substr( 0, 7 ) == 'http://' || modules.substr( 0, 8 ) == 'https://' ) {
+				if ( modules.substr( 0, 7 ) === 'http://' || modules.substr( 0, 8 ) === 'https://' || modules.substr( 0, 2 ) === '//' ) {
 					if ( type === 'text/css' ) {
 						$( 'head' )
 							.append( $( '<link rel="stylesheet" type="text/css" />' )
 							.attr( 'href', modules ) );
 						return true;
 					} else if ( type === 'text/javascript' || typeof type === 'undefined' ) {
-						var script = mediaWiki.html.element( 'script',
-							{ type: 'text/javascript', src: modules }, '' );
-						if ( ready ) {
-							$( 'body' ).append( script );
-						} else {
-							document.write( script );
-						}
+						addScript( modules );
 						return true;
 					}
 					// Unknown type
@@ -1131,7 +1194,6 @@ window.mediaWiki = new ( function( $ ) {
 			return s;
 		};
 	} )();
-
 
 	/* Extension points */
 

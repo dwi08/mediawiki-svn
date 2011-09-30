@@ -13,13 +13,12 @@
  * @since 1.17
  */
 class LocalSettingsGenerator {
-
+	
 	private $extensions = array();
 	private $values = array();
-	private $groupPermissions = array();
 	private $dbSettings = '';
 	private $safeMode = false;
-
+	
 	/**
 	 * @var Installer
 	 */
@@ -27,7 +26,7 @@ class LocalSettingsGenerator {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param $installer Installer subclass
 	 */
 	public function __construct( Installer $installer ) {
@@ -47,58 +46,47 @@ class LocalSettingsGenerator {
 				'wgRightsText', 'wgRightsCode', 'wgMainCacheType', 'wgEnableUploads',
 				'wgMainCacheType', '_MemCachedServers', 'wgDBserver', 'wgDBuser',
 				'wgDBpassword', 'wgUseInstantCommons', 'wgUpgradeKey', 'wgDefaultSkin',
-				'wgMetaNamespace', 'wgResourceLoaderMaxQueryLength'
 			),
 			$db->getGlobalNames()
 		);
-
+		
 		$unescaped = array( 'wgRightsIcon' );
-		$boolItems = array(
+		$boolItems = array( 
 			'wgEnableEmail', 'wgEnableUserEmail', 'wgEnotifUserTalk',
 			'wgEnotifWatchlist', 'wgEmailAuthentication', 'wgEnableUploads', 'wgUseInstantCommons'
 		);
-
+		
 		foreach( $confItems as $c ) {
 			$val = $installer->getVar( $c );
-
+			
 			if( in_array( $c, $boolItems ) ) {
 				$val = wfBoolToStr( $val );
 			}
-
+			
 			if ( !in_array( $c, $unescaped ) ) {
 				$val = self::escapePhpString( $val );
 			}
-
+			
 			$this->values[$c] = $val;
 		}
-
+		
 		$this->dbSettings = $db->getLocalSettings();
 		$this->safeMode = $installer->getVar( '_SafeMode' );
 		$this->values['wgEmergencyContact'] = $this->values['wgPasswordSender'];
 	}
 
 	/**
-	 * For $wgGroupPermissions, set a given ['group']['permission'] value.
-	 * @param $group String Group name
-	 * @param $rightsArr Array An array of permissions, in the form of:
-	 *   array( 'right' => true, 'right2' => false )
-	 */
-	public function setGroupRights( $group, $rightsArr ) {
-		$this->groupPermissions[$group] = $rightsArr;
-	}
-
-	/**
 	 * Returns the escaped version of a string of php code.
-	 *
+	 * 
 	 * @param $string String
-	 *
+	 * 
 	 * @return String
 	 */
 	public static function escapePhpString( $string ) {
 		if ( is_array( $string ) || is_object( $string ) ) {
 			return false;
 		}
-
+		
 		return strtr(
 			$string,
 			array(
@@ -115,26 +103,20 @@ class LocalSettingsGenerator {
 	/**
 	 * Return the full text of the generated LocalSettings.php file,
 	 * including the extensions
-	 *
+	 * 
 	 * @return String
 	 */
 	public function getText() {
 		$localSettings = $this->getDefaultText();
-
+		
 		if( count( $this->extensions ) ) {
-			$localSettings .= "
-# Enabled Extensions. Most extensions are enabled by including the base extension file here
-# but check specific extension documentation for more details
-# The following extensions were automatically enabled:\n";
-
+			$localSettings .= "\n# The following extensions were automatically enabled:\n";
+			
 			foreach( $this->extensions as $extName ) {
 				$encExtName = self::escapePhpString( $extName );
 				$localSettings .= "require( \"extensions/$encExtName/$encExtName.php\" );\n";
 			}
 		}
-
-		$localSettings .= "\n\n# End of automatically generated settings.
-# Add more configuration options below.\n\n";
 
 		return $localSettings;
 	}
@@ -153,25 +135,25 @@ class LocalSettingsGenerator {
 	 */
 	private function buildMemcachedServerList() {
 		$servers = $this->values['_MemCachedServers'];
-
+		
 		if( !$servers ) {
 			return 'array()';
 		} else {
 			$ret = 'array( ';
 			$servers = explode( ',', $servers );
-
+			
 			foreach( $servers as $srv ) {
 				$srv = trim( $srv );
 				$ret .= "'$srv', ";
 			}
-
+			
 			return rtrim( $ret, ', ' ) . ' )';
 		}
 	}
 
 	/**
 	 * @return String
-	 */
+	 */	
 	private function getDefaultText() {
 		if( !$this->values['wgImageMagickConvertCommand'] ) {
 			$this->values['wgImageMagickConvertCommand'] = '/usr/bin/convert';
@@ -179,34 +161,17 @@ class LocalSettingsGenerator {
 		} else {
 			$magic = '';
 		}
-
+		
 		if( !$this->values['wgShellLocale'] ) {
 			$this->values['wgShellLocale'] = 'en_US.UTF-8';
 			$locale = '#';
 		} else {
 			$locale = '';
 		}
-
-		$rightsUrl = $this->values['wgRightsUrl'] ? '' : '#';
+		
+		$rights = $this->values['wgRightsUrl'] ? '' : '#';
 		$hashedUploads = $this->safeMode ? '' : '#';
-		$metaNamespace = '';
-		if( $this->values['wgMetaNamespace'] !== $this->values['wgSitename'] ) {
-			$metaNamespace = "\$wgMetaNamespace = \"{$this->values['wgMetaNamespace']}\";\n";
-		}
-
-		$groupRights = '';
-		if( $this->groupPermissions ) {
-			$groupRights .= "# The following permissions were set based on your choice in the installer\n";
-			foreach( $this->groupPermissions as $group => $rightArr ) {
-				$group = self::escapePhpString( $group );
-				foreach( $rightArr as $right => $perm ) {
-					$right = self::escapePhpString( $right );
-					$groupRights .= "\$wgGroupPermissions['$group']['$right'] = " .
-						wfBoolToStr( $perm ) . ";\n";
-				}
-			}
-		}
-
+		
 		switch( $this->values['wgMainCacheType'] ) {
 			case 'anything':
 			case 'db':
@@ -218,7 +183,7 @@ class LocalSettingsGenerator {
 			default:
 				$cacheType = 'CACHE_NONE';
 		}
-
+		
 		$mcservers = $this->buildMemcachedServerList();
 		return "<?php
 # This file was automatically generated by the MediaWiki {$GLOBALS['wgVersion']}
@@ -240,8 +205,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 ## Uncomment this to disable output compression
 # \$wgDisableOutputCompression = true;
 
-\$wgSitename      = \"{$this->values['wgSitename']}\";
-{$metaNamespace}
+\$wgSitename         = \"{$this->values['wgSitename']}\";
+
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
 ## For more information on customizing the URLs please see:
@@ -326,7 +291,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 ## For attaching licensing metadata to pages, and displaying an
 ## appropriate copyright notice / icon. GNU Free Documentation
 ## License and Creative Commons licenses are supported so far.
-{$rightsUrl}\$wgEnableCreativeCommonsRdf = true;
+{$rights}\$wgEnableCreativeCommonsRdf = true;
 \$wgRightsPage = \"\"; # Set to the title of a wiki page that describes your license/copyright
 \$wgRightsUrl  = \"{$this->values['wgRightsUrl']}\";
 \$wgRightsText = \"{$this->values['wgRightsText']}\";
@@ -336,14 +301,9 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 # Path to the GNU diff3 utility. Used for conflict resolution.
 \$wgDiff3 = \"{$this->values['wgDiff3']}\";
 
-{$groupRights}
-
-# Query string length limit for ResourceLoader. You should only set this if
-# your web server has a query string length limit (then set it to that limit),
-# or if you have suhosin.get.max_value_length set in php.ini (then set it to
-# that value)
-\$wgResourceLoaderMaxQueryLength = {$this->values['wgResourceLoaderMaxQueryLength']};
+# Enabled Extensions. Most extensions are enabled by including the base extension file here
+# but check specific extension documentation for more details
 ";
 	}
-
+	
 }

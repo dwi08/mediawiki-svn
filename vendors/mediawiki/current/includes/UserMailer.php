@@ -466,7 +466,7 @@ class EmailNotification {
 		$keys    = array();
 
 		if ( $this->oldid ) {
-			$difflink = $this->title->getFullUrl( 'diff=0&oldid=' . $this->oldid );
+			$difflink = $this->title->getCanonicalUrl( 'diff=0&oldid=' . $this->oldid );
 			$keys['$NEWPAGE'] = wfMsgForContent( 'enotif_lastvisited', $difflink );
 			$keys['$OLDID']   = $this->oldid;
 			$keys['$CHANGEDORCREATED'] = wfMsgForContent( 'changed' );
@@ -483,17 +483,17 @@ class EmailNotification {
 			 * revision.
 			 */
 			$keys['$NEWPAGE'] = wfMsgForContent( 'enotif_lastdiff',
-					$this->title->getFullURL( "oldid={$this->oldid}&diff=next" ) );
+					$this->title->getCanonicalUrl( "oldid={$this->oldid}&diff=next" ) );
         }
 
 		$body = strtr( $body, $keys );
 		$pagetitle = $this->title->getPrefixedText();
 		$keys['$PAGETITLE']          = $pagetitle;
-		$keys['$PAGETITLE_URL']      = $this->title->getFullUrl();
+		$keys['$PAGETITLE_URL']      = $this->title->getCanonicalUrl();
 
 		$keys['$PAGEMINOREDIT']      = $medit;
 		$keys['$PAGESUMMARY']        = $summary;
-		$keys['$UNWATCHURL']         = $this->title->getFullUrl( 'action=unwatch' );
+		$keys['$UNWATCHURL']         = $this->title->getCanonicalUrl( 'action=unwatch' );
 
 		$subject = strtr( $subject, $keys );
 
@@ -528,10 +528,10 @@ class EmailNotification {
 			$subject = str_replace( '$PAGEEDITOR', $name, $subject );
 			$keys['$PAGEEDITOR']          = $name;
 			$emailPage = SpecialPage::getSafeTitleFor( 'Emailuser', $name );
-			$keys['$PAGEEDITOR_EMAIL'] = $emailPage->getFullUrl();
+			$keys['$PAGEEDITOR_EMAIL'] = $emailPage->getCanonicalUrl();
 		}
 		$userPage = $editor->getUserPage();
-		$keys['$PAGEEDITOR_WIKI'] = $userPage->getFullUrl();
+		$keys['$PAGEEDITOR_WIKI'] = $userPage->getCanonicalUrl();
 		$body = strtr( $body, $keys );
 		$body = wordwrap( $body, 72 );
 

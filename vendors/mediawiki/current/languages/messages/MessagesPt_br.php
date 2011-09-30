@@ -8,7 +8,6 @@
  * @file
  *
  * @author Bani
- * @author Brion
  * @author BrunaaAa
  * @author Brunoy Anastasiya Seryozhenko
  * @author Capmo
@@ -32,7 +31,6 @@
  * @author Luckas Blade
  * @author Malafaya
  * @author McDutchie
- * @author Raylton P. Sousa
  * @author Rodrigo Calanca Nishino
  * @author Urhixidur
  * @author Vuln
@@ -292,7 +290,7 @@ $magicWords = array(
 
 $messages = array(
 # User preference toggles
-'tog-underline'               => 'Sublinhar links:',
+'tog-underline'               => 'Sublinhar hiperligações:',
 'tog-highlightbroken'         => 'Formatar links quebrados <a href="" class="new">como isto</a> (alternativa: como isto<a href="" class="internal">?</a>).',
 'tog-justify'                 => 'Justificar parágrafos',
 'tog-hideminor'               => 'Esconder edições secundárias nas mudanças recentes',
@@ -1056,7 +1054,7 @@ Poderá ter sido eliminada da wiki ou renomeada.
 Tente [[Special:Search|pesquisar na wiki]] por páginas relevantes.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(resumo da edição suprimido)',
+'rev-deleted-comment'         => '(comentário removido)',
 'rev-deleted-user'            => '(nome de usuário removido)',
 'rev-deleted-event'           => '(entrada removida)',
 'rev-deleted-user-contribs'   => '[nome de usuário ou endereço de IP eliminado - edição ocultada das contribuições]',
@@ -1224,7 +1222,7 @@ Certifique-se de que tal alteração manterá a continuidade das ações.',
 'shown-title'                      => 'Mostrar $1 {{PLURAL:$1|resultado|resultados}} por página',
 'viewprevnext'                     => 'Ver ($1 {{int:pipe-separator}} $2) ($3).',
 'searchmenu-legend'                => 'Opções de pesquisa',
-'searchmenu-exists'                => "*'''Há uma página chamada \"[[:\$1]]\" nesta wiki'''",
+'searchmenu-exists'                => "*'''Há uma página chamada \"[[\$1]]\" nesta wiki'''",
 'searchmenu-new'                   => "'''Criar a página \"[[:\$1|\$1]]\" nesta wiki!'''",
 'searchhelp-url'                   => 'Help:Conteúdos',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|Navegue pelas páginas com este prefixo]]',
@@ -1296,9 +1294,9 @@ Note que os índices do sistema de busca externo poderão conter referências de
 'prefs-rc'                      => 'Mudanças recentes',
 'prefs-watchlist'               => 'Lista de páginas vigiadas',
 'prefs-watchlist-days'          => 'Dias a mostrar na lista de páginas vigiadas:',
-'prefs-watchlist-days-max'      => 'No máximo 7 dias',
+'prefs-watchlist-days-max'      => '(no máximo 7 dias)',
 'prefs-watchlist-edits'         => 'Número de edições mostradas na lista de páginas vigiadas expandida:',
-'prefs-watchlist-edits-max'     => 'Número máximo: 1000',
+'prefs-watchlist-edits-max'     => '(número máximo: 1000)',
 'prefs-watchlist-token'         => 'Senha para a lista de páginas vigiadas:',
 'prefs-misc'                    => 'Diversos',
 'prefs-resetpass'               => 'Alterar senha',
@@ -1504,6 +1502,7 @@ Caso decida fornecê-lo, este será utilizado para dar-lhe crédito pelo seu tra
 'right-reset-passwords'       => 'Redefinir a senha de outros usuários',
 'right-override-export-depth' => 'Exportar páginas incluindo páginas ligadas até uma profundidade de 5',
 'right-sendemail'             => 'Enviar email a outros usuários',
+'right-disableaccount'        => 'Desativar contas',
 
 # User rights log
 'rightslog'      => 'Registro de privilégios de usuário',
@@ -1674,7 +1673,7 @@ Se ainda pretende carregar o seu arquivo, por favor, volte e use um novo nome. [
 'fileexists-shared-forbidden' => 'Já existe um arquivo com este nome no repositório de arquivos compartilhados.
 Se você ainda quer carregar o seu arquivo, por favor volte e use um novo nome. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Esta imagem é uma duplicata do seguinte {{PLURAL:$1|arquivo|arquivos}}:',
-'file-deleted-duplicate'      => 'Um arquivo idêntico a este ([[:$1]]) foi eliminado anteriormente. Verifique o motivo da eliminação de tal arquivo antes de prosseguir com o re-envio.',
+'file-deleted-duplicate'      => 'Um arquivo idêntico a este ([[$1]]) foi eliminado anteriormente. Verifique o motivo da eliminação de tal arquivo antes de prosseguir com o re-envio.',
 'uploadwarning'               => 'Aviso',
 'uploadwarning-text'          => 'Por favor modifique a descrição do arquivo abaixo e tente novamente',
 'savefile'                    => 'Salvar arquivo',
@@ -1736,23 +1735,22 @@ Por gentileza, entre em contato com um [[Special:ListUsers/sysop|administrador]]
 'upload-http-error'         => 'Ocorreu um erro HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Acesso negado',
-'img-auth-nopathinfo'       => 'Falta PATH_INFO
+'img-auth-accessdenied' => 'Acesso negado',
+'img-auth-nopathinfo'   => 'Falta PATH_INFO
 Seu servidor não está configurado para passar essa informação.
 Pode ser baseado em CGI e não suportar img_auth.
 Veja http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'O caminho requerido não está no directório de carregamento configurado.',
-'img-auth-badtitle'         => 'Não é possível criar um título válido a partir de "$1".',
-'img-auth-nologinnWL'       => 'Você não está logado e "$1" não está na lista branca.',
-'img-auth-nofile'           => 'Arquivo "$1" não existe.',
-'img-auth-isdir'            => 'Você está tentando acessar o diretório "$1".
+'img-auth-notindir'     => 'O caminho requerido não está no directório de carregamento configurado.',
+'img-auth-badtitle'     => 'Não é possível criar um título válido a partir de "$1".',
+'img-auth-nologinnWL'   => 'Você não está logado e "$1" não está na lista branca.',
+'img-auth-nofile'       => 'Arquivo "$1" não existe.',
+'img-auth-isdir'        => 'Você está tentando acessar o diretório "$1".
 Somente acesso ao arquivo é permitido.',
-'img-auth-streaming'        => "Realizando ''streaming'' de \"\$1\".",
-'img-auth-public'           => 'A img_auth.php produz arquivos a partir de uma wiki privada.
+'img-auth-streaming'    => "Realizando ''streaming'' de \"\$1\".",
+'img-auth-public'       => 'A img_auth.php produz arquivos a partir de uma wiki privada.
 Esta wiki está configurada como uma wiki pública.
 Para melhor segurança, o img_auth.php está desativado.',
-'img-auth-noread'           => 'Usuário não tem acesso para ler "$1".',
-'img-auth-bad-query-string' => 'A URL tem um texto de consulta inválido.',
+'img-auth-noread'       => 'Usuário não tem acesso para ler "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'URL inválida: $1',
@@ -1990,7 +1988,7 @@ Por favor note que outros websites podem apontar para um arquivo através de um 
 'nopagetext'              => 'A página alvo especificada não existe.',
 'pager-newer-n'           => '{{PLURAL:$1|1 recente|$1 recentes}}',
 'pager-older-n'           => '{{PLURAL:$1|1 antiga|$1 antigas}}',
-'suppress'                => 'Supervisor',
+'suppress'                => 'Visão geral',
 
 # Book sources
 'booksources'               => 'Fontes de livros',
@@ -2188,13 +2186,13 @@ Você pode também reativar as notificações para todas as suas páginas vigiad
 
 --
 Para alterar as configurações de sua lista de páginas vigiadas, visite
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Para retirar esta página de sua lista de páginas vigiadas, visite
 $UNWATCHURL
 
 Comentários e assistência:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Eliminar página',
@@ -2461,7 +2459,7 @@ Consulte a [[Special:IPBlockList|lista de IPs bloqueados]] para rever os bloquei
 'ipusubmit'                       => 'Remover este bloqueio',
 'unblocked'                       => '[[User:$1|$1]] foi desbloqueado',
 'unblocked-id'                    => 'O bloqueio de $1 foi removido com sucesso',
-'ipblocklist'                     => 'Usuários bloqueados',
+'ipblocklist'                     => 'Usuários e endereços de IP bloqueados',
 'ipblocklist-legend'              => 'Procurar por um usuário bloqueado',
 'ipblocklist-username'            => 'Usuário ou endereço de IP:',
 'ipblocklist-sh-userblocks'       => '$1 bloqueios de contas',
@@ -2698,8 +2696,7 @@ Todas as acções de importação transwiki são registradas no [[Special:Log/im
 'import-interwiki-namespace' => 'Domínio de destino:',
 'import-upload-filename'     => 'Nome do arquivo:',
 'import-comment'             => 'Comentário:',
-'importtext'                 => 'Por favor, exporte o arquivo da wiki de origem utilizando a página especial [[Special:Export|exportação de páginas]].
-Salve o arquivo no seu computador e importe-o aqui.',
+'importtext'                 => 'Por favor, exporte o arquivo da fonte wiki utilizando a ferramenta {{ns:special}}:Export, salve o arquivo para o seu disco e importe-o aqui.',
 'importstart'                => 'Importando páginas...',
 'import-revision-count'      => '{{PLURAL:$1|uma edição|$1 edições}}',
 'importnopages'              => 'Não existem páginas a importar.',
@@ -3001,8 +2998,8 @@ Caso o arquivo tenha sido modificado a partir do seu estado original, alguns det
 'exif-colorspace'                  => 'Espaço de cor',
 'exif-componentsconfiguration'     => 'Significado de cada componente',
 'exif-compressedbitsperpixel'      => 'Modo de compressão de imagem',
-'exif-pixelydimension'             => 'Largura da imagem',
-'exif-pixelxdimension'             => 'Altura da imagem',
+'exif-pixelydimension'             => 'Largura de imagem válida',
+'exif-pixelxdimension'             => 'Altura de imagem válida',
 'exif-makernote'                   => 'Anotações do fabricante',
 'exif-usercomment'                 => 'Comentários de usuários',
 'exif-relatedsoundfile'            => 'arquivo áudio relacionado',
@@ -3018,8 +3015,8 @@ Caso o arquivo tenha sido modificado a partir do seu estado original, alguns det
 'exif-spectralsensitivity'         => 'Sensibilidade espectral',
 'exif-isospeedratings'             => 'Taxa de velocidade ISO',
 'exif-oecf'                        => 'Fator de conversão optoeletrônica.',
-'exif-shutterspeedvalue'           => 'Velocidade do obturador (APEX)',
-'exif-aperturevalue'               => 'Abertura APEX',
+'exif-shutterspeedvalue'           => 'Velocidade do obturador',
+'exif-aperturevalue'               => 'Abertura',
 'exif-brightnessvalue'             => 'Brilho',
 'exif-exposurebiasvalue'           => 'Polarização de exposição',
 'exif-maxaperturevalue'            => 'Abertura máxima',
@@ -3084,7 +3081,6 @@ Caso o arquivo tenha sido modificado a partir do seu estado original, alguns det
 'exif-gpsareainformation'          => 'Nome da área do GPS',
 'exif-gpsdatestamp'                => 'Data do GPS',
 'exif-gpsdifferential'             => 'Correção do diferencial do GPS',
-'exif-objectname'                  => 'Título curto',
 
 # EXIF attributes
 'exif-compression-1' => 'Sem compressão',
@@ -3165,8 +3161,6 @@ Caso o arquivo tenha sido modificado a partir do seu estado original, alguns det
 'exif-sensingmethod-5' => 'Sensor de área sequencial de cores',
 'exif-sensingmethod-7' => 'Sensor trilinear',
 'exif-sensingmethod-8' => 'Sensor linear sequencial de cores',
-
-'exif-filesource-3' => 'Câmara fotográfica digital',
 
 'exif-scenetype-1' => 'Imagem fotografada diretamente',
 
@@ -3288,21 +3282,6 @@ $3
 
 Caso a conta *não* lhe pertença, siga o seguinte link
 para cancelar a confirmação do endereço de e-mail:
-
-$5
-
-Este código de confirmação irá expirar em $4.',
-'confirmemail_body_set'     => 'Alguém, provavelmente você com o endereço IP $1,
-definiu o endereço de correio eletrónico da conta "$2" para este na {{SITENAME}}.
-
-Para confirmar que esta conta é realmente sua e reativar
-as funcionalidades de correio electrónico na {{SITENAME}},
-abra o seguinte link no seu browser:
-
-$3
-
-Caso a conta *não* lhe pertença, siga o seguinte link
-para cancelar a confirmação do endereço de correio electrónico:
 
 $5
 
@@ -3528,5 +3507,18 @@ Entre com o nome de arquivo sem fornecer o prefixo "{{ns:file}}:".',
 # SQLite database support
 'sqlite-has-fts' => '$1 com suporte de pesquisa de texto completo',
 'sqlite-no-fts'  => '$1 sem suporte de pesquisa de texto completo',
+
+# Special:DisableAccount
+'disableaccount'             => 'Desativar uma conta',
+'disableaccount-user'        => 'Nome de usuário:',
+'disableaccount-reason'      => 'Motivo:',
+'disableaccount-confirm'     => "Desativar esta conta.
+O usuário ficará impossibilitado de se autenticar, de reiniciar a palavra-chave e de receber notificações por e-mail.
+Se neste momento o usuário estiver autenticado em algum lugar, ele sairá de imediato.
+''Note que a desativação de uma conta não pode ser revertida sem intervenção de um administrador.''",
+'disableaccount-mustconfirm' => 'Você deve confirmar que pretende desativar esta conta.',
+'disableaccount-nosuchuser'  => 'A conta de usuário "$1" não existe.',
+'disableaccount-success'     => 'A conta de usuário "$1" foi desativada permanentemente.',
+'disableaccount-logentry'    => 'desativou permanentemente a conta [[$1]]',
 
 );

@@ -135,6 +135,7 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 					ApiQueryBase::addTitleInfo( $vals, $title );
 				}
 				if ( $fld_url ) {
+					// We *could* run this through wfExpandUrl() but I think it's better to output the link verbatim, even if it's protocol-relative --Roan
 					$vals['url'] = $row->el_to;
 				}
 				$fit = $result->addValue( array( 'query', $this->getModuleName() ), null, $vals );
@@ -229,6 +230,6 @@ class ApiQueryExtLinksUsage extends ApiQueryGeneratorBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryExtLinksUsage.php 70647 2010-08-07 19:59:42Z ialex $';
+		return __CLASS__ . ': $Id: ApiQueryExtLinksUsage.php 92172 2011-07-14 17:48:25Z catrope $';
 	}
 }

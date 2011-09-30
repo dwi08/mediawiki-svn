@@ -10,7 +10,6 @@
  * @author Ainali
  * @author Boivie
  * @author Dafer45
- * @author EPO
  * @author Fluff
  * @author GameOn
  * @author Grillo
@@ -41,7 +40,6 @@
  * @author Tobulos1
  * @author Where next Columbus
  * @author Where next Columbus?
- * @author WikiPhoenix
  * @author לערי ריינהארט
  */
 
@@ -336,9 +334,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Visa antalet användare som bevakar',
 'tog-oldsig'                  => 'Förhandsvisning av nuvarande signatur:',
 'tog-fancysig'                => 'Rå signatur som wikitext (utan en automatisk länk)',
-'tog-externaleditor'          => 'Använd extern editor som standard (endast för experter, speciella inställningar på din dator krävs. [Http://www.mediawiki.org/wiki/Manual:External_editors Mer information.])',
-'tog-externaldiff'            => 'Använd externt diff-verktyg som förval(avancerat, kräver speciella inställningar i din dator.
-[http://www.mediawiki.org/wiki/Manual:External_editors Mer information.])',
+'tog-externaleditor'          => 'Använd extern texteditor som standard (avancerat, kräver speciella inställningar i din dator)',
+'tog-externaldiff'            => 'Använd externt diff-verktyg (avancerat, kräver speciella inställningar i din dator)',
 'tog-showjumplinks'           => 'Aktivera "hoppa till"-tillgänglighetslänkar',
 'tog-uselivepreview'          => 'Använd direktuppdaterad förhandsgranskning (Javascript, på försöksstadiet)',
 'tog-forceeditsummary'        => 'Påminn mig om jag inte fyller i en redigeringskommentar',
@@ -910,11 +907,7 @@ eller <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}
 'userpage-userdoesnotexist-view'   => 'Kontot "$1" är inte registrerat.',
 'blocked-notice-logextract'        => 'Användaren är blockerad.
 Orsaken till senaste blockeringen kan ses nedan:',
-'clearyourcache'                   => "'''Observera: Sedan du sparat sidan kan du behöva tömma din webbläsares cache för att se ändringarna.''' 
-'''Mozilla/Firefox/Safari:''' håll ner ''Skift'' och klicka på ''Reload'' eller tryck antingen ''Ctrl-F5'' eller ''Ctrl-R'' (''Command-R'' på Macintosh);
-'''Konqueror:''': klicka ''Reload'' eller tryck ''F5;''
-'''Opera:''' rensa cachen i ''Tools → Preferences;''
-'''Internet Explorer:'''  håll ner ''Ctrl'' och klicka på ''Refresh'' eller tryck ''Ctrl-F5.''",
+'clearyourcache'                   => "'''Observera: Sedan du sparat sidan kan du behöva tömma din webbläsares cache för att se ändringarna.''' '''Mozilla/Firefox/Safari:''' håll ner ''Skift'' och klicka på ''Reload'' eller tryck antingen ''Ctrl-F5'' eller ''Ctrl-R'' (''Command-R'' på Macintosh); '''Konqueror:''': klicka ''Reload'' eller tryck ''F5;'' '''Opera:''' rensa cachen i ''Tools → Preferences;'' '''Internet Explorer:'''  håll ner ''Ctrl'' och klicka på ''Refresh'' eller tryck ''Ctrl-F5.''",
 'usercssyoucanpreview'             => "'''Tips:''' Använd \"{{int:showpreview}}\"-knappen för att testa din nya css innan du sparar.",
 'userjsyoucanpreview'              => "'''Tips:''' Använd \"{{int:showpreview}}\"-knappen för att testa din nya JavaScript innan du sparar.",
 'usercsspreview'                   => "'''Kom ihåg att du bara förhandsgranskar din användar-CSS.
@@ -1014,7 +1007,7 @@ Antalet anrop får vara högst $2, nu görs {{PLURAL:$#|$1 anrop}}.',
 'expensive-parserfunction-category'       => 'Sidor med för många resurskrävande parserfunktioner',
 'post-expand-template-inclusion-warning'  => 'Varning: Den här sidan innehåller för mycket mallinklusioner.
 Några av mallarna kommer inte att inkluderas.',
-'post-expand-template-inclusion-category' => 'Sidor som inkluderar för mycket mallkod',
+'post-expand-template-inclusion-category' => 'Sidor som inkluderar för mycket mallar',
 'post-expand-template-argument-warning'   => 'Varning: Sidan innehåller en eller flera mallparametrar som blir för långa när de expanderas.
 Dessa parametrar har uteslutits.',
 'post-expand-template-argument-category'  => 'Sidor med uteslutna mallparametrar',
@@ -1068,7 +1061,7 @@ Den kan ha tagits bort från wikin eller bytt namn.
 Prova att [[Special:Search|söka på wikin]] för relevanta nya sidor.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(redigeringssammanfattning togs bort)',
+'rev-deleted-comment'         => '(kommentar borttagen)',
 'rev-deleted-user'            => '(användarnamn borttaget)',
 'rev-deleted-event'           => '(loggåtgärd borttagen)',
 'rev-deleted-user-contribs'   => '[användarnamn eller IP-adress har tagits bort - redigeringen visas ej bland bidragen]',
@@ -1086,15 +1079,15 @@ Som administratör kan du se den; det kan finnas mer information i [{{fullurl:{{
 Som administratör kan du se den; det kan finnas mer information i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} undanhållandeloggen].",
 'rev-deleted-no-diff'         => "Du kan inte se den här diffen på grund av att en av versionerna har '''raderats'''.
 Det kan finnas mer information i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} raderingsloggen].",
-'rev-suppressed-no-diff'      => "Du kan inte se den här diffen för en av sidversionerna har '''raderats'''.",
+'rev-suppressed-no-diff'      => "Du kan inte se skillnaden för en av revisionerna har blivit '''raderad'''.",
 'rev-deleted-unhide-diff'     => "En av versionerna för den här diffen har '''raderats'''.
 Det kan finnas mer information i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} raderingsloggen].
 Som administratör kan du fortfarande [$1 se den här diffen] om du önskar att fortsätta.",
 'rev-suppressed-unhide-diff'  => "En av versionerna för denna diff har blivit '''undanhållen'''.
 Det kan finnas detaljer i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} undanhållandeloggen].
 Som administratör kan du fortfarande [$1 se denna diff] om du önskar fortsätta.",
-'rev-deleted-diff-view'       => "En av sidversionerna i denna diff har '''raderats'''.
-Som administratör kan du se denna diff. Mer information kan finnas i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} raderingsloggen].",
+'rev-deleted-diff-view'       => "En av revisionerna för denna diff har blivit '''raderad'''.
+Som en administratör kan du se denna diff, det kan finnas detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} raderingsloggen].",
 'rev-suppressed-diff-view'    => "En av versionerna för denna diff har blivit '''undanhållen'''.
 Som administratör kan du se denna diff; det kan finnas detaljer i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} undanhållandeloggen].",
 'rev-delundel'                => 'visa/göm',
@@ -1238,7 +1231,7 @@ Se till att sidhistorikens kontinuitet behålls när du sammanfogar historik.',
 'shown-title'                      => 'Visa $1 {{PLURAL:$1|resultat|resultat}} per sida',
 'viewprevnext'                     => 'Visa ($1 {{int:pipe-separator}} $2) ($3)',
 'searchmenu-legend'                => 'Sökalternativ',
-'searchmenu-exists'                => "'''Det finns en sida med namnet \"[[:\$1]]\" på denna wiki.'''",
+'searchmenu-exists'                => "'''Det finns en sida med namnet \"[[:\$1]]\" på denna wiki'''",
 'searchmenu-new'                   => "'''Skapa sidan \"[[:\$1]]\" på denna wiki!'''",
 'searchhelp-url'                   => 'Help:Innehåll',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|Bläddra igenom sidor med detta prefix]]',
@@ -1310,9 +1303,9 @@ Notera dock att deras indexering av {{SITENAME}} kan vara något föråldrad.',
 'prefs-rc'                      => 'Senaste ändringar',
 'prefs-watchlist'               => 'Bevakningslista',
 'prefs-watchlist-days'          => 'Antal dygn som skall visas i bevakningslistan:',
-'prefs-watchlist-days-max'      => 'Maximalt 7 dygn',
+'prefs-watchlist-days-max'      => '(maximalt 7 dygn)',
 'prefs-watchlist-edits'         => 'Maximalt antal redigeringar som visas i utökad bevakningslista:',
-'prefs-watchlist-edits-max'     => 'Maximalt antal: 1 000',
+'prefs-watchlist-edits-max'     => '(maximalt antal: 1 000)',
 'prefs-watchlist-token'         => 'Bevakningslistsnyckel:',
 'prefs-misc'                    => 'Diverse',
 'prefs-resetpass'               => 'Ändra lösenord',
@@ -1329,7 +1322,7 @@ Notera dock att deras indexering av {{SITENAME}} kan vara något föråldrad.',
 'resultsperpage'                => 'Träffar per sida:',
 'contextlines'                  => 'Antal rader per träff:',
 'contextchars'                  => 'Tecken per rad:',
-'stub-threshold'                => 'Gräns för <a href="#" class="stub">stubblänk</a>-formatering (byte):',
+'stub-threshold'                => 'Gräns för <a href="#" class="stub">stublänk</a>-formattering (byte):',
 'stub-threshold-disabled'       => 'Avaktiverat',
 'recentchangesdays'             => 'Antal dygn som skall visas i "senaste ändringarna":',
 'recentchangesdays-max'         => '(maximalt $1 {{PLURAL:$1|dygn|dygn}})',
@@ -1518,6 +1511,7 @@ Du kan också välja att låta andra användare kontakta dig genom din användar
 'right-reset-passwords'       => 'Återställa andra användares lösenord',
 'right-override-export-depth' => 'Exportera sidor inklusive länkade sidor till ett djup på 5',
 'right-sendemail'             => 'Skicka e-post till andra användare',
+'right-disableaccount'        => 'Inaktivera konton',
 
 # User rights log
 'rightslog'      => 'Användarrättighetslogg',
@@ -1690,7 +1684,7 @@ Om du fortfarande vill ladda upp din fil, var god gå tillbaka och välj ett nyt
 'fileexists-shared-forbidden' => 'En fil med detta namn finns redan bland de delade filerna.
 Om du ändå vill ladda upp din fil, gå då tillbaka och använd ett annat namn. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Den här filen är en dubblett till följande {{PLURAL:$1|fil|filer}}:',
-'file-deleted-duplicate'      => 'En identisk fil till den här filen ([[:$1]]) har tidigare raderats. Du bör kontrollera den filens raderingshistorik innan du fortsätter att återuppladda den.',
+'file-deleted-duplicate'      => 'En identisk fil till den här filen ([[$1]]) har tidigare raderats. Du bör kontrollera den filens raderingshistorik innan du fortsätter att återuppladda den.',
 'uploadwarning'               => 'Uppladdningsvarning',
 'uploadwarning-text'          => 'Var god och ändra filbeskrivningen nedanför och försök igen.',
 'savefile'                    => 'Spara fil',
@@ -1754,23 +1748,22 @@ Om problemet kvarstår, kontakta en [[Special:ListUsers/sysop|administratör]].'
 'upload-http-error'         => 'Ett HTTP-fel uppstod: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Åtkomst nekad',
-'img-auth-nopathinfo'       => 'Saknad PATH_INFO.
+'img-auth-accessdenied' => 'Åtkomst nekad',
+'img-auth-nopathinfo'   => 'Saknad PATH_INFO.
 Din server är inte inställd för att ge denna information.
 Den kan vara CGI-baserad och stöttar inte img_auth.
 Se http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Den önskade sökvägen finns inte i den inställda uppladdningskatalogen.',
-'img-auth-badtitle'         => 'Kan inte skapa en giltig titel från "$1"',
-'img-auth-nologinnWL'       => 'Du är inte inloggad och "$1" finns inte i vitlistan.',
-'img-auth-nofile'           => 'Filen "$1" finns inte.',
-'img-auth-isdir'            => 'Du försöker få åtkomst till en katalog "$1".
+'img-auth-notindir'     => 'Den önskade sökvägen finns inte i den inställda uppladdningskatalogen.',
+'img-auth-badtitle'     => 'Kan inte skapa en giltig titel från "$1"',
+'img-auth-nologinnWL'   => 'Du är inte inloggad och "$1" finns inte i vitlistan.',
+'img-auth-nofile'       => 'Filen "$1" finns inte.',
+'img-auth-isdir'        => 'Du försöker få åtkomst till en katalog "$1".
 Endast åtkomst till filer är tillåten.',
-'img-auth-streaming'        => 'Strömmar "$1".',
-'img-auth-public'           => 'Funktionaliteten i img_auth.php är att skicka filer från en privat wiki.
+'img-auth-streaming'    => 'Strömmar "$1".',
+'img-auth-public'       => 'Funktionaliteten i img_auth.php är att skicka filer från en privat wiki.
 Denna wiki är konfigurerad som en publik wiki.
 För optimal säkerhet, har img_auth.php blivit avaktiverad.',
-'img-auth-noread'           => 'Användaren har inte tillåtelse att läsa "$1"',
-'img-auth-bad-query-string' => 'URL-adressen har en ogiltig frågesträng.',
+'img-auth-noread'       => 'Användaren har inte tillåtelse att läsa "$1"',
 
 # HTTP errors
 'http-invalid-url'      => 'Ogiltig URL: $1',
@@ -2205,17 +2198,14 @@ Du kan också ta bort flaggan för meddelanden om ändringar på alla sidor i di
              Hälsningar från {{SITENAME}}s meddelandesystem
 
 --
-För att ändra inställningarna för dina uppdateringar via e-post, besök
-{{fullurl:{{#special:Preferences}}}}
-
 För att ändra inställningarna i din bevakningslista, besök
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 För att radera sidan från din bevakningslista, besök
 $UNWATCHURL
 
 Feedback och ytterligare hjälp:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Ta bort sida',
@@ -2399,10 +2389,10 @@ $1',
 'sp-contributions-newbies'             => 'Visa endast bidrag från nya konton',
 'sp-contributions-newbies-sub'         => 'Från nya konton',
 'sp-contributions-newbies-title'       => 'Bidrag från nya konton',
-'sp-contributions-blocklog'            => 'blockeringslogg',
+'sp-contributions-blocklog'            => 'Blockeringslogg',
 'sp-contributions-deleted'             => 'raderade användarbidrag',
 'sp-contributions-uploads'             => 'uppladdningar',
-'sp-contributions-logs'                => 'loggar',
+'sp-contributions-logs'                => 'Loggar',
 'sp-contributions-talk'                => 'diskussion',
 'sp-contributions-userrights'          => 'hantering av användarrättigheter',
 'sp-contributions-blocked-notice'      => 'Användaren är blockerad.
@@ -2480,7 +2470,7 @@ Ange orsak nedan (exempelvis genom att nämna sidor som blivit vandaliserade).',
 'ipusubmit'                       => 'Upphäv denna blockering',
 'unblocked'                       => 'Blockeringen av [[User:$1|$1]] har hävts',
 'unblocked-id'                    => 'Blockeringen $1 har hävts',
-'ipblocklist'                     => 'Blockerade användare',
+'ipblocklist'                     => 'Blockerade IP-adresser och användarnamn',
 'ipblocklist-legend'              => 'Sök efter en blockerad användare',
 'ipblocklist-username'            => 'Användarnamn eller IP-adress',
 'ipblocklist-sh-userblocks'       => '$1 blockeringar av konton',
@@ -2490,8 +2480,8 @@ Ange orsak nedan (exempelvis genom att nämna sidor som blivit vandaliserade).',
 'ipblocklist-localblock'          => 'Lokalblockering',
 'ipblocklist-otherblocks'         => 'Övriga {{PLURAL:$1|blockering|blockeringar}}',
 'blocklistline'                   => '$1, $2 blockerade $3 ($4)',
-'infiniteblock'                   => 'på obestämd tid',
-'expiringblock'                   => 'upphör den $1 kl $2',
+'infiniteblock'                   => 'för evigt',
+'expiringblock'                   => 'utgår den $1 kl $2',
 'anononlyblock'                   => 'endast oinloggade',
 'noautoblockblock'                => 'utan automatisk blockering',
 'createaccountblock'              => 'kontoregistrering blockerad',
@@ -2725,8 +2715,7 @@ All överföring mellan wikier (transwiki) listas i  [[Special:Log/import|import
 'import-interwiki-namespace' => 'Målnamnrymd:',
 'import-upload-filename'     => 'Filnamn:',
 'import-comment'             => 'Kommentar:',
-'importtext'                 => 'Var god exportera filen från ursprungs-wikin med hjälp av [[Special:Export|exporteringsverktyget]].
-Spara den på din dator och ladda upp den här.',
+'importtext'                 => 'Exportera filen från ursprungs-wikin genom att använda [[Special:Export|exportverktyget]], spara den till din hårddisk och ladda upp den här.',
 'importstart'                => 'Importerar sidor....',
 'import-revision-count'      => '$1 {{PLURAL:$1|version|versioner}}',
 'importnopages'              => 'Det finns inga sidor att importera.',
@@ -3042,8 +3031,8 @@ Den första länken på en rad måste vara en länk till en otillåten fil.
 'exif-colorspace'                  => 'Färgrymd',
 'exif-componentsconfiguration'     => 'Komponentanalys',
 'exif-compressedbitsperpixel'      => 'Bildkomprimeringsläge',
-'exif-pixelydimension'             => 'Bildbredd',
-'exif-pixelxdimension'             => 'Bildhöjd',
+'exif-pixelydimension'             => 'Giltig bildbredd',
+'exif-pixelxdimension'             => 'Giltig bildhöjd',
 'exif-makernote'                   => 'Tillverkarkommentarer',
 'exif-usercomment'                 => 'Kommentarer',
 'exif-relatedsoundfile'            => 'Relaterad ljudfil',
@@ -3059,9 +3048,9 @@ Den första länken på en rad måste vara en länk till en otillåten fil.
 'exif-spectralsensitivity'         => 'Spektral känslighet',
 'exif-isospeedratings'             => 'Filmhastighet (ISO)',
 'exif-oecf'                        => 'Optoelektronisk konversionsfaktor',
-'exif-shutterspeedvalue'           => 'APEX slutarhastighet',
-'exif-aperturevalue'               => 'APEX bländare',
-'exif-brightnessvalue'             => 'APEX ljusstyrka',
+'exif-shutterspeedvalue'           => 'Slutarhastighet',
+'exif-aperturevalue'               => 'Bländare',
+'exif-brightnessvalue'             => 'Ljusstyrka',
 'exif-exposurebiasvalue'           => 'Exponeringsbias',
 'exif-maxaperturevalue'            => 'Maximal bländare',
 'exif-subjectdistance'             => 'Avstånd till motivet',
@@ -3125,7 +3114,6 @@ Den första länken på en rad måste vara en länk till en otillåten fil.
 'exif-gpsareainformation'          => 'GPS-områdets namn',
 'exif-gpsdatestamp'                => 'GPS-datum',
 'exif-gpsdifferential'             => 'Differentiell GPS-korrektion',
-'exif-objectname'                  => 'Kort titel',
 
 # EXIF attributes
 'exif-compression-1' => 'Inte komprimerad',
@@ -3206,8 +3194,6 @@ Den första länken på en rad måste vara en länk till en otillåten fil.
 'exif-sensingmethod-5' => 'Färgsekventiell områdessensor',
 'exif-sensingmethod-7' => 'Trilinjär sensor',
 'exif-sensingmethod-8' => 'Färgsekventiell linjär sensor',
-
-'exif-filesource-3' => 'Digital stillbildskamera',
 
 'exif-scenetype-1' => 'Direkt fotograferad bild',
 
@@ -3533,7 +3519,7 @@ Skriv filnamnet utan prefixet "{{ns:file}}:" .',
 'tags-display-header'     => 'Utseende på listor över ändringar',
 'tags-description-header' => 'Full beskrivning av betydelse',
 'tags-hitcount-header'    => 'Märkta ändringar',
-'tags-edit'               => 'redigera',
+'tags-edit'               => 'redigering',
 'tags-hitcount'           => '$1 {{PLURAL:$1|ändring|ändringar}}',
 
 # Special:ComparePages
@@ -3569,5 +3555,18 @@ Skriv filnamnet utan prefixet "{{ns:file}}:" .',
 # SQLite database support
 'sqlite-has-fts' => '$1 med stöd för fulltextsökning',
 'sqlite-no-fts'  => '$1 utan stöd för fulltextsökning',
+
+# Special:DisableAccount
+'disableaccount'             => 'Inaktivera ett användarkonto',
+'disableaccount-user'        => 'Användarnamn:',
+'disableaccount-reason'      => 'Orsak:',
+'disableaccount-confirm'     => "Inaktivera detta användarkonto.
+Användaren kommer inte att kunna logga in, återställa sitt lösenord, eller ta emot e-postmeddelanden.
+Om användaren är inloggad någonstans, kommer den att omedelbart loggas ut.
+''Observera att inaktivering av ett konto inte är reversibelt utan ingripande av en systemadministratör.''",
+'disableaccount-mustconfirm' => 'Du måste bekräfta att du vill inaktivera detta konto.',
+'disableaccount-nosuchuser'  => 'Användarkontot "$1" existerar inte.',
+'disableaccount-success'     => 'Användarkontot "$1" har inaktiverats permanent.',
+'disableaccount-logentry'    => 'inaktivera användarkontot [[$1]] permanent',
 
 );

@@ -4,12 +4,6 @@
  * another, but don't ignore the poor non-Monobook users either.
  */
 
-/* Default style for semantic tags */
-abbr, acronym, .explain {
-	border-bottom: 1px dotted black;
-	cursor: help;
-}
-
 /* Colored watchlist and recent changes numbers */
 .mw-plusminus-pos { color: #006400; } /* dark green */
 .mw-plusminus-neg { color: #8b0000; } /* dark red */
@@ -787,6 +781,11 @@ li.gallerybox div.thumb {
 	margin: 2px;
 }
 
+li.gallerybox div.thumb img {
+	display: block;
+	margin: 0 auto;
+}
+
 div.gallerytext {
 	overflow: hidden;
 	font-size: 94%;
@@ -795,7 +794,6 @@ div.gallerytext {
 }
 
 table.mw-enhanced-rc {
-	background: none;
 	border:0;
 	border-spacing:0;
 }
@@ -872,9 +870,15 @@ ol:lang(ckb) li {
 	list-style-type: arabic-indic;
 }
 
+ol:lang(as) li,
 ol:lang(bn) li {
 	list-style-type: -moz-bengali;
 	list-style-type: bengali;
+}
+
+ol:lang(or) li {
+	list-style-type: -moz-oriya;
+	list-style-type: oriya;
 }
 
 /* tooltip styles */

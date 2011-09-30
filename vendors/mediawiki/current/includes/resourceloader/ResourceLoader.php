@@ -29,7 +29,7 @@
 class ResourceLoader {
 
 	/* Protected Static Members */
-	protected static $filterCacheVersion = 2;
+	protected static $filterCacheVersion = 5;
 
 	/** Array: List of module name/ResourceLoaderModule object pairs */
 	protected $modules = array();
@@ -96,7 +96,8 @@ class ResourceLoader {
 				), __METHOD__
 			);
 			foreach ( $res as $row ) {
-				$this->getModule( $row->mr_resource )->setMsgBlobMtime( $lang, $row->mr_timestamp );
+				$this->getModule( $row->mr_resource )->setMsgBlobMtime( $lang, 
+					wfTimestamp( TS_UNIX, $row->mr_timestamp ) );
 				unset( $modulesWithoutMessages[$row->mr_resource] );
 			}
 		} 
@@ -134,7 +135,7 @@ class ResourceLoader {
 
 		// Try for cache hit
 		// Use CACHE_ANYTHING since filtering is very slow compared to DB queries
-		$key = wfMemcKey( 'resourceloader', 'filter', $filter, md5( $data ) );
+		$key = wfMemcKey( 'resourceloader', 'filter', $filter, self::$filterCacheVersion, md5( $data ) );
 		$cache = wfGetCache( CACHE_ANYTHING );
 		$cacheEntry = $cache->get( $key );
 		if ( is_string( $cacheEntry ) ) {
@@ -150,9 +151,11 @@ class ResourceLoader {
 						$wgResourceLoaderMinifierStatementsOnOwnLine,
 						$wgResourceLoaderMinifierMaxLineLength
 					);
+					$result .= "\n\n/* cache key: $key */\n";
 					break;
 				case 'minify-css':
 					$result = CSSMin::minify( $data );
+					$result .= "\n\n/* cache key: $key */\n";
 					break;
 			}
 
@@ -195,7 +198,6 @@ class ResourceLoader {
 	 *   this may also be a ResourceLoaderModule object. Optional when using 
 	 *   multiple-registration calling style.
 	 * @throws MWException: If a duplicate module registration is attempted
-	 * @throws MWException: If a module name contains illegal characters (pipes or commas)
 	 * @throws MWException: If something other than a ResourceLoaderModule is being registered
 	 * @return Boolean: False if there were any errors, in which case one or more modules were not
 	 *     registered
@@ -219,11 +221,6 @@ class ResourceLoader {
 				'ResourceLoader duplicate registration error. ' . 
 				'Another module has already been registered as ' . $name
 			);
-		}
-		
-		// Check $name for illegal characters
-		if ( preg_match( '/[|,]/', $name ) ) {
-			throw new MWException( "ResourceLoader module name '$name' is invalid. Names may not contain pipes (|) or commas (,)" );
 		}
 
 		// Attach module
@@ -386,7 +383,8 @@ class ResourceLoader {
 		// Some clients send "timestamp;length=123". Strip the part after the first ';'
 		// so we get a valid timestamp.
 		$ims = $context->getRequest()->getHeader( 'If-Modified-Since' );
-		if ( $ims !== false ) {
+		// Never send 304s in debug mode
+		if ( $ims !== false && !$context->getDebug() ) {
 			$imsTS = strtok( $ims, ';' );
 			if ( $mtime <= wfTimestamp( TS_UNIX, $imsTS ) ) {
 				// There's another bug in ob_gzhandler (see also the comment at
@@ -697,31 +695,6 @@ class ResourceLoader {
 	 */
 	public static function makeConfigSetScript( array $configuration ) {
 		return Xml::encodeJsCall( 'mediaWiki.config.set', array( $configuration ) );
-	}
-	
-	/**
-	 * Convert an array of module names to a packed query string.
-	 * 
-	 * For example, array( 'foo.bar', 'foo.baz', 'bar.baz', 'bar.quux' )
-	 * becomes 'foo.bar,baz|bar.baz,quux'
-	 * @param $modules array of module names (strings)
-	 * @return string Packed query string
-	 */
-	public static function makePackedModulesString( $modules ) {
-		$groups = array(); // array( prefix => array( suffixes ) )
-		foreach ( $modules as $module ) {
-			$pos = strrpos( $module, '.' );
-			$prefix = $pos === false ? '' : substr( $module, 0, $pos );
-			$suffix = $pos === false ? $module : substr( $module, $pos + 1 );
-			$groups[$prefix][] = $suffix;
-		}
-		
-		$arr = array();
-		foreach ( $groups as $prefix => $suffixes ) {
-			$p = $prefix === '' ? '' : $prefix . '.';
-			$arr[] = $p . implode( ',', $suffixes );
-		}
-		return implode( '|', $arr );
 	}
 	
 	/**

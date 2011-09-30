@@ -196,6 +196,14 @@ class Language {
 	}
 
 	/**
+	 * Returns true if a language code is of a valid form for the purposes of 
+	 * internal customisation of MediaWiki, via Messages*.php.
+	 */
+	public static function isValidBuiltInCode( $code ) {
+		return preg_match( '/^[a-z0-9-]*$/i', $code );
+	}	
+
+	/**
 	 * Get the LocalisationCache instance
 	 */
 	public static function getLocalisationCache() {
@@ -1561,21 +1569,11 @@ class Language {
 	}
 
 	function getMessage( $key ) {
-		// Don't change getPreferredVariant() to getCode() / mCode, because:
-
-		// 1. Some language like Chinese has multiple variant languages. Only
-		//    getPreferredVariant() (in LanguageConverter) could return a
-		//    sub-language which would be more suitable for the user.
-		// 2. To languages without multiple variants, getPreferredVariant()
-		//    (in FakeConverter) functions exactly same as getCode() / mCode,
-		//    it won't break anything.
-
-		// The same below.
-		return self::$dataCache->getSubitem( $this->getPreferredVariant(), 'messages', $key );
+		return self::$dataCache->getSubitem( $this->mCode, 'messages', $key );
 	}
 
 	function getAllMessages() {
-		return self::$dataCache->getItem( $this->getPreferredVariant(), 'messages' );
+		return self::$dataCache->getItem( $this->mCode, 'messages' );
 	}
 
 	function iconv( $in, $out, $string ) {
@@ -1790,8 +1788,7 @@ class Language {
 			return $s;
 		}
 
-		$isutf8 = preg_match( '/^([\x00-\x7f]|[\xc0-\xdf][\x80-\xbf]|' .
-                '[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xf7][\x80-\xbf]{3})+$/', $s );
+		$isutf8 = ( $s == iconv("UTF-8","UTF-8//IGNORE", $s));
 		if ( $isutf8 ) {
 			return $s;
 		}
@@ -2907,11 +2904,37 @@ class Language {
 		return array( $wikiUpperChars, $wikiLowerChars );
 	}
 
-	function formatTimePeriod( $seconds ) {
+	/**
+	 * @todo Document
+	 * @param $seconds int|float
+	 * @param $format Array Optional
+	 *		If $format['avoid'] == 'avoidseconds' - don't mention seconds if $seconds >= 1 hour
+	 *		If $format['avoid'] == 'avoidminutes' - don't mention seconds/minutes if $seconds > 48 hours
+	 *		If $format['noabbrevs'] is true - use 'seconds' and friends instead of 'seconds-abbrev' and friends
+	 *		For backwards compatibility, $format may also be one of the strings 'avoidseconds' or 'avoidminutes'
+	 * @return string
+	 */
+	function formatTimePeriod( $seconds, $format = array() ) {
+		if ( !is_array( $format ) ) {
+			$format = array( 'avoid' => $format, 'noabbrevs' => false ); // For backwards compatibility
+		}
+		if ( !isset( $format['avoid'] ) ) {
+			$format['avoid'] = false;
+		}
+		if ( !isset( $format['noabbrevs' ] ) ) {
+			$format['noabbrevs'] = false;
+		}
+		$secondsMsg = wfMessage( $format['noabbrevs'] ? 'seconds' : 'seconds-abbrev' )->inLanguage( $this );
+		$minutesMsg = wfMessage( $format['noabbrevs'] ? 'minutes' : 'minutes-abbrev' )->inLanguage( $this );
+		$hoursMsg = wfMessage( $format['noabbrevs'] ? 'hours' : 'hours-abbrev' )->inLanguage( $this );
+		$daysMsg = wfMessage( $format['noabbrevs'] ? 'days' : 'days-abbrev' )->inLanguage( $this );
+		
 		if ( round( $seconds * 10 ) < 100 ) {
-			return $this->formatNum( sprintf( "%.1f", round( $seconds * 10 ) / 10 ) ) . $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $this->formatNum( sprintf( "%.1f", round( $seconds * 10 ) / 10 ) );
+			$s = $secondsMsg->params( $s )->text();
 		} elseif ( round( $seconds ) < 60 ) {
-			return $this->formatNum( round( $seconds ) ) . $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $this->formatNum( round( $seconds ) );
+			$s = $secondsMsg->params( $s )->text();
 		} elseif ( round( $seconds ) < 3600 ) {
 			$minutes = floor( $seconds / 60 );
 			$secondsPart = round( fmod( $seconds, 60 ) );
@@ -2919,9 +2942,10 @@ class Language {
 				$secondsPart = 0;
 				$minutes++;
 			}
-			return $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' ) . ' ' .
-				$this->formatNum( $secondsPart ) . $this->getMessageFromDB( 'seconds-abbrev' );
-		} else {
+			$s = $minutesMsg->params( $this->formatNum( $minutes ) )->text();
+			$s .= ' ';
+			$s .= $secondsMsg->params( $this->formatNum( $secondsPart ) )->text();
+		} elseif ( round( $seconds ) <= 2 * 86400 ) {
 			$hours = floor( $seconds / 3600 );
 			$minutes = floor( ( $seconds - $hours * 3600 ) / 60 );
 			$secondsPart = round( $seconds - $hours * 3600 - $minutes * 60 );
@@ -2933,10 +2957,46 @@ class Language {
 				$minutes = 0;
 				$hours++;
 			}
-			return $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' ) . ' ' .
-				$this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' ) . ' ' .
-				$this->formatNum( $secondsPart ) . $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $hoursMsg->params( $this->formatNum( $hours ) )->text();
+			$s .= ' ';
+			$s .= $minutesMsg->params( $this->formatNum( $minutes ) )->text();
+			if ( !in_array( $format['avoid'], array( 'avoidseconds', 'avoidminutes' ) ) ) {
+				$s .= ' ' . $secondsMsg->params( $this->formatNum( $secondsPart ) )->text();
+			}
+		} else {
+			$days = floor( $seconds / 86400 );
+			if ( $format['avoid'] === 'avoidminutes' ) {
+				$hours = round( ( $seconds - $days * 86400 ) / 3600 );
+				if ( $hours == 24 ) {
+					$hours = 0;
+					$days++;
+				}
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
+				$s .= ' ';
+				$s .= $hoursMsg->params( $this->formatNum( $hours ) )->text();
+			} elseif ( $format['avoid'] === 'avoidseconds' ) {
+				$hours = floor( ( $seconds - $days * 86400 ) / 3600 );
+				$minutes = round( ( $seconds - $days * 86400 - $hours * 3600 ) / 60 );
+				if ( $minutes == 60 ) {
+					$minutes = 0;
+					$hours++;
+				}
+				if ( $hours == 24 ) {
+					$hours = 0;
+					$days++;
+				}
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
+				$s .= ' ';
+				$s .= $hoursMsg->params( $this->formatNum( $hours ) )->text();
+				$s .= ' ';
+				$s .= $minutesMsg->params( $this->formatNum( $minutes ) )->text();
+			} else {
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
+				$s .= ' ';
+				$s .= $this->formatTimePeriod( $seconds - $days * 86400, $format );
+			}
 		}
+		return $s;
 	}
 
 	function formatBitrate( $bps ) {

@@ -11,7 +11,6 @@
  * @author Als-Holder
  * @author Hendergassler
  * @author J. 'mach' wust
- * @author MaxSem
  * @author Melancholie
  * @author MichaelFrey
  * @author Purodha
@@ -872,7 +871,7 @@ Erklärig: (aktuell) = Underschid zu jetz,
 'history-feed-empty'          => 'Di aagforderet Syte git s nid. Villicht isch si glescht oder verschobe wore. [[Special:Search|Suech]] {{SITENAME}} fir neji Syte, wu passe.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(Zämmefassig uusegnuh)',
+'rev-deleted-comment'         => '(Bearbeitigskommentar uusegnuh)',
 'rev-deleted-user'            => '(Benutzername uusegnuh)',
 'rev-deleted-event'           => '(Logbuechaktion uusegnuh)',
 'rev-deleted-user-contribs'   => '[Benutzername oder IP-Adräss uusegnuu - Bearbeitig in dr Byytragslischt versteckt]',
@@ -1108,9 +1107,9 @@ Stell sicher, ass d Versionsgschicht vun eme Artikel historisch korrekt isch.',
 'prefs-rc'                      => 'Letschti Änderige',
 'prefs-watchlist'               => 'Beobachtigslischte',
 'prefs-watchlist-days'          => 'Aazahl vu dr Täg, wu d Beobchtigslischt standardmässig soll umfasse:',
-'prefs-watchlist-days-max'      => 'Maximal 7 Täg',
+'prefs-watchlist-days-max'      => '(Maximal 7 Täg)',
 'prefs-watchlist-edits'         => 'Maximali Zahl vu dr Yyträg:',
-'prefs-watchlist-edits-max'     => 'Maximali Aazahl: 1000',
+'prefs-watchlist-edits-max'     => '(Maximali Aazahl: 1000)',
 'prefs-watchlist-token'         => 'Beobachtigslischte-Chännzeiche:',
 'prefs-misc'                    => 'Verschidnigs',
 'prefs-resetpass'               => 'Passwort ändere',
@@ -1314,6 +1313,7 @@ Des cha nimmi ruckgängig gmacht wäre.',
 'right-reset-passwords'       => 'S Passwort vun eme andere Benutzer zrucksetze',
 'right-override-export-depth' => 'Exportier Syte mitsamt dr vergleichte Syte bis zuen ere Tiefi vu 5',
 'right-sendemail'             => 'E-Mail an anderi Benutzer schicke',
+'right-disableaccount'        => 'Benutzerkonto deaktiviere',
 
 # User rights log
 'rightslog'      => 'Benutzerrächt-Logbuech',
@@ -1484,7 +1484,7 @@ Bitte prief, eb D s Bild in voller Uflesig vorlige hesch un lad derno des unter 
 Wänn Du die Datei einewäg wit uffelade, gang bitte zruck un ändere dr Name.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Die Datei isch e Duplikat vu {{PLURAL:$1|däre Datei|däne $1 Dateie}}:',
-'file-deleted-duplicate'      => 'E identischi Version vu däre Datei ([[:$1]]) isch friejer scho mol glescht wore. Iberprief s Leschlogbuech, voreb Du si uffeladesch.',
+'file-deleted-duplicate'      => 'E identischi Version vu däre Datei ([[$1]]) isch friejer scho mol glescht wore. Iberprief s Leschlogbuech, voreb Du si uffeladesch.',
 'uploadwarning'               => 'Warnig',
 'uploadwarning-text'          => 'Bitte tue unte d Dateibsschryybig ändere un versuech s nomol.',
 'savefile'                    => 'Datei spychere',
@@ -1981,13 +1981,13 @@ Uf Dyyre Beobachtigssyte chasch d Beobachtigsmarker fir alli Syte zrucksetze, wu
              Dyy fryndli {{SITENAME}}-Nochrichtesyschtem
 
 ---
-Go d Yystellige vu Dyyre Beobachtigslischte ändere, gang uf {{fullurl:Special:Watchlist/edit}}
+Go d Yystellige vu Dyyre Beobachtigslischte ändere, gang uf {{canonicalurl:Special:Watchlist/edit}}
 
 Go d Syte us Dyyre Beobachtigslischte uuseneh, gang uf
 $UNWATCHURL
 
 Ruckmäldig un wyteri Hilf:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Syte lösche',
@@ -2250,7 +2250,7 @@ Go d Sperri ufhebe lueg d [[Special:IPBlockList|Lisch vu allene aktive Sperrine]
 'ipusubmit'                       => 'Die Sperri useneh',
 'unblocked'                       => '[[User:$1|$1]] isch frejgee wore',
 'unblocked-id'                    => 'Sperr-ID $1 isch freijgee wore',
-'ipblocklist'                     => 'Gsperrti Benutzer',
+'ipblocklist'                     => 'Liste vo blockierten IP-Adrässen u Benutzernäme',
 'ipblocklist-legend'              => 'Suech no eme gsperrte Benutzer',
 'ipblocklist-username'            => 'Benutzername oder IP-Adräss:',
 'ipblocklist-sh-userblocks'       => 'Benutzersperrine $1',
@@ -2471,7 +2471,7 @@ Alli Transwiki-Import-Aktione werde im [[Special:Log/import|Import-Logbuech]] pr
 'import-interwiki-namespace' => 'Ziilnamensruum:',
 'import-upload-filename'     => 'Dateiname:',
 'import-comment'             => 'Grund:',
-'importtext'                 => 'Bitte speicher d’Syte vum Quellwiki met em Special:Export-Wärkzüg ab, un lad denn di XML-Datei do uffe. („Bild lokal“ sot im Folgénde eigentle „XML-Datei“ hoiße ;-)',
+'importtext'                 => 'Bitte speicher d’Syte vum Quellwiki met em Spezial:Export-Wärkzüg ab, un lad denn di XML-Datei do uffe. („Bild lokal“ sot im Folgénde eigentle „XML-Datei“ hoiße ;-)',
 'importstart'                => 'Importiere Syte …',
 'import-revision-count'      => '– {{PLURAL:$1|1 Vérsion|$1 Vérsiona}}',
 'importnopages'              => 'Es isch kei Syte doo wo mer importiere chönnt.',
@@ -2667,7 +2667,7 @@ $1',
 'file-nohires'         => '<small>Kei höcheri Uflösig verfüegbar.</small>',
 'svg-long-desc'        => 'SVG-Datei, Basisgrößi: $1 × $2 Pixel, Dateigrößi: $3',
 'show-big-image'       => 'Originalgrößi',
-'show-big-image-thumb' => '<small>Greßi vu däre Vorschau: $1 × $2 Pixel</small>',
+'show-big-image-thumb' => '<small>Größi vo dere Vorschou: $1 × $2 Pixel</small>',
 'file-info-gif-looped' => 'Ändlosschlupf',
 'file-info-gif-frames' => '$1 {{PLURAL:$1|Ramme|Ramme}}',
 'file-info-png-looped' => 'Ändlosschlupf',
@@ -2828,7 +2828,6 @@ Anderi Metadate sy standardmäßig versteckt.
 'exif-gpsareainformation'          => 'Name vum GPS-Biet',
 'exif-gpsdatestamp'                => 'GPS-Datum',
 'exif-gpsdifferential'             => 'GPS-Differentialkorrektur',
-'exif-objectname'                  => 'Churztitel',
 
 # EXIF attributes
 'exif-compression-1' => 'Uukomprimiert',
@@ -3263,5 +3262,18 @@ D Yygab muess ohni dr Zuesatz „{{ns:file}}:“ erfolge.',
 # SQLite database support
 'sqlite-has-fts' => '$1 mit Unterstitzig vu dr Volltextsuechi',
 'sqlite-no-fts'  => '$1 ohni Unterstitzig vu dr Volltextsuechi',
+
+# Special:DisableAccount
+'disableaccount'             => 'E Benutzerkonto deaktiviere',
+'disableaccount-user'        => 'Benutzername:',
+'disableaccount-reason'      => 'Grund:',
+'disableaccount-confirm'     => "Des Benutzerkonto deaktiviere.
+Dr Benutzer cha sich derno nimi aamälde, cha s Passwort nimi zrucksetze oder un keini E-Mail-Benochrichtigunge me iberchuu.
+Wänn dr Benutzer grad aagmäldet isch, wird er sofort abgmäldet.
+''Obacht: D Deaktivierig vun eme Benutzerkonto cha nume vun eme Syschtemadministrator ruckgängig gmacht wäre.''",
+'disableaccount-mustconfirm' => 'Du muesch d Deaktivierig vu däm Benutzerkonto no bstetige.',
+'disableaccount-nosuchuser'  => 'Dr Benutzer „$1“ git s nit.',
+'disableaccount-success'     => 'S Benutzerkonto „$1“ isch fir immer deaktiviert wore.',
+'disableaccount-logentry'    => 'het s Benutzerkonto [[$1]] fir immer deaktiviert',
 
 );

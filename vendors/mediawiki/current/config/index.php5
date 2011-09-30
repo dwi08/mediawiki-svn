@@ -1,1 +1,4 @@
-<?php require( dirname( dirname( __FILE__ ) ) . '/mw-config/index.php5' );
+<?php
+
+define('MW_INSTALL_PHP5_EXT', 1);
+require './index.php';

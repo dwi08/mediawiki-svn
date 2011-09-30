@@ -132,8 +132,8 @@ class ApiQueryCategories extends ApiQueryGeneratorBase {
 
 		$res = $this->select( __METHOD__ );
 
-		$count = 0;
 		if ( is_null( $resultPageSet ) ) {
+			$count = 0;
 			foreach ( $res as $row ) {
 				if ( ++$count > $params['limit'] ) {
 					// We've reached the one extra which shows that
@@ -247,6 +247,6 @@ class ApiQueryCategories extends ApiQueryGeneratorBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryCategories.php 86474 2011-04-20 13:22:05Z catrope $';
+		return __CLASS__ . ': $Id: ApiQueryCategories.php 92283 2011-07-15 19:15:18Z reedy $';
 	}
 }

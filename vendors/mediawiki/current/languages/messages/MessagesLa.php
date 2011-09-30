@@ -517,7 +517,7 @@ Nomen usoris alium selige.',
 'nocookieslogin'             => "{{SITENAME}} ''Cookies'' utitur in usorum conventa aperiendo. Cookies tua debiles sunt. Eis potestatem fac, tum conare denuo.",
 'noname'                     => 'Nominem usoris ratum non designavisti.',
 'loginsuccesstitle'          => 'Conventum prospere apertum est',
-'loginsuccess'               => "'''Apud {{grammar:accusative|{{SITENAME}}}} agnosceris nomine \"\$1\".'''",
+'loginsuccess'               => "'''Apud {{grammar:accusative|{{SITENAME}}}} agnosceris ut \"\$1\".'''",
 'nosuchuser'                 => 'Usor "$1" non est.
 Confirma orthographiam (cave litteras maiusculas minusculasque), aut [[Special:UserLogin/signup|novam rationem crea]].',
 'nosuchusershort'            => 'Usor "<nowiki>$1</nowiki>" non est.
@@ -882,9 +882,9 @@ Conare praefixare tua inquisitionem cum ''all:'' ut quaeras contenta omnia (pagi
 'prefs-rc'                  => 'Nuper mutata',
 'prefs-watchlist'           => 'Paginae custoditae',
 'prefs-watchlist-days'      => 'Numerus dierum displicandus in paginis tuis custoditis:',
-'prefs-watchlist-days-max'  => 'Maximum 7 dies',
+'prefs-watchlist-days-max'  => '(maximum 7 dies)',
 'prefs-watchlist-edits'     => 'Numerus recensionum displicandus in paginis tuis custoditis extensis:',
-'prefs-watchlist-edits-max' => 'Numerus maximus: 1000',
+'prefs-watchlist-edits-max' => '(numerus maximus: 1000)',
 'prefs-misc'                => 'Misc',
 'prefs-resetpass'           => 'Tesseram mutare',
 'prefs-email'               => 'Optiones inscriptionis electronicae',
@@ -1521,10 +1521,10 @@ You could also reset the notification flags for all your watched pages on your w
 
 --
 To change your watchlist settings, visit
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Feedback and further assistance:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Delere paginam',
@@ -1737,7 +1737,7 @@ Si pagina nova cum ipso nomine post deletionem creata est, emendationes restitut
 'ipusubmit'                    => 'Hanc obstructionem removere',
 'unblocked'                    => '[[User:$1|$1]] deobstructus est',
 'unblocked-id'                 => 'Obstructio numeri $1 abrogata est',
-'ipblocklist'                  => 'Usores obstructi',
+'ipblocklist'                  => 'Usores locique IP obstructi',
 'ipblocklist-legend'           => 'Usorem obstructum quaerere',
 'ipblocklist-username'         => 'Nomen usoris vel locus IP:',
 'ipblocklist-sh-userblocks'    => '$1 obstructiones rationum',
@@ -2079,8 +2079,8 @@ Paginae nomen petitum "[[:$1]]" iam existit. Vin tu eam delere ut pagina illic m
 'exif-artist'                      => 'Auctor',
 'exif-exifversion'                 => 'Emendatio Exif',
 'exif-colorspace'                  => 'Spatium colorimetricum',
-'exif-pixelydimension'             => 'Amplitudo imaginis',
-'exif-pixelxdimension'             => 'Altitudo imaginis',
+'exif-pixelydimension'             => 'Bona amplitudo imaginis',
+'exif-pixelxdimension'             => 'Bona altitudo imaginis',
 'exif-usercomment'                 => 'Adnota usoris',
 'exif-relatedsoundfile'            => 'Fasciculus soni relatus',
 'exif-datetimeoriginal'            => 'Dies et tempus creationis',
@@ -2090,9 +2090,9 @@ Paginae nomen petitum "[[:$1]]" iam existit. Vin tu eam delere ut pagina illic m
 'exif-exposureprogram'             => 'Programma expositionis',
 'exif-spectralsensitivity'         => 'Sensitivitas spectralis',
 'exif-oecf'                        => 'Factor conversionis optico-electronicae',
-'exif-shutterspeedvalue'           => 'Celeritas foriculae APEX',
-'exif-aperturevalue'               => 'Apertura APEX',
-'exif-brightnessvalue'             => 'Luminositas APEX',
+'exif-shutterspeedvalue'           => 'Celeritas foriculae',
+'exif-aperturevalue'               => 'Apertura',
+'exif-brightnessvalue'             => 'Luminositas',
 'exif-exposurebiasvalue'           => 'Obliquitas expositionis',
 'exif-meteringmode'                => 'Modus mensurae',
 'exif-lightsource'                 => 'Fons lucis',

@@ -63,7 +63,6 @@ class FindHooks extends Maintenance {
 			$IP . '/includes/installer/',
 			$IP . '/includes/parser/',
 			$IP . '/includes/resourceloader/',
-			$IP . '/includes/revisiondelete/',
 			$IP . '/includes/search/',
 			$IP . '/includes/specials/',
 			$IP . '/includes/upload/',
@@ -71,6 +70,7 @@ class FindHooks extends Maintenance {
 			$IP . '/maintenance/',
 			$IP . '/maintenance/tests/',
 			$IP . '/maintenance/tests/parser/',
+			$IP . '/maintenance/tests/phpunit/suites/',
 			$IP . '/skins/',
 		);
 

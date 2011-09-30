@@ -189,9 +189,14 @@ require_once( "$IP/includes/GlobalFunctions.php" );
 require_once( "$IP/includes/Hooks.php" );
 require_once( "$IP/includes/Namespace.php" );
 require_once( "$IP/includes/ProxyTools.php" );
-require_once( "$IP/includes/ObjectCache.php" );
 require_once( "$IP/includes/ImageFunctions.php" );
 wfProfileOut( $fname.'-includes' );
+
+# Now that GlobalFunctions is loaded, set the default for $wgCanonicalServer 
+if ( $wgCanonicalServer === false ) { 
+        $wgCanonicalServer = wfExpandUrl( $wgServer, PROTO_HTTP ); 
+}
+
 wfProfileIn( $fname.'-misc1' );
 
 # Raise the memory limit if it's too low
@@ -299,9 +304,9 @@ $wgFileExtensions = array_diff ( $wgFileExtensions, $wgFileBlacklist );
 wfProfileOut( $fname.'-misc1' );
 wfProfileIn( $fname.'-memcached' );
 
-$wgMemc =& wfGetMainCache();
-$messageMemc =& wfGetMessageCacheStorage();
-$parserMemc =& wfGetParserCacheStorage();
+$wgMemc = wfGetMainCache();
+$messageMemc = wfGetMessageCacheStorage();
+$parserMemc = wfGetParserCacheStorage();
 
 wfDebug( 'CACHES: ' . get_class( $wgMemc ) . '[main] ' .
 	get_class( $messageMemc ) . '[message] ' .
@@ -337,11 +342,11 @@ if( !wfIniGetBool( 'session.auto_start' ) )
 
 if( !defined( 'MW_NO_SESSION' ) && !$wgCommandLineMode ) {
 	if( $wgRequest->checkSessionCookie() || isset( $_COOKIE[$wgCookiePrefix.'Token'] ) ) {
-		wfIncrStats( 'request_with_session' );
+		#wfIncrStats( 'request_with_session' );
 		wfSetupSession();
 		$wgSessionStarted = true;
 	} else {
-		wfIncrStats( 'request_without_session' );
+		#wfIncrStats( 'request_without_session' );
 		$wgSessionStarted = false;
 	}
 }
@@ -356,7 +361,11 @@ $wgRequest->interpolateTitle();
 $wgUser = $wgCommandLineMode ? new User : User::newFromSession();
 $wgLang = new StubUserLang;
 $wgOut = new StubObject( 'wgOut', 'OutputPage' );
-$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
+
+#$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
+# Live hack to clear up profiling -- TS
+$class = $wgParserConf['class'];
+$wgParser = new $class( $wgParserConf );
 
 $wgMessageCache = new StubObject( 'wgMessageCache', 'MessageCache',
 	array( $messageMemc, $wgUseDatabaseMessages, $wgMsgCacheExpiry ) );

@@ -34,8 +34,6 @@
  * @author Melos
  * @author Nemo bis
  * @author Nick1915
- * @author Od1n
- * @author Oile11
  * @author Omnipaedista
  * @author PaoloRomano
  * @author Pietrodn
@@ -277,8 +275,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Mostra il numero di utenti che hanno la pagina in osservazione',
 'tog-oldsig'                  => 'Anteprima della firma attuale:',
 'tog-fancysig'                => 'Interpreta i comandi wiki nella firma (senza collegamento automatico)',
-'tog-externaleditor'          => "Usa per default un editor di testi esterno (solo per utenti esperti, richiede l'uso di impostazioni particolari sul proprio computer. [http://www.mediawiki.org/wiki/Manual:External_editors Ulteriori informazioni.])",
-'tog-externaldiff'            => "Usa per default un programma di diff esterno (solo per utenti esperti, richiede l'uso di impostazioni particolari sul proprio computer. [http://www.mediawiki.org/wiki/Manual:External_editors Ulteriori informazioni.])",
+'tog-externaleditor'          => "Usa per default un editor di testi esterno (solo per utenti esperti, richiede l'uso di impostazioni particolari sul proprio computer)",
+'tog-externaldiff'            => "Usa per default un programma di diff esterno (solo per utenti esperti, richiede l'uso di impostazioni particolari sul proprio computer)",
 'tog-showjumplinks'           => 'Attiva i collegamenti accessibili "vai a"',
 'tog-uselivepreview'          => "Attiva la funzione ''Live preview'' (richiede JavaScript; sperimentale)",
 'tog-forceeditsummary'        => "Chiedi conferma se l'oggetto della modifica è vuoto",
@@ -984,7 +982,7 @@ Legenda: '''({{int:cur}})''' = differenze con la versione attuale, '''({{int:las
 'history-feed-empty'          => 'La pagina richiesta non esiste; potrebbe essere stata cancellata dal sito o rinominata. Verificare con la [[Special:Search|pagina di ricerca]] se vi sono nuove pagine.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(Oggetto della modifica rimosso)',
+'rev-deleted-comment'         => '(commento rimosso)',
 'rev-deleted-user'            => '(nome utente rimosso)',
 'rev-deleted-event'           => '(azione del log rimossa)',
 'rev-deleted-user-contribs'   => '[nome utente o indirizzo IP rimosso - edit nascosto dalla cronologia]',
@@ -1216,9 +1214,9 @@ $1",
 'prefs-rc'                      => 'Ultime modifiche',
 'prefs-watchlist'               => 'Osservati speciali',
 'prefs-watchlist-days'          => 'Numero di giorni da mostrare negli osservati speciali:',
-'prefs-watchlist-days-max'      => 'Massimo 7 giorni',
+'prefs-watchlist-days-max'      => '(massimo 7 giorni)',
 'prefs-watchlist-edits'         => 'Numero di modifiche da mostrare con le funzioni avanzate:',
-'prefs-watchlist-edits-max'     => 'Numero massimo: 1000',
+'prefs-watchlist-edits-max'     => '(numero massimo: 1000)',
 'prefs-watchlist-token'         => 'Token Osservati speciali:',
 'prefs-misc'                    => 'Varie',
 'prefs-resetpass'               => 'Cambia password',
@@ -1420,6 +1418,7 @@ L'operazione non può essere annullata.",
 'right-reset-passwords'       => 'Reimposta le password di altri utenti',
 'right-override-export-depth' => 'Esporta le pagine includendo le pagine collegate fino ad una profondità di 5',
 'right-sendemail'             => 'Invia e-mail ad altri utenti',
+'right-disableaccount'        => 'Disabilitare gli account',
 
 # User rights log
 'rightslog'      => 'Diritti degli utenti',
@@ -1582,7 +1581,7 @@ Se si dispone dell'immagine nella risoluzione originale, si prega di caricarla. 
 'fileexists-forbidden'        => 'Un file con questo nome esiste già e non può essere sovrascritto. Tornare indietro e modificare il nome con il quale caricare il file. [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => "Un file con questo nome esiste già nell'archivio di risorse multimediali condivise. Se si desidera ancora caricare il file, tornare indietro e modificare il nome con il quale caricare il file. [[File:$1|thumb|center|$1]]",
 'file-exists-duplicate'       => 'Questo file è un duplicato {{PLURAL:$1|del seguente|dei seguenti}} file:',
-'file-deleted-duplicate'      => 'Un file identico a questo ([[:$1]]) è stato cancellato in passato. Verificare la cronologia delle cancellazioni prima di caricarlo di nuovo.',
+'file-deleted-duplicate'      => 'Un file identico a questo ([[$1]]) è stato cancellato in passato. Verificare la cronologia delle cancellazioni prima di caricarlo di nuovo.',
 'uploadwarning'               => 'Avviso di caricamento',
 'uploadwarning-text'          => 'Per favore modifica qui sotto la descrizione del file e prova di nuovo.',
 'savefile'                    => 'Salva file',
@@ -1643,23 +1642,22 @@ $1',
 'upload-http-error'         => 'Si è verificato un errore HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Accesso negato',
-'img-auth-nopathinfo'       => 'PATH_INFO mancante.
+'img-auth-accessdenied' => 'Accesso negato',
+'img-auth-nopathinfo'   => 'PATH_INFO mancante.
 Il server non è impostato per passare questa informazione.
 Potrebbe essere basato su CGI e non può supportare img_auth.
 Consultare http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Il percorso richiesto non si trova nella directory di upload configurata.',
-'img-auth-badtitle'         => 'Impossibile costruire un titolo valido da "$1".',
-'img-auth-nologinnWL'       => 'Non si è effettuato l\'accesso e "$1" non è nella whitelist.',
-'img-auth-nofile'           => 'File "$1" non esiste.',
-'img-auth-isdir'            => 'Si sta tentando di accedere a una directory "$1".
+'img-auth-notindir'     => 'Il percorso richiesto non si trova nella directory di upload configurata.',
+'img-auth-badtitle'     => 'Impossibile costruire un titolo valido da "$1".',
+'img-auth-nologinnWL'   => 'Non si è effettuato l\'accesso e "$1" non è nella whitelist.',
+'img-auth-nofile'       => 'File "$1" non esiste.',
+'img-auth-isdir'        => 'Si sta tentando di accedere a una directory "$1".
 Solo l\'accesso ai file è consentito.',
-'img-auth-streaming'        => '"$1" in streaming.',
-'img-auth-public'           => 'La funzione di img_auth.php è di dare in output file da un sito wiki privato.
+'img-auth-streaming'    => '"$1" in streaming.',
+'img-auth-public'       => 'La funzione di img_auth.php è di dare in output file da un sito wiki privato.
 Questo sito è configurato come un wiki pubblico.
 Per una sicurezza ottimale, img_auth.php è disattivato.',
-'img-auth-noread'           => 'L\'utente non ha accesso alla lettura di "$1".',
-'img-auth-bad-query-string' => "L'URL contiene una stringa di query non valida.",
+'img-auth-noread'       => 'L\'utente non ha accesso alla lettura di "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'URL non valido: $1',
@@ -2094,17 +2092,14 @@ Non verranno inviate altre notifiche in caso di ulteriori cambiamenti, a meno ch
              Il sistema di notifica di {{SITENAME}}, al tuo servizio
 
 --
-Per modificare le impostazioni delle notifiche via e-mail, visita 
-{{fullurl:{{#special:Preferences}}}}
+Per modificare le impostazioni della lista degli osservati speciali, visita
+{{canonicalurl:Special:Watchlist/edit}}
 
-Per modificare la lista degli osservati speciali, visita 
-{{fullurl:{{#special:Watchlist}}/edit}}
-
-Per rimuovere la pagina dalla lista degli osservati speciali, visita
+Per cancellare la pagina della lista degli osservati speciali, visita
 $UNWATCHURL
 
-Per commentare e ricevere aiuto:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+Per dare il tuo feedback e ricevere ulteriore assistenza:
+{{fullurl:Help:Aiuto}}',
 
 # Delete
 'deletepage'             => 'Cancella pagina',
@@ -2284,7 +2279,6 @@ $1',
 'sp-contributions-newbies-title'       => 'Contributi dei nuovi utenti',
 'sp-contributions-blocklog'            => 'blocchi',
 'sp-contributions-deleted'             => 'contributi utente cancellati',
-'sp-contributions-uploads'             => 'caricamenti',
 'sp-contributions-logs'                => 'registri',
 'sp-contributions-talk'                => 'discussione',
 'sp-contributions-userrights'          => 'gestione dei permessi',
@@ -2361,7 +2355,7 @@ Consultare la [[Special:IPBlockList|lista degli IP bloccati]] per vedere i blocc
 'ipusubmit'                       => 'Rimuovi questo blocco',
 'unblocked'                       => "L'utente [[User:$1|$1]] è stato sbloccato",
 'unblocked-id'                    => 'Il blocco $1 è stato rimosso',
-'ipblocklist'                     => 'Utenti bloccati',
+'ipblocklist'                     => 'Utenti e indirizzi IP bloccati',
 'ipblocklist-legend'              => 'Trova un utente bloccato',
 'ipblocklist-username'            => 'Nome utente o indirizzo IP:',
 'ipblocklist-sh-userblocks'       => '$1 i blocchi degli utenti registrati',
@@ -2588,7 +2582,7 @@ Tutte le operazioni di importazione trans-wiki sono registrate nel [[Special:Log
 'import-interwiki-namespace' => 'Namespace di destinazione:',
 'import-upload-filename'     => 'Nome file:',
 'import-comment'             => 'Oggetto:',
-'importtext'                 => 'Si prega di esportare il file dal sito wiki di origine con la [[Special:Export|funzione di esportazione]], salvarlo sul proprio disco e poi caricarlo qui.',
+'importtext'                 => 'Si prega di esportare il file dal sito wiki di origine con la funzione Special:Export, salvarlo sul proprio disco e poi caricarlo qui.',
 'importstart'                => 'Importazione delle pagine in corso...',
 'import-revision-count'      => '{{PLURAL:$1|una revisione importata|$1 revisioni importate}}',
 'importnopages'              => 'Nessuna pagina da importare.',
@@ -2885,8 +2879,8 @@ I collegamenti successivi, sulla stessa riga, sono considerati come eccezioni (o
 'exif-colorspace'                  => 'Spazio dei colori',
 'exif-componentsconfiguration'     => 'Significato di ciascuna componente',
 'exif-compressedbitsperpixel'      => 'Modalità di compressione immagine',
-'exif-pixelydimension'             => 'Larghezza immagine',
-'exif-pixelxdimension'             => 'Altezza immagine',
+'exif-pixelydimension'             => 'Larghezza effettiva immagine',
+'exif-pixelxdimension'             => 'Altezza effettiva immagine',
 'exif-makernote'                   => 'Note del produttore',
 'exif-usercomment'                 => "Note dell'utente",
 'exif-relatedsoundfile'            => 'File audio collegato',
@@ -2902,9 +2896,9 @@ I collegamenti successivi, sulla stessa riga, sono considerati come eccezioni (o
 'exif-spectralsensitivity'         => 'Sensibilità spettrale',
 'exif-isospeedratings'             => 'Sensibilità ISO',
 'exif-oecf'                        => 'Fattore di conversione optoelettronica',
-'exif-shutterspeedvalue'           => "Velocità dell'otturatore APEX",
-'exif-aperturevalue'               => 'Apertura APEX',
-'exif-brightnessvalue'             => 'Luminosità APEX',
+'exif-shutterspeedvalue'           => 'Tempo di esposizione',
+'exif-aperturevalue'               => 'Apertura',
+'exif-brightnessvalue'             => 'Luminosità',
 'exif-exposurebiasvalue'           => 'Correzione esposizione',
 'exif-maxaperturevalue'            => 'Apertura massima',
 'exif-subjectdistance'             => 'Distanza del soggetto',
@@ -2968,7 +2962,6 @@ I collegamenti successivi, sulla stessa riga, sono considerati come eccezioni (o
 'exif-gpsareainformation'          => 'Nome della zona GPS',
 'exif-gpsdatestamp'                => 'Data GPS',
 'exif-gpsdifferential'             => 'Correzione differenziale GPS',
-'exif-objectname'                  => 'Titolo breve',
 
 # EXIF attributes
 'exif-compression-1' => 'Nessuno',
@@ -3058,8 +3051,6 @@ I collegamenti successivi, sulla stessa riga, sono considerati come eccezioni (o
 'exif-sensingmethod-5' => 'Sensore area colore sequenziale',
 'exif-sensingmethod-7' => 'Sensore trilineare',
 'exif-sensingmethod-8' => 'Sensore lineare colore sequenziale',
-
-'exif-filesource-3' => 'Fotocamera digitale',
 
 'exif-scenetype-1' => 'Fotografia diretta',
 
@@ -3171,20 +3162,6 @@ $5
 Questo codice di conferma scadrà automaticamente alle $4.',
 'confirmemail_body_changed' => 'Qualcuno, probabilmente tu stesso dall\'indirizzo IP $1,
 ha modificato l\'indirizzo e-mail dell\'account "$2" su {{SITENAME}} indicando questo indirizzo e-mail.
-
-Per confermare che l\'account ti appartiene veramente e riattivare le funzioni relative all\'invio
-di e-mail su {{SITENAME}}, apri il collegamento seguente con il tuo browser:
-
-$3
-
-Se l\'account *non* ti appartiene, segui questo collegamento
-per annullare la conferma dell\'indirizzo e-mail:
-
-$5
-
-Questo codice di conferma scadrà automaticamente alle $4.',
-'confirmemail_body_set'     => 'Qualcuno, probabilmente tu stesso dall\'indirizzo IP $1,
-ha impostato l\'indirizzo e-mail dell\'account "$2" su {{SITENAME}} indicando questo indirizzo e-mail.
 
 Per confermare che l\'account ti appartiene veramente e riattivare le funzioni relative all\'invio
 di e-mail su {{SITENAME}}, apri il collegamento seguente con il tuo browser:
@@ -3423,5 +3400,18 @@ Inserire il nome del file senza il prefisso \"{{ns:file}}:\"",
 # SQLite database support
 'sqlite-has-fts' => '$1 con la possibilità di ricerca completa nel testo',
 'sqlite-no-fts'  => '$1 senza la possibilità di ricerca completa nel testo',
+
+# Special:DisableAccount
+'disableaccount'             => 'Disabilitare account utente',
+'disableaccount-user'        => 'Nome utente:',
+'disableaccount-reason'      => 'Motivo:',
+'disableaccount-confirm'     => "Disabilitare permanentemente questo account utente.
+L'utente non sarà in grado di accedere, reimpostare la password o ricevere notifiche via e-mail.
+Tutte le attuali connessioni dell'utente, saranno immediatamente terminate.
+''Si noti che la disattivazione di un account non è reversibile senza l'intervento dell'amministratore di sistema''.",
+'disableaccount-mustconfirm' => 'Devi confermare che vuoi disabilitare questo account.',
+'disableaccount-nosuchuser'  => 'L\'account utente "$1" non esiste.',
+'disableaccount-success'     => 'L\'account utente "$1" è stato disabilitato definitivamente.',
+'disableaccount-logentry'    => "ha disabilitato permanentemente l'account utente [[$1]]",
 
 );

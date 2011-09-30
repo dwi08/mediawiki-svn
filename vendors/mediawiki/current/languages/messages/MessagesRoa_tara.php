@@ -662,10 +662,6 @@ L'urteme archivije de le bloccaminde se iacche aqquà sotte pe referimende:",
 '''Non g'à state angore reggistrete ninde!'''",
 'userjspreview'                    => "'''Arrecuerdete ca tu ste vide/teste sulamende in andeprime 'u JavaScript tue.'''
 '''Non g'à state angore reggistrete ninde!'''",
-'sitecsspreview'                   => "'''Arrecuerdete ca tu ste vide sulamende in andeprime 'u CSS tune.'''
-'''Non g'à state angore reggistrate ninde!'''",
-'sitejspreview'                    => "'''Arrecuerdete ca tu ste vide sulamende in andeprime 'u codece JavaScript tune.'''
-'''Non g'à state angore reggistrate ninde!'''",
 'userinvalidcssjstitle'            => "'''Attenziò:''' Non ge stè 'nu skin \"\$1\".
 Arrecuerdete ca jndr'à le file personalizzete .css e .js s'ause scrivere le titele cu le lettere piccenne, pe esembie {{ns:user}}:Foo/vector.css è diverse da {{ns:user}}:Foo/Vector.css.",
 'updated'                          => '(Cangiete)',
@@ -814,7 +810,7 @@ Pò essere ca ha state scangellete da Uicchi o ha state renomenate..
 Pruève a [[Special:Search|cercò sus a Uicchi]] 'mbrà le vosce cchiù rilevande.",
 
 # Revision deletion
-'rev-deleted-comment'         => "(cangiamnde d'u riepileghe scangellate)",
+'rev-deleted-comment'         => '(commende scangillete)',
 'rev-deleted-user'            => '(nome utende scangillete)',
 'rev-deleted-event'           => "(azione de l'archivie scangillete)",
 'rev-deleted-user-contribs'   => '[nome utende o indirizze IP luate - cangiamende scunnute da le condrebbute]',
@@ -1057,9 +1053,9 @@ Però fa attenzione purcè l'indice lore sus a {{SITENAME}} ponne condenè pàgg
 'prefs-rc'                      => 'Cangiaminde recende',
 'prefs-watchlist'               => 'Pàggene condrollete',
 'prefs-watchlist-days'          => "Giurne da fà vedè jndr'à liste de le pàggene condrollete:",
-'prefs-watchlist-days-max'      => 'Massime 7 sciurne',
+'prefs-watchlist-days-max'      => '(massime 7 sciurne)',
 'prefs-watchlist-edits'         => "Numere massime de cangiaminde ca se ponne fa vedè jndr'à liste de le pàggene condrollete spannute:",
-'prefs-watchlist-edits-max'     => 'Numere massime: 1000',
+'prefs-watchlist-edits-max'     => '(numere massime: 1000)',
 'prefs-watchlist-token'         => 'Token de le pàggene condrollate:',
 'prefs-misc'                    => 'Misc',
 'prefs-resetpass'               => "Cange a 'password",
@@ -1267,6 +1263,7 @@ Tu puè pure scacchià de lassà otre condatte ausanne l'utende tue o le pàggen
 'right-reset-passwords'       => "Azzere l'otre password de l'utinde",
 'right-override-export-depth' => "L'esportazione de pàggene inglude pàggene collegate 'mbonde a 'na profonnetà de 5",
 'right-sendemail'             => "Manne 'a mail a otre utinde",
+'right-disableaccount'        => 'Disabbilete le cunde utinde',
 
 # User rights log
 'rightslog'      => "Archivie de le diritte de l'utende",
@@ -1443,7 +1440,7 @@ Ce tu vuè angore carecà 'u file tue, pe piacere tuèrne rrete e ause 'nu nome 
 'fileexists-shared-forbidden' => "'Nu file cu stu nome già esiste jndr'à 'u repository condivise de le file.<br />
 ce tu vuè angore carecà stu file, pe piacere tuèrne rrete e ause 'nu nome nuève. [[File:$1|thumb|center|$1]]",
 'file-exists-duplicate'       => "Stu file jè 'na copie {{PLURAL:$1|d'u seguende file|de le seguende file}}:",
-'file-deleted-duplicate'      => "'Nu file uguale a stu file ([[:$1]]) ha state scangellate precedendemende.<br />
+'file-deleted-duplicate'      => "'Nu file uguale a stu file ([[$1]]) ha state scangellate precedendemende.<br />
 Avissa verificà 'a storie d'a scangellazzione d'u file apprime de condinuà a carecarle.",
 'uploadwarning'               => 'Avvise de carecamende',
 'uploadwarning-text'          => "Pe piacere cange 'a descrizione d'u file sotte e pruève 'notra vote.",
@@ -1497,23 +1494,22 @@ Ce 'u probbleme angore jè presende, condatte 'n'[[Special:ListUsers/sysop|ammin
 'upload-http-error'         => "S'a verificate 'n'errore HTTP: $1",
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Accesse negate',
-'img-auth-nopathinfo'       => "No se iacchie PATH_INFO.
+'img-auth-accessdenied' => 'Accesse negate',
+'img-auth-nopathinfo'   => "No se iacchie PATH_INFO.
 'U server tue non g'è 'mbostate o non ge passe st'mbormazione.
 Pò essere ca jè basate sus a 'u CGI e non ge pò supportà img_auth.
 Vide http://www.mediawiki.org/wiki/Manual:Image_Authorization.",
-'img-auth-notindir'         => "'U percorse richieste non ge stè jndr'à cartelle de carecamende configurate",
-'img-auth-badtitle'         => 'Non ge se pò costruì \'nu titele valide da "$1".',
-'img-auth-nologinnWL'       => 'Tu non ge sì collegate e "$1" non ge stè jndr\'à lista vianghe.',
-'img-auth-nofile'           => 'File "$1" non g\'esiste.',
-'img-auth-isdir'            => 'Tu ste ppruève a trasè jndr\'à cartelle "$1".
+'img-auth-notindir'     => "'U percorse richieste non ge stè jndr'à cartelle de carecamende configurate",
+'img-auth-badtitle'     => 'Non ge se pò costruì \'nu titele valide da "$1".',
+'img-auth-nologinnWL'   => 'Tu non ge sì collegate e "$1" non ge stè jndr\'à lista vianghe.',
+'img-auth-nofile'       => 'File "$1" non g\'esiste.',
+'img-auth-isdir'        => 'Tu ste ppruève a trasè jndr\'à cartelle "$1".
 Sulamende le file ponne trasè.',
-'img-auth-streaming'        => 'Streaming "$1".',
-'img-auth-public'           => "'A funziona de img_auth.php jè 'u resultate de le file da 'na Uicchi private.
+'img-auth-streaming'    => 'Streaming "$1".',
+'img-auth-public'       => "'A funziona de img_auth.php jè 'u resultate de le file da 'na Uicchi private.
 Sta Uicchi jè configurate cumme a 'na Uicchi pubbleche.
 Pe 'na securezze a uerre proprie, img_auth.php jè disabbilitate.",
-'img-auth-noread'           => 'L\'utende non ge tène l\'accesse pe leggere "$1".',
-'img-auth-bad-query-string' => "L'URL tène 'na stringhe de inderrogazione invalide",
+'img-auth-noread'       => 'L\'utende non ge tène l\'accesse pe leggere "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'URL invalide: $1',
@@ -1943,7 +1939,7 @@ Le cangiaminde future a sta pàgene e 'a pàgene de le 'ngazzaminde associete le
 'enotif_body'                  => 'Care $WATCHINGUSERNAME,
 
 
-\'A pàgene $PAGETITLE de {{SITENAME}} ha state $CHANGEDORCREATED \'u $PAGEEDITDATE da $PAGEEDITOR, vide $PAGETITLE_URL pa revisione corrende.
+\'A pàgene $PAGETITLE de {{SITENAME}} ha state $CHANGEDORCREATED \'u $PAGEEDITDATE da $PAGEEDITOR, vide $PAGETITLE_URL pa versiona corrende.
 
 $NEWPAGE
 
@@ -1954,22 +1950,19 @@ mail: $PAGEEDITOR_EMAIL
 uicchi: $PAGEEDITOR_WIKI
 
 Non ge stonne otre notifiche ce tu face otre cangiaminde senza ca tu visite sta pàgene.
-Tu puè pure azzerà \'a spunde de le notifiche pe tutte le pàggene condrollate jndr\'à lista toje.
+Tu puè pure azzerà \'a spunde de le notifiche pe tutte le pàggene condrollete jndr\'à lista toje.
 
              Statte Bbuene, \'u sisteme de notificaziune de {{SITENAME}}
 
 --
-Pe cangià le \'mbostaziune de notifeche de l\'email toje, vè vide
-{{fullurl:{{#special:Preferences}}}}
-
-Pe cangià le \'mbostaziune de l\'elenghe de le pàggene condrollate tune, vè vide
-{{fullurl:{{#special:Watchlist}}/edit}}
+Pe cangià le \'mbostaziune d\'a liste de le pàggene condrollete tue, vè vide
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Pe scangellà \'a pàgene da \'a liste de le pàggene condrollate, vè vide
 $UNWATCHURL
 
 Segnalaziune e otre assistenze:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => "Scangille 'a pàgene",
@@ -2250,7 +2243,7 @@ Vide [[Special:IPBlockList|'a liste de le IP bloccate]] pe revedè le blocche.",
 'ipusubmit'                       => 'Live stu blocche',
 'unblocked'                       => '[[User:$1|$1]] ha state sblocchete',
 'unblocked-id'                    => 'Blocche $1 ha state luvete',
-'ipblocklist'                     => 'Utinde bloccate',
+'ipblocklist'                     => "'Ndirizze IP e nome utinde blocchete",
 'ipblocklist-legend'              => "Iacchije 'n'utende blocchete",
 'ipblocklist-username'            => 'Nome utende o indirizze IP:',
 'ipblocklist-sh-userblocks'       => '$1 le cunde utinde blocchete',
@@ -2505,7 +2498,7 @@ Tutte le aziune de 'mbortaziune 'mbrà le Uicchi sonde reggistrate jndr'à l'[[S
 'import-upload-filename'     => "Nome d'u file:",
 'import-comment'             => 'Commende:',
 'importtext'                 => "Pe piacere esporte 'u file da 'a Uicchi sorgende ausanne l'[[Special:Export|utilità de esportazione]].
-Reggistrele sus a 'u combiuter tune e carechele aqquà.",
+Reggistrele sus a 'u combiuter tue e carechele aqquà.",
 'importstart'                => "'Mbortazione de le pàggene...",
 'import-revision-count'      => '$1 {{PLURAL:$1|revisione|revisiune}}',
 'importnopages'              => "Nisciuna pàgene da 'mbortà.",
@@ -2789,8 +2782,8 @@ Otre avènene scunnute pe defolt.
 'exif-colorspace'                  => "Spazie d'u culore",
 'exif-componentsconfiguration'     => 'Significate de ogne combonende',
 'exif-compressedbitsperpixel'      => "Mode de combressione de l'immaggine",
-'exif-pixelydimension'             => "Larghezze de l'immaggine",
-'exif-pixelxdimension'             => "Altezze de l'immaggine",
+'exif-pixelydimension'             => "Larghezze de l'immaggine valide",
+'exif-pixelxdimension'             => "Altezze de l'immaggine valide",
 'exif-makernote'                   => "Note d'u ccreatore",
 'exif-usercomment'                 => "Commende de l'utende",
 'exif-relatedsoundfile'            => 'File audio collegate',
@@ -2806,9 +2799,9 @@ Otre avènene scunnute pe defolt.
 'exif-spectralsensitivity'         => 'Senzitività spettrale',
 'exif-isospeedratings'             => 'Senzibbilità ISO',
 'exif-oecf'                        => 'Fattore de conversione optoelettroneche',
-'exif-shutterspeedvalue'           => 'Velocità de esposizione APEX',
-'exif-aperturevalue'               => 'Aperture de APEX',
-'exif-brightnessvalue'             => 'Lumenosità de APEX',
+'exif-shutterspeedvalue'           => 'Velocità de esposizione',
+'exif-aperturevalue'               => 'Aperture',
+'exif-brightnessvalue'             => 'Lumenosità',
 'exif-exposurebiasvalue'           => "Correzzione de l'esposizione",
 'exif-maxaperturevalue'            => 'Aperture massime',
 'exif-subjectdistance'             => "Distanze d'u soggette",
@@ -2872,7 +2865,6 @@ Otre avènene scunnute pe defolt.
 'exif-gpsareainformation'          => "Nome de l'area d'u GPS",
 'exif-gpsdatestamp'                => "Date d'u GPS",
 'exif-gpsdifferential'             => "Correzzione differenziale d'u GPS",
-'exif-objectname'                  => 'Titele curte',
 
 # EXIF attributes
 'exif-compression-1' => 'No combresse',
@@ -2953,8 +2945,6 @@ Otre avènene scunnute pe defolt.
 'exif-sensingmethod-5' => "Senzore d'area culore sequenziale",
 'exif-sensingmethod-7' => 'Senzore trilinèere',
 'exif-sensingmethod-8' => 'Senzore linèere de culore sequenziale',
-
-'exif-filesource-3' => 'Maghena fotografeche digitale',
 
 'exif-scenetype-1' => 'Fotografije dirette',
 
@@ -3069,18 +3059,6 @@ Ce tu *NON* g'è reggistrate 'u cunde utende, segue stu collegamende pe scangell
 
 Stu codece de conferme more 'u \$4.",
 'confirmemail_body_changed' => "Quacchedune, pò essere tu, da l'indirizze IP \$1,
-ha cangiate l'indirizze e-mail d'u cunde utende \"\$2\" cu st'indirizze e-mail sus a {{SITENAME}}.
-
-Pe confermà ca stu cunde ète avveramende 'u tune e pe reattivà 'a funzione email de {{SITENAME}}, iapre stu collegamende jndr'à 'u borwser tune:
-
-\$3
-
-Ce tu *NON* g'è reggistrate 'u cunde utende, segue stu collegamende pe scangellà l'indirizze email de conferme:
-
-\$5
-
-Stu codece de conferme scade 'u \$4.",
-'confirmemail_body_set'     => "Quacchedune, pò essere tu, da l'indirizze IP \$1,
 ha cangiate l'indirizze e-mail d'u cunde utende \"\$2\" cu st'indirizze e-mail sus a {{SITENAME}}.
 
 Pe confermà ca stu cunde ète avveramende 'u tune e pe reattivà 'a funzione email de {{SITENAME}}, iapre stu collegamende jndr'à 'u borwser tune:
@@ -3313,5 +3291,14 @@ Mitte 'u nome d'u file senze 'u \"{{ns:file}}:\" prefisse.",
 # SQLite database support
 'sqlite-has-fts' => "$1 cu 'u supporte d'a ricerche full-text",
 'sqlite-no-fts'  => "$1 senze 'u supporte d'a ricerche full-text",
+
+# Special:DisableAccount
+'disableaccount'             => "Disabbilete 'nu cunde utende",
+'disableaccount-user'        => "Nome de l'utende:",
+'disableaccount-reason'      => 'Mutive:',
+'disableaccount-mustconfirm' => 'Tu a confermà ce vuè ccu disabbilete stu cunde utende.',
+'disableaccount-nosuchuser'  => '\'U cunde utende "$1" non g\'esiste.',
+'disableaccount-success'     => '\'U cunde utende "$1" ha state disabbilitate pe sembre.',
+'disableaccount-logentry'    => "disabbilete pe sembre 'u cunde utende [[$1]]",
 
 );

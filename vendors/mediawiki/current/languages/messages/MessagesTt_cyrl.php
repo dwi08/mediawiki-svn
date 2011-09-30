@@ -7,7 +7,6 @@
  * @ingroup Language
  * @file
  *
- * @author Bulatbulat
  * @author Don Alessandro
  * @author Haqmar
  * @author Himiq Dzyu
@@ -17,7 +16,6 @@
  * @author Rinatus
  * @author Timming
  * @author Yildiz
- * @author Zahidulla
  * @author Ерней
  * @author Ильнар
  * @author Рашат Якупов
@@ -55,8 +53,8 @@ $namespaceNames = array(
 	NS_FILE_TALK        => 'Файл_бәхәсе',
 	NS_MEDIAWIKI        => 'МедиаВики',
 	NS_MEDIAWIKI_TALK   => 'МедиаВики_бәхәсе',
-	NS_TEMPLATE         => 'Үрнәк',
-	NS_TEMPLATE_TALK    => 'Үрнәк_бәхәсе',
+	NS_TEMPLATE         => 'Калып',
+	NS_TEMPLATE_TALK    => 'Калып_бәхәсе',
 	NS_HELP             => 'Ярдәм',
 	NS_HELP_TALK        => 'Ярдәм_бәхәсе',
 	NS_CATEGORY         => 'Төркем',
@@ -80,6 +78,8 @@ $namespaceAliases = array(
 	'Обсуждение_MediaWiki'               => NS_MEDIAWIKI_TALK,
 	'Медиа_Вики'                         => NS_MEDIAWIKI,
 	'Медиа_Вики_бәхәсе'                  => NS_MEDIAWIKI_TALK,
+	'Үрнәк'                              => NS_TEMPLATE,
+	'Үрнәк_бәхәсе'                       => NS_TEMPLATE_TALK,
 	'Шаблон'                             => NS_TEMPLATE,
 	'Обсуждение_шаблона'                 => NS_TEMPLATE_TALK,
 	'Шаблон_бәхәсе'                      => NS_TEMPLATE_TALK,
@@ -88,7 +88,7 @@ $namespaceAliases = array(
 	'Категория'                          => NS_CATEGORY,
 	'Обсуждение_категории'               => NS_CATEGORY_TALK,
 
-	// tt-latn namespace names
+	// 'tt-latn' namespace names.
 	'Maxsus'           => NS_SPECIAL,
 	'Bäxäs'            => NS_TALK,
 	'Äğzä'             => NS_USER,
@@ -166,7 +166,7 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#ЮНӘЛТҮ', '#перенаправление', '#перенапр', '#REDIRECT' ),
+	'redirect'              => array( '0', '#yünältü', '#ЮНӘЛТҮ', '#перенаправление', '#перенапр', '#REDIRECT' ),
 	'notoc'                 => array( '0', '__БАШЛЫКЮК__', '__БЕЗ_ОГЛАВЛЕНИЯ__', '__БЕЗ_ОГЛ__', '__NOTOC__' ),
 	'forcetoc'              => array( '0', '__ETTIQ__', '__ОБЯЗ_ОГЛ__', '__ОБЯЗАТЕЛЬНОЕ_ОГЛАВЛЕНИЕ__', '__FORCETOC__' ),
 	'toc'                   => array( '0', '__ЭЧТЕЛЕК__', '__ОГЛАВЛЕНИЕ__', '__ОГЛ__', '__TOC__' ),
@@ -234,8 +234,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Битне күзәтү исемлекләренә өстәгән кулланучылар санын күрсәтелсен',
 'tog-oldsig'                  => 'Хәзерге имзаны алдан карау:',
 'tog-fancysig'                => 'Имзаның шәхси вики-билгеләмәсе (автоматик сылтамасыз)',
-'tog-externaleditor'          => 'Тышкы редактор куллану (бары тик белгечләргә генә һәм санак махсус көйләнгән булу зарур; [http://www.mediawiki.org/wiki/Manual:External_editors тулырак...])',
-'tog-externaldiff'            => 'Тышкы версия чагыштыру программасын куллану (бары тик белгечләр өчен һшм санак махсус көйләнгән булу зарур; [http://www.mediawiki.org/wiki/Manual:External_editors тулырак...])',
+'tog-externaleditor'          => 'Тышкы редактор куллану (компьютер махсус көйләнгән булу зарур)',
+'tog-externaldiff'            => 'Тышкы версия чагыштыру программасын куллану (компьютер махсус көйләнгән булу зарур)',
 'tog-showjumplinks'           => '«Күчү» ярдәмче сылтамалары ялгансын',
 'tog-uselivepreview'          => 'Тиз карап алу кулланылсын (JavaScript, эксперименталь)',
 'tog-forceeditsummary'        => 'Үзгәртүләрне тасвирлау юлы тутырылмаган булса, кисәтү',
@@ -808,10 +808,6 @@ $2',
 'userjsyoucanpreview'              => "'''Ярдәм:''' \"{{int:showpreview}}\" төймәсенә басып, яңа JS-файлны тикшереп була.",
 'usercsspreview'                   => "'''Бу бары тик CSS-файлны алдан карау гына, ул әле сакланмаган!'''",
 'userjspreview'                    => "'''Бу бары тик JavaScript файлын алдан карау гына, ул әле сакланмаган!'''",
-'sitecsspreview'                   => "'''онытмагыз, бу бары тик CSS-файлны алдан карау гына.'''
-'''Ул әле сакланмаган!'''",
-'sitejspreview'                    => "'''Бу бары тик JavaScript файлын алдан карау гына.'''
-'''Ул әле сакланмаган!'''",
 'userinvalidcssjstitle'            => "'''Игътибар:''' \"\$1\" бизәү темасы табылмады. Кулланучының .css һәм .js битләре исемнәре бары тик кечкенә (юл) хәрефләрдән генә торырга тиеш икәнен онытмагыз. Мисалга: {{ns:user}}:Foo/vector.css, ә {{ns:user}}:Foo/Vector.css түгел!",
 'updated'                          => '(Яңартылды)',
 'note'                             => "'''Искәрмә:'''",
@@ -955,7 +951,7 @@ $3 күрсәткән сәбәп: ''$2''",
 [[Special:Search|Эзләтеп]] карагыз.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(үзгәртүләрнең тасвиры бетерелгән)',
+'rev-deleted-comment'         => '(фикер бетерелгән)',
 'rev-deleted-user'            => '(автор исеме бетерелгән)',
 'rev-deleted-event'           => '(язма бетерелгән)',
 'rev-deleted-user-contribs'   => '[кулланучының исеме яки  IP-юлламасы бетерелгән  — үзгәртү кертем битеннән яшерелгән]',
@@ -980,10 +976,6 @@ $3 күрсәткән сәбәп: ''$2''",
 'rev-suppressed-unhide-diff'  => "Битнең кайсыдыр юрамасы '''яшерелгән'''.
 [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} Яшерүләр көндәлегендә] тулырак мәгълүмат табып була.
 Сез идарәче булу сәбәпле, [$1 яшерелгән юраманы карый аласыз]",
-'rev-deleted-diff-view'       => "Бу юрамалар чагыштыруының бер юрамасы '''бетерелгән'''.
-Сез идарәче буларак чагыштыруны карый аласыз, [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} бетерүләр көндәлегендә] тулырак мәгълүмат бирелгән булырга мөмкин.",
-'rev-suppressed-diff-view'    => "Бу юрамалар чагыштыруының бер юрамасы '''яшерелгән'''.
-Сез идарәче буларак чагыштыруны карый аласыз, [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} яшерүләр көндәлегендә] тулырак мәгълүмат бирелгән булырга мөмкин.",
 'rev-delundel'                => 'күрсәтү/яшерү',
 'rev-showdeleted'             => 'күрсәтү',
 'revisiondelete'              => 'Битнең юрамасын бетерү / кайтару',
@@ -994,8 +986,6 @@ $3 күрсәткән сәбәп: ''$2''",
 'revdelete-nologid-title'     => 'Көндәлектәге язма хаталы',
 'revdelete-no-file'           => 'Бу файл бар түгел',
 'revdelete-show-file-submit'  => 'Әйе',
-'revdelete-selected'          => "'''[[:$1]] битенең {{PLURAL:$2|Сайланган юрама|сайланган юрамалары}}:'''",
-'logdelete-selected'          => "'''Журналның {{PLURAL:$1|Сайланган язма|сайланган язмалары}} :'''",
 'revdelete-legend'            => 'Чикләүләр урнаштыр:',
 'revdelete-hide-text'         => 'Битнең бу юрамасы текстын яшер',
 'revdelete-hide-image'        => 'Файл эчендәгеләрне качыр',
@@ -1014,7 +1004,6 @@ $3 күрсәткән сәбәп: ''$2''",
 'revdelete-restricted'        => 'чикләүләр идарәчеләргә дә кулланыла',
 'revdelete-hid'               => ' $1 яшерелгән',
 'revdelete-unhid'             => '$1 ачылган',
-'revdelete-otherreason'       => 'Башка/өстәмә сәбәп:',
 'revdelete-reasonotherlist'   => 'Башка сәбәп',
 'revdelete-edit-reasonlist'   => 'Сәбәпләр исемлеген үзгәртү',
 'revdelete-offender'          => 'Әлеге юрамалы битнең авторы:',
@@ -1196,7 +1185,7 @@ $3 күрсәткән сәбәп: ''$2''",
 'gender-unknown'                => 'билгесез',
 'gender-male'                   => 'Ир',
 'gender-female'                 => 'Хатын',
-'prefs-help-gender'             => 'Мәҗбүри түгел: Ул бары тик кайбер хатларда гына күренәчәк һәм бу мәгълүмат барлык кулланучыларга да билгеле булачак.',
+'prefs-help-gender'             => 'Катгый түгел: Ул бары тик кайбер хатларда гына күренәчәк һәм бу мәгълүмат барлык кулланучыларга да билгеле булачак.',
 'email'                         => 'Электрон почта',
 'prefs-help-realname'           => 'Чын исемегез (кирәкми): аны күрсәтсәгез, ул битне үзгәртүче күрсәтү өчен файдалаячак.',
 'prefs-help-email'              => 'Электрон почта адресын күрсәтү катгый түгел, ләкин әгәрдә сез үзегезнең серсүзне онытсагыз бу сезгә аны яңадан кайтарырга ярдәм итәчәк.',
@@ -1292,7 +1281,6 @@ $3 күрсәткән сәбәп: ''$2''",
 'recentchanges-feed-description'    => 'Бу агымда соңгы үзгәртүләрне күзәтү.',
 'recentchanges-label-newpage'       => 'Бу үзгәртү белән яңа бит төзелде',
 'recentchanges-label-minor'         => 'Бу кече үзгәртү',
-'recentchanges-label-bot'           => 'Бу үзгәртү бот белән эшләнгән иде',
 'rcnote'                            => 'Аста $4 $5 вакытынна соңгы {{PLURAL:$2|1|$2}} көн эчендә булган соңгы {{PLURAL:$1|1|$1}} үзгәртмә күрсәтелә:',
 'rcnotefrom'                        => "Астарак '''$2''' башлап ('''$1''' кадәр) үзгәртүләр күрсәтелгән.",
 'rclistfrom'                        => '$1 башлап яңа үзгәртүләрне күрсәт',
@@ -1340,7 +1328,7 @@ $3 күрсәткән сәбәп: ''$2''",
 'upload_directory_read_only' => 'Моңа Сезнең хокукларыгыз юк һәм веб-сервер $1 папкасыны йөкли алмый.',
 'uploaderror'                => 'Файлны йөкләүдә хата',
 'upload-recreate-warning'    => "'''Игътибар: Мондый исемле файл бетерелгән яки исеме алмаштырылган '''",
-'uploadtext'                 => "Бу форманы кулланып серверга файллар йөкли аласыз. Элегрәк йөкләнелгән файлларны карау өчен [[Special:FileList|йөкләнелгән файллар исемлегенә]] мәрәҗәгать итегез. Шулай ук ул [[Special:Log/upload|йөкләнмәләр исемлегенә]] һәм [[Special:Log/delete|бетерелгән файллар]] исемлегенә дә языла.
+'uploadtext'                 => "Бу форманы кулланып серверга файллар йөкли аласыз. Элегрәк йөкләнелгән файлларны карау өчен [[Special:FileList|Йөкләнелгән файллар исемлегенә]] мәрәҗәгать итегез. Шулай ук ул [[Special:Log/upload|йөкләнмәләр исемлегенә]] һәм [[Special:Log/delete|бетерелгән файллар]] исемлегенә дә языла.
 
 Файлны мәкаләгә йөкләү өчен Сез менә бу үрнәкләрне куллана аласыз:
 * '''<tt><nowiki>[[</nowiki>{{ns:file}}<nowiki>:Рәсем.jpg]]</nowiki></tt>''' файлның тулы юрамасын кую өчен;
@@ -1416,9 +1404,6 @@ PICT # төрле
  #</pre> <!-- ничек бар шулай калдырыгыз -->',
 'upload-success-subj'        => 'Йөкләү әйбәт үтте',
 
-# HTTP errors
-'http-read-error' => 'HTTP укуда хата.',
-
 'license'            => 'Лицензиясе:',
 'license-header'     => 'Лицензиясе',
 'nolicense'          => 'Юк',
@@ -1428,7 +1413,6 @@ PICT # төрле
 # Special:ListFiles
 'imgfile'               => 'файл',
 'listfiles'             => 'Сүрәтләр исемлеге',
-'listfiles_thumb'       => 'Миниатюра',
 'listfiles_date'        => 'Вакыт',
 'listfiles_name'        => 'Ат',
 'listfiles_user'        => 'Кулланучы',
@@ -1445,7 +1429,7 @@ PICT # төрле
 'filehist-revert'           => 'кайтару',
 'filehist-current'          => 'хәзерге',
 'filehist-datetime'         => 'Дата/вакыт',
-'filehist-thumb'            => 'Миниатюра',
+'filehist-thumb'            => 'Эскиз',
 'filehist-thumbtext'        => '$1 көнне булган версиянең эскизы',
 'filehist-nothumb'          => 'Миниатюрасы юк',
 'filehist-user'             => 'Кулланучы',
@@ -1463,7 +1447,6 @@ PICT # төрле
 'filepage-nofile-link'      => 'Мондый исемле файл  юк. Сез аны [$1 йөкли аласыз].',
 'uploadnewversion-linktext' => 'Бу файлның яңа юрамасын йөкләү',
 'shared-repo-from'          => '$1 дән',
-'shared-repo'               => 'гомуми саклагыч',
 
 # File reversion
 'filerevert'         => '$1 юрамасына кире кайту',
@@ -1480,7 +1463,6 @@ PICT # төрле
 
 # MIME search
 'mimesearch' => 'MIME эзләү',
-'mimetype'   => 'MIME-тип:',
 'download'   => 'йөкләү',
 
 # Unwatched pages
@@ -1591,19 +1573,17 @@ PICT # төрле
 'logempty'             => 'Кирәкле язмалар көндәлектә юк.',
 
 # Special:AllPages
-'allpages'          => 'Барлык битләр',
-'alphaindexline'    => '$1 битеннән $2 битенә кадәр',
-'nextpage'          => 'Алдагы бит ($1)',
-'prevpage'          => 'Алдагы бит ($1)',
-'allpagesfrom'      => 'Моңа башланучы битләрне чыгару:',
-'allpagesto'        => 'Монда чыгаруны туктату:',
-'allarticles'       => 'Барлык битләр',
-'allinnamespace'    => '«$1» исемнәр мәйданындагы барлык битләр',
-'allnotinnamespace' => 'Барлык битләр («$1» исемнәр мәйданы исәпкә алынмады)',
-'allpagesprev'      => 'Алдагы',
-'allpagesnext'      => 'Киләсе',
-'allpagessubmit'    => 'Башкару',
-'allpagesprefix'    => 'Алкушымчалы битләрне күрсәтү:',
+'allpages'       => 'Барлык битләр',
+'alphaindexline' => '$1 битеннән $2 битенә кадәр',
+'nextpage'       => 'Алдагы бит ($1)',
+'prevpage'       => 'Алдагы бит ($1)',
+'allpagesfrom'   => 'Моңа башланучы битләрне чыгару:',
+'allpagesto'     => 'Монда чыгаруны туктату:',
+'allarticles'    => 'Барлык битләр',
+'allpagesprev'   => 'Элекке',
+'allpagesnext'   => 'Киләсе',
+'allpagessubmit' => 'Башкару',
+'allpagesprefix' => 'Алкушымчалы битләрне күрсәтү:',
 
 # Special:Categories
 'categories'                    => 'Төркемнәр',
@@ -1709,20 +1689,19 @@ $NEWPAGE
 
 --
 Күзәтү исемлеге көйләүләрен үзгәртү:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Битне сезнең күзәтү исемлегездән бетерү:
 $UNWATCHURL
 
 Элемтә һәм ярдәм:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Битне бетерү',
 'confirm'                => 'Раслау',
 'excontent'              => 'эчтәлек: «$1»',
 'excontentauthor'        => 'эчтәлеге: "$1" (бердәнбер үзгәртүче "[[Special:Contributions/$2|$2]]" иде)',
-'exbeforeblank'          => 'чистартуга кадәр булган эчтәлек: «$1»',
 'exblank'                => 'бит буш иде',
 'delete-confirm'         => '«$1» бетерү',
 'delete-legend'          => 'Бетерү',
@@ -1730,11 +1709,9 @@ $UNWATCHURL
 'confirmdeletetext'      => 'Сез бу битнең (яки рәсемнең) тулысынча бетерелүен сорадыгыз.
 Зинһар, моны чыннан да эшләргә теләгәнегезне, моның нәтиҗәләрен аңлаганыгызны һәм [[{{MediaWiki:Policy-url}}]] бүлегендәге кагыйдәләр буенча эшләгәнегезне раслагыз.',
 'actioncomplete'         => 'Гамәл башкарган',
-'actionfailed'           => 'Эш башкарылмаган',
 'deletedtext'            => '«<nowiki>$1</nowiki>» бетерелгән инде.<br />
 Соңгы бетерелгән битләрне күрер өчен, $2 карагыз.',
 'deletedarticle'         => '«[[$1]]» бетерелде',
-'suppressedarticle'      => '«[[$1]]» күрсәтелмәде',
 'dellogpage'             => 'Бетерү көндәлеге',
 'deletionlog'            => 'бетерү көндәлеге',
 'deletecomment'          => 'Сәбәп:',
@@ -1877,7 +1854,7 @@ $1',
 'ipbexpiry'                  => 'Бетә:',
 'ipbreason'                  => 'Сәбәп:',
 'ipbreasonotherlist'         => 'Башка сәбәп',
-'ipbreason-dropdown'         => '* Кысуның гадәттәге сәбәпләре
+'ipbreason-dropdown'         => '↓ * Кысуның гадәттәге сәбәпләре
 ** Ялган мәгълүмат кертү
 ** Битләрнең эчтәлеген сөртү
 ** Тышкы сайтларга спам-сылтамалар
@@ -1896,7 +1873,7 @@ $1',
 'ipb-unblock'                => 'Кулланучы яки IP адресы тыюдан азат итү',
 'unblockip'                  => 'Кулланучыны тыюдан азат итү',
 'ipusubmit'                  => 'Бу тыюны туктату',
-'ipblocklist'                => 'Тыелган кулланучылар',
+'ipblocklist'                => 'Тыелган IP адреслары һәм кулланучы исемнәре',
 'ipblocklist-username'       => 'кулланучы исеме яки IP адресы:',
 'ipblocklist-submit'         => 'Эзләү',
 'infiniteblock'              => 'билгеле бер вакытсыз',
@@ -2180,8 +2157,8 @@ $1',
 'exif-colorspace'               => 'Төсләр тирәлеге',
 'exif-componentsconfiguration'  => 'Төсләр төзелешенең конфигурациясе',
 'exif-compressedbitsperpixel'   => 'Кысылудан соң төснең тирәнлеге',
-'exif-pixelydimension'          => 'Рәсемнең киңлеге',
-'exif-pixelxdimension'          => 'Рәсемнең биеклеге',
+'exif-pixelydimension'          => 'Рәсемнең тулы биеклеге',
+'exif-pixelxdimension'          => 'Рәсемнең тулы киңлеге',
 'exif-makernote'                => 'Җитештерүче турында өстәмә мәгълүматлар',
 'exif-usercomment'              => 'Өстәмә җавап',
 'exif-relatedsoundfile'         => 'Тавыш файлы җавабы',
@@ -2198,9 +2175,9 @@ $1',
 'exif-spectralsensitivity'      => 'Спектраль сизүчәнлек',
 'exif-isospeedratings'          => 'ISO яктылык сизүчәнлеге',
 'exif-oecf'                     => 'OECF (оптоэлектрик күчерү коэффициенты)',
-'exif-shutterspeedvalue'        => 'APEX саклау',
-'exif-aperturevalue'            => 'APEX диафрагма',
-'exif-brightnessvalue'          => 'APEX яктылык',
+'exif-shutterspeedvalue'        => 'Саклау',
+'exif-aperturevalue'            => 'Диафрагма',
+'exif-brightnessvalue'          => 'Яктылык',
 'exif-exposurebiasvalue'        => 'Экспозиция компенсациясе',
 'exif-maxaperturevalue'         => 'Диафрагманың минималь саны',
 'exif-subjectdistance'          => 'Җисемгә кадәр ераклык',
@@ -2250,31 +2227,12 @@ $1',
 'exif-gpsspeed'                 => 'Хәрәкәт тизлеге',
 'exif-gpsdatestamp'             => 'Дата',
 
-'exif-orientation-1' => 'Нормаль',
-'exif-orientation-3' => '180° ка борылган',
-
-'exif-meteringmode-0'   => 'Билгесез',
-'exif-meteringmode-3'   => 'Нокталы',
-'exif-meteringmode-4'   => 'Мультинокталы',
 'exif-meteringmode-255' => 'Башка',
 
-'exif-lightsource-0'  => 'Билгесез',
-'exif-lightsource-4'  => 'Яктылык',
-'exif-lightsource-9'  => 'Яхшы һава торышы',
-'exif-lightsource-11' => 'Күләгә',
-
-'exif-sensingmethod-1' => 'Билгесез',
-
-'exif-scenecapturetype-0' => 'Стандарт',
-'exif-scenecapturetype-1' => 'Ландшафт',
-'exif-scenecapturetype-2' => 'Портрет',
-'exif-scenecapturetype-3' => 'Төнге төшерү',
+'exif-lightsource-0' => 'Билгесез',
+'exif-lightsource-9' => 'Яхшы һава торышы',
 
 'exif-gaincontrol-0' => 'Юк',
-'exif-gaincontrol-1' => 'Аз зурайту',
-'exif-gaincontrol-2' => 'Күпләп зурайту',
-'exif-gaincontrol-3' => 'Аз кечерәйтү',
-'exif-gaincontrol-4' => 'Күпләп кечерәйтү',
 
 'exif-contrast-0' => 'Нормаль',
 'exif-contrast-1' => 'Аз гына күтәрү',
@@ -2292,17 +2250,6 @@ $1',
 'exif-subjectdistancerange-1' => 'Макротөшерү',
 'exif-subjectdistancerange-2' => 'Якыннан төшерү',
 'exif-subjectdistancerange-3' => 'Ерактан төшерү',
-
-# Pseudotags used for GPSLatitudeRef and GPSDestLatitudeRef
-'exif-gpslatitude-n' => 'төньяк киңлек',
-'exif-gpslatitude-s' => 'көньяк киңлек',
-
-# Pseudotags used for GPSLongitudeRef and GPSDestLongitudeRef
-'exif-gpslongitude-e' => 'көнчыгыш озынлык',
-'exif-gpslongitude-w' => 'көнбатыш озынлык',
-
-'exif-gpsstatus-a' => 'Үлчәү тәмамланмаган',
-'exif-gpsstatus-v' => 'Мәгълүматларны җибәрүгә әзер',
 
 # Pseudotags used for GPSSpeedRef
 'exif-gpsspeed-k' => 'км/сәг',
@@ -2339,7 +2286,6 @@ $1',
 'descending_abbrev'        => 'кимү',
 'table_pager_next'         => 'Киләсе бит',
 'table_pager_prev'         => 'Алдагы бит',
-'table_pager_first'        => 'Беренче бит',
 'table_pager_last'         => 'Ахыргы бит',
 'table_pager_limit_submit' => 'Башкару',
 'table_pager_empty'        => 'Нәтиҗә юк',
@@ -2366,15 +2312,13 @@ $1',
 'hijri-calendar-m9' => 'Рамазан',
 
 # Special:Version
-'version'                   => 'Юрама',
-'version-extensions'        => 'Куелган киңәйтүләр',
-'version-specialpages'      => 'Махсус битләр',
-'version-other'             => 'Башка',
-'version-hook-subscribedby' => 'Түбәндәгеләргә язылган:',
-'version-license'           => 'Лицензия',
-'version-software'          => 'Урнаштырылган программа белән тәэмин ителешне',
-'version-software-product'  => 'Продукт',
-'version-software-version'  => 'Версия',
+'version'                  => 'Юрама',
+'version-specialpages'     => 'Махсус битләр',
+'version-other'            => 'Башка',
+'version-license'          => 'Лицензия',
+'version-software'         => 'Урнаштырылган программа белән тәэмин ителешне',
+'version-software-product' => 'Продукт',
+'version-software-version' => 'Версия',
 
 # Special:FilePath
 'filepath'        => 'Файлга юл',
@@ -2382,7 +2326,6 @@ $1',
 'filepath-submit' => 'Күчү',
 
 # Special:FileDuplicateSearch
-'fileduplicatesearch'        => 'Бер үк файлларны эзләү',
 'fileduplicatesearch-submit' => 'Эзләү',
 
 # Special:SpecialPages
@@ -2417,13 +2360,11 @@ $1',
 'tags-edit'         => 'үзгәртү',
 
 # Special:ComparePages
-'comparepages'     => 'Битләрне чагыштыру',
-'compare-selector' => 'Битләрнең юрамаларын чагыштыру',
-'compare-page1'    => 'Беренче сәхифә',
-'compare-page2'    => 'Икенче сәхифә',
-'compare-rev1'     => 'Беренче юрама',
-'compare-rev2'     => 'Икенче юрама',
-'compare-submit'   => 'Чагыштыр',
+'compare-page1'  => 'Беренче сәхифә',
+'compare-page2'  => 'Икенче сәхифә',
+'compare-rev1'   => 'Беренче юрама',
+'compare-rev2'   => 'Икенче юрама',
+'compare-submit' => 'Чагыштыр',
 
 # Database error messages
 'dberr-header'   => 'Бу вики авырлык кичерә',

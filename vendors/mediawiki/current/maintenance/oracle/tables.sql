@@ -72,10 +72,6 @@ CREATE UNIQUE INDEX &mw_prefix.page_u01 ON &mw_prefix.page (page_namespace,page_
 CREATE INDEX &mw_prefix.page_i01 ON &mw_prefix.page (page_random);
 CREATE INDEX &mw_prefix.page_i02 ON &mw_prefix.page (page_len);
 
--- Create a dummy page to satisfy fk contraints especially with revisions
-INSERT INTO &mw_prefix.page
-  VALUES (0, 0, ' ', NULL, 0, 0, 0, 0, current_timestamp, 0, 0);
-
 /*$mw$*/
 CREATE TRIGGER &mw_prefix.page_set_random BEFORE INSERT ON &mw_prefix.page
 	FOR EACH ROW WHEN (new.page_random IS NULL)
@@ -135,7 +131,7 @@ CREATE TABLE &mw_prefix.archive (
 ALTER TABLE &mw_prefix.archive ADD CONSTRAINT &mw_prefix.archive_fk1 FOREIGN KEY (ar_user) REFERENCES &mw_prefix.mwuser(user_id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX &mw_prefix.archive_i01 ON &mw_prefix.archive (ar_namespace,ar_title,ar_timestamp);
 CREATE INDEX &mw_prefix.archive_i02 ON &mw_prefix.archive (ar_user_text,ar_timestamp);
-CREATE INDEX &mw_prefix.archive_i03 ON &mw_prefix.archive (ar_rev_id);
+CREATE INDEX &mw_prefix.archive_i03 ON &mw_prefix.archive (ar_namespace, ar_title, ar_rev_id);
 
 CREATE TABLE &mw_prefix.pagelinks (
   pl_from       NUMBER   NOT NULL,
@@ -614,8 +610,8 @@ ALTER TABLE &mw_prefix.valid_tag ADD CONSTRAINT &mw_prefix.valid_tag_pk PRIMARY 
 --);
 --CREATE UNIQUE INDEX &mw_prefix.profiling_u01 ON &mw_prefix.profiling (pf_name, pf_server);
 
-CREATE INDEX &mw_prefix.si_title_idx ON &mw_prefix.searchindex(si_title) INDEXTYPE IS ctxsys.context;
-CREATE INDEX &mw_prefix.si_text_idx ON &mw_prefix.searchindex(si_text) INDEXTYPE IS ctxsys.context;
+CREATE INDEX si_title_idx ON &mw_prefix.searchindex(si_title) INDEXTYPE IS ctxsys.context;
+CREATE INDEX si_text_idx ON &mw_prefix.searchindex(si_text) INDEXTYPE IS ctxsys.context;
 
 CREATE TABLE &mw_prefix.l10n_cache (
   lc_lang varchar2(32) NOT NULL,

@@ -314,7 +314,7 @@ class MessageCache {
 	 */
 	function loadFromDB( $code = false ) {
 		wfProfileIn( __METHOD__ );
-		global $wgMaxMsgCacheEntrySize, $wgContLanguageCode;
+		global $wgMaxMsgCacheEntrySize, $wgLanguageCode;
 		$dbr = wfGetDB( DB_SLAVE );
 		$cache = array();
 
@@ -327,7 +327,7 @@ class MessageCache {
 		if ( $code ) {
 			# Is this fast enough. Should not matter if the filtering is done in the
 			# database or in code.
-			if ( $code !== $wgContLanguageCode ) {
+			if ( $code !== $wgLanguageCode ) {
 				# Messages for particular language
 				$conds[] = 'page_title' . $dbr->buildLike( $dbr->anyString(), "/$code" );
 			} else {
@@ -376,10 +376,6 @@ class MessageCache {
 		global $wgMaxMsgCacheEntrySize;
 		wfProfileIn( __METHOD__ );
 
-		if ( $this->mDisable ) {
-			wfProfileOut( __METHOD__ );
-			return;
-		}
 
 		list( $msg, $code ) = $this->figureMessage( $title );
 
@@ -411,7 +407,7 @@ class MessageCache {
 		$this->unlock($cacheKey);
 
 		// Also delete cached sidebar... just in case it is affected
-		global $parserMemc;
+		global $wgMemc;
 		$codes = array( $code );
 		if ( $code === 'en'  ) {
 			// Delete all sidebars, like for example on action=purge on the
@@ -421,7 +417,7 @@ class MessageCache {
 
 		foreach ( $codes as $code ) {
 			$sidebarKey = wfMemcKey( 'sidebar', $code );
-			$parserMemc->delete( $sidebarKey );
+			$wgMemc->delete( $sidebarKey );
 		}
 		
 		// Update the message in the message blob store
@@ -507,6 +503,11 @@ class MessageCache {
 	 */
 	function get( $key, $useDB = true, $langcode = true, $isFullKey = false ) {
 		global $wgLanguageCode, $wgContLang;
+
+		if ( is_int( $key ) ) {
+			// "Non-string key given" exception sometimes happens for numerical strings that become ints somewhere on their way here
+			$key = strval( $key );
+		}
 
 		if ( !is_string( $key ) ) {
 			throw new MWException( "Non-string key given" );
@@ -604,7 +605,7 @@ class MessageCache {
 		$message = false;
 
 		$this->load( $code );
-		if ( isset( $this->mCache[$code][$title] ) ) {
+		if (isset( $this->mCache[$code][$title] ) ) {
 			$entry = $this->mCache[$code][$title];
 			$type = substr( $entry, 0, 1 );
 			if ( $type == ' ' ) {
@@ -616,6 +617,11 @@ class MessageCache {
 		wfRunHooks('MessagesPreLoad', array( $title, &$message ) );
 		if ( $message !== false ) {
 			return $message;
+		}
+
+		# If there is no cache entry and no placeholder, it doesn't exist
+		if ( $type !== '!' ) {
+			return false;
 		}
 
 		$titleKey = wfMemcKey( 'messages', 'individual', $title );

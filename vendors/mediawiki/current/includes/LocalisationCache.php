@@ -122,7 +122,7 @@ class LocalisationCache {
 	 * key is removed after the first merge.
 	 */
 	static public $optionalMergeKeys = array( 'bookstoreList' );
-	
+
 	/**
 	 * Keys for items that are formatted like $magicWords
 	 */

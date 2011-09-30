@@ -5,7 +5,7 @@
  * @file
  * @ingroup Deployment
  */
-
+ 
 /**
  * Class for setting up the MediaWiki database using SQLLite.
  *
@@ -13,7 +13,7 @@
  * @since 1.17
  */
 class SqliteInstaller extends DatabaseInstaller {
-
+	
 	protected $globalNames = array(
 		'wgDBname',
 		'wgSQLiteDataDir',
@@ -45,30 +45,16 @@ class SqliteInstaller extends DatabaseInstaller {
 			$this->getTextBox( 'wgDBname', 'config-db-name', array(), $this->parent->getHelpBox( 'config-sqlite-name-help' ) );
 	}
 
-	/*
-	 * Safe wrapper for PHP's realpath() that fails gracefully if it's unable to canonicalize the path.
-	 */
-	private static function realpath( $path ) {
-		$result = realpath( $path );
-		if ( !$result ) {
-			return $path;
-		}
-		return $result;
-	}
-
 	public function submitConnectForm() {
 		$this->setVarsFromRequest( array( 'wgSQLiteDataDir', 'wgDBname' ) );
 
-		# Try realpath() if the directory already exists
-		$dir = self::realpath( $this->getVar( 'wgSQLiteDataDir' ) );
-		$result = self::dataDirOKmaybeCreate( $dir, true /* create? */ );
-		if ( $result->isOK() )
-		{
-			# Try expanding again in case we've just created it
-			$dir = self::realpath( $dir );
-			$this->setVar( 'wgSQLiteDataDir', $dir );
+		$dir = realpath( $this->getVar( 'wgSQLiteDataDir' ) );
+		if ( !$dir ) {
+			// realpath() sometimes fails, especially on Windows
+			$dir = $this->getVar( 'wgSQLiteDataDir' );
 		}
-		return $result;
+		$this->setVar( 'wgSQLiteDataDir', $dir );
+		return self::dataDirOKmaybeCreate( $dir, true /* create? */ );
 	}
 
 	private static function dataDirOKmaybeCreate( $dir, $create = false ) {
@@ -103,18 +89,19 @@ class SqliteInstaller extends DatabaseInstaller {
 		return Status::newGood();
 	}
 
-	public function openConnection() {
+	public function getConnection() {
 		global $wgSQLiteDataDir;
 
 		$status = Status::newGood();
 		$dir = $this->getVar( 'wgSQLiteDataDir' );
 		$dbName = $this->getVar( 'wgDBname' );
+
 		try {
 			# FIXME: need more sensible constructor parameters, e.g. single associative array
 			# Setting globals kind of sucks
 			$wgSQLiteDataDir = $dir;
-			$db = new DatabaseSqlite( false, false, false, $dbName );
-			$status->value = $db;
+			$this->db = new DatabaseSqlite( false, false, false, $dbName );
+			$status->value = $this->db;
 		} catch ( DBConnectionError $e ) {
 			$status->fatal( 'config-sqlite-connection-error', $e->getMessage() );
 		}
@@ -158,7 +145,6 @@ class SqliteInstaller extends DatabaseInstaller {
 		$this->setVar( 'wgDBserver', '' );
 		$this->setVar( 'wgDBuser', '' );
 		$this->setVar( 'wgDBpassword', '' );
-		$this->setupSchemaVars();
 		return $this->getConnection();
 	}
 
@@ -170,7 +156,7 @@ class SqliteInstaller extends DatabaseInstaller {
 	public function setupSearchIndex( &$status ) {
 		global $IP;
 
-		$module = DatabaseSqlite::getFulltextSearchModule();
+		$module = $this->db->getFulltextSearchModule();
 		$fts3tTable = $this->db->checkForEnabledSearch();
 		if ( $fts3tTable &&  !$module ) {
 			$status->warning( 'config-sqlite-fts3-downgrade' );

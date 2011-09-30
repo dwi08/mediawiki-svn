@@ -63,20 +63,21 @@ abstract class Job {
 		/* Ensure we "own" this row */
 		$dbw->delete( 'job', array( 'job_id' => $row->job_id ), __METHOD__ );
 		$affected = $dbw->affectedRows();
+		$dbw->commit();
 
 		if ( $affected == 0 ) {
 			wfProfileOut( __METHOD__ );
 			return false;
 		}
 
+		wfIncrStats( 'job-pop' );
 		$namespace = $row->job_namespace;
 		$dbkey = $row->job_title;
 		$title = Title::makeTitleSafe( $namespace, $dbkey );
 		$job = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ),
 			$row->job_id );
 
-		$dbw->delete( 'job', $job->insertFields(), __METHOD__ );
-		$dbw->commit();
+		$job->removeDuplicates();
 
 		wfProfileOut( __METHOD__ );
 		return $job;
@@ -158,16 +159,14 @@ abstract class Job {
 
 		// If execution got to here, there's a row in $row that has been deleted from the database
 		// by this thread. Hence the concurrent pop was successful.
+		wfIncrStats( 'job-pop' );
 		$namespace = $row->job_namespace;
 		$dbkey = $row->job_title;
 		$title = Title::makeTitleSafe( $namespace, $dbkey );
 		$job = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ), $row->job_id );
 
 		// Remove any duplicates it may have later in the queue
-		// Deadlock prone section
-		$dbw->begin();
-		$dbw->delete( 'job', $job->insertFields(), __METHOD__ );
-		$dbw->commit();
+		$job->removeDuplicates();
 
 		wfProfileOut( __METHOD__ );
 		return $job;
@@ -298,6 +297,7 @@ abstract class Job {
 				return;
 			}
 		}
+		wfIncrStats( 'job-insert' );
 		return $dbw->insert( 'job', $fields, __METHOD__ );
 	}
 
@@ -310,6 +310,27 @@ abstract class Job {
 			'job_title' => $this->title->getDBkey(),
 			'job_params' => Job::makeBlob( $this->params )
 		);
+	}
+
+	/**
+	 * Remove jobs in the job queue which are duplicates of this job.
+	 * This is deadlock-prone and so starts its own transaction.
+	 */
+	function removeDuplicates() {
+		if ( !$this->removeDuplicates ) {
+			return;
+		}
+
+		$fields = $this->insertFields();
+		unset( $fields['job_id'] );
+		$dbw = wfGetDB( DB_MASTER );
+		$dbw->begin();
+		$dbw->delete( 'job', $fields, __METHOD__ );
+		$affected = $dbw->affectedRows();
+		$dbw->commit();
+		if ( $affected ) {
+			wfIncrStats( 'job-dup-delete', $affected );
+		}
 	}
 
 	function toString() {

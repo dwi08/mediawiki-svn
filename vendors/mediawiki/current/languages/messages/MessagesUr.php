@@ -13,7 +13,6 @@
  * @author Reedy
  * @author Wisesabre
  * @author לערי ריינהארט
- * @author سمرقندی
  * @author محبوب عالم
  */
 
@@ -99,9 +98,8 @@ $messages = array(
 'underline-default' => 'متصفح کا طے شدہ',
 
 # Font style option in Special:Preferences
-'editfont-style'     => 'خانۂ تدوین کا اندازِ تحریر:',
-'editfont-default'   => 'متصفح کا طے شدہ',
-'editfont-monospace' => 'یکفضائی نویسہ',
+'editfont-style'   => 'خانۂ تدوین کا اندازِ تحریر:',
+'editfont-default' => 'متصفح کا طے شدہ',
 
 # Dates
 'sunday'        => 'اتوار',

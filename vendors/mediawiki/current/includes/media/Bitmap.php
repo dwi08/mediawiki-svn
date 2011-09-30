@@ -215,7 +215,7 @@ class BitmapHandler extends ImageHandler {
 				// We optimize the output, but -optimize is broken,
 				// use optimizeTransparency instead (bug 11822)
 				if ( version_compare( $this->getMagickVersion(), "6.3.5" ) >= 0 ) {
-					$animation_post = '-fuzz 5% -layers optimizeTransparency +map';
+					$animation_post = '-fuzz 5% -layers optimizeTransparency';
 				}
 			}
 		}

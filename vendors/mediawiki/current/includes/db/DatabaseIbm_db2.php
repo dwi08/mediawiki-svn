@@ -245,6 +245,11 @@ class DatabaseIbm_db2 extends DatabaseBase {
 		return 'ibm_db2';
 	}
 
+	######################################
+	# Setup
+	######################################
+
+
 	/**
 	 *
 	 * @param $server String: hostname of database server
@@ -254,12 +259,19 @@ class DatabaseIbm_db2 extends DatabaseBase {
 	 * @param $flags Integer: database behaviour flags (optional, unused)
 	 * @param $schema String
 	 */
-	public function __construct( $server = false, $user = false,
+	public function DatabaseIbm_db2( $server = false, $user = false,
 							$password = false,
 							$dbName = false, $flags = 0,
 							$schema = self::USE_GLOBAL )
 	{
-		global $wgDBmwschema;
+
+		global $wgOut, $wgDBmwschema;
+		# Can't get a reference if it hasn't been set yet
+		if ( !isset( $wgOut ) ) {
+			$wgOut = null;
+		}
+		$this->mOut =& $wgOut;
+		$this->mFlags = DBO_TRX | $flags;
 
 		if ( $schema == self::USE_GLOBAL ) {
 			$this->mSchema = $wgDBmwschema;
@@ -275,7 +287,7 @@ class DatabaseIbm_db2 extends DatabaseBase {
 		$this->setDB2Option( 'rowcount', 'DB2_ROWCOUNT_PREFETCH_ON',
 			self::STMT_OPTION );
 
-		parent::__construct( $server, $user, $password, $dbName, DBO_TRX | $flags );
+		$this->open( $server, $user, $password, $dbName );
 	}
 
 	/**
@@ -949,7 +961,7 @@ EOF;
 				$overhead = "SAVEPOINT $ignore ON ROLLBACK RETAIN CURSORS";
 				db2_exec( $this->mConn, $overhead, $this->mStmtOptions );
 
-				$res2 = $this->execute( $stmt, $row );
+				$this->execute( $stmt, $row );
 
 				if ( !$res2 ) {
 					$this->installPrint( 'Last error:' );

@@ -16,13 +16,10 @@
  * @author Mobe
  * @author Nedergard
  * @author Nike
- * @author Ochs
  * @author Olli
- * @author Pxos
  * @author Silvonen
  * @author Str4nd
  * @author Tarmo
- * @author Wix
  * @author ZeiP
  * @author לערי ריינהארט
  */
@@ -327,8 +324,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Näytä sivua tarkkailevien käyttäjien määrä',
 'tog-oldsig'                  => 'Nykyisen allekirjoituksen esikatselu',
 'tog-fancysig'                => 'Muotoilematon allekirjoitus ilman automaattista linkkiä',
-'tog-externaleditor'          => 'Käytä ulkoista tekstieditoria oletuksena. Vain kokeneille käyttäjille, vaatii selaimen asetusten muuttamista. (<span class="plainlinks">[http://www.mediawiki.org/wiki/Manual:External_editors Ohje]</span>)',
-'tog-externaldiff'            => 'Käytä oletuksena ulkoista työkalua sivun eri versioiden välisten erojen tarkasteluun. Vain kokeneille käyttäjille, vaatii selaimen asetusten muuttamista. (<span class="plainlinks">[http://www.mediawiki.org/wiki/Manual:External_editors Ohje]</span>)',
+'tog-externaleditor'          => 'Käytä ulkoista tekstieditoria oletuksena',
+'tog-externaldiff'            => 'Käytä ulkoista diff-ohjelmaa oletuksena',
 'tog-showjumplinks'           => 'Lisää loikkaa-käytettävyyslinkit sivun alkuun',
 'tog-uselivepreview'          => 'Käytä pikaesikatselua (JavaScript) (kokeellinen)',
 'tog-forceeditsummary'        => 'Huomauta, jos yhteenvetoa ei ole annettu',
@@ -704,7 +701,6 @@ Käyttäjätunnuksesi on luotu.
 'yourpassword'               => 'Salasana',
 'yourpasswordagain'          => 'Salasana uudelleen',
 'remembermypassword'         => 'Muista minut (enintään $1 {{PLURAL:$1|päivä|päivää}})',
-'securelogin-stick-https'    => 'Jatka salatun yhteyden käyttämistä sisäänkirjautumisen jälkeen',
 'yourdomainname'             => 'Verkkonimi',
 'externaldberror'            => 'Tapahtui virhe ulkoisen autentikointitietokannan käytössä tai sinulla ei ole lupaa päivittää tunnustasi.',
 'login'                      => 'Kirjaudu sisään',
@@ -739,7 +735,6 @@ Käyttäjätunnuksesi on luotu.
 'wrongpasswordempty'         => 'Et voi antaa tyhjää salasanaa.',
 'passwordtooshort'           => 'Salasanan täytyy olla vähintään {{PLURAL:$1|yhden merkin pituinen|$1 merkkiä pitkä}}.',
 'password-name-match'        => 'Salasanasi täytyy olla eri kuin käyttäjätunnuksesi.',
-'password-login-forbidden'   => 'Tämän käyttäjänimen ja salasanan käyttö on estetty.',
 'mailmypassword'             => 'Lähetä uusi salasana sähköpostitse',
 'passwordremindertitle'      => 'Salasanamuistutus {{GRAMMAR:elative|{{SITENAME}}}}',
 'passwordremindertext'       => 'Joku IP-osoitteesta $1 pyysi {{GRAMMAR:partitive|{{SITENAME}}}} ($4) lähettämään uuden salasanan. Väliaikainen salasana käyttäjälle $2 on nyt $3. Kirjaudu sisään ja vaihda salasana. Väliaikainen salasana vanhenee {{PLURAL:$5|yhden päivän|$5 päivän}} kuluttua.
@@ -771,9 +766,6 @@ Sinun ei tarvitse huomioida tätä viestiä, jos tunnus on luotu virheellisesti.
 Odota ennen kuin yrität uudelleen.',
 'loginlanguagelabel'         => 'Kieli: $1',
 'suspicious-userlogout'      => 'Pyyntösi kirjautua ulos evättiin, koska se näytti rikkinäisen selaimen tai välimuistipalvelimen lähettämältä.',
-
-# E-mail sending
-'php-mail-error-unknown' => 'Tuntematon virhe PHP:n mail()-funktiossa',
 
 # Password reset dialog
 'resetpass'                 => 'Muuta salasana',
@@ -895,18 +887,14 @@ tai <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}
 'blocked-notice-logextract'        => 'Tämä käyttäjä on tällä hetkellä estetty.
 Alla on viimeisin estolokin tapahtuma:',
 'clearyourcache'                   => "'''Huomautus:''' Selaimen välimuisti pitää tyhjentää asetusten tallentamisen jälkeen, jotta muutokset tulisivat voimaan:
-'''Mozilla, Firefox ja Safari:''' napsauta Vaihto-näppäin pohjassa Päivitä tai paina ''Ctrl-F5'' tai ''Ctrl-R'' (''Command-R'' Macintoshilla);
-'''Konqueror''': napsauta Päivitä tai paina ''F5'';
-'''Opera:''' tyhjennä välimuisti: ''Tools→Preferences'';
-'''Internet Explorer:''' napsauta ''Ctrl''-näppäin pohjassa Päivitä tai paina ''Ctrl-F5''.",
+*'''Mozilla, Konqueror ja Safari:''' napsauta ''Shift''-näppäin pohjassa päivitä tai paina ''Ctrl-Shift-R'' (''Cmd-Shift-R'' Applella)
+*'''IE:''' napsauta ''Ctrl''-näppäin pohjassa päivitä tai paina ''Ctrl-F5''
+*'''Konqueror''': napsauta päivitä tai paina ''F5''
+*'''Opera:''' saatat joutua tyhjentämään välimuistin kokonaan (''Tools→Preferences'').",
 'usercssyoucanpreview'             => 'Voit testata uutta CSS:ää ennen tallennusta käyttämällä painiketta ”{{int:showpreview}}”.',
 'userjsyoucanpreview'              => 'Voit testata uutta JavaScriptiä ennen tallennusta käyttämällä painiketta ”{{int:showpreview}}”.',
 'usercsspreview'                   => "'''Tämä on CSS:n esikatselu. Muutoksia ei ole vielä tallennettu.'''",
 'userjspreview'                    => "'''Tämä on JavaScriptin esikatselu.'''",
-'sitecsspreview'                   => "'''Huomaa, että tämä on vasta CSS:n esikatselu.''' 
-'''Muutoksia ei ole vielä tallennettu.'''",
-'sitejspreview'                    => "'''Huomaa, että tämä on vasta JavaScript-koodin esikatselu.'''
-'''Muutoksia ei ole vielä tallennettu.'''",
 'userinvalidcssjstitle'            => "'''Varoitus:''' Tyyliä nimeltä ”$1” ei ole olemassa. Muista, että käyttäjän määrittelemät .css- ja .js-sivut alkavat pienellä alkukirjaimella, esim. {{ns:user}}:Matti Meikäläinen/vector.css eikä {{ns:user}}:Matti Meikäläinen/Vector.css.",
 'updated'                          => '(Päivitetty)',
 'note'                             => "'''Huomautus:'''",
@@ -950,7 +938,7 @@ Alla on viimeisin lokitapahtuma:",
 'templatesusedpreview'             => 'Esikatselussa mukana {{PLURAL:$1|oleva malline|olevat mallineet}}:',
 'templatesusedsection'             => 'Tässä osiossa mukana {{PLURAL:$1|oleva malline|olevat mallineet}}:',
 'template-protected'               => '(suojattu)',
-'template-semiprotected'           => '(suojattu kirjautumattomilta ja uusilta käyttäjiltä)',
+'template-semiprotected'           => '(suojattu anonyymeiltä ja uusilta käyttäjiltä)',
 'hiddencategories'                 => 'Tämä sivu kuuluu {{PLURAL:$1|seuraavaan piilotettuun luokkaan|seuraaviin piilotettuihin luokkiin}}:',
 'edittools'                        => '<!-- Tässä oleva teksti näytetään muokkauskentän alla. -->',
 'nocreatetitle'                    => 'Sivujen luominen on rajoitettu',
@@ -959,7 +947,7 @@ Alla on viimeisin lokitapahtuma:",
 'sectioneditnotsupported-title'    => 'Osiomuokkaaminen ei ole tuettu.',
 'sectioneditnotsupported-text'     => 'Osiomuokkaaminen ei ole tuettu tällä sivulla.',
 'permissionserrors'                => 'Puutteelliset oikeudet',
-'permissionserrorstext'            => 'Sinulla ei ole oikeutta suorittaa toimintoa {{PLURAL:$1|seuraavasta syystä|seuraavista syistä}} johtuen:',
+'permissionserrorstext'            => 'Sinulla ei ole oikeuksia suorittaa toimintoa {{PLURAL:$1|seuraavasta|seuraavista}} syistä johtuen:',
 'permissionserrorstext-withaction' => 'Sinulla ei ole lupaa {{lcfirst:$2}} {{PLURAL:$1|seuraavasta syystä|seuraavista syistä}} johtuen:',
 'recreate-moveddeleted-warn'       => "'''Olet luomassa sivua, joka on aikaisemmin poistettu.'''
 
@@ -990,7 +978,7 @@ Nämä muuttujat on jätetty käsittelemättä.',
 
 # "Undo" feature
 'undo-success' => 'Kumoaminen onnistui. Valitse <em>tallenna</em> toteuttaaksesi muutokset.',
-'undo-failure' => 'Muokkausta ei voitu kumota välissä olevien ristiriitaisten muutosten vuoksi. Kumoa muutokset käsin.',
+'undo-failure' => 'Muokkausta ei voitu kumota välissä olevien ristiriistaisten muutosten vuoksi. Kumoa muutokset käsin.',
 'undo-norev'   => 'Muokkausta ei voitu perua, koska sitä ei ole olemassa tai se on poistettu.',
 'undo-summary' => 'Kumottu muokkaus $1, jonka teki [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]])',
 
@@ -1032,7 +1020,7 @@ Se on saatettu poistaa wikistä tai nimetä uudelleen.
 Kokeile [[Special:Search|hakua]] löytääksesi asiaan liittyviä sivuja.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(muokkausyhteenveto poistettu)',
+'rev-deleted-comment'         => '(kommentti poistettu)',
 'rev-deleted-user'            => '(käyttäjänimi poistettu)',
 'rev-deleted-event'           => '(lokitapahtuma poistettu)',
 'rev-deleted-user-contribs'   => '[käyttäjänimi tai IP-osoite poistettu – muokkaus piilotettu muokkauksista]',
@@ -1175,7 +1163,7 @@ Uuden ja vanhan sivun muutoksien pitää muodostaa jatkumo – ne eivät saa men
 'compareselectedversions'  => 'Vertaile valittuja versioita',
 'showhideselectedversions' => 'Näytä tai piilota valitut versiot',
 'editundo'                 => 'kumoa',
-'diff-multi'               => '(Näytettyjen versioiden välissä on {{PLURAL:$1|yksi muokkaus|$1 versiota, jotka ovat {{PLURAL:$2|yhden käyttäjän tekemiä|$2 eri käyttäjän tekemiä}}}}.)',
+'diff-multi'               => '(Versioiden välissä on {{PLURAL:$1|yksi muu muokkaus|$1 muuta muokkausta, jotka on tehnyt {{PLURAL:$2|yksi käyttäjä|$2 eri käyttäjää}}}}.)',
 'diff-multi-manyusers'     => '(Versioiden välissä on {{PLURAL:$1|yksi muu muokkaus|$1 muuta muokkausta, jotka on tehnyt {{PLURAL:$2|yksi käyttäjä|yli $2 eri käyttäjää}}}}.)',
 
 # Search results
@@ -1204,11 +1192,11 @@ $1 {{int:pipe-separator}} $2',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|Selaa sivuja tällä etuliitteellä]]',
 'searchprofile-articles'           => 'Sisältösivut',
 'searchprofile-project'            => 'Ohje- ja projektisivut',
-'searchprofile-images'             => 'Kuvat ja tiedostot',
+'searchprofile-images'             => 'Muut mediat',
 'searchprofile-everything'         => 'Kaikki',
 'searchprofile-advanced'           => 'Laajennettu',
-'searchprofile-articles-tooltip'   => 'Hae nimiavaruuksista $1',
-'searchprofile-project-tooltip'    => 'Hae nimiavaruuksista $1',
+'searchprofile-articles-tooltip'   => 'Etsi seuraavia $1',
+'searchprofile-project-tooltip'    => 'Etsi seuraavia $1',
 'searchprofile-images-tooltip'     => 'Etsi tiedostoja',
 'searchprofile-everything-tooltip' => 'Etsi kaikkialta (myös keskustelusivut)',
 'searchprofile-advanced-tooltip'   => 'Etsi määritellyistä nimiavaruuksista',
@@ -1240,7 +1228,7 @@ Kokeile lisätä haun alkuun ''all:'', niin haku kohdistuu kaikkeen sisältöön
 'powersearch-redir'                => 'Luettele ohjaukset',
 'powersearch-field'                => 'Etsi',
 'powersearch-togglelabel'          => 'Muuta valinta',
-'powersearch-toggleall'            => 'Valitse kaikki',
+'powersearch-toggleall'            => 'Lisää kaikki',
 'powersearch-togglenone'           => 'Poista kaikki',
 'search-external'                  => 'Ulkoinen haku',
 'searchdisabled'                   => 'Tekstihaku on poistettu toistaiseksi käytöstä suuren kuorman vuoksi. Voit käyttää alla olevaa Googlen hakukenttää sivujen etsimiseen, kunnes haku tulee taas käyttöön. <small>Huomaa, että ulkopuoliset kopiot {{GRAMMAR:genitive|{{SITENAME}}}} sisällöstä eivät välttämättä ole ajan tasalla.</small>',
@@ -1269,9 +1257,9 @@ Kokeile lisätä haun alkuun ''all:'', niin haku kohdistuu kaikkeen sisältöön
 'prefs-rc'                      => 'Tuoreet muutokset',
 'prefs-watchlist'               => 'Tarkkailulista',
 'prefs-watchlist-days'          => 'Tarkkailulistan ajanjakso',
-'prefs-watchlist-days-max'      => 'Enintään 7 päivää',
+'prefs-watchlist-days-max'      => '(enintään 7 päivää)',
 'prefs-watchlist-edits'         => 'Tarkkailulistalla näytettävien muokkausten määrä',
-'prefs-watchlist-edits-max'     => 'Enintään 1000',
+'prefs-watchlist-edits-max'     => '(enintään 1000)',
 'prefs-watchlist-token'         => 'Tarkkailulistan avain',
 'prefs-misc'                    => 'Muut',
 'prefs-resetpass'               => 'Muuta salasana',
@@ -1291,7 +1279,7 @@ Kokeile lisätä haun alkuun ''all:'', niin haku kohdistuu kaikkeen sisältöön
 'stub-threshold'                => '<a href="#" class="stub">Tynkäsivun</a> osoituskynnys',
 'stub-threshold-disabled'       => 'Ei käytössä',
 'recentchangesdays'             => 'Näytettävien päivien määrä tuoreissa muutoksissa',
-'recentchangesdays-max'         => 'Enintään $1 {{PLURAL:$1|päivä|päivää}}',
+'recentchangesdays-max'         => '(enintään $1 {{PLURAL:$1|päivä|päivää}})',
 'recentchangescount'            => 'Näytettävien muutoksien määrä oletuksena',
 'prefs-help-recentchangescount' => 'Tämä sisältää tuoreet muutokset, muutoshistoriat ja lokit.',
 'prefs-help-watchlist-token'    => 'Tämän kentän täyttäminen salaisella avaimella tuottaa RSS-syötteen tarkkailulistastasi.
@@ -1362,10 +1350,6 @@ Tässä satunnaisesti tuotettu arvo, jota voit käyttää: $1',
 'prefs-displaysearchoptions'    => 'Näyttöasetukset',
 'prefs-displaywatchlist'        => 'Näyttöasetukset',
 'prefs-diffs'                   => 'Erot',
-
-# User preference: e-mail validation using jQuery
-'email-address-validity-valid'   => 'Sähköpostiosoite vaikuttaa kelvolliselta',
-'email-address-validity-invalid' => 'Virheellinen sähköpostiosoite',
 
 # User rights
 'userrights'                   => 'Käyttöoikeuksien hallinta',
@@ -1637,7 +1621,7 @@ Jos sinulla on tämän kuvan alkuperäinen versio, tallenna se. Muussa tapaukses
 'fileexists-forbidden'        => 'Samanniminen tiedosto on jo olemassa, eikä sitä voi korvata. Tallenna tiedosto jollakin toisella nimellä. Nykyinen tiedosto: [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Samanniminen tiedosto on jo olemassa jaetussa mediavarastossa. Tallenna tiedosto jollakin toisella nimellä. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Tämä tiedosto on kaksoiskappale {{PLURAL:$1|seuraavasta tiedostosta|seuraavista tiedostoista}}:',
-'file-deleted-duplicate'      => 'Tiedosto, joka on identtinen tämän tiedoston kanssa ([[:$1]]) on aiemmin poistettu. Katso kyseisen tiedoston poistoloki ennen kuin jatkat uudelleentallentamista.',
+'file-deleted-duplicate'      => 'Tiedosto, joka on identtinen tämän tiedoston kanssa ([[$1]]) on aiemmin poistettu. Katso kyseisen tiedoston poistoloki ennen kuin jatkat uudelleentallentamista.',
 'uploadwarning'               => 'Tallennusvaroitus',
 'uploadwarning-text'          => 'Muuta alla olevaa tiedostokuvausta ja yritä uudelleen.',
 'savefile'                    => 'Tallenna',
@@ -1841,7 +1825,6 @@ Tiedot [$2 tiedoston kuvaussivulta] näkyvät alla.',
 'statistics-edits'             => 'Muokkauksia {{GRAMMAR:genitive|{{SITENAME}}}} perustamisen jälkeen',
 'statistics-edits-average'     => 'Keskimäärin yhtä sivua muokattu',
 'statistics-views-total'       => 'Sivuja katsottu yhteensä',
-'statistics-views-total-desc'  => 'Näyttökertoihin eivät sisälly toimintosivut eikä sivut, joita ei ole olemassa',
 'statistics-views-peredit'     => 'Sivuja katsottu muokkausta kohden',
 'statistics-users'             => 'Rekisteröityneitä [[Special:ListUsers|käyttäjiä]]',
 'statistics-users-active'      => 'Aktiivisia käyttäjiä',
@@ -1878,8 +1861,6 @@ Jokaisella rivillä on linkit ensimmäiseen ja toiseen ohjaukseen sekä toisen o
 'nmembers'                => '$1 {{PLURAL:$1|jäsen|jäsentä}}',
 'nrevisions'              => '$1 {{PLURAL:$1|muutos|muutosta}}',
 'nviews'                  => '$1 {{PLURAL:$1|lataus|latausta}}',
-'nimagelinks'             => 'Käytössä $1 {{PLURAL:$1|sivulla}}',
-'ntransclusions'          => 'käytössä $1 {{PLURAL:$1|sivulla}}',
 'specialpage-empty'       => 'Tämä sivu on tyhjä.',
 'lonelypages'             => 'Yksinäiset sivut',
 'lonelypagestext'         => 'Seuraaviin sivuihin ei ole linkkejä tai sisällytyksiä muualta wikistä.',
@@ -2129,13 +2110,13 @@ Uusia ilmoituksia tästä sivusta ei tule kunnes vierailet sivulla. Voit myös n
 
 --
 Tarkkailulistan asetuksia voit muuttaa osoitteessa:
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Voit poistaa sivun tarkkailulistalta osoitteessa:
 $UNWATCHURL
 
 Palaute ja lisäapu osoitteessa:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Poista sivu',
@@ -2292,7 +2273,7 @@ $1',
 
 # Namespace form on various pages
 'namespace'      => 'Nimiavaruus',
-'invert'         => 'Käänteinen valinta',
+'invert'         => 'Käännä nimiavaruusvalinta päinvastaiseksi',
 'blanknamespace' => '(sivut)',
 
 # Contributions
@@ -2342,7 +2323,7 @@ Alla on viimeisin estolokin tapahtuma:',
 'whatlinkshere-filters'    => 'Suotimet',
 
 # Block/unblock
-'blockip'                         => 'Estä käyttäjä',
+'blockip'                         => 'Aseta muokkausesto',
 'blockip-title'                   => 'Estä käyttäjä',
 'blockip-legend'                  => 'Estä käyttäjä',
 'blockiptext'                     => 'Tällä lomakkeella voit estää käyttäjän tai IP-osoitteen muokkausoikeudet. Muokkausoikeuksien poistamiseen [[{{MediaWiki:Policy-url}}|pitää olla syy]], esimerkiksi sivujen vandalisointi. Kirjoita syy siihen varattuun kenttään.<br />Vapaamuotoisen vanhenemisajat noudattavat GNUn standardimuotoa, joka on kuvattu tar-manuaalissa ([http://www.gnu.org/software/tar/manual/html_node/Date-input-formats.html] [EN]), esimerkiksi ”1 hour”, ”2 days”, ”next Wednesday”, ”2014-08-29”.',
@@ -2386,7 +2367,7 @@ Nykyiset estot löytyvät [[Special:IPBlockList|estolistalta]].',
 'ipusubmit'                       => 'Poista esto',
 'unblocked'                       => 'Käyttäjän [[User:$1|$1]] esto on poistettu',
 'unblocked-id'                    => 'Esto $1 on poistettu',
-'ipblocklist'                     => 'Estetyt käyttäjät',
+'ipblocklist'                     => 'Estetyt IP-osoitteet ja käyttäjätunnukset',
 'ipblocklist-legend'              => 'Haku',
 'ipblocklist-username'            => 'Käyttäjätunnus tai IP-osoite',
 'ipblocklist-sh-userblocks'       => '$1 käyttäjätunnusten estot',
@@ -2478,13 +2459,6 @@ Olet vastuussa siitä, että linkit osoittavat sinne, mihin niiden on tarkoitusk
 
 Huomaa, että sivua '''ei''' siirretä mikäli uusi otsikko on olemassa olevan sivun käytössä, paitsi milloin kyseessä on tyhjä sivu tai ohjaus, jolla ei ole muokkaushistoriaa.
 Tämä tarkoittaa sitä, että voit siirtää sivun takaisin vanhalle nimelleen mikäli teit virheen, mutta et voi kirjoittaa olemassa olevan sivun päälle.
-
-Tämä saattaa olla suuri ja odottamaton muutos suositulle sivulle. Varmista, että tiedät seuraukset ennen kuin siirrät sivun.",
-'movepagetext-noredirectfixer' => "Alla olevalla lomakkeella voit nimetä uudelleen sivuja, jolloin niiden koko historia siirtyy uuden nimen alle. Vanhasta sivusta tulee ohjaussivu, joka osoittaa uuteen sivuun.
-
-Tarkasta sivuun viittaavat ohjaukset [[Special:DoubleRedirects|kaksinkertaisten]] tai [[Special:BrokenRedirects|rikkinäisten]] ohjausten varalta. Olet vastuussa siitä, että linkit osoittavat sinne, mihin niiden on tarkoituskin osoittaa.
-
-Huomaa, että sivua '''ei''' siirretä mikäli uusi otsikko on olemassa olevan sivun käytössä, paitsi milloin kyseessä on tyhjä sivu tai ohjaus, jolla ei ole muokkaushistoriaa. Tämä tarkoittaa sitä, että voit siirtää sivun takaisin vanhalle nimelleen mikäli teit virheen, mutta et voi kirjoittaa olemassa olevan sivun päälle.
 
 Tämä saattaa olla suuri ja odottamaton muutos suositulle sivulle. Varmista, että tiedät seuraukset ennen kuin siirrät sivun.",
 'movepagetalktext'             => "Sivuun mahdollisesti kytketty keskustelusivu siirretään automaattisesti, '''paitsi jos''':
@@ -2616,8 +2590,7 @@ Jos haluat muokata MediaWikin yleistä kotoistusta, käy [http://www.mediawiki.o
 'import-interwiki-namespace' => 'Kohdenimiavaruus:',
 'import-upload-filename'     => 'Tiedostonimi:',
 'import-comment'             => 'Syy',
-'importtext'                 => 'Vie sivuja lähdewikistä käyttäen [[Special:Export|vientityökalua]].
-Tallenna tiedot koneellesi ja tuo ne tällä sivulla.',
+'importtext'                 => 'Vie sivuja lähdewikistä käyttäen [[Special:Export|vienti]]-työkalua. Tallenna tiedot koneellesi ja tallenna ne täällä.',
 'importstart'                => 'Tuodaan sivuja...',
 'import-revision-count'      => '$1 {{PLURAL:$1|versio|versiota}}',
 'importnopages'              => 'Ei tuotavia sivuja.',
@@ -2786,7 +2759,7 @@ Tallenna tiedot koneellesi ja tuo ne tällä sivulla.',
 'math_unknown_function' => 'Tuntematon funktio',
 'math_lexing_error'     => 'Tulkintavirhe',
 'math_syntax_error'     => 'Jäsennysvirhe',
-'math_image_error'      => 'Muuntaminen PNG-tiedostomuotoon epäonnistui; tarkista, että latex ja dvipng (tai dvips, gs ja convert) on asennettu oikein.',
+'math_image_error'      => 'PNG-muunnos epäonnistui; tarkista, että latex, dvips, gs ja convert on asennettu oikein.',
 'math_bad_tmpdir'       => 'Matematiikan kirjoittaminen väliaikaishakemistoon tai tiedostonluonti ei onnistu',
 'math_bad_output'       => 'Matematiikan tulostehakemistoon kirjoittaminen tai tiedostonluonti ei onnistu',
 'math_notexvc'          => 'Texvc-sovellus puuttuu, lue math/READMEstä asennustietoja',
@@ -2804,7 +2777,7 @@ Tallenna tiedot koneellesi ja tuo ne tällä sivulla.',
 
 # Patrol log
 'patrol-log-page'      => 'Muutostentarkastusloki',
-'patrol-log-header'    => 'Tämä on loki tarkastetuista muutoksista.',
+'patrol-log-header'    => 'Tämä on loki tarkistetuista muutoksista.',
 'patrol-log-line'      => 'merkitsi sivun $2 muutoksen $1 tarkastetuksi $3',
 'patrol-log-auto'      => '(automaattinen)',
 'patrol-log-diff'      => 'versio $1',
@@ -2816,7 +2789,7 @@ Tallenna tiedot koneellesi ja tuo ne tällä sivulla.',
 'filedeleteerror-long'            => 'Tiedoston poistaminen epäonnistui:
 
 $1',
-'filedelete-missing'              => 'Tiedostoa $1 ei voi poistaa, koska sitä ei ole olemassa.',
+'filedelete-missing'              => 'Tiedosto $1 ei voitu poistaa, koska sitä ei ole olemassa.',
 'filedelete-old-unregistered'     => 'Tiedoston version $1 ei ole tietokannassa.',
 'filedelete-current-unregistered' => 'Tiedosto $1 ei ole tietokannassa.',
 'filedelete-archive-read-only'    => 'Arkistohakemistoon ”$1” kirjoittaminen epäonnistui.',
@@ -2995,7 +2968,6 @@ Kaikki muut linkit ovat poikkeuksia eli toisin sanoen sivuja, joissa tiedostoa s
 'exif-gpsareainformation'          => 'GPS-alueen nimi',
 'exif-gpsdatestamp'                => 'GPS-päivämäärä',
 'exif-gpsdifferential'             => 'GPS-differentiaalikorjaus',
-'exif-objectname'                  => 'Lyhyt otsikko',
 
 # EXIF attributes
 'exif-compression-1' => 'Pakkaamaton',
@@ -3183,17 +3155,6 @@ Varmennuskoodi vanhenee $4.',
 'confirmemail_body_changed' => 'Joku IP-osoitteesta $1 on vaihtanut {{GRAMMAR:inessive|{{SITENAME}}}} tunnuksen $2 sähköpostiosoitteeksi tämän osoitteen.
 
 Varmenna, että tämä tunnus kuuluu sinulle ja uudelleenaktivoi sähköpostitoiminnot avaamalla seuraava linkki selaimellasi:
-
-$3
-
-Jos tunnus ei kuulu sinulle, peruuta sähköpostiosoitteen varmennus avaamalla seuraava linkki:
-
-$5
-
-Varmennuskoodi vanhenee $4.',
-'confirmemail_body_set'     => 'Joku, todennäköisesti sinä, IP-osoitteesta $1 on vaihtanut {{GRAMMAR:inessive|{{SITENAME}}}} tunnuksen $2 sähköpostiosoitteeksi tämän osoitteen.
-
-Varmenna, että tämä tunnus kuuluu sinulle ja aktivoi sähköpostitoiminnot uudelleen avaamalla seuraava linkki selaimellasi:
 
 $3
 
@@ -3428,5 +3389,8 @@ Kirjoita tiedostonimi ilman ”{{ns:file}}:”-etuliitettä.',
 # SQLite database support
 'sqlite-has-fts' => '$1, jossa on tuki kokotekstihaulle',
 'sqlite-no-fts'  => '$1, jossa ei ole tukea kokotekstihaulle',
+
+# Special:DisableAccount
+'disableaccount' => 'Käyttäjätunnuksen poistaminen käytöstä',
 
 );

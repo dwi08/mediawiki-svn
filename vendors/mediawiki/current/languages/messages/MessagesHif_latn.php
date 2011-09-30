@@ -435,17 +435,17 @@ Aapan [[Special:Preferences|{{SITENAME}} pasand]]  ke badle nai bhulna.',
 'gotaccountlink'             => 'Log in',
 'createaccountmail'          => 'e-mail se',
 'createaccountreason'        => 'Kaaran:',
-'badretype'                  => 'Jon duuno password aap likha hai uu ek rakam nai hae.',
-'userexists'                 => 'Ii username aur koi ke hae.
-Duusra username ke choose karo.',
-'loginerror'                 => 'Login me kuchh wrong hae',
+'badretype'                  => 'Jon duuno password aap likha hai uu ek rakam nai hai.',
+'userexists'                 => 'Ii username aur koi ke hai.
+Duusra username choose karo.',
+'loginerror'                 => 'Login me galti hai',
 'createaccounterror'         => 'Account ke nai banae sakaa hae: $1',
-'nocookiesnew'               => 'Aap ke account banae dewa gais hae lekin aap logged in nai hae.
-{{SITENAME}} me sadasya ke login khatir cookies hae.
-Aap cookies ke rok diya hae.
+'nocookiesnew'               => 'Aap ke account banae dewa gais hai lekin aap loggen in nai hai.
+{{SITENAME}} me sadasya ke login khatir cookies hai.
+Aap cookies ke disabled karaa hai.
 Cookies ke enable kar ke, aapan nawaa username aur password se login karo.',
-'nocookieslogin'             => '{{SITENAME}} me sadasya ke login khatir cookies hae.
-Aap cookies ke disabled karaa hae.
+'nocookieslogin'             => '{{SITENAME}} me sadasya ke login khatir cookies hai.
+Aap cookies ke disabled karaa hai.
 Cookies ke enable kar ke fir se kosis karo.',
 'noname'                     => 'Aap achchha user name ke nai specify karaa hai.',
 'loginsuccesstitle'          => 'Login safal bhais',
@@ -787,7 +787,7 @@ Saait iske wiki me se mitae dewa gae hoi, nai to iske naam badal dewa gae hoi.
 Try karo [[Special:Search|wiki me khije ke]] aur nawaa panna ke.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(badlao ke summary ke hatae dewa gais hae)',
+'rev-deleted-comment'         => '(comment ke hatae dewa gais hai)',
 'rev-deleted-user'            => '(username ke hatae dewa gais hai)',
 'rev-deleted-event'           => '(log action ke hatae dewa gais hai)',
 'rev-deleted-user-contribs'   => '[Sadasya ke naam nai to IP address ke hatae dewa gais hae- yogdaan se badlao ke lukae dewa gais hae]',
@@ -1028,9 +1028,9 @@ Yaad rakhna ki uu log ke {{SITENAME}} ke index saait purana hoi.',
 'prefs-rc'                      => 'Nawaa badlao',
 'prefs-watchlist'               => 'Dhyan suchi',
 'prefs-watchlist-days'          => 'Dhyan suchi me ketna roj dekhawa jaae:',
-'prefs-watchlist-days-max'      => 'Jaada se jaada 7 din',
+'prefs-watchlist-days-max'      => '(jaada se jaada 7 din)',
 'prefs-watchlist-edits'         => 'Barraa dhyan suchi me jaada se jaada ketna badlao dekhawa jaae:',
-'prefs-watchlist-edits-max'     => 'Jaada se jaada: 1000',
+'prefs-watchlist-edits-max'     => '(jaada se jaada: 1000)',
 'prefs-watchlist-token'         => 'Dhyan suchi ke nisani:',
 'prefs-misc'                    => 'Futkar',
 'prefs-resetpass'               => 'Password badlo',
@@ -1236,6 +1236,7 @@ Aap duusra log ke aap se aapan user_talk panna se aap ke contact kar le de sakta
 'right-reset-passwords'       => 'Duusra sadasya ke password ke badlo',
 'right-override-export-depth' => 'Panna aur jurra panna, 5 ke gahirrai talak, ke export karo',
 'right-sendemail'             => 'Duusra sadasya ke lage e-mail bhejo',
+'right-disableaccount'        => 'Sab account ke band karo',
 
 # User rights log
 'rightslog'      => 'Sadasya adhikar suchi',
@@ -1409,7 +1410,7 @@ Agar jo aap fir bhi aapan file ke upload kare mangta hai, tab pichhe jaae ke naw
 'fileexists-shared-forbidden' => 'Ii naam ke file abhi shared file repository me hai.
 Agar jo aap fir bhi aapan file upload kare manta hai tab pichhe jaae ke nawaa naam use karo. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ii file following file ke duplicate hai {{PLURAL:$1|file|files}}:',
-'file-deleted-duplicate'      => 'Yahii rakam ke ek aur file ([[:$1]]) ke pahile delete karaa gais hai. Aap ke file ke deletion history ke check kare ke chaahi, upload kare se pahile.',
+'file-deleted-duplicate'      => 'Yahii rakam ke ek aur file ([[$1]]) ke pahile delete karaa gais hai. Aap ke file ke deletion history ke check kare ke chaahi, upload kare se pahile.',
 'uploadwarning'               => 'Upload ke baare me chetauni',
 'uploadwarning-text'          => 'Meharbani kar ke file ke baaare me aur jankari ke niche badal ke aur fir se kosis karo.',
 'savefile'                    => 'File ke save karo',
@@ -1918,14 +1919,14 @@ Aap aapan dhyan suchi me sab dhyan me rakha gais panna pe notification flags ke 
 
 --
 Aapan dhyan ke settings ke badle ke khatir, jaao
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Aapan dhyan suchi se panna ke mitae ke khatir, jaao
 $UNWATCHURL
 
 
 Aapan bichar de ke khatir aur aage ke sahaeta:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Pana ke delete karo',
@@ -2204,7 +2205,7 @@ Ii rukawat pe fir se bichar kare ke khatir [[Special:IPBlockList|IP block list]]
 'ipusubmit'                       => 'Ii rukawat ke hatao',
 'unblocked'                       => '[[User:$1|$1]] ke rukawat ke khalaas kar dewa gais hai',
 'unblocked-id'                    => 'Roko $1 ke khalaas kar dewa gais hai',
-'ipblocklist'                     => 'Roka gais sadasya',
+'ipblocklist'                     => 'Roka gais IP addresses aur usernames',
 'ipblocklist-legend'              => 'Ek roka gais sadasya ke khojo',
 'ipblocklist-username'            => 'Username nai to IP address:',
 'ipblocklist-sh-userblocks'       => '$1 account rukawat',
@@ -2724,8 +2725,8 @@ Wahii line pe aur koi jorr exception consider karaa jai i.e. jahaan pe panna sak
 'exif-colorspace'                  => 'Rang ke jagha',
 'exif-componentsconfiguration'     => 'Har ek component ke matlab',
 'exif-compressedbitsperpixel'      => 'Chapa ke compression mode',
-'exif-pixelydimension'             => 'Chaapa ke thiik chaurrai',
-'exif-pixelxdimension'             => 'Chaapa ke thiik uunchai',
+'exif-pixelydimension'             => 'Chapa ke thik chaurrai',
+'exif-pixelxdimension'             => 'Chapa ke thik uunchai',
 'exif-makernote'                   => 'Manufacturer se jaankari',
 'exif-usercomment'                 => 'Sadasysa ke bichar',
 'exif-relatedsoundfile'            => 'Saathe waala awaaj waala file',
@@ -2741,9 +2742,9 @@ Wahii line pe aur koi jorr exception consider karaa jai i.e. jahaan pe panna sak
 'exif-spectralsensitivity'         => 'Ketna achchhaa se ujaala ke pakrre sake hae',
 'exif-isospeedratings'             => 'ISO ke raftaar rating',
 'exif-oecf'                        => 'Optoelectronic conversion factor',
-'exif-shutterspeedvalue'           => 'APEX shutter ke raftaar',
-'exif-aperturevalue'               => 'APEX aperture',
-'exif-brightnessvalue'             => 'APEX chamak',
+'exif-shutterspeedvalue'           => 'Shutter ke raftaar',
+'exif-aperturevalue'               => 'Aperture',
+'exif-brightnessvalue'             => 'Chamak',
 'exif-exposurebiasvalue'           => 'Exposure bias',
 'exif-maxaperturevalue'            => 'Sab se jaada land aperture',
 'exif-subjectdistance'             => 'Chij se duuri',
@@ -2889,5 +2890,10 @@ Wahii line pe aur koi jorr exception consider karaa jai i.e. jahaan pe panna sak
 # HTML forms
 'htmlform-reset'               => 'Badlao ke pahile jaise karo',
 'htmlform-selectorother-other' => 'Duusra',
+
+# Special:DisableAccount
+'disableaccount-user'       => 'Sadasya ke naam:',
+'disableaccount-reason'     => 'Kaaran',
+'disableaccount-nosuchuser' => 'Sadasya account "$1" nai hae.',
 
 );

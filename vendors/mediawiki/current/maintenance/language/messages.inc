@@ -1303,7 +1303,6 @@ $wgMessageStructure = array(
 		'img-auth-streaming',
 		'img-auth-public',
 		'img-auth-noread',
-		'img-auth-bad-query-string',
 	),
 
 	'http-errors' => array(
@@ -2025,6 +2024,7 @@ $wgMessageStructure = array(
 		'unblocklink',
 		'change-blocklink',
 		'contribslink',
+		'emaillink',
 		'autoblocker',
 		'blocklogpage',
 		'blocklog-showlog',

@@ -32,7 +32,6 @@
  * @author ToSter
  * @author Wpedzich
  * @author Ymar
- * @author Žekřil71pl
  * @author לערי ריינהארט
  */
 
@@ -60,10 +59,6 @@ $namespaceAliases = array(
 	'Dyskusja_grafiki' => NS_FILE_TALK,
 );
 
-$namespaceGenderAliases = array(
-	NS_USER => array( 'male' => 'Użytkownik', 'female' => 'Użytkowniczka' ),
-	NS_USER_TALK => array( 'male' => 'Dyskusja_użytkownika', 'female' => 'Dyskusja_użytkowniczki' ), 
-);
 
 $dateFormats = array(
 	'mdy time' => 'H:i',
@@ -497,8 +492,8 @@ $1',
 'policy-url'           => 'Project:Zasady',
 'portal'               => 'Portal społeczności',
 'portal-url'           => 'Project:Portal społeczności',
-'privacy'              => 'Zasady zachowania poufności',
-'privacypage'          => 'Project:Zasady zachowania poufności',
+'privacy'              => 'Zasady ochrony prywatności',
+'privacypage'          => 'Project:Zasady ochrony prywatności',
 
 'badaccess'        => 'Niewłaściwe uprawnienia',
 'badaccess-group0' => 'Nie masz uprawnień wymaganych do wykonania tej operacji.',
@@ -537,7 +532,7 @@ $1',
 
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => 'Strona',
-'nstab-user'      => '{{GENDER:{{BASEPAGENAME}}|Strona użytkownika|Strona użytkowniczki}}',
+'nstab-user'      => 'Strona użytkownika',
 'nstab-media'     => 'Pliki',
 'nstab-special'   => 'Strona specjalna',
 'nstab-project'   => 'Strona projektu',
@@ -1017,7 +1012,7 @@ Mogła zostać usunięta lub jej nazwa została zmieniona.
 Spróbuj [[Special:Search|poszukać]] tej strony.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(usunięto opis zmian)',
+'rev-deleted-comment'         => '(komentarz usunięty)',
 'rev-deleted-user'            => '(nazwa użytkownika usunięta)',
 'rev-deleted-event'           => '(wpis usunięty)',
 'rev-deleted-user-contribs'   => '[nazwa użytkownika lub adres IP usunięte – edycja ukryta we wkładzie]',
@@ -1256,9 +1251,9 @@ Jednak informacje o treści {{GRAMMAR:D.lp|{{SITENAME}}}} mogą być w Google ni
 'prefs-rc'                      => 'Ostatnie zmiany',
 'prefs-watchlist'               => 'Obserwowane',
 'prefs-watchlist-days'          => 'Liczba dni widocznych na liście obserwowanych',
-'prefs-watchlist-days-max'      => 'Maksimum 7 dni',
+'prefs-watchlist-days-max'      => '(maksimum 7 dni)',
 'prefs-watchlist-edits'         => 'Liczba edycji pokazywanych w rozszerzonej liście obserwowanych',
-'prefs-watchlist-edits-max'     => 'Maksymalnie 1000',
+'prefs-watchlist-edits-max'     => '(maksymalna liczba: 1000)',
 'prefs-watchlist-token'         => 'Identyfikator listy obserwowanych',
 'prefs-misc'                    => 'Ustawienia różne',
 'prefs-resetpass'               => 'Zmień hasło',
@@ -1287,7 +1282,7 @@ Wygenerowany losowo klucz, którego możesz użyć to $1',
 'savedprefs'                    => 'Twoje preferencje zostały zapisane.',
 'timezonelegend'                => 'Strefa czasowa',
 'localtime'                     => 'Czas lokalny',
-'timezoneuseserverdefault'      => 'Użyj domyślnego ustawienia serwera',
+'timezoneuseserverdefault'      => 'Użyj domyślnego czasu serwera',
 'timezoneuseoffset'             => 'Inna (określ różnicę czasu)',
 'timezoneoffset'                => 'Różnica¹',
 'servertime'                    => 'Czas serwera',
@@ -1465,6 +1460,7 @@ Umożliwi również innym użytkownikom skontaktowanie się z Tobą poprzez odpo
 'right-reset-passwords'       => 'Zerowanie haseł innych użytkowników',
 'right-override-export-depth' => 'Eksport stron wraz z linkowanymi do głębokości 5 linków',
 'right-sendemail'             => 'Wysyłanie e‐maili do innych użytkowników',
+'right-disableaccount'        => 'Wyłączanie kont',
 
 # User rights log
 'rightslog'      => 'Uprawnienia',
@@ -1637,8 +1633,7 @@ Jeśli chcesz przesłać plik cofnij się i prześlij go pod inną nazwą. [[Fil
 'fileexists-shared-forbidden' => 'Plik o tej nazwie już istnieje we współdzielonym repozytorium plików.
 Cofnij się i załaduj plik pod inną nazwą. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ten plik jest kopią {{PLURAL:$1|pliku|następujących plików:}}',
-'file-deleted-duplicate'      => 'Identyczny do tego plik ([[:$1]]) został wcześniej usunięty.
-Sprawdź historię usunięć tamtego pliku zanim prześlesz go ponownie.',
+'file-deleted-duplicate'      => 'Identyczny do tego plik ([[$1]]) został wcześniej usunięty. Sprawdź historię usunięć tamtego pliku zanim prześlesz go ponownie.',
 'uploadwarning'               => 'Ostrzeżenie o przesyłaniu',
 'uploadwarning-text'          => 'Zmień poniższy opis pliku i spróbuj ponownie.',
 'savefile'                    => 'Zapisz plik',
@@ -1704,22 +1699,21 @@ Jeśli problem będzie się powtarzał, skontaktuj się z [[Special:ListUsers/sy
 'upload-http-error'         => 'Wystąpił błąd protokołu HTTP – $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Odmowa dostępu',
-'img-auth-nopathinfo'       => 'Brak PATH_INFO.
+'img-auth-accessdenied' => 'Odmowa dostępu',
+'img-auth-nopathinfo'   => 'Brak PATH_INFO.
 Serwer nie został skonfigurowany, tak aby przekazywał tę informację.
 Możliwe, że jest oparty na CGI i nie może obsługiwać img_auth.
 Zobacz http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Żądana ścieżka nie jest w obrębie katalogu skonfigurowanego do przesyłania plików.',
-'img-auth-badtitle'         => 'Nie można wygenerować prawidłowego tytuł z „$1”.',
-'img-auth-nologinnWL'       => 'Nie jesteś zalogowany, a „$1” nie jest na białej liście.',
-'img-auth-nofile'           => 'Brak pliku „$1”.',
-'img-auth-isdir'            => 'Próbujesz uzyskać dostęp do katalogu „$1”.
+'img-auth-notindir'     => 'Żądana ścieżka nie jest w obrębie katalogu skonfigurowanego do przesyłania plików.',
+'img-auth-badtitle'     => 'Nie można wygenerować prawidłowego tytuł z „$1”.',
+'img-auth-nologinnWL'   => 'Nie jesteś zalogowany, a „$1” nie jest na białej liście.',
+'img-auth-nofile'       => 'Brak pliku „$1”.',
+'img-auth-isdir'        => 'Próbujesz uzyskać dostęp do katalogu „$1”.
 Dozwolony jest wyłącznie dostęp do plików.',
-'img-auth-streaming'        => 'Strumieniowanie „$1”.',
-'img-auth-public'           => 'Funkcja img_auth.php służy do pobierania plików z prywatnej wiki.
+'img-auth-streaming'    => 'Strumieniowanie „$1”.',
+'img-auth-public'       => 'Funkcja img_auth.php służy do pobierania plików z prywatnej wiki.
 Ponieważ ta wiki została skonfigurowana jako publiczna dla zapewnienia optymalnego bezpieczeństwa img_auth.php została wyłączona.',
-'img-auth-noread'           => 'Użytkownik nie ma dostępu do odczytu „$1”.',
-'img-auth-bad-query-string' => 'Adres URL zawiera nieprawidłowe zapytanie.',
+'img-auth-noread'       => 'Użytkownik nie ma dostępu do odczytu „$1”.',
 
 # HTTP errors
 'http-invalid-url'      => 'Niepoprawny adres URL: $1',
@@ -2155,17 +2149,19 @@ wiki – $PAGEEDITOR_WIKI
 W przypadku kolejnych zmian nowe powiadomienia nie zostaną wysłane, dopóki nie odwiedzisz tej strony.
 Możesz także zresetować wszystkie flagi powiadomień na swojej liście stron obserwowanych.
 
+$NEWPAGE
+
 	Wiadomość z systemu powiadomień {{GRAMMAR:D.lp|{{SITENAME}}}}
 
 --
 W celu zmiany ustawień swojej listy obserwowanych odwiedź
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Usunięcie strony z listy obserwowanych możliwe jest na stronie
 $UNWATCHURL
 
 Pomoc
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Usuń stronę',
@@ -2351,8 +2347,8 @@ $1',
 'contribsub2'         => 'Dla użytkownika $1 ($2)',
 'nocontribs'          => 'Brak zmian odpowiadających tym kryteriom.',
 'uctop'               => ' (jako ostatnia)',
-'month'               => 'Do miesiąca (włącznie)',
-'year'                => 'Do roku (włącznie)',
+'month'               => 'Przed miesiącem (włącznie)',
+'year'                => 'Przed rokiem (włącznie)',
 
 'sp-contributions-newbies'             => 'Pokaż wyłącznie wkład nowych użytkowników',
 'sp-contributions-newbies-sub'         => 'Dla nowych użytkowników',
@@ -2439,7 +2435,7 @@ Przejdź do [[Special:IPBlockList|listy zablokowanych adresów IP]], by przejrze
 'ipusubmit'                       => 'Odblokuj',
 'unblocked'                       => '[[User:$1|$1]] {{GENDER:$1|został odblokowany|została odblokowana|został odblokowany}}.',
 'unblocked-id'                    => 'Blokada $1 została zdjęta',
-'ipblocklist'                     => 'Zablokowani użytkownicy',
+'ipblocklist'                     => 'Lista zablokowanych adresów IP i użytkowników',
 'ipblocklist-legend'              => 'Znajdź zablokowanego użytkownika',
 'ipblocklist-username'            => 'Nazwa użytkownika lub adres IP',
 'ipblocklist-sh-userblocks'       => '$1 blokady kont',
@@ -2685,8 +2681,7 @@ Wszystkie operacje importu transwiki są odnotowywane w [[Special:Log/import|rej
 'import-interwiki-namespace' => 'Docelowa przestrzeń nazw',
 'import-upload-filename'     => 'Nazwa pliku',
 'import-comment'             => 'Komentarz:',
-'importtext'                 => 'Korzystając na źródłowej wiki z narzędzia [[Special:Export|eksportu]] wyeksportuj plik.
-Zapisz go na swoim dysku, a następnie prześlij go tutaj.',
+'importtext'                 => 'Używając narzędzia [[Special:Export|eksportu]], wyeksportuj plik ze źródłowej wiki, zapisz go na swoim dysku, a następnie prześlij go tutaj.',
 'importstart'                => 'Trwa importowanie stron...',
 'import-revision-count'      => '$1 {{PLURAL:$1|wersja|wersje|wersji}}',
 'importnopages'              => 'Brak stron do importu.',
@@ -2751,7 +2746,7 @@ Brak katalogu dla plików tymczasowych.',
 'tooltip-n-mainpage-description'  => 'Przejdź na stronę główną',
 'tooltip-n-portal'                => 'O projekcie, co możesz zrobić, gdzie możesz znaleźć informacje',
 'tooltip-n-currentevents'         => 'Informacje o aktualnych wydarzeniach',
-'tooltip-n-recentchanges'         => 'Lista ostatnich zmian na {{GRAMMAR:MS.lp|{{SITENAME}}}}.',
+'tooltip-n-recentchanges'         => 'Lista ostatnich zmian na {{GRAMMAR:D.lp|{{SITENAME}}}}.',
 'tooltip-n-randompage'            => 'Pokaż stronę wybraną losowo',
 'tooltip-n-help'                  => 'Tutaj możesz się wielu rzeczy dowiedzieć.',
 'tooltip-t-whatlinkshere'         => 'Pokaż listę wszystkich stron linkujących do tej strony',
@@ -2821,7 +2816,7 @@ Pozwala na wpisanie powodu w opisie zmian.',
 
 # Attribution
 'anonymous'        => '{{PLURAL:$1|Anonimowy użytkownik|Anonimowi użytkownicy}} {{GRAMMAR:D.lp|{{SITENAME}}}}',
-'siteuser'         => '{{GENDER:$2|użytkownik|użytkowniczka}} {{GRAMMAR:D.lp|{{SITENAME}}}} – $1',
+'siteuser'         => 'użytkownik {{GRAMMAR:D.lp|{{SITENAME}}}} – $1',
 'anonuser'         => 'niezalogowany użytkownik {{GRAMMAR:D.lp|{{SITENAME}}}} – $1',
 'lastmodifiedatby' => 'Ostatnia edycja tej strony: $2, $1 (autor zmian: $3)',
 'othercontribs'    => 'Inni autorzy: $1.',
@@ -3092,7 +3087,6 @@ Pozostałe pola zostaną domyślnie ukryte.
 'exif-gpsareainformation'          => 'Nazwa przestrzeni GPS',
 'exif-gpsdatestamp'                => 'Data GPS',
 'exif-gpsdifferential'             => 'Korekcja różnicy GPS',
-'exif-objectname'                  => 'Krótki tytuł',
 
 # EXIF attributes
 'exif-compression-1' => 'nieskompresowany',
@@ -3176,8 +3170,6 @@ Pozostałe pola zostaną domyślnie ukryte.
 'exif-sensingmethod-5' => 'przetwornik obrazu z sekwencyjnym przetwarzaniem kolorów',
 'exif-sensingmethod-7' => 'trójliniowy przetwornik obrazu',
 'exif-sensingmethod-8' => 'liniowy przetwornik obrazu z sekwencyjnym przetwarzaniem kolorów',
-
-'exif-filesource-3' => 'Cyfrowy aparat fotograficzny',
 
 'exif-scenetype-1' => 'obiekt fotografowany bezpośrednio',
 
@@ -3589,5 +3581,18 @@ Wpisz nazwę pliku z pominięciem prefiksu „{{ns:file}}:”.',
 # SQLite database support
 'sqlite-has-fts' => '$1 ze wsparciem pełnotekstowego wyszukiwania',
 'sqlite-no-fts'  => '$1 bez wsparcia pełnotekstowego wyszukiwania',
+
+# Special:DisableAccount
+'disableaccount'             => 'Wyłącz konto użytkownika',
+'disableaccount-user'        => 'Nazwa użytkownika',
+'disableaccount-reason'      => 'Powód',
+'disableaccount-confirm'     => "Wyłącz konto użytkownika.
+Użytkownik nie będzie mógł się zalogować, zresetować hasła oraz otrzymywać powiadomień e‐mailem. 
+Jeśli użytkownik jest obecnie gdziekolwiek zalogowany, zostanie natychmiast wylogowany. 
+''Zwróć uwagę, że cofnięcie tej operacji wymagać będzie interwencji administratora systemu.''",
+'disableaccount-mustconfirm' => 'Musisz potwierdzić, że chcesz wyłączyć to konto.',
+'disableaccount-nosuchuser'  => 'Brak konta użytkownika „$1”.',
+'disableaccount-success'     => 'Konto użytkownika „$1” zostało trwale wyłączone.',
+'disableaccount-logentry'    => 'trwale wyłączył konto użytkownika [[$1]]',
 
 );

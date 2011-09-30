@@ -821,9 +821,9 @@ Kan ''all:'' laganeyal ta varafa exulera (gon keyaksexo is teza ikz-), oke wetce
 'prefs-rc'                  => 'Noeltaf betakseem',
 'prefs-watchlist'           => 'Suzdasiki',
 'prefs-watchlist-days'      => 'Cugafa vielota gonedina koe suzdasiki :',
-'prefs-watchlist-days-max'  => 'Cugon 7 viel',
+'prefs-watchlist-days-max'  => '(cugon 7 viel)',
 'prefs-watchlist-edits'     => 'Betaracugota gonedina koe mantafi suzdasiki :',
-'prefs-watchlist-edits-max' => 'Cugafa ota : 1000',
+'prefs-watchlist-edits-max' => '(cugafa ota : 1000)',
 'prefs-misc'                => 'Gedrafa lodamaca yo',
 'prefs-resetpass'           => 'Betara va remravlem',
 'saveprefs'                 => 'Va lodamaceem tuená',
@@ -1440,10 +1440,10 @@ You could also reset the notification flags for all your watched pages on your w
 
 --
 To change your watchlist settings, visit
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Feedback and further assistance:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Busulara',

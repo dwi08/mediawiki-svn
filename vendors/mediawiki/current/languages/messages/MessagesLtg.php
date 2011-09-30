@@ -8,10 +8,9 @@
  * @file
  *
  * @author Dark Eagle
- * @author Gleb Borisov
  * @author Jureits
  */
-
+ 
 $namespaceNames = array(
 	NS_MEDIA            => 'Medeja',
 	NS_SPECIAL          => 'Seviškuo',
@@ -34,20 +33,17 @@ $namespaceNames = array(
 $fallback = 'lv';
 
 $messages = array(
-# User preference toggles
-'tog-showhiddencats' => 'Ruodeit nūglobuotys kategorejis',
-
 'underline-always' => 'Vysod',
 'underline-never'  => 'Nikod',
 
 # Dates
-'sunday'        => 'svātdīne',
-'monday'        => 'pyrmūdīne',
-'tuesday'       => 'ūtardīne',
-'wednesday'     => 'trešdīne',
-'thursday'      => 'catūrtdīne',
-'friday'        => 'pīktdīne',
-'saturday'      => 'sastdīne',
+'sunday'        => 'Svātdīne',
+'monday'        => 'Pyrmūdīne',
+'tuesday'       => 'Ūtardīne',
+'wednesday'     => 'Trešdīne',
+'thursday'      => 'Catūrtdīne',
+'friday'        => 'Pīktdīne',
+'saturday'      => 'Sastdīne',
 'sun'           => 'Sv',
 'mon'           => 'Pr',
 'tue'           => 'Ūt',
@@ -55,58 +51,56 @@ $messages = array(
 'thu'           => 'Ct',
 'fri'           => 'Pt',
 'sat'           => 'St',
-'january'       => 'jaunagods mieness',
-'february'      => 'svacainis mieness',
-'march'         => 'pavasara mieness',
-'april'         => 'sulu mieness',
-'may_long'      => 'lopu mieness',
-'june'          => 'vosorys mieness',
-'july'          => 'sīna mieness',
-'august'        => 'labeibys mieness',
-'september'     => 'rudiņa mieness',
-'october'       => 'leita mieness',
-'november'      => 'solnys mieness',
-'december'      => 'zīmys mieness',
-'january-gen'   => 'jaunagods mieneša',
-'february-gen'  => 'svacainis mieneša',
-'march-gen'     => 'pavasara mieneša',
-'april-gen'     => 'sulu mieneša',
-'may-gen'       => 'lopu mieneša',
-'june-gen'      => 'vosorys mieneša',
-'july-gen'      => 'sīna mieneša',
-'august-gen'    => 'labeibys mieneša',
-'september-gen' => 'rudiņa mieneša',
-'october-gen'   => 'leita mieneša',
-'november-gen'  => 'solnys mieneša',
-'december-gen'  => 'zīmys mieneša',
-'jan'           => 'jaun.',
-'feb'           => 'svac.',
-'mar'           => 'pav.',
-'apr'           => 'sulu',
-'may'           => 'lopu',
-'jun'           => 'vos.',
-'jul'           => 'sīna',
-'aug'           => 'lab.',
-'sep'           => 'rud.',
-'oct'           => 'leita',
-'nov'           => 'sol.',
-'dec'           => 'zīm.',
+'january'       => 'Janvars / Jaunagods mieness',
+'february'      => 'Febraļs / Svacainis mieness',
+'march'         => 'Marts / Pavasara mieness',
+'april'         => 'Apreļs / Sulu mieness',
+'may_long'      => 'Majs / Lopu mieness',
+'june'          => 'Juņs / Vosorys mieness',
+'july'          => 'Juļs / Sīna mieness',
+'august'        => 'Augusts / Labeibys mieness',
+'september'     => 'Seņtebrs / Rudiņa mieness',
+'october'       => 'Oktobrs / Leita mieness',
+'november'      => 'Nojabrs / Solnys mieness',
+'december'      => 'Dekabrs / Zīmys mieness',
+'january-gen'   => 'Janvara / Jaunagods mieneša',
+'february-gen'  => 'Febraļa / Svacainis mieneša',
+'march-gen'     => 'Marta / Pavasara mieneša',
+'april-gen'     => 'Apreļa / Sulu mieneša',
+'may-gen'       => 'Maja / Lopu mieneša',
+'june-gen'      => 'Juņa / Vosorys mieneša',
+'july-gen'      => 'Juļa / Sīna mieneša',
+'august-gen'    => 'Augusta / Labeibys mieneša',
+'september-gen' => 'Seņtebra / Rudiņa mieneša',
+'october-gen'   => 'Oktoba / Leita mieneša',
+'november-gen'  => 'Nojabra / Solnys mieneša',
+'december-gen'  => 'Dekabra / Zīmys mieneša',
+'jan'           => 'janv.',
+'feb'           => 'febr.',
+'mar'           => 'martā',
+'apr'           => 'apr.',
+'may'           => 'junī',
+'jun'           => 'julī',
+'jul'           => 'julī',
+'aug'           => 'aug.',
+'sep'           => 'seņt.',
+'oct'           => 'okt.',
+'nov'           => 'noj.',
+'dec'           => 'dek.',
 
 # Categories related messages
-'pagecategories'           => '{{PLURAL:$1|Kategoreja|Kategorejis}}',
-'category_header'          => 'Puslopys kategorejā "$1"',
-'subcategories'            => 'Zamkategorejis',
-'category-media-header'    => 'Faili kategorejā "$1"',
-'category-empty'           => "''Itūšaļt ita kategoreja natur sevī puslopys ci daudzapleicis failus.''",
-'hidden-categories'        => '{{PLURAL:$1|Nūglobuota kategoreja|Nūglobuotys kategorejis}}',
-'hidden-category-category' => 'Nūglobuotuos kategorejis',
-'category-subcat-count'    => '{{PLURAL:$2|Itymā kategorejā ir vīn dūtuo zamkategoreja.|{{PLURAL:$1|Paruodeita $1 zamkategoreja|Paruodeitys $1 zamkategorejis}} nu $2.}}',
-'category-article-count'   => '{{PLURAL:$2|Itymā kategorejā ir vīn dūtuo puslopa.|{{PLURAL:$1|Paruodeita $1 puslopa|Paruodeitys $1 puslopys}} nu $2.}}',
-'listingcontinuesabbrev'   => '(tuoļuojums)',
+'pagecategories'         => '{{PLURAL:$1|Kategoreja|Kategorejis}}',
+'category_header'        => 'Puslopys kategorejā "$1"',
+'subcategories'          => 'Zamkategorejis',
+'category-media-header'  => 'Faili kategorejā "$1"',
+'hidden-categories'      => '{{PLURAL:$1|Nūglobuota kategoreja|Nūglobuotys kategorejis}}',
+'category-subcat-count'  => '{{PLURAL:$2|Itymā kategorejā ir vīn dūtuo zamkategoreja.|{{PLURAL:$1|Paruodeita $1 zamkategoreja|Paruodeitys $1 zamkategorejis}} nu $2.}}',
+'category-article-count' => '{{PLURAL:$2|Itymā kategorejā ir vīn dūtuo puslopa.|{{PLURAL:$1|Paruodeita $1 puslopa|Paruodeitys $1 puslopys}} nu $2.}}',
+'listingcontinuesabbrev' => '(tuoļuojums)',
 
 'linkprefix' => '/^(.*?)([a-zA-Z\\x80-\\xff]+)$/sD',
 
-'about'         => 'Aproksts',
+'about'         => 'Ap',
 'article'       => 'Rakstīņs',
 'newwindow'     => '(atdareišona jaunuo puslopā)',
 'cancel'        => 'Atsaukt',
@@ -122,19 +116,13 @@ $messages = array(
 'qbpageoptions'  => 'Ita puslopa',
 'qbmyoptions'    => 'Munys puslopys',
 'qbspecialpages' => 'Specialuos puslopys',
-'faq'            => 'BUV',
-'faqpage'        => 'Project:BUV',
 
 # Vector skin
 'vector-action-addsection' => 'Dalikt padaļu',
 'vector-action-delete'     => 'Iztreit',
 'vector-action-move'       => 'Puorceļt',
 'vector-action-protect'    => 'Apsorguot',
-'vector-action-unprotect'  => 'Nūjimt apsardzeibu',
 'vector-view-edit'         => 'Pataiseit',
-'vector-view-history'      => 'Viesture',
-'vector-view-view'         => 'Vērtīs',
-'namespaces'               => 'Vuordu pluoti',
 'variants'                 => 'Varianti',
 
 'errorpagetitle'   => 'Klaida',
@@ -160,7 +148,6 @@ $messages = array(
 'protect'          => 'Apsorguot',
 'protect_change'   => 'puormeit',
 'protectthispage'  => 'Apsorguot itū puslopu',
-'unprotect'        => 'Nūjimt apsardzeibu',
 'newpage'          => 'Jauna puslopa',
 'talkpage'         => 'Apmīgt itū puslopu',
 'talkpagelinktext' => 'sprīža',
@@ -171,7 +158,6 @@ $messages = array(
 'talk'             => 'Sprīža',
 'views'            => 'Vierīņi',
 'toolbox'          => 'Reiki',
-'userpage'         => 'Apsavērt lītuotuoja lopu',
 'otherlanguages'   => 'Cytuos volūduos',
 'redirectedfrom'   => '(Puoradresēts nu $1)',
 'redirectpagesub'  => 'Puoradresiešonys puslopa',
@@ -185,8 +171,6 @@ $messages = array(
 'aboutpage'            => 'Project:Ap',
 'copyright'            => 'Turīņs ir daīmams pa $1.',
 'copyrightpage'        => '{{ns:project}}:Autortīseibys',
-'currentevents'        => 'Īmamuos nūtikšonys',
-'currentevents-url'    => 'Project:Īmamuos nūtikšonys',
 'disclaimers'          => 'Daīšmu nūstatejumi',
 'disclaimerpage'       => 'Project:Dasaīšonu nūstateišona',
 'edithelp'             => 'Paleigs',
@@ -194,8 +178,6 @@ $messages = array(
 'helppage'             => 'Help:Turīņs',
 'mainpage'             => 'Suoku puslopa',
 'mainpage-description' => 'Suoku puslopa',
-'policy-url'           => 'Project:Nūsacejumi',
-'portal'               => 'Dūmu meits',
 'portal-url'           => 'Project:Dūmu meits',
 'privacy'              => 'Privatuma politika',
 'privacypage'          => 'Project:Privatuma politika',
@@ -225,15 +207,13 @@ $messages = array(
 'red-link-title'          => '$1 (itaidys puslopys navā)',
 
 # Short words for each namespace, by default used in the namespace tab in monobook
-'nstab-main'      => 'Rakstīņs',
-'nstab-user'      => 'Lītuotuoja puslopa',
-'nstab-media'     => 'Daudzapleicis puslopa',
-'nstab-special'   => 'Specialuo puslopa',
-'nstab-project'   => 'Projekta puslopa',
-'nstab-image'     => 'Fails',
-'nstab-mediawiki' => 'Viestejums',
-'nstab-template'  => 'Taiss',
-'nstab-category'  => 'Kategoreja',
+'nstab-main'     => 'Rakstīņs',
+'nstab-user'     => 'Lītuotuoja puslopa',
+'nstab-special'  => 'Specialuo puslopa',
+'nstab-project'  => 'Projekta puslopa',
+'nstab-image'    => 'Fails',
+'nstab-template' => 'Taiss',
+'nstab-category' => 'Kategoreja',
 
 # General errors
 'error'              => 'Klaida',
@@ -260,7 +240,6 @@ Par to var ziņuot [[Special:ListUsers/sysop|kaidam administratoram]], nūruodū
 'nologinlink'             => 'Registrētīs',
 'createaccount'           => 'Sataiseit jaunu lītuotuoju',
 'gotaccountlink'          => 'Dasaslāgt',
-'createaccountreason'     => 'Īmesle:',
 'mailmypassword'          => 'Atsyuteit maņ jaunu paroli',
 'loginlanguagelabel'      => 'Volūda: $1',
 
@@ -345,11 +324,9 @@ n = nasvareigs lobuojums.',
 
 # Revision deletion
 'rev-delundel'               => 'ruodeit/nūglobuot',
-'rev-showdeleted'            => 'paruodeit',
 'revdelete-show-file-submit' => 'Nui',
 'revdelete-radio-set'        => 'Nui',
 'revdelete-radio-unset'      => 'Nā',
-'revdelete-log'              => 'Īmesle:',
 'revdel-restore'             => 'maineit radzameibu',
 'pagehist'                   => 'Puslopys viesture',
 'revdelete-uname'            => 'slāgvuords',
@@ -384,7 +361,7 @@ n = nasvareigs lobuojums.',
 'searchprofile-articles'    => 'Rakstīņuos',
 'search-result-size'        => '$1 ({{PLURAL:$2|$2 vuords|$2 vuordi|$2 vuordi}})',
 'search-redirect'           => '(puoradresiešona nu $1)',
-'search-section'            => '(padaļa $1)',
+'search-section'            => '(sadaļa $1)',
 'search-suggest'            => 'Voi jius dūmovat: $1',
 'search-interwiki-caption'  => 'Citi projekti',
 'search-interwiki-default'  => 'Rezuļtati nu $1',
@@ -402,29 +379,23 @@ n = nasvareigs lobuojums.',
 'powersearch-togglenone'    => 'Nikas',
 
 # Preferences page
-'preferences'      => 'Īstatejumi',
-'mypreferences'    => 'Muni īstatejumi',
-'datedefault'      => 'Piec nūklusiejuma',
-'prefs-datetime'   => 'Data i laiks',
-'saveprefs'        => 'Izglobuot',
-'timezonelegend'   => 'Laika zona:',
-'prefs-namespaces' => 'Vuordu pluoti',
-'username'         => 'Slāgvuords:',
-'uid'              => 'Lītuotuoja ID:',
-'yourlanguage'     => 'Volūda:',
-'yourgender'       => 'Kuorta:',
-'gender-unknown'   => 'Nava nūruodeits',
-'gender-male'      => 'Veirīts',
-'gender-female'    => 'Sīvīts',
-'prefs-info'       => 'Pamatinformaceja',
+'preferences'    => 'Īstatejumi',
+'mypreferences'  => 'Muni īstatejumi',
+'saveprefs'      => 'Izglobuot',
+'uid'            => 'Lītuotuoja ID:',
+'yourlanguage'   => 'Volūda:',
+'yourgender'     => 'Kuorta:',
+'gender-unknown' => 'Nava nūruodeits',
+'gender-male'    => 'Veirīts',
+'gender-female'  => 'Sīvīts',
+'prefs-info'     => 'Pamatinformaceja',
 
 # Groups
 'group'       => 'Grupa:',
 'group-user'  => 'Lītuotuoji',
-'group-bot'   => 'Boti',
 'group-sysop' => 'Administratori',
 
-'group-user-member'  => 'lītuotuojs',
+'group-user-member'  => 'Lītuotuojs',
 'group-sysop-member' => 'Administrators',
 
 'grouppage-user'  => '{{ns:project}}:Lītuotuoji',
@@ -459,8 +430,8 @@ n = nasvareigs lobuojums.',
 'rclinks'                        => 'Paruodeit pādejuos $1 izmainis pādejūs $2 dīnu laikā.<br />$3',
 'diff'                           => 'izmainis',
 'hist'                           => 'viesture',
-'hide'                           => 'Nūglobuot',
-'show'                           => 'Paruodeit',
+'hide'                           => 'nūglobuot',
+'show'                           => 'Ruodeit',
 'minoreditletter'                => 'n',
 'newpageletter'                  => 'J',
 'boteditletter'                  => 'b',
@@ -469,8 +440,6 @@ n = nasvareigs lobuojums.',
 
 # Recent changes linked
 'recentchangeslinked'         => 'Sasītuos puormejis',
-'recentchangeslinked-feed'    => 'Sasītuos puormejis',
-'recentchangeslinked-toolbox' => 'Sasītuos puormejis',
 'recentchangeslinked-title'   => 'Izmainis, kas saisteitys ar "$1"',
 'recentchangeslinked-summary' => "Ite ir naseņ izdareituos izmainis lopuos, iz kurom ir saitis nu paruodeituos lopys (voi paruodeitajā kategorejā īlyktuos lopys).
 Lopys, kas ir tovā [[Special:Watchlist|puorraugamūs rokstu sarokstā]] ir '''rasnys'''.",
@@ -523,16 +492,11 @@ Lopys, kas ir tovā [[Special:Watchlist|puorraugamūs rokstu sarokstā]] ir '''r
 'filedelete-legend' => 'Iztreit failu',
 'filedelete-submit' => 'Iztreit',
 
-# Random page
-'randompage' => 'Navieškys rakstīņs',
-
 # Statistics
 'statistics'          => 'Statistika',
-'statistics-articles' => 'Rakstīni',
+'statistics-articles' => 'Rakstīņi',
 'statistics-pages'    => 'Puslopys',
 'statistics-files'    => 'Īsyuteiti faili',
-
-'withoutinterwiki-submit' => 'Paruodeit',
 
 # Miscellaneous special pages
 'nbytes'        => '$1 {{PLURAL:$1|baits|baiti|baitu}}',
@@ -565,11 +529,7 @@ Lopys, kas ir tovā [[Special:Watchlist|puorraugamūs rokstu sarokstā]] ir '''r
 'sp-deletedcontributions-contribs' => 'devīņs',
 
 # Special:LinkSearch
-'linksearch'    => 'Uorejuos saitys',
-'linksearch-ns' => 'Vuordu pluots:',
-
-# Special:ListUsers
-'listusers-submit' => 'Paruodeit',
+'linksearch' => 'Uorejuos saitys',
 
 # Special:Log/newusers
 'newuserlogpage'          => 'Jaunūs lītuotuoju registrs',
@@ -580,8 +540,7 @@ Lopys, kas ir tovā [[Special:Watchlist|puorraugamūs rokstu sarokstā]] ir '''r
 'listgrouprights-addgroup' => 'Dalikt {{PLURAL:$2|grupu|grupys}}: $1',
 
 # E-mail user
-'emailuser'    => 'Syuteit e-postu itam lītuotuojam',
-'emailmessage' => 'Viestejums:',
+'emailuser' => 'Syuteit e-postu itam lītuotuojam',
 
 # Watchlist
 'watchlist'         => 'Muns davēris saroksts',
@@ -605,8 +564,6 @@ Ka vāluok puordūmuosi i nagribiesi vairs puorraudzeit itū lopu, spīd iz sait
 
 # Delete
 'deletepage'            => 'Iztreit puslopu',
-'excontent'             => 'lopys turīņs beja: "$1"',
-'excontentauthor'       => 'turīņs beja: "$1" (vīneigais autors: [[Special:Contributions/$2|$2]])',
 'confirmdeletetext'     => 'Tu tagad nu datu bazys iztreisi lopu voi biļdi, kai ari tūs īprīškejuos versejis. Lyudzu, apstypryni, ka tu pa eistam tū gribi dareit, ka tu saprūt, ka tū dori i atbylstūši [[{{MediaWiki:Policy-url}}|nūsacejumim]].',
 'actioncomplete'        => 'Darbeiba pabeigta',
 'deletedtext'           => '"<nowiki>$1</nowiki>" beja iztreits.
@@ -652,7 +609,7 @@ Pašreizejī lopys '''$1''' īstatejumi ir:",
 'undeletedarticle' => 'atjaunynoju "[[$1]]"',
 
 # Namespace form on various pages
-'namespace'      => 'Vuordu pluots:',
+'namespace'      => 'Paleigpuslopa:',
 'invert'         => 'Izavielēt pretejū',
 'blanknamespace' => '(Pamatpuslopa)',
 
@@ -692,7 +649,7 @@ Pašreizejī lopys '''$1''' īstatejumi ir:",
 'ipboptions'               => '2 stuņdis:2 hours,1 dīna:1 day,3 dīnys:3 days,1 nedeļa:1 week,2 nedelis:2 weeks,1 mieness:1 month,3 mieneši:3 months,6 mieneši:6 months,1 gods:1 year,iz nanūsokamu laiku:infinite',
 'ipbotheroption'           => 'cyts',
 'ipb-blocklist-contribs'   => '$1 devīņs',
-'ipblocklist'              => 'Nūblokēti lītuotuoji',
+'ipblocklist'              => 'Blokietais IP adress i lītuotuojvuords',
 'blocklink'                => 'nūblokēt',
 'unblocklink'              => 'atblokēt',
 'change-blocklink'         => 'puormeit bloku',
@@ -873,7 +830,6 @@ Puorejī lauki, piec nūklusiejuma, byus nūglobuoti.
 # Special:Version
 'version'                  => 'Verseja',
 'version-specialpages'     => 'Specialuos puslopys',
-'version-version'          => '(Verseja $1)',
 'version-license'          => 'Liceņceja',
 'version-poweredby-others' => 'cyti',
 'version-software-product' => 'Produkts',
@@ -887,5 +843,9 @@ Puorejī lauki, piec nūklusiejuma, byus nūglobuoti.
 
 # Special:SpecialPages
 'specialpages' => 'Specialuos puslopys',
+
+# Special:DisableAccount
+'disableaccount-user'   => 'Slāgvuords:',
+'disableaccount-reason' => 'Īmesle:',
 
 );

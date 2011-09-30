@@ -97,7 +97,7 @@ class ApiRsd extends ApiBase {
 		$apis = array(
 			'MediaWiki' => array(
 				// The API link is required for all RSD API entries.
-				'apiLink' => wfExpandUrl( wfScript( 'api' ) ),
+				'apiLink' => wfExpandUrl( wfScript( 'api' ), PROTO_CURRENT ),
 
 				// Docs link is optional, but recommended.
 				'docs' => 'http://mediawiki.org/wiki/API',
@@ -160,7 +160,7 @@ class ApiRsd extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiRsd.php 76195 2010-11-06 15:57:15Z btongminh $';
+		return __CLASS__ . ': $Id: ApiRsd.php 95505 2011-08-25 19:32:37Z catrope $';
 	}
 }
 
@@ -175,6 +175,6 @@ class ApiFormatXmlRsd extends ApiFormatXml {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiRsd.php 76195 2010-11-06 15:57:15Z btongminh $';
+		return __CLASS__ . ': $Id: ApiRsd.php 95505 2011-08-25 19:32:37Z catrope $';
 	}
 }

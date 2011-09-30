@@ -12,10 +12,10 @@ define( 'DO_MAINTENANCE', RUN_MAINTENANCE_IF_MAIN ); // original name, harmless
 $maintClass = false;
 
 // Make sure we're on PHP5 or better
-if ( version_compare( PHP_VERSION, '5.2.3' ) < 0 ) {
-	die ( "Sorry! This version of MediaWiki requires PHP 5.2.3; you are running " .
+if ( version_compare( PHP_VERSION, '5.1.0' ) < 0 ) {
+	die ( "Sorry! This version of MediaWiki requires PHP 5.1.x; you are running " .
 		PHP_VERSION . ".\n\n" .
-		"If you are sure you already have PHP 5.2.3 or higher installed, it may be\n" .
+		"If you are sure you already have PHP 5.1.x or higher installed, it may be\n" .
 		"installed in a different path from PHP " . PHP_VERSION . ". Check with your system\n" .
 		"administrator.\n" );
 }
@@ -121,18 +121,25 @@ abstract class Maintenance {
 	/**
 	 * Should we execute the maintenance script, or just allow it to be included
 	 * as a standalone class? It checks that the call stack only includes this
-	 * function and a require (meaning was called from the file scope)
+	 * function and "requires" (meaning was called from the file scope)
 	 *
 	 * @return Boolean
 	 */
 	public static function shouldExecute() {
 		$bt = debug_backtrace();
-		if( count( $bt ) !== 2 ) {
-			return false;
+		if ( count( $bt ) < 2 ) {
+			return false; // sanity
 		}
-		return $bt[1]['function'] == 'require_once' &&
-			$bt[0]['class'] == 'Maintenance' &&
-			$bt[0]['function'] == 'shouldExecute';
+		if ( $bt[0]['class'] !== 'Maintenance' || $bt[0]['function'] !== 'shouldExecute' ) {
+			return false; // last call should be to this function
+		}
+		$includeFuncs = array( 'require_once', 'require', 'include' );
+		for( $i=1; $i < count( $bt ); $i++ ) {
+			if ( !in_array( $bt[$i]['function'], $includeFuncs ) ) {
+				return false; // previous calls should all be "requires"
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -565,10 +572,14 @@ abstract class Maintenance {
 			} elseif ( substr( $arg, 0, 2 ) == '--' ) {
 				# Long options
 				$option = substr( $arg, 2 );
+				if ( array_key_exists( $option, $options ) ) {
+					$this->error( "\nERROR: $option parameter given twice\n" );
+					$this->maybeHelp( true );
+				}
 				if ( isset( $this->mParams[$option] ) && $this->mParams[$option]['withArg'] ) {
 					$param = next( $argv );
 					if ( $param === false ) {
-						$this->error( "\nERROR: $option needs a value after it\n" );
+						$this->error( "\nERROR: $option parameter needs a value after it\n" );
 						$this->maybeHelp( true );
 					}
 					$options[$option] = $param;
@@ -586,10 +597,14 @@ abstract class Maintenance {
 				# Short options
 				for ( $p = 1; $p < strlen( $arg ); $p++ ) {
 					$option = $arg { $p } ;
+					if ( array_key_exists( $option, $options ) ) {
+						$this->error( "\nERROR: $option parameter given twice\n" );
+						$this->maybeHelp( true );
+					}
 					if ( isset( $this->mParams[$option]['withArg'] ) && $this->mParams[$option]['withArg'] ) {
 						$param = next( $argv );
 						if ( $param === false ) {
-							$this->error( "\nERROR: $option needs a value after it\n" );
+							$this->error( "\nERROR: $option parameter needs a value after it\n" );
 							$this->maybeHelp( true );
 						}
 						$options[$option] = $param;
@@ -832,7 +847,9 @@ abstract class Maintenance {
 		ini_set( 'include_path', ".:$IP:$IP/includes:$IP/languages:$IP/maintenance" );
 
 		if ( $lang == 'test' && $site == 'wikipedia' ) {
-			define( 'TESTWIKI', 1 );
+			if ( !defined( 'TESTWIKI' ) ) {
+				define( 'TESTWIKI', 1 );
+			}
 		}
 	}
 
@@ -1141,4 +1158,3 @@ class FakeMaintenance extends Maintenance {
 		return;
 	}
 }
-

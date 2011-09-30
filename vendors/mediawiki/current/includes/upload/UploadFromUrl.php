@@ -45,6 +45,9 @@ class UploadFromUrl extends UploadBase {
 
 		$this->mUrl = $url;
 		$this->mAsync = $wgAllowAsyncCopyUploads ? $async : false;
+		if ( $async ) {
+			throw new MWException( 'Asynchronous copy uploads are no longer possible as of r81612.' );
+		}
 
 		$tempPath = $this->mAsync ? null : $this->makeTemporaryFile();
 		# File size and removeTempFile will be filled in later
@@ -78,6 +81,7 @@ class UploadFromUrl extends UploadBase {
 			&& $wgUser->isAllowed( 'upload_by_url' );
 	}
 
+	public function getSourceType() { return 'url'; }
 
 	public function fetchFile() {
 		if ( !Http::isValidURI( $this->mUrl ) ) {
@@ -163,7 +167,7 @@ class UploadFromUrl extends UploadBase {
 	 */
 	public function verifyUpload() {
 		if ( $this->mAsync ) {
-			return array( 'status' => UploadBase::OK );
+			return array( 'status' => self::OK );
 		}
 		return parent::verifyUpload();
 	}
@@ -184,11 +188,11 @@ class UploadFromUrl extends UploadBase {
 	 * Wrapper around the parent function in order to defer checking protection
 	 * until we are sure that the file can actually be uploaded
 	 */
-	public function verifyPermissions( $user ) {
+	public function verifyTitlePermissions( $user ) {
 		if ( $this->mAsync ) {
 			return true;
 		}
-		return parent::verifyPermissions( $user );
+		return parent::verifyTitlePermissions( $user );
 	}
 
 	/**

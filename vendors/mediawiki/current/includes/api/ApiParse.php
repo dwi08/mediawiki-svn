@@ -65,7 +65,7 @@ class ApiParse extends ApiBase {
 
 		// The parser needs $wgTitle to be set, apparently the
 		// $title parameter in Parser::parse isn't enough *sigh*
-		global $wgParser, $wgUser, $wgTitle, $wgLang;
+		global $wgParser, $wgUser, $wgTitle, $wgEnableParserCache, $wgLang;
 
 		// Currently unnecessary, code to act as a safeguard against any change in current behaviour of uselang breaks
 		$oldLang = null;
@@ -349,7 +349,7 @@ class ApiParse extends ApiBase {
 			
 			$entry['lang'] = $bits[0];
 			if ( $title ) {
-				$entry['url'] = $title->getFullURL();
+				$entry['url'] = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
 			}
 			$this->getResult()->setContent( $entry, $bits[1] );
 			$result[] = $entry;
@@ -407,7 +407,7 @@ class ApiParse extends ApiBase {
 
 				$title = Title::newFromText( "{$prefix}:{$title}" );
 				if ( $title ) {
-					$entry['url'] = $title->getFullURL();
+					$entry['url'] = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
 				}
 
 				$this->getResult()->setContent( $entry, $title->getFullText() );
@@ -516,6 +516,7 @@ class ApiParse extends ApiBase {
 				' headhtml       - Gives parsed <head> of the page',
 				' iwlinks        - Gives interwiki links in the parsed wikitext',
 				' wikitext       - Gives the original wikitext that was parsed',
+				'NOTE: Section tree is only generated if there are more than 4 sections, or if the __TOC__ keyword is present'
 			),
 			'pst' => array(
 				'Do a pre-save transform on the input before parsing it',
@@ -553,6 +554,6 @@ class ApiParse extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiParse.php 89672 2011-06-07 18:45:20Z catrope $';
+		return __CLASS__ . ': $Id: ApiParse.php 95668 2011-08-29 15:42:14Z neilk $';
 	}
 }

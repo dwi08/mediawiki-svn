@@ -77,7 +77,7 @@ class MinifyScript extends Maintenance {
 	public function getExtension( $fileName ) {
 		$dotPos = strrpos( $fileName, '.' );
 		if ( $dotPos === false ) {
-			$this->error( "No file extension, cannot determine type: $fileName" );
+			$this->error( "No file extension, cannot determine type: $arg" );
 			exit( 1 );
 		}
 		return substr( $fileName, $dotPos + 1 );

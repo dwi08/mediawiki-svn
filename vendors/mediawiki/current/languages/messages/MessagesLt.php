@@ -13,11 +13,9 @@
  * @author Garas
  * @author Homo
  * @author Hugo.arg
- * @author Ignas693
  * @author Matasg
  * @author Meno25
  * @author Pdxx
- * @author Perkunas
  * @author Pėstininkas
  * @author Siggis
  * @author Tomasdd
@@ -205,8 +203,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Rodyti stebinčių naudotojų skaičių',
 'tog-oldsig'                  => 'Esamo parašo peržiūra:',
 'tog-fancysig'                => 'Laikyti parašą vikitekstu (be automatinių nuorodų)',
-'tog-externaleditor'          => 'Pagal nutylėjimą naudoti išorinį redaktorių (skirta tik ekspertams, nes reikia atitinkamai paruošti jūsų kompiuterį. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
-'tog-externaldiff'            => 'Pagal nutylėjimą naudoti išorinę skirtumų rodymo programą (tik ekspertams, nes reikia atitinkamai  paruošti jūsų kompiuterį. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaleditor'          => 'Pagal nutylėjimą naudoti išorinį redaktorių',
+'tog-externaldiff'            => 'Pagal nutylėjimą naudoti išorinę skirtumų rodymo programą',
 'tog-showjumplinks'           => 'Įjungti „peršokti į“ pasiekiamumo nuorodas',
 'tog-uselivepreview'          => 'Naudoti tiesioginę peržiūrą (JavaScript) (Eksperimentinis)',
 'tog-forceeditsummary'        => 'Klausti, kai palieku tuščią keitimo komentarą',
@@ -616,7 +614,6 @@ Patikrinkite rašybą, arba [[Special:UserLogin/signup|sukurkite naują paskyrą
 'wrongpasswordempty'         => 'Įvestas slaptažodis yra tuščias. Pamėginkite vėl.',
 'passwordtooshort'           => 'Slaptažodžiai turi būti bent $1 {{PLURAL:$1|simbolio|simbolių|simbolių}} ilgio.',
 'password-name-match'        => 'Jūsų slaptažodis turi skirtis nuo jūsų naudotojo vardo.',
-'password-login-forbidden'   => 'Šito naudotojo vardo ir slaptažodžio naudojimas yra uždraustas.',
 'mailmypassword'             => 'Atsiųsti naują slaptažodį el. paštu',
 'passwordremindertitle'      => 'Laikinasis {{SITENAME}} slaptažodis',
 'passwordremindertext'       => 'Kažkas (tikriausiai jūs, IP adresu $1)
@@ -660,9 +657,6 @@ Jūs galite nekreipti dėmesio į laišką, jei ši paskyra buvo sukurta per kla
 Palaukite prieš bandant vėl.',
 'loginlanguagelabel'         => 'Kalba: $1',
 'suspicious-userlogout'      => 'Jūsų prašymas atsijungti buvo atmestas, nes, atrodo, jį klaidingai išsiuntė naršyklė arba spartinantysis tarpinis serveris.',
-
-# E-mail sending
-'php-mail-error-unknown' => 'Nežinoma klaida PHP mail() funkcijoje',
 
 # Password reset dialog
 'resetpass'                 => 'Keisti slaptažodį',
@@ -716,7 +710,7 @@ Jūs galbūt jau sėkmingai pakeitėte savo slaptažodį ar gavote naują laikin
 'showdiff'                         => 'Rodyti skirtumus',
 'anoneditwarning'                  => "'''Dėmesio:''' Jūs nesate prisijungęs. Jūsų IP adresas bus įrašytas į šio puslapio istoriją.",
 'anonpreviewwarning'               => "''Jūs nesate prisijungęs. Išsaugojant jūsų IP adresas bus rodomas šio puslapio redagavimo istorijoje.''",
-'missingsummary'                   => "'''Priminimas:''' Jūs nenurodėte keitimo komentaro. Jei vėl paspausite „{{int:savearticle}}“, jūsų keitimas bus išsaugotas be jo.",
+'missingsummary'                   => "'''Priminimas:''' Jūs nenurodėte keitimo komentaro. Jei vėl paspausite Įšsaugoti, jūsų keitimas bus išsaugotas be jo.",
 'missingcommenttext'               => 'Prašome įvesti komentarą.',
 'missingcommentheader'             => "'''Priminimas:''' Jūs nenurodėte šio komentaro pavadinimo/antraštės.
 Jei vėl paspausite „{{int:savearticle}}“, jūsų keitimas bus įrašytas be jo.",
@@ -792,8 +786,6 @@ Jūs galite [[Special:Search/{{PAGENAME}}|ieškoti šio puslapio pavadinimo]] ki
 'userjsyoucanpreview'              => "'''Patarimas:''' Naudokite „{{int:showpreview}}“ mygtuką, kad išmėgintumėte savo naująjį JS prieš išsaugant.",
 'usercsspreview'                   => "'''Nepamirškite, kad jūs tik peržiūrit savo naudotojo CSS, jis dar nebuvo išsaugotas!'''",
 'userjspreview'                    => "'''Nepamirškite, kad jūs tik testuojat/peržiūrit savo naudotojo JavaScript, jis dar nebuvo išsaugotas!'''",
-'sitecsspreview'                   => "'''Nepamirškite, kad jūs tik peržiūrit šio CSS .'''! N!''' Tai dar nebuvo išsaugotas!'''",
-'sitejspreview'                    => "'''Nepamirškite, kad jūs tik peržiūrit šis JavaScript kodas .'''! N!''' Tai dar nebuvo išsaugotas!'''",
 'userinvalidcssjstitle'            => "'''Dėmesio:''' Nėra jokios išvaizdos „$1“. Nepamirškite, kad savo .css ir .js puslapiai naudoja pavadinimą mažosiomis raidėmis, pvz., {{ns:user}}:Foo/vector.css, o ne {{ns:user}}:Foo/Vector.css.",
 'updated'                          => '(Atnaujinta)',
 'note'                             => "'''Pastaba:'''",
@@ -934,7 +926,7 @@ Jis galėjo būti ištrintas iš projekto, arba pervardintas.
 Pamėginkite [[Special:Search|ieškoti projekte]] susijusių naujų puslapių.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(keitimo aprašymas pašalintas)',
+'rev-deleted-comment'         => '(komentaras pašalintas)',
 'rev-deleted-user'            => '(naudotojo vardas pašalintas)',
 'rev-deleted-event'           => '(įrašas pašalintas)',
 'rev-deleted-user-contribs'   => '[vardas arba IP adresas pašalintas - redagavimas paslėptas nuo prisidėjimų]',
@@ -1174,9 +1166,9 @@ Prašome patikrinti sąrašus.',
 'prefs-rc'                      => 'Paskutiniai keitimai',
 'prefs-watchlist'               => 'Stebimų sąrašas',
 'prefs-watchlist-days'          => 'Dienos rodomos stebimųjų sąraše:',
-'prefs-watchlist-days-max'      => 'Daugiausiai 7 dienos',
+'prefs-watchlist-days-max'      => '(daugiausiai 7 dienos)',
 'prefs-watchlist-edits'         => 'Kiek daugiausia keitimų rodyti išplėstiniame stebimųjų sąraše:',
-'prefs-watchlist-edits-max'     => 'Didžiausias skaičius: 1000',
+'prefs-watchlist-edits-max'     => '(didžiausias skaičius: 1000)',
 'prefs-watchlist-token'         => 'Stebimųjų sąrašo raktas:',
 'prefs-misc'                    => 'Įvairūs nustatymai',
 'prefs-resetpass'               => 'Keisti slaptažodį',
@@ -1271,10 +1263,6 @@ Jei jūs jį įvesite, jis bus naudojamas pažymėti jūsų darbą.',
 'prefs-displaysearchoptions'    => 'Rodymo nuostatos',
 'prefs-displaywatchlist'        => 'Rodymo nuostatos',
 'prefs-diffs'                   => 'Skirtumai',
-
-# User preference: e-mail validation using jQuery
-'email-address-validity-valid'   => 'Panašu, kad E-pašto adresas yra teisingas',
-'email-address-validity-invalid' => 'Įveskite korektišką e-pašto adresą',
 
 # User rights
 'userrights'                   => 'Naudotojų teisių valdymas',
@@ -1551,7 +1539,7 @@ prašome eiti atgal ir įkelti šį failą kitu vardu. [[File:$1|thumb|center|$1
 'fileexists-shared-forbidden' => 'Failas tokiu vardu jau egzistuoja bendrojoje failų saugykloje;
 Jei visvien norite įkelti savo failą, prašome eiti atgal ir įkelti šį failą kitu vardu. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Šis failas yra {{PLURAL:$1|šio failo|šių failų}} dublikatas:',
-'file-deleted-duplicate'      => 'Failas, identiškas šiam failui ([[:$1]]), seniau buvo ištrintas. Prieš įkeldami jį vėl patikrinkite šio failo ištrynimo istoriją.',
+'file-deleted-duplicate'      => 'Failas, identiškas šiam failui ([[$1]]), seniau buvo ištrintas. Prieš įkeldami jį vėl patikrinkite šio failo ištrynimo istoriją.',
 'uploadwarning'               => 'Dėmesio',
 'uploadwarning-text'          => 'Prašome pakeisti failo aprašymą ir bandykite dar kartą.',
 'savefile'                    => 'Išsaugoti failą',
@@ -1600,23 +1588,22 @@ Prašome susisiekti su [[Special:ListUsers/sysop|sistemos administratoriumi]].',
 'upload-http-error'         => 'Įvyko HTTP klaida: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Prieiga uždrausta',
-'img-auth-nopathinfo'       => 'Trūksta PATH_INFO.
+'img-auth-accessdenied' => 'Prieiga uždrausta',
+'img-auth-nopathinfo'   => 'Trūksta PATH_INFO.
 Jūsų serveris nenustatytas perduoti šią informaciją.
 Tai gali būti CGI paremta ir negali palaikyti img_auth.
 Daugiau informacijos http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Užklaustas kelias nėra sukonfigūruotame įkėlimo kataloge.',
-'img-auth-badtitle'         => 'Nepavyksta padaryti leistino pavadinimo iš „$1“.',
-'img-auth-nologinnWL'       => 'Jūs nesate prisijungęs ir „$1“ nėra baltajame sąraše.',
-'img-auth-nofile'           => 'Failas „$1“ neegzistuoja.',
-'img-auth-isdir'            => 'Jūs bandote pasiekti katalogą „$1“.
+'img-auth-notindir'     => 'Užklaustas kelias nėra sukonfigūruotame įkėlimo kataloge.',
+'img-auth-badtitle'     => 'Nepavyksta padaryti leistino pavadinimo iš „$1“.',
+'img-auth-nologinnWL'   => 'Jūs nesate prisijungęs ir „$1“ nėra baltajame sąraše.',
+'img-auth-nofile'       => 'Failas „$1“ neegzistuoja.',
+'img-auth-isdir'        => 'Jūs bandote pasiekti katalogą „$1“.
 Leidžiama prieiga tik prie failų.',
-'img-auth-streaming'        => 'Siunčiamas „$1“.',
-'img-auth-public'           => 'img_auth.php paskirtis yra pateikti failus iš privačių projektų.
+'img-auth-streaming'    => 'Siunčiamas „$1“.',
+'img-auth-public'       => 'img_auth.php paskirtis yra pateikti failus iš privačių projektų.
 Šis projektas sukonfigūruotas kaip viešasis.
 Dėl saugumo, img_auth.php yra išjungtas.',
-'img-auth-noread'           => 'Naudotojas neturi teisės peržiūrėti „$1“.',
-'img-auth-bad-query-string' => 'URL neteisingas užklausos eilutę.',
+'img-auth-noread'       => 'Naudotojas neturi teisės peržiūrėti „$1“.',
 
 # HTTP errors
 'http-invalid-url'      => 'Neleistinas URL: $1',
@@ -2055,13 +2042,13 @@ Jūs taip pat galite išjungti pranešimo žymę visiems jūsų stebimiems pusla
 
 --
 Norėdami pakeisti stebimų puslapių nustatymus, užeikite į
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Norėdami puslapį iš stebimų puslapių sąrašo, užeikite į
 $UNWATCHURL
 
 Atsiliepimai ir pagalba:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Trinti puslapį',
@@ -2249,7 +2236,6 @@ $1',
 'sp-contributions-newbies-title'       => 'Naudotojų keitimai naujoms paskyroms',
 'sp-contributions-blocklog'            => 'Blokavimų istorija',
 'sp-contributions-deleted'             => 'ištrintas naudotojo indėlis',
-'sp-contributions-uploads'             => 'nuotraukos',
 'sp-contributions-logs'                => 'Specialiųjų veiksmų istorija',
 'sp-contributions-talk'                => 'Aptarimas',
 'sp-contributions-userrights'          => 'naudotojų teisių valdymas',
@@ -2328,7 +2314,7 @@ ankščiau užblokuotam IP adresui ar naudotojui.',
 'ipusubmit'                       => 'Atblokuoti šį adresą',
 'unblocked'                       => '[[User:$1|$1]] buvo atblokuotas',
 'unblocked-id'                    => 'Blokavimas $1 buvo pašalintas',
-'ipblocklist'                     => 'Blokuoti naudotojai',
+'ipblocklist'                     => 'Blokuoti IP adresai bei naudotojų vardai',
 'ipblocklist-legend'              => 'Rasti užblokuotą naudotoją',
 'ipblocklist-username'            => 'Naudotojas arba IP adresas:',
 'ipblocklist-sh-userblocks'       => '$1 paskyros blokavimus',
@@ -2587,7 +2573,7 @@ Visi tarpprojektiniai importo veiksmai yra registruojami  [[Special:Log/import|i
 'import-interwiki-namespace' => 'Paskirties vardų sritis:',
 'import-upload-filename'     => 'Failo pavadinimas:',
 'import-comment'             => 'Komentaras:',
-'importtext'                 => 'Prašome eksportuoti iš projekto-šaltinio failo, naudojant [[Specialus: Export | Export.]]! N! Išsaugokite jį savo kompiuteryje ir įkelkite jį čia.',
+'importtext'                 => 'Prašome eksportuoti failą iš projekto-šaltinio naudojantis {{ns:special}}:Export priemone, išsaugokite jį savo diske ir įkelkite jį čia.',
 'importstart'                => 'Imporuojami puslapiai...',
 'import-revision-count'      => '$1 {{PLURAL:$1|versija|versijos|versijų}}',
 'importnopages'              => 'Nėra puslapių importavimui.',
@@ -2880,8 +2866,8 @@ Visos kitos nuorodos toje pačioje eilutėje yra laikomos išimtimis, t. y. pusl
 'exif-colorspace'                  => 'Spalvų pristatymas',
 'exif-componentsconfiguration'     => 'kiekvieno komponento reikšmė',
 'exif-compressedbitsperpixel'      => 'Paveikslėlio suspaudimo režimas',
-'exif-pixelydimension'             => 'Paveikslėlio plotis',
-'exif-pixelxdimension'             => 'Vaizdo aukštis',
+'exif-pixelydimension'             => 'Leistinas paveikslėlio plotis',
+'exif-pixelxdimension'             => 'Leistinas paveikslėlio aukštis',
 'exif-makernote'                   => 'Gamintojo pastabos',
 'exif-usercomment'                 => 'Naudotojo komentarai',
 'exif-relatedsoundfile'            => 'Susijusi garso byla',
@@ -2897,9 +2883,9 @@ Visos kitos nuorodos toje pačioje eilutėje yra laikomos išimtimis, t. y. pusl
 'exif-spectralsensitivity'         => 'Spektrinis jautrumas',
 'exif-isospeedratings'             => 'ISO greitis',
 'exif-oecf'                        => 'Optoelektronikos konversijos daugiklis',
-'exif-shutterspeedvalue'           => 'APEX užrakto greičio',
-'exif-aperturevalue'               => 'APEX diafragma',
-'exif-brightnessvalue'             => 'APEX ryškumas',
+'exif-shutterspeedvalue'           => 'Užrakto greitis',
+'exif-aperturevalue'               => 'Diafragma',
+'exif-brightnessvalue'             => 'Šviesumas',
 'exif-exposurebiasvalue'           => 'Išlaikymo paklaida',
 'exif-maxaperturevalue'            => 'Mažiausias lešio F numeris',
 'exif-subjectdistance'             => 'Objekto atstumas',

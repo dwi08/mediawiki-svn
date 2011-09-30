@@ -1655,7 +1655,7 @@ $1",
 لو كنت لسه عايز ترفعه، لو سمحت ارجع وحمل الملف دا باسم جديد.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'الملف دا تكرار  {{PLURAL:$1|للملف|للملفات}} دي:',
-'file-deleted-duplicate'      => 'فى ملف مطابق للملف دا ([[:$1]]) اتمسح قبل كدا. انتا لازم تشيك على تاريخ المسح بتاع الملف دا قبل ما تحمله مرة تانية',
+'file-deleted-duplicate'      => 'فى ملف مطابق للملف دا ([[$1]]) اتمسح قبل كدا. انتا لازم تشيك على تاريخ المسح بتاع الملف دا قبل ما تحمله مرة تانية',
 'uploadwarning'               => 'تحذير التحميل',
 'uploadwarning-text'          => 'لو سمحت عدل وصف الملف اللى تحت وحاول تانى.',
 'savefile'                    => 'حفظ الملف',
@@ -2164,13 +2164,13 @@ $NEWPAGE
 
 --
 علشان تغيّر ليستة المراقبه بتاعتك, زور
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 علشان تمسح الصفحه من على ليستة مراقبتك, زور
 $UNWATCHURL
 
 الfeedback و مساعده اكتر:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'امسح الصفحه',

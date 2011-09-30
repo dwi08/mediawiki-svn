@@ -182,15 +182,7 @@ class DatabaseOracle extends DatabaseBase {
 	{
 		$tablePrefix = $tablePrefix == 'get from global' ? $tablePrefix : strtoupper( $tablePrefix );
 		parent::__construct( $server, $user, $password, $dbName, $flags, $tablePrefix );
-		wfRunHooks( 'DatabaseOraclePostInit', array( $this ) );
-	}
-
-	function __destruct() {
-		if ($this->mOpened) {
-			wfSuppressWarnings();
-			$this->close();
-			wfRestoreWarnings();
-		}
+		wfRunHooks( 'DatabaseOraclePostInit', array( &$this ) );
 	}
 
 	function getType() {
@@ -232,6 +224,7 @@ class DatabaseOracle extends DatabaseBase {
 			throw new DBConnectionError( $this, "Oracle functions missing, have you compiled PHP with the --with-oci8 option?\n (Note: if you recently installed PHP, you may need to restart your webserver and database)\n" );
 		}
 
+		$this->close();
 		$this->mUser = $user;
 		$this->mPassword = $password;
 		// changed internal variables functions
@@ -285,9 +278,6 @@ class DatabaseOracle extends DatabaseBase {
 	function close() {
 		$this->mOpened = false;
 		if ( $this->mConn ) {
-			if ( $this->mTrxLevel ) {
-				$this->commit();
-			}
 			return oci_close( $this->mConn );
 		} else {
 			return true;
@@ -572,7 +562,7 @@ class DatabaseOracle extends DatabaseBase {
 
 		wfSuppressWarnings();
 
-		if ( oci_execute( $stmt, $this->execFlags() ) === false ) {
+		if ( oci_execute( $stmt, OCI_DEFAULT ) === false ) {
 			$e = oci_error( $stmt );
 			if ( !$this->ignore_DUP_VAL_ON_INDEX || $e['code'] != '1' ) {
 				$this->reportQueryError( $e['message'], $e['code'], $sql, __METHOD__ );
@@ -704,11 +694,6 @@ class DatabaseOracle extends DatabaseBase {
 		return strtoupper( $tableName );
 	}
 
-	function tableNameInternal( $name ) {
-		$name = $this->tableName( $name );
-		return preg_replace( '/.*\."(.*)"/', '$1', $name);
-	}
-
 	/**
 	 * Return the next in a sequence, save the value for retrieval via insertId()
 	 */
@@ -808,8 +793,13 @@ class DatabaseOracle extends DatabaseBase {
 
 	# Returns the size of a text field, or -1 for "unlimited"
 	function textFieldSize( $table, $field ) {
-		$fieldInfoData = $this->fieldInfo( $table, $field );
-		return $fieldInfoData->maxLength();
+		$fieldInfoData = $this->fieldInfo( $table, $field);
+		if ( $fieldInfoData->type == 'varchar' ) {
+			$size = $row->size - 4;
+		} else {
+			$size = $row->size;
+		}
+		return $size;
 	}
 
 	function limitResult( $sql, $limit, $offset = false ) {
@@ -936,9 +926,8 @@ class DatabaseOracle extends DatabaseBase {
 	 * Query whether a given table exists (in the given schema, or the default mw one if not given)
 	 */
 	function tableExists( $table ) {
-		$table = $this->addQuotes( trim( $this->tableName($table), '"' ) );
-		$owner = $this->addQuotes( strtoupper( $this->mDBname ) );
-		$SQL = "SELECT 1 FROM all_tables WHERE owner=$owner AND table_name=$table";
+		$table = trim($this->tableName($table), '"');
+		$SQL = "SELECT 1 FROM user_tables WHERE table_name='$table'";
 		$res = $this->doQuery( $SQL );
 		if ( $res ) {
 			$count = $res->numRows();
@@ -946,7 +935,7 @@ class DatabaseOracle extends DatabaseBase {
 		} else {
 			$count = 0;
 		}
-		return $count!=0;
+		return $count;
 	}
 
 	/**
@@ -961,7 +950,7 @@ class DatabaseOracle extends DatabaseBase {
 	private function fieldInfoMulti( $table, $field ) {
 		$field = strtoupper( $field );
 		if ( is_array( $table ) ) {
-			$table = array_map( array( &$this, 'tableNameInternal' ), $table );
+			$table = array_map( array( &$this, 'tableName' ), $table );
 			$tableWhere = 'IN (';
 			foreach( $table as &$singleTable ) {
 				$singleTable = strtoupper( trim( $singleTable, '"' ) );
@@ -972,7 +961,7 @@ class DatabaseOracle extends DatabaseBase {
 			}
 			$tableWhere = rtrim( $tableWhere, ',' ) . ')';
 		} else {
-			$table = strtoupper( trim( $this->tableNameInternal( $table ), '"' ) );
+			$table = strtoupper( trim( $this->tableName( $table ), '"' ) );
 			if ( isset( $this->mFieldInfoCache["$table.$field"] ) ) {
 				return $this->mFieldInfoCache["$table.$field"];
 			}
@@ -980,7 +969,7 @@ class DatabaseOracle extends DatabaseBase {
 		}
 
 		$fieldInfoStmt = oci_parse( $this->mConn, 'SELECT * FROM wiki_field_info_full WHERE table_name '.$tableWhere.' and column_name = \''.$field.'\'' );
-		if ( oci_execute( $fieldInfoStmt, $this->execFlags() ) === false ) {
+		if ( oci_execute( $fieldInfoStmt, OCI_DEFAULT ) === false ) {
 			$e = oci_error( $fieldInfoStmt );
 			$this->reportQueryError( $e['message'], $e['code'], 'fieldInfo QUERY', __METHOD__ );
 			return false;
@@ -1011,22 +1000,13 @@ class DatabaseOracle extends DatabaseBase {
 		return $this->fieldInfoMulti ($table, $field);
 	}
 
-	function begin( $fname = 'DatabaseOracle::begin' ) {
+	function begin( $fname = '' ) {
 		$this->mTrxLevel = 1;
 	}
 
-	function commit( $fname = 'DatabaseOracle::commit' ) {
-		if ( $this->mTrxLevel ) {
-			oci_commit( $this->mConn );
-			$this->mTrxLevel = 0;
-		}
-	}
-
-	function rollback( $fname = 'DatabaseOracle::rollback' ) {
-		if ( $this->mTrxLevel ) {
-			oci_rollback( $this->mConn );
-			$this->mTrxLevel = 0;
-		}
+	function commit( $fname = '' ) {
+		oci_commit( $this->mConn );
+		$this->mTrxLevel = 0;
 	}
 
 	/* Not even sure why this is used in the main codebase... */
@@ -1107,17 +1087,41 @@ class DatabaseOracle extends DatabaseBase {
 		return true;
 	}
 
-	function selectDB( $db ) {
-		$this->mDBname = $db;
-		if ( $db == null || $db == $this->mUser ) {
-			return true;
+	function setup_database() {
+		$res = $this->sourceFile( "../maintenance/oracle/tables.sql" );
+		if ( $res === true ) {
+			print " done.</li>\n";
+		} else {
+			print " <b>FAILED</b></li>\n";
+			dieout( htmlspecialchars( $res ) );
 		}
+
+		// Avoid the non-standard "REPLACE INTO" syntax
+		echo "<li>Populating interwiki table</li>\n";
+		$f = fopen( "../maintenance/interwiki.sql", 'r' );
+		if ( !$f ) {
+			dieout( "Could not find the interwiki.sql file" );
+		}
+
+		// do it like the postgres :D
+		$SQL = "INSERT INTO " . $this->tableName( 'interwiki' ) . " (iw_prefix,iw_url,iw_local) VALUES ";
+		while ( !feof( $f ) ) {
+			$line = fgets( $f, 1024 );
+			$matches = array();
+			if ( !preg_match( '/^\s*(\(.+?),(\d)\)/', $line, $matches ) ) {
+				continue;
+			}
+			$this->query( "$SQL $matches[1],$matches[2])" );
+		}
+
+		echo "<li>Table interwiki successfully populated</li>\n";
+	}
+
+	function selectDB( $db ) {
+		if ( $db == null || $db == $this->mUser ) { return true; }
 		$sql = 'ALTER SESSION SET CURRENT_SCHEMA=' . strtoupper($db);
 		$stmt = oci_parse( $this->mConn, $sql );
-		wfSuppressWarnings();
-		$success = oci_execute( $stmt );
-		wfRestoreWarnings();
-		if ( !$success ) {
+		if ( !oci_execute( $stmt ) ) {
 			$e = oci_error( $stmt );
 			if ( $e['code'] != '1435' ) {
 				$this->reportQueryError( $e['message'], $e['code'], $sql, __METHOD__ );
@@ -1309,7 +1313,7 @@ class DatabaseOracle extends DatabaseBase {
 
 		wfSuppressWarnings();
 
-		if ( oci_execute( $stmt, $this->execFlags() ) === false ) {
+		if ( oci_execute( $stmt, OCI_DEFAULT ) === false ) {
 			$e = oci_error( $stmt );
 			if ( !$this->ignore_DUP_VAL_ON_INDEX || $e['code'] != '1' ) {
 				$this->reportQueryError( $e['message'], $e['code'], $sql, __METHOD__ );
@@ -1357,6 +1361,18 @@ class DatabaseOracle extends DatabaseBase {
 
 	function getServer() {
 		return $this->mServer;
+	}
+
+	public function replaceVars( $ins ) {
+		$varnames = array( 'wgDBprefix' );
+		if ( $this->mFlags & DBO_SYSDBA ) {
+			$varnames[] = '_OracleDefTS';
+			$varnames[] = '_OracleTempTS';
+		}
+
+		$ins = $this->replaceGlobalVars( $ins, $varnames );
+
+		return parent::replaceVars( $ins );
 	}
 
 	public function getSearchEngine() {

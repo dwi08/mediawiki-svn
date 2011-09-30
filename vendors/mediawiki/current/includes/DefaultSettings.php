@@ -34,7 +34,7 @@ if ( !defined( 'MW_PHP4' ) ) {
 /** @endcond */
 
 /** MediaWiki version number */
-$wgVersion = '1.17.0';
+$wgVersion = '1.17wmf1';
 
 /** Name of the site. It must be changed in LocalSettings.php */
 $wgSitename         = 'MediaWiki';
@@ -77,6 +77,15 @@ if(    isset( $_SERVER['SERVER_PORT'] )
 
 	$wgServer .= ":" . $_SERVER['SERVER_PORT'];
 }
+
+/**
+ * Canonical URL of the server, to use in IRC feeds and notification e-mails.
+ * Must be fully qualified, even if $wgServer is protocol-relative.
+ *
+ * Defaults to $wgServer, expanded to a fully qualified http:// URL if needed.
+ */
+$wgCanonicalServer = false;
+
 /** @endcond */
 
 /************************************************************************//**
@@ -172,7 +181,8 @@ $wgLoadScript           = false;
  * The URL path of the skins directory. Defaults to "{$wgScriptPath}/skins"
  */
 $wgStylePath   = false;
-$wgStyleSheetPath = &$wgStylePath;
+# Broken PHP, canary mismatch -- TS
+#$wgStyleSheetPath = &$wgStylePath;
 
 /**
  * The URL path of the skins directory. Should not point to an external domain.
@@ -204,6 +214,11 @@ $wgArticlePath      = false;
  * The URL path for the images directory. Defaults to "{$wgScriptPath}/images"
  */
 $wgUploadPath       = false;
+
+/**
+ * The maximum age of temporary (incomplete) uploaded files
+ */
+$wgUploadStashMaxAge = 6 * 3600; // 6 hours
 
 /**
  * The filesystem path of the images directory. Defaults to "{$IP}/images".
@@ -434,12 +449,24 @@ $wgCacheSharedUploads = true;
 $wgAllowCopyUploads = false;
 /**
  * Allow asynchronous copy uploads.
- * This feature is experimental.
+ * This feature is experimental is broken as of r81612.
  */
 $wgAllowAsyncCopyUploads = false;
 
 /**
- * Max size for uploads, in bytes. Applies to all uploads.
+ * Max size for uploads, in bytes. If not set to an array, applies to all 
+ * uploads. If set to an array, per upload type maximums can be set, using the
+ * file and url keys. If the * key is set this value will be used as maximum
+ * for non-specified types.
+ * 
+ * For example:
+ * 	$wgUploadSize = array(
+ * 		'*' => 250 * 1024,
+ * 		'url' => 500 * 1024,
+ * 	);
+ * Sets the maximum for all uploads to 250 kB except for upload-by-url, which
+ * will have a maximum of 500 kB.
+ * 
  */
 $wgMaxUploadSize = 1024*1024*100; # 100MB
 
@@ -1467,6 +1494,8 @@ $wgCacheDirectory = false;
  *   - CACHE_DBA:        Use PHP's DBA extension to store in a DBM-style
  *                       database. This is slow, and is not recommended for
  *                       anything other than debugging.
+ *   - (other):          A string may be used which identifies a cache 
+ *                       configuration in $wgObjectCaches.
  *
  * @see $wgMessageCacheType, $wgParserCacheType
  */
@@ -1487,6 +1516,36 @@ $wgMessageCacheType = CACHE_ANYTHING;
  * For available types see $wgMainCacheType.
  */
 $wgParserCacheType = CACHE_ANYTHING;
+
+/**
+ * Advanced object cache configuration.
+ *
+ * Use this to define the class names and constructor parameters which are used 
+ * for the various cache types. Custom cache types may be defined here and 
+ * referenced from $wgMainCacheType, $wgMessageCacheType or $wgParserCacheType.
+ *
+ * The format is an associative array where the key is a cache identifier, and 
+ * the value is an associative array of parameters. The "class" parameter is the
+ * class name which will be used. Alternatively, a "factory" parameter may be 
+ * given, giving a callable function which will generate a suitable cache object.
+ *
+ * The other parameters are dependent on the class used.
+ */
+$wgObjectCaches = array(
+	CACHE_NONE => array( 'class' => 'EmptyBagOStuff' ),
+	CACHE_DB => array( 'class' => 'SqlBagOStuff', 'table' => 'objectcache' ),
+	CACHE_DBA => array( 'class' => 'DBABagOStuff' ),
+
+	CACHE_ANYTHING => array( 'factory' => 'ObjectCache::newAnything' ),
+	CACHE_ACCEL => array( 'factory' => 'ObjectCache::newAccelerator' ),
+	CACHE_MEMCACHED => array( 'factory' => 'ObjectCache::newMemcached' ),
+
+	'eaccelerator' => array( 'class' => 'eAccelBagOStuff' ),
+	'apc' => array( 'class' => 'APCBagOStuff' ),
+	'xcache' => array( 'class' => 'XCacheBagOStuff' ),
+	'wincache' => array( 'class' => 'WinCacheBagOStuff' ),
+	'memcached-php' => array( 'class' => 'MemcachedPhpBagOStuff' ),
+);
 
 /**
  * The expiry time for the parser cache, in seconds. The default is 86.4k
@@ -1706,13 +1765,20 @@ $wgUseESI = false;
 /** Send X-Vary-Options header for better caching (requires patched Squid) */
 $wgUseXVO = false;
 
+/** Add X-Forwarded-Proto to the Vary and X-Vary-Options headers for API
+ * requests and RSS/Atom feeds. Use this if you have an SSL termination setup
+ * and need to split the cache between HTTP and HTTPS for API and feed requests
+ * in order to prevent cache pollution. This does not affect 'normal' requests.
+ */
+$wgVaryOnXFPForAPI = false;
+
 /**
  * Internal server name as known to Squid, if different. Example:
  * <code>
  * $wgInternalServer = 'http://yourinternal.tld:8000';
  * </code>
  */
-$wgInternalServer = $wgServer;
+$wgInternalServer = false;
 
 /**
  * Cache timeout for the squid, will be sent as s-maxage (without ESI) or
@@ -1813,7 +1879,6 @@ $wgDummyLanguageCodes = array(
 	'nb',
 	'qqq',
 	'simple',
-	'tp',
 );
 
 /** @deprecated Since MediaWiki 1.5, this must always be set to UTF-8. */
@@ -2446,25 +2511,6 @@ $wgResourceLoaderMinifierStatementsOnOwnLine = false;
  */
 $wgResourceLoaderMinifierMaxLineLength = 1000;
 
-/**
- * Whether to include the mediawiki.legacy JS library (old wikibits.js), and its
- * dependencies
- */
-$wgIncludeLegacyJavaScript = true;
-
-/**
- * If set to a positive number, ResourceLoader will not generate URLs whose
- * query string is more than this many characters long, and will instead use
- * multiple requests with shorter query strings. This degrades performance,
- * but may be needed if your web server has a low (less than, say 1024)
- * query string length limit or a low value for suhosin.get.max_value_length
- * that you can't increase.
- *
- * If set to a negative number, ResourceLoader will assume there is no query
- * string length limit.
- */
-$wgResourceLoaderMaxQueryLength = -1;
-
 /** @} */ # End of resource loader settings }
 
 
@@ -2729,6 +2775,7 @@ $wgUrlProtocols = array(
 	'svn://',
 	'git://',
 	'mms://',
+	'//', // for protocol-relative URLs
 );
 
 /**
@@ -3132,16 +3179,10 @@ $wgSecureLogin        = false;
  * @{
  */
 
-/**
- * Allow sysops to ban logged-in users
- * @deprecated since 1.17, will be made permanently true in 1.18
- */
+/** Allow sysops to ban logged-in users */
 $wgSysopUserBans        = true;
 
-/**
- * Allow sysops to ban IP ranges
- * @deprecated since 1.17; set $wgBlockCIDRLimit to array( 'IPv4' => 32, 'IPv6 => 128 ) instead.
- */
+/** Allow sysops to ban IP ranges */
 $wgSysopRangeBans       = true;
 
 /**
@@ -3451,10 +3492,11 @@ $wgAutoConfirmCount = 0;
  * user who has provided an e-mail address.
  */
 $wgAutopromote = array(
+	/* test patch -- TS
 	'autoconfirmed' => array( '&',
 		array( APCOND_EDITCOUNT, &$wgAutoConfirmCount ),
 		array( APCOND_AGE, &$wgAutoConfirmAge ),
-	),
+	),*/
 );
 
 /**
@@ -3897,6 +3939,14 @@ $wgDebugFunctionEntry = 0;
  * false to disable
  */
 $wgStatsMethod = 'cache';
+
+/**
+ * When $wgStatsMethod is 'udp', setting this to a string allows statistics to 
+ * be aggregated over more than one wiki. The string will be used in place of
+ * the DB name in outgoing UDP packets. If this is set to false, the DB name
+ * will be used.
+ */
+$wgAggregateStatsID = false;
 
 /** Whereas to count the number of time an article is viewed.
  * Does not work if pages are cached (for example with squid).
@@ -4799,11 +4849,6 @@ $wgLogActionsHandlers = array();
  * Maintain a log of newusers at Log/newusers?
  */
 $wgNewUserLog = true;
-
-/**
- * Log the automatic creations of new users accounts?
- */
-$wgLogAutocreatedAccounts = false;
 
 /** @} */ # end logging }
 

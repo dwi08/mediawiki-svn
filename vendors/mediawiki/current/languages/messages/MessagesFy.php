@@ -1018,9 +1018,9 @@ Jo kinne ek in nammerûmte as foarheaksel brûke.",
 'prefs-rc'                  => 'Koartlyn feroare',
 'prefs-watchlist'           => 'Folchlist',
 'prefs-watchlist-days'      => 'Oantal dagen yn folchlist sjen litte:',
-'prefs-watchlist-days-max'  => 'Maksimaal 7 dagen',
+'prefs-watchlist-days-max'  => '(maksimaal 7 dagen)',
 'prefs-watchlist-edits'     => 'Tal wizigings om sjen te litten yn de útwreide folchlist:',
-'prefs-watchlist-edits-max' => 'Maksimum oantal: 1000',
+'prefs-watchlist-edits-max' => '(maksimum oantal: 1000)',
 'prefs-misc'                => 'Ferskaat',
 'prefs-resetpass'           => 'Wachtwurd feroarje',
 'saveprefs'                 => 'Ynstellings fêstlizze',
@@ -1350,7 +1350,7 @@ Bied jo triem ûnder in oare namme oan.
 As jo de triem dochs noch oanbiede wolle, gean dan werom en kies in oare namme.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Dizze triem is idintyk oan {{PLURAL:$1|de folgjende triem|de folgjende triemmen}}:',
-'file-deleted-duplicate'      => "In bestân idintyk oan dit bestân ([[:$1]]) is foarhinne fuorthelle.
+'file-deleted-duplicate'      => "In bestân idintyk oan dit bestân ([[$1]]) is foarhinne fuorthelle.
 Rieplachtsje it fuorthel-logboek foar't jo fierder geane.",
 'uploadwarning'               => 'Oanbied-warskôging',
 'savefile'                    => 'Lis triem fêst',
@@ -1784,11 +1784,11 @@ Fierdere meldings wurde jo net tastjoerd, oant jo de side lêzen hawwe. Op jo fo
                  Jo freonlike {{SITENAME}}-meldingssysteem.
 
 --
-Gean nei {{fullurl:{{#special:Watchlist}}/edit}}
+Gean nei {{canonicalurl:{{#special:Watchlist}}/edit}}
 om jo folchlistynstellings te feroarjen.
 
 Reaksjes en fierdere help:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'            => 'Wisk side',

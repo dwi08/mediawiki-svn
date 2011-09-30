@@ -96,7 +96,7 @@ class ApiQueryIWLinks extends ApiQueryBase {
 			if ( !is_null( $params['url'] ) ) {
 				$title = Title::newFromText( "{$row->iwl_prefix}:{$row->iwl_title}" );
 				if ( $title ) {
-					$entry['url'] = $title->getFullURL();
+					$entry['url'] = wfExpandUrl( $title->getFullURL(), PROTO_CURRENT );
 				}
 			}
 
@@ -153,6 +153,6 @@ class ApiQueryIWLinks extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryIWLinks.php 77080 2010-11-21 17:27:13Z reedy $';
+		return __CLASS__ . ': $Id: ApiQueryIWLinks.php 95505 2011-08-25 19:32:37Z catrope $';
 	}
 }

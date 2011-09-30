@@ -462,7 +462,7 @@ U to indirizzu IP serà registratu indu a cronolugia di ista pagina.",
 'tooltip-ca-nstab-user'  => 'Vede a pagina di utilizatore',
 
 # Attribution
-'anonymous' => '{{PLURAL:$1|Utilizatore anonimu|Utilizatori anonimi}} di {{SITENAME}}',
+'anonymous' => 'Utilizatore(/i) anonimu(/i) di {{SITENAME}}',
 'others'    => 'altri',
 
 # Math errors

@@ -148,7 +148,7 @@ class LoginForm {
 		global $wgOut;
 
 		if ( $this->mEmail == '' ) {
-			$this->mainLoginForm( wfMsgExt( 'noemailcreate', array( 'parsemag', 'escape' ) ) );
+			$this->mainLoginForm( wfMsgExt( 'noemail', array( 'parsemag', 'escape' ), $this->mName ) );
 			return;
 		}
 
@@ -431,7 +431,7 @@ class LoginForm {
 	 * creation.
 	 */
 	public function authenticateUserData() {
-		global $wgUser, $wgAuth, $wgMemc;
+		global $wgUser, $wgAuth;
 
 		if ( $this->mName == '' ) {
 			return self::NO_NAME;
@@ -452,22 +452,9 @@ class LoginForm {
 			return self::NEED_TOKEN;
 		}
 
-		global $wgPasswordAttemptThrottle;
-
-		$throttleCount = 0;
-		if ( is_array( $wgPasswordAttemptThrottle ) ) {
-			$throttleKey = wfMemcKey( 'password-throttle', wfGetIP(), md5( $this->mName ) );
-			$count = $wgPasswordAttemptThrottle['count'];
-			$period = $wgPasswordAttemptThrottle['seconds'];
-
-			$throttleCount = $wgMemc->get( $throttleKey );
-			if ( !$throttleCount ) {
-				$wgMemc->add( $throttleKey, 1, $period ); // start counter
-			} elseif ( $throttleCount < $count ) {
-				$wgMemc->incr( $throttleKey );
-			} elseif ( $throttleCount >= $count ) {
-				return self::THROTTLED;
-			}
+		$throttleCount = self::incLoginThrottle( $this->mName );
+		if ( $throttleCount === true ) {
+			return self::THROTTLED;
 		}
 
 		// Validate the login token
@@ -561,8 +548,8 @@ class LoginForm {
 			$wgUser = $u;
 
 			// Please reset throttle for successful logins, thanks!
-			if( $throttleCount ) {
-				$wgMemc->delete( $throttleKey );
+			if ( $throttleCount ) {
+				self::clearLoginThrottle( $this->mName );
 			}
 
 			if ( $isAutoCreated ) {
@@ -574,6 +561,48 @@ class LoginForm {
 		}
 		wfRunHooks( 'LoginAuthenticateAudit', array( $u, $this->mPassword, $retval ) );
 		return $retval;
+	}
+
+	/*
+	 * Increment the login attempt throttle hit count for the (username,current IP)
+	 * tuple unless the throttle was already reached.
+	 * @param $username string The user name
+	 * @return Bool|Integer The integer hit count or True if it is already at the limit
+	 */
+	public static function incLoginThrottle( $username ) {
+		global $wgPasswordAttemptThrottle, $wgMemc;
+		$username = trim( $username ); // sanity
+
+		$throttleCount = 0;
+		if ( is_array( $wgPasswordAttemptThrottle ) ) {
+			$throttleKey = wfMemcKey( 'password-throttle', wfGetIP(), md5( $username ) );
+			$count = $wgPasswordAttemptThrottle['count'];
+			$period = $wgPasswordAttemptThrottle['seconds'];
+
+			$throttleCount = $wgMemc->get( $throttleKey );
+			if ( !$throttleCount ) {
+				$wgMemc->add( $throttleKey, 1, $period ); // start counter
+			} elseif ( $throttleCount < $count ) {
+				$wgMemc->incr( $throttleKey );
+			} elseif ( $throttleCount >= $count ) {
+				return true;
+			}
+		}
+
+		return $throttleCount;
+	}
+
+	/*
+	 * Clear the login attempt throttle hit count for the (username,current IP) tuple.
+	 * @param $username string The user name
+	 * @return void
+	 */
+	public static function clearLoginThrottle( $username ) {
+		global $wgMemc;
+		$username = trim( $username ); // sanity
+
+		$throttleKey = wfMemcKey( 'password-throttle', wfGetIP(), md5( $username ) );
+		$wgMemc->delete( $throttleKey );
 	}
 
 	/**
@@ -872,9 +901,13 @@ class LoginForm {
 		global $wgUser;
 		# Run any hooks; display injected HTML
 		$injected_html = '';
+		$welcome_creation_msg = 'welcomecreation';
 		wfRunHooks( 'UserLoginComplete', array( &$wgUser, &$injected_html ) );
 
-		$this->displaySuccessfulLogin( 'welcomecreation', $injected_html );
+		//let any extensions change what message is shown
+ 		wfRunHooks( 'BeforeWelcomeCreation', array( &$welcome_creation_msg, &$injected_html ) );
+
+		$this->displaySuccessfulLogin( $welcome_creation_msg, $injected_html );
 	}
 
 	/**
@@ -886,7 +919,9 @@ class LoginForm {
 		$wgOut->setPageTitle( wfMsg( 'loginsuccesstitle' ) );
 		$wgOut->setRobotPolicy( 'noindex,nofollow' );
 		$wgOut->setArticleRelated( false );
-		$wgOut->addWikiMsg( $msgname, $wgUser->getName() );
+		if( $msgname ){
+			$wgOut->addWikiMsg( $msgname, $wgUser->getName() );
+		}
 		$wgOut->addHTML( $injected_html );
 
 		if ( !empty( $this->mReturnTo ) ) {

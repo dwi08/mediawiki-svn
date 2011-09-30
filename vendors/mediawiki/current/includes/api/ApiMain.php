@@ -381,15 +381,19 @@ class ApiMain extends ApiBase {
 	}
 
 	protected function sendCacheHeaders() {
+		global $wgUseXVO, $wgOut, $wgVaryOnXFPForAPI;
 		if ( $this->mCacheMode == 'private' ) {
 			header( 'Cache-Control: private' );
 			return;
 		}
 
 		if ( $this->mCacheMode == 'anon-public-user-private' ) {
-			global $wgUseXVO, $wgOut;
-			header( 'Vary: Accept-Encoding, Cookie' );
+			$xfp = $wgVaryOnXFPForAPI ? ', X-Forwarded-Proto' : '';
+			header( 'Vary: Accept-Encoding, Cookie' . $xfp );
 			if ( $wgUseXVO ) {
+				if ( $wgVaryOnXFPForAPI ) {
+					$wgOut->addVaryHeader( 'X-Forwarded-Proto' );
+				}
 				header( $wgOut->getXVO() );
 				if ( $wgOut->haveCacheVaryCookies() ) {
 					// Logged in, mark this request private
@@ -403,6 +407,15 @@ class ApiMain extends ApiBase {
 				header( 'Cache-Control: private' );
 				return;
 			} // else no XVO and anonymous, send public headers below
+		}
+		
+		// Send public headers
+		if ( $wgVaryOnXFPForAPI ) {
+			header( 'Vary: Accept-Encoding, X-Forwarded-Proto' );
+			if ( $wgUseXVO ) {
+				// Bleeeeegh. Our header setting system sucks
+				header( 'X-Vary-Options: Accept-Encoding;list-contains=gzip, X-Forwarded-Proto' );
+			}
 		}
 
 		// If nobody called setCacheMaxAge(), use the (s)maxage parameters
@@ -934,7 +947,7 @@ class ApiMain extends ApiBase {
 	public function getVersion() {
 		$vers = array ();
 		$vers[] = 'MediaWiki: ' . SpecialVersion::getVersion() . "\n    http://svn.wikimedia.org/viewvc/mediawiki/trunk/phase3/";
-		$vers[] = __CLASS__ . ': $Id: ApiMain.php 76196 2010-11-06 16:11:19Z reedy $';
+		$vers[] = __CLASS__ . ': $Id: ApiMain.php 93890 2011-08-04 15:02:26Z catrope $';
 		$vers[] = ApiBase::getBaseVersion();
 		$vers[] = ApiFormatBase::getBaseVersion();
 		$vers[] = ApiQueryBase::getBaseVersion();

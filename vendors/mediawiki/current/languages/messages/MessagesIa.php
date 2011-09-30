@@ -430,7 +430,7 @@ $1',
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => 'Pagina',
 'nstab-user'      => 'Pagina de usator',
-'nstab-media'     => 'Pagina multimedia',
+'nstab-media'     => 'Pagina de media',
 'nstab-special'   => 'Pagina special',
 'nstab-project'   => 'Pagina de projecto',
 'nstab-image'     => 'File',
@@ -918,7 +918,7 @@ Es possibile que illo esseva delite del wiki, o renominate.
 Prova [[Special:Search|cercar nove paginas relevante]] in le wiki.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(summario del modification removite)',
+'rev-deleted-comment'         => '(commento removite)',
 'rev-deleted-user'            => '(nomine de usator eliminate)',
 'rev-deleted-event'           => '(entrata eliminate)',
 'rev-deleted-user-contribs'   => '[nomine de usator o adresse IP removite - modification celate ab contributiones]',
@@ -1131,7 +1131,7 @@ Tenta prefixar tu consulta con ''all:'' pro cercar in tote le contento (includen
 'powersearch-redir'                => 'Listar redirectiones',
 'powersearch-field'                => 'Cercar',
 'powersearch-togglelabel'          => 'Seliger:',
-'powersearch-toggleall'            => 'Totes',
+'powersearch-toggleall'            => 'Toto',
 'powersearch-togglenone'           => 'Nihil',
 'search-external'                  => 'Recerca externe',
 'searchdisabled'                   => 'Le recerca in {{SITENAME}} es disactivate.
@@ -1162,9 +1162,9 @@ Nota que lor indices del contento de {{SITENAME}} pote esser obsolete.',
 'prefs-rc'                      => 'Modificationes recente',
 'prefs-watchlist'               => 'Observatorio',
 'prefs-watchlist-days'          => 'Numero de dies a monstrar in le observatorio:',
-'prefs-watchlist-days-max'      => 'Maximo 7 dies',
+'prefs-watchlist-days-max'      => '(non plus de 7 dies)',
 'prefs-watchlist-edits'         => 'Numero maxime de modificationes a monstrar in le observatorio expandite:',
-'prefs-watchlist-edits-max'     => 'Numero maxime: 1000',
+'prefs-watchlist-edits-max'     => '(numero maxime: 1000)',
 'prefs-watchlist-token'         => 'Indicio pro le observatorio:',
 'prefs-misc'                    => 'Misc',
 'prefs-resetpass'               => 'Cambiar contrasigno',
@@ -1370,6 +1370,7 @@ Si tu opta pro dar lo, isto essera usate pro dar te attribution pro tu contribut
 'right-reset-passwords'       => 'Redefinir le contrasigno de altere usatores',
 'right-override-export-depth' => 'Exportar paginas includente paginas ligate usque a un profunditate de 5',
 'right-sendemail'             => 'Inviar e-mail a altere usatores',
+'right-disableaccount'        => 'Disactivar contos',
 
 # User rights log
 'rightslog'      => 'Registro de derectos de usator',
@@ -1545,7 +1546,7 @@ Si tu vole ancora incargar iste file, per favor retorna e usa un nove nomine. [[
 'fileexists-shared-forbidden' => 'Un file con iste nomine existe ja in le deposito de files commun.
 Si tu vole totevia incargar iste file, per favor retorna e usa un nove nomine. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Iste file es un duplicato del sequente {{PLURAL:$1|file|files}}:',
-'file-deleted-duplicate'      => 'Un file identic a iste file ([[:$1]]) esseva ja delite anteriormente. Tu deberea verificar le registro de deletiones concernente iste file ante de re-incargar lo.',
+'file-deleted-duplicate'      => 'Un file identic a iste file ([[$1]]) esseva ja delite anteriormente. Tu deberea verificar le registro de deletiones concernente iste file ante de re-incargar lo.',
 'uploadwarning'               => 'Advertimento de incargamento',
 'uploadwarning-text'          => 'Per favor modifica le description del file ci infra e reproba.',
 'savefile'                    => 'Salveguardar file',
@@ -1611,23 +1612,22 @@ Si le problema persiste, contacta un [[Special:ListUsers/sysop|administrator]].'
 'upload-http-error'         => 'Un error HTTP occurreva: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Accesso refusate',
-'img-auth-nopathinfo'       => 'PATH_INFO mancante.
+'img-auth-accessdenied' => 'Accesso refusate',
+'img-auth-nopathinfo'   => 'PATH_INFO mancante.
 Le servitor non ha essite configurate pro passar iste information.
 Illo pote esser basate super CGI e non pote supportar img_auth.
 Vide http://www.mediawiki.org/wiki/Manual:Image_Authorization .',
-'img-auth-notindir'         => 'Le cammino requestate non es in le directorio de incargamentos configurate.',
-'img-auth-badtitle'         => 'Impossibile construer un titulo valide ex "$1".',
-'img-auth-nologinnWL'       => 'Tu non ha aperite un session e "$1" non es in le lista blanc.',
-'img-auth-nofile'           => 'File "$1" non existe.',
-'img-auth-isdir'            => 'Tu tenta acceder a un directorio "$1".
+'img-auth-notindir'     => 'Le cammino requestate non es in le directorio de incargamentos configurate.',
+'img-auth-badtitle'     => 'Impossibile construer un titulo valide ex "$1".',
+'img-auth-nologinnWL'   => 'Tu non ha aperite un session e "$1" non es in le lista blanc.',
+'img-auth-nofile'       => 'File "$1" non existe.',
+'img-auth-isdir'        => 'Tu tenta acceder a un directorio "$1".
 Solmente le accesso a files es permittite.',
-'img-auth-streaming'        => 'Fluxo de "$1" comenciate.',
-'img-auth-public'           => 'Le function de img_auth.php es de reproducer files ex un wiki private.
+'img-auth-streaming'    => 'Fluxo de "$1" comenciate.',
+'img-auth-public'       => 'Le function de img_auth.php es de reproducer files ex un wiki private.
 Iste wiki es configurate como un wiki public.
 Pro securitate optimal, img_auth.php es disactivate.',
-'img-auth-noread'           => 'Le usator non ha accesso pro leger "$1".',
-'img-auth-bad-query-string' => 'Le URL include un consulta con formato invalide.',
+'img-auth-noread'       => 'Le usator non ha accesso pro leger "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'URL invalide: $1',
@@ -1684,7 +1684,7 @@ Tu pote reordinar le lista con un clic super le titulo de un columna.',
 'filehist-nothumb'          => 'Nulle miniatura',
 'filehist-user'             => 'Usator',
 'filehist-dimensions'       => 'Dimensiones',
-'filehist-filesize'         => 'Dimension del file',
+'filehist-filesize'         => 'Grandor del file',
 'filehist-comment'          => 'Commento',
 'filehist-missing'          => 'File mancante',
 'imagelinks'                => 'Ligamines verso iste file',
@@ -1931,7 +1931,7 @@ Vide etiam le [[Special:WantedCategories|categorias desirate]].',
 'linksearch-text'  => 'Es possibile usar metacharacteres como in "*.wikipedia.org".<br />
 Protocollos supportate: <tt>$1</tt>',
 'linksearch-line'  => '$1 ligate ab $2',
-'linksearch-error' => 'Le metacharacteres pote apparer solmente al initio del nomine de host.',
+'linksearch-error' => 'Le metacharacteres pote apparer solmente al initio del nomine del hospite.',
 
 # Special:ListUsers
 'listusersfrom'      => 'Monstrar usatores a partir de:',
@@ -2065,7 +2065,7 @@ $NEWPAGE
 
 Summario del redactor: $PAGESUMMARY $PAGEMINOREDIT
 
-Pro contactar le redactor:
+Contactar le redactor:
 e-mail: $PAGEEDITOR_EMAIL
 wiki: $PAGEEDITOR_WIKI
 
@@ -2074,18 +2074,15 @@ Como alternativa tu pote reinitialisar le optiones de notification pro tote le p
 
              Le systema de notification de {{SITENAME}}, a tu servicio
 
--- 
-Pro configurar le notification per e-mail, visita
-{{fullurl:{{#special:Preferences}}}}
-
-Pro configurar le observatorio, visita
-{{fullurl:{{#special:Watchlist}}/edit}}
+--
+Pro cambiar le configuration de tu observatorio, visita
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Pro retirar le pagina de tu observatorio, visita
 $UNWATCHURL
 
 Feedback e ulterior assistentia:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Deler pagina',
@@ -2368,7 +2365,7 @@ a un adresse IP blocate previemente.',
 'ipusubmit'                       => 'Cancellar iste blocada',
 'unblocked'                       => '[[User:$1|$1]] ha essite disblocate',
 'unblocked-id'                    => 'Le blocada $1 ha essite eliminate',
-'ipblocklist'                     => 'Usatores blocate',
+'ipblocklist'                     => 'Adresses IP e nomines de usator blocate',
 'ipblocklist-legend'              => 'Cercar un usator blocate',
 'ipblocklist-username'            => 'Nomine de usator o adresse IP:',
 'ipblocklist-sh-userblocks'       => '$1 blocadas de contos',
@@ -2851,7 +2848,7 @@ $1',
 'mediawarning'         => "'''Attention''': Iste typo de file pote continer codice maligne.
 Le execution de illo pote compromitter le securitate de tu systema.",
 'imagemaxsize'         => "Dimension maxime de imagines:<br />''(pro paginas de description de files)''",
-'thumbsize'            => 'Dimension del miniaturas:',
+'thumbsize'            => 'Grandor del miniaturas:',
 'widthheightpage'      => '$1×$2, $3 {{PLURAL:$3|pagina|paginas}}',
 'file-info'            => 'grandor del file: $1, typo MIME: $2',
 'file-info-size'       => '$1 × $2 pixel, grandor del file: $3, typo MIME: $4',
@@ -2936,8 +2933,8 @@ Le alteres essera initialmente celate.
 'exif-colorspace'                  => 'Spatio de colores',
 'exif-componentsconfiguration'     => 'Significato de cata componente',
 'exif-compressedbitsperpixel'      => 'Modo de compression del imagine',
-'exif-pixelydimension'             => 'Latitude del imagine',
-'exif-pixelxdimension'             => 'Altitude del imagine',
+'exif-pixelydimension'             => 'Latitude valide del imagine',
+'exif-pixelxdimension'             => 'Altitude valide del imagine',
 'exif-makernote'                   => 'Notas del fabricante',
 'exif-usercomment'                 => 'Commentos del usator',
 'exif-relatedsoundfile'            => 'File audio connexe',
@@ -2953,9 +2950,9 @@ Le alteres essera initialmente celate.
 'exif-spectralsensitivity'         => 'Sensibilitate spectral',
 'exif-isospeedratings'             => 'Classification de velocitate ISO',
 'exif-oecf'                        => 'Factor de conversion optoelectronic',
-'exif-shutterspeedvalue'           => 'Velocitate del obturator in unitates APEX',
-'exif-aperturevalue'               => 'Latitude del apertura in unitates APEX',
-'exif-brightnessvalue'             => 'Luminositate in unitates APEX',
+'exif-shutterspeedvalue'           => 'Velocitate del obturator',
+'exif-aperturevalue'               => 'Apertura',
+'exif-brightnessvalue'             => 'Luminositate',
 'exif-exposurebiasvalue'           => 'Correction de exposition',
 'exif-maxaperturevalue'            => 'Apertura maxime pro terra',
 'exif-subjectdistance'             => 'Distantia del subjecto',
@@ -3019,7 +3016,6 @@ Le alteres essera initialmente celate.
 'exif-gpsareainformation'          => 'Nomine de area GPS',
 'exif-gpsdatestamp'                => 'Data GPS',
 'exif-gpsdifferential'             => 'Correction differential GPS',
-'exif-objectname'                  => 'Titulo curte',
 
 # EXIF attributes
 'exif-compression-1' => 'Non comprimite',
@@ -3100,8 +3096,6 @@ Le alteres essera initialmente celate.
 'exif-sensingmethod-5' => 'Sensor de area sequential de colores',
 'exif-sensingmethod-7' => 'Sensor trilinear',
 'exif-sensingmethod-8' => 'Sensor de color linear sequential',
-
-'exif-filesource-3' => 'Camera photographic digital',
 
 'exif-scenetype-1' => 'Un imagine directemente photographiate',
 
@@ -3465,5 +3459,18 @@ Entra le nomine del file sin le prefixo \"{{ns:file}}:\".",
 # SQLite database support
 'sqlite-has-fts' => '$1 con supporto de recerca de texto integre',
 'sqlite-no-fts'  => '$1 sin supporto de recerca de texto integre',
+
+# Special:DisableAccount
+'disableaccount'             => 'Disactivar un conto de usator',
+'disableaccount-user'        => 'Nomine de usator:',
+'disableaccount-reason'      => 'Motivo:',
+'disableaccount-confirm'     => "Disactivar iste conto de usator.
+Le usator non potera aperir session, ni reinitialisar su contrasigno, ni reciper notificationes per e-mail.
+Si le usator es actualmente authenticate alicubi, su session essera immediatemente claudite.
+''Nota que le disactivation de un conto de usator non es reversibile sin intervention de un administrator del systema.''",
+'disableaccount-mustconfirm' => 'Tu debe confirmar que tu vole disactivar iste conto.',
+'disableaccount-nosuchuser'  => 'Le conto de usator "$1" non existe.',
+'disableaccount-success'     => 'Le conto de usator "$1" ha essite disactivate permanentemente.',
+'disableaccount-logentry'    => 'disactivava permanentemente le conto de usator [[$1]]',
 
 );

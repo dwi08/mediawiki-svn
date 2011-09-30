@@ -992,9 +992,9 @@ Kontrololös, va votükam at okipon fovöfi padajenotema.',
 'prefs-rc'                  => 'Votükams nulik',
 'prefs-watchlist'           => 'Galädalised',
 'prefs-watchlist-days'      => 'Num delas ad pajonön in galädalised:',
-'prefs-watchlist-days-max'  => 'Maxum: dels 7',
+'prefs-watchlist-days-max'  => '(maxum: dels 7)',
 'prefs-watchlist-edits'     => 'Num redakamas ad pajonön in galädalised pestäänüköl:',
-'prefs-watchlist-edits-max' => 'Maxumanum: 1000',
+'prefs-watchlist-edits-max' => '(maxumanum: 1000)',
 'prefs-misc'                => 'Votikos',
 'prefs-resetpass'           => 'Votükön letavödi',
 'prefs-rendering'           => 'Selogam',
@@ -1313,7 +1313,7 @@ If ragiv ya dabinöli binon magod ot gretota rigik, no zesüdos ad löpükön ma
 If nog vilol lopükön ragivi olik, geikolös e gebolös nemi votik. [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Ragiv labü nem at ya dabinon in ragivastok kobädik. If nog vilol löpükön ragivi olik, geikolös e löpükolös ragivi at me nem votik. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ragiv at leigon ko {{PLURAL:$1|ragiv|ragivs}} fovik:',
-'file-deleted-duplicate'      => 'Ragiv votik, kel leigon ko ragiv at ([[:$1]]), pemoükon büo. Sötol kontrolön moükamajenotemi ragiva et büä odönulöpükol oni.',
+'file-deleted-duplicate'      => 'Ragiv votik, kel leigon ko ragiv at ([[$1]]), pemoükon büo. Sötol kontrolön moükamajenotemi ragiva et büä odönulöpükol oni.',
 'uploadwarning'               => 'Löpükamanuned',
 'savefile'                    => 'Dakipolöd ragivi',
 'uploadedimage'               => '"[[$1]]" pelöpüköl',
@@ -1742,10 +1742,10 @@ Kanol i geükön nunamastänis padas valik galädaliseda olik.
 
 --
 Ad votükön parametami galädaliseda olik, loglös
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Küpets e yuf pluik:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Moükolöd padi',
@@ -2870,5 +2870,10 @@ Penolös ragivanemi nen foyümot: „{{ns:file}}:“.',
 'htmlform-submit'              => 'Sedön',
 'htmlform-reset'               => 'Sädunön votükamis',
 'htmlform-selectorother-other' => 'Votik',
+
+# Special:DisableAccount
+'disableaccount-user'       => 'Gebananem:',
+'disableaccount-reason'     => 'Kod:',
+'disableaccount-nosuchuser' => 'Gebanakal: "$1" no dabinon.',
 
 );

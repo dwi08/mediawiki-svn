@@ -83,7 +83,7 @@ abstract class ResourceLoaderModule {
 	 */
 	public function getStyles( ResourceLoaderContext $context ) {
 		// Stub, override expected
-		return '';
+		return array();
 	}
 
 	/**
@@ -106,6 +106,15 @@ abstract class ResourceLoaderModule {
 	public function getGroup() {
 		// Stub, override expected
 		return null;
+	}
+	
+	/**
+	 * Where on the HTML page should this module's JS be loaded?
+	 * 'top': in the <head>
+	 * 'bottom': at the bottom of the <body>
+	 */
+	public function getPosition() {
+		return 'bottom';
 	}
 
 	/**
@@ -179,7 +188,7 @@ abstract class ResourceLoaderModule {
 	 * Get the last modification timestamp of the message blob for this
 	 * module in a given language.
 	 * @param $lang String: Language code
-	 * @return Integer: UNIX timestamp, or 0 if no blob found
+	 * @return Integer: UNIX timestamp, or 0 if the module doesn't have messages
 	 */
 	public function getMsgBlobMtime( $lang ) {
 		if ( !isset( $this->msgBlobMtime[$lang] ) ) {
@@ -192,7 +201,12 @@ abstract class ResourceLoaderModule {
 					'mr_lang' => $lang
 				), __METHOD__
 			);
-			$this->msgBlobMtime[$lang] = $msgBlobMtime ? wfTimestamp( TS_UNIX, $msgBlobMtime ) : 0;
+			// If no blob was found, but the module does have messages, that means we need
+			// to regenerate it. Return NOW
+			if ( $msgBlobMtime === false ) {
+				$msgBlobMtime = wfTimestampNow();
+			}
+			$this->msgBlobMtime[$lang] = wfTimestamp( TS_UNIX, $msgBlobMtime );
 		}
 		return $this->msgBlobMtime[$lang];
 	}

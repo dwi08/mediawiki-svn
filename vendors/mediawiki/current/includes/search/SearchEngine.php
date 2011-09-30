@@ -434,13 +434,13 @@ class SearchEngine {
 	 * @return String
 	 */
 	public static function getOpenSearchTemplate() {
-		global $wgOpenSearchTemplate, $wgServer;
+		global $wgOpenSearchTemplate, $wgCanonicalServer, $wgScriptPath;
 		if ( $wgOpenSearchTemplate )	{
 			return $wgOpenSearchTemplate;
 		} else {
 			$ns = implode( '|', SearchEngine::defaultNamespaces() );
 			if ( !$ns ) $ns = "0";
-			return $wgServer . wfScript( 'api' ) . '?action=opensearch&search={searchTerms}&namespace=' . $ns;
+			return $wgCanonicalServer . $wgScriptPath . '/api.php?action=opensearch&search={searchTerms}&namespace=' . $ns;
 		}
 	}
 
@@ -450,11 +450,11 @@ class SearchEngine {
 	 * @return String
 	 */
 	public static function getMWSuggestTemplate() {
-		global $wgMWSuggestTemplate, $wgServer;
+		global $wgMWSuggestTemplate, $wgServer, $wgScriptPath;
 		if ( $wgMWSuggestTemplate )
 			return $wgMWSuggestTemplate;
 		else
-			return $wgServer . wfScript( 'api' ) . '?action=opensearch&search={searchTerms}&namespace={namespaces}&suggest';
+			return $wgServer . $wgScriptPath . '/api.php?action=opensearch&search={searchTerms}&namespace={namespaces}&suggest';
 	}
 }
 

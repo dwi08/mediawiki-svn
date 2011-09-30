@@ -14,7 +14,7 @@ class Http {
 	 * Perform an HTTP request
 	 *
 	 * @param $method String: HTTP method. Usually GET/POST
-	 * @param $url String: full URL to act on
+	 * @param $url String: full URL to act on. If protocol-relative, will be expanded to an http:// URL
 	 * @param $options Array: options to pass to MWHttpRequest object.
 	 *	Possible keys for the array:
 	 *    - timeout             Timeout length in seconds
@@ -32,7 +32,6 @@ class Http {
 	 * @return Mixed: (bool)false on failure or a string on success
 	 */
 	public static function request( $method, $url, $options = array() ) {
-		$url = wfExpandUrl( $url );
 		wfDebug( "HTTP: $method: $url\n" );
 		$options['method'] = strtoupper( $method );
 
@@ -116,19 +115,16 @@ class Http {
 	}
 
 	/**
-	 * Checks that the given URI is a valid one. Hardcoding the
-	 * protocols, because we only want protocols that both cURL
-	 * and php support.
-	 *
-	 * @fixme this is wildly inaccurate and fails to actually check most stuff
+	 * Checks that the given URI is a valid one
 	 *
 	 * @param $uri Mixed: URI to check for validity
 	 * @returns Boolean
 	 */
 	public static function isValidURI( $uri ) {
 		return preg_match(
-			'/^https?:\/\/[^\/\s]\S*$/D',
-			$uri
+			'/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/',
+			$uri,
+			$matches
 		);
 	}
 }
@@ -168,14 +164,14 @@ class MWHttpRequest {
 	public $status;
 
 	/**
-	 * @param $url String: url to use
+	 * @param $url String: url to use. If protocol-relative, will be expanded to an http:// URL
 	 * @param $options Array: (optional) extra params to pass (see Http::request())
 	 */
 	function __construct( $url, $options = array() ) {
 		global $wgHTTPTimeout;
 
-		$this->url = $url;
-		$this->parsedUrl = parse_url( $url );
+		$this->url = wfExpandUrl( $url, PROTO_HTTP );
+		$this->parsedUrl = parse_url( $this->url );
 
 		if ( !Http::isValidURI( $this->url ) ) {
 			$this->status = Status::newFatal( 'http-invalid-url' );
@@ -364,7 +360,7 @@ class MWHttpRequest {
 		}
 
 		if ( is_object( $wgTitle ) && !isset( $this->reqHeaders['Referer'] ) ) {
-			$this->setReferer( $wgTitle->getFullURL() );
+			$this->setReferer( wfExpandUrl( $wgTitle->getFullURL(), PROTO_CURRENT ) );
 		}
 
 		if ( !$this->noProxy ) {
@@ -942,8 +938,7 @@ class PhpHttpRequest extends MWHttpRequest {
 		// causes a segfault
 		$manuallyRedirect = version_compare( phpversion(), '5.1.7', '<' );
 
-		if ( $this->parsedUrl['scheme'] != 'http' &&
-			 $this->parsedUrl['scheme'] != 'https' ) {
+		if ( $this->parsedUrl['scheme'] != 'http' ) {
 			$this->status->fatal( 'http-invalid-scheme', $this->parsedUrl['scheme'] );
 		}
 

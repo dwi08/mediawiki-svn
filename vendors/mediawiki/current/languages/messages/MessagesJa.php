@@ -1128,7 +1128,7 @@ $3による理由は以下の通りです：''$2''",
 [[Special:Search|このウィキの検索]]で関連する新しいページを探してみてください。',
 
 # Revision deletion
-'rev-deleted-comment'         => '(要約は除去されています)',
+'rev-deleted-comment'         => '（要約は除去されています）',
 'rev-deleted-user'            => '（利用者名は除去されています）',
 'rev-deleted-event'           => '（記録は除去されています）',
 'rev-deleted-user-contribs'   => '[利用者名またはIPアドレスは除去されました - その編集は投稿の中から隠されています]',
@@ -1174,7 +1174,7 @@ $3による理由は以下の通りです：''$2''",
 'revdelete-text'              => "'''削除された版や記録はページの履歴や記録に表示され続けますが、一般の利用者はその内容にアクセスできなくなります。'''
 追加の制限がかけられない限り、{{SITENAME}}の他の管理者もこれと同じインターフェースを使って隠された内容にアクセスしたり、復元したりできます。",
 'revdelete-confirm'           => 'この操作を意図して行っていること、その結果を理解していること、[[{{MediaWiki:Policy-url}}|方針]]に沿って行っていることを確認してください。',
-'revdelete-suppress-text'     => "秘匿は、'''以下の場合に限って'''使用すべきです：
+'revdelete-suppress-text'     => "隠蔽は、'''以下の場合に限って'''使用すべきです：
 * 名誉毀損の恐れのある記述
 * 非公開個人情報
 *: ''自宅の住所や電話番号、社会保障番号など''",
@@ -1184,7 +1184,7 @@ $3による理由は以下の通りです：''$2''",
 'revdelete-hide-name'         => '操作および対象を隠す',
 'revdelete-hide-comment'      => '編集の要約を隠す',
 'revdelete-hide-user'         => '投稿者の利用者名またはIPを隠す',
-'revdelete-hide-restricted'   => '他の利用者と同様に管理者からもデータを隠す',
+'revdelete-hide-restricted'   => '他の利用者と同様に管理者からもデータを隠蔽する',
 'revdelete-radio-same'        => '（変更なし）',
 'revdelete-radio-set'         => 'はい',
 'revdelete-radio-unset'       => 'いいえ',
@@ -1208,7 +1208,7 @@ $1",
 'revdelete-content'           => '本文',
 'revdelete-summary'           => '編集内容の要約',
 'revdelete-uname'             => '利用者名',
-'revdelete-restricted'        => '管理者に対する制限を適用',
+'revdelete-restricted'        => '管理者に対する制限を適用しました',
 'revdelete-unrestricted'      => '管理者に対する制限を除去しました',
 'revdelete-hid'               => '$1を隠しました',
 'revdelete-unhid'             => '$1の版指定削除を解除しました',
@@ -1374,7 +1374,7 @@ $1",
 'prefs-watchlist-days'          => 'ウォッチリストに表示する日数：',
 'prefs-watchlist-days-max'      => '（最大7日間）',
 'prefs-watchlist-edits'         => '拡張ウォッチリストに表示する件数：',
-'prefs-watchlist-edits-max'     => '最大数：1000',
+'prefs-watchlist-edits-max'     => '（最大数：1000）',
 'prefs-watchlist-token'         => 'ウォッチリストのトークン：',
 'prefs-misc'                    => 'その他',
 'prefs-resetpass'               => 'パスワードの変更',
@@ -1582,6 +1582,7 @@ HTMLタグを見直してください。',
 'right-reset-passwords'       => '他の利用者のパスワードを再設定する',
 'right-override-export-depth' => 'リンク先ページを5階層まで含めて書き出す',
 'right-sendemail'             => '他の利用者へ電子メールを送る',
+'right-disableaccount'        => 'アカウントを無効化',
 
 # User rights log
 'rightslog'      => '利用者権限変更記録',
@@ -1629,7 +1630,7 @@ HTMLタグを見直してください。',
 'nchanges'                          => '$1回の変更',
 'recentchanges'                     => '最近の更新',
 'recentchanges-legend'              => '最近の更新のオプション',
-'recentchangestext'                 => '最近の更新はこのページから確認できます。',
+'recentchangestext'                 => 'このページでそのウィキへの最近の更新を追跡。',
 'recentchanges-feed-description'    => 'このフィードでそのウィキへの最近の更新を追跡。',
 'recentchanges-label-newpage'       => 'この編集で新しいページが作成されました',
 'recentchanges-label-minor'         => 'これは細部の編集です',
@@ -1760,7 +1761,7 @@ HTMLタグを見直してください。',
 アップロードを継続したい場合は、前のページに戻り、別のファイル名を使用してください。
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'このファイルは以下の{{PLURAL:$1|ファイル}}と重複しています：',
-'file-deleted-duplicate'      => 'このファイル（[[:$1]]）と同一のファイルが以前に削除されています。
+'file-deleted-duplicate'      => 'このファイル（[[$1]]）と同一のファイルが以前に削除されています。
 再度アップロードをする前に、以前削除されたファイルの削除記録を確認してください。',
 'uploadwarning'               => 'アップロード警告',
 'uploadwarning-text'          => '下記のファイル解説を修正して再試行してください。',
@@ -1829,23 +1830,22 @@ $1',
 'upload-http-error'         => 'HTTPエラー発生：$1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'アクセスが拒否されました',
-'img-auth-nopathinfo'       => 'PATH_INFOが見つかりません。
+'img-auth-accessdenied' => 'アクセスが拒否されました',
+'img-auth-nopathinfo'   => 'PATH_INFOが見つかりません。
 サーバーが、この情報を渡すように構成されていません。
 CGIベースで、img_authに対応できない可能性もあります。
 http://www.mediawiki.org/wiki/Manual:Image_Authorization を参照してください。',
-'img-auth-notindir'         => '要求されたパスは、設定済みのアップロード用ディレクトリーの中にありません。',
-'img-auth-badtitle'         => '「$1」からは有効なページ名を構築できません。',
-'img-auth-nologinnWL'       => 'ログインしておらず、さらに「$1」はホワイトリストに入っていません。',
-'img-auth-nofile'           => 'ファイル「$1」は存在しません。',
-'img-auth-isdir'            => 'ディレクトリー「$1」にアクセスしようとしています。
+'img-auth-notindir'     => '要求されたパスは、設定済みのアップロード用ディレクトリーの中にありません。',
+'img-auth-badtitle'     => '「$1」からは有効なページ名を構築できません。',
+'img-auth-nologinnWL'   => 'ログインしておらず、さらに「$1」はホワイトリストに入っていません。',
+'img-auth-nofile'       => 'ファイル「$1」は存在しません。',
+'img-auth-isdir'        => 'ディレクトリー「$1」にアクセスしようとしています。
 ファイルへのアクセスのみが許可されています。',
-'img-auth-streaming'        => '「$1」を転送中。',
-'img-auth-public'           => 'img_auth.phpの機能は非公開ウィキからファイルを出力することです。
+'img-auth-streaming'    => '「$1」を転送中。',
+'img-auth-public'       => 'img_auth.phpの機能は非公開ウィキからファイルを出力することです。
 このウィキは公開ウィキとして構成されています。
 最適なセキュリティーのため、img_auth.phpは無効化されています。',
-'img-auth-noread'           => '利用者は「$1」の読み取り権限を持っていません。',
-'img-auth-bad-query-string' => 'URLの中に無効なクエリ文字列があります。',
+'img-auth-noread'       => '利用者は「$1」の読み取り権限を持っていません。',
 
 # HTTP errors
 'http-invalid-url'      => '無効なURL：$1',
@@ -2010,7 +2010,7 @@ contenttype/subtypeの形式で指定してください（例：<tt>image/jpeg</
 
 'doubleredirects'            => '二重転送',
 'doubleredirectstext'        => 'これは他のリダイレクトページへのリダイレクトの一覧です。
-各行には、最初のリダイレクトと、その転送先のリダイレクト、そのまた転送先へのリンクが表示されています。多くの場合、最終の転送先が正しい転送先であり、最初のリダイレクトは直接最後の転送先に向けるべきです。
+各行には、最初のリダイレクトと、その転送先のリダイレクト、そのまた転送先へのリンクが表示されています。多くの場合、最終の転送先が正しい転送先であり、最初のリダイレクトは直接最後の転送先に向けるべきです。。
 <del>打ち消し線</del>のはいった項目は既に修正されています。',
 'double-redirect-fixed-move' => '[[$1]]が移動されています。
 [[$2]]に転送されます。',
@@ -2227,7 +2227,7 @@ contenttype/subtypeの形式で指定してください（例：<tt>image/jpeg</
 # Watchlist
 'watchlist'            => 'ウォッチリスト',
 'mywatchlist'          => 'ウォッチリスト',
-'watchlistfor2'        => '利用者: $1 $2',
+'watchlistfor2'        => '利用者:$1$2',
 'nowatchlist'          => 'ウォッチリストに項目がありません。',
 'watchlistanontext'    => 'ウォッチリストに入っている項目を表示または編集するには、$1してください。',
 'watchnologin'         => 'ログインしていません',
@@ -2266,8 +2266,8 @@ contenttype/subtypeの形式で指定してください（例：<tt>image/jpeg</
 'changed'                      => '変更',
 'created'                      => '作成',
 'enotif_subject'               => '{{SITENAME}}のページ「$PAGETITLE」が$PAGEEDITORによって$CHANGEDORCREATEDされました',
-'enotif_lastvisited'           => '最後に閲覧した後に行なわれた全ての変更は、 $1 で見ることができます。',
-'enotif_lastdiff'              => 'この変更内容を表示するには $1 をご覧ください。',
+'enotif_lastvisited'           => '最後に閲覧した後に行なわれた全てのの変更は、$1で見ることができます。',
+'enotif_lastdiff'              => 'この変更内容を表示するには$1をご覧ください。',
 'enotif_anon_editor'           => '匿名利用者：$1',
 'enotif_body'                  => '$WATCHINGUSERNAMEさん
 
@@ -2287,17 +2287,12 @@ $NEWPAGE
                          {{SITENAME}}通知システム
 
 --
-メール通知の設定は、次のページから変更してください。
-{{fullurl:{{#special:Preferences}}}}
+ウォッチリストの設定は、{{canonicalurl:{{#special:Watchlist}}/edit}}で変更できます。
 
-ウォッチリストの設定は、次のページから変更して下さい。
-{{fullurl:{{#special:Watchlist}}/edit}}
-
-このページは、次のページでウォッチリストから除去することが出来ます。
-$UNWATCHURL
+このページをウォッチリストから除去するには$UNWATCHURLをご覧ください。
 
 ご意見、お問い合わせ：
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'ページを削除',
@@ -2546,7 +2541,7 @@ $1',
 ** ページへ無意味な/意味不明な内容の挿入
 ** 威圧的な態度/嫌がらせ
 ** 複数アカウントの不正利用
-** 不適切な利用者名',
+** 許可されていない利用者名',
 'ipbanononly'                     => '匿名利用者のみブロック',
 'ipbcreateaccount'                => 'アカウント作成を禁止する',
 'ipbemailban'                     => 'メール送信を防止',
@@ -2561,7 +2556,7 @@ $1',
 'ipballowusertalk'                => 'この利用者に対して、ブロック中の自身のトークページ編集を許可',
 'ipb-change-block'                => 'これらの設定で、利用者を再びブロック',
 'badipaddress'                    => '不正なIPアドレス',
-'blockipsuccesssub'               => 'ブロックしました',
+'blockipsuccesssub'               => 'ブロックに成功しました',
 'blockipsuccesstext'              => '[[Special:Contributions/$1|$1]]をブロックしました。<br />
 [[Special:IPBlockList|投稿ブロック中の利用者やIPアドレス]]を参照してください。',
 'ipb-edit-dropdown'               => 'ブロック理由を編集する',
@@ -2574,7 +2569,7 @@ $1',
 'ipusubmit'                       => 'この投稿ブロックを解除',
 'unblocked'                       => '[[User:$1|$1]]のブロックを解除しました',
 'unblocked-id'                    => 'ブロック$1は除去されました',
-'ipblocklist'                     => 'ブロック中の利用者',
+'ipblocklist'                     => 'ブロック中のIPアドレスや利用者',
 'ipblocklist-legend'              => 'ブロック中の利用者を検索',
 'ipblocklist-username'            => '利用者名またはIPアドレス：',
 'ipblocklist-sh-userblocks'       => 'アカウントのブロックを$1',
@@ -2603,9 +2598,9 @@ $1のブロックの理由は「$2」です。',
 'blocklog-showlog'                => 'この利用者は以前にブロックされたことがあります。
 参考のため、ブロックの記録を以下に示します：',
 'blocklog-showsuppresslog'        => 'この利用者は以前にブロックされ、隠されたことがあります。
-参考のため、秘匿記録を以下に示します：',
+参考のため、隠蔽記録を以下に示します：',
 'blocklogentry'                   => '[[$1]] を$2ブロックしました。ブロックの詳細$3',
-'reblock-logentry'                => '[[$1]]ブロック設定を$2に変更しました。ブロックの詳細$3',
+'reblock-logentry'                => '[[$1]]ブロック設定を$2に変更しました。ブロックの内容は$3です',
 'blocklogtext'                    => 'このページは利用者のブロックと解除の記録です。
 自動的にブロックされたIPアドレスは表示されていません。
 現時点で有効なブロックは[[Special:IPBlockList|ブロックの一覧]]をご覧ください。',
@@ -2616,10 +2611,10 @@ $1のブロックの理由は「$2」です。',
 'block-log-flags-noemail'         => 'メール送信のブロック',
 'block-log-flags-nousertalk'      => '自身のトークページの編集禁止',
 'block-log-flags-angry-autoblock' => '拡張自動ブロック有効',
-'block-log-flags-hiddenname'      => '利用者名の秘匿',
+'block-log-flags-hiddenname'      => '利用者名を隠す',
 'range_block_disabled'            => '範囲ブロックを作成する管理者機能は無効化されています。',
 'ipb_expiry_invalid'              => '有効期限が不正です。',
-'ipb_expiry_temp'                 => '利用者名秘匿のブロックは、無期限ブロックになります。',
+'ipb_expiry_temp'                 => '利用者名秘匿のブロックは、無期限ブロックなります。',
 'ipb_hide_invalid'                => 'このアカウントを秘匿できません。編集回数が非常に多いためだと思われます。',
 'ipb_already_blocked'             => '「$1」は既にブロックされています',
 'ipb-needreblock'                 => '== すでにブロックされています ==
@@ -2717,7 +2712,7 @@ hideuser権限を持っていないため、この利用者のブロックを閲
 'talkexists'                   => "'''ページ自身は無事に移動されましたが、トークページは移動先のページが存在したため移動できませんでした。
 手動で統合してください。'''",
 'movedto'                      => '移動先：',
-'movetalk'                     => '付随するトークページも移動',
+'movetalk'                     => '関連付けられたトークページを移動',
 'move-subpages'                => '下位ページも移動する（$1ページまで）',
 'move-talk-subpages'           => 'トークページの下位ページも移動する（$1個まで）',
 'movepage-page-exists'         => 'ページ$1は既に存在するため、自動的に上書きされませんでした。',
@@ -2824,8 +2819,8 @@ hideuser権限を持っていないため、この利用者のブロックを閲
 'import-interwiki-namespace' => '目的の名前空間：',
 'import-upload-filename'     => 'ファイルの名前：',
 'import-comment'             => 'コメント：',
-'importtext'                 => '元のウィキで[[Special:Export|書き出し機能]]を使ってファイルに書き出してください。
-それをコンピューターに保存した後、こちらへアップロードしてください。',
+'importtext'                 => '書き出し元となるウィキから[[Special:Export|書き出し用機能]]を使ってファイルを書き出してください。
+それをコンピューターに保存した後、ここにアップロードしてください。',
 'importstart'                => 'ページを取り込んでいます・・・',
 'import-revision-count'      => '$1版',
 'importnopages'              => '取り込むページがありません。',
@@ -2921,7 +2916,7 @@ hideuser権限を持っていないため、この利用者のブロックを閲
 'tooltip-save'                    => '変更を保存',
 'tooltip-preview'                 => '変更をプレビューで確認できます。保存前に使用してください！',
 'tooltip-diff'                    => '文章に加えた変更を表示します',
-'tooltip-compareselectedversions' => '選択された二つの版の差分を表示します。',
+'tooltip-compareselectedversions' => '選択された二つのこのページの版間の差分を表示します',
 'tooltip-watch'                   => 'このページをウォッチリストへ追加します',
 'tooltip-recreate'                => '削除されていても、ページを再作成',
 'tooltip-upload'                  => 'アップロードを開始',
@@ -3108,7 +3103,7 @@ Variants for Chinese language
 # Metadata
 'metadata'          => 'メタデータ',
 'metadata-help'     => 'このファイルは、追加情報を含んでいます（おそらく、デジタルカメラやスキャナーが作成あるいはデジタル化し追加したもの）。
-このファイルが元の状態から変更されている場合、いくつかの項目は、修正されたファイルへ完全に反映されていないかもしれません。',
+このファイルが元の状態から変更されている場合、いくつかの項目は、完全には修正されたファイルに反映していないかもしれません。',
 'metadata-expand'   => '拡張項目を表示',
 'metadata-collapse' => '拡張項目を非表示',
 'metadata-fields'   => 'ここのメッセージにあるEXIFメタデータフィールドは、メタデータ表が折りたたまれている状態のときに画像ページに読み込まれます。
@@ -3157,8 +3152,8 @@ Variants for Chinese language
 'exif-colorspace'                  => '色空間',
 'exif-componentsconfiguration'     => '各コンポーネントの構成',
 'exif-compressedbitsperpixel'      => '画像圧縮モード',
-'exif-pixelydimension'             => '画像の幅',
-'exif-pixelxdimension'             => '画像の高さ',
+'exif-pixelydimension'             => '実効画像幅',
+'exif-pixelxdimension'             => '実効画像高さ',
 'exif-makernote'                   => 'メーカーノート',
 'exif-usercomment'                 => '利用者のコメント',
 'exif-relatedsoundfile'            => '関連音声ファイル',
@@ -3240,7 +3235,6 @@ Variants for Chinese language
 'exif-gpsareainformation'          => 'GPSエリア名',
 'exif-gpsdatestamp'                => 'GPS測位日時',
 'exif-gpsdifferential'             => 'ディファレンシャル補正',
-'exif-objectname'                  => '短いタイトル',
 
 # EXIF attributes
 'exif-compression-1' => '非圧縮',
@@ -3503,7 +3497,7 @@ $1',
 # Multipage image navigation
 'imgmultipageprev' => '&larr;前ページ',
 'imgmultipagenext' => '次ページ&rarr;',
-'imgmultigo'       => '表示',
+'imgmultigo'       => '表示！',
 'imgmultigoto'     => '$1へ行く',
 
 # Table pager
@@ -3550,8 +3544,8 @@ $1',
 'watchlistedit-normal-explain' => 'ウォッチリストに入っているページ名が以下に表示されています。
 ページ名を除去するには、横にあるボックスにチェックを入れ、「{{int:watchlistedit-normal-submit}}」をクリックしてください。
 また、[[Special:Watchlist/raw|そのままの一覧で編集]]することもできます。',
-'watchlistedit-normal-submit'  => 'ページの除去',
-'watchlistedit-normal-done'    => 'ウォッチリストから $1{{PLURAL:$1|件}}を削除しました:',
+'watchlistedit-normal-submit'  => 'ページ名の除去',
+'watchlistedit-normal-done'    => 'ウォッチリストから$1のページ名を除去しました：',
 'watchlistedit-raw-title'      => 'ウォッチリストをそのまま編集',
 'watchlistedit-raw-legend'     => 'ウォッチリストをそのまま編集',
 'watchlistedit-raw-explain'    => 'ウォッチリストに含まれるページ名が以下に表示されており、この一覧から追加や除去できます。
@@ -3759,5 +3753,18 @@ MediaWikiは、有用であることを期待して配布されていますが�
 # SQLite database support
 'sqlite-has-fts' => '$1（全文検索あり）',
 'sqlite-no-fts'  => '$1（全文検索なし）',
+
+# Special:DisableAccount
+'disableaccount'             => '利用者アカウントを無効化',
+'disableaccount-user'        => '利用者名：',
+'disableaccount-reason'      => '理由：',
+'disableaccount-confirm'     => "この利用者アカウントを無効化します。
+無効化された利用者は、ログインしたり、パスワードを再設定したり、電子メールの通知を受け取ることができなくなります。
+もしこの利用者がどこかで最近ログインしていた場合、それらはただちにログアウトされます。
+''アカウントの無効化は、システム管理者の助けなければ戻すことができないことに、十分注意してください。''",
+'disableaccount-mustconfirm' => 'このアカウントを本当に無効化するか確認する必要があります。',
+'disableaccount-nosuchuser'  => '利用者アカウント「$1」は存在しません。',
+'disableaccount-success'     => '利用者アカウント「$1」は、永久に無効化されています。',
+'disableaccount-logentry'    => '利用者アカウント[[$1]]を永久に無効化',
 
 );

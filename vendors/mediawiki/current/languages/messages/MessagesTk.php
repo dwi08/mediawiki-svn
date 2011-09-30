@@ -1041,9 +1041,9 @@ Emma olaryň {{SITENAME}} indeksleriniň möwriti geçen bolmagy mümkindir.',
 'prefs-rc'                      => 'Soňky üýtgeşmeler',
 'prefs-watchlist'               => 'Gözegçilik sanawy',
 'prefs-watchlist-days'          => 'Gözegçilik sanawynda görkeziljek gün sany:',
-'prefs-watchlist-days-max'      => 'Iň köp 7 gün',
+'prefs-watchlist-days-max'      => '(iň köp 7 gün)',
 'prefs-watchlist-edits'         => 'Giňeldilen gözegçilik sanawynda görkeziljek üýtgeşmeleriň maksimum sany:',
-'prefs-watchlist-edits-max'     => 'Maksimum san: 1000',
+'prefs-watchlist-edits-max'     => '(maksimum san: 1000)',
 'prefs-watchlist-token'         => 'Gözegçilik sanawynyň alamaty:',
 'prefs-misc'                    => 'Başga',
 'prefs-resetpass'               => 'Paroly üýtget',
@@ -1419,7 +1419,7 @@ Faýlyňyzy şonda-da ýüklemek isleýän bolsaňyz, onda yza gaýdyp täze bir
 'fileexists-shared-forbidden' => 'Şu atly bir faýl umumy faýl ammarynda eýýäm bar.
 Faýlyňyzy şonda-da ýüklemek isleýän bolsaňyz, onda yza gaýdyp täze bir at ulanmagyňyzy haýyş edýäris. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Bu faýl aşakdaky {{PLURAL:$1|faýlyň|faýllaryň}} dublikatydyr:',
-'file-deleted-duplicate'      => 'Şu faýl bilen birmeňzeş bir faýl ([[:$1]]) ozal öçürilipdir. Bu faýly gaýtadan ýüklemänkäňiz şol faýlyň öçürme geçmişini barlaň.',
+'file-deleted-duplicate'      => 'Şu faýl bilen birmeňzeş bir faýl ([[$1]]) ozal öçürilipdir. Bu faýly gaýtadan ýüklemänkäňiz şol faýlyň öçürme geçmişini barlaň.',
 'uploadwarning'               => 'Ýükleme duýduryşy',
 'uploadwarning-text'          => 'Aşakdaky faýl düşündirişini üýtgediň we gaýtadan synanyşyň.',
 'savefile'                    => 'Faýly ýazdyr',
@@ -1925,13 +1925,13 @@ Bu sahypany baryp görýänçäňiz onuň bilen baglanyşykly üýtgeşmeler siz
 
 --
 Gözegçilik sanawy sazlamalaryňyzy üýtgetmek üçin:
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Sahypany gözegçilik sanawyňyzdan öçürmek üçin:
 $UNWATCHURL
 
 Seslenme we goşmaça kömek:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Sahypany öçür',

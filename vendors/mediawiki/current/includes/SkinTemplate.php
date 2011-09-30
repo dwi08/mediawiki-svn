@@ -606,9 +606,7 @@ class SkinTemplate extends Skin {
 			$personal_urls['logout'] = array(
 				'text' => wfMsg( 'userlogout' ),
 				'href' => self::makeSpecialUrl( 'Userlogout',
-					// userlogout link must always contain an & character, otherwise we might not be able
-					// to detect a buggy precaching proxy (bug 17790)
-					$title->isSpecial( 'Preferences' ) ? 'noreturnto' : $returnto
+					$title->isSpecial( 'Preferences' ) ? '' : $returnto
 				),
 				'active' => false
 			);

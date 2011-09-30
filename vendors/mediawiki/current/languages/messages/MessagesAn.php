@@ -21,7 +21,7 @@ $fallback = 'es';
 
 $namespaceNames = array(
 	NS_MEDIA            => 'Media',
-	NS_SPECIAL          => 'Espezial',
+	NS_SPECIAL          => 'Especial',
 	NS_TALK             => 'Descusión',
 	NS_USER             => 'Usuario',
 	NS_USER_TALK        => 'Descusión_usuario',
@@ -36,6 +36,10 @@ $namespaceNames = array(
 	NS_HELP_TALK        => 'Descusión_aduya',
 	NS_CATEGORY         => 'Categoría',
 	NS_CATEGORY_TALK    => 'Descusión_categoría',
+);
+
+$namespaceAliases = array(
+	'Espezial' => NS_SPECIAL,
 );
 
 $magicWords = array(
@@ -1085,9 +1089,9 @@ Asegure-se que iste cambio no trencará a continidat de l'historial d'a pachina.
 'prefs-rc'                      => 'Zaguers cambeos',
 'prefs-watchlist'               => 'Lista de seguimiento',
 'prefs-watchlist-days'          => "Numero de días que s'amostrarán en a lista de seguimiento:",
-'prefs-watchlist-days-max'      => 'Masimo 7 diyas',
+'prefs-watchlist-days-max'      => '(masimo 7 diyas)',
 'prefs-watchlist-edits'         => "Numero d'edicions que s'amostrarán en a lista ixamplata:",
-'prefs-watchlist-edits-max'     => 'Numero masimo: 1000',
+'prefs-watchlist-edits-max'     => '(numero masimo: 1000)',
 'prefs-watchlist-token'         => 'Ficha de lista de seguimiento:',
 'prefs-misc'                    => 'Atras preferencias',
 'prefs-resetpass'               => 'Cambear a contrasenya',
@@ -1453,7 +1457,7 @@ Si tiene ista imachen a toda resolución, cargue-la, si no, por favor, cambee o 
 Si encara quiere cargar ixe fichero, torne y faiga servir un nuevo nombre. [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Ya bi ha un fichero con ixe nombre en o reposte compartito. Si encara quiere cargar o fichero, por favor, torne enta zaga y faiga servir un nuevo nombre. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => "Iste fichero ye un duplicau {{PLURAL:$1|d'o siguient fichero|d'os siguients fichers}}:",
-'file-deleted-duplicate'      => "Un fichero igual que iste ([[:$1]]) s'ha borrato enantes. Debería mirar-se o historial de borraus d'o fichero antes de continar cargando-lo atra vegada.",
+'file-deleted-duplicate'      => "Un fichero igual que iste ([[$1]]) s'ha borrato enantes. Debería mirar-se o historial de borraus d'o fichero antes de continar cargando-lo atra vegada.",
 'uploadwarning'               => 'Alvertencia de carga de fichero',
 'uploadwarning-text'          => "Por favor, modifique a descripción d'o fichero d'abaixo y torne a intentar-lo.",
 'savefile'                    => 'Alzar fichero',
@@ -1963,13 +1967,13 @@ O sistema de notificación de {{SITENAME}}.
 
 --
 Ta cambiar as opcions d\'a suya lista de seguimiento, punche:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Ta borrar ista pachina d\'a suya lista de seguimiento, punche:
 $UNWATCHURL
 
 Ta obtenir más información y aduya:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Borrar ista pachina',

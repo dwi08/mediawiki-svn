@@ -55,34 +55,31 @@ $dateFormats = array(
 );
 
 $namespaceNames = array(
-	NS_MEDIA            => 'Media',
-	NS_SPECIAL          => 'Special',
-	NS_TALK             => 'Talk',
-	NS_USER             => 'User',
-	NS_USER_TALK        => 'User_talk',
-	NS_PROJECT_TALK     => '$1_talk',
-	NS_FILE             => 'File',
-	NS_FILE_TALK        => 'File_talk',
+	NS_MEDIA            => '媒體',
+	NS_SPECIAL          => '特別',
+	NS_TALK             => '傾偈',
+	NS_USER             => '用戶',
+	NS_USER_TALK        => '用戶傾偈',
+	NS_PROJECT_TALK     => '$1_傾偈',
+	NS_FILE             => '文件',
+	NS_FILE_TALK        => '文件傾偈',
 	NS_MEDIAWIKI        => 'MediaWiki',
-	NS_MEDIAWIKI_TALK   => 'MediaWiki_talk',
-	NS_TEMPLATE         => 'Template',
-	NS_TEMPLATE_TALK    => 'Template_talk',
-	NS_HELP             => 'Help',
-	NS_HELP_TALK        => 'Help_talk',
-	NS_CATEGORY         => 'Category',
-	NS_CATEGORY_TALK    => 'Category_talk',
+	NS_MEDIAWIKI_TALK   => 'MediaWiki_傾偈',
+	NS_TEMPLATE         => '模',
+	NS_TEMPLATE_TALK    => '模傾偈',
+	NS_HELP             => '幫手',
+	NS_HELP_TALK        => '幫手傾偈',
+	NS_CATEGORY         => '分類',
+	NS_CATEGORY_TALK    => '分類傾偈',
 );
 
 $namespaceAliases = array(
-	"媒體" 			=> NS_MEDIA,
 	"媒体" 			=> NS_MEDIA,
-	"特別" 			=> NS_SPECIAL,
 	"特殊" 			=> NS_SPECIAL,
 	"對話" 			=> NS_TALK,
 	"对话" 			=> NS_TALK,
 	"討論" 			=> NS_TALK,
 	"讨论" 			=> NS_TALK,
-	"用戶" 			=> NS_USER,
 	"用户" 			=> NS_USER,
 	"用戶 對話" 		=> NS_USER_TALK,
 	"用户 对话" 		=> NS_USER_TALK,
@@ -109,10 +106,8 @@ $namespaceAliases = array(
 	"图 讨论" 		=> NS_FILE_TALK,
 	"圖像 討論" 		=> NS_FILE_TALK,
 	"图像 讨论" 		=> NS_FILE_TALK,
-	"模" 			=> NS_TEMPLATE,
 	"模 討論" 		=> NS_TEMPLATE_TALK,
 	"模 讨论" 		=> NS_TEMPLATE_TALK,
-	"幫手" 			=> NS_HELP,
 	"幫助" 			=> NS_HELP,
 	"說明" 			=> NS_HELP,
 	"帮手" 			=> NS_HELP,
@@ -125,7 +120,6 @@ $namespaceAliases = array(
 	"帮助 讨论" 		=> NS_HELP_TALK,
 	"说明 讨论" 		=> NS_HELP_TALK,
 	"類" 			=> NS_CATEGORY,
-	"分類" 			=> NS_CATEGORY,
 	"类" 			=> NS_CATEGORY,
 	"分类" 			=> NS_CATEGORY,
 	"類 討論" 		=> NS_CATEGORY_TALK,
@@ -347,7 +341,7 @@ $messages = array(
 'protect_change'    => '改',
 'protectthispage'   => '保護呢頁',
 'unprotect'         => '解除保護',
-'unprotectthispage' => '解除保護',
+'unprotectthispage' => '解呢頁嘅保護',
 'newpage'           => '開新頁',
 'talkpage'          => '討論呢版',
 'talkpagelinktext'  => '傾偈',
@@ -1332,6 +1326,7 @@ $1",
 'right-reset-passwords'       => '重設其他用戶嘅密碼',
 'right-override-export-depth' => '倒出包含有五層深連版嘅頁面',
 'right-sendemail'             => '寄電郵畀其他用戶',
+'right-disableaccount'        => '停用戶口',
 
 # User rights log
 'rightslog'      => '用戶權限日誌',
@@ -1497,7 +1492,7 @@ $1",
 'fileexists-shared-forbidden' => '共享檔案庫入面已經有一個同名嘅檔案。
 如果你仍然想去上載佢嘅話，麻煩返轉去用第二個名嚟上載呢個檔案。[[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => '呢個檔案係同下面嘅{{PLURAL:$1|一|幾}}個檔案重覆:',
-'file-deleted-duplicate'      => '一個同名嘅檔案 ([[:$1]]) 響之前刪除過。你應該響重新上載之前檢查一下嗰個檔案嘅刪除紀錄。',
+'file-deleted-duplicate'      => '一個同名嘅檔案 ([[$1]]) 響之前刪除過。你應該響重新上載之前檢查一下嗰個檔案嘅刪除紀錄。',
 'uploadwarning'               => '上載警告',
 'uploadwarning-text'          => '請修改下面嘅檔案描述再重試。',
 'savefile'                    => '儲存檔案',
@@ -1992,12 +1987,12 @@ wiki: $PAGEEDITOR_WIKI
             {{SITENAME}}通知系統
 
 --
-要修改你嘅監視清單設定，請睇{{fullurl:{{#special:Watchlist}}/edit}}
+要修改你嘅監視清單設定，請睇{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 要刪除你嘅監視清單度嘅呢一版，請睇$UNWATCHURL
 
 回饋及更多幫助：
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => '刪除頁面',
@@ -2916,7 +2911,6 @@ Variants for Chinese language
 'exif-gpsareainformation'          => 'GPS 地區名',
 'exif-gpsdatestamp'                => 'GPS 日期',
 'exif-gpsdifferential'             => 'GPS 差動修正',
-'exif-objectname'                  => '短標題',
 
 # EXIF attributes
 'exif-compression-1' => '未壓過',
@@ -3115,18 +3109,6 @@ $3
 $5
 
 呢個確認代碼會喺$4到期。',
-'confirmemail_body_set'     => '有個人，可能係你，來自$1呢個IP，
-幫係{{SITENAME}}嘅用戶"$2"設定左個電郵地址。
-
-要確認呢個電郵真係你嘅同埋再次啟動{{SITENAME}}嘅電郵功能，請開啟呢個網址確認：
-
-$3
-
-如果呢個*唔係*你嘅戶口，用下面呢個網址去取消呢個電郵確認：
-
-$5
-
-呢個確認碼會喺$4到期。',
 'confirmemail_invalidated'  => '電郵地址確認取消咗',
 'invalidateemail'           => '取消電郵確認',
 
@@ -3349,5 +3331,18 @@ MediaWiki是基於使用目的而加以發佈，但係就唔會負上任何嘅�
 # SQLite database support
 'sqlite-has-fts' => '$1 有全文搜尋支援',
 'sqlite-no-fts'  => '$1 冇全文搜尋支援',
+
+# Special:DisableAccount
+'disableaccount'             => '停用一個用戶戶口',
+'disableaccount-user'        => '用戶名：',
+'disableaccount-reason'      => '原因：',
+'disableaccount-confirm'     => "停用呢個用戶戶口。
+呢位用戶唔可以再登入、重設佢嘅密碼，又或者收到電郵通知。
+如果呢位用戶而家係響任何地方緊入緊嘅，佢嘅就將會即刻登出。
+''留意停用一個戶口響無系統管理員嘅介入之下係唔可以番轉頭嘅。''",
+'disableaccount-mustconfirm' => '你一定要確認你想去停用呢個戶口。',
+'disableaccount-nosuchuser'  => '用戶戶口 "$1" 唔存在。',
+'disableaccount-success'     => '用戶戶口 "$1" 已經永久停用咗。',
+'disableaccount-logentry'    => '永久停用咗用戶戶口[[$1]]',
 
 );

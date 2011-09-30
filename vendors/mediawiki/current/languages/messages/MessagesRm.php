@@ -335,7 +335,7 @@ $1',
 'nstab-special'   => 'Pagina speziala',
 'nstab-project'   => 'pagina dal project',
 'nstab-image'     => 'Datoteca',
-'nstab-mediawiki' => 'Messadi',
+'nstab-mediawiki' => 'messadi',
 'nstab-template'  => 'Model',
 'nstab-help'      => 'Agid',
 'nstab-category'  => 'Categoria',
@@ -1144,6 +1144,7 @@ Questa infurmaziun è publica.',
 'right-siteadmin'            => 'Bloccar u debloccar la banca da datas',
 'right-reset-passwords'      => "Redefinir pleds-clav d'auters utilisaders",
 'right-sendemail'            => 'Trametter e-mails ad auters utilisaders',
+'right-disableaccount'       => 'Deactivar contos',
 
 # User rights log
 'rightslog'      => "Log dals dretgs d'utilisader",
@@ -1318,7 +1319,7 @@ Sche ti vuls anc adina chargiar si tia datoteca, turna per plaschair anavos e ts
 Sche ti vuls anc adina chargiar si tia datoteca, turna anavos e tscherna in auter num.
 [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Questa datoteca è in duplicat da {{PLURAL:$1|suandanta datoteca|suandantas datotecas}}:',
-'file-deleted-duplicate'      => 'Ina daoteca identica a questa ([[:$1]]) è vegnida stizzada pli baud.
+'file-deleted-duplicate'      => 'Ina daoteca identica a questa ([[$1]]) è vegnida stizzada pli baud.
 Ti duessas controllar la cronologia da stizzar da questa datoteca avant che puspè chargiar si ella.',
 'uploadwarning'               => 'Attenziun',
 'uploadwarning-text'          => 'Mida per plaschair la descripziun da la datoteca sutvart ed emprova danovamain.',
@@ -1784,7 +1785,7 @@ Ti pos midar il livel da protecziun da quest\'artitgel, quai na vegn dentant bet
 # Contributions
 'contributions'       => "contribuziuns da l'utilisader",
 'contributions-title' => "Contribuziuns d'utilisader da $1",
-'mycontris'           => 'Mias contribuziuns',
+'mycontris'           => 'mias contribuziuns',
 'contribsub2'         => 'Per $1 ($2)',
 'nocontribs'          => 'Chattà naginas modificaziuns che correspundan a quests criteris.',
 'uctop'               => '(actual)',
@@ -2701,5 +2702,18 @@ Questa pagina ha actualmain difficultads tecnicas.',
 # SQLite database support
 'sqlite-has-fts' => '$1 cun sustegn per la retschertga da text integrala',
 'sqlite-no-fts'  => '$1 senza sustegn per la retschertga da text integrala',
+
+# Special:DisableAccount
+'disableaccount'             => "Deactivar in conto d'utilisader",
+'disableaccount-user'        => "Num d'utilisader:",
+'disableaccount-reason'      => 'Motiv:',
+'disableaccount-confirm'     => "Deactivar quest conto d'utilisader.
+Quest utilisader na vegn betg pli pudair s'annunziar, midar il pled-clav u retschaiver e-mails d'avis.
+Sche l'utilisader è actualmain annunzià vegn el immediatamain sortì dal sistem.
+''Resguarda che la reactivaziun d'in conto d'utilisader po be vegnir fatga d'in administratur.''",
+'disableaccount-mustconfirm' => 'Ti stos confermar che ti vuls deactivar quest conto.',
+'disableaccount-nosuchuser'  => 'Il conto d\'utilisader "$1" n\'exista betg.',
+'disableaccount-success'     => 'Il conto d\'utilisader "$1" è vegnì deactivà premanentamain.',
+'disableaccount-logentry'    => "ha deactivà permanentamain il conto d'utilisader [[$1]]",
 
 );

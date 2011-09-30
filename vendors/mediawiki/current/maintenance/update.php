@@ -10,11 +10,17 @@
  * @ingroup Maintenance
  */
 
-if ( !function_exists( 'version_compare' ) || ( version_compare( phpversion(), '5.2.3' ) < 0 ) ) {
-	echo "You are using PHP version " . phpversion() . " but MediaWiki needs PHP 5.2.3 or higher. ABORTING.\n" .
+if ( !function_exists( 'version_compare' ) || ( version_compare( phpversion(), '5.1.0' ) < 0 ) ) {
+	echo "You are using PHP version " . phpversion() . " but MediaWiki needs PHP 5.1.0 or higher. ABORTING.\n" .
 	"Check if you have a newer php executable with a different name, such as php5.\n";
 	die( 1 );
 }
+
+/**
+ * update.php is verboten on WMF cluster. It's *not* how you do schema updates
+ */
+die( "Do not run update.php on the cluster. If you're seeing this you should
+probably ask for some help in performing your schema changes.\n" );
 
 $wgUseMasterForMaintenance = true;
 require_once( dirname( __FILE__ ) . '/Maintenance.php' );
@@ -35,7 +41,7 @@ class UpdateMediaWiki extends Maintenance {
 		return 2 /* Maintenance::DB_ADMIN */;
 	}
 
-	function compatChecks() {
+	private function compatChecks() {
 		$test = new PhpXmlBugTester();
 		if ( !$test->ok ) {
 			$this->error(
@@ -87,14 +93,10 @@ class UpdateMediaWiki extends Maintenance {
 		}
 
 		$shared = $this->hasOption( 'doshared' );
-
-		$updates = array('core','extensions');
-		if( !$this->hasOption('nopurge') ) {
-			$updates[] = 'purge';
-		}
+		$purge = !$this->hasOption( 'nopurge' );
 
 		$updater = DatabaseUpdater::newForDb( $db, $shared, $this );
-		$updater->doUpdates( $updates );
+		$updater->doUpdates( $purge );
 
 		foreach( $updater->getPostDatabaseUpdateMaintenance() as $maint ) {
 			$child = $this->runChild( $maint );

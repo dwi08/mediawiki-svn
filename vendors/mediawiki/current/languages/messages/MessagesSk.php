@@ -7,7 +7,6 @@
  * @ingroup Language
  * @file
  *
- * @author Chiak
  * @author Danny B.
  * @author Helix84
  * @author Liso
@@ -307,8 +306,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Zobraziť počet používateľov sledujúcich stránku',
 'tog-oldsig'                  => 'Náhľad súčasného podpisu:',
 'tog-fancysig'                => 'Považovať podpisy za wikitext (bez automatických odkazov)',
-'tog-externaleditor'          => 'Používať štandardne externý editor (iba pre expertov, vyžaduje špeciálne nastavenie vášho počítača. [http://www.mediawiki.org/wiki/Manual:External_editors Ďalšie informácie.])',
-'tog-externaldiff'            => 'Používať štandardne externý diff (iba pre expertov, vyžaduje špeciálne nastavenie vášho počítača. [http://www.mediawiki.org/wiki/Manual:External_editors Ďalšie informácie.])',
+'tog-externaleditor'          => 'Používať štandardne externý editor (iba pre expertov, vyžaduje špeciálne nastavenie vášho počítača)',
+'tog-externaldiff'            => 'Používať štandardne externý diff (iba pre expertov, vyžaduje špeciálne nastavenie vášho počítača)',
 'tog-showjumplinks'           => 'Používať odkazy „skočiť na“ pre lepšiu dostupnosť',
 'tog-uselivepreview'          => 'Používať živý náhľad (JavaScript) (experimentálna funkcia)',
 'tog-forceeditsummary'        => 'Upozoriť ma, keď nevyplním zhrnutie úprav',
@@ -883,7 +882,7 @@ alebo [{{fullurl:{{FULLPAGENAME}}|action=edit}} upravovať túto stránku]</span
 'noarticletext-nopermission'       => 'Táto stránka momentálne neobsahuje žiadny text.
 Môžete [[Special:Search/{{PAGENAME}}|hľadať názov tejto stránky]] v texte iných stránok
 alebo <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} si pozrieť súvisiace záznamy]</span>.',
-'userpage-userdoesnotexist'        => 'Používateľský účet „$1“ nie je registrovaný. Prosím, skontrolujte, či naozaj chcete vytvoriť/upravovať túto stránku.',
+'userpage-userdoesnotexist'        => 'Používateľský účet „$1“ nie je registrovaný. Prosím, zaškrtnite ak chcete vytvoriť/upravovať túto stránku.',
 'userpage-userdoesnotexist-view'   => 'Používateľský účet „$1“ nie je registrovaný.',
 'blocked-notice-logextract'        => 'Tento používateľ je momentálne zablokovaný.
 Dolu je pre informáciu posledná položka zo záznamu blokovaní:',
@@ -1040,7 +1039,7 @@ Možno bola zmazaná z wiki alebo premenovaná.
 Skúste [[Special:Search|vyhľadávať na wiki]] relevantné nové stránky.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(zhrnutie úprav odstránené)',
+'rev-deleted-comment'         => '(komentár odstránený)',
 'rev-deleted-user'            => '(používateľské meno odstránené)',
 'rev-deleted-event'           => '(činnosť odstránená zo záznamu)',
 'rev-deleted-user-contribs'   => '[používateľské meno alebo IP adresa odstránená - úprava skrytá pred prispievateľmi]',
@@ -1265,7 +1264,7 @@ Uistite sa, že táto zmena zachová historickú kontinuitu zmien stránky.',
 
 # Preferences page
 'preferences'                   => 'Nastavenia',
-'mypreferences'                 => 'Nastavenia',
+'mypreferences'                 => 'nastavenia',
 'prefs-edits'                   => 'Počet úprav:',
 'prefsnologin'                  => 'Nie ste prihlásený/á',
 'prefsnologintext'              => 'Aby ste mohli zmeniť svoje nastavenia, musíte byť <span class="plainlinks">[{{fullurl:{{#Special:UserLogin}}|returnto=$1}} prihlásený]</span>.',
@@ -1279,9 +1278,9 @@ Uistite sa, že táto zmena zachová historickú kontinuitu zmien stránky.',
 'prefs-rc'                      => 'Posledné úpravy',
 'prefs-watchlist'               => 'Sledované stránky',
 'prefs-watchlist-days'          => 'Koľko dní zobrazovať v sledovaných stránkach:',
-'prefs-watchlist-days-max'      => 'Maximálne 7 dní',
+'prefs-watchlist-days-max'      => '(maximálne 7 dní)',
 'prefs-watchlist-edits'         => 'Počet úprav, ktorý sa zobrazí v rozšírenom zozname sledovaných:',
-'prefs-watchlist-edits-max'     => 'Maximum: 1000',
+'prefs-watchlist-edits-max'     => '(maximum: 1000)',
 'prefs-watchlist-token'         => 'Token zoznamu sledovaných?',
 'prefs-misc'                    => 'Rôzne',
 'prefs-resetpass'               => 'Zmeniť heslo',
@@ -1485,6 +1484,7 @@ Musí obsahovať menej ako $1 {{PLURAL:$1|znak|znaky|znakov}}.',
 'right-reset-passwords'       => 'Zmeniť heslo iných používateľov',
 'right-override-export-depth' => 'Exportovať stránky vrátane okdazovaných stránok do hĺbky 5 odkazov',
 'right-sendemail'             => 'Posielať e-mail ostatným používateľom',
+'right-disableaccount'        => 'Zakázať účty',
 
 # User rights log
 'rightslog'      => 'Záznam používateľských práv',
@@ -1656,7 +1656,7 @@ Ak si aj tak želáte nahrať svoj súbor, choďte prosím späť a nahrajte ten
 'fileexists-shared-forbidden' => 'Súbor s týmto názvom už existuje v zdieľanom úložisku súborov.
 Ak ho chcete aj napriek tomu nahrať, choďte prosím späť a použite iný názov. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Tento súbor je duplikátom {{PLURAL:$1|nasledovného súboru|nasledovných súborov}}:',
-'file-deleted-duplicate'      => 'Súbor zhodný s týmto súborom ([[:$1]]) už bol v minulosti zmazaný. Mali by ste skontrolovať históriu nahrávania tohto súboru predtým, než budete pokračovať v jeho nahrávaní.',
+'file-deleted-duplicate'      => 'Súbor zhodný s týmto súborom ([[$1]]) už bol v minulosti zmazaný. Mali by ste skontrolovať históriu nahrávania tohto súboru predtým, než budete pokračovať v jeho nahrávaní.',
 'uploadwarning'               => 'Varovanie pri nahrávaní',
 'uploadwarning-text'          => 'Prosím, zmeňte popis súboru nižšie a skúste to znova.',
 'savefile'                    => 'Uložiť súbor',
@@ -1720,23 +1720,22 @@ Ak problém pretrváva, kontaktujte [[Special:ListUsers/sysop|správcu systému]
 'upload-http-error'         => 'Vyskytla sa chyba HTTP: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Prístup zamietnutý',
-'img-auth-nopathinfo'       => 'Chýba PATH_INFO.
+'img-auth-accessdenied' => 'Prístup zamietnutý',
+'img-auth-nopathinfo'   => 'Chýba PATH_INFO.
 Váš server nie je nastavený tak, aby poskytoval tieto informácie.
 Môže byť založený na CGI a nedokáže podporovať img_auth.
 Pozri http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Požadovaná cesta nie je v nastavenom adresári na nahrávanie.',
-'img-auth-badtitle'         => 'Nepodarilo sa zostaviť platný názov z „$1“.',
-'img-auth-nologinnWL'       => 'Nie ste prihlásený a „$1“ nie je na bielej listine.',
-'img-auth-nofile'           => 'Súbor „$1“ neexistuje.',
-'img-auth-isdir'            => 'Pokúšate sa o prístup k adresáru „$1“.
+'img-auth-notindir'     => 'Požadovaná cesta nie je v nastavenom adresári na nahrávanie.',
+'img-auth-badtitle'     => 'Nepodarilo sa zostaviť platný názov z „$1“.',
+'img-auth-nologinnWL'   => 'Nie ste prihlásený a „$1“ nie je na bielej listine.',
+'img-auth-nofile'       => 'Súbor „$1“ neexistuje.',
+'img-auth-isdir'        => 'Pokúšate sa o prístup k adresáru „$1“.
 Je povolený iba prístup k súborom.',
-'img-auth-streaming'        => 'Streamovanie „$1“.',
-'img-auth-public'           => 'Funkciou img_auth.php je výstup súborov zo súkromnej wiki.
+'img-auth-streaming'    => 'Streamovanie „$1“.',
+'img-auth-public'       => 'Funkciou img_auth.php je výstup súborov zo súkromnej wiki.
 Nastavená wiki je verejná.
 Aby bolo zabezpečenie optimálne, img_auth.php je vypnutý.',
-'img-auth-noread'           => 'Používateľ nemá prístup na čítanie „$1“.',
-'img-auth-bad-query-string' => 'URL má neplatný reťazec požiadavky.',
+'img-auth-noread'       => 'Používateľ nemá prístup na čítanie „$1“.',
 
 # HTTP errors
 'http-invalid-url'      => 'Neplatný URL: $1',
@@ -2171,7 +2170,7 @@ Nedostanete ďalšie upozornenia, aj ak bude stránka znovu upravovaná, kým ne
 
 --
 Zmeniť nastavenia vašich sledovaných stránok môžete na
-{{fullurl:Special:Watchlist/edit}}
+{{canonicalurl:Special:Watchlist/edit}}
 
 Zmazať stránku z vášho zoznamu sledovaných môžete na
 $UNWATCHURL
@@ -2310,7 +2309,7 @@ Kliknutie na '''''Reset''''' vyčistí pole s komentárom a všetky zaškrtávac
 Ak bola od zmazania vytvorená nová stránka s rovnakým názvom, obnovené revízie sa objavia v histórii stránky.',
 'undeleterevdel'               => 'Obnovenie sa nevykoná, ak by malo mať za dôsledok čiastočné zmazanie poslednej revízie. V takých prípadoch musíte odznačiť alebo odkryť najnovšie zmazané revízie.',
 'undeletehistorynoadmin'       => 'Táto stránka bola zmazaná. Dôvod zmazania je zobrazený dolu v zhrnutí spolu s podrobnosťami o používateľoch, ktorí túto stránku upravovali pred zmazaním. Samotný text týchto zmazaných revízií je prístupný iba správcom.',
-'undelete-revision'            => 'Zmazaná revízia $1 ($4, $5) od $3:',
+'undelete-revision'            => '$3 zmazal revíziu $1 ($4, $5):',
 'undeleterevision-missing'     => 'Neplatná alebo chýbajúca revízia. Zrejme ste použili zlý odkaz alebo revízia bola obnovená alebo odstránená z histórie.',
 'undelete-nodiff'              => 'Nebola nájdená žiadna predošlá revízia.',
 'undeletebtn'                  => 'Obnoviť!',
@@ -2442,7 +2441,7 @@ z/od momentálne zablokovanej IP adresy/používateľa.',
 'ipusubmit'                       => 'Zrušiť toto blokovanie',
 'unblocked'                       => '[[User:$1|$1]] bol odblokovaný',
 'unblocked-id'                    => 'Blokovanie $1 bolo odstránené',
-'ipblocklist'                     => 'Zablokovaní používatelia',
+'ipblocklist'                     => 'Zablokovaní používatelia/IP adresy',
 'ipblocklist-legend'              => 'Nájsť zablokovaného používateľa',
 'ipblocklist-username'            => 'Používateľské meno alebo IP adresa:',
 'ipblocklist-sh-userblocks'       => '$1 zablokovaných účtov',
@@ -2697,8 +2696,7 @@ Všetky transwiki importy sa zaznamenávajú v [[Special:Log/import|Zázname imp
 'import-interwiki-namespace' => 'Cieľový menný priestor:',
 'import-upload-filename'     => 'Názov súboru:',
 'import-comment'             => 'komentár:',
-'importtext'                 => 'Prosím, exportujte súbor zo zdrojovej wiki použitím [[Special:Export|nástroja na export]].
-Uložte ho na svoj disk a nahrajte sem.',
+'importtext'                 => 'Prosím exportujte súbor zo zdrojovej wiki použitím [[Special:Export|nástroja na export]], uložte ho na svoj disk a nahrajte sem.',
 'importstart'                => 'Importujú sa stránky...',
 'import-revision-count'      => '$1 {{PLURAL:$1|revízia|revízie|revízií}}',
 'importnopages'              => 'Žiadne stránky pre import.',
@@ -3008,8 +3006,8 @@ Každý ďalší odkaz na rovnakom riadku sa považuje za výnimku, t.j. článk
 'exif-colorspace'                  => 'Farebný priestor',
 'exif-componentsconfiguration'     => 'Význam jednotlivých zložiek',
 'exif-compressedbitsperpixel'      => 'Komprimované bity na pixel',
-'exif-pixelydimension'             => 'Šírka obrázka',
-'exif-pixelxdimension'             => 'Výška obrázka',
+'exif-pixelydimension'             => 'Platná šírka obrázka',
+'exif-pixelxdimension'             => 'Platná vyška obrázka',
 'exif-makernote'                   => 'Poznámka výrobcu',
 'exif-usercomment'                 => 'Komentár používateľa',
 'exif-relatedsoundfile'            => 'Súvisiaci zvukový súbor',
@@ -3025,9 +3023,9 @@ Každý ďalší odkaz na rovnakom riadku sa považuje za výnimku, t.j. článk
 'exif-spectralsensitivity'         => 'Spektrálna citlivosť',
 'exif-isospeedratings'             => 'Rýchlostné ohodnotenie ISO',
 'exif-oecf'                        => 'Optoelektronický konverzný činiteľ',
-'exif-shutterspeedvalue'           => 'Rýchlosť uzávierky APEX',
-'exif-aperturevalue'               => 'Clona APEX',
-'exif-brightnessvalue'             => 'Jas APEX',
+'exif-shutterspeedvalue'           => 'Rýchlosť uzávierky',
+'exif-aperturevalue'               => 'Clona',
+'exif-brightnessvalue'             => 'Jas',
 'exif-exposurebiasvalue'           => 'Expozičné skreslenie',
 'exif-maxaperturevalue'            => 'Maximálna krajinná clona',
 'exif-subjectdistance'             => 'Vzdialenosť subjektu',
@@ -3091,7 +3089,6 @@ Každý ďalší odkaz na rovnakom riadku sa považuje za výnimku, t.j. článk
 'exif-gpsareainformation'          => 'Názov GPS oblasti',
 'exif-gpsdatestamp'                => 'Dátum GPS',
 'exif-gpsdifferential'             => 'Diferenciálna korekcia GPS',
-'exif-objectname'                  => 'Krátky názov',
 
 # EXIF attributes
 'exif-compression-1' => 'Bez kompresie',
@@ -3172,8 +3169,6 @@ Každý ďalší odkaz na rovnakom riadku sa považuje za výnimku, t.j. článk
 'exif-sensingmethod-5' => 'Sekvenčný farebný snímač oblasti',
 'exif-sensingmethod-7' => 'Trilineárny snímač',
 'exif-sensingmethod-8' => 'Sekvenčný farebný lineárny snímač',
-
-'exif-filesource-3' => 'Digitálny fotoaparát',
 
 'exif-scenetype-1' => 'Priamo odfotený obrázok',
 
@@ -3300,20 +3295,6 @@ $3
 
 Ak vám účet *nepatrí*, otvorte namiesto toho tento odkaz,
 ktorý zruší potvrdenie emailovej adresy:
-
-$5
-
-Platnosť tohto potvrdzovacieho kódu vyprší $4.',
-'confirmemail_body_set'     => 'Niekto, pravdepodobne vy, z IP adresy $1, 
-nastavil e-mailovú adresu účtu „$2“ na túto adresu na {{GRAMMAR:genitív|{{SITENAME}}}}.
-
-Ak chcete potvrdiť, že tento účet skutočne patrí vám a aktivovať
-e-mailové funkcie na {{GRAMMAR:genitív|{{SITENAME}}}}, otvorte tento odkaz vo vašom prehliadači:
-
-$3
-
-Ak účet nie je *nepatrí* patrí k vám, nasledujte tento odkaz,
-ktorú zruší potvrdenie e-mailovej adresy:
 
 $5
 
@@ -3542,5 +3523,18 @@ Zadajte názov súboru bez predpony „{{ns:file}}:“.',
 # SQLite database support
 'sqlite-has-fts' => '$1 s podporou vyhľadávania v plnom texte',
 'sqlite-no-fts'  => '$1 bez podpory vyhľadávania v plnom texte',
+
+# Special:DisableAccount
+'disableaccount'             => 'Zakázať používateľský účet',
+'disableaccount-user'        => 'Používateľské meno:',
+'disableaccount-reason'      => 'Dôvod:',
+'disableaccount-confirm'     => "Zakázať tento používateľský účet.
+Používateľ sa nebude môcť prihlásiť, zmeniť svoje heslo ani dostávať upozornenia emailom.
+Ak je používateľ momentálne niekde prihlásený, bude okamžite odhlásený.
+''Pamätajte, že zakázanie používateľského účtu je nezvratné bez zásahu správcu.''",
+'disableaccount-mustconfirm' => 'Musíte potvrdiť, že chcete zakázať tento účet.',
+'disableaccount-nosuchuser'  => 'Používateľský účet „$1“ neexistuje.',
+'disableaccount-success'     => 'Používateľský účet „$1“ bol natrvalo zakázaný.',
+'disableaccount-logentry'    => 'natrvalo zakázaný používateľský účet [[$1]]',
 
 );

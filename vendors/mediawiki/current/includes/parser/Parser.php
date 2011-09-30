@@ -128,7 +128,7 @@ class Parser {
 		$this->mFunctionSynonyms = array( 0 => array(), 1 => array() );
 		$this->mDefaultStripList = $this->mStripList = array();
 		$this->mUrlProtocols = wfUrlProtocols();
-		$this->mExtLinkBracketedRegex = '/\[(\b(' . wfUrlProtocols() . ')'.
+		$this->mExtLinkBracketedRegex = '/\[((' . wfUrlProtocols() . ')'.
 			'[^][<>"\\x00-\\x20\\x7F]+) *([^\]\\x00-\\x08\\x0a-\\x1F]*?)\]/S';
 		$this->mVarCache = array();
 		if ( isset( $conf['preprocessorClass'] ) ) {
@@ -188,7 +188,9 @@ class Parser {
 			$this->firstCallInit();
 		}
 		$this->mOutput = new ParserOutput;
-		$this->mOptions->registerWatcher( array( $this->mOutput, 'recordOption' ) );
+		if( $this->mOptions ) {
+			$this->mOptions->registerWatcher( array( $this->mOutput, 'recordOption' ) );
+		}
 		$this->mAutonumber = 0;
 		$this->mLastSection = '';
 		$this->mDTopen = false;
@@ -1043,7 +1045,7 @@ class Parser {
 	 */
 	function doMagicLinks( $text ) {
 		wfProfileIn( __METHOD__ );
-		$prots = $this->mUrlProtocols;
+		$prots = wfUrlProtocolsWithoutProtRel();
 		$urlChar = self::EXT_LINK_URL_CLASS;
 		$text = preg_replace_callback(
 			'!(?:                           # Start cases
@@ -1399,16 +1401,10 @@ class Parser {
 
 			# No link text, e.g. [http://domain.tld/some.link]
 			if ( $text == '' ) {
-				# Autonumber if allowed. See bug #5918
-				if ( strpos( wfUrlProtocols(), substr( $protocol, 0, strpos( $protocol, ':' ) ) ) !== false ) {
-					$langObj = $this->getFunctionLang();
-					$text = '[' . $langObj->formatNum( ++$this->mAutonumber ) . ']';
-					$linktype = 'autonumber';
-				} else {
-					# Otherwise just use the URL
-					$text = htmlspecialchars( $url );
-					$linktype = 'free';
-				}
+				# Autonumber
+				$langObj = $this->getFunctionLang();
+				$text = '[' . $langObj->formatNum( ++$this->mAutonumber ) . ']';
+				$linktype = 'autonumber';
 			} else {
 				# Have link text, e.g. [http://domain.tld/some.link text]s
 				# Check for trail
@@ -1705,7 +1701,7 @@ class Parser {
 			# Don't allow internal links to pages containing
 			# PROTO: where PROTO is a valid URL protocol; these
 			# should be external links.
-			if ( preg_match( '/^\b(?:' . wfUrlProtocols() . ')/', $m[1] ) ) {
+			if ( preg_match( '/^(?:' . wfUrlProtocols() . ')/', $m[1] ) ) {
 				$s .= $prefix . '[[' . $line ;
 				wfProfileOut( __METHOD__."-misc" );
 				continue;
@@ -2719,10 +2715,8 @@ class Parser {
 			case 'server':
 				return $wgServer;
 			case 'servername':
-				wfSuppressWarnings(); # May give an E_WARNING in PHP < 5.3.3
-				$serverName = parse_url( $wgServer, PHP_URL_HOST );
-				wfRestoreWarnings();
-				return $serverName ? $serverName : $wgServer;
+				$serverParts = wfParseUrl( $wgServer );
+				return $serverParts && isset( $serverParts['host'] ) ? $serverParts['host'] : $wgServer;
 			case 'scriptpath':
 				return $wgScriptPath;
 			case 'stylepath':
@@ -4045,9 +4039,6 @@ class Parser {
 		# Because mOutputType is OT_WIKI, this will only process {{subst:xxx}} type tags
 		$text = $this->replaceVariables( $text );
 
-		# This works almost by chance, as the replaceVariables are done before the getUserSig(),
-		# which may corrupt this parser instance via its wfMsgExt( parsemag ) call-
-
 		# Signatures
 		$sigText = $this->getUserSig( $user );
 		$text = strtr( $text, array(
@@ -4928,15 +4919,6 @@ class Parser {
 		return $this->extractSections( $text, $section, "get", $deftext );
 	}
 
-	/**
-	 * This function returns $oldtext after the content of the section
-	 * specified by $section has been replaced with $text.
-	 *
-	 * @param $text String: former text of the article
-	 * @param $section Numeric: section identifier
-	 * @param $text String: replacing text
-	 * #return String: modified text
-	 */
 	public function replaceSection( $oldtext, $section, $text ) {
 		return $this->extractSections( $oldtext, $section, "replace", $text );
 	}

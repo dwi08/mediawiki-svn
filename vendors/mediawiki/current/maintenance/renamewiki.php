@@ -57,7 +57,7 @@ class RenameWiki extends Maintenance {
 		}
 
 		if ( count( $stores ) ) {
-			$this->output( "Initialising external storage...\n" );
+			$this->output( "Initialising external storage $store...\n" );
 			global $wgDBuser, $wgDBpassword, $wgExternalServers;
 			foreach ( $stores as $storeURL ) {
 				$m = array();

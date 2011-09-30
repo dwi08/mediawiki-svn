@@ -261,8 +261,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Vis antall overvåkende brukere',
 'tog-oldsig'                  => 'Forhåndsvisning av nåværende signatur:',
 'tog-fancysig'                => 'Signatur som wikitekst uten automatisk lenke',
-'tog-externaleditor'          => 'Bruk ekstern behandler som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin. [http://www.mediawiki.org/wiki/Manual:External_editors Mer informasjon.])',
-'tog-externaldiff'            => 'Bruk ekstern differanse som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin. [http://www.mediawiki.org/wiki/Manual:External_editors Mer informasjon.])',
+'tog-externaleditor'          => 'Bruk ekstern behandler som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin)',
+'tog-externaldiff'            => 'Bruk ekstern differanse som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin)',
 'tog-showjumplinks'           => 'Slå på «gå til»-lenker',
 'tog-uselivepreview'          => 'Bruk levende forhåndsvisning (eksperimentell JavaScript)',
 'tog-forceeditsummary'        => 'Advar meg når jeg ikke gir noen redigeringsforklaring',
@@ -973,7 +973,7 @@ Forklaring: '''({{int:cur}})''' = forskjell fra nåværende revisjon, '''({{int:
 'history-feed-empty'          => 'Den etterspurte siden finnes ikke. Den kan ha blitt slettet fra wikien, eller fått et nytt navn. Prøv å [[Special:Search|søke]] etter beslektede sider.',
 
 # Revision deletion
-'rev-deleted-comment'         => '(redigeringskommentar fjernet)',
+'rev-deleted-comment'         => '(kommentar fjernet)',
 'rev-deleted-user'            => '(brukernavn fjernet)',
 'rev-deleted-event'           => '(fjernet loggoppføring)',
 'rev-deleted-user-contribs'   => '[brukernavn eller IP-adresse fjernet – redigeringen vises ikke blant bidragene]',
@@ -1212,9 +1212,9 @@ For å søke i alle, bruk prefikset ''all:'' (inkluderer diskusjonssider, maler,
 'prefs-rc'                      => 'Siste endringer',
 'prefs-watchlist'               => 'Overvåkningsliste',
 'prefs-watchlist-days'          => 'Dager som skal vises i overvåkningslisten:',
-'prefs-watchlist-days-max'      => 'Maksimum 7 dager',
+'prefs-watchlist-days-max'      => '(maskimum 7 dager)',
 'prefs-watchlist-edits'         => 'Antall redigeringer som skal vises i utvidet overvåkningsliste:',
-'prefs-watchlist-edits-max'     => 'Maksimum antall: 1000',
+'prefs-watchlist-edits-max'     => '(maksimum antall: 1000)',
 'prefs-watchlist-token'         => 'Nøkkel for overvåkningsliste',
 'prefs-misc'                    => 'Diverse',
 'prefs-resetpass'               => 'Endre passord',
@@ -1420,6 +1420,7 @@ Du kan også la velge å la andre brukere kontakte deg via brukersiden din uten 
 'right-reset-passwords'       => 'Nullstille andre brukeres passord',
 'right-override-export-depth' => 'Eksporter sider inkludert lenkede sider til en dypde på 5',
 'right-sendemail'             => 'Send e-post til andre brukere',
+'right-disableaccount'        => 'Deaktivere kontoer',
 
 # User rights log
 'rightslog'      => 'Brukerrettighetslogg',
@@ -1589,7 +1590,7 @@ Om du fortsatt ønsker å laste opp fila, gå tilbake og last den opp under et n
 'fileexists-shared-forbidden' => 'Ei fil med dette navnet finnes fra før i det delte fillageret.
 Om du fortsatt ønsker å laste opp fila, gå tilbake og last den opp under et nytt navn. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Denne filen er en dublett av følgende {{PLURAL:$1|fil|filer}}:',
-'file-deleted-duplicate'      => 'En fil identisk med denne filen ([[:$1]]) har tidligere blitt slettet. Du bør sjekke denne filens slettehistorikk før du prøver å laste den opp på nytt.',
+'file-deleted-duplicate'      => 'En fil identisk med denne filen ([[$1]]) har tidligere blitt slettet. Du bør sjekke denne filens slettehistorikk før du prøver å laste den opp på nytt.',
 'uploadwarning'               => 'Opplastingsadvarsel',
 'uploadwarning-text'          => 'Vennligst endre filbeskrivelsen nedenfor og prøv igjen.',
 'savefile'                    => 'Lagre fil',
@@ -1651,23 +1652,22 @@ Om problemet fortsetter, kontakt en [[Special:ListUsers/sysop|administrator]].',
 'upload-http-error'         => 'En HTTP-feil oppstod: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Ingen tilgang',
-'img-auth-nopathinfo'       => 'PATH_INFO mangler.
+'img-auth-accessdenied' => 'Ingen tilgang',
+'img-auth-nopathinfo'   => 'PATH_INFO mangler.
 Tjeneren din er ikke satt opp til å gi denne informasjonen.
 Den er kanskje CGI-basert og støtter ikke img_auth.
 Se http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Den ønskede stien finnes ikke i den oppsatte opplastingsmappa.',
-'img-auth-badtitle'         => 'Kunne ikke lage en gyldig tittel ut fra «$1».',
-'img-auth-nologinnWL'       => 'Du er ikke logget inn, og «$1» er ikke på hvitelista.',
-'img-auth-nofile'           => 'Filen «$1» finnes ikke.',
-'img-auth-isdir'            => 'Du prøver å få tilgang til mappa «$1».
+'img-auth-notindir'     => 'Den ønskede stien finnes ikke i den oppsatte opplastingsmappa.',
+'img-auth-badtitle'     => 'Kunne ikke lage en gyldig tittel ut fra «$1».',
+'img-auth-nologinnWL'   => 'Du er ikke logget inn, og «$1» er ikke på hvitelista.',
+'img-auth-nofile'       => 'Filen «$1» finnes ikke.',
+'img-auth-isdir'        => 'Du prøver å få tilgang til mappa «$1».
 Kun filtilgang tillates.',
-'img-auth-streaming'        => 'Sender «$1».',
-'img-auth-public'           => 'Funksjonen til img_auth.php er å lage filer fra en privat wiki.
+'img-auth-streaming'    => 'Sender «$1».',
+'img-auth-public'       => 'Funksjonen til img_auth.php er å lage filer fra en privat wiki.
 Denne wikien er satt opp som en offentlig wiki.
 For best mulig sikkerhet er img_auth.php slått av.',
-'img-auth-noread'           => 'Brukeren har ikke tilgang til å lese «$1».',
-'img-auth-bad-query-string' => 'URL-en har en ugyldig spørrestreng.',
+'img-auth-noread'       => 'Brukeren har ikke tilgang til å lese «$1».',
 
 # HTTP errors
 'http-invalid-url'      => 'Ugyldig internettadresse: $1',
@@ -2083,7 +2083,6 @@ Fremtidige endringer til denne siden og den tilhørende diskusjonssiden blir lis
 'enotif_anon_editor'           => 'anonym bruker $1',
 'enotif_body'                  => 'Kjære $WATCHINGUSERNAME,
 
-
 {{SITENAME}}-siden $PAGETITLE har blitt $CHANGEDORCREATED den $PAGEEDITDATE av $PAGEEDITOR, se $PAGETITLE_URL for den nåværende revisjonen.
 
 $NEWPAGE
@@ -2094,23 +2093,21 @@ Kontakt brukeren:
 e-post: $PAGEEDITOR_EMAIL
 wiki: $PAGEEDITOR_WIKI
 
-Det vil ikke komme flere varsler om endringer på denne siden med mindre du besøker den.
-Du kan også fjerne varslingsflagg for alle overvåkede sider i overvåkningslisten din.
+Det vil ikke komme flere påminnelser om endringer på denne siden med mindre du besøker den.
+Du kan også fjerne påminnelsesflagg for alle sider i overvåkningslisten din.
 
-             Ditt vennlige varslingssystem for {{SITENAME}}
+Med vennlig hilsen,
+{{SITENAME}}s påminnelsessystem
 
 --
-For å endre innstillingene for e-postvarsler, se
-{{fullurl:{{#special:Preferences}}}}
+For å endre innstillingene i overvåkningslisten din, besøk
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
-For å endre innstillingene for overvåkningslisten, se
-{{fullurl:{{#special:Watchlist}}/edit}}
-
-For å slette en side fra overvåkningssiden, se
+For å slette siden fra overvåkningslisten din, besøk
 $UNWATCHURL
 
-Tilbakemelding og videre assistanse:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+Tilbakemeldinger og videre assistanse:
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Slett side',
@@ -2611,8 +2608,7 @@ Besøk [http://translatewiki.net translatewiki.net] om du ønsker å bidra med o
 'import-interwiki-namespace' => 'Målnavnerom:',
 'import-upload-filename'     => 'Filnavn:',
 'import-comment'             => 'Kommentar:',
-'importtext'                 => 'Importer fila fra kildewikien med [[Special:Export|eksporteringsverktøyet]].
-Lagre den på din egen datamaskin og last den opp her.',
+'importtext'                 => 'Importer fila fra kildewikien med [[Special:Export|eksporteringsverktøyet]], lagre den på den egen datamaskin, og last den opp hit.',
 'importstart'                => 'Importerer sider&nbsp;…',
 'import-revision-count'      => '({{PLURAL:$1|Én revisjon|$1 revisjoner}})',
 'importnopages'              => 'Ingen sider å importere.',
@@ -2924,8 +2920,8 @@ Andre vil skjules som standard.
 'exif-colorspace'                  => 'Fargerom',
 'exif-componentsconfiguration'     => 'Betydning av hver komponent',
 'exif-compressedbitsperpixel'      => 'Bildekompresjonsmodus',
-'exif-pixelydimension'             => 'Bildebredde',
-'exif-pixelxdimension'             => 'Bildehøyde',
+'exif-pixelydimension'             => 'Gyldig bildebredde',
+'exif-pixelxdimension'             => 'Gyldig bildehøyde',
 'exif-makernote'                   => 'Fabrikkmerknader',
 'exif-usercomment'                 => 'Brukerkommentarer',
 'exif-relatedsoundfile'            => 'Relatert lydfil',
@@ -2941,9 +2937,9 @@ Andre vil skjules som standard.
 'exif-spectralsensitivity'         => 'Spektralsensitivitet',
 'exif-isospeedratings'             => 'Filmhastighet (ISO)',
 'exif-oecf'                        => 'Optoelektronisk konversjonsfaktor',
-'exif-shutterspeedvalue'           => 'APEX lukkerhastighet',
-'exif-aperturevalue'               => 'APEX blenderåpning',
-'exif-brightnessvalue'             => 'APEX lysstyrke',
+'exif-shutterspeedvalue'           => 'Lukkerhastighet',
+'exif-aperturevalue'               => 'Apertur',
+'exif-brightnessvalue'             => 'Lysstyrke',
 'exif-exposurebiasvalue'           => 'Eksponeringsbias',
 'exif-maxaperturevalue'            => 'Maksimal blender',
 'exif-subjectdistance'             => 'Avstand til subjekt',
@@ -3007,7 +3003,6 @@ Andre vil skjules som standard.
 'exif-gpsareainformation'          => 'Navn på GPS-område',
 'exif-gpsdatestamp'                => 'GPS-dato',
 'exif-gpsdifferential'             => 'Differentiell GPS-korreksjon',
-'exif-objectname'                  => 'Kort tittel',
 
 # EXIF attributes
 'exif-compression-1' => 'Ukomprimert',
@@ -3090,8 +3085,6 @@ Rotert 90° mot klokka og vridd vertikalt',
 'exif-sensingmethod-5' => 'Fargesekvensiell områdesensor',
 'exif-sensingmethod-7' => 'Trilineær sensor',
 'exif-sensingmethod-8' => 'Fargesekvensiell linær sensor',
-
-'exif-filesource-3' => 'Digitalt stillbildekamera',
 
 'exif-scenetype-1' => 'Direktefotografert bilde',
 
@@ -3210,17 +3203,6 @@ for å avbryte e-postbekreftelsen:
 $5
 
 Denne bekreftelseskoden vil løpe ut $4.',
-'confirmemail_body_set'     => 'Noen, trolig deg, har satt e-postadressen for kontoen «$2» til denne adressen på {{SITENAME}}, fra IP-adressen $1.
-
-For å bekrefte at denne kontoen tilhører deg og for å slå på e-posttjenestene på {{SITENAME}}, åpne denne lenka i nettleseren din:
-
-$3
-
-Om kontoen *ikke* tilhører deg, følg denne lenka for å avbryte bekreftelsen:
-
-$5
-
-Denne bekreftelseskoden går ut på dato $4.',
 'confirmemail_invalidated'  => 'Bekreftelse av e-postadresse avbrutt',
 'invalidateemail'           => 'Avbryt bekreftelse av e-postadresse',
 
@@ -3271,7 +3253,7 @@ $1',
 'autosumm-new'     => 'Ny side: $1',
 
 # Live preview
-'livepreview-loading' => 'Laster…',
+'livepreview-loading' => 'Laster&nbsp;…',
 'livepreview-ready'   => 'Laster&nbsp;… Klar!',
 'livepreview-failed'  => 'Levende forhåndsvisning mislyktes. Prøv vanlig forhåndsvisning.',
 'livepreview-error'   => 'Tilkobling mislyktes: $1 «$2»
@@ -3427,7 +3409,7 @@ Skriv inn filnavn uten «{{ns:file}}:»-prefikset.',
 'tag-filter'              => 'Filter for [[Special:Tags|tagger]]:',
 'tag-filter-submit'       => 'Filtrer',
 'tags-title'              => 'Tagger',
-'tags-intro'              => 'Denne siden lister opp taggene programvaren kan merke en endring med, og hva de betyr.',
+'tags-intro'              => 'Denne siden lister opp taggene programvaren kan merke endrineg med, og hva de betyr.',
 'tags-tag'                => 'Taggnavn',
 'tags-display-header'     => 'Utseende på endringslister',
 'tags-description-header' => 'Fullstendig betydning',
@@ -3468,5 +3450,18 @@ Skriv inn filnavn uten «{{ns:file}}:»-prefikset.',
 # SQLite database support
 'sqlite-has-fts' => '$1 med støtte for fulltekstsøk',
 'sqlite-no-fts'  => '$1 uten støtte for fulltekstsøk',
+
+# Special:DisableAccount
+'disableaccount'             => 'Deaktiver en brukerkonto',
+'disableaccount-user'        => 'Brukernavn:',
+'disableaccount-reason'      => 'Årsak:',
+'disableaccount-confirm'     => "Deaktiver denne brukerkontoen.
+Brukeren vil ikke kunne logge inn, tilbakestille sitt passord eller motta e-postvarsler.
+Om denne brukeren er pålogget et sted vil den umiddelbart bli logget ut.
+''Merk at å deaktivere en konto ikke er reversibelt uten inngripen fra en systemadministrator.''",
+'disableaccount-mustconfirm' => 'Du må bekrefte at du vil deaktivere denne kontoen.',
+'disableaccount-nosuchuser'  => 'Brukerkontoen «$1» finnes ikke.',
+'disableaccount-success'     => 'Brukerkontoen «$1» har blitt permanent deaktivert.',
+'disableaccount-logentry'    => 'deaktiverte brukerkontoen [[$1]] permanent',
 
 );

@@ -7,14 +7,12 @@
  * @ingroup Language
  * @file
  *
- * @author Anton008
  * @author Brest
  * @author Dalibor Bosits
  * @author Demicx
  * @author Dnik
  * @author Ex13
  * @author Excaliboor
- * @author Herr Mlinka
  * @author Luka Krstulovic
  * @author MayaSimFan
  * @author Meno25
@@ -337,8 +335,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Prikaži broj suradnika koji prate stranicu (u nedavnim izmjenama, popisu praćenja i samim člancima)',
 'tog-oldsig'                  => 'Pregled postojećeg potpisa:',
 'tog-fancysig'                => 'Običan potpis kao wikitekst (bez automatske poveznice)',
-'tog-externaleditor'          => 'Uvijek koristi vanjski program za uređivanje (samo za napredne, potrebne su posebne postavke na računalu. [http://www.mediawiki.org/wiki/Manual:External_editors Dodatne informacije.])',
-'tog-externaldiff'            => 'Uvijek koristi vanjski program za usporedbu (samo za napredne, potrebne su posebne postavke na računalu. [http://www.mediawiki.org/wiki/Manual:External_editors Dodatne informacije.])',
+'tog-externaleditor'          => 'Uvijek rabi vanjski program za uređivanje (samo za napredne, potrebne su posebne postavke na računalu)',
+'tog-externaldiff'            => 'Uvijek koristi vanjski program za usporedbu',
 'tog-showjumplinks'           => 'Uključi pomoćne poveznice "Skoči na"',
 'tog-uselivepreview'          => 'Uključi trenutačni pretpregled (JavaScript) (eksperimentalno)',
 'tog-forceeditsummary'        => 'Podsjeti me ako sažetak uređivanja ostavljam praznim',
@@ -1281,9 +1279,9 @@ Primijetite da uporaba navigacijskih poveznica resetira Vaše izbore u stupcu.',
 'prefs-rc'                      => 'Nedavne promjene i kratki članci',
 'prefs-watchlist'               => 'Praćene stranice',
 'prefs-watchlist-days'          => 'Broj dana koji će se prikazati na popisu praćenja:',
-'prefs-watchlist-days-max'      => 'Maksimalno 7 dana',
+'prefs-watchlist-days-max'      => '(maksimalno 7 dana)',
 'prefs-watchlist-edits'         => 'Broj uređivanja koji će se prikazati na proširenom popisu praćenja:',
-'prefs-watchlist-edits-max'     => 'Maksimalni broj: 1000',
+'prefs-watchlist-edits-max'     => '(maksimalni broj: 1000)',
 'prefs-watchlist-token'         => 'Token popisa praćenja:',
 'prefs-misc'                    => 'Razno',
 'prefs-resetpass'               => 'Promijeni lozinku',
@@ -1374,10 +1372,6 @@ Možete omogućiti drugima da Vas kontaktiraju na suradničkoj stranici ili stra
 'prefs-displaysearchoptions'    => 'Opcije prikaza',
 'prefs-displaywatchlist'        => 'Opcije prikaza',
 'prefs-diffs'                   => 'razl',
-
-# User preference: e-mail validation using jQuery
-'email-address-validity-valid'   => 'E-mail adresa se pokazuje ispravnom',
-'email-address-validity-invalid' => 'Unesite valjanu e-mail adresu',
 
 # User rights
 'userrights'                   => 'Upravljanje suradničkim pravima',
@@ -1486,6 +1480,7 @@ Možete omogućiti drugima da Vas kontaktiraju na suradničkoj stranici ili stra
 'right-reset-passwords'       => "Poništi (''resetiraj'') lozinku drugog suradnika",
 'right-override-export-depth' => 'Izvezi stranice uključujući i povezane stranice do dubine od 5',
 'right-sendemail'             => 'Slanje e-maila drugim korisnicima',
+'right-disableaccount'        => 'Onemogući račune',
 
 # User rights log
 'rightslog'      => 'Evidencija suradničkih prava',
@@ -1652,7 +1647,7 @@ Ako i dalje želite postaviti svoju datoteku, molimo vratite se i odaberite novo
 'fileexists-shared-forbidden' => 'Datoteka s ovim imenom već postoji u središnjem poslužitelju datoteka.
 Ako još uvijek želite postaviti svoju datoteku, idite nazad i postavite ju pod drugim imenom. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'Ova datoteka je duplikat {{PLURAL:$1|sljedeće datoteke|sljedećih datoteka}}:',
-'file-deleted-duplicate'      => 'Datoteka istovjetna ovoj datoteci ([[:$1]]) prethodno je obrisana. Provjerite evidenciju brisanja za tu datoteke datoteku prije nego što nastavite s ponovnim postavljanjem.',
+'file-deleted-duplicate'      => 'Datoteka istovjetna ovoj datoteci ([[$1]]) prethodno je obrisana. Provjerite evidenciju brisanja za tu datoteke datoteku prije nego što nastavite s ponovnim postavljanjem.',
 'uploadwarning'               => 'Upozorenje kod postavljanja',
 'uploadwarning-text'          => 'Molimo izmijenite opis datoteke ispod i pokušajte kasnije.',
 'savefile'                    => 'Sačuvaj datoteku',
@@ -1701,23 +1696,22 @@ Ukoliko se problem ponovi, javite to [[Special:ListUsers/sysop|administratoru]].
 'upload-http-error'         => 'HTTP pogreška: $1',
 
 # img_auth script messages
-'img-auth-accessdenied'     => 'Pristup onemogućen',
-'img-auth-nopathinfo'       => 'Nedostaje PATH_INFO.
+'img-auth-accessdenied' => 'Pristup onemogućen',
+'img-auth-nopathinfo'   => 'Nedostaje PATH_INFO.
 Vaš poslužitelj nije postavljen da prosljeđuje ovu informaciju.
 Možda se temelji na CGI i ne može podržavati img_auth.
 Pogledajte http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Zahtjevana putanja nije u direktoriju podešenom za postavljanje.',
-'img-auth-badtitle'         => 'Ne mogu stvoriti valjani naslov iz "$1".',
-'img-auth-nologinnWL'       => 'Niste prijavljeni i "$1" nije na popisu dozvoljenih.',
-'img-auth-nofile'           => 'Datoteka "$1" ne postoji.',
-'img-auth-isdir'            => 'Pokušavate pristupiti direktoriju "$1".
+'img-auth-notindir'     => 'Zahtjevana putanja nije u direktoriju podešenom za postavljanje.',
+'img-auth-badtitle'     => 'Ne mogu stvoriti valjani naslov iz "$1".',
+'img-auth-nologinnWL'   => 'Niste prijavljeni i "$1" nije na popisu dozvoljenih.',
+'img-auth-nofile'       => 'Datoteka "$1" ne postoji.',
+'img-auth-isdir'        => 'Pokušavate pristupiti direktoriju "$1".
 Dozvoljen je samo pristup datotekama.',
-'img-auth-streaming'        => 'Tok "$1".',
-'img-auth-public'           => 'Funkcija img_auth.php služi za izlaz datoteka s privatnih wikija.
+'img-auth-streaming'    => 'Tok "$1".',
+'img-auth-public'       => 'Funkcija img_auth.php služi za izlaz datoteka s privatnih wikija.
 Ovaj wiki je postavljena kao javni wiki.
 Za optimalnu sigurnost, img_auth.php je onemogućena.',
-'img-auth-noread'           => 'Suradnik nema pristup za čitanje "$1".',
-'img-auth-bad-query-string' => 'URL ima nevažeći izraz upita.',
+'img-auth-noread'       => 'Suradnik nema pristup za čitanje "$1".',
 
 # HTTP errors
 'http-invalid-url'      => 'Nevaljan URL: $1',
@@ -2155,13 +2149,13 @@ Postavke za izvješćivanje možete resetirati za sve praćene stranice svog pop
 
 --
 Za promjene svog popisa praćenja, posjetite
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Za brisanje stranica iz svog popisa praćenja, posjetite
 $UNWATCHURL
 
 Za povratne informacije i pomoć posjetite:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Izbriši stranicu',
@@ -2427,7 +2421,7 @@ Pogledaj [[Special:IPBlockList|popis blokiranih IP adresa]] za pregled.',
 'ipusubmit'                       => 'Ukloni ovaj blok',
 'unblocked'                       => '[[User:$1|$1]] je deblokiran',
 'unblocked-id'                    => 'Blok $1 je uklonjen',
-'ipblocklist'                     => 'Blokirani suradnici',
+'ipblocklist'                     => 'Popis blokiranih IP adresa i suradničkih računa',
 'ipblocklist-legend'              => 'Pronađi blokiranog suradnika',
 'ipblocklist-username'            => 'Ime suradnika ili IP adresa:',
 'ipblocklist-sh-userblocks'       => '$1 blokirane račune',
@@ -2530,10 +2524,10 @@ Stari će se naslov pretvoriti u stranicu koja automatski preusmjerava na novi n
 Budite sigurni da ste provjerili [[Special:DoubleRedirects|dvostruka]] ili [[Special:BrokenRedirects|nevaljana preusmjeravanja]]. 
 Vi ste odgovorni za to da poveznice i dalje povezuju tamo gdje treba.
 
-Imajte na umu da stranica '''neće''' biti premještena ako već postoji stranica s novim naslovom, osim u slučaju prazne stranice ili stranice za preusmjeravanje koja nema nikakvih starih izmjena. 
-To znači da stranicu možete preimenovati u prethodno ime ukoliko ste pogriješili te ne možete pisati preko postojeće stranice. 
+Imajte na umu da će stranica'''neće''' premjestiti ako već postoji stranica s novim naslovom, osim u slučaju prazne stranice ili stranice za preusmjeravanje koja nema nikakvih starih izmjena. 
+To znači da možete preimenovati stranicu natrag do mjesta gdje je preimenovan iz ako pogriješite, i ne možete prepisati postojeću stranicu. 
 
-'''Upozorenje!''' 
+ '''Upozorenje!''' 
 Ovo može biti drastična i neočekivana promjena kad su u pitanju popularne stranice; 
 budite sigurni da razumijete posljedice ove akcije prije nastavka.",
 'movepagetalktext'             => "Stranica za razgovor, ako postoji, automatski će se premjestiti zajedno sa stranicom koju premještate. '''Stranica za razgovor neće se premjestiti ako:'''
@@ -2667,8 +2661,7 @@ Transwiki uvoz stranica je zabilježen u [[Special:Log/import|evidenciji uvoza s
 'import-interwiki-namespace' => 'Odredišni imenski prostor:',
 'import-upload-filename'     => 'Ime datoteke:',
 'import-comment'             => 'Komentar:',
-'importtext'                 => 'Molimo izvezite datoteku iz izvorišnog wikija koristeći [[Special:Export|izvozno pomagalo]]. 
-Snimite je na svoje računalo i postavite je ovdje.',
+'importtext'                 => 'Molim da izvezete ovu datoteku iz izvorišnog wikija koristeći pomagalo Special:Export, snimite je na svoj disk i postavite je ovdje.',
 'importstart'                => 'Uvozim stranice...',
 'import-revision-count'      => '$1 {{PLURAL:$1|izmjena|izmjene|izmjena}}',
 'importnopages'              => 'Nema stranica za uvoz.',
@@ -2832,7 +2825,7 @@ Razlog je vjerojatno vanjska poveznica koja se nalazi na crnom popisu.',
 'math_unknown_function' => 'nepoznata funkcija',
 'math_lexing_error'     => 'rječnička pogreška (lexing error)',
 'math_syntax_error'     => 'sintaksna pogreška',
-'math_image_error'      => 'Pretvorba u PNG nije uspjela; provjerite jesu li dobro instalirani latex, dvips, gs, i convert',
+'math_image_error'      => 'Konverzija u PNG nije uspjela; provjerite jesu li dobro instalirani latex, dvips, gs, i convert',
 'math_bad_tmpdir'       => 'Ne mogu otvoriti ili pisati u privremeni direktorij za matematiku',
 'math_bad_output'       => 'Ne mogu otvoriti ili pisati u odredišni direktorij za matematiku',
 'math_notexvc'          => 'Nedostaje izvršna datoteka texvc-a; pogledajte math/README za postavke.',
@@ -2961,8 +2954,8 @@ Svaka sljedeća poveznica u istom retku je izuzetak, npr. kod stranica gdje se s
 'exif-colorspace'                  => 'Kolor prostor',
 'exif-componentsconfiguration'     => 'Značenje pojedinih komponenti',
 'exif-compressedbitsperpixel'      => 'Dubina boje poslije sažimanja',
-'exif-pixelydimension'             => 'Važeća širina slike',
-'exif-pixelxdimension'             => 'Važeća visina slike',
+'exif-pixelydimension'             => 'Puna visina slike',
+'exif-pixelxdimension'             => 'Puna širina slike',
 'exif-makernote'                   => 'Napomene proizvođača',
 'exif-usercomment'                 => 'Suradnički komentar',
 'exif-relatedsoundfile'            => 'Povezani zvučni zapis',
@@ -2979,7 +2972,7 @@ Svaka sljedeća poveznica u istom retku je izuzetak, npr. kod stranica gdje se s
 'exif-isospeedratings'             => 'ISO vrijednost',
 'exif-oecf'                        => 'Optoelektronski faktor konverzije',
 'exif-shutterspeedvalue'           => 'Brzina zatvarača',
-'exif-aperturevalue'               => 'Otvor',
+'exif-aperturevalue'               => 'Dijafragma',
 'exif-brightnessvalue'             => 'Osvijetljenost',
 'exif-exposurebiasvalue'           => 'Kompenzacija ekspozicije',
 'exif-maxaperturevalue'            => 'Minimalni broj dijafragme',
@@ -3044,7 +3037,6 @@ Svaka sljedeća poveznica u istom retku je izuzetak, npr. kod stranica gdje se s
 'exif-gpsareainformation'          => 'Ime GPS područja',
 'exif-gpsdatestamp'                => 'GPS datum',
 'exif-gpsdifferential'             => 'GPS diferencijalna korekcija',
-'exif-objectname'                  => 'Kratki naslov',
 
 # EXIF attributes
 'exif-compression-1' => 'Nesažeto',
@@ -3251,20 +3243,6 @@ za poništavanje potvrde adrese e-pošte:
 $5
 
 Valjanost ovog potvrdnog koda istječe $4.',
-'confirmemail_body_set'     => 'Netko, najvjerojatnije vi, s IP adrese $1,
-otvorio je suradnički račun pod imenom "$2" s ovom e-mail adresom na {{SITENAME}}.
-
-Kako biste potvrdili da je ovaj suradnički račun uistinu vaš i uključili 
-e-mail naredbe na {{SITENAME}}, otvorite u vašem pregledniku sljedeću poveznicu:
-
-$3
-
-Ako ovaj suradnički račun *ne* pripada vama, slijedite ovaj link 
-kako biste poništili potvrdu e-mail adrese:
-
-$5
-
-Valjanost ovog potvrdnog koda istječe u $4',
 'confirmemail_invalidated'  => 'Potvrda E-mail adrese je otkazana',
 'invalidateemail'           => 'Poništi potvrđivanje elektroničke pošte',
 
@@ -3483,5 +3461,18 @@ Unesite ime datoteke bez prefiksa "{{ns:file}}:"',
 # SQLite database support
 'sqlite-has-fts' => '$1 s podrškom pretraživanja cijelog teksta',
 'sqlite-no-fts'  => '$1 bez podrške pretraživanja cijelog teksta',
+
+# Special:DisableAccount
+'disableaccount'             => 'Onemogući suradnički račun',
+'disableaccount-user'        => 'Suradničko ime:',
+'disableaccount-reason'      => 'Razlog:',
+'disableaccount-confirm'     => "Onemogućite ovaj suradnički račun. 
+Suradnik neće biti u mogućnosti prijaviti se, promijeniti svoju lozinku, niti primati e-mail obavijesti. 
+Ako je suradnik trenutno prijavljen negdje, odmah će biti odjavljen. 
+''Napominjemo da onemogućavanje računa nije reverzibilno bez intervencije administratora sustava.''",
+'disableaccount-mustconfirm' => 'Morate potvrditi da želite onemogućiti ovaj račun.',
+'disableaccount-nosuchuser'  => 'Suradnik "$1" ne postoji.',
+'disableaccount-success'     => 'Suradnički račun "$1" je trajno onemogućen.',
+'disableaccount-logentry'    => 'trajno onesposobljen suradnički račun [[$1]]',
 
 );

@@ -319,6 +319,8 @@ $magicWords = array(
 	'plural'                 => array( 0,    'PLURAL:'                ),
 	'fullurl'                => array( 0,    'FULLURL:'               ),
 	'fullurle'               => array( 0,    'FULLURLE:'              ),
+	'canonicalurl'           => array( 0,    'CANONICALURL:'          ),
+	'canonicalurle'          => array( 0,    'CANONICALURLE:'         ),
 	'lcfirst'                => array( 0,    'LCFIRST:'               ),
 	'ucfirst'                => array( 0,    'UCFIRST:'               ),
 	'lc'                     => array( 0,    'LC:'                    ),
@@ -648,7 +650,7 @@ XHTML id names.
 'tog-enotifminoredits'        => 'E-mail me also for minor edits of pages',
 'tog-enotifrevealaddr'        => 'Reveal my e-mail address in notification e-mails',
 'tog-shownumberswatching'     => 'Show the number of watching users',
-'tog-oldsig'                  => 'Preview of existing signature:',
+'tog-oldsig'                  => 'Existing signature:',
 'tog-fancysig'                => 'Treat signature as wikitext (without an automatic link)',
 'tog-externaleditor'          => 'Use external editor by default (for experts only, needs special settings on your computer. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
 'tog-externaldiff'            => 'Use external diff by default (for experts only, needs special settings on your computer. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
@@ -789,7 +791,7 @@ XHTML id names.
 'vector-action-move'             => 'Move',
 'vector-action-protect'          => 'Protect',
 'vector-action-undelete'         => 'Undelete',
-'vector-action-unprotect'        => 'Unprotect',
+'vector-action-unprotect'        => 'Change protection',
 'vector-simplesearch-preference' => 'Enable enhanced search suggestions (Vector skin only)',
 'vector-view-create'             => 'Create',
 'vector-view-edit'               => 'Edit',
@@ -825,8 +827,8 @@ XHTML id names.
 'protect'           => 'Protect',
 'protect_change'    => 'change',
 'protectthispage'   => 'Protect this page',
-'unprotect'         => 'Unprotect',
-'unprotectthispage' => 'Unprotect this page',
+'unprotect'         => 'Change protection',
+'unprotectthispage' => 'Change protection of this page',
 'newpage'           => 'New page',
 'talkpage'          => 'Discuss this page',
 'talkpagelinktext'  => 'Talk',
@@ -1078,7 +1080,7 @@ Please enable them and try again.',
 'nosuchuser'                 => 'There is no user by the name "$1".
 Usernames are case sensitive.
 Check your spelling, or [[Special:UserLogin/signup|create a new account]].',
-'nosuchusershort'            => 'There is no user by the name "<nowiki>$1</nowiki>".
+'nosuchusershort'            => 'There is no user by the name "$1".
 Check your spelling.',
 'nouserspecified'            => 'You have to specify a username.',
 'login-userblocked'          => 'This user is blocked. Login not allowed.',
@@ -1146,7 +1148,7 @@ Please wait before trying again.',
 # E-mail sending
 'pear-mail-error'        => '$1', # do not translate or duplicate this message to other languages
 'php-mail-error'         => '$1', # do not translate or duplicate this message to other languages
-'php-mail-error-unknown' => "Unknown error in PHP's mail() function",
+'php-mail-error-unknown' => "Unknown error in PHP's mail() function.",
 
 # Password reset dialog
 'resetpass'                 => 'Change password',
@@ -1279,11 +1281,12 @@ Please check if you want to create/edit this page.',
 'userpage-userdoesnotexist-view'   => 'User account "$1" is not registered.',
 'blocked-notice-logextract'        => 'This user is currently blocked.
 The latest block log entry is provided below for reference:',
-'clearyourcache'                   => "'''Note: After saving, you may have to bypass your browser's cache to see the changes.'''
-'''Mozilla / Firefox / Safari:''' hold ''Shift'' while clicking ''Reload'', or press either ''Ctrl-F5'' or ''Ctrl-R'' (''Command-R'' on a Macintosh);
-'''Konqueror: '''click ''Reload'' or press ''F5'';
-'''Opera:''' clear the cache in ''Tools → Preferences'';
-'''Internet Explorer:''' hold ''Ctrl'' while clicking ''Refresh,'' or press ''Ctrl-F5''.",
+'clearyourcache'                   => "'''Note:''' After saving, you may have to bypass your browser's cache to see the changes.
+* '''Firefox / Safari:''' hold ''Shift'' while clicking ''Reload'', or press either ''Ctrl-F5'' or ''Ctrl-R'' (''Command-R'' on a Mac)
+* '''Google Chrome:''' press ''Ctrl-Shift-R'' (''Command-Shift-R'' on a Mac)
+* '''Internet Explorer:''' hold ''Ctrl'' while clicking ''Refresh'', or press ''Ctrl-F5''
+* '''Konqueror:''' click ''Reload'' or press ''F5''
+* '''Opera:''' clear the cache in ''Tools → Preferences''",
 'usercssyoucanpreview'             => "'''Tip:''' Use the \"{{int:showpreview}}\" button to test your new CSS before saving.",
 'userjsyoucanpreview'              => "'''Tip:''' Use the \"{{int:showpreview}}\" button to test your new JavaScript before saving.",
 'usercsspreview'                   => "'''Remember that you are only previewing your user CSS.'''
@@ -1675,16 +1678,16 @@ Try prefixing your query with ''all:'' to search all content (including talk pag
 You can search via Google in the meantime.
 Note that their indexes of {{SITENAME}} content may be out of date.',
 'googlesearch'                     => '<form method="get" action="http://www.google.com/search" id="googlesearch">
-    <input type="hidden" name="domains" value="{{SERVER}}" />
-    <input type="hidden" name="num" value="50" />
-    <input type="hidden" name="ie" value="$2" />
-    <input type="hidden" name="oe" value="$2" />
+	<input type="hidden" name="domains" value="{{SERVER}}" />
+	<input type="hidden" name="num" value="50" />
+	<input type="hidden" name="ie" value="$2" />
+	<input type="hidden" name="oe" value="$2" />
 
-    <input type="text" name="q" size="31" maxlength="255" value="$1" />
-    <input type="submit" name="btnG" value="$3" />
+	<input type="text" name="q" size="31" maxlength="255" value="$1" />
+	<input type="submit" name="btnG" value="$3" />
   <div>
-    <input type="radio" name="sitesearch" id="gwiki" value="{{SERVER}}" checked="checked" /><label for="gwiki">{{SITENAME}}</label>
-    <input type="radio" name="sitesearch" id="gWWW" value="" /><label for="gWWW">WWW</label>
+	<input type="radio" name="sitesearch" id="gwiki" value="{{SERVER}}" checked="checked" /><label for="gwiki">{{SITENAME}}</label>
+	<input type="radio" name="sitesearch" id="gWWW" value="" /><label for="gWWW">WWW</label>
   </div>
 </form>', # do not translate or duplicate this message to other languages
 
@@ -1784,7 +1787,7 @@ This cannot be undone.',
 'prefs-registration-date-time'  => '$1', # only translate this message to other languages if you have to change it
 'yourrealname'                  => 'Real name:',
 'yourlanguage'                  => 'Language:',
-'yourvariant'                   => 'Variant:', # only translate this message to other languages if you have to change it
+'yourvariant'                   => 'Content language variant:',
 'yournick'                      => 'New signature:',
 'prefs-help-signature'          => 'Comments on talk pages should be signed with "<nowiki>~~~~</nowiki>" which will be converted into your signature and a timestamp.',
 'badsig'                        => 'Invalid raw signature.
@@ -1792,7 +1795,7 @@ Check HTML tags.',
 'badsiglength'                  => 'Your signature is too long.
 It must not be more than $1 {{PLURAL:$1|character|characters}} long.',
 'yourgender'                    => 'Gender:',
-'gender-unknown'                => 'Unspecified',
+'gender-unknown'                => 'Undisclosed',
 'gender-male'                   => 'Male',
 'gender-female'                 => 'Female',
 'prefs-help-gender'             => 'Optional: used for gender-correct addressing by the software.
@@ -1841,7 +1844,7 @@ You can also choose to let others contact you through your user or talk page wit
 'userrights-no-interwiki'        => 'You do not have permission to edit user rights on other wikis.',
 'userrights-nodatabase'          => 'Database $1 does not exist or is not local.',
 'userrights-nologin'             => 'You must [[Special:UserLogin|log in]] with an administrator account to assign user rights.',
-'userrights-notallowed'          => 'Your account does not have permission to assign user rights.',
+'userrights-notallowed'          => 'Your account does not have permission to add or remove user rights.',
 'userrights-changeable-col'      => 'Groups you can change',
 'userrights-unchangeable-col'    => 'Groups you cannot change',
 'userrights-irreversible-marker' => '$1*', # only translate this message to other languages if you have to change it
@@ -2184,23 +2187,32 @@ If the problem persists, contact an [[Special:ListUsers/sysop|administrator]].',
 'upload-unknown-size'       => 'Unknown size',
 'upload-http-error'         => 'An HTTP error occured: $1',
 
+# Special:UploadStash
+'uploadstash'		   => 'Upload stash',
+'uploadstash-summary'      => 'This page provides access to files which are uploaded (or in the process of uploading) but are not yet published to the wiki. These files are not visible to anyone but the user who uploaded them. See the documentation for the upload API.',
+'uploadstash-clear'        => 'Clear stashed files',
+'uploadstash-nofiles'      => 'You have no stashed files.',
+'uploadstash-badtoken'     => 'Performing of that action was unsuccessful, perhaps because your editing credentials expired. Try again.',
+'uploadstash-errclear'     => 'Clearing the files was unsuccessful.',
+'uploadstash-refresh'	   => 'Refresh the list of files',
+
 # img_auth script messages
-'img-auth-accessdenied'     => 'Access denied',
-'img-auth-nopathinfo'       => 'Missing PATH_INFO.
+'img-auth-accessdenied' => 'Access denied',
+'img-auth-nopathinfo'   => 'Missing PATH_INFO.
 Your server is not set up to pass this information.
 It may be CGI-based and cannot support img_auth.
 See http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
-'img-auth-notindir'         => 'Requested path is not in the configured upload directory.',
-'img-auth-badtitle'         => 'Unable to construct a valid title from "$1".',
-'img-auth-nologinnWL'       => 'You are not logged in and "$1" is not in the whitelist.',
-'img-auth-nofile'           => 'File "$1" does not exist.',
-'img-auth-isdir'            => 'You are trying to access a directory "$1".
+'img-auth-notindir'     => 'Requested path is not in the configured upload directory.',
+'img-auth-badtitle'     => 'Unable to construct a valid title from "$1".',
+'img-auth-nologinnWL'   => 'You are not logged in and "$1" is not in the whitelist.',
+'img-auth-nofile'       => 'File "$1" does not exist.',
+'img-auth-isdir'        => 'You are trying to access a directory "$1".
 Only file access is allowed.',
-'img-auth-streaming'        => 'Streaming "$1".',
-'img-auth-public'           => 'The function of img_auth.php is to output files from a private wiki.
+'img-auth-streaming'    => 'Streaming "$1".',
+'img-auth-public'       => 'The function of img_auth.php is to output files from a private wiki.
 This wiki is configured as a public wiki.
 For optimal security, img_auth.php is disabled.',
-'img-auth-noread'           => 'User does not have access to read "$1".',
+'img-auth-noread'       => 'User does not have access to read "$1".',
 'img-auth-bad-query-string' => 'The URL has an invalid query string.',
 
 # HTTP errors
@@ -2698,14 +2710,17 @@ You could also reset the notification flags for all your watched pages on your w
              Your friendly {{SITENAME}} notification system
 
 --
+To change your email notification settings, visit
+{{canonicalurl:{{#special:Preferences}}}}
+
 To change your watchlist settings, visit
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 To delete the page from your watchlist, visit
 $UNWATCHURL
 
 Feedback and further assistance:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Delete page',
@@ -2722,7 +2737,7 @@ Feedback and further assistance:
 Please confirm that you intend to do this, that you understand the consequences, and that you are doing this in accordance with [[{{MediaWiki:Policy-url}}|the policy]].',
 'actioncomplete'         => 'Action complete',
 'actionfailed'           => 'Action failed',
-'deletedtext'            => '"<nowiki>$1</nowiki>" has been deleted.
+'deletedtext'            => '"$1" has been deleted.
 See $2 for a record of recent deletions.',
 'deletedarticle'         => 'deleted "[[$1]]"',
 'suppressedarticle'      => 'suppressed "[[$1]]"',
@@ -2769,11 +2784,11 @@ Go back to the previous page, reload that page and then try again.',
 
 # Protect
 'protectlogpage'              => 'Protection log',
-'protectlogtext'              => 'Below is a list of page protections and page unprotections.
+'protectlogtext'              => 'Below is a list of changes to page protections.
 See the [[Special:ProtectedPages|protected pages list]] for the list of currently operational page protections.',
 'protectedarticle'            => 'protected "[[$1]]"',
 'modifiedarticleprotection'   => 'changed protection level for "[[$1]]"',
-'unprotectedarticle'          => 'unprotected "[[$1]]"',
+'unprotectedarticle'          => 'removed protection from "[[$1]]"',
 'movedarticleprotection'      => 'moved protection settings from "[[$2]]" to "[[$1]]"',
 'protect-title'               => 'Change protection level for "$1"',
 'prot_1movedto2'              => '[[$1]] moved to [[$2]]',
@@ -2784,7 +2799,7 @@ See the [[Special:ProtectedPages|protected pages list]] for the list of currentl
 'protect_expiry_invalid'      => 'Expiry time is invalid.',
 'protect_expiry_old'          => 'Expiry time is in the past.',
 'protect-unchain-permissions' => 'Unlock further protect options',
-'protect-text'                => "You may view and change the protection level here for the page '''<nowiki>$1</nowiki>'''.",
+'protect-text'                => "You may view and change the protection level here for the page '''$1'''.",
 'protect-locked-blocked'      => "You cannot change protection levels while blocked.
 Here are the current settings for the page '''$1''':",
 'protect-locked-dblock'       => "Protection levels cannot be changed due to an active database lock.
@@ -2840,8 +2855,7 @@ You can change this page's protection level, but it will not affect the cascadin
 The archive may be periodically cleaned out.',
 'undelete-fieldset-title'      => 'Restore revisions',
 'undeleteextrahelp'            => "To restore the page's entire history, leave all checkboxes deselected and click '''''{{int:undeletebtn}}'''''.
-To perform a selective restoration, check the boxes corresponding to the revisions to be restored, and click '''''{{int:undeletebtn}}'''''.
-Clicking '''''{{int:undeletereset}}''''' will clear the comment field and all checkboxes.",
+To perform a selective restoration, check the boxes corresponding to the revisions to be restored, and click '''''{{int:undeletebtn}}'''''.",
 'undeleterevisions'            => '$1 {{PLURAL:$1|revision|revisions}} archived',
 'undeletehistory'              => 'If you restore the page, all revisions will be restored to the history.
 If a new page with the same name has been created since the deletion, the restored revisions will appear in the prior history.',
@@ -2933,7 +2947,7 @@ The latest block log entry is provided below for reference:',
 'nolinkshere-ns'           => "No pages link to '''[[:$1]]''' in the chosen namespace.",
 'isredirect'               => 'redirect page',
 'istemplate'               => 'transclusion',
-'isimage'                  => 'image link',
+'isimage'                  => 'file link',
 'whatlinkshere-prev'       => '{{PLURAL:$1|previous|previous $1}}',
 'whatlinkshere-next'       => '{{PLURAL:$1|next|next $1}}',
 'whatlinkshere-links'      => '← links',
@@ -2969,7 +2983,7 @@ Fill in a specific reason below (for example, citing particular pages that were 
 'ipbenableautoblock'              => 'Automatically block the last IP address used by this user, and any subsequent IP addresses they try to edit from',
 'ipbsubmit'                       => 'Block this user',
 'ipbother'                        => 'Other time:',
-'ipboptions'                      => '2 hours:2 hours,1 day:1 day,3 days:3 days,1 week:1 week,2 weeks:2 weeks,1 month:1 month,3 months:3 months,6 months:6 months,1 year:1 year,infinite:infinite',
+'ipboptions'                      => '2 hours:2 hours,1 day:1 day,3 days:3 days,1 week:1 week,2 weeks:2 weeks,1 month:1 month,3 months:3 months,6 months:6 months,1 year:1 year,indefinite:infinite',
 'ipbotheroption'                  => 'other',
 'ipbotherreason'                  => 'Other/additional reason:',
 'ipbhidename'                     => 'Hide username from edits and lists',
@@ -2990,7 +3004,7 @@ See [[Special:IPBlockList|IP block list]] to review blocks.',
 'ipusubmit'                       => 'Remove this block',
 'unblocked'                       => '[[User:$1|$1]] has been unblocked',
 'unblocked-id'                    => 'Block $1 has been removed',
-'ipblocklist'                     => 'Blocked IP addresses and usernames',
+'ipblocklist'                     => 'Blocked users',
 'ipblocklist-legend'              => 'Find a blocked user',
 'ipblocklist-username'            => 'Username or IP address:',
 'ipblocklist-sh-userblocks'       => '$1 account blocks',
@@ -3014,6 +3028,7 @@ See [[Special:IPBlockList|IP block list]] to review blocks.',
 'unblocklink'                     => 'unblock',
 'change-blocklink'                => 'change block',
 'contribslink'                    => 'contribs',
+'emaillink'                       => 'send e-mail',
 'autoblocker'                     => 'Autoblocked because your IP address has been recently used by "[[User:$1|$1]]".
 The reason given for $1\'s block is: "$2"',
 'blocklogpage'                    => 'Block log',
@@ -3043,8 +3058,7 @@ See the [[Special:IPBlockList|IP block list]] for the list of currently operatio
 $1 is already blocked.
 Do you want to change the settings?',
 'ipb-otherblocks-header'          => 'Other {{PLURAL:$1|block|blocks}}',
-'ipb_cant_unblock'                => 'Error: Block ID $1 not found.
-It may have been unblocked already.',
+'ipb_cant_unblock'                => 'Error: Block ID $1 not found. It may have been unblocked already.',
 'ipb_blocked_as_range'            => 'Error: The IP address $1 is not blocked directly and cannot be unblocked.
 It is, however, blocked as part of the range $2, which can be unblocked.',
 'ip_range_invalid'                => 'Invalid IP range.',
@@ -3358,8 +3372,8 @@ Please try again.',
 'tooltip-pt-mytalk'               => 'Your talk page',
 'tooltip-pt-anontalk'             => 'Discussion about edits from this IP address',
 'tooltip-pt-preferences'          => 'Your preferences',
-'tooltip-pt-watchlist'            => 'The list of pages you are monitoring for changes',
-'tooltip-pt-mycontris'            => 'List of your contributions',
+'tooltip-pt-watchlist'            => 'A list of pages you are monitoring for changes',
+'tooltip-pt-mycontris'            => 'A list of your contributions',
 'tooltip-pt-login'                => 'You are encouraged to log in; however, it is not mandatory',
 'tooltip-pt-anonlogin'            => 'You are encouraged to log in; however, it is not mandatory',
 'tooltip-pt-logout'               => 'Log out',
@@ -3370,7 +3384,7 @@ Please try again.',
 You can view its source',
 'tooltip-ca-history'              => 'Past revisions of this page',
 'tooltip-ca-protect'              => 'Protect this page',
-'tooltip-ca-unprotect'            => 'Unprotect this page',
+'tooltip-ca-unprotect'            => 'Change protection of this page',
 'tooltip-ca-delete'               => 'Delete this page',
 'tooltip-ca-undelete'             => 'Restore the edits done to this page before it was deleted',
 'tooltip-ca-move'                 => 'Move this page',
@@ -3387,14 +3401,14 @@ You can view its source',
 'tooltip-n-recentchanges'         => 'The list of recent changes in the wiki',
 'tooltip-n-randompage'            => 'Load a random page',
 'tooltip-n-help'                  => 'The place to find out',
-'tooltip-t-whatlinkshere'         => 'List of all wiki pages that link here',
+'tooltip-t-whatlinkshere'         => 'A list of all wiki pages that link here',
 'tooltip-t-recentchangeslinked'   => 'Recent changes in pages linked from this page',
 'tooltip-feed-rss'                => 'RSS feed for this page',
 'tooltip-feed-atom'               => 'Atom feed for this page',
-'tooltip-t-contributions'         => 'View the list of contributions of this user',
+'tooltip-t-contributions'         => 'A list of contributions of this user',
 'tooltip-t-emailuser'             => 'Send an e-mail to this user',
 'tooltip-t-upload'                => 'Upload files',
-'tooltip-t-specialpages'          => 'List of all special pages',
+'tooltip-t-specialpages'          => 'A list of all special pages',
 'tooltip-t-print'                 => 'Printable version of this page',
 'tooltip-t-permalink'             => 'Permanent link to this revision of the page',
 'tooltip-ca-nstab-main'           => 'View the content page',
@@ -3578,9 +3592,15 @@ By executing it, your system may be compromised.",
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'     => '$1, $2×$3', # only translate this message to other languages if you have to change it
-'seconds-abbrev' => 's', # only translate this message to other languages if you have to change it
-'minutes-abbrev' => 'm', # only translate this message to other languages if you have to change it
-'hours-abbrev'   => 'h', # only translate this message to other languages if you have to change it
+'seconds-abbrev' => '$1s', # only translate this message to other languages if you have to change it
+'minutes-abbrev' => '$1m', # only translate this message to other languages if you have to change it
+'hours-abbrev'   => '$1h', # only translate this message to other languages if you have to change it
+'days-abbrev'    => '$1d', # only translate this message to other languages if you have to change it
+'seconds' => '{{PLURAL:$1|$1 second|$1 seconds}}',
+'minutes' => '{{PLURAL:$1|$1 minute|$1 minutes}}',
+'hours' => '{{PLURAL:$1|$1 hour|$1 hours}}',
+'days' => '{{PLURAL:$1|$1 day|$1 days}}',
+'ago' => '$1 ago',
 
 # Bad image list
 'bad_image_list' => 'The format is as follows:
@@ -3640,7 +3660,7 @@ Variants for Chinese language
 If the file has been modified from its original state, some details may not fully reflect the modified file.',
 'metadata-expand'   => 'Show extended details',
 'metadata-collapse' => 'Hide extended details',
-'metadata-fields'   => 'EXIF metadata fields listed in this message will be included on image page display when the metadata table is collapsed.
+'metadata-fields'   => 'Image metadata fields listed in this message will be included on image page display when the metadata table is collapsed.
 Others will be hidden by default.
 * make
 * model
@@ -3792,9 +3812,9 @@ Others will be hidden by default.
 'exif-orientation-3' => 'Rotated 180°',
 'exif-orientation-4' => 'Flipped vertically',
 'exif-orientation-5' => 'Rotated 90° CCW and flipped vertically',
-'exif-orientation-6' => 'Rotated 90° CW',
+'exif-orientation-6' => 'Rotated 90° CCW',
 'exif-orientation-7' => 'Rotated 90° CW and flipped vertically',
-'exif-orientation-8' => 'Rotated 90° CCW',
+'exif-orientation-8' => 'Rotated 90° CW',
 
 'exif-planarconfiguration-1' => 'chunky format',
 'exif-planarconfiguration-2' => 'planar format',
@@ -4356,5 +4376,4 @@ This site is experiencing technical difficulties.',
 # SQLite database support
 'sqlite-has-fts' => '$1 with full-text search support',
 'sqlite-no-fts'  => '$1 without full-text search support',
-
 );

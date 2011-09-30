@@ -39,18 +39,17 @@ define( 'RE_IPV6_ADD',
 		':(?::|(?::' . RE_IPV6_WORD . '){1,7})' .
 	'|' . // ends with "::" (except "::")
 		RE_IPV6_WORD . '(?::' . RE_IPV6_WORD . '){0,6}::' .
-	'|' . // contains one "::" in the middle, ending in "::WORD"
-		RE_IPV6_WORD . '(?::' . RE_IPV6_WORD . '){0,5}' . '::' . RE_IPV6_WORD .
-	'|' . // contains one "::" in the middle, not ending in "::WORD" (regex for PCRE 4.0+)
+	'|' . // contains no "::"
+		RE_IPV6_WORD . '(?::' . RE_IPV6_WORD . '){7}' .
+	'|' . // contains one "::" in the middle and 2 words
+		RE_IPV6_WORD . '::' . RE_IPV6_WORD .
+	'|' . // contains one "::" in the middle and 3+ words (awkward regex for PCRE 4.0+)
 		RE_IPV6_WORD . '(?::(?P<abn>:(?P<iabn>))?' . RE_IPV6_WORD . '(?!:(?P=abn))){1,5}' .
 			':' . RE_IPV6_WORD . '(?P=iabn)' .
 		// NOTE: (?!(?P=abn)) fails iff "::" used twice; (?P=iabn) passes iff a "::" was found.
-	'|' . // contains no "::"
-		RE_IPV6_WORD . '(?::' . RE_IPV6_WORD . '){7}' .
+		// RegExp (PCRE 7.2+ only) for last 2 cases that allows easy regex concatenation:
+		#RE_IPV6_WORD . '(?::((?(-1)|:))?' . RE_IPV6_WORD . '){1,6}(?(-2)|^)' .
 	')'
-	// NOTE: With PCRE 7.2+, we can combine the two '"::" in the middle' cases into:
-	//		RE_IPV6_WORD . '(?::((?(-1)|:))?' . RE_IPV6_WORD . '){1,6}(?(-2)|^)'
-	// This also improves regex concatenation by using relative references.
 );
 // An IPv6 block is an IP address and a prefix (d1 to d128)
 define( 'RE_IPV6_BLOCK', RE_IPV6_ADD . '\/' . RE_IPV6_PREFIX );
@@ -184,6 +183,23 @@ class IP {
 		$ip = preg_replace( '/(^|:)0+(' . RE_IPV6_WORD . ')/', '$1$2', $ip );
 		return $ip;
 	}
+	
+	/**
+	 * Given a host name and a port, combine them into host/port string like
+	 * you might find in a URL. If the host contains a colon, wrap it in square
+	 * brackets like in RFC 2732. If the port matches the default port, omit 
+	 * the port specification
+	 */
+	public static function combineHostAndPort( $host, $port, $defaultPort = false ) {
+		if ( strpos( $host, ':' ) !== false ) {
+			$host = "[$host]";
+		}
+		if ( $defaultPort !== false && $port == $defaultPort ) {
+			return $host;
+		} else {
+			return "$host:$port";
+		}
+	}
 
 	/**
 	 * Given an unsigned integer, returns an IPv6 address in octet notation
@@ -303,7 +319,7 @@ class IP {
 		static $privateRanges = false;
 		if ( !$privateRanges ) {
 			$privateRanges = array(
-				array( 'fc::', 'fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff' ), # RFC 4193 (local)
+				array( 'fc00::', 'fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff' ), # RFC 4193 (local)
 				array( '0:0:0:0:0:0:0:1', '0:0:0:0:0:0:0:1' ), # loopback
 			);
 		}

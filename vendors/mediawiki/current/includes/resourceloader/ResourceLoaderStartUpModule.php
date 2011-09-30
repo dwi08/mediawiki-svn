@@ -33,8 +33,7 @@ class ResourceLoaderStartUpModule extends ResourceLoaderModule {
 			$wgArticlePath, $wgScriptPath, $wgServer, $wgContLang, 
 			$wgVariantArticlePath, $wgActionPaths, $wgUseAjax, $wgVersion, 
 			$wgEnableAPI, $wgEnableWriteAPI, $wgDBname, $wgEnableMWSuggest, 
-			$wgSitename, $wgFileExtensions, $wgExtensionAssetsPath,
-			$wgResourceLoaderMaxQueryLength;
+			$wgSitename, $wgFileExtensions, $wgExtensionAssetsPath;
 
 		// Pre-process information
 		$separatorTransTable = $wgContLang->separatorTransformTable();
@@ -79,11 +78,7 @@ class ResourceLoaderStartUpModule extends ResourceLoaderModule {
 			'wgFileExtensions' => array_values( $wgFileExtensions ),
 			'wgDBname' => $wgDBname,
 			'wgExtensionAssetsPath' => $wgExtensionAssetsPath,
-			'wgResourceLoaderMaxQueryLength' => $wgResourceLoaderMaxQueryLength,
 		);
-		if ( $wgContLang->hasVariants() ) {
-			$vars['wgUserVariant'] = $wgContLang->getPreferredVariant();
-		}
 		if ( $wgUseAjax && $wgEnableMWSuggest ) {
 			$vars['wgMWSuggestTemplate'] = SearchEngine::getMWSuggestTemplate();
 		}

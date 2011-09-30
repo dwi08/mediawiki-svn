@@ -1577,13 +1577,13 @@ Bu bitkä kermäsägez, anıñ başqa üzgärtüläre turında xat cibärelmäy�
 
 --
 Küzätü isemlege köyläwlären üzgärtü:
-{{fullurl:{{#special:Watchlist}}/edit}}
+{{canonicalurl:{{#special:Watchlist}}/edit}}
 
 Bitne sezneñ küzätü isemlegezdän beterü:
 $UNWATCHURL
 
 Elemtä häm yärdäm:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'deletepage'             => 'Bitne beterü',
@@ -1736,7 +1736,7 @@ $1',
 'ipbexpiry'                  => 'Betä:',
 'ipbreason'                  => 'Säbäp:',
 'ipbreasonotherlist'         => 'Başqa säbäp',
-'ipbreason-dropdown'         => '* Qısunıñ ğädättäge säbäpläre
+'ipbreason-dropdown'         => '↓ * Qısunıñ ğädättäge säbäpläre
 ** Yalğan mäğlümat kertü
 ** Bitlärneñ eçtälegen sörtü
 ** Tışqı saytlarğa spam-sıltamalar

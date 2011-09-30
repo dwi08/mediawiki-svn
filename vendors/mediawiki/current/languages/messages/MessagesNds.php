@@ -1131,9 +1131,9 @@ de aver nich jümmer den aktuellsten Stand weerspegelt.<p>',
 'prefs-rc'                      => 'Letzte Ännern un Wiesen vun kotte Sieten',
 'prefs-watchlist'               => 'Oppasslist',
 'prefs-watchlist-days'          => 'Maximumtall Daag, de in de Oppasslist wiest warrt:',
-'prefs-watchlist-days-max'      => 'Maximal 7 Daag',
+'prefs-watchlist-days-max'      => '(Maximal 7 Daag)',
 'prefs-watchlist-edits'         => 'Maximumtall Daag, de in de verwiederte Oppasslist wiest warrt:',
-'prefs-watchlist-edits-max'     => 'Maximaltall: 1000',
+'prefs-watchlist-edits-max'     => '(Maximaltall: 1000)',
 'prefs-watchlist-token'         => 'Oppasslistenslötel:',
 'prefs-misc'                    => 'Verscheden Kraam',
 'prefs-resetpass'               => 'Passwoord ännern',
@@ -1473,7 +1473,7 @@ Kiek na, wat du dat Bild nich ok in vulle Grött hest un laad dat ünner’n Ori
 Wenn du ehr liekers hoochladen wullt, gah trüch un laad de Datei ünner en annern Naam hooch. [[File:$1|thumb|center|$1]]',
 'fileexists-shared-forbidden' => 'Dat gifft al en Datei mit dissen Naam. Gah trüch un laad de Datei ünner en annern Naam hooch. [[File:$1|thumb|center|$1]]',
 'file-exists-duplicate'       => 'De Datei is desülve as disse {{PLURAL:$1|Datei|$1 Datein}}:',
-'file-deleted-duplicate'      => 'Jüst disse Datei ([[:$1]]) is al mal löscht worrn. Kiek man eerst, wat in dat Löschlogbook steiht, ehrdat du ehr noch wedder hoochlaadst.',
+'file-deleted-duplicate'      => 'Jüst disse Datei ([[$1]]) is al mal löscht worrn. Kiek man eerst, wat in dat Löschlogbook steiht, ehrdat du ehr noch wedder hoochlaadst.',
 'uploadwarning'               => 'Wohrschau',
 'savefile'                    => 'Datei spiekern',
 'uploadedimage'               => '„$1“ hoochladen',
@@ -1919,7 +1919,7 @@ Du kriggst solang keen Bescheedgeev-E-Mails mehr, bet dat du de Siet wedder bes�
              Dien fründlich {{SITENAME}}-Bescheedgeevsystem
 
 --
-De Instellungen vun dien Oppasslist to ännern, gah na: {{fullurl:Special:Watchlist/edit}}',
+De Instellungen vun dien Oppasslist to ännern, gah na: {{canonicalurl:Special:Watchlist/edit}}',
 
 # Delete
 'deletepage'             => 'Siet wegsmieten',
@@ -3139,5 +3139,13 @@ Geev den Dateinaam ahn dat Präfix „{{ns:file}}:“ in.',
 # SQLite database support
 'sqlite-has-fts' => '$1 mit Stöhn för Vulltext-Söök',
 'sqlite-no-fts'  => '$1 ahn Stöhn för Vulltext-Söök',
+
+# Special:DisableAccount
+'disableaccount'            => 'Brukerkonto deaktiveren',
+'disableaccount-user'       => 'Brukernaam:',
+'disableaccount-reason'     => 'Grund:',
+'disableaccount-nosuchuser' => 'Dat Brukerkonto „$1“ gifft dat nich.',
+'disableaccount-success'    => 'Dat Brukerkonto „$1“ is nu duurhaftig deaktiveert.',
+'disableaccount-logentry'   => 'hett dat Brukerkonto [[$1]] duurhaftig deaktiveert',
 
 );
