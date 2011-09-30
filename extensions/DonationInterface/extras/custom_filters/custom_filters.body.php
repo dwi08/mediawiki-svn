@@ -24,7 +24,7 @@ class Gateway_Extras_CustomFilters extends Gateway_Extras {
 	static $instance;
 
 	public function __construct( &$gateway_adapter ) {
-		parent::__construct( &$gateway_adapter ); //gateway_adapter is set in there. 
+		parent::__construct( $gateway_adapter ); //gateway_adapter is set in there. 
 		// load user action ranges and risk score		
 		$this->action_ranges = $this->getGlobal( 'CustomFiltersActionRanges' );
 		$this->risk_score = $this->getGlobal( 'CustomFiltersRiskScore' );
@@ -63,12 +63,13 @@ class Gateway_Extras_CustomFilters extends Gateway_Extras {
 	}
 
 	static function onValidate( &$gateway_adapter ) {
-		return self::singleton( &$gateway_adapter )->validate();
+		$gateway_adapter->debugarray[] = 'custom filters onValidate hook!';
+		return self::singleton( $gateway_adapter )->validate();
 	}
 
 	static function singleton( &$gateway_adapter ) {
 		if ( !self::$instance ) {
-			self::$instance = new self( &$gateway_adapter );
+			self::$instance = new self( $gateway_adapter );
 		}
 		return self::$instance;
 	}

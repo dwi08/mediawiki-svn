@@ -61,7 +61,7 @@ EOT;
 		//TODO: This is short-circuiting what I really want to do here. 
 		//so stop it. 
 		$data = $this->adapter->getDisplayData();
-		
+
 		/*
 		 * The $transactionType should default to false.
 		 *
@@ -71,14 +71,14 @@ EOT;
 		 */
 		$transactionType = false;
 		$transactionType = 'INSERT_ORDERWITHPAYMENT';
-		$data['transaction_type'] = isset( $data['transaction_type'] ) ? $data['transaction_type'] : $transactionType;
+		$data['transaction_type'] = (isset( $data['transaction_type'] ) && !empty( $data['transaction_type'] ) ) ? $data['transaction_type'] : $transactionType;
 		$this->adapter->setTransactionType( $data['transaction_type'] );
 		unset( $transactionType );
-		
+
 		$this->adapter->log( '$transactionType: Default is set to: INSERT_ORDERWITHPAYMENT, this is a temporary hack for backwards compatibility.' );
-		$this->adapter->log( 'Setting transaction type: ' . (string) $data['transaction_type'] );
-		
-		
+		$this->adapter->log( 'Setting transaction type: ' . ( string ) $data['transaction_type'] );
+
+
 		// dispatch forms/handling
 		if ( $this->adapter->checkTokens() ) {
 			if ( $this->adapter->posted && $data['payment_method'] == 'processed' ) {
@@ -86,54 +86,51 @@ EOT;
 				$this->adapter->log( "Form posted and payment method set." );
 
 				// Check form for errors
-				
-				$options = array();
+
+				$options = array( );
 				switch ( $this->adapter->getTransactionType() ) {
-					
+
 					case 'BANK_TRANSFER':
 						$options['creditCard'] = false;
 						break;
-					
+
 					case 'INSERT_ORDERWITHPAYMENT':
 						$options['creditCard'] = true;
 						break;
-						
+
 					default:
 						$options['creditCard'] = true;
 				}
-				
+
 				$form_errors = $this->validateForm( $data, $this->errors, $options );
 				unset( $options );
 
 				//$form_errors = $this->fnValidateForm( $data, $this->errors );
-
 				// If there were errors, redisplay form, otherwise proceed to next step
 				if ( $form_errors ) {
 
 					$this->displayForm( $data, $this->errors );
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
-
 					// Execute the proper transaction code:
 					switch ( $this->adapter->getTransactionType() ) {
-						
+
 						case 'BANK_TRANSFER':
 							$this->executeBankTransfer( $wgOut );
 							break;
-						
+
 						case 'INSERT_ORDERWITHPAYMENT':
 							$this->executeInsertOrderWithPayment( $wgOut );
 							break;
-							
+
 						default:
-							
-							$message = 'The transaction type [ ' . $this->adapter->getTransactionType() . ' ] was not found.'; 
+
+							$message = 'The transaction type [ ' . $this->adapter->getTransactionType() . ' ] was not found.';
 							throw new Exception( $message );
 					}
 
 
 					//TODO: add all the hooks back in. 
-
 				}
 			} else {
 				// Display form for the first time
@@ -199,65 +196,6 @@ EOT;
 				$wgOut->addHTML( $paymentFrame );
 			}
 		}
-	}
-	
-	/**
-	 * Interpret response code, return
-	 * 1 if approved
-	 * 2 if declined
-	 * 3 if invalid data was submitted by user
-	 * 4 all other errors
-	 */
-	function fnPayflowGetResponseMsg( $resultCode, &$responseMsg ) {
-		$responseMsg = wfMsg( 'globalcollect_gateway-response-default' );
-
-		switch ( $resultCode ) {
-			case '0':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-0' );
-				$errorCode = '1';
-				break;
-			case '126':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-126-2' );
-				$errorCode = '5';
-				break;
-			case '12':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-12' );
-				$errorCode = '2';
-				break;
-			case '13':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-13' );
-				$errorCode = '2';
-				break;
-			case '114':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-114' );
-				$errorCode = '2';
-				break;
-			case '4':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-4' );
-				$errorCode = '3';
-				break;
-			case '23':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-23' );
-				$errorCode = '3';
-				break;
-			case '24':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-24' );
-				$errorCode = '3';
-				break;
-			case '112':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-112' );
-				$errorCode = '3';
-				break;
-			case '125':
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-125-2' );
-				$errorCode = '3';
-				break;
-			default:
-				$responseMsg = wfMsg( 'globalcollect_gateway-response-default' );
-				$errorCode = '4';
-		}
-
-		return $errorCode;
 	}
 
 	//TODO: Remember why the heck I decided to leave this here...

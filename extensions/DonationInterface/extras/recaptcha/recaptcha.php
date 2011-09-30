@@ -34,8 +34,9 @@ $wgDonationInterfaceRecaptchaTimeout = 2;
  * 
  * Default to settings in DonationInterface
  */
-$wgDonationInterfaceRecaptchaUseHTTPProxy = $wgDonationInterfaceUseHTTPProxy;
-$wgDonationInterfaceRecaptchaHTTPProxy = $wgDonationInterfaceHTTPProxy;
+//TODO: I think we can get rid of these entirely, due to the way we are now checking for globals in the extras. 
+//$wgDonationInterfaceRecaptchaUseHTTPProxy = $wgDonationInterfaceUseHTTPProxy;
+//$wgDonationInterfaceRecaptchaHTTPProxy = $wgDonationInterfaceHTTPProxy;
 
 /**
  * Use SSL to communicate with reCaptcha

@@ -137,19 +137,19 @@ class GatewayForm extends UnlistedSpecialPage {
 	 *
 	 * @see GatewayForm::fnValidateForm()
 	 */
-	public function validateForm( &$data, &$error, $options = array() ) {
+	public function validateForm( &$data, &$error, $options = array( ) ) {
 
 		extract( $options );
-		
+
 		// Set which items will be validated
-		$address	= isset( $address )		? (boolean) $address	: true ;
-		$amount		= isset( $amount )		? (boolean) $amount		: true ;
-		$creditCard	= isset( $creditCard )	? (boolean) $creditCard	: false ;
-		$email		= isset( $email )		? (boolean) $email		: true ;
-		$name		= isset( $name )		? (boolean) $name		: true ;
+		$address = isset( $address ) ? ( boolean ) $address : true;
+		$amount = isset( $amount ) ? ( boolean ) $amount : true;
+		$creditCard = isset( $creditCard ) ? ( boolean ) $creditCard : false;
+		$email = isset( $email ) ? ( boolean ) $email : true;
+		$name = isset( $name ) ? ( boolean ) $name : true;
 
 		// These are set in the order they will most likely appear on the form.
-		
+
 		if ( $name ) {
 			$this->validateName( $data, $error );
 		}
@@ -163,7 +163,7 @@ class GatewayForm extends UnlistedSpecialPage {
 		}
 
 		if ( $email ) {
-		$this->validateEmail( $data, $error );
+			$this->validateEmail( $data, $error );
 		}
 
 		if ( $creditCard ) {
@@ -175,9 +175,9 @@ class GatewayForm extends UnlistedSpecialPage {
 		 *
 		 * This is done for backward compatibility.
 		 */
-		return $this->getValidateFormResult() ? 0 : 1 ;
+		return $this->getValidateFormResult() ? 0 : 1;
 	}
-	
+
 	/**
 	 * Validates the address
 	 *
@@ -187,32 +187,32 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @see GatewayForm::validateForm()
 	 */
 	public function validateAddress( &$data, &$error ) {
-		
+
 		if ( empty( $data['street'] ) ) {
-			
+
 			$error['street'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-street' );
-			
+
 			$this->setValidateFormResult( false );
 		}
-		
+
 		if ( empty( $data['city'] ) ) {
-			
+
 			$error['city'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-city' );
-			
+
 			$this->setValidateFormResult( false );
 		}
-		
+
 		if ( empty( $data['state'] ) ) {
-			
+
 			$error['state'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-state' );
-			
+
 			$this->setValidateFormResult( false );
 		}
-		
+
 		if ( empty( $data['zip'] ) ) {
-			
+
 			$error['zip'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-zip' );
-			
+
 			$this->setValidateFormResult( false );
 		}
 	}
@@ -226,14 +226,14 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @see GatewayForm::validateForm()
 	 */
 	public function validateAmount( &$data, &$error ) {
-		
+
 		if ( empty( $data['amount'] ) ) {
-			
+
 			$error['amount'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-amount' );
-			
+
 			$this->setValidateFormResult( false );
 		}
-		
+
 		// check amount
 		$priceFloor = $this->adapter->getGlobal( 'PriceFloor' );
 		$priceCeiling = $this->adapter->getGlobal( 'PriceCeiling' );
@@ -256,48 +256,39 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @see GatewayForm::validateForm()
 	 */
 	public function validateCreditCard( &$data, &$error ) {
-		
+
 		if ( empty( $data['card_num'] ) ) {
 
 			$error['card_num'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-card_num' );
 
 			$this->setValidateFormResult( false );
 		}
-		
+
 		if ( empty( $data['cvv'] ) ) {
 
 			$error['cvv'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-cvv' );
 
 			$this->setValidateFormResult( false );
 		}
-		
+
 		if ( empty( $data['expiration'] ) ) {
 
 			$error['expiration'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-expiration' );
 
 			$this->setValidateFormResult( false );
 		}
-		
+
 		// validate that credit card number entered is correct and set the card type
 		if ( preg_match( '/^3[47][0-9]{13}$/', $data['card_num'] ) ) { // american express
-
 			$data['card'] = 'american';
-
 		} elseif ( preg_match( '/^5[1-5][0-9]{14}$/', $data['card_num'] ) ) { //	mastercard
-
 			$data['card'] = 'mastercard';
-
 		} elseif ( preg_match( '/^4[0-9]{12}(?:[0-9]{3})?$/', $data['card_num'] ) ) {// visa
-
 			$data['card'] = 'visa';
-
 		} elseif ( preg_match( '/^6(?:011|5[0-9]{2})[0-9]{12}$/', $data['card_num'] ) ) { // discover
-
 			$data['card'] = 'discover';
-
 		} else { // an invalid credit card number was entered
-
-			$error[ 'card_num' ] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-card-num' );
+			$error['card_num'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-card-num' );
 
 			$this->setValidateFormResult( false );
 		}
@@ -312,14 +303,14 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @see GatewayForm::validateForm()
 	 */
 	public function validateEmail( &$data, &$error ) {
-		
+
 		if ( empty( $data['email'] ) ) {
 
 			$error['email'] = wfMsg( $gateway_identifier . '_gateway-error-email-empty' );
 
 			$this->setValidateFormResult( false );
 		}
-		
+
 		// is email address valid?
 		$isEmail = User::isValidEmailAddr( $data['email'] );
 
@@ -340,22 +331,22 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @see GatewayForm::validateForm()
 	 */
 	public function validateName( &$data, &$error ) {
-		
+
 		if ( empty( $data['fname'] ) ) {
-			
+
 			$error['fname'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-fname' );
-			
+
 			$this->setValidateFormResult( false );
 		}
-		
+
 		if ( empty( $data['lname'] ) ) {
-			
+
 			$error['lname'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-lname' );
-			
+
 			$this->setValidateFormResult( false );
 		}
 	}
-	
+
 	/**
 	 * Build and display form to user
 	 *
@@ -451,6 +442,16 @@ class GatewayForm extends UnlistedSpecialPage {
 			$wgOut->addHTML( "</ul>" );
 		} else {
 			$wgOut->addHTML( "No Session Donor Vars:<ul>" );
+		}
+
+		if ( is_array( $this->adapter->debugarray ) ) {
+			$wgOut->addHTML( "Debug Array:<ul>" );
+			foreach ( $this->adapter->debugarray as $val ) {
+				$wgOut->addHTML( "<li>$val" );
+			}
+			$wgOut->addHTML( "</ul>" );
+		} else {
+			$wgOut->addHTML( "No Debug Array<ul>" );
 		}
 	}
 
@@ -575,8 +576,7 @@ class GatewayForm extends UnlistedSpecialPage {
 		// submit the data to the paypal redirect URL
 		$wgOut->redirect( $this->adapter->getPaypalRedirectURL() );
 	}
-	
-	
+
 	/**
 	 * Fetch the array of iso country codes => country names
 	 * @return array
@@ -592,8 +592,8 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @return boolean
 	 */
 	public function getValidateFormResult() {
-		
-		return (boolean) $this->validateFormResult;
+
+		return ( boolean ) $this->validateFormResult;
 	}
 
 	/**
@@ -602,8 +602,8 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * @param boolean $validateFormResult
 	 */
 	public function setValidateFormResult( $validateFormResult ) {
-		
-		$this->validateFormResult = empty( $validateFormResult ) ? false : (boolean) $validateFormResult;
+
+		$this->validateFormResult = empty( $validateFormResult ) ? false : ( boolean ) $validateFormResult;
 	}
 
 }

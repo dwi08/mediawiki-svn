@@ -39,10 +39,10 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 	static $instance;
 
 	function __construct( &$gateway_adapter, $license_key = NULL ) {
-		parent::__construct( &$gateway_adapter );
+		parent::__construct( $gateway_adapter );
 		$dir = dirname( __FILE__ ) . '/';
 		require_once( $dir . "ccfd/CreditCardFraudDetection.php" );
-		require_once( $dir . "../../includes/countryCodes.inc" );
+		//require_once( $dir . "../../includes/countryCodes.inc" );
 		global $wgMinFraudLicenseKey, $wgMinFraudActionRanges;
 
 		// set the minfraud license key, go no further if we don't have it
@@ -147,7 +147,7 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 	 */
 	public function get_ccfd() {
 		if ( !$this->ccfd ) {
-			$this->ccfd = new CreditCardFraudDetection( &$this->gateway_adapter );
+			$this->ccfd = new CreditCardFraudDetection( $this->gateway_adapter );
 		}
 		return $this->ccfd;
 	}
@@ -270,12 +270,13 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 	}
 
 	static function onValidate( &$gateway_adapter ) {
-		return self::singleton( &$gateway_adapter )->validate();
+		$gateway_adapter->debugarray[] = "Running an onValidate hook!";
+		return self::singleton( $gateway_adapter )->validate();
 	}
 
 	static function singleton( &$gateway_adapter ) {
 		if ( !self::$instance ) {
-			self::$instance = new self( &$gateway_adapter );
+			self::$instance = new self( $gateway_adapter );
 		}
 		return self::$instance;
 	}

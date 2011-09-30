@@ -82,7 +82,7 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $accountInfo;
 	protected $url;
 	protected $transactions;
-	
+
 	/**
 	 * $transaction_type will be set in the GatewayForm::execute()
 	 *
@@ -91,7 +91,6 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @see GatewayForm::execute()
 	 */
 	protected $transaction_type = false;
-	
 	protected $return_value_map;
 	protected $postdata;
 	protected $postdatadefaults;
@@ -100,6 +99,8 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $transaction_results;
 	protected $form_class;
 	protected $validation_errors;
+	public $action; //Currently, hooks need to be able to set this directly.
+	public $debugarray; //TODO: Take me out. 
 
 	//ALL OF THESE need to be redefined in the children. Much voodoo depends on the accuracy of these constants. 
 	const GATEWAY_NAME = 'Donation Gateway';
@@ -332,6 +333,28 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->currentTransaction( $transaction );
 		//update the contribution tracking data
 		$this->incrementNumAttempt();
+
+		$this->runPreProcess(); //many hooks get fired here...
+		//TODO: Uhmmm... what if none of the validate hooks are enabled? 
+		//Currently, I think that means the transaction stops here, and that's not quite right.
+		//...is it?
+		// if the transaction was NOT flagged for processing by something in runPreProcess()...
+		if ( $this->action != 'process' ) {
+			self::log( "Transaction failed pre-process checks." . print_r( $this->getData(), true ) );
+			return array(
+				'status' => false,
+				//TODO: appropriate messages. 
+				'message' => "$transaction : Failed failed pre-process checks. Somebody PLEASE override me!",
+				'errors' => array(
+					'1000000' => 'pre-process failed you.' //...stupid code.
+				),
+				'action' => $this->action,
+			);
+		}
+
+		// expose a hook for external handling of trxns ready for processing
+		wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
+
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$this->getStopwatch( "buildRequestXML" );
@@ -369,12 +392,19 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->setTransactionResult( $this->getResponseStatus( $formatted ), 'status' );
 
 		//set errors
+		//TODO: This "errors" business is becoming a bit of a misnomer, as the result code and message
+		//are frequently packaged togther in the same place, whether the transaction passed or failed. 
 		$this->setTransactionResult( $this->getResponseErrors( $formatted ), 'errors' );
 
 		//if we're still okay (hey, even if we're not), get relevent dataz.
-		$this->setTransactionResult( $this->getResponseData( $formatted ), 'data' );
+		$pulled_data = $this->getResponseData( $formatted );
+		$this->setTransactionResult( $pulled_data, 'data' );
 
-		$this->processResponse( $formatted );
+		// expose a hook for any post processing
+		wfRunHooks( 'GatewayPostProcess', array( &$this ) ); //conversion log (at least)
+
+		$this->processResponse( $pulled_data );
+		$this->dataObj->unsetEditToken();
 
 		//TODO: Actually pull these from somewhere legit. 
 		if ( $this->getTransactionStatus() === true ) {
@@ -384,6 +414,9 @@ abstract class GatewayAdapter implements GatewayType {
 		} else {
 			$this->setTransactionResult( "$transaction Transaction... weird. I have no idea what happened there.", 'message' );
 		}
+
+		// log that the transaction is essentially complete
+		self::log( $this->getData( 'order_id' ) . " Transaction complete." );
 
 		return $this->getTransactionAllResults();
 
@@ -821,7 +854,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @return string|false
 	 */
 	public function getTransactionType() {
-		
+
 		return $this->transaction_type;
 	}
 
@@ -831,12 +864,12 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @param string|false $transaction_type
 	 */
 	public function setTransactionType( $transaction_type ) {
-		
+
 		$transaction_type = empty( $transaction_type ) ? false : $transaction_type;
-		
+
 		$this->transaction_type = $transaction_type;
 	}
-	
+
 	public function getTransactionAllResults() {
 		if ( !empty( $this->transaction_results ) && is_array( $this->transaction_results ) ) {
 			return $this->transaction_results;
@@ -932,5 +965,33 @@ abstract class GatewayAdapter implements GatewayType {
 
 	public function unsetActionHash() {
 		$this->dataObj->expunge( 'action' );
-	}	
+	}
+
+	function runPreProcess() {
+
+		// allow any external validators to have their way with the data
+		self::log( $this->getData( 'order_id' ) . " Preparing to query MaxMind" );
+		wfRunHooks( 'GatewayValidate', array( &$this ) );
+		self::log( $this->getData( 'order_id' ) . ' Finished querying Maxmind' );
+
+		// if the transaction was flagged for review
+		if ( $this->action == 'review' ) {
+			// expose a hook for external handling of trxns flagged for review
+			wfRunHooks( 'GatewayReview', array( &$this ) );
+		}
+
+		// if the transaction was flagged to be 'challenged'
+		if ( $this->action == 'challenge' ) {
+			// expose a hook for external handling of trxns flagged for challenge (eg captcha)
+			wfRunHooks( 'GatewayChallenge', array( &$this ) );
+		}
+
+		// if the transaction was flagged for rejection
+		if ( $this->action == 'reject' ) {
+			// expose a hook for external handling of trxns flagged for rejection
+			wfRunHooks( 'GatewayReject', array( &$this ) );
+			$this->dataObj->unsetEditToken();
+		}
+	}
+
 }

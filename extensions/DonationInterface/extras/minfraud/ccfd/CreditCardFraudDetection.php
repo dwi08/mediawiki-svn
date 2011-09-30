@@ -28,8 +28,8 @@ class CreditCardFraudDetection extends HTTPBase {
 	var $API_VERSION;
 
 	function __construct( &$gateway_adapter ) {
-		parent::__construct( &$gateway_adapter );
-		$this->isSecure = 1;	// use HTTPS by default
+		parent::__construct( $gateway_adapter );
+		$this->isSecure = 1; // use HTTPS by default
 		// set the allowed_fields hash
 		$this->allowed_fields["i"] = 1;
 		$this->allowed_fields["domain"] = 1;

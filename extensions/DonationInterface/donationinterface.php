@@ -20,8 +20,17 @@ $wgExtensionCredits['specialpage'][] = array(
 
 $donationinterface_dir = dirname( __FILE__ ) . '/';
 
+//TODO: It may be a good idea to make all these stop behaving like they're independent extensions. 
+//Better yet, we should decide if they're a required part of this or not, 
+//and split 'em entirely off, or roll 'em all the way in to this file. 
 require_once( $donationinterface_dir . 'donate_interface/donate_interface.php' );
 require_once( $donationinterface_dir . 'activemq_stomp/activemq_stomp.php' );
+
+require_once( $donationinterface_dir . 'extras/extras.php' );
+require_once( $donationinterface_dir . 'extras/custom_filters/custom_filters.php' );
+require_once( $donationinterface_dir . 'extras/conversion_log/conversion_log.php' );
+require_once( $donationinterface_dir . 'extras/minfraud/minfraud.php' );
+require_once( $donationinterface_dir . 'extras/recaptcha/recaptcha.php' );
 
 
 /**
