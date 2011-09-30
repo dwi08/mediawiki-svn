@@ -216,16 +216,16 @@ function getAveReviewTimesAnons( $dbr, $dbCache ) {
 	$sql = "
 		SELECT
 			MIN(rev_timestamp) AS rt, MAX(p.fr_timestamp) AS pft, MIN(n.fr_timestamp) AS nft
-		FROM $revision
+		FROM $revision FORCE INDEX (user_timestamp)
 		INNER JOIN $page FORCE INDEX (PRIMARY) ON
 			(page_id = rev_page AND page_namespace IN ($reviewableNS))
-		INNER JOIN $flaggedrevs AS p FORCE INDEX (PRIMARY) ON
+		INNER JOIN $flaggedrevs AS p FORCE INDEX (page_rev) ON
 			(p.fr_page_id = page_id AND p.fr_rev_id < rev_id AND p.fr_timestamp < rev_timestamp)
-		LEFT JOIN $flaggedrevs AS n FORCE INDEX (PRIMARY) ON
+		LEFT JOIN $flaggedrevs AS n FORCE INDEX (page_rev) ON
 			(n.fr_page_id = page_id AND n.fr_rev_id >= rev_id AND n.fr_timestamp >= rev_timestamp)
 		WHERE
 			((rev_user = 0) AND ($timeCondition) AND ((rev_id % $mod) = 0))
-		GROUP BY rev_id";
+		GROUP BY rev_timestamp,rev_id";
 	# Actually run the query...
 	$res = $dbr->doQuery( $sql, __METHOD__ );
 	$secondsR = 0; // total wait seconds for edits later reviewed
