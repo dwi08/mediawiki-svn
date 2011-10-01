@@ -186,8 +186,8 @@ class ApiRollback extends ApiBase {
 
 	public function getExamples() {
 		return array(
-			'api.php?action=rollback&title=Main%20Page&user=Catrope&token=123ABC',
-			'api.php?action=rollback&title=Main%20Page&user=217.121.114.116&token=123ABC&summary=Reverting%20vandalism&markbot=1'
+			'api.php?action=rollback&title=Main%20Page&user=Catrope&token=' . EXAMPLE_TOKEN,
+			'api.php?action=rollback&title=Main%20Page&user=217.121.114.116&token=' . EXAMPLE_TOKEN . '&summary=Reverting%20vandalism&markbot=1'
 		);
 	}
 

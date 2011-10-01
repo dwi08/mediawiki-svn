@@ -106,7 +106,7 @@ class ApiPatrol extends ApiBase {
 
 	public function getExamples() {
 		return array(
-			'api.php?action=patrol&token=123abc&rcid=230672766'
+			'api.php?action=patrol&token=' . EXAMPLE_TOKEN . '&rcid=230672766'
 		);
 	}
 
