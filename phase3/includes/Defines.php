@@ -254,4 +254,4 @@ define( 'PROTO_INTERNAL', 2 );
 /**
  * Common example strings for api examples
  */
-define( 'EXAMPLE_TOKEN', 'abcdef123456789ab12ab12cd45ef78' ); //in case that way how token looks change it would save us a lot of work rewriting all examples
+define( 'EXAMPLE_TOKEN', 'abcdef123456789ab12ab12cd45ef78%2B%5C' ); //in case that way how token looks change it would save us a lot of work rewriting all examples
