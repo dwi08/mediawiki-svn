@@ -155,7 +155,7 @@ class ApiUndelete extends ApiBase {
 	public function getExamples() {
 		return array(
 			'api.php?action=undelete&title=Main%20Page&token=' . EXAMPLE_TOKEN . '&reason=Restoring%20main%20page',
-			'api.php?action=undelete&title=Main%20Page&token=token=' . EXAMPLE_TOKEN . '&timestamps=20070703220045|20070702194856'
+			'api.php?action=undelete&title=Main%20Page&token=' . EXAMPLE_TOKEN . '&timestamps=20070703220045|20070702194856'
 		);
 	}
 
