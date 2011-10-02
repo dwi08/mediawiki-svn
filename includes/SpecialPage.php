@@ -632,17 +632,25 @@ class SpecialPage {
 	}
 
 	/**
+	 * Get the textual form of the target.
+	 * This may be from the parameter or from the target in the request
+	 */
+	public function getTargetText() {
+		$par = $this->getParameter();
+		if ( !is_null( $par ) ) {
+			return $par;
+		}
+		return $this->getRequest()->getVal( 'target', null );
+	}
+
+	/**
 	 * Get the target.
 	 * This may be from the parameter or from the target in the request
 	 * @note This cannot be getTarget because SpecialEmailUser has a static with that name
 	 */
 	public function target() {
 		if ( is_null( $this->mTargetParameter ) ) {
-			$par = $this->getParameter();
-			if ( !is_null( $par ) ) {
-				return $par;
-			}
-			$target = $this->getRequest()->getVal( 'target', null );
+			$target = $this->getTargetText();
 
 			if ( $this instanceof SpecialTitleTarget ) {
 				$target = Title::newFromURL( $target );
