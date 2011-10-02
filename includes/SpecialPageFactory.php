@@ -435,6 +435,7 @@ class SpecialPageFactory {
 
 		// Page exists, set the context
 		$page->setContext( $context );
+		$page->mParameter = $par; // FormSpecialPage uses setParameter for a separate purpose so we can't use that here
 
 		if ( !$including ) {
 			// Redirect to canonical alias for GET commands

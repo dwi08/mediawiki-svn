@@ -23,6 +23,15 @@
  */
 
 /**
+ * interface hints for the return type for target();
+ */
+interface SpecialTargeted {
+	public function executeWithTarget();
+}
+interface SpecialTitleTarget extends SpecialTargeted { public function target(); }
+interface SpecialUserTarget extends SpecialTargeted { public function target(); }
+
+/**
  * Parent special page class, also static functions for handling the special
  * page list.
  * @ingroup SpecialPage
@@ -32,6 +41,15 @@ class SpecialPage {
 	// The canonical name of this special page
 	// Also used for the default <h1> heading, @see getDescription()
 	protected $mName;
+
+	// The $par parameter text after the /
+	// @hack This is not protected because it's set from SpecialPageFactory and
+	//       we can't have a setParameter method do this because FormSpecialPage
+	//       already abused that for a different purpose.
+	var $mParameter;
+
+	// The special page's primary target if any
+	private $mTargetParameter;
 
 	// The local name of this special page
 	private $mLocalName;
@@ -530,16 +548,32 @@ class SpecialPage {
 		$this->setHeaders();
 
 		if ( $this->userCanExecute( $this->getUser() ) ) {
-			$func = $this->mFunction;
-			// only load file if the function does not exist
-			if( !is_callable($func) && $this->mFile ) {
-				require_once( $this->mFile );
+			if ( $this instanceof SpecialTargeted ) {
+				if ( $this->target() ) {
+					$this->executeWithTarget();
+				} else {
+					$this->executeWithoutTarget();
+				}
+			} else {
+				$func = $this->mFunction;
+				// only load file if the function does not exist
+				if( !is_callable($func) && $this->mFile ) {
+					require_once( $this->mFile );
+				}
+				$this->outputHeader();
+				call_user_func( $func, $par, $this );
 			}
-			$this->outputHeader();
-			call_user_func( $func, $par, $this );
 		} else {
 			$this->displayRestrictionError();
 		}
+	}
+
+	/**
+	 * Executed for a targeted special page when there is no target.
+	 * By default outputs a form that can take a target as input.
+	 */ 
+	function executeWithoutTarget() {
+		// @todo
 	}
 
 	/**
@@ -587,6 +621,39 @@ class SpecialPage {
 	 */
 	function getTitle( $subpage = false ) {
 		return self::getTitleFor( $this->mName, $subpage );
+	}
+
+	/**
+	 * Get the text from the special page title passed after the /
+	 * @return String
+	 */
+	function getParameter() {
+		return $this->mParameter;
+	}
+
+	/**
+	 * Get the target.
+	 * This may be from the parameter or from the target in the request
+	 * @note This cannot be getTarget because SpecialEmailUser has a static with that name
+	 */
+	public function target() {
+		if ( is_null( $this->mTargetParameter ) ) {
+			$par = $this->getParameter();
+			if ( !is_null( $par ) ) {
+				return $par;
+			}
+			$target = $this->getRequest()->getVal( 'target', null );
+
+			if ( $this instanceof SpecialTitleTarget ) {
+				$target = Title::newFromURL( $target );
+			} elseif ( $this instanceof SpecialUserTarget ) {
+				$target = User::newFromName( $target );
+			}
+
+			$this->mTargetParameter = $target;
+		}
+		
+		return $this->mTargetParameter;
 	}
 
 	/**

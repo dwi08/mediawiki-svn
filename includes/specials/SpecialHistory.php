@@ -26,22 +26,17 @@
  *
  * @ingroup SpecialPage
  */
-class SpecialHistory extends UnlistedSpecialPage { // XXX: Should this be listed or unlisted?
+class SpecialHistory extends UnlistedSpecialPage implements SpecialTitleTarget { // XXX: Should this be listed or unlisted?
 
 	function __construct() {
 		parent::__construct( 'History' );
 	}
 
-	function execute( $par ) {
-		$title = Title::newFromText( $par );
-		if ( $title ) {
-			$context = new DerivativeContext( $this->getContext() );
-			$context->setTitle( $title );
-			$history = new HistoryPage( $context );
-			$history->history();
-		}
-		
-		
+	function executeWithTarget() {
+		$context = new DerivativeContext( $this->getContext() );
+		$context->setTitle( $this->target() );
+		$history = new HistoryPage( $context );
+		$history->history();
 	}
 
 }
