@@ -808,8 +808,7 @@ HTML tags لوڑے.',",
 'linksearch-line' => '$1 مربوط شیر $2 ری',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'نوشتۂ آمد صارف',
-'newuserlog-create-entry' => 'نوغ یوزر',
+'newuserlogpage' => 'نوشتۂ آمد صارف',
 
 # Special:ListGroupRights
 'listgrouprights-members' => 'ممبارانن فھرست',
@@ -1008,9 +1007,6 @@ HTML tags لوڑے.',",
 'tooltip-rollback'                => '"رول بیک" ای کلکا صفحو واپس سابقہ حالتہ گنی آلوی',
 'tooltip-undo'                    => '"واپس" یا لوظ آچیا کلک کوریکو سوم جستہ تہ صفحہ کچا تہ پشینو بوی ھے سوم جستہ تو واپس کوریکو وجہ نیویشیکو بوس',
 'tooltip-summary'                 => 'ای مختصار سمری ساوزاوے',
-
-# Patrol log
-'patrol-log-diff' => '$1 نظرثانی',
 
 # Browsing diffs
 'previousdiff' => ' ← پرانو تدوین',

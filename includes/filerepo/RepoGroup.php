@@ -377,12 +377,27 @@ class RepoGroup {
 	/**
 	 * Limit cache memory
 	 */
-	function trimCache() {
+	protected function trimCache() {
 		while ( count( $this->cache ) >= self::MAX_CACHE_SIZE ) {
 			reset( $this->cache );
 			$key = key( $this->cache );
 			wfDebug( __METHOD__.": evicting $key\n" );
 			unset( $this->cache[$key] );
+		}
+	}
+
+	/**
+	 * Clear RepoGroup process cache used for finding a file
+	 * @param $title Title|null Title of the file or null to clear all files
+	 */
+	public function clearCache( Title $title = null ) {
+		if ( $title == null ) {
+			$this->cache = array();
+		} else {
+			$dbKey = $title->getDBkey();
+			if ( isset( $this->cache[$dbKey] ) ) {
+				unset( $this->cache[$dbKey] );
+			}
 		}
 	}
 }

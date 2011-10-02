@@ -224,6 +224,8 @@ abstract class DatabaseBase implements DatabaseType {
 	protected $mDefaultBigSelects = null;
 	protected $mSchemaVars = false;
 
+	protected $preparedArgs;
+
 # ------------------------------------------------------------------------------
 # Accessors
 # ------------------------------------------------------------------------------
@@ -290,7 +292,7 @@ abstract class DatabaseBase implements DatabaseType {
 	 * code should use lastErrno() and lastError() to handle the
 	 * situation as appropriate.
 	 *
-	 * @param $ignoreErrors
+	 * @param $ignoreErrors bool|null
 	 *
 	 * @return The previous value of the flag.
 	 */
@@ -433,6 +435,8 @@ abstract class DatabaseBase implements DatabaseType {
 	/**
 	 * Returns true if this database does an implicit order by when the column has an index
 	 * For example: SELECT page_title FROM page LIMIT 1
+	 *
+	 * @return bool
 	 */
 	function implicitOrderby() {
 		return true;
@@ -530,6 +534,10 @@ abstract class DatabaseBase implements DatabaseType {
 
 	/**
 	 * General read-only accessor
+	 *
+	 * @param $name string
+	 *
+	 * @return string
 	 */
 	function getProperty( $name ) {
 		return $this->$name;
@@ -597,6 +605,17 @@ abstract class DatabaseBase implements DatabaseType {
 
 		if ( $user ) {
 			$this->open( $server, $user, $password, $dbName );
+		}
+	}
+
+ 	/**
+	 * Called by unserialize. Needed to reopen DB connection, which
+	 * is not saved by serialize.
+	 */
+	public function __wakeup() {
+        if ( $this->isOpen() ) {
+			$this->open( $this->mServer, $this->mUser,
+				     $this->mPassword, $this->mDBname);
 		}
 	}
 
@@ -707,7 +726,7 @@ abstract class DatabaseBase implements DatabaseType {
 	 * The DBMS-dependent part of query()
 	 *
 	 * @param  $sql String: SQL query.
-	 * @return Result object to feed to fetchObject, fetchRow, ...; or false on failure
+	 * @return ResultWrapper Result object to feed to fetchObject, fetchRow, ...; or false on failure
 	 */
 	protected abstract function doQuery( $sql );
 
@@ -1182,7 +1201,6 @@ abstract class DatabaseBase implements DatabaseType {
 	 * @param $options Array Query options
 	 * @param $join_conds Array Join conditions
 	 *
-	 *
 	 * @param $table string|array
 	 *
 	 * May be either an array of table names, or a single string holding a table
@@ -1349,7 +1367,7 @@ abstract class DatabaseBase implements DatabaseType {
 				$from = ' FROM ' . implode( ',', $this->tableNamesWithAlias( $table ) );
 			}
 		} elseif ( $table != '' ) {
-			if ( $table { 0 } == ' ' ) {
+			if ( $table[0] == ' ' ) {
 				$from = ' FROM ' . $table;
 			} else {
 				$from = ' FROM ' . $this->tableName( $table );
@@ -1429,8 +1447,8 @@ abstract class DatabaseBase implements DatabaseType {
 	 * Takes the same arguments as DatabaseBase::select().
 	 *
 	 * @param $table String: table name
-	 * @param $vars Array: unused
-	 * @param $conds Array: filters on the table
+	 * @param Array|string $vars : unused
+	 * @param Array|string $conds : filters on the table
 	 * @param $fname String: function name for profiling
 	 * @param $options Array: options for select
 	 * @return Integer: row count
@@ -1594,7 +1612,7 @@ abstract class DatabaseBase implements DatabaseType {
 	 *
 	 * @param $table   String Table name. This will be passed through
 	 *                 DatabaseBase::tableName().
-	 * @param $a	   Array of rows to insert
+	 * @param $a       Array of rows to insert
 	 * @param $fname   String Calling function name (use __METHOD__) for logs/profiling
 	 * @param $options Array of options
 	 *
@@ -1787,39 +1805,6 @@ abstract class DatabaseBase implements DatabaseType {
 				$conds[] = $this->makeList(
 					array( $baseKey => $base, $subKey => array_keys( $sub ) ),
 					LIST_AND );
-			}
-		}
-
-		if ( $conds ) {
-			return $this->makeList( $conds, LIST_OR );
-		} else {
-			// Nothing to search for...
-			return false;
-		}
-	}
-
-	/**
-	 * Build a partial where clause from a 3-d array
-	 * The keys on each level may be either integers or strings.
-	 *
-	 * @param $data Array: organized as 3-d array(baseKeyVal => array(middleKeyVal => array(subKeyVal => <ignored>, ...), ...), ...)
-	 * @param $baseKey String: field name to match the base-level keys to (eg 'gtl_to_prefix')
-	 * @param $middleKey String: field name to match the middle-level keys to (eg 'gtl_to_namespace')
-	 * @param $subKey String: field name to match the sub-level keys to (eg 'gtl_to_title')
-	 * @return Mixed: string SQL fragment, or false if no items in array.
-	 */
-	function makeWhereFrom3d( $data, $baseKey, $middleKey, $subKey ) {
-		$conds = array();
-		foreach ( $data as $base => $subdata ) {
-			foreach ( $subdata as $middle => $sub ) {
-				if ( count( $sub ) ) {
-					$conds[] = $this->makeList(
-						array( $baseKey => $base,
-							$middleKey => $middle,
-							$subKey => array_keys( $sub ) ),
-						LIST_AND
-					);
-				}
 			}
 		}
 
@@ -3109,7 +3094,7 @@ abstract class DatabaseBase implements DatabaseType {
 				continue;
 			}
 
-			if ( '-' == $line { 0 } && '-' == $line { 1 } ) {
+			if ( '-' == $line[0] && '-' == $line[1] ) {
 				continue;
 			}
 
@@ -3124,7 +3109,7 @@ abstract class DatabaseBase implements DatabaseType {
 				}
 			}
 			elseif ( !$dollarquote ) {
-				if ( ';' == $line { $sl } && ( $sl < 2 || ';' != $line { $sl - 1 } ) ) {
+				if ( ';' == $line[$sl] && ( $sl < 2 || ';' != $line[$sl - 1] ) ) {
 					$done = true;
 					$line = substr( $line, 0, $sl );
 				}

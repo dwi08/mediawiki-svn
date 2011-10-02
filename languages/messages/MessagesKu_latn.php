@@ -480,6 +480,7 @@ Hesabê te hate afirandin. Tu dikarî niha [[Special:Preferences|tercîhên xwe 
 'wrongpasswordempty'         => 'Cihê şîfreya te vala ye. Carekê din binivisîne.',
 'passwordtooshort'           => 'Şîfreya te netê qebûlkirin: Şîfreya te gereke bi kêmani {{PLURAL:$1|nîşaneka|$1 nîşanên}} xwe hebe û ne wek navî tê wek bikarhêner be.',
 'password-name-match'        => 'Divê şîfreya te ji navê te yê bikaranînê cuda be.',
+'password-login-forbidden'   => 'Bikaranîna vî navî û vê şîfreyê hatiye qedexekirin.',
 'mailmypassword'             => 'Şîfreyeke nû bi e-mail ji min re bişîne',
 'passwordremindertitle'      => 'Şîfreyakekî nuh ji hesabekî {{SITENAME}} ra',
 'passwordremindertext'       => 'Kesek (têbê tu, bi IP\'ya $1) xwast ku şîfreyekî nuh ji {{SITENAME}} ($4) ji te ra were şandin. Şîfreya nuh ji bikarhêner "$2" niha "$3" e. Tu dikarî niha têkevê û şîfreya xwe biguherînê.
@@ -702,6 +703,7 @@ Sedema qedexekirina $3 ev e: ''$2''",
 'currentrev'             => 'Guhertoya niha',
 'currentrev-asof'        => 'Guhertoya herî kevn a $1',
 'revisionasof'           => 'Guhertoya $1',
+'revision-info'          => 'Guhertoya $1 ya ji aliyê $2 ve',
 'previousrevision'       => '←Guhertoya kevintir',
 'nextrevision'           => 'Guhertoya nûtir→',
 'currentrevisionlink'    => 'Guhertoya niha nîşan bide',
@@ -710,7 +712,7 @@ Sedema qedexekirina $3 ev e: ''$2''",
 'last'                   => 'berê',
 'page_first'             => 'yekemîn',
 'page_last'              => 'paşîn',
-'histlegend'             => 'Nivîsar: (cudahî) = cudahiya nav vê û versiyona niha,
+'histlegend'             => 'Rênîşan: (cudahî) = cudahiya nav vê û versiyona niha,
 (berê) = cudahiya nav vê û ya berî vê, B = guhertina biçûk',
 'history-fieldset-title' => 'Li dîrokê bigere',
 'history-show-deleted'   => 'Tenê yên jêbirî',
@@ -844,6 +846,7 @@ Sedema qedexekirina $3 ev e: ''$2''",
 'prefs-skin'                  => 'Pêste',
 'skin-preview'                => 'Pêşdîtin',
 'datedefault'                 => 'Tercih tune ne',
+'prefs-beta'                  => "Taybetmendiyên Beta'yê",
 'prefs-datetime'              => 'Dîrok û dem',
 'prefs-personal'              => 'Profîla bikarhêner',
 'prefs-rc'                    => 'Guherandinên dawî',
@@ -862,6 +865,7 @@ Sedema qedexekirina $3 ev e: ''$2''",
 'rows'                        => 'Rêz',
 'columns'                     => 'Stûn:',
 'searchresultshead'           => 'Lê bigere',
+'recentchangesdays-max'       => 'Herî zêde $1 {{PLURAL:$1|roj|rojan}}',
 'savedprefs'                  => 'Tercîhên te qeyd kirî ne.',
 'timezonelegend'              => 'Herêma demê:',
 'localtime'                   => 'Dema herêmî',
@@ -1099,7 +1103,8 @@ Xêra xwe navekî din bibîne.",
 'upload-failure-subj'     => 'Pirsgirêka barkirinê',
 'upload-warning-subj'     => 'Hişyariya barkirinê',
 
-'upload-file-error' => 'Çewtiya navxweyî',
+'upload-file-error'   => 'Çewtiya navxweyî',
+'upload-unknown-size' => 'Mezinahiya nayê zanîn',
 
 'license'           => 'Lîsens:',
 'license-header'    => 'Lîsens:',
@@ -1138,6 +1143,7 @@ Xêra xwe navekî din bibîne.",
 
 # File reversion
 'filerevert'         => '"$1" şondabike',
+'filerevert-legend'  => 'Pelê vegerîne',
 'filerevert-comment' => 'Sedem:',
 'filerevert-submit'  => 'Şûnde vegerîne',
 
@@ -1257,7 +1263,7 @@ Xêra xwe navekî din bibîne.",
 'speciallogtitlelabel' => 'Sernav:',
 'log'                  => 'Têketin',
 'all-logs-page'        => 'Hemû têketin',
-'alllogstext'          => 'Ev nîşandana hemû têketinên {{SITENAME}} e.
+'alllogstext'          => 'Hemû têketinên {{SITENAME}} li jêr tên nîşandan.
 Tu dikarî ji xwe re têketinekê hilbijêrî, navê bikarhêneriyê an navê rûpelekê binivîse û agahiyan li ser wê bibîne.',
 'logempty'             => 'Tiştek di vir de nîne.',
 'log-title-wildcard'   => 'Li sernavan bigere, yê bi vê destpêdikin',
@@ -1309,8 +1315,7 @@ Li [[Special:WantedCategories|kategoriyên xwestî]] binêre.',
 'activeusers-noresult'   => 'Tu bikarhêner nehate dîtin.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Çêkirina hesabê nû',
-'newuserlog-create-entry' => 'Bikarhênerê/a nû',
+'newuserlogpage' => 'Çêkirina hesabê nû',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Mafên koma bikarhêner',
@@ -1767,7 +1772,7 @@ Rûpela "[[:$1]]" berê heye. Tu rast dixazê wê jêbibê ji bo navguherandinê
 'tooltip-t-recentchangeslinked'   => 'Recent changes in pages linking to this page',
 'tooltip-feed-rss'                => "RSS feed'ên ji bo rûpelê",
 'tooltip-feed-atom'               => "Atom feed'ên ji bo vê rûpelê",
-'tooltip-t-contributions'         => 'Lîsteya tevkarîyên vê bikarhênerê/î bibîne',
+'tooltip-t-contributions'         => 'Lîsteya beşdariyên bikarhêner bibîne',
 'tooltip-t-emailuser'             => 'Jê re name bişîne',
 'tooltip-t-upload'                => 'Wêneyan bar bike',
 'tooltip-t-specialpages'          => 'Lîsteya hemû rûpelên taybetî',
@@ -1871,9 +1876,6 @@ if (wgUserLanguage == "ku-arab")
 
 # Patrol log
 'patrol-log-page' => 'Têketina kontrolkirinê',
-'patrol-log-line' => '$1 ji $2 hate kontrolkirin $3',
-'patrol-log-auto' => '(otomatîk)',
-'patrol-log-diff' => 'revîzyona $1',
 
 # Image deletion
 'deletedrevision'                 => 'Guhertoya berê $1 hate jêbirin.',

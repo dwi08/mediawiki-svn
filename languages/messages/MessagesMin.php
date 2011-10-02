@@ -965,8 +965,7 @@ Deskripsi dari [$2 laman deskripsi berkas] ditampilkan di bawah.',
 'linksearch-line' => '$1 tapauik dari $2',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Log pangguno baru',
-'newuserlog-create-entry' => 'Mendaftar sabagai pangguno',
+'newuserlogpage' => 'Log pangguno baru',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(senarai anggota)',
@@ -1191,10 +1190,6 @@ Awak hanyo buliah lihek sumber se',
 
 # Metadata
 'notacceptable' => 'Layanan wiki indak manyadioan data dalam format yang dapek dibaco dek pelanggan awak.',
-
-# Patrol log
-'patrol-log-line' => 'manandoi $1 dari $2 nan tajago $3',
-'patrol-log-diff' => 'revisi $1',
 
 # Browsing diffs
 'previousdiff' => '← Revisi sabalunnyo',

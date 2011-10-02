@@ -53,7 +53,13 @@ class FakeConverter {
  * @ingroup Language
  */
 class Language {
-	var $mConverter, $mVariants, $mCode, $mLoaded = false;
+
+	/**
+	 * @var LanguageConverter
+	 */
+	var $mConverter;
+
+	var $mVariants, $mCode, $mLoaded = false;
 	var $mMagicExtensions = array(), $mMagicHookDone = false;
 
 	var $mNamespaceIds, $namespaceNames, $namespaceAliases;
@@ -232,7 +238,7 @@ class Language {
 
 	/**
 	 * Includes language class files
-	 * 
+	 *
 	 * @param $class Name of the language class
 	 */
 	public static function preloadLanguageClass( $class ) {
@@ -341,7 +347,7 @@ class Language {
 			}
 
 			# Sometimes a language will be localised but not actually exist on this wiki.
-			foreach( $this->namespaceNames as $key => $text ) {
+			foreach ( $this->namespaceNames as $key => $text ) {
 				if ( !isset( $validNamespaces[$key] ) ) {
 					unset( $this->namespaceNames[$key] );
 				}
@@ -409,7 +415,9 @@ class Language {
 	 * @since 1.18
 	 */
 	function getGenderNsText( $index, $gender ) {
-		$ns = self::$dataCache->getItem( $this->mCode, 'namespaceGenderAliases' );
+		global $wgExtraGenderNamespaces;
+
+		$ns = $wgExtraGenderNamespaces + self::$dataCache->getItem( $this->mCode, 'namespaceGenderAliases' );
 		return isset( $ns[$index][$gender] ) ? $ns[$index][$gender] : $this->getNsText( $index );
 	}
 
@@ -420,8 +428,19 @@ class Language {
 	 * @since 1.18
 	 */
 	function needsGenderDistinction() {
-		$aliases = self::$dataCache->getItem( $this->mCode, 'namespaceGenderAliases' );
-		return count( $aliases ) > 0;
+		global $wgExtraGenderNamespaces, $wgExtraNamespaces;
+		if ( count( $wgExtraGenderNamespaces ) > 0 ) {
+			// $wgExtraGenderNamespaces overrides everything
+			return true;
+		} elseif ( isset( $wgExtraNamespaces[NS_USER] ) && isset( $wgExtraNamespaces[NS_USER_TALK] ) ) {
+			/// @todo There may be other gender namespace than NS_USER & NS_USER_TALK in the future
+			// $wgExtraNamespaces overrides any gender aliases specified in i18n files
+			return false;
+		} else {
+			// Check what is in i18n files
+			$aliases = self::$dataCache->getItem( $this->mCode, 'namespaceGenderAliases' );
+			return count( $aliases ) > 0;
+		}
 	}
 
 	/**
@@ -456,7 +475,8 @@ class Language {
 				}
 			}
 
-			$genders = self::$dataCache->getItem( $this->mCode, 'namespaceGenderAliases' );
+			global $wgExtraGenderNamespaces;
+			$genders = $wgExtraGenderNamespaces + self::$dataCache->getItem( $this->mCode, 'namespaceGenderAliases' );
 			foreach ( $genders as $index => $forms ) {
 				foreach ( $forms as $alias ) {
 					$aliases[$alias] = $index;
@@ -494,7 +514,6 @@ class Language {
 		return $this->mNamespaceIds;
 	}
 
-
 	/**
 	 * Get a namespace key by value, case insensitive.  Canonical namespace
 	 * names override custom ones defined for the current language.
@@ -504,7 +523,8 @@ class Language {
 	 */
 	function getNsIndex( $text ) {
 		$lctext = $this->lc( $text );
-		if ( ( $ns = MWNamespace::getCanonicalIndex( $lctext ) ) !== null ) {
+		$ns = MWNamespace::getCanonicalIndex( $lctext );
+		if ( $ns !== null ) {
 			return $ns;
 		}
 		$ids = $this->getNamespaceIds();
@@ -515,15 +535,17 @@ class Language {
 	 * short names for language variants used for language conversion links.
 	 *
 	 * @param $code String
-	 * @param $usemsg Use the "variantname-xyz" message if it exists
+	 * @param $usemsg bool Use the "variantname-xyz" message if it exists
 	 * @return string
 	 */
 	function getVariantname( $code, $usemsg = true ) {
 		$msg = "variantname-$code";
-		$codeArray = list( $rootCode ) = explode( '-', $code );
-		if( $usemsg && wfMessage( $msg )->exists() ) {
+		list( $rootCode ) = explode( '-', $code );
+		if ( $usemsg && wfMessage( $msg )->exists() ) {
 			return $this->getMessageFromDB( $msg );
-		} elseif( $name = self::getLanguageName( $code ) ) {
+		}
+		$name = self::getLanguageName( $code );
+		if ( $name ) {
 			return $name; # if it's defined as a language name, show that
 		} else {
 			# otherwise, output the language code
@@ -702,7 +724,7 @@ class Language {
 	 */
 	function getMonthNamesArray() {
 		$monthNames = array( '' );
-		for ( $i=1; $i < 13; $i++ ) {
+		for ( $i = 1; $i < 13; $i++ ) {
 			$monthNames[] = $this->getMonthName( $i );
 		}
 		return $monthNames;
@@ -729,7 +751,7 @@ class Language {
 	 */
 	function getMonthAbbreviationsArray() {
 		$monthNames = array( '' );
-		for ( $i=1; $i < 13; $i++ ) {
+		for ( $i = 1; $i < 13; $i++ ) {
 			$monthNames[] = $this->getMonthAbbreviation( $i );
 		}
 		return $monthNames;
@@ -1254,7 +1276,6 @@ class Language {
 			+ floor( ( $gy + 3 ) / 4 )
 			- floor( ( $gy + 99 ) / 100 )
 			+ floor( ( $gy + 399 ) / 400 );
-
 
 		// Add days of the past months of this year
 		for ( $i = 0; $i < $gm; $i++ ) {
@@ -2405,7 +2426,7 @@ class Language {
 	function getDirMark( $opposite = false ) {
 		$rtl = "\xE2\x80\x8F";
 		$ltr = "\xE2\x80\x8E";
-		if( $opposite ) { return $this->isRTL() ? $ltr : $rtl; }
+		if ( $opposite ) { return $this->isRTL() ? $ltr : $rtl; }
 		return $this->isRTL() ? $rtl : $ltr;
 	}
 
@@ -2585,12 +2606,54 @@ class Language {
 
 	/**
 	 * Adds commas to a given number
-	 *
+	 * @since 1.19
 	 * @param $_ mixed
 	 * @return string
 	 */
 	function commafy( $_ ) {
-		return strrev( (string)preg_replace( '/(\d{3})(?=\d)(?!\d*\.)/', '$1,', strrev( $_ ) ) );
+		$digitGroupingPattern = $this->digitGroupingPattern();
+
+		if ( !$digitGroupingPattern || $digitGroupingPattern === "###,###,###" ) {
+			// default grouping is at thousands,  use the same for ###,###,### pattern too.
+			return strrev( (string)preg_replace( '/(\d{3})(?=\d)(?!\d*\.)/', '$1,', strrev( $_ ) ) );
+		} else {
+			// Ref: http://cldr.unicode.org/translation/number-patterns
+			$numberpart = array();
+			$decimalpart = array();
+			$numMatches = preg_match_all( "/(#+)/", $digitGroupingPattern, $matches );
+			preg_match( "/\d+/", $_, $numberpart );
+			preg_match( "/\.\d*/", $_, $decimalpart );
+			$groupedNumber = ( count( $decimalpart ) > 0 ) ? $decimalpart[0]:"";
+			if ( $groupedNumber  === $_ ) {
+				// the string does not have any number part. Eg: .12345
+				return $groupedNumber;
+			}
+			$start = $end = strlen( $numberpart[0] );
+			while ( $start > 0 ) {
+				$match = $matches[0][$numMatches -1] ;
+				$matchLen = strlen( $match );
+				$start = $end - $matchLen;
+				if ( $start < 0 ) {
+					$start = 0;
+				}
+				$groupedNumber = substr( $_ , $start, $end -$start ) . $groupedNumber ;
+				$end = $start;
+				if ( $numMatches > 1 ) {
+					// use the last pattern for the rest of the number
+					$numMatches--;
+				}
+				if ( $start > 0 ) {
+					$groupedNumber = "," . $groupedNumber;
+				}
+			}
+			return $groupedNumber;
+		}
+	}
+	/**
+	 * @return String
+	 */
+	function digitGroupingPattern() {
+		return self::$dataCache->getItem( $this->mCode, 'digitGroupingPattern' );
 	}
 
 	/**
@@ -3040,7 +3103,7 @@ class Language {
 	 */
 	function translateBlockExpiry( $str ) {
 		$duration = SpecialBlock::getSuggestedDurations( $this );
-		foreach( $duration as $show => $value ){
+		foreach ( $duration as $show => $value ) {
 			if ( strcmp( $str, $value ) == 0 ) {
 				return htmlspecialchars( trim( $show ) );
 			}
@@ -3050,7 +3113,7 @@ class Language {
 		// equivalents if still here.
 		$indefs = array( 'infinite', 'infinity', 'indefinite' );
 		if ( in_array( $str, $indefs ) ) {
-			foreach( $indefs as $val ) {
+			foreach ( $indefs as $val ) {
 				$show = array_search( $val, $duration, true );
 				if ( $show !== false ) {
 					return htmlspecialchars( trim( $show ) );
@@ -3333,7 +3396,7 @@ class Language {
 	}
 
 	/**
-	 * Get the first fallback for a given language. 
+	 * Get the first fallback for a given language.
 	 *
 	 * @param $code string
 	 *
@@ -3393,10 +3456,12 @@ class Language {
 	static function getMessageFor( $key, $code ) {
 		return self::getLocalisationCache()->getSubitem( $code, 'messages', $key );
 	}
-	
+
 	/**
 	 * Get all message keys for a given language. This is a faster alternative to
 	 * array_keys( Language::getMessagesFor( $code ) )
+	 *
+	 * @since 1.19
 	 * @param $code string Language code
 	 * @return array of message keys (strings)
 	 */
@@ -3465,7 +3530,7 @@ class Language {
 	 */
 	public function formatExpiry( $expiry, $format = true ) {
 		static $infinity, $infinityMsg;
-		if( $infinity === null ){
+		if ( $infinity === null ) {
 			$infinityMsg = wfMessage( 'infiniteblock' );
 			$infinity = wfGetDB( DB_SLAVE )->getInfinity();
 		}
@@ -3484,18 +3549,38 @@ class Language {
 	/**
 	 * @todo Document
 	 * @param $seconds int|float
-	 * @param $format String Optional, one of ("avoidseconds","avoidminutes"):
-	 *		"avoidseconds" - don't mention seconds if $seconds >= 1 hour
-	 *		"avoidminutes" - don't mention seconds/minutes if $seconds > 48 hours
+	 * @param $format Array Optional
+	 *		If $format['avoid'] == 'avoidseconds' - don't mention seconds if $seconds >= 1 hour
+	 *		If $format['avoid'] == 'avoidminutes' - don't mention seconds/minutes if $seconds > 48 hours
+	 *		If $format['noabbrevs'] is true - use 'seconds' and friends instead of 'seconds-abbrev' and friends
+	 *		For backwards compatibility, $format may also be one of the strings 'avoidseconds' or 'avoidminutes'
 	 * @return string
 	 */
-	function formatTimePeriod( $seconds, $format = false ) {
+	function formatTimePeriod( $seconds, $format = array() ) {
+		if ( !is_array( $format ) ) {
+			$format = array( 'avoid' => $format ); // For backwards compatibility
+		}
+		if ( !isset( $format['avoid'] ) ) {
+			$format['avoid'] = false;
+		}
+		if ( !isset( $format['noabbrevs' ] ) ) {
+			$format['noabbrevs'] = false;
+		}
+		$secondsMsg = wfMessage(
+			$format['noabbrevs'] ? 'seconds' : 'seconds-abbrev' )->inLanguage( $this );
+		$minutesMsg = wfMessage(
+			$format['noabbrevs'] ? 'minutes' : 'minutes-abbrev' )->inLanguage( $this );
+		$hoursMsg = wfMessage(
+			$format['noabbrevs'] ? 'hours' : 'hours-abbrev' )->inLanguage( $this );
+		$daysMsg = wfMessage(
+			$format['noabbrevs'] ? 'days' : 'days-abbrev' )->inLanguage( $this );
+		
 		if ( round( $seconds * 10 ) < 100 ) {
 			$s = $this->formatNum( sprintf( "%.1f", round( $seconds * 10 ) / 10 ) );
-			$s .= $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $secondsMsg->params( $s )->text();
 		} elseif ( round( $seconds ) < 60 ) {
 			$s = $this->formatNum( round( $seconds ) );
-			$s .= $this->getMessageFromDB( 'seconds-abbrev' );
+			$s = $secondsMsg->params( $s )->text();
 		} elseif ( round( $seconds ) < 3600 ) {
 			$minutes = floor( $seconds / 60 );
 			$secondsPart = round( fmod( $seconds, 60 ) );
@@ -3503,10 +3588,10 @@ class Language {
 				$secondsPart = 0;
 				$minutes++;
 			}
-			$s = $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' );
+			$s = $minutesMsg->params( $this->formatNum( $minutes ) )->text();
 			$s .= ' ';
-			$s .= $this->formatNum( $secondsPart ) . $this->getMessageFromDB( 'seconds-abbrev' );
-		} elseif ( round( $seconds ) <= 2*86400 ) {
+			$s .= $secondsMsg->params( $this->formatNum( $secondsPart ) )->text();
+		} elseif ( round( $seconds ) <= 2 * 86400 ) {
 			$hours = floor( $seconds / 3600 );
 			$minutes = floor( ( $seconds - $hours * 3600 ) / 60 );
 			$secondsPart = round( $seconds - $hours * 3600 - $minutes * 60 );
@@ -3518,25 +3603,24 @@ class Language {
 				$minutes = 0;
 				$hours++;
 			}
-			$s = $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' );
+			$s = $hoursMsg->params( $this->formatNum( $hours ) )->text();
 			$s .= ' ';
-			$s .= $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' );
-			if ( !in_array( $format, array( 'avoidseconds', 'avoidminutes' ) ) ) {
-				$s .= ' ' . $this->formatNum( $secondsPart ) .
-					$this->getMessageFromDB( 'seconds-abbrev' );
+			$s .= $minutesMsg->params( $this->formatNum( $minutes ) )->text();
+			if ( !in_array( $format['avoid'], array( 'avoidseconds', 'avoidminutes' ) ) ) {
+				$s .= ' ' . $secondsMsg->params( $this->formatNum( $secondsPart ) )->text();
 			}
 		} else {
 			$days = floor( $seconds / 86400 );
-			if ( $format === 'avoidminutes' ) {
+			if ( $format['avoid'] === 'avoidminutes' ) {
 				$hours = round( ( $seconds - $days * 86400 ) / 3600 );
 				if ( $hours == 24 ) {
 					$hours = 0;
 					$days++;
 				}
-				$s = $this->formatNum( $days ) . $this->getMessageFromDB( 'days-abbrev' );
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
 				$s .= ' ';
-				$s .= $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' );
-			} elseif ( $format === 'avoidseconds' ) {
+				$s .= $hoursMsg->params( $this->formatNum( $hours ) )->text();
+			} elseif ( $format['avoid'] === 'avoidseconds' ) {
 				$hours = floor( ( $seconds - $days * 86400 ) / 3600 );
 				$minutes = round( ( $seconds - $days * 86400 - $hours * 3600 ) / 60 );
 				if ( $minutes == 60 ) {
@@ -3547,13 +3631,13 @@ class Language {
 					$hours = 0;
 					$days++;
 				}
-				$s = $this->formatNum( $days ) . $this->getMessageFromDB( 'days-abbrev' );
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
 				$s .= ' ';
-				$s .= $this->formatNum( $hours ) . $this->getMessageFromDB( 'hours-abbrev' );
+				$s .= $hoursMsg->params( $this->formatNum( $hours ) )->text();
 				$s .= ' ';
-				$s .= $this->formatNum( $minutes ) . $this->getMessageFromDB( 'minutes-abbrev' );
+				$s .= $minutesMsg->params( $this->formatNum( $minutes ) )->text();
 			} else {
-				$s = $this->formatNum( $days ) . $this->getMessageFromDB( 'days-abbrev' );
+				$s = $daysMsg->params( $this->formatNum( $days ) )->text();
 				$s .= ' ';
 				$s .= $this->formatTimePeriod( $seconds - $days * 86400, $format );
 			}

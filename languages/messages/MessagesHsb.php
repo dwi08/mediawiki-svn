@@ -1894,12 +1894,8 @@ Hlej tež [[Special:WantedCategories|požadane kategorije]].',
 'activeusers-noresult'   => 'Žani wužiwarjo namakani.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Protokol nowych wužiwarjow',
-'newuserlogpagetext'          => 'To je protokol wutworjenja nowych wužiwarskich kontow.',
-'newuserlog-byemail'          => 'Hesło z e-mejlku pósłane',
-'newuserlog-create-entry'     => 'Nowy wužiwar',
-'newuserlog-create2-entry'    => 'Wutwori nowe konto za wužiwarja $1',
-'newuserlog-autocreate-entry' => 'Wužiwarske konto bu awtomatisce wutworjene.',
+'newuserlogpage'     => 'Protokol nowych wužiwarjow',
+'newuserlogpagetext' => 'To je protokol wutworjenja nowych wužiwarskich kontow.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Prawa wužiwarskeje skupiny',
@@ -2677,9 +2673,6 @@ W poslednim padźe móžeš tež wotkaz wužiwać, na př. „[[{{#Special:Expor
 # Patrol log
 'patrol-log-page'      => 'Protokol přepruwowanjow',
 'patrol-log-header'    => 'To je protokol dohladowanych wersijow.',
-'patrol-log-line'      => 'je $1 strony $2 jako přepruwowanu markěrował $3.',
-'patrol-log-auto'      => '(awtomatisce)',
-'patrol-log-diff'      => 'wersiju $1',
 'log-show-hide-patrol' => 'Protokol dohladowanja $1',
 
 # Image deletion
@@ -3300,9 +3293,8 @@ Ty měł [{{SERVER}}{{SCRIPTPATH}}/COPYING kopiju licency GNU General Public Lic
 'filepath'         => 'Datajowy puć',
 'filepath-page'    => 'Dataja:',
 'filepath-submit'  => 'Pytać',
-'filepath-summary' => 'Tuta specialna strona wróća dospołny puć aktualneje datajoweje wersije. Wobrazy so połnym rozeznaću pokazuja, druhe datajowe typy so ze zwjazanym programom startuja.
-
-Zapodaj datajowe mjeno bjez dodawka "{{ns:file}}:".',
+'filepath-summary' => 'Tuta specialna strona wróća dospołny puć aktualneje datajoweje wersije.
+Wobrazy so połnym rozeznaću pokazuja, druhe datajowe typy so ze zwjazanym programom startuja.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Dwójne dataje pytać',
@@ -3398,5 +3390,6 @@ Zapodaj datajowe mjeno bjez dodawka "{{ns:file}}:".',
 # New logging system
 'revdelete-restricted'   => 'na administratorow nałožene wobmjezowanja',
 'revdelete-unrestricted' => 'Wobmjezowanja za administratorow wotstronjene',
+'newuserlog-byemail'     => 'Hesło z e-mejlku pósłane',
 
 );

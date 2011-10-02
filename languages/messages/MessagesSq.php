@@ -1989,12 +1989,8 @@ Protokolle të mbështetura: <tt>$1</tt>',
 'activeusers-noresult'   => 'Asnjë përdorues nuk u gjet.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Regjistri i llogarive',
-'newuserlogpagetext'          => 'Ky është një regjistër i llogarive të fundit që janë hapur',
-'newuserlog-byemail'          => 'fjalëkalimi u dërgua në postën elektronike',
-'newuserlog-create-entry'     => 'Përdorues i ri',
-'newuserlog-create2-entry'    => 'krijoi llofari të re $1',
-'newuserlog-autocreate-entry' => 'Llogaria u hap automatikisht',
+'newuserlogpage'     => 'Regjistri i llogarive',
+'newuserlogpagetext' => 'Ky është një regjistër i llogarive të fundit që janë hapur',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Grupime përdoruesish me privilegje',
@@ -2829,9 +2825,6 @@ Ju lutemi provoni përsëri.',
 # Patrol log
 'patrol-log-page'      => 'Regjistri i patrollimeve',
 'patrol-log-header'    => 'Këto janë të dhëna të revizioneve të patrulluara.',
-'patrol-log-line'      => 'shënoi $1 të $2 të patrulluar $3',
-'patrol-log-auto'      => '(automatikisht)',
-'patrol-log-diff'      => 'versioni $1',
 'log-show-hide-patrol' => '$1 regjistri i patrollimeve',
 
 # Image deletion
@@ -2896,19 +2889,6 @@ Në qoftë se skeda është ndryshuar nga gjendja origjinale, disa hollësira mu
 'metadata-expand'   => 'Trego detajet',
 'metadata-collapse' => 'Fshih detajet',
 'metadata-fields'   => 'Imetadata fusha Image të listuara në këtë mesazh do të përfshihen në faqen shfaqur imazhin kur tryezë metadata është shembur
-* make
-* model
-* datetimeoriginal
-* exposuretime
-* fnumber
-* isospeedratings
-* focallength
-* artist
-* copyright
-* imagedescription
-* gpslatitude
-* gpslongitude
-* gpsaltitude
 * make
 * model
 * datetimeoriginal
@@ -3594,7 +3574,6 @@ Shtypni emrin e skedës pa parashtesën "Figura:".',
 'globalfileusage-text'        => 'Kërko përdorim global të dokumentit',
 'globalfileusage-no-results'  => '[[$1]] nuk është përdorur në wiki-t e tjerë.',
 'globalfileusage-on-wiki'     => 'Përdorimi në $2',
-'globalfileusage-of-file'     => 'Wiki-t e tjerë në vijim e përdorin këtë dokument:',
 'globalfileusage-more'        => 'Pamje [[{{#Special:GlobalUsage}}/$1|more global usage]] e këtij dokumenti',
 'globalfileusage-filterlocal' => 'Mos trego përdorimin lokal',
 
@@ -3605,7 +3584,6 @@ Shtypni emrin e skedës pa parashtesën "Figura:".',
 'globaltemplateusage-text'        => 'Kërko përdorim global të dokumentit',
 'globaltemplateusage-no-results'  => '[[$1]] nuk është përdorur në wiki-t e tjerë.',
 'globaltemplateusage-on-wiki'     => 'Përdorimi në $2',
-'globaltemplateusage-of-file'     => 'Wiki-t e tjerë në vijim e përdorin këtë dokument:',
 'globaltemplateusage-more'        => 'Pamje [[{{#Special:GlobalUsage}}/$1|more global usage]] e këtij dokumenti',
 'globaltemplateusage-filterlocal' => 'Mos trego përdorimin lokal',
 
@@ -3638,5 +3616,6 @@ Kjo faqe është duke përjetuar vështirësi teknike.',
 # New logging system
 'revdelete-restricted'   => 'u vendosën kufizime për administruesit',
 'revdelete-unrestricted' => 'u hoqën kufizimet për administruesit',
+'newuserlog-byemail'     => 'fjalëkalimi u dërgua në postën elektronike',
 
 );

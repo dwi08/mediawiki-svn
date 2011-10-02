@@ -992,8 +992,7 @@ Tafaasiishiisa waxee ku qorantahay [$2 bogga tafaasiisha faylka] oo ka arki kart
 'listusers-blocked'  => '(waa la mamnuucay)',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Gudagalaha Isticmaale sameeyay',
-'newuserlog-create-entry' => 'Isticmaale cusub',
+'newuserlogpage' => 'Gudagalaha Isticmaale sameeyay',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(Inta ka mid ah liiskooda)',
@@ -1256,10 +1255,6 @@ Waxaa fiiri kartaa cadaadkiisa',
 'siteuser'         => '{{SITENAME}} isticmaalaha $1',
 'lastmodifiedatby' => 'Bogaan waxaa ugu dambeyntii wax laga bedelay $2, $1 kana bedelay $3.',
 'othercontribs'    => 'Waxay ku saleysantahay shaqada $1.',
-
-# Patrol log
-'patrol-log-line' => 'waxa la calaamadeeyay  $1 ee  $2 waxaa la waardiyeeyay $3',
-'patrol-log-diff' => 'bedelaadka $1',
 
 # Browsing diffs
 'previousdiff' => '← bedelkii ka duqsanaa',

@@ -796,16 +796,18 @@ $2',
 'resetpass-temp-password'   => 'Временный пароль:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Сброс пароля',
-'passwordreset-text'           => 'Заполните эту форму, чтобы получить в письме напоминание о параметрах вашей учётной записи.',
-'passwordreset-legend'         => 'Переустановить пароль',
-'passwordreset-disabled'       => 'Функция переустановки пароля отключены на этой вики.',
-'passwordreset-pretext'        => '{{PLURAL:$1||введите один одну из частей данных, показанных ниже.}}',
-'passwordreset-username'       => 'Имя участника:',
-'passwordreset-domain'         => 'Домен:',
-'passwordreset-email'          => 'Адрес электронной почты:',
-'passwordreset-emailtitle'     => 'Сведения об учётной записи {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Кто-то (возможно вы, с IP-адреса $1) запросил напоминание о вашей
+'passwordreset'                    => 'Сброс пароля',
+'passwordreset-text'               => 'Заполните эту форму, чтобы получить в письме напоминание о параметрах вашей учётной записи.',
+'passwordreset-legend'             => 'Переустановить пароль',
+'passwordreset-disabled'           => 'Функция переустановки пароля отключены на этой вики.',
+'passwordreset-pretext'            => '{{PLURAL:$1||введите один одну из частей данных, показанных ниже.}}',
+'passwordreset-username'           => 'Имя участника:',
+'passwordreset-domain'             => 'Домен:',
+'passwordreset-capture'            => 'Просмотреть получившееся письмо?',
+'passwordreset-capture-help'       => 'Если вы установите данную отметку, то вам будет показано письмо с временным паролем, отправляемое участнику.',
+'passwordreset-email'              => 'Адрес электронной почты:',
+'passwordreset-emailtitle'         => 'Сведения об учётной записи {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Кто-то (возможно вы, с IP-адреса $1) запросил напоминание о вашей
 учётной записи в проекте {{SITENAME}} ($4).
 {{PLURAL:$3|Следующая учётная запись связана|Следующие учётные записи связаны}} с этим адресом электронной почты:
 
@@ -816,7 +818,7 @@ $2
 Если вы не делали этого запроса, или вспомнили свой исходный пароль
 и не желаете его менять, вы можете проигнорировать это сообщение
 и продолжить использовать свой старый пароль.',
-'passwordreset-emailtext-user' => 'Участник $1 из проекта {{SITENAME}} запросил напоминание о вашей
+'passwordreset-emailtext-user'     => 'Участник $1 из проекта {{SITENAME}} запросил напоминание о вашей
 учётной записи в проекте {{SITENAME}} ($4).
 {{PLURAL:$3|Следующая учётная запись связана|Следующие учётные записи связаны}} с этим адресом электронной почты:
 
@@ -827,9 +829,11 @@ $2
 Если вы не делали этого запроса, или вспомнили свой исходный пароль
 и не желаете его менять, вы можете проигнорировать это сообщение
 и продолжить использовать свой старый пароль.',
-'passwordreset-emailelement'   => 'Имя участника: $1
+'passwordreset-emailelement'       => 'Имя участника: $1
 Временный пароль: $2',
-'passwordreset-emailsent'      => 'По электронной почте было отправлено напоминание.',
+'passwordreset-emailsent'          => 'По электронной почте было отправлено напоминание.',
+'passwordreset-emailsent-capture'  => 'Ниже приведено отправленное письмо-напоминание.',
+'passwordreset-emailerror-capture' => 'Ниже приведено созданное письмо-напоминание, его отправка не удалась по причине: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Изменить адрес электронной почты',
@@ -1544,6 +1548,7 @@ $1",
 'right-siteadmin'             => 'блокировка и разблокировка базы данных',
 'right-override-export-depth' => 'экспортирование страниц, включая связанные страницы с глубиной до 5',
 'right-sendemail'             => 'отправлять электронную почту другим участникам',
+'right-passwordreset'         => 'сброс пароля участника ([[Special:PasswordReset|служебная страница]])',
 
 # User rights log
 'rightslog'                  => 'Журнал прав участника',
@@ -1867,7 +1872,7 @@ $1',
 'filehist-filesize'                 => 'Размер файла',
 'filehist-comment'                  => 'Примечание',
 'filehist-missing'                  => 'Файл отсутствует',
-'imagelinks'                        => 'Ссылки на файл',
+'imagelinks'                        => 'Использование файла',
 'linkstoimage'                      => '{{PLURAL:$1|Следующая $1 страница ссылается|Следующие $1 страницы ссылаются|Следующие $1 страниц ссылаются}} на данный файл:',
 'linkstoimage-more'                 => 'Более $1 {{PLURAL:$1|страницы|страниц|страниц}} ссылаются на этот файл.
 В данном списке {{PLURAL:$1|представлена только $1 ссылка|представлены только $1 ссылки|представлены только $1 ссылок}} на этот файл.
@@ -2130,12 +2135,8 @@ $1',
 'activeusers-noresult'   => 'Не найдено участников.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Журнал регистрации участников',
-'newuserlogpagetext'          => 'Список недавно зарегистрировавшихся участников',
-'newuserlog-byemail'          => 'пароль отправлен по эл. почте',
-'newuserlog-create-entry'     => 'Новый участник',
-'newuserlog-create2-entry'    => 'создал новую учётную запись $1',
-'newuserlog-autocreate-entry' => 'Учётная запись создана автоматически',
+'newuserlogpage'     => 'Журнал регистрации участников',
+'newuserlogpagetext' => 'Список недавно зарегистрировавшихся участников',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Права групп участников',
@@ -2984,9 +2985,6 @@ The wiki server can't provide data in a format your client can read.",
 # Patrol log
 'patrol-log-page'      => 'Журнал патрулирования',
 'patrol-log-header'    => 'Это журнал патрулированных версий.',
-'patrol-log-line'      => 'проверил $1 из $2 $3',
-'patrol-log-auto'      => '(автоматически)',
-'patrol-log-diff'      => 'версию $1',
 'log-show-hide-patrol' => '$1 журнал патрулирования',
 
 # Image deletion
@@ -3040,9 +3038,15 @@ $1',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'     => '$1, $2 × $3',
-'seconds-abbrev' => 'с',
-'minutes-abbrev' => 'м',
-'hours-abbrev'   => 'ч',
+'seconds-abbrev' => '$1 с',
+'minutes-abbrev' => '$1 м',
+'hours-abbrev'   => '$1 ч',
+'days-abbrev'    => '$1 д',
+'seconds'        => '{{PLURAL:$1|$1 секунда|$1 секунды|$1 секунд}}',
+'minutes'        => '{{PLURAL:$1|$1 минута|$1 минуты|$1 минут}}',
+'hours'          => '{{PLURAL:$1|$1 час|$1 часа|$1 часов}}',
+'days'           => '{{PLURAL:$1|$1 день|$1 дня|$1 дней}}',
+'ago'            => '$1 назад',
 
 # Bad image list
 'bad_image_list' => 'Формат должен быть следующим:
@@ -3723,9 +3727,8 @@ MediaWiki распространяется в надежде, что она бу
 'filepath'         => 'Путь к файлу',
 'filepath-page'    => 'Файл:',
 'filepath-submit'  => 'Перейти',
-'filepath-summary' => 'Данная служебная страница возвращает полный путь к файлу в том виде, в котором он хранится на диске.
-
-Введите имя файла без префикса <code>{{ns:file}}:</code>.',
+'filepath-summary' => 'Данная служебная страница возвращает полный путь к файлу.
+Изображения показываются в полном разрешении, другие типы файлов открываются напрямую в связанных с ними программах.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Поиск одинаковых файлов',
@@ -3804,7 +3807,6 @@ MediaWiki распространяется в надежде, что она бу
 'globalfileusage-text'        => 'Поиск глобального использования файла',
 'globalfileusage-no-results'  => '[[$1]] не используется в других вики.',
 'globalfileusage-on-wiki'     => 'Используется в $2',
-'globalfileusage-of-file'     => 'Следующие другие вики используют этот файл:',
 'globalfileusage-more'        => 'Просмотреть [[{{#Special:GlobalUsage}}/$1|другие глобальные использования]] этого файла.',
 'globalfileusage-filterlocal' => 'Не показывать локальное использование',
 
@@ -3815,7 +3817,6 @@ MediaWiki распространяется в надежде, что она бу
 'globaltemplateusage-text'        => 'Поиск глобального использования шаблона',
 'globaltemplateusage-no-results'  => '[[$1]] не используется в других вики.',
 'globaltemplateusage-on-wiki'     => 'Используется в $2',
-'globaltemplateusage-of-file'     => 'Следующие другие вики используют этот шаблон:',
 'globaltemplateusage-more'        => 'Просмотреть [[{{#Special:GlobalUsage}}/$1|другие глобальные использования]] этого шаблона.',
 'globaltemplateusage-filterlocal' => 'Не показывать локальное использование',
 
@@ -3845,11 +3846,35 @@ MediaWiki распространяется в надежде, что она бу
 'sqlite-no-fts'  => '$1 без поддержки полнотекстового поиска',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|удалил|удалила}} страницу $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|восстановил|восстановила}} страницу $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|изменил|изменила}} видимость {{PLURAL:$5|$5 записи журнала|$5 записей журнала|$5 записей журнала}} на $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|изменил|изменила}} видимость {{PLURAL:$5|$5 версии|$5 версий|$5 версий}} на странице $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|изменил|изменила}} видимость записей журнала $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|изменил|изменила}} видимость версий на странице $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|подавил|подавила}} страницу $3',
+'logentry-suppress-event'             => '$1 скрытно {{GENDER:$2|изменил|изменила}} видимость {{PLURAL:$5|$5 записи журнала|$5 записей журнала|$5 записей журнала}} на $3: $4',
+'logentry-suppress-revision'          => '$1 скрытно {{GENDER:$2|изменил|изменила}} видимость {{PLURAL:$5|$5 версии|$5 версий|$5 версий}} на странице $3: $4',
+'logentry-suppress-event-legacy'      => '$1 скрытно {{GENDER:$2|изменил|изменила}} видимость записей журнала $3',
+'logentry-suppress-revision-legacy'   => '$1 скрытно {{GENDER:$2|изменил|изменила}} видимость версий на странице $3',
+'revdelete-content-hid'               => 'содержание скрыто',
+'revdelete-summary-hid'               => 'описание правки скрыто',
+'revdelete-uname-hid'                 => 'имя участника скрыто',
+'revdelete-content-unhid'             => 'содержание открыто',
+'revdelete-summary-unhid'             => 'описание правки открыто',
+'revdelete-uname-unhid'               => 'имя участника открыто',
 'revdelete-restricted'                => 'ограничения применяются к администраторам',
 'revdelete-unrestricted'              => 'ограничения сняты для администраторов',
 'logentry-move-move'                  => '$1 {{GENDER:$2|переименовал|переименовала}} страницу $3 в $4',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|переименовал|переименовала}} страницу $3 в $4 без оставления перенаправления',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|переименовал|переименовала}} страницу $3 в $4 поверх перенаправления',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|переименовал|переименовала}} страницу $3 в $4 поверх перенаправления и без оставления перенаправления',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|отпатрулировал|отпатрулировала}} версию $4 страницы $3',
+'logentry-patrol-patrol-auto'         => '$1 автоматически {{GENDER:$2|отпатрулировал|отпатрулировала}} версию $4 страницы $3',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|создал|создала}} учётную запись участника',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|создал|создала}} учётную запись участника',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|создал|создала}} {{GENDER:$4|учётную запись участника|учётную запись участника}} $3',
+'logentry-newusers-autocreate'        => 'Автоматически {{GENDER:$2|создана|создана}} учётная запись $1',
+'newuserlog-byemail'                  => 'пароль отправлен по эл. почте',
 
 );

@@ -796,8 +796,7 @@ Thoir sùil air na [[Special:WantedCategories|roinntean-seòrsa a thathar 'gan i
 'linksearch-line' => "Tha $1 a' ceangal an-seo o $2",
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Loga cruthachaidh de chleachdaichean',
-'newuserlog-create-entry' => 'Cunntas de chleachdaiche ùr',
+'newuserlogpage' => 'Loga cruthachaidh de chleachdaichean',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(liosta de bhuill)',
@@ -1088,10 +1087,6 @@ Tadhail air [http://www.mediawiki.org/wiki/Localisation Ionadaileadh MediaWiki] 
 'othercontribs' => 'Stèidhichte air obair le $1.',
 'others'        => 'eile',
 'siteusers'     => '{{PLURAL:$2|chleachdaiche|chleachdaiche|chleachdaiche|chleachdaiche|cleachdaichean|cleachdaiche}} {{SITENAME}} $1',
-
-# Patrol log
-'patrol-log-line' => 'a chomharraich $1 dhen duilleag $2 freiceadan $3',
-'patrol-log-diff' => 'lèirmheas $1',
 
 # Browsing diffs
 'previousdiff' => '← Mùthadh nas sine',

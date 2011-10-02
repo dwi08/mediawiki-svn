@@ -1391,12 +1391,8 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'Ҳеҷ корбаре ёфт нашуд.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Гузориши эҷоди корбар',
-'newuserlogpagetext'          => 'Ин гузориш аз номҳои корбарии тозасохташуда аст.',
-'newuserlog-byemail'          => 'калимаи убур ба почтаи электронӣ фиристода шуд',
-'newuserlog-create-entry'     => 'Корбари нав',
-'newuserlog-create2-entry'    => 'ҳисоби ҷадиди $1 эҷод шуд',
-'newuserlog-autocreate-entry' => 'Ҳисоб бо таври худкор эҷод шудааст',
+'newuserlogpage'     => 'Гузориши эҷоди корбар',
+'newuserlogpagetext' => 'Ин гузориш аз номҳои корбарии тозасохташуда аст.',
 
 # Special:ListGroupRights
 'listgrouprights'          => 'Ихтиёроти гурӯҳҳои корбарӣ',
@@ -2016,8 +2012,6 @@ $1',
 
 # Patrol log
 'patrol-log-page' => 'Гузоришҳои нигаҳбонӣ',
-'patrol-log-line' => '$1 аз $2-ро ба сурати посбонишуда аломат зад $3',
-'patrol-log-auto' => '(худкор)',
 
 # Image deletion
 'deletedrevision'                 => 'Нусхаи ҳазфшудаи кӯҳнаи $1',
@@ -2563,5 +2557,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'маҳдудиятҳо ба мудирон амалӣ шуданд',
 'revdelete-unrestricted' => 'маҳдудиятҳо аз мудирон бардошта шуданд',
+'newuserlog-byemail'     => 'калимаи убур ба почтаи электронӣ фиристода шуд',
 
 );

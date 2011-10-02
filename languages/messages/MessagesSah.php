@@ -1874,12 +1874,8 @@ $1',
 'activeusers-noresult'   => 'Кыттааччылар көстүбэтилэр.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Кыттааччылары бэлиэтиир сурунаал',
-'newuserlogpagetext'          => 'Соторутааҕыта бэлиэтэммит кыттааччылар.',
-'newuserlog-byemail'          => 'киирии тыл эл. почтаннан ыытылынна',
-'newuserlog-create-entry'     => 'Саҥа кыттааччы',
-'newuserlog-create2-entry'    => '$1 диэн саҥа киһи бэлиэтэннэ',
-'newuserlog-autocreate-entry' => 'Кыттааччы аата аптамаатынан оҥоһуллубут',
+'newuserlogpage'     => 'Кыттааччылары бэлиэтиир сурунаал',
+'newuserlogpagetext' => 'Соторутааҕыта бэлиэтэммит кыттааччылар.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Кыттааччылар бөлөхтөрүн бырааптара',
@@ -2703,9 +2699,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Бэрэбиэркэ сурунаала',
 'patrol-log-header'    => 'Ботуруулламмыт торумнар сурунааллара.',
-'patrol-log-line'      => '$2-тэн $1 бэлиэтэммит, патрулламмыт $3',
-'patrol-log-auto'      => '(аптамаатынан)',
-'patrol-log-diff'      => '$1 барыл',
 'log-show-hide-patrol' => '$1 ботурууллааһын сурунаала',
 
 # Image deletion
@@ -3462,7 +3455,6 @@ MediaWiki туһалаах буоллун диэн тарҕатыллар, ол 
 'globalfileusage-text'        => 'Билэни киэҥник туттууну көрдөөһүн',
 'globalfileusage-no-results'  => '[[$1]] атын биикигэ туттуллубат эбит.',
 'globalfileusage-on-wiki'     => 'Манна туттуллар $2',
-'globalfileusage-of-file'     => 'Бу биикилэр бу билэни тутталлар эбит:',
 'globalfileusage-more'        => 'Билэ [[{{#Special:GlobalUsage}}/$1|атын сиргэ киэҥник туттуллуутун]] көрүү.',
 'globalfileusage-filterlocal' => 'Локаал туттууну көрдөрүмэ',
 
@@ -3473,7 +3465,6 @@ MediaWiki туһалаах буоллун диэн тарҕатыллар, ол 
 'globaltemplateusage-text'        => 'Халыыбы киэҥник туттууну көрдөөһүн',
 'globaltemplateusage-no-results'  => '[[$1]] атын биикигэ туттуллубат эбит.',
 'globaltemplateusage-on-wiki'     => 'Манна туттуллар $2',
-'globaltemplateusage-of-file'     => 'Бу халыып маннык биикилэргэ туттуллар:',
 'globaltemplateusage-more'        => 'Халыып [[{{#Special:GlobalUsage}}/$1|атын сиргэ киэҥник туттуллуутун]] көрүү.',
 'globaltemplateusage-filterlocal' => 'Локаал туттууну көрдөрүмэ',
 
@@ -3505,5 +3496,6 @@ MediaWiki туһалаах буоллун диэн тарҕатыллар, ол 
 # New logging system
 'revdelete-restricted'   => 'хааччахтааһын администраатардарга сыһыаннаах',
 'revdelete-unrestricted' => 'хааччахтааһын админстраатардартан уһулунна',
+'newuserlog-byemail'     => 'киирии тыл эл. почтаннан ыытылынна',
 
 );

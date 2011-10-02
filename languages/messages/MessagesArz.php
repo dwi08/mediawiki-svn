@@ -2021,12 +2021,8 @@ PICT # misc.
 'activeusers-noresult'   => 'مالقيناش اى يوزر',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'سجل اليوزرز الجداد',
-'newuserlogpagetext'          => 'دا سجل لليوزرز الجداد',
-'newuserlog-byemail'          => 'الباسورد اتبعتت بالايميل',
-'newuserlog-create-entry'     => 'يوزر جديد',
-'newuserlog-create2-entry'    => 'الحساب الجديد المعمول $1',
-'newuserlog-autocreate-entry' => 'الحساب اتفتح اوتوماتيكي',
+'newuserlogpage'     => 'سجل اليوزرز الجداد',
+'newuserlogpagetext' => 'دا سجل لليوزرز الجداد',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'حقوق مجموعات اليوزرز',
@@ -2811,9 +2807,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'سجل المراجعة',
 'patrol-log-header'    => 'دا سجل بالنسخ المتراجعة',
-'patrol-log-line'      => 'علم على $1 من $2 كأنها متراجعة $3',
-'patrol-log-auto'      => '(اوتوماتيكي)',
-'patrol-log-diff'      => 'ن$1',
 'log-show-hide-patrol' => '$1 سجل المراجعة',
 
 # Image deletion
@@ -3400,8 +3393,7 @@ $1',
 'filepath-page'    => 'الملف:',
 'filepath-submit'  => 'المسار',
 'filepath-summary' => 'الصفحة المخصوصة دى بتعرض المسار الكامل  بتاع ملف.
-الصور بتتعرض  بدقة كاملة، أنواع الملفات التانية ح تشتغل فى البرنامج بتاعهم مباشرة.
-دخل اسم الملف  من غير البريفيكس "{{ns:file}}:"',
+الصور بتتعرض  بدقة كاملة، أنواع الملفات التانية ح تشتغل فى البرنامج بتاعهم مباشرة.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'دور على الملفات المتكررة',
@@ -3486,5 +3478,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'طبق التعليمات على السيسوبات',
 'revdelete-unrestricted' => 'شيل الضوابط من على السيسوبات',
+'newuserlog-byemail'     => 'الباسورد اتبعتت بالايميل',
 
 );

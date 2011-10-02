@@ -1498,12 +1498,8 @@ $1",
 'activeusers-noresult'   => 'Οὐδεὶς χρώμενος εὑρέθη.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Κατάλογος ποιήσεων λογισμῶν.',
-'newuserlogpagetext'          => 'Ὅδε ἐστὶν κατάλογος τις τῶν ποιήσεων λογισμῶν.',
-'newuserlog-byemail'          => 'σύνθημα ἀπεσταλμένον μέσῳ ἠλ-ταχυδρομείου',
-'newuserlog-create-entry'     => 'Νέος χρώμενος',
-'newuserlog-create2-entry'    => 'νέος λογισμὸς ποιηθεὶς διὰ $1',
-'newuserlog-autocreate-entry' => 'Λογισμὸς ποιηθεὶς αὐτομάτως',
+'newuserlogpage'     => 'Κατάλογος ποιήσεων λογισμῶν.',
+'newuserlogpagetext' => 'Ὅδε ἐστὶν κατάλογος τις τῶν ποιήσεων λογισμῶν.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Δικαιώματα ὁμάδος χρωμένου',
@@ -2154,9 +2150,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Κατάλογος περιπόλων',
 'patrol-log-header'    => 'Ὅδε ἐστὶ κατάλογος περιπολουμένων ἀναθεωρήσεων.',
-'patrol-log-line'      => 'σήμανσις τῆς ἐκδόσεως $1 τοῦ $2 ὡς περιπολουμένη $3',
-'patrol-log-auto'      => '(αὐτόματον)',
-'patrol-log-diff'      => 'ἀναθεώρησις $1',
 'log-show-hide-patrol' => '$1 κατάλογος περιπόλου',
 
 # Image deletion
@@ -2738,5 +2731,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'ἐφηρμοσμένοι περιορισμοὶ διὰ τοὺς ἐπιτρόπους',
 'revdelete-unrestricted' => 'αἱρεθέντες περιορισμοὶ διὰ τοὺς ἐπιτρόπους',
+'newuserlog-byemail'     => 'σύνθημα ἀπεσταλμένον μέσῳ ἠλ-ταχυδρομείου',
 
 );

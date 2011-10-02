@@ -1988,12 +1988,8 @@ Prôtôkôly zaka : <tt>$1</tt>.',
 'activeusers-noresult'   => 'Tsy nahitana mpikambana.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Tatitr’asan’ny fanokafana kaontim-pikambana',
-'newuserlogpagetext'          => "Ity pejy ity dia maneho ny tantaran'asan'ny fampidirana mpikambana vaovao.",
-'newuserlog-byemail'          => 'tenimiafina nalefa imailaka',
-'newuserlog-create-entry'     => 'Mpikambana vaovao',
-'newuserlog-create2-entry'    => 'namorona ny kaonty vaovao $1',
-'newuserlog-autocreate-entry' => 'Kaonty namboarina ho azy',
+'newuserlogpage'     => 'Tatitr’asan’ny fanokafana kaontim-pikambana',
+'newuserlogpagetext' => "Ity pejy ity dia maneho ny tantaran'asan'ny fampidirana mpikambana vaovao.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => "Fahefan'ny vondrom-pikambana",
@@ -2746,9 +2742,6 @@ Mamerina ny version taloha io asa io ary afaka manometraka ny antony anatin'ny a
 # Patrol log
 'patrol-log-page'      => "Laogin'ny fanovana voamarina",
 'patrol-log-header'    => "Ity dia laogy mikasikan'ny fanovana voamarina.",
-'patrol-log-line'      => "nanamarika ny $1 an'i $2 ho voamarina $3",
-'patrol-log-auto'      => '(mandeha ho azy)',
-'patrol-log-diff'      => 'fanovana faha $1',
 'log-show-hide-patrol' => "$1 ny laogy mikasikan'ny santiôna voamarina",
 
 # Image deletion
@@ -3056,9 +3049,7 @@ Andramo ny topi-maso tsotra',
 'filepath-page'    => 'Rakitra',
 'filepath-submit'  => 'Handeha',
 'filepath-summary' => "Mamerina ny lalam-pandehanana any amin'ilay rakitra ity pejy ity.
-Aseho amin'ny tena habeny ny sary aseho, ny hafa dia alefa miaraka amin'ny rindrankajy miaraka aminy avy hatrany.
-
-Ampidiro ny anaran-drakitra tsy misy ny tovona « {{ns:file}}: »",
+Aseho amin'ny tena habeny ny sary aseho, ny hafa dia alefa miaraka amin'ny rindrankajy miaraka aminy avy hatrany.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Hitady rakitra mitovy endrika',
@@ -3134,5 +3125,6 @@ Ampidiro ny anaran-drakitra tsy misy ny tovona « {{ns:file}}: »",
 # New logging system
 'revdelete-restricted'   => "nametraka fanerena ho an'ny mpandrindra",
 'revdelete-unrestricted' => "fanerena nesorina tamin'ny mpandrindra",
+'newuserlog-byemail'     => 'tenimiafina nalefa imailaka',
 
 );

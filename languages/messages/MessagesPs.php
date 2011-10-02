@@ -620,11 +620,20 @@ $1',
 'passwordreset'              => 'پټنوم بياپرځايول',
 'passwordreset-legend'       => 'پټنوم بياپرځايول',
 'passwordreset-username'     => 'کارن-نوم:',
+'passwordreset-domain'       => 'شپول:',
 'passwordreset-email'        => 'برېښليک پته:',
 'passwordreset-emailtitle'   => 'د {{SITENAME}} د ګڼون څرګندنې',
 'passwordreset-emailelement' => 'کارن-نوم: $1
 لنډمهاله پټنوم: $2',
 'passwordreset-emailsent'    => 'يو يادښتي برېښليک ولېږل شو.',
+
+# Special:ChangeEmail
+'changeemail'          => 'برېښليک پته بدلول',
+'changeemail-oldemail' => 'اوسنۍ برېښليک پته:',
+'changeemail-newemail' => 'نوې برېښليک پته:',
+'changeemail-none'     => '(هېڅ)',
+'changeemail-submit'   => 'برېښليک بدلول',
+'changeemail-cancel'   => 'ناګارل',
 
 # Edit page toolbar
 'bold_sample'     => 'زغرد متن',
@@ -956,6 +965,7 @@ $1',
 'prefs-watchlist-edits-max'     => 'د شمېر اکثر بريد: 1000',
 'prefs-misc'                    => 'بېلابېل',
 'prefs-resetpass'               => 'پټنوم بدلول',
+'prefs-changeemail'             => 'برېښليک بدلول',
 'prefs-email'                   => 'د برېښليک خوښنې',
 'prefs-rendering'               => 'ښکارېدنه',
 'saveprefs'                     => 'خوندي کول',
@@ -1467,12 +1477,8 @@ $1',
 'activeusers-noresult'   => 'کارن و نه موندل شو.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'د کارن-نوم د جوړېدو يادښت',
-'newuserlogpagetext'          => 'دا د کارن-نوم د جوړېدو يادښت دی',
-'newuserlog-byemail'          => 'پټنوم مو برېښليک ته درولېږه',
-'newuserlog-create-entry'     => 'نوی کارن',
-'newuserlog-create2-entry'    => 'نوی جوړ شوی ګڼون $1',
-'newuserlog-autocreate-entry' => 'ګڼون په اتوماتيک ډول جوړ شو',
+'newuserlogpage'     => 'د کارن-نوم د جوړېدو يادښت',
+'newuserlogpagetext' => 'دا د کارن-نوم د جوړېدو يادښت دی',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'د کارن ډلو رښتې',
@@ -1993,10 +1999,6 @@ $UNWATCHURL  نه ليدنه وکړۍ
 # Patrolling
 'markaspatrolledtext' => 'دا مخ څارل شوی په نخښه کول',
 
-# Patrol log
-'patrol-log-auto' => '(خپلسر)',
-'patrol-log-diff' => 'بڼه $1',
-
 # Image deletion
 'filedeleteerror-short' => 'د دوتنې د ړنګولو ستونزه: $1',
 
@@ -2157,6 +2159,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'exif-dc-contributor' => 'ونډه وال',
 'exif-dc-date'        => 'نېټه (نېټې)',
 'exif-dc-publisher'   => 'خپرونکی',
+'exif-dc-relation'    => 'اړونده رسنۍ',
 'exif-dc-rights'      => 'رښتې',
 'exif-dc-source'      => 'د سرچينې رسنۍ',
 'exif-dc-type'        => 'د رسنۍ ډول',
@@ -2357,6 +2360,12 @@ $5
 'compare-rev2'     => '۲ بڼه',
 'compare-submit'   => 'پرتلل',
 
+# Special:GlobalFileUsage
+'globalfileusage-ok' => 'پلټل',
+
+# Special:GlobalTemplateUsage
+'globaltemplateusage-ok' => 'پلټل',
+
 # Database error messages
 'dberr-header'    => 'دا ويکي يوه ستونزه لري',
 'dberr-problems'  => 'اوبخښۍ!
@@ -2374,5 +2383,8 @@ $5
 'htmlform-submit'              => 'سپارل',
 'htmlform-reset'               => 'بدلونونه ناکړل',
 'htmlform-selectorother-other' => 'بل',
+
+# New logging system
+'newuserlog-byemail' => 'پټنوم مو برېښليک ته درولېږه',
 
 );

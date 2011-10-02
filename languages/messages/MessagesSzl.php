@@ -1410,12 +1410,8 @@ Uobsůgiwane protokoły: <tt>$1</tt>',
 'listusers-noresult' => 'Ńy znejdźůno žodnygo užytkowńika.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Nowe użytkowniki',
-'newuserlogpagetext'          => 'To je rejer uostatńo utworzůnych kůnt użytkowńikůw',
-'newuserlog-byemail'          => 'hasło uostało wysłane e-brifym',
-'newuserlog-create-entry'     => '– nowy użytkowńik',
-'newuserlog-create2-entry'    => '– utworzůł kůnto $1',
-'newuserlog-autocreate-entry' => '– kůnto utworzůne automatyczńy',
+'newuserlogpage'     => 'Nowe użytkowniki',
+'newuserlogpagetext' => 'To je rejer uostatńo utworzůnych kůnt użytkowńikůw',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Uprawńyńo grup užytkowńikůw',
@@ -2086,8 +2082,6 @@ Nojprawdopodobńij zostoło to spowodowane bez link do zewnyntrznyj zajty intern
 # Patrol log
 'patrol-log-page'      => 'Dźynńik patrolowańo',
 'patrol-log-header'    => 'Půniżej je dźeńńik patrolowańo zajtůw.',
-'patrol-log-line'      => 'označůu wersyja $1 artikla $2 kej sprawdzůno $3',
-'patrol-log-auto'      => '(autůmatyčńy)',
 'log-show-hide-patrol' => '$1 rejer sprawdzańo',
 
 # Image deletion
@@ -2621,5 +2615,6 @@ Naškryflej sam mjano plika bez prefiksu „{{ns:file}}:”.',
 # New logging system
 'revdelete-restricted'   => 'naštaluj uograničyńo do administratorůw',
 'revdelete-unrestricted' => 'wycofej uograničyńo do administratorůw',
+'newuserlog-byemail'     => 'hasło uostało wysłane e-brifym',
 
 );

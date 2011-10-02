@@ -12,6 +12,7 @@
  * @author Cwt96
  * @author Devunt
  * @author Ficell
+ * @author Freebiekr
  * @author Gapo
  * @author Gjue
  * @author IRTC1015
@@ -1236,7 +1237,6 @@ $1",
 'searchmenu-legend'                => '검색 설정',
 'searchmenu-exists'                => "'''이 위키에 \"[[:\$1]]\"의 이름을 가진 문서가 있습니다.'''",
 'searchmenu-new'                   => "'''이 위키에 \"[[:\$1]]\" 문서를 만드십시오!'''",
-'searchmenu-new-nocreate'          => '"$1"은 잘못된 문서 제목이거나 당신이 생성할 수 없는 문서입니다.',
 'searchhelp-url'                   => 'Help:목차',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|이 접두어로 시작하는 문서 찾기]]',
 'searchprofile-articles'           => '일반 문서',
@@ -1834,7 +1834,7 @@ URL이 맞고 해당 웹사이트가 작동하는지 확인해주세요.',
 'filehist-filesize'                 => '파일 크기',
 'filehist-comment'                  => '내용',
 'filehist-missing'                  => '파일을 찾을 수 없음',
-'imagelinks'                        => '파일 링크',
+'imagelinks'                        => '이 파일을 사용하는 문서',
 'linkstoimage'                      => '다음 $1개의 문서가 이 파일을 사용하고 있습니다:',
 'linkstoimage-more'                 => '$1개 이상의 문서가 이 파일을 가리키고 있습니다.
 다음 목록은 이 파일을 가리키는 처음 $1개 문서만 보여주고 있습니다.
@@ -2097,12 +2097,8 @@ URL이 맞고 해당 웹사이트가 작동하는지 확인해주세요.',
 'activeusers-noresult'   => '사용자가 없습니다.',
 
 # Special:Log/newusers
-'newuserlogpage'              => '사용자 등록 기록',
-'newuserlogpagetext'          => '사용자 등록 기록입니다.',
-'newuserlog-byemail'          => '이메일로 보낸 암호',
-'newuserlog-create-entry'     => '새 사용자',
-'newuserlog-create2-entry'    => '$1 계정을 새로 만듦',
-'newuserlog-autocreate-entry' => '계정이 자동으로 만들어졌습니다.',
+'newuserlogpage'     => '사용자 등록 기록',
+'newuserlogpagetext' => '사용자 등록 기록입니다.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => '사용자 권한 목록',
@@ -2131,7 +2127,7 @@ URL이 맞고 해당 웹사이트가 작동하는지 확인해주세요.',
 'emailpagetext'        => '이 사용자가 환경 설정에 올바른 이메일 주소를 적었다면, 아래 양식을 통해 이메일을 보낼 수 있습니다.
 이메일을 받은 사용자가 바로 답장할 수 있도록 하기 위해 당신이 [[Special:Preferences|사용자 환경 설정]]에 적은 이메일 주소가 "발신자" 정보에 들어갑니다. 따라서 수신자가 당신에게 직접 답장을 보낼 수 있습니다.',
 'usermailererror'      => '메일 객체에서 오류 발생:',
-'defemailsubject'      => '{{SITENAME}} 이메일',
+'defemailsubject'      => '"$1" 사용자가 보낸 {{SITENAME}} 이메일',
 'usermaildisabled'     => '사용자 이메일 비활성화됨',
 'usermaildisabledtext' => '당신은 이 위키에서 다른 사용자에게 메일을 보낼 수 없습니다',
 'noemailtitle'         => '이메일 주소 없음',
@@ -2311,6 +2307,7 @@ $UNWATCHURL
 'protect-level-sysop'         => '관리자만 가능',
 'protect-summary-cascade'     => '연쇄적',
 'protect-expiring'            => '$1 (UTC)에 만료',
+'protect-expiring-local'      => '$1에 해제',
 'protect-expiry-indefinite'   => '무기한',
 'protect-cascade'             => '연쇄적 보호 - 이 문서에서 사용되는 다른 문서를 함께 보호합니다.',
 'protect-cantedit'            => '이 문서의 보호 설정을 바꿀 권한이 없습니다.',
@@ -2505,6 +2502,7 @@ $1',
 'blocklist-userblocks'            => '계정에 대한 차단 숨기기',
 'blocklist-tempblocks'            => '기한이 정해진 차단을 숨기기',
 'blocklist-addressblocks'         => '당일 IP 차단을 숨기기',
+'blocklist-rangeblocks'           => '광역 차단을 숨기기',
 'blocklist-timestamp'             => '날짜/시각',
 'blocklist-target'                => '차단 대상',
 'blocklist-expiry'                => '차단 기한',
@@ -2515,7 +2513,7 @@ $1',
 'ipblocklist-localblock'          => '로컬 차단',
 'ipblocklist-otherblocks'         => '다른 {{PLURAL:$1|}}차단 기록',
 'infiniteblock'                   => '무기한',
-'expiringblock'                   => '$1 $2에 해제',
+'expiringblock'                   => '$1 $2에 해제됩니다',
 'anononlyblock'                   => '익명 사용자만',
 'noautoblockblock'                => '자동 차단 비활성화됨',
 'createaccountblock'              => '계정 생성 금지됨',
@@ -2527,6 +2525,7 @@ $1',
 'unblocklink'                     => '차단 해제',
 'change-blocklink'                => '차단 설정 변경',
 'contribslink'                    => '기여',
+'emaillink'                       => '이메일 보내기',
 'autoblocker'                     => '당신의 IP 주소는 최근에 "[[User:$1|$1]]" 사용자가 사용하였기 때문에 자동으로 차단되었습니다.
 $1 사용자가 차단된 이유는 다음과 같습니다: "$2"',
 'blocklogpage'                    => '차단 기록',
@@ -2923,9 +2922,6 @@ $1 사용자가 차단된 이유는 다음과 같습니다: "$2"',
 # Patrol log
 'patrol-log-page'      => '검토 기록',
 'patrol-log-header'    => '이 기록은 검토된 문서에 대한 기록입니다.',
-'patrol-log-line'      => '$2 문서의 $1을 검토함 $3',
-'patrol-log-auto'      => '(자동)',
-'patrol-log-diff'      => '제$1번 판',
 'log-show-hide-patrol' => '검토 기록을 $1',
 
 # Image deletion
@@ -2955,7 +2951,7 @@ $1',
 'svg-long-desc'          => 'SVG 파일, 실제 크기 $1 × $2 픽셀, 파일 크기 $3',
 'show-big-image'         => '최대 해상도',
 'show-big-image-preview' => '미리 보기 크기: $1.',
-'show-big-image-other'   => '다른 해상도: $1.',
+'show-big-image-other'   => '다른 {{PLURAL:$2|해상도}}: $1.',
 'show-big-image-size'    => '$1 × $2 픽셀',
 'file-info-gif-looped'   => '반복됨',
 'file-info-gif-frames'   => '$1 프레임',
@@ -3149,7 +3145,7 @@ Variants for Chinese language
 'exif-orientation-5' => '시계 반대 방향으로 90° 회전하고 수직으로 뒤집음',
 'exif-orientation-6' => '시계 방향으로 90° 회전함',
 'exif-orientation-7' => '시계 방향으로 90° 회전하고 수직으로 뒤집음',
-'exif-orientation-8' => '시계 반대 방향으로 90° 회전됨',
+'exif-orientation-8' => '시계 방향으로 90° 회전됨',
 
 'exif-planarconfiguration-1' => '덩어리 형식',
 'exif-planarconfiguration-2' => '평면형',
@@ -3482,9 +3478,7 @@ $1',
 'filepath-page'    => '파일:',
 'filepath-submit'  => '가기',
 'filepath-summary' => '파일의 실제 URL 주소를 엽니다.
-그림 파일일 경우 원본 해상도의 파일이 열립니다. 다른 종류의 파일일 경우 그 파일의 종류에 맞는 프로그램이 실행됩니다.
-
-"{{ns:file}}:" 접두어를 뺀 파일 이름을 입력해주세요.',
+그림 파일일 경우 원본 해상도의 파일이 열립니다. 다른 종류의 파일일 경우 그 파일의 종류에 맞는 프로그램이 실행됩니다.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => '중복된 파일 찾기',
@@ -3580,5 +3574,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => '관리자에게 제한을 적용함',
 'revdelete-unrestricted' => '관리자에 대한 제한을 해제함',
+'newuserlog-byemail'     => '이메일로 보낸 암호',
 
 );

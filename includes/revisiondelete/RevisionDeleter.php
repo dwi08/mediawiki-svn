@@ -28,12 +28,17 @@ class RevisionDeleter {
 	}
 
 	/**
-	 * Gets an array of message keys describing the changes made to the visibility
-	 * of the revision. If the resulting array is $arr, then $arr[0] will contain an
-	 * array of strings describing the items that were hidden, $arr[1] will contain
-	 * an array of strings describing the items that were unhidden, and $arr[2] will
-	 * contain an array with a single string, which can be one of "applied
-	 * restrictions to sysops", "removed restrictions from sysops", or null.
+	 * Gets an array of message keys describing the changes made to the
+	 * visibility of the revision.
+	 *
+	 * If the resulting array is $arr, then $arr[0] will contain an array of
+	 * keys describing the items that were hidden, $arr[1] will contain
+	 * an array of keys describing the items that were unhidden, and $arr[2]
+	 * will contain an array with a single message key, which can be one of
+	 * "revdelete-restricted", "revdelete-unrestricted" indicating (un)suppression
+	 * or null to indicate nothing in particular.
+	 * You can turn the keys in $arr[0] and $arr[1] into message keys by
+	 * appending -hid and and -unhid to the keys respectively.
 	 *
 	 * @param $n Integer: the new bitfield.
 	 * @param $o Integer: the old bitfield.

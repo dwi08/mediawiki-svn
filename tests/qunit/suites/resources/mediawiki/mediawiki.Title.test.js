@@ -64,7 +64,7 @@ test( '-- Initial check', function() {
 });
 
 test( 'Transformation', function() {
-	expect(3);
+	expect(4);
 	_titleConfig();
 
 	var title;
@@ -74,6 +74,9 @@ test( 'Transformation', function() {
 
 	title = new mw.Title( 'File:Glarg_foo_glang.jpg' );
 	equal( title.getNameText(), 'Glarg foo glang' );
+
+	title = new mw.Title( 'User:ABC.DEF' );
+	equal( title.toText(), 'User:ABC.DEF' );
 
 	title = new mw.Title( '   MediaWiki:  Foo   bar   .js   ' );
 	// Don't ask why, it's the way the backend works. One space is kept of each set
@@ -90,10 +93,10 @@ test( 'Main text for filename', function() {
 	equal( title.getNamespacePrefix(), 'File:' );
 	equal( title.getName(), 'Foo_bar' );
 	equal( title.getNameText(), 'Foo bar' );
-	equal( title.getMain(), 'Foo_bar.jpg' );
-	equal( title.getMainText(), 'Foo bar.jpg' );
-	equal( title.getExtension(), 'jpg' );
-	equal( title.getDotExtension(), '.jpg' );
+	equal( title.getMain(), 'Foo_bar.JPG' );
+	equal( title.getMainText(), 'Foo bar.JPG' );
+	equal( title.getExtension(), 'JPG' );
+	equal( title.getDotExtension(), '.JPG' );
 });
 
 test( 'Namespace detection and conversion', function() {
@@ -103,7 +106,7 @@ test( 'Namespace detection and conversion', function() {
 	var title;
 
 	title = new mw.Title( 'something.PDF', 6 );
-	equal( title.toString(), 'File:Something.pdf' );
+	equal( title.toString(), 'File:Something.PDF' );
 
 	title = new mw.Title( 'NeilK', 3 );
 	equal( title.toString(), 'User_talk:NeilK' );
@@ -178,7 +181,7 @@ test( 'Exists', function() {
 	title = new mw.Title( 'Project:Sandbox rules' );
 	assertTrue( title.exists(), 'Return true for page titles marked as existing' );
 	title = new mw.Title( 'Foobar' );
-	assertFalse( title.exists(), 'Return false for page titles marked as inexisting' );
+	assertFalse( title.exists(), 'Return false for page titles marked as inexistent' );
 
 });
 

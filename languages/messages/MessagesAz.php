@@ -419,7 +419,7 @@ Bu vəziyyət səhifənin, silinmiş bir səhifənin keçmiş versiyası olması
 
 Əgər niyə bu deyilsə, proqramda bir səhv ilə qarşılaşmış ola bilərsiniz.
 Xahiş edirik bunu bir [[Special:ListUsers/sysop|İdarəçilərə]], URL not edərək göndərin.',
-'missingarticle-rev'   => '(təftiş#: $1)',
+'missingarticle-rev'   => '(təftiş № $1)',
 'missingarticle-diff'  => '(fərq: $1, $2)',
 'readonly_lag'         => 'Məlumatlar bazasının ikinci dərəcəli serveri əsas serverlə əlaqə yaradanadək məlumatlar bazası avtomatik olaraq bloklanmışdır',
 'internalerror'        => 'Daxili xəta',
@@ -1032,7 +1032,7 @@ Təsadüfi yolla seçilmiş bu paroldan istifadə edə bilərsiniz: $1',
 'prefs-registration-date-time'  => '$1',
 'yourrealname'                  => 'Əsl adınız:',
 'yourlanguage'                  => 'Dil:',
-'yourvariant'                   => 'Variant:',
+'yourvariant'                   => 'Dil variant;:',
 'yournick'                      => 'Ləqəb:',
 'badsig'                        => 'Səhv xam imza.
 HTML kodu yoxla.',
@@ -1412,6 +1412,7 @@ $1',
 'filehist-missing'                  => 'Fayl çatışmır',
 'imagelinks'                        => 'Fayl keçidləri',
 'linkstoimage'                      => '{{PLURAL:$1|səhifə|$1 səhifə}} bu fayla istinad edir:',
+'nolinkstoimage'                    => 'Bu fayla keçid verən səhifə yoxdur.',
 'linkstoimage-redirect'             => '$1 (fayl istiqamətləndirilir) $2',
 'sharedupload'                      => 'Bu fayl $1-dandır və ola bilsin ki, başqa layihələrdə də istifadə edilir.',
 'uploadnewversion-linktext'         => 'Bu faylın yeni versiyasını yüklə',
@@ -1627,12 +1628,8 @@ Həmçinin, [[Special:WantedCategories|tələb olunan kateqoriyalara]] baxın.',
 'activeusers-noresult'   => 'İstifadəçi tapılmadı.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Yeni istifadəçilərin qeydiyyatı',
-'newuserlogpagetext'          => 'Yeni qeydiyyatdan keçmiş istifadəçilərin siyahısı.',
-'newuserlog-byemail'          => 'parol e-maillə göndərildi',
-'newuserlog-create-entry'     => 'Yeni istifadəçi hesabı',
-'newuserlog-create2-entry'    => 'Yeri $1 hesabı açıldı',
-'newuserlog-autocreate-entry' => 'Hesab avtomatik olaraq yaradıldı',
+'newuserlogpage'     => 'Yeni istifadəçilərin qeydiyyatı',
+'newuserlogpagetext' => 'Yeni qeydiyyatdan keçmiş istifadəçilərin siyahısı.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'İstifadəçi qruplarının hüquqları',
@@ -2146,6 +2143,7 @@ Zəhmət olmasa başqa ad seçin.',
 # Thumbnails
 'thumbnail-more'          => 'Böyüt',
 'filemissing'             => 'Şəkil gözlənilir',
+'thumbnail_error'         => 'Kiçik şəkil yaratma xətası: $1',
 'djvu_page_error'         => 'DjVu səhifəsi əlçatmazdır',
 'djvu_no_xml'             => 'DjVu üçün XML faylı almaq mümkün deyil.',
 'thumbnail_image-missing' => 'Belə görünür ki, $1 faylı yoxdur',
@@ -2247,6 +2245,7 @@ Zəhmət olmasa başqa ad seçin.',
 'tooltip-rollback'                => 'Sonuncu istifadəçi tərəfindən edilmiş bütün dəyişiklikləri bir dəfəyə geri qaytar',
 'tooltip-undo'                    => 'Edilmiş dəyişikliyi geri qaytar və geri qaytarma səbəbini qeyd etmək üçün sınaq göstərişini aç',
 'tooltip-preferences-save'        => 'Nizamlamaları saxla',
+'tooltip-summary'                 => 'Qısa rezyume daxil edin',
 
 # Stylesheets
 'common.css'              => '/* Burada yerləşən CSS bütün skinlərə tətbiq olunur */',
@@ -2333,9 +2332,6 @@ Zəhmət olmasa başqa ad seçin.',
 # Patrol log
 'patrol-log-page'      => 'Patrul gündəliyi',
 'patrol-log-header'    => 'Bu yoxlanmış dəyişikliklərin gündəliyidir.',
-'patrol-log-line'      => '$3 yoxlanılaraq $2 $1 versiyası işarələndi',
-'patrol-log-auto'      => '(avtomatik)',
-'patrol-log-diff'      => 'təftiş $1',
 'log-show-hide-patrol' => '$1 patrul gündəliyi',
 
 # Image deletion
@@ -2835,6 +2831,7 @@ $1',
 
 # Core parser functions
 'unknown_extension_tag' => '"$1" Naməlum ayırma teqi',
+'duplicate-defaultsort' => '\'\'\'Diqqət:\'\'\' Ehtimal edilən "$2" klassifikasiya açarı əvvəlki "$1" klassifikasiya açarını keçərsiz edir.',
 
 # Special:Version
 'version'                     => 'Versiya',
@@ -2939,5 +2936,6 @@ Bu saytda texniki problemlər var.',
 # New logging system
 'revdelete-restricted'   => 'məhdudiyyətlər idarəçilərə tətbiq olunur',
 'revdelete-unrestricted' => 'idarəçilər üçün götürülmüş məhdudiyyətlər',
+'newuserlog-byemail'     => 'parol e-maillə göndərildi',
 
 );

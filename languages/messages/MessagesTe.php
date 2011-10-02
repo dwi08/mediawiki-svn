@@ -138,6 +138,8 @@ $magicWords = array(
 
 $linkTrail = "/^([\xE0\xB0\x81-\xE0\xB1\xAF]+)(.*)$/sDu";
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'లంకె క్రీగీత:',
@@ -1087,7 +1089,6 @@ $1",
 'searchmenu-legend'                => 'అన్వేషణ ఎంపికలు',
 'searchmenu-exists'                => "'''ఈ వికీలో \"[[:\$1]]\" అనే పేజీ ఉంది'''",
 'searchmenu-new'                   => "'''ఈ వికీలో \"[[:\$1]]\" అనే పేరుతో పేజీని సృష్టించు!'''",
-'searchmenu-new-nocreate'          => '"$1" అనేది సరైన పేజీపేరు కాదు. లేదా మీ రా పేజీని సృష్టించలేరు.',
 'searchhelp-url'                   => 'Help:సూచిక',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|ఈ ఉపసర్గ ఉన్న పేజీలను చూడండి]]',
 'searchprofile-articles'           => 'విషయపు పేజీలు',
@@ -1922,12 +1923,8 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization చూడండి.',
 'activeusers-noresult'   => 'వాడుకరులెవరూ లేరు.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'కొత్త వాడుకరుల చిట్టా',
-'newuserlogpagetext'          => 'ఇది వాడుకరి నమోదుల చిట్టా.',
-'newuserlog-byemail'          => 'ఈ-మెయిలులో సంకేతపదం పంపించాం',
-'newuserlog-create-entry'     => 'కొత్త వాడుకరి ఖాతా',
-'newuserlog-create2-entry'    => '$1 అనే కొత్త ఖాతాని సృష్టించారు',
-'newuserlog-autocreate-entry' => 'ఖాతాని ఆటోమెటిగ్గా సృష్టించాం',
+'newuserlogpage'     => 'కొత్త వాడుకరుల చిట్టా',
+'newuserlogpagetext' => 'ఇది వాడుకరి నమోదుల చిట్టా.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'వాడుకరి గుంపుల హక్కులు',
@@ -2719,9 +2716,6 @@ $UNWATCHURL కి వెళ్ళండి.
 # Patrol log
 'patrol-log-page'      => 'నిఘా చిట్టా',
 'patrol-log-header'    => 'ఇది పర్యవేక్షించిన కూర్పుల చిట్టా.',
-'patrol-log-line'      => 'మొత్తం $1లోని $2లను $3గా పెట్రోలు చేసినట్లుగా గుర్తించాము',
-'patrol-log-auto'      => '(దావంత అదే)',
-'patrol-log-diff'      => 'కూర్పు $1',
 'log-show-hide-patrol' => '$1 పర్యవేక్షణ చిట్టా',
 
 # Image deletion
@@ -3414,14 +3408,12 @@ $1',
 'globalfileusage-ok'          => 'వెతుకు',
 'globalfileusage-no-results'  => '[[:$1]]ను ఇతర వికీలలో ఉపయోగించట్లేదు.',
 'globalfileusage-on-wiki'     => '$2 లో వాడుక',
-'globalfileusage-of-file'     => 'ఈ దస్త్రాన్ని ఈ క్రింది ఇతర వికీలు ఉపయోగిస్తున్నాయి:',
 'globalfileusage-filterlocal' => 'స్థానిక వాడుకని చూపించవద్దు',
 
 # Special:GlobalTemplateUsage
 'globaltemplateusage'             => 'సార్వత్రిక మూస వాడుక',
 'globaltemplateusage-ok'          => 'శోధించు',
 'globaltemplateusage-text'        => 'సార్వత్రిక మూస వాడుకలో శోధించు',
-'globaltemplateusage-of-file'     => 'ఈ మూసను ఈ క్రింది ఇతర వికీలు ఉపయోగిస్తున్నాయి:',
 'globaltemplateusage-filterlocal' => 'స్థానిక వాడుకని చూపించవద్దు',
 
 # Database error messages
@@ -3452,5 +3444,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'నిర్వాహకులకు ఆంక్షలు విధించాను',
 'revdelete-unrestricted' => 'నిర్వాహకులకున్న ఆంక్షలను ఎత్తేశాను',
+'newuserlog-byemail'     => 'ఈ-మెయిలులో సంకేతపదం పంపించాం',
 
 );

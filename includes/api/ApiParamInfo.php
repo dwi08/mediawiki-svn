@@ -34,55 +34,81 @@ if ( !defined( 'MEDIAWIKI' ) ) {
  */
 class ApiParamInfo extends ApiBase {
 
+	/**
+	 * @var ApiQuery
+	 */
+	protected $queryObj;
+
 	public function __construct( $main, $action ) {
 		parent::__construct( $main, $action );
+		$this->queryObj = new ApiQuery( $this->getMain(), 'query' );
 	}
 
 	public function execute() {
 		// Get parameters
 		$params = $this->extractRequestParams();
 		$result = $this->getResult();
-		$queryObj = new ApiQuery( $this->getMain(), 'query' );
-		$r = array();
+
+		$res = array();
 		if ( is_array( $params['modules'] ) ) {
-			$modArr = $this->getMain()->getModules();
-			$r['modules'] = array();
-			foreach ( $params['modules'] as $m ) {
-				if ( !isset( $modArr[$m] ) ) {
-					$r['modules'][] = array( 'name' => $m, 'missing' => '' );
+			$modules = $this->getMain()->getModules();
+			$res['modules'] = array();
+			foreach ( $params['modules'] as $mod ) {
+				if ( !isset( $modules[$mod] ) ) {
+					$res['modules'][] = array( 'name' => $mod, 'missing' => '' );
 					continue;
 				}
-				$obj = new $modArr[$m]( $this->getMain(), $m );
-				$a = $this->getClassInfo( $obj );
-				$a['name'] = $m;
-				$r['modules'][] = $a;
+				$obj = new $modules[$mod]( $this->getMain(), $mod );
+
+				$item = $this->getClassInfo( $obj );
+				$item['name'] = $mod;
+				$res['modules'][] = $item;
 			}
-			$result->setIndexedTagName( $r['modules'], 'module' );
+			$result->setIndexedTagName( $res['modules'], 'module' );
 		}
+
 		if ( is_array( $params['querymodules'] ) ) {
-			$qmodArr = $queryObj->getModules();
-			$r['querymodules'] = array();
+			$queryModules = $this->queryObj->getModules();
+			$res['querymodules'] = array();
 			foreach ( $params['querymodules'] as $qm ) {
-				if ( !isset( $qmodArr[$qm] ) ) {
-					$r['querymodules'][] = array( 'name' => $qm, 'missing' => '' );
+				if ( !isset( $queryModules[$qm] ) ) {
+					$res['querymodules'][] = array( 'name' => $qm, 'missing' => '' );
 					continue;
 				}
-				$obj = new $qmodArr[$qm]( $this, $qm );
-				$a = $this->getClassInfo( $obj );
-				$a['name'] = $qm;
-				$a['querytype'] = $queryObj->getModuleType( $qm );
-				$r['querymodules'][] = $a;
+				$obj = new $queryModules[$qm]( $this, $qm );
+				$item = $this->getClassInfo( $obj );
+				$item['name'] = $qm;
+				$item['querytype'] = $this->queryObj->getModuleType( $qm );
+				$res['querymodules'][] = $item;
 			}
-			$result->setIndexedTagName( $r['querymodules'], 'module' );
+			$result->setIndexedTagName( $res['querymodules'], 'module' );
 		}
+
 		if ( $params['mainmodule'] ) {
-			$r['mainmodule'] = $this->getClassInfo( $this->getMain() );
+			$res['mainmodule'] = $this->getClassInfo( $this->getMain() );
 		}
+
 		if ( $params['pagesetmodule'] ) {
-			$pageSet = new ApiPageSet( $queryObj );
-			$r['pagesetmodule'] = $this->getClassInfo( $pageSet );
+			$pageSet = new ApiPageSet( $this->queryObj );
+			$res['pagesetmodule'] = $this->getClassInfo( $pageSet );
 		}
-		$result->addValue( null, $this->getModuleName(), $r );
+
+		if ( is_array( $params['formatmodules'] ) ) {
+			$formats = $this->getMain()->getFormats();
+			$res['formatmodules'] = array();
+			foreach ( $params['formatmodules'] as $f ) {
+				if ( !isset( $formats[$f] ) ) {
+					$res['formatmodules'][] = array( 'name' => $f, 'missing' => '' );
+					continue;
+				}
+				$obj = new $formats[$f]( $this, $f );
+				$item = $this->getClassInfo( $obj );
+				$item['name'] = $f;
+				$res['formatmodules'][] = $item;
+			}
+			$result->setIndexedTagName( $res['formatmodules'], 'module' );
+		}
+		$result->addValue( null, $this->getModuleName(), $res );
 	}
 
 	/**
@@ -219,15 +245,22 @@ class ApiParamInfo extends ApiBase {
 	}
 
 	public function getAllowedParams() {
+
 		return array(
 			'modules' => array(
-				ApiBase::PARAM_ISMULTI => true
+				ApiBase::PARAM_ISMULTI => true,
+				ApiBase::PARAM_TYPE => array_keys( $this->getMain()->getModules() ),
 			),
 			'querymodules' => array(
-				ApiBase::PARAM_ISMULTI => true
+				ApiBase::PARAM_ISMULTI => true,
+				ApiBase::PARAM_TYPE => array_keys( $this->queryObj->getModules() ),
 			),
 			'mainmodule' => false,
 			'pagesetmodule' => false,
+			'formatmodules' => array(
+				ApiBase::PARAM_ISMULTI => true,
+				ApiBase::PARAM_TYPE => array_keys( $this->getMain()->getFormats() ),
+			)
 		);
 	}
 
@@ -237,6 +270,7 @@ class ApiParamInfo extends ApiBase {
 			'querymodules' => 'List of query module names (value of prop=, meta= or list= parameter)',
 			'mainmodule' => 'Get information about the main (top-level) module as well',
 			'pagesetmodule' => 'Get information about the pageset module (providing titles= and friends) as well',
+			'formatmodules' => 'List of format module names (value of format= parameter)',
 		);
 	}
 

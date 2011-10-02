@@ -696,7 +696,7 @@ $messages = array(
 'filehist-filesize'         => 'Паьла юстарал',
 'filehist-comment'          => 'ХIамоалар',
 'filehist-missing'          => 'Паьла йоацаш я',
-'imagelinks'                => 'Паьла Iинкаш',
+'imagelinks'                => 'Паьлий пайда эца',
 'linkstoimage'              => '{{PLURAL:$1|ТIехьайоагIа $1 оагIув Iинк ду|ТIехьайоагIа $1 оагIувнаш Iинкаш ду}} укх паьла тIа:',
 'nolinkstoimage'            => 'Йола паьлат  Iинк ю оагIувнаш дац',
 'sharedupload'              => 'Ер паьла $1чера я, кхыча хьахьоадайтамча хьахайраде йийшайолаш я.',
@@ -771,8 +771,7 @@ $messages = array(
 'linksearch-line' => '$1 тIа Iинк $2 юкъера',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Дакъалаьцархоший дIаязбeнна таптар',
-'newuserlog-create-entry' => 'Керда дакъалаьцархо',
+'newuserlogpage' => 'Дакъалаьцархоший дIаязбeнна таптар',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(тоабий дагарче)',
@@ -1011,10 +1010,6 @@ $messages = array(
 'tooltip-rollback'                => 'ГIалaтанийсадаро тIехьара я йола хувцамаш, пIелг тоIоби дIаяккха.',
 'tooltip-undo'                    => 'Я хувцам дIаяккхи, бIаргатассар хьахокха, кара дале, дIаяккха бахьан Iочуязаде моттигаца.',
 'tooltip-summary'                 => 'Лоаца чулоацам Iочуязаде',
-
-# Patrol log
-'patrol-log-line' => '$1 долачаьрахь $2 $3 хьажав/хьажай',
-'patrol-log-diff' => '$1 доржам',
 
 # Browsing diffs
 'previousdiff' => '← Хьалхара хувцам',

@@ -1872,12 +1872,8 @@ Protocolos suportados: <tt>$1</tt>',
 'activeusers-noresult'   => "No s'han trobato usuarios.",
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Rechistro de nuevos usuarios',
-'newuserlogpagetext'          => "Isto ye un rechistro de creyación d'usuarios.",
-'newuserlog-byemail'          => 'Contrasenya ninviata por correu electronico',
-'newuserlog-create-entry'     => 'Nuevo usuario',
-'newuserlog-create2-entry'    => "s'ha creyato a nueva cuenta $1",
-'newuserlog-autocreate-entry' => 'Cuenta creyata automaticament',
+'newuserlogpage'     => 'Rechistro de nuevos usuarios',
+'newuserlogpagetext' => "Isto ye un rechistro de creyación d'usuarios.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => "Dreitos d'a colla d'usuarios",
@@ -2615,9 +2611,6 @@ Puede veyer-ne, manimenos, o codigo fuent.',
 # Patrol log
 'patrol-log-page'      => 'Rechistro de control de revisions',
 'patrol-log-header'    => 'Iste ye un rechistro de revisions patrullatas.',
-'patrol-log-line'      => "s'ha sinyalato a versión $1 de $2 como revisata $3",
-'patrol-log-auto'      => '(automatico)',
-'patrol-log-diff'      => 'versión $1',
 'log-show-hide-patrol' => '$1 o rechistro de patrullache',
 
 # Image deletion
@@ -3122,9 +3115,7 @@ Con iste programa ha d'haber recibiu [{{SERVER}}{{SCRIPTPATH}}/COPYING una copia
 'filepath-page'    => 'Fichero:',
 'filepath-submit'  => 'Ir-ie',
 'filepath-summary' => "Ista pachina especial le retorna o camín completo d'un fichero.
-As imachens s'amuestran en resolución completa, a resta de fichers fan encetar dreitament os suyos programas asociatos.
-
-Escriba o nombre d'o fichero sin o prefixo \"{{ns:file}}:\".",
+As imachens s'amuestran en resolución completa, a resta de fichers fan encetar dreitament os suyos programas asociatos.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Mirar fichers duplicatos',
@@ -3218,5 +3209,6 @@ Escriba o nombre d'o fichero sin o prefixo \"{{ns:file}}:\".",
 # New logging system
 'revdelete-restricted'   => "S'han aplicato as restriccions ta almenistradors",
 'revdelete-unrestricted' => "S'han borrato as restriccions ta almenistradors",
+'newuserlog-byemail'     => 'Contrasenya ninviata por correu electronico',
 
 );

@@ -124,6 +124,7 @@ class OutputPage extends ContextSource {
 	// @todo FIXME: Next variables probably comes from the resource loader
 	var $mModules = array(), $mModuleScripts = array(), $mModuleStyles = array(), $mModuleMessages = array();
 	var $mResourceLoader;
+	var $mJsConfigVars = array();
 
 	/** @todo FIXME: Is this still used ?*/
 	var $mInlineMsg = array();
@@ -1359,7 +1360,7 @@ class OutputPage extends ContextSource {
 	}
 
 	/**
-	 * Add wikitext with a custom Title object and
+	 * Add wikitext with a custom Title object and tidy enabled.
 	 *
 	 * @param $text String: wikitext
 	 * @param $title Title object
@@ -1683,12 +1684,12 @@ class OutputPage extends ContextSource {
 	 *   /w/index.php?title=Main_page&variant=zh-cn should never be served.
 	 */
 	function addAcceptLanguage() {
-		global $wgContLang;
-		if( !$this->getRequest()->getCheck( 'variant' ) && $wgContLang->hasVariants() ) {
-			$variants = $wgContLang->getVariants();
+		$lang = $this->getTitle()->getPageLanguage();
+		if( !$this->getRequest()->getCheck( 'variant' ) && $lang->hasVariants() ) {
+			$variants = $lang->getVariants();
 			$aloption = array();
 			foreach ( $variants as $variant ) {
-				if( $variant === $wgContLang->getCode() ) {
+				if( $variant === $lang->getCode() ) {
 					continue;
 				} else {
 					$aloption[] = 'string-contains=' . $variant;
@@ -2089,8 +2090,6 @@ class OutputPage extends ContextSource {
 	 * @param $action    String: action that was denied or null if unknown
 	 */
 	public function readOnlyPage( $source = null, $protected = false, $reasons = array(), $action = null ) {
-		global $wgEnableInterwikiTranscluding, $wgEnableInterwikiTemplatesTracking;
-
 		$this->setRobotPolicy( 'noindex,nofollow' );
 		$this->setArticleRelated( false );
 
@@ -2139,13 +2138,6 @@ class OutputPage extends ContextSource {
 $templates
 </div>
 " );
-			if ( $wgEnableInterwikiTranscluding && $wgEnableInterwikiTemplatesTracking ) {
-				$distantTemplates = Linker::formatDistantTemplates( $article->getUsedDistantTemplates() );
-				$this->addHTML( "<div class='distantTemplatesUsed'>
-$distantTemplates
-</div>
-" );
-			}
 		}
 
 		# If the title doesn't exist, it's fairly pointless to print a return
@@ -2499,7 +2491,7 @@ $distantTemplates
 				// Add a version parameter so cache will break when things change
 				$version = wfTimestamp( TS_ISO_8601_BASIC, $timestamp );
 			}
-			
+
 			$url = ResourceLoader::makeLoaderURL(
 				array_keys( $modules ),
 				$this->getContext()->getLang()->getCode(),
@@ -2635,15 +2627,33 @@ $distantTemplates
 	}
 
 	/**
-	 * Get an array containing global JS variables
+	 * Add one or more variables to be set in mw.config in JavaScript.
 	 *
-	 * Do not add things here which can be evaluated in
-	 * ResourceLoaderStartupScript - in other words, without state.
-	 * You will only be adding bloat to the page and causing page caches to
+	 * @param $key {String|Array} Key or array of key/value pars.
+	 * @param $value {Mixed} Value of the configuration variable.
+	 */
+	public function addJsConfigVars( $keys, $value ) {
+		if ( is_array( $keys ) ) {
+			foreach ( $keys as $key => $value ) {
+				$this->mJsConfigVars[$key] = $value;
+			}
+			return;
+		}
+
+		$this->mJsConfigVars[$keys] = $value;
+	}
+
+
+	/**
+	 * Get an array containing the variables to be set in mw.config in JavaScript.
+	 *
+	 * Do not add things here which can be evaluated in ResourceLoaderStartupScript
+	 * - in other words, page-indendent/site-wide variables (without state).
+	 * You will only be adding bloat to the html page and causing page caches to
 	 * have to be purged on configuration changes.
 	 */
 	protected function getJSVars() {
-		global $wgUseAjax, $wgEnableMWSuggest, $wgContLang;
+		global $wgUseAjax, $wgEnableMWSuggest;
 
 		$title = $this->getTitle();
 		$ns = $title->getNamespace();
@@ -2669,9 +2679,10 @@ $distantTemplates
 			'wgCategories' => $this->getCategories(),
 			'wgBreakFrames' => $this->getFrameOptions() == 'DENY',
 		);
-		if ( $wgContLang->hasVariants() ) {
-			$vars['wgUserVariant'] = $wgContLang->getPreferredVariant();
-		}
+		$lang = $this->getTitle()->getPageLanguage();
+		if ( $lang->hasVariants() ) {
+			$vars['wgUserVariant'] = $lang->getPreferredVariant();
+ 		}
 		foreach ( $title->getRestrictionTypes() as $type ) {
 			$vars['wgRestriction' . ucfirst( $type )] = $title->getRestrictions( $type );
 		}
@@ -2682,10 +2693,14 @@ $distantTemplates
 			$vars['wgIsMainPage'] = true;
 		}
 
-		// Allow extensions to add their custom variables to the global JS variables
+		// Allow extensions to add their custom variables to the mw.config map.
+		// Use the 'ResourceLoaderGetConfigVars' hook if the variable is not
+		// page-dependant but site-wide (without state).
+		// Alternatively, you may want to use OutputPage->addJsConfigVars() instead.
 		wfRunHooks( 'MakeGlobalVariablesScript', array( &$vars, &$this ) );
 
-		return $vars;
+		// Merge in variables from addJsConfigVars last
+		return array_merge( $vars, $this->mJsConfigVars );
 	}
 
 	/**
@@ -2722,7 +2737,7 @@ $distantTemplates
 		global $wgUniversalEditButton, $wgFavicon, $wgAppleTouchIcon, $wgEnableAPI,
 			$wgSitename, $wgVersion, $wgHtml5, $wgMimeType,
 			$wgFeed, $wgOverrideSiteFeed, $wgAdvertisedFeedTypes,
-			$wgDisableLangConversion, $wgCanonicalLanguageLinks, $wgContLang,
+			$wgDisableLangConversion, $wgCanonicalLanguageLinks,
 			$wgRightsPage, $wgRightsUrl;
 
 		$tags = array();
@@ -2848,14 +2863,16 @@ $distantTemplates
 			) );
 		}
 
+		$lang = $this->getTitle()->getPageLanguage();
+
 		# Language variants
 		if ( !$wgDisableLangConversion && $wgCanonicalLanguageLinks
-			&& $wgContLang->hasVariants() ) {
+			&& $lang->hasVariants() ) {
 
-			$urlvar = $wgContLang->getURLVariant();
+			$urlvar = $lang->getURLVariant();
 
 			if ( !$urlvar ) {
-				$variants = $wgContLang->getVariants();
+				$variants = $lang->getVariants();
 				foreach ( $variants as $_v ) {
 					$tags[] = Html::element( 'link', array(
 						'rel' => 'alternate',

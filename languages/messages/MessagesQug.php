@@ -482,8 +482,7 @@ Shuk rurakkunaka kikinpa e-chaski ''dirección''ta mana yachankachu.",
 'linksearch-line' => '$1 pankaka $2-manta tinkishkami kan',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Rurakkununata kamaykunapa kamu',
-'newuserlog-create-entry' => 'Mushuk rurak',
+'newuserlogpage' => 'Rurakkununata kamaykunapa kamu',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(Kay tantanakuypa rurakkunapa shutikuna)',
@@ -676,10 +675,6 @@ Shuk shutita akllapay.',
 'tooltip-undo'                    => '"Kutichina" nikpika, kay hapishka killkayta kutichipanki, shinalla killkana pankapa "ñawpak rikuchiy" rikupanki : chaymanta, imashpa kay killkayta kutichipankichu rimanata ushapanki',
 'tooltip-summary'                 => 'Uchilla willayta killkana',
 
-# Patrol log
-'patrol-log-line' => '$1 $2 pankamanta alli kachirka $3',
-'patrol-log-diff' => '$1 mushuk killkata',
-
 # Browsing diffs
 'previousdiff' => 'Yallik ñawpakmi killkay',
 'nextdiff'     => 'Yalli mushukmi killkay',
@@ -700,7 +695,20 @@ Shuk aspipi, shukniki tinkika ima tinkita wichkashkami kanka nin, kay aspipi shu
 'metadata-help'     => 'Chay rikchaka yapa willaykunata charin, icha camara antamanta shinalla shuk suyuchik antamanta. Rikchata shukchishkami kakpika, icha kay willaykunaka mana alli kan.',
 'metadata-expand'   => 'Uchilla willaykunata rikuchiy',
 'metadata-collapse' => 'Uchilla willaykunata pakay',
-'metadata-fields'   => 'Kaypi killkashka rikchamanta willaykunaka wiñay paypa rikchawan rikuchishkami kanka. Shuk willaykunata pakashkami kanka. Shinapash shuk rurakka munakpika paykunaya rikunata ushanka.',
+'metadata-fields'   => 'Kaypi killkashka rikchamanta willaykunaka wiñay paypa rikchawan rikuchishkami kanka. Shuk willaykunata pakashkami kanka. Shinapash shuk rurakka munakpika paykunaya rikunata ushanka.
+* make
+* model
+* datetimeoriginal
+* exposuretime
+* fnumber
+* isospeedratings
+* focallength
+* artist
+* copyright
+* imagedescription
+* gpslatitude
+* gpslongitude
+* gpsaltitude',
 
 # External editor support
 'edit-externally'      => 'Kay archiwuta shuk hawa antanawan llankana',

@@ -298,7 +298,7 @@ $messages = array(
 'tog-enotifminoredits'        => 'Ibgħatli wkoll ittra-e għall-modifiki minuri fuq paġni',
 'tog-enotifrevealaddr'        => "Ikxef l-indirizz tal-posta elettronika tiegħi fil-messaġġi ta' avviż",
 'tog-shownumberswatching'     => "Uri n-numru ta' utenti li qegħdin isegwu din il-paġna",
-'tog-oldsig'                  => 'Dehra proviżorja tal-firma attwali:',
+'tog-oldsig'                  => 'Firma attwali:',
 'tog-fancysig'                => 'Interpreta l-firma bħala test tal-wiki (mingħajr ħolqa awtomatika)',
 'tog-externaleditor'          => 'Uża awtomatikament editur estern (għal utenti esperti biss, hemm bżonn preferenzi speċjali fuq il-komputer tiegħek. [http://www.mediawiki.org/wiki/Manual:External_editors Iktar informazzjoni.])',
 'tog-externaldiff'            => 'Uża awtomatikament diff estern (għal utenti esperti biss, hemm bżonn preferenzi speċjali fuq il-komputer tiegħek. [http://www.mediawiki.org/wiki/Manual:External_editors Iktar informazzjoni.])',
@@ -1261,7 +1261,7 @@ Ipprova għamel prefiss għall-inkjesta tiegħek ma' ''all:'' sabiex tfittex il-
 'powersearch'                      => 'Tfittxija avvanzata',
 'powersearch-legend'               => 'Tfittxija avvanzata',
 'powersearch-ns'                   => 'Fittex fl-ispazju tal-isem:',
-'powersearch-redir'                => "Lista ta' riindirizzi",
+'powersearch-redir'                => 'Uri r-rindirizzi',
 'powersearch-field'                => 'Fittex',
 'powersearch-togglelabel'          => 'Agħżel:',
 'powersearch-toggleall'            => 'Kollha',
@@ -1306,7 +1306,7 @@ Innota però li l-werreja tal-kontenut ta' {{SITENAME}} f'dawn is-siti, jistgħu
 'prefs-setemail'                => 'Issettja indirizz elettroniku',
 'prefs-email'                   => 'Opzjonijiet għall-posta elettronika',
 'prefs-rendering'               => 'Dehra',
-'saveprefs'                     => 'Żomm il-preferenzi',
+'saveprefs'                     => 'Salva l-preferenzi',
 'resetprefs'                    => 'Neħħi modifiki mhux salvati',
 'restoreprefs'                  => 'Irkupra l-impostazzjonijiet awtomatiċi',
 'prefs-editing'                 => 'Modifiki',
@@ -1328,7 +1328,7 @@ Hawnhekk hawn valur iġġenerat b'mod każwali li inti tista' tuża: $1",
 'timezonelegend'                => 'Żona tal-ħin:',
 'localtime'                     => 'Ħin lokali:',
 'timezoneuseserverdefault'      => 'Uża l-ħin użat mill-wiki ($1)',
-'timezoneuseoffset'             => 'Ieħor (ispeċifika d-differenza)',
+'timezoneuseoffset'             => 'Ieħor (speċifika d-differenza)',
 'timezoneoffset'                => 'Differenza¹:',
 'servertime'                    => 'Ħin tas-server:',
 'guesstimezone'                 => "Uża l-ħin tal-''browser'' tiegħek",
@@ -1886,7 +1886,7 @@ Daħħal: tip/sottotip, eż. <tt>image/jpeg</tt>.",
 'unwatchedpages' => 'Paġni mhux osservati',
 
 # List redirects
-'listredirects' => "Lista ta' riindirizzi",
+'listredirects' => "Lista ta' rindirizzi",
 
 # Unused templates
 'unusedtemplates'     => 'Templates mhux użati',
@@ -2085,12 +2085,8 @@ Protokolli aċċettati: <tt>$1</tt>',
 'activeusers-noresult'   => 'L-ebda utent ma nstab.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Utenti ġodda',
-'newuserlogpagetext'          => "Dan hu reġistru tal-kreazzjoni ta' kontijiet ġodda.",
-'newuserlog-byemail'          => "il-password intbagħtet permezz ta' posta elettronika",
-'newuserlog-create-entry'     => 'Utent ġdid',
-'newuserlog-create2-entry'    => 'irreġistra l-isem tal-utent ġdid $1',
-'newuserlog-autocreate-entry' => 'Kont maħluq awtomatikament',
+'newuserlogpage'     => 'Utenti ġodda',
+'newuserlogpagetext' => "Dan hu reġistru tal-kreazzjoni ta' kontijiet ġodda.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Drittijiet tal-grupp tal-utenti',
@@ -2915,9 +2911,6 @@ Kull azzjonijiet ta' importazzjoni tal-transwiki jiġu reġistrati fil-[[Special
 # Patrol log
 'patrol-log-page'      => 'Modifiki verifikati',
 'patrol-log-header'    => "Dan huwa reġistru ta' reviżjonijiet verifikati.",
-'patrol-log-line'      => 'immarka r-$1 tal-paġna $2 bħala verifikata $3',
-'patrol-log-auto'      => '(verifika awtomatika)',
-'patrol-log-diff'      => 'reviżjoni $1',
 'log-show-hide-patrol' => '$1 r-reġistru tal-modifiki verifikati',
 
 # Image deletion
@@ -3601,10 +3594,8 @@ Flimkien ma' dan il-programm suppost kellek tirċievi [{{SERVER}}{{SCRIPTPATH}}/
 'filepath'         => 'Post tal-fajl',
 'filepath-page'    => 'Fajl:',
 'filepath-submit'  => 'Mur',
-'filepath-summary' => 'Din il-paġna speċjali tagħti lura l-indirizz komplet tal-posta għal fajl.
-Stampi huwa mogħrija b\'risoluzzjoni sħiħa, tipi tal-fajl oħrajn jibdew bil-program assoċjat magħhom direttament.
-
-Daħħal l-isem tal-fajl bla l-prefiss "{{ns:file}}:".',
+'filepath-summary' => "Din il-paġna speċjali tagħti lura l-indirizz komplet tal-posta għal fajl.
+Stampi huwa mogħrija b'risoluzzjoni sħiħa, tipi tal-fajl oħrajn jibdew bil-program assoċjat magħhom direttament.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Fittex fajls duplikati',
@@ -3683,7 +3674,6 @@ Daħħal l-isem tal-fajl bla l-prefiss "{{ns:file}}:".',
 'globalfileusage-text'        => 'Fittex l-użu globali tal-fajl',
 'globalfileusage-no-results'  => '[[$1]] mhuwiex użat fuq wikis oħrajn.',
 'globalfileusage-on-wiki'     => 'Użu fuq $2',
-'globalfileusage-of-file'     => 'Anke il-wikis segwenti jużaw dan il-fajl:',
 'globalfileusage-more'        => "Ara [[{{#Special:GlobalUsage}}/$1|aktar użu globali]] ta' dan il-fajl.",
 'globalfileusage-filterlocal' => 'Turix l-użu lokali',
 
@@ -3694,7 +3684,6 @@ Daħħal l-isem tal-fajl bla l-prefiss "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Fittex l-użu globali tal-mudell',
 'globaltemplateusage-no-results'  => '[[$1]] mhuwiex użat fuq wikis oħrajn.',
 'globaltemplateusage-on-wiki'     => 'Użu fuq $2',
-'globaltemplateusage-of-file'     => 'Anke il-wikis segwenti jużaw dan il-mudell:',
 'globaltemplateusage-more'        => "Ara [[{{#Special:GlobalUsage}}/$1|aktar użu globali]] ta' dan il-mudell.",
 'globaltemplateusage-filterlocal' => 'Turix l-użu lokali',
 
@@ -3730,5 +3719,6 @@ Daħħal l-isem tal-fajl bla l-prefiss "{{ns:file}}:".',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|mexxa l-|mexxiet il-}}paġna $3 għal $4 mingħajr ma ħalla rindirizz',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|mexxa l-|mexxiet il-}}paġna $3 għal $4 fuq rindrizz',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|mexxa l-|mexxiet il-}}paġna $3 għal $4 fuq rindirizz mingħajr ma ħalla rindirizz',
+'newuserlog-byemail'                  => "il-password intbagħtet permezz ta' posta elettronika",
 
 );

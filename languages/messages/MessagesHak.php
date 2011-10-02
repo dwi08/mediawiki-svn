@@ -1014,10 +1014,8 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'Cháu put-to yung-fu.',
 
 # Special:Log/newusers
-'newuserlogpage'           => 'Sîn-chin yung-fu miàng-chhak',
-'newuserlogpagetext'       => 'Liá-he yit-ke chui-khiun pûn chhóng-kien yung-fu ke ngit-ki.',
-'newuserlog-create-entry'  => 'Sîn yung-fu',
-'newuserlog-create2-entry' => 'Yí-kîn chhong-kien $1 ke chong-fu',
+'newuserlogpage'     => 'Sîn-chin yung-fu miàng-chhak',
+'newuserlogpagetext' => 'Liá-he yit-ke chui-khiun pûn chhóng-kien yung-fu ke ngit-ki.',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(sṳ̀n-yèn chhîn-tân)',
@@ -1528,8 +1526,6 @@ Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]
 
 # Patrol log
 'patrol-log-page' => 'Sùn-chhà ki-liu̍k',
-'patrol-log-line' => 'Yí-kîn phêu-sṳ $1/$2-pán cho yí-kîn sùn-chhà ke $3',
-'patrol-log-auto' => '（chhṳ-thung）',
 
 # Image deletion
 'deletedrevision' => 'Yí-kîn chhù-thet khiu-ke pán-pún $1.',

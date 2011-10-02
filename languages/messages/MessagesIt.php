@@ -1468,6 +1468,7 @@ L'operazione non può essere annullata.",
 'right-siteadmin'             => 'Blocca e sblocca il database',
 'right-override-export-depth' => 'Esporta le pagine includendo le pagine collegate fino ad una profondità di 5',
 'right-sendemail'             => 'Invia e-mail ad altri utenti',
+'right-passwordreset'         => 'Reimposta la password di un utente ([[Special:PasswordReset|pagina speciale]])',
 
 # User rights log
 'rightslog'                  => 'Diritti degli utenti',
@@ -1780,7 +1781,7 @@ Se vengono filtrati per utente, saranno mostrati solamente quei file per i quali
 'filehist-filesize'         => 'Dimensione del file',
 'filehist-comment'          => 'Oggetto',
 'filehist-missing'          => 'File mancante',
-'imagelinks'                => 'Collegamenti al file',
+'imagelinks'                => 'Uso del file',
 'linkstoimage'              => '{{PLURAL:$1|La seguente pagina contiene|Le seguenti $1 pagine contengono}} collegamenti al file:',
 'linkstoimage-more'         => 'Più di $1 {{PLURAL:$1|pagina punta|pagine puntano}} a questo file.
 Di seguito sono elencate solo {{PLURAL:$1|la prima pagina che punta|le prime $1 pagine che puntano}} a questo file.
@@ -2040,12 +2041,8 @@ Protocolli supportati: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nessun utente risponde ai criteri impostati.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Nuovi utenti',
-'newuserlogpagetext'          => 'Di seguito sono elencate le creazioni di nuovi account.',
-'newuserlog-byemail'          => 'password inviata via mail',
-'newuserlog-create-entry'     => 'si è appena registrato/a',
-'newuserlog-create2-entry'    => 'ha registrato il nuovo nome utente $1',
-'newuserlog-autocreate-entry' => 'account creato automaticamente',
+'newuserlogpage'     => 'Nuovi utenti',
+'newuserlogpagetext' => 'Di seguito sono elencate le creazioni di nuovi account.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Diritti del gruppo utente',
@@ -2852,9 +2849,6 @@ Tutte le operazioni di importazione trans-wiki sono registrate nel [[Special:Log
 # Patrol log
 'patrol-log-page'      => 'Modifiche verificate',
 'patrol-log-header'    => 'Di seguito sono elencate le verifiche delle modifiche.',
-'patrol-log-line'      => 'ha segnato la $1 alla pagina $2 come verificata $3',
-'patrol-log-auto'      => '(verifica automatica)',
-'patrol-log-diff'      => 'modifica $1',
 'log-show-hide-patrol' => '$1 log delle modifiche verificate',
 
 # Image deletion
@@ -2903,6 +2897,13 @@ $1',
 'ilsubmit'              => 'Ricerca',
 'bydate'                => 'per data',
 'sp-newimages-showfrom' => 'Mostra i file più recenti a partire dalle ore $2 del $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|un secondo|$1 secondi}}',
+'minutes' => '{{PLURAL:$1|un minuto|$1 minuti}}',
+'hours'   => "{{PLURAL:$1|un'ora|$1 ore}}",
+'days'    => '{{PLURAL:$1|un giorno|$1 giorni}}',
+'ago'     => '$1 fa',
 
 # Bad image list
 'bad_image_list' => "Il formato è il seguente:
@@ -3537,9 +3538,8 @@ Questo programma deve essere distribuito assieme ad [{{SERVER}}{{SCRIPTPATH}}/CO
 'filepath'         => 'Percorso di un file',
 'filepath-page'    => 'Nome del file:',
 'filepath-submit'  => 'Vai',
-'filepath-summary' => 'Questa pagina speciale restituisce il percorso completo di un file. Le immagini vengono mostrate alla massima risoluzione disponibile, per gli altri tipi di file viene avviato direttamente il programma associato.
-
-Inserire il nome del file senza il prefisso "{{ns:file}}:"',
+'filepath-summary' => 'Questa pagina speciale restituisce il percorso completo di un file.
+Le immagini vengono mostrate alla massima risoluzione disponibile, per gli altri tipi di file viene avviato direttamente il programma associato.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Ricerca dei file duplicati',
@@ -3618,7 +3618,6 @@ Inserire il nome del file senza il prefisso "{{ns:file}}:"',
 'globalfileusage-text'        => 'Ricerca utilizzo globale file',
 'globalfileusage-no-results'  => '[[$1]] non è utilizzato in altri wiki.',
 'globalfileusage-on-wiki'     => 'Utilizzo in $2',
-'globalfileusage-of-file'     => 'Anche i wiki seguenti utilizzano questo file:',
 'globalfileusage-more'        => 'Vedi [[{{#Special:GlobalUsage}}/$1|altro utilizzo globale]] di questo file.',
 'globalfileusage-filterlocal' => "Non mostrare l'utilizzo locale",
 
@@ -3629,7 +3628,6 @@ Inserire il nome del file senza il prefisso "{{ns:file}}:"',
 'globaltemplateusage-text'        => 'Ricerca utilizzo globale file',
 'globaltemplateusage-no-results'  => '[[$1]] non è usato in altri wiki.',
 'globaltemplateusage-on-wiki'     => 'Utilizzo in $2',
-'globaltemplateusage-of-file'     => 'Anche i wiki seguenti utilizzano questo template:',
 'globaltemplateusage-more'        => 'Vedi [[{{#Special:GlobalUsage}}/$1|altro utilizzo globale]] di questo template.',
 'globaltemplateusage-filterlocal' => "Non mostrare l'utilizzo locale",
 
@@ -3659,7 +3657,20 @@ Inserire il nome del file senza il prefisso "{{ns:file}}:"',
 'sqlite-no-fts'  => '$1 senza la possibilità di ricerca completa nel testo',
 
 # New logging system
-'revdelete-restricted'   => 'limitazioni ai soli amministratori attivate',
-'revdelete-unrestricted' => 'limitazioni ai soli amministratori rimosse',
+'logentry-delete-delete'              => '$1 {{GENDER:$2|ha cancellato}} la pagina $3',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|ha modificato}} la visibilità per {{PLURAL:$5|una revisione|$5 revisioni}} della pagina $3: $4',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|ha modificato}} la visibilità per le revisioni della pagina $3',
+'revdelete-content-hid'               => 'contenuto nascosto',
+'revdelete-summary-hid'               => 'oggetto della modifica nascosto',
+'revdelete-uname-hid'                 => 'nome utente nascosto',
+'revdelete-restricted'                => 'limitazioni ai soli amministratori attivate',
+'revdelete-unrestricted'              => 'limitazioni ai soli amministratori rimosse',
+'logentry-move-move'                  => '$1 {{GENDER:$2|ha spostato}} la pagina $3 a $4',
+'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|ha spostato}} la pagina $3 a $4 senza lasciare redirect',
+'logentry-move-move_redir'            => '$1 {{GENDER:$2|ha spostato}} la pagina $3 a $4 tramite redirect',
+'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|ha spostato}} la pagina $3 a $4 tramite redirect senza lasciare redirect',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|ha segnato}} la versione $4 della pagina $3 come verificata',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|ha segnato}} automaticamente la versione $4 della pagina $3 come verificata',
+'newuserlog-byemail'                  => 'password inviata via mail',
 
 );

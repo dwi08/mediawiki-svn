@@ -52,6 +52,7 @@
  * @author زكريا
  * @author عصام بايزيدي
  * @author عمرو
+ * @author محمد الجداوي
  * @author نصوح
  */
 
@@ -473,7 +474,7 @@ $messages = array(
 'tog-enotifminoredits'        => 'أرسل لي رسالة إلكترونية عن التعديلات الطفيفة للصفحات أيضا',
 'tog-enotifrevealaddr'        => 'أظهر عنوان بريدي الإلكتروني في رسائل الإخطار',
 'tog-shownumberswatching'     => 'اعرض عدد المستخدمين المراقبين',
-'tog-oldsig'                  => 'معاينة للتوقيع الموجود:',
+'tog-oldsig'                  => 'التوقيع الحالي:',
 'tog-fancysig'                => 'عامل التوقيع كنص ويكي (بدون وصلة أوتوماتيكية)',
 'tog-externaleditor'          => 'استخدم محررا خارجيا بشكل افتراضي (للخبراء فقط، يحتاج إعدادات خاصة على حاسوبك) ([http://www.mediawiki.org/wiki/Manual:External_editors مزيد من المعلومات.])',
 'tog-externaldiff'            => 'استخدم فرقا خارجيا بشكل افتراضي (للخبراء فقط، يحتاج إعدادات خاصة على حاسوبك) ([http://www.mediawiki.org/wiki/Manual:External_editors للمزيد من المعلومات.])',
@@ -973,6 +974,7 @@ $2',
 'passwordreset-disabled'       => 'عُطّلت إعادة تعيين كلمة السر على هذه الويكي.',
 'passwordreset-pretext'        => '{{PLURAL:$1||أدخل أحد أجزاء البيانات أدناه}}',
 'passwordreset-username'       => 'اسم المستخدم:',
+'passwordreset-domain'         => 'النطاق:',
 'passwordreset-email'          => 'عنوان البريد الإلكتروني:',
 'passwordreset-emailtitle'     => 'تفاصيل حساب {{SITENAME}}',
 'passwordreset-emailtext-ip'   => 'احد ما (قد يكون انت$1)طلب مذكرة تفاصيل الحساب ل{{SITENAME}} ($4).المستخدم الاتي {{PLURAL:$3|الحساب هو|الحسابات هي}} قد قرن بهذا العنوان :
@@ -1577,7 +1579,7 @@ $1",
 'prefs-registration'            => 'وقت التسجيل:',
 'yourrealname'                  => 'الاسم الحقيقي:',
 'yourlanguage'                  => 'اللغة:',
-'yourvariant'                   => 'اللهجة:',
+'yourvariant'                   => 'لهجة المحتوى:',
 'yournick'                      => 'التوقيع:',
 'prefs-help-signature'          => 'يجب أن توقع تعليقات صفحات النقاش باستخدام "<nowiki>~~~~</nowiki>" الذي سيحول إلى توقيعك مع طابع زمني.',
 'badsig'                        => 'توقيع خام غير صحيح؛ تحقق من وسوم HTML.',
@@ -1719,6 +1721,7 @@ $1",
 'right-siteadmin'             => 'غلق ورفع غلق قاعدة البيانات',
 'right-override-export-depth' => 'تصدير الصفحات متضمنة الصفحات الموصولة حتى عمق 5',
 'right-sendemail'             => 'إرسال رسائل بريد إلكتروني إلى مستخدمين آخرين',
+'right-passwordreset'         => 'إعادة ضبط كلمة سر مستخدم([[Special:PasswordReset|صفحة خاصة]])',
 
 # User rights log
 'rightslog'                  => 'سجل صلاحيات المستخدمين',
@@ -2052,7 +2055,7 @@ $1',
 'filehist-filesize'                 => 'حجم الملف',
 'filehist-comment'                  => 'تعليق',
 'filehist-missing'                  => 'ملف مفقود',
-'imagelinks'                        => 'وصلات الملف',
+'imagelinks'                        => 'استخدام الملف',
 'linkstoimage'                      => '{{PLURAL:$1||الصفحة التالية تصل|الصفحتان التاليتان تصلان|ال$1 صفحات التالية تصل|ال$1 صفحة التالية تصل}} إلى هذا الملف:',
 'linkstoimage-more'                 => 'أكثر من {{PLURAL:$1||صفحة واحدة تصل|صفحتين تصلان|$1 صفحات تصل|$1 صفحة تصل}} إلى هذا الملف.
 القائمة التالية تعرض فقط {{PLURAL:$1||أول صفحة تصل|أول صفحتين تصلان|أول $1 صفحات تصل|أول $1 صفحة تصل}} إلى هذا الملف.
@@ -2319,12 +2322,8 @@ $1',
 'activeusers-noresult'   => 'لا مستخدمون تم إيجادهم.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'سجل إنشاء المستخدمين',
-'newuserlogpagetext'          => 'هذا سجل بعمليات إنشاء المستخدمين.',
-'newuserlog-byemail'          => 'كلمة السر تم إرسالها بواسطة البريد الإلكتروني',
-'newuserlog-create-entry'     => 'مستخدم جديد',
-'newuserlog-create2-entry'    => 'أنشأ حسابا جديدا $1',
-'newuserlog-autocreate-entry' => 'الحساب تم إنشاؤه تلقائيا',
+'newuserlogpage'     => 'سجل إنشاء المستخدمين',
+'newuserlogpagetext' => 'هذا سجل بعمليات إنشاء المستخدمين.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'صلاحيات مجموعات المستخدمين',
@@ -2689,10 +2688,7 @@ $1',
 'blockip'                         => 'منع مستخدم',
 'blockip-title'                   => 'منع مستخدم',
 'blockip-legend'                  => 'منع المستخدم',
-'blockiptext'                     => 'استخدم الاستمارة أدناه لمنع عنوان أيبي أو مستخدم مسجل من الكتابة.
-يجب أن يتم هذا فقط لمنع التخريب، وبالتوافق مع
-[[{{MediaWiki:Policy-url}}|السياسة]].
-اذكر سببا محددا أدناه (على سبيل المثال، اذكر بعض الصفحات المعينة التي قام بتخريبها).',
+'blockiptext'                     => 'استخدم النموذج التالي لمنع مستخدم، أو عنوان آيبي، معين من التعديل أو إنشاء حسابات جديدة. تُستخدم هذه العملية لمنع التخريب فقط، ويجب أن تتماشى مع [[{{MediaWiki:Policy-url}}|سياسة المنع]]. أدخل تعليلاً واضحًا لسبب المنع في الخانة المخصصة لذلك (مثلاً: ذكر صفحات محددة تمّ تخريبها من قبل المستخدم).',
 'ipadressorusername'              => 'عنوان الأيبي أو اسم المستخدم:',
 'ipbexpiry'                       => 'مدة المنع:',
 'ipbreason'                       => 'السبب:',
@@ -2765,6 +2761,7 @@ $1',
 'unblocklink'                     => 'رفع المنع',
 'change-blocklink'                => 'تغيير المنع',
 'contribslink'                    => 'مساهمات',
+'emaillink'                       => 'أرسل بريدًا إلكترونيًا',
 'autoblocker'                     => 'تم منعك تلقائيا لأن الأيبي الخاص بك تم استخدامه مؤخرا بواسطة "[[User:$1|$1]]".
 السبب المعطى لمنع $1 هو: "$2"',
 'blocklogpage'                    => 'سجل المنع',
@@ -3098,7 +3095,7 @@ $1',
 'tooltip-summary'                 => 'أدخل ملخصا قصيرا',
 
 # Stylesheets
-'common.css'              => '/* الأنماط المتراصة CSS المعروضة هنا ستؤثر على كل الواجهات */',
+'common.css'              => '/* ستؤثر الأنماط المتراصة (CSS) المعروضة هنا على كل الواجهات */',
 'standard.css'            => '/* الأنماط المتراصة CSS المعروضة هنا ستؤثر على مستخدمي واجهة ستاندرد */',
 'nostalgia.css'           => '/* الأنماط المتراصة CSS المعروضة هنا ستؤثر على مستخدمي واجهة نوستالشيا */',
 'cologneblue.css'         => '/* الأنماط المتراصة CSS المعروضة هنا ستؤثر على مستخدمي واجهة كولون بلو */',
@@ -3194,9 +3191,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'سجل الخفر',
 'patrol-log-header'    => 'هذا سجل بالمراجعات المراجعة.',
-'patrol-log-line'      => 'علم على $1 من $2 كمراجعة $3',
-'patrol-log-auto'      => '(تلقائيا)',
-'patrol-log-diff'      => 'ن$1',
 'log-show-hide-patrol' => '$1 سجل الخفر',
 
 # Image deletion
@@ -3251,6 +3245,11 @@ $1',
 'seconds-abbrev' => 'ث',
 'minutes-abbrev' => 'د',
 'hours-abbrev'   => 'س',
+'seconds'        => '{{PLURAL:$1||ثانية واحدة|ثانيتين|$1 ثوانٍ|$1 ثانية}}',
+'minutes'        => '{{PLURAL:$1||دقيقة واحدة|دقيقتين|$1 دقائق|$1 دقيقة}}',
+'hours'          => '{{PLURAL:$1||ساعة واحدة|ساعتين|$1 ساعات|$1 ساعة}}',
+'days'           => '{{PLURAL:$1||يوم واحد|يومين|$1 أيام|$1 يومًا|$1 يوم}}',
+'ago'            => 'قبل $1',
 
 # Bad image list
 'bad_image_list' => 'الصيغة كالتالي:
@@ -3984,9 +3983,7 @@ $1',
 'filepath-page'    => 'الملف:',
 'filepath-submit'  => 'اذهب',
 'filepath-summary' => 'هذه الصفحة الخاصة تعرض المسار الكامل لملف.
-ستعرض الصور بأقصى دقة، ستعمل أنواع الملفات الأخرى بالبرنامج المخصص لهم مباشرة.
-
-أدخل اسم الملف بدون البادئة "{{ns:file}}:"',
+ستعرض الصور بأقصى دقة، ستعمل أنواع الملفات الأخرى بالبرنامج المخصص لهم مباشرة.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'بحث عن ملفات مكررة',
@@ -4065,7 +4062,6 @@ $1',
 'globalfileusage-text'        => 'ابحث عن الاستخدام العام لملف',
 'globalfileusage-no-results'  => '[[$1]] غير مستخدم في ويكيات أخرى.',
 'globalfileusage-on-wiki'     => 'الاستخدام في $2',
-'globalfileusage-of-file'     => 'الويكيات الأخرى التالية تستخدم هذا الملف:',
 'globalfileusage-more'        => 'اعرض [[{{#Special:GlobalUsage}}/$1|المزيد من الاستخدام العام]] لهذا الملف.',
 'globalfileusage-filterlocal' => 'لا تعرض الاستخدام المحلي',
 
@@ -4076,7 +4072,6 @@ $1',
 'globaltemplateusage-text'        => 'ابحث عن الاستخدام العام لقالب',
 'globaltemplateusage-no-results'  => '[[$1]] غير مستخدم في ويكيات أخرى.',
 'globaltemplateusage-on-wiki'     => 'الاستخدام في $2',
-'globaltemplateusage-of-file'     => 'الويكيات الأخرى التالية تستخدم هذا القالب:',
 'globaltemplateusage-more'        => 'اعرض [[{{#Special:GlobalUsage}}/$1|المزيد من الاستخدام العام]] لهذا القالب.',
 'globaltemplateusage-filterlocal' => 'لا تعرض الاستخدام المحلي',
 
@@ -4106,7 +4101,14 @@ $1',
 'sqlite-no-fts'  => '$1 بدون دعم البحث في كامل النص',
 
 # New logging system
-'revdelete-restricted'   => 'طبق الضوابط لمديري النظام',
-'revdelete-unrestricted' => 'أزال الضوابط لمديري النظام',
+'logentry-delete-delete'              => '{{GENDER:$2|حذف|حذفت}} $1 صفحة $3',
+'logentry-delete-restore'             => '{{GENDER:$2|استعاد|استعادت}} $1 صفحة $3',
+'revdelete-restricted'                => 'طبق الضوابط لمديري النظام',
+'revdelete-unrestricted'              => 'أزال الضوابط لمديري النظام',
+'logentry-move-move'                  => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى $4',
+'logentry-move-move-noredirect'       => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى $4 دون ترك تحويلة',
+'logentry-move-move_redir'            => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى التحويلة $4',
+'logentry-move-move_redir-noredirect' => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى التحويلة $4 دون ترك تحويلة',
+'newuserlog-byemail'                  => 'كلمة السر تم إرسالها بواسطة البريد الإلكتروني',
 
 );

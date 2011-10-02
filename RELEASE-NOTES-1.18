@@ -211,6 +211,15 @@ production.
 * New maintenance script to refresh image metadata (maintenance/refreshImageMetadata.php)
 * (bug 30722) Add an identity collation that sorts things based on what the
   unicode code point is (aka pre-1.17 behaviour)
+* (bug 30940) Add a hook in User:getDefaultOptions.
+  To give extensions a better and more flexible way of providing default
+  values for preferences a hook has been introdiced in User:getDefaultOptions().
+  Setting preferences in $wgDefaultUserOptions still work fine, but when reading
+  them (i.e. with array_keys) to get a list of all preferences, then
+  $wgDefaultUserOptions should no longer be used as it will contain those set via
+  User:getDefaultOptions().
+* (bug 30497) Add client-nojs and client-js classes on document element
+  to let styles easily hide or show things based on general JS availability
 
 === Bug fixes in 1.18 ===
 * mw.util.getScript has been implemented (like wfScript in GlobalFunctions.php)
@@ -338,8 +347,6 @@ production.
   environments
 * (bug 14977) Fixed $wgServer detection in cases where an IPv6 address is used
   as the server name.
-* (bug 19725) Do not list suppressed edits in the "View X deleted edits" link
-  if user cannot view suppressed edits.
 * The View X deleted revisions is now shown again on Special:Upload.
 * (bug 29071) mediawiki.action.watch.ajax.js should pass uselang to API.
 * (bug 28868) Show total pages in the subtitle of an image on the
@@ -451,6 +458,11 @@ production.
 * (bug 28545) When using the uca-default collation, sortkey's starting with a
   space (U+20) will sort under an invisible header like in 1.16 rather than a U+6DE
 * (bug 30192) Thumbnails of archived files are now deleted
+* (bug 30843) mediawiki.Title should not convert extensions (anything after the
+  last full stop) to lower case)
+* (bug 31213) Exception thrown when trying to move file cross-namespace
+* (bug 18424) Special:Prefixindex and Special:Allpages paging links are
+  really small, and somewhat inconsistent with each other.
 
 === API changes in 1.18 ===
 * BREAKING CHANGE: action=watch now requires POST and token.
@@ -625,6 +637,9 @@ changes to languages because of Bugzilla reports.
 * Kashmiri (ks) split into Kashmiri (Perso-Arabic) (ks-arab) and Kashmiri
   (Devanagari) (ks-deva). Defaults to ks-arab.
 * (bug 30864) Use bengali numerals for <ol> for Assamese
+* (bug 30817) Restored linktrail for kk (Kazakh)
+* (bug 27398) Add $wgExtraGenderNamespaces for configured gendered namespaces
+* (bug 30846) New LanguageOs class
 
 === Other changes in 1.18 ===
 * Removed legacy wgAjaxWatch javascript global object, no longer in use.

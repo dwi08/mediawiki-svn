@@ -1872,12 +1872,8 @@ Disukung protokol: <tt>$1</tt>',
 'activeusers-noresult'   => 'Kadada papamuruk tatamu.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Log pamuruk hanyar',
-'newuserlogpagetext'          => 'Ngini adalah sabuah log paulahan pamuruk.',
-'newuserlog-byemail'          => 'Katasunduk dikirimakan lung suril.',
-'newuserlog-create-entry'     => 'mandaptar sabagai pamuruk',
-'newuserlog-create2-entry'    => 'Maulah akun hanyar $1',
-'newuserlog-autocreate-entry' => 'Akun diulah utumatis',
+'newuserlogpage'     => 'Log pamuruk hanyar',
+'newuserlogpagetext' => 'Ngini adalah sabuah log paulahan pamuruk.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Galambang hak pamuruk',
@@ -2687,9 +2683,6 @@ Ngini pinanya dikaranakan ulih sabuah tautan ka sabuah situs daptar-hirang luar.
 # Patrol log
 'patrol-log-page'      => 'Log pa-awasan',
 'patrol-log-header'    => 'Ngini adalah sabuah log matan raralatan nang ta-awasi.',
-'patrol-log-line'      => 'ciri-i $1 matan $2 ta-awasi $3',
-'patrol-log-auto'      => '(utumatis)',
-'patrol-log-diff'      => 'Ralatan $1',
 'log-show-hide-patrol' => '$1 log pa-awasan',
 
 # Image deletion
@@ -2716,11 +2709,11 @@ Manarusakan ngini, kawa manyarang sistem Pian.",
 'file-info'              => 'takaran barakas: $1, macam MIME: $2',
 'file-info-size'         => '$1 × $2 piksel, ukuran barakas: $3, tipe MIME: $4',
 'file-info-size-pages'   => '$1 × $2 piksal, takaran barakas: $3, macam MIME: $4, $5 {{PLURAL:$5|tungkaran|tutungkaran}}',
-'file-nohires'           => ' kadada tasadia resolusi tapancau.',
+'file-nohires'           => 'Kadada tasadia resolusi tapancau.',
 'svg-long-desc'          => 'Barakas SVG, nominal $1 × $2 piksel, basar barakas: $3',
 'show-big-image'         => 'Ukuran hibak',
 'show-big-image-preview' => 'Takaran tilikan ngini: $1.',
-'show-big-image-other'   => 'Risulusi lain: $1.',
+'show-big-image-other'   => 'Resolusi lain: $1.',
 'show-big-image-size'    => '$1 × $2 piksal',
 'file-info-gif-looped'   => 'mambulat',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|pigura|pipigura}}',
@@ -3088,7 +3081,7 @@ Tautan-tautan abis tu pada baris sama dipartimbangkan sabagai pangacualian, nang
 # Table pager
 'ascending_abbrev'         => 'naik',
 'descending_abbrev'        => 'turun',
-'table_pager_next'         => 'Tungkaran barikutnya',
+'table_pager_next'         => 'Tungkaran salanjutnya',
 'table_pager_prev'         => 'Tungkaran sabalumnya',
 'table_pager_first'        => 'Tungkaran panambaian',
 'table_pager_last'         => 'Tungkaran pauncitnya',
@@ -3100,7 +3093,7 @@ Tautan-tautan abis tu pada baris sama dipartimbangkan sabagai pangacualian, nang
 'autosumm-blank'   => 'Kusungakan tungkaran',
 'autosumm-replace' => "Mangganti isi wan ''$1''",
 'autoredircomment' => 'Paugahan tungkaran ka [[$1]]',
-'autosumm-new'     => "Diulah tungkaran wan ''$1''",
+'autosumm-new'     => "Ma-ulah tungkaran nang isinya ''$1''",
 
 # Watchlist editor
 'watchlistedit-normal-title' => 'Babak daptar itihan',
@@ -3205,5 +3198,6 @@ Situs ngini mangalami kangalihan teknik.',
 # New logging system
 'revdelete-restricted'   => 'Talamar pambatasan hagan pambakal-pambakal',
 'revdelete-unrestricted' => 'Buang pambatasan gasan pambakal-pambakal',
+'newuserlog-byemail'     => 'Katasunduk dikirimakan lung suril.',
 
 );

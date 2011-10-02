@@ -890,8 +890,7 @@ Ta duillagyn er [[Special:Watchlist|dty rolley arrey]] ayns '''clou trome'''.",
 'listusers-submit' => 'Taishbyn',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Lioar chooishyn ny h-ymmydeyryn noa',
-'newuserlog-create-entry' => 'Ymmydeyr noa',
+'newuserlogpage' => 'Lioar chooishyn ny h-ymmydeyryn noa',
 
 # Special:ListGroupRights
 'listgrouprights-group'    => 'Possan',
@@ -1245,10 +1244,6 @@ T'eh lhiggey da oyr y chur 'sy ghiare-choontey.",
 'siteuser'  => 'ymmydeyr {{SITENAME}} $1',
 'others'    => 'sleih elley',
 'siteusers' => '{{PLURAL:$2|Ymmydeyr|Ymmydeyryn}} ec {{SITENAME}} $1',
-
-# Patrol log
-'patrol-log-auto' => '(seyr-obbragh)',
-'patrol-log-diff' => 'caghlaa $1',
 
 # Browsing diffs
 'previousdiff' => '← Y caghlaa ny shinney',

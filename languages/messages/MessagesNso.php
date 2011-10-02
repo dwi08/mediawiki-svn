@@ -873,8 +873,7 @@ Matlakala ago ba [[Special:Watchlist|lenanong la gago la matlakala ditlhapetšo]
 'listusers-submit' => 'Bontšha',
 
 # Special:Log/newusers
-'newuserlogpage'          => '"Log" yago hlola mošumiši',
-'newuserlog-create-entry' => 'Tšhupaleloko ya mošumiši ye mphsa',
+'newuserlogpage' => '"Log" yago hlola mošumiši',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(Lenano la ditho)',
@@ -1169,10 +1168,6 @@ Ka kgopelo, kgetha leina le lengwe.',
 'lastmodifiedatby' => 'Letlakala le  fetotšwe la mafelelo ka $2, $1 ke $3.',
 'others'           => 'tše dingwe',
 'siteusers'        => '{{SITENAME}} mošumiši/bašumiši $1',
-
-# Patrol log
-'patrol-log-line' => 'maraka $1 ya $2 "patrolwa" ke $3',
-'patrol-log-diff' => 'Pušeletšo $1',
 
 # Image deletion
 'filedeleteerror-short' => 'Phošo go phumuleng faele: $1',

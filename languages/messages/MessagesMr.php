@@ -295,6 +295,8 @@ $digitTransformTable = array(
 
 $linkTrail = "/^([\xE0\xA4\x80-\xE0\xA5\xA3\xE0\xA5\xB1-\xE0\xA5\xBF\xEF\xBB\xBF\xE2\x80\x8D]+)(.*)$/sDu";
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'दुव्यांना अधोरेखित करा:',
@@ -669,6 +671,7 @@ MySQL returned error "$3: $4".',
 'cascadeprotected'     => 'हे पान संपादनांपासून सुरक्षित केले गेलेले आहे, कारण ते खालील {{PLURAL:$1|पानात|पानांमध्ये}} अंतर्भूत केलेले आहे, की जे पान/जी पाने शिडी पर्यायाने सुरक्षित आहेत:
 $2',
 'namespaceprotected'   => "'''$1''' नामविश्वातील पाने बदलण्याची आपणांस परवानगी नाही.",
+'customcssprotected'   => 'या पानावर इतर सदस्याच्या व्यक्तिगत पसंती असल्यामुळे, तुम्हाला हे सीएसएस पान संपादीत करण्याची परवानगी नाही.',
 'ns-specialprotected'  => 'विशेष पाने संपादीत करता येत नाहीत.',
 'titleprotected'       => "या शीर्षकाचे पान सदस्य [[User:$1|$1]]ने निर्मीत करण्यापासून सुरक्षित केलेले आहे.
 ''$2'' हे कारण नमूद केलेले आहे.",
@@ -809,6 +812,9 @@ $2',
 'passwordreset-emailelement'   => 'सदस्यनाव: $1
 अस्थायी परवलीचा शब्द: $2',
 'passwordreset-emailsent'      => 'आठवणीसाठी एक विपत्र पाठवण्यात आले आहे.',
+
+# Special:ChangeEmail
+'changeemail-cancel' => 'रद्द करा',
 
 # Edit page toolbar
 'bold_sample'     => 'ठळक मजकूर',
@@ -1200,7 +1206,6 @@ $1",
 'searchmenu-legend'                => 'विकल्प शोधा',
 'searchmenu-exists'                => "'''या विकीवर \"[[:\$1]]\" या नावाचे पान आहे.'''",
 'searchmenu-new'                   => "'''या विकीवर \"[[:\$1]]\" हे पान तयार करा!'''",
-'searchmenu-new-nocreate'          => '"$1" हे अमान्य लेखनाव आहे किंवा ते तुम्ही निर्माण करू शकत नाही.',
 'searchhelp-url'                   => 'Help:साहाय्य पृष्ठ',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|या उपसर्गानिशी असलेली पाने न्याहाळा]]',
 'searchprofile-articles'           => 'संबंधित पाने',
@@ -1276,6 +1281,7 @@ $1",
 'prefs-watchlist-token'         => 'पहार्‍याच्या सूचीचा बिल्ला:',
 'prefs-misc'                    => 'इतर',
 'prefs-resetpass'               => 'परवलीचा शब्द बदला.',
+'prefs-changeemail'             => 'विपत्रपत्ता बदला',
 'prefs-email'                   => 'विपत्र पर्याय',
 'prefs-rendering'               => 'देखावा',
 'saveprefs'                     => 'जतन करा',
@@ -1365,7 +1371,7 @@ $1",
 'userrights-lookup-user'       => 'सदस्य गटांचे(ग्रूप्स) व्यवस्थापन करा.',
 'userrights-user-editname'     => 'सदस्य नाव टाका:',
 'editusergroup'                => 'सदस्य गट (ग्रूप्स) संपादीत करा',
-'editinguser'                  => "सदस्य '''[[User:$1|$1]]''' ([[User talk:$1|{{int:talkpagelinktext}}]]{{int:pipe-separator}}[[Special:Contributions/$1|{{int:contribslink}}]])चे सदस्य अधिकारात बदल केला जात आहे.",
+'editinguser'                  => "सदस्य '''[[User:$1|$1]]''' $2 चे सदस्य अधिकारात बदल केला जात आहे.",
 'userrights-editusergroup'     => 'सदस्य मंडळे संपादीत करा',
 'saveusergroups'               => 'सदस्य गट जतन करा',
 'userrights-groupsmember'      => '(चा) सभासद:',
@@ -1983,12 +1989,8 @@ Input:contenttype/subtype, e.g. <tt>image/jpeg</tt>.',
 'activeusers-noresult'   => 'एकही सदस्य सापडला नाही.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'नवीन सदस्यांची नोंद',
-'newuserlogpagetext'          => 'ही नवीन सदस्यांची नोंद यादी आहे.',
-'newuserlog-byemail'          => 'परवलीचा शब्द इमेलमार्फत पाठविलेला आहे',
-'newuserlog-create-entry'     => 'नवीन सदस्य',
-'newuserlog-create2-entry'    => '$1 साठी सदस्यत्व घेतले.',
-'newuserlog-autocreate-entry' => 'खाते आपोआप तयार झाले',
+'newuserlogpage'     => 'नवीन सदस्यांची नोंद',
+'newuserlogpagetext' => 'ही नवीन सदस्यांची नोंद यादी आहे.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'सदस्य गट अधिकार',
@@ -2718,9 +2720,6 @@ $1',
 
 # Patrol log
 'patrol-log-page' => 'टेहळणीतील नोंदी',
-'patrol-log-line' => '$2चे $1 $3 गस्त घातल्याची खूण केली',
-'patrol-log-auto' => '(स्वयंचलीत)',
-'patrol-log-diff' => 'आवर्तन $1',
 
 # Image deletion
 'deletedrevision'                 => 'जुनी आवृत्ती ($1) वगळली.',
@@ -3345,5 +3344,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'प्रबंधकांना बंधने दिली',
 'revdelete-unrestricted' => 'प्रबंधकांची बंधने काढली',
+'newuserlog-byemail'     => 'परवलीचा शब्द इमेलमार्फत पाठविलेला आहे',
 
 );

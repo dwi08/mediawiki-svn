@@ -141,7 +141,6 @@ div#mw-js-message {
 .editsection {
 	float: right;
 	margin-left: 5px;
-	unicode-bidi: embed;
 }
 /* Correct directionality when page dir is different from site/user dir */
 .mw-content-ltr .editsection,
@@ -286,6 +285,7 @@ input#wpSummary {
 .catlinks ul {
 	display: inline;
 	margin: 0px;
+	padding: 0px;
 	list-style: none;
 	list-style-type: none;
 	list-style-image: none;
@@ -460,7 +460,7 @@ th.mw-revdel-checkbox {
 /* feed links */
 a.feedlink {
 	/* @embed */
-	background: url("images/feed-icon.png") center left no-repeat;
+	background: url(images/feed-icon.png) center left no-repeat;
 	padding-left: 16px;
 }
 
@@ -477,12 +477,13 @@ a.feedlink {
 	unicode-bidi: embed;
 }
 
-/* wikitable class for skinning normal tables
- * keep on sync with commonPrint.css
+/**
+ * wikitable class for skinning normal tables
+ * keep in sync with commonPrint.css
  */
 table.wikitable {
 	margin: 1em 1em 1em 0;
-	background: #f9f9f9;
+	background-color: #f9f9f9;
 	border: 1px #aaa solid;
 	border-collapse: collapse;
 	color: black;
@@ -493,7 +494,7 @@ table.wikitable {
 	padding: 0.2em;
 }
 .wikitable th {
-	background: #f2f2f2;
+	background-color: #f2f2f2;
 	text-align: center;
 }
 .wikitable caption {
@@ -864,6 +865,13 @@ ol:lang(or) li {
 	margin: 0 2em 0 0;
 }
 
+#toc #toctitle,
+.toc #toctitle,
+#toc .toctitle,
+.toc .toctitle {
+	direction: ltr;
+}
+
 /* tooltip styles */
 .mw-help-field-hint {
 	display: none;
@@ -918,17 +926,17 @@ ol:lang(or) li {
 	background-position: 0% 100%;
 }
 /* Table Sorting */
-th.headerSort {
+table.sortable th.headerSort {
 	background-image: url(images/sort_both.gif);
 	cursor: pointer;
 	background-repeat: no-repeat;
 	background-position: center right;
 	padding-right: 21px;
 }
-th.headerSortUp {
+table.sortable th.headerSortUp {
 	background-image: url(images/sort_up.gif);
 }
-th.headerSortDown {
+table.sortable th.headerSortDown {
 	background-image: url(images/sort_down.gif);
 }
 
@@ -999,3 +1007,11 @@ table.floatleft {
 #mw-credits a {
 	unicode-bidi: embed;
 }
+
+/* Accessibility */
+.mw-jump {
+	overflow: hidden;
+	height: 0;
+	zoom: 1; /* http://webaim.org/techniques/skipnav/#iequirk */
+}
+

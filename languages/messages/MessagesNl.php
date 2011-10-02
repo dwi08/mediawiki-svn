@@ -865,32 +865,36 @@ Mogelijk hebt u uw wachtwoord al gewijzigd of een nieuw tijdelijk wachtwoord aan
 'resetpass-temp-password'   => 'Tijdelijk wachtwoord:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Wachtwoord opnieuw instellen',
-'passwordreset-text'           => 'Vul dit formulier in zodat we u een e-mail kunnen sturen met uw gebruikersgegevens.',
-'passwordreset-legend'         => 'Wachtwoord opnieuw instellen',
-'passwordreset-disabled'       => 'Het is in deze wiki niet mogelijk uw wachtwoord opnieuw in te stellen.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Voer één van de onderstaande velden in}}',
-'passwordreset-username'       => 'Gebruiker:',
-'passwordreset-domain'         => 'Domein:',
-'passwordreset-email'          => 'E-mailadres:',
-'passwordreset-emailtitle'     => 'Gebruikersgegevens op {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Iemand, waarschijnlijk u, vanaf het IP-adres $1, heeft uw gebruikersgegevens voor {{SITENAME}} ($4) opgevraagd.
+'passwordreset'                    => 'Wachtwoord opnieuw instellen',
+'passwordreset-text'               => 'Vul dit formulier in zodat we u een e-mail kunnen sturen met uw gebruikersgegevens.',
+'passwordreset-legend'             => 'Wachtwoord opnieuw instellen',
+'passwordreset-disabled'           => 'Het is in deze wiki niet mogelijk uw wachtwoord opnieuw in te stellen.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Voer één van de onderstaande velden in}}',
+'passwordreset-username'           => 'Gebruiker:',
+'passwordreset-domain'             => 'Domein:',
+'passwordreset-capture'            => 'De resulterende e-mail bekijken?',
+'passwordreset-capture-help'       => 'Als u dit vakje aanvinkt, wordt de e-mail (met het tijdelijke wachtwoord) naar de gebruiker verzonden en ook aan u getoond.',
+'passwordreset-email'              => 'E-mailadres:',
+'passwordreset-emailtitle'         => 'Gebruikersgegevens op {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Iemand, waarschijnlijk u, vanaf het IP-adres $1, heeft uw gebruikersgegevens voor {{SITENAME}} ($4) opgevraagd.
 De volgende {{PLURAL:$3|gebruiker is|gebruikers zijn}} gekoppeld aan dit e-mailadres:
 
 $2
 
 {{PLURAL:$3|Dit tijdelijke wachtwoord vervalt|Deze tijdelijke wachtwoorden vervallen}} over {{PLURAL:$5|een dag|$5 dagen}}.
 Meld u aan en wijzig het wachtwoord nu. Als u dit verzoek niet zelfs heeft gedaan, of als u het oorspronkelijke wachtwoord nog kent en het niet wilt wijzigen, negeer dit bericht dan en blijf uw oude wachtwoord gebruiken.',
-'passwordreset-emailtext-user' => 'Gebruiker $1 op de site {{SITENAME}} heeft uw gebruikersgegevens voor {{SITENAME}} ($4) opgevraagd.
+'passwordreset-emailtext-user'     => 'Gebruiker $1 op de site {{SITENAME}} heeft uw gebruikersgegevens voor {{SITENAME}} ($4) opgevraagd.
 De volgende {{PLURAL:$3|gebruiker is|gebruikers zijn}} gekoppeld aan dit e-mailadres:
 
 $2
 
 {{PLURAL:$3|Dit tijdelijke wachtwoord vervalt|Deze tijdelijke wachtwoorden vervallen}} over {{PLURAL:$5|een dag|$5 dagen}}.
 Meld u aan en wijzig het wachtwoord nu. Als u dit verzoek niet zelfs heeft gedaan, of als u het oorspronkelijke wachtwoord nog kent en het niet wilt wijzigen, negeer dit bericht dan en blijf uw oude wachtwoord gebruiken.',
-'passwordreset-emailelement'   => 'Gebruikersnaam: $1
+'passwordreset-emailelement'       => 'Gebruikersnaam: $1
 Tijdelijk wachtwoord: $2',
-'passwordreset-emailsent'      => 'Er is per e-mail een herinnering verzonden.',
+'passwordreset-emailsent'          => 'Er is per e-mail een herinnering verzonden.',
+'passwordreset-emailsent-capture'  => 'Er is een herinneringse-mail verzonden. Deze wordt hieronder weergegeven.',
+'passwordreset-emailerror-capture' => 'Er is een herinneringse-mail aangemaakt. Deze wordt hieronder weergegeven. Het verzonden naar de gebruiker is mislukt om de volgende reden: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'E-mailadres wijzigen',
@@ -1627,6 +1631,7 @@ Deze informatie is zichtbaar voor andere gebruikers.',
 'right-siteadmin'             => 'De database blokkeren en weer vrijgeven',
 'right-override-export-depth' => "Pagina's exporteren inclusief pagina's waarnaar verwezen wordt tot een diepte van vijf",
 'right-sendemail'             => 'E-mail versturen aan andere gebruikers',
+'right-passwordreset'         => 'Wachtwoord van een gebruiker opnieuw instellen ([[Special:PasswordReset|speciale pagina]])',
 
 # User rights log
 'rightslog'                  => 'Gebruikersrechtenlogboek',
@@ -1968,7 +1973,7 @@ Als deze pagina wordt gefilterd op gebruiker, worden alleen bestanden waar de ge
 'filehist-filesize'                 => 'Bestandsgrootte',
 'filehist-comment'                  => 'Opmerking',
 'filehist-missing'                  => 'Het bestand is niet aangetroffen',
-'imagelinks'                        => 'Bestandsverwijzingen',
+'imagelinks'                        => 'Bestandsgebruik',
 'linkstoimage'                      => "Dit bestand wordt op de volgende {{PLURAL:$1|pagina|$1 pagina's}} gebruikt:",
 'linkstoimage-more'                 => 'Er {{PLURAL:$2|is|zijn}} meer dan $1 {{PLURAL:$1|verwijzing|verwijzingen}} naar dit bestand.
 De volgende lijst geeft alleen de eerste {{PLURAL:$1|verwijzing|$1 verwijzingen}} naar dit bestand weer.
@@ -2237,12 +2242,8 @@ Ondersteunde protocollen: <tt>$1</tt>',
 'activeusers-noresult'   => 'Geen actieve gebruikers gevonden.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Logboek nieuwe gebruikers',
-'newuserlogpagetext'          => 'Hieronder staan de nieuw ingeschreven gebruikers',
-'newuserlog-byemail'          => 'wachtwoord is verzonden per e-mail',
-'newuserlog-create-entry'     => 'Nieuwe gebruiker',
-'newuserlog-create2-entry'    => 'heeft gebruiker $1 ingeschreven',
-'newuserlog-autocreate-entry' => 'Gebruiker automatisch aangemaakt',
+'newuserlogpage'     => 'Logboek nieuwe gebruikers',
+'newuserlogpagetext' => 'Hieronder staan de nieuw ingeschreven gebruikers',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Rechten van gebruikersgroepen',
@@ -3115,9 +3116,6 @@ Meestal wordt dit door een externe verwijzing op een zwarte lijst veroorzaakt.',
 # Patrol log
 'patrol-log-page'      => 'Markeerlogboek',
 'patrol-log-header'    => 'Dit logboek bevat versies die gemarkeerd zijn als gecontroleerd.',
-'patrol-log-line'      => 'markeerde versie $1 van $2 als gecontroleerd $3',
-'patrol-log-auto'      => '(automatisch)',
-'patrol-log-diff'      => 'versie $1',
 'log-show-hide-patrol' => 'Markeerlogboek $1',
 
 # Image deletion
@@ -3170,7 +3168,12 @@ $1',
 'sp-newimages-showfrom' => 'Nieuwe bestanden bekijken vanaf $1 om $2.',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
-'hours-abbrev' => 'u',
+'hours-abbrev' => '$1u',
+'seconds'      => '{{PLURAL:$1|$1 seconde|$1 seconden}}',
+'minutes'      => '{{PLURAL:$1|$1 minuut|$1 minuten}}',
+'hours'        => '{{PLURAL:$1|$1 uur|$1 uur}}',
+'days'         => '{{PLURAL:$1|$1 dag|$1 dagen}}',
+'ago'          => '$1 geleden',
 
 # Bad image list
 'bad_image_list' => "De opmaak is als volgt:
@@ -3816,9 +3819,7 @@ Samen met dit programma hoort u een [{{SERVER}}{{SCRIPTPATH}}/COPYING kopie van 
 'filepath-submit'  => 'OK',
 'filepath-summary' => 'Deze speciale pagina geeft het volledige pad voor een bestand.
 Afbeeldingen worden in hun volledige resolutie weergegeven.
-Andere bestandstypen worden direct in het met het MIME-type verbonden programma geopend.
-
-Voer de bestandsnaam in zonder het voorvoegsel "{{ns:file}}:".',
+Andere bestandstypen worden direct in het met het MIME-type verbonden programma geopend.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Duplicaatbestanden zoeken',
@@ -3897,7 +3898,6 @@ Voer de bestandsnaam in zonder het voorvoegsel "{{ns:file}}:".',
 'globalfileusage-text'        => 'Globaal bestandsgebruik bekijken',
 'globalfileusage-no-results'  => "[[$1]] wordt niet gebruikt in andere wiki's.",
 'globalfileusage-on-wiki'     => 'Gebruik in $2',
-'globalfileusage-of-file'     => "De volgende andere wiki's gebruiken dit bestand:",
 'globalfileusage-more'        => '[[{{#Special:GlobalUsage}}/$1|Globaal gebruik]] van dit bestand bekijken.',
 'globalfileusage-filterlocal' => 'Lokaal gebruik niet weergeven',
 
@@ -3908,7 +3908,6 @@ Voer de bestandsnaam in zonder het voorvoegsel "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Globaal sjabloongebruik bekijken',
 'globaltemplateusage-no-results'  => "[[$1]] wordt niet gebruikt in andere wiki's.",
 'globaltemplateusage-on-wiki'     => 'Gebruik in $2',
-'globaltemplateusage-of-file'     => "De volgende andere wiki's gebruiken dit sjabloon:",
 'globaltemplateusage-more'        => '[[{{#Special:GlobalUsage}}/$1|Globaal gebruik]] van dit sjabloon bekijken.',
 'globaltemplateusage-filterlocal' => 'Lokaal gebruik niet weergeven',
 
@@ -3961,5 +3960,12 @@ Voer de bestandsnaam in zonder het voorvoegsel "{{ns:file}}:".',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|hernoemde}} pagina $3 naar $4 zonder een doorverwijzing achter te laten',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|hernoemde}} pagina $3 naar $4 over een doorverwijzing',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|hernoemde}} pagina $3 naar $4 over een doorverwijzing zonder een doorverwijzing achter te laten',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|heeft}} versie $4 van pagina $3 als gecontroleerd gemarkeerd',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|heeft}} versie $4 van pagina $3 automatisch als gecontroleerd gemarkeerd',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|heeft}} een gebruiker aangemaakt',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|heeft}} een gebruiker aangemaakt',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|heeft}} een {{GENDER:$4|gebruiker}} $3 aangemaakt',
+'logentry-newusers-autocreate'        => 'De gebruiker $1 is automatisch {{GENDER:$2|aangemaakt}}',
+'newuserlog-byemail'                  => 'wachtwoord is verzonden per e-mail',
 
 );

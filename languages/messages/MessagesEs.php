@@ -1483,7 +1483,7 @@ Tu dirección de correo-e no se revela cuando otros usuarios te contactan.',
 'userrights-no-interwiki'      => 'No tienes permiso para editar los grupos a los que pertenece un usuario en otros wikis.',
 'userrights-nodatabase'        => 'La base de datos $1 no existe o no es local.',
 'userrights-nologin'           => 'Debes [[Special:UserLogin|iniciar sesión]] con una cuenta de administrador para poder editar los grupos de los usuarios.',
-'userrights-notallowed'        => 'No tienes permiso para realizar cambios de grupos a usuarios.',
+'userrights-notallowed'        => 'Tu cuenta no tiene permiso para añadir o retirar permisos de usuario.',
 'userrights-changeable-col'    => 'Grupos que puedes cambiar',
 'userrights-unchangeable-col'  => 'Grupos que no puedes cambiar',
 
@@ -1571,6 +1571,7 @@ Tu dirección de correo-e no se revela cuando otros usuarios te contactan.',
 'right-siteadmin'             => 'Bloquear y desbloquear la base de datos',
 'right-override-export-depth' => 'Exporta páginas incluyendo aquellas enlazadas hasta una profundidad de 5',
 'right-sendemail'             => 'Enviar un correo electrónico a otros usuarios',
+'right-passwordreset'         => 'Reestablecer contraseña de un usuario ([[Special:PasswordReset|página especial]])',
 
 # User rights log
 'rightslog'                  => 'Cambios de perfil de usuario',
@@ -1916,7 +1917,7 @@ La descripción en su [$2 página de descripción del archivo] está mostrada de
 'filedelete-intro'            => "Estás borrando el archivo '''[[Media:$1|$1]]''' así como todo su historial.",
 'filedelete-intro-old'        => "Estás borrando la versión de '''[[Media:$1|$1]]''' del [$4 $2 a las $3].",
 'filedelete-comment'          => 'Motivo:',
-'filedelete-submit'           => 'Borrar',
+'filedelete-submit'           => 'Eliminar',
 'filedelete-success'          => "'''$1''' ha sido borrado.",
 'filedelete-success-old'      => "La version de '''[[Media:$1|$1]]''' del $2 a las $3 ha sido borrada.",
 'filedelete-nofile'           => "'''$1''' no existe.",
@@ -1964,7 +1965,7 @@ Entrada: contenttype/subtype, p. ej. <tt>image/jpeg</tt>.',
 'statistics-header-hooks'      => 'Otras estadísticas',
 'statistics-articles'          => 'Páginas de contenido',
 'statistics-pages'             => 'Páginas',
-'statistics-pages-desc'        => 'Todas las páginas de la wiki, incluyendo discusiones, redirecciones, etc.',
+'statistics-pages-desc'        => 'Todas las páginas en el wiki, incluyendo páginas de discusión, redirecciones, etc.',
 'statistics-files'             => 'Ficheros subidos',
 'statistics-edits'             => 'Ediciones en páginas desde que {{SITENAME}} fue instalado',
 'statistics-edits-average'     => 'Media de ediciones por página',
@@ -2141,12 +2142,8 @@ Protocolos soportados: <tt>$1</tt>',
 'activeusers-noresult'   => 'No se encontraron usuarios.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Registro de creación de usuarios',
-'newuserlogpagetext'          => 'Este es un registro de creación de usuarios.',
-'newuserlog-byemail'          => 'contraseña enviada por correo electrónico',
-'newuserlog-create-entry'     => 'Usuario nuevo',
-'newuserlog-create2-entry'    => 'Nueva cuenta creada $1',
-'newuserlog-autocreate-entry' => 'Cuenta creada automáticamente',
+'newuserlogpage'     => 'Registro de creación de usuarios',
+'newuserlogpagetext' => 'Este es un registro de creación de usuarios.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Permisos del grupo de usuarios',
@@ -2535,6 +2532,7 @@ Explica la razón específica del bloqueo (por ejemplo, citando las páginas en 
 'blockipsuccesstext'              => '"[[Special:Contributions/$1|$1]]" ha sido bloqueado.<br />
 Véase la [[Special:IPBlockList|lista de bloqueos]] para revisarlo.',
 'ipb-blockingself'                => '¡Estás a punto de bloquearte a ti mismo!  ¿Estás seguro de que quieres hacerlo?',
+'ipb-confirmhideuser'             => 'Estás a punto de bloquear un usuario con la opción de supresión activada. Esto suprimirá el nombre de usuario en todas las listas y entradas de registro. ¿Estás seguro de que deseas proceder?',
 'ipb-edit-dropdown'               => 'Editar motivo del bloqueo',
 'ipb-unblock-addr'                => 'Desbloquear $1',
 'ipb-unblock'                     => 'Desbloquear un usuario o una IP',
@@ -2707,7 +2705,8 @@ Por favor, elige otro nombre.',
 La página de destino ("[[:$1]]") ya existe. ¿Quiere borrarla para permitir al traslado?',
 'delete_and_move_confirm'      => 'Sí, borrar la página',
 'delete_and_move_reason'       => 'Borrada para permitir el traslado',
-'selfmove'                     => 'Los títulos de origen y destino son los mismos. No se puede trasladar un página sobre sí misma.',
+'selfmove'                     => 'Los títulos de origen y destino son los mismos;
+no se puede trasladar una página sobre sí misma.',
 'immobile-source-namespace'    => 'No se pueden trasladar páginas en el espacio de nombres «$1»',
 'immobile-target-namespace'    => 'No se puede trasladar páginas al espacio de nombres «$1»',
 'immobile-target-namespace-iw' => 'Un enlace interwiki no es un destino válido para trasladar una página.',
@@ -2866,7 +2865,7 @@ Puedes ver su código fuente',
 'tooltip-t-recentchangeslinked'   => 'Cambios recientes en las páginas que enlazan con ésta',
 'tooltip-feed-rss'                => 'Sindicación RSS de esta página',
 'tooltip-feed-atom'               => 'Sindicación Atom de esta página',
-'tooltip-t-contributions'         => 'Ver la lista de contribuciones de este usuario',
+'tooltip-t-contributions'         => 'Lista de contribuciones de este usuario',
 'tooltip-t-emailuser'             => 'Enviar un mensaje de correo a este usuario',
 'tooltip-t-upload'                => 'Subir imágenes o archivos multimedia',
 'tooltip-t-specialpages'          => 'Lista de todas las páginas especiales',
@@ -2984,9 +2983,6 @@ Esto podría estar causado por un enlace a un sitio externo incluido en la lista
 # Patrol log
 'patrol-log-page'      => 'Registro de revisiones',
 'patrol-log-header'    => 'Este es un registro de revisiones patrulladas.',
-'patrol-log-line'      => 'revisó la $1 de $2 $3',
-'patrol-log-auto'      => '(automático)',
-'patrol-log-diff'      => 'revisión $1',
 'log-show-hide-patrol' => '$1 registro de patrullaje',
 
 # Image deletion
@@ -3655,9 +3651,7 @@ Has recibido [{{SERVER}}{{SCRIPTPATH}}/COPYING una copia de la Licencia Pública
 'filepath-page'    => 'Archivo:',
 'filepath-submit'  => 'Ir',
 'filepath-summary' => 'Esta página devuelve la ruta completa de un archivo.
-Las imágenes se muestran en resolución máxima, otros tipos de archivo se inician directamente con su programa asociado.
-
-Ingrese el nombre del archivo sin su prefijo "{{ns:file}}:".',
+Las imágenes se muestran en resolución máxima, otros tipos de archivo se inician directamente con su programa asociado.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Búsqueda de archivos duplicados',
@@ -3736,7 +3730,6 @@ Ingrese el nombre del archivo sin su prefijo "{{ns:file}}:".',
 'globalfileusage-text'        => 'Buscar uso de archivo global',
 'globalfileusage-no-results'  => '[[$1]] no se utiliza en otros wikis.',
 'globalfileusage-on-wiki'     => 'Uso en $2',
-'globalfileusage-of-file'     => 'Los siguientes wikis utilizan este archivo:',
 'globalfileusage-more'        => 'Ver [[{{#Special:GlobalUsage}}/$1|más uso global]] de este archivo.',
 'globalfileusage-filterlocal' => 'No mostrar el uso local',
 
@@ -3747,7 +3740,6 @@ Ingrese el nombre del archivo sin su prefijo "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Buscar uso de plantilla global',
 'globaltemplateusage-no-results'  => '[[$1]] no se utiliza en otros wikis.',
 'globaltemplateusage-on-wiki'     => 'Uso en $2',
-'globaltemplateusage-of-file'     => 'Los siguientes wikis utilizan esta plantilla:',
 'globaltemplateusage-more'        => 'Ver [[{{#Special:GlobalUsage}}/$1|más uso global]] de esta plantilla.',
 'globaltemplateusage-filterlocal' => 'No mostrar el uso local',
 
@@ -3780,5 +3772,6 @@ Este sitio está experimentando dificultades técnicas.',
 # New logging system
 'revdelete-restricted'   => 'restricciones para administradores aplicadas',
 'revdelete-unrestricted' => 'restricciones para administradores eliminadas',
+'newuserlog-byemail'     => 'contraseña enviada por correo electrónico',
 
 );

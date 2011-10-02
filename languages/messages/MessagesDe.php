@@ -875,29 +875,33 @@ Möglicherweise hast du dein Passwort bereits erfolgreich geändert oder ein neu
 'resetpass-temp-password'   => 'Temporäres Passwort:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Passwort zurücksetzen',
-'passwordreset-text'           => 'Bitte dieses Formular ausfüllen, um per E-Mail eine Erinnerung zu den Anmeldeinformationen deines Benutzerkontos zu erhalten.',
-'passwordreset-legend'         => 'Passwort zurücksetzen',
-'passwordreset-disabled'       => 'Das Zurücksetzen von Passwörtern wurde in diesem Wiki deaktiviert.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Gib eines der folgenden Daten ein}}',
-'passwordreset-username'       => 'Benutzername:',
-'passwordreset-domain'         => 'Domain:',
-'passwordreset-email'          => 'E-Mail-Adresse:',
-'passwordreset-emailtitle'     => 'Benutzerkontoinformationen auf {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Jemand mit der IP-Adresse $1, wahrscheinlich du selbst, hat eine Erinnerung an deine Benutzerkonteninformationen für {{SITENAME}} angefordert ($4). {{PLURAL:$3|Das folgende Benutzerkonto ist|Die folgenden Benutzerkonten sind}} mit dieser E-Mail-Adresse verknüpft:
+'passwordreset'                    => 'Passwort zurücksetzen',
+'passwordreset-text'               => 'Bitte dieses Formular ausfüllen, um per E-Mail eine Erinnerung zu den Anmeldeinformationen deines Benutzerkontos zu erhalten.',
+'passwordreset-legend'             => 'Passwort zurücksetzen',
+'passwordreset-disabled'           => 'Das Zurücksetzen von Passwörtern wurde in diesem Wiki deaktiviert.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Gib eines der folgenden Daten ein}}',
+'passwordreset-username'           => 'Benutzername:',
+'passwordreset-domain'             => 'Domain:',
+'passwordreset-capture'            => 'Die E-Mail-Nachricht ansehen?',
+'passwordreset-capture-help'       => 'Sofern Du dieses Kästchen ankreuzt, wird die E-Mail-Nachricht mit dem temporären Passwort, sowohl dir angezeigt, als auch dem Benutzer zugesandt.',
+'passwordreset-email'              => 'E-Mail-Adresse:',
+'passwordreset-emailtitle'         => 'Benutzerkontoinformationen auf {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Jemand mit der IP-Adresse $1, wahrscheinlich du selbst, hat eine Erinnerung an deine Benutzerkonteninformationen für {{SITENAME}} angefordert ($4). {{PLURAL:$3|Das folgende Benutzerkonto ist|Die folgenden Benutzerkonten sind}} mit dieser E-Mail-Adresse verknüpft:
 
 $2
 
 {{PLURAL:$3|Dieses temporäre Passwort läuft|Diese temporären Passwörter laufen}} innerhalb von {{PLURAL:$5|einem Tag|$5 Tagen}} ab.
 Du solltest dich anmelden und ein neues Passwort vergeben. Falls jemand anderes diese Anfrage getätigt hat oder du dich wieder an dein ursprüngliches Passwort erinnern kannst und es nicht länger ändern möchtest, kannst du diese Nachricht ignorieren und weiterhin dein altes Passwort benutzen.',
-'passwordreset-emailtext-user' => 'Benutzer $1 auf {{SITENAME}} hat eine Erinnerung an deine Benutzerkonteninformationen für {{SITENAME}} angefordert ($4). {{PLURAL:$3|Das folgende Benutzerkonto ist|Die folgenden Benutzerkonten sind}} mit dieser E-Mail-Adresse verknüpft:
+'passwordreset-emailtext-user'     => 'Benutzer $1 auf {{SITENAME}} hat eine Erinnerung an deine Benutzerkonteninformationen für {{SITENAME}} angefordert ($4). {{PLURAL:$3|Das folgende Benutzerkonto ist|Die folgenden Benutzerkonten sind}} mit dieser E-Mail-Adresse verknüpft:
 
 $2
 
 {{PLURAL:$3|Dieses temporäre Passwort läuft|Diese temporären Passwörter laufen}} innerhalb von {{PLURAL:$5|einem Tag|$5 Tagen}} ab. Du solltest dich anmelden und ein neues Passwort vergeben. Falls jemand anderes diese Anfrage getätigt hat oder du dich wieder an dein ursprüngliches Passwort erinnern kannst und es nicht ändern möchtest, kannst du diese Nachricht ignorieren und weiterhin dein altes Passwort benutzen.',
-'passwordreset-emailelement'   => 'Benutzername: $1
+'passwordreset-emailelement'       => 'Benutzername: $1
 Temporäres Passwort: $2',
-'passwordreset-emailsent'      => 'Eine Erinnerung wurde per E-Mail versandt.',
+'passwordreset-emailsent'          => 'Eine Erinnerung wurde per E-Mail versandt.',
+'passwordreset-emailsent-capture'  => 'Die unten angezeigte Erinnerungs-E-Mail wurde abgeschickt.',
+'passwordreset-emailerror-capture' => 'Die unten angezeigte Erinnerungs-E-Mail wurde generiert, allerdings ist der Versand an den Benutzer gescheitert: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'E-Mail-Adresse ändern',
@@ -1009,7 +1013,7 @@ oder die zugehörigen <span class="plainlinks">[{{fullurl:{{#special:Log}}|page=
 'blocked-notice-logextract'        => '{{GENDER:$1|Dieser Benutzer|Diese Benutzerin|Dieser Benutzer}} ist zurzeit gesperrt.
 Zur Information folgt ein aktueller Auszug aus dem Benutzersperr-Logbuch:',
 'clearyourcache'                   => "'''Hinweis:''' Leere nach dem Speichern den Browser-Cache, um die Änderungen sehen zu können.
-* '''Firefox/ Safari:''' ''Umschaltung'' drücken und gleichzeitig ''Aktualisieren'' anklicken oder entweder ''Strg+F5'' oder ''Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
+* '''Firefox/Safari:''' ''Umschaltung'' drücken und gleichzeitig ''Aktualisieren'' anklicken oder entweder ''Strg+F5'' oder ''Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
 * '''Google Chrome:''' ''Umschaltung+Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
 * '''Internet Explorer:''' ''Strg+F5'' drücken oder ''Strg'' drücken und gleichzeitig ''Aktualisieren'' anklicken
 * '''Opera:''' ''Extras → Internetspuren löschen … → Individuelle Auswahl → Den kompletten Cache löschen''
@@ -1495,7 +1499,7 @@ Dies kann nicht mehr rückgängig gemacht werden.',
 'prefs-diffs'                   => 'Versionsvergleich',
 
 # User preference: e-mail validation using jQuery
-'email-address-validity-valid'   => 'E-Mail-Adresse scheint gültig zu sein',
+'email-address-validity-valid'   => 'Diese E-Mail-Adresse scheint gültig zu sein.',
 'email-address-validity-invalid' => 'Eine gültige E-Mail-Adresse ist erforderlich.',
 
 # User rights
@@ -1603,6 +1607,7 @@ Dies kann nicht mehr rückgängig gemacht werden.',
 'right-siteadmin'             => 'Datenbank sperren und entsperren',
 'right-override-export-depth' => 'Exportiere Seiten einschließlich verlinkter Seiten bis zu einer Tiefe von 5',
 'right-sendemail'             => 'E-Mails an andere Benutzer senden',
+'right-passwordreset'         => 'Passwort eines Benutzers zurücksetzen ([[Special:PasswordReset|Spezialseite]])',
 
 # User rights log
 'rightslog'                  => 'Rechte-Logbuch',
@@ -1928,7 +1933,7 @@ Sofern nach einem bestimmten Benutzer gefiltert wird, werden nur die Dateien gez
 'filehist-filesize'         => 'Dateigröße',
 'filehist-comment'          => 'Kommentar',
 'filehist-missing'          => 'Datei fehlt',
-'imagelinks'                => 'Dateiverwendungen',
+'imagelinks'                => 'Dateiverwendung',
 'linkstoimage'              => 'Die {{PLURAL:$1|folgende Seite verwendet|folgenden $1 Seiten verwenden}} diese Datei:',
 'linkstoimage-more'         => 'Mehr als {{PLURAL:$1|eine Seite verlinkt|$1 Seiten verlinken}} auf diese Datei.
 Die folgende Liste zeigt nur {{PLURAL:$1|den ersten Link|die ersten $1 Links}} auf diese Datei.
@@ -1970,8 +1975,7 @@ Eine [[Special:WhatLinksHere/$2|vollständige Liste]] ist verfügbar.',
 'filedelete-nofile-old'       => "Es gibt von '''„$1“''' keine archivierte Version mit den angegebenen Attributen.",
 'filedelete-otherreason'      => 'Anderer/ergänzender Grund:',
 'filedelete-reason-otherlist' => 'Anderer Grund',
-'filedelete-reason-dropdown'  => '
-* Allgemeine Löschgründe
+'filedelete-reason-dropdown'  => '* Allgemeine Löschgründe
 ** Urheberrechtsverletzung
 ** Duplikat',
 'filedelete-edit-reasonlist'  => 'Löschgründe bearbeiten',
@@ -2189,12 +2193,8 @@ Siehe auch die Liste der [[Special:WantedCategories|gewünschten Kategorien]].',
 'activeusers-noresult'   => 'Keine Benutzer gefunden.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Neuanmeldungs-Logbuch',
-'newuserlogpagetext'          => 'Dies ist ein Logbuch der neu erstellten Benutzerkonten.',
-'newuserlog-byemail'          => 'das Passwort wurde per E-Mail versandt',
-'newuserlog-create-entry'     => 'Benutzer wurde neu registriert',
-'newuserlog-create2-entry'    => 'erstellte neues Benutzerkonto „$1“',
-'newuserlog-autocreate-entry' => 'Benutzerkonto wurde automatisch erstellt',
+'newuserlogpage'     => 'Neuanmeldungs-Logbuch',
+'newuserlogpagetext' => 'Dies ist ein Logbuch der neu erstellten Benutzerkonten.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Benutzergruppenrechte',
@@ -2577,7 +2577,7 @@ Bitte gib den Grund für die Sperre an.',
 'badipaddress'                    => 'Die IP-Adresse hat ein falsches Format.',
 'blockipsuccesssub'               => 'Sperre erfolgreich',
 'blockipsuccesstext'              => 'Der Benutzer/die IP-Adresse [[Special:Contributions/$1|$1]] wurde gesperrt.<br />
-Zur Aufhebung der Sperre siehe die [[Special:IPBlockList|Liste aller aktiven Sperren]].',
+Zur Aufhebung der Sperre siehe die [[Special:BlockList|Liste aller aktiven Sperren]].',
 'ipb-blockingself'                => 'Du bist gerade dabei, dich selbst zu sperren! Möchtest du das wirklich tun?',
 'ipb-confirmhideuser'             => 'Du bist gerade dabei einen Benutzer im Modus „Benutzer verstecken“ zu sperren. Dies führt dazu, dass der Benutzername in allen Listen und Logbüchern unterdrückt wird. Möchtest du das wirklich tun?',
 'ipb-edit-dropdown'               => 'Sperrgründe bearbeiten',
@@ -3036,9 +3036,6 @@ Das liegt wahrscheinlich an einem Link auf eine externe Seite.',
 # Patrol log
 'patrol-log-page'      => 'Kontroll-Logbuch',
 'patrol-log-header'    => 'Dies ist das Kontroll-Logbuch.',
-'patrol-log-line'      => 'markierte $1 von „$2“ als kontrolliert $3',
-'patrol-log-auto'      => '(automatisch)',
-'patrol-log-diff'      => 'Version $1',
 'log-show-hide-patrol' => 'Kontroll-Logbuch $1',
 
 # Image deletion
@@ -3088,6 +3085,13 @@ Durch das Herunterladen und Öffnen der Datei kann dein Computer beschädigt wer
 'ilsubmit'              => 'Suchen',
 'bydate'                => 'nach Datum',
 'sp-newimages-showfrom' => 'Zeige neue Dateien ab $1, $2 Uhr',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|$1 Sekunde|$1 Sekunden}}',
+'minutes' => '{{PLURAL:$1|$1 Minute|$1 Minuten}}',
+'hours'   => '{{PLURAL:$1|$1 Stunde|$1 Stunden}}',
+'days'    => '{{PLURAL:$1|$1 Tag|$1 Tage}}',
+'ago'     => 'vor $1',
 
 # Bad image list
 'bad_image_list' => 'Format:
@@ -3246,7 +3250,7 @@ Weitere werden standardmäßig nicht angezeigt.
 'exif-objectname'                  => 'Kurztitel',
 'exif-specialinstructions'         => 'Besondere Anweisungen',
 'exif-headline'                    => 'Titel',
-'exif-credit'                      => 'Namensnennung/ Veröffentlicher',
+'exif-credit'                      => 'Namensnennung/Veröffentlicher',
 'exif-source'                      => 'Quelle',
 'exif-editstatus'                  => 'Redaktioneller Status des Fotos',
 'exif-urgency'                     => 'Dringlichkeit',
@@ -3647,7 +3651,7 @@ Bitte bestätige, dass du diese Seite wirklich neu erstellen möchten.",
 'size-gigabytes' => '$1 GB',
 
 # Live preview
-'livepreview-loading' => 'Laden …',
+'livepreview-loading' => 'Am Laden …',
 'livepreview-ready'   => 'Laden … Fertig!',
 'livepreview-failed'  => 'Die sofortige Vorschau ist nicht möglich!
 Bitte die normale Vorschau nutzen.',
@@ -3730,9 +3734,7 @@ Eine [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopie der ''GNU General Public License'']
 'filepath'         => 'Dateipfad',
 'filepath-page'    => 'Datei:',
 'filepath-submit'  => 'Los',
-'filepath-summary' => 'Mit dieser Spezialseite lässt sich der komplette Pfad der aktuellen Version einer Datei ohne Umweg abfragen. Die angefragte Datei wird direkt dargestellt bzw. mit der verknüpften Anwendung gestartet.
-
-Die Eingabe muss ohne den Zusatz „{{ns:file}}:“ erfolgen.',
+'filepath-summary' => 'Mit dieser Spezialseite lässt sich der komplette Pfad der aktuellen Version einer Datei ohne Umweg abfragen. Die angefragte Datei wird direkt dargestellt bzw. mit der verknüpften Anwendung gestartet.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Dateiduplikatsuche',
@@ -3811,7 +3813,6 @@ Die Eingabe muss ohne den Zusatz „{{ns:file}}:“ erfolgen.',
 'globalfileusage-text'        => 'Globale Suche nach der Dateiverwendung',
 'globalfileusage-no-results'  => '[[$1]] wird nicht auf anderen Wikis verwendet.',
 'globalfileusage-on-wiki'     => 'Verwendung auf $2',
-'globalfileusage-of-file'     => 'Die nachfolgenden anderen Wikis verwenden diese Datei:',
 'globalfileusage-more'        => '[[{{#Special:GlobalUsage}}/$1|Weitere globale Verwendungen]] dieser Datei anschauen.',
 'globalfileusage-filterlocal' => 'Zeige keine lokale Dateiverwendung',
 
@@ -3822,7 +3823,6 @@ Die Eingabe muss ohne den Zusatz „{{ns:file}}:“ erfolgen.',
 'globaltemplateusage-text'        => 'Globale Suche nach der Vorlagenverwendung',
 'globaltemplateusage-no-results'  => '[[$1]] wird nicht auf anderen Wikis verwendet.',
 'globaltemplateusage-on-wiki'     => 'Verwendung auf $2',
-'globaltemplateusage-of-file'     => 'Die nachfolgenden anderen Wikis verwenden diese Vorlage:',
 'globaltemplateusage-more'        => '[[{{#Special:GlobalUsage}}/$1|Weitere globale Verwendungen]] dieser Vorlage anschauen.',
 'globaltemplateusage-filterlocal' => 'Zeige keine lokale Vorlagenverwendung',
 
@@ -3875,5 +3875,12 @@ Die Eingabe muss ohne den Zusatz „{{ns:file}}:“ erfolgen.',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|verschob}} Seite $3 nach $4 ohne dabei eine Weiterleitung anzulegen',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|verschob}} Seite $3 nach $4 und überschrieb dabei eine Weiterleitung',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|verschob}} Seite $3 nach $4 und überschrieb dabei eine Weiterleitung ohne selbst eine Weiterleitung anzulegen',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|markierte}} Version $4 von Seite $3 als kontrolliert',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|markierte}} Version $4 von Seite $3 als kontrolliert (automatisch)',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|erstellte}} ein Benutzerkonto',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|erstellte}} ein Benutzerkonto',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|erstellte}} {{GENDER:$4|ein Benutzerkonto}} $3',
+'logentry-newusers-autocreate'        => 'Benutzerkonto $1 wurde automatisch {{GENDER:$2|erstellt}}',
+'newuserlog-byemail'                  => 'das Passwort wurde per E-Mail versandt',
 
 );

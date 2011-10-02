@@ -888,10 +888,10 @@ class Linker {
 	 */
 	public static function makeExternalLink( $url, $text, $escape = true, $linktype = '', $attribs = array() ) {
 		$class = "external";
-		if ( isset($linktype) && $linktype ) {
+		if ( $linktype ) {
 			$class .= " $linktype";
 		}
-		if ( isset($attribs['class']) && $attribs['class'] ) {
+		if ( isset( $attribs['class'] ) && $attribs['class'] ) {
 			$class .= " {$attribs['class']}";
 		}
 		$attribs['class'] = $class;
@@ -1234,7 +1234,9 @@ class Linker {
 			# Media link; trail not supported.
 			$linkRegexp = '/\[\[(.*?)\]\]/';
 			$title = Title::makeTitleSafe( NS_FILE, $submatch[1] );
-			$thelink = self::makeMediaLinkObj( $title, $text );
+			if ( $title ) {
+				$thelink = self::makeMediaLinkObj( $title, $text );
+			}
 		} else {
 			# Other kind of link
 			if ( preg_match( $wgContLang->linkTrail(), $match[4], $submatch ) ) {
@@ -1305,7 +1307,7 @@ class Linker {
 			# bug 7425
 			$target = trim( $target );
 			# Look at the first character
-			if ( $target != '' && $target { 0 } === '/' ) {
+			if ( $target != '' && $target[0] === '/' ) {
 				# / at end means we don't want the slash to be shown
 				$m = array();
 				$trailingSlashes = preg_match_all( '%(/+)$%', $target, $m );
@@ -1652,42 +1654,6 @@ class Linker {
 					);
 				}
 				$outText .= '<li>' . self::link( $titleObj ) . ' (' . $editLink . ') ' . $protected . '</li>';
-			}
-			$outText .= '</ul>';
-		}
-		wfProfileOut( __METHOD__  );
-		return $outText;
-	}
-
-	/**
-	 * Returns HTML for the "templates used on this page" list.
-	 *
-	 * @param $templates Array of templates from Article::getUsedTemplate
-	 * or similar
-	 * @param $preview Boolean: whether this is for a preview
-	 * @param $section Boolean: whether this is for a section edit
-	 * @return String: HTML output
-	 */
-	public static function formatDistantTemplates( $templates, $preview = false, $section = false ) {
-		wfProfileIn( __METHOD__ );
-
-		$outText = '';
-		if ( count( $templates ) > 0 ) {
-
-			# Construct the HTML
-			$outText = '<div class="mw-templatesUsedExplanation">';
-			if ( $preview ) {
-				$outText .= wfMsgExt( 'distanttemplatesusedpreview', array( 'parse' ), count( $templates ) );
-			} elseif ( $section ) {
-				$outText .= wfMsgExt( 'distanttemplatesusedsection', array( 'parse' ), count( $templates ) );
-			} else {
-				$outText .= wfMsgExt( 'distanttemplatesused', array( 'parse' ), count( $templates ) );
-			}
-			$outText .= "</div><ul>\n";
-
-			usort( $templates, array( 'Title', 'compare' ) );
-			foreach ( $templates as $titleObj ) {
-				$outText .= '<li>' . self::link( $titleObj ) . '</li>';
 			}
 			$outText .= '</ul>';
 		}

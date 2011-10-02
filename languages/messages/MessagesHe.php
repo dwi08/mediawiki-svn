@@ -215,6 +215,8 @@ $magicWords = array(
 	'url_path'              => array( '0', 'נתיב', 'PATH' ),
 	'url_wiki'              => array( '0', 'ויקי', 'WIKI' ),
 	'url_query'             => array( '0', 'שאילתה', 'QUERY' ),
+	'defaultsort_noerror'   => array( '0', 'ללא שגיאה', 'noerror' ),
+	'defaultsort_noreplace' => array( '0', 'ללא החלפה', 'noreplace' ),
 );
 
 $specialPageAliases = array(
@@ -726,7 +728,7 @@ $1',
 'editinginterface'     => "'''אזהרה:''' הדף שאתם עורכים הוא אחד הדפים המספקים הודעות מערכת לתוכנה.
 שינויים בדף זה ישפיעו על תצוגת ממשק המשתמש של משתמשים אחרים.",
 'sqlhidden'            => '(שאילתת ה־SQL מוסתרת)',
-'cascadeprotected'     => 'דף זה מוגן מעריכה כיוון שהוא מוכלל {{PLURAL:$1|בדף הבא, שמופעלת אצלו|בדפים הבאים, שמופעלת אצלם}} הגנה מדורגת:
+'cascadeprotected'     => 'דף זה מוגן מעריכה כי הוא מוכלל {{PLURAL:$1|בדף הבא, שמופעלת עליו|בדפים הבאים, שמופעלת עליהם}} הגנה מדורגת:
 $2',
 'namespaceprotected'   => "אינכם מורשים לערוך דפים במרחב השם '''$1'''.",
 'customcssprotected'   => 'אינכם מורשים לערוך דף CSS זה, כיוון שהוא כולל את ההגדרות האישיות של משתמש אחר.',
@@ -860,16 +862,18 @@ $2',
 'resetpass-temp-password'   => 'סיסמה זמנית:',
 
 # Special:PasswordReset
-'passwordreset'                => 'איפוס סיסמה',
-'passwordreset-text'           => 'מלאו טופס זה כדי לקבל דואר אלקטרוני ובו תזכורת של פרטי החשבון.',
-'passwordreset-legend'         => 'איפוס סיסמה',
-'passwordreset-disabled'       => 'איפוסי סיסמה בוטלו באתר ויקי זה.',
-'passwordreset-pretext'        => '{{PLURAL:$1||הקלידו אחד מפריטי המידע למטה}}',
-'passwordreset-username'       => 'שם משתמש:',
-'passwordreset-domain'         => 'תחום:',
-'passwordreset-email'          => 'כתובת דוא"ל:',
-'passwordreset-emailtitle'     => 'פרטי חשבון ב{{grammar:תחילית|{{SITENAME}}}}',
-'passwordreset-emailtext-ip'   => 'מישהו (ככל הנראה אתם, מכתובת ה־IP מספר $1) ביקש תזכורת של פרטי
+'passwordreset'                    => 'איפוס סיסמה',
+'passwordreset-text'               => 'מלאו טופס זה כדי לקבל דואר אלקטרוני ובו תזכורת של פרטי החשבון.',
+'passwordreset-legend'             => 'איפוס סיסמה',
+'passwordreset-disabled'           => 'איפוסי סיסמה בוטלו באתר ויקי זה.',
+'passwordreset-pretext'            => '{{PLURAL:$1||הקלידו אחד מפריטי המידע למטה}}',
+'passwordreset-username'           => 'שם משתמש:',
+'passwordreset-domain'             => 'תחום:',
+'passwordreset-capture'            => 'צפייה בדוא"ל הנשלח?',
+'passwordreset-capture-help'       => 'אם תסמנו תיבה זו, הדואר האלקטרוני (יחד עם הסיסמה הזמנית) יוצג לכם במקביל לשליחתו למשתמש.',
+'passwordreset-email'              => 'כתובת דוא"ל:',
+'passwordreset-emailtitle'         => 'פרטי חשבון ב{{grammar:תחילית|{{SITENAME}}}}',
+'passwordreset-emailtext-ip'       => 'מישהו (ככל הנראה אתם, מכתובת ה־IP מספר $1) ביקש תזכורת של פרטי
 החשבון שלכם ב{{grammar:תחילית|{{SITENAME}}}} ($4). {{PLURAL:$3|חשבון המשתמש הבא|חשבונות המשתמש הבאים}}
 שייכים לכתובת הדואר האלקטרוני הזו:
 
@@ -879,7 +883,7 @@ $2
 עליכם להיכנס ולבחור סיסמה חדשה עכשיו. אם מישהו אחר ביצע בקשה זו, או שנזכרתם בסיסמתכם
 המקורית ואינכם רוצים עוד לשנות אותה, באפשרותכם להתעלם מהודעה זו ולהמשיך להשתמש בסיסמה
 הישנה.',
-'passwordreset-emailtext-user' => 'המשתמש $1 ב{{grammar:תחילית|{{SITENAME}}}} ביקש תזכורת של פרטי
+'passwordreset-emailtext-user'     => 'המשתמש $1 ב{{grammar:תחילית|{{SITENAME}}}} ביקש תזכורת של פרטי
 החשבון שלכם ב{{grammar:תחילית|{{SITENAME}}}} ($4). {{PLURAL:$3|חשבון המשתמש הבא|חשבונות המשתמש הבאים}}
 שייכים לכתובת הדואר האלקטרוני הזו:
 
@@ -889,9 +893,11 @@ $2
 עליכם להיכנס ולבחור סיסמה חדשה עכשיו. אם מישהו אחר ביצע בקשה זו, או שנזכרתם בסיסמתכם
 המקורית ואינכם רוצים עוד לשנות אותה, באפשרותכם להתעלם מהודעה זו ולהמשיך להשתמש בסיסמה
 הישנה.',
-'passwordreset-emailelement'   => 'שם משתמש: $1
+'passwordreset-emailelement'       => 'שם משתמש: $1
 סיסמה זמנית: $2',
-'passwordreset-emailsent'      => 'נשלח דואר אלקטרוני עם תזכורת.',
+'passwordreset-emailsent'          => 'נשלח דואר אלקטרוני עם תזכורת.',
+'passwordreset-emailsent-capture'  => 'נשלח דואר אלקטרוני עם תזכורת, והוא מוצג להלן.',
+'passwordreset-emailerror-capture' => 'נוצר דואר אלקטרוני עם תזכורת, והוא מוצג להלן, אך שליחתו למשתמש נכשלה: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'שינוי כתובת דוא"ל',
@@ -1066,7 +1072,7 @@ $2
 פעולת היומן האחרונה מוצגת להלן:",
 'semiprotectedpagewarning'         => "'''הערה:''' דף זה מוגן כך שרק משתמשים רשומים יכולים לערוך אותו.
 פעולת היומן האחרונה מוצגת להלן:",
-'cascadeprotectedwarning'          => "'''אזהרה:''' דף זה מוגן כך שרק מפעילי מערכת יכולים לערוך אותו, כיוון שהוא מוכלל {{PLURAL:$1|בדף הבא, שמופעלת עליו|בדפים הבאים, שמופעלת עליהם}} הגנה מדורגת:",
+'cascadeprotectedwarning'          => "'''אזהרה:''' דף זה מוגן כך שרק מפעילי מערכת יכולים לערוך אותו, כי הוא מוכלל {{PLURAL:$1|בדף הבא, שמופעלת עליו|בדפים הבאים, שמופעלת עליהם}} הגנה מדורגת:",
 'titleprotectedwarning'            => "'''אזהרה: דף זה מוגן כך שדרושות [[Special:ListGroupRights|הרשאות מסוימות]] כדי ליצור אותו.'''
 פעולת היומן האחרונה מוצגת להלן:",
 'templatesused'                    => '{{PLURAL:$1|תבנית המופיעה|תבניות המופיעות}} בדף זה:',
@@ -1459,7 +1465,8 @@ $1",
 'prefs-registration'            => 'זמן ההרשמה:',
 'yourrealname'                  => 'שם אמיתי:',
 'yourlanguage'                  => 'שפת הממשק:',
-'yourvariant'                   => 'גרסה:',
+'yourvariant'                   => 'סוג הכתב בשפת התוכן:',
+'prefs-help-variant'            => 'סוג הכתב המועדף להצגת דפי התוכן באתר ויקי זה.',
 'yournick'                      => 'חתימה:',
 'prefs-help-signature'          => 'על הודעות בדפי שיחה יש לחתום באמצעות הטקסט "<nowiki>~~~~</nowiki>", שיומר לחתימה שלכם ואחריה תאריך ושעה.',
 'badsig'                        => 'חתימה מסוגננת שגויה.
@@ -1603,6 +1610,7 @@ $1",
 'right-siteadmin'             => 'נעילת וביטול נעילת בסיס הנתונים',
 'right-override-export-depth' => 'ייצוא דפים כולל דפים מקושרים עד עומק של חמישה',
 'right-sendemail'             => 'שליחת דואר אלקטרוני למשתמשים אחרים',
+'right-passwordreset'         => 'צפייה בדואר אלקטרוני של איפוס סיסמה',
 
 # User rights log
 'rightslog'                  => 'יומן תפקידים',
@@ -1930,7 +1938,7 @@ $1',
 'filehist-filesize'                 => 'גודל הקובץ',
 'filehist-comment'                  => 'הערה',
 'filehist-missing'                  => 'הקובץ חסר',
-'imagelinks'                        => 'קישורים לקובץ',
+'imagelinks'                        => 'שימוש בקובץ',
 'linkstoimage'                      => '{{PLURAL:$1|הדף הבא משתמש|הדפים הבאים משתמשים}} בקובץ זה:',
 'linkstoimage-more'                 => 'יותר מ{{PLURAL:$1|דף אחד מקשר|־$1 דפים מקשרים}} לקובץ זה.
 הרשימה הבאה מראה רק את {{PLURAL:$1|הדף הראשון שמקשר|$1 הדפים הראשונים שמקשרים}} לקובץ זה.
@@ -2039,7 +2047,7 @@ $1',
 
 'doubleredirects'                   => 'הפניות כפולות',
 'doubleredirectstext'               => 'ההפניות הבאות מפנות לדפי הפניה אחרים.
-כל שורה מכילה קישור להפניות הראשונה והשנייה, וכן את היעד של ההפניה השנייה, שהיא לרוב היעד ה"אמיתי" של ההפניה, אליו אמורה ההפניה הראשונה להצביע.
+כל שורה מכילה קישור לשתי ההפניות הראשונות, וכן את היעד של ההפניה השנייה, שהיא לרוב היעד ה"אמיתי" של ההפניה, שההפניה הראשונה אמורה להצביע אליו.
 ערכים <del>מחוקים</del> כבר תוקנו.',
 'double-redirect-fixed-move'        => '[[$1]] הועבר. כעת הוא הפניה לדף [[$2]].',
 'double-redirect-fixed-maintenance' => 'תיקון הפניה כפולה מ[[$1]] ל[[$2]].',
@@ -2176,7 +2184,8 @@ $1',
 'linksearch-pat'   => 'תבנית קישור לחיפוש:',
 'linksearch-ns'    => 'מרחב שם:',
 'linksearch-ok'    => 'חיפוש',
-'linksearch-text'  => 'ניתן להשתמש בתווים כללים, לדוגמה "*.wikipedia.org".<br />פרוטוקולים נתמכים: <tt>$1</tt>',
+'linksearch-text'  => 'ניתן להשתמש בתווים כלליים, לדוגמה <span dir="ltr">"*.wikipedia.org"</span>.<br />
+פרוטוקולים נתמכים: <tt dir="ltr">$1</tt>',
 'linksearch-line'  => '$1 מקושר מהדף $2',
 'linksearch-error' => 'תווים כלליים יכולים להופיע רק בתחילת שם השרת.',
 
@@ -2196,12 +2205,8 @@ $1',
 'activeusers-noresult'   => 'לא נמצאו משתמשים.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'יומן רישום משתמשים',
-'newuserlogpagetext'          => 'זהו יומן המכיל הרשמות של משתמשים.',
-'newuserlog-byemail'          => 'הסיסמה נשלחה בדוא"ל',
-'newuserlog-create-entry'     => 'חשבון משתמש חדש',
-'newuserlog-create2-entry'    => 'יצר חשבון חדש $1',
-'newuserlog-autocreate-entry' => 'חשבון שנוצר אוטומטית',
+'newuserlogpage'     => 'יומן רישום משתמשים',
+'newuserlogpagetext' => 'זהו יומן המכיל הרשמות של משתמשים.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'רשימת הרשאות לקבוצה',
@@ -2929,7 +2934,7 @@ $1',
 'tooltip-t-recentchangeslinked'   => 'השינויים האחרונים שבוצעו בדפים המקושרים לכאן',
 'tooltip-feed-rss'                => 'הוספת עדכון אוטומטי על ידי RSS',
 'tooltip-feed-atom'               => 'הוספת עדכון אוטומטי על ידי Atom',
-'tooltip-t-contributions'         => 'צפייה בתרומותיו של משתמש זה',
+'tooltip-t-contributions'         => 'תרומותיו של משתמש זה',
 'tooltip-t-emailuser'             => 'שליחת דואר אלקטרוני למשתמש זה',
 'tooltip-t-upload'                => 'העלאת קבצים',
 'tooltip-t-specialpages'          => 'רשימת כל הדפים המיוחדים',
@@ -3055,9 +3060,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'יומן שינויים בדוקים',
 'patrol-log-header'    => 'יומן זה מציג גרסאות שנבדקו.',
-'patrol-log-line'      => 'סימן את $1 בדף $2 כבדוקה $3',
-'patrol-log-auto'      => '(אוטומטית)',
-'patrol-log-diff'      => 'הגרסה $1',
 'log-show-hide-patrol' => '$1 יומן שינויים בדוקים',
 
 # Image deletion
@@ -3088,7 +3090,7 @@ $1',
 'svg-long-desc'          => 'קובץ SVG, הגודל המקורי: $1 × $2 פיקסלים, גודל הקובץ: $3',
 'show-big-image'         => 'תמונה ברזולוציה גבוהה יותר',
 'show-big-image-preview' => 'גודל תצוגה זו: $1.',
-'show-big-image-other'   => 'רזולוציות אחרות: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|רזולוציה אחרת|רזולוציות אחרות}}: $1.',
 'show-big-image-size'    => '$1 × $2 פיקסלים',
 'file-info-gif-looped'   => 'בלולאה',
 'file-info-gif-frames'   => '{{PLURAL:$1|תמונה אחת|$1 תמונות}}',
@@ -3107,6 +3109,13 @@ $1',
 'ilsubmit'              => 'חיפוש',
 'bydate'                => 'לפי תאריך',
 'sp-newimages-showfrom' => 'הצגת קבצים חדשים החל מ־$2, $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|שנייה|$1 שניות}}',
+'minutes' => '{{PLURAL:$1|דקה|$1 דקות}}',
+'hours'   => '{{PLURAL:$1|שעה|$1 שעות|שעתיים}}',
+'days'    => '{{PLURAL:$1|יום|$1 ימים|יומיים}}',
+'ago'     => 'לפני $1',
 
 # Bad image list
 'bad_image_list' => 'דרך הכתיבה בהודעה היא כמתואר להלן:
@@ -3789,9 +3798,7 @@ $1',
 'filepath-page'    => 'הקובץ:',
 'filepath-submit'  => 'הצגה',
 'filepath-summary' => 'דף זה מציג את הנתיב המלא לקבצים שהועלו.
-תמונות מוצגות ברזולוציה מלאה, וסוגי קבצים אחרים מוצגים ישירות באמצעות התוכנה שהוגדרה להצגתם.
-
-יש להקליד את שם הקובץ ללא הקידומת "{{ns:file}}:".',
+תמונות מוצגות ברזולוציה מלאה, וסוגי קבצים אחרים מוצגים ישירות באמצעות התוכנה שהוגדרה להצגתם.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'חיפוש קבצים כפולים',
@@ -3870,7 +3877,6 @@ $1',
 'globalfileusage-text'        => 'חיפוש שימוש גלובלי בקובץ',
 'globalfileusage-no-results'  => '[[$1]] אינו בשימוש באתרי ויקי אחרים.',
 'globalfileusage-on-wiki'     => 'שימוש ב{{grammar:תחילית|{{SITENAME}}}}$2',
-'globalfileusage-of-file'     => 'אתרי הוויקי האחרים הבאים משתמשים בקובץ זה:',
 'globalfileusage-more'        => 'הצגת [[{{#Special:GlobalUsage}}/$1|שימושים גלובליים נוספים]] בקובץ זה.',
 'globalfileusage-filterlocal' => 'הסתרת השימוש המקומי',
 
@@ -3881,7 +3887,6 @@ $1',
 'globaltemplateusage-text'        => 'חיפוש שימוש גלובלי בתבנית',
 'globaltemplateusage-no-results'  => '[[$1]] אינה בשימוש באתרי ויקי אחרים.',
 'globaltemplateusage-on-wiki'     => 'שימוש ב{{grammar:תחילית|{{SITENAME}}}}$2',
-'globaltemplateusage-of-file'     => 'אתרי הוויקי האחרים הבאים משתמשים בתבנית זו:',
 'globaltemplateusage-more'        => 'הצגת [[{{#Special:GlobalUsage}}/$1|שימושים גלובליים נוספים]] בתבנית זו.',
 'globaltemplateusage-filterlocal' => 'הסתרת השימוש המקומי',
 
@@ -3911,11 +3916,31 @@ $1',
 'sqlite-no-fts'  => '$1 ללא תמיכה בחיפוש בטקסט מלא',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|מחק|מחקה}} את הדף $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|שחזר|שחזרה}} את הדף $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|שינה|שינתה}} את מצב התצוגה של {{PLURAL:$5|פעולת יומן|$5 פעולות יומן}} של $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|שינה|שינתה}} את מצב התצוגה של {{PLURAL:$5|גרסה|$5 גרסאות}} של הדף $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|שינה|שינתה}} את מצב התצוגה של פעולות יומן של $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|שינה|שינתה}} את מצב התצוגה של גרסאות בדף $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|הסתיר|הסתירה}} לחלוטין את הדף $3',
+'logentry-suppress-event'             => '$1 {{GENDER:$2|שינה|שינתה}} בסודיות את מצב התצוגה של {{PLURAL:$5|פעולת יומן|$5 פעולות יומן}} של $3: $4',
+'logentry-suppress-revision'          => '$1 {{GENDER:$2|שינה|שינתה}} בסודיות את מצב התצוגה של {{PLURAL:$5|גרסה|$5 גרסאות}} של הדף $3: $4',
+'logentry-suppress-event-legacy'      => '$1 {{GENDER:$2|שינה|שינתה}} בסודיות את מצב התצוגה של פעולות יומן של $3',
+'logentry-suppress-revision-legacy'   => '$1 {{GENDER:$2|שינה|שינתה}} בסודיות את מצב התצוגה של גרסאות של הדף $3',
+'revdelete-content-hid'               => 'התוכן הוסתר',
+'revdelete-summary-hid'               => 'תקציר העריכה הוסתר',
+'revdelete-uname-hid'                 => 'שם המשתמש הוסתר',
+'revdelete-content-unhid'             => 'הסתרת התוכן בוטלה',
+'revdelete-summary-unhid'             => 'הסתרת תקציר העריכה בוטלה',
+'revdelete-uname-unhid'               => 'הסתרת שם המשתמש בוטלה',
 'revdelete-restricted'                => 'נוספו הגבלות למפעילי מערכת',
 'revdelete-unrestricted'              => 'הוסרו הגבלות ממפעילי מערכת',
-'logentry-move-move'                  => '$1 {{GENDER:$2|העביר|העבירה}} את $3 ל$4',
-'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|העביר|העבירה}} את $3 ל$4 בלי להשאיר הפניה',
-'logentry-move-move_redir'            => '$1 {{GENDER:$2|העביר|העבירה}} את $3 ל$4 תוך דריסת הפניה',
-'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|העביר|העבירה}} את $3 ל$4 תוך דריסת הפניה ובלי להשאיר הפניה',
+'logentry-move-move'                  => '$1 {{GENDER:$2|העביר|העבירה}} את הדף $3 ל$4',
+'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|העביר|העבירה}} את הדף $3 ל{{GRAMMAR:תחילית|$4}} בלי להשאיר הפניה',
+'logentry-move-move_redir'            => '$1 {{GENDER:$2|העביר|העבירה}} את הדף $3 ל{{GRAMMAR:תחילית|$4}} תוך דריסת הפניה',
+'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|העביר|העבירה}} את הדף $3 ל{{GRAMMAR:תחילית|$4}} תוך דריסת הפניה ובלי להשאיר הפניה',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|סימן|סימנה}} את הגרסה $4 בדף $3 כבדוקה',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|סימן|סימנה}} אוטומטית את הגרסה $4 בדף $3 כבדוקה',
+'newuserlog-byemail'                  => 'הסיסמה נשלחה בדוא"ל',
 
 );

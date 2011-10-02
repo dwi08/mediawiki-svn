@@ -1977,12 +1977,8 @@ Palaikomi protokolai: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nerasta jokių naudotojų.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Prisiregistravę naudotojai',
-'newuserlogpagetext'          => 'Tai naudotojų kūrimo sąrašas.',
-'newuserlog-byemail'          => 'slaptažodis nusiųstas elektroniniu paštu',
-'newuserlog-create-entry'     => 'Naujas naudotojas',
-'newuserlog-create2-entry'    => 'sukurta nauja paskyra $1',
-'newuserlog-autocreate-entry' => 'Paskyra sukurta automatiškai',
+'newuserlogpage'     => 'Prisiregistravę naudotojai',
+'newuserlogpagetext' => 'Tai naudotojų kūrimo sąrašas.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Naudotojų grupių teisės',
@@ -2821,9 +2817,6 @@ Leidžia pridėti atmetimo priežastį komentaruose',
 # Patrol log
 'patrol-log-page'      => 'Patikrinimo istorija',
 'patrol-log-header'    => 'Tai patvirtintų versijų sąrašas.',
-'patrol-log-line'      => 'Puslapio „$2“ $1 pažymėta kaip patikrinta $3',
-'patrol-log-auto'      => '(automatiškai)',
-'patrol-log-diff'      => 'versija $1',
 'log-show-hide-patrol' => '$1 patvirtinimų sąrašą',
 
 # Image deletion
@@ -3502,9 +3495,8 @@ Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public Licens
 'filepath'         => 'Failo kelias',
 'filepath-page'    => 'Failas:',
 'filepath-submit'  => 'Kelias',
-'filepath-summary' => 'Šis specialusis puslapis parašo pilną kelią iki failo. Paveikslėliai yra rodomi pilna raiška, kiti failų tipai paleidžiami tiesiogiai su jų susietąja programa.
-
-Įveskite failo pavadinimą be „{{ns:file}}:“ priedėlio.',
+'filepath-summary' => 'Šis specialusis puslapis parašo pilną kelią iki failo.
+Paveikslėliai yra rodomi pilna raiška, kiti failų tipai paleidžiami tiesiogiai su jų susietąja programa.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Ieškoti dublikuotų failų',
@@ -3583,7 +3575,6 @@ Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public Licens
 'globalfileusage-text'        => 'Paieškos pasaulio failo naudojimo',
 'globalfileusage-no-results'  => '[[:$1]] nenaudojama kituose Wiki projektuose.',
 'globalfileusage-on-wiki'     => 'Naudojimo$2',
-'globalfileusage-of-file'     => 'Šių kitų wiki naudoti šį failą:',
 'globalfileusage-more'        => 'Peržiūrėti [[{{# specialus: GlobalUsage}} / $1 |kiti pasaulio naudojimo]] šio failo.',
 'globalfileusage-filterlocal' => 'Nerodyti vietos naudojimo',
 
@@ -3594,7 +3585,6 @@ Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public Licens
 'globaltemplateusage-text'        => 'Paieškos pasaulio failo naudojimo',
 'globaltemplateusage-no-results'  => '[[:$1]] nenaudojama kituose Wiki projektuose.',
 'globaltemplateusage-on-wiki'     => 'Naudojimo$2',
-'globaltemplateusage-of-file'     => 'Šių kitų wiki naudoti šį failą:',
 'globaltemplateusage-more'        => 'Peržiūrėti [[{{# specialus: GlobalUsage}} / $1 |kiti pasaulio naudojimo]] šio failo.',
 'globaltemplateusage-filterlocal' => 'Nerodyti vietos naudojimo',
 
@@ -3626,5 +3616,6 @@ Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public Licens
 # New logging system
 'revdelete-restricted'   => 'uždėti apribojimai administratoriams',
 'revdelete-unrestricted' => 'pašalinti apribojimai administratoriams',
+'newuserlog-byemail'     => 'slaptažodis nusiųstas elektroniniu paštu',
 
 );

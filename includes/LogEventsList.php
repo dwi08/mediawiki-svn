@@ -213,6 +213,10 @@ class LogEventsList {
 		return $this->out->getTitle();
 	}
 
+	public function getContext() {
+		return $this->out->getContext();
+	}
+
 	/**
 	 * @param $queryTypes Array
 	 * @return String: Formatted HTML
@@ -482,19 +486,6 @@ class LogEventsList {
 					array( 'known', 'noclasses' )
 				) . ')';
 			}
-		// Self-created users
-		} elseif( self::typeAction( $row, 'newusers', 'create2' ) ) {
-			if( isset( $paramArray[0] ) ) {
-				$revert = Linker::userToolLinks( $paramArray[0], $title->getDBkey(), true );
-			} else {
-				# Fall back to a blue contributions link
-				$revert = Linker::userToolLinks( 1, $title->getDBkey() );
-			}
-			if( wfTimestamp( TS_MW, $row->log_timestamp ) < '20080129000000' ) {
-				# Suppress $comment from old entries (before 2008-01-29),
-				# not needed and can contain incorrect links
-				$comment = '';
-			}
 		// Do nothing. The implementation is handled by the hook modifiying the passed-by-ref parameters.
 		} else {
 			wfRunHooks( 'LogLine', array( $row->log_type, $row->log_action, $title, $paramArray,
@@ -609,8 +600,8 @@ class LogEventsList {
 	 * Show log extract. Either with text and a box (set $msgKey) or without (don't set $msgKey)
 	 *
 	 * @param $out OutputPage|String-by-reference
-	 * @param $types String or Array
-	 * @param $page String The page title to show log entries for
+	 * @param $types String|Array Log types to show
+	 * @param $page String|Title The page title to show log entries for
 	 * @param $user String The user who made the log entries
 	 * @param $param Associative Array with the following additional options:
 	 * - lim Integer Limit of items to show, default is 50
@@ -629,7 +620,6 @@ class LogEventsList {
 	public static function showLogExtract(
 		&$out, $types=array(), $page='', $user='', $param = array()
 	) {
-		global $wgUser, $wgOut;
 		$defaultParameters = array(
 			'lim' => 25,
 			'conds' => array(),
@@ -651,8 +641,15 @@ class LogEventsList {
 		if ( !is_array( $msgKey ) ) {
 			$msgKey = array( $msgKey );
 		}
+
+		if ( $out instanceof OutputPage ) {
+			$context = $out->getContext();
+		} else {
+			$context = RequestContext::getMain();
+		}
+
 		# Insert list of top 50 (or top $lim) items
-		$loglist = new LogEventsList( $wgUser->getSkin(), $wgOut, $flags );
+		$loglist = new LogEventsList( $context->getSkin(), $context->getOutput(), $flags );
 		$pager = new LogPager( $loglist, $types, $user, $page, '', $conds );
 		if ( isset( $param['offset'] ) ) { # Tell pager to ignore $wgRequest offset
 			$pager->setOffset( $param['offset'] );
@@ -682,8 +679,11 @@ class LogEventsList {
 		}
 		if( $pager->getNumRows() > $pager->mLimit ) { # Show "Full log" link
 			$urlParam = array();
-			if ( $page != '')
+			if ( $page instanceof Title ) {
+				$urlParam['page'] = $page->getPrefixedDBkey();
+			} elseif ( $page != '' ) {
 				$urlParam['page'] = $page;
+			}
 			if ( $user != '')
 				$urlParam['user'] = $user;
 			if ( !is_array( $types ) ) # Make it an array, if it isn't
@@ -704,6 +704,11 @@ class LogEventsList {
 
 		if ( $wrap!='' ) { // Wrap message in html
 			$s = str_replace( '$1', $s, $wrap );
+		}
+
+		/* hook can return false, if we don't want the message to be emitted (Wikia BugId:7093) */
+		if ( !wfRunHooks( 'LogEventsListShowLogExtract', array( &$s, $types, $page, $user, $param ) ) ) {
+			return $pager->getNumRows();
 		}
 
 		// $out can be either an OutputPage object or a String-by-reference
@@ -740,13 +745,13 @@ class LogEventsList {
 		}
 		return false;
 	}
-}
+ }
 
 /**
  * @ingroup Pager
  */
 class LogPager extends ReverseChronologicalPager {
-	private $types = array(), $user = '', $title = '', $pattern = '';
+	private $types = array(), $performer = '', $title = '', $pattern = '';
 	private $typeCGI = '';
 	public $mLogEventsList;
 
@@ -755,23 +760,23 @@ class LogPager extends ReverseChronologicalPager {
 	 *
 	 * @param $list LogEventsList
 	 * @param $types String or Array: log types to show
-	 * @param $user String: the user who made the log entries
-	 * @param $title String: the page title the log entries are for
+	 * @param $performer String: the user who made the log entries
+	 * @param $title String|Title: the page title the log entries are for
 	 * @param $pattern String: do a prefix search rather than an exact title match
 	 * @param $conds Array: extra conditions for the query
 	 * @param $year Integer: the year to start from
 	 * @param $month Integer: the month to start from
 	 * @param $tagFilter String: tag
 	 */
-	public function __construct( $list, $types = array(), $user = '', $title = '', $pattern = '',
+	public function __construct( $list, $types = array(), $performer = '', $title = '', $pattern = '',
 		$conds = array(), $year = false, $month = false, $tagFilter = '' ) {
-		parent::__construct();
+		parent::__construct( $list->getContext() );
 		$this->mConds = $conds;
 
 		$this->mLogEventsList = $list;
 
 		$this->limitType( $types ); // also excludes hidden types
-		$this->limitUser( $user );
+		$this->limitPerformer( $performer );
 		$this->limitTitle( $title, $pattern );
 		$this->getDateCond( $year, $month );
 		$this->mTagFilter = $tagFilter;
@@ -780,30 +785,23 @@ class LogPager extends ReverseChronologicalPager {
 	public function getDefaultQuery() {
 		$query = parent::getDefaultQuery();
 		$query['type'] = $this->typeCGI; // arrays won't work here
-		$query['user'] = $this->user;
+		$query['user'] = $this->performer;
 		$query['month'] = $this->mMonth;
 		$query['year'] = $this->mYear;
 		return $query;
 	}
 
-	/**
-	 * @return Title
-	 */
-	function getTitle() {
-		return $this->mLogEventsList->getDisplayTitle();
-	}
-
 	// Call ONLY after calling $this->limitType() already!
 	public function getFilterParams() {
-		global $wgFilterLogTypes, $wgUser, $wgRequest;
+		global $wgFilterLogTypes;
 		$filters = array();
 		if( count($this->types) ) {
 			return $filters;
 		}
 		foreach( $wgFilterLogTypes as $type => $default ) {
 			// Avoid silly filtering
-			if( $type !== 'patrol' || $wgUser->useNPPatrol() ) {
-				$hide = $wgRequest->getInt( "hide_{$type}_log", $default );
+			if( $type !== 'patrol' || $this->getUser()->useNPPatrol() ) {
+				$hide = $this->getRequest()->getInt( "hide_{$type}_log", $default );
 				$filters[$type] = $hide;
 				if( $hide )
 					$this->mConds[] = 'log_type != ' . $this->mDb->addQuotes( $type );
@@ -820,13 +818,13 @@ class LogPager extends ReverseChronologicalPager {
 	 *   empty string means no restriction
 	 */
 	private function limitType( $types ) {
-		global $wgLogRestrictions, $wgUser;
+		global $wgLogRestrictions;
 		// If $types is not an array, make it an array
 		$types = ($types === '') ? array() : (array)$types;
 		// Don't even show header for private logs; don't recognize it...
 		foreach ( $types as $type ) {
 			if( isset( $wgLogRestrictions[$type] )
-				&& !$wgUser->isAllowed($wgLogRestrictions[$type])
+				&& !$this->getUser()->isAllowed($wgLogRestrictions[$type])
 			) {
 				$types = array_diff( $types, array( $type ) );
 			}
@@ -851,7 +849,7 @@ class LogPager extends ReverseChronologicalPager {
 	 *
 	 * @param $name String: (In)valid user name
 	 */
-	private function limitUser( $name ) {
+	private function limitPerformer( $name ) {
 		if( $name == '' ) {
 			return false;
 		}
@@ -866,16 +864,16 @@ class LogPager extends ReverseChronologicalPager {
 			   but for now it won't pass anywhere behind the optimizer */
 			$this->mConds[] = "NULL";
 		} else {
-			global $wgUser;
 			$this->mConds['log_user'] = $userid;
 			// Paranoia: avoid brute force searches (bug 17342)
-			if( !$wgUser->isAllowed( 'deletedhistory' ) || $wgUser->isBlocked() ) {
+			$user = $this->getUser();
+			if( !$user->isAllowed( 'deletedhistory' ) || $user->isBlocked() ) {
 				$this->mConds[] = $this->mDb->bitAnd('log_deleted', LogPage::DELETED_USER) . ' = 0';
-			} elseif( !$wgUser->isAllowed( 'suppressrevision' ) || $wgUser->isBlocked() ) {
+			} elseif( !$user->isAllowed( 'suppressrevision' ) || $user->isBlocked() ) {
 				$this->mConds[] = $this->mDb->bitAnd('log_deleted', LogPage::SUPPRESSED_USER) .
 					' != ' . LogPage::SUPPRESSED_USER;
 			}
-			$this->user = $usertitle->getText();
+			$this->performer = $usertitle->getText();
 		}
 	}
 
@@ -883,15 +881,19 @@ class LogPager extends ReverseChronologicalPager {
 	 * Set the log reader to return only entries affecting the given page.
 	 * (For the block and rights logs, this is a user page.)
 	 *
-	 * @param $page String: Title name as text
+	 * @param $page String or Title object: Title name
 	 * @param $pattern String
 	 */
 	private function limitTitle( $page, $pattern ) {
-		global $wgMiserMode, $wgUser;
+		global $wgMiserMode;
 
-		$title = Title::newFromText( $page );
-		if( strlen( $page ) == 0 || !$title instanceof Title ) {
-			return false;
+		if ( $page instanceof Title ) {
+			$title = $page;
+		} else {
+			$title = Title::newFromText( $page );
+			if( strlen( $page ) == 0 || !$title instanceof Title ) {
+				return false;
+			}
 		}
 
 		$this->title = $title->getPrefixedText();
@@ -918,9 +920,10 @@ class LogPager extends ReverseChronologicalPager {
 			$this->mConds['log_title'] = $title->getDBkey();
 		}
 		// Paranoia: avoid brute force searches (bug 17342)
-		if( !$wgUser->isAllowed( 'deletedhistory' ) || $wgUser->isBlocked() ) {
+		$user = $this->getUser();
+		if( !$user->isAllowed( 'deletedhistory' ) || $user->isBlocked() ) {
 			$this->mConds[] = $db->bitAnd('log_deleted', LogPage::DELETED_ACTION) . ' = 0';
-		} elseif( !$wgUser->isAllowed( 'suppressrevision' ) || $wgUser->isBlocked() ) {
+		} elseif( !$user->isAllowed( 'suppressrevision' ) || $user->isBlocked() ) {
 			$this->mConds[] = $db->bitAnd('log_deleted', LogPage::SUPPRESSED_ACTION) .
 				' != ' . LogPage::SUPPRESSED_ACTION;
 		}
@@ -959,7 +962,7 @@ class LogPager extends ReverseChronologicalPager {
 		# Avoid usage of the wrong index by limiting
 		# the choices of available indexes. This mainly
 		# avoids site-breaking filesorts.
-		} elseif( $this->title || $this->pattern || $this->user ) {
+		} elseif( $this->title || $this->pattern || $this->performer ) {
 			$index['logging'] = array( 'page_time', 'user_time' );
 			if( count($this->types) == 1 ) {
 				$index['logging'][] = 'log_user_type_time';
@@ -1026,8 +1029,8 @@ class LogPager extends ReverseChronologicalPager {
 	/**
 	 * @return string
 	 */
-	public function getUser() {
-		return $this->user;
+	public function getPerformer() {
+		return $this->performer;
 	}
 
 	/**

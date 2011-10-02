@@ -1612,7 +1612,7 @@ Quand a l'é filtrà da l'utent, a son mostrà mach j'archivi anté che l'utent 
 'filehist-filesize'                 => "Amzure dl'archivi",
 'filehist-comment'                  => 'Coment',
 'filehist-missing'                  => 'Archivi mancant',
-'imagelinks'                        => "Anliure a l'archivi",
+'imagelinks'                        => "Usagi dl'archivi",
 'linkstoimage'                      => "{{PLURAL:$1|La pàgina sì-sota a l'ha|Le $1 pàgine sì-sota a l'han}} andrinta dj'anliure a cost archivi:",
 'linkstoimage-more'                 => "Pì che $1 {{PLURAL:$1|pàgina|pàgine}} a l'han dj'anliure a cost archivi.
 La lista sì-sota a smon mach {{PLURAL:$1|la prima pàgina ch'a l'ha|le prime $1 pàgine ch'a l'han}} d'anliure a s'archivi.
@@ -1873,12 +1873,8 @@ Ch'a bèica ëdcò [[Special:WantedCategories|le categorìe domandà]].",
 'activeusers-noresult'   => 'Pa gnun utent trovà.',
 
 # Special:Log/newusers
-'newuserlogpage'              => "Registr dla creassion dj'utent",
-'newuserlogpagetext'          => "Sossì a l'é un registr andova ch'as marco le creassion dj'utent.",
-'newuserlog-byemail'          => 'ciav spedìa për pòsta eletrònica',
-'newuserlog-create-entry'     => 'Neuv utent',
-'newuserlog-create2-entry'    => 'Creà ël neuv cont $1',
-'newuserlog-autocreate-entry' => 'Cont creà automaticament',
+'newuserlogpage'     => "Registr dla creassion dj'utent",
+'newuserlogpagetext' => "Sossì a l'é un registr andova ch'as marco le creassion dj'utent.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => "Drit dël grup d'utent",
@@ -2013,20 +2009,20 @@ Comunicassion ëd servissi e pì d\'agiut:
 
 # Delete
 'deletepage'             => 'Scancelé la pàgina',
-'confirm'                => 'Conferma',
+'confirm'                => 'Confermé',
 'excontent'              => "Ël contnù a l'era: '$1'",
-'excontentauthor'        => "ël contnù a l'era: '$1' (e l'ùnich contributor a l'era stait '$2')",
-'exbeforeblank'          => "Anans d'esse dësvojdà ël contnù a l'era: '$1'",
+'excontentauthor'        => "ël contnù a l'era: «$1» (e l'ùnich contributor a l'era stàit «[[Special:Contributions/$2|$2]]»)",
+'exbeforeblank'          => "anans d'esse dësvujdà ël contnù a l'era: «$1»",
 'exblank'                => "La pàgina a l'era veujda",
-'delete-confirm'         => 'Scancela "$1"',
-'delete-legend'          => 'Scancela',
+'delete-confirm'         => 'Scancelé «$1»',
+'delete-legend'          => 'Scancelé',
 'historywarning'         => "'''Avis:''' La pàgina che a l'é antramentr che a scancela a l'ha na stòria con pi o men $1 {{PLURAL:$1|revision|revision}}:",
 'confirmdeletetext'      => "A sta për scancelé d'autut da 'nt la base dat na pàgina ò pura na figura, ansema a tuta soa cronologìa.<p>
 Për piasì, che an conferma che sòn a l'é da bon sò but, che a as rend cont ëd le conseguense ëd lòn che a fa, e che sòn a resta an pien an régola con lòn che a l'é stabilì ant la [[{{MediaWiki:Policy-url}}]].",
 'actioncomplete'         => 'Travaj fait e finì',
 'actionfailed'           => 'Assion falìa',
-'deletedtext'            => 'La pàgina "$1" a l\'é staita scancelà.
-Che a varda $2 për na lista dle pàgine scancelà ant j\'ùltim temp.',
+'deletedtext'            => "La pàgina «$1» a l'é stàita scancelà.
+Che a varda $2 për na lista dle pàgine scancelà ant j'ùltim temp.",
 'dellogpage'             => 'Registr djë scancelament',
 'dellogpagetext'         => "Ambelessì sota na lista dle pàgine scancelà ant j'ùltim temp.
 Ij temp a son conforma a l'ora dël server.",
@@ -2702,9 +2698,6 @@ Sòn a l'é motobin belfé che a sia rivà përchè a-i era n'anliura a un sit e
 # Patrol log
 'patrol-log-page'      => 'Registr dij contròj',
 'patrol-log-header'    => "Sto sì a l'é un registr ëd le revision verificà.",
-'patrol-log-line'      => "a l'ha marcà la $1 ëd $2 coma controlà $3",
-'patrol-log-auto'      => '(automàtich)',
-'patrol-log-diff'      => 'modìfica $1',
 'log-show-hide-patrol' => '$1 registr verificà',
 
 # Image deletion
@@ -3407,10 +3400,8 @@ A dovrìa avèj arseivù [{{SERVER}}{{SCRIPTPATH}}/COPYING na còpia dla Licensa
 'filepath'         => "Përcors d'archivi",
 'filepath-page'    => 'Archivi:',
 'filepath-submit'  => 'Përcors',
-'filepath-summary' => "Sta pàgina special-sì a la smon ël përcors complet për rive-ie a n'archivi.
-Le figure as ësmon-o a amzura pijn-a, j'àotre sòrt d'archivi a ven-o faite parte da sò programa a pòsta.
-
-Ch'a buta mach ël nòm dl'archivi sensa pa ël prefiss \"{{ns:file}}:\".",
+'filepath-summary' => "Sta pàgina special-sì a la smon ël përcors complet për n'archivi.
+Le figure a së smon-o a amzura pijn-a, j'àotre sòrt d'archivi a ven-o fàite parte diretament da sò programa a pòsta.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => "Arsërca dj'archivi dobi",
@@ -3489,7 +3480,6 @@ Ch'a buta mach ël nòm dl'archivi sensa pa ël prefiss \"{{ns:file}}:\".",
 'globalfileusage-text'        => "Arserché l'utilisassion ëd l'archivi global",
 'globalfileusage-no-results'  => "[[$1]] a l'é pa dovrà dzora d'àutre wiki.",
 'globalfileusage-on-wiki'     => 'Usagi dzora $2',
-'globalfileusage-of-file'     => "J'àutre wiki sì-sota a deuvro st'archivi-sì:",
 'globalfileusage-more'        => "Varda l'[[{{#Special:GlobalUsage}}/$1|usagi global]] dë st'archivi-sì.",
 'globalfileusage-filterlocal' => "Smon-e nen l'utilisassion local.",
 
@@ -3500,7 +3490,6 @@ Ch'a buta mach ël nòm dl'archivi sensa pa ël prefiss \"{{ns:file}}:\".",
 'globaltemplateusage-text'        => "Serca l'usagi dlë stamp global",
 'globaltemplateusage-no-results'  => "[[$1]] a l'é pa dovrà dzora d'àutre wiki.",
 'globaltemplateusage-on-wiki'     => 'Usagi dzora $2',
-'globaltemplateusage-of-file'     => "J'àutre wiki sì-sota a deuvro së stamp-sì:",
 'globaltemplateusage-more'        => "Varda l'[[{{#Special:GlobalUsage}}/$1|àutr usagi global]] dë sto stamp-sì.",
 'globaltemplateusage-filterlocal' => "Smon-e nen l'utilisassion local.",
 
@@ -3530,11 +3519,31 @@ Ch'a buta mach ël nòm dl'archivi sensa pa ël prefiss \"{{ns:file}}:\".",
 'sqlite-no-fts'  => '$1 sensa arserca an test pien mantnùa',
 
 # New logging system
+'logentry-delete-delete'              => "$1 {{GENDER:$2|a l'ha scancelà}} la pàgina $3",
+'logentry-delete-restore'             => "$1 {{GENDER:$2|a l'ha ripristinà}} la pàgina $3",
+'logentry-delete-event'               => "$1 {{GENDER:$2|cangià}} la visibilità ëd {{PLURAL:$5|n'event dël registr|$5 event dël registr}} dzora $3: $4",
+'logentry-delete-revision'            => "$1 {{GENDER:$2|a l'ha modificà}} la visibilità ëd {{PLURAL:$5|na revision|$5 revision}} dzora la pàgina $3: $4",
+'logentry-delete-event-legacy'        => "$1 {{GENDER:$2|cangià}} la visibilità dj'event dël registr dzora $3",
+'logentry-delete-revision-legacy'     => "$1 {{GENDER:$2|a l'ha modificà}} la visibilità dle revision dzora la pàgina $3",
+'logentry-suppress-delete'            => "$1 {{GENDER:$2|a l'ha eliminà}} la pàgina $3",
+'logentry-suppress-event'             => "$1 {{GENDER:$2|cangià}} segretament la visibilità ëd {{PLURAL:$5|n'event dël registr|$5 event dël registr}} dzora $3: $4",
+'logentry-suppress-revision'          => "$1 {{GENDER:$2|a l'ha modificà}} segretament la visibilità ëd {{PLURAL:$5|na revision|$5 revision}} dzora la pàgina $3: $4",
+'logentry-suppress-event-legacy'      => "$1 {{GENDER:$2|cangià}} segretament la visibilità dj'event dël registr dzora $3",
+'logentry-suppress-revision-legacy'   => "$1 {{GENDER:$2|a l'ha modificà}} segretament la visibilità dle revision dzora la pàgina $3",
+'revdelete-content-hid'               => 'contnù stërmà',
+'revdelete-summary-hid'               => 'resumé dle modìfiche stërmà',
+'revdelete-uname-hid'                 => 'stranòm stërmà',
+'revdelete-content-unhid'             => 'contnù dëscoatà',
+'revdelete-summary-unhid'             => 'resumé dle modìfiche dëscoatà',
+'revdelete-uname-unhid'               => 'stranòm dëscoatà',
 'revdelete-restricted'                => "a l'ha aplicà le restrission a j'aministrator",
 'revdelete-unrestricted'              => "restrission për j'aministrator gavà",
 'logentry-move-move'                  => "$1 {{GENDER:$2|a l'ha tramudà}} la pàgina $3 a $4",
 'logentry-move-move-noredirect'       => "$1 {{GENDER:$2|a l'ha tramudà}} la pàgina $3 a $4 sensa lassé na ridiression",
 'logentry-move-move_redir'            => "$1 {{GENDER:$2|a l'ha tramudà}} la pàgina $3 a $4 ansima a na ridiression",
 'logentry-move-move_redir-noredirect' => "$1 {{GENDER:$2|a l'ha tramudà}} la pàgina $3 a $4 ansima a na ridiression sensa lassé na ridiression",
+'logentry-patrol-patrol'              => "$1 {{GENDER:$2|a l'ha marcà}} la revision $4 dla pàgina $3 'me controlà",
+'logentry-patrol-patrol-auto'         => "$1 {{GENDER:$2|a l'ha marcà}} automaticament la revision $4 dla pàgina $3 'me controlà",
+'newuserlog-byemail'                  => 'ciav spedìa për pòsta eletrònica',
 
 );

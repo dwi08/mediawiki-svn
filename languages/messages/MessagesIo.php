@@ -1041,8 +1041,7 @@ Volutez kontrolar '''<tt>[[:$1]]</tt>''' se vu ne esas certa pri chanjar olu.
 'activeusers-noresult' => 'Nula uzanto trovesis.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Uzanto-kreo-registro',
-'newuserlog-create-entry' => 'Nova uzanto',
+'newuserlogpage' => 'Uzanto-kreo-registro',
 
 # Special:ListGroupRights
 'listgrouprights-group'   => 'Grupo',
@@ -1408,10 +1407,6 @@ Vu darfos adjuntar kauso en la rezumo.',
 
 # Spam protection
 'spamprotectiontitle' => 'Filtrilo kontre spamo',
-
-# Patrol log
-'patrol-log-auto' => '(automata)',
-'patrol-log-diff' => 'revizado $1',
 
 # Browsing diffs
 'previousdiff' => '← Plu anciena versiono',

@@ -179,7 +179,6 @@ $wgIgnoredMessages = array(
 	'unusedtemplates-summary',
 	'fewestrevisions-summary',
 	'upload-summary',
-	'newuserlogentry',
 	'wantedtemplates-summary',
 	'activeusers-summary',
 	'search-summary',

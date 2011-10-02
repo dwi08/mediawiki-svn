@@ -2186,7 +2186,7 @@ $wgAllowMicrodataAttributes = false;
 /**
  * Cleanup as much presentational html like valign -> css vertical-align as we can
  */
-$wgCleanupPresentationalAttributes = false;
+$wgCleanupPresentationalAttributes = true;
 
 /**
  * Should we try to make our HTML output well-formed XML?  If set to false,
@@ -2631,6 +2631,14 @@ $wgMetaNamespaceTalk = false;
 $wgExtraNamespaces = array();
 
 /**
+ * Same as above, but for namespaces with gender distinction.
+ * Note: the default form for the namespace should also be set
+ * using $wgExtraNamespaces for the same index.
+ * @since 1.18
+ */
+$wgExtraGenderNamespaces = array();
+
+/**
  * Namespace aliases
  * These are alternate names for the primary localised namespace names, which
  * are defined by $wgExtraNamespaces and the language file. If a page is
@@ -2990,34 +2998,12 @@ $wgExpensiveParserFunctionLimit = 100;
 $wgPreprocessorCacheThreshold = 1000;
 
 /**
- * Enable interwiki transcluding.  Only when iw_trans=1 in the interwiki table.
- * If the interwiki prefix is associated with a wiki ID in the interwiki table,
- * then the distant templates will be retrieved in the distant DB. If there is
- * no wiki ID but a API URL for that prefix, the distant templates will be
- * retrieved using the API and cached in memcached.
+ * Enable interwiki transcluding.  Only when iw_trans=1.
  */
-$wgEnableInterwikiTranscluding = false;
+$wgEnableScaryTranscluding = false;
 
 /**
- * If $wgEnableInterwikiTranscluding is set to true and if an interwiki prefix
- * is associated with a wiki ID, then, this option should be set to true to
- * enable the cache invalidation of the distant pages when the local templates
- * are edited and also to display the list of the distant templates used by
- * the local pages. Enabling this requires to set up a global shared database
  * (see next option $wgGlobalDatabase).
- */
-$wgEnableInterwikiTemplatesTracking = false;
-
-/**
- * If $wgEnableInterwikiTemplatesTracking is set to true, this option should
- * contain the wiki ID of the database that hosts the globaltemplatelinks table.
- */
-$wgGlobalDatabase = '';
-
-/**
- * If $wgEnableInterwikiTranscluding is set to true and if an interwiki
- * prefix is associated with an API URL and no wiki ID, this will be
- * the expiry time for the transcluded templates cached in memcached.
  */
 $wgTranscludeCacheExpiry = 3600;
 
@@ -3998,6 +3984,7 @@ $wgShowDebug            = false;
 
 /**
  * Prefix debug messages with relative timestamp. Very-poor man's profiler.
+ * Since 1.19 also includes memory usage.
  */
 $wgDebugTimestamps = false;
 
@@ -4148,6 +4135,14 @@ $wgParserTestFiles = array(
  * );
  */
 $wgParserTestRemote = false;
+
+
+/**
+ * Overwrite the caching key prefix with custom value.  Do not set if using
+ * load balancer, since it depends on the key being in certain format.
+ * @since 1.19
+ */
+$wgWikiID = false;
 
 /** @} */ # end of profiling, testing and debugging }
 
@@ -4787,7 +4782,7 @@ $wgExtensionCredits = array();
 
 /**
  * Authentication plugin.
- * @var AuthPlugin
+ * @var $wgAuth AuthPlugin
  */
 $wgAuth = null;
 
@@ -5046,7 +5041,6 @@ $wgLogActions = array(
 	'merge/merge'        => 'pagemerge-logentry',
 	'suppress/block'     => 'blocklogentry',
 	'suppress/reblock'   => 'reblock-logentry',
-	'patrol/patrol'      => 'patrol-log-line',
 );
 
 /**
@@ -5063,6 +5057,7 @@ $wgLogActionsHandlers = array(
 	'suppress/revision' => 'DeleteLogFormatter',
 	'suppress/event'    => 'DeleteLogFormatter',
 	'suppress/delete'   => 'DeleteLogFormatter',
+	'patrol/patrol'     => 'PatrolLogFormatter',
 );
 
 /**
@@ -5181,8 +5176,6 @@ $wgSpecialPageGroups = array(
 	'Export'                    => 'pagetools',
 	'Import'                    => 'pagetools',
 	'Whatlinkshere'             => 'pagetools',
-	'GlobalFileUsage'           => 'pagetools',
-	'GlobalTemplateUsage'       => 'pagetools',
 
 	'Statistics'                => 'wiki',
 	'Version'                   => 'wiki',

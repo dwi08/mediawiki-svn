@@ -1151,7 +1151,6 @@ $1",
 'searchmenu-legend'                => '搜尋選項',
 'searchmenu-exists'                => "'''在這個 wiki 上已有一頁面叫做「[[:$1]]」。'''",
 'searchmenu-new'                   => "'''在這個 wiki 上建立這個頁面「[[:$1]]」！'''",
-'searchmenu-new-nocreate'          => '「$1」是一個無效的頁面名稱或無法被您創建。',
 'searchhelp-url'                   => 'Help:目錄',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|去瀏覽以此為首的頁面]]',
 'searchprofile-articles'           => '內容頁面',
@@ -1996,12 +1995,8 @@ Template:消除歧義',
 'activeusers-noresult'   => '找不到用戶。',
 
 # Special:Log/newusers
-'newuserlogpage'              => '新進用戶名冊',
-'newuserlogpagetext'          => '這是一個最近被創建用戶的新日誌',
-'newuserlog-byemail'          => '密碼已由電子郵件寄出',
-'newuserlog-create-entry'     => '新進使用者帳戶',
-'newuserlog-create2-entry'    => '已創建$1的新賬戶',
-'newuserlog-autocreate-entry' => '自動建立的帳號',
+'newuserlogpage'     => '新進用戶名冊',
+'newuserlogpagetext' => '這是一個最近被創建用戶的新日誌',
 
 # Special:ListGroupRights
 'listgrouprights'                      => '用戶群組權限',
@@ -2844,9 +2839,6 @@ $1被封禁的理由是“$2”',
 # Patrol log
 'patrol-log-page'      => '巡查日誌',
 'patrol-log-header'    => '這是已巡查的修訂版本的日誌。',
-'patrol-log-line'      => '$2的版本$1已被標記為已巡查$3',
-'patrol-log-auto'      => '（自動）',
-'patrol-log-diff'      => '修訂 $1',
 'log-show-hide-patrol' => '$1巡查記錄',
 
 # Image deletion
@@ -3534,9 +3526,7 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 'filepath'         => '檔案路徑',
 'filepath-page'    => '檔案名：',
 'filepath-submit'  => '前往',
-'filepath-summary' => '這個特殊頁面擷取一個檔案的完整路徑。圖片會以完整的解像度顯示，其它的檔案類型會以同它們已關聯程式啟動。
-
-請輸入檔名，不要包含"{{ns:file}}:"開頭。',
+'filepath-summary' => '這個特殊頁面擷取一個檔案的完整路徑。圖片會以完整的解像度顯示，其它的檔案類型會以同它們已關聯程式啟動。',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => '選擇重覆檔案',
@@ -3615,7 +3605,6 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 'globalfileusage-text'        => '搜尋全域檔案使用情況',
 'globalfileusage-no-results'  => '[[$1]]未在其他維基項目中使用。',
 'globalfileusage-on-wiki'     => '$2 中的使用情況',
-'globalfileusage-of-file'     => '本檔案也在如下其他維基項目中使用：',
 'globalfileusage-more'        => '檢視本檔案的[[{{#Special:GlobalUsage}}/$1|更多全域使用情況]]。',
 'globalfileusage-filterlocal' => '勿顯示本地使用情況',
 
@@ -3626,7 +3615,6 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 'globaltemplateusage-text'        => '搜尋全域模板使用情況',
 'globaltemplateusage-no-results'  => '[[$1]]未在其他維基項目中使用。',
 'globaltemplateusage-on-wiki'     => '$2 中的使用情況',
-'globaltemplateusage-of-file'     => '本模板也在如下其他維基項目中使用：',
 'globaltemplateusage-more'        => '檢視本模板的[[{{#Special:GlobalUsage}}/$1|更多全域使用情況]]。',
 'globaltemplateusage-filterlocal' => '勿顯示本地使用情況',
 
@@ -3663,5 +3651,6 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 'logentry-move-move-noredirect'       => '$1{{GENDER:$2|移動}}$3頁面至$4，不留重定向',
 'logentry-move-move_redir'            => '$1通過重定向{{GENDER:$2|移動}}$3頁面至$4',
 'logentry-move-move_redir-noredirect' => '$1通過重定向{{GENDER:$2|移動}}$3頁面至$4，不留重定向',
+'newuserlog-byemail'                  => '密碼已由電子郵件寄出',
 
 );

@@ -275,6 +275,8 @@ class ApiQueryContributions extends ApiQueryBase {
 
 	/**
 	 * Extract fields from the database row and append them to a result array
+	 *
+	 * @return array
 	 */
 	private function extractRowInfo( $row ) {
 		$vals = array();
@@ -321,8 +323,7 @@ class ApiQueryContributions extends ApiQueryBase {
 				}
 
 				if ( $this->fld_parsedcomment ) {
-					global $wgUser;
-					$vals['parsedcomment'] = $wgUser->getSkin()->formatComment( $row->rev_comment, $title );
+					$vals['parsedcomment'] = Linker::formatComment( $row->rev_comment, $title );
 				}
 			}
 		}

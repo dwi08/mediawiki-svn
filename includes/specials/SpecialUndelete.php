@@ -62,7 +62,6 @@ class PageArchive {
 	 * @return ResultWrapper
 	 */
 	public static function listPagesByPrefix( $prefix ) {
-		global $wgUser;
 		$dbr = wfGetDB( DB_SLAVE );
 
 		$title = Title::newFromText( $prefix );
@@ -78,13 +77,6 @@ class PageArchive {
 			'ar_namespace' => $ns,
 			'ar_title' . $dbr->buildLike( $prefix, $dbr->anyString() ),
 		);
-
-		// bug 19725
-		$suppressedText = Revision::DELETED_TEXT | Revision::DELETED_RESTRICTED;
-		if( !$wgUser->isAllowed( 'suppressrevision' ) ) {
-                        $conds[] = $dbr->bitAnd('ar_deleted', $suppressedText ) .
-                                ' != ' . $suppressedText;
-                }
 		return self::listPages( $dbr, $conds );
 	}
 
@@ -1084,11 +1076,11 @@ class SpecialUndelete extends SpecialPage {
 
 		# Show relevant lines from the deletion log:
 		$out->addHTML( Xml::element( 'h2', null, LogPage::logName( 'delete' ) ) . "\n" );
-		LogEventsList::showLogExtract( $out, 'delete', $this->mTargetObj->getPrefixedText() );
+		LogEventsList::showLogExtract( $out, 'delete', $this->mTargetObj );
 		# Show relevant lines from the suppression log:
 		if( $this->getUser()->isAllowed( 'suppressionlog' ) ) {
 			$out->addHTML( Xml::element( 'h2', null, LogPage::logName( 'suppress' ) ) . "\n" );
-			LogEventsList::showLogExtract( $out, 'suppress', $this->mTargetObj->getPrefixedText() );
+			LogEventsList::showLogExtract( $out, 'suppress', $this->mTargetObj );
 		}
 
 		if( $this->mAllowed && ( $haveRevisions || $haveFiles ) ) {

@@ -56,7 +56,14 @@ class BackupDumper {
 	var $revCountLast = 0;
 	var $ID = 0;
 
-	function BackupDumper( $args ) {
+	var $outputTypes = array(), $filterTypes = array();
+
+	/**
+	 * @var LoadBalancer
+	 */
+	protected $lb;
+
+	function __construct( $args ) {
 		$this->stderr = fopen( "php://stderr", "wt" );
 
 		// Built-in output and filter plugins
@@ -330,7 +337,7 @@ class BackupDumper {
 }
 
 class ExportProgressFilter extends DumpFilter {
-	function ExportProgressFilter( &$sink, &$progress ) {
+	function __construct( &$sink, &$progress ) {
 		parent::__construct( $sink );
 		$this->progress = $progress;
 	}

@@ -1479,10 +1479,8 @@ Asta [[Special:UnusedCategories|qullanılmağan törkemnär]] kärsätelgän.
 'activeusers-noresult'   => 'Qullanuçılar tabılmadı.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Qullanuçılarnı terkäw köndälege',
-'newuserlogpagetext'      => 'Yaña terkälgän qullanuçılar isemlege',
-'newuserlog-byemail'      => 'sersüz elektron poçta aşa cibärelde',
-'newuserlog-create-entry' => 'Yaña qullanuçı',
+'newuserlogpage'     => 'Qullanuçılarnı terkäw köndälege',
+'newuserlogpagetext' => 'Yaña terkälgän qullanuçılar isemlege',
 
 # Special:ListGroupRights
 'listgrouprights'          => 'Qullanuçı törkemnäreneñ xoquqları',
@@ -1933,9 +1931,6 @@ Zinhar başqa isem saylağız.',
 # Patrol log
 'patrol-log-page'      => 'Tikşerü köndälege',
 'patrol-log-header'    => 'Bu tikşerelgän bitlärneñ köndälege.',
-'patrol-log-line'      => '$2 $3 bitennän $1nı tikşerde',
-'patrol-log-auto'      => '(avtomatik räweştä)',
-'patrol-log-diff'      => '$1 yurama',
 'log-show-hide-patrol' => '$1 tikşerü köndälege',
 
 # Image deletion
@@ -2211,5 +2206,6 @@ Yulnıñ berençe sıltaması quyma öçen tıyılğan räsemgä sıltama bulır
 
 # New logging system
 'revdelete-restricted' => 'çikläwlär idaräçelärgä dä qullanıla',
+'newuserlog-byemail'   => 'sersüz elektron poçta aşa cibärelde',
 
 );

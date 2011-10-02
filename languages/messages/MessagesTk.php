@@ -64,9 +64,9 @@ $messages = array(
 'tog-enotifminoredits'        => 'Sahypalardaky ujypsyzja özgerdişlerde-de maňa e-poçta iber',
 'tog-enotifrevealaddr'        => 'E-poçta adresimi bildiriş e-poçtalarynda görkez.',
 'tog-shownumberswatching'     => 'Gözegçilikde saklaýan ulanyjylaryň sanyny görkez',
-'tog-oldsig'                  => 'Bar bolan goluň deslapky syny:',
+'tog-oldsig'                  => 'Bar bolan gol:',
 'tog-fancysig'                => 'Gola wikitekst hökmünde çemeleş (awtomatik çykgytsyz)',
-'tog-externaleditor'          => 'Başga programmalar bilen redaktirle (diňe hünärmenler üçin, kompýuteriňizde ýörite sazlamalar talap edilýär)',
+'tog-externaleditor'          => 'Gaýybana daşarky redaktor ulan (diňe hünärmenler üçin, kompýuteriňizde ýörite sazlamalar talap edilýär. [http://www.mediawiki.org/wiki/Manual:External_editors Jikme-jik.])',
 'tog-externaldiff'            => 'Başga programmalaryň üsti bilen deňeşdir (diňe hünärmenler üçin, kompýuteriňizde ýörite sazlamalar talap edilýär)',
 'tog-showjumplinks'           => '"Git" çykgydyny işlet',
 'tog-uselivepreview'          => 'Gönümel deslapky syny ulan (JavaScript) (Synag edilýär)',
@@ -1780,12 +1780,8 @@ Goldanylýan protokollar: <tt>$1</tt>',
 'activeusers-noresult'   => 'Ulanyjy tapylmady.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Täze ulanyjy gündeligi',
-'newuserlogpagetext'          => 'Ulanyjy döretme gündeligi.',
-'newuserlog-byemail'          => 'parol e-poçta bilen iberildi',
-'newuserlog-create-entry'     => 'Täze ulanyjy',
-'newuserlog-create2-entry'    => 'täze $1 hasabyny döretdi',
-'newuserlog-autocreate-entry' => 'Hasap awtomatik döredildi',
+'newuserlogpage'     => 'Täze ulanyjy gündeligi',
+'newuserlogpagetext' => 'Ulanyjy döretme gündeligi.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Ulanyjy topary hukuklary',
@@ -1969,11 +1965,11 @@ sessiýaňyzyň birugsat ele geçirilmezligi üçin bu iş goýbolsun edildi.
 
 # Protect
 'protectlogpage'              => 'Gorag gündeligi',
-'protectlogtext'              => 'Aşakdaky sanaw gulplanan we açylan sahypalaryň sanawydyr.
-Häzirki wagtda gorag astynda duran sahypalaryň sanawy üçin [[Special:ProtectedPages|goragly sahypa sanawyna]] serediň.',
+'protectlogtext'              => 'Aşakdaky sanaw sahypa goraglaryndaky üýtgeşmeleriň sanawydyr.
+Häzirki wagtda hereket edýän sahypa goraglary üçin [[Special:ProtectedPages|goragly sahypa sanawyna]] serediň.',
 'protectedarticle'            => 'gorag astyna aldy: "[[$1]]"',
 'modifiedarticleprotection'   => 'gorag derejesini üýtgetdi: "[[$1]]"',
-'unprotectedarticle'          => 'goragyny aýyrdy: "[[$1]]"',
+'unprotectedarticle'          => 'goragy aýryldy: "[[$1]]"',
 'movedarticleprotection'      => 'gorag sazlamalaryny "[[$2]]" sahypasyndan "[[$1]]" sahypasyna geçirdi',
 'protect-title'               => '"$1" üçin gorag derejesini üýtget',
 'prot_1movedto2'              => '[[$1]] sahypasy [[$2]] sahypasyna göçürildi',
@@ -2179,7 +2175,7 @@ Aşakda blokirlemäniň takyk sebäbini ýazyň (meselem: wandalizm eden sahypal
 'ipusubmit'                       => 'Bu blokirlemäni aýyr',
 'unblocked'                       => '[[User:$1|$1]] - blokirlenmesi aýyryldy',
 'unblocked-id'                    => '$1 blokirlemesi aýyryldy',
-'ipblocklist'                     => 'Blokirlenen IP adresleri we ulanyjy atlary',
+'ipblocklist'                     => 'Blokirlenen ulanyjylar',
 'ipblocklist-legend'              => 'Blokirlenen ulanyjy gözle',
 'ipblocklist-submit'              => 'Gözle',
 'ipblocklist-localblock'          => 'Lokal blokirleme',
@@ -2403,7 +2399,7 @@ Wersiýalaryň seneleri we awtorlaryň atlary saklanyljakdyr.
 'import-interwiki-namespace' => 'Niýetlenilýän at giňişligi:',
 'import-upload-filename'     => 'Faýlyň ady:',
 'import-comment'             => 'Teswir:',
-'importtext'                 => 'Faýly çeşme wikiden [[Special:Export|eksportirleme funksiýasyny]] ulanmak arkaly eksportirlemegiňizi haýyş edýäris.
+'importtext'                 => 'Faýly düýp wikiden [[Special:Export|eksportirleme funksiýasyny]] ulanmak arkaly eksportirläň.
 Kompýuteriňize ýazdyryň we şu ýere ýükläň.',
 'importstart'                => 'Sahypalar importirlenýär...',
 'import-revision-count'      => '$1 {{PLURAL:$1|wersiýa|wersiýa}}',
@@ -2455,7 +2451,7 @@ Kompýuteriňize ýazdyryň we şu ýere ýükläň.',
 Onuň çeşmesini görüp bilersiňiz',
 'tooltip-ca-history'              => 'Bu sahypanyň ozalky wersiýalary',
 'tooltip-ca-protect'              => 'Sahypany goraga al',
-'tooltip-ca-unprotect'            => 'Sahypanyň goragyny aýyr',
+'tooltip-ca-unprotect'            => 'Bu sahypanyň goragyny üýtget',
 'tooltip-ca-delete'               => 'Sahypany öçür',
 'tooltip-ca-undelete'             => 'Bu sahypadaky özgerdişleri öçürilmänkäki ýagdaýyna yzyna dikelt',
 'tooltip-ca-move'                 => 'Sahypanyň adyny üýtget',
@@ -2543,9 +2539,6 @@ Mazmun üçin bir sebäp goşmaga rugsat berýär',
 # Patrol log
 'patrol-log-page'      => 'Patrullyk gündeligi',
 'patrol-log-header'    => 'Bu patrullyk edilen wersiýalaryň gündeligidir.',
-'patrol-log-line'      => '$2 sahypasynyň $1 patrullyk edilen diýip belledi $3',
-'patrol-log-auto'      => '(awtomatik)',
-'patrol-log-diff'      => '$1 wersiýasyny',
 'log-show-hide-patrol' => 'Patrullyk gündeligini $1',
 
 # Image deletion
@@ -3164,5 +3157,6 @@ Faýlyň adyny "{{ns:file}}:" pristawkasyz giriziň.',
 # New logging system
 'revdelete-restricted'   => 'administratorlara goýlan çäklendirmeler',
 'revdelete-unrestricted' => 'administratorlardan aýyrylan çäklendirmeler',
+'newuserlog-byemail'     => 'parol e-poçta bilen iberildi',
 
 );

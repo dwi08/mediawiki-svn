@@ -1595,11 +1595,8 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'activeusers' => 'Ակտիվ մասնակիցների ցանկ',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Մասնակիցների գրանցման տեղեկամատյան',
-'newuserlogpagetext'          => 'Սա նոր մասնակիցների գրանցման տեղեկամատյանն է.',
-'newuserlog-create-entry'     => 'Նոր մասնակից',
-'newuserlog-create2-entry'    => 'ստեղծեց նոր մասնակցային հաշիվ $1',
-'newuserlog-autocreate-entry' => 'Ավտոմատիկ հաշվի ստեղծում',
+'newuserlogpage'     => 'Մասնակիցների գրանցման տեղեկամատյան',
+'newuserlogpagetext' => 'Սա նոր մասնակիցների գրանցման տեղեկամատյանն է.',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(անդամների ցանկ)',
@@ -2185,8 +2182,6 @@ Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]
 
 # Patrol log
 'patrol-log-page' => 'Պարեկման տեղեկամատյան',
-'patrol-log-line' => 'նշագրված է $1՝ $2-ից, պարեկվել է $3',
-'patrol-log-auto' => '(ավտոմատ)',
 
 # Image deletion
 'deletedrevision'                 => 'Ջնջված է հին տարբերակը $1',

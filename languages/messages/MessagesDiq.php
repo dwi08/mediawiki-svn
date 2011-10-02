@@ -1722,12 +1722,8 @@ qaydeyê destek biyayeyi: <tt>$1</tt>',
 'activeusers-noresult'   => 'Karberî çini yo.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Cıkewtışê hesab-vıraştışi',
-'newuserlogpagetext'          => 'Ena log de viraştişê karberî esta.',
-'newuserlog-byemail'          => 'pê e-mail ra paralo şiravt',
-'newuserlog-create-entry'     => 'Hesabê karberê newey',
-'newuserlog-create2-entry'    => 'hesabê newî $1 viraşt',
-'newuserlog-autocreate-entry' => 'hesab otomatik vıraziya.',
+'newuserlogpage'     => 'Cıkewtışê hesab-vıraştışi',
+'newuserlogpagetext' => 'Ena log de viraştişê karberî esta.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'heqê grubê karberi',
@@ -2476,9 +2472,6 @@ Tı eşkeno yew sebeb bınus.',
 # Patrol log
 'patrol-log-page'      => 'Logê devriye',
 'patrol-log-header'    => 'Ena listeyê logi revizyonê devriyeyi mocneno.',
-'patrol-log-line'      => 'nişan biyo $1 ê $2 patrol biyo $3',
-'patrol-log-auto'      => '(otomatik)',
-'patrol-log-diff'      => 'revizyon $1',
 'log-show-hide-patrol' => '$1 logê devriye',
 
 # Image deletion
@@ -2504,7 +2497,7 @@ Gurênayışê nae de, beno ke sistemê şıma zerar bıvêno.",
 'widthheightpage'      => '$1×$2, $3 {{PLURAL:$3|pele|peleyi}}',
 'file-info'            => 'ebatê dosyayi: $1, MIME tip: $2',
 'file-info-size'       => '$1 × $2 pixelan, ebatê dosya: $3, MIME type: $4',
-'file-nohires'         => 'Resolosyonê detayeri çino .',
+'file-nohires'         => 'Rovıleşiyayışo berzêr çıniyo.',
 'svg-long-desc'        => 'SVG dosya, nominalin $1 × $2 piksels, ebatê dosya: $3',
 'show-big-image'       => 'Resolosyonê temami',
 'file-info-gif-looped' => 'viyariye biyo',
@@ -2988,9 +2981,7 @@ Ti hem zi eşkeno [[Special:EditWatchlist|use the standard editor]].',
 'filepath-page'    => 'Dosya:',
 'filepath-submit'  => 'Şo',
 'filepath-summary' => 'Ena pela xasî ser yew dosyayî patikayê temamî ano.
-Resiman ful resolasyon de mocnayiyê, tipê dosyayî binî pê direktorê programî başlî beno.
-
-Nameyê dosyayî de bike feqet prefiksê  "{{ns:file}}:"î menuse.',
+Resiman ful resolasyon de mocnayiyê, tipê dosyayî binî pê direktorê programî başlî beno.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'kopyayê dosyayi bigêre',
@@ -3080,5 +3071,6 @@ satır ê ke pê ney # # destpêkenê zey mışore/mıjore muamele vineno.
 # New logging system
 'revdelete-restricted'   => 'verger (vergırewtış) ê ke qey xızmkaran biye',
 'revdelete-unrestricted' => 'verger (ver gırewtış) ê ke qey xızmkaran diyê wera (wedariyê)',
+'newuserlog-byemail'     => 'pê e-mail ra paralo şiravt',
 
 );

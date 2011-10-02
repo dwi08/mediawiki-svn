@@ -1589,7 +1589,7 @@ Par modificar l'ordinamento, struca su l'intestazion de la colona presièlta.",
 'filehist-filesize'         => 'Dimension del file',
 'filehist-comment'          => 'Comento',
 'filehist-missing'          => 'File mancante',
-'imagelinks'                => 'Colegamenti al file',
+'imagelinks'                => 'Uso del file',
 'linkstoimage'              => '{{PLURAL:$1|Sta pagina qua la gà|Ste $1 pagine le gà}} dei colegamenti al file:',
 'linkstoimage-more'         => 'Piassè de $1 {{PLURAL:$1|pagina la ponta|pagine le ponta}} a sto file.
 De seguito xe elencà solo {{PLURAL:$1|la prima pagina che ponta|le prime $1 pagine che ponta}} a sto file.
@@ -1845,12 +1845,8 @@ Protocòli suportè: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nissun utente catà.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Novi utenti',
-'newuserlogpagetext'          => 'Sto qua el xè el registro dei novi utenti registrai.',
-'newuserlog-byemail'          => 'password spedìa par e-mail',
-'newuserlog-create-entry'     => 'se ga pena rejistrà',
-'newuserlog-create2-entry'    => 'ga registrà el nome utente $1',
-'newuserlog-autocreate-entry' => 'Account creà automaticamente',
+'newuserlogpage'     => 'Novi utenti',
+'newuserlogpagetext' => 'Sto qua el xè el registro dei novi utenti registrai.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Diriti dei grupi utenti',
@@ -2587,9 +2583,6 @@ Questo xe probabilmente dovùo a la presenza de un colegamento a un sito foresto
 # Patrol log
 'patrol-log-page'      => 'Modifiche verificàe',
 'patrol-log-header'    => 'Qua de sèvito xe elencàe le verifiche de le modifiche.',
-'patrol-log-line'      => 'gà segnà la $1 a la pagina $2 come verificà $3',
-'patrol-log-auto'      => '(verifica automatica)',
-'patrol-log-diff'      => 'revision $1',
 'log-show-hide-patrol' => '$1 el registro dei canbiamenti verificài',
 
 # Image deletion
@@ -3108,9 +3101,8 @@ Insieme co sto programa te dovaressi 'ver ricevùo na copia de la Licensa Public
 'filepath'         => 'Percorso de un file',
 'filepath-page'    => 'Nome del file:',
 'filepath-submit'  => 'Va',
-'filepath-summary' => 'Sta pagina speciale la restituìsse el percorso conpleto de un file. Le imagini le vien mostrà a la risoluzion pi granda che se pol, par i altri tipi de file vien avià diretamente el programa associà.
-
-Inserissi el nome del file senza el prefisso "{{ns:file}}:"',
+'filepath-summary' => 'Sta pagina speciale la restituìsse el percorso conpleto de un file.
+Le imagini le vien mostrà a la risoluzion pi granda che se pol, par i altri tipi de file vien avià diretamente el programa associà.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Riçerca dei file duplicà',
@@ -3204,5 +3196,6 @@ Inserissi el nome del file senza el prefisso "{{ns:file}}:"',
 # New logging system
 'revdelete-restricted'   => 'aplicà restrizioni ai aministradori',
 'revdelete-unrestricted' => 'gà cavà le limitazion par i aministradori',
+'newuserlog-byemail'     => 'password spedìa par e-mail',
 
 );

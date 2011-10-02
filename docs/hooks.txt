@@ -540,7 +540,8 @@ $article: Article object
 viewing.
 &$article: the article
 &$pcache: whether to try the parser cache or not
-&$outputDone: whether the output for this page finished or not
+&$outputDone: whether the output for this page finished or not. Set to a ParserOutput
+object to both indicate that the output is done and what parser output was used.
 
 'ArticleViewRedirect': before setting "Redirected from ..." subtitle when
 follwed an redirect
@@ -1188,6 +1189,20 @@ $cache: The LocalisationCache object
 $code: language code
 &$alldata: The localisation data from core and extensions
 
+'LogEventsListShowLogExtract': called before the string is added to OutputPage. Returning false will prevent the string from being added to the OutputPage
+&$s: html string to show for the log extract
+$types: String or Array Log types to show
+$page: String or Title The page title to show log entries for
+$user: String The user who made the log entries
+$param: Associative Array with the following additional options:
+ - lim Integer Limit of items to show, default is 50
+ - conds Array Extra conditions for the query (e.g. "log_action != 'revision'")
+ - showIfEmpty boolean Set to false if you don't want any output in case the loglist is empty if set to true (default), "No matching items in log" is displayed if loglist is empty
+ - msgKey Array If you want a nice box with a message, set this to the key of the message. First element is the message key, additional optional elements are parameters for the key that are processed with wgMsgExt and option 'parse'
+ - offset Set to overwrite offset parameter in $wgRequest set to '' to unset offset
+ - wrap String Wrap the message in html (usually something like "&lt;div ...>$1&lt;/div>").
+ - flags Integer display flags (NO_ACTION_LINK,NO_EXTRA_USER_LINKS)
+
 'LoginAuthenticateAudit': a login attempt for a valid user account either
 succeeded or failed. No return data is accepted; this hook is for auditing only.
 $user: the User object being authenticated against
@@ -1742,6 +1757,11 @@ $opts: FormOptions for this request
 &$query_options: array of options for the database request
 &$select: Array of columns to select
 
+'SpecialSearchCreateLink': called when making the message to create a page or
+go to the existing page
+$t: title object searched for
+&$params: an array of the default message name and page title (as parameter)
+
 'SpecialSearchGo': called when user clicked the "Go"
 &$title: title object generated from the text entered by the user
 &$term: the search term entered by the user
@@ -1749,6 +1769,12 @@ $opts: FormOptions for this request
 'SpecialSearchNogomatch': called when user clicked the "Go" button but the
 target doesn't exist
 &$title: title object generated from the text entered by the user
+
+'SpecialSearchPowerBox': the equivalent of SpecialSearchProfileForm for
+the advanced form, a.k.a. power search box
+&$showSections: an array to add values with more options to
+$term: the search term (not a title object)
+$opts: an array of hidden options (containing 'redirs' and 'profile')
 
 'SpecialSearchProfiles': allows modification of search profiles
 &$profiles: profiles, which can be modified.
@@ -1797,6 +1823,11 @@ Each key maps to an associative array with a 'msg' (message key) and a 'default'
 &$tables: array of tables to be queried
 &$join_conds: join conditions for the tables
 &$fields: array of query fields
+
+'TestCanonicalRedirect': called when about to force a redirect to a canonical URL for a title when we have no other parameters on the URL. Gives a chance for extensions that alter page view behavior radically to abort that redirect or handle it manually.
+$request: WebRequest
+$title: Title of the currently found title obj
+$output: OutputPage object
 
 'TitleArrayFromResult': called when creating an TitleArray object from a
 database result
@@ -1980,6 +2011,10 @@ $user: User to get groups for
 
 'UserGetAllRights': after calculating a list of all available rights
 &$rights: Array of rights, which may be added to.
+
+'UserGetDefaultOptions': after fetching the core default, this hook is ran
+right before returning the options to the caller.
+&$defaultOptions: Array of preference keys and their default values. 
 
 'UserGetEmail': called when getting an user email address
 $user: User object

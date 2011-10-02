@@ -1704,12 +1704,8 @@ Protucolli suppurtati: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nussun utenti truvatu.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Novi utenti',
-'newuserlogpagetext'          => 'Di sècutu vènunu elincati li criazzioni di cunti novi (account).',
-'newuserlog-byemail'          => 'password mannata via mail',
-'newuserlog-create-entry'     => "s'arriggistrau ora",
-'newuserlog-create2-entry'    => 'arriggistrau lu novu nomu utenti $1',
-'newuserlog-autocreate-entry' => 'account criatu automaticamenti',
+'newuserlogpage'     => 'Novi utenti',
+'newuserlogpagetext' => 'Di sècutu vènunu elincati li criazzioni di cunti novi (account).',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Diritti dô gruppu utenti',
@@ -2395,9 +2391,6 @@ Visita [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] e [ht
 # Patrol log
 'patrol-log-page'      => 'Canciamenti virificati',
 'patrol-log-header'    => 'Ccassutta sunnu elencati li virìfichi dî canci.',
-'patrol-log-line'      => 'hà signatu la $1 di $2 comu virificata $3',
-'patrol-log-auto'      => '(virìfica automàtica)',
-'patrol-log-diff'      => 'virsioni $1',
 'log-show-hide-patrol' => '$1 log di li canciamenti virificati',
 
 # Image deletion
@@ -2966,5 +2959,6 @@ Mèttiri lu nomu dû file senza lu prifissu "{{ns:file}}:"',
 # New logging system
 'revdelete-restricted'   => 'ristrizzioni ai suli amministratura attivate',
 'revdelete-unrestricted' => 'ristrizzioni pi suli amministraturi rimossi',
+'newuserlog-byemail'     => 'password mannata via mail',
 
 );

@@ -304,21 +304,14 @@ class ChangesList extends ContextSource {
 			$params['rcid'] = $rc->mAttribs['rc_id'];
 		}
 
+		$articlelink = Linker::linkKnown(
+			$rc->getTitle(),
+			null,
+			array(),
+			$params
+		);
 		if( $this->isDeleted($rc,Revision::DELETED_TEXT) ) {
-			$articlelink = Linker::linkKnown(
-				$rc->getTitle(),
-				null,
-				array(),
-				$params
-			);
 			$articlelink = '<span class="history-deleted">' . $articlelink . '</span>';
-		} else {
-			$articlelink = ' '. Linker::linkKnown(
-				$rc->getTitle(),
-				null,
-				array(),
-				$params
-			);
 		}
 		# Bolden pages watched by this user
 		if( $watched ) {
@@ -365,6 +358,20 @@ class ChangesList extends ContextSource {
 		$formatter->setShowUserToolLinks( true );
 		$mark = $this->getLang()->getDirMark();
 		return $formatter->getActionText() . " $mark" . $formatter->getComment();
+	}
+
+	/** 
+	 * Insert a formatted comment
+	 * @param $rc RecentChange
+	 */
+	public function insertComment( $rc ) {
+		if( $rc->mAttribs['rc_type'] != RC_MOVE && $rc->mAttribs['rc_type'] != RC_MOVE_OVER_REDIRECT ) {
+			if( $this->isDeleted( $rc, Revision::DELETED_COMMENT ) ) {
+				return ' <span class="history-deleted">' . wfMsgHtml( 'rev-deleted-comment' ) . '</span>';
+			} else {
+				return Linker::commentBlock( $rc->mAttribs['rc_comment'], $rc->getTitle() );
+			}
+		}
 	}
 
 	/**
@@ -504,7 +511,7 @@ class OldChangesList extends ChangesList {
 		if( $rc->mAttribs['rc_type'] == RC_MOVE || $rc->mAttribs['rc_type'] == RC_MOVE_OVER_REDIRECT ) {
 		// Log entries
 		} elseif( $rc->mAttribs['rc_log_type'] ) {
-			$logtitle = Title::newFromText( 'Log/'.$rc->mAttribs['rc_log_type'], NS_SPECIAL );
+			$logtitle = SpecialPage::getTitleFor( 'Log', $rc->mAttribs['rc_log_type'] );
 			$this->insertLog( $s, $logtitle, $rc->mAttribs['rc_log_type'] );
 		// Log entries (old format) or log targets, and special pages
 		} elseif( $rc->mAttribs['rc_namespace'] == NS_SPECIAL ) {
@@ -544,6 +551,7 @@ class OldChangesList extends ChangesList {
 			$this->insertUserRelatedLinks( $s, $rc );
 			# LTR/RTL direction mark
 			$s .= $this->getLang()->getDirMark();
+			$s .= $this->insertComment( $rc );
 		}
 
 		# Tags
@@ -994,6 +1002,7 @@ class EnhancedChangesList extends ChangesList {
 				# User links
 				$r .= $rcObj->userlink;
 				$r .= $rcObj->usertalklink;
+				$r .= $this->insertComment( $rcObj );
 			}
 
 			# Rollback
@@ -1120,6 +1129,8 @@ class EnhancedChangesList extends ChangesList {
 			$r .= $this->insertLogEntry( $rcObj );
 		} else { 
 			$r .= ' '.$rcObj->userlink . $rcObj->usertalklink;
+			$r .= $this->insertComment( $rcObj );
+			$r .= $this->insertRollback( $r, $rcObj );
 		}
 
 		# Tags

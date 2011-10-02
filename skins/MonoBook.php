@@ -39,10 +39,10 @@ class SkinMonoBook extends SkinTemplate {
 		}
 
 		// TODO: Migrate all of these
-		//$out->addStyle( 'monobook/IE50Fixes.css', 'screen', 'lt IE 5.5000' );
-		//$out->addStyle( 'monobook/IE55Fixes.css', 'screen', 'IE 5.5000' );
-		//$out->addStyle( 'monobook/IE60Fixes.css', 'screen', 'IE 6' );
-		//$out->addStyle( 'monobook/IE70Fixes.css', 'screen', 'IE 7' );
+		$out->addStyle( 'monobook/IE50Fixes.css', 'screen', 'lt IE 5.5000' );
+		$out->addStyle( 'monobook/IE55Fixes.css', 'screen', 'IE 5.5000' );
+		$out->addStyle( 'monobook/IE60Fixes.css', 'screen', 'IE 6' );
+		$out->addStyle( 'monobook/IE70Fixes.css', 'screen', 'IE 7' );
 
 	}
 }
@@ -80,7 +80,7 @@ class MonoBookTemplate extends BaseTemplate {
 <?php } ?><?php if($this->data['newtalk'] ) { ?>
 		<div class="usermessage"><?php $this->html('newtalk')  ?></div>
 <?php } ?><?php if($this->data['showjumplinks']) { ?>
-		<div id="jump-to-nav"><?php $this->msg('jumpto') ?> <a href="#column-one"><?php $this->msg('jumptonavigation') ?></a>, <a href="#searchInput"><?php $this->msg('jumptosearch') ?></a></div>
+		<div id="jump-to-nav" class="mw-jump"><?php $this->msg('jumpto') ?> <a href="#column-one"><?php $this->msg('jumptonavigation') ?></a>, <a href="#searchInput"><?php $this->msg('jumptosearch') ?></a></div>
 <?php } ?>
 		<!-- start content -->
 <?php $this->html('bodytext') ?>

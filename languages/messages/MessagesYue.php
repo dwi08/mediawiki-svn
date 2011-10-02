@@ -1962,12 +1962,8 @@ Template:搞清楚',
 'activeusers-noresult'   => '搵唔到用戶。',
 
 # Special:Log/newusers
-'newuserlogpage'              => '使用者開戶記錄',
-'newuserlogpagetext'          => '呢個係一個使用者開戶嘅日誌',
-'newuserlog-byemail'          => '密碼已由電郵寄出',
-'newuserlog-create-entry'     => '新用戶戶口',
-'newuserlog-create2-entry'    => '已經開咗$1嘅新戶口',
-'newuserlog-autocreate-entry' => '自動建立咗戶口',
+'newuserlogpage'     => '使用者開戶記錄',
+'newuserlogpagetext' => '呢個係一個使用者開戶嘅日誌',
 
 # Special:ListGroupRights
 'listgrouprights'                      => '用戶組權限',
@@ -2740,9 +2736,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => '巡查日誌',
 'patrol-log-header'    => '呢個係已經巡查過嘅日誌。',
-'patrol-log-line'      => '已經標示咗$1/$2版做已經巡查嘅$3',
-'patrol-log-auto'      => '(自動)',
-'patrol-log-diff'      => '修訂 $1',
 'log-show-hide-patrol' => '$1巡查紀錄',
 
 # Image deletion
@@ -3299,9 +3292,7 @@ MediaWiki是基於使用目的而加以發佈，但係就唔會負上任何嘅�
 'filepath'         => '檔案路徑',
 'filepath-page'    => '檔名:',
 'filepath-submit'  => '去',
-'filepath-summary' => '呢個特別頁拎一個檔案嘅完整路徑。圖像會以完整嘅解像度顯示，其它嘅檔案類型會以同佢哋關聯咗嘅程式啟動。
-
-請輸入檔名，唔好連埋個"{{ns:file}}:"開頭。',
+'filepath-summary' => '呢個特別頁拎一個檔案嘅完整路徑。圖像會以完整嘅解像度顯示，其它嘅檔案類型會以同佢哋關聯咗嘅程式啟動。',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => '㨂重覆檔案',
@@ -3397,5 +3388,6 @@ MediaWiki是基於使用目的而加以發佈，但係就唔會負上任何嘅�
 # New logging system
 'revdelete-restricted'   => '已經應用限制到操作員',
 'revdelete-unrestricted' => '已經拎走對於操作員嘅限制',
+'newuserlog-byemail'     => '密碼已由電郵寄出',
 
 );

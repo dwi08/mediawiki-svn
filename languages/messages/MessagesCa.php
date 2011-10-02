@@ -689,7 +689,9 @@ Deveu haver canviat la vostra contrasenya o demanat una nova contrasenya tempora
 'passwordreset-text'         => 'Completeu el següent formulari per rebre un recordatori per correu electrònic amb els detalls del vostre compte.',
 'passwordreset-legend'       => 'Restablir contrasenya',
 'passwordreset-disabled'     => "S'ha desactivat el restabliment de contranyes en aquest wiki.",
+'passwordreset-pretext'      => '{{PLURAL:$1||Introduïu un dels elements de dades següents}}',
 'passwordreset-username'     => "Nom d'usuari:",
+'passwordreset-domain'       => 'Domini',
 'passwordreset-email'        => 'Adreça de correu electrònic:',
 'passwordreset-emailtitle'   => 'Detalls del compte a {{SITENAME}}',
 'passwordreset-emailelement' => "Nom d'usuari: $1
@@ -1164,12 +1166,13 @@ Assegureu-vos que aquest canvi mantindrà la continuïtat històrica de la pàgi
 'searchdisabled'                   => 'La cerca dins el projecte {{SITENAME}} està inhabilitada. Mentrestant, podeu cercar a través de Google, però tingueu en compte que la seua base de dades no estarà actualitzada.',
 
 # Quickbar
-'qbsettings'               => 'Quickbar',
-'qbsettings-none'          => 'Cap',
-'qbsettings-fixedleft'     => "Fixa a l'esquerra",
-'qbsettings-fixedright'    => 'Fixa a la dreta',
-'qbsettings-floatingleft'  => "Surant a l'esquerra",
-'qbsettings-floatingright' => 'Surant a la dreta',
+'qbsettings'                => 'Quickbar',
+'qbsettings-none'           => 'Cap',
+'qbsettings-fixedleft'      => "Fixa a l'esquerra",
+'qbsettings-fixedright'     => 'Fixa a la dreta',
+'qbsettings-floatingleft'   => "Surant a l'esquerra",
+'qbsettings-floatingright'  => 'Surant a la dreta',
+'qbsettings-directionality' => "Fix, segons la direcció d'escriptura del vostre idioma",
 
 # Preferences page
 'preferences'                   => 'Preferències',
@@ -1343,7 +1346,7 @@ Ha de tenir com a molt {{PLURAL:$1|un caràcter|$1 caràcters}}.',
 'right-minoredit'             => 'Marcar les edicions com a menors',
 'right-move'                  => 'Moure pàgines',
 'right-move-subpages'         => 'Moure pàgines amb les seves subpàgines',
-'right-move-rootuserpages'    => "Moure pàgines d'usuari root",
+'right-move-rootuserpages'    => "Reanomenar la pàgina principal d'un usuari",
 'right-movefile'              => 'Moure fitxers',
 'right-suppressredirect'      => 'No crear redireccions quan es reanomena una pàgina',
 'right-upload'                => 'Carregar fitxers',
@@ -1396,10 +1399,11 @@ Ha de tenir com a molt {{PLURAL:$1|un caràcter|$1 caràcters}}.',
 'right-sendemail'             => 'Enviar missatges de correu electrònic a altres usuaris',
 
 # User rights log
-'rightslog'      => "Registre dels permisos d'usuari",
-'rightslogtext'  => "Aquest és un registre de canvis dels permisos d'usuari.",
-'rightslogentry' => 'ha modificat els drets de $1 del grup $2 a $3',
-'rightsnone'     => '(cap)',
+'rightslog'                  => "Registre dels permisos d'usuari",
+'rightslogtext'              => "Aquest és un registre de canvis dels permisos d'usuari.",
+'rightslogentry'             => 'ha modificat els drets de $1 del grup $2 a $3',
+'rightslogentry-autopromote' => 'ha estat promogut automàticament de $2 a $3',
+'rightsnone'                 => '(cap)',
 
 # Associated actions - in the sentence "You do not have permission to X"
 'action-read'                 => 'llegir aquesta pàgina',
@@ -1410,7 +1414,7 @@ Ha de tenir com a molt {{PLURAL:$1|un caràcter|$1 caràcters}}.',
 'action-minoredit'            => 'marcar aquesta modificació com a menor',
 'action-move'                 => 'moure aquesta pàgina',
 'action-move-subpages'        => 'moure aquesta pàgina, i llurs subpàgines',
-'action-move-rootuserpages'   => "moure pàgines d'usuari root",
+'action-move-rootuserpages'   => "reanomenar la pàgina principal d'un usuari",
 'action-movefile'             => 'moure aquest fitxer',
 'action-upload'               => 'carregar aquest fitxer',
 'action-reupload'             => 'substituir aquest fitxer',
@@ -1696,7 +1700,7 @@ Si filtreu per usuari només es mostraran els fitxers la versió més recent del
 'filehist-filesize'         => 'Mida del fitxer',
 'filehist-comment'          => 'Comentari',
 'filehist-missing'          => 'Fitxer que falta',
-'imagelinks'                => 'Enllaços a la imatge',
+'imagelinks'                => 'Ús del fitxer',
 'linkstoimage'              => '{{PLURAL:$1|La següent pàgina enllaça|Les següents pàgines enllacen}} a aquesta imatge:',
 'linkstoimage-more'         => "Hi ha més de $1 {{PLURAL:$1|pàgina que enllaça|pàgines que enllaçen}} a aquest fitxer.
 La següent llista només mostra {{PLURAL:$1|la primera d'elles|les primeres $1 d'aquestes pàgines}}.
@@ -1955,12 +1959,8 @@ Vegeu també [[Special:WantedCategories|les categories soŀlicitades]].",
 'activeusers-noresult'   => "No s'han trobat usuaris.",
 
 # Special:Log/newusers
-'newuserlogpage'              => "Registre de creació de l'usuari",
-'newuserlogpagetext'          => 'Aquest és un registre de creació de nous usuaris.',
-'newuserlog-byemail'          => 'contrasenya enviada per correu electrònic',
-'newuserlog-create-entry'     => 'Nou usuari',
-'newuserlog-create2-entry'    => 'ha creat un compte per a $1',
-'newuserlog-autocreate-entry' => 'Compte creat automàticament',
+'newuserlogpage'     => "Registre de creació de l'usuari",
+'newuserlogpagetext' => 'Aquest és un registre de creació de nous usuaris.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => "Drets dels grups d'usuaris",
@@ -2748,8 +2748,17 @@ Això deu ser degut per un enllaç a un lloc extern inclòs a la llista negra.',
 'spam_blanking'       => "Totes les revisions contenien enllaços $1, s'està deixant en blanc",
 
 # Info page
+'pageinfo-title'            => 'Informació de «$1»',
 'pageinfo-header-edits'     => 'Modificacions',
 'pageinfo-header-watchlist' => 'Llista de seguiment',
+'pageinfo-header-views'     => 'Visites',
+'pageinfo-subjectpage'      => 'Pàgina',
+'pageinfo-talkpage'         => 'Pàgina de discussió',
+'pageinfo-watchers'         => "Número d'usuaris que l'estan vigilant",
+'pageinfo-edits'            => "Número d'edicions",
+'pageinfo-authors'          => "Número d'autors diferents",
+'pageinfo-views'            => 'Número de visites',
+'pageinfo-viewsperedit'     => 'Visites per edició',
 
 # Skin names
 'skinname-standard'    => 'Clàssic',
@@ -2770,9 +2779,6 @@ Això deu ser degut per un enllaç a un lloc extern inclòs a la llista negra.',
 # Patrol log
 'patrol-log-page'      => 'Registre de supervisió',
 'patrol-log-header'    => 'Això és un registre de les revisions patrullades.',
-'patrol-log-line'      => 'ha marcat $3 la $1 de «$2» com a supervisada',
-'patrol-log-auto'      => '(automàticament)',
-'patrol-log-diff'      => 'revisió $1',
 'log-show-hide-patrol' => '$1 el registre de patrulla',
 
 # Image deletion
@@ -3445,9 +3451,7 @@ Amb aquest programa heu d'haver rebut [{{SERVER}}{{SCRIPTPATH}}/COPYING una còp
 'filepath-page'    => 'Fitxer:',
 'filepath-submit'  => 'Vés-hi',
 'filepath-summary' => "Aquesta pàgina especial retorna un camí complet d'un fitxer.
-Les imatges es mostren en plena resolució; altres tipus de fitxer s'inicien directament amb el seu programa associat.
-
-Introduïu el nom del fitxer sense el prefix «{{ns:file}}:»",
+Les imatges es mostren en plena resolució; altres tipus de fitxer s'inicien directament amb el seu programa associat.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Cerca fitxers duplicats',
@@ -3549,5 +3553,6 @@ Introduïu el nom del fitxer sense el prefix «{{ns:file}}:»",
 # New logging system
 'revdelete-restricted'   => 'ha aplicat restriccions al administradors',
 'revdelete-unrestricted' => 'ha esborrat les restriccions per a administradors',
+'newuserlog-byemail'     => 'contrasenya enviada per correu electrònic',
 
 );

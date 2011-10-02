@@ -181,7 +181,8 @@ class MediaWiki {
 		} elseif ( $request->getVal( 'action', 'view' ) == 'view' && !$request->wasPosted()
 			&& ( $request->getVal( 'title' ) === null ||
 				$title->getPrefixedDBKey() != $request->getVal( 'title' ) )
-			&& !count( $request->getValueNames( array( 'action', 'title' ) ) ) )
+			&& !count( $request->getValueNames( array( 'action', 'title' ) ) )
+			&& wfRunHooks( 'TestCanonicalRedirect', array( $request, $title, $output ) ) )
 		{
 			if ( $title->getNamespace() == NS_SPECIAL ) {
 				list( $name, $subpage ) = SpecialPageFactory::resolveAlias( $title->getDBkey() );
@@ -211,7 +212,7 @@ class MediaWiki {
 						"\$wgArticlePath setting and/or toggle \$wgUsePathInfo " .
 						"to true.";
 				}
-				wfHttpError( 500, "Internal error", $message );
+				throw new HttpError( 500, $message );
 			} else {
 				$output->setSquidMaxage( 1200 );
 				$output->redirect( $targetUrl, '301' );
@@ -519,7 +520,7 @@ class MediaWiki {
 				if ( $request->getFullRequestURL() == $title->getInternalURL( 'action=history' ) ) {
 					$output->setSquidMaxage( $wgSquidMaxage );
 				}
-				$history = new HistoryPage( $article );
+				$history = new HistoryPage( $article, $this->context );
 				$history->history();
 				break;
 			default:
@@ -604,18 +605,16 @@ class MediaWiki {
 			return;
 		}
 
-		if ( $wgUseFileCache && $wgTitle->getNamespace() != NS_SPECIAL ) {
+		if ( $wgUseFileCache && $wgTitle->getNamespace() >= 0 ) {
 			wfProfileIn( 'main-try-filecache' );
-			// Raw pages should handle cache control on their own,
-			// even when using file cache. This reduces hits from clients.
-			if ( HTMLFileCache::useFileCache() ) {
+			if ( HTMLFileCache::useFileCache( $this->context ) ) {
 				/* Try low-level file cache hit */
-				$cache = new HTMLFileCache( $wgTitle, $action );
-				if ( $cache->isFileCacheGood( /* Assume up to date */ ) ) {
+				$cache = HTMLFileCache::newFromTitle( $wgTitle, $action );
+				if ( $cache->isCacheGood( /* Assume up to date */ ) ) {
 					/* Check incoming headers to see if client has this cached */
-					$timestamp = $cache->fileCacheTime();
+					$timestamp = $cache->cacheTimestamp();
 					if ( !$this->context->getOutput()->checkLastModified( $timestamp ) ) {
-						$cache->loadFromFileCache();
+						$cache->loadFromFileCache( $this->context );
 					}
 					# Do any stats increment/watchlist stuff
 					$article = WikiPage::factory( $wgTitle );

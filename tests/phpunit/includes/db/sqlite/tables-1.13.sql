@@ -123,7 +123,7 @@ CREATE TABLE /*$wgDBprefix*/site_stats (
   ss_images INTEGER default '0') /*$wgDBTableOptions*/;
 
 CREATE TABLE /*$wgDBprefix*/hitcounter (
-  hc_id INTEGER 
+  hc_id INTEGER
 )  ;
 
 CREATE TABLE /*$wgDBprefix*/ipblocks (

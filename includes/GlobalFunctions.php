@@ -164,7 +164,7 @@ function wfArrayMerge( $array1/* ... */ ) {
  *		array( array( 'x' ) ),
  *		array( array( 'x', '2' ) ),
  *		array( array( 'x' ) ),
- *		array( array( 'y') )
+ *		array( array( 'y' ) )
  *	);
  * returns:
  * 		array(
@@ -756,8 +756,8 @@ function wfDebugTimer() {
 	} else {
 		$prefix = sprintf( "%6.4f", microtime( true ) - $start );
 	}
-
-	return $prefix . '  ';
+	$mem = sprintf( "%5.1fM", ( memory_get_usage( true ) / (1024*1024) ) );
+	return "$prefix $mem  " ;
 }
 
 /**
@@ -852,21 +852,22 @@ function wfErrorLog( $text, $file ) {
 			$text = preg_replace( '/^/m', $prefix . ' ', $text );
 
 			// Limit to 64KB
-			if ( strlen( $text ) > 65534 ) {
-				$text = substr( $text, 0, 65534 );
+			if ( strlen( $text ) > 65506 ) {
+				$text = substr( $text, 0, 65506 );
 			}
 
 			if ( substr( $text, -1 ) != "\n" ) {
 				$text .= "\n";
 			}
-		} elseif ( strlen( $text ) > 65535 ) {
-			$text = substr( $text, 0, 65535 );
+		} elseif ( strlen( $text ) > 65507 ) {
+			$text = substr( $text, 0, 65507 );
 		}
 
 		$sock = socket_create( $domain, SOCK_DGRAM, SOL_UDP );
 		if ( !$sock ) {
 			return;
 		}
+
 		socket_sendto( $sock, $text, strlen( $text ), 0, $host, $port );
 		socket_close( $sock );
 	} else {
@@ -974,9 +975,10 @@ function wfReadOnlyReason() {
  *                    a valid code create a language for that language, if
  *                    it is a string but not a valid code then make a basic
  *                    language object
- *                  - a boolean: if it's false then use the current users
- *                    language (as a fallback for the old parameter
- *                    functionality), or if it is true then use the wikis
+ *                  - a boolean: if it's false then use the global object for
+ *                    the current user's language (as a fallback for the old parameter
+ *                    functionality), or if it is true then use global object
+ *                    for the wiki's content language.
  * @return Language object
  */
 function wfGetLangObj( $langcode = false ) {
@@ -2159,7 +2161,7 @@ function mimeTypeMatch( $type, $avail ) {
 function wfNegotiateType( $cprefs, $sprefs ) {
 	$combine = array();
 
-	foreach( array_keys($sprefs) as $type ) {
+	foreach( array_keys( $sprefs ) as $type ) {
 		$parts = explode( '/', $type );
 		if( $parts[1] != '*' ) {
 			$ckey = mimeTypeMatch( $type, $cprefs );
@@ -2211,7 +2213,7 @@ function wfSuppressWarnings( $end = false ) {
 	} else {
 		if ( !$suppressCount ) {
 			// E_DEPRECATED is undefined in PHP 5.2
-			if( !defined( 'E_DEPRECATED' ) ){
+			if( !defined( 'E_DEPRECATED' ) ) {
 				define( 'E_DEPRECATED', 8192 );
 			}
 			$originalLevel = error_reporting( E_ALL & ~( E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE | E_DEPRECATED ) );
@@ -2324,7 +2326,7 @@ function wfTimestamp( $outputtype = TS_UNIX, $ts = 0 ) {
 		# TS_POSTGRES
 	} elseif ( preg_match( '/^(\d{4})\-(\d\d)\-(\d\d) (\d\d):(\d\d):(\d\d)\.*\d* GMT$/', $ts, $da ) ) {
 		# TS_POSTGRES
-	} elseif (preg_match('/^(\d{4})\-(\d\d)\-(\d\d) (\d\d):(\d\d):(\d\d)\.\d\d\d$/',$ts,$da)) {
+	} elseif (preg_match( '/^(\d{4})\-(\d\d)\-(\d\d) (\d\d):(\d\d):(\d\d)\.\d\d\d$/', $ts, $da ) ) {
 		# TS_DB2
 	} elseif ( preg_match( '/^[ \t\r\n]*([A-Z][a-z]{2},[ \t\r\n]*)?' . # Day of week
 							'\d\d?[ \t\r\n]*[A-Z][a-z]{2}[ \t\r\n]*\d{2}(?:\d{2})?' .  # dd Mon yyyy
@@ -2803,6 +2805,31 @@ function wfInitShellLocale() {
 }
 
 /**
+ * Generate a shell-escaped command line string to run a maintenance script.
+ * Note that $parameters should be a flat array and an option with an argument
+ * should consist of two consecutive items in the array (do not use "--option value").
+ * @param $script string MediaWiki maintenance script path
+ * @param $parameters Array Arguments and options to the script
+ * @param $options Array Associative array of options:
+ * 		'php': The path to the php executable
+ * 		'wrapper': Path to a PHP wrapper to handle the maintenance script
+ * @return Array
+ */
+function wfShellMaintenanceCmd( $script, array $parameters = array(), array $options = array() ) {
+	global $wgPhpCli;
+	// Give site config file a chance to run the script in a wrapper.
+	// The caller may likely want to call wfBasename() on $script.
+	wfRunHooks( 'wfShellMaintenanceCmd', array( &$script, &$parameters, &$options ) );
+	$cmd = isset( $options['php'] ) ? array( $options['php'] ) : array( $wgPhpCli );
+	if ( isset( $options['wrapper'] ) ) {
+		$cmd[] = $options['wrapper'];
+	}
+	$cmd[] = $script;
+	// Escape each parameter for shell
+	return implode( " ", array_map( 'wfEscapeShellArg', array_merge( $cmd, $parameters ) ) );
+}
+
+/**
  * This function works like "use VERSION" in Perl, the program will die with a
  * backtrace if the current version of PHP is less than the version provided
  *
@@ -3140,8 +3167,10 @@ function wfForeignMemcKey( $db, $prefix /*, ... */ ) {
  * @return String
  */
 function wfWikiID() {
-	global $wgDBprefix, $wgDBname;
-	if ( $wgDBprefix ) {
+	global $wgDBprefix, $wgDBname, $wgWikiID;
+	if ( $wgWikiID !== false ) {
+		return $wgWikiID;
+	} elseif ( $wgDBprefix ) {
 		return "$wgDBname-$wgDBprefix";
 	} else {
 		return $wgDBname;
@@ -3153,6 +3182,8 @@ function wfWikiID() {
  *
  * @param $wiki String
  * @param $bits String
+ *
+ * @return array
  */
 function wfSplitWikiID( $wiki ) {
 	$bits = explode( '-', $wiki, 2 );
@@ -3338,7 +3369,7 @@ function wfGetNull() {
  * @param $version String
  * @return null
  */
-function wfDeprecated( $function, $version=false ) {
+function wfDeprecated( $function, $version = false ) {
 	static $functionsWarned = array();
 	if ( !isset( $functionsWarned[$function] ) ) {
 		$functionsWarned[$function] = true;
@@ -3558,7 +3589,7 @@ function wfBCP47( $code ) {
 	foreach ( $codeSegment as $segNo => $seg ) {
 		if ( count( $codeSegment ) > 0 ) {
 			// when previous segment is x, it is a private segment and should be lc
-			if( $segNo > 0 && strtolower( $codeSegment[($segNo - 1)] ) == 'x') {
+			if( $segNo > 0 && strtolower( $codeSegment[( $segNo - 1 )] ) == 'x' ) {
 				$codeBCP[$segNo] = strtolower( $seg );
 			// ISO 3166 country code
 			} elseif ( ( strlen( $seg ) == 2 ) && ( $segNo > 0 ) ) {

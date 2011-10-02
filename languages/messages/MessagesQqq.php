@@ -400,14 +400,14 @@ Also used as title of [[Special:Search]] page in [[Special:SpecialPages]].
 'editthispage'      => 'This is the "edit" link as used in the skins Classic/Standard, Cologne Blue and Nostalgia. See {{msg|create-this-page}} for when the page does not exist.',
 'create-this-page'  => 'In the skins Classic/Standard, Cologne Blue and Nostalgia this is the text for the link leading to the edit form on pages that have not yet been created. See {{msg|editthispage}} for when the page already exists.
 {{Identical|Createpage}}',
-'delete'            => 'Name of the Delete tab shown for admins. Should be in the imperative mood.
+'delete'            => 'Name of the Delete tab shown for admins. Should be in the infinitive mood.
 
 {{Identical|Delete}}',
 'deletethispage'    => 'In the skins Classic/Standard, Cologne Blue and Nostalgia this is the text for link to delete the page in admin view.
 {{Identical|Delete this page}}',
 'undelete_short'    => "It is tab label. It's really can be named ''nstab-undelete''.",
 'viewdeleted_short' => 'Tab label for the undelete button when the user has permission to view the deleted history but not undelete.',
-'protect'           => 'Name of protect tab displayed for admins
+'protect'           => 'Name of protect tab displayed for admins. Should be in the infinitive mood.
 
 {{Identical|Protect}}',
 'protect_change'    => 'Text on links for each entry in [[Special:ProtectedPages]] to change the protection of pages (only displayed to admins).
@@ -726,6 +726,7 @@ This message is displayed when someone tried to login and the CSRF failed (most 
 $1 is the minimum number of characters in the password.',
 'password-login-forbidden'   => 'Error message shown when the user has tried to log in using one of the special username/password combinations used for MediaWiki testing. (See [[mwr:75589]], [[mwr:75605]].)',
 'mailmypassword'             => 'Shown at [[Special:UserLogin]]',
+'cannotchangeemail'          => 'Error message shown when user goes to [[Special:ChangeEmail]] but email addresses cannot be changed on the site.',
 'passwordremindertitle'      => 'Title of e-mail which contains temporary password',
 'passwordremindertext'       => 'This text is used in an e-mail sent when a user requests a new temporary password (he has forgotten his password) or when an sysop creates a new user account choosing to have password and username sent to the new user by e-mail.
 * $1 is an IP addres. Example: 123.123.123.123
@@ -791,6 +792,8 @@ Used on [[Special:ResetPass]]',
 'passwordreset-pretext'        => '$1 is the number of password reset routes. Apparently, this is never 1, but always two or more. Thus, the first plural option is empty in English.',
 'passwordreset-username'       => '{{Identical|Username}}',
 'passwordreset-domain'         => 'A domain like used in Domain Name System (DNS) or more specifically like a domain component in the Lightweight Directory Access Protocol (LDAP)',
+'passwordreset-capture'        => 'Label for checkbox asking the user whether they want to see the contents of the password reset email (only shown if they have the <tt>passwordreset</tt> permission',
+'passwordreset-capture-help'   => 'Longer explanatory message for the capture checkbox label.',
 'passwordreset-email'          => '{{Identical|E-mail address}}',
 'passwordreset-emailtext-ip'   => 'Parameters:
 * $1 - an IP address
@@ -953,7 +956,8 @@ See also {{msg-mw|Noarticletext-nopermission}}.',
 'template-semiprotected'           => 'Used on [[Special:ProtectedPages]]. Appears in brackets after listed page titles which are semi-protected.',
 'hiddencategories'                 => "This message is shown below the edit form, like you have a section ''\"Templates used on this page\"''.",
 'edittools'                        => 'This text will be shown below edit and upload forms. It can be used to offer special characters not present on most keyboards for copying/pasting, and also often makes them clickable for insertion via a javascript. Since these are seen as specific to a wiki, however, this message should not contain anything but an html comment explaining how it should be used once the wiki has been installed.',
-'edittools-upload'                 => 'This text will be shown below upload forms. It will default to the contents of edittools.',
+'edittools-upload'                 => '{{optional}}
+This text will be shown below upload forms. It will default to the contents of edittools.',
 'sectioneditnotsupported-title'    => 'Page title of special page, which presumably appears when someone tries to edit a section, and section editing is disabled. Explanation of section editing on [http://meta.wikimedia.org/wiki/Help:Section_editing#Section_editing meta].',
 'sectioneditnotsupported-text'     => 'I think this is the text of an error message, which presumably appears when someone tries to edit a section, and section editing is disabled. Explanation of section editing on [http://meta.wikimedia.org/wiki/Help:Section_editing#Section_editing meta].',
 'permissionserrorstext-withaction' => '* $1 is the number of reasons that were found why the action cannot be performed.
@@ -1551,7 +1555,8 @@ If someone with this right (bots by default) edits a user talk page and marks it
 'right-writeapi'              => '{{doc-right}}',
 'right-delete'                => '{{doc-right|delete}}',
 'right-bigdelete'             => '{{doc-right|bigdelete}}',
-'right-deleterevision'        => 'This is a user right that is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
+'right-deleterevision'        => '{{doc-right|deleterevision}}
+This user right is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
 It can be given to the group {{msg|group-sysop|pl=yes}}, although this right is disabled by default.
 
 See also
@@ -1562,14 +1567,16 @@ See also
 'right-deletedtext'           => '{{doc-right|deletedtext}}',
 'right-browsearchive'         => '{{doc-right|browsearchive}}',
 'right-undelete'              => '{{doc-right|undelete}}',
-'right-suppressrevision'      => 'This is a user right that is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
+'right-suppressrevision'      => '{{doc-right|suppressrevision}}
+This user right is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
 It can be given to the group {{msg|group-suppress|pl=yes}}, although that group is disabled by default.
 
 See also
 * {{msg|right-suppressionlog|pl=yes}}
 * {{msg|right-hideuser|pl=yes}}
 * {{msg|right-deleterevision|pl=yes}}',
-'right-suppressionlog'        => 'This is a user right that is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
+'right-suppressionlog'        => '{{doc-right|suppressionlog}}
+This user right is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
 It can be given to the group {{msg|group-suppress|pl=yes}}, although that group is disabled by default.
 
 See also
@@ -1578,15 +1585,16 @@ See also
 * {{msg|right-deleterevision|pl=yes}}',
 'right-block'                 => '{{doc-right|block}}',
 'right-blockemail'            => '{{doc-right|blockemail}}',
-'right-hideuser'              => 'This is a user right that is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
+'right-hideuser'              => '{{doc-right|hideuser}}
+This user right is part of the [[mw:RevisionDelete|RevisionDelete]] feature.
 It can be given to the group {{msg|group-suppress|pl=yes}}, although that group is disabled by default.
 
 See also
 * {{msg|right-suppressionlog|pl=yes}}
 * {{msg|right-suppressrevision|pl=yes}}
 * {{msg|right-deleterevision|pl=yes}}',
-'right-ipblock-exempt'        => 'This user automatically
-bypasses IP blocks, auto-blocks and range blocks - so I presume - but I am uncertain',
+'right-ipblock-exempt'        => '{{doc-right|ipblock-exempt}}
+This user automatically bypasses IP blocks, auto-blocks and range blocks - so I presume - but I am uncertain',
 'right-proxyunbannable'       => '{{doc-right|proxyunbannable}}',
 'right-unblockself'           => '{{doc-right|unblockself}}',
 'right-protect'               => '{{doc-right|protect}}',
@@ -1595,7 +1603,8 @@ bypasses IP blocks, auto-blocks and range blocks - so I presume - but I am uncer
 'right-editusercssjs'         => '{{doc-right|editusercssjs}}',
 'right-editusercss'           => '{{doc-right|editusercss}}',
 'right-edituserjs'            => '{{doc-right|edituserjs}}',
-'right-rollback'              => '{{Identical|Rollback}}',
+'right-rollback'              => '{{doc-right|rollback}}
+{{Identical|Rollback}}',
 'right-markbotedits'          => '{{doc-right}}
 A user with this right can mark a roll-back edit as a bot edit by adding <tt>&bot=1</tt> to the URL (not by default).',
 'right-noratelimit'           => '{{doc-right}}
@@ -1617,6 +1626,7 @@ An alternative wording for translators could be \'Get the wiki to accept a track
 'right-siteadmin'             => '{{doc-right|siteadmin}}',
 'right-override-export-depth' => '{{doc-right|override-export-depth}}',
 'right-sendemail'             => '{{doc-right}}',
+'right-passwordreset'         => '{{doc-right}}',
 
 # User rights log
 'rightslog'                  => 'In [[Special:Log]]',
@@ -1926,7 +1936,7 @@ Example: [[:Image:Addon-icn.png]]',
 'filehist-comment'                  => 'In file description page
 
 {{Identical|Comment}}',
-'imagelinks'                        => 'In top header of the image description page, see for example [[:Image:Yes.png]].',
+'imagelinks'                        => 'In top header of the image description page, see for example [[:Image:Yes.png]]. Shows a list of pages where this file is used.',
 'linkstoimage'                      => 'Used on image description, see for example [[:Image:Yes.png#filelinks]].
 * Parameter $1 is the number of pages that link to the file/image.',
 'linkstoimage-more'                 => 'Shown on an image description page when a file is used/linked more than 100 times on other pages.
@@ -2057,7 +2067,8 @@ A 'content page' is a page that forms part of the purpose of the wiki. It includ
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
 {{Identical|Content page}}",
-'statistics-pages'             => 'Used in [[Special:Statistics]]',
+'statistics-pages'             => 'Used in [[Special:Statistics]]
+{{Identical|Pages}}',
 'statistics-pages-desc'        => "Tooltip shown over ''Pages'' (or as a note below it) in [[Special:Statistics]]",
 'statistics-files'             => 'Used in [[Special:Statistics]]',
 'statistics-edits'             => 'Used in [[Special:Statistics]]',
@@ -2286,13 +2297,8 @@ You can apparently use 'URL' instead of 'hostname'.",
 'activeusers-noresult' => 'identical with {{msg-mw|listusers-noresult}}',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Part of the "Newuserlog" extension. It is both the title of [[Special:Log/newusers]] and the link you can see in the recent changes.',
-'newuserlogpagetext'          => 'Part of the "Newuserlog" extension. It is the description you can see on [[Special:Log/newusers]].',
-'newuserlog-create-entry'     => 'Part of the "Newuserlog" extension. It is the summary in the [[Special:RecentChanges|recent changes]] and on [[Special:Log/newusers]].',
-'newuserlog-create2-entry'    => 'Part of the "Newuserlog" extension. It is the summary in the [[Special:RecentChanges|recent changes]] and on [[Special:Log/newusers]] when creating an account for someone else ("$1" - a link). The name of the user doing this task appears before this message.
-
-* $2 - the user id of the user $1',
-'newuserlog-autocreate-entry' => 'This message is used in the [[:mw:Extension:Newuserlog|new user log]] to mark an account that was created by MediaWiki as part of a [[:mw:Extension:CentralAuth|CentralAuth]] global account.',
+'newuserlogpage'     => 'Part of the "Newuserlog" extension. It is both the title of [[Special:Log/newusers]] and the link you can see in the recent changes.',
+'newuserlogpagetext' => 'Part of the "Newuserlog" extension. It is the description you can see on [[Special:Log/newusers]].',
 
 # Special:ListGroupRights
 'listgrouprights'                  => 'The name of the special page [[Special:ListGroupRights]].',
@@ -2334,6 +2340,7 @@ See also {{msg|listgrouprights-addgroup}}.',
 'emailpagetext'       => 'This is the text that is displayed above the e-mail form on [[Special:EmailUser]].
 
 Special:EmailUser appears when you click on the link "E-mail this user" in the sidebar, but only if there is an e-mail address in the recipient\'s user preferences. If there isn\'t then the message [[Mediawiki:Noemailtext]] will appear instead of Special:EmailUser.',
+'defemailsubject'     => 'The default subject of EmailUser emails.  The first parameter is the username of the user sending the email.',
 'usermaildisabled'    => 'Caption for an error message ({{msg-mw|Usermaildisabledtext}}) shown when the user-to-user e-mail feature is disabled on the wiki (see [[mw:Manual:$wgEnableEmail]], [[mw:Manual:$wgEnableUserEmail]]).',
 'noemailtitle'        => 'The title of the message that appears instead of Special:EmailUser after clicking the "E-mail this user" link in the sidebar, if no e-mail can be sent to the user.',
 'noemailtext'         => 'The text of the message that appears in [[Special:EmailUser]] after clicking the "E-mail this user" link in the sidebar, if no e-mail can be sent to the user because he has not specified or not confirmed an e-mail address.',
@@ -2641,6 +2648,7 @@ Anon version: {{msg-mw|Sp-contributions-blocked-notice-anon}}',
 {{Identical/IP address or username}}',
 'sp-contributions-toponly'             => '"top revision" means the "latest revision"',
 'sp-contributions-submit'              => '{{Identical|Search}}',
+'sp-contributions-explain'             => '{{optional}}',
 
 # What links here
 'whatlinkshere'            => 'The text of the link in the toolbox (on the left, below the search menu) going to [[Special:WhatLinksHere]].',
@@ -2761,7 +2769,9 @@ Usage:
 'blocklink'                   => "Display name for a link that, when selected, leads to a form where a user can be blocked. Used in page history and recent changes pages. Example: \"''UserName (Talk | contribs | '''block''')''\".",
 'change-blocklink'            => 'Used to name the link on Special:Log',
 'contribslink'                => 'Short for "contributions". Used as display name for a link to user contributions on history pages, [[Special:RecentChanges]], [[Special:Watchlist]], etc.',
-'emaillink'                   => 'Used as display name for a link to send an e-mail to a user in the user tool links. Example: "(Talk | contribs | block | send e-mail)".',
+'emaillink'                   => 'Used as display name for a link to send an e-mail to a user in the user tool links. Example: "(Talk | contribs | block | send e-mail)".
+
+{{Identical|E-mail}}',
 'blocklogpage'                => "The page name of [[Special:Log/block]]. Also appears in the drop down menu of [[Special:Log]] pages and in the action links of Special:Contributions/''Username'' pages (e.g. \"For Somebody (talk | block log | logs)\").
 
 {{Identical|Block log}}",
@@ -3107,14 +3117,6 @@ See also {{msg-mw|Anonuser}} and {{msg-mw|Siteusers}}.',
 # Patrol log
 'patrol-log-page'      => 'Name of log.',
 'patrol-log-header'    => 'Text that appears above the log entries on the [[Special:log|patrol log]].',
-'patrol-log-line'      => 'Text of notes on entries in the [http://translatewiki.net/w/i.php?title=Special%3ALog&type=patrol&user=&page=&year=&month=-1 patrol log]. $1 is the link whose text is {{msg-mw|patrol-log-diff}}. $2 is the name of the page. $3 appears to be {{msg-mw|Patrol-log-auto}} (at least sometimes).
-
-The message appears after the name of the patroller.',
-'patrol-log-auto'      => 'Automated edit summary when patrolling.
-
-{{Identical|Automatic}}',
-'patrol-log-diff'      => 'The text of the diff link in [[MediaWiki:Patrol-log-line]] (inside $1 there)
-{{Identical|Revision}}',
 'log-show-hide-patrol' => '* $1 is one of {{msg|show}} or {{msg|hide}}',
 
 # Browsing diffs
@@ -3184,9 +3186,48 @@ For example of message in use see [[:File:Mouse10.gif]].',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'     => '{{optional}}',
-'seconds-abbrev' => '{{optional}}',
-'minutes-abbrev' => '{{optional}}',
-'hours-abbrev'   => 'Abbreviation for "hours"',
+'seconds-abbrev' => '{{optional}}
+Abbreviation for "seconds". $1 is the number of seconds.
+
+See also {{msg-mw|seconds}}',
+'minutes-abbrev' => '{{optional}}
+Abbreviation for "minutes". $1 is the number of minutes.
+
+See also {{msg-mw|minutes}}',
+'hours-abbrev'   => '{{optional}}
+Abbreviation for "hours". $1 is the number of hours.
+
+See also {{msg-mw|hours}}',
+'days-abbrev'    => '{{optional}}
+Abbreviation for "days". $1 is the number of days.
+
+See also {{msg-mw|days}}',
+'seconds'        => 'Full word for "seconds". $1 is the number of seconds.
+
+See also {{msg-mw|Seconds-abbrev}}
+
+Part of variable $1 in {{msg-mw|Ago}}',
+'minutes'        => 'Full word for "minutes". $1 is the number of minutes.
+
+See also {{msg-mw|Minutes-abbrev}}
+
+Part of variable $1 in {{msg-mw|Ago}}',
+'hours'          => 'Full word for "hours". $1 is the number of hours.
+
+See also {{msg-mw|Hours-abbrev}}
+
+Part of variable $1 in {{msg-mw|Ago}}',
+'days'           => 'Full word for "days". $1 is the number of days.
+
+See also {{msg-mw|Days-abbrev}}
+
+Part of variable $1 in {{msg-mw|Ago}}
+{{Identical|Day}}',
+'ago'            => 'Phrase for indicating how long ago something happened. $1 is something like "3 days 10 hours", taken from these messages:
+*{{msg-mw|Seconds}}
+*{{msg-mw|Minutes}}
+*{{msg-mw|Hours}}
+*{{msg-mw|Days}}',
 
 # Bad image list
 'bad_image_list' => 'This is only message appears to guide administrators to add links with right format. This will not appear anywhere else in Mediawiki.',
@@ -3273,6 +3314,16 @@ Varient Option for wikis with variants conversion enabled.',
 'variantname-tg-latn' => '{{optional}}',
 'variantname-tg'      => '{{optional}}',
 
+# Variants for Inuktitut language
+'variantname-ike-cans' => '{{optional}}',
+'variantname-ike-latn' => '{{optional}}',
+'variantname-iu'       => '{{optional}}',
+
+# Variants for Tachelhit language
+'variantname-shi-tfng' => '{{optional}}',
+'variantname-shi-latn' => '{{optional}}',
+'variantname-shi'      => '{{optional}}',
+
 # Metadata
 'metadata'                  => 'The title of a section on an image description page, with information and data about the image. For example of message in use see [http://commons.wikimedia.org/wiki/File:Titan-crystal_bar.JPG Commons].
 
@@ -3282,10 +3333,12 @@ Varient Option for wikis with variants conversion enabled.',
 'metadata-fields'           => "'''Warning:''' Do not translate list items, only translate the text! So leave \"<tt>* make</tt>\" and the other items exactly as they are.
 
 The sentences are for explanation only and are not shown to the user.",
-'metadata-langitem'         => 'This is used for constructing the list of translations when a metadata property is translated into multiple languages.
+'metadata-langitem'         => '{{optional}}
+This is used for constructing the list of translations when a metadata property is translated into multiple languages.
 
 $1 is the value of the property (in one language), $2 is the language name that this translation is for (or language code if language name cannot be determined), $3 is the language code.',
-'metadata-langitem-default' => 'Similar to "metadata-langitem" but for the case where a multilingual property has a default specified that does not specify what language the default is in. $1 is the value of the property.',
+'metadata-langitem-default' => '{{optional}}
+Similar to "metadata-langitem" but for the case where a multilingual property has a default specified that does not specify what language the default is in. $1 is the value of the property.',
 
 # EXIF tags
 'exif-imagewidth'                  => 'Exif is a format for storing metadata in image files. See this [http://en.wikipedia.org/wiki/Exchangeable_image_file_format Wikipedia article] and the example at the bottom of [http://commons.wikimedia.org/wiki/File:Phalacrocorax-auritus-020.jpg this page on Commons]. The tags are explained [http://www.awaresystems.be/imaging/tiff/tifftags/privateifd/exif.html briefly] and [http://www.kodak.com/global/plugins/acrobat/en/service/digCam/exifStandard2.pdf in further detail].
@@ -3569,7 +3622,8 @@ This is taken from IPTC-iim 2:135 and XMP's dc:language.
 'exif-cameraownername'             => 'Who owns the camera.',
 'exif-label'                       => 'Label given to the image for organizational purposes. This is very similar to {{msg-mw|exif-keywords}}. Label is more used by a person to organize their media, where keywords are used to describe the photo contents itself.
 
-This property can come from xmp:Label in XMP ( http://www.adobe.com/content/dam/Adobe/en/devnet/xmp/pdfs/XMPSpecificationPart1.pdf ) or the label textual chunk in PNG.',
+This property can come from xmp:Label in XMP ( http://www.adobe.com/content/dam/Adobe/en/devnet/xmp/pdfs/XMPSpecificationPart1.pdf ) or the label textual chunk in PNG.
+{{Identical|Label}}',
 'exif-datetimemetadata'            => 'Date metadata was last modified. Typically this refers to XMP metadata.',
 'exif-nickname'                    => 'Short informal name of image. See http://www.adobe.com/content/dam/Adobe/en/devnet/xmp/pdfs/XMPSpecificationPart2.pdf',
 'exif-rating'                      => 'This is a rating for how good the image is. The range is between 1 to 5 (5 highest), with an additional option of "reject".',
@@ -3613,7 +3667,8 @@ Note, not all fields are guaranteed to be present, some may be empty strings.',
 *$2 is one of 17 broad categories that the code falls into. For example any code starting with 15 has the contents of {{msg-mw|exif-iimcategory-spo}} for $2.',
 
 # EXIF attributes
-'exif-compression-5'     => 'Lempel-Ziv & Welch algorithm {{optional}}',
+'exif-compression-5'     => '{{optional}}
+Lempel-Ziv & Welch algorithm',
 'exif-compression-6'     => '{{optional}}',
 'exif-compression-7'     => '{{optional}}',
 'exif-compression-8'     => '{{optional}}',
@@ -3884,7 +3939,7 @@ Do \'\'not\'\' change the leading ;  and the first : as it is wiki markup.
 
 * $1: title of the trackback
 * $2: URL of the trackback
-* <font style="color:grey;">$3: unused in this message, see [[MediaWiki:trackbackexcerpt]] instead</font>
+* <span style="color:grey;">$3: unused in this message, see [[MediaWiki:trackbackexcerpt]] instead</span>
 * $4: name of the trackback
 * $5: a link to delete the trackback. The content of [[MediaWiki:Trackbackremove]] is injected here.',
 'trackbackexcerpt' => "{{optional}}
@@ -3907,16 +3962,18 @@ Do ''not'' change the leading ;  and the first : as it is wiki markup.
 'confirm-unwatch-button' => '{{Identical|OK}}',
 
 # Separators for various lists, etc.
-'comma-separator' => '{{optional}}',
-'colon-separator' => "Optional message. Change it only if your language uses another character for ':' or it needs an extra space before the colon.",
-'pipe-separator'  => '{{optional}}',
-'word-separator'  => 'This is a string which is (usually) put between words of the language. It is used, e.g. when messages are concatenated (appended to each other). Note that you must express a space as html entity &amp;#32; because the editing and updating process strips leading and trailing spaces from messages.
+'semicolon-separator' => '{{optional}}',
+'comma-separator'     => '{{optional}}',
+'colon-separator'     => "{{optional}}
+Change it only if your language uses another character for ':' or it needs an extra space before the colon.",
+'autocomment-prefix'  => '{{optional}}',
+'pipe-separator'      => '{{optional}}',
+'word-separator'      => '{{optional}}
+This is a string which is (usually) put between words of the language. It is used, e.g. when messages are concatenated (appended to each other). Note that you must express a space as html entity &amp;#32; because the editing and updating process strips leading and trailing spaces from messages.
 
-Most languages use a space, but some Asian languages, such as Thai and Chinese, do not.
-
-{{optional}}',
-'percent'         => '{{optional}}',
-'parentheses'     => '{{optional}}',
+Most languages use a space, but some Asian languages, such as Thai and Chinese, do not.',
+'percent'             => '{{optional}}',
+'parentheses'         => '{{optional}}',
 
 # Multipage image navigation
 'imgmultipageprev' => '{{Identical|Previous page}}',
@@ -4236,9 +4293,6 @@ $1 is a file name (with namespace)',
 
 * $1 the file name, but unused in this message
 * $2 is a wiki name, given as a domain, e.g. en.wiktionary.org',
-'globalfileusage-of-file'     => 'Text introducing list of files on an image page ([http://commons.wikimedia.org/wiki/File:Example.jpg example]).
-
-The number of following wikis is unknown. For an empty result, no message is shown.',
 'globalfileusage-more'        => 'Used on an image page, when more global usage results are available. Example: [[Commons:File:Example.jpg]]
 * $1 - name of the file (without namespace)',
 'globalfileusage-filterlocal' => 'Filter option for GlobalUsage special page, ([http://commons.wikimedia.org/wiki/Special:GlobalUsage/Hacienda_jaral_de_berrios.jpg example]).
@@ -4277,9 +4331,10 @@ The number of following wikis is unknown. For an empty result, no message is sho
 'logentry-delete-restore'             => '{{Logentry}}',
 'logentry-delete-event'               => '{{Logentry}}
 {{Logentryparam}}
-$3 is the name of the log page inside parenthesis',
+* $3 is the name of the log page inside parenthesis',
 'logentry-delete-revision'            => '{{Logentry}}
-{{Logentryparam}}',
+{{Logentryparam}}
+* $5 is the number of affected revisions of the page $3.',
 'logentry-delete-event-legacy'        => '{{Logentry}}
 $3 is the name of the log page inside parenthesis',
 'logentry-delete-revision-legacy'     => '{{Logentry}}',
@@ -4288,7 +4343,8 @@ $3 is the name of the log page inside parenthesis',
 {{Logentryparam}}
 $3 is the name of the log page inside parenthesis',
 'logentry-suppress-revision'          => '{{Logentry}}
-{{Logentryparam}}',
+{{Logentryparam}}
+* $5 is the number of affected revisions of the page $3.',
 'logentry-suppress-event-legacy'      => '{{Logentry}}
 $3 is the name of the log page inside parenthesis',
 'logentry-suppress-revision-legacy'   => '{{Logentry}}',
@@ -4340,5 +4396,10 @@ Parameter $4, the target page, is also not visible to parser functions.',
 Parameter $4, the target page, is also not visible to parser functions.',
 'logentry-move-move_redir-noredirect' => '{{Logentry}}
 Parameter $4, the target page, is also not visible to parser functions.',
+'logentry-patrol-patrol'              => '{{Logentry}}
+* $4 is a formatted revision number, maybe linked to the diff.',
+'logentry-patrol-patrol-auto'         => '{{Logentry}}
+* $4 is a formatted revision number, maybe linked to the diff.
+"Automatically" refers to users with autopatrol right who mark revisions automatically patrolled when editing.',
 
 );

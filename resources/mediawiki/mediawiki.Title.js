@@ -71,7 +71,7 @@ var	Title = function( title, namespace ) {
 	 * Sanitize name.
 	 */
 	fixExt = function( s ) {
-		return clean( s.toLowerCase() );
+		return clean( s );
 	},
 
 	/**
@@ -198,7 +198,7 @@ var	Title = function( title, namespace ) {
 		pages: {},
 		/**
 		 * @example Declare existing titles: Title.exist.set(['User:John_Doe', ...]);
-		 * @example Declare titles inexisting: Title.exist.set(['File:Foo_bar.jpg', ...], false);
+		 * @example Declare titles inexistent: Title.exist.set(['File:Foo_bar.jpg', ...], false);
 		 * @param titles {String|Array} Title(s) in strict prefixedDb title form.
 		 * @param state {Boolean} (optional) State of the given titles. Defaults to true.
 		 * @return {Boolean}

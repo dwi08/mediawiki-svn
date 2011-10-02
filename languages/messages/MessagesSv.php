@@ -353,7 +353,7 @@ $messages = array(
 'tog-watchlisthideanons'      => 'Visa inte redigeringar av anonyma användare i bevakningslistan',
 'tog-watchlisthidepatrolled'  => 'Göm patrullerade redigeringar från bevakningslistan',
 'tog-nolangconversion'        => 'Konvertera inte mellan språkvarianter',
-'tog-ccmeonemails'            => 'Skicka mig kopior av epost jag skickar till andra användare',
+'tog-ccmeonemails'            => 'Skicka kopior till mig av e-post jag skickar till andra användare',
 'tog-diffonly'                => 'Visa inte sidinnehåll under diffar',
 'tog-showhiddencats'          => 'Visa dolda kategorier',
 'tog-noconvertlink'           => 'Stäng av konvertering av sidtitlar',
@@ -816,30 +816,34 @@ Du kanske redan har lyckats ändra ditt lösenord eller begärt ett nytt tillfä
 'resetpass-temp-password'   => 'Tillfälligt lösenord:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Lösenordsåterställning',
-'passwordreset-text'           => 'Fyll i detta formulär för att få en påminnelse om dina kontouppgifter via e-post.',
-'passwordreset-legend'         => 'Återställ lösenord',
-'passwordreset-disabled'       => 'Lösenordsåterställning har inaktiverats på denna wiki.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Ange en av datadelarna nedan}}',
-'passwordreset-username'       => 'Användarnamn:',
-'passwordreset-domain'         => 'Domän:',
-'passwordreset-email'          => 'E-postadress:',
-'passwordreset-emailtitle'     => 'Kontouppgifter på {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Någon (förmodligen du, från IP-adressen $1) begärde en påminnelse av dina kontodetaljer för {{SITENAME}} ($4). Följande användar{{PLURAL:$3|konto är förknippad|konton är förknippade}} med denna e-postadress:
+'passwordreset'                    => 'Lösenordsåterställning',
+'passwordreset-text'               => 'Fyll i detta formulär för att få en påminnelse om dina kontouppgifter via e-post.',
+'passwordreset-legend'             => 'Återställ lösenord',
+'passwordreset-disabled'           => 'Lösenordsåterställning har inaktiverats på denna wiki.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Ange en av datadelarna nedan}}',
+'passwordreset-username'           => 'Användarnamn:',
+'passwordreset-domain'             => 'Domän:',
+'passwordreset-capture'            => 'Visa resulterande e-post?',
+'passwordreset-capture-help'       => 'Om du markerar den här rutan kommer e-postmeddelandet (med det tillfälliga lösenordet) visas för dig och skickas till användaren.',
+'passwordreset-email'              => 'E-postadress:',
+'passwordreset-emailtitle'         => 'Kontouppgifter på {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Någon (förmodligen du, från IP-adressen $1) begärde en påminnelse av dina kontodetaljer för {{SITENAME}} ($4). Följande användar{{PLURAL:$3|konto är förknippad|konton är förknippade}} med denna e-postadress:
 
 $2
 
 {{PLURAL:$3|Detta|Dessa}} tillfälliga lösenord kommer att gå ut om {{PLURAL:$5|en dag|$5 dagar}}.
 Du bör logga in och välja ett nytt lösenord nu. Om någon annan gjorde denna begäran, eller om du kommer ihåg ditt ursprungliga lösenord, och du önskar inte att ändra det, kan du ignorera detta meddelande och fortsätta använda ditt gamla lösenord.',
-'passwordreset-emailtext-user' => 'Användaren $1 på {{SITENAME}} begärde en påminnelse om dina kontodetaljer för {{SITENAME}} ($4). Följande användar{{PLURAL:$3|konto är förknippad|konton är förknippade}} med denna e-postadress:
+'passwordreset-emailtext-user'     => 'Användaren $1 på {{SITENAME}} begärde en påminnelse om dina kontodetaljer för {{SITENAME}} ($4). Följande användar{{PLURAL:$3|konto är förknippad|konton är förknippade}} med denna e-postadress:
 
 $2
 
 {{PLURAL:$3|Detta|Dessa}} tillfälliga lösenord kommer att gå ut om {{PLURAL:$5|en dag|$5 dagar}}.
 Du bör logga in och välja ett nytt lösenord nu. Om någon annan gjorde denna begäran, eller om du kommer ihåg ditt ursprungliga lösenord, och du önskar inte att ändra det, kan du ignorera detta meddelande och fortsätta använda ditt gamla lösenord.',
-'passwordreset-emailelement'   => 'Användarnamn: $1
+'passwordreset-emailelement'       => 'Användarnamn: $1
 Tillfälligt lösenord: $2',
-'passwordreset-emailsent'      => 'En påminnelse via e-post har skickats.',
+'passwordreset-emailsent'          => 'En påminnelse via e-post har skickats.',
+'passwordreset-emailsent-capture'  => 'En påminnelse via e-post har skickats, som visas nedan.',
+'passwordreset-emailerror-capture' => 'En påminnelse via e-post har skapats, som visas nedan, men det gick inte att skicka den till användaren: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Ändra e-postadress',
@@ -1415,6 +1419,7 @@ Detta kan inte återställas.',
 'yourrealname'                  => 'Riktigt namn:',
 'yourlanguage'                  => 'Språk:',
 'yourvariant'                   => 'Språkval för innehåll:',
+'prefs-help-variant'            => 'Ditt önskade variant eller ortografi för att visa innehållssidor på denna wiki i.',
 'yournick'                      => 'Signatur:',
 'prefs-help-signature'          => 'Kommentarer på diskussionssidor ska signeras med "<nowiki>~~~~</nowiki>", vilket konverteras till din signatur och tidpunkt.',
 'badsig'                        => 'Det är något fel med råsignaturen, kontrollera HTML-koden.',
@@ -1556,6 +1561,7 @@ Om du väljer att ange ditt riktiga namn, kommer det att användas för att till
 'right-siteadmin'             => 'Låsa och låsa upp databasen',
 'right-override-export-depth' => 'Exportera sidor inklusive länkade sidor till ett djup på 5',
 'right-sendemail'             => 'Skicka e-post till andra användare',
+'right-passwordreset'         => 'Återställ en användares lösenord ([[Special:PasswordReset|specialsida]])',
 
 # User rights log
 'rightslog'                  => 'Användarrättighetslogg',
@@ -1880,7 +1886,7 @@ När den filtreras av en användare visas endast den senast uppladdade versionen
 'filehist-filesize'         => 'Filstorlek',
 'filehist-comment'          => 'Kommentar',
 'filehist-missing'          => 'Fil saknas',
-'imagelinks'                => 'Fillänkar',
+'imagelinks'                => 'Filanvändning',
 'linkstoimage'              => 'Följande {{PLURAL:$1|sida|$1 sidor}} länkar till den här filen:',
 'linkstoimage-more'         => 'Mer är {{PLURAL:$1|en sida|$1 sidor}} länkar till den här filen.
 Följande lista visar bara {{PLURAL:$1|den första sidan|de $1 första sidorna}} som länkar till filen.
@@ -2140,12 +2146,8 @@ Stödda protokoll: <tt>$1</tt>',
 'activeusers-noresult'   => 'Inga användare funna.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Logg över nya användare',
-'newuserlogpagetext'          => 'Detta är en logg över skapade användarkonton.',
-'newuserlog-byemail'          => 'lösenord skickat med e-post',
-'newuserlog-create-entry'     => 'Ny användare',
-'newuserlog-create2-entry'    => 'skapade nytt användarkonto $1',
-'newuserlog-autocreate-entry' => 'Konto skapades automatiskt',
+'newuserlogpage'     => 'Logg över nya användare',
+'newuserlogpagetext' => 'Detta är en logg över skapade användarkonton.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Behörigheter för användargrupper',
@@ -2989,9 +2991,6 @@ Detta orsakades troligen av en länk till en svartlistad webbplats.',
 # Patrol log
 'patrol-log-page'      => 'Patrulleringslogg',
 'patrol-log-header'    => 'Detta är en logg över patrullerade sidversioner.',
-'patrol-log-line'      => 'markerade $1 av $2 som patrullerad $3',
-'patrol-log-auto'      => '(automatiskt)',
-'patrol-log-diff'      => 'version $1',
 'log-show-hide-patrol' => '$1 patrulleringslogg',
 
 # Image deletion
@@ -3044,6 +3043,11 @@ Om du kör den kan din dator skadas.",
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'hours-abbrev' => 't',
+'seconds'      => '{{PLURAL:$1|$1 sekund|$1 sekunder}}',
+'minutes'      => '{{PLURAL:$1|$1 minut|$1 minuter}}',
+'hours'        => '{{PLURAL:$1|$1 timme|$1 timmar}}',
+'days'         => '{{PLURAL:$1|$1 dag|$1 dagar}}',
+'ago'          => '$1 sedan',
 
 # Bad image list
 'bad_image_list' => 'Listan fungerar enligt följande:
@@ -3670,9 +3674,8 @@ Du bör ha fått [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopia av GNU General Publi
 'filepath'         => 'Sökväg till fil',
 'filepath-page'    => 'Fil:',
 'filepath-submit'  => 'Sökväg',
-'filepath-summary' => 'Den här sidan ger den fullständiga sökvägen till en fil. Bilder visas i full upplösning i din webbläsare, andra filtyper öppnas direkt i de program som är associerade till dem.
-
-Ange filens namn utan prefixet "{{ns:file}}:".',
+'filepath-summary' => 'Den här specialsidan ger den fullständiga sökvägen till en fil.
+Bilder visas i full upplösning, andra filtyper öppnas direkt i de program som är associerade till dem.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Sök efter dubblettfiler',
@@ -3751,7 +3754,6 @@ Ange filens namn utan prefixet "{{ns:file}}:".',
 'globalfileusage-text'        => 'Sök global filanvändning',
 'globalfileusage-no-results'  => '[[$1]] används inte på andra wikis.',
 'globalfileusage-on-wiki'     => 'Användande av $2',
-'globalfileusage-of-file'     => 'Följande andra wikier använder denna fil:',
 'globalfileusage-more'        => 'Visa [[{{#Special:GlobalUsage}}/$1|mer globalt användande]] av denna fil.',
 'globalfileusage-filterlocal' => 'Visa inte lokalt användande',
 
@@ -3762,7 +3764,6 @@ Ange filens namn utan prefixet "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Sök global mallanvändning',
 'globaltemplateusage-no-results'  => '[[$1]] används inte på andra wikis.',
 'globaltemplateusage-on-wiki'     => 'Användande av $2',
-'globaltemplateusage-of-file'     => 'Följande andra wikier använder denna mall:',
 'globaltemplateusage-more'        => 'Visa [[{{#Special:GlobalUsage}}/$1|mer globalt användande]] av denna mall.',
 'globaltemplateusage-filterlocal' => 'Visa inte lokalt användande',
 
@@ -3792,11 +3793,34 @@ Ange filens namn utan prefixet "{{ns:file}}:".',
 'sqlite-no-fts'  => '$1 utan stöd för fulltextsökning',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|raderade}} sidan $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|återställde}} sidan $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|ändrade}} synligheten för {{PLURAL:$5|en logghändelse|$5 logghändelser}} på $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|ändrade}} synligheten för {{PLURAL:$5|en version|$5 versioner}} på sidan $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|ändrade}} synligheten för logghändelser på $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|ändrade}} synligheten för versioner på sidan $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|gömde}} sidan $3',
+'logentry-suppress-event'             => '$1 {{GENDER:$2|ändrade}} i hemlighet synligheten för {{PLURAL:$5|en logghändelse|$5 logghändelser}} på $3: $4',
+'logentry-suppress-revision'          => '$1 {{GENDER:$2|ändrade}} synligheten i hemlighet för {{PLURAL:$5|en version|$5 versioner}} på sidan $3: $4',
+'logentry-suppress-event-legacy'      => '$1 {{GENDER:$2|ändrade}} synligheten i hemlighet för logghändelser på $3',
+'logentry-suppress-revision-legacy'   => '$1 {{GENDER:$2|ändrade}} synligheten i hemlighet för versioner på sidan $3',
+'revdelete-content-hid'               => 'innehåll dolt',
+'revdelete-summary-hid'               => 'redigeringssammanfattning dold',
+'revdelete-uname-hid'                 => 'användarnamn dolt',
+'revdelete-content-unhid'             => 'innehåll synligt',
+'revdelete-summary-unhid'             => 'redigeringssammanfattning synlig',
+'revdelete-uname-unhid'               => 'användarnamn synligt',
 'revdelete-restricted'                => 'satte begränsningar för administratörer',
 'revdelete-unrestricted'              => 'tog bort begränsningar för administratörer',
 'logentry-move-move'                  => '$1 {{GENDER:$2|flyttade}} sidan $3 till $4',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|flyttade}} sidan $3 till $4 utan att lämna en omdirigering',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|flyttade}} sidan $3 till $4 över en omdirigering',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|flyttade}} sidan $3 till $4 över en omdirigering utan att lämna en omdirigering',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|markerade}} versionen $4 av sidan $3 som patrullerad',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|markerade}} automatiskt versionen $4 av sidan $3 som patrullerad',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|skapade}} ett användarkonto',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|skapade}} ett användarkonto $3',
+'logentry-newusers-autocreate'        => 'Kontot $1 {{GENDER:$2|skapades}} automatiskt',
+'newuserlog-byemail'                  => 'lösenord skickat med e-post',
 
 );

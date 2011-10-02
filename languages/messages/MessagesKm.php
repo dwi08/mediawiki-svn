@@ -1225,7 +1225,6 @@ $1",
 'searchmenu-legend'                => 'ជម្រើសនានាក្នុងការស្វែងរក',
 'searchmenu-exists'                => "* ទំព័រ '''[[$1]]'''",
 'searchmenu-new'                   => "'''បង្កើតទំព័រ \"[[:\$1]]\" នៅ​លើ​វិគី​នេះ!'''",
-'searchmenu-new-nocreate'          => '"$1" ជាទំព័រគ្មានសុពលភាព ឬអ្នកគ្មានសិទ្ធិនឹងបង្កើតវា។',
 'searchhelp-url'                   => 'Help:មាតិកា',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|រុក​រក​ក្នុង​ទំព័រ​នានា​ជាមួយ​បុព្វបទ​នេះ​]]',
 'searchprofile-articles'           => 'ទំព័រ​មាតិកា',
@@ -2084,12 +2083,8 @@ $1',
 'activeusers-noresult'   => 'អ្នកប្រើប្រាស់​រកមិនឃើញ​។​',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'កំណត់ហេតុនៃការបង្កើតគណនី',
-'newuserlogpagetext'          => 'នេះជាកំណត់ហេតុនៃការបង្កើតអ្នកប្រើប្រាស់។',
-'newuserlog-byemail'          => 'ពាក្យសំងាត់ត្រូវបានផ្ញើតាមអ៊ីមែល',
-'newuserlog-create-entry'     => 'អ្នកប្រើប្រាស់ថ្មី',
-'newuserlog-create2-entry'    => "បាន​បង្កើត​គណនី​ថ្មី​សម្រាប់ '''$1'''",
-'newuserlog-autocreate-entry' => 'គណនីត្រូវបានបង្កើតដោយស្វ័យប្រវត្តិ',
+'newuserlogpage'     => 'កំណត់ហេតុនៃការបង្កើតគណនី',
+'newuserlogpagetext' => 'នេះជាកំណត់ហេតុនៃការបង្កើតអ្នកប្រើប្រាស់។',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'សិទ្ធិនិងក្រុមអ្នកប្រើប្រាស់',
@@ -2856,9 +2851,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'កំណត់ហេតុនៃការតាមដាន',
 'patrol-log-header'    => 'នេះជាកំណត់ហេតុនៃកំណែ​ប្រែ​ដែល​បាន​តាមដាន',
-'patrol-log-line'      => 'បានចំណាំការល្បាត $1 នៃ $2 ថា បានត្រួតពិនិត្យ $3',
-'patrol-log-auto'      => '(ស្វ័យប្រវត្តិ)',
-'patrol-log-diff'      => 'កំណែប្រែ​ $1',
 'log-show-hide-patrol' => 'កំណត់ហេតុនៃការតាមដាន $1',
 
 # Image deletion
@@ -3416,5 +3408,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'បានអនុវត្តការដាក់កំហិតចំពោះអ្នកអភិបាល',
 'revdelete-unrestricted' => 'បានដកការដាក់កំហិតចេញសម្រាប់អ្នកអភិបាល',
+'newuserlog-byemail'     => 'ពាក្យសំងាត់ត្រូវបានផ្ញើតាមអ៊ីមែល',
 
 );

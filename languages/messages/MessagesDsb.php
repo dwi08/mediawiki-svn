@@ -1882,12 +1882,8 @@ Pódpěrane protokole: <tt>$1</tt>',
 'activeusers-noresult'   => 'Žedne wužywarje namakane.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Protokol nowych wužywarjow',
-'newuserlogpagetext'          => 'To jo protokol wó nowych wužywarskich kontow.',
-'newuserlog-byemail'          => 'Pótajne słowo bu pśez e-mail pósłane.',
-'newuserlog-create-entry'     => 'Nowy wužywaŕ',
-'newuserlog-create2-entry'    => 'Nowe konto za $1 napórane.',
-'newuserlog-autocreate-entry' => 'Wužywarske konto bu awtomatiski napórane',
+'newuserlogpage'     => 'Protokol nowych wužywarjow',
+'newuserlogpagetext' => 'To jo protokol wó nowych wužywarskich kontow.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Pšawa wužywarskeje kupki',
@@ -2661,9 +2657,6 @@ W zespominanju dajo se pśicyna pódaś.',
 # Patrol log
 'patrol-log-page'      => 'Protokol kontrolow',
 'patrol-log-header'    => 'To jo protokol pśekontrolowanych wersijow.',
-'patrol-log-line'      => 'markěrował $1 wót $2 ako kontrolěrowane $3.',
-'patrol-log-auto'      => '(awtomatiski)',
-'patrol-log-diff'      => 'Wersija $1',
 'log-show-hide-patrol' => 'Protokol doglědowanja $1',
 
 # Image deletion
@@ -3201,9 +3194,8 @@ Ty by dejał [{{SERVER}}{{SCRIPTPATH}}/COPYING kopiju licence GNU General Public
 'filepath'         => 'Datajowa droga',
 'filepath-page'    => 'Dataja:',
 'filepath-submit'  => 'Pytaś',
-'filepath-summary' => 'Toś ten specialny bok wróśa dopołnu drogu za dataju. Wobraze se w połnym wótgranicowanju pokazuju, druge datajowe typy se ze zwězanym programom direktnje startuju.
-
-Zapódaj datajowe mě bźez dodanka "{{ns:file}}:".',
+'filepath-summary' => 'Toś ten specialny bok wróśa dopołnu drogu za dataju.
+Wobraze se w połnym wótgranicowanju pokazuju, druge datajowe typy se ze zwězanym programom direktnje startuju.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Za duplikatnymi datajami pytaś',
@@ -3299,5 +3291,6 @@ Zapódaj datajowe mě bźez dodanka "{{ns:file}}:".',
 # New logging system
 'revdelete-restricted'   => 'Wobgranicowanja se teke na administratorow nałožuju',
 'revdelete-unrestricted' => 'Wobgranicowanja za administratorow wótpórane',
+'newuserlog-byemail'     => 'Pótajne słowo bu pśez e-mail pósłane.',
 
 );

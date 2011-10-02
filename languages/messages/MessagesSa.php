@@ -267,6 +267,8 @@ $magicWords = array(
 	'protectionlevel'       => array( '1', 'रक्षास्तर', 'PROTECTIONLEVEL' ),
 );
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'संबंधनानि अधोरेखितानि करोतु',
@@ -1264,8 +1266,7 @@ You may ignore this message, if this account was created in error.',
 'linksearch-line' => '$2 अधि $1 अन्वित अस्ति।',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'प्रयोक्तृ-सृजन-सूचिका',
-'newuserlog-create-entry' => 'नूतन-प्रयोक्तृ-लेखा',
+'newuserlogpage' => 'प्रयोक्तृ-सृजन-सूचिका',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(सदस्यानां सूचिका)',
@@ -1492,9 +1493,6 @@ You may ignore this message, if this account was created in error.',
 'skinname-monobook'    => 'पुस्तक',
 'skinname-myskin'      => 'मे चर्मन्',
 'skinname-chick'       => 'Chick',
-
-# Patrol log
-'patrol-log-diff' => 'संस्करण $1',
 
 # Browsing diffs
 'previousdiff' => '← पुरातनतरं सम्पादनम्',

@@ -1201,8 +1201,7 @@ $1",
 'listusers-submit' => '显示',
 
 # Special:Log/newusers
-'newuserlogpage'          => '用户创建日志',
-'newuserlog-create-entry' => '新开户',
+'newuserlogpage' => '用户创建日志',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '（成员列表）',
@@ -1471,9 +1470,6 @@ $1",
 
 # Attribution
 'anonymous' => '{{SITENAME}}浪个匿名用户',
-
-# Patrol log
-'patrol-log-auto' => '（自动）',
 
 # Image deletion
 'deletedrevision' => '拨删脱个旧修订 $1',

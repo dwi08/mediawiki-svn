@@ -169,7 +169,10 @@ Installation aborted.',
 
 If you are using shared web hosting, your hosting provider should give you the correct host name in their documentation.
 
-If you are installing on a Windows server and using MySQL, using "localhost" may not work for the server name. If it does not, try "127.0.0.1" for the local IP address.',
+If you are installing on a Windows server and using MySQL, using "localhost" may not work for the server name. If it does not, try "127.0.0.1" for the local IP address.
+
+If you are using PostgreSQL, leave this field blank to connect via a Unix socket.
+',
 	'config-db-host-oracle'           => 'Database TNS:',
 	'config-db-host-oracle-help'      => 'Enter a valid [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm Local Connect Name]; a tnsnames.ora file must be visible to this installation.<br />If you are using client libraries 10g or newer you can also use the [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm Easy Connect] naming method.',
 	'config-db-wiki-settings'         => 'Identify this wiki',
@@ -3097,7 +3100,7 @@ Die Ergebnisse dieser Prüfung sollten angegeben werden, sofern während des Ins
 
 $1
 
-Dieses Programm ist freie Software, d. h. es kann, gemäß den Bedingungen der von der Free Software Foundation veröffentlichten ''GNU General Public License'', weiterverteilt und/ oder modifiziert werden. Dabei kann die Version 2, oder nach eigenem Ermessen, jede neuere Version der Lizenz verwendet werden.
+Dieses Programm ist freie Software, d. h. es kann, gemäß den Bedingungen der von der Free Software Foundation veröffentlichten ''GNU General Public License'', weiterverteilt und/oder modifiziert werden. Dabei kann die Version 2, oder nach eigenem Ermessen, jede neuere Version der Lizenz verwendet werden.
 
 Dieses Programm wird in der Hoffnung verteilt, dass es nützlich sein wird, allerdings '''ohne jegliche Garantie''' und sogar ohne die implizierte Garantie einer '''Marktgängigkeit''' oder '''Eignung für einen bestimmten Zweck'''. Hierzu sind weitere Hinweise in der ''GNU General Public License'' enthalten.
 
@@ -3122,7 +3125,7 @@ Allerdings benötigt MediaWiki PHP $2 oder höher.',
 	'config-unicode-using-intl' => 'Zur  Unicode-Normalisierung wird die [http://pecl.php.net/intl PECL-Erweiterung intl] eingesetzt.',
 	'config-unicode-pure-php-warning' => "'''Warnung:''' Die [http://pecl.php.net/intl PECL-Erweiterung intl] ist für die Unicode-Normalisierung nicht verfügbar, so dass stattdessen die langsame pure-PHP-Implementierung genutzt wird.
 Sofern eine Website mit großer Benutzeranzahl betrieben wird, sollten weitere Informationen auf der Webseite [http://www.mediawiki.org/wiki/Unicode_normalization_considerations Unicode-Normalisierung (en)] gelesen werden.",
-	'config-unicode-update-warning' => "'''Warnung:''' Die installierte Version des Unicode-Normalisierungswrappers nutzt einer ältere Version der Bibliothek [http://site.icu-project.org/ des ICU-Projekts].
+	'config-unicode-update-warning' => "'''Warnung:''' Die installierte Version des Unicode-Normalisierungswrappers nutzt einer ältere Version der Bibliothek des [http://site.icu-project.org/ ICU-Projekts].
 Diese sollte [http://www.mediawiki.org/wiki/Unicode_normalization_considerations aktualisiert] werden, sofern auf die Verwendung von Unicode Wert gelegt wird.",
 	'config-no-db' => 'Es konnte kein adäquater Datenbanktreiber gefunden werden. Es muss daher ein Datenbanktreiber für PHP installiert werden.
 Die folgenden Datenbanksysteme werden unterstützt: $1
@@ -3194,7 +3197,9 @@ Die Installation wurde abgebrochen.',
 
 Sofern ein gemeinschaftlich genutzter Server verwendet wird, sollte der Hoster den zutreffenden Servernamen in seiner Dokumentation angegeben haben.
 
-Sofern auf einem Windows-Server installiert und MySQL genutzt wird, funktioniert der Servername „localhost“ voraussichtlich nicht. Wenn nicht, sollte  „127.0.0.1“ oder die lokale IP-Adresse angegeben werden.',
+Sofern auf einem Windows-Server installiert und MySQL genutzt wird, funktioniert der Servername „localhost“ voraussichtlich nicht. Wenn nicht, sollte  „127.0.0.1“ oder die lokale IP-Adresse angegeben werden.
+
+Sofern PostgresQL genutzt wird, muss dieses Feld leer gelassen werden, um über ein Unix-Socket zu verwinden.',
 	'config-db-host-oracle' => 'Datenbank-TNS:',
 	'config-db-host-oracle-help' => 'Einen gültigen [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm „Local Connect“-Namen] angeben. Die „tnsnames.ora“-Datei muss von dieser Installation erkannt werden können.<br />Sofern die Client-Bibliotheken für Version 10g oder neuer verwendet werden, kann auch [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm „Easy Connect“] zur Namensgebung genutzt werden.',
 	'config-db-wiki-settings' => 'Bitte Daten zur eindeutigen Identifikation dieses Wikis angeben',
@@ -4149,7 +4154,7 @@ Löydät sen LocalSettings.php-tiedostosta.',
 	'config-session-error' => 'Istunnon aloittaminen epäonnistui: $1',
 	'config-session-expired' => 'Istuntotietosi näyttävät olevan vanhentuneita.
 Istuntojen elinajaksi on määritelty $1.
-Voit muuttaa tätä asetusta vaihtamalla kohtaa <code>session.gc_maxlifetime</code> php.ini -tiedostossa.
+Voit muuttaa tätä asetusta vaihtamalla kohtaa <code>session.gc_maxlifetime</code> php.ini-tiedostossa.
 Käynnistä asennusprosessi uudelleen.',
 	'config-your-language' => 'Asennuksen kieli',
 	'config-your-language-help' => 'Valitse kieli, jota haluat käyttää asennuksen ajan.',
@@ -4168,7 +4173,7 @@ Käynnistä asennusprosessi uudelleen.',
 	'config-page-complete' => 'Valmis!',
 	'config-page-restart' => 'Aloita asennus alusta',
 	'config-page-readme' => 'Lue minut',
-	'config-page-releasenotes' => 'Julkaisun tiedot',
+	'config-page-releasenotes' => 'Julkaisutiedot',
 	'config-page-copying' => 'Kopiointi',
 	'config-page-upgradedoc' => 'Päivittäminen',
 	'config-page-existingwiki' => 'Aikaisempi asennus',
@@ -4180,7 +4185,12 @@ Sinun pitäisi antaa näiden tarkistusten tulokset, jos tarvitset apua asennukse
 	'config-sidebar' => '* [http://www.mediawiki.org MediaWikin kotisivu]
 * [http://www.mediawiki.org/wiki/Help:Contents Käyttöopas]
 * [http://www.mediawiki.org/wiki/Manual:Contents Hallintaopas]
-* [http://www.mediawiki.org/wiki/Manual:FAQ UKK]',
+* [http://www.mediawiki.org/wiki/Manual:FAQ UKK]
+----
+* <doclink href=Readme>Lue minut</doclink>
+* <doclink href=ReleaseNotes>Julkaisutiedot</doclink>
+* <doclink href=Copying>Kopiointi</doclink>
+* <doclink href=UpgradeDoc>Päivittäminen</doclink>',
 	'config-env-good' => 'Asennusympäristö on tarkastettu.
 Voit asentaa MediaWikin.',
 	'config-env-bad' => 'Asennusympäristö on tarkastettu.
@@ -4211,10 +4221,12 @@ MediaWiki vaatii toimiakseen Perl-yhteensopivat säännölliset lausekkeet.',
 	'config-type-postgres' => 'PostgreSQL',
 	'config-type-sqlite' => 'SQLite',
 	'config-type-oracle' => 'Oracle',
+	'config-type-ibm_db2' => 'IBM DB2',
 	'config-header-mysql' => 'MySQL-asetukset',
 	'config-header-postgres' => 'PostgreSQL-asetukset',
 	'config-header-sqlite' => 'SQLite-asetukset',
 	'config-header-oracle' => 'Oracle-asetukset',
+	'config-header-ibm_db2' => 'IBM DB2 -asetukset',
 	'config-invalid-db-type' => 'Virheellinen tietokantatyyppi',
 	'config-missing-db-name' => 'Kenttä »Tietokannan nimi» on pakollinen',
 	'config-invalid-db-name' => '”$1” ei kelpaa tietokannan nimeksi.
@@ -4222,7 +4234,7 @@ Se voi sisältää vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivan (_).'
 	'config-invalid-db-prefix' => '”$1” ei kelpaa tietokannan etuliitteeksi.
 Se voi sisältää vain kirjaimia (a-z, A-Z), numeroita (0-9) ja alaviivan (_).',
 	'config-postgres-old' => 'MediaWiki tarvitsee PostgreSQL:n version $1 tai uudemman. Nykyinen versio on $2.',
-	'config-sqlite-name-help' => 'Valitse nimi joka yksilöi tämän wikin.
+	'config-sqlite-name-help' => 'Valitse nimi, joka yksilöi tämän wikin.
 Älä käytä välilyöntejä tai viivoja.
 Nimeä käytetään SQlite-tietokannan tiedostonimessä.',
 	'config-sqlite-dir-unwritable' => 'Hakemistoon ”$1” kirjoittaminen epäonnistui.
@@ -4243,9 +4255,13 @@ Muuta hakemiston käyttöoikeuksia siten, että palvelinohjelmisto voi kirjoitta
 	'config-admin-password-confirm' => 'Salasana uudelleen',
 	'config-admin-name-blank' => 'Anna ylläpitäjän käyttäjänimi.',
 	'config-admin-email' => 'Sähköpostiosoite',
+	'config-profile-wiki' => 'Perinteinen wiki',
 	'config-profile-private' => 'Yksityinen wiki',
+	'config-email-settings' => 'Sähköpostiasetukset',
+	'config-extensions' => 'Laajennukset',
 	'config-install-step-done' => 'tehty',
 	'config-install-step-failed' => 'epäonnistui',
+	'config-download-localsettings' => 'Lataa LocalSettings.php',
 	'config-help' => 'ohje',
 	'mainpagetext' => "'''MediaWiki on onnistuneesti asennettu.'''",
 	'mainpagedocfooter' => "Lisätietoja käytöstä on sivulla [http://meta.wikimedia.org/wiki/Help:Contents User's Guide].
@@ -5236,7 +5252,9 @@ Instalación abortada.',
 
 Se está usando un aloxamento web compartido, o seu provedor de hospedaxe debe darlle o nome de servidor correcto na súa documentación.
 
-Se está a realizar a instalación nun servidor de Windows con MySQL, o nome "localhost" pode non valer como servidor. Se non funcionase, inténteo con "127.0.0.1" como enderezo IP local.',
+Se está a realizar a instalación nun servidor de Windows con MySQL, o nome "localhost" pode non valer como servidor. Se non funcionase, inténteo con "127.0.0.1" como enderezo IP local.
+
+Se está usando PostgreSQL, deixe este campo en branco para facer a conexión a través do conectador Unix.',
 	'config-db-host-oracle' => 'TNS da base de datos:',
 	'config-db-host-oracle-help' => 'Insira un [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm nome de conexión local] válido; cómpre que haxa visible un ficheiro tnsnames.ora para esta instalación.<br />Se está a empregar bibliotecas cliente versión 10g ou máis recentes, tamén pode usar o método de atribución de nomes [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm Easy Connect].',
 	'config-db-wiki-settings' => 'Identificar o wiki',
@@ -5939,7 +5957,9 @@ $1
 
 אם אתם משתמשים באירוח משותף, ספק האירוח שלכם אמור לתת לכם את שם השרת הנכון במסמכים.
 
-אם אתם מתקינים בשרת חלונות ומשתמשים ב־MySQL, השימוש ב־localhost עשוי לא לעבוד. אם הוא לא עובד, נסו את "127.0.0.1" בתור כתובת ה־IP המקומית.',
+אם אתם מתקינים בשרת חלונות ומשתמשים ב־MySQL, השימוש ב־localhost עשוי לא לעבוד. אם הוא לא עובד, נסו את "127.0.0.1" בתור כתובת ה־IP המקומית.
+
+אם אתם משתמשים ב־PostgreSQL, תשאירו את השדה הזה ריק כדי להתחבר דרך שקע יוניקס.',
 	'config-db-host-oracle' => 'TNS של מסד הנתונים:',
 	'config-db-host-oracle-help' => 'הקלידו [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm שם חיבור מקומי (Local Connect Name)] תקין; הקובץ tnsnames.ora צריך להיות זמין להתקנה הזאת.<br />
 אם אתם משתמשים ב־client libraries 10g או בגרסה חדשה יותר, אתם יכולים גם להשתמש בשיטת מתן השמות [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm Easy Connect].',
@@ -7395,7 +7415,9 @@ Installation abortate.',
 
 Si tu usa un servitor web usate in commun, tu providitor deberea dar te le correcte nomine de servitor in su documentation.
 
-Si tu face le installation in un servitor Windows e usa MySQL, le nomine "localhost" possibilemente non functiona como nomine de servitor. Si non, essaya "127.0.0.1", i.e. le adresse IP local.',
+Si tu face le installation in un servitor Windows e usa MySQL, le nomine "localhost" possibilemente non functiona como nomine de servitor. In tal caso, essaya "127.0.0.1", i.e. le adresse IP local.
+
+Si tu usa PostgreSQL, lassa iste campo vacue pro connecter via un "socket" de Unix.',
 	'config-db-host-oracle' => 'TNS del base de datos:',
 	'config-db-host-oracle-help' => 'Entra un [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm nomine Local Connect] valide; un file tnsnames.ora debe esser visibile a iste installation.<br />Si tu usa bibliothecas de cliente 10g o plus recente, tu pote anque usar le methodo de nomination [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm Easy Connect].',
 	'config-db-wiki-settings' => 'Identificar iste wiki',
@@ -10286,11 +10308,13 @@ $1
 	'config-suhosin-max-value-length' => 'Suhosin е инсталиран и ја ограничува должината на параметарот GET на $1 bytes. Делот ResourceLoader на МедијаВики ќе ја заобиколува ова граница, но со тоа ќе се влоши делотворноста. Ако е воопшто можно, на suhosin.get.max_value_length треба да го наместите на 1024 или поевеќе во php.ini , и да му ја зададете истата вредност на $wgResourceLoaderMaxQueryLength во LocalSettings.php .',
 	'config-db-type' => 'Тип на база:',
 	'config-db-host' => 'Домаќин на базата:',
-	'config-db-host-help' => 'Ако вашата база е на друг опслужувач, тогаш тука внесете го името на домаќинот илиу IP-адресата.
+	'config-db-host-help' => 'Ако вашата база е на друг опслужувач, тогаш тука внесете го името на домаќинот или IP-адресата.
 
-Ако користите заедничко (споделено) вдомување, тогаш вашиот вдомител треба да го доде точното име на домаќинот и неговата документација.
+Ако користите заедничко (споделено) вдомување, тогаш вашиот вдомител треба да го наведе точното име на домаќинот во неговата документација.
 
-Ако инсталирате на опслужувач на Windows и користите MySQL, можноста „localhost“ може да не функционира за опслужувачкото име. Во тој случај, обидете се со внесување на „127.0.0.1“ како локална IP-адреса',
+Ако инсталирате на опслужувач на Windows и користите MySQL, можноста „localhost“ може да не функционира за опслужувачкото име. Во тој случај, обидете се со внесување на „127.0.0.1“ како локална IP-адреса.
+
+Ако користите PostgreSQL, оставете го полево празно за да се поврзете преку Unix-приклучок.',
 	'config-db-host-oracle' => 'TNS на базата:',
 	'config-db-host-oracle-help' => 'Внесете важечко [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm локално име за поврзување]. На оваа инсталација мора да ѝ биде видлива податотеката tnsnames.ora.<br />Ако користите клиентски библиотеки 10g или понови, тогаш можете да го користите и методот на иметнување на [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm Easy Connect].',
 	'config-db-wiki-settings' => 'Идентификувај го викиво',
@@ -11154,7 +11178,9 @@ De installatie wordt afgebroken.',
 Als u gebruik maakt van gedeelde webhosting, hoort uw provider u de juiste hostnaam te hebben verstrekt.
 
 Als u MediaWiki op een Windowsserver installeert en MySQL gebruikt, dan werkt "localhost" mogelijk niet als servernaam.
-Als het inderdaad niet werkt, probeer dan "127.0.0.1" te gebruiken als lokaal IP-adres.',
+Als het inderdaad niet werkt, probeer dan "127.0.0.1" te gebruiken als lokaal IP-adres.
+
+Als u PostgreSQL gebruikt, laat dit veld dan leeg om via een Unix-socket te verbinden.',
 	'config-db-host-oracle' => 'Database-TNS:',
 	'config-db-host-oracle-help' => 'Voer een geldige [http://download.oracle.com/docs/cd/B28359_01/network.111/b28317/tnsnames.htm Local Connect Name] in; een tnsnames.ora-bestand moet zichtbaar zijn voor deze installatie.<br />Als u gebruik maakt van clientlibraries 10g of een latere versie, kunt u ook gebruik maken van de naamgevingsmethode [http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm Easy Connect].',
 	'config-db-wiki-settings' => 'Identificeer deze wiki',
@@ -13766,7 +13792,7 @@ MediaWiki распространяется в надежде, что она бу
 	'config-env-php-toolow' => 'Найден PHP $1, тогда как MediaWiki требуется PHP версии $2 или выше.',
 	'config-unicode-using-utf8' => 'Использовать Brion Vibber utf8_normalize.so для нормализации Юникода.',
 	'config-unicode-using-intl' => 'Будет использовано [http://pecl.php.net/intl расширение «intl» для PECL] для нормализации Юникода.',
-	'config-unicode-pure-php-warning' => "'''Внимание!''': [http://pecl.php.net/intl международное расширение PECL] недоступно для нормализации Юникода, будет использоваться медленная реализация на чистом PHP.
+	'config-unicode-pure-php-warning' => "'''Внимание!''': [http://pecl.php.net/intl расширение intl из PECL] недоступно для нормализации Юникода, будет использоваться медленная реализация на чистом PHP.
 Если ваш сайт работает под высокой нагрузкой, вам следует больше узнать о [http://www.mediawiki.org/wiki/Unicode_normalization_considerations нормализации Юникода].",
 	'config-unicode-update-warning' => "'''Предупреждение''': установленная версия обёртки нормализации Юникода использует старую версию библиотеки [http://site.icu-project.org/ проекта ICU].
 Вы должны [http://www.mediawiki.org/wiki/Unicode_normalization_considerations обновить версию], если хотите полноценно использовать Юникод.",

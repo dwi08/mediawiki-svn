@@ -18,8 +18,6 @@
  * @author Urhixidur
  */
 
-$fallback = 'bn';
-
 $namespaceNames = array(
 	NS_MEDIA            => 'মাধ্যম',
 	NS_SPECIAL          => 'বিশেষ',
@@ -107,6 +105,8 @@ $digitTransformTable = array(
 	'8' => '৮', # &#x09ee;
 	'9' => '৯', # &#x09ef;
 );
+
+$digitGroupingPattern = "##,##,###";
 
 $messages = array(
 # User preference toggles
@@ -377,7 +377,7 @@ $1',
 'editsection'             => 'সম্পাদনা কৰক',
 'editold'                 => 'সম্পাদনা',
 'viewsourceold'           => 'অক্ষৰ-মূল দেখুওৱা হওক',
-'editlink'                => 'সম্পাদনা',
+'editlink'                => 'সম্পাদনা কৰক',
 'viewsourcelink'          => 'উৎস চাওক',
 'editsectionhint'         => '$1 খণ্ডৰ সম্পাদনা',
 'toc'                     => 'সূচী',
@@ -604,7 +604,7 @@ $2',
 'resetpass'                 => 'গুপ্তশব্দ সলনি কৰক',
 'resetpass_announce'        => 'আপুনি ই-মেইলত পোৱা অস্থায়ী গুপ্তশব্দৰে প্ৰৱেশ কৰিছে।
 প্ৰৱেশ সম্পুৰ্ণ কৰিবলৈ, আপুনি এটা নতুন গুপ্তশব্দ দিব লাগিব:',
-'resetpass_header'          => 'গুপ্তশব্দ শলনি কৰক',
+'resetpass_header'          => 'গুপ্তশব্দ সলনি কৰক',
 'oldpassword'               => 'পুৰণি গুপ্তশব্দ:',
 'newpassword'               => 'নতুন গুপ্তশব্দ:',
 'retypenew'                 => 'নতুন গুপ্তশব্দ আকৌ টাইপ কৰক',
@@ -619,28 +619,32 @@ $2',
 'resetpass-temp-password'   => 'অস্থায়ী গুপ্তশব্দ:',
 
 # Special:PasswordReset
-'passwordreset'                => 'গুপ্তশব্দ ন-কৈ বহাওক',
-'passwordreset-text'           => 'আপোনাৰ একাউণ্টৰ সবিশেষ তথ্য ই-পত্ৰৰ জৰিয়তে পাবলৈ তলৰ প্ৰ-পত্ৰ পুৰাওক ।',
-'passwordreset-legend'         => 'গুপ্তশব্দ ন-কৈ বহাওক',
-'passwordreset-disabled'       => 'এই ৱিকিত গুপ্তশব্দ নবীকৰণ নিষ্ক্ৰিয় কৰা হৈছে ।',
-'passwordreset-pretext'        => '{{PLURAL:$1||তলত উল্লেখ কৰা তথ্যৰ কোনো অংশ ভৰাওক}}',
-'passwordreset-username'       => 'সদস্যনাম',
-'passwordreset-domain'         => 'ডমেইন :',
-'passwordreset-email'          => 'ই-মেইল ঠিকনা:',
-'passwordreset-emailtitle'     => '{{SITENAME}} ত একাউণ্টৰ সবিশেষ তথ্য আছে ।',
-'passwordreset-emailtext-ip'   => 'কোনোবাই (IP ঠিকনা $1 ৰ পৰা সম্ভৱত: আপুনিয়েই) {{SITENAME}} ($4) ৰ বাবে আপোনাৰ একাউণ্টৰ সবিশেষ তথ্য বিচাৰিছিল । ই-পত্ৰ ঠিকনাটোৰ লগত এই সদস্যৰ {{PLURAL:$3|একাউণ্ট|একাউণ্টবোৰ}} জড়িত হৈ আছে ।
+'passwordreset'                    => 'গুপ্তশব্দ ন-কৈ বহাওক',
+'passwordreset-text'               => 'আপোনাৰ একাউণ্টৰ সবিশেষ তথ্য ই-পত্ৰৰ জৰিয়তে পাবলৈ তলৰ প্ৰ-পত্ৰ পুৰাওক ।',
+'passwordreset-legend'             => 'গুপ্তশব্দ ন-কৈ বহাওক',
+'passwordreset-disabled'           => 'এই ৱিকিত গুপ্তশব্দ নবীকৰণ নিষ্ক্ৰিয় কৰা হৈছে ।',
+'passwordreset-pretext'            => '{{PLURAL:$1||তলত উল্লেখ কৰা তথ্যৰ কোনো অংশ ভৰাওক}}',
+'passwordreset-username'           => 'সদস্যনাম',
+'passwordreset-domain'             => 'ডমেইন :',
+'passwordreset-capture'            => 'ফলাফল ই-মেইলখন চাওক ?',
+'passwordreset-capture-help'       => "আপুনি এই ঘৰটো চিহ্নিত কৰিলে এই ই-মেইল (আৰু অস্থায়ী গুপ্তশব্দ) আপুনি দেখা পোৱাৰ লগতে সদস্যজনলৈও পঠোৱা হ'ব।",
+'passwordreset-email'              => 'ই-মেইল ঠিকনা:',
+'passwordreset-emailtitle'         => '{{SITENAME}} ত একাউণ্টৰ সবিশেষ তথ্য আছে ।',
+'passwordreset-emailtext-ip'       => 'কোনোবাই (IP ঠিকনা $1 ৰ পৰা সম্ভৱত: আপুনিয়েই) {{SITENAME}} ($4) ৰ বাবে আপোনাৰ একাউণ্টৰ সবিশেষ তথ্য বিচাৰিছিল । ই-পত্ৰ ঠিকনাটোৰ লগত এই সদস্যৰ {{PLURAL:$3|একাউণ্ট|একাউণ্টবোৰ}} জড়িত হৈ আছে ।
 
 $2
  
 {{PLURAL:$3|এই অস্থায়ী গুপ্তশব্দ|এই অস্থায়ী গুপ্তশব্দবোৰ}} {{PLURAL:$5|এদিনত|$5 দিনত }} নাইকীয়া হ’ব । আপুনি লগ-ইন কৰি এটা নতুন গুপ্তশব্দ দিয়া উচিত । যদি আন কোনোবাই এই অনুৰোধ কৰিছিল, বা আপুনি নিজৰ পূৰ্বৰ গুপ্তশব্দ মনত পেলাইছে আৰু ইয়াক সলাব খোজা নাই, তেন্তে আপুনি এই বাৰ্তাক অগ্ৰাহ্য কৰি নিজৰ পূৰ্বৰ গুপ্তশব্দ ব্যৱহাৰ কৰি থাকিব পাৰে ।',
-'passwordreset-emailtext-user' => '$1 ব্যৱহাৰকাৰীয়ে {{SITENAME}} ($4) ৰ বাবে আপোনাৰ একাউণ্টৰ সবিশেষ তথ্য বিচাৰিছিল । ই-পত্ৰ ঠিকনাটোৰ লগত এই সদস্যৰ {{PLURAL:$3|একাউণ্ট|একাউণ্টসমূহ}} জড়িত হৈ আছে ।
+'passwordreset-emailtext-user'     => '$1 ব্যৱহাৰকাৰীয়ে {{SITENAME}} ($4) ৰ বাবে আপোনাৰ একাউণ্টৰ সবিশেষ তথ্য বিচাৰিছিল । ই-পত্ৰ ঠিকনাটোৰ লগত এই সদস্যৰ {{PLURAL:$3|একাউণ্ট|একাউণ্টসমূহ}} জড়িত হৈ আছে ।
  
 $2
  
 {{PLURAL:$3|এই অস্থায়ী গুপ্তশব্দ|এই অস্থায়ী গুপ্তশব্দবোৰ}} {{PLURAL:$5|এদিনত|$5 দিনত }} নাইকীয়া হ’ব । আপুনি লগ-ইন কৰি এটা নতুন গুপ্তশব্দ দিয়া উচিত । যদি আন কোনোবাই এই অনুৰোধ কৰিছিল, বা আপুনি নিজৰ পূৰ্বৰ গুপ্তশব্দ মনত পেলাইছে আৰু ইয়াক সলাব খোজা নাই, তেন্তে আপুনি এই বাৰ্তাক অগ্ৰাহ্য কৰি নিজৰ পূৰ্বৰ গুপ্তশব্দ ব্যৱহাৰ কৰি থাকিব পাৰে ।',
-'passwordreset-emailelement'   => 'সদস্যনাম: $1
+'passwordreset-emailelement'       => 'সদস্যনাম: $1
 অস্থায়ী গুপ্তশব্দ: $2',
-'passwordreset-emailsent'      => 'এখন স্মৰণকাৰক ই-মেইল পঠোৱা হৈছে ।',
+'passwordreset-emailsent'          => 'এখন স্মৰণকাৰক ই-মেইল পঠোৱা হৈছে ।',
+'passwordreset-emailsent-capture'  => 'এখন স্মাৰক ই-মেইল পঠোৱা হৈছে, এইখন তলত দেখা পাব।',
+'passwordreset-emailerror-capture' => "এখন স্মাৰক ই-মেইল সৃষ্টি কৰা হ'ল কিন্তু সদস্যজনলৈ পঠিয়াব পৰা নগ'ল, এইখন তলত দেখুওৱা হৈছে।",
 
 # Special:ChangeEmail
 'changeemail'          => 'ই-মেইল ঠিকনা সলনি কৰক',
@@ -1088,7 +1092,6 @@ $1",
 'searchmenu-legend'                => 'সন্ধান বিকল্পসমূহ',
 'searchmenu-exists'                => 'এই ৱিকিত "[[:$1]]" নামৰ পৃষ্ঠা এখন আছে ।',
 'searchmenu-new'                   => "'''এই ৱিকিত \"[[:\$1]]\" পৃষ্ঠাখন সৃষ্টি কৰক!'''",
-'searchmenu-new-nocreate'          => 'পৃষ্ঠাৰ "$1" নামটো অবৈধ বা আপুনি ইয়াক তৈয়াৰ কৰিব নোৱাৰে ।',
 'searchhelp-url'                   => 'Help:বিষয়বস্তু',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|এই উপসৰ্গ থকা পৃষ্ঠাসমূহ ব্ৰাউজ কৰক]]',
 'searchprofile-articles'           => 'বিষয়বস্তুৰ পৃষ্ঠা',
@@ -1693,7 +1696,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization চাওক।",
 'filehist-filesize'         => 'ফাইলৰ আকাৰ (বাইট)',
 'filehist-comment'          => 'মন্তব্য',
 'filehist-missing'          => 'ফাইল সন্ধানহীন',
-'imagelinks'                => 'ফাইল সংযোগসমূহ',
+'imagelinks'                => 'ফাইল ব্যৱহাৰ',
 'linkstoimage'              => 'তলত দিয়া পৃষ্ঠাবোৰ এই চিত্ৰ খনৰ লগত জৰিত :{{PLURAL:$1|page links|$1 pages link}}',
 'linkstoimage-more'         => 'এই ফাইলৰ লগত $1ৰো বেছি {{PLURAL:$1|পৃষ্ঠা সংযোগ|পৃষ্ঠা সংযোগ}} হৈ আছে ।
 তলৰ তালিকাত {{PLURAL:$1|প্ৰথম পৃষ্ঠা সংযোগ|প্ৰথম $1 পৃষ্ঠা সংযোগ}} দেখুওৱা হৈছে ।
@@ -1957,12 +1960,8 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization চাওক।",
 'activeusers-noresult'   => 'কোনো সদস্য পোৱা নগল ।',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'সদস্যৰ সৃষ্টি অভিলেখ',
-'newuserlogpagetext'          => 'এইখন এখন সদস্য সৃষ্টিৰ ল’গ ।',
-'newuserlog-byemail'          => 'গুপ্তশব্দ ই-মেইল কৰি পঠোৱা হৈছে',
-'newuserlog-create-entry'     => 'নতুন সদস্য',
-'newuserlog-create2-entry'    => '$1 ক নতুন সদস্যভুক্তি কৰা হল',
-'newuserlog-autocreate-entry' => "স্বয়ংক্ৰিয়ভাৱে একাউণ্ট সৃষ্টি কৰা হ'ল",
+'newuserlogpage'     => 'সদস্যৰ সৃষ্টি অভিলেখ',
+'newuserlogpagetext' => 'এইখন এখন সদস্য সৃষ্টিৰ ল’গ ।',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'ব্যৱহাৰকাৰী গোটৰ অধিকাৰ',
@@ -2758,8 +2757,6 @@ $1ৰ অৱৰোধৰ কাৰণ: "$2"',
 # Patrol log
 'patrol-log-page'      => "নিৰীক্ষণ ল'গ",
 'patrol-log-header'    => "এইখন নিৰীক্ষিত সংশোধনসমূহৰ ল'গ ।",
-'patrol-log-auto'      => '(স্বয়ংক্ৰিয়)',
-'patrol-log-diff'      => 'সংশোধন $1',
 'log-show-hide-patrol' => "নিৰীক্ষণ ল'গ $1",
 
 # Image deletion
@@ -2784,7 +2781,7 @@ $1',
 'svg-long-desc'          => 'SVG ফাইল, সাধাৰণতঃ $1 × $2 পিক্সেল, ফাইল মাত্ৰা: $3',
 'show-big-image'         => 'সম্পূৰ্ণ দৃশ্য',
 'show-big-image-preview' => 'এই খচৰাৰ আকাৰ: $1.',
-'show-big-image-other'   => 'আন ৰিজলিউচনসমূহ: $1.',
+'show-big-image-other'   => 'আন {{PLURAL:$2|ৰিজলিউচন|ৰিজলিউচনসমূহ}}: $1।',
 'show-big-image-size'    => '$1 × $2 পিক্সেল',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|ফ্ৰেম|ফ্ৰেম}}',
 'file-info-png-repeat'   => "$1 {{PLURAL:$1|বাৰ|বাৰ}} চলোৱা হ'ল",
@@ -2799,6 +2796,9 @@ $1',
 'ilsubmit'              => 'সন্ধান কৰক',
 'bydate'                => 'তাৰিখ অনুযায়ী',
 'sp-newimages-showfrom' => '$2, $1 পৰা নতুন চিত্ৰসমূহ দেখুৱাওক',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'ago' => '$1 আগেয়ে',
 
 # Metadata
 'metadata'          => 'মেটাডাটা',
@@ -2859,7 +2859,12 @@ $1',
 'exif-gpslongitude'        => 'দ্রাঘিমাংশ',
 'exif-gpsaltitude'         => 'উচ্চতা',
 'exif-gpstimestamp'        => 'GPS সময় (পাৰমাণৱিক ঘড়ি)',
+'exif-gpssatellites'       => 'জোখ মাপত ব্যৱহৃত উপগ্ৰহ সমূহ',
+'exif-countrycodedest'     => 'দেশৰ ক’ড প্ৰদৰ্শিত',
+'exif-citydest'            => 'চহৰ প্ৰদৰ্শিত',
 'exif-objectname'          => 'চমু শীৰ্ষক',
+'exif-specialinstructions' => 'বিশেষ নির্দেশনাসমূহ',
+'exif-headline'            => 'শিৰোনাম',
 'exif-source'              => 'উত্‍স',
 'exif-writer'              => 'লেখক',
 'exif-languagecode'        => 'ভাষা',
@@ -2986,7 +2991,7 @@ $1',
 মেইলাৰে ঘূৰাই পঠাইছে: $1',
 'confirmemail_invalid'      => 'নিশ্চিতকৰণ সংকেত অবৈধ ।
 সম্ভৱতঃ ইয়াৰ ম্যাদ উকলি গৈছে ।',
-'confirmemail_needlogin'    => 'আপোনাৰ ই-মেইল ঠিকনা নিশ্চিতকৰণৰ বাবে $1 কৰক |',
+'confirmemail_needlogin'    => 'আপোনাৰ ই-মেইল ঠিকনা নিশ্চিতকৰণৰ বাবে $1 কৰক ।',
 'confirmemail_success'      => 'আপোনাৰ ই-মেইল ঠিকনা নিশ্চিতকৰণ কৰা হৈছে ।
 আপুনি এতিয়া [[Special:UserLogin|log in]] কৰক আৰু ৱিকি উপভোগ কৰক ।',
 'confirmemail_loggedin'     => 'আপোনাৰ ই-মেইল ঠিকনা নিশ্চিত কৰা হৈছে ।',
@@ -3207,7 +3212,6 @@ You can also [[Special:EditWatchlist/raw|edit the raw list]].',
 'globalfileusage-text'        => 'গোলকীয় ফাইল ব্যৱহাৰ অনুসন্ধান কৰক',
 'globalfileusage-no-results'  => 'আন ৱিকিত [[$1]] ব্যৱহাৰ নহয় ।',
 'globalfileusage-on-wiki'     => '$2ত ব্যৱহাৰ',
-'globalfileusage-of-file'     => 'তলত দিয়া অন্যান্য ৱিকিয়ে এই ফাইল ব্যৱহাৰ কৰিছে:',
 'globalfileusage-more'        => 'এই ফাইলৰ [[{{#Special:GlobalUsage}}/$1|অধিক গোলকীয় ব্যৱহাৰ]] চাওক ।',
 'globalfileusage-filterlocal' => 'স্থানীয় ব্যৱহাৰ নেদেখুৱাব',
 
@@ -3218,7 +3222,6 @@ You can also [[Special:EditWatchlist/raw|edit the raw list]].',
 'globaltemplateusage-text'        => 'গোলকীয় সাঁচ ব্যৱহাৰ অনুসন্ধান কৰক',
 'globaltemplateusage-no-results'  => 'আন ৱিকিত [[$1]] ব্যৱহাৰ নহয় ।',
 'globaltemplateusage-on-wiki'     => '$2ত ব্যৱহাৰ',
-'globaltemplateusage-of-file'     => 'তলত দিয়া অন্যান্য ৱিকিয়ে এই সাঁচ ব্যৱহাৰ কৰিছে:',
 'globaltemplateusage-more'        => 'এই সাঁচৰ [[{{#Special:GlobalUsage}}/$1|অধিক গোলকীয় ব্যৱহাৰ]] চাওক ।',
 'globaltemplateusage-filterlocal' => 'স্থানীয় ব্যৱহাৰ নেদেখুৱাব',
 
@@ -3251,5 +3254,6 @@ You can also [[Special:EditWatchlist/raw|edit the raw list]].',
 # New logging system
 'revdelete-restricted'   => 'এই সীমাবদ্ধতা প্ৰশাসকৰ ক্ষেত্ৰত প্ৰযোজ্য',
 'revdelete-unrestricted' => 'প্ৰশাসকৰ সীমাবদ্ধতা বাতিল কৰা হ’ল',
+'newuserlog-byemail'     => 'গুপ্তশব্দ ই-মেইল কৰি পঠোৱা হৈছে',
 
 );

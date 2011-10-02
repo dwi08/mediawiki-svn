@@ -926,8 +926,7 @@ Li descrition es in li [$2 págine de descrition del file] ta e es monstrat in i
 'linksearch-line' => '$1 es ligat de $2',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Diarium de creation de usator',
-'newuserlog-create-entry' => 'Nov conto de usator',
+'newuserlogpage' => 'Diarium de creation de usator',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(liste de membres)',
@@ -1211,10 +1210,6 @@ Pleser fuse les manualmen.'''",
 
 # Scripts
 'vector.js' => '/* Alquel JavaScript ci va esser cargat por usatores que usa li pelle Vector */',
-
-# Patrol log
-'patrol-log-line' => 'marcat $1 de $2 protectet $3',
-'patrol-log-diff' => 'revision $1',
 
 # Browsing diffs
 'previousdiff' => '← Redaction anteriori',

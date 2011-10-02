@@ -1381,12 +1381,8 @@ Ja'nede [[Special:WantedCategories|kerekli kategoriyalardı]] qarap ko'rin'.",
 'listusers-noresult' => 'Paydalanıwshı tabılmadı.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Paydalanıwshılardı esapqa alıw jurnalı',
-'newuserlogpagetext'          => 'Bul paydalanıwshılardı esapqa alıw jurnalı',
-'newuserlog-byemail'          => 'parol e-mail arqalı jiberildi',
-'newuserlog-create-entry'     => "Jan'a paydalanıwshı",
-'newuserlog-create2-entry'    => "jan'a akkaunt jarattı $1",
-'newuserlog-autocreate-entry' => 'Akkaunt avtomatik halda jaratıldı',
+'newuserlogpage'     => 'Paydalanıwshılardı esapqa alıw jurnalı',
+'newuserlogpagetext' => 'Bul paydalanıwshılardı esapqa alıw jurnalı',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Paydalanıwshılar toparı huqıqları',
@@ -1794,9 +1790,6 @@ Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]
 'siteusers'        => '{{SITENAME}} {{PLURAL:$2|paydalanıwshı|paydalanıwshıları}} $1',
 'creditspage'      => 'Bet avtorları',
 
-# Patrol log
-'patrol-log-auto' => '(avtomatlasqan)',
-
 # Image deletion
 'deletedrevision'       => "$1 eski nusqasın o'shirdi",
 'filedeleteerror-short' => "Fayl o'shiriw qateligi: $1",
@@ -1971,5 +1964,6 @@ Bul tastıyıqlaw kodının' pitetug'ın waqtı: $4.",
 # New logging system
 'revdelete-restricted'   => "administratorlarg'a qollanılg'an sheklewler",
 'revdelete-unrestricted' => "administratorlardan alıp taslang'an sheklewler",
+'newuserlog-byemail'     => 'parol e-mail arqalı jiberildi',
 
 );

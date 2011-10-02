@@ -1326,7 +1326,6 @@ $1",
 'searchmenu-legend'                => '検索オプション',
 'searchmenu-exists'                => "'''このウィキには「[[:$1]]」という名前のページがあります'''",
 'searchmenu-new'                   => "'''このウィキでページ「[[:$1|$1]]」を新規作成する'''",
-'searchmenu-new-nocreate'          => '「$1」は、あなたが作成することができない、もしくは無効な記事名です。',
 'searchhelp-url'                   => 'Help:目次',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|この文字列から始まる名前のページを見る]]',
 'searchprofile-articles'           => '記事',
@@ -1466,7 +1465,7 @@ $1",
 'prefs-registration'            => '登録日時：',
 'yourrealname'                  => '本名：',
 'yourlanguage'                  => '使用言語：',
-'yourvariant'                   => '言語変種：',
+'yourvariant'                   => 'コンテンツ言語変種：',
 'yournick'                      => '新しい署名：',
 'prefs-help-signature'          => 'トークページ上での発言には「<nowiki>~~~~</nowiki>」と付けて署名するべきです。これは自分の署名に時刻印を付加したものに変換されます。',
 'badsig'                        => '署名用のソースが正しくありません。
@@ -2213,12 +2212,8 @@ contenttype/subtypeの形式で指定してください（例：<tt>image/jpeg</
 'activeusers-noresult'   => '利用者が見つかりませんでした。',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'アカウント作成記録',
-'newuserlogpagetext'          => '以下はアカウント作成の記録です。',
-'newuserlog-byemail'          => 'パスワードを電子メールで送信しました',
-'newuserlog-create-entry'     => '新規利用者アカウント',
-'newuserlog-create2-entry'    => 'が新規にアカウント $1 を作成しました',
-'newuserlog-autocreate-entry' => 'アカウントが自動的に作成されました',
+'newuserlogpage'     => 'アカウント作成記録',
+'newuserlogpagetext' => '以下はアカウント作成の記録です。',
 
 # Special:ListGroupRights
 'listgrouprights'                      => '利用者グループの権限',
@@ -2660,6 +2655,7 @@ $1',
 'unblocklink'                     => 'ブロックを解除',
 'change-blocklink'                => '設定を変更',
 'contribslink'                    => '投稿記録',
+'emaillink'                       => '電子メールを送る',
 'autoblocker'                     => '使用中のIPアドレスが「[[User:$1|$1]]」に使用されたため、自動ブロックされています。
 $1のブロックの理由は「$2」です。',
 'blocklogpage'                    => 'ブロック記録',
@@ -3088,9 +3084,6 @@ hideuser権限を持っていないため、この利用者のブロックを閲
 # Patrol log
 'patrol-log-page'      => '巡回記録',
 'patrol-log-header'    => '以下は巡回された版の記録です。',
-'patrol-log-line'      => '$2の$1を巡回$3',
-'patrol-log-auto'      => '（自動）',
-'patrol-log-diff'      => '$1版',
 'log-show-hide-patrol' => '巡回記録を$1',
 
 # Image deletion
@@ -3845,9 +3838,7 @@ MediaWikiは、有用であることを期待して配布されていますが�
 'filepath'         => 'ファイルパス',
 'filepath-page'    => 'ファイル：',
 'filepath-submit'  => '取得',
-'filepath-summary' => 'この特別ページは、ファイルへの完全なパスを返します。画像は最大解像度で表示され、他のファイルタイプは関連付けされたプログラムが直接起動します。
-
-ファイル名は接頭辞「{{ns:file}}:」を付けずに入力してください。',
+'filepath-summary' => 'この特別ページは、ファイルへの完全なパスを返します。画像は最大解像度で表示され、他のファイルタイプは関連付けされたプログラムが直接起動します。',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => '重複ファイルの検索',
@@ -3924,7 +3915,6 @@ MediaWikiは、有用であることを期待して配布されていますが�
 'globalfileusage-text'        => 'グローバルなファイル使用状況を検索',
 'globalfileusage-no-results'  => '[[$1]] は他のウィキでは使われていません。',
 'globalfileusage-on-wiki'     => '$2 での使用状況',
-'globalfileusage-of-file'     => '以下に挙げる他のウィキがこのファイルを使っています:',
 'globalfileusage-filterlocal' => 'ローカル使用状況を表示しない',
 
 # Special:GlobalTemplateUsage
@@ -3934,7 +3924,6 @@ MediaWikiは、有用であることを期待して配布されていますが�
 'globaltemplateusage-text'        => 'グローバルなテンプレートの使用状況を検索',
 'globaltemplateusage-no-results'  => '[[$1]] は他のウィキでは使われていません。',
 'globaltemplateusage-on-wiki'     => '$2 での使用状況',
-'globaltemplateusage-of-file'     => '以下に挙げる他のウィキがこのテンプレートを使っています:',
 'globaltemplateusage-filterlocal' => 'ローカル使用状況を表示しない',
 
 # Database error messages
@@ -3966,5 +3955,6 @@ MediaWikiは、有用であることを期待して配布されていますが�
 # New logging system
 'revdelete-restricted'   => '管理者に対する制限を適用',
 'revdelete-unrestricted' => '管理者に対する制限を除去しました',
+'newuserlog-byemail'     => 'パスワードを電子メールで送信しました',
 
 );

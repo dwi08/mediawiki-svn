@@ -485,7 +485,7 @@ $1',
 'viewsourcelink'          => 'ver o código fonte',
 'editsectionhint'         => 'Editar a sección: "$1"',
 'toc'                     => 'Índice',
-'showtoc'                 => 'amosar',
+'showtoc'                 => 'mostrar',
 'hidetoc'                 => 'agochar',
 'collapsible-collapse'    => 'Contraer',
 'collapsible-expand'      => 'Expandir',
@@ -553,7 +553,7 @@ Se este non é o caso, pode ter atopado un erro no software.
 Por favor, comuníquello a un [[Special:ListUsers/sysop|administrador]] tomando nota do enderezo URL.',
 'missingarticle-rev'   => '(revisión#: $1)',
 'missingarticle-diff'  => '(Dif: $1, $2)',
-'readonly_lag'         => 'A base de datos bloqueouse automaticamente mentres os servidores escravos da base de datos se actualizan desde o máster',
+'readonly_lag'         => 'A base de datos bloqueouse automaticamente mentres os servidores levan a cabo a sincronización co servidor principal',
 'internalerror'        => 'Erro interno',
 'internalerror_info'   => 'Erro interno: $1',
 'fileappenderrorread'  => 'Non foi posible ler "$1" durante a inserción.',
@@ -732,16 +732,18 @@ Pode ser que xa cambiase o seu contrasinal ou que solicitase un novo contrasinal
 'resetpass-temp-password'   => 'Contrasinal temporal:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Restablecer o contrasinal',
-'passwordreset-text'           => 'Encha este formulario para recibir un recordatorio por correo electrónico cos detalles da súa conta.',
-'passwordreset-legend'         => 'Restablecer o contrasinal',
-'passwordreset-disabled'       => 'O restablecemento de contrasinais está desactivado neste wiki.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Introduza un dos datos a continuación}}',
-'passwordreset-username'       => 'Nome de usuario:',
-'passwordreset-domain'         => 'Dominio:',
-'passwordreset-email'          => 'Enderezo de correo electrónico:',
-'passwordreset-emailtitle'     => 'Detalles da conta de {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Alguén (probablemente vostede, desde o enderezo IP $1) solicitou un recordatorio coa
+'passwordreset'                    => 'Restablecer o contrasinal',
+'passwordreset-text'               => 'Encha este formulario para recibir un recordatorio por correo electrónico cos detalles da súa conta.',
+'passwordreset-legend'             => 'Restablecer o contrasinal',
+'passwordreset-disabled'           => 'O restablecemento de contrasinais está desactivado neste wiki.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Introduza un dos datos a continuación}}',
+'passwordreset-username'           => 'Nome de usuario:',
+'passwordreset-domain'             => 'Dominio:',
+'passwordreset-capture'            => 'Quere ollar o correo electrónico?',
+'passwordreset-capture-help'       => 'Se marca esta caixa, poderá ver o correo electrónico (co contrasinal temporal) que se envía ao usuario.',
+'passwordreset-email'              => 'Enderezo de correo electrónico:',
+'passwordreset-emailtitle'         => 'Detalles da conta de {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Alguén (probablemente vostede, desde o enderezo IP $1) solicitou un recordatorio coa
 información da súa conta en {{SITENAME}} ($4). {{PLURAL:$3|A seguinte conta de usuario está asociada|As seguintes contas de usuarios están asociadas}}
 a este enderezo de correo electrónico:
 
@@ -751,7 +753,7 @@ $2
 Debería acceder ao sistema e elixir un novo contrasinal agora. Se outro fixo esta
 solicitude ou se lembrou o seu contrasinal orixinal e xa non o quere cambiar,
 ignore esta mensaxe e continúe empregando o seu contrasinal vello.',
-'passwordreset-emailtext-user' => 'O usuario $1 solicitou un recordatorio coa información da súa conta en {{SITENAME}}
+'passwordreset-emailtext-user'     => 'O usuario $1 solicitou un recordatorio coa información da súa conta en {{SITENAME}}
 ($4). {{PLURAL:$3|A seguinte conta de usuario está asociada|As seguintes contas de usuarios están asociadas}}
 a este enderezo de correo electrónico:
 
@@ -761,9 +763,11 @@ $2
 Debería acceder ao sistema e elixir un novo contrasinal agora. Se outro fixo esta
 solicitude ou se lembrou o seu contrasinal orixinal e xa non o quere cambiar,
 ignore esta mensaxe e continúe empregando o seu contrasinal vello.',
-'passwordreset-emailelement'   => 'Nome de usuario: $1
+'passwordreset-emailelement'       => 'Nome de usuario: $1
 Contrasinal temporal: $2',
-'passwordreset-emailsent'      => 'Enviouse o correo electrónico co recordatorio.',
+'passwordreset-emailsent'          => 'Enviouse o correo electrónico co recordatorio.',
+'passwordreset-emailsent-capture'  => 'Enviouse un correo electrónico recordatorio, mostrado a continuación.',
+'passwordreset-emailerror-capture' => 'Xerouse un correo electrónico recordatorio, mostrado a continuación, pero o envío ao usuario fallou: $1.',
 
 # Special:ChangeEmail
 'changeemail'          => 'Cambiar o enderezo de correo electrónico',
@@ -1285,7 +1289,7 @@ Note que os seus índices do contido de {{SITENAME}} poden estar desactualizados
 'prefs-setemail'                => 'Establecer un enderezo de correo electrónico',
 'prefs-email'                   => 'Opcións de correo electrónico',
 'prefs-rendering'               => 'Aparencia',
-'saveprefs'                     => 'Gardar as preferencias',
+'saveprefs'                     => 'Gardar',
 'resetprefs'                    => 'Eliminar os cambios non gardados',
 'restoreprefs'                  => 'Restaurar todas as preferencias por defecto',
 'prefs-editing'                 => 'Edición',
@@ -1483,6 +1487,7 @@ Ha de ter menos {{PLURAL:$1|dun carácter|de $1 caracteres}}.',
 'right-siteadmin'             => 'Fechar e abrir a base de datos',
 'right-override-export-depth' => 'Exportar páxinas incluíndo as páxinas ligadas ata unha profundidade de 5',
 'right-sendemail'             => 'Enviar correos electrónicos a outros usuarios',
+'right-passwordreset'         => 'Restablecer o contrasinal dun usuario ([[Special:PasswordReset|páxina especial]])',
 
 # User rights log
 'rightslog'                  => 'Rexistro de dereitos de usuario',
@@ -1550,7 +1555,7 @@ Ha de ter menos {{PLURAL:$1|dun carácter|de $1 caracteres}}.',
 'diff'                              => 'dif',
 'hist'                              => 'hist',
 'hide'                              => 'Agochar',
-'show'                              => 'Amosar',
+'show'                              => 'Mostrar',
 'minoreditletter'                   => 'm',
 'newpageletter'                     => 'N',
 'boteditletter'                     => 'b',
@@ -1815,7 +1820,7 @@ Ao filtrar a lista por usuario, soamente se mostran as últimas versións dos fi
 'filehist-filesize'         => 'Tamaño do ficheiro',
 'filehist-comment'          => 'Comentario',
 'filehist-missing'          => 'Falta o ficheiro',
-'imagelinks'                => 'Ligazóns do ficheiro',
+'imagelinks'                => 'Uso do ficheiro',
 'linkstoimage'              => '{{PLURAL:$1|A seguinte páxina liga|As seguintes $1 páxinas ligan}} con esta imaxe:',
 'linkstoimage-more'         => 'Máis {{PLURAL:$1|dunha páxina liga|de $1 páxinas ligan}} con este ficheiro.
 A seguinte lista só amosa {{PLURAL:$1|a primeira páxina que liga|as primeiras $1 páxina que ligan}} con el.
@@ -1852,7 +1857,7 @@ A descrición da [$2 páxina de descrición do ficheiro] móstrase a continuaci�
 'filedelete-intro'            => "Está a piques de eliminar o ficheiro \"'''[[Media:\$1|\$1]]'''\" xunto con todo o seu historial.",
 'filedelete-intro-old'        => 'Vai eliminar a versión de "\'\'\'[[Media:$1|$1]]\'\'\'" do [$4 $2, ás $3].',
 'filedelete-comment'          => 'Motivo:',
-'filedelete-submit'           => 'Eliminar',
+'filedelete-submit'           => 'Borrar',
 'filedelete-success'          => "Borrouse o ficheiro \"'''\$1'''\".",
 'filedelete-success-old'      => 'Eliminouse a versión de "\'\'\'[[Media:$1|$1]]\'\'\'" do $2 ás $3.',
 'filedelete-nofile'           => "\"'''\$1'''\" non existe.",
@@ -1935,7 +1940,7 @@ As entradas <del>riscadas</del> xa foron resoltas.',
 'withoutinterwiki'         => 'Páxinas sen ligazóns interwiki',
 'withoutinterwiki-summary' => 'As seguintes páxinas non ligan con ningunha versión noutra lingua.',
 'withoutinterwiki-legend'  => 'Prefixo',
-'withoutinterwiki-submit'  => 'Amosar',
+'withoutinterwiki-submit'  => 'Mostrar',
 
 'fewestrevisions' => 'Artigos con menos revisións',
 
@@ -2033,7 +2038,7 @@ Pode precisar máis a vista seleccionando o tipo de rexistro, o nome do usuario 
 'allnotinnamespace' => 'Todas as páxinas (que non están no espazo de nomes $1)',
 'allpagesprev'      => 'Anterior',
 'allpagesnext'      => 'Seguinte',
-'allpagessubmit'    => 'Amosar',
+'allpagessubmit'    => 'Mostrar',
 'allpagesprefix'    => 'Mostrar as páxinas que comezan co prefixo:',
 'allpagesbadtitle'  => 'O título dado á páxina non era válido ou contiña un prefixo inter-linguas ou inter-wikis. Pode que conteña un ou máis caracteres que non se poden empregar nos títulos.',
 'allpages-bad-ns'   => '{{SITENAME}} carece do espazo de nomes "$1".',
@@ -2078,12 +2083,8 @@ Protocolos soportados: <tt>$1</tt>',
 'activeusers-noresult'   => 'Non se atopou ningún usuario.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Rexistro de creación de usuarios',
-'newuserlogpagetext'          => 'Este é un rexistro de creación de contas de usuario.',
-'newuserlog-byemail'          => 'contrasinal enviado por correo electrónico',
-'newuserlog-create-entry'     => 'Novo usuario',
-'newuserlog-create2-entry'    => 'creou unha nova conta para "$1"',
-'newuserlog-autocreate-entry' => 'Conta de usuario creada automaticamente',
+'newuserlogpage'     => 'Rexistro de creación de usuarios',
+'newuserlogpagetext' => 'Este é un rexistro de creación de contas de usuario.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Dereitos dun usuario segundo o seu grupo',
@@ -2940,9 +2941,6 @@ Isto, probabelmente, se debe a unha ligazón cara a un sitio externo que está n
 # Patrol log
 'patrol-log-page'      => 'Rexistro de revisións',
 'patrol-log-header'    => 'Este é un rexistro das revisións patrulladas.',
-'patrol-log-line'      => 'marcou a $1 de "$2" como revisada $3',
-'patrol-log-auto'      => '(automático)',
-'patrol-log-diff'      => 'revisión $1',
 'log-show-hide-patrol' => '$1 o rexistro de patrullas',
 
 # Image deletion
@@ -2973,7 +2971,7 @@ O seu sistema pode quedar comprometido se o executa.",
 'svg-long-desc'          => 'ficheiro SVG, nominalmente $1 × $2 píxeles, tamaño do ficheiro: $3',
 'show-big-image'         => 'Imaxe na máxima resolución',
 'show-big-image-preview' => 'Tamaño desta vista previa: $1.',
-'show-big-image-other'   => 'Outras resolucións: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Outra resolución|Outras resolucións}}: $1.',
 'show-big-image-size'    => '$1 × $2 píxeles',
 'file-info-gif-looped'   => 'en bucle',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|fotograma|fotogramas}}',
@@ -2994,7 +2992,12 @@ O seu sistema pode quedar comprometido se o executa.",
 'sp-newimages-showfrom' => 'Mostrar os novos ficheiros comezando polo $1 ás $2',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
-'minutes-abbrev' => 'min',
+'minutes-abbrev' => '$1min',
+'seconds'        => '{{PLURAL:$1|$1 segundo|$1 segundos}}',
+'minutes'        => '{{PLURAL:$1|$1 minuto|$1 minutos}}',
+'hours'          => '{{PLURAL:$1|$1 hora|$1 horas}}',
+'days'           => '{{PLURAL:$1|$1 día|$1 días}}',
+'ago'            => 'hai $1',
 
 # Bad image list
 'bad_image_list' => 'O formato é o seguinte:
@@ -3628,9 +3631,7 @@ Debería recibir [{{SERVER}}{{SCRIPTPATH}}/COPYING unha copia da licenza públic
 'filepath-page'    => 'Ficheiro:',
 'filepath-submit'  => 'Ir',
 'filepath-summary' => 'Esta páxina especial devolve a ruta completa dun ficheiro.
-As imaxes móstranse na súa resolución completa; outros tipos de ficheiros inícianse directamente co seu programa asociado.
-
-Introduza o nome do ficheiro sen o prefixo "{{ns:file}}:"',
+As imaxes móstranse na súa resolución completa; outros tipos de ficheiros inícianse directamente co seu programa asociado.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Procurar ficheiros duplicados',
@@ -3709,7 +3710,6 @@ Introduza o nome do ficheiro sen o prefixo "{{ns:file}}:"',
 'globalfileusage-text'        => 'Procurar o uso global do ficheiro',
 'globalfileusage-no-results'  => '"[[$1]]" non se emprega noutros wikis.',
 'globalfileusage-on-wiki'     => 'Uso en $2',
-'globalfileusage-of-file'     => 'Os seguintes wikis empregan este ficheiro:',
 'globalfileusage-more'        => 'Ollar [[{{#Special:GlobalUsage}}/$1|o uso global]] deste ficheiro.',
 'globalfileusage-filterlocal' => 'Non mostrar o uso local',
 
@@ -3720,7 +3720,6 @@ Introduza o nome do ficheiro sen o prefixo "{{ns:file}}:"',
 'globaltemplateusage-text'        => 'Procurar o uso global do modelo',
 'globaltemplateusage-no-results'  => '"[[$1]]" non se emprega noutros wikis.',
 'globaltemplateusage-on-wiki'     => 'Uso en $2',
-'globaltemplateusage-of-file'     => 'Os seguintes wikis empregan este modelo:',
 'globaltemplateusage-more'        => 'Ollar [[{{#Special:GlobalUsage}}/$1|o uso global]] deste modelo.',
 'globaltemplateusage-filterlocal' => 'Non mostrar o uso local',
 
@@ -3750,11 +3749,35 @@ Introduza o nome do ficheiro sen o prefixo "{{ns:file}}:"',
 'sqlite-no-fts'  => '$1 sen soporte para procuras de texto completo',
 
 # New logging system
-'revdelete-restricted'                => 'aplicou as restricións aos administradores',
-'revdelete-unrestricted'              => 'eliminou as restricións aos administradores',
+'logentry-delete-delete'              => '$1 {{GENDER:$2|borrou}} a páxina "$3"',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|restaurou}} a páxina "$3"',
+'logentry-delete-event'               => '$1 {{GENDER:$2|mudou}} a visibilidade {{PLURAL:$5|dunha entrada|de $5 entradas}} do rexistro de "$3": $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|mudou}} a visibilidade {{PLURAL:$5|dunha revisión|de $5 revisións}} da páxina "$3": $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|mudou}} a visibilidade de entradas do rexistro de "$3"',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|mudou}} a visibilidade de revisións da páxina "$3"',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|suprimiu}} a páxina "$3"',
+'logentry-suppress-event'             => '$1 {{GENDER:$2|mudou}} de xeito secreto a visibilidade {{PLURAL:$5|dunha entrada|de $5 entradas}} do rexistro de "$3": $4',
+'logentry-suppress-revision'          => '$1 {{GENDER:$2|mudou}} de xeito secreto a visibilidade {{PLURAL:$5|dunha revisión|de $5 revisións}} da páxina "$3": $4',
+'logentry-suppress-event-legacy'      => '$1 {{GENDER:$2|mudou}} de xeito secreto a visibilidade de entradas do rexistro de "$3"',
+'logentry-suppress-revision-legacy'   => '$1 {{GENDER:$2|mudou}} de xeito secreto a visibilidade de revisións da páxina "$3"',
+'revdelete-content-hid'               => 'agochou contidos',
+'revdelete-summary-hid'               => 'agochou o resumo de edición',
+'revdelete-uname-hid'                 => 'agochou o nome de usuario',
+'revdelete-content-unhid'             => 'descubriu contidos',
+'revdelete-summary-unhid'             => 'descubriu o resumo de edición',
+'revdelete-uname-unhid'               => 'descubriu o nome de usuario',
+'revdelete-restricted'                => 'aplicou restricións aos administradores',
+'revdelete-unrestricted'              => 'eliminou restricións aos administradores',
 'logentry-move-move'                  => '$1 {{GENDER:$2|moveu}} a páxina "$3" a "$4"',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|moveu}} a páxina "$3" a "$4" sen deixar unha redirección',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|moveu}} a páxina "$3" a "$4" sobre unha redirección',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|moveu}} a páxina "$3" a "$4" sobre unha redirección sen deixar unha redirección',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|marcou}} a revisión $4 da páxina "$3" como patrullada',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|marcou}} automaticamente a revisión $4 da páxina "$3" como patrullada',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|creou}} unha conta de usuario',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|creou}} unha conta de usuario',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|creou}} {{GENDER:$4|unha conta de usuario}} $3',
+'logentry-newusers-autocreate'        => 'A conta $1 {{GENDER:$2|creouse}} automaticamente',
+'newuserlog-byemail'                  => 'contrasinal enviado por correo electrónico',
 
 );

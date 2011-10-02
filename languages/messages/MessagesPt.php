@@ -36,6 +36,7 @@
  * @author Remember the dot
  * @author RmSilva
  * @author Rodrigo Calanca Nishino
+ * @author SandroHc
  * @author Sir Lestaty de Lioncourt
  * @author Sérgio Ribeiro
  * @author Urhixidur
@@ -1430,6 +1431,7 @@ Esta operação não pode ser desfeita.',
 'yourrealname'                  => 'Nome verdadeiro:',
 'yourlanguage'                  => 'Língua:',
 'yourvariant'                   => 'Variante da língua de conteúdo:',
+'prefs-help-variant'            => 'A tua variante preferida ou ortografia para mostrar no conteúdo das páginas desta wiki.',
 'yournick'                      => 'Assinatura:',
 'prefs-help-signature'          => 'Ao inserir comentários em páginas de discussão, assine-os colocando quatro tiles "<nowiki>~~~~</nowiki>" no fim dos comentários. Ao gravar, estes serão convertidos na sua assinatura mais a data e a hora da edição.',
 'badsig'                        => 'Assinatura inválida; verifique o código HTML utilizado.',
@@ -1571,6 +1573,7 @@ Esta informação será pública.',
 'right-siteadmin'             => 'Bloquear e desbloquear a base de dados',
 'right-override-export-depth' => 'Exportar páginas incluindo páginas ligadas até uma profundidade de 5',
 'right-sendemail'             => 'Enviar correio electrónico a outros utilizadores',
+'right-passwordreset'         => 'Repor palavra-chave de um utilizador ([[Special:PasswordReset|página especial]])',
 
 # User rights log
 'rightslog'                  => 'Registo de privilégios de utilizador',
@@ -1904,7 +1907,7 @@ Quando filtrados pelo usuário, os últimos ficheiros carregados aparecem no top
 'filehist-filesize'         => 'Tamanho do ficheiro',
 'filehist-comment'          => 'Comentário',
 'filehist-missing'          => 'Ficheiro em falta',
-'imagelinks'                => 'Links para este ficheiro',
+'imagelinks'                => 'Uso do ficheiro',
 'linkstoimage'              => '{{PLURAL:$1|A seguinte página contém|As seguintes $1 páginas contêm}} links para este ficheiro:',
 'linkstoimage-more'         => 'Mais de {{PLURAL:$1|uma página contém|$1 páginas contêm}} links para este ficheiro.
 A lista abaixo apresenta apenas {{PLURAL:$1|a primeira página|as primeiras $1 páginas}}.
@@ -2165,12 +2168,8 @@ Veja também as [[Special:WantedCategories|categorias desejadas]].',
 'activeusers-noresult'   => 'Nenhum utilizador encontrado.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Registo de criação de utilizadores',
-'newuserlogpagetext'          => 'Este é um registo de novas contas de utilizador',
-'newuserlog-byemail'          => 'palavra-chave enviada por correio-electrónico',
-'newuserlog-create-entry'     => 'Novo utilizador',
-'newuserlog-create2-entry'    => 'criou nova conta $1',
-'newuserlog-autocreate-entry' => 'Conta criada automaticamente',
+'newuserlogpage'     => 'Registo de criação de utilizadores',
+'newuserlogpagetext' => 'Este é um registo de novas contas de utilizador',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Privilégios dos grupos de utilizadores',
@@ -3024,9 +3023,6 @@ Este bloqueio foi provavelmente causado por um link para um site externo que con
 # Patrol log
 'patrol-log-page'      => 'Registo de edições patrulhadas',
 'patrol-log-header'    => 'Este é um registo de edições patrulhadas.',
-'patrol-log-line'      => 'marcou a $1 de $2 como uma edição patrulhada $3',
-'patrol-log-auto'      => 'automaticamente',
-'patrol-log-diff'      => 'edição $1',
 'log-show-hide-patrol' => '$1 registo de edições patrulhadas',
 
 # Image deletion
@@ -3057,7 +3053,7 @@ Executá-lo poderá comprometer a segurança do seu sistema.",
 'svg-long-desc'          => 'ficheiro SVG, de $1 × $2 pixels, tamanho: $3',
 'show-big-image'         => 'Resolução completa',
 'show-big-image-preview' => 'Tamanho desta antevisão: $1.',
-'show-big-image-other'   => 'Outras resoluções: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Outra resolução|Outras resoluções}}: $1.',
 'show-big-image-size'    => '$1 × $2 pixels',
 'file-info-gif-looped'   => 'cíclico',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|quadro|quadros}}',
@@ -3076,6 +3072,13 @@ Executá-lo poderá comprometer a segurança do seu sistema.",
 'ilsubmit'              => 'Procurar',
 'bydate'                => 'por data',
 'sp-newimages-showfrom' => 'Mostrar novos ficheiros a partir das $2 de $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|um segundo|$1 segundos}}',
+'minutes' => '{{PLURAL:$1|um minuto|$1 minutos}}',
+'hours'   => '{{PLURAL:$1|uma hora|$1 horas}}',
+'days'    => '{{PLURAL:$1|um dia|$1 dias}}',
+'ago'     => '$1 atrás',
 
 # Bad image list
 'bad_image_list' => 'O formato é o seguinte:
@@ -3707,11 +3710,8 @@ Em conjunto com este programa deve ter recebido [{{SERVER}}{{SCRIPTPATH}}/COPYIN
 'filepath'         => 'Endereço de ficheiro',
 'filepath-page'    => 'Ficheiro:',
 'filepath-submit'  => 'Ir',
-'filepath-summary' => 'Esta página especial retorna o endereço completo de um ficheiro ao seu browser, que irá processá-lo.
-Imagens serão apresentadas pelo browser na resolução máxima.
-Ficheiros de outro tipo serão abertos pelo browser directamente no programa que lhes está associado no seu computador.
-
-Introduza o nome do ficheiro sem o prefixo "{{ns:file}}:".',
+'filepath-summary' => 'Esta página especial retorna o endereço completo de um ficheiro.
+Imagens serão apresentadas pelo browser na resolução máxima; ficheiros de outro tipo serão abertos pelo browser directamente no programa que lhes está associado no seu computador.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Ficheiros duplicados',
@@ -3790,7 +3790,6 @@ Introduza o nome do ficheiro sem o prefixo "{{ns:file}}:".',
 'globalfileusage-text'        => 'Pesquisar utilização global do ficheiro.',
 'globalfileusage-no-results'  => '[[$1]] não é usado em outras wikis.',
 'globalfileusage-on-wiki'     => 'Uso na $2',
-'globalfileusage-of-file'     => 'As outras wikis a seguir usam este ficheiro:',
 'globalfileusage-more'        => 'Ver [[{{#Special:GlobalUsage}}/$1|a utilização global]] deste ficheiro.',
 'globalfileusage-filterlocal' => 'Não mostrar uso local.',
 
@@ -3801,7 +3800,6 @@ Introduza o nome do ficheiro sem o prefixo "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Pesquisar utilização global da predefinição',
 'globaltemplateusage-no-results'  => '[[$1]] não é utilizado em outras wikis.',
 'globaltemplateusage-on-wiki'     => 'Uso na $2',
-'globaltemplateusage-of-file'     => 'As wikis a seguir usam esta predefinição:',
 'globaltemplateusage-more'        => 'Ver [[{{#Special:GlobalUsage}}/$1|a utilização global]] desta predefinição.',
 'globaltemplateusage-filterlocal' => 'Não mostrar utilização local.',
 
@@ -3831,9 +3829,29 @@ Introduza o nome do ficheiro sem o prefixo "{{ns:file}}:".',
 'sqlite-no-fts'  => '$1 sem suporte de pesquisa de texto completo',
 
 # New logging system
-'revdelete-restricted'          => 'restrições a administradores aplicadas',
-'revdelete-unrestricted'        => 'restrições a administradores removidas',
-'logentry-move-move'            => '$1 {{GENDER:$2|moveu}} página $3 para $4',
-'logentry-move-move-noredirect' => '$1 {{GENDER:$2|moveu}} página $3 para $4 sem deixar um redireccionamento',
+'logentry-delete-delete'              => '$1 {{GENDER:$2|apagou}} a página $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|restaurou}} a página $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|alterou}} a visibilidade {{PLURAL:$5|de uma entrada|$5 das entradas}} em $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|alterou}} a visibilidade {{PLURAL:$5|de uma revisão|$5 das revisões}} em $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|alterou}} a visibilidade de uma entrada em $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|alterou}} a visibilidade de uma revisão em $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|suprimiu}} a página $3',
+'logentry-suppress-event'             => '$1 {{GENDER:$2|alterou}} secretamente a visibilidade {{PLURAL:$5|de uma entrada|$5 das entradas}} em $3: $4',
+'logentry-suppress-revision'          => '$1 secretamente {{GENDER:$2|alterou}} a visibilidade {{PLURAL:$5|de uma revisão|$5 das revisões}} em $3: $4',
+'logentry-suppress-event-legacy'      => '$1 secretamente {{GENDER:$2|alterou}} a visibilidade das entradas em $3',
+'logentry-suppress-revision-legacy'   => '$1 secretamente {{GENDER:$2|alterou}} a visibilidade das revisões em $3',
+'revdelete-content-hid'               => 'conteúdo oculto',
+'revdelete-summary-hid'               => 'editar sumário oculto',
+'revdelete-uname-hid'                 => 'utilizador oculto',
+'revdelete-content-unhid'             => 'conteúdo não oculto',
+'revdelete-summary-unhid'             => 'editar sumário não oculto',
+'revdelete-uname-unhid'               => 'utilizador não oculto',
+'revdelete-restricted'                => 'restrições a administradores aplicadas',
+'revdelete-unrestricted'              => 'restrições a administradores removidas',
+'logentry-move-move'                  => '$1 {{GENDER:$2|moveu}} página $3 para $4',
+'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|moveu}} página $3 para $4 sem deixar um redireccionamento',
+'logentry-move-move_redir'            => '$1 {{GENDER:$2|moveu}} a página $3 para $4 através de um redireccionamento',
+'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|moveu}} a página $3 para $4 sem um redireccionamento',
+'newuserlog-byemail'                  => 'palavra-chave enviada por correio-electrónico',
 
 );

@@ -1855,7 +1855,7 @@ Pri filtrovaní podľa používateľa sa zobrazia iba súbory, ktorých najnovš
 'filehist-filesize'         => 'veľkosť súboru',
 'filehist-comment'          => 'komentár',
 'filehist-missing'          => 'Súbor chýba',
-'imagelinks'                => 'Odkazy na súbor',
+'imagelinks'                => 'Využitie súboru',
 'linkstoimage'              => 'Na tento obrázok {{PLURAL:$1|odkazuje nasledujúca stránka|odkazujú nasledujúce $1 stránky|odkazuje nasledujúcich $1 stránok}}:',
 'linkstoimage-more'         => 'Viac ako $1 {{PLURAL:$1|stránka odkazuje|stránky odkazujú|stránok odkazuje}} na tento súbor.
 Nasledovný zoznam zobrazuje {{PLURAL:$1|prvú stránku odkazujúcu|prvé $1 stránky odkazujúce|prvých $1 stránok odkazujúcich}} iba na tento súbor.
@@ -2114,12 +2114,8 @@ Podporované protokoly: <tt>$1</tt>',
 'activeusers-noresult'   => 'Neboli nájdení žiadni používatelia.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Záznam vytvorených používateľov',
-'newuserlogpagetext'          => 'Toto je záznam naposledy vytvorených používateľských účtov.',
-'newuserlog-byemail'          => 'heslo poslané emailom',
-'newuserlog-create-entry'     => 'Nový používateľ',
-'newuserlog-create2-entry'    => 'vytvoril nový účet $1',
-'newuserlog-autocreate-entry' => 'Účet vytvorený automaticky',
+'newuserlogpage'     => 'Záznam vytvorených používateľov',
+'newuserlogpagetext' => 'Toto je záznam naposledy vytvorených používateľských účtov.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Práva skupiny používateľov',
@@ -2969,9 +2965,6 @@ Pravdepodobne to spôsobil odkaz na externú internetovú lokalitu, ktorá sa na
 # Patrol log
 'patrol-log-page'      => 'Záznam strážení',
 'patrol-log-header'    => 'Toto je záznam strážených revízií.',
-'patrol-log-line'      => '$1 z $2 označených ako sledované $3',
-'patrol-log-auto'      => '(automaticky)',
-'patrol-log-diff'      => 'revízia $1',
 'log-show-hide-patrol' => 'záznam stráženia $1',
 
 # Image deletion
@@ -3002,7 +2995,7 @@ Jeho spustením môžete kompromitovať svoj systém.",
 'svg-long-desc'          => 'SVG súbor, $1 × $2 pixelov, veľkosť súboru: $3',
 'show-big-image'         => 'Obrázok vo vyššom rozlíšení',
 'show-big-image-preview' => 'Veľkosť tohto náhľadu: $1.',
-'show-big-image-other'   => 'Iné rozlíšenia: $1.',
+'show-big-image-other'   => 'Iné {{PLURAL:$2|rozlíšenie|rozlíšenia}}: $1 .',
 'show-big-image-size'    => '$1 × $2 pixlov',
 'file-info-gif-looped'   => 'v cykle',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|rámec|rámce|rámcov}}',
@@ -3734,7 +3727,6 @@ Zadajte názov súboru bez predpony „{{ns:file}}:“.',
 'globalfileusage-text'        => 'Hľadať globálne využitie súboru.',
 'globalfileusage-no-results'  => '[[$1]] sa nepoužíva na iných wiki.',
 'globalfileusage-on-wiki'     => 'Použitie na $2',
-'globalfileusage-of-file'     => 'Nasledovné ďalšie wiki používajú tento súbor:',
 'globalfileusage-more'        => 'Zobraziť [[{{#Special:GlobalUsage}}/$1|ďalšie globálne použitie]] tohto súboru.',
 'globalfileusage-filterlocal' => 'Nezobrazovať lokálne použitie',
 
@@ -3745,7 +3737,6 @@ Zadajte názov súboru bez predpony „{{ns:file}}:“.',
 'globaltemplateusage-text'        => 'Hľadať globálne využitie šablóny.',
 'globaltemplateusage-no-results'  => '[[$1]] sa nepoužíva na iných wiki.',
 'globaltemplateusage-on-wiki'     => 'Použitie na $2',
-'globaltemplateusage-of-file'     => 'Nasledovné ďalšie wiki používajú túto šablónu:',
 'globaltemplateusage-more'        => 'Zobraziť [[{{#Special:GlobalUsage}}/$1|ďalšie globálne použitie]] tejto šablóny.',
 'globaltemplateusage-filterlocal' => 'Nezobrazovať lokálne použitie',
 
@@ -3781,5 +3772,6 @@ Zadajte názov súboru bez predpony „{{ns:file}}:“.',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|premiestnil}} stránku $3 na $4, ale neponechal presmerovanie',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|premiestnil}} stránku $3 na $4 prostredníctvom presmerovania',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|premiestnil}} stránku $3 na $4 prostredníctvom  presmerovania, ale neponechal presmerovanie',
+'newuserlog-byemail'                  => 'heslo poslané emailom',
 
 );

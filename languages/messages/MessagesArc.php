@@ -309,7 +309,7 @@ $messages = array(
 'hidetoc'                 => 'ܛܫܝ',
 'viewdeleted'             => 'ܚܙܝ $1؟',
 'restorelink'             => '{{PLURAL:$1|ܚܕ ܫܘܚܠܦܐ ܫܝܦܐ|$1 ܫܘܚܠܦ̈ܐ ܫܝܦ̈ܐ}}',
-'site-atom-feed'          => 'ܛܥܝܡܘܬܐ ܕܐܛܘܡ',
+'site-atom-feed'          => '$1 ܛܥܝܡܘܬܐ ܕܐܛܘܡ',
 'page-atom-feed'          => '"$1" ܛܥܝܡܘܬܐ ܕܐܛܘܡ',
 'red-link-title'          => '$1 (ܦܐܬܐ ܗܕܐ ܠܝܬ)',
 
@@ -565,7 +565,7 @@ $messages = array(
 'searchprofile-everything'       => 'ܟܠ ܡܕܡ',
 'searchprofile-advanced'         => 'ܡܬܩܕܡܢܐ',
 'searchprofile-articles-tooltip' => 'Search in $1',
-'searchprofile-project-tooltip'  => 'Search in $1',
+'searchprofile-project-tooltip'  => '',
 'search-result-size'             => '$1 ({{PLURAL:$2|1 ܡܠܬܐ|$2 ܡܠ̈ܐ}})',
 'search-redirect'                => '(ܨܝܒ $1)',
 'search-section'                 => '(ܡܢܬܐ $1)',
@@ -575,7 +575,9 @@ $messages = array(
 'search-interwiki-more'          => '(ܝܬܝܪ)',
 'search-mwsuggest-enabled'       => 'ܥܡ ܡܚܫܚܬ̈ܐ',
 'search-mwsuggest-disabled'      => 'ܠܐ ܡܚܫܚܬ̈ܐ',
+'search-relatedarticle'          => 'ܐܚܝܢܝ̈ܐ',
 'searcheverything-enable'        => 'ܒܨܝ ܒܟܠ ܚܩܠܬ̈ܐ',
+'searchrelated'                  => 'ܐܚܝܢܝ̈ܐ',
 'searchall'                      => 'ܟܠ',
 'showingresults'                 => "ܚܘܘܝܐ ܠܬܚܬ {{PLURAL:$1|'''1''' ܦܠܛܐ|'''$1''' ܦܠܛ̈ܐ}} ܫܪܐ ܡܢ ܡܢܝܢܐ '''$2'''.",
 'showingresultsheader'           => "{{PLURAL:$5|ܦܠܛܐ '''$1''' ܡܢ '''$3'''|ܦܠܛ̈ܐ '''$1 - $2''' ܡܢ '''$3'''}} ܠ'''$4'''",
@@ -615,6 +617,7 @@ $messages = array(
 'saveprefs'                   => 'ܠܒܘܟ',
 'resetprefs'                  => 'ܡܫܝ ܫܘܚܠܦ̈ܐ ܠܐ ܠܒܝܟ̈ܐ',
 'prefs-editing'               => 'ܫܚܠܦܬܐ',
+'rows'                        => 'ܨ̈ܦܐ',
 'columns'                     => 'ܥܡܘܕ̈ܐ:',
 'searchresultshead'           => 'ܒܨܝ',
 'resultsperpage'              => 'ܡܢܝܢܐ ܕܦܠܛ̈ܐ ܒܕܦܐ:',
@@ -662,6 +665,8 @@ $messages = array(
 'prefs-advancedsearchoptions' => 'ܓܒܝܬ̈ܐ ܡܬܩܕ̈ܡܢܐ',
 'prefs-advancedwatchlist'     => 'ܓܒܝܬ̈ܐ ܡܬܩܕ̈ܡܢܐ',
 'prefs-displayrc'             => 'ܚܘܝ ܓܒܝܬ̈ܐ',
+'prefs-displaysearchoptions'  => 'ܚܘܝ ܓܒܝܬ̈ܐ',
+'prefs-displaywatchlist'      => 'ܚܘܝ ܓܒܝܬ̈ܐ',
 'prefs-diffs'                 => 'ܦܪ̈ܝܫܘܝܬܐ',
 
 # User rights
@@ -844,7 +849,7 @@ $1',
 'filehist-dimensions'       => 'ܩܝܡ̈ܐ',
 'filehist-filesize'         => 'ܥܓܪܐ ܕܠܦܦܐ',
 'filehist-comment'          => 'ܥܘܩܒܐ',
-'imagelinks'                => 'ܐܣܘܪ̈ܐ ܕܠܦܦܐ',
+'imagelinks'                => 'ܚܫܚܬܐ ܕܠܦܦܐ',
 'linkstoimage'              => '{{PLURAL:$1|ܦܐܬܐ ܗܕܐ ܐܣܪ|$1 ܦܐܬܬ̈ܐ ܗܠܝܢ ܐܣܪܝܢ}} ܥܡ ܗܢܐ ܠܦܦܐ:',
 'nolinkstoimage'            => 'ܠܝܬ ܦܐܬܐ ܕܐܣܪ ܠܗܢܐ ܠܦܦܐ.',
 'uploadnewversion-linktext' => 'ܐܣܩ ܨܚܚܐ ܚܕܬܐ ܡܢ ܗܢܐ ܠܦܦܐ',
@@ -1009,10 +1014,7 @@ $1',
 'activeusers-noresult'   => 'ܠܐ ܡܦܠܚܢܐ ܐܫܬܟܚ.',
 
 # Special:Log/newusers
-'newuserlogpage'           => 'ܣܓܠܐ ܕܒܪܝܬܐ ܕܡܦܠܚܢܐ',
-'newuserlog-byemail'       => 'ܡܠܬܐ ܕܥܠܠܐ ܐܫܬܕܪܬ ܒܝܕ ܒܝܠܕܪܐ ܐܠܩܛܪܘܢܝܐ',
-'newuserlog-create-entry'  => 'ܚܘܫܒܢܐ ܕܡܦܠܚܢܐ ܚܕܬܐ',
-'newuserlog-create2-entry' => 'ܒܪܐ ܚܘܫܒܢܐ ܚܕܬܐ $1',
+'newuserlogpage' => 'ܣܓܠܐ ܕܒܪܝܬܐ ܕܡܦܠܚܢܐ',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'ܙܕ̈ܩܐ ܕܟܢܘܫܬܐ ܕܡܦܠܚܢ̈ܐ',
@@ -1195,6 +1197,7 @@ $1',
 'whatlinkshere-next'       => '{{PLURAL:$1|ܚܕܬܐ|$1 ܚܕ̈ܬܐ}}',
 'whatlinkshere-links'      => '← ܐܣܘܪ̈ܐ',
 'whatlinkshere-hideredirs' => '$1 ܨܘܝܒ̈ܐ',
+'whatlinkshere-hidetrans'  => '$1 ܡܬܚܪ̈ܙܢܘܬܐ',
 'whatlinkshere-hidelinks'  => '$1 ܐܣܘܪ̈ܐ',
 'whatlinkshere-hideimages' => '$1 ܐܣܘܪܐ ܕܨܘܪܬܐ',
 'whatlinkshere-filters'    => 'ܡܨܦܝܢܝܬ̈ܐ',
@@ -1309,10 +1312,6 @@ Do you want to change the settings?',
 'siteusers'   => '{{SITENAME}} {{PLURAL:$2|ܡܦܠܚܢܐ|ܡܦܠܚܢ̈ܐ}} $1',
 'anonusers'   => '{{SITENAME}} {{PLURAL:$2|ܡܦܠܚܢܐ ܠܐ ܝܕܝܥܐ|ܡܦܠܚܢ̈ܐ ܠܐ ܝܕ̈ܝܥܐ}} $1',
 'creditspage' => 'ܙܕ̈ܩܐ ܕܦܐܬܐ',
-
-# Patrol log
-'patrol-log-auto' => '(ܝܬܐܝܬ)',
-'patrol-log-diff' => 'ܬܢܝܬܐ $1',
 
 # Image deletion
 'filedeleteerror-short' => 'ܦܘܕܐ ܒܫܝܦܐ ܕܠܦܦܐ: $1',
@@ -1506,5 +1505,8 @@ $1',
 'htmlform-submit'              => 'ܫܕܪ',
 'htmlform-reset'               => 'ܠܐ ܬܥܒܕ ܫܘܚܠܦ̈ܐ',
 'htmlform-selectorother-other' => 'ܐܚܪܢܐ',
+
+# New logging system
+'newuserlog-byemail' => 'ܡܠܬܐ ܕܥܠܠܐ ܐܫܬܕܪܬ ܒܝܕ ܒܝܠܕܪܐ ܐܠܩܛܪܘܢܝܐ',
 
 );

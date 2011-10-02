@@ -126,8 +126,6 @@ class SpecialPageFactory {
 		// Page tools
 		'ComparePages'              => 'SpecialComparePages',
 		'Export'                    => 'SpecialExport',
-		'GlobalFileUsage'           => 'SpecialGlobalFileUsage',
-		'GlobalTemplateUsage'       => 'SpecialGlobalTemplateUsage',
 		'Import'                    => 'SpecialImport',
 		'Undelete'                  => 'SpecialUndelete',
 		'Whatlinkshere'             => 'SpecialWhatlinkshere',
@@ -265,7 +263,7 @@ class SpecialPageFactory {
 	/**
 	 * Add a page to a certain display group for Special:SpecialPages
 	 *
-	 * @param $page SpecialPage|string
+	 * @param $page Mixed: SpecialPage or string
 	 * @param $group String
 	 */
 	public static function setGroup( $page, $group ) {
@@ -278,8 +276,6 @@ class SpecialPageFactory {
 	 * Get the group that the special page belongs in on Special:SpecialPage
 	 *
 	 * @param $page SpecialPage
-	 *
-	 * @return string
 	 */
 	public static function getGroup( &$page ) {
 		$name = $page->getName();
@@ -456,7 +452,7 @@ class SpecialPageFactory {
 				wfProfileOut( __METHOD__ );
 				return $title;
 			} else {
-				$context->setTitle( $page->getTitle() );
+				$context->setTitle( $page->getTitle( $par ) );
 			}
 
 		} elseif ( !$page->isIncludable() ) {
@@ -477,9 +473,9 @@ class SpecialPageFactory {
 
 	/**
 	 * Just like executePath() but will override global variables and execute
-	 * the page in "inclusion" mode. Returns true if the excution was successful
-	 * or false if there was no such special page, or a title object if it was
-	 * a redirect.
+	 * the page in "inclusion" mode. Returns true if the execution was
+	 * successful or false if there was no such special page, or a title object
+	 * if it was a redirect.
 	 *
 	 * Also saves the current $wgTitle, $wgOut, $wgRequest, $wgUser and $wgLang
 	 * variables so that the special page will get the context it'd expect on a
@@ -510,7 +506,7 @@ class SpecialPageFactory {
 		// The useful part
 		$ret = self::executePath( $title, $context, true );
 
-		// And restore that globals
+		// And restore the old globals
 		$wgTitle = $oldTitle;
 		$wgOut = $oldOut;
 		$wgRequest = $oldRequest;

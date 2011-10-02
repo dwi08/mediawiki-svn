@@ -490,8 +490,7 @@ Legend: '''({{int:cur}})''' = vaiţīd līdzinţõmizõks lǟndz redaktsijõks,,
 'linksearch-line' => '$1 um sidtõd līedst $2',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Kȭlbatijizt lūomiz log',
-'newuserlog-create-entry' => 'Ūž kȭlbatiji',
+'newuserlogpage' => 'Kȭlbatijizt lūomiz log',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(nõtkõmd nimkēra)',
@@ -701,10 +700,6 @@ Až sugīz nei, sōd līed tōdõs kädūdõks jeddõpēḑõn sōtõ agā jūr�
 'tooltip-rollback'                => 'Kištāntõb jarā īd glõbžõks lǟndz kubsõtīe tējiz tīedõd mõitõkst',
 'tooltip-undo'                    => '"Viedāgid jarā" tīeb tijāks/kīeldõbjarā sīe mõitõks ja ovātõb redigīerimiz läb tekstõ jedmõl-vaņtlimizõks. Neiīž tēg võigid sǟl kēratõ, mis vȯļ sīe jarā vīmiz sī.',
 'tooltip-summary'                 => 'Kēratigid lītõ kubbõ-võtāmi',
-
-# Patrol log
-'patrol-log-line' => 'paņ merk ku $1 līeds $2 kontroļļtõd $3',
-'patrol-log-diff' => 'versij $1',
 
 # Browsing diffs
 'previousdiff' => '← Jedmõli redaktsij',

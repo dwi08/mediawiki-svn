@@ -47,8 +47,10 @@ return array(
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 	),
 	'skins.modern' => array(
-		'styles' => array( 'modern/main.css' => array( 'media' => 'screen' ),
-				'modern/print.css' => array( 'media' => 'print' ) ),
+		'styles' => array(
+			'modern/main.css' => array( 'media' => 'screen' ),
+			'modern/print.css' => array( 'media' => 'print' ),
+		),
 		'remoteBasePath' => $GLOBALS['wgStylePath'],
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 	),
@@ -155,6 +157,9 @@ return array(
 	),
 	'jquery.mwExtension' => array(
 		'scripts' => 'resources/jquery/jquery.mwExtension.js',
+	),
+	'jquery.mw-jump' => array(
+		'scripts' => 'resources/jquery/jquery.mw-jump.js',
 	),
 	'jquery.qunit' => array(
 		'scripts' => 'resources/jquery/jquery.qunit.js',
@@ -565,8 +570,10 @@ return array(
 			'mk' => 'resources/mediawiki.language/languages/mk.js',
 			'mo' => 'resources/mediawiki.language/languages/mo.js',
 			'mt' => 'resources/mediawiki.language/languages/mt.js',
+			'nl' => 'resources/mediawiki.language/languages/nl.js',
 			'nso' => 'resources/mediawiki.language/languages/nso.js',
 			'pl' => 'resources/mediawiki.language/languages/pl.js',
+			'pt' => 'resources/mediawiki.language/languages/pt.js',
 			'pt-br' => 'resources/mediawiki.language/languages/pt-br.js',
 			'ro' => 'resources/mediawiki.language/languages/ro.js',
 			'ru' => 'resources/mediawiki.language/languages/ru.js',
@@ -608,6 +615,7 @@ return array(
 			'jquery.checkboxShiftClick',
 			'jquery.makeCollapsible',
 			'jquery.placeholder',
+			'jquery.mw-jump',
 			'mediawiki.util',
 		),
 	),

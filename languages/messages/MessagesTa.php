@@ -68,6 +68,8 @@ $magicWords = array(
 
 $linkTrail = "/^([\xE0\xAE\x80-\xE0\xAF\xBF]+)(.*)$/sDu";
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'இணைப்புகளுக்கு அடிக்கோடிடு',
@@ -1600,11 +1602,7 @@ $1 பயனரையோ அல்லது வேறு [[{{MediaWiki:Grouppage
 'activeusers-noresult'   => 'எந்தவொரு பயனர்களும் காணப்படவில்லை.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'பயனர் உருவாக்கம் பற்றிய குறிப்பு',
-'newuserlog-byemail'          => 'மின்னஞ்சல் மூலம் கடவுச்சொல் அனுப்பப்பட்டுவிட்டது',
-'newuserlog-create-entry'     => 'புதிய பயனர் கணக்கு',
-'newuserlog-create2-entry'    => '$1-என்ற புதிய கணக்குத் தொடங்கப்பட்டுவிட்டது',
-'newuserlog-autocreate-entry' => 'கணக்கு தானாக உருவாக்கப்பட்டுவிட்டது',
+'newuserlogpage' => 'பயனர் உருவாக்கம் பற்றிய குறிப்பு',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'பயனர் குழு உரிமைகள்',
@@ -2213,9 +2211,6 @@ $1',
 
 # Patrol log
 'patrol-log-page' => 'ரோந்துப் பதிகை',
-'patrol-log-line' => '$1 பக்கத்தின் $2 திருத்தத்தை ரோந்திடப்பட்டதாகக் குறித்தார் $3',
-'patrol-log-auto' => '(தன்னிச்சையாக)',
-'patrol-log-diff' => 'திருத்தம் $1',
 
 # Image deletion
 'deletedrevision'                 => 'பழைய திருத்தம் $1 நீக்கப்பட்டது',
@@ -2684,5 +2679,6 @@ $5
 # New logging system
 'revdelete-restricted'   => 'நிர்வாகிகளுக்கு கட்டுப்பாடுகள் விதிக்கப்பட்டது',
 'revdelete-unrestricted' => 'நிர்வாகிகளின் கட்டுப்பாடுகள் நீக்கப்பட்டது',
+'newuserlog-byemail'     => 'மின்னஞ்சல் மூலம் கடவுச்சொல் அனுப்பப்பட்டுவிட்டது',
 
 );

@@ -34,12 +34,6 @@ class WikiPage extends Page {
 	/**@}}*/
 
 	/**
-	 * @protected
-	 * @var ParserOptions: ParserOptions object for $wgUser articles
-	 */
-	public $mParserOptions;
-
-	/**
 	 * Constructor and clear the article
 	 * @param $title Title Reference to a Title object.
 	 */
@@ -371,8 +365,7 @@ class WikiPage extends Page {
 		$lc = LinkCache::singleton();
 
 		if ( $data ) {
-			$lc->addGoodLinkObj( $data->page_id, $this->mTitle,
-				$data->page_len, $data->page_is_redirect, $data->page_latest );
+			$lc->addGoodLinkObjFromRow( $this->mTitle, $data );
 
 			$this->mTitle->loadFromRow( $data );
 
@@ -666,7 +659,7 @@ class WikiPage extends Page {
 		if ( $dbr->implicitGroupby() ) {
 			$realNameField = 'user_real_name';
 		} else {
-			$realNameField = 'FIRST(user_real_name) AS user_real_name';
+			$realNameField = 'MIN(user_real_name) AS user_real_name';
 		}
 
 		$tables = array( 'revision', 'user' );
@@ -1607,7 +1600,7 @@ class WikiPage extends Page {
 	public function doDeleteArticle(
 		$reason, $suppress = false, $id = 0, $commit = true, &$error = '', User $user = null
 	) {
-		global $wgUseTrackbacks, $wgEnableInterwikiTemplatesTracking, $wgGlobalDatabase, $wgUser;
+		global $wgDeferredUpdateList, $wgUseTrackbacks, $wgUser;
 		$user = is_null( $user ) ? $wgUser : $user;
 
 		wfDebug( __METHOD__ . "\n" );
@@ -1713,14 +1706,6 @@ class WikiPage extends Page {
 			$dbw->delete( 'iwlinks', array( 'iwl_from' => $id ), __METHOD__ );
 			$dbw->delete( 'redirect', array( 'rd_from' => $id ), __METHOD__ );
 			$dbw->delete( 'page_props', array( 'pp_page' => $id ), __METHOD__ );
-
-			if ( $wgEnableInterwikiTemplatesTracking && $wgGlobalDatabase ) {
-				$dbw2 = wfGetDB( DB_MASTER, array(), $wgGlobalDatabase );
-				$dbw2->delete( 'globaltemplatelinks',
-							array(  'gtl_from_wiki' => wfGetID(),
-									'gtl_from_page' => $id )
-							);
-		}
 		}
 
 		# If using cleanup triggers, we can skip some manual deletes
@@ -1984,7 +1969,7 @@ class WikiPage extends Page {
 		$edit->revid = $revid;
 		$edit->newText = $text;
 		$edit->pst = $this->preSaveTransform( $text, $user, $popts );
-		$edit->popts = $this->getParserOptions( true );
+		$edit->popts = $this->makeParserOptions( 'canonical' );
 		$edit->output = $wgParser->parse( $edit->pst, $this->mTitle, $edit->popts, true, true, $revid );
 		$edit->oldText = $this->getRawText();
 
@@ -2241,9 +2226,7 @@ class WikiPage extends Page {
 		$title->touchLinks();
 		$title->purgeSquid();
 		$title->deleteTitleProtection();
-
-		# Invalidate caches of distant articles which transclude this page
-		DeferredUpdates::addHTMLCacheUpdate( $title, 'globaltemplatelinks' );
+		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 	}
 
 	/**
@@ -2287,9 +2270,7 @@ class WikiPage extends Page {
 
 		# Image redirects
 		RepoGroup::singleton()->getLocalRepo()->invalidateImageRedirect( $title );
-
-		# Invalidate caches of distant articles which transclude this page
-		DeferredUpdates::addHTMLCacheUpdate( $title, 'globaltemplatelinks' );
+		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 	}
 
 	/**
@@ -2302,8 +2283,6 @@ class WikiPage extends Page {
 		// Invalidate caches of articles which include this page
 		DeferredUpdates::addHTMLCacheUpdate( $title, 'templatelinks' );
 
-		// Invalidate caches of distant articles which transclude this page
-		DeferredUpdates::addHTMLCacheUpdate( $title, 'globaltemplatelinks' );
 
 		// Invalidate the caches of all pages which redirect here
 		DeferredUpdates::addHTMLCacheUpdate( $title, 'redirect' );
@@ -2340,40 +2319,6 @@ class WikiPage extends Page {
 		if ( $res !== false ) {
 			foreach ( $res as $row ) {
 				$result[] = Title::makeTitle( $row->tl_namespace, $row->tl_title );
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Return a list of distant templates used by this article.
-	 * Uses the globaltemplatelinks table
-	 *
-	 * @return Array of Title objects
-	 */
-	public function getUsedDistantTemplates() {
-		global $wgGlobalDatabase;
-
-		$result = array();
-
-		if ( $wgGlobalDatabase ) {
-			$id = $this->mTitle->getArticleID();
-
-			if ( $id == 0 ) {
-				return array();
-			}
-
-			$dbr = wfGetDB( DB_SLAVE, array(), $wgGlobalDatabase );
-			$res = $dbr->select( 'globaltemplatelinks',
-				array( 'gtl_to_prefix', 'gtl_to_namespace', 'gtl_to_title' ),
-				array( 'gtl_from_wiki' => wfWikiID( ), 'gtl_from_page' => $id ),
-				__METHOD__ );
-
-			if ( $res !== false ) {
-				foreach ( $res as $row ) {
-					$result[] = Title::makeTitle( $row->gtl_to_namespace, $row->gtl_to_title, null, $row->gtl_to_prefix );
-				}
 			}
 		}
 
@@ -2560,34 +2505,20 @@ class WikiPage extends Page {
 	}
 
 	/**
-	 * Get parser options suitable for rendering the primary article wikitext
-	 * @param $canonical boolean Determines that the generated options must not depend on user preferences (see bug 14404)
-	 * @return mixed ParserOptions object or boolean false
-	 * @deprecated since 1.19
-	 */
-	public function getParserOptions( $canonical = false ) {
-		global $wgUser, $wgLanguageCode; // @fixme Eliminate $wgUser
-		if ( !$this->mParserOptions || $canonical ) {
-			$user = !$canonical ? $wgUser : new User;
-			$this->mParserOptions = $this->makeParserOptions( $user );
-		}
-		// Clone to allow modifications of the return value without affecting cache
-		return clone $this->mParserOptions;
-	}
-
-	/**
 	* Get parser options suitable for rendering the primary article wikitext
-	* @param User $user
+	* @param User|string $user User object or 'canonical'
 	* @return ParserOptions
 	*/
-	public function makeParserOptions( User $user ) {
+	public function makeParserOptions( $user ) {
 		global $wgLanguageCode;
-		$options = ParserOptions::newFromUser( $user );
-		$options->enableLimitReport(); // show inclusion/loop reports
-		$options->setTidy( true ); // fix bad HTML
-		if ( $user->isAnon() ) {
+		if ( $user instanceof User ) { // settings per user (even anons)
+			$options = ParserOptions::newFromUser( $user );
+		} else { // canonical settings
+			$options = ParserOptions::newFromUser( new User );
 			$options->setUserLang( $wgLanguageCode ); # Must be set explicitily
 		}
+		$options->enableLimitReport(); // show inclusion/loop reports
+		$options->setTidy( true ); // fix bad HTML
 		return $options;
 	}
 

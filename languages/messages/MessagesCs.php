@@ -1580,6 +1580,7 @@ Tuto operaci nelze vrátit zpět.',
 'right-siteadmin'             => 'Zamykání a odemykání databáze',
 'right-override-export-depth' => 'Exportovat stránky včetně odkazovaných stránek až do hloubky 5',
 'right-sendemail'             => 'Odesílání e-mailů ostatním uživatelům',
+'right-passwordreset'         => 'Reset hesla uživatele ([[Special:PasswordReset|speciální stránka]])',
 
 # User rights log
 'rightslog'                  => 'Kniha práv uživatelů',
@@ -1897,7 +1898,7 @@ Při filtrování podle uživatele se zobrazují jen soubory, u kterých tento u
 'filehist-filesize'         => 'Velikost souboru',
 'filehist-comment'          => 'Komentář',
 'filehist-missing'          => 'Soubor chybí',
-'imagelinks'                => 'Odkazy na soubor',
+'imagelinks'                => 'Využití souboru',
 'linkstoimage'              => 'Na soubor {{PLURAL:$1|odkazuje tato stránka|odkazují tyto $1 stránky|odkazuje těchto $1 stránek}}:',
 'linkstoimage-more'         => 'Na tento soubor {{PLURAL:$1|odkazuje více stránek|odkazují více než $1 stránky|odkazuje více než $1 stránek}}.
 Následující seznam zobrazuje pouze {{PLURAL:$1|tu první|první $1|prvních $1}}.
@@ -2156,12 +2157,8 @@ Podporované protokoly: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nenalezen žádný uživatel.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Kniha nových uživatelů',
-'newuserlogpagetext'          => 'Toto je záznam nově zaregistrovaných uživatelů.',
-'newuserlog-byemail'          => 'heslo zasláno e-mailem',
-'newuserlog-create-entry'     => 'Nově založený uživatel',
-'newuserlog-create2-entry'    => 'založil účet $1',
-'newuserlog-autocreate-entry' => 'Účet vytvořen automaticky',
+'newuserlogpage'     => 'Kniha nových uživatelů',
+'newuserlogpagetext' => 'Toto je záznam nově zaregistrovaných uživatelů.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Práva skupin uživatelů',
@@ -2983,9 +2980,6 @@ Uložte jej na svůj disk a nahrajte ho sem.',
 # Patrol log
 'patrol-log-page'      => 'Kniha prověřených editací',
 'patrol-log-header'    => 'Toto je kniha prověřených verzí.',
-'patrol-log-line'      => 'označuje $1 stránky $2 za prověřenou $3',
-'patrol-log-auto'      => '(automaticky)',
-'patrol-log-diff'      => 'revizi $1',
 'log-show-hide-patrol' => '$1 knihu záznamů patroly',
 
 # Image deletion
@@ -3036,6 +3030,12 @@ Otevřením souboru můžete ohrozit svůj počítač.",
 'ilsubmit'              => 'Hledat',
 'bydate'                => 'podle data',
 'sp-newimages-showfrom' => 'Zobrazit nové soubory počínaje od $2, $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|$1 sekunda|$1 sekundy|$1 sekund}}',
+'minutes' => '{{PLURAL:$1|$1 minuta|$1 minuty|$1 minut}}',
+'hours'   => '{{PLURAL:$1|$1 hodina|$1 hodiny|$1 hodin}}',
+'days'    => '{{PLURAL:$1|$1 den|$1 dny|$1 dní}}',
 
 # Bad image list
 'bad_image_list' => 'Tato stránka má následující formát:
@@ -3713,9 +3713,8 @@ MediaWiki je distribuována v naději, že bude užitečná, avšak BEZ JAKÉKOL
 'filepath'         => 'Cesta k souboru',
 'filepath-page'    => 'Soubor:',
 'filepath-submit'  => 'Přejít',
-'filepath-summary' => 'Tato speciální stránka vrátí úplnou cestu k souboru. Obrázky se zobrazí v plném rozlišení, jiné typy souborů se otevřenou v  přiřazených programech.
-
-Jméno souboru vkládejte bez označení "{{ns:file}}:" .',
+'filepath-summary' => 'Tato speciální stránka vrátí úplnou cestu k souboru.
+Obrázky se zobrazí v plném rozlišení, jiné typy souborů se otevřenou v přiřazených programech.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Hledání duplicitních souborů',
@@ -3794,7 +3793,6 @@ Jméno souboru vkládejte bez označení "{{ns:file}}:" .',
 'globalfileusage-text'        => 'Hledání globálního využití souboru',
 'globalfileusage-no-results'  => '[[$1]] se na ostatních wiki nepoužívá.',
 'globalfileusage-on-wiki'     => 'Využití na $2',
-'globalfileusage-of-file'     => 'Tento soubor využívají následující wiki:',
 'globalfileusage-more'        => 'Zobrazit [[{{#Special:GlobalUsage}}/$1|další globální využití]] tohoto souboru.',
 'globalfileusage-filterlocal' => 'Nezobrazovat místní využití',
 
@@ -3805,7 +3803,6 @@ Jméno souboru vkládejte bez označení "{{ns:file}}:" .',
 'globaltemplateusage-text'        => 'Hledání globálního využití šablony',
 'globaltemplateusage-no-results'  => '[[$1]] se na ostatních wiki nepoužívá.',
 'globaltemplateusage-on-wiki'     => 'Využití na $2',
-'globaltemplateusage-of-file'     => 'Tuto šablonu využívají následující wiki:',
 'globaltemplateusage-more'        => 'Zobrazit [[{{#Special:GlobalUsage}}/$1|další globální využití]] této šablony.',
 'globaltemplateusage-filterlocal' => 'Nezobrazovat místní využití',
 
@@ -3835,11 +3832,33 @@ Jméno souboru vkládejte bez označení "{{ns:file}}:" .',
 'sqlite-no-fts'  => '$1 bez podpory plnotextového vyhledávání',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|smazal|smazala|smazal}} stránku $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|obnovil|obnovila|obnovil}} stránku $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|změnil|změnila|změnil}} viditelnost {{PLURAL:$5|protokolovacího záznamu|$5 protokolovacích záznamů}} ke stránce $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|změnil|změnila|změnil}} viditelnost {{PLURAL:$5|revize|$5 revizí}} na stránce $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|změnil|změnila|změnil}} viditelnost protokolovacích záznamů ke stránce $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|změnil|změnila|změnil}} viditelnost revizí na stránce $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|utajil|utajila|utajil}} stránku $3',
+'logentry-suppress-event'             => '$1 utajeně {{GENDER:$2|změnil|změnila|změnil}} viditelnost {{PLURAL:$5|protokolovacího záznamu|$5 protokolovacích záznamů}} ke stránce $3: $4',
+'logentry-suppress-revision'          => '$1 utajeně {{GENDER:$2|změnil|změnila|změnil}} viditelnost {{PLURAL:$5|revize|$5 revizí}} na stránce $3: $4',
+'logentry-suppress-event-legacy'      => '$1 utajeně {{GENDER:$2|změnil|změnila|změnil}} viditelnost protokolovacích záznamů ke stránce $3',
+'logentry-suppress-revision-legacy'   => '$1 utajeně {{GENDER:$2|změnil|změnila|změnil}} viditelnost revizí na stránce $3',
+'revdelete-content-hid'               => 'skryt obsah',
+'revdelete-summary-hid'               => 'skryto shrnutí editace',
+'revdelete-uname-hid'                 => 'skryto uživatelské jméno',
+'revdelete-content-unhid'             => 'odkryt obsah',
+'revdelete-summary-unhid'             => 'odkryto shrnutí editace',
+'revdelete-uname-unhid'               => 'odkryto uživatelské jméno',
 'revdelete-restricted'                => 'omezení správců použito',
 'revdelete-unrestricted'              => 'omezení správců odstraněno',
 'logentry-move-move'                  => '$1 {{GENDER:$2|přesunul|přesunula|přesunul}} stránku $3 na $4',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|přesunul|přesunula|přesunul}} stránku $3 na $4 bez založení přesměrování',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|přesunul|přesunula|přesunul}} stránku $3 na $4 s výměnou přesměrování',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|přesunul|přesunula|přesunul}} stránku $3 na $4 místo přesměrování bez založení přesměrování',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|založil|založila|založil}} uživatelský účet',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|založil|založila|založil}} uživatelský účet',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|založil|založila|založil}} {{GENDER:$4|uživatelský účet}} $3',
+'logentry-newusers-autocreate'        => 'Automaticky {{GENDER:$2|byl}} založen účet $1',
+'newuserlog-byemail'                  => 'heslo zasláno e-mailem',
 
 );

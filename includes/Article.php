@@ -322,6 +322,15 @@ class Article extends Page {
 		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
+	/*
+	 * Adjust title for pages with displaytitle, -{T|}- or language conversion
+	 * @param $pOutput ParserOutput
+	 */
+	public function adjustDisplayTitle( ParserOutput $pOutput ) {
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
+	}
+
 	/**
 	 * Show a diff page according to current request variables. For use within
 	 * Article::view() only, other callers should use the DifferenceEngine class.
@@ -374,7 +383,14 @@ class Article extends Page {
 		}
 	}
 
-	public function getRobotPolicy( $action ) {
+	/**
+	 * Get the robot policy to be used for the current view
+	 * @param $action String the action= GET parameter
+	 * @param $pOutput ParserOutput
+	 * @return Array the policy that should be set
+	 * TODO: actions other than 'view'
+	 */
+	public function getRobotPolicy( $action, $pOutput ) {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
 		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
@@ -437,13 +453,14 @@ class Article extends Page {
 	 * @return string containing HMTL with redirect link
 	 */
 	public function viewRedirect( $target, $appendSubtitle = true, $forceKnown = false ) {
-		global $wgOut, $wgLang, $wgStylePath;
+		global $wgOut, $wgStylePath;
 
 		if ( !is_array( $target ) ) {
 			$target = array( $target );
 		}
 
-		$imageDir = $wgLang->getDir();
+		$lang = $this->getTitle()->getPageLanguage();
+		$imageDir = $lang->getDir();
 
 		if ( $appendSubtitle ) {
 			$wgOut->appendSubtitle( wfMsgHtml( 'redirectpagesub' ) );
@@ -459,7 +476,7 @@ class Article extends Page {
 		}
 
 		$nextRedirect = $wgStylePath . '/common/images/nextredirect' . $imageDir . '.png';
-		$alt = $wgLang->isRTL() ? '←' : '→';
+		$alt = $lang->isRTL() ? '←' : '→';
 		// Automatically append redirect=no to each link, since most of them are redirect pages themselves.
 		foreach ( $target as $rt ) {
 			$link .= Html::element( 'img', array( 'src' => $nextRedirect, 'alt' => $alt ) );
@@ -945,10 +962,10 @@ class Article extends Page {
 
 		$called = true;
 		if ( $this->isFileCacheable() ) {
-			$cache = new HTMLFileCache( $this->getTitle() );
-			if ( $cache->isFileCacheGood( $this->mPage->getTouched() ) ) {
+			$cache = HTMLFileCache::newFromTitle( $this->getTitle(), 'view' );
+			if ( $cache->isCacheGood( $this->mPage->getTouched() ) ) {
 				wfDebug( "Article::tryFileCache(): about to load file\n" );
-				$cache->loadFromFileCache();
+				$cache->loadFromFileCache( $this->getContext() );
 				return true;
 			} else {
 				wfDebug( "Article::tryFileCache(): starting buffer\n" );
@@ -968,8 +985,9 @@ class Article extends Page {
 	public function isFileCacheable() {
 		$cacheable = false;
 
-		if ( HTMLFileCache::useFileCache() ) {
-			$cacheable = $this->mPage->getID() && !$this->mRedirectedFrom && !$this->getTitle()->isRedirect();
+		if ( HTMLFileCache::useFileCache( $this->getContext() ) ) {
+			$cacheable = $this->mPage->getID()
+				&& !$this->mRedirectedFrom && !$this->getTitle()->isRedirect();
 			// Extension may have reason to disable file caching on some pages.
 			if ( $cacheable ) {
 				$cacheable = wfRunHooks( 'IsFileCacheable', array( &$this ) );
@@ -1015,7 +1033,8 @@ class Article extends Page {
 		}
 
 		if ( $useParserCache ) {
-			$parserOutput = ParserCache::singleton()->get( $this, $this->mPage->getParserOptions() );
+			$options = $this->mPage->makeParserOptions( $user );
+			$parserOutput = ParserCache::singleton()->get( $this, $options );
 			if ( $parserOutput !== false ) {
 				wfProfileOut( __METHOD__ );
 				return $parserOutput;
@@ -1042,6 +1061,15 @@ class Article extends Page {
 	public function getOutputFromWikitext( $text, $cache = true, $parserOptions = false ) {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
 		return OutputPage::formatRobotPolicy( $policy );
+	}
+
+	/**
+	 * Get parser options suitable for rendering the primary article wikitext
+	 * @return mixed ParserOptions object or boolean false
+	 */
+	public function getParserOptions() {
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**

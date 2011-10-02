@@ -786,16 +786,18 @@ Có thể bạn đã thay đổi thành công mật khẩu của mình hoặc đ
 'resetpass-temp-password'   => 'Mật khẩu tạm:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Tái tạo mật khẩu',
-'passwordreset-text'           => 'Hãy điền mẫu đơn này để nhận thư điện tử nhắc nhở về thông tin tài khoản của bạn.',
-'passwordreset-legend'         => 'Tái tạo mật khẩu',
-'passwordreset-disabled'       => 'Chức năng tái tạo mật khẩu đã bị tắt trên wiki này.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Nhập một trong những thông tin được yêu cầu ở dưới}}',
-'passwordreset-username'       => 'Tên người dùng:',
-'passwordreset-domain'         => 'Tên miền:',
-'passwordreset-email'          => 'Địa chỉ thư điện tử:',
-'passwordreset-emailtitle'     => 'Thông tin tài khoản tại {{SITENAM}}',
-'passwordreset-emailtext-ip'   => 'Ai đó (có thể là bạn, từ địa chỉ IP $1) đã yêu cầu một lời
+'passwordreset'                    => 'Tái tạo mật khẩu',
+'passwordreset-text'               => 'Hãy điền mẫu đơn này để nhận thư điện tử nhắc nhở về thông tin tài khoản của bạn.',
+'passwordreset-legend'             => 'Tái tạo mật khẩu',
+'passwordreset-disabled'           => 'Chức năng tái tạo mật khẩu đã bị tắt trên wiki này.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Nhập một trong những thông tin được yêu cầu ở dưới}}',
+'passwordreset-username'           => 'Tên người dùng:',
+'passwordreset-domain'             => 'Tên miền:',
+'passwordreset-capture'            => 'Xem thư điện tử có mật khẩu tạm',
+'passwordreset-capture-help'       => 'Nếu bạn kiểm hộp này, bạn sẽ xem thư điện tử có mật khẩu tạm lúc khi nó được gửi cho người dùng.',
+'passwordreset-email'              => 'Địa chỉ thư điện tử:',
+'passwordreset-emailtitle'         => 'Thông tin tài khoản tại {{SITENAM}}',
+'passwordreset-emailtext-ip'       => 'Ai đó (có thể là bạn, từ địa chỉ IP $1) đã yêu cầu một lời
 nhắc nhở các thông tin tài khoản của bạn tại {{SITENAME}} ($4).
 {{PLURAL:$3|Tài khoản|Các tài khoản}} ở dưới có đặt địa chỉ thư điện tử này:
 
@@ -806,7 +808,7 @@ ngay bây giờ để chọn mật khẩu mới. Nếu bạn không phải là n
 đặt lại mật khẩu hoặc đã nhớ lại mật khẩu hiện hành, và bạn không còn
 muốn thay đổi nó, xin vui lòng kệ thông điệp này và tiếp tục sử dụng
 mật khẩu cũ.',
-'passwordreset-emailtext-user' => 'Thành viên $1 tại {{SITENAME}} đã yêu cầu một lời nhắc nhở
+'passwordreset-emailtext-user'     => 'Thành viên $1 tại {{SITENAME}} đã yêu cầu một lời nhắc nhở
 các thông tin tài khoản của bạn tại {{SITENAME}} ($4). {{PLURAL:$3|Tài
 khoản|Các
 tài khoản}} ở dưới có đặt địa chỉ thư điện tử này:
@@ -818,9 +820,11 @@ ngay bây giờ để chọn mật khẩu mới. Nếu bạn không phải là n
 đặt lại mật khẩu hoặc đã nhớ lại mật khẩu hiện hành, và bạn không còn
 muốn thay đổi nó, xin vui lòng kệ thông điệp này và tiếp tục sử dụng
 mật khẩu cũ.',
-'passwordreset-emailelement'   => 'Tên người dùng: $1
+'passwordreset-emailelement'       => 'Tên người dùng: $1
 Mật khẩu tạm: $2',
-'passwordreset-emailsent'      => 'Đã gửi thư điện tử nhắc nhở.',
+'passwordreset-emailsent'          => 'Đã gửi thư điện tử nhắc nhở.',
+'passwordreset-emailsent-capture'  => 'Thư điện tử nhắc nhở ở dưới đã được gửi:',
+'passwordreset-emailerror-capture' => 'Không thể gửi thư điện tử nhắc nhở ở dưới cho người dùng: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Đổi địa chỉ thư điện tử',
@@ -1139,6 +1143,7 @@ hoặc bạn đang tìm cách ẩn phiên bản hiện tại.',
 Các quản lý khác ở {{SITENAME}} vẫn có thể truy nhập vào nội dung ẩn và phục hồi lại bằng cách dùng giao diện này, trừ trường hợp thiết lập thêm một số hạn chế.",
 'revdelete-confirm'           => 'Xin hãy xác nhận rằng bạn có ý định xóa, nhận biết tầm quan trọng của việc này, và việc xóa tuân theo [[{{MediaWiki:Policy-url}}|quy định]].',
 'revdelete-suppress-text'     => "Việc ẩn giấu '''chỉ''' nên dùng trong các trường hợp sau:
+* Thông tin có thể phỉ báng
 * Thông tin cá nhân không thích hợp
 *: ''địa chỉ nhà và số điện thoại, số an sinh xã hội, v.v.''",
 'revdelete-legend'            => 'Thiết lập hạn chế khả kiến',
@@ -1530,6 +1535,7 @@ Nếu bạn đồng ý cung cấp, nó sẽ dùng để ghi nhận công lao c�
 'right-siteadmin'             => 'Khóa và mở khóa cơ sở dữ liệu',
 'right-override-export-depth' => 'Xuất trang kèm theo các trang được liên kết đến với độ sâu tối đa là 5',
 'right-sendemail'             => 'Gửi thư điện tử cho thành viên khác',
+'right-passwordreset'         => 'Tái tạo mật khẩu của người dùng ([[Special:PasswordReset|trang đặc biệt]])',
 
 # User rights log
 'rightslog'                  => 'Nhật trình cấp quyền thành viên',
@@ -1854,7 +1860,7 @@ Lọc theo người dùng để chỉ hiện các tập tin mà người đó đ
 'filehist-filesize'         => 'Kích thước tập tin',
 'filehist-comment'          => 'Miêu tả',
 'filehist-missing'          => 'Không thấy tập tin',
-'imagelinks'                => 'Liên kết đến tập tin',
+'imagelinks'                => 'Các trang sử dụng tập tin',
 'linkstoimage'              => '{{PLURAL:$1|Trang|$1 trang}} sau có liên kết đến tập tin này:',
 'linkstoimage-more'         => 'Có hơn $1 {{PLURAL:$1|trang|trang}} liên kết đến tập tin này.
 Danh sách dưới đây chỉ hiển thị {{PLURAL:$1|liên kết đầu tiên|$1 liên kết đầu tiên}} đến tập tin này.
@@ -2100,7 +2106,7 @@ Xem thêm [[Special:WantedCategories|thể loại cần thiết]].',
 
 # Special:ListUsers
 'listusersfrom'      => 'Hiển thị thành viên bắt đầu từ:',
-'listusers-submit'   => 'Liệt kê',
+'listusers-submit'   => 'Xem',
 'listusers-noresult' => 'Không thấy thành viên.',
 'listusers-blocked'  => '(bị cấm)',
 
@@ -2114,12 +2120,8 @@ Xem thêm [[Special:WantedCategories|thể loại cần thiết]].',
 'activeusers-noresult'   => 'Không thấy thành viên.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Nhật trình mở tài khoản',
-'newuserlogpagetext'          => 'Đây là danh sách những tài khoản thành viên mở lên gần đây.',
-'newuserlog-byemail'          => 'gửi mật khẩu qua thư điện tử',
-'newuserlog-create-entry'     => 'đã mở tài khoản mới',
-'newuserlog-create2-entry'    => 'đã tạo tài khoản mới với tên $1',
-'newuserlog-autocreate-entry' => 'Tài khoản được tạo tự động',
+'newuserlogpage'     => 'Nhật trình mở tài khoản',
+'newuserlogpagetext' => 'Đây là danh sách những tài khoản thành viên mở lên gần đây.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Nhóm thành viên',
@@ -2963,9 +2965,6 @@ Lưu nó vào máy tính của bạn rồi tải nó lên đây.',
 # Patrol log
 'patrol-log-page'      => 'Nhật ký tuần tra',
 'patrol-log-header'    => 'Đây là nhật trình tuần tra phiên bản.',
-'patrol-log-line'      => 'đánh dấu tuần tra vào $1 của $2 $3',
-'patrol-log-auto'      => '(tự động)',
-'patrol-log-diff'      => 'bản $1',
 'log-show-hide-patrol' => '$1 nhật trình tuần tra',
 
 # Image deletion
@@ -3020,6 +3019,11 @@ Nếu thực thi nó máy tính của bạn có thể bị tiếm quyền.",
 'seconds-abbrev' => 's',
 'minutes-abbrev' => 'm',
 'hours-abbrev'   => 'h',
+'seconds'        => '$1 giây',
+'minutes'        => '$1 phút',
+'hours'          => '$1 giờ',
+'days'           => '$1 ngày',
+'ago'            => 'cách đây $1',
 
 # Bad image list
 'bad_image_list' => 'Định dạng như sau:
@@ -3735,9 +3739,8 @@ hoặc [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html đọc nó trực 
 'filepath'         => 'Đường dẫn tập tin',
 'filepath-page'    => 'Tập tin:',
 'filepath-submit'  => 'Hiển thị tập tin',
-'filepath-summary' => 'Trang này chuyển bạn thẳng đến địa chỉ của một tập tin. Nếu là hình, địa chỉ là của hình kích thước tối đa; các loại tập tin khác sẽ được mở lên ngay trong chương trình đúng.
-
-Hãy ghi vào tên tập tin, không bao gồm tiền tố “{{ns:file}}:”.',
+'filepath-summary' => 'Trang này cho ra địa chỉ đầy đủ của một tập tin.
+Các hình ảnh được hiển thị ở kích thước tối đa, còn các loại tập tin khác được mở lên ngay trong chương trình mặc định.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Tìm kiếm các tập tin trùng lắp',
@@ -3816,7 +3819,6 @@ Hãy ghi vào tên tập tin, không bao gồm tiền tố “{{ns:file}}:”.',
 'globalfileusage-text'        => 'Tìm trang dùng tập tin toàn cục',
 'globalfileusage-no-results'  => '[[$1]] không được sử dụng tại các wiki khác.',
 'globalfileusage-on-wiki'     => 'Trang sử dụng tại $2',
-'globalfileusage-of-file'     => 'Các wiki sau đang sử dụng tập tin này:',
 'globalfileusage-more'        => 'Xem tập tin này [[{{#Special:GlobalUsage}}/$1|đang dùng ở đâu toàn hệ thống]].',
 'globalfileusage-filterlocal' => 'Ẩn trang nội bộ sử dụng',
 
@@ -3827,7 +3829,6 @@ Hãy ghi vào tên tập tin, không bao gồm tiền tố “{{ns:file}}:”.',
 'globaltemplateusage-text'        => 'Tìm trang dùng bản mẫu toàn cục',
 'globaltemplateusage-no-results'  => '[[$1]] không được sử dụng tại các wiki khác.',
 'globaltemplateusage-on-wiki'     => 'Trang sử dụng tại $2',
-'globaltemplateusage-of-file'     => 'Các wiki sau sử dụng bản mẫu này:',
 'globaltemplateusage-more'        => 'Xem bản mẫu này [[{{#Special:GlobalUsage}}/$1|đang dùng ở đâu toàn hệ thống]].',
 'globaltemplateusage-filterlocal' => 'Ẩn trang nội bộ sử dụng',
 
@@ -3857,11 +3858,34 @@ Hãy ghi vào tên tập tin, không bao gồm tiền tố “{{ns:file}}:”.',
 'sqlite-no-fts'  => '$1 không có hỗ trợ tìm kiếm toàn văn',
 
 # New logging system
-'revdelete-restricted'                => 'áp dụng hạn chế này cho sysop',
-'revdelete-unrestricted'              => 'gỡ bỏ hạn chế này cho sysop',
+'logentry-delete-delete'              => '$1 đã {{GENDER:$2|xóa}} trang “$3”',
+'logentry-delete-restore'             => '$1 đã {{GENDER:$2|phục hồi}} trang “$3”',
+'logentry-delete-event'               => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của {{PLURAL:$5|một mục nhật trình|$5 mục nhật trình}} về $3: $4',
+'logentry-delete-revision'            => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của {{PLURAL:$5|một phiên bản|$5 phiên bản}} trang $3: $4',
+'logentry-delete-event-legacy'        => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của các mục nhật trình về $3',
+'logentry-delete-revision-legacy'     => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của các phiên bản trang $3',
+'logentry-suppress-delete'            => '$1 đã {{GENDER:$2|ẩn}} trang $3',
+'logentry-suppress-event'             => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của {{PLURAL:$5|một mục nhật trình|$5 mục nhật trình}} về $3 một cách kín đáo: $4',
+'logentry-suppress-revision'          => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của {{PLURAL:$5|một phiên bản|$5 phiên bản}} trang $3 một cách kín đáo: $4',
+'logentry-suppress-event-legacy'      => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị các mục nhật trình về $3 một cách kín đáo',
+'logentry-suppress-revision-legacy'   => '$1 đã {{GENDER:$2|thay đổi}} mức hiển thị của các phiên bản trang $3 một cách kín đáo',
+'revdelete-content-hid'               => 'đã ẩn nội dung',
+'revdelete-summary-hid'               => 'đã ẩn tóm lược sửa đổi',
+'revdelete-uname-hid'                 => 'đã ẩn tên người dùng',
+'revdelete-content-unhid'             => 'đã hiện nội dung',
+'revdelete-summary-unhid'             => 'đã hiện tom lược sửa đổi',
+'revdelete-uname-unhid'               => 'đã hiện tên người dùng',
+'revdelete-restricted'                => 'đã áp dụng hạn chế cho bảo quản viên',
+'revdelete-unrestricted'              => 'đã gỡ bỏ hạn chế cho bảo quản viên',
 'logentry-move-move'                  => '$1 đã {{GENDER:$2|đổi}} trang $3 thành $4',
 'logentry-move-move-noredirect'       => '$1 đã {{GENDER:$2|đổi}} trang $3 thành $4 mà không để lại một trang đổi hướng',
 'logentry-move-move_redir'            => '$1 đã {{GENDER:$2|đổi}} trang $3 thành $4 qua trang đổi hướng',
 'logentry-move-move_redir-noredirect' => '$1 đã {{GENDER:$2|đổi}} trang $3 thành $4 qua trang đổi hướng mà không để lại một trang đổi hướng',
+'logentry-patrol-patrol'              => '$1 đã {{GENDER:$2|đánh dấu}} tuần tra phiên bản $4 của trang $3',
+'logentry-patrol-patrol-auto'         => '$1 đã tự động {{GENDER:$2|đánh dấu}} tuần tra phiên bản $4 của trang $3',
+'logentry-newusers-create'            => '$1 đã {{GENDER:$2|mở}} một tài khoản người dùng',
+'logentry-newusers-create2'           => '$1 đã {{GENDER:$2|mở}} tài khoản người dùng $3',
+'logentry-newusers-autocreate'        => 'Tài khoản $1 đã được {{GENDER:$2|mở}} tự động',
+'newuserlog-byemail'                  => 'gửi mật khẩu qua thư điện tử',
 
 );

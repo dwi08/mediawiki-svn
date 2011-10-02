@@ -51,7 +51,7 @@ $messages = array(
 'tog-enotifminoredits'        => 'Sió pian-chi̍p mā kià tiān-tsú-phue hōo guá.',
 'tog-enotifrevealaddr'        => 'Hō͘ pat-lâng khoàⁿ ê tio̍h oá ê tiān-chú-phoe tē-chí',
 'tog-shownumberswatching'     => 'Hián-sī tng leh khoàⁿ ê iōng-chiá sò͘-bo̍k',
-'tog-oldsig'                  => 'Khoàⁿ chìn-chêng ê chhiam-miâ:',
+'tog-oldsig'                  => 'Chit-má ê chhiam-miâ:',
 'tog-fancysig'                => 'Chhiam-miâ mài chò liân-kiat',
 'tog-externaleditor'          => 'Iōng gōa-pō· pian-chi̍p-khì (kan-na hō͘ ko-chhiú, he ài tī lí ê tiān-náu koh siat-tēng. [http://www.mediawiki.org/wiki/Manual:External_editors Siông-chêng.])',
 'tog-externaldiff'            => 'Iōng gōa-pō· diff (kan-na hō͘ ko-chhiú, he ài tī lí ê tiān-noá koh siat-tēng. [http://www.mediawiki.org/wiki/Manual:External_editors Siông-chêng.])',
@@ -174,7 +174,7 @@ $messages = array(
 'faqpage'        => 'Project:Būn-tah',
 
 # Vector skin
-'vector-action-addsection'       => 'Ka-ji̍p sin toān-lo̍k',
+'vector-action-addsection'       => 'Ke chi̍t-ê toān-lo̍h',
 'vector-action-delete'           => 'Thâi',
 'vector-action-move'             => 'Sóa khì',
 'vector-action-protect'          => 'Pó-hō·',
@@ -337,6 +337,7 @@ Chhiáⁿ khoàⁿ [[Special:Version|pán-pún ia̍h]].',
 'filedeleteerror'      => 'Bô-hoat-tō· kā tóng-àn "$1" thâi tiāu',
 'directorycreateerror' => 'Bô-hoat-tō͘ khui bo̍k-lo̍k "$1".',
 'filenotfound'         => 'Chhōe bô tóng-àn "$1".',
+'fileexistserror'      => 'Bô-hoat-tō͘ chûn-ji̍p tóng-àn "$1": í-keng ū chit ê tóng-àn',
 'formerror'            => 'Chhò-gō·: bô-hoat-tō· kā pió sàng chhut khì.',
 'badarticleerror'      => 'Bē-tàng tiàm chit ia̍h chip-hêng chit ê tōng-chok.',
 'cannotdelete'         => 'Bô-hoat-tō· kā  "$1" hit ê ia̍h a̍h-sī iáⁿ-siōng thâi tiāu. (Khó-lêng pa̍t-lâng í-keng kā thâi tiāu ah.)',
@@ -386,9 +387,12 @@ Chhiaⁿ chù-ì: ū-kóa ia̍h ū khó-lêng khoàⁿ-tio̍h bē-su lí iû-go�
 'badretype'                  => 'Lí su-ji̍p ê 2-cho· bi̍t-bé bô tùi.',
 'userexists'                 => 'Lí beh ti̍h ê iōng-chiá miâ-chheng í-keng ū lâng iōng. Chhiáⁿ kéng pa̍t-ê miâ.',
 'loginerror'                 => 'Teng-ji̍p chhò-gō·',
+'createaccounterror'         => 'Bô hoat-tō͘ khui kháu-chō: $1',
 'loginsuccesstitle'          => 'Teng-ji̍p sêng-kong',
 'loginsuccess'               => 'Lí hiān-chhú-sî í-keng teng-ji̍p {{SITENAME}} chò "$1".',
 'nosuchuser'                 => 'Chia bô iōng-chiá hō-chò "$1". Miâ-jī  ū hun toā-siá, sio-siá . Chhiáⁿ kiám-cha lí ê phèng-im, a̍h-sī [[Special:UserLogin/signup|khui sin káu-chō]].',
+'nosuchusershort'            => 'Bô "$1" chit ê iōng-chiá miâ.
+Tùi khoàⁿ-māi,  lí phah--ê.',
 'nouserspecified'            => 'Lí ài chí-tēng chi̍t ê iōng-chiá miâ.',
 'wrongpassword'              => 'Lí su-ji̍p ê bi̍t-bé ū têng-tâⁿ. Chhiáⁿ têng chhì.',
 'wrongpasswordempty'         => 'Bi̍t-bé keh-á khang-khang. Chhiáⁿ têng chhì.',
@@ -404,11 +408,16 @@ Tiō-sī kóng, tī chit-má iōng chit ê IP bāng-chí ê lâng bē-sái koh k
 'noemailprefs'               => 'Tī lí ê siat-piān chí-tēng chi̍t ê tiān-chú-phoe tē-chí thang hō͘ chia ê kong-lêng ē-tàng ēng.',
 'emailconfirmlink'           => 'Chhiáⁿ khak-jīn lí ê e-mail chū-chí ū-hāu',
 
+# E-mail sending
+'user-mail-no-addy' => 'Siūⁿ beh kià tiān-chú-phoe, m̄-koh bô siá tē-chí.',
+
 # Change password dialog
 'resetpass'                 => 'Kái bi̍t-bé',
+'resetpass_header'          => 'Kái káu-chō ê bi̍t-bé.',
 'oldpassword'               => 'Kū bi̍t-bé:',
 'newpassword'               => 'Sin bi̍t-bé:',
 'retypenew'                 => 'Têng phah sin bi̍t-bé:',
+'resetpass_forbidden'       => 'Bi̍t-bé bē-sái piàn.',
 'resetpass-submit-loggedin' => 'Kái bi̍t-bé',
 'resetpass-submit-cancel'   => 'Chhú-siau',
 'resetpass-temp-password'   => 'Lîm-sî ê bi̍t-bé:',
@@ -423,8 +432,10 @@ Lîm-sî ê bi̍t-bé: $2',
 'passwordreset-emailsent'    => 'Chit hong thê-chhíⁿ ê  tiān-chú-phoe í-keng kià chhut.',
 
 # Special:ChangeEmail
-'changeemail'        => 'Kái tiān-chú-phoe ê tē-chí',
-'changeemail-cancel' => 'Chhú-siau',
+'changeemail'          => 'Kái tiān-chú-phoe ê tē-chí',
+'changeemail-oldemail' => 'Chit-má ê E-mail tē-chí:',
+'changeemail-newemail' => 'Sin E-mail ê chū-chí:',
+'changeemail-cancel'   => 'Chhú-siau',
 
 # Edit page toolbar
 'bold_sample'     => 'Chho·-thé bûn-jī',
@@ -459,6 +470,7 @@ Lîm-sî ê bi̍t-bé: $2',
 'nosuchsectiontitle'         => 'Chhoé bô toān-lo̍h',
 'loginreqtitle'              => 'Su-iàu Teng-ji̍p',
 'loginreqlink'               => 'Teng-ji̍p',
+'loginreqpagetext'           => 'Lí ài $1 chiah thang khoàⁿ pat ia̍h.',
 'accmailtitle'               => 'Bi̍t-bé kià chhut khì ah.',
 'accmailtext'                => "Hō͘ [[User talk:$1|$1]] ê chi̍t ê iōng loān-sò͘ sán-seng ê bi̍t-bé í-keng kìa khì $2.
 

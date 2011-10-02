@@ -1893,12 +1893,8 @@ Protocolle supportate: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nisciune utende acchiate.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Archivije de ccreazione de le utinde',
-'newuserlogpagetext'          => "Quiste ète l'archivije de le creazziune de l'utinde.",
-'newuserlog-byemail'          => 'password mannete pe e-mail',
-'newuserlog-create-entry'     => 'Utende nuève',
-'newuserlog-create2-entry'    => 'cunde utende ccrejete pe $1',
-'newuserlog-autocreate-entry' => 'Cunde utende ccrejete automaticamende',
+'newuserlogpage'     => 'Archivije de ccreazione de le utinde',
+'newuserlogpagetext' => "Quiste ète l'archivije de le creazziune de l'utinde.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Deritte de le gruppe utinde',
@@ -2734,9 +2730,6 @@ Stu fatte ha state causate da 'nu collegamende a 'nu site esterne ca appartene a
 # Patrol log
 'patrol-log-page'      => 'Archivije de le condrolle',
 'patrol-log-header'    => "Quiste è l'archivije de le revisiune condrollate.",
-'patrol-log-line'      => 'signate $1 de $2 condrollate $3',
-'patrol-log-auto'      => '(automatiche)',
-'patrol-log-diff'      => 'revisione $1',
 'log-show-hide-patrol' => '$1 archivije de le condrolle',
 
 # Image deletion
@@ -3491,7 +3484,6 @@ Mitte 'u nome d'u file senza 'u prefisse \"{{ns:file}}\".",
 'globalfileusage-text'        => 'Cirche le file de ause globale',
 'globalfileusage-no-results'  => "[[$1]] non g'è ausate jndr'à otre Uicchi.",
 'globalfileusage-on-wiki'     => 'Ause sus a $2',
-'globalfileusage-of-file'     => 'Le seguende Uicchi ausane stu file:',
 'globalfileusage-more'        => 'Vide [[{{#Special:GlobalUsage}}/$1|ause globale]] de stu file.',
 'globalfileusage-filterlocal' => "No fà vedè l'ause locale",
 
@@ -3502,7 +3494,6 @@ Mitte 'u nome d'u file senza 'u prefisse \"{{ns:file}}\".",
 'globaltemplateusage-text'        => 'Cirche le template de ause globale',
 'globaltemplateusage-no-results'  => "[[$1]] non g'è ausate jndr'à otre Uicchi.",
 'globaltemplateusage-on-wiki'     => 'Ause sus a $2',
-'globaltemplateusage-of-file'     => 'Le seguende Uicchi ausane stu file:',
 'globaltemplateusage-more'        => 'Vide [[{{#Special:GlobalUsage}}/$1|ause globale]] de stu template.',
 'globaltemplateusage-filterlocal' => "No fà vedè l'ause locale",
 
@@ -3538,5 +3529,6 @@ Mitte 'u nome d'u file senza 'u prefisse \"{{ns:file}}\".",
 'logentry-move-move-noredirect'       => "$1 pàgena {{GENDER:$2|spustate}} $3 a $4 senze lassà 'nu redirezionamende",
 'logentry-move-move_redir'            => "$1 pàgena {{GENDER:$2|spustate}} $3 a $4 cu 'u redirezionamende",
 'logentry-move-move_redir-noredirect' => "$1 pàgena {{GENDER:$2|spustate}} $3 a $4 sus a 'nu redirezionamende senze lassà 'nu redirezionamende",
+'newuserlog-byemail'                  => 'password mannete pe e-mail',
 
 );

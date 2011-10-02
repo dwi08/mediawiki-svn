@@ -414,7 +414,6 @@ $messages = array(
 'viewprevnext'                     => 'ქოძირ  ($1 {{int:pipe-separator}} $2) ($3).',
 'searchmenu-exists'                => 'თე ვიკის "[[:$1]]" ჯოხოთ ხასჷლა რე',
 'searchmenu-new'                   => "''ქჷდარსხი \"[[:\$1]]\" ხასჷლა თე ვიკის'''",
-'searchmenu-new-nocreate'          => '"$1" რე ხასჷლაშ ურგენჯი ჯოხო ვარა თე ხასჷლა თქვა ვადუგარსხუენა',
 'searchhelp-url'                   => 'Help:მოხვარა',
 'searchprofile-articles'           => 'სტატიეფი',
 'searchprofile-project'            => 'მოხვარაშ დო პროექტიშ ხასჷლეფი',
@@ -607,8 +606,7 @@ $messages = array(
 'linksearch-line' => '$1 მერცხიილი რე $2-შე',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'მახვარებუშ რეგისტრაციაშ ჟურნალ',
-'newuserlog-create-entry' => 'ახალ მახვარებუ',
+'newuserlogpage' => 'მახვარებუშ რეგისტრაციაშ ჟურნალ',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(მაკათურეფიშ ერკებული)',
@@ -848,10 +846,6 @@ $messages = array(
 'tooltip-rollback'                => '"დორთინა" ათე ხასილაშა ეკონია გინმახანდეშ ნაღოლემ თირაფას(ეფს) გოუქვენს ართ გენჭირათ',
 'tooltip-undo'                    => '"გოუქვაფა" მიშაღალირ თირაფეფს გოუქვენს დო გუთმონწყუნს რედაქტირაფაშ ფორმას გიწოთოლორაფაშ რეჟიმს. თენა შესაძლებლობას ირძენს რეზიუმეს სამანჯელქ იყ’უას დაკონკრეტებულქინ.',
 'tooltip-summary'                 => 'კუნტა რეზიუმეშ მიშაჸონაფა',
-
-# Patrol log
-'patrol-log-line' => 'მერჩქინელი $1 $2-შე პატრულირაფილი $3',
-'patrol-log-diff' => 'რევიზია $1',
 
 # Browsing diffs
 'previousdiff' => '← წოხოლენი თირაფეფ',

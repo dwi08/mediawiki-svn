@@ -658,16 +658,18 @@ Es possibile que tu ha ja cambiate tu contrasigno o requestate un nove contrasig
 'resetpass-temp-password'   => 'Contrasigno temporari:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Reinitialisar contrasigno',
-'passwordreset-text'           => 'Complete iste formulario pro reciper un rememoration in e-mail del datos de tu conto.',
-'passwordreset-legend'         => 'Reinitialisar contrasigno',
-'passwordreset-disabled'       => 'Le reinitialisation de contrasignos ha essite disactivate in iste wiki.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Entra un del elementos de datos hic infra}}',
-'passwordreset-username'       => 'Nomine de usator:',
-'passwordreset-domain'         => 'Dominio:',
-'passwordreset-email'          => 'Adresse de e-mail:',
-'passwordreset-emailtitle'     => 'Detalios del conto in {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Un persona (probabilemente tu, ab le adresse IP $1) requestava un rememoration del
+'passwordreset'                    => 'Reinitialisar contrasigno',
+'passwordreset-text'               => 'Complete iste formulario pro reciper un rememoration in e-mail del datos de tu conto.',
+'passwordreset-legend'             => 'Reinitialisar contrasigno',
+'passwordreset-disabled'           => 'Le reinitialisation de contrasignos ha essite disactivate in iste wiki.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Entra un del elementos de datos hic infra}}',
+'passwordreset-username'           => 'Nomine de usator:',
+'passwordreset-domain'             => 'Dominio:',
+'passwordreset-capture'            => 'Vider le e-mail resultante?',
+'passwordreset-capture-help'       => 'Si tu marca iste quadrato, le e-mail (con le contrasigno temporari) non solmente essera inviate al usator, ma anque monstrate a te.',
+'passwordreset-email'              => 'Adresse de e-mail:',
+'passwordreset-emailtitle'         => 'Detalios del conto in {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Un persona (probabilemente tu, ab le adresse IP $1) requestava un rememoration del
 detalios de tu conto in {{SITENAME}} ($4). Le {{PLURAL:$3|conto|contos}} de usator sequente es
 associate con iste adresse de e-mail:
 
@@ -678,7 +680,7 @@ Tu deberea ora aperir session e eliger un nove contrasigno. Si un altere persona
 requesta, o si tu te ha rememorate tu contrasigno original e non plus
 vole cambiar lo, tu pote ignorar iste message e continuar a usar le ancian
 contrasigno.',
-'passwordreset-emailtext-user' => 'Le usator $1 in {{SITENAME}} requestava un rememoration del detalios de tu conto in {{SITENAME}}
+'passwordreset-emailtext-user'     => 'Le usator $1 in {{SITENAME}} requestava un rememoration del detalios de tu conto in {{SITENAME}}
 ($4). Le {{PLURAL:$3|conto|contos}} de usator sequente es associate con iste adresse de e-mail:
 
 $2
@@ -688,9 +690,11 @@ Tu deberea ora aperir session e eliger un nove contrasigno. Si un altere persona
 requesta, o si tu te ha rememorate tu contrasigno original e non plus
 vole cambiar lo, tu pote ignorar iste message e continuar a usar le ancian
 contrasigno.',
-'passwordreset-emailelement'   => 'Nomine de usator: $1
+'passwordreset-emailelement'       => 'Nomine de usator: $1
 Contrasigno temporari: $2',
-'passwordreset-emailsent'      => 'Un e-mail de rememoration ha essite inviate.',
+'passwordreset-emailsent'          => 'Un e-mail de rememoration ha essite inviate.',
+'passwordreset-emailsent-capture'  => 'Un e-mail de rememoration ha essite inviate; iste message es monstrate hic infra.',
+'passwordreset-emailerror-capture' => 'Un e-mail de rememoration ha essite generate; iste message es monstrate hic infra, ma le invio al usator ha fallite: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Cambiar adresse de e-mail',
@@ -1421,6 +1425,7 @@ Si tu opta pro dar lo, isto essera usate pro dar te attribution pro tu contribut
 'right-siteadmin'             => 'Blocar e disblocar le base de datos',
 'right-override-export-depth' => 'Exportar paginas includente paginas ligate usque a un profunditate de 5',
 'right-sendemail'             => 'Inviar e-mail a altere usatores',
+'right-passwordreset'         => 'Reinitialisar le contrasigno de un usator ([[Special:PasswordReset|pagina special]])',
 
 # User rights log
 'rightslog'                  => 'Registro de derectos de usator',
@@ -1754,7 +1759,7 @@ Si un filtro per usator es active, es monstrate solmente le files del quales le 
 'filehist-filesize'         => 'Dimension del file',
 'filehist-comment'          => 'Commento',
 'filehist-missing'          => 'File mancante',
-'imagelinks'                => 'Ligamines verso iste file',
+'imagelinks'                => 'Uso de iste file',
 'linkstoimage'              => 'Le sequente {{PLURAL:$1|pagina ha un ligamine|$1 paginas ha ligamines}} verso iste file:',
 'linkstoimage-more'         => 'Plus de $1 {{PLURAL:$1|pagina ha un ligamine|paginas ha ligamines}} verso iste file.
 Le sequente lista monstra le {{PLURAL:$1|prime pagina|prime $1 paginas}} que puncta a iste file specific.
@@ -2018,12 +2023,8 @@ Protocollos supportate: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nulle usator trovate.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Registro de creation de usatores',
-'newuserlogpagetext'          => 'Isto es un registro de creation de usatores.',
-'newuserlog-byemail'          => 'contrasigno inviate per e-mail',
-'newuserlog-create-entry'     => 'Nove usator',
-'newuserlog-create2-entry'    => 'creava le nove conto $1',
-'newuserlog-autocreate-entry' => 'Conto create automaticamente',
+'newuserlogpage'     => 'Registro de creation de usatores',
+'newuserlogpagetext' => 'Isto es un registro de creation de usatores.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Derectos del gruppos de usatores',
@@ -2896,9 +2897,6 @@ Le causa es probabilemente un ligamine verso un sito externe que es presente in 
 # Patrol log
 'patrol-log-page'      => 'Registro de patrulia',
 'patrol-log-header'    => 'Isto es un registro de versiones patruliate.',
-'patrol-log-line'      => 'marcava $1 de $2 como patruliate $3',
-'patrol-log-auto'      => '(automaticamente)',
-'patrol-log-diff'      => 'le version $1',
 'log-show-hide-patrol' => '$1 le registro de versiones patruliate',
 
 # Image deletion
@@ -2948,6 +2946,13 @@ Le execution de illo pote compromitter le securitate de tu systema.",
 'ilsubmit'              => 'Cercar',
 'bydate'                => 'per data',
 'sp-newimages-showfrom' => 'Monstrar nove files a partir del $1 a $2',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|$1 secunda|$1 secundas}}',
+'minutes' => '{{PLURAL:$1|$1 minuta|$1 minutas}}',
+'hours'   => '{{PLURAL:$1|$1 hora|$1 horas}}',
+'days'    => '{{PLURAL:$1|$1 die|$1 dies}}',
+'ago'     => '$1 retro',
 
 # Bad image list
 'bad_image_list' => 'Le formato es como seque:
@@ -3576,10 +3581,8 @@ Vos deberea haber recipite [{{SERVER}}{{SCRIPTPATH}}/COPYING un exemplar del Lic
 'filepath'         => 'Cammino del file',
 'filepath-page'    => 'File:',
 'filepath-submit'  => 'Ir',
-'filepath-summary' => 'Iste pagina special contine le cammino complete de un file.
-Le imagines se monstra in plen resolution, le altere typos de file se executa directemente con lor programmas associate.
-
-Entra le nomine del file sin le prefixo "{{ns:file}}:".',
+'filepath-summary' => 'Iste pagina special retorna le cammino complete de un file.
+Le imagines se monstra in plen resolution, le altere typos de file se executa directemente con lor programmas associate.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Cercar files duplicate',
@@ -3658,7 +3661,6 @@ Entra le nomine del file sin le prefixo "{{ns:file}}:".',
 'globalfileusage-text'        => 'Cercar uso global de files.',
 'globalfileusage-no-results'  => '[[$1]] non es usate in altere wikis.',
 'globalfileusage-on-wiki'     => 'Uso in $2',
-'globalfileusage-of-file'     => 'Le altere wikis sequente usa iste imagine:',
 'globalfileusage-more'        => 'Vider [[{{#Special:GlobalUsage}}/$1|altere usos global]] de iste file.',
 'globalfileusage-filterlocal' => 'Non monstrar uso local',
 
@@ -3669,7 +3671,6 @@ Entra le nomine del file sin le prefixo "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Cercar uso global de patronos.',
 'globaltemplateusage-no-results'  => '[[$1]] non es usate in altere wikis.',
 'globaltemplateusage-on-wiki'     => 'Uso in $2',
-'globaltemplateusage-of-file'     => 'Le altere wikis sequente usa iste patrono:',
 'globaltemplateusage-more'        => 'Vider [[{{#Special:GlobalUsage}}/$1|altere usos global]] de iste patrono.',
 'globaltemplateusage-filterlocal' => 'Non monstrar uso local',
 
@@ -3722,5 +3723,11 @@ Entra le nomine del file sin le prefixo "{{ns:file}}:".',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|renominava}} le pagina $3 a $4 sin lassar un redirection',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|renominava}} le pagina $3 a $4, superscribente un redirection',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|renominava}} le pagina $3 a $4, superscribente un redirection sin lassar un nove redirection',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|marcava}} le version $4 del pagina $3 como patruliate',
+'logentry-patrol-patrol-auto'         => '$1 automaticamente {{GENDER:$2|marcava}} le version $4 del pagina $3 como patruliate',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|creava}} un conto de usator',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|creava}} un conto de usator $3',
+'logentry-newusers-autocreate'        => 'Le conto $1 ha essite {{GENDER:$2|create}} automaticamente',
+'newuserlog-byemail'                  => 'contrasigno inviate per e-mail',
 
 );

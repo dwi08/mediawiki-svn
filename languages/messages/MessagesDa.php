@@ -1725,7 +1725,7 @@ Når der filtreres efter bruger, vil kun filer, hvor den pågældende bruger lag
 'filehist-filesize'         => 'Filstørrelse',
 'filehist-comment'          => 'Kommentar',
 'filehist-missing'          => 'Fil mangler',
-'imagelinks'                => 'Filhenvisninger',
+'imagelinks'                => 'Filanvendelse',
 'linkstoimage'              => '{{Plural:$1|Den følgende side|De følgende $1 sider}} henviser til denne fil:',
 'linkstoimage-more'         => 'Flere end $1 {{PLURAL:$1|side|sider}} henviser til denne fil.
 Den følgende liste viser kun {{PLURAL:$1|den første henvisning|de $1 første henvisninger}}.
@@ -1984,12 +1984,8 @@ Se også [[Special:WantedCategories|ønskede kategorier]].',
 'activeusers-noresult'   => 'Ingen brugere fundet.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Brugeroprettelseslog',
-'newuserlogpagetext'          => 'Dette er en log over de senest oprettede brugere.',
-'newuserlog-byemail'          => 'kodeord tilsendt pr. e-mail',
-'newuserlog-create-entry'     => 'Ny bruger',
-'newuserlog-create2-entry'    => 'oprettede ny brugerkonto $1',
-'newuserlog-autocreate-entry' => 'Automatisk oprettet konto',
+'newuserlogpage'     => 'Brugeroprettelseslog',
+'newuserlogpagetext' => 'Dette er en log over de senest oprettede brugere.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Brugergrupperettigheder',
@@ -2795,9 +2791,6 @@ Dette skyldes sandsynligvis en henvisning til et sortlistet eksternt websted.',
 # Patrol log
 'patrol-log-page'      => 'Kontrollog',
 'patrol-log-header'    => 'Patruljerede versioner.',
-'patrol-log-line'      => 'har markeret $1 af $2 som kontrolleret $3.',
-'patrol-log-auto'      => '(automatisk)',
-'patrol-log-diff'      => 'Version $1',
 'log-show-hide-patrol' => '$1 patruljeringslog',
 
 # Image deletion
@@ -2850,6 +2843,11 @@ Du kan beskadige dit system hvis du udfører den.",
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'hours-abbrev' => 't',
+'seconds'      => '{{PLURAL: $1|$1 sekund|$1 sekunder}}',
+'minutes'      => '{{PLURAL: $1|$1 minut|$1 minutter}}',
+'hours'        => '{{PLURAL: $1|$1 time|$1 timer}}',
+'days'         => '{{PLURAL: $1|$1 dag|$1 dage}}',
+'ago'          => '$1 siden',
 
 # Bad image list
 'bad_image_list' => 'Formatet er:
@@ -3465,9 +3463,7 @@ Du skulle have modtaget [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopi af GNU General
 'filepath-page'    => 'Fil:',
 'filepath-submit'  => 'Vis sti',
 'filepath-summary' => 'Denne specialside giver et direkte link til en fil.
-Billeder vises i fuld opløsning, og andre mediatyper vil blive aktiveret med deres tilhørende program.
-
-Angiv filnavnet uden "{{ns:file}}:"-præfiks.',
+Billeder vises i fuld opløsning, og andre mediatyper vil blive aktiveret med deres tilhørende program.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Find dubletfiler',
@@ -3546,7 +3542,6 @@ Angiv filnavnet uden "{{ns:file}}:"-præfiks.',
 'globalfileusage-text'        => 'Søg i global filanvendelse',
 'globalfileusage-no-results'  => '[[$1]] er ikke i brug på andre wikier.',
 'globalfileusage-on-wiki'     => 'Anvendelse på $2',
-'globalfileusage-of-file'     => 'Følgende andre wikier anvender denne fil:',
 'globalfileusage-more'        => 'Vis [[{{#Special:GlobalUsage}}/$1|flere globale anvendelser]] af denne fil.',
 'globalfileusage-filterlocal' => 'Vis ikke lokal anvendelse',
 
@@ -3557,7 +3552,6 @@ Angiv filnavnet uden "{{ns:file}}:"-præfiks.',
 'globaltemplateusage-text'        => 'Søg i global skabelonanvendelse',
 'globaltemplateusage-no-results'  => '[[$1]] er ikke i brug på andre wikier.',
 'globaltemplateusage-on-wiki'     => 'Anvendelse på $2',
-'globaltemplateusage-of-file'     => 'Følgende andre wikier anvender denne skabelon:',
 'globaltemplateusage-more'        => 'Vis [[{{#Special:GlobalUsage}}/$1|flere globale anvendelser]] af denne skabelon.',
 'globaltemplateusage-filterlocal' => 'Vis ikke lokal anvendelse',
 
@@ -3587,11 +3581,31 @@ Angiv filnavnet uden "{{ns:file}}:"-præfiks.',
 'sqlite-no-fts'  => '$1 uden fuld-tekst søgnings support',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|slettede}} siden $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|gendannede}} siden $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|ændrede}} synligheden af {{PLURAL:$5|en loghændelse|$5 loghændelser}} for siden $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|ændrede}} synligheden af {{PLURAL:$5|en version|$5 versioner}} af siden $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|ændrede}} synligheden af loghændelser for siden $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|ændrede}} synligheden af versioner af siden $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|skjulte}} hændelser for siden $3',
+'logentry-suppress-event'             => '$1 {{GENDER:$2|ændrede}} hemmeligt synligheden af {{PLURAL:$5|en loghændelse|$5 loghændelser}} for siden $3: $4',
+'logentry-suppress-revision'          => '$1 {{GENDER:$2|ændrede}} hemmeligt synligheden af {{PLURAL:$5|en version|$5 versioner}} af siden $3: $4',
+'logentry-suppress-event-legacy'      => '$1 {{GENDER:$2|ændrede}} hemmeligt synligheden af loghændelser for siden $3',
+'logentry-suppress-revision-legacy'   => '$1 {{GENDER:$2|ændrede}} hemmeligt synligheden af versioner af siden $3',
+'revdelete-content-hid'               => 'indhold skjult',
+'revdelete-summary-hid'               => 'redigeringsbeskrivelse skjult',
+'revdelete-uname-hid'                 => 'brugernavnet er skjult',
+'revdelete-content-unhid'             => 'indhold er ikke længere skjult',
+'revdelete-summary-unhid'             => 'redigeringsbeskrivelse er ikke længere skjult',
+'revdelete-uname-unhid'               => 'brugernavnet er ikke længere skjult',
 'revdelete-restricted'                => 'tilføjede begrænsninger for administratorer',
 'revdelete-unrestricted'              => 'fjernede begrænsninger for administratorer',
 'logentry-move-move'                  => '$1 {{GENDER:$2|flyttede}} siden $3 til $4',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|flyttede}} siden $3 til $4 uden at efterlade en omdirigering',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|flyttede}} siden $3 til $4 hen over en omdirigering',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|flyttede}} siden $3 til $4 hen over en omdirigering og uden at efterlade en omdirigering',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|markerede}} version $4 af siden $3 som patruljeret',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|markerede}} automatisk version $4 af siden $3 som patruljeret',
+'newuserlog-byemail'                  => 'kodeord tilsendt pr. e-mail',
 
 );

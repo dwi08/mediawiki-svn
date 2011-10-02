@@ -1080,7 +1080,6 @@ $1",
 'searchmenu-legend'                => 'ตัวเลือกการค้นหา',
 'searchmenu-exists'                => "'''มีหน้าที่ชื่อว่า \"[[:\$1]]\" บนวิกินี้'''",
 'searchmenu-new'                   => "'''สร้างหน้า \"[[:\$1]]\" บนวิกินี้'''",
-'searchmenu-new-nocreate'          => '"$1" เป็นชื่อหน้าที่ไม่ถูกต้อง หรือคุณไม่สามารถสร้างได้',
 'searchhelp-url'                   => 'Help:วิธีการใช้งาน',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|สืบค้นหน้าที่มีคำขึ้นต้นเหล่านี้]]',
 'searchprofile-articles'           => 'หน้าบทความ',
@@ -1908,12 +1907,8 @@ $1',
 'activeusers-noresult'   => 'ไม่พบชื่อผู้ใช้',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'ปูมการสร้างบัญชีผู้ใช้ใหม่',
-'newuserlogpagetext'          => 'นี่คือบันทึกการสร้างบัญชีผู้ใช้',
-'newuserlog-byemail'          => 'รหัสผ่านถูกส่งทางอีเมล',
-'newuserlog-create-entry'     => 'ผู้ใช้ใหม่',
-'newuserlog-create2-entry'    => 'ได้สร้างบัญชีผู้ใช้ใหม่ชื่อ $1',
-'newuserlog-autocreate-entry' => 'ชื่อบัญชีถูกสร้างอัตโนมัติ',
+'newuserlogpage'     => 'ปูมการสร้างบัญชีผู้ใช้ใหม่',
+'newuserlogpagetext' => 'นี่คือบันทึกการสร้างบัญชีผู้ใช้',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'สิทธิของกลุ่มผู้ใช้',
@@ -2666,9 +2661,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'บันทึกการตรวจสอบ',
 'patrol-log-header'    => 'หน้านี้คือบันทึกรุ่นการแก้ไขที่กำหนดว่าตรวจสอบแล้ว',
-'patrol-log-line'      => 'ทำเครื่องหมาย $1 ของ $2 ว่าถูกตรวจสอบ $3 แล้ว',
-'patrol-log-auto'      => '(อัตโนมัติ)',
-'patrol-log-diff'      => 'รุ่น $1',
 'log-show-hide-patrol' => '$1 บันทึกการตรวจตรา',
 
 # Image deletion
@@ -3292,5 +3284,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'จำกัดให้เฉพาะผู้ดูแลระบบขั้นพื้นฐาน',
 'revdelete-unrestricted' => 'ยกเลิกการจำกัดให้เฉพาะผู้ดูแลระบบขั้นพื้นฐาน',
+'newuserlog-byemail'     => 'รหัสผ่านถูกส่งทางอีเมล',
 
 );

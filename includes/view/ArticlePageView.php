@@ -2,7 +2,7 @@
 
 class ArticlePageView extends PageView {
 
-	protected $mRedirectedFrom, $mRedirectUrl, $mParserOutput;
+	protected $mRedirectedFrom, $mRedirectUrl, $mParserOutput, $mParserOptions;
 	private $mOldId, $mRevision, $mPage;
 
 	function getTabs() {
@@ -144,9 +144,10 @@ class ArticlePageView extends PageView {
 
 	/**
 	 * Get the robot policy to be used for the current view
+	 * @param $pOutput ParserOutput
 	 * @return Array the policy that should be set
 	 */
-	public function getRobotPolicy() {
+	public function getRobotPolicy( $pOutput ) {
 		global $wgArticleRobotPolicies, $wgNamespaceRobotPolicies;
 		global $wgDefaultRobotPolicy;
 
@@ -194,12 +195,12 @@ class ArticlePageView extends PageView {
 				OutputPage::formatRobotPolicy( $wgNamespaceRobotPolicies[$ns] )
 			);
 		}
-		if ( $this->getTitle()->canUseNoindex() && is_object( $this->mParserOutput ) && $this->mParserOutput->getIndexPolicy() ) {
+		if ( $this->getTitle()->canUseNoindex() && is_object( $pOutput ) && $pOutput->getIndexPolicy() ) {
 			# __INDEX__ and __NOINDEX__ magic words, if allowed. Incorporates
 			# a final sanity check that we have really got the parser output.
 			$policy = array_merge(
 				$policy,
-				array( 'index' => $this->mParserOutput->getIndexPolicy() )
+				array( 'index' => $pOutput->getIndexPolicy() )
 			);
 		}
 
@@ -266,7 +267,7 @@ class ArticlePageView extends PageView {
 
 		$parserCache = ParserCache::singleton();
 
-		$parserOptions = $this->getPage()->getParserOptions();
+		$parserOptions = $this->getParserOptions();
 		# Render printable version, use printable version cache
 		// @fixme printable check should be moved from Wiki.php to PageView
 		if ( $out->isPrintable() ) {
@@ -425,13 +426,15 @@ class ArticlePageView extends PageView {
 			}
 		}
 
-		# Adjust the title if it was set by displaytitle, -{T|}- or language conversion
-		if ( $this->mParserOutput ) {
-			$titleText = $this->mParserOutput->getTitleText();
+		# Get the ParserOutput actually *displayed* here.
+		# Note that $this->mParserOutput is the *current* version output.
+		$pOutput = ( $outputDone instanceof ParserOutput )
+			? $outputDone // object fetched by hook
+			: $this->mParserOutput;
 
-			if ( strval( $titleText ) !== '' ) {
-				$out->setPageTitle( $titleText );
-			}
+		# Adjust title for main page & pages with displaytitle
+		if ( $pOutput ) {
+			$this->adjustDisplayTitle( $pOutput );
 		}
 
 		# For the main page, overwrite the <title> element with the con-
@@ -445,15 +448,26 @@ class ArticlePageView extends PageView {
 			}
 		}
 
-		# Now that we've filled $this->mParserOutput, we know whether
-		# there are any __NOINDEX__ tags on the page
-		$policy = $this->getRobotPolicy();
+		# Check for any __NOINDEX__ tags on the page using $pOutput
+		$policy = $this->getRobotPolicy( $pOutput );
 		$out->setIndexPolicy( $policy['index'] );
 		$out->setFollowPolicy( $policy['follow'] );
 
 		$this->showViewFooter();
 		$this->getPage()->viewUpdates();
 		wfProfileOut( __METHOD__ );
+	}
+
+	/*
+	 * Adjust title for pages with displaytitle, -{T|}- or language conversion
+	 * @param $pOutput ParserOutput
+	 */
+	public function adjustDisplayTitle( ParserOutput $pOutput ) {
+		# Adjust the title if it was set by displaytitle, -{T|}- or language conversion
+		$titleText = $pOutput->getTitleText();
+		if ( strval( $titleText ) !== '' ) {
+			$this->getOutput()->setPageTitle( $titleText );
+		}
 	}
 
 	/**
@@ -854,7 +868,7 @@ class ArticlePageView extends PageView {
 	 */
 	public function doViewParse( $text ) {
 		$oldid = $this->getOldID();
-		$parserOptions = $this->getPage()->getParserOptions();
+		$parserOptions = $this->getParserOptions();
 
 		# Render printable version, use printable version cache
 		$parserOptions->setIsPrintable( $this->getOutput()->isPrintable() );
@@ -901,7 +915,7 @@ class ArticlePageView extends PageView {
 		global $wgParser, $wgEnableParserCache, $wgUseFileCache;
 
 		if ( !$parserOptions ) {
-			$parserOptions = $this->getPage()->getParserOptions();
+			$parserOptions = $this->getParserOptions();
 		}
 
 		$time = - wfTime();
@@ -935,6 +949,18 @@ class ArticlePageView extends PageView {
 	}
 
 	/**
+	 * Get parser options suitable for rendering the primary article wikitext
+	 * @return mixed ParserOptions object or boolean false
+	 */
+	public function getParserOptions() {
+		if ( !$this->mParserOptions ) {
+			$this->mParserOptions = $this->getPage()->makeParserOptions( $this->getUser() );
+		}
+		// Clone to allow modifications of the return value without affecting cache
+		return clone $this->mParserOptions;
+	}
+
+	/**
 	 * Try to fetch an expired entry from the parser cache. If it is present,
 	 * output it and return true. If it is not present, output nothing and
 	 * return false. This is used as a callback function for
@@ -945,7 +971,7 @@ class ArticlePageView extends PageView {
 	public function tryDirtyCache() {
 		$out = $this->getOutput();
 		$parserCache = ParserCache::singleton();
-		$options = $this->getPage()->getParserOptions();
+		$options = $this->getParserOptions();
 
 		if ( $out->isPrintable() ) {
 			$options->setIsPrintable( true );

@@ -1308,11 +1308,7 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'Mek trasiyin favesik.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Buredura "log"',
-'newuserlog-byemail'          => 'remravlem staksayan kan e-mail',
-'newuserlog-create-entry'     => 'Warzaf favesik',
-'newuserlog-create2-entry'    => 'va $1 warzafa pata reduyur',
-'newuserlog-autocreate-entry' => 'Mivaskon reduyuna pata',
+'newuserlogpage' => 'Buredura "log"',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Rokeem ke favesiklospa',
@@ -1875,8 +1871,6 @@ MediaWiki spam cleanup',
 
 # Patrol log
 'patrol-log-page' => '"Log" triosusiki va fiereem',
-'patrol-log-line' => 'tcalara va $1 ke $2 : $3 fieyen',
-'patrol-log-auto' => '(mivaskon)',
 
 # Image deletion
 'deletedrevision'                 => '$1 sulayan guazaf betaks',
@@ -2279,5 +2273,6 @@ This confirmation code will expire at $4.',
 # New logging system
 'revdelete-restricted'   => 'irutara rewana pu ristusik',
 'revdelete-unrestricted' => 'irutara tiolteyena pu ristusik',
+'newuserlog-byemail'     => 'remravlem staksayan kan e-mail',
 
 );

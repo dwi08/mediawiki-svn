@@ -32,6 +32,7 @@
  * @author Suelnur
  * @author Szoszv
  * @author Tarikozket
+ * @author Tarkovsky
  * @author Urhixidur
  * @author Uğur Başak
  * @author Vito Genovese
@@ -333,7 +334,7 @@ $messages = array(
 'tog-enotifminoredits'        => 'Sayfalardaki küçük değişikliklerde de bana e-posta gönder',
 'tog-enotifrevealaddr'        => 'E-posta adresimi bildiri postalarımda göster.',
 'tog-shownumberswatching'     => 'İzleyen kullanıcı sayısını göster',
-'tog-oldsig'                  => 'Mevcut imzanın önizlemesi:',
+'tog-oldsig'                  => 'Mevcut imza:',
 'tog-fancysig'                => 'İmzaya vikimetin muamelesi yap (otomatik bir bağlantı olmadan)',
 'tog-externaleditor'          => 'Harici düzenleyici kullan (deneyimli kullanıcılar içindir; bilgisayarınızda özel ayarlar gerektirir. [detaylı bilgi için : http://www.mediawiki.org/wiki/Manual:External_editors])',
 'tog-externaldiff'            => 'Harici karşılaştırıcı kullan (deneyimli kullanıcılar içindir; bilgisayarınızda özel ayarlar gerektirir. [detaylı bilgi için : http://www.mediawiki.org/wiki/Manual:External_editors])',
@@ -432,6 +433,7 @@ $messages = array(
 'listingcontinuesabbrev'         => '(devam)',
 'index-category'                 => 'Dizinli sayfalar',
 'noindex-category'               => 'Dizinli olmayan sayfalar',
+'broken-file-category'           => 'Bozuk dosya bağlantıları içeren sayfalar',
 
 'about'         => 'Hakkında',
 'article'       => 'Madde',
@@ -591,6 +593,7 @@ $1',
 'page-rss-feed'           => '"$1" RSS Beslemesi',
 'page-atom-feed'          => '"$1" Atom beslemesi',
 'red-link-title'          => '$1 (sayfa mevcut değil)',
+'sort-descending'         => 'Azalan sıralama',
 
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => 'Madde',
@@ -676,6 +679,8 @@ Lütfen birkaç dakika sonra yeniden deneyin.',
 'cascadeprotected'     => 'Bu sayfa değişiklik yapılması engellenmiştir, çünkü  "kademeli" seçeneği aktif hale getirilerek koruma altına alınan {{PLURAL:$1|sayfada|sayfada}} kullanılmaktadır:
 $2',
 'namespaceprotected'   => "'''$1''' alandındaki sayfaları düzenlemeye izniniz bulunmamaktadır.",
+'customcssprotected'   => 'Bu sayfayı değiştirmeye yetkiniz bulunmamaktadır, çünkü bu sayfa başka bir kullanıcının kişisel ayarlarını içermektedir.',
+'customjsprotected'    => 'Bu Java Script sayfasını değiştirmeye yetkiniz bulunmamaktadır, çünkü bu sayfa başka bir kullanıcının kişisel ayarlarını içermektedir.',
 'ns-specialprotected'  => '{{ns:special}} alanadı içindeki sayfalar değiştirilemez.',
 'titleprotected'       => "[[User:$1|$1]] tarafından oluşturulması engellenmesi için bu sayfa koruma altına alınmıştır.
 Verilen sebep: ''$2''.",
@@ -718,7 +723,8 @@ Hesabınız açıldı.
 'createaccountmail'          => 'e-posta ile',
 'createaccountreason'        => 'Sebep:',
 'badretype'                  => 'Girdiğiniz şifreler birbirleriyle uyuşmuyor.',
-'userexists'                 => 'Girdiğiniz kullanıcı adı kullanımda. Lütfen farklı bir kullanıcı adı seçin.',
+'userexists'                 => 'Girdiğiniz kullanıcı adı zaten kullanımda.
+Lütfen farklı bir kullanıcı adı seçiniz.',
 'loginerror'                 => 'Oturum açma hatası.',
 'createaccounterror'         => 'Hesap oluşturulamıyor: $1',
 'nocookiesnew'               => 'Kullanıcı hesabı oluşturuldu ama oturum açamadınız.
@@ -776,11 +782,13 @@ Eğer kullanıcı hesabını yanlışlıkla oluşturmuş iseniz, bu mesajı yoks
 'usernamehasherror'          => 'Kullanıcı adı karma karakterler içeremez',
 'login-throttled'            => 'Yakın zamanda çok fazla oturum açma denemesinde bulundunuz.
 Lütfen tekrar denemeden önce bekleyin.',
+'login-abort-generic'        => 'Girişiniz başarısız - iptal edilmiş',
 'loginlanguagelabel'         => 'Dil: $1',
 'suspicious-userlogout'      => 'Çıkış isteğiniz reddedildi çünkü bozuk bir tarayıcı ya da önbellekli vekil tarafından gönerilmiş gibi görünüyor.',
 
 # E-mail sending
 'php-mail-error-unknown' => "PHP's mail() fonksiyonunda bilinmeyen hata",
+'user-mail-no-addy'      => 'Bir e-posta adresi olmadan e-posta göndermeye çalıştı.',
 
 # Change password dialog
 'resetpass'                 => 'Parolayı değiştir',
@@ -804,9 +812,23 @@ Girişi bitirmek için, burada yeni bir parola yazın:',
 
 # Special:PasswordReset
 'passwordreset'              => 'Parola sıfırlama',
+'passwordreset-text'         => 'Hesap bilgilerinizin e-posta ile hatırlatılması için bu formu doldurunuz.',
 'passwordreset-legend'       => 'Şifreyi sıfırla',
+'passwordreset-disabled'     => 'Parola sıfırlamaları bu wiki üzerinde devre dışı bırakıldı.',
+'passwordreset-pretext'      => '{{PLURAL:$1||Aşağıdaki verilerden birini girin}}',
 'passwordreset-username'     => 'Kullanıcı adı:',
+'passwordreset-domain'       => 'Domain:',
+'passwordreset-capture'      => 'Sonuç e-postasını görüntüle?',
+'passwordreset-capture-help' => 'Bu kutuyu işaretlerseniz, e-posta (geçici şifre ile) size ve yanı sıra kullanıcıya gönderiliyor.',
 'passwordreset-email'        => 'E-posta adresi:',
+'passwordreset-emailtitle'   => '{{SITENAME}} hesap detayları',
+'passwordreset-emailtext-ip' => 'Birisi, (muhtemelen siz, $1 IP adresinden) {{SITENAME}} ($4) için hesap bilgilerinizin 
+hatırlatılmasını istedi. Aşağıdaki kullanıcı {{PLURAL:$3|hesabı|hesapları}} bu e-posta adresiyle ilişkili:
+
+$2
+
+{{PLURAL:$3|Bu geçici şifre|Bu geçici şifreler}} {{PLURAL:$5|bir gün|$5  gün}} geçerlidir.
+Bu geçici parola ile giriş yapın ve yeni bir şifre seçin. Şifre değişimini siz istemediyseniz veya şifrenizi hatırladıysanız ve artık şifrenizi değiştirmek istemiyorsanız; bu iletiyi önemsemeyerek eski şifrenizi kullanmaya devam edebilirsiniz.',
 'passwordreset-emailelement' => 'Kullanıcı adı: $1
 Geçici şifre: $2',
 
@@ -1325,7 +1347,7 @@ Kullanabileceğiniz rastgele-üretilmiş bir değer: $1',
 'savedprefs'                    => 'Ayarlar kaydedildi.',
 'timezonelegend'                => 'Zaman dilimi:',
 'localtime'                     => 'Yerel saat:',
-'timezoneuseserverdefault'      => 'Sunucu varsayılanını kullan',
+'timezoneuseserverdefault'      => 'Viki varsayılanını kullanın ($1)',
 'timezoneuseoffset'             => 'Diğer (ofset belirtin)',
 'timezoneoffset'                => 'Ofset¹:',
 'servertime'                    => 'Sunucu saati:',
@@ -1501,6 +1523,7 @@ Diğer kullanıcılar sizinle bu yolla iletişime geçtiğinde e-posta adresiniz
 'right-siteadmin'             => 'Veritabanını kilitle ve kilidi aç',
 'right-override-export-depth' => "Sayfaları, derinlik 5'e kadar bağlantılı sayfalarla beraber, dışa aktar",
 'right-sendemail'             => 'Diğer kullanıcılara e-posta gönder',
+'right-passwordreset'         => 'Bir kullanıcının parolasını sıfırlar ([[Special:PasswordReset|özel sayfa]])',
 
 # User rights log
 'rightslog'      => 'Kullanıcı hakları kayıtları',
@@ -2081,12 +2104,8 @@ Desteklenen iletişim kuralları: <tt>$1</tt>',
 'activeusers-noresult'   => 'Kullanıcı bulunamadı.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Yeni kullanıcı kayıtları',
-'newuserlogpagetext'          => 'En son kaydolan kullanıcı kayıtları.',
-'newuserlog-byemail'          => 'e-posta yoluyla şifre gönderilmiştir',
-'newuserlog-create-entry'     => 'Yeni kullanıcı',
-'newuserlog-create2-entry'    => '$1 yeni hesabını oluşturdu',
-'newuserlog-autocreate-entry' => 'Otomatik hesap oluşturuldu',
+'newuserlogpage'     => 'Yeni kullanıcı kayıtları',
+'newuserlogpagetext' => 'En son kaydolan kullanıcı kayıtları.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Kullanıcı grubu hakları',
@@ -2514,6 +2533,7 @@ Son engelleme günlüğü girdisi kaynak amacıyla aşağıda verilmiştir:',
 'unblocklink'                     => 'engeli kaldır',
 'change-blocklink'                => 'engeli değiştir',
 'contribslink'                    => 'katkılar',
+'emaillink'                       => 'e-posta gönder',
 'autoblocker'                     => 'Otomatik olarak engellendiniz çünkü yakın zamanda IP adresiniz "[[User:$1|$1]]" kullanıcısı tarafından  kullanılmıştır. $1 isimli kullanıcının engellenmesi için verilen sebep: "\'\'\'$2\'\'\'"',
 'blocklogpage'                    => 'Engel kaydı',
 'blocklog-showlog'                => 'Bu kullanıcı daha önceden engellenmiş.
@@ -2895,9 +2915,6 @@ Geçici dosya kayıp.',
 # Patrol log
 'patrol-log-page'      => 'Kontrol kaydı',
 'patrol-log-header'    => 'Bu gözlenmiş revizyonların günlüğüdür.',
-'patrol-log-line'      => '$3 kontrol edilmiş olarak $2 $1 sürümü işaretlendi',
-'patrol-log-auto'      => '(otomatik)',
-'patrol-log-diff'      => 'revizyon $1',
 'log-show-hide-patrol' => 'Gözetim günlüğünü $1',
 
 # Image deletion
@@ -2923,6 +2940,7 @@ Bunu çalıştırarak, sisteminiz tehlikeye atılabilir.",
 'widthheightpage'        => '$1×$2, $3 {{PLURAL:$3|sayfa|sayfa}}',
 'file-info'              => 'dosya boyutu: $1, MIME tipi: $2',
 'file-info-size'         => '$1 × $2 piksel, dosya boyutu: $3, MIME tipi: $4',
+'file-info-size-pages'   => '$1 × $2 piksel, dosya boyutu: $3, MIME tipi: $4, $5 {{PLURAL:$5|sayfa|sayfa}}',
 'file-nohires'           => 'Daha yüksek çözünürlük yok.',
 'svg-long-desc'          => 'SVG dosyası, sözde $1 × $2 piksel, dosya boyutu: $3',
 'show-big-image'         => 'Tam çözünürlük',
@@ -2952,6 +2970,7 @@ Bunu çalıştırarak, sisteminiz tehlikeye atılabilir.",
 'seconds-abbrev' => 'sn',
 'minutes-abbrev' => 'dk.',
 'hours-abbrev'   => 's',
+'ago'            => '$1 önce',
 
 # Bad image list
 'bad_image_list' => 'Biçim aşağıdaki gibidir:
@@ -3538,9 +3557,7 @@ Bu programla birlikte [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU Genel Kamu Lisansın
 'filepath-page'    => 'Dosya adı:',
 'filepath-submit'  => 'Git',
 'filepath-summary' => 'Bu özel sayfa bir dosya için tam yolu getirir.
-Resimler tam çözünürlükte görüntülenir, diğer dosya tipleri ilgili programlarıyla doğrudan başlatılır.
-
-Dosya adını "{{ns:file}}:" öneki olmadan gir.',
+Resimler tam çözünürlükte görüntülenir, diğer dosya tipleri ilgili programlarıyla doğrudan başlatılır.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Benzer dosyaları ara',
@@ -3635,5 +3652,6 @@ Dosya adını "{{ns:file}}:" öneki olmadan gir.',
 # New logging system
 'revdelete-restricted'   => 'hizmetliler için uygulanmış kısıtlamalar',
 'revdelete-unrestricted' => 'hizmetliler için kaldırılmış kısıtlamalar',
+'newuserlog-byemail'     => 'e-posta yoluyla şifre gönderilmiştir',
 
 );

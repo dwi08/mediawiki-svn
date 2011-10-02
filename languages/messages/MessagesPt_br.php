@@ -2125,12 +2125,8 @@ Protocolos suportados: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nenhum usuário encontrado.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Registro de criação de usuários',
-'newuserlogpagetext'          => 'Este é um registro de novas contas de usuário',
-'newuserlog-byemail'          => 'senha enviada por correio-eletrônico',
-'newuserlog-create-entry'     => 'Novo usuário',
-'newuserlog-create2-entry'    => 'criou nova conta para $1',
-'newuserlog-autocreate-entry' => 'Conta criada automaticamente',
+'newuserlogpage'     => 'Registro de criação de usuários',
+'newuserlogpagetext' => 'Este é um registro de novas contas de usuário',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Privilégios de grupo de usuários',
@@ -2956,9 +2952,6 @@ Tal bloqueio foi provavelmente causado por uma ligação para um ''website'' ext
 # Patrol log
 'patrol-log-page'      => 'Registro de edições patrulhadas',
 'patrol-log-header'    => 'Este é um registro de edições patrulhadas.',
-'patrol-log-line'      => 'marcou a $1 de $2 como uma edição patrulhada $3',
-'patrol-log-auto'      => 'automaticamente',
-'patrol-log-diff'      => 'edição $1',
 'log-show-hide-patrol' => '$1 registro de edições patrulhadas',
 
 # Image deletion
@@ -2989,7 +2982,7 @@ Executá-lo poderá comprometer a segurança do seu sistema.",
 'svg-long-desc'          => 'arquivo SVG, de $1 × $2 pixels, tamanho: $3',
 'show-big-image'         => 'Resolução completa',
 'show-big-image-preview' => 'Tamanho desta previsualização: $1.',
-'show-big-image-other'   => 'Outras resoluções: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Outra resolução|Outras resoluções}}: $1.',
 'show-big-image-size'    => '$1 × $2 pixels',
 'file-info-gif-looped'   => 'cíclico',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|quadro|quadros}}',
@@ -3715,7 +3708,6 @@ Insira o nome do arquivo sem o prefixo "{{ns:file}}:".',
 'globalfileusage-text'        => 'Pesquisar utilização global de arquivos',
 'globalfileusage-no-results'  => '[[$1]] Não é utilizado em outras wikis',
 'globalfileusage-on-wiki'     => 'Uso em $2',
-'globalfileusage-of-file'     => 'As outras wikis a seguir usam este arquivo:',
 'globalfileusage-more'        => 'Ver [[{{#Special:GlobalUsage}}/$1|a utilização global]] deste arquivo.',
 'globalfileusage-filterlocal' => 'Ocultar usos locais',
 
@@ -3726,7 +3718,6 @@ Insira o nome do arquivo sem o prefixo "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Pesquisar utlização global de arquivos',
 'globaltemplateusage-no-results'  => '[[$1]] Não é utilizado em outras wikis',
 'globaltemplateusage-on-wiki'     => 'Uso em $2',
-'globaltemplateusage-of-file'     => 'As wikis a seguir utilizam esta predefinição:',
 'globaltemplateusage-more'        => 'Ver [[{{#Special:GlobalUsage}}/$1|a utilização global]] deste arquivo.',
 'globaltemplateusage-filterlocal' => 'Ocultar usos locais',
 
@@ -3758,5 +3749,6 @@ Insira o nome do arquivo sem o prefixo "{{ns:file}}:".',
 # New logging system
 'revdelete-restricted'   => 'restrições a administradores aplicadas',
 'revdelete-unrestricted' => 'restrições a administradores removidas',
+'newuserlog-byemail'     => 'senha enviada por correio-eletrônico',
 
 );

@@ -137,7 +137,9 @@ class ParserOptions {
 	function setNumberHeadings( $x )            { return wfSetVar( $this->mNumberHeadings, $x ); }
 	function setAllowSpecialInclusion( $x )     { return wfSetVar( $this->mAllowSpecialInclusion, $x ); }
 	function setTidy( $x )                      { return wfSetVar( $this->mTidy, $x ); }
-	function setSkin( $x )                      {}
+
+	/** @deprecated in 1.19; will be removed in 1.20 */
+	function setSkin( $x )                      { wfDeprecated( __METHOD__, '1.19' ); }
 	function setInterfaceMessage( $x )          { return wfSetVar( $this->mInterfaceMessage, $x ); }
 	function setTargetLanguage( $x )            { return wfSetVar( $this->mTargetLanguage, $x, true ); }
 	function setMaxIncludeSize( $x )            { return wfSetVar( $this->mMaxIncludeSize, $x ); }
@@ -274,10 +276,12 @@ class ParserOptions {
 	 * settings.
 	 *
 	 * @since 1.17
+	 * @param $forOptions Array
+	 * @param $title Title: used to get the content language of the page (since r97636)
 	 * @return \string Page rendering hash
 	 */
-	public function optionsHash( $forOptions ) {
-		global $wgContLang, $wgRenderHashAppend;
+	public function optionsHash( $forOptions, $title = null ) {
+		global $wgRenderHashAppend;
 
 		$confstr = '';
 
@@ -321,7 +325,12 @@ class ParserOptions {
 
 		// add in language specific options, if any
 		// @todo FIXME: This is just a way of retrieving the url/user preferred variant
-		$confstr .= $wgContLang->getExtraHashOptions();
+		if( !is_null( $title ) ) {
+			$confstr .= $title->getPageLanguage()->getExtraHashOptions();
+		} else {
+			global $wgContLang;
+			$confstr .= $wgContLang->getExtraHashOptions();
+		}
 
 		$confstr .= $wgRenderHashAppend;
 

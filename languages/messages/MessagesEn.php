@@ -462,8 +462,6 @@ $specialPageAliases = array(
 	'Watchlist'                 => array( 'Watchlist' ),
 	'Whatlinkshere'             => array( 'WhatLinksHere' ),
 	'Withoutinterwiki'          => array( 'WithoutInterwiki' ),
-	'GlobalFileUsage'           => array( 'GlobalFileUsage' ),
-	'GlobalTemplateUsage'       => array( 'GlobalTemplateUsage' ),
 );
 
 /**
@@ -1129,6 +1127,7 @@ No e-mail will be sent for any of the following features.',
 'emailconfirmlink'           => 'Confirm your e-mail address',
 'invalidemailaddress'        => 'The e-mail address cannot be accepted as it appears to have an invalid format.
 Please enter a well-formatted address or empty that field.',
+'cannotchangeemail'          => 'Account e-mail addresses cannot be changed on this wiki.',
 'accountcreated'             => 'Account created',
 'accountcreatedtext'         => 'The user account for $1 has been created.',
 'createaccount-title'        => 'Account creation for {{SITENAME}}',
@@ -1177,16 +1176,18 @@ You may have already successfully changed your password or requested a new tempo
 'resetpass-temp-password'   => 'Temporary password:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Reset password',
-'passwordreset-text'           => 'Complete this form to receive an e-mail reminder of your account details.',
-'passwordreset-legend'         => 'Reset password',
-'passwordreset-disabled'       => 'Password resets have been disabled on this wiki.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Enter one of the pieces of data below}}',
-'passwordreset-username'       => 'Username:',
-'passwordreset-domain'         => 'Domain:',
-'passwordreset-email'          => 'E-mail address:',
-'passwordreset-emailtitle'     => 'Account details on {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Someone (probably you, from IP address $1) requested a reminder of your
+'passwordreset'                    => 'Reset password',
+'passwordreset-text'               => 'Complete this form to receive an e-mail reminder of your account details.',
+'passwordreset-legend'             => 'Reset password',
+'passwordreset-disabled'           => 'Password resets have been disabled on this wiki.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Enter one of the pieces of data below}}',
+'passwordreset-username'           => 'Username:',
+'passwordreset-domain'             => 'Domain:',
+'passwordreset-capture'            => 'View the resulting e-mail?',
+'passwordreset-capture-help'       => 'If you check this box, the e-mail (with the temporary password) will be shown to you as well as being sent to the user.',
+'passwordreset-email'              => 'E-mail address:',
+'passwordreset-emailtitle'         => 'Account details on {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Someone (probably you, from IP address $1) requested a reminder of your
 account details for {{SITENAME}} ($4). The following user {{PLURAL:$3|account is|accounts are}}
 associated with this e-mail address:
 
@@ -1197,7 +1198,7 @@ You should log in and choose a new password now. If someone else made this
 request, or if you have remembered your original password, and you no longer
 wish to change it, you may ignore this message and continue using your old
 password.',
-'passwordreset-emailtext-user' => 'User $1 on {{SITENAME}} requested a reminder of your account details for {{SITENAME}}
+'passwordreset-emailtext-user'     => 'User $1 on {{SITENAME}} requested a reminder of your account details for {{SITENAME}}
 ($4). The following user {{PLURAL:$3|account is|accounts are}} associated with this e-mail address:
 
 $2
@@ -1207,9 +1208,11 @@ You should log in and choose a new password now. If someone else made this
 request, or if you have remembered your original password, and you no longer
 wish to change it, you may ignore this message and continue using your old
 password.',
-'passwordreset-emailelement'   => 'Username: $1
+'passwordreset-emailelement'       => 'Username: $1
 Temporary password: $2',
-'passwordreset-emailsent'      => 'A reminder e-mail has been sent.',
+'passwordreset-emailsent'          => 'A reminder e-mail has been sent.',
+'passwordreset-emailsent-capture'  => 'A reminder e-mail has been sent, which is shown below.',
+'passwordreset-emailerror-capture' => 'A reminder e-mail was generated, which is shown below, but sending it to the user failed: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Change E-mail address',
@@ -1409,9 +1412,6 @@ The latest log entry is provided below for reference:",
 'templatesused'                    => '{{PLURAL:$1|Template|Templates}} used on this page:',
 'templatesusedpreview'             => '{{PLURAL:$1|Template|Templates}} used in this preview:',
 'templatesusedsection'             => '{{PLURAL:$1|Template|Templates}} used in this section:',
-'distanttemplatesused'             => 'Distant {{PLURAL:$1|template|templates}} used on this page:',
-'distanttemplatesusedpreview'      => 'Distant {{PLURAL:$1|template|templates}} used in this preview:',
-'distanttemplatesusedsection'      => 'Distant {{PLURAL:$1|template|templates}} used in this section:',
 'template-protected'               => '(protected)',
 'template-semiprotected'           => '(semi-protected)',
 'hiddencategories'                 => 'This page is a member of {{PLURAL:$1|1 hidden category|$1 hidden categories}}:',
@@ -1981,6 +1981,7 @@ Your e-mail address is not revealed when other users contact you.',
 'right-siteadmin'             => 'Lock and unlock the database',
 'right-override-export-depth' => 'Export pages including linked pages up to a depth of 5',
 'right-sendemail'             => 'Send e-mail to other users',
+'right-passwordreset'         => 'View password reset e-mails',
 
 # User rights log
 'rightslog'                  => 'User rights log',
@@ -2328,7 +2329,7 @@ When filtered by user, only files where that user uploaded the most recent versi
 'filehist-filesize'                 => 'File size',
 'filehist-comment'                  => 'Comment',
 'filehist-missing'                  => 'File missing',
-'imagelinks'                        => 'File links',
+'imagelinks'                        => 'File usage',
 'linkstoimage'                      => 'The following {{PLURAL:$1|page links|$1 pages link}} to this file:',
 'linkstoimage-more'                 => 'More than $1 {{PLURAL:$1|page links|pages link}} to this file.
 The following list shows the {{PLURAL:$1|first page link|first $1 page links}} to this file only.
@@ -2641,13 +2642,8 @@ Supported protocols: <tt>$1</tt>',
 'activeusers-noresult'   => 'No users found.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'User creation log',
-'newuserlogpagetext'          => 'This is a log of user creations.',
-'newuserlogentry'             => '', # do not translate or duplicate this message to other languages
-'newuserlog-byemail'          => 'password sent by e-mail',
-'newuserlog-create-entry'     => 'New user account',
-'newuserlog-create2-entry'    => 'created new account $1',
-'newuserlog-autocreate-entry' => 'Account created automatically',
+'newuserlogpage'     => 'User creation log',
+'newuserlogpagetext' => 'This is a log of user creations.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'User group rights',
@@ -2771,7 +2767,7 @@ You could also reset the notification flags for all your watched pages on your w
 			 Your friendly {{SITENAME}} notification system
 
 --
-To change your email notification settings, visit
+To change your e-mail notification settings, visit
 {{canonicalurl:{{#special:Preferences}}}}
 
 To change your watchlist settings, visit
@@ -3477,7 +3473,7 @@ You can view its source',
 'tooltip-t-recentchangeslinked'   => 'Recent changes in pages linked from this page',
 'tooltip-feed-rss'                => 'RSS feed for this page',
 'tooltip-feed-atom'               => 'Atom feed for this page',
-'tooltip-t-contributions'         => 'View the list of contributions of this user',
+'tooltip-t-contributions'         => 'A list of contributions of this user',
 'tooltip-t-emailuser'             => 'Send an e-mail to this user',
 'tooltip-t-upload'                => 'Upload files',
 'tooltip-t-specialpages'          => 'A list of all special pages',
@@ -3604,9 +3600,6 @@ This is probably caused by a link to a blacklisted external site.',
 # Patrol log
 'patrol-log-page'      => 'Patrol log',
 'patrol-log-header'    => 'This is a log of patrolled revisions.',
-'patrol-log-line'      => 'marked $1 of $2 patrolled $3',
-'patrol-log-auto'      => '(automatic)',
-'patrol-log-diff'      => 'revision $1',
 'log-show-hide-patrol' => '$1 patrol log',
 
 # Image deletion
@@ -3660,10 +3653,15 @@ By executing it, your system may be compromised.",
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'     => '$1, $2×$3', # only translate this message to other languages if you have to change it
-'seconds-abbrev' => 's', # only translate this message to other languages if you have to change it
-'minutes-abbrev' => 'm', # only translate this message to other languages if you have to change it
-'hours-abbrev'   => 'h', # only translate this message to other languages if you have to change it
-'days-abbrev'    => 'd', # only translate this message to other languages if you have to change it
+'seconds-abbrev' => '$1s', # only translate this message to other languages if you have to change it
+'minutes-abbrev' => '$1m', # only translate this message to other languages if you have to change it
+'hours-abbrev'   => '$1h', # only translate this message to other languages if you have to change it
+'days-abbrev'    => '$1d', # only translate this message to other languages if you have to change it
+'seconds'        => '{{PLURAL:$1|$1 second|$1 seconds}}',
+'minutes'        => '{{PLURAL:$1|$1 minute|$1 minutes}}',
+'hours'          => '{{PLURAL:$1|$1 hour|$1 hours}}',
+'days'           => '{{PLURAL:$1|$1 day|$1 days}}',
+'ago'            => '$1 ago',
 
 # Bad image list
 'bad_image_list' => 'The format is as follows:
@@ -4507,9 +4505,7 @@ You should have received [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU Gen
 'filepath-page'    => 'File:',
 'filepath-submit'  => 'Go',
 'filepath-summary' => 'This special page returns the complete path for a file.
-Images are shown in full resolution, other file types are started with their associated program directly.
-
-Enter the file name without the "{{ns:file}}:" prefix.',
+Images are shown in full resolution, other file types are started with their associated program directly.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Search for duplicate files',
@@ -4581,28 +4577,6 @@ Enter the file name without the "{{ns:file}}:" prefix.',
 'compare-title-not-exists'    => 'The title you specified does not exist.',
 'compare-revision-not-exists' => 'The revision you specified does not exist.',
 
-# Special:GlobalFileUsage
-'globalfileusage'             => 'Global file usage',
-'globalfileusage-for'         => 'Global file usage for "$1"',
-'globalfileusage-desc'        => '[[Special:GlobalFileUsage|Special page]] to view global file usage',
-'globalfileusage-ok'          => 'Search',
-'globalfileusage-text'        => 'Search global file usage',
-'globalfileusage-no-results'  => '[[$1]] is not used on other wikis.',
-'globalfileusage-on-wiki'     => 'Usage on $2',
-'globalfileusage-of-file'     => 'The following other wikis use this file:',
-'globalfileusage-more'        => 'View [[{{#Special:GlobalUsage}}/$1|more global usage]] of this file.',
-'globalfileusage-filterlocal' => 'Do not show local usage',
-
-# Special:GlobalTemplateUsage
-'globaltemplateusage'             => 'Global template usage',
-'globaltemplateusage-for'         => 'Global template usage for "$1"',
-'globaltemplateusage-ok'          => 'Search',
-'globaltemplateusage-text'        => 'Search global template usage',
-'globaltemplateusage-no-results'  => '[[$1]] is not used on other wikis.',
-'globaltemplateusage-on-wiki'     => 'Usage on $2',
-'globaltemplateusage-of-file'     => 'The following other wikis use this template:',
-'globaltemplateusage-more'        => 'View [[{{#Special:GlobalUsage}}/$1|more global usage]] of this template.',
-'globaltemplateusage-filterlocal' => 'Do not show local usage',
 
 # Database error messages
 'dberr-header'      => 'This wiki has a problem',
@@ -4654,5 +4628,12 @@ This site is experiencing technical difficulties.',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|moved}} page $3 to $4 without leaving a redirect',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|moved}} page $3 to $4 over redirect',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|moved}} page $3 to $4 over a redirect without leaving a redirect',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|marked}} revision $4 of page $3 patrolled',
+'logentry-patrol-patrol-auto'         => '$1 automatically {{GENDER:$2|marked}} revision $4 of page $3 patrolled',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|created}} a user account',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|created}} a user account',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|created}} {{GENDER:$4|a user account}} $3',
+'logentry-newusers-autocreate'        => 'Account $1 was {{GENDER:$2|created}} automatically',
+'newuserlog-byemail'                  => 'password sent by e-mail',
 
 );

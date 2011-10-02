@@ -950,8 +950,7 @@ $messages = array(
 'listusers-submit' => 'Δείξον',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Αρχείον ποισιματίων λογαρίων χρήστε',
-'newuserlog-create-entry' => 'Νέον χρήστες',
+'newuserlogpage' => 'Αρχείον ποισιματίων λογαρίων χρήστε',
 
 # Special:ListGroupRights
 'listgrouprights-group'   => 'Ομάδαν',
@@ -1268,9 +1267,6 @@ $messages = array(
 
 # Spam protection
 'spamprotectiontitle' => 'Φίλτρον προστασίας ασό σπαμ',
-
-# Patrol log
-'patrol-log-auto' => '(αυτόματον)',
 
 # Browsing diffs
 'previousdiff' => '← Προτεσνόν διαφορά',

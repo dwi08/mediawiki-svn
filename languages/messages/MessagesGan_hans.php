@@ -1188,8 +1188,7 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => '寻伓到用户。',
 
 # Special:Log/newusers
-'newuserlogpage'          => '新开户𠮶人名单',
-'newuserlog-create-entry' => '新用户𠮶账户',
+'newuserlogpage' => '新开户𠮶人名单',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '（成员名单）',
@@ -1750,8 +1749,6 @@ Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]
 
 # Patrol log
 'patrol-log-page' => '巡查记录',
-'patrol-log-line' => '标正嘞$1/$2版系检查过𠮶$3',
-'patrol-log-auto' => '（自动）',
 
 # Image deletion
 'deletedrevision'                 => '删卟嘞旧版本$1。',

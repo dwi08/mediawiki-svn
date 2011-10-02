@@ -1305,11 +1305,8 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'ማንም ተጠቃሚ አልተገኘም።',
 
 # Special:Log/newusers
-'newuserlogpage'           => 'የአባልነት መዝገብ (user log)',
-'newuserlogpagetext'       => 'ይህ መዝገብ ወደ አባልነት የገቡትን ብዕር ስሞች ይዘርዝራል።',
-'newuserlog-byemail'       => 'ማለፊያ-ቃል በኤ-መልዕክት ተልኳል',
-'newuserlog-create-entry'  => 'አዲስ አባል',
-'newuserlog-create2-entry' => 'ለ$1 አባልነት ተፈጥሯል',
+'newuserlogpage'     => 'የአባልነት መዝገብ (user log)',
+'newuserlogpagetext' => 'ይህ መዝገብ ወደ አባልነት የገቡትን ብዕር ስሞች ይዘርዝራል።',
 
 # Special:ListGroupRights
 'listgrouprights'         => 'የተጠቃሚ ስብስባ መብቶች',
@@ -1860,8 +1857,6 @@ Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]
 
 # Patrol log
 'patrol-log-page' => 'የማሳለፊያ መዝገብ',
-'patrol-log-line' => 'እትም $1 ከ$2 የተመለከተ ሆኖ አሳለፈ $3',
-'patrol-log-auto' => '(በቀጥታ)',
 
 # Image deletion
 'deletedrevision'                 => 'የቆየው ዕትም $1 አጠፋ',
@@ -2258,9 +2253,7 @@ $3
 'filepath-page'    => 'ፋይሉ፦',
 'filepath-submit'  => 'መንገድ',
 'filepath-summary' => 'ይህ ልዩ ገጽ ለ1 ፋይል ሙሉ መንገድ ይሰጣል።<br />
-ስዕል በሙሉ ማጉላት ይታያል፤ ሌላ አይነት ፋይል በሚገባው ፕሮግራም በቀጥታ ይጀመራል።
-
-የፋይሉ ስም («{{ns:file}}:» የሚለው ባዕድ መነሻ ሳይኖር) ከዚህ ታች ይግባ፦',
+ስዕል በሙሉ ማጉላት ይታያል፤ ሌላ አይነት ፋይል በሚገባው ፕሮግራም በቀጥታ ይጀመራል።',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'ለቅጂ ፋይሎች መፈልግ',
@@ -2280,5 +2273,8 @@ $3
 
 # Special:BlankPage
 'blankpage' => 'ባዶ ገጽ',
+
+# New logging system
+'newuserlog-byemail' => 'ማለፊያ-ቃል በኤ-መልዕክት ተልኳል',
 
 );

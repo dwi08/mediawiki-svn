@@ -980,8 +980,7 @@ Links aus Namensräume wern da net aufglistet.',
 'listusers-noresult' => 'Koane Benutzer gfunden.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Neiåmödungs-Logbiaché',
-'newuserlog-create-entry' => 'Benutza is nei registriad',
+'newuserlogpage' => 'Neiåmödungs-Logbiaché',
 
 # Special:ListGroupRights
 'listgrouprights-members' => '(Mitgliaderlisten)',
@@ -1363,10 +1362,6 @@ Bsuach bittschee de Saiten [http://www.mediawiki.org/wiki/Localisation MediaWiki
 
 # Patrolling
 'markedaspatrollederrortext' => 'Du muasst a Seitenänderrung auswön',
-
-# Patrol log
-'patrol-log-line' => 'markirde $1 voh „$2“ ois kontroilird $3',
-'patrol-log-diff' => 'Versión $1',
 
 # Image deletion
 'deletedrevision'    => 'Oide Version $1 glöscht.',

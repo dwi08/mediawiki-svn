@@ -1717,12 +1717,8 @@ PICT # misc.
 'activeusers-noresult' => 'هچ کاربری درگیزگ نه بیت',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'ورود شرکتن کاربر',
-'newuserlogpagetext'          => '.شی یک ورودی چه شرکتن کاربر',
-'newuserlog-byemail'          => 'کلمه رمز گون ایمیل دیم دهگ بوت',
-'newuserlog-create-entry'     => 'نوکین کاربر',
-'newuserlog-create2-entry'    => 'نوکین حساب شربوت  $1',
-'newuserlog-autocreate-entry' => 'حساب اتوماتیکی شربوت',
+'newuserlogpage'     => 'ورود شرکتن کاربر',
+'newuserlogpagetext' => '.شی یک ورودی چه شرکتن کاربر',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'حقوق گروه کاربر',
@@ -2453,9 +2449,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'آمار نظارت',
 'patrol-log-header'    => 'شی آماری چه بازبینی آن گشتی انت.',
-'patrol-log-line'      => 'نشان هلگ بیتن $1 چه $2 نظارت $3',
-'patrol-log-auto'      => '(اتوماتیک)',
-'patrol-log-diff'      => 'ر$1',
 'log-show-hide-patrol' => '$1  آمار گشت',
 
 # Image deletion
@@ -3074,9 +3067,7 @@ $1',
 'filepath-page'    => 'فایل:',
 'filepath-submit'  => 'مسیر',
 'filepath-summary' => 'ای حاصین صفحه مسیر کامل په یک فایل پیش داریت.
-تصاویر گون وضوح کامل پیش دارگ بنت و دگه نوع فایلان گون وتی برنامه یانش مستقیما پچ بنت.
-
-نام فایل بی پسوند "{{ns:file}}:" وارد کن',
+تصاویر گون وضوح کامل پیش دارگ بنت و دگه نوع فایلان گون وتی برنامه یانش مستقیما پچ بنت.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'گردگ په کپی  فایلان',
@@ -3155,5 +3146,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'محدودیت آن په مدیران سیستم بوت',
 'revdelete-unrestricted' => 'به زور چه مدیران سیستم محدودیتان',
+'newuserlog-byemail'     => 'کلمه رمز گون ایمیل دیم دهگ بوت',
 
 );

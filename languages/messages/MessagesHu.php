@@ -2103,12 +2103,8 @@ Támogatott protokollok: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nem található ilyen szerkesztő.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Új szerkesztők naplója',
-'newuserlogpagetext'          => 'Ez a napló az újonnan regisztrált szerkesztők listáját tartalmazza.',
-'newuserlog-byemail'          => 'a jelszót kiküldtük a megadott e-mail címre',
-'newuserlog-create-entry'     => 'új szerkesztőként regisztrált',
-'newuserlog-create2-entry'    => 'új felhasználói fiókot hozott létre $1 néven',
-'newuserlog-autocreate-entry' => 'Felhasználói fiók automatikusan létrehozva',
+'newuserlogpage'     => 'Új szerkesztők naplója',
+'newuserlogpagetext' => 'Ez a napló az újonnan regisztrált szerkesztők listáját tartalmazza.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Szerkesztői csoportok jogai',
@@ -2940,9 +2936,6 @@ Ez valószínűleg egy olyan link miatt van, ami egy feketelistán lévő oldalr
 # Patrol log
 'patrol-log-page'      => 'Ellenőrzési napló',
 'patrol-log-header'    => 'Ez az ellenőrzött változatok naplója.',
-'patrol-log-line'      => 'ellenőrzöttnek jelölte a(z) $2 $1 $3',
-'patrol-log-auto'      => '(automatikus)',
-'patrol-log-diff'      => '$1 azonosítójú változatát',
 'log-show-hide-patrol' => 'járőrnapló $1',
 
 # Image deletion
@@ -3587,9 +3580,8 @@ A MediaWikit abban a reményben terjesztjük, hogy hasznos lesz, de GARANCIA NÉ
 'filepath'         => 'Fájlelérés',
 'filepath-page'    => 'Fájl:',
 'filepath-submit'  => 'Elérési út',
-'filepath-summary' => 'Ezen lap segítségével lekérheted egy adott fájl pontos útvonalát. A képek teljes méretben jelennek meg, más fájltípusok közvetlenül a hozzájuk rendelt programmal indulnak el.
-
-Add meg a fájlnevet a „{{ns:file}}:” prefixum nélkül.',
+'filepath-summary' => 'Ezen lap segítségével lekérheted egy adott fájl pontos útvonalát.
+A képek teljes méretben jelennek meg, más fájltípusok közvetlenül a hozzájuk rendelt programmal indulnak el.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Duplikátumok keresése',
@@ -3683,7 +3675,14 @@ Add meg a fájlnevet a „{{ns:file}}:” prefixum nélkül.',
 'sqlite-no-fts'  => '$1 teljes szöveges keresés támogatása nélkül',
 
 # New logging system
-'revdelete-restricted'   => 'elrejtett az adminisztrátorok elől',
-'revdelete-unrestricted' => 'felfedett az adminisztrátoroknak',
+'logentry-delete-delete'          => '$1 {{GENDER:$2|törölte}} a következő lapot: $3',
+'logentry-delete-restore'         => '$1 {{GENDER:$2|helyreállította}} a következő lapot: $3',
+'logentry-delete-event'           => '$1 {{GENDER:$2|módosította}} {{PLURAL:$5|egy|$1}} naplóbejegyzés láthatóságát: $4',
+'logentry-delete-revision'        => '$1 {{GENDER:$2|módosította}} a(z) $3 című lap {{PLURAL:$5|egy|$1}} lapváltozatának láthatóságát: $4',
+'logentry-delete-event-legacy'    => '$1 {{GENDER:$2|módosította}} a(z) $3 című lap naplóbejegyzéseinek láthatóságát',
+'logentry-delete-revision-legacy' => '$1 {{GENDER:$2|módosította}} a(z) $3 című lap lapváltozatainak láthatóságát',
+'revdelete-restricted'            => 'elrejtett az adminisztrátorok elől',
+'revdelete-unrestricted'          => 'felfedett az adminisztrátoroknak',
+'newuserlog-byemail'              => 'a jelszót kiküldtük a megadott e-mail címre',
 
 );

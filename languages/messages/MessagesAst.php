@@ -1645,7 +1645,7 @@ Al peñerar por usuariu, s'amuesa namái la cabera versión de los ficheros que 
 'filehist-filesize'         => 'Tamañu del archivu',
 'filehist-comment'          => 'Comentariu',
 'filehist-missing'          => 'Falta ficheru',
-'imagelinks'                => 'Enllaces del ficheru',
+'imagelinks'                => 'Usu del ficheru',
 'linkstoimage'              => '{{PLURAL:$1|La páxina siguiente enllacia|Les páxines siguientes enllacien}} a esti archivu:',
 'linkstoimage-more'         => "Más de $1 {{PLURAL:$1|páxina enllacia|páxines enllacien}} a esti archivu.
 La llista siguiente amuesa{{PLURAL:$1|'l primer enllaz de páxina| los primeros $1 enllaces de páxina}} a esti archivu namái.
@@ -1904,12 +1904,8 @@ Ver tamién les [[Special:WantedCategories|categoríes más buscaes]].",
 'activeusers-noresult'   => "Nun s'alcontraron usuarios.",
 
 # Special:Log/newusers
-'newuserlogpage'              => "Rexistru de creación d'usuarios",
-'newuserlogpagetext'          => "Esti ye un rexistru de creación d'usuarios.",
-'newuserlog-byemail'          => 'clave unviada per corréu electrónicu',
-'newuserlog-create-entry'     => 'Usuariu nuevu',
-'newuserlog-create2-entry'    => 'creó una cuenta nueva pa $1',
-'newuserlog-autocreate-entry' => 'Cuenta creada automáticamente',
+'newuserlogpage'     => "Rexistru de creación d'usuarios",
+'newuserlogpagetext' => "Esti ye un rexistru de creación d'usuarios.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => "Drechos de los grupos d'usuariu",
@@ -2771,9 +2767,6 @@ Probablemente tea causao por un enllaz a un sitiu esternu de la llista prieta.',
 # Patrol log
 'patrol-log-page'      => 'Rexistru de supervisión',
 'patrol-log-header'    => 'Esti ye un rexistru de les revisiones supervisaes.',
-'patrol-log-line'      => 'marcó la versión $1 de $2 como supervisada $3',
-'patrol-log-auto'      => '(automática)',
-'patrol-log-diff'      => 'revisión $1',
 'log-show-hide-patrol' => '$1 rexistru de supervisión',
 
 # Image deletion
@@ -2804,7 +2797,7 @@ Al executalu pues comprometer el to sistema.",
 'svg-long-desc'          => "archivu SVG, $1 × $2 píxeles nominales, tamañu d'archivu: $3",
 'show-big-image'         => 'Resolución completa',
 'show-big-image-preview' => "Tamañu d'esta previsualización: $1.",
-'show-big-image-other'   => 'Otres resoluciones: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Otra resolución|Otres resoluciones}}: $1.',
 'show-big-image-size'    => '$1 × $2 pixels',
 'file-info-gif-looped'   => 'animáu',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|cuadru|cuadros}}',
@@ -3453,9 +3446,8 @@ Tendríes d'haber recibío [{{SERVER}}{{SCRIPTPATH}}/COPYING una copia de la Lli
 'filepath'         => "Ruta d'archivu",
 'filepath-page'    => 'Ficheru:',
 'filepath-submit'  => 'Dir',
-'filepath-summary' => "Esta páxina especial devuelve la ruta completa d'un archivu. Les imáxenes amuésense a resolución completa; les demás tribes d'archivu execútense direutamente col so programa asociáu.
-
-Escribi'l nome d'archivu ensin el prefixu \"{{ns:file}}:\".",
+'filepath-summary' => "Esta páxina especial devuelve la ruta completa d'un archivu.
+Les imáxenes amuésense a resolución completa; les demás tribes d'archivu execútense direutamente col so programa asociáu.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Buscar archivos duplicaos',
@@ -3534,7 +3526,6 @@ Escribi'l nome d'archivu ensin el prefixu \"{{ns:file}}:\".",
 'globalfileusage-text'        => "Guetar l'usu global del ficheru",
 'globalfileusage-no-results'  => "[[$1]] nun s'usa n'otres wikis.",
 'globalfileusage-on-wiki'     => 'Usu en $2',
-'globalfileusage-of-file'     => 'Estes otres wikis usen esti ficheru:',
 'globalfileusage-more'        => "Ver [[{{#Special:GlobalUsage}}/$1|más usos globales]] d'esti ficheru.",
 'globalfileusage-filterlocal' => "Nun amosar l'usu llocal",
 
@@ -3545,7 +3536,6 @@ Escribi'l nome d'archivu ensin el prefixu \"{{ns:file}}:\".",
 'globaltemplateusage-text'        => "Guetar l'usu global de la plantía",
 'globaltemplateusage-no-results'  => "[[$1]] nun s'usa n'otres wikis.",
 'globaltemplateusage-on-wiki'     => 'Usu en $2',
-'globaltemplateusage-of-file'     => 'Estes otres wikis usen esta plantía:',
 'globaltemplateusage-more'        => "Ver [[{{#Special:GlobalUsage}}/$1|más usos globales]] d'esta plantía.",
 'globaltemplateusage-filterlocal' => "Nun amosar l'usu llocal",
 
@@ -3575,11 +3565,31 @@ Escribi'l nome d'archivu ensin el prefixu \"{{ns:file}}:\".",
 'sqlite-no-fts'  => '$1 ensin sofitu pa gueta en testu completu',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|desanició}} la páxina $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|restauró}} la páxina $3',
+'logentry-delete-event'               => "$1 {{GENDER:$2|camudó}} la visibilidá {{PLURAL:$5|d'un socesu del rexistru|de $5 socesos del rexistru}} en $3: $4",
+'logentry-delete-revision'            => "$1 {{GENDER:$2|camudó}} la visibilidá {{PLURAL:$5|d'una revisión|de $5 revisiones}} na páxina $3: $4",
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|camudó}} la visibilidá de los socesos del rexistru en $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|camudó}} la visibilidá de les revisiones na páxina $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|suprimió}} la páxina $3',
+'logentry-suppress-event'             => "$1 {{GENDER:$2|camudó}} en secretu la visibilidá {{PLURAL:$5|d'un socesu del rexistru|de $5 socesos del rexistru}} en $3: $4",
+'logentry-suppress-revision'          => "$1 {{GENDER:$2|camudó}} en secretu la visibilidá {{PLURAL:$5|d'una revisión|de $5 revisiones}} na páxina $3: $4",
+'logentry-suppress-event-legacy'      => '$1 {{GENDER:$2|camudó}} en secretu la visibilidá de los socesos del rexistru en $3',
+'logentry-suppress-revision-legacy'   => '$1 {{GENDER:$2|camudó}} en secretu la visibilidá de les revisiones na páxina $3',
+'revdelete-content-hid'               => 'conteníu tapecíu',
+'revdelete-summary-hid'               => "resume d'edición tapecíu",
+'revdelete-uname-hid'                 => "nome d'usuariu anubríu",
+'revdelete-content-unhid'             => 'conteníu non tapecíu',
+'revdelete-summary-unhid'             => "resume d'edición non tapecíu",
+'revdelete-uname-unhid'               => "nome d'usuariu non anubríu",
 'revdelete-restricted'                => 'aplicaes les restricciones a los alministradores',
 'revdelete-unrestricted'              => 'eliminaes les restricciones a los alministradores',
 'logentry-move-move'                  => '$1 {{GENDER:$2|treslladó}} la páxina "$3" a "$4"',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|treslladó}} la páxina "$3" a "$4" ensin dexar una redireición',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|treslladó}} la páxina "$3" a "$4" sobre una redireición',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|treslladó}} la páxina "$3" a "$4" sobre una redireición ensin dexar una redireición',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|marcó}} la revisión $4 de la páxina "$3" como patrullada',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|marcó}} automaticamente la revisión $4 de la páxina "$3" como patrullada',
+'newuserlog-byemail'                  => 'clave unviada per corréu electrónicu',
 
 );

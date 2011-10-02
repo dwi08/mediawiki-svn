@@ -1667,12 +1667,8 @@ Skatīt arī [[Special:WantedCategories|''sarkanās'' kategorijas]].",
 'activeusers-noresult'   => 'Neviens lietotājs nav atrasts.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Jauno lietotāju reģistrs',
-'newuserlogpagetext'          => 'Jauno lietotājvārdu reģistrs.',
-'newuserlog-byemail'          => 'parole nosūtīta pa e-pastu',
-'newuserlog-create-entry'     => 'Reģistrēts lietotājvārds',
-'newuserlog-create2-entry'    => 'izveidoja jaunu kontu $1',
-'newuserlog-autocreate-entry' => 'Automātiski reģistrēts lietotājvārds',
+'newuserlogpage'     => 'Jauno lietotāju reģistrs',
+'newuserlogpagetext' => 'Jauno lietotājvārdu reģistrs.',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Lietotāju grupu tiesības',
@@ -2390,9 +2386,6 @@ To visticamāk izraisīja ārēja saite uz melnajā sarakstā esošu interneta v
 # Patrol log
 'patrol-log-page'      => 'Pārbaudes reģistrs',
 'patrol-log-header'    => 'Šis ir pārbaudīto versiju reģistrs.',
-'patrol-log-line'      => '"$2" lapas $1 atzīmēta kā pārbaudīta $3',
-'patrol-log-auto'      => '(automātiski)',
-'patrol-log-diff'      => 'versija $1',
 'log-show-hide-patrol' => '$1 pārbaudes reģistrs',
 
 # Image deletion
@@ -2928,7 +2921,6 @@ Var arī lietot [[Special:EditWatchlist|standarta izmainīšanas lapu]].',
 'globalfileusage-filterlocal' => 'Nerādīt lokālo lietojumu',
 
 # Special:GlobalTemplateUsage
-'globaltemplateusage-of-file'     => 'Šo veidni izmanto vēl šādas viki:',
 'globaltemplateusage-filterlocal' => 'Nerādīt lokālo lietojumu',
 
 # Database error messages
@@ -2960,5 +2952,6 @@ Var arī lietot [[Special:EditWatchlist|standarta izmainīšanas lapu]].',
 # New logging system
 'revdelete-restricted'   => 'piemērot administratoriem ierobežojumus',
 'revdelete-unrestricted' => 'noņemt administratoriem ierobežojumus',
+'newuserlog-byemail'     => 'parole nosūtīta pa e-pastu',
 
 );

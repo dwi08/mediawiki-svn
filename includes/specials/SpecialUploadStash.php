@@ -46,9 +46,7 @@ class SpecialUploadStash extends UnlistedSpecialPage {
 	 * @return Boolean: success
 	 */
 	public function execute( $subPage ) {
-		global $wgUser;
-
-		if ( !$this->userCanExecute( $wgUser ) ) {
+		if ( !$this->userCanExecute( $this->getUser() ) ) {
 			$this->displayRestrictionError();
 			return;
 		}
@@ -95,8 +93,7 @@ class SpecialUploadStash extends UnlistedSpecialPage {
 			$message = $e->getMessage();
 		}
 
-		wfHttpError( $code, HttpStatus::getMessage( $code ), $message );
-		return false;
+		throw new HttpError( $code, $message );
 	}
 
 	/**

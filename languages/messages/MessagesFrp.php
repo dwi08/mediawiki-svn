@@ -312,7 +312,7 @@ $messages = array(
 'tog-newpageshidepatrolled'   => 'Cachiér les pâges survelyês de la lista de les pâges novèles',
 'tog-extendwatchlist'         => 'Ètendre la lista de survelyence por fâre vêre tôs los changements et pas ren que los ples novéls',
 'tog-usenewrc'                => 'Utilisar los dèrriérs changements mèlyorâs (at fôta de JavaScript)',
-'tog-numberheadings'          => 'Numerotar ôtomaticament los titros de sèccion',
+'tog-numberheadings'          => 'Numerotar ôtomaticament los titros de sèccions',
 'tog-showtoolbar'             => 'Montrar la bârra d’outils d’èdicion (at fôta de JavaScript)',
 'tog-editondblclick'          => 'Doblo-clicar pèrmèt de changiér una pâge (at fôta de JavaScript)',
 'tog-editsection'             => 'Activar los lims « [changiér] » por changiér una sèccion',
@@ -663,7 +663,7 @@ La volyéd signalar a un [[Special:ListUsers/sysop|administrator]] sen oubliar d
 'cannotdelete'         => 'Empossiblo de suprimar la pâge ou ben lo fichiér « $1 ».
 La suprèssion at pôt-étre ja étâ fêta per quârqu’un d’ôtro.',
 'badtitle'             => 'Crouyo titro',
-'badtitletext'         => 'Lo titro de la pâge demandâ est fôx, vouedo, ou ben o est un titro entèrlengoua ou entèrvouiqui mâl-liyê.
+'badtitletext'         => 'Lo titro de pâge demandâ est fôx, vouedo, ou ben o est un titro entèrlengoua ou entèrvouiqui mâl-liyê.
 Contint sûrement yon ou ben un mouél de caractèros que pôvont pas étre utilisâs dens los titros.',
 'perfcached'           => 'Cetes balyês sont en cache et pôvont pas étre a jorn.',
 'perfcachedts'         => 'Cetes balyês sont en cache, sont vêr pas forciêment a jorn. La dèrriére actualisacion dâte du $1.',
@@ -1287,7 +1287,7 @@ Notâd bien que l’usâjo des lims de navigacion tornerat inicialisar cela colo
 'searchsubtitle'                   => "Vos éd rechèrchiê « '''[[:$1]]''' » ([[Special:Prefixindex/$1|totes les pâges que començont per « $1 »]]{{int:pipe-separator}}[[Special:WhatLinksHere/$1|totes les pâges qu’ont un lim de vers « $1 »]])",
 'searchsubtitleinvalid'            => "Vos éd rechèrchiê « '''$1''' »",
 'toomanymatches'                   => 'Un trop grant nombro d’ocasions at étâ retornâ, volyéd sometre una requéta difèrenta.',
-'titlematches'                     => 'Corrèspondances dens los titros de les pâges',
+'titlematches'                     => 'Corrèspondances dens los titros de pâges',
 'notitlematches'                   => 'Nion titro de pâge corrèspond a la rechèrche.',
 'textmatches'                      => 'Corrèspondances dens lo tèxto de les pâges',
 'notextmatches'                    => 'Nion tèxto de pâge corrèspond a la rechèrche.',
@@ -1922,7 +1922,7 @@ Quand el est filtrâ per utilisator, solament los fichiérs que la vèrsion la p
 'filehist-filesize'         => 'Talye du fichiér',
 'filehist-comment'          => 'Comentèro',
 'filehist-missing'          => 'Fichiér manquent',
-'imagelinks'                => 'Lims de vers lo fichiér',
+'imagelinks'                => 'Usâjo du fichiér',
 'linkstoimage'              => '{{PLURAL:$1|Ceta pâge utilise|Cetes $1 pâges utilisont}} ceti fichiér :',
 'linkstoimage-more'         => 'Més de {{PLURAL:$1|yona pâge utilise|$1 pâges utilisont}} ceti fichiér.
 Ceta lista montre ren que {{PLURAL:$1|la premiére pâge qu’utilise|les $1 premiéres pâges qu’utilisont}} ceti fichiér.
@@ -2143,7 +2143,7 @@ Vos pouede rètrendre la vua en chouèséssent un tipo de jornal, un nom d’uti
 'allpagesnext'      => 'Aprés',
 'allpagessubmit'    => 'Listar',
 'allpagesprefix'    => 'Fâre vêre les pâges que començont per lo prèfixo :',
-'allpagesbadtitle'  => 'Lo titro de la pâge balyê est fôx ou ben il at un prèfixo entèrlengoua ou entèrvouiqui resèrvâ.
+'allpagesbadtitle'  => 'Lo titro de pâge balyê est fôx ou ben il at un prèfixo entèrlengoua ou entèrvouiqui resèrvâ.
 Contint sûrement yon ou ben un mouél de caractèros que pôvont pas étre utilisâs dens los titros.',
 'allpages-bad-ns'   => '{{SITENAME}} at gins d’èspâço de noms « $1 ».',
 
@@ -2188,12 +2188,8 @@ Controlâd asse-ben les variantes de câssa.',
 'activeusers-noresult'   => 'Gins d’utilisator trovâ.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Jornal de les crèacions de comptos utilisator',
-'newuserlogpagetext'          => 'O est un jornal de les crèacions de comptos utilisator.',
-'newuserlog-byemail'          => 'mot de pâssa mandâ per mèssageria èlèctronica',
-'newuserlog-create-entry'     => 'Compto utilisator novél',
-'newuserlog-create2-entry'    => 'at fêt lo compto novél $1',
-'newuserlog-autocreate-entry' => 'Compto fêt ôtomaticament',
+'newuserlogpage'     => 'Jornal de les crèacions de comptos utilisator',
+'newuserlogpagetext' => 'O est un jornal de les crèacions de comptos utilisator.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Drêts a les tropes d’utilisators',
@@ -3073,9 +3069,6 @@ O est probâblament diu a un lim de vers un seto de defôr qu’aparêt sur la l
 # Patrol log
 'patrol-log-page'      => 'Jornal de les vèrsions survelyês',
 'patrol-log-header'    => 'Vê-que un jornal de les vèrsions survelyês.',
-'patrol-log-line'      => 'at marcâ la vèrsion $1 de $2 coment survelyê $3',
-'patrol-log-auto'      => '(ôtomatico)',
-'patrol-log-diff'      => 'v$1',
 'log-show-hide-patrol' => '$1 lo jornal de les vèrsions survelyês',
 
 # Image deletion
@@ -3128,6 +3121,11 @@ Se vos l’ègzécutâd, voutron sistèmo pôt étre compromês.",
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'days-abbrev' => 'j',
+'seconds'     => '$1 second{{PLURAL:$1|a|es}}',
+'minutes'     => '$1 menut{{PLURAL:$1|a|es}}',
+'hours'       => '$1 hor{{PLURAL:$1|a|es}}',
+'days'        => '$1 jorn{{PLURAL:$1||s}}',
+'ago'         => 'cen fât $1',
 
 # Bad image list
 'bad_image_list' => 'Lo format est ceti :
@@ -3838,9 +3836,7 @@ Vos devriâd avêr reçu un [{{SERVER}}{{SCRIPTPATH}}/COPYING ègzemplèro de la
 'filepath-page'    => 'Fichiér :',
 'filepath-submit'  => 'Alar trovar',
 'filepath-summary' => 'Ceta pâge spèciâla montre lo chemin d’accès complèt d’un fichiér.
-Les émâges sont montrâs dens lor plêna rèsolucion, los ôtros fichiérs sont chargiês et dèmarrâs tot drêt avouéc lor programo associyê.
-
-Buchiéd lo nom du fichiér sen lo prèfixo « {{ns:file}}: ».',
+Les émâges sont montrâs dens lor plêna rèsolucion, los ôtros fichiérs sont chargiês et dèmarrâs tot drêt avouéc lor programo associyê.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Rechèrche des fichiérs en doblo',
@@ -3919,7 +3915,6 @@ Buchiéd lo nom du fichiér sen lo prèfixo « {{ns:file}}: ».',
 'globalfileusage-text'        => 'Rechèrchiér l’usâjo globâl du fichiér',
 'globalfileusage-no-results'  => '[[$1]] est pas utilisâ sur d’ôtros vouiquis.',
 'globalfileusage-on-wiki'     => 'Usâjo dessus $2',
-'globalfileusage-of-file'     => 'Cetos ôtros vouiquis utilisont ceti fichiér :',
 'globalfileusage-more'        => 'Vêre [[{{#Special:GlobalUsage}}/$1|més d’usâjos globâls]] de ceti fichiér.',
 'globalfileusage-filterlocal' => 'Pas montrar l’usâjo local',
 
@@ -3930,7 +3925,6 @@ Buchiéd lo nom du fichiér sen lo prèfixo « {{ns:file}}: ».',
 'globaltemplateusage-text'        => 'Rechèrchiér l’usâjo globâl du modèlo',
 'globaltemplateusage-no-results'  => '[[$1]] est pas utilisâ sur d’ôtros vouiquis.',
 'globaltemplateusage-on-wiki'     => 'Usâjo dessus $2',
-'globaltemplateusage-of-file'     => 'Cetos ôtros vouiquis utilisont ceti modèlo :',
 'globaltemplateusage-more'        => 'Vêre [[{{#Special:GlobalUsage}}/$1|més d’usâjos globâls]] de ceti modèlo.',
 'globaltemplateusage-filterlocal' => 'Pas montrar l’usâjo local',
 
@@ -3960,11 +3954,31 @@ Buchiéd lo nom du fichiér sen lo prèfixo « {{ns:file}}: ».',
 'sqlite-no-fts'  => '$1 sen rechèrche en tèxto complèt recognua',
 
 # New logging system
+'logentry-delete-delete'              => '$1 at {{GENDER:$2|suprimâ}} la pâge $3',
+'logentry-delete-restore'             => '$1 at {{GENDER:$2|refêt|refêta}} la pâge $3',
+'logentry-delete-event'               => '$1 at {{GENDER:$2|changiê}} la visibilitât {{PLURAL:$5|d’un èvènement|de $5 èvènements}} du jornal dessus $3 : $4',
+'logentry-delete-revision'            => '$1 at {{GENDER:$2|changiê}} la visibilitât {{PLURAL:$5|d’una vèrsion|de $5 vèrsions}} sur la pâge $3 : $4',
+'logentry-delete-event-legacy'        => '$1 at {{GENDER:$2|changiê}} la visibilitât des èvènements du jornal dessus $3',
+'logentry-delete-revision-legacy'     => '$1 at {{GENDER:$2|changiê}} la visibilitât de les vèrsions sur la pâge $3',
+'logentry-suppress-delete'            => '$1 at {{GENDER:$2|suprimâ}} la pâge $3',
+'logentry-suppress-event'             => '$1 at {{GENDER:$2|changiê}} a cachon la visibilitât {{PLURAL:$5|d’un èvènement|de $5 èvènements}} du jornal dessus $3 : $4',
+'logentry-suppress-revision'          => '$1 at {{GENDER:$2|changiê}} a cachon la visibilitât {{PLURAL:$5|d’una vèrsion|de $5 vèrsions}} sur la pâge $3 : $4',
+'logentry-suppress-event-legacy'      => '$1 at {{GENDER:$2|changiê}} a cachon la visibilitât des èvènements du jornal dessus $3',
+'logentry-suppress-revision-legacy'   => '$1 at {{GENDER:$2|changiê}} a cachon la visibilitât de les vèrsions sur la pâge $3',
+'revdelete-content-hid'               => 'contegnu cachiê',
+'revdelete-summary-hid'               => 'rèsumâ de changement cachiê',
+'revdelete-uname-hid'                 => 'nom d’utilisator cachiê',
+'revdelete-content-unhid'             => 'contegnu pas més cachiê',
+'revdelete-summary-unhid'             => 'rèsumâ de changement pas més cachiê',
+'revdelete-uname-unhid'               => 'nom d’utilisator pas més cachiê',
 'revdelete-restricted'                => 'at aplicâ les rèstriccions ux administrators',
 'revdelete-unrestricted'              => 'rèstriccions enlevâs por los administrators',
 'logentry-move-move'                  => '$1 at {{GENDER:$2|dèplaciê}} la pâge $3 vers $4',
 'logentry-move-move-noredirect'       => '$1 at {{GENDER:$2|dèplaciê}} la pâge $3 vers $4 sen lèssiér una redirèccion',
 'logentry-move-move_redir'            => '$1 at {{GENDER:$2|dèplaciê}} la pâge $3 vers $4 en ècrasent sa redirèccion',
 'logentry-move-move_redir-noredirect' => '$1 at {{GENDER:$2|dèplaciê}} la pâge $3 vers $4 en ècrasent sa redirèccion sen lèssiér una redirèccion',
+'logentry-patrol-patrol'              => '$1 at {{GENDER:$2|marcâ}} la vèrsion $4 de la pâge $3 coment survelyê',
+'logentry-patrol-patrol-auto'         => '$1 at {{GENDER:$2|marcâ}} ôtomaticament la vèrsion $4 de la pâge $3 coment survelyê',
+'newuserlog-byemail'                  => 'mot de pâssa mandâ per mèssageria èlèctronica',
 
 );

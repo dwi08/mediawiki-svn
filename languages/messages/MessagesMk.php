@@ -505,7 +505,7 @@ $messages = array(
 'view'              => 'Преглед',
 'edit'              => 'Уреди',
 'create'            => 'Создај',
-'editthispage'      => 'Уреди ја оваа страница',
+'editthispage'      => 'Уреди ја страницава',
 'create-this-page'  => 'Создај ја оваа страница',
 'delete'            => 'Избриши',
 'deletethispage'    => 'Избриши ја оваа страница',
@@ -841,16 +841,18 @@ $2',
 'resetpass-temp-password'   => 'Привремена лозинка:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Менување на лозинка',
-'passwordreset-text'           => 'Пополнете го образецов за да ви испратиме потсетник за вашите најавни податоци по е-пошта.',
-'passwordreset-legend'         => 'Нова лозинка',
-'passwordreset-disabled'       => 'На ова вики е оневозможено задавање на нова лозинка.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Подолу внесете еден податок}}',
-'passwordreset-username'       => 'Корисничко име:',
-'passwordreset-domain'         => 'Домен:',
-'passwordreset-email'          => 'Е-пошта:',
-'passwordreset-emailtitle'     => 'Најавни податоци за {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Некој (веројатно вие, од IP-адресата $1) побара потсетник на вашите
+'passwordreset'                    => 'Менување на лозинка',
+'passwordreset-text'               => 'Пополнете го образецов за да ви испратиме потсетник за вашите најавни податоци по е-пошта.',
+'passwordreset-legend'             => 'Нова лозинка',
+'passwordreset-disabled'           => 'На ова вики е оневозможено задавање на нова лозинка.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Подолу внесете еден податок}}',
+'passwordreset-username'           => 'Корисничко име:',
+'passwordreset-domain'             => 'Домен:',
+'passwordreset-capture'            => 'Да ја прикажам пораката?',
+'passwordreset-capture-help'       => 'Ако го штиклирате кутивчево, ќе ви се прикаже пораката (со привремената лозинка) и истата ќе му биде испратена на корисникот.',
+'passwordreset-email'              => 'Е-пошта:',
+'passwordreset-emailtitle'         => 'Најавни податоци за {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Некој (веројатно вие, од IP-адресата $1) побара потсетник на вашите
 најавни податоци за {{SITENAME}} ($4). Оваа е-поштенска адреса е наведена во
 {{PLURAL:$3|следнава корисничка сметка|следниве кориснички сметки}}:
 
@@ -860,7 +862,7 @@ $2
 Сега треба да се најавите и да внесете нова лозинка. Ако ова барање го
 поставил некој друг, или пак во меѓувреме сте се сетиле на лозинката, и не сакате
 да ја менувате, тогаш слободно занемарете ја поракава и продолжете да ја користите старата.',
-'passwordreset-emailtext-user' => 'Корисникот $1 на {{SITENAME}} побара да потсетник за вашите најавни податоци на {{SITENAME}}
+'passwordreset-emailtext-user'     => 'Корисникот $1 на {{SITENAME}} побара да потсетник за вашите најавни податоци на {{SITENAME}}
 ($4). Оваа е-поштенска адреса е наведена во {{PLURAL:$3|следнава корисничка сметка|следниве кориснички сметки}}:
 
 $2
@@ -869,9 +871,11 @@ $2
 Сега треба да се најавите и да внесете нова лозинка. Ако ова барање го
 поставил некој друг, или пак во меѓувреме сте се сетиле на лозинката, и не сакате
 да ја менувате, тогаш слободно занемарете ја поракава и продолжете да ја користите старата.',
-'passwordreset-emailelement'   => 'Корисничко име: $1
+'passwordreset-emailelement'       => 'Корисничко име: $1
 Привремена лозинка: $2',
-'passwordreset-emailsent'      => 'Испратен е потсетник по е-пошта',
+'passwordreset-emailsent'          => 'Испратен е потсетник по е-пошта',
+'passwordreset-emailsent-capture'  => 'Испратен е потсетник по е-пошта (прикажан подолу).',
+'passwordreset-emailerror-capture' => 'Создаден е потсетник за испраќање по е-пошта (прикажан подолу), но не успеав да го испратам на корисникот: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Смени е-пошта',
@@ -1593,6 +1597,7 @@ $1",
 'right-siteadmin'             => 'Заклучување и отклучување на базата на податоци',
 'right-override-export-depth' => 'Извезување на страници вклучувајќи поврзани страници со длабочина до 5',
 'right-sendemail'             => 'Испраќање на е-пошта до други корисници',
+'right-passwordreset'         => 'Менување на лозинка на корисник ([[Special:PasswordReset|специјална страница]])',
 
 # User rights log
 'rightslog'                  => 'Дневник на менувања на кориснички права',
@@ -1927,7 +1932,7 @@ $1',
 'filehist-filesize'                 => 'Големина',
 'filehist-comment'                  => 'Коментар',
 'filehist-missing'                  => 'Непостоечка податотека',
-'imagelinks'                        => 'Врски до податотекава',
+'imagelinks'                        => 'Употреба на податотеката',
 'linkstoimage'                      => 'До оваа податотека има {{PLURAL:$1|врска од следнава страница|врски од следниве $1 страници}}:',
 'linkstoimage-more'                 => 'Повеќе од {{PLURAL:$1|една страница е поврзана|$1 страници се поврзани}} со оваа податотека.
 Следниов список {{PLURAL:$1|ја прикажува само првата поврзана страница|ги прикажува само првите $1 поврзани страници}} до оваа податотека.
@@ -2196,12 +2201,8 @@ $1',
 'activeusers-noresult'   => 'Нема пронајдено корисници.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Дневник на регистрирања на корисници',
-'newuserlogpagetext'          => 'Ова е дневник на регистрирани корисници.',
-'newuserlog-byemail'          => 'испратена лозинка по е-пошта',
-'newuserlog-create-entry'     => 'Нов корисник',
-'newuserlog-create2-entry'    => 'создадено нова корисничка сметка $1',
-'newuserlog-autocreate-entry' => 'Автоматски создадена корисничка сметка',
+'newuserlogpage'     => 'Дневник на регистрирања на корисници',
+'newuserlogpagetext' => 'Ова е дневник на регистрирани корисници.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Права на кориснички групи',
@@ -3076,9 +3077,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Дневник на патролирања',
 'patrol-log-header'    => 'Ова е дневник на патролирани ревизии.',
-'patrol-log-line'      => 'означена $1 од $2 како патролирана $3',
-'patrol-log-auto'      => '(автоматски)',
-'patrol-log-diff'      => 'ревизија $1',
 'log-show-hide-patrol' => '$1 дневник на патролирање',
 
 # Image deletion
@@ -3132,10 +3130,15 @@ $1',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'     => '$1, $2 × $3',
-'seconds-abbrev' => 'с',
-'minutes-abbrev' => 'м',
-'hours-abbrev'   => 'ч',
-'days-abbrev'    => 'д',
+'seconds-abbrev' => '$1 с',
+'minutes-abbrev' => '$1 м',
+'hours-abbrev'   => '$1 ч',
+'days-abbrev'    => '$1 д',
+'seconds'        => '{{PLURAL:$1|$1 секунда|$1 секунди}}',
+'minutes'        => '{{PLURAL:$1|$1 минута|$1 минути}}',
+'hours'          => '{{PLURAL:$1|$1 час|$1 часа}}',
+'days'           => '{{PLURAL:$1|$1 ден|$1 дена}}',
+'ago'            => 'пред $1',
 
 # Bad image list
 'bad_image_list' => 'Форматот е следниот:
@@ -3898,9 +3901,7 @@ $1',
 'filepath-page'    => 'Податотека:',
 'filepath-submit'  => 'Патека',
 'filepath-summary' => 'Оваа специјална страница го враќа целосниот пат на податотеката.
-Сликите се прикажани во изворна големина, другите типови на податотеки се отвораат со соодветните програми, директно.
-
-Внесете го името на податотеката без префиксот „{{ns:file}}:“.',
+Сликите се прикажани во изворна големина, другите типови на податотеки се отвораат со соодветните програми, директно.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Барање на дуплирани податотеки',
@@ -3978,7 +3979,6 @@ $1',
 'globalfileusage-text'        => 'Пребарување на глобалната употреба на податотека',
 'globalfileusage-no-results'  => '[[$1]] не се користи на други викија.',
 'globalfileusage-on-wiki'     => 'Употреба на $2',
-'globalfileusage-of-file'     => 'Оваа податотека ја користат и следниве викија:',
 'globalfileusage-more'        => 'Вид. [[{{#Special:GlobalUsage}}/$1|останатата глобална употреба]] на податотекава.',
 'globalfileusage-filterlocal' => 'Не ја прикажувај локалната употреба',
 
@@ -3989,7 +3989,6 @@ $1',
 'globaltemplateusage-text'        => 'Пребарување на глобалната употреба на шаблон',
 'globaltemplateusage-no-results'  => '[[$1]] не се користи на други викија.',
 'globaltemplateusage-on-wiki'     => 'Употреба на $2',
-'globaltemplateusage-of-file'     => 'Овој шаблон го користат и следниве викија:',
 'globaltemplateusage-more'        => 'Вид. [[{{#Special:GlobalUsage}}/$1|останатата глобална употреба]] на шаблонов.',
 'globaltemplateusage-filterlocal' => 'Не прикажувај локална употреба',
 
@@ -4010,7 +4009,7 @@ $1',
 'htmlform-int-toolow'          => 'Вредноста која ја наведовте е под минимумот од $1',
 'htmlform-int-toohigh'         => 'Вредноста која ја наведовте е над максимумот од $1',
 'htmlform-required'            => 'Се бара оваа вредност',
-'htmlform-submit'              => 'Зачувај',
+'htmlform-submit'              => 'Поднеси',
 'htmlform-reset'               => 'Откажи промени',
 'htmlform-selectorother-other' => 'Друго',
 
@@ -4019,11 +4018,35 @@ $1',
 'sqlite-no-fts'  => '$1 без поддршка за пребарување по цели текстови',
 
 # New logging system
+'logentry-delete-delete'              => '$1 {{GENDER:$2|ја избриша}} страницата $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|ја врати}} страницата $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|ја измени}} видливоста на {{PLURAL:$5|настан во дневникот|$5 настани во дневникот}} на $3: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|ја измени}} видливоста на {{PLURAL:$5|ревизија|$5 ревизии}} на страницата $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|ја измени}} видливоста на настани во дневникот на $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|ја измени}} видливоста на ревизии на страницата $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|ја потисна}} страницата $3',
+'logentry-suppress-event'             => '$1 потајно {{GENDER:$2|ја измени}} видливоста на {{PLURAL:$5|настан во дневникот|$5 настани во дневникот}} на $3: $4',
+'logentry-suppress-revision'          => '$1 потајно {{GENDER:$2|ја измени}} видливоста на {{PLURAL:$5|ревизија|$5 ревизии}} на страницата $3: $4',
+'logentry-suppress-event-legacy'      => '$1 потајно {{GENDER:$2|ја измени}} видливоста на настани во дневникот на $3',
+'logentry-suppress-revision-legacy'   => '$1 потајно {{GENDER:$2|ја измени}} видливоста на ревизии на страницата $3',
+'revdelete-content-hid'               => 'содржината е скриена',
+'revdelete-summary-hid'               => 'описот на уредувањето е скриен',
+'revdelete-uname-hid'                 => 'корисничкото име е скриено',
+'revdelete-content-unhid'             => 'содржината е откриена',
+'revdelete-summary-unhid'             => 'описот на уредувањето е откриен',
+'revdelete-uname-unhid'               => 'корисничкото име е скриено',
 'revdelete-restricted'                => 'применети ограничувања на систем оператори',
 'revdelete-unrestricted'              => 'отстранети ограничувања за систем оператори',
 'logentry-move-move'                  => '$1 {{GENDER:$2|ја премести}} страницата $3 на $4',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|ја премести}} страницата $3 на $4 без да остави пренасочување',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|ја премести}} страницата $3 на $4 презапишувајќи врз пренасочување',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|ја премести}} страницата $3 на $4 презапишувајќи врз пренасочување без да остави пренасочување',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|ја означи}} ревизијата $4 на страницата $3 како испатролирана',
+'logentry-patrol-patrol-auto'         => '$1 автоматски {{GENDER:$2|ја означи}} ревизијата $4 на страницата $3 како испатролирана',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|направи}} корисничка сметка',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|направи}} корисничка сметка',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|направи}} {{GENDER:$4|корисничка сметка}} $3',
+'logentry-newusers-autocreate'        => 'Сметката $1 е {{GENDER:$2|создадена}} автоматски',
+'newuserlog-byemail'                  => 'испратена лозинка по е-пошта',
 
 );

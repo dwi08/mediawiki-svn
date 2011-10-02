@@ -537,7 +537,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'filehist-datetime'  => 'Loron/Tempu',
 'filehist-user'      => "Uza-na'in",
 'filehist-comment'   => 'Komentáriu',
-'imagelinks'         => 'Ligasaun',
+'imagelinks'         => "Pájina iha ne'ebá fixeiru ne'e",
 
 # File reversion
 'filerevert-comment' => 'Razaun:',
@@ -615,10 +615,8 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'activeusers-hidesysops' => 'Subar administradór sira',
 
 # Special:Log/newusers
-'newuserlogpage'           => "Lista kria uza-na'in",
-'newuserlogpagetext'       => "Ne'e lista kria uza-na'in.",
-'newuserlog-create-entry'  => "Uza-na'in foun",
-'newuserlog-create2-entry' => 'registrar tiha konta foun $1',
+'newuserlogpage'     => "Lista kria uza-na'in",
+'newuserlogpagetext' => "Ne'e lista kria uza-na'in.",
 
 # Special:ListGroupRights
 'listgrouprights-group'   => 'Grupu',
@@ -627,7 +625,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 
 # E-mail user
 'emailuser'       => "Haruka korreiu eletróniku ba uza-na'in ne'e",
-'defemailsubject' => '{{SITENAME}} korreiu eletróniku',
+'defemailsubject' => '{{SITENAME}} - korreiu eletróniku husi uza-na\'in "$1"',
 'noemailtitle'    => "Lá'os diresaun korreiu eletróniku",
 'emailusername'   => "Naran uza-na'in:",
 'emailsend'       => 'Haruka',
@@ -724,7 +722,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'whatlinkshere-title'     => 'Pájina sira ne\'ebé bá "$1".',
 'whatlinkshere-page'      => 'Pájina:',
 'linkshere'               => "Pájina sira ne'e link ba '''[[:$1]]''':",
-'isimage'                 => 'ligasaun ba imajen ida',
+'isimage'                 => 'ligasaun ba fixeiru',
 'whatlinkshere-prev'      => '{{PLURAL:$1|oinmai|oinmai $1}}',
 'whatlinkshere-next'      => '{{PLURAL:$1|molok|molok $1}}',
 'whatlinkshere-links'     => '← ligasaun',

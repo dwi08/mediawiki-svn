@@ -521,6 +521,7 @@ window.mw = window.mediaWiki = new ( function( $ ) {
 						for ( var i = 0; i < style.length; i++ ) {
 							getMarker().before( mw.html.element( 'link', {
 								'type': 'text/css',
+								'media': media,
 								'rel': 'stylesheet',
 								'href': style[i]
 							} ) );
@@ -1174,6 +1175,11 @@ window.mw = window.mediaWiki = new ( function( $ ) {
 			} );
 			return names;
 		};
+		
+		/**
+		 * For backwards-compatibility with Squid-cached pages. Loads mw.user
+		 */
+		this.go = function() { mw.loader.load( 'mediawiki.user' ); };
 
 		/* Cache document ready status */
 

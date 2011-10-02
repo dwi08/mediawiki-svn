@@ -1654,12 +1654,8 @@ Deleng uga [[Special:WantedCategories|kategori sing diperlokaké]].',
 'activeusers-noresult'   => 'Panganggo ora ditemokaké.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Log panganggo anyar',
-'newuserlogpagetext'          => 'Ing ngisor iki kapacak log pandaftaran panganggo anyar.',
-'newuserlog-byemail'          => 'tembung sandhi wis dikirim liwat e-mail',
-'newuserlog-create-entry'     => 'Panganggo anyar',
-'newuserlog-create2-entry'    => 'gawé akun anyar $1',
-'newuserlog-autocreate-entry' => 'akun panganggo digawé otomatis',
+'newuserlogpage'     => 'Log panganggo anyar',
+'newuserlogpagetext' => 'Ing ngisor iki kapacak log pandaftaran panganggo anyar.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Hak-hak grup panganggo',
@@ -2361,9 +2357,6 @@ Mbokmanawa iki disebabaké anané pranala jaba sing klebu daftar ireng.',
 # Patrol log
 'patrol-log-page'      => 'Log patroli',
 'patrol-log-header'    => 'Iki log revisi sing wis dipatroli.',
-'patrol-log-line'      => 'nandhani $1 saka $2 sing dipatroli $3',
-'patrol-log-auto'      => '(otomatis)',
-'patrol-log-diff'      => 'révisi $1',
 'log-show-hide-patrol' => '$1 log patroli',
 
 # Image deletion
@@ -2847,9 +2840,7 @@ Panjenengan uga bisa [[Special:EditWatchlist|nganggo éditor standar panjenengan
 'filepath-page'    => 'Berkas:',
 'filepath-submit'  => 'Golèk',
 'filepath-summary' => 'Kaca astaméwa utawa kusus iki nuduhaké jalur pepak sawijining berkas.
-Gambar dituduhaké mawa résolusi kebak lan tipe liyané berkas bakal dibuka langsung mawa program kagandhèng.
-
-Lebokna jeneng berkas tanpa imbuhan awalan "{{ns:file}}:".',
+Gambar dituduhaké mawa résolusi kebak lan tipe liyané berkas bakal dibuka langsung mawa program kagandhèng.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Golèk berkas duplikat',
@@ -2937,5 +2928,6 @@ Katrangan tampilan:
 # New logging system
 'revdelete-restricted'   => 'rèstriksi ditrapaké marang para opsis',
 'revdelete-unrestricted' => 'rèstriksi marang para opsis dijabel',
+'newuserlog-byemail'     => 'tembung sandhi wis dikirim liwat e-mail',
 
 );

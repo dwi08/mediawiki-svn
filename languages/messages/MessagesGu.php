@@ -134,6 +134,8 @@ $digitTransformTable = array(
 	'9' => '૯', # &#x0aef;
 );
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'કડીઓની નીચે લીટી (અંડરલાઇન) ઉમેરો:',
@@ -524,6 +526,8 @@ Query: $2',
 'cascadeprotected'     => 'આ પાના પર ફેરફાર પ્રતિબંધિત છે કેમ કે આ પાનું  {{PLURAL:$1|એવું પાનું|એવા પાના}} માં શામિલ છે જેમાં અનુવર્તી (પગથિયામય)સંરક્ષણ સક્રીય છે :
 $2',
 'namespaceprotected'   => "તમને '''$1''' નામાવકાશનાં પાનાંમાં ફેરફાર કરવાની પરવાનગી નથી.",
+'customcssprotected'   => 'તમને આ પાનું બદલવાની પરવાનગી નથી કારણકે આ પાનામાં બીજા સભ્યની પસંદગીના સેટીંગ્સ છે.',
+'customjsprotected'    => 'તમને આ JavaScript પાનું બદલવાની પરવાનગી નથી કારણકે આ પાનામાં બીજા સભ્યની પસંદગીના સેટીંગ્સ છે.',
 'ns-specialprotected'  => 'ખાસ પાનાંમાં ફેરફાર ન થઇ શકે.',
 'titleprotected'       => 'આ મથાળું (વિષય) [[User:$1|$1]] બનાવવા માટે સુરક્ષિત કરવામાં આવ્યો છે.
 આ માટેનું કારણ છે-- "\'\'$2\'\'".',
@@ -561,6 +565,7 @@ $2',
 'createaccount'              => 'નવું ખાતું ખોલો',
 'gotaccount'                 => "પહેલેથી ખાતું ખોલેલું છે? '''$1'''.",
 'gotaccountlink'             => 'પ્રવેશો (લૉગ ઇન કરો)',
+'userlogin-resetlink'        => 'પોતાની પ્રવેશ માહિતી ભૂલી ગયા છો?',
 'createaccountmail'          => 'ઇ-મેઇલ દ્વારા',
 'createaccountreason'        => 'કારણ:',
 'badretype'                  => 'તમે દાખલ કરેલ ગુપ્તસંજ્ઞા મળતી આવતી નથી.',
@@ -1101,7 +1106,6 @@ $1",
 'searchmenu-legend'                => 'શોધ વિકલ્પો',
 'searchmenu-exists'                => "''' આ વિકિ પર  \"[[:\$1]]\" નામે પાનું પહેલેથી અસ્તિત્વમાં છે.'''",
 'searchmenu-new'                   => "'''આ વિકિ પર \"[[:\$1]]\" નામે પાનું બનાવો!'''",
-'searchmenu-new-nocreate'          => '"$1" એ એક અવૈધ પાના શીર્ષક છે અને તે નહીં બનાવી શકાય્',
 'searchhelp-url'                   => 'Help:સૂચિ',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|આ પૂર્વાક્ષર વાળા પાનાં જુઓ]]',
 'searchprofile-articles'           => 'લેખનું પાનું',
@@ -1964,12 +1968,8 @@ $1',
 'activeusers-noresult'   => 'કોઇ સક્રીય સભ્ય ન મળ્યો',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'નવા બનેલા સભ્યોનો લૉગ',
-'newuserlogpagetext'          => 'આ સભ્યોની રચનાનો લોગ છે.',
-'newuserlog-byemail'          => 'ગુપ્ત સંજ્ઞા ઇ-મેલ દ્વારા મોકલાઇ છે.',
-'newuserlog-create-entry'     => 'નવું ખાતું',
-'newuserlog-create2-entry'    => 'નવું ખાતું $1 ખોલાયું',
-'newuserlog-autocreate-entry' => 'સ્વયંચલિત રીતે ખુલેલા ખાતાં',
+'newuserlogpage'     => 'નવા બનેલા સભ્યોનો લૉગ',
+'newuserlogpagetext' => 'આ સભ્યોની રચનાનો લોગ છે.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'સભ્ય જૂથ ના હક્કો',
@@ -2764,9 +2764,6 @@ Clicking '''''{{int:undeletereset}}''''' will clear the comment field and all ch
 # Patrol log
 'patrol-log-page'      => 'ચકાસણી લોગ',
 'patrol-log-header'    => 'આ નીરીક્ષિત ફેરફાઓનો લોગ છે',
-'patrol-log-line'      => '$1 માંના $2 ને નીરીક્ષિત  અંકિત કરો  $3',
-'patrol-log-auto'      => '(સ્વયંચાલિત)',
-'patrol-log-diff'      => 'સુધારો: $1',
 'log-show-hide-patrol' => '$1 ચકાસણી લોગ',
 
 # Image deletion
@@ -3298,8 +3295,7 @@ $1',
 'filepath-page'    => 'ફાઇલ:',
 'filepath-submit'  => 'કરો',
 'filepath-summary' => 'આ ખાસ પાનું કોઇ ફાઇલનો સંપૂર્ણ પથ બતાવે છે.
-ચિત્રોને તેમના પૂર્ણ ઘનત્વ સાથે બતાવાય છે, અન્ય ફાઈલો તેમને તેમના સંલગ્ન પ્રોગ્રામ દ્વારા સીધી ખોલવામાં આવશે.
-ફાઈલ નામને તેમના "{{ns:file}}:" પૂર્વર્ગ વિના લખો.',
+ચિત્રોને તેમના પૂર્ણ ઘનત્વ સાથે બતાવાય છે, અન્ય ફાઈલો તેમને તેમના સંલગ્ન પ્રોગ્રામ દ્વારા સીધી ખોલવામાં આવશે.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'નકલ ફાઇલ શોધો',
@@ -3396,5 +3392,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'પ્રબઁધકોના ફેરફાર કરવા પર પ્રતિબંધ મુકાયો',
 'revdelete-unrestricted' => 'પ્રબંધકોના ફેરફાર કરવા પર પ્રતિબંધ હટાવાયો.',
+'newuserlog-byemail'     => 'ગુપ્ત સંજ્ઞા ઇ-મેલ દ્વારા મોકલાઇ છે.',
 
 );

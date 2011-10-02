@@ -1122,12 +1122,8 @@ Cjale ancje lis [[Special:WantedCategories|categoriis desideradis]].',
 'activeusers-noresult'   => 'Nissun utent cjatât.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Regjistri dai gnûfs utents',
-'newuserlogpagetext'          => 'Ca sot tu cjatis un regjistri dai gnûfs utents creâts.',
-'newuserlog-byemail'          => 'peraule clâf mandade par pueste eletroniche',
-'newuserlog-create-entry'     => 'al è rivât il gnûf utent',
-'newuserlog-create2-entry'    => 'creade une gnove identitât par $1',
-'newuserlog-autocreate-entry' => 'Identitât creade in automatic',
+'newuserlogpage'     => 'Regjistri dai gnûfs utents',
+'newuserlogpagetext' => 'Ca sot tu cjatis un regjistri dai gnûfs utents creâts.',
 
 # Special:ListGroupRights
 'listgrouprights'         => 'Dirits dai grups di utents',
@@ -1498,11 +1494,6 @@ Par plasê va su [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisat
 'skinname-nostalgia' => 'Nostalgjie',
 'skinname-modern'    => 'Moderne',
 
-# Patrol log
-'patrol-log-line' => 'al à segnât $1 di $2 come verificade $3',
-'patrol-log-auto' => '(in automatic)',
-'patrol-log-diff' => 'revision $1',
-
 # Browsing diffs
 'previousdiff' => '← Difarence precedente',
 'nextdiff'     => 'Prossime difarence →',
@@ -1708,5 +1699,8 @@ Se il file al è stât cambiât rispiet al so stât origjinâl, cualchi informaz
 # HTML forms
 'htmlform-submit'              => 'Invie',
 'htmlform-selectorother-other' => 'Altris',
+
+# New logging system
+'newuserlog-byemail' => 'peraule clâf mandade par pueste eletroniche',
 
 );

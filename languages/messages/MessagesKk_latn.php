@@ -1669,10 +1669,8 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'Qatıswşı tabılğan joq.',
 
 # Special:Log/newusers
-'newuserlogpage'           => 'Tirkelw jwrnalı',
-'newuserlogpagetext'       => 'Bul qatıswşı tirkelgi jasaw jwrnalı',
-'newuserlog-create-entry'  => 'Jaña qatıswşı',
-'newuserlog-create2-entry' => 'jaña tirkelgi jasadı — $1',
+'newuserlogpage'     => 'Tirkelw jwrnalı',
+'newuserlogpagetext' => 'Bul qatıswşı tirkelgi jasaw jwrnalı',
 
 # Special:ListGroupRights
 'listgrouprights'          => 'Qatıswşı tobı quqıqtarı',
@@ -2330,9 +2328,6 @@ Bunıñ sebebi şettik torap siltemesinen bolwı mümkin.',
 
 # Patrol log
 'patrol-log-page' => 'Zerttew jwrnalı',
-'patrol-log-line' => '$2 degenniñ $1 tüzetwin zertteldi dep belgiledi $3',
-'patrol-log-auto' => '(özdiktik)',
-'patrol-log-diff' => 'nömir $1',
 
 # Image deletion
 'deletedrevision'                 => 'Eski tüzetwin joýdı: $1',
@@ -2861,9 +2856,7 @@ Tağı da [[Special:EditWatchlist|qalıpalğan öñdewişti paýdalana]] alasız
 'filepath-page'    => 'Faýl atı:',
 'filepath-submit'  => 'Ornalaswın tap',
 'filepath-summary' => 'Bul arnaýı bet faýl ornalaswı tolıq jolın qaýtaradı.
-Swretter tolıq ajıratılımdığımen körsetiledi, basqa faýl türlerine qatıstı bağdarlaması twra jegiledi.
-
-Faýl atawın «{{ns:file}}:» degen bastawışsız eñgiziñiz.',
+Swretter tolıq ajıratılımdığımen körsetiledi, basqa faýl türlerine qatıstı bağdarlaması twra jegiledi.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Faýl telnusqaların izdew',

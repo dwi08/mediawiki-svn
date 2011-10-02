@@ -1951,12 +1951,8 @@ Sinusuportahang mga protokolo: <tt>$1</tt>',
 'activeusers-noresult'   => 'Walang natagpuang mga tagagamit.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Talaan ng paglikha ng tagagamit',
-'newuserlogpagetext'          => 'Isa itong talaan ng mga paglikha ng tagagamit.',
-'newuserlog-byemail'          => 'Ipinadala ang hudyat sa pamamagitan ng e-liham',
-'newuserlog-create-entry'     => 'Bagong tagagamit',
-'newuserlog-create2-entry'    => 'nalikha ang bagong akawnt na $1',
-'newuserlog-autocreate-entry' => 'Awtomatikong nalikha ang akawnt',
+'newuserlogpage'     => 'Talaan ng paglikha ng tagagamit',
+'newuserlogpagetext' => 'Isa itong talaan ng mga paglikha ng tagagamit.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Mga uri ng tagagamit',
@@ -2772,9 +2768,6 @@ Maaaring dahil ito sa isang kawing sa isang nakatalang hinarang dahil di-kinaisn
 # Patrol log
 'patrol-log-page'      => 'Tala ng Pagpapatrolya',
 'patrol-log-header'    => 'Tala ito ng mga pagbabagong napatrolya na.',
-'patrol-log-line'      => 'tinatakang $1 ng $2 napatrolya $3',
-'patrol-log-auto'      => '(awtomatiko)',
-'patrol-log-diff'      => 'rebisyong $1',
 'log-show-hide-patrol' => '$1 tala ng pagpatrolya',
 
 # Image deletion
@@ -3585,5 +3578,6 @@ Ipasok ang pangalan ng talaksan na hindi kasama ang unlaping "{{ns:image}}:".',
 # New logging system
 'revdelete-restricted'   => 'nilapat na mga paghihigpit sa mga tagapangasiwa',
 'revdelete-unrestricted' => 'tinanggal ang mga pagbabawal para sa mga tagapangasiwa',
+'newuserlog-byemail'     => 'Ipinadala ang hudyat sa pamamagitan ng e-liham',
 
 );

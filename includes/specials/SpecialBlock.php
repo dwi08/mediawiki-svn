@@ -87,9 +87,12 @@ class SpecialBlock extends SpecialPage {
 			throw new ErrorPageError( 'badaccess', $status );
 		}
 
+		$this->setHeaders();
+		$this->outputHeader();
+
 		$out = $this->getOutput();
 		$out->setPageTitle( wfMsg( 'blockip-title' ) );
-		$out->addModules( 'mediawiki.special', 'mediawiki.special.block' );
+		$out->addModules( array( 'mediawiki.special', 'mediawiki.special.block' ) );
 
 		$fields = $this->getFormFields();
 		$this->maybeAlterFormDefaults( $fields );
@@ -401,7 +404,7 @@ class SpecialBlock extends SpecialPage {
 			LogEventsList::showLogExtract(
 				$out,
 				'block',
-				$userpage->getPrefixedText(),
+				$userpage,
 				'',
 				array(
 					'lim' => 10,
@@ -416,7 +419,7 @@ class SpecialBlock extends SpecialPage {
 				LogEventsList::showLogExtract(
 					$out,
 					'suppress',
-					$userpage->getPrefixedText(),
+					$userpage,
 					'',
 					array(
 						'lim' => 10,
@@ -640,7 +643,7 @@ class SpecialBlock extends SpecialPage {
 		if( !$status ) {
 			# Show form unless the user is already aware of this...
 			if( !$data['Confirm'] || ( array_key_exists( 'PreviousTarget', $data )
-				&& $data['PreviousTarget'] !== $block->getTarget() ) )
+				&& $data['PreviousTarget'] !== $target ) )
 			{
 				return array( array( 'ipb_already_blocked', $block->getTarget() ) );
 			# Otherwise, try to update the block...

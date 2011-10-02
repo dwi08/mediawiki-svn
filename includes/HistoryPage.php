@@ -30,15 +30,19 @@ class HistoryPage extends ContextSource {
 	function __construct( $context ) {
 		if ( $context instanceof Article || $context instanceof PageView ) {
 			$this->mPage = $context->getPage();
-			$this->setContext( $context->getContext() );
+			$this->setContext( clone $context->getContext() );
 		} else {
 			$this->mPage = WikiPage::factory( $context->getTitle() );
-			$this->setContext( $context );
+			$this->setContext( clone $context );
 		}
 		$this->preCacheMessages();
 	}
 
-	/** For hook compatibility, returns a WikiPage now instead of an Article */
+	/**
+	 * Get the WikiPage object we are working on.
+	 * Method name is kept for hook compatibility, doesn't return an Article anymore
+	 * @return Page
+	 */
 	public function getArticle() {
 		return $this->mPage;
 	}
@@ -62,7 +66,7 @@ class HistoryPage extends ContextSource {
 	 * @return nothing
 	 */
 	function history() {
-		global $wgScript;
+		global $wgScript, $wgUseFileCache;
 
 		$out = $this->getOutput();
 		$request = $this->getRequest();
@@ -70,10 +74,19 @@ class HistoryPage extends ContextSource {
 		/**
 		 * Allow client caching.
 		 */
-		if ( $out->checkLastModified( $this->mPage->getTouched() ) )
+		if ( $out->checkLastModified( $this->mPage->getTouched() ) ) {
 			return; // Client cache fresh and headers sent, nothing more to do.
+		}
 
 		wfProfileIn( __METHOD__ );
+
+		# Fill in the file cache if not set already
+		if ( $wgUseFileCache && HTMLFileCache::useFileCache( $this->getContext() ) ) {
+			$cache = HTMLFileCache::newFromTitle( $this->getTitle(), 'history' );
+			if ( !$cache->isCacheGood( /* Assume up to date */ ) ) {
+				ob_start( array( &$cache, 'saveToFileCache' ) );
+			}
+		}
 
 		// Setup page variables.
 		$out->setPageTitle( wfMsg( 'history-title', $this->getTitle()->getPrefixedText() ) );
@@ -87,12 +100,11 @@ class HistoryPage extends ContextSource {
 
 		// Creation of a subtitle link pointing to [[Special:Log]]
 		$logPage = SpecialPage::getTitleFor( 'Log' );
-		$logLink = Linker::link(
+		$logLink = Linker::linkKnown(
 			$logPage,
 			wfMsgHtml( 'viewpagelogs' ),
 			array(),
-			array( 'page' => $this->getTitle()->getPrefixedText() ),
-			array( 'known', 'noclasses' )
+			array( 'page' => $this->getTitle()->getPrefixedText() )
 		);
 		$out->setSubtitle( $logLink );
 
@@ -110,7 +122,7 @@ class HistoryPage extends ContextSource {
 			LogEventsList::showLogExtract(
 				$out,
 				array( 'delete', 'move' ),
-				$this->getTitle()->getPrefixedText(),
+				$this->getTitle(),
 				'',
 				array(  'lim' => 10,
 					'conds' => array( "log_action != 'revision'" ),
@@ -219,6 +231,7 @@ class HistoryPage extends ContextSource {
 		if ( !FeedUtils::checkFeedOutput( $type ) ) {
 			return;
 		}
+		$request = $this->getRequest();
 
 		$feed = new $wgFeedClasses[$type](
 			$this->getTitle()->getPrefixedText() . ' - ' .
@@ -229,7 +242,7 @@ class HistoryPage extends ContextSource {
 
 		// Get a limit on number of feed entries. Provide a sane default
 		// of 10 if none is defined (but limit to $wgFeedLimit max)
-		$limit = $this->getRequest()->getInt( 'limit', 10 );
+		$limit = $request->getInt( 'limit', 10 );
 		if ( $limit > $wgFeedLimit || $limit < 1 ) {
 			$limit = 10;
 		}
@@ -579,7 +592,7 @@ class HistoryPager extends ReverseChronologicalPager {
 				$undoTooltip = $latest
 					? array( 'title' => wfMsg( 'tooltip-undo' ) )
 					: array();
-				$undolink = Linker::link(
+				$undolink = Linker::linkKnown(
 					$this->getTitle(),
 					wfMsgHtml( 'editundo' ),
 					$undoTooltip,
@@ -587,8 +600,7 @@ class HistoryPager extends ReverseChronologicalPager {
 						'action' => 'edit',
 						'undoafter' => $next->rev_id,
 						'undo' => $rev->getId()
-					),
-					array( 'known', 'noclasses' )
+					)
 				);
 				$tools[] = "<span class=\"mw-history-undo\">{$undolink}</span>";
 			}
@@ -623,12 +635,11 @@ class HistoryPager extends ReverseChronologicalPager {
 		$date = $this->getLang()->timeanddate( wfTimestamp( TS_MW, $rev->getTimestamp() ), true );
 		$date = htmlspecialchars( $date );
 		if ( $rev->userCan( Revision::DELETED_TEXT ) ) {
-			$link = Linker::link(
+			$link = Linker::linkKnown(
 				$this->getTitle(),
 				$date,
 				array(),
-				array( 'oldid' => $rev->getId() ),
-				array( 'known', 'noclasses' )
+				array( 'oldid' => $rev->getId() )
 			);
 		} else {
 			$link = $date;
@@ -651,15 +662,14 @@ class HistoryPager extends ReverseChronologicalPager {
 		if ( $latest || !$rev->userCan( Revision::DELETED_TEXT ) ) {
 			return $cur;
 		} else {
-			return Linker::link(
+			return Linker::linkKnown(
 				$this->getTitle(),
 				$cur,
 				array(),
 				array(
 					'diff' => $this->getTitle()->getLatestRevID(),
 					'oldid' => $rev->getId()
-				),
-				array( 'known', 'noclasses' )
+				)
 			);
 		}
 	}
@@ -680,30 +690,28 @@ class HistoryPager extends ReverseChronologicalPager {
 			return $last;
 		} elseif ( $next === 'unknown' ) {
 			# Next row probably exists but is unknown, use an oldid=prev link
-			return Linker::link(
+			return Linker::linkKnown(
 				$this->getTitle(),
 				$last,
 				array(),
 				array(
 					'diff' => $prevRev->getId(),
 					'oldid' => 'prev'
-				),
-				array( 'known', 'noclasses' )
+				)
 			);
 		} elseif ( !$prevRev->userCan( Revision::DELETED_TEXT )
 			|| !$nextRev->userCan( Revision::DELETED_TEXT ) )
 		{
 			return $last;
 		} else {
-			return Linker::link(
+			return Linker::linkKnown(
 				$this->getTitle(),
 				$last,
 				array(),
 				array(
 					'diff' => $prevRev->getId(),
 					'oldid' => $next->rev_id
-				),
-				array( 'known', 'noclasses' )
+				)
 			);
 		}
 	}

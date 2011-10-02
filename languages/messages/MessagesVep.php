@@ -1617,12 +1617,8 @@ Kc. mugažo [[Special:WantedCategories|ectud kategorijoiden nimikirjutez]].',
 'activeusers-noresult' => 'Kävutajad ei olgoi löutud.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Kävutajiden registracijan aigkirj',
-'newuserlogpagetext'          => 'Tantoi registriruidud kävutajiden nimikirjutez.',
-'newuserlog-byemail'          => 'peisana om oigetud e-počtadme',
-'newuserlog-create-entry'     => "Uz' kävutai",
-'newuserlog-create2-entry'    => 'om sänu uden $1-kävutajan registracii',
-'newuserlog-autocreate-entry' => 'Registracii om sätud avtomatižešti',
+'newuserlogpage'     => 'Kävutajiden registracijan aigkirj',
+'newuserlogpagetext' => 'Tantoi registriruidud kävutajiden nimikirjutez.',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Kävutajiden gruppiden oiktused',
@@ -2284,9 +2280,6 @@ Voib olda, necil lehtpolel om kosketuz irdsaitale, kudamb om mustas nimikirjutes
 # Patrol log
 'patrol-log-page'      => 'Patruliruindan aigkirj',
 'patrol-log-header'    => 'Nece om patruliruidud versijoiden aiglehtez.',
-'patrol-log-line'      => 'kodvi $1 $2-špäi $3',
-'patrol-log-auto'      => '(avtomatižikš)',
-'patrol-log-diff'      => 'versii $1',
 'log-show-hide-patrol' => '$1 patruliruindan aigkirj',
 
 # Image deletion
@@ -2861,5 +2854,6 @@ Kävutagat normaline ezikacund.',
 # New logging system
 'revdelete-restricted'   => 'kaidendused administratoriden täht',
 'revdelete-unrestricted' => 'kaidendused heittud administratoriden täht',
+'newuserlog-byemail'     => 'peisana om oigetud e-počtadme',
 
 );

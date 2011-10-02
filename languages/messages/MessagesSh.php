@@ -2060,12 +2060,8 @@ Podržani protokoli: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nije pronađen korisnik.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Registar novih korisnika',
-'newuserlogpagetext'          => 'Ovo je evidencija registracije novih korisnika.',
-'newuserlog-byemail'          => 'lozinka je poslana putem e-maila',
-'newuserlog-create-entry'     => 'Novi korisnički račun',
-'newuserlog-create2-entry'    => 'napravljen novi račun za $1',
-'newuserlog-autocreate-entry' => 'Račun napravljen automatski',
+'newuserlogpage'     => 'Registar novih korisnika',
+'newuserlogpagetext' => 'Ovo je evidencija registracije novih korisnika.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Prava korisničkih grupa',
@@ -2894,9 +2890,6 @@ Ovo je vjerovatno izazvano vezom ka vanjskoj nepoželjnoj stranici.',
 # Patrol log
 'patrol-log-page'      => 'Evidencija patroliranja',
 'patrol-log-header'    => 'Ovdje se nalazi evidencija patroliranih revizija.',
-'patrol-log-line'      => 'označeno $1 od $2 patrolirano $3',
-'patrol-log-auto'      => '(automatsko)',
-'patrol-log-diff'      => 'revizija $1',
 'log-show-hide-patrol' => '$1 zapis patroliranja',
 
 # Image deletion
@@ -3657,7 +3650,6 @@ Unesite ime datoteke bez "{{ns:file}}:" prefiksa.',
 'globalfileusage-text'        => 'Pretraži globalnu upotrebu datoteke',
 'globalfileusage-no-results'  => '[[$1]] se ne koristi na drugim wikijima.',
 'globalfileusage-on-wiki'     => 'Korištenje na $2',
-'globalfileusage-of-file'     => 'Sljedeći ostali wikiji koriste ovu datoteku:',
 'globalfileusage-more'        => 'Pregledaj [[{{#Special:GlobalUsage}}/$1|još globalne upotrebe]] ove datoteke.',
 'globalfileusage-filterlocal' => 'Ne prikaži lokalnu upotrebu',
 
@@ -3668,7 +3660,6 @@ Unesite ime datoteke bez "{{ns:file}}:" prefiksa.',
 'globaltemplateusage-text'        => 'Pretraži globalnu upotrebu šablona',
 'globaltemplateusage-no-results'  => '[[$1]] se ne koristi na drugim wikijima.',
 'globaltemplateusage-on-wiki'     => 'Korištenje na $2',
-'globaltemplateusage-of-file'     => 'Sljedeći ostali wikiji koriste ovaj šablon:',
 'globaltemplateusage-more'        => 'Pogledaj [[{{#Special:GlobalUsage}}/$1|još globalne upotrebe]] ovog šablona.',
 'globaltemplateusage-filterlocal' => 'Ne prikazuj lokalnu upotrebu',
 
@@ -3704,5 +3695,6 @@ Unesite ime datoteke bez "{{ns:file}}:" prefiksa.',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|je premjestio|je premjestila|premjesti}} stranicu $3 na $4 bez ostavljanja preusmjerenja',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|je premjestio|je premjestila|je premjestio}} stranicu $3 na $4 preko preusmjerenja',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|je premjestio|je premjestila|premjesti}} stranicu $3 na $4 preko preusmjerenja bez ostavljanja preusmjerenja',
+'newuserlog-byemail'                  => 'lozinka je poslana putem e-maila',
 
 );

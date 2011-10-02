@@ -34,7 +34,7 @@
  * Globals used:
  *    objects:   $wgLang, $wgContLang
  *
- * NOT $wgUser or $wgTitle. Keep them away!
+ * NOT $wgUser or $wgTitle or $wgRequest. Keep them away!
  *
  * settings:
  *  $wgUseDynamicDates*, $wgInterwikiMagic*,
@@ -321,7 +321,7 @@ class Parser {
 		 * to internalParse() which does all the real work.
 		 */
 
-		global $wgUseTidy, $wgAlwaysUseTidy, $wgContLang, $wgDisableLangConversion, $wgDisableTitleConversion;
+		global $wgUseTidy, $wgAlwaysUseTidy, $wgDisableLangConversion, $wgDisableTitleConversion;
 		$fname = __METHOD__.'-' . wfGetCaller();
 		wfProfileIn( __METHOD__ );
 		wfProfileIn( $fname );
@@ -376,8 +376,7 @@ class Parser {
 			# The position of the convert() call should not be changed. it
 			# assumes that the links are all replaced and the only thing left
 			# is the <nowiki> mark.
-
-			$text = $wgContLang->convert( $text );
+			$text = $this->getFunctionLang()->convert( $text );
 		}
 
 		/**
@@ -393,11 +392,11 @@ class Parser {
 				|| isset( $this->mDoubleUnderscores['notitleconvert'] )
 				|| $this->mOutput->getDisplayTitle() !== false ) )
 		{
-			$convruletitle = $wgContLang->getConvRuleTitle();
+			$convruletitle = $this->getFunctionLang()->getConvRuleTitle();
 			if ( $convruletitle ) {
 				$this->mOutput->setTitleText( $convruletitle );
 			} else {
-				$titleText = $wgContLang->convertTitle( $title );
+				$titleText = $this->getFunctionLang()->convertTitle( $title );
 				$this->mOutput->setTitleText( $titleText );
 			}
 		}
@@ -1194,7 +1193,6 @@ class Parser {
 	 * @private
 	 */
 	function makeFreeExternalLink( $url ) {
-		global $wgContLang;
 		wfProfileIn( __METHOD__ );
 
 		$trail = '';
@@ -1227,7 +1225,7 @@ class Parser {
 		$text = $this->maybeMakeExternalImage( $url );
 		if ( $text === false ) {
 			# Not an image, make a link
-			$text = Linker::makeExternalLink( $url, $wgContLang->markNoConversion($url), true, 'free',
+			$text = Linker::makeExternalLink( $url, $this->getFunctionLang()->markNoConversion($url), true, 'free',
 				$this->getExternalLinkAttribs( $url ) );
 			# Register it in the output object...
 			# Replace unnecessary URL escape codes with their equivalent characters
@@ -1455,7 +1453,6 @@ class Parser {
 	 * @return string
 	 */
 	function replaceExternalLinks( $text ) {
-		global $wgContLang;
 		wfProfileIn( __METHOD__ );
 
 		$bits = preg_split( $this->mExtLinkBracketedRegex, $text, -1, PREG_SPLIT_DELIM_CAPTURE );
@@ -1501,7 +1498,7 @@ class Parser {
 				list( $dtrail, $trail ) = Linker::splitTrail( $trail );
 			}
 
-			$text = $wgContLang->markNoConversion( $text );
+			$text = $this->getFunctionLang()->markNoConversion( $text );
 
 			$url = Sanitizer::cleanUrl( $url );
 
@@ -1658,8 +1655,6 @@ class Parser {
 	 * @private
 	 */
 	function replaceInternalLinks2( &$s ) {
-		global $wgContLang;
-
 		wfProfileIn( __METHOD__ );
 
 		wfProfileIn( __METHOD__.'-setup' );
@@ -1683,7 +1678,7 @@ class Parser {
 		$line = $a->current(); # Workaround for broken ArrayIterator::next() that returns "void"
 		$s = substr( $s, 1 );
 
-		$useLinkPrefixExtension = $wgContLang->linkPrefixExtension();
+		$useLinkPrefixExtension = $this->getFunctionLang()->linkPrefixExtension();
 		$e2 = null;
 		if ( $useLinkPrefixExtension ) {
 			# Match the end of a line for a word that's not followed by whitespace,
@@ -1709,8 +1704,8 @@ class Parser {
 			$prefix = '';
 		}
 
-		if ( $wgContLang->hasVariants() ) {
-			$selflink = $wgContLang->autoConvertToAllVariants( $this->mTitle->getPrefixedText() );
+		if ( $this->getFunctionLang()->hasVariants() ) {
+			$selflink = $this->getFunctionLang()->autoConvertToAllVariants( $this->mTitle->getPrefixedText() );
 		} else {
 			$selflink = array( $this->mTitle->getPrefixedText() );
 		}
@@ -1878,6 +1873,7 @@ class Parser {
 
 			# Link not escaped by : , create the various objects
 			if ( $noforce ) {
+				global $wgContLang;
 
 				# Interwikis
 				wfProfileIn( __METHOD__."-interwiki" );
@@ -1927,7 +1923,7 @@ class Parser {
 					}
 					$sortkey = Sanitizer::decodeCharReferences( $sortkey );
 					$sortkey = str_replace( "\n", '', $sortkey );
-					$sortkey = $wgContLang->convertCategoryKey( $sortkey );
+					$sortkey = $this->getFunctionLang()->convertCategoryKey( $sortkey );
 					$this->mOutput->addCategory( $nt->getDBkey(), $sortkey );
 
 					/**
@@ -2827,10 +2823,8 @@ class Parser {
 			case 'server':
 				return $wgServer;
 			case 'servername':
-				wfSuppressWarnings(); # May give an E_WARNING in PHP < 5.3.3
-				$serverName = parse_url( $wgServer, PHP_URL_HOST );
-				wfRestoreWarnings();
-				return $serverName ? $serverName : $wgServer;
+				$serverParts = wfParseUrl( $wgServer );
+				return $serverParts && isset( $serverParts['host'] ) ? $serverParts['host'] : $wgServer;
 			case 'scriptpath':
 				return $wgScriptPath;
 			case 'stylepath':
@@ -3028,7 +3022,7 @@ class Parser {
 	 * @private
 	 */
 	function braceSubstitution( $piece, $frame ) {
-		global $wgContLang, $wgNonincludableNamespaces, $wgEnableInterwikiTranscluding, $wgEnableInterwikiTemplatesTracking;
+		global $wgContLang, $wgNonincludableNamespaces;
 		wfProfileIn( __METHOD__ );
 		wfProfileIn( __METHOD__.'-setup' );
 
@@ -3036,6 +3030,7 @@ class Parser {
 		$found = false;             # $text has been filled
 		$nowiki = false;            # wiki markup in $text should be escaped
 		$isHTML = false;            # $text is HTML, armour it against wikitext transformation
+		$forceRawInterwiki = false; # Force interwiki transclusion to be done in raw mode not rendered
 		$isChildObj = false;        # $text is a DOM node needing expansion in a child frame
 		$isLocalObj = false;        # $text is a DOM node needing expansion in the current frame
 
@@ -3129,7 +3124,7 @@ class Parser {
 					$function = $this->mFunctionSynonyms[1][$function];
 				} else {
 					# Case insensitive functions
-					$function = $wgContLang->lc( $function );
+					$function = $this->getFunctionLang()->lc( $function );
 					if ( isset( $this->mFunctionSynonyms[0][$function] ) ) {
 						$function = $this->mFunctionSynonyms[0][$function];
 					} else {
@@ -3200,13 +3195,10 @@ class Parser {
 			}
 			$title = Title::newFromText( $part1, $ns );
 			if ( $title ) {
-				if ( !$title->isExternal() && $piece['interwiki'] !== '' ) {
-					$title->setInterwiki( $piece['interwiki'] );
-				}
 				$titleText = $title->getPrefixedText();
 				# Check for language variants if the template is not found
-				if ( $wgContLang->hasVariants() && $title->getArticleID() == 0 ) {
-					$wgContLang->findVariantLink( $part1, $title, true );
+				if ( $this->getFunctionLang()->hasVariants() && $title->getArticleID() == 0 ) {
+					$this->getFunctionLang()->findVariantLink( $part1, $title, true );
 				}
 				# Do recursion depth check
 				$limit = $this->mOptions->getMaxTemplateDepth();
@@ -3227,6 +3219,9 @@ class Parser {
 					&& $this->mOptions->getAllowSpecialInclusion()
 					&& $this->ot['html'] )
 				{
+					// Pass the template arguments as URL parameters.
+					// "uselang" will have no effect since the Language object
+					// is forced to the one defined in ParserOptions.
 					$pageArgs = array();
 					for ( $i = 0; $i < $args->getLength(); $i++ ) {
 						$bits = $args->item( $i )->splitArg();
@@ -3236,6 +3231,8 @@ class Parser {
 							$pageArgs[$name] = $value;
 						}
 					}
+
+					// Create a new context to execute the special page
 					$context = new RequestContext;
 					$context->setTitle( $title );
 					$context->setRequest( new FauxRequest( $pageArgs ) );
@@ -3265,22 +3262,18 @@ class Parser {
 					$text = "[[:$titleText]]";
 					$found = true;
 				}
-			} elseif ( $wgEnableInterwikiTranscluding && $title->isTrans() ) {
-
-				$text = Interwiki::interwikiTransclude( $title );
-				$this->registerDistantTemplate( $title );
-
-				if ( $wgEnableInterwikiTemplatesTracking ) {
-					$this->registerDistantTemplate( $title );
-				}
-
-				if ( $text !== false ) {
+			} elseif ( $title->isTrans() ) {
+				# Interwiki transclusion
+				if ( $this->ot['html'] && !$forceRawInterwiki ) {
+					$text = $this->interwikiTransclude( $title, 'render' );
+					$isHTML = true;
+				} else {
+					$text = $this->interwikiTransclude( $title, 'raw' );
 					# Preprocess it like a template
 					$text = $this->preprocessToDom( $text, self::PTD_FOR_INCLUSION );
-					$found = true;
 					$isChildObj = true;
 				}
-
+				$found = true;
 			}
 
 			# Do infinite loop check
@@ -3430,19 +3423,10 @@ class Parser {
 	}
 
 	/**
-	 * Register a distant template as used
+	 * Fetch the unparsed text of a template and register a reference to it.
+	 * @param Title $title
+	 * @return mixed string or false
 	 */
-	function registerDistantTemplate( $title ) {
-		$stuff = Parser::distantTemplateCallback( $title, $this );
-		$text = $stuff['text'];
-		$finalTitle = isset( $stuff['finalTitle'] ) ? $stuff['finalTitle'] : $title;
-		if ( isset( $stuff['deps'] ) ) {
-			foreach ( $stuff['deps'] as $dep ) {
-				$this->mOutput->addDistantTemplate( $dep['title'], $dep['page_id'], $dep['rev_id'] );
-			}
-		}
-	}
-
 	function fetchTemplate( $title ) {
 		$rv = $this->fetchTemplateAndTitle( $title );
 		return $rv[0];
@@ -3571,21 +3555,56 @@ class Parser {
 		return array( $file, $title );
 	}
 
-	static function distantTemplateCallback( $title, $parser=false ) {
-		$text = '';
-		$rev_id = null;
-		$deps[] = array(
-			'title' => $title,
-			'page_id' => $title->getArticleID(),
-			'rev_id' => $rev_id );
+	/**
+	 * Transclude an interwiki link.
+	 *
+	 * @param $title Title
+	 * @param $action
+	 *
+	 * @return string
+	 */
+	function interwikiTransclude( $title, $action ) {
+		global $wgEnableScaryTranscluding;
 
-		$finalTitle = $title;
-
-		return array(
-			'text' => $text,
-			'finalTitle' => $finalTitle,
-			'deps' => $deps );
+		if ( !$wgEnableScaryTranscluding ) {
+			return wfMsgForContent('scarytranscludedisabled');
 		}
+
+		$url = $title->getFullUrl( "action=$action" );
+
+		if ( strlen( $url ) > 255 ) {
+			return wfMsgForContent( 'scarytranscludetoolong' );
+		}
+		return $this->fetchScaryTemplateMaybeFromCache( $url );
+	}
+
+	/**
+	 * @param $url string
+	 * @return Mixed|String
+	 */
+	function fetchScaryTemplateMaybeFromCache( $url ) {
+		global $wgTranscludeCacheExpiry;
+		$dbr = wfGetDB( DB_SLAVE );
+		$tsCond = $dbr->timestamp( time() - $wgTranscludeCacheExpiry );
+		$obj = $dbr->selectRow( 'transcache', array('tc_time', 'tc_contents' ),
+				array( 'tc_url' => $url, "tc_time >= " . $dbr->addQuotes( $tsCond ) ) );
+		if ( $obj ) {
+			return $obj->tc_contents;
+		}
+
+		$text = Http::get( $url );
+		if ( !$text ) {
+			return wfMsgForContent( 'scarytranscludefailed', $url );
+		}
+
+		$dbw = wfGetDB( DB_MASTER );
+		$dbw->replace( 'transcache', array('tc_url'), array(
+			'tc_url' => $url,
+			'tc_time' => $dbw->timestamp( time() ),
+			'tc_contents' => $text)
+		);
+		return $text;
+	}
 
 	/**
 	 * Triple brace replacement -- used for template arguments

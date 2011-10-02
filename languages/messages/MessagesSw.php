@@ -1607,7 +1607,7 @@ Ukibofya kichwa cha safu mtindo wa kupanga orodha utabadilika.',
 'filehist-filesize'         => 'Ukubwa wa faili',
 'filehist-comment'          => 'Maelezo',
 'filehist-missing'          => 'Faili halipo',
-'imagelinks'                => 'Viungo vya mafaili',
+'imagelinks'                => 'Matumizi ya faili',
 'linkstoimage'              => '{{PLURAL:$1|Ukurasa huu umeunganishwa|Kurasa hizi $1 zimeunganishwa}} na faili hili:',
 'linkstoimage-more'         => 'Zipo {{PLURAL:$1|kurasa|kurasa}} zaidi ya $1 zinazounga na faili hili.
 Orodha inayofuata inaonyesha {{PLURAL:$1|kiungo cha kwanza|viungo $1 vya kwanza}} tu vinavyoungana na faili hili.
@@ -1858,12 +1858,8 @@ Itifaki zinazoungwa mkono: <tt>$1</tt>',
 'activeusers-noresult'   => 'Watumiaji hawakupatikana.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Kumbukumbu za kuanzisha akaunti za watumiaji',
-'newuserlogpagetext'          => 'Hii ni kumbukumbu ya akaunti mpya zilizosajiliwa.',
-'newuserlog-byemail'          => 'neno la siri limetumwa kwa barua pepe',
-'newuserlog-create-entry'     => 'Akaunti ya mtumiaji mgeni',
-'newuserlog-create2-entry'    => 'amesajili akaunti mpya $1',
-'newuserlog-autocreate-entry' => 'Akaunti imejifungua yenyewe',
+'newuserlogpage'     => 'Kumbukumbu za kuanzisha akaunti za watumiaji',
+'newuserlogpagetext' => 'Hii ni kumbukumbu ya akaunti mpya zilizosajiliwa.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Wezo za kundi za watumiaji',
@@ -2500,11 +2496,6 @@ Tafadhali jaribu tena.',
 'pageinfo-watchers'         => 'Idadi ya wanaofuatilia',
 'pageinfo-edits'            => 'Idadi ya haririo',
 
-# Patrol log
-'patrol-log-line' => 'imewekewa alama $1 ya $2 kufanyiwa doria $3',
-'patrol-log-auto' => '(kwa kujiendesha)',
-'patrol-log-diff' => 'pitio la $1',
-
 # Image deletion
 'deletedrevision'                 => 'Pitio la awali lililofutwa $1',
 'filedeleteerror-short'           => 'Hitilafu wakati wa kufuta faili: $1',
@@ -2529,7 +2520,7 @@ Ukilitekeleza faili, mashine yako huenda ikawa matatani.',
 'svg-long-desc'          => 'faili la SVG, husemwa kuwa piseli $1 × $2, saizi ya faili: $3',
 'show-big-image'         => 'Ukubwa wa awali',
 'show-big-image-preview' => 'Ukubwa wa hakikisho: $1.',
-'show-big-image-other'   => 'Ukubwa zingine: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Ukubwa mwingine|Ukubwa zingine}}: $1.',
 'show-big-image-size'    => 'piseli $1 × $2',
 'file-info-png-repeat'   => 'inachezwa {{PLURAL:$1|mara}} $1',
 
@@ -2544,6 +2535,13 @@ Ukilitekeleza faili, mashine yako huenda ikawa matatani.',
 'ilsubmit'              => 'Tafuta',
 'bydate'                => 'kwa tarehe',
 'sp-newimages-showfrom' => 'Onyesha mafaili mapya kuanzia saa $2, tarehe $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => 'sekunde $1 {{PLURAL:$1|iliyopita|zilizopita}}',
+'minutes' => 'dakika $1 {{PLURAL:$1|iliyopita|zilizopita}}',
+'hours'   => '{{PLURAL:$1|saa $1 lililopita|masaa $1 yaliyopita}}',
+'days'    => 'siku $1 {{PLURAL:$1|iliyopita|zilizopita}}',
+'ago'     => '$1',
 
 # Bad image list
 'bad_image_list' => 'Fomati ni hii:
@@ -3003,7 +3001,6 @@ Andika jina la faili bila kiambishi awali cha "{{ns:file}}:".',
 'globalfileusage-text'        => 'Tafuta matumizi ya faili katika wiki zote',
 'globalfileusage-no-results'  => '[[$1]] haitumiki katika wiki zingine.',
 'globalfileusage-on-wiki'     => 'Matumizi kwenye $2',
-'globalfileusage-of-file'     => 'Wiki zifuatazo zinatumia faili hili:',
 'globalfileusage-more'        => 'Tazama matumizi mengine ya faili hili [[{{#Special:GlobalUsage}}/$1|katika wiki zote]].',
 'globalfileusage-filterlocal' => 'Matumizi katika wiki hii isionyeshwe',
 
@@ -3014,7 +3011,6 @@ Andika jina la faili bila kiambishi awali cha "{{ns:file}}:".',
 'globaltemplateusage-text'        => 'Tafuta matumizi ya kigezo katika wiki zote',
 'globaltemplateusage-no-results'  => '[[$1]] haitumiki katika wiki zingine.',
 'globaltemplateusage-on-wiki'     => 'Matumizi katika $2',
-'globaltemplateusage-of-file'     => 'Wiki zifuatazo zinatumia kigezo hili:',
 'globaltemplateusage-more'        => 'Tazama matumizi mengine ya kigezo hiki [[{{#Special:GlobalUsage}}/$1|katika wiki zote]].',
 'globaltemplateusage-filterlocal' => 'Matumizi katika wiki hii isionyeshwe',
 
@@ -3043,5 +3039,6 @@ Tovuti hii inapata matatatizo wakati huu.',
 # New logging system
 'revdelete-restricted'   => 'aliwazuia pia wakabidhi wasiyaone maelezo',
 'revdelete-unrestricted' => 'aliwarudishia wakabidhi uwezo wa kuona maelezo',
+'newuserlog-byemail'     => 'neno la siri limetumwa kwa barua pepe',
 
 );

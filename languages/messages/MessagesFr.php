@@ -1448,7 +1448,8 @@ Voici une valeur générée aléatoirement que vous pouvez utiliser : $1',
 'prefs-registration'            => 'Date d’inscription :',
 'yourrealname'                  => 'Nom réel :',
 'yourlanguage'                  => 'Langue de l’interface :',
-'yourvariant'                   => 'Variante :',
+'yourvariant'                   => 'Variante de la langue du contenu:',
+'prefs-help-variant'            => 'Votre variante ou orthographe préféré dans lequel afficher les pages de contenu de ce wiki.',
 'yournick'                      => 'Signature pour les discussions :',
 'prefs-help-signature'          => 'Les commentaires sur les pages de discussion doivent être signés avec « <nowiki>~~~~</nowiki> », qui sera converti par votre signature et un horodatage.',
 'badsig'                        => 'Signature brute incorrecte.
@@ -1915,7 +1916,7 @@ Quand elle est filtrée par utilisateur, seuls les fichiers dont la version la p
 'filehist-filesize'                 => 'Taille du fichier',
 'filehist-comment'                  => 'Commentaire',
 'filehist-missing'                  => 'Fichier manquant',
-'imagelinks'                        => 'Utilisations du fichier',
+'imagelinks'                        => 'Utilisation du fichier',
 'linkstoimage'                      => '{{PLURAL:$1|La page suivante utilise|Les $1 pages suivantes utilisent}} ce fichier :',
 'linkstoimage-more'                 => 'Plus {{PLURAL:$1|d’une page utilise|de $1 pages utilisent}} ce fichier.
 La liste suivante affiche seulement {{PLURAL:$1|la première page qui utilise|les $1 premières pages qui utilisent}} ce fichier.
@@ -2179,12 +2180,8 @@ Protocoles reconnus : <tt>$1</tt>.',
 'activeusers-noresult'   => 'Aucun utilisateur trouvé.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Journal des créations de comptes utilisateur',
-'newuserlogpagetext'          => 'Cette page affiche l’historique des créations de comptes utilisateur.',
-'newuserlog-byemail'          => 'mot de passe envoyé par courriel',
-'newuserlog-create-entry'     => 'Nouveau compte utilisateur',
-'newuserlog-create2-entry'    => 'a créé le nouveau compte $1',
-'newuserlog-autocreate-entry' => 'Compte créé automatiquement',
+'newuserlogpage'     => 'Journal des créations de comptes utilisateur',
+'newuserlogpagetext' => 'Cette page affiche l’historique des créations de comptes utilisateur.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Droits des groupes d’utilisateurs',
@@ -3032,9 +3029,6 @@ Permet de rétablir la version précédente et d’ajouter un motif dans la boî
 # Patrol log
 'patrol-log-page'      => 'Journal des relectures',
 'patrol-log-header'    => 'Voici l’historique des versions relues.',
-'patrol-log-line'      => 'a marqué la $1 de $2 comme relue $3',
-'patrol-log-auto'      => '(automatique)',
-'patrol-log-diff'      => 'version $1',
 'log-show-hide-patrol' => '$1 l’historique des relectures',
 
 # Image deletion
@@ -3065,7 +3059,7 @@ Si vous l’exécutez, votre système peut être compromis.",
 'svg-long-desc'          => 'Fichier SVG, résolution de $1 × $2 pixels, taille : $3',
 'show-big-image'         => 'Image en plus haute résolution',
 'show-big-image-preview' => 'Taille de cet aperçu : $1.',
-'show-big-image-other'   => 'Autres résolutions : $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Autre résolution|Autres résolutions}} : $1.',
 'show-big-image-size'    => '$1 × $2 pixels',
 'file-info-gif-looped'   => 'en boucle',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|image|images}}',
@@ -3735,9 +3729,7 @@ Vous devriez avoir reçu [{{SERVER}}{{SCRIPTPATH}}/COPYING une copie de la Licen
 'filepath-page'    => 'Fichier :',
 'filepath-submit'  => 'Aller',
 'filepath-summary' => 'Cette page spéciale retourne le chemin d’accès complet d’un fichier.
-Les images sont montrées dans leur pleine résolution, les autres fichiers sont chargés et démarrés directement avec leur programme associé.
-
-Entrez le nom du fichier sans le préfixe « {{ns:file}}: »',
+Les images sont montrées dans leur pleine résolution, les autres fichiers sont chargés et démarrés directement avec leur programme associé.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Recherche de doublons',
@@ -3816,7 +3808,6 @@ Entrez le nom du fichier sans le préfixe « {{ns:file}}: »',
 'globalfileusage-text'        => "Rechercher l'utilisation du fichier global",
 'globalfileusage-no-results'  => "[[$1]] n'est pas utilisé sur d'autres wikis.",
 'globalfileusage-on-wiki'     => 'Utilisation sur $2',
-'globalfileusage-of-file'     => 'Les autres wikis suivants utilisent ce fichier:',
 'globalfileusage-more'        => "Voyez [[{{#Special:GlobalUsage}}/$1|l'utilisation plus globale]] de ce fichier.",
 'globalfileusage-filterlocal' => "Ne pas afficher l'utilisation locale",
 
@@ -3827,7 +3818,6 @@ Entrez le nom du fichier sans le préfixe « {{ns:file}}: »',
 'globaltemplateusage-text'        => "Rechercher l'utilisation globale du modèle",
 'globaltemplateusage-no-results'  => "[[$1]] n'est pas utilisé sur d'autres wikis.",
 'globaltemplateusage-on-wiki'     => 'Utilisation sur $2',
-'globaltemplateusage-of-file'     => 'Les autres wikis suivants utilisent ce modèle:',
 'globaltemplateusage-more'        => "Voyez [[{{#Special:GlobalUsage}}/$1|l'utilisation plus globale]] de ce modèle.",
 'globaltemplateusage-filterlocal' => "Ne pas afficher l'utilisation locale",
 
@@ -3857,7 +3847,31 @@ Entrez le nom du fichier sans le préfixe « {{ns:file}}: »',
 'sqlite-no-fts'  => '$1 sans recherche en texte intégral supportée',
 
 # New logging system
-'revdelete-restricted'   => 'a appliqué les restrictions aux administrateurs',
-'revdelete-unrestricted' => 'restrictions retirées pour les administrateurs',
+'logentry-delete-delete'              => '$1 {{GENDER:$2|a supprimé}} la page $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|a restauré}} la page $3',
+'logentry-delete-event'               => "$1 {{GENDER:$2|a modifié}} la visibilité {{PLURAL:$5|d'un événement du journal|de $5 événements du journal}} sur $3: $4",
+'logentry-delete-revision'            => "$1 {{GENDER:$2|a modifié}} la visibilité {{PLURAL:$5|d'une révision|de $5 révisions}} sur la page $3: $4",
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|a modifié}} la visibilité des événements du journal sur $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|a modifié}} la visibilité des révisions sur la page $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|a supprimé}} la page $3',
+'logentry-suppress-event'             => "$1 a secrètement {{GENDER:$2|modifié}} la visibilité {{PLURAL:$5|d'un événement du journal|de $5 événements du journal}} sur $3: $4",
+'logentry-suppress-revision'          => "$1 a secrètement {{GENDER:$2|modifié}} la visibilité {{PLURAL:$5|d'une révision|de $5 révisions}} sur la page $3: $4",
+'logentry-suppress-event-legacy'      => '$1 a secrètement {{GENDER:$2|modifié}} la visibilité des événements du journal sur $3',
+'logentry-suppress-revision-legacy'   => '$1 a secrètement {{GENDER:$2|modifié}} la visibilité des révisions sur la page $3',
+'revdelete-content-hid'               => 'contenu caché',
+'revdelete-summary-hid'               => 'modifier le résumé caché',
+'revdelete-uname-hid'                 => "nom d'utilisateur caché",
+'revdelete-content-unhid'             => 'contenu démasqué',
+'revdelete-summary-unhid'             => 'modifier le résumé démasqué',
+'revdelete-uname-unhid'               => "nom d'utilisateur démasqué",
+'revdelete-restricted'                => 'a appliqué les restrictions aux administrateurs',
+'revdelete-unrestricted'              => 'restrictions retirées pour les administrateurs',
+'logentry-move-move'                  => '$1 {{GENDER:$2|a déplacé}} la page $3 vers $4',
+'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|a déplacé}} la page $3 vers $4 sans laisser de redirection',
+'logentry-move-move_redir'            => '$1 {{GENDER:$2|a déplacé}} la page $3 vers $4 par-dessus une redirection',
+'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|a déplacé}} la page $3 vers $4 par-dessus une redirection sans laisser de redirection',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|a marqué}} la révision $4 de la page $3 comme contrôlée',
+'logentry-patrol-patrol-auto'         => '$1 a automatiquement {{GENDER:$2|marqué}} la révision $4 de la page $3 comme contrôlée',
+'newuserlog-byemail'                  => 'mot de passe envoyé par courriel',
 
 );

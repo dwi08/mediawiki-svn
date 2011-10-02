@@ -1775,12 +1775,8 @@ URL нь зөв болон сайт ажиллагаатай байгаа эсэ
 'activeusers-noresult'   => 'Хэрэглэгч олдсонгүй.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Хэрэглэгч үүсгэлтийн лог',
-'newuserlogpagetext'          => 'Энэ нь хэрэглэгч үүсгэлтийн лог юм.',
-'newuserlog-byemail'          => 'мэйлээр явуулсан нууц үг',
-'newuserlog-create-entry'     => 'Шинэ хэрэглэгчийн бүртгэл',
-'newuserlog-create2-entry'    => '$1 гэсэн бүртгэлийг үүсгэв',
-'newuserlog-autocreate-entry' => 'Автоматаар үүсгэгдсэн бүртгэл',
+'newuserlogpage'     => 'Хэрэглэгч үүсгэлтийн лог',
+'newuserlogpagetext' => 'Энэ нь хэрэглэгч үүсгэлтийн лог юм.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Хэрэглэгчийн бүлгийн эрхүүд',
@@ -2529,9 +2525,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Эргүүлийн лог',
 'patrol-log-header'    => 'Энэ нь манагдсан засваруудын лог юм.',
-'patrol-log-line'      => '$2-н $1-г $3 манагдсан гэж тэмдэглэв',
-'patrol-log-auto'      => '（автомат）',
-'patrol-log-diff'      => 'засвар $1',
 'log-show-hide-patrol' => 'мануулын логийг $1',
 
 # Image deletion
@@ -3009,9 +3002,7 @@ $1',
 'filepath-page'    => 'Файл:',
 'filepath-submit'  => 'Явах',
 'filepath-summary' => 'Энэхүү тусгай хуудас нь файлын бүтэн замыг дуудна.
-Зургууд нь бүтэн хэмжээгээрээ гарах ба бусад файлын төрлүүд нь тохирох програмаараа шууд нээгдэнэ.
-
-Файлын нэрийг "{{ns:file}}:" угтваргүйгээр нь оруулна уу.',
+Зургууд нь бүтэн хэмжээгээрээ гарах ба бусад файлын төрлүүд нь тохирох програмаараа шууд нээгдэнэ.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Давхардсан файлуудыг хайх',
@@ -3096,5 +3087,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'системийн операторуудад тавигдсан хязгаарлалтууд',
 'revdelete-unrestricted' => 'системийн операторуудаас авч хаясан хязгаарлалтууд',
+'newuserlog-byemail'     => 'мэйлээр явуулсан нууц үг',
 
 );

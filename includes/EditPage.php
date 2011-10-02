@@ -467,6 +467,13 @@ class EditPage {
 					$wgOut->addWikiText( $editnotice_base_msg->plain()  );
 				}
 			}
+		} else {
+			# Even if there are no subpages in namespace, we still don't want / in MW ns.
+			$editnoticeText = $editnotice_ns . '-' . str_replace( '/', '-', $this->mTitle->getDBkey() );
+			$editnoticeMsg = wfMessage( $editnoticeText )->inContentLanguage();
+			if ( $editnoticeMsg->exists() ) {
+				$wgOut->addWikiText( $editnoticeMsg->plain() );
+			}
 		}
 
 		# Attempt submission here.  This will check for edit conflicts,
@@ -800,7 +807,7 @@ class EditPage {
 				LogEventsList::showLogExtract(
 					$wgOut,
 					'block',
-					$user->getUserPage()->getPrefixedText(),
+					$user->getUserPage(),
 					'',
 					array(
 						'lim' => 1,
@@ -823,7 +830,7 @@ class EditPage {
 		}
 		# Give a notice if the user is editing a deleted/moved page...
 		if ( !$this->mTitle->exists() ) {
-			LogEventsList::showLogExtract( $wgOut, array( 'delete', 'move' ), $this->mTitle->getPrefixedText(),
+			LogEventsList::showLogExtract( $wgOut, array( 'delete', 'move' ), $this->mTitle,
 				'', array( 'lim' => 10,
 					   'conds' => array( "log_action != 'revision'" ),
 					   'showIfEmpty' => false,
@@ -1131,8 +1138,10 @@ class EditPage {
 			{
 				if ( md5( $this->summary ) == $this->autoSumm ) {
 					$this->missingSummary = true;
+					$status->fatal( 'missingsummary' );
+					$status->value = self::AS_SUMMARY_NEEDED;
 					wfProfileOut( __METHOD__ );
-					return self::AS_SUMMARY_NEEDED;
+					return $status;
 				}
 			}
 
@@ -1367,7 +1376,7 @@ class EditPage {
 	 *     during form output near the top, for captchas and the like.
 	 */
 	function showEditForm( $formCallback = null ) {
-		global $wgOut, $wgUser, $wgEnableInterwikiTranscluding, $wgEnableInterwikiTemplatesTracking;
+		global $wgOut, $wgUser;
 
 		wfProfileIn( __METHOD__ );
 
@@ -1401,6 +1410,7 @@ class EditPage {
 			$toolbar = '';
 		}
 
+
 		$wgOut->addHTML( $this->editFormPageTop );
 
 		if ( $wgUser->getOption( 'previewontop' ) ) {
@@ -1411,9 +1421,6 @@ class EditPage {
 
 		$templates = $this->getTemplates();
 		$formattedtemplates = Linker::formatTemplates( $templates, $this->preview, $this->section != '');
-
-		$distantTemplates = $this->getDistantTemplates();
-		$formattedDistantTemplates = Linker::formatDistantTemplates( $distantTemplates, $this->preview, $this->section != '' );
 
 		$hiddencats = $this->mArticle->getHiddenCategories();
 		$formattedhiddencats = Linker::formatHiddenCategories( $hiddencats );
@@ -1513,21 +1520,6 @@ HTML
 <div class='templatesUsed'>
 {$formattedtemplates}
 </div>
-HTML
-);
-
-		if ( $wgEnableInterwikiTranscluding && $wgEnableInterwikiTemplatesTracking ) {
-					$wgOut->addHTML( <<<HTML
-{$this->editFormTextAfterTools}
-<div class='distantTemplatesUsed'>
-{$formattedDistantTemplates}
-</div>
-HTML
-);
-		}
-
-		$wgOut->addHTML( <<<HTML
-{$this->editFormTextAfterTools}
 <div class='hiddencats'>
 {$formattedhiddencats}
 </div>
@@ -1640,7 +1632,7 @@ HTML
 				# Then it must be protected based on static groups (regular)
 				$noticeMsg = 'protectedpagewarning';
 			}
-			LogEventsList::showLogExtract( $wgOut, 'protect', $this->mTitle->getPrefixedText(), '',
+			LogEventsList::showLogExtract( $wgOut, 'protect', $this->mTitle, '',
 				array( 'lim' => 1, 'msgKey' => array( $noticeMsg ) ) );
 		}
 		if ( $this->mTitle->isCascadeProtected() ) {
@@ -1658,7 +1650,7 @@ HTML
 			$wgOut->wrapWikiMsg( $notice, array( 'cascadeprotectedwarning', $cascadeSourcesCount ) );
 		}
 		if ( !$this->mTitle->exists() && $this->mTitle->getRestrictions( 'create' ) ) {
-			LogEventsList::showLogExtract( $wgOut, 'protect', $this->mTitle->getPrefixedText(), '',
+			LogEventsList::showLogExtract( $wgOut, 'protect', $this->mTitle, '',
 				array(  'lim' => 1,
 					'showIfEmpty' => false,
 					'msgKey' => array( 'titleprotectedwarning' ),
@@ -2189,28 +2181,6 @@ HTML
 		}
 	}
 
-	function getDistantTemplates() {
-		global $wgEnableInterwikiTemplatesTracking;
-		if ( !$wgEnableInterwikiTemplatesTracking ) {
-			return array( );
-		}
-		if ( $this->preview || $this->section != '' ) {
-			$templates = array();
-			if ( !isset( $this->mParserOutput ) ) return $templates;
-			$templatesList = $this->mParserOutput->getDistantTemplates();
-			foreach( $templatesList as $prefix => $templatesbyns ) {
-				foreach( $templatesbyns as $ns => $template ) {
-					foreach( array_keys( $template ) as $dbk ) {
-						$templates[] = Title::makeTitle( $ns, $dbk, null, $prefix );
-					}
-				}
-			}
-			return $templates;
-		} else {
-			return $this->mArticle->getUsedDistantTemplates();
-		}
-	}
-
 	/**
 	 * Call the stock "user is blocked" page
 	 */
@@ -2530,7 +2500,6 @@ HTML
 				'key'    => 'R'
 			)
 		);
-		$toolbar = "<div id='toolbar'>\n";
 
 		$script = '';
 		foreach ( $toolarray as $tool ) {
@@ -2551,15 +2520,11 @@ HTML
 				$cssId = $tool['id'],
 			);
 
-			$paramList = implode( ',',
-				array_map( array( 'Xml', 'encodeJsVar' ), $params ) );
-			$script .= "mw.toolbar.addButton($paramList);\n";
+			$script .= Xml::encodeJsCall( 'mw.toolbar.addButton', $params );
 		}
-		$wgOut->addScript( Html::inlineScript(
-			"if ( window.mediaWiki ) {{$script}}"
-		) );
+		$wgOut->addScript( Html::inlineScript( ResourceLoader::makeLoaderConditionalScript( $script ) ) );
 
-		$toolbar .= "\n</div>";
+		$toolbar = '<div id="toolbar"></div>';
 
 		wfRunHooks( 'EditPageBeforeEditToolbar', array( &$toolbar ) );
 

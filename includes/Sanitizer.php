@@ -641,6 +641,14 @@ class Sanitizer {
 			'width' => array( 'width', array_merge( array( 'hr', 'pre' ), $table, $cells, $colls ) ),
 		);
 		
+		// Ensure that any upper case or mixed case attributes are converted to lowercase
+		foreach ( $attribs as $attribute => $value ) {
+			if ( $attribute !== strtolower( $attribute ) && array_key_exists( strtolower( $attribute ), $presentationalAttribs ) ) {
+				$attribs[strtolower( $attribute )] = $value;
+				unset( $attribs[$attribute] );
+			}
+		}
+		
 		$style = "";
 		foreach ( $presentationalAttribs as $attribute => $info ) {
 			list( $property, $elements ) = $info;
@@ -662,6 +670,11 @@ class Sanitizer {
 				$value = 'nowrap';
 			}
 			
+			// clear="all" is clear: both; in css
+			if ( $attribute === 'clear' && strtolower( $value ) === 'all' ) {
+				$value = 'both';
+			}
+			
 			// Size based properties should have px applied to them if they have no unit
 			if ( in_array( $attribute, array( 'height', 'width', 'size' ) ) ) {
 				if ( preg_match( '/^[\d.]+$/', $value ) ) {
@@ -674,7 +687,7 @@ class Sanitizer {
 			unset( $attribs[$attribute] );
 		}
 		
-		if ( !empty($style) ) {
+		if ( $style ) {
 			// Prepend our style rules so that they can be overridden by user css
 			if ( isset($attribs['style']) ) {
 				$style .= " " . $attribs['style'];

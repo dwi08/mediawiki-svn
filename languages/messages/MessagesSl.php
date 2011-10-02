@@ -703,16 +703,18 @@ Morda ste že uspešno spremenili geslo ali pa ste zahtevali novo začasno geslo
 'resetpass-temp-password'   => 'Začasno geslo:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Ponastavitev gesla',
-'passwordreset-text'           => 'Izpolnite obrazec, da prejmete e-poštni opomnik s podrobnostmi vašega računa.',
-'passwordreset-legend'         => 'Ponastavitev gesla',
-'passwordreset-disabled'       => 'Ponastavljanje gesla je na tem wikiju onemogočeno.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Vnesite enega od dela podatkov spodaj}}',
-'passwordreset-username'       => 'Uporabniško ime:',
-'passwordreset-domain'         => 'Domena:',
-'passwordreset-email'          => 'E-poštni naslov:',
-'passwordreset-emailtitle'     => 'Podrobnosti računa na {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Nekdo (verjetno vi, z IP-naslova $1) je zahteval opomnik vaših
+'passwordreset'                    => 'Ponastavitev gesla',
+'passwordreset-text'               => 'Izpolnite obrazec, da prejmete e-poštni opomnik s podrobnostmi vašega računa.',
+'passwordreset-legend'             => 'Ponastavitev gesla',
+'passwordreset-disabled'           => 'Ponastavljanje gesla je na tem wikiju onemogočeno.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Vnesite enega od dela podatkov spodaj}}',
+'passwordreset-username'           => 'Uporabniško ime:',
+'passwordreset-domain'             => 'Domena:',
+'passwordreset-capture'            => 'Ogled nastale e-pošte?',
+'passwordreset-capture-help'       => 'Če potrdite to polje, vam bodo e-pošte (z začasnim geslom) pokazane in poslane uporabniku.',
+'passwordreset-email'              => 'E-poštni naslov:',
+'passwordreset-emailtitle'         => 'Podrobnosti računa na {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Nekdo (verjetno vi, z IP-naslova $1) je zahteval opomnik vaših
 podatkov o računu na {{SITENAME}} ($4). S tem e-poštnim naslovom
 {{PLURAL:$3|je povezan naslednji uporabniški račun|sta povezana naslednja uporabniška računa|so povezani naslednji uporabniški računi}}:
 
@@ -723,7 +725,7 @@ Prijavite se in izberite novo geslo sedaj. Če je zahtevo podal
 nekdo drug ali pa ste se spomnili svojega prvotnega gesla in ga več
 ne želite spremeniti, lahko to sporočilo prezrete in nadaljujete z uporabo
 svojega starega gesla.',
-'passwordreset-emailtext-user' => 'Uporabnik $1 na {{SITENAME}} je zahteval opomnik vaših podatkov o računu na {{SITENAME}}
+'passwordreset-emailtext-user'     => 'Uporabnik $1 na {{SITENAME}} je zahteval opomnik vaših podatkov o računu na {{SITENAME}}
 ($4). S tem e-poštnim naslovom {{PLURAL:$3|je povezan naslednji uporabniški račun|sta povezana naslednja uporabniška računa|so povezani naslednji uporabniški računi}}:
 
 $2
@@ -733,9 +735,11 @@ Prijavite se in izberite novo geslo sedaj. Če je zahtevo podal
 nekdo drug ali pa ste se spomnili svojega prvotnega gesla in ga več
 ne želite spremeniti, lahko to sporočilo prezrete in nadaljujete z uporabo
 svojega starega gesla.',
-'passwordreset-emailelement'   => 'Uporabniško ime: $1
+'passwordreset-emailelement'       => 'Uporabniško ime: $1
 Začasno geslo: $2',
-'passwordreset-emailsent'      => 'Opomnilna e-pošta je bila poslana.',
+'passwordreset-emailsent'          => 'Opomnilna e-pošta je bila poslana.',
+'passwordreset-emailsent-capture'  => 'E-poštni opomnik je bil poslan in je prikazan spodaj.',
+'passwordreset-emailerror-capture' => 'E-poštni opomnik je bil poslan in je prikazan spodaj, vendar pa pošiljanje uporabniku ni uspelo: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Sprememba e-poštnega naslova',
@@ -1310,7 +1314,7 @@ Tega ni mogoče razveljaviti.',
 'yourvariant'                   => 'Jezikovna različica vsebine:',
 'prefs-help-variant'            => 'Vaša prednostna različica ali pravopis, v katerem naj bo prikazana vsebina strani tega wikija.',
 'yournick'                      => 'Nov podpis:',
-'prefs-help-signature'          => 'Komentarje na pogovornih straneh, je treba podpisati s »<nowiki>~~~~</nowiki>«, kar bo pretvorjeno v vaš podpis s časom.',
+'prefs-help-signature'          => 'Komentarje na pogovornih straneh je treba podpisati s »<nowiki>~~~~</nowiki>«, kar bo pretvorjeno v vaš podpis s časovnim žigom.',
 'badsig'                        => 'Neveljaven surovi podpis; preverite oznake HTML.',
 'badsiglength'                  => 'Vaš podpis je preobsežen.
 Ne sme biti daljši od $1 {{PLURAL:$1|znaka|znakov}}.',
@@ -1451,6 +1455,7 @@ Podatek bo javno prikazan.',
 'right-siteadmin'             => 'Zaklepanje in odklepanje baze podatkov',
 'right-override-export-depth' => 'Izvoz strani, vključno s povezaimi straneh do globine 5',
 'right-sendemail'             => 'Pošiljanje e-pošte drugim uporabnikom',
+'right-passwordreset'         => 'Ogled e-pošt ponastavitve gesel',
 
 # User rights log
 'rightslog'                  => 'Dnevnik uporabniških pravic',
@@ -1785,7 +1790,7 @@ Ko so rezultati filtrirani po uporabniku, so prikazane samo datoteke, pri kateri
 'filehist-filesize'                 => 'Velikost datoteke',
 'filehist-comment'                  => 'Komentar',
 'filehist-missing'                  => 'Datoteka manjka',
-'imagelinks'                        => 'Strani z datoteko',
+'imagelinks'                        => 'Uporaba datoteke',
 'linkstoimage'                      => 'Datoteka je del {{PLURAL:$1|naslednje $1 strani|naslednjih $1 strani}} {{GRAMMAR:rodilnik|{{SITENAME}}}}:',
 'linkstoimage-more'                 => 'Na to datoteko se {{PLURAL:$1|povezuje več kot $1 stran|povezujeta več kot $1 strani|povezujejo več kot $1 strani|povezuje več kot $1 strani}}.
 Naslednji seznam obsega samo {{PLURAL:$1|prvo stran, ki se povezuje|prvi $1 strani, ki se povezujeta|prve $1 strani, ki se povezujejo|prvih $1 strani, ki se povezujejo}} na to datoteko.
@@ -2049,12 +2054,8 @@ Podprti protokoli: <tt>$1</tt>',
 'activeusers-noresult'   => 'Noben uporabnik ni bil najden.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Dnevnik registracij uporabnikov',
-'newuserlogpagetext'          => 'Prikazan je dnevnik nedavnih registracij novih uporabnikov.',
-'newuserlog-byemail'          => 'geslo je bilo poslano po e-pošti',
-'newuserlog-create-entry'     => 'Nov uporabnik',
-'newuserlog-create2-entry'    => 'je ustvaril(-a) račun »$1«',
-'newuserlog-autocreate-entry' => 'Račun ustvarjen samodejno',
+'newuserlogpage'     => 'Dnevnik registracij uporabnikov',
+'newuserlogpagetext' => 'Prikazan je dnevnik nedavnih registracij novih uporabnikov.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Pravice uporabniških skupin',
@@ -2879,9 +2880,6 @@ Omogoča vnos pojasnila v povzetku urejanja.',
 # Patrol log
 'patrol-log-page'      => 'Dnevnik patrulje',
 'patrol-log-header'    => 'To je dnevnik nadzorovanih redakcij.',
-'patrol-log-line'      => 'je označil $1 strani $2 kot preverjeno urejanje $3',
-'patrol-log-auto'      => '(samodejno)',
-'patrol-log-diff'      => 'redakcija $1',
 'log-show-hide-patrol' => '$1 dnevnik nadzora',
 
 # Image deletion
@@ -2934,7 +2932,16 @@ Z njenim zagonom lahko ogrozite vaš sistem.",
 'sp-newimages-showfrom' => 'Prikaži datoteke, naložene od $2, $1 naprej',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
-'video-dims' => '$1, $2&nbsp;×&nbsp;$3',
+'video-dims'     => '$1, $2&nbsp;×&nbsp;$3',
+'seconds-abbrev' => '$1 s',
+'minutes-abbrev' => '$1 m',
+'hours-abbrev'   => '$1 h',
+'days-abbrev'    => '$1 d',
+'seconds'        => '$1 {{PLURAL:$1|sekunda|sekundi|sekunde|sekund}}',
+'minutes'        => '$1 {{PLURAL:$1|minuta|minuti|minute|minut}}',
+'hours'          => '$1 {{PLURAL:$1|ura|uri|ure|ur}}',
+'days'           => '$1 {{PLURAL:$1|dan|dneva|dnevi|dni}}',
+'ago'            => 'pred $1',
 
 # Bad image list
 'bad_image_list' => 'Oblika je naslednja:
@@ -3565,9 +3572,7 @@ Skupaj s programom bi morali bi prejeti [{{SERVER}}{{SCRIPTPATH}}/COPYING kopijo
 'filepath-page'    => 'Datoteka:',
 'filepath-submit'  => 'Pojdi',
 'filepath-summary' => 'Ta posebna stran vrne polno pot do datoteke.
-Slike so prikazane v polni ločljivosti, druge vrste datotek pa se zaženejo v zanje določenih programih.
-
-Vnesite ime datoteke brez predpone »{{ns:image}}:«.',
+Slike so prikazane v polni ločljivosti, druge vrste datotek pa se zaženejo v zanje določenih programih.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Iskanje podvojenih datotek',
@@ -3646,7 +3651,6 @@ Vnesite ime datoteke brez predpone »{{ns:image}}:«.',
 'globalfileusage-text'        => 'Iskanje globalne uporabe datoteke',
 'globalfileusage-no-results'  => '[[$1]] se ne uporablja na drugih wikijih.',
 'globalfileusage-on-wiki'     => 'Uporaba na $2',
-'globalfileusage-of-file'     => 'Sledeči drugi wikiji uporabljajo to datoteko:',
 'globalfileusage-more'        => 'Oglej si [[{{#Special:GlobalUsage}}/$1|globalno uporabo]] te datoteke.',
 'globalfileusage-filterlocal' => 'Ne prikaži lokalne uporabe',
 
@@ -3657,7 +3661,6 @@ Vnesite ime datoteke brez predpone »{{ns:image}}:«.',
 'globaltemplateusage-text'        => 'Iskanje globalne uporabe predloge',
 'globaltemplateusage-no-results'  => '[[$1]] se ne uporablja na drugih wikijih.',
 'globaltemplateusage-on-wiki'     => 'Uporaba na $2',
-'globaltemplateusage-of-file'     => 'Sledeči drugi wikiji uporabljajo to predlogo:',
 'globaltemplateusage-more'        => 'Oglej si [[{{#Special:GlobalUsage}}/$1|globalno uporabo]] te predloge.',
 'globaltemplateusage-filterlocal' => 'Ne prikaži lokalne uporabe',
 
@@ -3688,11 +3691,35 @@ Ta stran se sooča s tehničnimi težavami.',
 'sqlite-no-fts'  => '$1 brez podpore iskanju polnih besedil',
 
 # New logging system
+'logentry-delete-delete'              => '$1 je {{GENDER:$2|izbrisal|izbrisala|izbrisal(-a)}} stran $3',
+'logentry-delete-restore'             => '$1 je {{GENDER:$2|obnovil|obnovila|obnovil(-a)}} stran $3',
+'logentry-delete-event'               => '$1 je {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost $5 {{PLURAL:$5|dnevniškega dogodka|dnevniških dogodkov}} na $3: $4',
+'logentry-delete-revision'            => '$1 je {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost $5 {{PLURAL:$5|redakcije|redakcij}} na strani $3: $4',
+'logentry-delete-event-legacy'        => '$1 je {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost dnevniških dogodkov na $3',
+'logentry-delete-revision-legacy'     => '$1 je {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost redakcij na strani $3',
+'logentry-suppress-delete'            => '$1 je {{GENDER:$2|zatrl|zatrla|zatrl(-a)}} stran $3',
+'logentry-suppress-event'             => '$1 je skrivaj {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost $5 {{PLURAL:$5|dnevniškega dogodka|dnevniških dogodkov}} na $3: $4',
+'logentry-suppress-revision'          => '$1 je skrivaj {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost $5 {{PLURAL:$5|redakcije|redakcij}} na strani $3: $4',
+'logentry-suppress-event-legacy'      => '$1 je skrivaj {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost dnevniških dogodkov na $3',
+'logentry-suppress-revision-legacy'   => '$1 je skrivaj {{GENDER:$2|spremenil|spremenila|spremenil(-a)}} vidljivost redakcij na strani $3',
+'revdelete-content-hid'               => 'vsebina je skrita',
+'revdelete-summary-hid'               => 'povzetek urejanja je skrit',
+'revdelete-uname-hid'                 => 'uporabniško ime je skrito',
+'revdelete-content-unhid'             => 'vsebina je ponovno prikazana',
+'revdelete-summary-unhid'             => 'povzetek urejanja je ponovno prikazan',
+'revdelete-uname-unhid'               => 'uporabniško ime je ponovno prikazano',
 'revdelete-restricted'                => 'uveljavljene omejitve administratorjev',
 'revdelete-unrestricted'              => 'odstranjene omejitve administratorjev',
 'logentry-move-move'                  => '$1 je {{GENDER:$2|premaknil|premaknila|premaknil(-a)}} stran $3 na $4',
 'logentry-move-move-noredirect'       => '$1 je {{GENDER:$2|premaknil|premaknila|premaknil(-a)}} stran $3 na $4 brez preusmeritve',
 'logentry-move-move_redir'            => '$1 je {{GENDER:$2|premaknil|premaknila|premaknil(-a)}} stran $3 na $4 prek preusmeritve',
 'logentry-move-move_redir-noredirect' => '$1 je {{GENDER:$2|premaknil|premaknila|premaknil(-a)}} stran $3 na $4 prek preusmeritve in brez preusmeritve',
+'logentry-patrol-patrol'              => '$1 je {{GENDER:$2|označil|označila|označil(-a)}} redakcijo $4 strani $3 kot nadzorovano',
+'logentry-patrol-patrol-auto'         => '$1 je samodejno {{GENDER:$2|označil|označila|označil(-a)}} redakcijo $4 strani $3 kot nadzorovano',
+'logentry-newusers-newusers'          => '$1 je {{GENDER:$2|ustvaril|ustvarila|ustvaril(-a)}} uporabniški račun',
+'logentry-newusers-create'            => '$1 je {{GENDER:$2|ustvaril|ustvarila|ustvaril(-a)}} uporabniški račun',
+'logentry-newusers-create2'           => '$1 je {{GENDER:$2|ustvaril|ustvarila|ustvaril(-a)}} {{GENDER:$4|uporabniški račun}} $3',
+'logentry-newusers-autocreate'        => 'Račun $1 je bil samodejno {{GENDER:$2|ustvarjen}}',
+'newuserlog-byemail'                  => 'geslo je bilo poslano po e-pošti',
 
 );

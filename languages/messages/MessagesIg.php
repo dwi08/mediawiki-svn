@@ -1095,8 +1095,7 @@ Ubwa, o na ga [[$2]].',
 'activeusers-noresult'   => "Ọ hügị ọ'bànifé.",
 
 # Special:Log/newusers
-'newuserlogpage'          => "Ndétu nchétá ihe ọ'bànifé kèrè",
-'newuserlog-create-entry' => "Ọ'bànifé ohúrù",
+'newuserlogpage' => "Ndétu nchétá ihe ọ'bànifé kèrè",
 
 # Special:ListGroupRights
 'listgrouprights-group'        => 'Ọtú',
@@ -1445,9 +1444,6 @@ Biko meríáríá ozor.',
 
 # Spam protection
 'spamprotectiontitle' => 'Ihe na zata maka cẹdolu ụrú',
-
-# Patrol log
-'patrol-log-diff' => 'orübà nke $1',
 
 # Image deletion
 'filedeleteerror-short' => 'Nsògbú í kàcha usòrò: $1',

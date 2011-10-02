@@ -14,6 +14,8 @@
  * @author לערי ריינהארט
  */
 
+$linkTrail = '/^(:?[a-zàáâçčʒǯđðéèêëǧǥȟíìîïıǩŋñóòôõßšŧúùûýÿüžþæøåäö]+)(.*)$/sDu';
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'Liŋkkaid vuolláisárgun',
@@ -1135,9 +1137,6 @@ Siiddus $2 lea listu maŋimus sihkomiin.',
 'markaspatrolledtext'   => 'Merke, ahte rievdadus lea dárkistuvvon',
 'markedaspatrolled'     => 'Dárkistuvvon',
 'markedaspatrolledtext' => 'Válljejuvvon veršuvdna lea dárkistuvvon.',
-
-# Patrol log
-'patrol-log-auto' => '(automáhtalaš)',
 
 # Browsing diffs
 'previousdiff' => '← Ovddit rievdadus',

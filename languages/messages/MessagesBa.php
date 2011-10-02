@@ -1808,12 +1808,8 @@ $1',
 'activeusers-noresult'   => 'Ҡатнашыусылар табылманы',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Яңы ҡулланыусы яҙмалары',
-'newuserlogpagetext'          => 'Яңы теркәлгән ҡатнашыусылар яҙмалары журналы.',
-'newuserlog-byemail'          => 'пароль электрон почта адресы аша ебәрелде',
-'newuserlog-create-entry'     => 'Яңы ҡулланыусы',
-'newuserlog-create2-entry'    => 'яңы $1 иҫәп яҙмаһын булдырған',
-'newuserlog-autocreate-entry' => 'Иҫәп яҙмаһы үҙенән-үҙе булдырылған',
+'newuserlogpage'     => 'Яңы ҡулланыусы яҙмалары',
+'newuserlogpagetext' => 'Яңы теркәлгән ҡатнашыусылар яҙмалары журналы.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Ҡатнашыусылар төркөмө хоҡуҡтары',
@@ -2599,9 +2595,6 @@ The wiki server cannot provide data in a format your client can read.',
 # Patrol log
 'patrol-log-page'      => 'Тикшереү яҙмалары журналы',
 'patrol-log-header'    => 'Был — тикшерелгән өлгөләр яҙмалары журналы.',
-'patrol-log-line'      => '$2 битенең $1 тикшерелгән тип билдәләгән $3',
-'patrol-log-auto'      => '(автоматик рәүештә)',
-'patrol-log-diff'      => '$1 өлгөһөн',
 'log-show-hide-patrol' => 'тикшереү яҙмалары журналын $1',
 
 # Image deletion
@@ -3139,9 +3132,7 @@ MediaWiki файҙалы булыр, тигән өмөттә, ләкин БЕР 
 'filepath-page'    => 'Файл:',
 'filepath-submit'  => 'Күсеү',
 'filepath-summary' => 'Был махсус бит файлдың тулы юлын ҡайтара.
-Рәсемдәр тулы асыҡлыҡта күрһәтелә, башҡа файлдар билдәләнгән программалары аша турана-тура асыла.
-
-Файлдың исемен "{{ns:file}}:" ҡушылмаһын өҫтәмәйенсә керетегеҙ.',
+Рәсемдәр тулы асыҡлыҡта күрһәтелә, башҡа файлдар билдәләнгән программалары аша турана-тура асыла.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Бер иш файлдарҙы эҙләү',
@@ -3237,5 +3228,6 @@ MediaWiki файҙалы булыр, тигән өмөттә, ләкин БЕР 
 # New logging system
 'revdelete-restricted'   => 'хәкимдәргә ҡаршы ҡулланылған сикләүҙәр',
 'revdelete-unrestricted' => 'хәкимдәрҙән алынған сикләүҙәр',
+'newuserlog-byemail'     => 'пароль электрон почта адресы аша ебәрелде',
 
 );

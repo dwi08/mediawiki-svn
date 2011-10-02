@@ -1351,7 +1351,7 @@ Die inligting is vir ander gebruikers sigbaar.',
 'userrights-lookup-user'       => 'Beheer gebruikersgroepe',
 'userrights-user-editname'     => 'Voer gebruikersnaam in:',
 'editusergroup'                => 'Wysig gebruikersgroepe',
-'editinguser'                  => "Besig om gebruikersregte van gebruiker '''[[User:$1|$1]]''' ([[User talk:$1|{{int:talkpagelinktext}}]]{{int:pipe-separator}}[[Special:Contributions/$1|{{int:contribslink}}]]) te wysig",
+'editinguser'                  => "Besig om gebruikersregte van gebruiker '''[[User:$1|$1]]''' $2 te wysig",
 'userrights-editusergroup'     => 'Wysig gebruikersgroepe',
 'saveusergroups'               => 'Stoor gebruikersgroepe',
 'userrights-groupsmember'      => 'Lid van:',
@@ -2045,12 +2045,8 @@ Ondersteunde protokolle: <tt>$1</tt>',
 'activeusers-noresult'   => 'Geen gebruikers gevind nie.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Logboek van nuwe gebruikers',
-'newuserlogpagetext'          => "Dit is 'n logboek van gebruikers wat onlangs ingeteken het.",
-'newuserlog-byemail'          => 'wagwoord is per e-pos versend',
-'newuserlog-create-entry'     => 'Nuwe gebruiker',
-'newuserlog-create2-entry'    => 'het gebruiker $1 geskep',
-'newuserlog-autocreate-entry' => 'Gebruiker outomaties geskep',
+'newuserlogpage'     => 'Logboek van nuwe gebruikers',
+'newuserlogpagetext' => "Dit is 'n logboek van gebruikers wat onlangs ingeteken het.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Gebruikersgroepregte',
@@ -2873,9 +2869,6 @@ Hierdie situasie was waarskynlik deur 'n skakel na 'n eksterne webtuiste op ons 
 # Patrol log
 'patrol-log-page'      => 'Kontroleringslogboek',
 'patrol-log-header'    => 'Die logboek wys weergawes wat as gekontroleer gemerk is.',
-'patrol-log-line'      => 'merk $1 van $2 as gekontroleer $3',
-'patrol-log-auto'      => '(outomaties)',
-'patrol-log-diff'      => 'weergawe $1',
 'log-show-hide-patrol' => 'Nasienlogboek $1',
 
 # Image deletion
@@ -2905,7 +2898,7 @@ $1',
 'svg-long-desc'          => 'SVG-lêer, nominaal $1 × $2 pixels, lêergrootte: $3',
 'show-big-image'         => 'Volle resolusie',
 'show-big-image-preview' => 'Grootte van hierdie voorskou: $1.',
-'show-big-image-other'   => 'Ander resolusies: $1.',
+'show-big-image-other'   => 'Ander {{PLURAL:$2|resolusie|resolusies}}: $1.',
 'show-big-image-size'    => '$1 × $2 piksels',
 'file-info-gif-looped'   => 'herhalend',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|raam|rame}}',
@@ -3549,10 +3542,8 @@ Saam met die program moes u \'n [{{SERVER}}{{SCRIPTPATH}}/COPYING kopie van van 
 'filepath'         => 'Lêerpad',
 'filepath-page'    => 'Lêer:',
 'filepath-submit'  => 'OK',
-'filepath-summary' => 'Die spesiale bladsy wys die volledige pad vir \'n lêer.
-Beelde word in hulle volle resolusie gewys. Ander lêertipes word direk met hulle MIME-geskakelde programme geopen.
-
-Sleutel die lêernaam in sonder die "{{ns:file}}:" voorvoegsel.',
+'filepath-summary' => "Die spesiale bladsy wys die volledige pad vir 'n lêer.
+Beelde word in hulle volle resolusie gewys. Ander lêertipes word direk met hulle MIME-geskakelde programme geopen.",
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Soek duplikaat lêers',
@@ -3631,7 +3622,6 @@ Sleutel die lêernaam in sonder die "{{ns:file}}:" voorvoegsel.',
 'globalfileusage-text'        => 'Soek globale lêergebruik',
 'globalfileusage-no-results'  => "[[$1]] word nie in ander wiki's gebruik nie.",
 'globalfileusage-on-wiki'     => 'Gebruik in $2',
-'globalfileusage-of-file'     => "Die volgende ander wiki's gebruik hierdie lêer:",
 'globalfileusage-more'        => 'Wys [[{{#Special:GlobalUsage}}/$1|globale gebruik]] van die lêer.',
 'globalfileusage-filterlocal' => 'Moenie lokale gebruik wys nie',
 
@@ -3642,7 +3632,6 @@ Sleutel die lêernaam in sonder die "{{ns:file}}:" voorvoegsel.',
 'globaltemplateusage-text'        => 'Soek globale sjabloongebruik',
 'globaltemplateusage-no-results'  => "[[$1]] word nie in ander wiki's gebruik nie.",
 'globaltemplateusage-on-wiki'     => 'Gebruik in $2',
-'globaltemplateusage-of-file'     => "Die volgende ander wiki's gebruik hierdie sjabloon:",
 'globaltemplateusage-more'        => 'Wys [[{{#Special:GlobalUsage}}/$1|globale gebruik]] van die sjabloon.',
 'globaltemplateusage-filterlocal' => 'Moenie lokale gebruik wys nie',
 
@@ -3674,5 +3663,6 @@ Sleutel die lêernaam in sonder die "{{ns:file}}:" voorvoegsel.',
 # New logging system
 'revdelete-restricted'   => 'beperkings is aan administrateurs opgelê',
 'revdelete-unrestricted' => 'beperkings vir administrateurs is opgehef',
+'newuserlog-byemail'     => 'wagwoord is per e-pos versend',
 
 );

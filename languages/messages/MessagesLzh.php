@@ -888,7 +888,6 @@ $1",
 'searchmenu-legend'                => '尋選',
 'searchmenu-exists'                => "'''在此wiki中有頁為\"[[:\$1]]\"。'''",
 'searchmenu-new'                   => "'''在此wiki上建頁\"[[:\$1]]\"！'''",
-'searchmenu-new-nocreate'          => '「$1」為效無之頁名或建於爾也。',
 'searchhelp-url'                   => 'Help:目錄',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|查此首之頁]]',
 'searchprofile-articles'           => '容',
@@ -1665,12 +1664,8 @@ $1',
 'activeusers-noresult'   => '無簿矣。',
 
 # Special:Log/newusers
-'newuserlogpage'              => '誌簿',
-'newuserlogpagetext'          => '此為誌簿之記也',
-'newuserlog-byemail'          => '號發自電郵',
-'newuserlog-create-entry'     => '新簿',
-'newuserlog-create2-entry'    => '已註$1之簿',
-'newuserlog-autocreate-entry' => '已自註之簿',
+'newuserlogpage'     => '誌簿',
+'newuserlogpagetext' => '此為誌簿之記也',
 
 # Special:ListGroupRights
 'listgrouprights'                      => '權任一覽',
@@ -2388,8 +2383,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => '誌哨',
 'patrol-log-header'    => '此乃誌哨也。',
-'patrol-log-line'      => '令哨$2之$1$3',
-'patrol-log-auto'      => '（自行）',
 'log-show-hide-patrol' => '$1誌巡',
 
 # Image deletion
@@ -2687,9 +2680,7 @@ MediaWiki乃為用之發，無擔之責也；亦無售目之默擔也。參GNU�
 'filepath'         => '檔路',
 'filepath-page'    => '檔名：',
 'filepath-submit'  => '往',
-'filepath-summary' => '此奇頁取一檔之整路。圖以全解像示之，他檔會以有關之程式啟動也。
-
-輸檔名之，不包「{{ns:file}}:」開頭也。',
+'filepath-summary' => '此奇頁取一檔之整路。圖以全解像示之，他檔會以有關之程式啟動也。',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => '擇重檔',
@@ -2765,5 +2756,6 @@ MediaWiki乃為用之發，無擔之責也；亦無售目之默擔也。參GNU�
 # New logging system
 'revdelete-restricted'   => '應限至有秩',
 'revdelete-unrestricted' => '除限自有秩',
+'newuserlog-byemail'     => '號發自電郵',
 
 );

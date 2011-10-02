@@ -1555,12 +1555,8 @@ Sjá einnig [[Special:WantedCategories|eftirsótta flokka]].',
 'activeusers-hidesysops' => 'Fela möppudýr',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Skrá yfir nýja notendur',
-'newuserlogpagetext'          => 'Þetta er skrá yfir nýskráða notendur.',
-'newuserlog-byemail'          => 'lykilorð sent með tölvupósti',
-'newuserlog-create-entry'     => 'Nýr notandi',
-'newuserlog-create2-entry'    => 'bjó til notanda fyrir $1',
-'newuserlog-autocreate-entry' => 'Aðgangur búinn til sjálfkrafa',
+'newuserlogpage'     => 'Skrá yfir nýja notendur',
+'newuserlogpagetext' => 'Þetta er skrá yfir nýskráða notendur.',
 
 # Special:ListGroupRights
 'listgrouprights'          => 'Notandahópréttindi',
@@ -2112,9 +2108,6 @@ Allir innflutningar eru skráð í [[Special:Log/import|innflutningsskránna]].'
 # Patrol log
 'patrol-log-page'   => 'Yfirferðarskrá',
 'patrol-log-header' => 'Þetta er skrá yfir yfirfarna breytingar.',
-'patrol-log-line'   => 'merkti $1 eftir $2 sem yfirfarið $3',
-'patrol-log-auto'   => '(sjálfkrafa)',
-'patrol-log-diff'   => 'útgáfa $1',
 
 # Image deletion
 'deletedrevision'       => 'Eydd gömul útgáfu $1',
@@ -2393,5 +2386,6 @@ Vinsamlegast staðfestu að þú viljir endurvekja hana.",
 # New logging system
 'revdelete-restricted'   => 'hömlur settar á stjórnendur',
 'revdelete-unrestricted' => 'fjarlægja hömlur á stjórnendur',
+'newuserlog-byemail'     => 'lykilorð sent með tölvupósti',
 
 );

@@ -2143,12 +2143,8 @@ $1',
 'activeusers-noresult'   => 'Δεν βρέθηκε χρήστης.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Αρχείο δημιουργίας χρηστών',
-'newuserlogpagetext'          => 'Αυτή είναι μια καταγραφή δημιουργίας χρηστών.',
-'newuserlog-byemail'          => 'ο κωδικός έχει σταλεί μέσω ηλεκτρονικού μηνύματος',
-'newuserlog-create-entry'     => 'Νέος χρήστης',
-'newuserlog-create2-entry'    => 'δημιουργία νέου λογαριασμού: $1',
-'newuserlog-autocreate-entry' => 'Ο λογαριασμός έχει δημιουργηθεί αυτόματα',
+'newuserlogpage'     => 'Αρχείο δημιουργίας χρηστών',
+'newuserlogpagetext' => 'Αυτή είναι μια καταγραφή δημιουργίας χρηστών.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Δικαιώματα ομάδων χρηστών',
@@ -2566,7 +2562,7 @@ $1',
 'blocklist-timestamp'             => 'Timestamp',
 'blocklist-target'                => 'Στόχος',
 'blocklist-expiry'                => 'Λήγει',
-'blocklist-by'                    => 'Φραγή admin',
+'blocklist-by'                    => 'Διαχειριστής που επέβαλε τη φραγή',
 'blocklist-params'                => 'Παράμετροι φραγής',
 'blocklist-reason'                => 'Αιτιολογία',
 'ipblocklist-submit'              => 'Αναζήτηση',
@@ -2986,9 +2982,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Αρχείο καταγραφής περιπολιών',
 'patrol-log-header'    => 'Αυτός είναι ένας κατάλογος περιπολούμενων αναθεωρήσεων.',
-'patrol-log-line'      => 'σημάνθηκε το $1 του $2 υπό περιπολία $3',
-'patrol-log-auto'      => '(αυτόματα)',
-'patrol-log-diff'      => 'αναθεώρηση $1',
 'log-show-hide-patrol' => '$1 καταγραφή επιτήρησης',
 
 # Image deletion
@@ -3655,9 +3648,7 @@ $1',
 'filepath-page'    => 'Αρχείο:',
 'filepath-submit'  => 'Μετάβαση',
 'filepath-summary' => 'Αυτή η ειδική σελίδα επιστρέφει την πλήρη διαδρομή ενός αρχείου.
-Οι εικόνες εμφανίζονται σε πλήρη ανάλυση, ενώ άλλοι τύποι αρχείων ανοίγονται απευθείας με το αντίστοιχο πρόγραμμα.
-
-Εισάγετε το όνομα του αρχείου χωρίς το πρόθεμα "{{ns:file}}\'".',
+Οι εικόνες εμφανίζονται σε πλήρη ανάλυση, ενώ άλλοι τύποι αρχείων ανοίγονται απευθείας με το αντίστοιχο πρόγραμμα.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Αναζήτηση για διπλά αρχεία',
@@ -3672,9 +3663,9 @@ $1',
 
 # Special:SpecialPages
 'specialpages'                   => 'Σελίδες λειτουργιών',
-'specialpages-note'              => ' * Κανονικές ειδικές σελίδες.
+'specialpages-note'              => '* Κανονικές ειδικές σελίδες.
 * <span class="mw-specialpagerestricted">Ειδικές σελίδες με περιορισμούς.</span>
-* <span class="mw-specialpagecached">Ειδικές σελίδες που βρίσκονται στη μνήμη cache (μπορεί να είναι απαρχαιωμένες).</span>',
+* <span class="mw-specialpagecached">Ειδικές σελίδες αποθηκευμένες προσωρινά (μπορεί να είναι παρωχημένες).</span>',
 'specialpages-group-maintenance' => 'Αναφορές συντήρησης',
 'specialpages-group-other'       => 'Άλλες ειδικές σελίδες',
 'specialpages-group-login'       => 'Σύνδεση / δημιουργία λογαριασμού',
@@ -3735,7 +3726,6 @@ $1',
 'globalfileusage-text'        => 'Αναζήτηση καθολικής χρήσης αρχείου',
 'globalfileusage-no-results'  => 'Το αρχείο [[$1]] δεν χρησιμοποιείται σε άλλα βίκι.',
 'globalfileusage-on-wiki'     => 'Χρήση στο $2',
-'globalfileusage-of-file'     => 'Τα ακόλουθα διαφορετικά βίκι χρησιμοποιούν αυτό το αρχείο:',
 'globalfileusage-more'        => 'Δείτε  [[{{#Special:GlobalUsage}}/$1|περισσότερη καθολική χρήση]] αυτού του αρχείου.',
 'globalfileusage-filterlocal' => 'Απόκρυψη τοπικής χρήσης',
 
@@ -3746,7 +3736,6 @@ $1',
 'globaltemplateusage-text'        => 'Αναζήτηση καθολικής χρήσης προτύπου',
 'globaltemplateusage-no-results'  => 'Το αρχείο [[$1]] δεν χρησιμοποιείται σε άλλα βίκι.',
 'globaltemplateusage-on-wiki'     => 'Χρήση στο $2',
-'globaltemplateusage-of-file'     => 'Τα ακόλουθα άλλα βίκι κάνουν χρήση αυτού του προτύπου:',
 'globaltemplateusage-more'        => 'Δείτε  [[{{#Special:GlobalUsage}}/$1|περισσότερη καθολική χρήση]] αυτού του προτύπου.',
 'globaltemplateusage-filterlocal' => 'Απόκρυψη τοπικής χρήσης',
 
@@ -3778,5 +3767,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'εφάρμοσε περιορισμούς στους sysops',
 'revdelete-unrestricted' => 'αφαίρεσε περιορισμούς στους sysops',
+'newuserlog-byemail'     => 'ο κωδικός έχει σταλεί μέσω ηλεκτρονικού μηνύματος',
 
 );

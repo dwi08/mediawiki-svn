@@ -1774,12 +1774,8 @@ $1",
 'activeusers-noresult'   => 'Няма такіх удзельнікаў.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Журнал рэгістрацыі ўдзельнікаў',
-'newuserlogpagetext'          => 'Гэта журнал рэгістрацыі новых удзельнікаў.',
-'newuserlog-byemail'          => 'пароль адасланы эл.поштай',
-'newuserlog-create-entry'     => 'Новы ўдзельнік',
-'newuserlog-create2-entry'    => 'створаны новы рахунак $1',
-'newuserlog-autocreate-entry' => 'Рахунак створаны аўтаматычна',
+'newuserlogpage'     => 'Журнал рэгістрацыі ўдзельнікаў',
+'newuserlogpagetext' => 'Гэта журнал рэгістрацыі новых удзельнікаў.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Дазволы для груп удзельнікаў',
@@ -2492,9 +2488,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Журнал ухваленых',
 'patrol-log-header'    => 'Журнал ухваленых версій',
-'patrol-log-line'      => 'пазначаны $1 з ліку $2 ухваленых $3',
-'patrol-log-auto'      => '(аўтаматычна)',
-'patrol-log-diff'      => 'версія $1',
 'log-show-hide-patrol' => '$1 журнал ухваленняў',
 
 # Image deletion
@@ -2989,9 +2982,7 @@ MediaWiki распаўсюджваецца, спадзеючыся на прыд
 'filepath-page'    => 'Файл:',
 'filepath-submit'  => 'Пуск',
 'filepath-summary' => 'Гэтая адмысловая старонка вяртае поўны шлях да файла.
-Выявы паказваюцца ў поўным памеры, іншыя тыпы файлаў адкрываюцца ў прыпісаных да іх праграмах.
-
-Упішыце назву файла без прэфіксу "{{ns:file}}:".',
+Выявы паказваюцца ў поўным памеры, іншыя тыпы файлаў адкрываюцца ў прыпісаных да іх праграмах.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Пошук дублікатных файлаў',
@@ -3085,5 +3076,6 @@ MediaWiki распаўсюджваецца, спадзеючыся на прыд
 # New logging system
 'revdelete-restricted'   => 'пастаўленыя абмежаванні на адміністратараў',
 'revdelete-unrestricted' => 'знятыя абмежаванні з адміністратараў',
+'newuserlog-byemail'     => 'пароль адасланы эл.поштай',
 
 );

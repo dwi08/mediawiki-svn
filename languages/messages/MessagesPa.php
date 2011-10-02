@@ -48,6 +48,8 @@ $digitTransformTable = array(
 );
 $linkTrail = '/^([ਁਂਃਅਆਇਈਉਊਏਐਓਔਕਖਗਘਙਚਛਜਝਞਟਠਡਢਣਤਥਦਧਨਪਫਬਭਮਯਰਲਲ਼ਵਸ਼ਸਹ਼ਾਿੀੁੂੇੈੋੌ੍ਖ਼ਗ਼ਜ਼ੜਫ਼ੰੱੲੳa-z]+)(.*)$/sDu';
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'            => 'ਅੰਡਰ-ਲਾਈਨ ਲਿੰਕ:',
@@ -768,9 +770,6 @@ to upload files.',
 'listusers-submit'   => 'ਵੇਖੋ',
 'listusers-noresult' => 'ਕੋਈ ਯੂਜ਼ਰ ਨਹੀਂ ਲੱਭਿਆ।',
 
-# Special:Log/newusers
-'newuserlog-create-entry' => 'ਨਵਾਂ ਯੂਜ਼ਰ ਅਕਾਊਂਟ',
-
 # Special:ListGroupRights
 'listgrouprights-group'   => 'ਗਰੁੱਪ',
 'listgrouprights-members' => '(ਮੈਂਬਰਾਂ ਦੀ ਲਿਸਟ)',
@@ -1021,9 +1020,6 @@ to upload files.',
 'skinname-myskin'   => 'ਮੇਰੀਸਕਿਨ',
 'skinname-chick'    => 'ਚੀਚਕ',
 'skinname-simple'   => 'ਸੈਂਪਲ',
-
-# Patrol log
-'patrol-log-auto' => '(ਆਟੋਮੈਟਿਕ)',
 
 # Browsing diffs
 'previousdiff' => '← ਪੁਰਾਣੀ ਸੋਧ',

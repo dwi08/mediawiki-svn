@@ -1833,7 +1833,7 @@ Kui kasutaja järgi filtrida, kuvatakse ainult need failid, mille viimase versio
 'filehist-filesize'         => 'Faili suurus',
 'filehist-comment'          => 'Kommentaar',
 'filehist-missing'          => 'Fail puudub',
-'imagelinks'                => 'Viited failile',
+'imagelinks'                => 'Failikasutus',
 'linkstoimage'              => 'Sellele pildile {{PLURAL:$1|viitab järgmine lehekülg|viitavad järgmised leheküljed}}:',
 'linkstoimage-more'         => 'Sellele failile viitab enam kui $1 {{PLURAL:$1|lehekülg|lehekülge}}.
 Järgnevas loetelus on kuvatud ainult {{PLURAL:$1|esimene viitav lehekülg|esimesed $1 viitavat lehekülge}}.
@@ -2093,12 +2093,8 @@ Toetatud protokollid: <tt>$1</tt>',
 'activeusers-noresult'   => 'Kasutajaid ei leidunud.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Kasutaja loomise logi',
-'newuserlogpagetext'          => 'See logi sisaldab infot äsja loodud uute kasutajate kohta.',
-'newuserlog-byemail'          => 'parool saadetud e-postiga',
-'newuserlog-create-entry'     => 'Uus kasutaja',
-'newuserlog-create2-entry'    => 'lõi uue konto $1',
-'newuserlog-autocreate-entry' => 'Konto loodud automaatselt',
+'newuserlogpage'     => 'Kasutaja loomise logi',
+'newuserlogpagetext' => 'See logi sisaldab infot äsja loodud uute kasutajate kohta.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Kasutajarühma õigused',
@@ -2533,6 +2529,7 @@ Kehtivaid blokeeringuid vaata [[Special:IPBlockList|blokeeringute loendist]].',
 'unblocklink'                     => 'lõpeta blokeerimine',
 'change-blocklink'                => 'muuda blokeeringut',
 'contribslink'                    => 'kaastöö',
+'emaillink'                       => 'saada e-kiri',
 'autoblocker'                     => 'Automaatselt blokeeritud, kuna [[User:$1|$1]] on hiljuti sinu IP-aadressi kasutanud. Põhjus: $2',
 'blocklogpage'                    => 'Blokeerimislogi',
 'blocklog-showlog'                => 'See kasutaja on varem blokeeritud. Allpool on toodud blokeerimislogi sissekanne:',
@@ -2927,9 +2924,6 @@ See on ilmselt põhjustatud linkimisest mustas nimekirjas olevasse välisvõrguk
 # Patrol log
 'patrol-log-page'      => 'Kontrollimislogi',
 'patrol-log-header'    => 'See on kontrollitud redaktsioonide logi.',
-'patrol-log-line'      => 'märkis $1 leheküljel $2 kontrollituks $3',
-'patrol-log-auto'      => '(automaatne)',
-'patrol-log-diff'      => 'versiooni $1',
 'log-show-hide-patrol' => '$1 kontrollimislogi',
 
 # Image deletion
@@ -3549,9 +3543,7 @@ GNU Üldise Avaliku Litsentsi [{{SERVER}}{{SCRIPTPATH}}/COPYING eksemplar] peaks
 'filepath-page'    => 'Fail:',
 'filepath-submit'  => 'Mine',
 'filepath-summary' => 'See erileht määrab otsitava failini viiva tee.
-Pilt kuvatakse algupärases suuruses, muu fail avatakse koheselt seostuva programmiga.
-
-Sisesta faili nimi eesliiteta "{{ns:file}}:".',
+Pilt kuvatakse algupärases suuruses, muu fail avatakse koheselt seostuva programmiga.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Faili duplikaatide otsimine',
@@ -3630,7 +3622,6 @@ Sisesta faili nimi eesliiteta "{{ns:file}}:".',
 'globalfileusage-text'        => 'Faili globaalse kasutuse otsimine',
 'globalfileusage-no-results'  => '[[$1]] pole teistes vikides kasutusel.',
 'globalfileusage-on-wiki'     => 'Kasutus vikis $2',
-'globalfileusage-of-file'     => 'Seda faili kasutatakse järgmistes teistes vikides:',
 'globalfileusage-more'        => 'Vaata selle faili [[{{#Special:GlobalUsage}}/$1|ülejäänud globaalset kasutust]].',
 'globalfileusage-filterlocal' => 'Ära näita kohalikku kasutust',
 
@@ -3663,5 +3654,6 @@ Sisesta faili nimi eesliiteta "{{ns:file}}:".',
 'revdelete-restricted'   => 'kohta administraatoritele piirangud kehtestatud',
 'revdelete-unrestricted' => 'kohta administraatoritelt piirangud eemaldatud',
 'logentry-move-move'     => '$1 {{GENDER:$2|teisaldas}} lehekülje $3 pealkirja $4 alla',
+'newuserlog-byemail'     => 'parool saadetud e-postiga',
 
 );

@@ -1053,6 +1053,8 @@ class User {
 	public function loadFromRow( $row ) {
 		$all = true;
 
+		$this->mGroups = null; // deferred
+
 		if ( isset( $row->user_name ) ) {
 			$this->mName = $row->user_name;
 			$this->mFrom = 'name';
@@ -1087,8 +1089,10 @@ class User {
 			$this->mNewpassword = $row->user_newpassword;
 			$this->mNewpassTime = wfTimestampOrNull( TS_MW, $row->user_newpass_time );
 			$this->mEmail = $row->user_email;
-			$this->decodeOptions( $row->user_options );
-			$this->mTouched = wfTimestamp(TS_MW,$row->user_touched);
+			if ( isset( $row->user_options ) ) {
+				$this->decodeOptions( $row->user_options );
+			}
+			$this->mTouched = wfTimestamp( TS_MW, $row->user_touched );
 			$this->mToken = $row->user_token;
 			$this->mEmailAuthenticated = wfTimestampOrNull( TS_MW, $row->user_email_authenticated );
 			$this->mEmailToken = $row->user_email_token;
@@ -1213,6 +1217,8 @@ class User {
 			$defOpt['searchNs'.$nsnum] = !empty( $wgNamespacesToBeSearchedDefault[$nsnum] );
 		}
 		$defOpt['skin'] = $wgDefaultSkin;
+
+		wfRunHooks( 'UserGetDefaultOptions', array( &$defOpt ) );
 
 		return $defOpt;
 	}
@@ -2310,6 +2316,7 @@ class User {
 	 */
 	public function getGroups() {
 		$this->load();
+		$this->loadGroups();
 		return $this->mGroups;
 	}
 
@@ -2688,8 +2695,10 @@ class User {
 	/**
 	 * Set this user's options from an encoded string
 	 * @param $str String Encoded options to import
+	 *
+	 * @deprecated in 1.19 due to removal of user_options from the user table
 	 */
-	public function decodeOptions( $str ) {
+	private function decodeOptions( $str ) {
 		if( !$str )
 			return;
 
@@ -2817,7 +2826,6 @@ class User {
 				'user_real_name' => $this->mRealName,
 				'user_email' => $this->mEmail,
 				'user_email_authenticated' => $dbw->timestampOrNull( $this->mEmailAuthenticated ),
-				'user_options' => '',
 				'user_touched' => $dbw->timestamp( $this->mTouched ),
 				'user_token' => $this->mToken,
 				'user_email_token' => $this->mEmailToken,
@@ -2885,7 +2893,6 @@ class User {
 			'user_email' => $user->mEmail,
 			'user_email_authenticated' => $dbw->timestampOrNull( $user->mEmailAuthenticated ),
 			'user_real_name' => $user->mRealName,
-			'user_options' => '',
 			'user_token' => $user->mToken,
 			'user_registration' => $dbw->timestamp( $user->mRegistration ),
 			'user_editcount' => 0,
@@ -2919,7 +2926,6 @@ class User {
 				'user_email' => $this->mEmail,
 				'user_email_authenticated' => $dbw->timestampOrNull( $this->mEmailAuthenticated ),
 				'user_real_name' => $this->mRealName,
-				'user_options' => '',
 				'user_token' => $this->mToken,
 				'user_registration' => $dbw->timestamp( $this->mRegistration ),
 				'user_editcount' => 0,
@@ -3475,7 +3481,7 @@ class User {
 	 *
 	 * @return Array of Strings List of permission key names for given groups combined
 	 */
-	public static function getGroupPermissions( $groups, $ns = null ) {
+	public static function getGroupPermissions( array $groups, $ns = null ) {
 		global $wgGroupPermissions, $wgRevokePermissions;
 		$rights = array();
 
@@ -3907,7 +3913,7 @@ class User {
 	 * @param $byEmail Boolean: account made by email?
 	 * @param $reason String: user supplied reason
 	 *
-	 * @return true
+	 * @return int|bool True if not $wgNewUserLog; otherwise ID of log item or 0 on failure
 	 */
 	public function addNewUserLogEntry( $byEmail = false, $reason = '' ) {
 		global $wgUser, $wgContLang, $wgNewUserLog;
@@ -3929,13 +3935,12 @@ class User {
 			}
 		}
 		$log = new LogPage( 'newusers' );
-		$log->addEntry(
+		return (int)$log->addEntry(
 			$action,
 			$this->getUserPage(),
 			$reason,
 			array( $this->getId() )
 		);
-		return true;
 	}
 
 	/**

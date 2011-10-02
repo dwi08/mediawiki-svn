@@ -1173,9 +1173,7 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'Nerast anėjuokiū nauduotuoju.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Nauduotuojė kūrėma regėstros',
-'newuserlog-byemail'      => 'slaptažuodis ėšsiōsts par el. pašta',
-'newuserlog-create-entry' => 'Naus nauduotuos',
+'newuserlogpage' => 'Nauduotuojė kūrėma regėstros',
 
 # Special:ListGroupRights
 'listgrouprights'         => 'Nauduotuoju gropiu teisės',
@@ -1662,9 +1660,6 @@ Paskėrties straipsnis „[[:$1]]“ jau īr. A nuorėt ana ėštrintė, kū gal
 
 # Patrol log
 'patrol-log-page'      => 'Patikrinėma istuorėjė',
-'patrol-log-line'      => 'Poslapė „$2“ $1 pažīmieta kāp patėkrinta $3',
-'patrol-log-auto'      => '(autuomatėškā)',
-'patrol-log-diff'      => 'versėjė $1',
 'log-show-hide-patrol' => '$1 patvirtėnėmu saraša',
 
 # Image deletion
@@ -1893,5 +1888,8 @@ Tamsta tēpuogi galėt [[Special:EditWatchlist/raw|redagoutė grīnaji keravuoja
 
 # Special:Tags
 'tags-edit' => 'taisītė',
+
+# New logging system
+'newuserlog-byemail' => 'slaptažuodis ėšsiōsts par el. pašta',
 
 );

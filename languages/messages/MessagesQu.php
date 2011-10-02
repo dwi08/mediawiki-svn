@@ -2009,12 +2009,8 @@ Rikuyniykitaqa k'ullkuchaytam atinki hallch'a layata, ruraqpa sutinta (uchuy ich
 'activeusers-noresult'   => 'Ruraqkunataqa manam tarinichu.',
 
 # Special:Log/newusers
-'newuserlogpage'              => "Rakiquna kamariy hallch'a",
-'newuserlogpagetext'          => "Kayqa ruraqkunap rakiqunankunata kamariymanta hallch'am.",
-'newuserlog-byemail'          => 'e-chaskiwan kachasqa yaykuna rima',
-'newuserlog-create-entry'     => 'Musuq ruraq',
-'newuserlog-create2-entry'    => 'kamarin $1-paq musuq rakiqunata',
-'newuserlog-autocreate-entry' => 'Kikinmanta kamarisqa rakiquna',
+'newuserlogpage'     => "Rakiquna kamariy hallch'a",
+'newuserlogpagetext' => "Kayqa ruraqkunap rakiqunankunata kamariymanta hallch'am.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Ruraq huñup hayñinkuna',
@@ -2800,9 +2796,6 @@ Tukuy hawa wikimanta chaskisqakunaqa [[Special:Log/import|hawamanta chaskiy hall
 # Patrol log
 'patrol-log-page'      => "Qhawakipay hallch'a",
 'patrol-log-header'    => "Kayqa patrullasqa musuqchasqakunamanta hallch'asqam.",
-'patrol-log-line'      => '$1 sananchasqa $2-manta qhawakipasqa $3',
-'patrol-log-auto'      => '(kikinmanta)',
-'patrol-log-diff'      => 'musuqchasqa $1',
 'log-show-hide-patrol' => "$1 patrullay hallch'a",
 
 # Image deletion
@@ -3553,5 +3546,6 @@ Willañiqi sutita yaykuchispaqa ama \"{{ns:file}}:\" ñawpaq k'askaqta qillqamuy
 # New logging system
 'revdelete-restricted'   => "kamachiqkunaman llamk'achisqa saywachanakuna",
 'revdelete-unrestricted' => 'kamachiqkunamanta qichusqa saywachanakuna',
+'newuserlog-byemail'     => 'e-chaskiwan kachasqa yaykuna rima',
 
 );

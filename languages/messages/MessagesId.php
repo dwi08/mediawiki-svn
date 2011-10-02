@@ -353,7 +353,7 @@ $messages = array(
 'tog-enotifminoredits'        => 'Kirimkan saya surel juga pada perubahan kecil',
 'tog-enotifrevealaddr'        => 'Tampilkan alamat surel saya pada surel notifikasi',
 'tog-shownumberswatching'     => 'Tunjukkan jumlah pemantau',
-'tog-oldsig'                  => 'Pratayang tanda tangan:',
+'tog-oldsig'                  => 'Tanda tangan sekarang:',
 'tog-fancysig'                => 'Perlakukan tanda tangan sebagai teks wiki (tanpa suatu pranala otomatis)',
 'tog-externaleditor'          => 'Gunakan editor eksternal secara bawaan (hanya untuk ahli, perlu pengaturan khusus pada komputer Anda.
 [http://www.mediawiki.org/wiki/Manual:External_editors Informasi selengkapnya].)',
@@ -831,6 +831,7 @@ Anda mungkin telah berhasil mengganti kata sandi Anda atau telah meminta kata sa
 'passwordreset-disabled'       => 'Penyetelan ulang sandi telah dimatikan di wiki ini.',
 'passwordreset-pretext'        => '{{PLURAL:$1||Masukkan salah satu data di bawah ini}}',
 'passwordreset-username'       => 'Nama pengguna:',
+'passwordreset-domain'         => 'Domain:',
 'passwordreset-email'          => 'Alamat surel:',
 'passwordreset-emailtitle'     => 'Detail akun di {{SITENAME}}',
 'passwordreset-emailtext-ip'   => 'Seseorang (mungkin Anda, dari alamat IP $1) meminta pengingat
@@ -2123,12 +2124,8 @@ Lihat pula [[Special:WantedCategories|kategori yang diinginkan]].',
 'activeusers-noresult'   => 'Pengguna tidak ditemukan.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Log pengguna baru',
-'newuserlogpagetext'          => 'Di bawah ini adalah log pendaftaran pengguna baru',
-'newuserlog-byemail'          => 'kata sandi dikirim melalui surel',
-'newuserlog-create-entry'     => 'mendaftar sebagai pengguna',
-'newuserlog-create2-entry'    => 'membuat akun baru $1',
-'newuserlog-autocreate-entry' => 'akun pengguna dibuat secara otomatis',
+'newuserlogpage'     => 'Log pengguna baru',
+'newuserlogpagetext' => 'Di bawah ini adalah log pendaftaran pengguna baru',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Daftar kelompok pengguna',
@@ -2554,6 +2551,7 @@ Lihat [[Special:IPBlockList|Daftar IP]] untuk meninjau kembali pemblokiran.',
 'unblocklink'                     => 'hilangkan blokir',
 'change-blocklink'                => 'ubah blokir',
 'contribslink'                    => 'kontrib',
+'emaillink'                       => 'kirim surel',
 'autoblocker'                     => 'Diblokir secara otomatis karena alamat IP Anda digunakan oleh "[[User:$1|$1]]".
 Alasan yang diberikan untuk pemblokiran $1 adalah: "$2"',
 'blocklogpage'                    => 'Log pemblokiran',
@@ -2787,6 +2785,8 @@ Simpan ke komputer Anda dan unggah ke sini.',
 'import-upload'              => 'Memuat data XML',
 'import-token-mismatch'      => 'Kehilangan data sesi. Silakan mencoba kembali.',
 'import-invalid-interwiki'   => 'Tidak dapat mengimpor dari wiki tersebut.',
+'import-error-edit'          => 'Halaman "$1" tidak diimpor karena Anda tidak diizinkan untuk menyuntingnya.',
+'import-error-create'        => 'Halaman "$1" tidak diimpor karena Anda tidak diizinkan untuk membuatnya.',
 
 # Import log
 'importlogpage'                    => 'Log impor',
@@ -2944,9 +2944,6 @@ Ini mungkin disebabkan oleh pranala ke situs luar yang termasuk dalam daftar hit
 # Patrol log
 'patrol-log-page'      => 'Log patroli',
 'patrol-log-header'    => 'Ini adalah log revisi terpatroli.',
-'patrol-log-line'      => 'menandai $1 dari $2 terpatroli $3',
-'patrol-log-auto'      => '(otomatis)',
-'patrol-log-diff'      => 'revisi $1',
 'log-show-hide-patrol' => '$1 log patroli',
 
 # Image deletion
@@ -3224,9 +3221,9 @@ Data lain akan disembunyikan secara bawaan.
 'exif-orientation-3' => 'Diputar 180°',
 'exif-orientation-4' => 'Dibalik vertikal',
 'exif-orientation-5' => 'Diputar 90° CCW dan dibalik vertikal',
-'exif-orientation-6' => 'Diputar 90° CW',
+'exif-orientation-6' => 'Diputar 90° CCW',
 'exif-orientation-7' => 'Diputar 90° CW dan dibalik vertikal',
-'exif-orientation-8' => 'Diputar 90° CCW',
+'exif-orientation-8' => 'Diputar 90° CW',
 
 'exif-planarconfiguration-1' => 'format chunky',
 'exif-planarconfiguration-2' => 'format planar',
@@ -3665,9 +3662,7 @@ Anda seharusnya telah menerima [{{SERVER}}{{SCRIPTPATH}}/COPYING salinan Lisensi
 'filepath-page'    => 'Berkas:',
 'filepath-submit'  => 'Cari',
 'filepath-summary' => 'Halaman istimewa ini menampilkan jalur lengkap untuk suatu berkas.
-Gambar ditampilkan dalam resolusi penuh dan tipe lain berkas akan dibuka langsung dengan program terkaitnya.
-
-Masukkan nama berkas tanpa prefiks "{{ns:file}}:"-nya.',
+Gambar ditampilkan dalam resolusi penuh dan tipe lain berkas akan dibuka langsung dengan program terkaitnya.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Pencarian berkas duplikat',
@@ -3745,7 +3740,6 @@ Masukkan nama berkas tanpa prefiks "{{ns:file}}:"-nya.',
 'globalfileusage-text'        => 'Cari penggunaan secara global berkas.',
 'globalfileusage-no-results'  => '[[$1]] tidak digunakan di wiki lain.',
 'globalfileusage-on-wiki'     => 'Penggunaan pada $2',
-'globalfileusage-of-file'     => 'Wiki lain berikut menggunakan berkas ini:',
 'globalfileusage-more'        => 'Lihat [[{{#Special:GlobalUsage}}/$1|lebih banyak penggunaan global]] dari berkas ini.',
 'globalfileusage-filterlocal' => 'Jangan tunjukkan penggunaan lokal',
 
@@ -3756,7 +3750,6 @@ Masukkan nama berkas tanpa prefiks "{{ns:file}}:"-nya.',
 'globaltemplateusage-text'        => 'Cari penggunaan templat secara global.',
 'globaltemplateusage-no-results'  => '[[$1]] tidak digunakan di wiki lain.',
 'globaltemplateusage-on-wiki'     => 'Penggunaan pada $2',
-'globaltemplateusage-of-file'     => 'Wiki lain berikut menggunakan templat ini:',
 'globaltemplateusage-more'        => 'Lihat [[{{#Special:GlobalUsage}}/$1|penggunaan global]] dari templat ini.',
 'globaltemplateusage-filterlocal' => 'Jangan tunjukkan penggunaan lokal',
 
@@ -3786,7 +3779,14 @@ Masukkan nama berkas tanpa prefiks "{{ns:file}}:"-nya.',
 'sqlite-no-fts'  => '$1 tanpa dukungan pencarian teks lengkap',
 
 # New logging system
-'revdelete-restricted'   => 'akses telah dibatasi untuk opsis',
-'revdelete-unrestricted' => 'pembatasan akses opsis dihapuskan',
+'revdelete-content-hid'   => 'konten disembunyikan',
+'revdelete-summary-hid'   => 'ringkasan suntingan disembunyikan',
+'revdelete-uname-hid'     => 'nama pengguna disembunyikan',
+'revdelete-content-unhid' => 'konten tidak disembunyikan',
+'revdelete-summary-unhid' => 'ringkasan suntingan tidak disembunyikan',
+'revdelete-uname-unhid'   => 'nama pengguna tidak disembunyikan',
+'revdelete-restricted'    => 'akses telah dibatasi untuk opsis',
+'revdelete-unrestricted'  => 'pembatasan akses opsis dihapuskan',
+'newuserlog-byemail'      => 'kata sandi dikirim melalui surel',
 
 );

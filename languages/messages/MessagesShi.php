@@ -896,8 +896,7 @@ Mel imbddeln z tisniwin li ittuyzdayni bla tasna li trit.',
 'linksearch-line' => '$1 tmmuttid z $2',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Aɣmis n willi mmurzmn imiḍan amsqdac',
-'newuserlog-create-entry' => 'Amḍan amaynu n umsqdac',
+'newuserlogpage' => 'Aɣmis n willi mmurzmn imiḍan amsqdac',
 
 # Special:ListGroupRights
 'listgrouprights-members' => 'Umuɣ n  midn',
@@ -1138,10 +1137,6 @@ Maya Iẓḍar ad iglb zzu uzddar ar aflla tasna yad lli bdda n nttagga. Illa fl
 'tooltip-rollback'                => '"Rard" s yan klik ażrig (iżrign) s ɣiklli sttin kkan tiklit li igguran',
 'tooltip-undo'                    => '"Sglb" ḥiyd ambdl ad t mmurẓmt tasatmt n umbdl ɣ umuḍ tiẓri tamzwarut.',
 'tooltip-summary'                 => 'Skcm yat tayafut imẓẓin',
-
-# Patrol log
-'patrol-log-line' => 'ircm $1 d $2 zu nɣra daɣ $3',
-'patrol-log-diff' => 'Amzṛi daɣ $1',
 
 # Browsing diffs
 'previousdiff' => 'Imbddln imzwura',

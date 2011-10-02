@@ -87,6 +87,11 @@ class DBConnectionError extends DBError {
 		return false;
 	}
 
+	/**
+	 * @param $key
+	 * @param $fallback
+	 * @return string
+	 */
 	function msg( $key, $fallback /*[, params...] */ ) {
 		global $wgLang;
 
@@ -227,9 +232,9 @@ EOT;
 			$t = Title::newFromText( $this->msg( 'mainpage', 'Main Page' ) );
 		}
 
-		$cache = new HTMLFileCache( $t );
-		if ( $cache->isFileCached() ) {
-			return $cache->fetchPageText();
+		$cache = HTMLFileCache::newFromTitle( $t, 'view' );
+		if ( $cache->isCached() ) {
+			return $cache->fetchText();
 		} else {
 			return '';
 		}

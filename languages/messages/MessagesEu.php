@@ -1826,12 +1826,8 @@ Baimendutako protokoloak: <tt>$1</tt>',
 'activeusers-noresult'   => 'Ez da lankiderik aurkitu.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Erabiltzaile erregistroa',
-'newuserlogpagetext'          => 'Hau azken erabiltzaileen sorreren erregistroa da.',
-'newuserlog-byemail'          => 'pasahitza e-postaz bidali da',
-'newuserlog-create-entry'     => 'Erabiltzaile berria',
-'newuserlog-create2-entry'    => '$1 kontu berria sortu da',
-'newuserlog-autocreate-entry' => 'Automatikoki sorturiko kontua',
+'newuserlogpage'     => 'Erabiltzaile erregistroa',
+'newuserlogpagetext' => 'Hau azken erabiltzaileen sorreren erregistroa da.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Erabiltzaile talde eskumenak',
@@ -2590,9 +2586,6 @@ Baliteke zerrenda beltzean dagoen kanpo lotura batek sortzea arazo hori.',
 # Patrol log
 'patrol-log-page'      => 'Patrullatze loga',
 'patrol-log-header'    => 'Hau patruliatutako aldaketen log bat da.',
-'patrol-log-line'      => '$1etik $2 markatu da patruilatu moduan $3',
-'patrol-log-auto'      => '(automatikoa)',
-'patrol-log-diff'      => '$1 berrikuspena',
 'log-show-hide-patrol' => '$1 patruilatze loga',
 
 # Image deletion
@@ -3162,9 +3155,7 @@ Halaber [[Special:EditWatchlist|aldatzaile estandarra]] erabil dezakezu.',
 'filepath-page'    => 'Fitxategia:',
 'filepath-submit'  => 'Joan',
 'filepath-summary' => 'Orri berezi honek fitxategiaren ibilbidea itzultzen du.
-Irudiak bereizmen handienean daude, bestelako fitxategi motak beraiei esleitutako programarekin hasiko dira zuzenean.
-
-Sartu fitxategiaren izena "{{ns:file}}:" aurrizkia gabe.',
+Irudiak bereizmen handienean daude, bestelako fitxategi motak beraiei esleitutako programarekin hasiko dira zuzenean.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Artxibo bikoiztuen bilaketa',
@@ -3255,5 +3246,6 @@ Sartu fitxategiaren izena "{{ns:file}}:" aurrizkia gabe.',
 # New logging system
 'revdelete-restricted'   => 'administratzaileei ezarritako mugak',
 'revdelete-unrestricted' => 'Administratzaileentzako mugak kendu dira',
+'newuserlog-byemail'     => 'pasahitza e-postaz bidali da',
 
 );

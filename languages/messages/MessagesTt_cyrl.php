@@ -1646,10 +1646,8 @@ PICT # төрле
 'activeusers-noresult'   => 'Кулланучылар табылмады.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Кулланучыларны теркәү көндәлеге',
-'newuserlogpagetext'      => 'Яңа теркәлгән кулланучылар исемлеге',
-'newuserlog-byemail'      => 'серсүз электрон почта аша җибәрелде',
-'newuserlog-create-entry' => 'Яңа кулланучы',
+'newuserlogpage'     => 'Кулланучыларны теркәү көндәлеге',
+'newuserlogpagetext' => 'Яңа теркәлгән кулланучылар исемлеге',
 
 # Special:ListGroupRights
 'listgrouprights'          => 'Кулланучы төркемнәренең хокуклары',
@@ -2109,9 +2107,6 @@ $1',
 # Patrol log
 'patrol-log-page'      => 'Тикшерү көндәлеге',
 'patrol-log-header'    => 'Бу тикшерелгән битләрнең көндәлеге.',
-'patrol-log-line'      => '$2 $3 битеннән $1ны тикшерде',
-'patrol-log-auto'      => '(автоматик рәвештә)',
-'patrol-log-diff'      => '$1 юрама',
 'log-show-hide-patrol' => '$1 тикшерү көндәлеге',
 
 # Image deletion
@@ -2437,5 +2432,6 @@ $1',
 
 # New logging system
 'revdelete-restricted' => 'чикләүләр идарәчеләргә дә кулланыла',
+'newuserlog-byemail'   => 'серсүз электрон почта аша җибәрелде',
 
 );

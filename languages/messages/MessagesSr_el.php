@@ -726,32 +726,36 @@ Možda ste već uspešno promenili lozinku ili zatražili novu privremenu.',
 'resetpass-temp-password'   => 'Privremena šifra:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Obnavljanje lozinke',
-'passwordreset-text'           => 'Popunite ovaj obrazac da biste primili e-poruku sa svojim podacima za prijavu.',
-'passwordreset-legend'         => 'Poništi lozinku',
-'passwordreset-disabled'       => 'Poništavanje lozinke je onemogućeno na ovom vikiju.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Unesite jedan od delova podataka ispod}}',
-'passwordreset-username'       => 'Korisničko ime:',
-'passwordreset-domain'         => 'Domen:',
-'passwordreset-email'          => 'E-adresa:',
-'passwordreset-emailtitle'     => 'Detalji naloga na vikiju {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Neko, verovatno vi, sa IP adrese $1 je zatražio novu lozinku na vikiju {{SITENAME}} ($4).
+'passwordreset'                    => 'Obnavljanje lozinke',
+'passwordreset-text'               => 'Popunite ovaj obrazac da biste primili e-poruku sa svojim podacima za prijavu.',
+'passwordreset-legend'             => 'Poništi lozinku',
+'passwordreset-disabled'           => 'Poništavanje lozinke je onemogućeno na ovom vikiju.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Unesite jedan od delova podataka ispod}}',
+'passwordreset-username'           => 'Korisničko ime:',
+'passwordreset-domain'             => 'Domen:',
+'passwordreset-capture'            => 'Pogledati krajnju poruku?',
+'passwordreset-capture-help'       => 'Ako označite ovu kućicu, e-poruka s privremenom lozinkom će biti prikazana i poslata korisniku.',
+'passwordreset-email'              => 'E-adresa:',
+'passwordreset-emailtitle'         => 'Detalji naloga na vikiju {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Neko, verovatno vi, sa IP adrese $1 je zatražio novu lozinku na vikiju {{SITENAME}} ($4).
 Sledeći {{PLURAL:$3|korisnički nalog je povezan|korisnički nalozi su povezani}} s ovom e-adresom:
 
 $2
 
 {{PLURAL:$3|Privremena lozinka ističe|Privremene lozinke ističu}} za {{PLURAL:$5|jedan dan|$5 dana|$5 dana}}.
 Prijavite se i izaberite novu lozinku. Ako je neko drugi zahtevao ovu radnju ili ste se setili lozinke i ne želite da je menjate, zanemarite ovu poruku.',
-'passwordreset-emailtext-user' => '{{GENDER:$1|Korisnik|Korisnica|Korisnik}} $1 je zatražio podsetnik o podacima za prijavu na vikiju {{SITENAME}} ($4).
+'passwordreset-emailtext-user'     => '{{GENDER:$1|Korisnik|Korisnica|Korisnik}} $1 je zatražio podsetnik o podacima za prijavu na vikiju {{SITENAME}} ($4).
 Sledeći {{PLURAL:$3|korisnički nalog je povezan|korisnički nalozi su povezani}} s ovom e-adresom:
 
 $2
 
 {{PLURAL:$3|Privremena lozinka ističe|Privremene lozinke ističu}} za {{PLURAL:$5|jedan dan|$5 dana|$5 dana}}.
 Prijavite se i izaberite novu lozinku. Ako je neko drugi zahtevao ovu radnju ili ste se setili lozinke i ne želite da je menjate, zanemarite ovu poruku.',
-'passwordreset-emailelement'   => 'Korisničko ime: $1
+'passwordreset-emailelement'       => 'Korisničko ime: $1
 Privremena lozinka: $2',
-'passwordreset-emailsent'      => 'Podsetnik o lozinci je poslat na vašu adresu.',
+'passwordreset-emailsent'          => 'Podsetnik o lozinci je poslat na vašu adresu.',
+'passwordreset-emailsent-capture'  => 'Poslat je podsetnik preko e-pošte (prikazan dole).',
+'passwordreset-emailerror-capture' => 'Napravljen je podsetnik za slanje preko e-pošte (prikazan dole), ali ga ne mogu poslati korisniku: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Promena e-adrese',
@@ -1457,6 +1461,7 @@ Ova informacija će biti javna.',
 'right-siteadmin'             => 'zaključavanje i otključavanje baze podataka',
 'right-override-export-depth' => 'Izvezi strane, uključujući povezane strane, do dubine 5',
 'right-sendemail'             => 'Pošalji e-poštu ostalim korisnicima',
+'right-passwordreset'         => 'pregledanje poruka za obnavljanje lozinke',
 
 # User rights log
 'rightslog'                  => 'Istorija korisničkih prava',
@@ -1766,7 +1771,7 @@ Kad je poređano po korisniku, popis prikazuje samo one datoteke čije je posled
 'filehist-filesize'         => 'Veličina fajla',
 'filehist-comment'          => 'Komentar',
 'filehist-missing'          => 'Nema fajla',
-'imagelinks'                => 'Veze ka fajlu',
+'imagelinks'                => 'Upotreba datoteke',
 'linkstoimage'              => '{{PLURAL:$1|Sledeća stranica koristi|$1 Sledeće stranice koriste}} ovaj fajl:',
 'linkstoimage-more'         => 'Više od $1 {{PLURAL:$1|stranice se veše|stranica se vežu}} za ovaj fajl.
 Sledeći spisak pokazuje stranice koje se vežu za ovaj fajl
@@ -2028,12 +2033,8 @@ Podržani protokoli: <tt>$1</tt>',
 'activeusers-noresult'   => 'Korisnik nije pronađen.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Istorija otvaranja naloga',
-'newuserlogpagetext'          => 'Ovo je istorija stvaranja korisnika.',
-'newuserlog-byemail'          => 'lozinka poslata imejlom',
-'newuserlog-create-entry'     => 'Novi korisnik',
-'newuserlog-create2-entry'    => 'napravio novi nalog za $1',
-'newuserlog-autocreate-entry' => 'nalog automatski napravljen',
+'newuserlogpage'     => 'Istorija otvaranja naloga',
+'newuserlogpagetext' => 'Ovo je istorija stvaranja korisnika.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Prava korisničkih grupa',
@@ -2867,9 +2868,6 @@ Ovo je verovatno izazvano blokiranom vezom ka spoljašnjem sajtu.',
 # Patrol log
 'patrol-log-page'      => 'Istorija patroliranja',
 'patrol-log-header'    => 'Ovo je istorija patroliranih revizija.',
-'patrol-log-line'      => 'obeležena verzija $1 strane $2 kao patrolirana ($3)',
-'patrol-log-auto'      => '(automatski)',
-'patrol-log-diff'      => 'revizija $1',
 'log-show-hide-patrol' => '$1 istorija patroliranja',
 
 # Image deletion
@@ -2919,6 +2917,13 @@ Njegovim izvršavanjem biste mogli da oštetite Vaš sistem.",
 'ilsubmit'              => 'Traži',
 'bydate'                => 'po datumu',
 'sp-newimages-showfrom' => 'Prikaži nove fajlove počevši od $2, $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|$1 sekunda|$1 sekunde|$1 sekundi}}',
+'minutes' => '{{PLURAL:$1|$1 minut|$1 minuta|$1 minuta}}',
+'hours'   => '{{PLURAL:$1|$1 sat|$1 sata|$1 sati}}',
+'days'    => '{{PLURAL:$1|$1 dan|$1 dana|$1 dana}}',
+'ago'     => 'pre $1',
 
 # Bad image list
 'bad_image_list' => 'Format je sledeći:
@@ -3539,10 +3544,8 @@ Trebalo bi da ste primili [{{SERVER}}{{SCRIPTPATH}}/COPYING primerak GNU-ove op�
 'filepath'         => 'Putanja fajla',
 'filepath-page'    => 'Fajl:',
 'filepath-submit'  => 'Pošalji',
-'filepath-summary' => 'Ova specijalna strana vraća kompletnu putanju za fajl.
-Slike bivaju prikazane u punoj rezoluciji, drugi tipovi fajlova bivaju direktno startovani pomoću njima pridruženih progama.
-
-Unesite naziv fajla bez prefiksa &quot;{{ns:file}}:&quot;.',
+'filepath-summary' => 'Ova posebna stranica prikazuje potpunu putanju datoteke.
+Slike su prikazane u punoj veličini, a druge vrste datoteka se pokreću pomoću njima pridruženim programima.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Pretražite duplikate fajlova',
@@ -3621,7 +3624,6 @@ Unesite naziv fajla bez prefiksa &quot;{{ns:file}}:&quot;.',
 'globalfileusage-text'        => 'Pretraga globalne upotrebe datoteke',
 'globalfileusage-no-results'  => '[[$1]] se ne koristi na drugim vikijima.',
 'globalfileusage-on-wiki'     => 'Upotreba na vikiju $2',
-'globalfileusage-of-file'     => 'Sledeći vikiji koriste ovu datoteku:',
 'globalfileusage-more'        => 'Pogledaj [[{{#Special:GlobalUsage}}/$1|još globalne upotrebe]] ove datoteke.',
 'globalfileusage-filterlocal' => 'Ne prikazuj lokalnu upotrebu',
 
@@ -3632,7 +3634,6 @@ Unesite naziv fajla bez prefiksa &quot;{{ns:file}}:&quot;.',
 'globaltemplateusage-text'        => 'Pretraga globalne upotrebe šablona',
 'globaltemplateusage-no-results'  => '[[$1]] se ne koristi na drugim vikijima.',
 'globaltemplateusage-on-wiki'     => 'Upotreba na vikiju $2',
-'globaltemplateusage-of-file'     => 'Sledeći vikiji koriste ovaj šablon:',
 'globaltemplateusage-more'        => 'Pogledaj [[{{#Special:GlobalUsage}}/$1|još globalne upotrebe]] ovog šablona.',
 'globaltemplateusage-filterlocal' => 'Ne prikazuj lokalnu upotrebu',
 
@@ -3685,5 +3686,12 @@ Unesite naziv fajla bez prefiksa &quot;{{ns:file}}:&quot;.',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|je premestio|je premestila|premesti}} stranicu $3 na $4 bez ostavljanja preusmerenja',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|je premestio|je premestila|je premestio}} stranicu $3 na $4 preko preusmerenja',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|je premestio|je premestila|premesti}} stranicu $3 na $4 preko preusmerenja bez ostavljanja preusmerenja',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|je označio|je označila|označi}} izmenu $4 pregledane stranice $3',
+'logentry-patrol-patrol-auto'         => '$1 {{GENDER:$2|je samostalno označio|je samostalno označila|samostalno označi}} izmenu $4 pregledane stranice $3',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|je otvorio|je otvorila|otvori}} korisnički nalog',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|je otvorio|je otvorila|otvori}} korisnički nalog',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|je otvorio|je otvorila|otvori}} {{GENDER:$4|korisnički nalog}} $3',
+'logentry-newusers-autocreate'        => 'Nalog $1 je {{GENDER:$2|samostalno otvoren}}',
+'newuserlog-byemail'                  => 'lozinka poslata imejlom',
 
 );

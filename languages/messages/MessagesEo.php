@@ -427,7 +427,7 @@ $messages = array(
 'listingcontinuesabbrev'         => 'daŭrigo',
 'index-category'                 => 'Indeksitaj paĝoj',
 'noindex-category'               => 'Neindeksitaj paĝoj',
-'broken-file-category'           => 'Paĝoj kun trompitaj dosierligiloj',
+'broken-file-category'           => 'Paĝoj kun eraraj dosierligiloj',
 
 'about'         => 'Enkonduko',
 'article'       => 'Artikolo',
@@ -1555,6 +1555,7 @@ Jen hazarde generita valoro por via uzo: $1',
 'right-siteadmin'             => 'Ŝlosi kaj malŝlosi la datumbazon',
 'right-override-export-depth' => 'Eksporti paĝojn inkluzivante ligitajn paĝojn ĝis profundeco de 5',
 'right-sendemail'             => 'Sendi retpoŝton al aliaj uzantoj',
+'right-passwordreset'         => 'Refari pasvorton de uzanto ([[Special:PasswordReset|speciala paĝo]])',
 
 # User rights log
 'rightslog'                  => 'Protokolo de uzanto-rajtoj',
@@ -2128,12 +2129,8 @@ Vidu ankaŭ [[Special:WantedCategories|Dezirataj kategorioj]].',
 'activeusers-noresult'   => 'Neniuj uzantoj trovitaj.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Protokolo de uzanto-kreado',
-'newuserlogpagetext'          => 'Jen protokolo de lastaj kreadoj de uzantoj.',
-'newuserlog-byemail'          => 'pasvorto sendita retpoŝte',
-'newuserlog-create-entry'     => 'Nova uzanto',
-'newuserlog-create2-entry'    => 'kreis novan konton $1',
-'newuserlog-autocreate-entry' => 'Konto kreita aŭtomate',
+'newuserlogpage'     => 'Protokolo de uzanto-kreado',
+'newuserlogpagetext' => 'Jen protokolo de lastaj kreadoj de uzantoj.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Gruprajtoj de uzantoj',
@@ -2946,9 +2943,6 @@ Datoj de versioj kaj nomoj de redaktantoj estos preservitaj.
 # Patrol log
 'patrol-log-page'      => 'Protokolo pri patrolado',
 'patrol-log-header'    => 'Jen protokolo de patrolitaj versioj.',
-'patrol-log-line'      => 'markis $1 de $2 patrolita $3',
-'patrol-log-auto'      => '(aŭtomata)',
-'patrol-log-diff'      => 'version $1',
 'log-show-hide-patrol' => '$1 protokolo pri patrolado',
 
 # Image deletion
@@ -3618,9 +3612,7 @@ Oni devis doni al vi [{{SERVER}}{{SCRIPTPATH}}/COPYING ekzempleron de la GNU Gen
 'filepath-page'    => 'Dosiero:',
 'filepath-submit'  => 'Vojo',
 'filepath-summary' => 'Ĉi tiu speciala paĝo liveras kompletan vojon al dosiero.
-Bildoj montriĝas en plena distingivo, aliaj dosiertipoj estas malfermataj rekte per ties asociita programo.
-
-Entajpu la dosiernomon sen la prefikso "{{ns:file}}:"',
+Bildoj montriĝas en plena distingivo, aliaj dosiertipoj estas malfermataj rekte per ties asociita programo.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Serĉu duplikatajn dosierojn',
@@ -3699,7 +3691,6 @@ Entajpu la dosiernomon sen la prefikso "{{ns:file}}:"',
 'globalfileusage-text'        => 'Serĉi uzadon de ĝeneralaj dosieroj',
 'globalfileusage-no-results'  => '[[$1]] ne estas uzata en aliaj vikioj.',
 'globalfileusage-on-wiki'     => 'Uzado en $2',
-'globalfileusage-of-file'     => 'La jenaj aliaj vikioj utiligas ĉi tiun dosieron:',
 'globalfileusage-more'        => 'Vidi [[{{#Special:GlobalUsage}}/$1|plian ĝeneralan uzadon]] de ĉi tiu dosiero.',
 'globalfileusage-filterlocal' => 'Ne montri lokan uzadon',
 
@@ -3710,7 +3701,6 @@ Entajpu la dosiernomon sen la prefikso "{{ns:file}}:"',
 'globaltemplateusage-text'        => 'Serĉi uzadon de ĝeneralaj ŝablonoj.',
 'globaltemplateusage-no-results'  => '[[$1]] ne estas uzata en aliaj vikioj.',
 'globaltemplateusage-on-wiki'     => 'Uzado en $2',
-'globaltemplateusage-of-file'     => 'La jenaj aliaj vikioj utiligas ĉi tiun ŝablonon:',
 'globaltemplateusage-more'        => 'Vidi [[{{#Special:GlobalUsage}}/$1|plian ĝeneralan uzadon]] de ĉi tiu ŝablono.',
 'globaltemplateusage-filterlocal' => 'Ne montri lokan uzadon',
 
@@ -3746,5 +3736,6 @@ Entajpu la dosiernomon sen la prefikso "{{ns:file}}:"',
 'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|movis|movis}} paĝon $3 al $4 sen lasante alidirektilon',
 'logentry-move-move_redir'            => '$1 {{GENDER:$2|movis|movis}} paĝon $3 al $4 anstataŭigante alidirektilon',
 'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|movis|movis}} paĝon $3 al $4 anstataŭigante alidirektilon sen lasante alidirektilon',
+'newuserlog-byemail'                  => 'pasvorto sendita retpoŝte',
 
 );

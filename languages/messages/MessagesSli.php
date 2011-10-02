@@ -1263,12 +1263,8 @@ Siehe au de Liste dar [[Special:WantedCategories|gewienschta Heetgruppa]].',
 'activeusers-noresult' => 'Kenne Benutzer gefunda.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Neuoameldungs-Logbuch',
-'newuserlogpagetext'          => 'Dies ies a Logbuch fier neu erstellte Nutzerkonten.',
-'newuserlog-byemail'          => 'doas Passwurt wourde per E-Mail versandt',
-'newuserlog-create-entry'     => 'Nutzer wourde neu registriert',
-'newuserlog-create2-entry'    => 'erstallte neues Nutzerkonto „$1“',
-'newuserlog-autocreate-entry' => 'Nutzerkonto wurde automatisch erstallt',
+'newuserlogpage'     => 'Neuoameldungs-Logbuch',
+'newuserlogpagetext' => 'Dies ies a Logbuch fier neu erstellte Nutzerkonten.',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Nutzergruppen-Rechte',
@@ -1866,7 +1862,6 @@ Olle Transwiki-Import-Aksjonna waan eim [[Special:Log/import|Import-Logbuch]] pr
 # Patrol log
 'patrol-log-page'      => 'Kontroll-Logbichl',
 'patrol-log-header'    => 'Dies ies doas Kontroll-Logbuch.',
-'patrol-log-line'      => 'hoot $1 vu „$2“ ols kontrolliert markiert $3',
 'log-show-hide-patrol' => 'Kontroll-Logbichl $1',
 
 # Image deletion
@@ -2252,5 +2247,6 @@ De Eengabe muuß ohne dann Zusatz „{{ns:file}}:“ erfolga.',
 # New logging system
 'revdelete-restricted'   => 'Einschränkungen gelten au fier Administratorn',
 'revdelete-unrestricted' => 'Einschränkungen fier Administratorn uffgehobn',
+'newuserlog-byemail'     => 'doas Passwurt wourde per E-Mail versandt',
 
 );

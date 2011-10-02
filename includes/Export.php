@@ -354,8 +354,6 @@ class WikiExporter {
  * @ingroup Dump
  */
 class XmlDumpWriter {
-	protected $firstPageWritten = 0, $lastPageWritten = 0, $pageInProgress = 0;
-
 	/**
 	 * Returns the export schema version.
 	 * @return string
@@ -459,7 +457,6 @@ class XmlDumpWriter {
 		$title = Title::makeTitle( $row->page_namespace, $row->page_title );
 		$out .= '    ' . Xml::elementClean( 'title', array(), $title->getPrefixedText() ) . "\n";
 		$out .= '    ' . Xml::element( 'id', array(), strval( $row->page_id ) ) . "\n";
-		$this->pageInProgress = $row->page_id;
 		if ( $row->page_is_redirect ) {
 			$out .= '    ' . Xml::element( 'redirect', array() ) . "\n";
 		}
@@ -480,10 +477,6 @@ class XmlDumpWriter {
 	 */
 	function closePage() {
 		return "  </page>\n";
-		if ( !$this->firstPageWritten ) {
-			$this->firstPageWritten = $this->pageInProgress;
-		}
-		$this->lastPageWritten = $this->pageInProgress;
 	}
 
 	/**
@@ -711,7 +704,7 @@ class DumpOutput {
 
 	/**
 	 * Close the old file, and move it to a specified name.
-	 * Use this for the last piece of a file written out 
+	 * Use this for the last piece of a file written out
 	 * at specified checkpoints (e.g. every n hours).
 	 * @param $newname mixed File name. May be a string or an array with one element
 	 * @param $open bool If true, a new file with the old filename will be opened again for writing (default: false)
@@ -759,8 +752,10 @@ class DumpFileOutput extends DumpOutput {
 		}
 		if ( $newname ) {
 			fclose( $this->handle );
-			rename( $this->filename, $newname );
-			if ( $open ) {
+			if (! rename( $this->filename, $newname ) ) {
+				throw new MWException( __METHOD__ . ": rename of file {$this->filename} to $newname failed\n" );
+			}
+			elseif ( $open ) {
 				$this->handle = fopen( $this->filename, "wt" );
 			}
 		}
@@ -814,8 +809,10 @@ class DumpPipeOutput extends DumpFileOutput {
 		if ( $newname ) {
 			fclose( $this->handle );
 			proc_close( $this->procOpenResource );
-			rename( $this->filename, $newname );
-			if ( $open ) {
+			if (! rename( $this->filename, $newname ) ) {
+				throw new MWException( __METHOD__ . ": rename of file {$this->filename} to $newname failed\n" );
+			}
+			elseif ( $open ) {
 				$command = $this->command;
 				$command .=  " > " . wfEscapeShellArg( $this->filename );
 				$this->startCommand( $command );
@@ -873,8 +870,10 @@ class Dump7ZipOutput extends DumpPipeOutput {
 		if ( $newname ) {
 			fclose( $this->handle );
 			proc_close( $this->procOpenResource );
-			rename( $this->filename, $newname );
-			if ( $open ) {
+			if (! rename( $this->filename, $newname ) ) {
+				throw new MWException( __METHOD__ . ": rename of file {$this->filename} to $newname failed\n" );
+			}
+			elseif ( $open ) {
 				$command = "7za a -bd -si " . wfEscapeShellArg( $file );
 				// Suppress annoying useless crap from p7zip
 				// Unfortunately this could suppress real error messages too

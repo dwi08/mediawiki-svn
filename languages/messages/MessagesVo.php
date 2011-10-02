@@ -1614,12 +1614,8 @@ Protoks pestütöl: <tt>$1</tt>',
 'activeusers-noresult'   => 'Geban nonik petuvon.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Lised gebanijafamas',
-'newuserlogpagetext'          => 'Is palisedons jafams gebanas nulik.',
-'newuserlog-byemail'          => 'letavöd pesedon me pot leäktronik',
-'newuserlog-create-entry'     => 'Geban nulik',
-'newuserlog-create2-entry'    => 'ejafon kali nulik: $1',
-'newuserlog-autocreate-entry' => 'Kal itjäfidiko pejaföl',
+'newuserlogpage'     => 'Lised gebanijafamas',
+'newuserlogpagetext' => 'Is palisedons jafams gebanas nulik.',
 
 # Special:ListGroupRights
 'listgrouprights'                 => 'Gitäts gebanagrupa',
@@ -2321,9 +2317,6 @@ Pad luveratiko ninädon yümi lü bevüresodatopäd plödik in blägalised.',
 # Patrol log
 'patrol-log-page'      => 'Jenotalised zepamas',
 'patrol-log-header'    => 'Is lisedons revids pezepöl.',
-'patrol-log-line'      => 'Fomam: $1 pada: $2 pezepon $3',
-'patrol-log-auto'      => '(itjäfidik)',
-'patrol-log-diff'      => 'fomami: $1',
 'log-show-hide-patrol' => 'Jenotalised Zepamas: $1',
 
 # Image deletion
@@ -2767,9 +2760,8 @@ Kanol i [[Special:EditWatchlist|gebön redakametodi kösömik]].',
 'filepath'         => 'Ragivaluveg',
 'filepath-page'    => 'Ragiv:',
 'filepath-submit'  => 'Gololöd',
-'filepath-summary' => 'Pad patik at tuvon luvegi lölöfik ragiva. Magods pajonons ma fomät gudikün, ragivasots votik pamaifükons stedöfo kobü programs onsik.
-
-Penolös ragivanemi nen foyümot: „{{ns:file}}:“',
+'filepath-summary' => 'Pad patik at tuvon luvegi lölöfik ragiva.
+Magods pajonons ma fomät gudikün, ragivasots votik pamaifükons stedöfo kobü programs onsik.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'          => 'Sukön ragivis petelüköl',
@@ -2832,5 +2824,6 @@ Penolös ragivanemi nen foyümot: „{{ns:file}}:“',
 # New logging system
 'revdelete-restricted'   => 'miedükams pelonöfükons pro guvans',
 'revdelete-unrestricted' => 'miedükams pro guvans pemoükons',
+'newuserlog-byemail'     => 'letavöd pesedon me pot leäktronik',
 
 );

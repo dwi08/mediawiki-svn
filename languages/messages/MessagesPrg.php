@@ -1540,12 +1540,8 @@ Ebšlūzitai prōtokulai: <tt>$1</tt>',
 'activeusers-noresult'   => 'Ni aupalā di tērpautajans',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Nāunai tērpautajai',
-'newuserlogpagetext'          => 'Sta ast registerin stēisan nāunai teīkatan rekkenan stēisan tērpautajan',
-'newuserlog-byemail'          => 'kliptaswīrds tengīntan pra e-mail',
-'newuserlog-create-entry'     => 'nāunas tērpautajas rekkens',
-'newuserlog-create2-entry'    => 'ast teīkuns(si) rekkenan $1',
-'newuserlog-autocreate-entry' => 'Rekkens teīktan autōmatiskai',
+'newuserlogpage'     => 'Nāunai tērpautajai',
+'newuserlogpagetext' => 'Sta ast registerin stēisan nāunai teīkatan rekkenan stēisan tērpautajan',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Tērpautajan gruppin enwarīnsenei',
@@ -2205,9 +2201,6 @@ Sta ast drūwiminai dīlintan pra autengīnsenin prēi izwinandan pāusan iz kī
 # Patrol log
 'patrol-log-page'      => 'Izbandāsnas registerin',
 'patrol-log-header'    => 'Sta ast izbandātan wersiōnin regīsterin.',
-'patrol-log-line'      => 'ast pazentliwuns(si) $1 wersiōnin stesse $2 pāusan kāigi "izbandātan" $3',
-'patrol-log-auto'      => '(autōmatiskai)',
-'patrol-log-diff'      => 'wersiōni $1',
 'log-show-hide-patrol' => '$1 izbandāsnas registerin',
 
 # Image deletion
@@ -2739,5 +2732,6 @@ Enpeisāis zūrbrukes pabilīsnan šlāit "{{ns:file}}:" prefiksan.',
 # New logging system
 'revdelete-restricted'   => 'ensadinnais arāikinsenins per perwaldītajans',
 'revdelete-unrestricted' => 'āupausinais arāikinsenins per perwaldītajans',
+'newuserlog-byemail'     => 'kliptaswīrds tengīntan pra e-mail',
 
 );

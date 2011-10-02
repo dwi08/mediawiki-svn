@@ -845,8 +845,7 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'activeusers' => 'Hƿata brūcenda ȝetalu',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Brūcenda ȝesceaft ȝetalu',
-'newuserlog-create-entry' => 'Nīƿe brūcend',
+'newuserlogpage' => 'Brūcenda ȝesceaft ȝetalu',
 
 # Special:ListGroupRights
 'listgrouprights-group'           => 'Clīeƿen',
@@ -1119,10 +1118,6 @@ Bidde cēos ōðerne naman.',
 'siteuser'  => '{{SITENAME}}n brūcere $1',
 'others'    => 'ōðru',
 'anonusers' => '{{SITENAME}} {{PLURAL:$2|uncūþ brūcend|uncūðe brūcendas}} $1',
-
-# Patrol log
-'patrol-log-auto' => '(selffremmende)',
-'patrol-log-diff' => 'nīƿung $1',
 
 # Browsing diffs
 'previousdiff' => '← Ieldra ādiht',

@@ -14,6 +14,7 @@
  * @author Chenxiaoqino
  * @author Chenzw
  * @author Chinalace
+ * @author Dingyuang
  * @author Fantasticfears
  * @author Franklsf95
  * @author Gaoxuewei
@@ -279,7 +280,7 @@ $messages = array(
 'tog-enotifminoredits'        => '当页面有小修改时也发送电子邮件通知我',
 'tog-enotifrevealaddr'        => '在通知电子邮件中显示我的电子邮件地址',
 'tog-shownumberswatching'     => '显示监视用户数',
-'tog-oldsig'                  => '原签名预览：',
+'tog-oldsig'                  => '原有签名：',
 'tog-fancysig'                => '将签名以wiki文本对待（不产生自动链接）',
 'tog-externaleditor'          => '默认使用外部编辑器（供高级用户使用，需要在您的计算机上作出一些特别设置。[http://www.mediawiki.org/wiki/Manual:External_editors 更多信息。]）',
 'tog-externaldiff'            => '默认使用外部差异分析（供高级用户使用，需要在您的计算机上作出一些特别设置。[http://www.mediawiki.org/wiki/Manual:External_editors 更多信息。]）',
@@ -738,28 +739,32 @@ $2',
 'resetpass-temp-password'   => '临时密码：',
 
 # Special:PasswordReset
-'passwordreset'                => '重置密码',
-'passwordreset-text'           => '完成此窗体可以接收电子邮件提醒您帐户详细信息。',
-'passwordreset-legend'         => '重置密码',
-'passwordreset-disabled'       => '此wiki已经禁用密码重置。',
-'passwordreset-pretext'        => '{{PLURAL:$1||输入下面的数据块之一}}',
-'passwordreset-username'       => '用户名：',
-'passwordreset-domain'         => '域：',
-'passwordreset-email'          => '电子邮件地址：',
-'passwordreset-emailtitle'     => '在 {{SITENAME}} 的帐户详细信息',
-'passwordreset-emailtext-ip'   => '有人通过IP地址 $1 （也许是你）要求获取 {{SITENAME}} ($4)上相关账户的密码提示。{{PLURAL:$3|以下账户|此账户}}与该email地址关联：
+'passwordreset'                    => '重置密码',
+'passwordreset-text'               => '完成此窗体可以接收电子邮件提醒您帐户详细信息。',
+'passwordreset-legend'             => '重置密码',
+'passwordreset-disabled'           => '此wiki已经禁用密码重置。',
+'passwordreset-pretext'            => '{{PLURAL:$1||输入下面的数据块之一}}',
+'passwordreset-username'           => '用户名：',
+'passwordreset-domain'             => '域：',
+'passwordreset-capture'            => '查看生成的电子邮件吗？',
+'passwordreset-capture-help'       => '如果您选中此框，电子邮件（包括临时密码）将显示，并发送给用户。',
+'passwordreset-email'              => '电子邮件地址：',
+'passwordreset-emailtitle'         => '在 {{SITENAME}} 的帐户详细信息',
+'passwordreset-emailtext-ip'       => '有人通过IP地址 $1 （也许是你）要求获取 {{SITENAME}} ($4)上相关账户的密码提示。{{PLURAL:$3|以下账户|此账户}}与该email地址关联：
 
 $2
 
 {{PLURAL:$3|这个|这些}}临时密码会在{{PLURAL:$5|一天|$5 天}}内过期。请现在登入并设置新的密码。如果请求是其他人提出的，或者您记起你的旧密码并不再需要更改，您可以无视本条消息并继续使用旧有密码。',
-'passwordreset-emailtext-user' => '用户 $1 要求获取 {{SITENAME}} ($4)上你的账户的密码提示。{{PLURAL:$3|以下账户|此账户}}与该email地址关联：
+'passwordreset-emailtext-user'     => '用户 $1 要求获取 {{SITENAME}} ($4)上你的账户的密码提示。{{PLURAL:$3|以下账户|此账户}}与该email地址关联：
 
 $2
 
 {{PLURAL:$3|这个|这些}}临时密码会在{{PLURAL:$5|一天|$5 天}}内过期。请现在登入并设置新的密码。如果请求是其他人提出的，或者您记起你的旧密码并不再需要更改，您可以无视本条消息并继续使用旧有密码。',
-'passwordreset-emailelement'   => '用户名：$1
+'passwordreset-emailelement'       => '用户名：$1
 临时密码：$2',
-'passwordreset-emailsent'      => '已发送提醒电子邮件。',
+'passwordreset-emailsent'          => '已发送提醒电子邮件。',
+'passwordreset-emailsent-capture'  => '提醒电子邮件已发送，并在下面显示。',
+'passwordreset-emailerror-capture' => '生成的提醒电子邮件如下所示，但发送失败：$1',
 
 # Special:ChangeEmail
 'changeemail'          => '更改电子邮件地址',
@@ -884,9 +889,9 @@ $2
 'token_suffix_mismatch'            => "'''由于您用户端中的编辑令牌毁损了一些标点符号字元，为防止编辑的文字损坏，您的编辑已经被拒绝。'''
 这种情况通常出现于使用含有很多臭虫、以网络为主的匿名代理服务的时候。",
 'edit_form_incomplete'             => "'''编辑表单的某些部分没有到达服务器 ；请检查您的编辑内容是否完整并再试一次。'''",
-'editing'                          => '正在编辑 $1',
-'editingsection'                   => '编辑$1（段落）',
-'editingcomment'                   => '编辑$1中（新段落）',
+'editing'                          => '编辑“$1”',
+'editingsection'                   => '编辑“$1（段落）”',
+'editingcomment'                   => '编辑“$1（新段落）”',
 'editconflict'                     => '编辑冲突：$1',
 'explainconflict'                  => "有人在你开始编辑后更改了页面。
 上面的文字框内显示的是目前本页的内容。
@@ -912,16 +917,16 @@ $2
 'readonlywarning'                  => "'''警告：数据库被锁定以进行维护，所以您目前将无法保存您的修改。'''您或许希望将本段文字先复制并保存到文本文件，并在稍后进行修改。
 
 锁定数据库的管理员有如下解释：$1",
-'protectedpagewarning'             => "'''警告：此页已经被保护，只有拥有管理员权限的用户才可修改。'''
-最近的日志在下面提供以便参考：",
-'semiprotectedpagewarning'         => "'''注意：''' 本页面被保护，仅限注册用户编辑。
-最近的日志在下面提供以便参考：",
-'cascadeprotectedwarning'          => "'''警告：'''本页已经被保护，只有拥有管理员权限的用户才可修改，因为本页已被以下连锁保护的{{PLURAL:$1|一个|多个}}页面所包含：",
-'titleprotectedwarning'            => "'''警告：本页面已被保护，需要[[Special:ListGroupRights|指定权限]]方可创建。'''
-最近的日志在下面提供以便参考：",
-'templatesused'                    => '在这个页面上使用的{{PLURAL:$1|模板|模板}}有：',
-'templatesusedpreview'             => '此次预览中使用的{{PLURAL:$1|模板|模板}}有：',
-'templatesusedsection'             => '在这个段落上使用的{{PLURAL:$1|模板|模板}}有：',
+'protectedpagewarning'             => "'''警告：本页面已被保护，只有拥有管理员权限的用户可以编辑。'''
+下面提供最后的日志条目以参考：",
+'semiprotectedpagewarning'         => "'''注意：''' 本页面已被保护，只有注册用户可以编辑。
+下面提供最后的日志条目以参考：",
+'cascadeprotectedwarning'          => "'''警告：'''本页面已被保护，只有拥有管理员权限的用户可以编辑，因为其包含于下列受连锁保护的{{PLURAL:$1|页面}}：",
+'titleprotectedwarning'            => "'''警告：本页面已被保护，创建本页面需要[[Special:ListGroupRights|特定权限]]。'''
+下面提供最后的日志条目以参考：",
+'templatesused'                    => '该页面使用的{{PLURAL:$1|模板}}：',
+'templatesusedpreview'             => '本预览使用的{{PLURAL:$1|模板}}：',
+'templatesusedsection'             => '该段落使用的{{PLURAL:$1|模板}}：',
 'distanttemplatesused'             => '间接使用于该页的{{PLURAL:$1|template|模板}}：',
 'distanttemplatesusedpreview'      => '间接使用于该预览的{{PLURAL:$1|template|模板}}：',
 'distanttemplatesusedsection'      => '间接使用于该章节的{{PLURAL:$1|template|模板}}：',
@@ -931,16 +936,16 @@ $2
 'edittools'                        => '<!-- 这里的文字将显示在编辑和上传表单下方。 -->',
 'nocreatetitle'                    => '创建页面受限',
 'nocreatetext'                     => '{{SITENAME}}限制了创建新页面的功能。你可以返回并编辑已有的页面，或者[[Special:UserLogin|登录或创建新账户]]。',
-'nocreate-loggedin'                => '您并无权限去创建新页面。',
-'sectioneditnotsupported-title'    => '不支持编辑段落',
-'sectioneditnotsupported-text'     => '此页面不支持编辑段落。',
+'nocreate-loggedin'                => '你没有权限创建新页面。',
+'sectioneditnotsupported-title'    => '段落编辑不支持',
+'sectioneditnotsupported-text'     => '本页面不支持段落编辑。',
 'permissionserrors'                => '权限错误',
-'permissionserrorstext'            => '根据以下的{{PLURAL:$1|原因|原因}}，您并无权限去做以下的动作：',
-'permissionserrorstext-withaction' => '根据下列{{PLURAL:$1|原因|原因}}，你无权进行$2操作：',
+'permissionserrorstext'            => '根据下列{{PLURAL:$1|原因}}，你没有权限进行本操作：',
+'permissionserrorstext-withaction' => '根据下列{{PLURAL:$1|原因}}，你没有权限$2：',
 'recreate-moveddeleted-warn'       => "'''警告：你正在重新创建曾经被删除的页面。'''
 
 你应该考虑继续编辑本页是否合适。这里提供本页的删除和移动记录以供参考：",
-'moveddeleted-notice'              => '本页已被删除。下面提供本页的删除和移动记录以供参考。',
+'moveddeleted-notice'              => '本页面已被删除。下面提供本页的删除和移动日志以供参考。',
 'log-fulllog'                      => '查看完整日志',
 'edit-hook-aborted'                => '编辑被钩取消。
 它并无给出解释。',
@@ -980,14 +985,14 @@ $2
 
 # History pages
 'viewpagelogs'           => '查看本页面的所有记录',
-'nohistory'              => '此页没有修订记录。',
-'currentrev'             => '最新修订版本',
-'currentrev-asof'        => '$1的最后修订版本',
-'revisionasof'           => '$1的修订版本',
-'revision-info'          => '$1$2的修订版本',
-'previousrevision'       => '←上一修订版本',
-'nextrevision'           => '下一修订版本→',
-'currentrevisionlink'    => '最新修订版本',
+'nohistory'              => '本页面没有编辑历史记录。',
+'currentrev'             => '最后版本',
+'currentrev-asof'        => '$1的最后版本',
+'revisionasof'           => '$1的版本',
+'revision-info'          => '$1$2的版本',
+'previousrevision'       => '←上一版本',
+'nextrevision'           => '下一版本→',
+'currentrevisionlink'    => '最后版本',
 'cur'                    => '当前',
 'next'                   => '后继',
 'last'                   => '先前',
@@ -1165,7 +1170,6 @@ $1",
 'searchmenu-legend'                => '搜索选项',
 'searchmenu-exists'                => "'''本wiki上有名为“[[:$1]]”的页面。'''",
 'searchmenu-new'                   => "'''在本wiki上新建名为“[[:$1]]”的页面！'''",
-'searchmenu-new-nocreate'          => '“$1”是一个无效的页面名称或无法被您创建。',
 'searchhelp-url'                   => 'Help:目录',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|去浏览以此为首的页面]]',
 'searchprofile-articles'           => '内容页面',
@@ -1300,6 +1304,7 @@ $1",
 'yourrealname'                  => '真实姓名：',
 'yourlanguage'                  => '语言：',
 'yourvariant'                   => '内容语言变种：',
+'prefs-help-variant'            => '您希望用于显示本站内容的语种或拼写语系。',
 'yournick'                      => '新签名：',
 'prefs-help-signature'          => '在讨论页上的发言应该使用“<nowiki>~~~~</nowiki>”签名，它会被自动转换成你的签名并附带时间戳。',
 'badsig'                        => '错误的原始签名。请检查HTML标签。',
@@ -1441,6 +1446,7 @@ $1",
 'right-siteadmin'             => '锁定和解除锁定数据库',
 'right-override-export-depth' => '导出含有五层深度链接页面之页面',
 'right-sendemail'             => '发电子邮件给其他用户',
+'right-passwordreset'         => '重置密码或用户（[[Special:PasswordReset|特殊页面]]）',
 
 # User rights log
 'rightslog'                  => '用户权限日志',
@@ -1739,7 +1745,7 @@ $1',
 'filehist-filesize'                 => '文件大小',
 'filehist-comment'                  => '注解',
 'filehist-missing'                  => '文件遗失',
-'imagelinks'                        => '文件链接',
+'imagelinks'                        => '文件使用量',
 'linkstoimage'                      => '以下的$1个页面链接到本文件：',
 'linkstoimage-more'                 => '多于$1个页面连接到这个文件。
 下面的列表只列示了连去这个文件的最首$1个页面。
@@ -1998,12 +2004,8 @@ $1',
 'activeusers-noresult'   => '找不到用户。',
 
 # Special:Log/newusers
-'newuserlogpage'              => '用户创建日志',
-'newuserlogpagetext'          => '本日志是显示新注册用户的日志',
-'newuserlog-byemail'          => '密码已由电子邮件发出',
-'newuserlog-create-entry'     => '新用户账户',
-'newuserlog-create2-entry'    => '已创建$1的新账户',
-'newuserlog-autocreate-entry' => '已自动创建帐户',
+'newuserlogpage'     => '用户创建日志',
+'newuserlogpagetext' => '本日志是显示新注册用户的日志',
 
 # Special:ListGroupRights
 'listgrouprights'                      => '用户组权限',
@@ -2185,8 +2187,8 @@ $UNWATCHURL
 请返回先前的页面，重新载入该页面，然后重试。',
 
 # Protect
-'protectlogpage'              => '保护记录',
-'protectlogtext'              => '下面是页面保护的更改的列表。 ！N ！当前正在运行的页保护列表，请参阅 [[Special:ProtectedPages|保护页列表]]。',
+'protectlogpage'              => '保护日志',
+'protectlogtext'              => '以下是页面保护的更改日志。[[Special:ProtectedPages|保护页列表]]列出目前存在的页面保护。',
 'protectedarticle'            => '保护“[[$1]]”',
 'modifiedarticleprotection'   => '已更改“[[$1]]”的保护等级',
 'unprotectedarticle'          => '删除保护从 "[[$1]]"',
@@ -2312,7 +2314,7 @@ $1',
 'sp-contributions-blocklog'            => '封禁记录',
 'sp-contributions-deleted'             => '已删除的用户贡献',
 'sp-contributions-uploads'             => '上传',
-'sp-contributions-logs'                => '所有记录',
+'sp-contributions-logs'                => '日志',
 'sp-contributions-talk'                => '讨论',
 'sp-contributions-userrights'          => '用户权限管理',
 'sp-contributions-blocked-notice'      => '这位用户现时正在被封锁中。
@@ -2397,7 +2399,7 @@ $1',
 'unblocked-range'                 => '$1 已畅通',
 'unblocked-id'                    => '封禁$1已被解除',
 'blocklist'                       => '被阻止的用户',
-'ipblocklist'                     => '封禁用户',
+'ipblocklist'                     => '被封禁用户',
 'ipblocklist-legend'              => '查找已封禁用户',
 'blocklist-userblocks'            => '隐藏帐户块',
 'blocklist-tempblocks'            => '隐藏临时块',
@@ -2829,9 +2831,6 @@ $1被封禁的理由是：“$2”',
 # Patrol log
 'patrol-log-page'      => '巡查日志',
 'patrol-log-header'    => '这是已巡查的修订版本的日志。',
-'patrol-log-line'      => '标记$2的$1已巡查$3',
-'patrol-log-auto'      => '（自动）',
-'patrol-log-diff'      => '修订版本$1',
 'log-show-hide-patrol' => '$1巡查纪录',
 
 # Image deletion
@@ -2862,7 +2861,7 @@ $1',
 'svg-long-desc'          => 'SVG文件，图像大小：$1×$2像素，文件大小：$3',
 'show-big-image'         => '完整分辨率',
 'show-big-image-preview' => '此预览的大小：$1.',
-'show-big-image-other'   => '其他解决方案：$1。',
+'show-big-image-other'   => '其他{{PLURAL:$2||}}解决方案：$1。',
 'show-big-image-size'    => '$1×$2像素',
 'file-info-gif-looped'   => '循环',
 'file-info-gif-frames'   => '$1帧',
@@ -2881,6 +2880,13 @@ $1',
 'ilsubmit'              => '搜索',
 'bydate'                => '按日期',
 'sp-newimages-showfrom' => '从$1 $2开始显示新文件',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|$1秒|$1秒}}',
+'minutes' => '{{PLURAL:$1|$1分钟|$1分钟}}',
+'hours'   => '{{PLURAL:$1|$1小时|$1小时}}',
+'days'    => '{{PLURAL:$1|$1天|$1天}}',
+'ago'     => '$1前',
 
 # Bad image list
 'bad_image_list' => '请按照下列格式编写：
@@ -3126,9 +3132,9 @@ Variants for Chinese language
 'exif-orientation-3' => '旋转180°',
 'exif-orientation-4' => '垂直翻转',
 'exif-orientation-5' => '逆时针旋转90°并垂直翻转',
-'exif-orientation-6' => '顺时针旋转90°',
+'exif-orientation-6' => '逆时针旋转90°',
 'exif-orientation-7' => '顺时针旋转90°并垂直翻转',
-'exif-orientation-8' => '逆时针旋转90°',
+'exif-orientation-8' => '顺时针旋转90°',
 
 'exif-planarconfiguration-1' => '矮胖格式',
 'exif-planarconfiguration-2' => '平面格式',
@@ -3527,9 +3533,7 @@ MediaWiki是基于使用目的而加以发布，然而不负任何担保责任�
 'filepath'         => '文件路径',
 'filepath-page'    => '文件名：',
 'filepath-submit'  => '提交',
-'filepath-summary' => '此特殊页面返回文件的完整路径。图像会以完整的分辨率显示，其它的文件类型亦将直接通过关联的应用程序打开。
-
-请输入文件名，不要包含“{{ns:file}}:”前缀。',
+'filepath-summary' => '此特殊页面返回文件的完整路径。图像会以完整的分辨率显示，其它的文件类型亦将直接通过关联的应用程序打开。',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => '搜索重复文件',
@@ -3589,37 +3593,35 @@ MediaWiki是基于使用目的而加以发布，然而不负任何担保责任�
 'tags-hitcount'           => '$1次更改',
 
 # Special:ComparePages
-'comparepages'                => '比较页面',
+'comparepages'                => '对比页面',
 'compare-selector'            => '比较页面的修订',
 'compare-page1'               => '第1页',
 'compare-page2'               => '第2页',
 'compare-rev1'                => '修订版本1',
 'compare-rev2'                => '修订版本2',
-'compare-submit'              => '比较',
+'compare-submit'              => '对比',
 'compare-invalid-title'       => '您指定的标题无效。',
 'compare-title-not-exists'    => '您指定的标题不存在。',
 'compare-revision-not-exists' => '您指定的修订不存在。',
 
 # Special:GlobalFileUsage
-'globalfileusage'             => '全域文件使用情况',
-'globalfileusage-for'         => '$1的全域文件使用情况',
+'globalfileusage'             => '全局文件用途',
+'globalfileusage-for'         => '“$1”的全局文件用途',
 'globalfileusage-desc'        => '查看全域文件使用情况的[[Special:GlobalFileUsage|特殊页面]]',
 'globalfileusage-ok'          => '搜索',
 'globalfileusage-text'        => '搜索全域文件使用',
 'globalfileusage-no-results'  => '[[$1]]并未在其他wiki上使用',
 'globalfileusage-on-wiki'     => '使用于$2',
-'globalfileusage-of-file'     => '下列的其他wiki使用了该文件：',
-'globalfileusage-more'        => '查看该文件[[{{#Special:GlobalUsage}}/$1|更多全域使用情况]]。',
+'globalfileusage-more'        => '查看本文件的[[{{#Special:GlobalUsage}}/$1|更多全局用途]]。',
 'globalfileusage-filterlocal' => '不显示本地使用',
 
 # Special:GlobalTemplateUsage
 'globaltemplateusage'             => '全域模板使用',
-'globaltemplateusage-for'         => '$1的全域模板使用',
+'globaltemplateusage-for'         => '“$1”的全局模板用途',
 'globaltemplateusage-ok'          => '搜索',
 'globaltemplateusage-text'        => '搜索全域模板使用',
 'globaltemplateusage-no-results'  => '[[$1]]并未在其他wiki上使用。',
 'globaltemplateusage-on-wiki'     => '使用于$2',
-'globaltemplateusage-of-file'     => '下列的其他wiki使用该模板：',
 'globaltemplateusage-more'        => '查看该模板的 [[{{#Special:GlobalUsage}}/$1|更多全域使用情况]]',
 'globaltemplateusage-filterlocal' => '不显示本地使用',
 
@@ -3650,11 +3652,35 @@ MediaWiki是基于使用目的而加以发布，然而不负任何担保责任�
 'sqlite-no-fts'  => '不带全文搜索的版本$1',
 
 # New logging system
+'logentry-delete-delete'              => '$1{{GENDER:$2|已删除}}$3',
+'logentry-delete-restore'             => '$1已{{GENDER:$2|恢复}}$3',
+'logentry-delete-event'               => '$1{{GENDER:$2|已更改}}$3中{{PLURAL:$5|$5项日志|$5项日志}}的可见性：$4',
+'logentry-delete-revision'            => '$1{{GENDER:$2|已更改}}$3中{{PLURAL:$5|$5个历史版本|$5个历史版本}}的可见性：$4',
+'logentry-delete-event-legacy'        => '$1{{GENDER:$2|已更改}}$3中日志的可见性',
+'logentry-delete-revision-legacy'     => '$1{{GENDER:$2|已更改}}$3中历史版本的可见性',
+'logentry-suppress-delete'            => '$1{{GENDER:$2|已隐藏}}页面$3',
+'logentry-suppress-event'             => '$1{{GENDER:$2|已不可见地更改}}$3中{{PLURAL:$5|$5项日志|$5项日志}}的可见性：$4',
+'logentry-suppress-revision'          => '$1{{GENDER:$2|已不可见地更改}}$3中{{PLURAL:$5|$5个历史版本|$5个历史版本}}的可见性：$4',
+'logentry-suppress-event-legacy'      => '$1{{GENDER:$2|已不可见地更改}}$3中日志的可见性',
+'logentry-suppress-revision-legacy'   => '$1{{GENDER:$2|已不可见地更改}}$3中历史版本的可见性',
+'revdelete-content-hid'               => '隐藏内容',
+'revdelete-summary-hid'               => '隐藏编辑摘要',
+'revdelete-uname-hid'                 => '隐藏用户名',
+'revdelete-content-unhid'             => '恢复内容',
+'revdelete-summary-unhid'             => '恢复编辑摘要',
+'revdelete-uname-unhid'               => '恢复用户名',
 'revdelete-restricted'                => '已将限制应用到管理员',
 'revdelete-unrestricted'              => '已移除对管理员的限制',
 'logentry-move-move'                  => '$1{{GENDER:$2|移动}}$3页面至$4',
 'logentry-move-move-noredirect'       => '$1{{GENDER:$2|移动}}$3页面至$4，不留重定向',
 'logentry-move-move_redir'            => '$1通过重定向{{GENDER:$2|移动}}$3页面至$4',
 'logentry-move-move_redir-noredirect' => '$1通过重定向{{GENDER:$2|移动}}$3页面至$4，不留重定向',
+'logentry-patrol-patrol'              => '$1将$3的修订版本$4{{GENDER:$2|标记为}}已巡查',
+'logentry-patrol-patrol-auto'         => '$1将$3的修订版本$4{{GENDER:$2|标记为}}已巡查（自动）',
+'logentry-newusers-newusers'          => '$1{{GENDER:$2|创建}}账户',
+'logentry-newusers-create'            => '$1{{GENDER:$2|创建}}账户',
+'logentry-newusers-create2'           => '$1{{GENDER:$2|创建}}{{GENDER:$4|账户}}$3',
+'logentry-newusers-autocreate'        => '$1已{{GENDER:$2|自动创建}}帐户 ‎',
+'newuserlog-byemail'                  => '密码已由电子邮件发出',
 
 );

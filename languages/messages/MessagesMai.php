@@ -985,7 +985,6 @@ $3 द्वारा देल कारण अछि ''$2''",
 'searchmenu-legend'                => 'खोज विकल्प',
 'searchmenu-exists'                => "'''ऐ विकीपर एकटा पन्ना अछि \"[[:\$1]]\" नामसँ।'''",
 'searchmenu-new'                   => "''' पन्ना निर्माण \"[[:\$1]]\" ऐ विकीपर !'''",
-'searchmenu-new-nocreate'          => '"$1" एकटा अमान्य पन्ना-नाम अछि वा अहाँ द्वारा निर्माणक योग्य नै अछि।',
 'searchhelp-url'                   => 'Help: विषय सूची',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|ऐ उपसर्गक पन्ना सभकेँ देखू]]',
 'searchprofile-articles'           => 'अनुक्रम पन्ना सभ',
@@ -1851,12 +1850,8 @@ $1',
 'activeusers-noresult'   => 'कोनो प्रयोक्ता नै भेटल',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'प्रयोक्ता रचना वृत्तलेख',
-'newuserlogpagetext'          => 'ई प्रयोक्ता निर्माणक वृत्तलेख अछि।',
-'newuserlog-byemail'          => 'कूटशब्द ई-पत्र द्वारा पठाएल गेल',
-'newuserlog-create-entry'     => 'नव प्रयोक्ता खाता',
-'newuserlog-create2-entry'    => 'नव खाता $1 बनेलौं',
-'newuserlog-autocreate-entry' => 'खाता स्वचालित रूपेँ बनल',
+'newuserlogpage'     => 'प्रयोक्ता रचना वृत्तलेख',
+'newuserlogpagetext' => 'ई प्रयोक्ता निर्माणक वृत्तलेख अछि।',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'प्रयोक्ता संवर्ग अधिकार',
@@ -2680,9 +2675,6 @@ $1 एकर प्रतिबन्धक कारण अछि : "$2"',
 # Patrol log
 'patrol-log-page'      => 'संचालन वृत्तलेख',
 'patrol-log-header'    => 'ई संचालित संशोधन सभक वृत्तलेख छी।',
-'patrol-log-line'      => 'चेन्हासी देल $2 क $1 संचालित $3',
-'patrol-log-auto'      => '(स्वचालित)',
-'patrol-log-diff'      => 'संशोधन $1',
 'log-show-hide-patrol' => '$1 निरीक्षण वृत्तलेख',
 
 # Image deletion
@@ -2747,19 +2739,19 @@ $1',
 'metadata-collapse' => 'विस्तृत विवरण नुकाउ',
 'metadata-fields'   => 'चित्र प्रदत्तांश क्षेत्र सभ जे ऐ संदेशमे संकलित अछि चित्र पन्ना प्रदर्शनमे लेल जाएत जखन प्रदत्तांश सारणी क्षतिग्रस्त हएत।  
 आन सभ पूर्वनिधारित रूपेँ नुका जाएत।
-* बनाउ
-* प्रारूप
-* मूल समए काल
-* प्रायोगिक काल
-* एफ. संख्या
-* आइ.एस.ओ. गति प्रमाण
-* दृश्यपथ नाप
-* कलाकार
-* सर्वाधिकार
-* चित्र विवरण
-* जी.पी.एस. देशांतर
-* जी.पी.एस.अक्षांश
-* जी.पी.एस. लम्बाकार',
+* make
+* model
+* datetimeoriginal
+* exposuretime
+* fnumber
+* isospeedratings
+* focallength
+* artist
+* copyright
+* imagedescription
+* gpslatitude
+* gpslongitude
+* gpsaltitude',
 
 # EXIF tags
 'exif-imagewidth'                  => 'चौड़ाई',
@@ -3360,9 +3352,7 @@ $1',
 'filepath-page'    => 'संचिका',
 'filepath-submit'  => 'जाऊ',
 'filepath-summary' => 'ई विशेष पन्ना संचिकाक पूर्ण रस्ता देखबैत अछि।
-चित्र सभ पूर्ण आकारमे देखाएल जाइत अछि, दोसर संचिका प्रकार चालित होइए सोझे सम्बन्धित संविधि द्वारा।
-
-संचिका नाम दर्ज करू बिन "{{ns:file}}:" उपसर्गक।',
+चित्र सभ पूर्ण आकारमे देखाएल जाइत अछि, दोसर संचिका प्रकार चालित होइए सोझे सम्बन्धित संविधि द्वारा।',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'द्वितीयक संचिका ताकू',
@@ -3441,7 +3431,6 @@ $1',
 'globalfileusage-text'        => 'सार्वत्रिक संचिका प्रयोग ताकू',
 'globalfileusage-no-results'  => '[[$1]] दोसर विकी सभ पर प्रयोग नै होइए।',
 'globalfileusage-on-wiki'     => '$2 पर प्रयोग',
-'globalfileusage-of-file'     => 'ई दोसर विकी सभ ऐ संचिकाक प्रयोग करैए:',
 'globalfileusage-more'        => 'देखू [[{{#Special:GlobalUsage}}/$1|आर सार्वत्रिक प्रयोग]] ऐ संचिकाक।',
 'globalfileusage-filterlocal' => 'स्थानीय प्रयोग नै देखाउ',
 
@@ -3452,7 +3441,6 @@ $1',
 'globaltemplateusage-text'        => 'सार्वत्रिक नमूना प्रयोग ताकू',
 'globaltemplateusage-no-results'  => '[[$1]] दोसर विकी सभ पर प्रयोग नै होइए।',
 'globaltemplateusage-on-wiki'     => '$2 पर प्रयोग',
-'globaltemplateusage-of-file'     => 'ई दोसर विकी सभ ऐ संचिकाक प्रयोग करैए:',
 'globaltemplateusage-more'        => 'देखू [[{{#Special:GlobalUsage}}/$1|आर सार्वत्रिक प्रयोग]] ऐ नमूनाक।',
 'globaltemplateusage-filterlocal' => 'स्थानीय प्रयोग नै देखाउ',
 
@@ -3485,5 +3473,6 @@ $1',
 # New logging system
 'revdelete-restricted'   => 'संचालक लेल प्रायोगिक प्रतिबन्ध',
 'revdelete-unrestricted' => 'संचालक लेल हटाओल प्रतिबन्ध',
+'newuserlog-byemail'     => 'कूटशब्द ई-पत्र द्वारा पठाएल गेल',
 
 );

@@ -14,10 +14,9 @@ production.
 * Removed SkinTemplateSetupPageCss hook; use BeforePageDisplay instead.
 * (bug 27132) movefile right granted by default to registered users.
 * Default cookie lifetime ($wgCookieExpiration) is increased to 180 days.
+* (bug 31204) Removed old user.user_options
 
 === New features in 1.19 ===
-* (bug 30497) Add client-nojs and client-js classes on document element
-  to let styles easily hide or show things based on general JS availability
 * (bug 19838) Possibility to get all interwiki prefixes if the interwiki
   cache is used.
 * $wgDnsBlacklistUrls now accepts an array with url and key as the
@@ -61,6 +60,16 @@ production.
   to stop it from replace an already existing default sort, and suppress error.
 * (bug 18578) Rewrote revision delete related messages to allow better
   localisation
+* (bug 30364) LanguageConverter now depends on the page content language
+  instead of the wiki content language
+* Jump links will now be usable in css-capable browsers instead of only
+  in outdated text browsers.
+* New common*.css files usable by skins instead of having to copy piles
+  of generic styles from MonoBook or Vector's css.
+* Some deprecated presentational html attributes will now be automatically converted to css.
+* (bug 31233) New OutputPage::addJsConfigVars() method to make the output page specific
+  mw.config map extendable.
+* (bug 31297) Add support for namespaces in Special:RecentChanges subpage filter syntax.
 
 === Bug fixes in 1.19 ===
 * $wgUploadNavigationUrl should be used for file redlinks if
@@ -92,6 +101,11 @@ production.
 * Allowing moving the associated talk pages of subpages even if the base page
   has no subpage.
 * (bug 30907) Special:Unusedcategories should sort ascendingly.
+* Per page edit-notices now work in namespaces without subpages enabled.
+* (bug 30245) Use the correct way to construct a log page title
+* (bug 31081) $wgEnotifUseJobQ causes many unnecessary jobs to be queued
+* (bug 30202) File names are now restricted on upload to 240 bytes, because of
+  restrictions on some of the database fields.
 
 === API changes in 1.19 ===
 * (bug 19838) siprop=interwikimap can now use the interwiki cache.
@@ -115,6 +129,7 @@ changes to languages because of Bugzilla reports.
 
 * Uighur (Latin) (ug-latn) was incorrectly marked as right-to-left language.
 * (bug 30217) Make pt-br a fallback of pt
+* (bug 31193) Set fallback language of Assamese from Bengali to English
 
 === Other changes in 1.19 ===
 * jquery.mwPrototypes module was renamed to jquery.mwExtension.

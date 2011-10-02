@@ -2098,12 +2098,8 @@ Također pogledajte [[Special:WantedCategories|tražene kategorije]].',
 'activeusers-noresult'   => 'Niti jedan suradnik nije nađen.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Evidencija novih suradnika',
-'newuserlogpagetext'          => 'Ispod je popis nedavno otvorenih suradničkih imena.',
-'newuserlog-byemail'          => 'lozinka poslana e-poštom',
-'newuserlog-create-entry'     => 'Novi suradnik',
-'newuserlog-create2-entry'    => 'otvoren je novi suradnički račun $1',
-'newuserlog-autocreate-entry' => 'Automatski stvoren račun',
+'newuserlogpage'     => 'Evidencija novih suradnika',
+'newuserlogpagetext' => 'Ispod je popis nedavno otvorenih suradničkih imena.',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Prava suradničkih skupina',
@@ -2900,9 +2896,6 @@ Razlog je vjerojatno vanjska poveznica koja se nalazi na crnom popisu.',
 # Patrol log
 'patrol-log-page'      => 'Evidencija pregledavanja promjena',
 'patrol-log-header'    => 'Ovo su evidencije patroliranih izmjena.',
-'patrol-log-line'      => 'promjena broj $1 stranice $2 pregledana $3',
-'patrol-log-auto'      => '(automatski pregledano)',
-'patrol-log-diff'      => 'promjena $1',
 'log-show-hide-patrol' => '$1 evidenciju patroliranja',
 
 # Image deletion
@@ -3565,9 +3558,8 @@ Trebali ste primiti [{{SERVER}}{{SCRIPTPATH}}/COPYING kopiju GNU opće javne lic
 'filepath'         => 'Putanja datoteke',
 'filepath-page'    => 'Datoteka:',
 'filepath-submit'  => 'Idi',
-'filepath-summary' => "Ova posebna stranica daje Vam kompletnu putanju do neke datoteke. Slike se na taj način prikazuju u punoj rezoluciji, a drugi tipovi datoteka se otvaraju na klik (kako je već namješteno u Vašem operacijskom sustavu).
-
-Unesite ime datoteke bez predmetka (''prefiksa'') imenskog prostora \"{{ns:file}}:\".",
+'filepath-summary' => 'Ova posebna stranica daje Vam kompletnu putanju do neke datoteke.
+Slike se na taj način prikazuju u punoj rezoluciji, a drugi tipovi datoteka se otvaraju na klik (kako je već namješteno u Vašem operacijskom sustavu).',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Traži kopije datoteka',
@@ -3662,5 +3654,6 @@ Unesite ime datoteke bez predmetka (''prefiksa'') imenskog prostora \"{{ns:file}
 # New logging system
 'revdelete-restricted'   => 'primijenjeno ograničenje za administratore',
 'revdelete-unrestricted' => 'uklonjeno ograničenje za administratore',
+'newuserlog-byemail'     => 'lozinka poslana e-poštom',
 
 );

@@ -52,6 +52,8 @@ $digitTransformTable = array(
 	'9' => '೯', # &#x0cef;
 );
 
+$digitGroupingPattern = "##,##,###";
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'ಲಿಂಕುಗಳ ಕೆಳಗೆ ಗೆರೆ ತೋರಿಸಿ',
@@ -1309,8 +1311,7 @@ $2',
 'activeusers' => 'ಸಕ್ರಿಯ ಸದಸ್ಯರ ಪಟ್ಟಿ',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'ಸದಸ್ಯತ್ವ ಸೃಷ್ಟಿಗಳ ದಾಖಲೆ',
-'newuserlog-create-entry' => 'ಹೊಸ ಸದಸ್ಯತ್ವ ಖಾತೆ',
+'newuserlogpage' => 'ಸದಸ್ಯತ್ವ ಸೃಷ್ಟಿಗಳ ದಾಖಲೆ',
 
 # Special:ListGroupRights
 'listgrouprights'              => 'ಬಳಕೆದಾರ ಗುಂಪು ಹಕ್ಕುಗಳು',
@@ -1741,9 +1742,6 @@ $2',
 'others'        => 'ಇತರರು',
 'siteusers'     => '{{SITENAME}} {{PLURAL:$2|ಸದಸ್ಯ|ಸದಸ್ಯರು}} $1',
 'creditspage'   => 'ಪುಟದ ಗೌರವಗಳು',
-
-# Patrol log
-'patrol-log-diff' => 'ಆವೃತ್ತಿ $1',
 
 # Image deletion
 'deletedrevision'       => 'ಹಳೆ ಆವೃತ್ತಿ $1 ಅನ್ನು ಅಳಿಸಲಾಗಿದೆ',

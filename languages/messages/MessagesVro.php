@@ -1286,8 +1286,7 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'listusers-noresult' => 'Olõ-s pruukjit.',
 
 # Special:Log/newusers
-'newuserlogpage'          => 'Vahtsõq pruukjaq',
-'newuserlog-create-entry' => 'Vahtsõnõ pruukja',
+'newuserlogpage' => 'Vahtsõq pruukjaq',
 
 # Special:ListGroupRights
 'listgrouprights'         => 'Pruukjarühmi õigusõq',
@@ -1842,8 +1841,6 @@ Kokkovõttõria pääle või kirotaq tagasivõtmisõ põhjusõ.',
 
 # Patrol log
 'patrol-log-page' => 'Muutmiisi ülekaemiisi nimekiri',
-'patrol-log-line' => 'märke lehe $2 muutmisõ $1 ülekaetus $3',
-'patrol-log-auto' => '(automaatnõ)',
 
 # Image deletion
 'deletedrevision'    => 'Kistutõdi ärq vana kujo $1.',

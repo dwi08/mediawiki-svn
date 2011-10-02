@@ -673,18 +673,21 @@ Vläicht hutt Dir Äert Passwuert scho geännert oder en neit temporäert Passwu
 'resetpass-temp-password'   => 'Temporäert Passwuert:',
 
 # Special:PasswordReset
-'passwordreset'              => 'Passwuert zrécksetzen',
-'passwordreset-text'         => 'Fëllt dëse Formulaire aus fir eng E-Mail Erënnerung vun den Detailer vun Ärem Benotzerkont ze kréien.',
-'passwordreset-legend'       => 'Passwuert zrécksetzen',
-'passwordreset-disabled'     => "D'Zerécksetze vum Passwuert ass op dëser Wiki ausgeschalt.",
-'passwordreset-pretext'      => '{{PLURAL:$1||Gitt eng vun dësen Donnéeën an}}',
-'passwordreset-username'     => 'Benotzernumm:',
-'passwordreset-domain'       => 'Domaine:',
-'passwordreset-email'        => 'E-Mailadress:',
-'passwordreset-emailtitle'   => 'Detailer vum Benotzerkont op{{SITENAME}}',
-'passwordreset-emailelement' => 'Benotzernumm: $1
+'passwordreset'                    => 'Passwuert zrécksetzen',
+'passwordreset-text'               => 'Fëllt dëse Formulaire aus fir eng E-Mail Erënnerung vun den Detailer vun Ärem Benotzerkont ze kréien.',
+'passwordreset-legend'             => 'Passwuert zrécksetzen',
+'passwordreset-disabled'           => "D'Zerécksetze vum Passwuert ass op dëser Wiki ausgeschalt.",
+'passwordreset-pretext'            => '{{PLURAL:$1||Gitt eng vun dësen Donnéeën an}}',
+'passwordreset-username'           => 'Benotzernumm:',
+'passwordreset-domain'             => 'Domaine:',
+'passwordreset-capture'            => "D'Mail kucken?",
+'passwordreset-email'              => 'E-Mailadress:',
+'passwordreset-emailtitle'         => 'Detailer vum Benotzerkont op{{SITENAME}}',
+'passwordreset-emailelement'       => 'Benotzernumm: $1
 Temporärt Passwuert: $2',
-'passwordreset-emailsent'    => 'Eng Erënnerungs-Mail gouf geschéckt.',
+'passwordreset-emailsent'          => 'Eng Erënnerungs-Mail gouf geschéckt.',
+'passwordreset-emailsent-capture'  => "D'Erënnerungsmail gouf esou geschéckt wéi Dir se hei drënner gesitt.",
+'passwordreset-emailerror-capture' => "D'Erënnerungsmail gouf esou geschéckt wéi Dir se hei drënner gesitt, awer de Benotzer konnt se net kréien: $1",
 
 # Special:ChangeEmail
 'changeemail'          => 'Mailadress änneren',
@@ -1250,6 +1253,7 @@ Dëst kann net réckgängeg gemaach ginn.",
 'yourrealname'                  => 'Richtegen Numm:',
 'yourlanguage'                  => 'Sprooch vun der Benotzeruewerfläch:',
 'yourvariant'                   => 'Sproochvariant fir den Inhalt:',
+'prefs-help-variant'            => 'Är léifste Variant oder Orthographie an där Inhaltssäite vun dëser Wiki gewise solle ginn.',
 'yournick'                      => 'Ënnerschrëft:',
 'prefs-help-signature'          => 'Bemierkungen op Diskussiounssäite solle mat "<nowiki>~~~~</nowiki>" ënnerschriwwe ginn. Dëst gëtt dann an Är Ënnerschrëft an en Zäitstempel ëmgewandelt.',
 'badsig'                        => "D'Syntax vun ärer Ënnerschëft ass net korrekt; iwwerpréift w.e.g. ären HTML Code.",
@@ -1390,6 +1394,7 @@ Si muss manner wéi $1 {{PLURAL:$1|Zeechen|Zeechen}} hunn.',
 'right-siteadmin'             => "Datebank spären an d'Spär ophiewen",
 'right-override-export-depth' => 'Säiten exportéieren inklusiv de verlinkte Säite bis zu enger Déift vu 5',
 'right-sendemail'             => 'Anere Benotzer E-Maile schécken',
+'right-passwordreset'         => 'Passwuert vun engem Benotzer zrécksetzen ([[Special:PasswordReset|Spezialsäit]])',
 
 # User rights log
 'rightslog'                  => 'Logbuch vun de Benotzerrechter',
@@ -1704,7 +1709,7 @@ Wann se pro Benotzer gefiltert sinn, ginn nëmmen déi Fichiere gewise wou dee B
 'filehist-filesize'                 => 'Gréisst vum Fichier',
 'filehist-comment'                  => 'Bemierkung',
 'filehist-missing'                  => 'Fichier feelt',
-'imagelinks'                        => 'Linken op Fichieren',
+'imagelinks'                        => 'Benotze vu Fichieren',
 'linkstoimage'                      => 'Dës {{PLURAL:$1|Säit benotzt|Säite benotzen}} dëse Fichier:',
 'linkstoimage-more'                 => 'Méi wéi {{PLURAL:$1|eng Säit ass|$1 Säite si}} mat dësem Fichier verlinkt.
 Dës Lëscht weist nëmmen {{PLURAL:$1|den éischte Link|déi éischt $1 Linken}} op dëse Fichier.
@@ -1966,12 +1971,8 @@ Kuckt och [[Special:WantedCategories|Gewënschte Kategorien]].',
 'activeusers-noresult'   => 'Keng Benotzer fonnt.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Logbuch vun den neien Umeldungen',
-'newuserlogpagetext'          => "Dëst ass d'Lescht vun de Benotzernimm déi ugeluecht goufen.",
-'newuserlog-byemail'          => "d'Passwuert gouf per E-Mail geschéckt",
-'newuserlog-create-entry'     => 'Neie Benotzer',
-'newuserlog-create2-entry'    => 'huet den neie Benotzerkont $1 opgemaach',
-'newuserlog-autocreate-entry' => 'Benotzerkont gouf automatesch gemaach',
+'newuserlogpage'     => 'Logbuch vun den neien Umeldungen',
+'newuserlogpagetext' => "Dëst ass d'Lescht vun de Benotzernimm déi ugeluecht goufen.",
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Rechter vun de Benotzergruppen',
@@ -2801,9 +2802,6 @@ Dëst warscheinlech duerch en externe Link den op der schwaarzer Lëscht (blackl
 # Patrol log
 'patrol-log-page'      => 'Logbuch vun den iwwerkuckte Versiounen',
 'patrol-log-header'    => "Dëst ass d'Logbuch vun den nogekuckte Versiounen.",
-'patrol-log-line'      => 'huet d\'$1 vu(n) "$2" als nogekuckt markéiert $3',
-'patrol-log-auto'      => '(automatesch)',
-'patrol-log-diff'      => 'Versioun $1',
 'log-show-hide-patrol' => 'Kontroll-Logbuch $1',
 
 # Image deletion
@@ -2832,7 +2830,7 @@ Duerch d'Opmaache vum Fichier kann Äre System beschiedegt ginn.",
 'file-info-size-pages'   => '$1 × $2 Pixelen, Gréisst vum Fichier: $3, MIME Typ: $4, $5 {{PLURAL:$5|Säit|Säiten}}',
 'file-nohires'           => 'Et gëtt keng méi héich Opléisung.',
 'svg-long-desc'          => 'SVG-Fichier, Basisgréisst: $1 × $2 Pixel, Gréisst vum Fichier: $3',
-'show-big-image'         => 'Versioun an enger méi héijer Opléisung',
+'show-big-image'         => 'Voll Opléisung',
 'show-big-image-preview' => 'Gréisst vun dësem Preview: $1.',
 'show-big-image-other'   => 'Aner {{PLURAL:$2|Opléisung|Opléisungen}}: $1.',
 'show-big-image-size'    => '$1 × $2 Pixel',
@@ -2853,6 +2851,13 @@ Duerch d'Opmaache vum Fichier kann Äre System beschiedegt ginn.",
 'ilsubmit'              => 'Sichen',
 'bydate'                => 'no Datum',
 'sp-newimages-showfrom' => 'Nei Biller weisen, ugefaang den $1 ëm $2',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|enger Sekonn|$1 Sekonnen}}',
+'minutes' => '{{PLURAL:$1|enger Minutt|$1 Minutten}}',
+'hours'   => '{{PLURAL:$1|enger Stonn|$1 Stonnen}}',
+'days'    => '{{PLURAL:$1|engem Dag|$1 Deeg}}',
+'ago'     => 'viru(n) $1',
 
 # Bad image list
 'bad_image_list' => 'Format:
@@ -3039,6 +3044,7 @@ Déi aner sinn am Standard verstoppt.
 'exif-licenseurl'                  => 'URL vum Copyright (Lizenz)',
 'exif-morepermissionsurl'          => 'Alternativ Lizenzinformatiounen',
 'exif-attributionurl'              => 'Wann dëst Wierk weiderbenotzt gëtt, da linkt w.e.g. op',
+'exif-preferredattributionname'    => 'Wann dëst Wierk weiderbenotzt gëtt, da nennt w.e.g.',
 'exif-pngfilecomment'              => 'Bemierkung zum PNG-Fichier',
 'exif-disclaimer'                  => 'Limitatioun vun der Responsabilitéit',
 'exif-contentwarning'              => 'Warnung iwwer den Inhalt',
@@ -3224,6 +3230,7 @@ Déi aner sinn am Standard verstoppt.
 'exif-dc-contributor' => 'Bedeelegt',
 'exif-dc-date'        => 'Datum(en)',
 'exif-dc-publisher'   => 'Editeur',
+'exif-dc-relation'    => 'Verbonne Medien',
 'exif-dc-rights'      => 'Rechter',
 'exif-dc-source'      => 'Ursprong vum Fichier',
 'exif-dc-type'        => 'Medientyp',
@@ -3448,9 +3455,8 @@ Dir misst eng [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopie vun der GNU General Public
 'filepath'         => 'Pad bei de Fichier',
 'filepath-page'    => 'Fichier:',
 'filepath-submit'  => 'Lass',
-'filepath-summary' => 'Op dëser Spezialsäit kënnt Dir de komplette Pad vun der aktueller Versioun vun engem Fichier direkt offroen. Den ugefrote Fichier gëtt direkt gewise respektiv mat enger verbonner Applikatioun gestart.
-
-D\'Ufro muss ouni den Zousaz "{{ns:file}}": gemaach ginn.',
+'filepath-summary' => 'Op dëser Spezialsäit kënnt Dir de komplette Pad vun der aktueller Versioun vun engem Fichier direkt offroen.
+Den ugefrote Fichier gëtt direkt gewise respektiv mat enger verbonner Applikatioun gestart.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'No duebele Fichiere sichen',
@@ -3529,7 +3535,6 @@ D\'Ufro muss ouni den Zousaz "{{ns:file}}": gemaach ginn.',
 'globalfileusage-text'        => 'Nom globale Benotze vum Fichier sichen.',
 'globalfileusage-no-results'  => '[[$1]] gëtt net op anere Wikie benotzt.',
 'globalfileusage-on-wiki'     => 'Benotzt op $2',
-'globalfileusage-of-file'     => 'Dës aner Wikie benotzen dëse Fichier:',
 'globalfileusage-more'        => 'Kuckt [[{{#Special:GlobalUsage}}/$1|globale Gebrauch]] vun dësem Fichier.',
 'globalfileusage-filterlocal' => 'Déi lokal Benotzung net weisen',
 
@@ -3540,7 +3545,6 @@ D\'Ufro muss ouni den Zousaz "{{ns:file}}": gemaach ginn.',
 'globaltemplateusage-text'        => 'Nom globale Benotze vun der Schabloun sichen.',
 'globaltemplateusage-no-results'  => '[[$1]] gëtt net op anere Wikie benotzt.',
 'globaltemplateusage-on-wiki'     => 'Benotzt op $2',
-'globaltemplateusage-of-file'     => 'Dës aner Wikie benotzen dëse Schabloun:',
 'globaltemplateusage-more'        => 'Kuckt [[{{#Special:GlobalUsage}}/$1|globale Gebrauch]] vun dëser Schabloun.',
 'globaltemplateusage-filterlocal' => 'Déi lokal Benotzung net weisen',
 
@@ -3570,7 +3574,27 @@ D\'Ufro muss ouni den Zousaz "{{ns:file}}": gemaach ginn.',
 'sqlite-no-fts'  => "$1 ënnerstëtzt d'Volltextsich net",
 
 # New logging system
-'revdelete-restricted'   => 'Limitatioune fir Administrateuren ageschalt',
-'revdelete-unrestricted' => 'Limitatioune fir Administrateuren opgehuewen',
+'logentry-delete-delete'              => "$1 {{GENDER:$2|huet}} d'Säit $3 geläscht",
+'logentry-delete-restore'             => "$1 {{GENDER:$2|huet}} d'Säit $3 restauréiert",
+'logentry-delete-event-legacy'        => "$1 {{GENDER:$2|huet}} d'Visibilitéit vun Elementer am Log op $3 geännert",
+'logentry-delete-revision-legacy'     => "$1 {{GENDER:$2|huet}} d'Visibilitéit vu Versioune vun der Säit $3 geännert",
+'logentry-suppress-delete'            => "$1 {{GENDER:$2|huet}} d'Säit $3 ewechgeholl",
+'logentry-suppress-event-legacy'      => "$1 {{GENDER:$2|huet}} diskret d'Visibilitéit vun Elementer am Log op $3 geännert",
+'logentry-suppress-revision-legacy'   => "$1 {{GENDER:$2|huet}} diskret d'Visibilitéit vu Versioune vun der Säit $3 geännert",
+'revdelete-content-hid'               => 'Inhalt verstoppt',
+'revdelete-summary-hid'               => 'Resumé vun der Ännerung verstoppt',
+'revdelete-uname-hid'                 => 'Benotzernumm verstoppt',
+'revdelete-content-unhid'             => 'Inhalt net verstoppt',
+'revdelete-summary-unhid'             => 'Resumé vun der Ännerung net verstoppt',
+'revdelete-uname-unhid'               => 'Benotzernumm net verstoppt',
+'revdelete-restricted'                => 'Limitatioune fir Administrateuren ageschalt',
+'revdelete-unrestricted'              => 'Limitatioune fir Administrateuren opgehuewen',
+'logentry-move-move'                  => "$1 {{GENDER:$2|huet}} d'Säit $3 op $4 geréckelt",
+'logentry-move-move-noredirect'       => "$1 {{GENDER:$2|huet}} d'Säit $3 op $4 geréckelt ouni eng Viruleedung unzeleeën",
+'logentry-move-move_redir'            => "$1 {{GENDER:$2|huet}} d'Säit $3 op $4 geréckelt an dobäi gouf eng Viruleedung iwwerschriwwen",
+'logentry-move-move_redir-noredirect' => "$1 {{GENDER:$2|huet}} d'Säit $3 op $4 geréckelt an dobäi gouf eng Viruleedung iwwerschriwwen an et et gouf keng nei Viruleedung ugeluecht",
+'logentry-patrol-patrol'              => "$1 {{GENDER:$2|huet}} d'Versioun $4 vun der Säit $3 als nogekuckt markéiert",
+'logentry-patrol-patrol-auto'         => "$1 {{GENDER:$2|huet}} d'Versioun $4 vun der Säit $3 automatesch als nogekuckt markéiert",
+'newuserlog-byemail'                  => "d'Passwuert gouf per E-Mail geschéckt",
 
 );

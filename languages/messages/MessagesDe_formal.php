@@ -129,6 +129,7 @@ Möglicherweise haben Sie Ihr Passwort bereits erfolgreich geändert oder ein ne
 
 # Special:PasswordReset
 'passwordreset-text'           => 'Bitte dieses Formular ausfüllen, um per E-Mail eine Erinnerung zu den Anmeldeinformationen Ihres Benutzerkontos zu erhalten.',
+'passwordreset-capture-help'   => 'Sofern Sie dieses Kästchen ankreuzen, wird die E-Mail-Nachricht mit dem temporären Passwort, sowohl Ihnen angezeigt, als auch dem Benutzer zugesandt.',
 'passwordreset-emailtext-ip'   => 'Jemand mit der IP-Adresse $1, wahrscheinlich Sie selbst, hat eine Erinnerung an Ihre Benutzerkonteninformationen für {{SITENAME}} angefordert ($4). {{PLURAL:$3|Das folgende Benutzerkonto ist|Die folgenden Benutzerkonten sind}} mit dieser E-Mail-Adresse verknüpft:
 
 $2
@@ -199,7 +200,7 @@ Sie können diesen Titel auf den anderen Seiten [[Special:Search/{{PAGENAME}}|su
 oder in den zugehörigen <span class="plainlinks">[{{fullurl:{{#special:Log}}|page={{FULLPAGENAMEE}}}} Logbüchern suchen]</span>.',
 'userpage-userdoesnotexist'        => 'Das Benutzerkonto „<nowiki>$1</nowiki>“ ist nicht vorhanden. Bitte prüfen Sie, ob Sie diese Seite wirklich erstellen/bearbeiten möchten.',
 'clearyourcache'                   => "'''Hinweis:''' Leeren Sie nach dem Speichern den Browser-Cache, um die Änderungen sehen zu können.
-* '''Firefox/ Safari:''' ''Umschaltung'' drücken und gleichzeitig ''Aktualisieren'' anklicken oder entweder ''Strg+F5'' oder ''Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
+* '''Firefox/Safari:''' ''Umschaltung'' drücken und gleichzeitig ''Aktualisieren'' anklicken oder entweder ''Strg+F5'' oder ''Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
 * '''Google Chrome:''' ''Umschaltung+Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
 * '''Internet Explorer:''' ''Strg+F5'' drücken oder ''Strg'' drücken und gleichzeitig ''Aktualisieren'' anklicken
 * '''Opera:''' ''Extras → Internetspuren löschen … → Individuelle Auswahl → Den kompletten Cache löschen''

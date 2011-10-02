@@ -764,30 +764,34 @@ Być może właśnie zmienił{{GENDER:|eś|aś|eś(‐aś)}} swoje hasło lub po
 'resetpass-temp-password'   => 'Tymczasowe hasło:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Wyczyść hasło',
-'passwordreset-text'           => 'Wypełnij formularz, aby otrzymać e‐mail z przypomnieniem danych Twojego konta.',
-'passwordreset-legend'         => 'Zresetuj hasło',
-'passwordreset-disabled'       => 'Na tej wiki wyłączono możliwość resetowania haseł.',
-'passwordreset-pretext'        => '{{PLURAL:$1||Wprowadź jedną z danych poniżej}}',
-'passwordreset-username'       => 'Nazwa użytkownika:',
-'passwordreset-domain'         => 'Domena',
-'passwordreset-email'          => 'Adres e‐mail',
-'passwordreset-emailtitle'     => 'Dane konta w {{GRAMMAR:MS.lp|{{SITENAME}}}}',
-'passwordreset-emailtext-ip'   => 'Ktoś (prawdopodobnie Ty, spod adresu IP $1) poprosił o przypomnienie szczegółów dotyczących Twojego konta w {{GRAMMAR:MS.lp{{SITENAME}}}} ($4). Z tym adresem e‐mailowym powiązane {{PLURAL:$3|jest konto użytkownika|są następujące konta użytkowników:}}
+'passwordreset'                    => 'Wyczyść hasło',
+'passwordreset-text'               => 'Wypełnij formularz, aby otrzymać e‐mail z przypomnieniem danych Twojego konta.',
+'passwordreset-legend'             => 'Zresetuj hasło',
+'passwordreset-disabled'           => 'Na tej wiki wyłączono możliwość resetowania haseł.',
+'passwordreset-pretext'            => '{{PLURAL:$1||Wprowadź jedną z danych poniżej}}',
+'passwordreset-username'           => 'Nazwa użytkownika:',
+'passwordreset-domain'             => 'Domena',
+'passwordreset-capture'            => 'Czy pokazywać treść wiadomości e‐mail?',
+'passwordreset-capture-help'       => 'Jeśli zaznaczysz to pole, zobaczysz treść wiadomości e‐mail z tymczasowym hasłem, w tej samej formie w jakiej jest wysyłana do użytkownika.',
+'passwordreset-email'              => 'Adres e‐mail',
+'passwordreset-emailtitle'         => 'Dane konta w {{GRAMMAR:MS.lp|{{SITENAME}}}}',
+'passwordreset-emailtext-ip'       => 'Ktoś (prawdopodobnie Ty, spod adresu IP $1) poprosił o przypomnienie szczegółów dotyczących Twojego konta w {{GRAMMAR:MS.lp{{SITENAME}}}} ($4). Z tym adresem e‐mailowym powiązane {{PLURAL:$3|jest konto użytkownika|są następujące konta użytkowników:}}
 
 $2
 
 {{PLURAL:$3|Tymczasowego hasła|Tymczasowych haseł}} można użyć w ciągu {{PLURAL:$5|jednego dnia|$5 dni}}.
 Powinieneś zalogować się i zmienić hasło na nowe. Jeśli to ktoś inni poprosił o wysłanie przypomnienia lub jeśli pamiętasz aktualne hasło i nie chce go zmieniać wystarczy, że zignorujesz tę wiadomość i będziesz nadal korzystał ze swojego starego hasła.',
-'passwordreset-emailtext-user' => 'Użytkownik $1 poprosił o przypomnienie szczegółów dotyczących Twojego konta w {{GRAMMAR:MS.lp{{SITENAME}}}} ($4). Z tym adresem e‐mailowym powiązane {{PLURAL:$3|jest konto użytkownika|są następujące konta użytkowników:}}
+'passwordreset-emailtext-user'     => 'Użytkownik $1 poprosił o przypomnienie szczegółów dotyczących Twojego konta w {{GRAMMAR:MS.lp{{SITENAME}}}} ($4). Z tym adresem e‐mailowym powiązane {{PLURAL:$3|jest konto użytkownika|są następujące konta użytkowników:}}
 
 $2
 
 {{PLURAL:$3|Tymczasowego hasła|Tymczasowych haseł}} można użyć w ciągu {{PLURAL:$5|jednego dnia|$5 dni}}.
 Powinieneś zalogować się i zmienić hasło na nowe. Jeśli to ktoś inni poprosił o wysłanie przypomnienia lub jeśli pamiętasz aktualne hasło i nie chce go zmieniać wystarczy, że zignorujesz tę wiadomość i będziesz nadal korzystał ze swojego starego hasła.',
-'passwordreset-emailelement'   => 'Nazwa użytkownika – $1
+'passwordreset-emailelement'       => 'Nazwa użytkownika – $1
 Tymczasowe hasło – $2',
-'passwordreset-emailsent'      => 'Przypominający e‐mail został wysłany.',
+'passwordreset-emailsent'          => 'Przypominający e‐mail został wysłany.',
+'passwordreset-emailsent-capture'  => 'Poniżej znajdujący się e‐mail z przypomnieniem został wysłany',
+'passwordreset-emailerror-capture' => 'Poniżej wyświetlony e‐mail z przypomnieniem został wygenerowany, ale nie udało się wysłać go do użytkownika: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Zmiana adresu e‐mail',
@@ -1226,7 +1230,6 @@ Użycie linków nawigacyjnych kasuje wybór w kolumnie.',
 'searchmenu-legend'                => 'Opcje wyszukiwania',
 'searchmenu-exists'                => "* Strona '''[[$1]]'''",
 'searchmenu-new'                   => "'''Utwórz stronę „[[:$1|$1]]” na tej wiki.'''",
-'searchmenu-new-nocreate'          => '„$1” nie jest prawidłową nazwą strony lub nie może zostać utworzona przez Ciebie.',
 'searchhelp-url'                   => 'Help:Spis treści',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|Przeglądaj strony zaczynające się od tego przedrostka]]',
 'searchprofile-articles'           => 'Strony',
@@ -1508,6 +1511,7 @@ Jeśli zdecydujesz się je podać, zostaną użyte, by udokumentować Twoje auto
 'right-siteadmin'             => 'Blokowanie i odblokowywanie bazy danych',
 'right-override-export-depth' => 'Eksport stron wraz z linkowanymi do głębokości 5 linków',
 'right-sendemail'             => 'Wysyłanie e‐maili do innych użytkowników',
+'right-passwordreset'         => 'Czyszczenie hasła użytkownika ([[Special:PasswordReset|na specjalnej stronie]])',
 
 # User rights log
 'rightslog'                  => 'Uprawnienia',
@@ -1543,7 +1547,7 @@ Jeśli zdecydujesz się je podać, zostaną użyte, by udokumentować Twoje auto
 'action-protect'              => 'zmiany poziomu zabezpieczenia tej strony',
 'action-import'               => 'importu tej strony z innej wiki',
 'action-importupload'         => 'importu tej strony poprzez przesłanie pliku',
-'action-patrol'               => 'oznaczenia edycji jako „sprawdzonej”',
+'action-patrol'               => 'oznaczenia cudzej edycji jako „sprawdzonej”',
 'action-autopatrol'           => 'oznaczenia własnej edycji jako „sprawdzonej”',
 'action-unwatchedpages'       => 'podglądu listy nieobserwowanych stron',
 'action-trackback'            => 'wysyłania trackbacka',
@@ -1838,7 +1842,7 @@ Jeśli włączono filtrowanie dla konkretnego użytkownika, prezentowane są wy�
 'filehist-filesize'         => 'Rozmiar pliku',
 'filehist-comment'          => 'Opis',
 'filehist-missing'          => 'Brak pliku',
-'imagelinks'                => 'Odnośniki do pliku',
+'imagelinks'                => 'Wykorzystanie pliku',
 'linkstoimage'              => '{{PLURAL:$1|Poniższa strona odwołuje|Następujące strony odwołują}} się do tego pliku:',
 'linkstoimage-more'         => 'Więcej niż $1 {{PLURAL:$1|strona linkuje|strony linkują|stron linkuje}} do tego pliku.
 Poniższa lista pokazuje jedynie {{PLURAL:$1|pierwszy link|pierwsze $1 linki|pierwszych $1 linków}} do tego pliku.
@@ -2100,12 +2104,8 @@ Obsługiwane protokoły: <tt>$1</tt>',
 'activeusers-noresult'   => 'Nie odnaleziono żadnego użytkownika.',
 
 # Special:Log/newusers
-'newuserlogpage'              => 'Nowi użytkownicy',
-'newuserlogpagetext'          => 'To jest rejestr ostatnio utworzonych kont użytkowników',
-'newuserlog-byemail'          => 'hasło zostało wysłane e‐mailem',
-'newuserlog-create-entry'     => '– nowy użytkownik',
-'newuserlog-create2-entry'    => 'utworzył konto $1',
-'newuserlog-autocreate-entry' => '– konto utworzone automatycznie',
+'newuserlogpage'     => 'Nowi użytkownicy',
+'newuserlogpagetext' => 'To jest rejestr ostatnio utworzonych kont użytkowników',
 
 # Special:ListGroupRights
 'listgrouprights'                      => 'Uprawnienia grup użytkowników',
@@ -2957,9 +2957,6 @@ Najprawdopodobniej zostało to spowodowane przez link do zewnętrznej strony int
 # Patrol log
 'patrol-log-page'      => 'Dziennik patrolowania',
 'patrol-log-header'    => 'Poniżej znajduje się dziennik patrolowania stron.',
-'patrol-log-line'      => 'oznaczył $1 hasła $2 jako sprawdzoną $3',
-'patrol-log-auto'      => '(automatycznie)',
-'patrol-log-diff'      => 'wersja $1',
 'log-show-hide-patrol' => '$1 rejestr sprawdzania',
 
 # Image deletion
@@ -3014,6 +3011,11 @@ Jeśli go otworzysz, możesz zarazić swój system.",
 'seconds-abbrev' => '&nbsp;s',
 'minutes-abbrev' => '&nbsp;min',
 'hours-abbrev'   => '&nbsp;h',
+'seconds'        => '{{PLURAL:$1|$1 sekunda|$1 sekundy|$1 sekund}}',
+'minutes'        => '{{PLURAL:$1|$1 minuta|$1 minuty|$1 minut}}',
+'hours'          => '{{PLURAL:$1|$1 godzina|$1 godziny|$1 godzin}}',
+'days'           => '{{PLURAL:$1|$1 dzień|$1 dni}}',
+'ago'            => '$1 temu',
 
 # Bad image list
 'bad_image_list' => 'Dane należy wprowadzić w formacie:
@@ -3696,9 +3698,7 @@ Powinieneś otrzymać [{{SERVER}}{{SCRIPTPATH}}/COPYING kopię licencji GNU Gene
 'filepath-page'    => 'Plik',
 'filepath-submit'  => 'Przejdź',
 'filepath-summary' => 'Ta strona specjalna zwraca pełną ścieżkę do pliku.
-Grafiki są pokazywane w pełnej rozdzielczości, inne typy plików są otwierane w skojarzonym z nimi programie.
-
-Wpisz nazwę pliku bez prefiksu „{{ns:file}}:”.',
+Grafiki są pokazywane w pełnej rozdzielczości. Inne typy plików są otwierane w skojarzonym z nimi programie.',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch'           => 'Szukaj duplikatów pliku',
@@ -3776,7 +3776,6 @@ Wpisz nazwę pliku bez prefiksu „{{ns:file}}:”.',
 'globalfileusage-text'        => 'Wyszukaj globalnie gdzie plik został wykorzystany',
 'globalfileusage-no-results'  => '[[$1]] nie jest używany na innych wiki.',
 'globalfileusage-on-wiki'     => 'Wykorzystanie w $2',
-'globalfileusage-of-file'     => 'Następujące inne wiki wykorzystują ten plik:',
 'globalfileusage-more'        => 'Zobacz [[{{#Special:GlobalUsage}}/$1|więcej informacji o globalnym wykorzystaniu]] tego pliku.',
 'globalfileusage-filterlocal' => 'Nie pokazuj lokalnego wykorzystania',
 
@@ -3787,7 +3786,6 @@ Wpisz nazwę pliku bez prefiksu „{{ns:file}}:”.',
 'globaltemplateusage-text'        => 'Globalne wyszukiwanie wykorzystania szablonu',
 'globaltemplateusage-no-results'  => '[[$1]] nie jest używany w innych wiki.',
 'globaltemplateusage-on-wiki'     => 'Wykorzystanie w $2',
-'globaltemplateusage-of-file'     => 'Następujące inne wiki używają tego szablonu:',
 'globaltemplateusage-more'        => 'Pokaż [[{{#Special:GlobalUsage}}/$1|listę globalnego wykorzystania]] tego szablonu.',
 'globaltemplateusage-filterlocal' => 'Nie pokazuj lokalnego wykorzystania',
 
@@ -3817,11 +3815,34 @@ Wpisz nazwę pliku bez prefiksu „{{ns:file}}:”.',
 'sqlite-no-fts'  => '$1 bez wsparcia pełnotekstowego wyszukiwania',
 
 # New logging system
-'revdelete-restricted'                => 'ustaw ograniczenia dla administratorów',
-'revdelete-unrestricted'              => 'usuń ograniczenia dla administratorów',
+'logentry-delete-delete'              => '$1 {{GENDER:$2|usunął|usunęła}} stronę $3',
+'logentry-delete-restore'             => '$1 {{GENDER:$2|odtworzył|odtworzyła}} stronę $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|zmienił|zmieniła}} widoczność {{PLURAL:$5|zdarzenia|$5 zdarzeń}} w rejestrze $3, wykonano następujące operacje: $4',
+'logentry-delete-revision'            => '$1 {{GENDER:$2|zmienił|zmieniła}} widoczność {{PLURAL:$5|wersji|$5 wersji}} strony $3, wykonano następujące operacje: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|zmienił|zmieniła}} widoczność zdarzeń w rejestrze $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|zmienił|zmieniła}} widoczność wersji strony $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|ukrył|ukryła}} stronę $3',
+'logentry-suppress-event'             => '$1 potajemnie {{GENDER:$2|zmienił|zmieniła}} widoczność {{PLURAL:$5|zdarzenia|$5 zdarzeń}} w $3, wykonano następujące operacje: $4',
+'logentry-suppress-revision'          => '$1 potajemnie {{GENDER:$2|zmienił|zmieniła}} widoczność {{PLURAL:$5|wersji|$5 wersji}} strony $3, wykonano następujące operacje: $4',
+'logentry-suppress-event-legacy'      => '$1 potajemnie {{GENDER:$2|zmienił|zmieniła}} widoczność zdarzenia w rejestrze $3',
+'logentry-suppress-revision-legacy'   => '$1 potajemnie {{GENDER:$2|zmienił|zmieniła}} widoczność wersji strony $3',
+'revdelete-content-hid'               => 'treść została ukryta',
+'revdelete-summary-hid'               => 'opis zmian został ukryty',
+'revdelete-uname-hid'                 => 'nazwa użytkownika została ukryta',
+'revdelete-content-unhid'             => 'wycofano ukrycie treści',
+'revdelete-summary-unhid'             => 'wycofano ukrycie opisu zmian',
+'revdelete-uname-unhid'               => 'wycofano ukrycie nazwy użytkownika',
+'revdelete-restricted'                => 'ograniczono widoczność dla administratorów',
+'revdelete-unrestricted'              => 'wycofano ograniczenie widoczności dla administratorów',
 'logentry-move-move'                  => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4',
-'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4 bez pozostawienia przekierowania na starej stronie',
-'logentry-move-move_redir'            => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4 ponad przekierowaniem',
-'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4 ponad przekierowaniem bez pozostawienia przekierowania na starej stronie',
+'logentry-move-move-noredirect'       => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4, ale bez pozostawienia przekierowania pod starym tytułem',
+'logentry-move-move_redir'            => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4, czyli w miejsce przekierowania',
+'logentry-move-move_redir-noredirect' => '$1 {{GENDER:$2|przeniósł|przeniosła}} stronę $3 na $4, czyli w miejsce przekierowania i bez pozostawienia przekierowania pod starym tytułem',
+'logentry-patrol-patrol'              => '$1 {{GENDER:$2|oznaczył|oznaczyła}} wersję $4 strony $3 jako sprawdzoną',
+'logentry-patrol-patrol-auto'         => '$1 automatycznie {{GENDER:$2|oznaczył|oznaczyła}} wersję $4 strony $3 jako sprawdzoną',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|utworzył konto użytkownika|utworzyła konto użytkowniczki}}',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|utworzył|utworzyła}} konto {{GENDER:$3|użytkownika|użytkowniczki}} $3',
+'logentry-newusers-autocreate'        => 'Konto {{GENDER:$2|użytkownika|użytkowniczki}} $1 zostało utworzone automatycznie',
+'newuserlog-byemail'                  => 'hasło zostało wysłane e‐mailem',
 
 );
