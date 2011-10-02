@@ -285,6 +285,16 @@ class Message {
 	public function exists() {
 		return $this->fetchMessage() !== false;
 	}
+
+	/**
+	 * Check whether a message does not exist, or is an empty string
+	 * @return Bool: true if is is and false if not
+	 * @todo FIXME: Merge with isDisabled()?
+	 */
+	public function isBlank() {
+		$message = $this->fetchMessage();
+		return $message === false || $message === '';
+	}
 	
 	/**
 	 * Check whether a message does not exist, is an empty string, or is "-"
