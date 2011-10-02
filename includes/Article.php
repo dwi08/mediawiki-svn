@@ -436,12 +436,12 @@ class Article extends Page {
 
 	public function doViewParse() {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
-		return OutputPage::formatRobotPolicy( $policy );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	public function tryDirtyCache() {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
-		return OutputPage::formatRobotPolicy( $policy );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**
@@ -940,7 +940,7 @@ class Article extends Page {
 
 	public function setOldSubtitle( $oldid = 0 ) {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
-		return OutputPage::formatRobotPolicy( $policy );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/* Caching functions */
@@ -1001,7 +1001,7 @@ class Article extends Page {
 
 	public function outputWikiText( $text, $cache = true, $parserOptions = false ) {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
-		return OutputPage::formatRobotPolicy( $policy );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**
@@ -1060,7 +1060,7 @@ class Article extends Page {
 
 	public function getOutputFromWikitext( $text, $cache = true, $parserOptions = false ) {
 		wfDeprecated( __METHOD__, '1.19-pageoutput' );
-		return OutputPage::formatRobotPolicy( $policy );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**
