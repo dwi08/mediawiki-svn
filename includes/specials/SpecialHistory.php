@@ -35,12 +35,8 @@ class SpecialHistory extends UnlistedSpecialPage { // XXX: Should this be listed
 	function execute( $par ) {
 		$title = Title::newFromText( $par );
 		if ( $title ) {
-			// @fixme Instead of this create a method to create a RequestContext based on another
-			$context = new RequestContext;
+			$context = new DerivativeContext( $this->getContext() );
 			$context->setTitle( $title );
-			$context->setUser( $this->getUser() );
-			$context->setRequest( new FauxRequest( array() ) );
-			$context->setOutput( $this->getOutput() );
 			$history = new HistoryPage( $context );
 			$history->history();
 		}
