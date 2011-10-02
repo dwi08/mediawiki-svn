@@ -211,6 +211,8 @@ production.
   $wgDefaultUserOptions should no longer be used as it will contain those set via
   User:getDefaultOptions().
 * (bug 30722) Add a new collation that sorts categories in ascii sort order.
+* (bug 31293) If Special:Userlogin is loaded over HTTPS, display
+  MediaWiki:loginend-https instead of MediaWiki:loginend, if it exists
 
 === Bug fixes in 1.18 ===
 * mw.util.getScript has been implemented (like wfScript in GlobalFunctions.php)
