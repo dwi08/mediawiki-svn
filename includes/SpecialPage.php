@@ -344,6 +344,9 @@ class SpecialPage {
 	 * @param $includable Bool: whether the page can be included in normal pages
 	 */
 	private function init( $name, $restriction, $listed, $function, $file, $includable ) {
+		if ( $name == '' && preg_match( '/^Special[_A-Za-z0-9]+$/', get_class( $this ) ) ) {
+			$name = preg_replace( '/^Special/', '', get_class( $this ) );
+		}
 		$this->mName = $name;
 		$this->mRestriction = $restriction;
 		$this->mListed = $listed;
@@ -921,7 +924,7 @@ abstract class FormSpecialPage extends SpecialPage {
  * @ingroup SpecialPage
  */
 class UnlistedSpecialPage extends SpecialPage {
-	function __construct( $name, $restriction = '', $function = false, $file = 'default' ) {
+	function __construct( $name = '', $restriction = '', $function = false, $file = 'default' ) {
 		parent::__construct( $name, $restriction, false, $function, $file );
 	}
 
@@ -936,7 +939,7 @@ class UnlistedSpecialPage extends SpecialPage {
  */
 class IncludableSpecialPage extends SpecialPage {
 	function __construct(
-		$name, $restriction = '', $listed = true, $function = false, $file = 'default'
+		$name = '', $restriction = '', $listed = true, $function = false, $file = 'default'
 	) {
 		parent::__construct( $name, $restriction, $listed, $function, $file, true );
 	}

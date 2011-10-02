@@ -28,10 +28,6 @@
  */
 class SpecialHistory extends UnlistedSpecialPage implements SpecialTitleTarget { // XXX: Should this be listed or unlisted?
 
-	function __construct() {
-		parent::__construct( 'History' );
-	}
-
 	function executeWithTarget() {
 		$context = new DerivativeContext( $this->getContext() );
 		$context->setTitle( $this->target() );
