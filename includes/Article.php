@@ -444,53 +444,9 @@ class Article extends Page {
 		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
-	/**
-	 * View redirect
-	 *
-	 * @param $target Title|Array of destination(s) to redirect
-	 * @param $appendSubtitle Boolean [optional]
-	 * @param $forceKnown Boolean: should the image be shown as a bluelink regardless of existence?
-	 * @return string containing HMTL with redirect link
-	 */
 	public function viewRedirect( $target, $appendSubtitle = true, $forceKnown = false ) {
-		global $wgOut, $wgStylePath;
-
-		if ( !is_array( $target ) ) {
-			$target = array( $target );
-		}
-
-		$lang = $this->getTitle()->getPageLanguage();
-		$imageDir = $lang->getDir();
-
-		if ( $appendSubtitle ) {
-			$wgOut->appendSubtitle( wfMsgHtml( 'redirectpagesub' ) );
-		}
-
-		// the loop prepends the arrow image before the link, so the first case needs to be outside
-		$title = array_shift( $target );
-
-		if ( $forceKnown ) {
-			$link = Linker::linkKnown( $title, htmlspecialchars( $title->getFullText() ) );
-		} else {
-			$link = Linker::link( $title, htmlspecialchars( $title->getFullText() ) );
-		}
-
-		$nextRedirect = $wgStylePath . '/common/images/nextredirect' . $imageDir . '.png';
-		$alt = $lang->isRTL() ? '←' : '→';
-		// Automatically append redirect=no to each link, since most of them are redirect pages themselves.
-		foreach ( $target as $rt ) {
-			$link .= Html::element( 'img', array( 'src' => $nextRedirect, 'alt' => $alt ) );
-			if ( $forceKnown ) {
-				$link .= Linker::linkKnown( $rt, htmlspecialchars( $rt->getFullText(), array(), array( 'redirect' => 'no' ) ) );
-			} else {
-				$link .= Linker::link( $rt, htmlspecialchars( $rt->getFullText() ), array(), array( 'redirect' => 'no' ) );
-			}
-		}
-
-		$imageUrl = $wgStylePath . '/common/images/redirect' . $imageDir . '.png';
-		return '<div class="redirectMsg">' .
-			Html::element( 'img', array( 'src' => $imageUrl, 'alt' => '#REDIRECT' ) ) .
-			'<span class="redirectText">' . $link . '</span></div>';
+		wfDeprecated( __METHOD__, '1.19-pageoutput' );
+		throw new MWException(__METHOD__ . " moved to PageView." );
 	}
 
 	/**
