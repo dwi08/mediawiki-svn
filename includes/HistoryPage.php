@@ -322,8 +322,8 @@ class HistoryPager extends ReverseChronologicalPager {
 	protected $preventClickjacking = false;
 
 	function __construct( $historyPage, $year = '', $month = '', $tagFilter = '', $conds = array() ) {
-		parent::__construct();
 		$this->historyPage = $historyPage;
+		parent::__construct( $historyPage->getContext() );
 		$this->tagFilter = $tagFilter;
 		$this->getDateCond( $year, $month );
 		$this->conds = $conds;
@@ -333,19 +333,6 @@ class HistoryPager extends ReverseChronologicalPager {
 	// Note that this returns a WikiPage now, some extensions should still work though
 	function getArticle() {
 		return $this->historyPage->getArticle();
-	}
-
-	function getTitle() {
-		return $this->historyPage->getTitle();
-	}
-	function getUser() {
-		return $this->historyPage->getUser();
-	}
-	function getLang() {
-		return $this->historyPage->getLang();
-	}
-	function getOutput() {
-		return $this->historyPage->getOutput();
 	}
 
 	function getSqlComment() {
