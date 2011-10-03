@@ -32,6 +32,6 @@ require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'TestHelper.php';
  * @category	UnitTesting
  * @package		Fundraising_QueueHandling
  */
-abstract class DonationInterfaceTestCase extends MediaWikiTestCase
+abstract class DonationInterfaceTestCase extends PHPUnit_Framework_TestCase
 {
 }
