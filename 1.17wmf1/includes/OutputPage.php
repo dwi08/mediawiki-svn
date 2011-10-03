@@ -1642,7 +1642,7 @@ class OutputPage {
 	 */
 	public function output() {
 		global $wgUser, $wgOutputEncoding, $wgRequest;
-		global $wgLanguageCode, $wgDebugRedirects, $wgMimeType;
+		global $wgLanguageCode, $wgDebugRedirects, $wgMimeType, $wgVaryOnXFP;
 		global $wgUseAjax, $wgAjaxWatch;
 		global $wgEnableMWSuggest, $wgUniversalEditButton;
 		global $wgArticle;
@@ -1660,6 +1660,9 @@ class OutputPage {
 					$wgRequest->response()->header( "HTTP/1.1 {$this->mRedirectCode} $message" );
 				}
 				$this->mLastModified = wfTimestamp( TS_RFC2822 );
+			}
+			if ( $wgVaryOnXFP ) {
+				$this->addVaryHeader( 'X-Forwarded-Proto' );
 			}
 			$this->sendCacheControl();
 

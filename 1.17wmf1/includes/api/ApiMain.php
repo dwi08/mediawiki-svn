@@ -381,17 +381,17 @@ class ApiMain extends ApiBase {
 	}
 
 	protected function sendCacheHeaders() {
-		global $wgUseXVO, $wgOut, $wgVaryOnXFPForAPI;
+		global $wgUseXVO, $wgOut, $wgVaryOnXFP;
 		if ( $this->mCacheMode == 'private' ) {
 			header( 'Cache-Control: private' );
 			return;
 		}
 
 		if ( $this->mCacheMode == 'anon-public-user-private' ) {
-			$xfp = $wgVaryOnXFPForAPI ? ', X-Forwarded-Proto' : '';
+			$xfp = $wgVaryOnXFP ? ', X-Forwarded-Proto' : '';
 			header( 'Vary: Accept-Encoding, Cookie' . $xfp );
 			if ( $wgUseXVO ) {
-				if ( $wgVaryOnXFPForAPI ) {
+				if ( $wgVaryOnXFP ) {
 					$wgOut->addVaryHeader( 'X-Forwarded-Proto' );
 				}
 				header( $wgOut->getXVO() );
@@ -410,7 +410,7 @@ class ApiMain extends ApiBase {
 		}
 		
 		// Send public headers
-		if ( $wgVaryOnXFPForAPI ) {
+		if ( $wgVaryOnXFP ) {
 			header( 'Vary: Accept-Encoding, X-Forwarded-Proto' );
 			if ( $wgUseXVO ) {
 				// Bleeeeegh. Our header setting system sucks
