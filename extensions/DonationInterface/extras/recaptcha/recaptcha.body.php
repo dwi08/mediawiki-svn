@@ -17,7 +17,7 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 	public $recap_err;
 
 	public function __construct( &$gateway_adapter ) {
-		parent::__construct( &$gateway_adapter );
+		parent::__construct( $gateway_adapter );
 		
 		//stash all the vars that reCaptcha is going to need in a global just for it. 
 		//I know this is vaguely unpleasant, but it's the quickest way back to zero. 
@@ -77,8 +77,12 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 		$form_class = $this->gateway_adapter->getFormClass();
 		
 		//hmm. Looking at this now, makes me want to say 
-		//TODO: Refactor the Form Class constructors. Again. 
-		$form_obj = new $form_class( $this->gateway_adapter->getData(), $this->gateway_adapter->getValidationErrors(), $this->gateway_adapter);
+		//TODO: Refactor the Form Class constructors. Again. Because the next three lines of code anger me deeply.
+		//#1 - all three things are clearly in the gateway adapter, and we're passing that already. 
+		//#2 - I have to stuff them in variables because Form wants parameters by reference. 
+		$data = $this->gateway_adapter->getData();
+		$erros = $this->gateway_adapter->getValidationErrors();
+		$form_obj = new $form_class( $data, $errors, $this->gateway_adapter );
 
 		// set the captcha HTML to use in the form
 		$form_obj->setCaptchaHTML( $captcha_html );
@@ -102,12 +106,12 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 	}
 
 	static function onChallenge( &$gateway_adapter ) {
-		return self::singleton( &$gateway_adapter )->challenge();
+		return self::singleton( $gateway_adapter )->challenge();
 	}
 
 	static function singleton( &$gateway_adapter ) {
 		if ( !self::$instance ) {
-			self::$instance = new self( &$gateway_adapter );
+			self::$instance = new self( $gateway_adapter );
 		}
 		return self::$instance;
 	}

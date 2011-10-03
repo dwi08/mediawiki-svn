@@ -354,7 +354,7 @@ abstract class GatewayAdapter implements GatewayType {
 
 		// expose a hook for external handling of trxns ready for processing
 		wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
-
+		
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$this->getStopwatch( "buildRequestXML" );
@@ -365,7 +365,6 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 
 		if ( $this->getCommunicationType() === 'namevalue' ) {
-			$namevalue = $this->postdata;
 			//buildRequestNameValueString()
 			$this->getStopwatch( "buildRequestNameValueString" );
 			$namevalstring = $this->buildRequestNameValueString();

@@ -43,6 +43,7 @@ class GatewayForm extends UnlistedSpecialPage {
 		$me = get_called_class();
 		parent::__construct( $me );
 		$this->errors = $this->getPossibleErrors();
+		$this->setFormClass(); 
 	}
 
 	/**
@@ -406,7 +407,10 @@ class GatewayForm extends UnlistedSpecialPage {
 	}
 
 	function displayResultsForDebug( $results ) {
-		global $wgOut;
+		global $wgOut, $wgDonationInterfaceDisplayDebug;
+		if ( $wgDonationInterfaceDisplayDebug !== true ){
+			return;
+		}
 		$wgOut->addHTML( $results['message'] );
 
 		if ( !empty( $results['errors'] ) ) {
@@ -552,7 +556,7 @@ class GatewayForm extends UnlistedSpecialPage {
 		return $usd_amount;
 	}
 
-	public static function log( $msg, $log_level=LOG_INFO ) {
+	public function log( $msg, $log_level=LOG_INFO ) {
 		$this->adapter->log( $msg, $log_level );
 	}
 

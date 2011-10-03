@@ -270,7 +270,7 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 	}
 
 	static function onValidate( &$gateway_adapter ) {
-		$gateway_adapter->debugarray[] = "Running an onValidate hook!";
+		$gateway_adapter->debugarray[] = "minfraud onValidate hook!";
 		return self::singleton( $gateway_adapter )->validate();
 	}
 

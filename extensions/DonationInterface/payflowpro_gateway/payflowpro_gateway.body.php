@@ -80,6 +80,7 @@ EOT;
 					if ( $this->adapter->action == 'process' ) {
 						$this->fnPayflowDisplayResults( $result );
 					}
+					$this->displayResultsForDebug( $result );
 				}
 			} else {
 				// Display form for the first time
@@ -117,25 +118,31 @@ EOT;
 
 		// if approved, display results and send transaction to the queue
 		if ( $errorCode == '1' ) {
-			self::log( $oid . " " . $i_oid . " Transaction approved.", LOG_DEBUG );
-			$this->fnPayflowDisplayApprovedResults( $data, $responseArray, $responseMsg );
+			$this->log( $oid . " " . $i_oid . " Transaction approved.", LOG_DEBUG );
+			$this->fnPayflowDisplayApprovedResults( $data, $responseMsg );
 			// give user a second chance to enter incorrect data
 		} elseif ( ( $errorCode == '3' ) && ( $data['numAttempt'] < '5' ) ) {
-			self::log( $oid . " " . $i_oid . " Transaction unsuccessful (invalid info).", LOG_DEBUG );
+			$this->log( $oid . " " . $i_oid . " Transaction unsuccessful (invalid info).", LOG_DEBUG );
 			// pass responseMsg as an array key as required by displayForm
 			$this->errors['retryMsg'] = $responseMsg;
 			$this->fnPayflowDisplayForm( $data, $this->errors );
 			// if declined or if user has already made two attempts, decline
 		} elseif ( ( $errorCode == '2' ) || ( $data['numAttempt'] >= '3' ) ) {
-			self::log( $oid . " " . $i_oid . " Transaction declined.", LOG_DEBUG );
+			$this->log( $oid . " " . $i_oid . " Transaction declined.", LOG_DEBUG );
 			$this->fnPayflowDisplayDeclinedResults( $responseMsg );
 		} elseif ( ( $errorCode == '4' ) ) {
-			self::log( $oid . " " . $i_oid . " Transaction unsuccessful.", LOG_DEBUG );
+			$this->log( $oid . " " . $i_oid . " Transaction unsuccessful.", LOG_DEBUG );
 			$this->fnPayflowDisplayOtherResults( $responseMsg );
 		} elseif ( ( $errorCode == '5' ) ) {
-			self::log( $oid . " " . $i_oid . " Transaction pending.", LOG_DEBUG );
-			$this->fnPayflowDisplayPending( $data, $responseArray, $responseMsg );
+			$this->log( $oid . " " . $i_oid . " Transaction pending.", LOG_DEBUG );
+			$this->fnPayflowDisplayPending( $data, $responseMsg );
+		} elseif ( ( $errorCode == '1000000' ) ) { //TODO: This is temporary until we can decide on the actual error codes WE control.
+			$this->log( $oid . " " . $i_oid . " Transaction unsuccessful (communication failure).", LOG_DEBUG );
+			$this->fnPayflowDisplayOtherResults( $responseMsg );
+			$this->errors['retryMsg'] = $responseMsg;
+			$this->fnPayflowDisplayForm( $data, $this->errors );
 		}
+		$this->displayResultsForDebug( $result );
 	}
 
 	/**
@@ -144,18 +151,8 @@ EOT;
 	 * @param $data Array: array of posted data from form
 	 * @param $responseMsg String: message supplied by getResults function
 	 */
-	function fnPayflowDisplayApprovedResults( $data, $responseArray, $responseMsg ) {
+	function fnPayflowDisplayApprovedResults( $data, $responseMsg ) {
 		global $wgOut, $wgExternalThankYouPage;
-
-		$transaction = $this->prepareStompTransaction( $data, $responseArray, $responseMsg );
-
-		/**
-		 * hook to call stomp functions
-		 *
-		 * Sends transaction to Stomp-based queueing service,
-		 * eg ActiveMQ
-		 */
-		wfRunHooks( 'gwStomp', array( $transaction ) );
 
 		if ( $wgExternalThankYouPage ) {
 			$wgOut->redirect( $wgExternalThankYouPage . "/" . $data['language'] );
@@ -200,22 +197,13 @@ EOT;
 	 * @param $responseMsg String: message supplied by getResults function
 	 */
 	function fnPayflowDisplayOtherResults( $responseMsg ) {
-		global $wgOut;
-
-		// general decline message
-		$declinedDefault = wfMsg( 'php-response-declined' );
-
-		// display response message
-		$wgOut->addHTML( '<h3 class="response_message">' . $declinedDefault . ' ' . $responseMsg . '</h3>' );
+		//I have collapsed it like this because the contents were identical. 
+		//TODO: Determine if we need to be switching on anything else in the display here. 
+		$this->fnPayflowDisplayDeclinedResults( $responseMsg );
 	}
 
-	function fnPayflowDisplayPending( $data, $responseArray, $responseMsg ) {
+	function fnPayflowDisplayPending( $responseMsg ) {
 		global $wgOut;
-
-		$transaction = $this->prepareStompTransaction( $data, $responseArray, $responseMsg );
-
-		// hook to call stomp functions
-		wfRunHooks( 'gwPendingStomp', array( $transaction ) );
 
 		$thankyou = wfMsg( 'payflowpro_gateway-thankyou' );
 

@@ -32,15 +32,15 @@ $wgAjaxExportList[] = "fnPayflowProofofWork";
 
 
 // set defaults, these should be assigned in LocalSettings.php
-$wgPayflowProURL = 'https://payflowpro.paypal.com';
-$wgPayflowProTestingURL = 'https://pilot-payflowpro.paypal.com'; // Payflow testing URL
+$wgPayflowProGatewayURL = 'https://payflowpro.paypal.com';
+$wgPayflowProGatewayTestingURL = 'https://pilot-payflowpro.paypal.com'; // Payflow testing URL
 
 $wgPayFlowProGatewayCSSVersion = 1;
 
-$wgPayflowProPartnerID = ''; // PayPal or original authorized reseller
-$wgPayflowProVendorID = ''; // paypal merchant login ID
-$wgPayflowProUserID = ''; // if one or more users are set up, authorized user ID, else same as VENDOR
-$wgPayflowProPassword = ''; // merchant login password
+$wgPayflowProGatewayPartnerID = ''; // PayPal or original authorized reseller
+$wgPayflowProGatewayVendorID = ''; // paypal merchant login ID
+$wgPayflowProGatewayUserID = ''; // if one or more users are set up, authorized user ID, else same as VENDOR
+$wgPayflowProGatewayPassword = ''; // merchant login password
 // a boolean to determine if we're in testing mode
 $wgPayflowProGatewayTest = FALSE;
 

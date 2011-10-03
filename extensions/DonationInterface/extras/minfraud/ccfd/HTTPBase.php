@@ -158,6 +158,9 @@ class HTTPBase {
 			$datetime = fgets( $fh, 1024 );
 			$datetime = rtrim( $datetime );
 			fclose( $fh );
+		} else {
+			//otherwise, this thing complains loudly when the file doesn't exist. 
+			$datetime = time();
 		}
 
 		// if the ip addresses expired or don't exist then
