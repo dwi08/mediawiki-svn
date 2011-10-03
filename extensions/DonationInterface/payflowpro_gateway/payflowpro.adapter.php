@@ -100,7 +100,7 @@ class PayflowProAdapter extends GatewayAdapter {
 		 */
 		$result_arr = explode( "&", $nvString );
 		foreach ( $result_arr as $result_pair ) {
-			list( $key, $value ) = preg_split( "/=/", $result_pair );
+			list( $key, $value ) = preg_split( "/=/", $result_pair, 2 );
 			$responseArray[$key] = $value;
 		}
 
