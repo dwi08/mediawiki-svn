@@ -125,7 +125,7 @@ EOT;
 			$this->log( $oid . " " . $i_oid . " Transaction unsuccessful (invalid info).", LOG_DEBUG );
 			// pass responseMsg as an array key as required by displayForm
 			$this->errors['retryMsg'] = $responseMsg;
-			$this->fnPayflowDisplayForm( $data, $this->errors );
+			$this->displayForm( $data, $this->errors );
 			// if declined or if user has already made two attempts, decline
 		} elseif ( ( $errorCode == '2' ) || ( $data['numAttempt'] >= '3' ) ) {
 			$this->log( $oid . " " . $i_oid . " Transaction declined.", LOG_DEBUG );
@@ -140,7 +140,7 @@ EOT;
 			$this->log( $oid . " " . $i_oid . " Transaction unsuccessful (communication failure).", LOG_DEBUG );
 			$this->fnPayflowDisplayOtherResults( $responseMsg );
 			$this->errors['retryMsg'] = $responseMsg;
-			$this->fnPayflowDisplayForm( $data, $this->errors );
+			$this->displayForm( $data, $this->errors );
 		}
 		$this->displayResultsForDebug( $result );
 	}
