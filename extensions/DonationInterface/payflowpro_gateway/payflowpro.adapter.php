@@ -78,6 +78,8 @@ class PayflowProAdapter extends GatewayAdapter {
 				'TENDER' => 'C',
 				'VERBOSITY' => 'MEDIUM',
 			),
+			'do_validation' => 'true',
+			'do_processhooks' => 'true',
 		);
 	}
 

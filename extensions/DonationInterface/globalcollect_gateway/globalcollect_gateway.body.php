@@ -95,11 +95,11 @@ EOT;
 						break;
 
 					case 'INSERT_ORDERWITHPAYMENT':
-						$options['creditCard'] = true;
+						$options['creditCard'] = false;
 						break;
 
 					default:
-						$options['creditCard'] = true;
+						$options['creditCard'] = false;
 				}
 
 				$form_errors = $this->validateForm( $data, $this->errors, $options );

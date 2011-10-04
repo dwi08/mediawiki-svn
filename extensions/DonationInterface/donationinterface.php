@@ -78,6 +78,7 @@ $wgDonationInterfaceTest = false;
 /**
  * Default Thank You and Fail pages for all of donationinterface - language will be calc'd and appended at runtime. 
  */
+//$wgDonationInterfaceThankYouPage = 'https://wikimediafoundation.org/wiki/Thank_You';
 $wgDonationInterfaceThankYouPage = 'Donate-thanks';
 $wgDonationInterfaceFailPage = 'Donate-error';
 

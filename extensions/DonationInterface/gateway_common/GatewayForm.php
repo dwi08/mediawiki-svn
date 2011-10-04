@@ -234,7 +234,7 @@ class GatewayForm extends UnlistedSpecialPage {
 
 		if ( empty( $data['email'] ) ) {
 
-			$error['email'] = wfMsg( $gateway_identifier . '_gateway-error-email-empty' );
+			$error['email'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-email-empty' );
 
 			$this->setValidateFormResult( false );
 		}

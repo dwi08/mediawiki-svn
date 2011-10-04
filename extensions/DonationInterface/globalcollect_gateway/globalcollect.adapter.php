@@ -155,6 +155,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				'HOSTEDINDICATOR' => '1',
 			//'PAYMENTPRODUCTID' => '11',
 			),
+			'do_validation' => 'true',
+			'do_processhooks' => 'true',
 		);
 
 		$this->transactions['TEST_CONNECTION'] = array(

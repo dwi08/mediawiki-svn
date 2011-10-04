@@ -158,9 +158,9 @@ abstract class GatewayAdapter implements GatewayType {
 		global $wgLang;
 		$language = $wgLang->getCode();
 		$page = self::getGlobal( "ThankYouPage" ) . "/$language";
-		$returnTitle = Title::newFromText( $page );
-		$returnto = $returnTitle->getFullURL();
-		return $returnto;
+//		$returnTitle = Title::newFromText( $page );
+//		$returnto = $returnTitle->getFullURL();
+		return $page;
 	}
 
 	function getFailPage() {
@@ -352,26 +352,27 @@ abstract class GatewayAdapter implements GatewayType {
 			);
 		}
 
-		// expose a hook for external handling of trxns ready for processing
-		wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
+		// expose a hook for external handling of trxns ready for processing		
+		if (array_key_exists('do_processhooks', $this->transactions[$this->currentTransaction()]) && 
+			$this->transactions[$this->currentTransaction()]['do_processhooks'] === 'true'){
+			wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
+		}
 		
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$this->getStopwatch( "buildRequestXML" );
-			$xml = $this->buildRequestXML();
+			$curlme = $this->buildRequestXML();
 			$this->saveCommunicationStats( "buildRequestXML", $transaction );
-			$txn_ok = $this->curl_transaction( $xml );
-			//put the response in a universal form, and return it. 
 		}
 
 		if ( $this->getCommunicationType() === 'namevalue' ) {
 			//buildRequestNameValueString()
 			$this->getStopwatch( "buildRequestNameValueString" );
-			$namevalstring = $this->buildRequestNameValueString();
+			$curlme = $this->buildRequestNameValueString();
 			$this->saveCommunicationStats( "buildRequestNameValueString", $transaction );
-			$txn_ok = $this->curl_transaction( $namevalstring );
-			//put the response in a universal form, and return it. 
 		}
+		
+		$txn_ok = $this->curl_transaction( $curlme );
 
 		if ( $txn_ok === false ) { //nothing to process, so we have to build it manually
 			self::log( "Transaction Communication failed" . print_r( $this->getTransactionAllResults(), true ) );
@@ -400,7 +401,10 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->setTransactionResult( $pulled_data, 'data' );
 
 		// expose a hook for any post processing
-		wfRunHooks( 'GatewayPostProcess', array( &$this ) ); //conversion log (at least)
+		if (array_key_exists('do_processhooks', $this->transactions[$this->currentTransaction()]) && 
+			$this->transactions[$this->currentTransaction()]['do_processhooks'] === 'true'){
+			wfRunHooks( 'GatewayPostProcess', array( &$this ) ); //conversion log (at least)
+		}
 
 		$this->processResponse( $pulled_data );
 		$this->dataObj->unsetEditToken();
@@ -967,29 +971,33 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 
 	function runPreProcess() {
+		if (array_key_exists('do_validation', $this->transactions[$this->currentTransaction()]) && 
+			$this->transactions[$this->currentTransaction()]['do_validation'] === 'true'){
+			// allow any external validators to have their way with the data
+			self::log( $this->getData( 'order_id' ) . " Preparing to query MaxMind" );
+			wfRunHooks( 'GatewayValidate', array( &$this ) );
+			self::log( $this->getData( 'order_id' ) . ' Finished querying Maxmind' );
 
-		// allow any external validators to have their way with the data
-		self::log( $this->getData( 'order_id' ) . " Preparing to query MaxMind" );
-		wfRunHooks( 'GatewayValidate', array( &$this ) );
-		self::log( $this->getData( 'order_id' ) . ' Finished querying Maxmind' );
+			// if the transaction was flagged for review
+			if ( $this->action == 'review' ) {
+				// expose a hook for external handling of trxns flagged for review
+				wfRunHooks( 'GatewayReview', array( &$this ) );
+			}
 
-		// if the transaction was flagged for review
-		if ( $this->action == 'review' ) {
-			// expose a hook for external handling of trxns flagged for review
-			wfRunHooks( 'GatewayReview', array( &$this ) );
-		}
+			// if the transaction was flagged to be 'challenged'
+			if ( $this->action == 'challenge' ) {
+				// expose a hook for external handling of trxns flagged for challenge (eg captcha)
+				wfRunHooks( 'GatewayChallenge', array( &$this ) );
+			}
 
-		// if the transaction was flagged to be 'challenged'
-		if ( $this->action == 'challenge' ) {
-			// expose a hook for external handling of trxns flagged for challenge (eg captcha)
-			wfRunHooks( 'GatewayChallenge', array( &$this ) );
-		}
-
-		// if the transaction was flagged for rejection
-		if ( $this->action == 'reject' ) {
-			// expose a hook for external handling of trxns flagged for rejection
-			wfRunHooks( 'GatewayReject', array( &$this ) );
-			$this->dataObj->unsetEditToken();
+			// if the transaction was flagged for rejection
+			if ( $this->action == 'reject' ) {
+				// expose a hook for external handling of trxns flagged for rejection
+				wfRunHooks( 'GatewayReject', array( &$this ) );
+				$this->dataObj->unsetEditToken();
+			}
+		} else {
+			$this->action = 'process';
 		}
 	}
 
