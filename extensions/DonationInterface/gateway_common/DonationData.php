@@ -18,14 +18,72 @@ class DonationData {
 		$this->populateData( $test, $data );
 	}
 
-	function populateData( $test = false, $data = false ) {
+	function populateData( $test = false, $testdata = false ) {
+		global $wgRequest;
 		$this->normalized = array( );
 		if ( $test ) {
-			$this->populateData_Test( $data );
-		} else if ( $this->boss == 'DonationApi' ) {
-			$this->populateData_Api( $data );
+			$this->populateData_Test( $testdata );
 		} else {
-			$this->populateData_Form();
+			$this->normalized = array(
+				'posted' => 'true', //moderately sneaky. 
+				'amount' => $wgRequest->getText( 'amount', null ),
+				'amountGiven' => $wgRequest->getText( 'amountGiven', null ),
+				'amountOther' => $wgRequest->getText( 'amountOther', null ),
+				'email' => $wgRequest->getText( 'emailAdd' ),
+				'fname' => $wgRequest->getText( 'fname' ),
+				'mname' => $wgRequest->getText( 'mname' ),
+				'lname' => $wgRequest->getText( 'lname' ),
+				'street' => $wgRequest->getText( 'street' ),
+				'city' => $wgRequest->getText( 'city' ),
+				'state' => $wgRequest->getText( 'state' ),
+				'zip' => $wgRequest->getText( 'zip' ),
+				'country' => $wgRequest->getText( 'country' ),
+				'fname2' => $wgRequest->getText( 'fname' ),
+				'lname2' => $wgRequest->getText( 'lname' ),
+				'street2' => $wgRequest->getText( 'street' ),
+				'city2' => $wgRequest->getText( 'city' ),
+				'state2' => $wgRequest->getText( 'state' ),
+				'zip2' => $wgRequest->getText( 'zip' ),
+				/**
+				 * For legacy reasons, we might get a 0-length string passed into the form for country2.  If this happens, we need to set country2
+				 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
+				 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
+				 */
+				'country2' => ( strlen( $wgRequest->getText( 'country2' ) ) ) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
+				'size' => $wgRequest->getText( 'size' ),
+				'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
+				'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
+				'card_type' => $wgRequest->getText( 'card_type' ),
+				'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
+				'cvv' => $wgRequest->getText( 'cvv' ),
+				'currency' => $wgRequest->getText( 'currency_code' ),
+				'payment_method' => $wgRequest->getText( 'payment_method' ),
+				'order_id' => $wgRequest->getText( 'order_id', null ), //as far as I know, this won't actually ever pull anything back.
+				'i_order_id' => $wgRequest->getText( 'i_order_id', null ), //internal id for each contribution attempt
+				'numAttempt' => $wgRequest->getVal( 'numAttempt', 0 ),
+				'referrer' => ( $wgRequest->getVal( 'referrer' ) ) ? $wgRequest->getVal( 'referrer' ) : $wgRequest->getHeader( 'referer' ),
+				'utm_source' => self::getUtmSource(), //TODO: yes. That.
+				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
+				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
+				// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
+				'language' => $wgRequest->getText( 'uselang', $wgRequest->getText( 'language' ) ),
+				'comment-option' => $wgRequest->getText( 'comment-option' ),
+				'comment' => $wgRequest->getText( 'comment' ),
+				'email-opt' => $wgRequest->getText( 'email-opt' ),
+				'test_string' => $wgRequest->getText( 'process' ), // for showing payflow string during testing
+				'_cache_' => $wgRequest->getText( '_cache_', null ),
+				'token' => $wgRequest->getText( 'token', null ),
+				'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
+				'data_hash' => $wgRequest->getText( 'data_hash' ),
+				'action' => $wgRequest->getText( 'action' ),
+				'gateway' => $wgRequest->getText( 'gateway' ), //likely to be reset shortly by setGateway();
+				'owa_session' => $wgRequest->getText( 'owa_session', null ),
+				'owa_ref' => $wgRequest->getText( 'owa_ref', null ),
+				'transaction_type' => $wgRequest->getText( 'transaction_type', null ), // Used by GlobalCollect for payment types
+			);
+			if ( !$wgRequest->wasPosted() ) {
+				$this->setVal( 'posted', false );
+			}
 		}
 		$this->doCacheStuff();
 
@@ -114,131 +172,6 @@ class DonationData {
 				'transaction_type' => '', // Used by GlobalCollect for payment types
 			);
 		}
-	}
-
-	function populateData_Form() {
-		global $wgRequest; //I'll let you have this one, because it makes sense. 
-		$this->normalized = array(
-			'posted' => 'true', //moderately sneaky. 
-			'amount' => $wgRequest->getText( 'amount', null ),
-			'amountGiven' => $wgRequest->getText( 'amountGiven', null ),
-			'amountOther' => $wgRequest->getText( 'amountOther', null ),
-			'email' => $wgRequest->getText( 'emailAdd' ),
-			'fname' => $wgRequest->getText( 'fname' ),
-			'mname' => $wgRequest->getText( 'mname' ),
-			'lname' => $wgRequest->getText( 'lname' ),
-			'street' => $wgRequest->getText( 'street' ),
-			'city' => $wgRequest->getText( 'city' ),
-			'state' => $wgRequest->getText( 'state' ),
-			'zip' => $wgRequest->getText( 'zip' ),
-			'country' => $wgRequest->getText( 'country' ),
-			'fname2' => $wgRequest->getText( 'fname' ),
-			'lname2' => $wgRequest->getText( 'lname' ),
-			'street2' => $wgRequest->getText( 'street' ),
-			'city2' => $wgRequest->getText( 'city' ),
-			'state2' => $wgRequest->getText( 'state' ),
-			'zip2' => $wgRequest->getText( 'zip' ),
-			/**
-			 * For legacy reasons, we might get a 0-length string passed into the form for country2.  If this happens, we need to set country2
-			 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
-			 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
-			 */
-			'country2' => ( strlen( $wgRequest->getText( 'country2' ) )) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
-			'size' => $wgRequest->getText( 'size' ),
-			'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
-			'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
-			'card_type' => $wgRequest->getText( 'card_type' ),
-			'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
-			'cvv' => $wgRequest->getText( 'cvv' ),
-			'currency' => $wgRequest->getText( 'currency_code' ),
-			'payment_method' => $wgRequest->getText( 'payment_method' ),
-			'order_id' => $wgRequest->getText( 'order_id', null ), //as far as I know, this won't actually ever pull anything back.
-			'i_order_id' => $wgRequest->getText( 'i_order_id', null ), //internal id for each contribution attempt
-			'numAttempt' => $wgRequest->getVal( 'numAttempt', 0 ),
-			'referrer' => ( $wgRequest->getVal( 'referrer' ) ) ? $wgRequest->getVal( 'referrer' ) : $wgRequest->getHeader( 'referer' ),
-			'utm_source' => self::getUtmSource(), //TODO: yes. That.
-			'utm_medium' => $wgRequest->getText( 'utm_medium' ),
-			'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
-			// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
-			'language' => $wgRequest->getText( 'uselang', $wgRequest->getText( 'language' ) ),
-			'comment-option' => $wgRequest->getText( 'comment-option' ),
-			'comment' => $wgRequest->getText( 'comment' ),
-			'email-opt' => $wgRequest->getText( 'email-opt' ),
-			'test_string' => $wgRequest->getText( 'process' ), // for showing payflow string during testing
-			'_cache_' => $wgRequest->getText( '_cache_', null ),
-			'token' => $wgRequest->getText( 'token', null ),
-			'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
-			'data_hash' => $wgRequest->getText( 'data_hash' ),
-			'action' => $wgRequest->getText( 'action' ),
-			'gateway' => $wgRequest->getText( 'gateway' ), //likely to be reset shortly by setGateway();
-			'owa_session' => $wgRequest->getText( 'owa_session', null ),
-			'owa_ref' => $wgRequest->getText( 'owa_ref', null ),
-			'transaction_type' => $wgRequest->getText( 'transaction_type', null ), // Used by GlobalCollect for payment types
-		);
-		if ( !$wgRequest->wasPosted() ) {
-			$this->setVal( 'posted', false );
-		}
-	}
-	
-	function populateData_Api( $data ) {
-		global $wgRequest;
-		$this->normalized = array(
-			// Do we need 'posted' here?
-			'amount' => $data['amount'],
-			'amountGiven' => $data['amountGiven'],
-			'amountOther' => $data['amountOther'],
-			'email' => $data['email'],
-			'fname' => $data['fname'],
-			'mname' => $data['mname'],
-			'lname' => $data['lname'],
-			'street' =>$data['street'],
-			'city' => $data['city'],
-			'state' => $data['state'],
-			'zip' => $data['zip'],
-			'country' => $data['country'],
-			'fname2' => $data['fname'],
-			'lname2' => $data['lname'],
-			'street2' => $data['street'],
-			'city2' => $data['city'],
-			'state2' => $data['state'],
-			'zip2' => $data['zip'],
-			/**
-			 * For legacy reasons, we might get a 0-length string passed into the form for country2.  If this happens, we need to set country2
-			 * to be 'country' for downstream processing (until we fully support passing in two separate addresses).  I thought about completely
-			 * disabling country2 support in the forms, etc but realized there's a chance it'll be resurrected shortly.  Hence this silly hack.
-			 */
-			'country2' => ( strlen( $data['country2'] ) ) ? $data['country2'] : $data['country'],
-			'size' => $data['size'],
-			'premium_language' => ( $data['premium_language'] ) ? $data['premium_language'] : 'en',
-			'card_num' => str_replace( ' ', '', $data['card_num'] ),
-			'card_type' => $data['card_type'],
-			'expiration' => $data['mos'] . substr( $data['year'], 2, 2 ),
-			'cvv' => $data['cvv'],
-			'currency' => $data['currency_code'],
-			'payment_method' => $data['payment_method'],
-			'order_id' => $data['order_id'], //as far as I know, this won't actually ever pull anything back.
-			'i_order_id' => $data['i_order_id'], //internal id for each contribution attempt
-			'numAttempt' => $data['numAttempt'],
-			'referrer' => $data['referrer'] ? $data['referrer'] : $wgRequest->getHeader( 'referer' ),
-			'utm_source' => self::getUtmSource( $data['$utm_source'], $data['$utm_source_id'] ),
-			'utm_medium' => $data['utm_medium'],
-			'utm_campaign' => $data['utm_campaign'],
-			// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
-			'language' => ( $data['uselang'] ) ? $data['uselang'] : $data['language'],
-			'comment-option' => $data['comment-option'],
-			'comment' => $data['comment'],
-			'email-opt' => $data['email-opt'],
-			'test_string' => $data['process'], // for showing payflow string during testing
-			'_cache_' => $data['_cache_'],
-			'token' => $data['token'],
-			'contribution_tracking_id' => $data['contribution_tracking_id'],
-			'data_hash' => $data['data_hash'],
-			'action' => $data['action'],
-			'gateway' => $data['gateway'], //likely to be reset shortly by setGateway();
-			'owa_session' => $data['owa_session'],
-			'owa_ref' => $data['owa_ref'],
-			'transaction_type' => $data['transaction_type'], // Used by GlobalCollect for payment types
-		);
 	}
 
 	function isSomething( $key ) {

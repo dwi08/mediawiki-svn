@@ -10,13 +10,14 @@ class DonationApi extends ApiBase {
 		
 		$params = $this->extractRequestParams();
 		
-		$ddObj = new DonationData( 'DonationApi', false, $params );
+		$ddObj = new DonationData( 'DonationApi', false );
 		
 		$normalizedData = $ddObj->getData();
 		
 		// Some test output
 		$this->getResult()->addValue( 'data', 'gateway', $normalizedData['gateway'] );
 		$this->getResult()->addValue( 'data', 'amount', $normalizedData['amount'] );
+		$this->getResult()->addValue( 'data', 'referrer', $normalizedData['referrer'] );
 	}
 
 	public function getAllowedParams() {
