@@ -54,7 +54,7 @@ class DonationInterface_Adapter_GlobalCollect_AllTests
 		$suite = new PHPUnit_Framework_TestSuite( 'Donation Interface - Adapter Suite' );
 
 		$suite->addTestSuite( 'DonationInterface_Adapter_GlobalCollect_BankTransferTestCase' );                                                             
-		$suite->addTestSuite( 'DonationInterface_Adapter_GlobalCollect_BankTransferTestCase' );                                                             
+		$suite->addTestSuite( 'DonationInterface_Adapter_GlobalCollect_GlobalCollectTestCase' );                                                             
 
 		return $suite;
 	}
