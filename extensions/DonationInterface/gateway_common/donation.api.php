@@ -10,13 +10,22 @@ class DonationApi extends ApiBase {
 		
 		$params = $this->extractRequestParams();
 		
-		$ddObj = new DonationData( 'DonationApi', false );
+		$gateway = $wgRequest->getText( 'gateway' );
 		
-		$normalizedData = $ddObj->getData();
+		if ( $gateway == 'payflowpro' ) {
+			$gatewayObj = new PayflowProAdapter();
+		} else if ( $gateway == 'globalcollect' ) {
+			$gatewayObj = new GlobalCollectAdapter();
+		} else {
+			$this->dieUsage( "Invalid gateway <<<$gateway>>> passed to Donation API.", 'unknown_gateway' );
+		}
+		
+		$normalizedData = $gatewayObj->getData();
 		
 		// Some test output
 		$this->getResult()->addValue( 'data', 'gateway', $normalizedData['gateway'] );
 		$this->getResult()->addValue( 'data', 'amount', $normalizedData['amount'] );
+		$this->getResult()->addValue( 'data', 'currency', $normalizedData['currency'] );
 		$this->getResult()->addValue( 'data', 'referrer', $normalizedData['referrer'] );
 	}
 
@@ -28,6 +37,11 @@ class DonationApi extends ApiBase {
 			),
 			'amount' => array(
 				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_REQUIRED => true,
+			),
+			'currency' => array(
+				ApiBase::PARAM_TYPE => 'string',
+				ApiBase::PARAM_REQUIRED => true,
 			),
 		);
 	}
@@ -36,6 +50,7 @@ class DonationApi extends ApiBase {
 		return array(
 			'gateway' => 'Which payment gateway to use - payflowpro, globalcollect, etc.',
 			'amount' => 'The amount donated',
+			'currency' => 'Currency code',
 		);
 	}
 
@@ -48,7 +63,7 @@ class DonationApi extends ApiBase {
 
 	public function getExamples() {
 		return array(
-			'api.php?action=donate&gateway=payflowpro&amount=2.00',
+			'api.php?action=donate&gateway=payflowpro&amount=2.00&currency=USD',
 		);
 	}
 

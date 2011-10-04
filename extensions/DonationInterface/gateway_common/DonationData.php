@@ -13,7 +13,6 @@ class DonationData {
 	function __construct( $owning_class, $test = false, $data = false ) {
 		//TODO: Actually think about this bit.
 		// ...and keep in mind we can re-populate if it's a test or whatever. (But that may not be a good idea either)
-		//maybe we should just explicitly pass in where we get the data from. (Test, post, API...)
 		$this->boss = $owning_class;
 		$this->populateData( $test, $data );
 	}
@@ -284,11 +283,9 @@ class DonationData {
 
 	function setGateway() {
 		//TODO: Hum. If we have some other gateway in the form data, should we go crazy here? (Probably)
-		if ( $this->boss == 'DonationApi' ) {
-			$this->setVal( 'gateway', $this->normalized['gateway'] );
-		} else {
-			if ( class_exists( $this->boss ) ) {
-				$c = $this->boss;
+		if ( class_exists( $this->boss ) ) {
+			$c = $this->boss;
+			if ( is_callable( array( $c, 'getIdentifier' ) ) ) {
 				$gateway = $c::getIdentifier();
 				$this->setVal( 'gateway', $gateway );
 			}
