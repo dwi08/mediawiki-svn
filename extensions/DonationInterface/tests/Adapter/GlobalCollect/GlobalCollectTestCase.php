@@ -29,7 +29,6 @@ require_once dirname( dirname( dirname( __FILE__ ) ) ) . DIRECTORY_SEPARATOR . '
  * @group Gateways
  * @group DonationInterface
  * @group GlobalCollect
- * @group BankTransfer
  */
 class DonationInterface_Adapter_GlobalCollect_GlobalCollectTestCase extends DonationInterfaceTestCase {
 
