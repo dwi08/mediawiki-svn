@@ -821,6 +821,15 @@ class WikiPage extends Page {
 		if ( !is_null( $lastRevision ) ) {
 			# An extra check against threads stepping on each other
 			$conditions['page_latest'] = $lastRevision;
+			if ( $lastRevision === 0 ) { // hack to log bug 31179
+				global $wgRequest;
+				$time = wfTimestamp( TS_DB );
+				$wiki = wfWikiID();
+				$msg = "$time $wiki Got page_latest = 0 for `" .
+					$this->mTitle->getPrefixedDbKey() .
+					"` Request: " . $wgRequest->getFullRequestURL();
+				wfErrorLog( $msg, 'udp://10.0.5.8:8420/bug31179' );
+			}
 		}
 
 		$now = wfTimestampNow();
