@@ -52,6 +52,11 @@ $wgNoticeCounterSource = 'http://wikimediafoundation.org/wiki/Special:Contributi
 // Example: '.wikipedia.org'
 $wgNoticeCookieDomain = '';
 
+// When the cookie set in SpecialHideBanners.php should expire
+// This would typically be the end date for a fundraiser
+// NOTE: This must be in UNIX timestamp format, for example, '1325462400'
+$wgNoticeHideBannersExpiration = '';
+
 $wgExtensionFunctions[] = 'efCentralNoticeSetup';
 
 $wgExtensionCredits['other'][] = array(
@@ -126,8 +131,9 @@ function efCentralNoticeSetup() {
 		
 		$wgAutoloadClasses['TemplatePager'] = $dir . 'TemplatePager.php';
 		$wgAutoloadClasses['CentralNoticePager'] = $dir . 'CentralNoticePager.php';
-		$wgAutoloadClasses['CentralNoticeLogPager'] = $dir . 'CentralNoticeLogPager.php';
+		$wgAutoloadClasses['CentralNoticeCampaignLogPager'] = $dir . 'CentralNoticeCampaignLogPager.php';
 		$wgAutoloadClasses['CentralNoticeBannerLogPager'] = $dir . 'CentralNoticeBannerLogPager.php';
+		$wgAutoloadClasses['CentralNoticePageLogPager'] = $dir . 'CentralNoticePageLogPager.php';
 	}
 }
 
@@ -153,6 +159,8 @@ function efCentralNoticeSchema( $updater = null ) {
 				$base . '/patches/patch-notice_projects.sql' );
 			$wgExtNewTables[] = array( 'cn_notice_log',
 				$base . '/patches/patch-notice_log.sql' );
+			$wgExtNewTables[] = array( 'cn_template_log',
+				$base . '/patches/patch-template_log.sql' );
 		}
 	} else {
 		if ( $updater->getDB()->getType() == 'mysql' ) {
@@ -172,6 +180,8 @@ function efCentralNoticeSchema( $updater = null ) {
 				$base . '/patches/patch-notice_projects.sql', true ) );
 			$updater->addExtensionUpdate( array( 'addTable', 'cn_notice_log',
 				$base . '/patches/patch-notice_log.sql', true ) );
+			$updater->addExtensionUpdate( array( 'addTable', 'cn_template_log',
+				$base . '/patches/patch-template_log.sql', true ) );
 		}
 	}
 	return true;
