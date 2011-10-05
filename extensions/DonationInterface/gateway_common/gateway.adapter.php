@@ -329,6 +329,12 @@ abstract class GatewayAdapter implements GatewayType {
 		return $xml;
 	}
 
+	/**
+	 * Perform a transaction through the gateway
+	 *
+	 * @param $transaction string This is a specific transaction type like 'INSERT_ORDERWITHPAYMENT'
+	 * that maps to a first-level key in the $transactions array.
+	 */
 	function do_transaction( $transaction ) {
 		$this->currentTransaction( $transaction );
 		//update the contribution tracking data

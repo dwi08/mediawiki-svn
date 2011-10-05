@@ -14,36 +14,50 @@ class DonationApi extends ApiBase {
 		
 		if ( $gateway == 'payflowpro' ) {
 			$gatewayObj = new PayflowProAdapter();
+			$result = $gatewayObj->do_transaction( 'Card' );
 		} else if ( $gateway == 'globalcollect' ) {
 			$gatewayObj = new GlobalCollectAdapter();
+			$result = $gatewayObj->do_transaction( 'TEST_CONNECTION' );
 		} else {
 			$this->dieUsage( "Invalid gateway <<<$gateway>>> passed to Donation API.", 'unknown_gateway' );
 		}
 		
 		$normalizedData = $gatewayObj->getData();
 		
-		// Some test output
-		$this->getResult()->addValue( 'data', 'gateway', $normalizedData['gateway'] );
-		$this->getResult()->addValue( 'data', 'amount', $normalizedData['amount'] );
-		$this->getResult()->addValue( 'data', 'currency', $normalizedData['currency'] );
-		$this->getResult()->addValue( 'data', 'referrer', $normalizedData['referrer'] );
+		// Some output
+		$this->getResult()->setIndexedTagName( $result, 'response' );
+		$this->getResult()->addValue( 'data', 'result', $result );
 	}
 
 	public function getAllowedParams() {
 		return array(
-			'gateway' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
-			),
-			'amount' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
-			),
-			'currency' => array(
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
-			),
+			'gateway' => $this->defineParam( 'gateway', true ),
+			'amount' => $this->defineParam( 'amount', true ),
+			'currency' => $this->defineParam( 'currency', true ),
+			'fname' => $this->defineParam( 'fname', true ),
+			'mname' => $this->defineParam( 'mname', false ),
+			'lname' => $this->defineParam( 'lname', true ),
+			'street' => $this->defineParam( 'street', true ),
+			'city' => $this->defineParam( 'city', true ),
+			'state' => $this->defineParam( 'state', true ),
+			'zip' => $this->defineParam( 'zip', true ),
+			'email' => $this->defineParam( 'email', true ),
+			'country' => $this->defineParam( 'country', true ),
+			'card_num' => $this->defineParam( 'card_num', false  ),
+			'card_type' => $this->defineParam( 'card_type', false  ),
+			'expiration' => $this->defineParam( 'expiration', false  ),
+			'cvv' => $this->defineParam( 'cvv', false  ),
+			'payment_method' => $this->defineParam( 'payment_method', false  ),
 		);
+	}
+	
+	private function defineParam( $paramName, $required = false, $type = 'string' ) {
+		if ( $required ) {
+			$param = array( ApiBase::PARAM_TYPE => $type, ApiBase::PARAM_REQUIRED => true );
+		} else {
+			$param = array( ApiBase::PARAM_TYPE => $type );
+		}
+		return $param;
 	}
 
 	public function getParamDescription() {
