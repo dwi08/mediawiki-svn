@@ -1109,7 +1109,13 @@ class CentralAuthUser extends AuthPluginUser {
 				/* $allowUsertalk */ false,
 				/* $byName */ $by
 			);
-
+			// Live hack for $by not being used anymore, --aaron
+			$foreignUser = User::newFromName( $by, false );
+			$foreignUser->setId( 0 );
+			$foreignUser->setItemLoaded( 'id' ); // hack around Block::getDatabaseArray()
+			$block->setBlocker( $foreignUser );
+			// end hack
+			
 			# On normal block, BlockIp hook would be run here, but doing
 			# that from CentralAuth doesn't seem a good idea...
 
