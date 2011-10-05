@@ -142,7 +142,6 @@ EOT;
 			$this->errors['retryMsg'] = $responseMsg;
 			$this->displayForm( $data, $this->errors );
 		}
-		$this->displayResultsForDebug( $result );
 	}
 
 	/**

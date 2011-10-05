@@ -461,6 +461,11 @@ abstract class GatewayAdapter implements GatewayType {
 
 		// log that the transaction is essentially complete
 		self::log( $this->getData( 'order_id' ) . " Transaction complete." );
+		
+		//if we're not actively adding the donor data to the session, kill it. 
+		if ( !$this->transaction_option( 'addDonorDataToSession' ) ) {
+			$this->unsetAllGatewaySessionData();
+		}
 
 		return $this->getTransactionAllResults();
 
@@ -974,9 +979,8 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @return mixed WMF Transaction results status, or false if not set.  
 	 */
 	public function getTransactionWMFStatus() {
-		if ( array_key_exists( 'data', $this->transaction_results ) &&
-			array_key_exists( 'WMF_STATUS', $this->transaction_results['data'] ) ) {
-			return $this->transaction_results['data']['WMF_STATUS'];
+		if ( array_key_exists( 'WMF_STATUS', $this->transaction_results ) ) {
+			return $this->transaction_results['WMF_STATUS'];
 		} else {
 			return false;
 		}
@@ -987,7 +991,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * switching on behavior. 
 	 */
 	public function setTransactionWMFStatus( $status ) {
-		$this->transaction_results['data']['WMF_STATUS'] = $status;
+		$this->transaction_results['WMF_STATUS'] = $status;
 	}
 
 	public function getTransactionMessage() {

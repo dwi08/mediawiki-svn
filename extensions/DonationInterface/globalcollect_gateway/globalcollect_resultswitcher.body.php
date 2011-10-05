@@ -76,7 +76,7 @@ class GlobalCollectGatewayResult extends GatewayForm {
 				$this->displayResultsForDebug( $result );
 				//do the switching between the... stuff. 
 
-				switch ( $result['data']['WMF_STATUS'] ) {
+				switch ( $this->adapter->getTransactionWMFStatus() ) {
 					case 'complete':
 					case 'pending':
 					case 'pending-poke':

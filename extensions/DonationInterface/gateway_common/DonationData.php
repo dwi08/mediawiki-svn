@@ -401,7 +401,9 @@ class DonationData {
 		} else {
 			$gateway_ident = "DonationData";
 		}
-		unset( $_SESSION[$gateway_ident . 'EditToken'] );
+		if ( isset( $_SESSION ) && isset( $_SESSION[$gateway_ident . 'EditToken'] ) ){
+			unset( $_SESSION[$gateway_ident . 'EditToken'] );
+		}
 	}
 
 	/**

@@ -124,10 +124,11 @@ class PayflowProAdapter extends GatewayAdapter {
 
 	/**
 	 * Interpret response code, return
-	 * 1 if approved
-	 * 2 if declined
+	 * 1 if approved - 'complete'
+	 * 2 if declined - 'failed'
 	 * 3 if invalid data was submitted by user
 	 * 4 all other errors
+	 * 5 if pending - 'pending'
 	 */
 	function getResponseErrors( $response ) {
 
@@ -142,36 +143,47 @@ class PayflowProAdapter extends GatewayAdapter {
 		switch ( $resultCode ) {
 			case '0':
 				$errors['1'] = wfMsg( 'payflowpro_gateway-response-0' );
+				$this->setTransactionWMFStatus( 'complete' );
 				break;
 			case '126':
 				$errors['5'] = wfMsg( 'payflowpro_gateway-response-126-2' );
+				$this->setTransactionWMFStatus( 'pending' );
 				break;
 			case '12':
 				$errors['2'] = wfMsg( 'payflowpro_gateway-response-12' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '13':
 				$errors['2'] = wfMsg( 'payflowpro_gateway-response-13' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '114':
 				$errors['2'] = wfMsg( 'payflowpro_gateway-response-114' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '4':
 				$errors['3'] = wfMsg( 'payflowpro_gateway-response-4' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '23':
 				$errors['3'] = wfMsg( 'payflowpro_gateway-response-23' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '24':
 				$errors['3'] = wfMsg( 'payflowpro_gateway-response-24' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '112':
 				$errors['3'] = wfMsg( 'payflowpro_gateway-response-112' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			case '125':
 				$errors['3'] = wfMsg( 'payflowpro_gateway-response-125-2' );
+				$this->setTransactionWMFStatus( 'failed' );
 				break;
 			default:
 				$errors['4'] = wfMsg( 'payflowpro_gateway-response-default' );
+				$this->setTransactionWMFStatus( 'failed' );
 		}
 
 		return $errors;
@@ -182,6 +194,7 @@ class PayflowProAdapter extends GatewayAdapter {
 	 * return a key/value array
 	 */
 	function getResponseData( $response ) {
+		
 		if ( is_array( $response ) && !empty( $response ) ) {
 			return $response;
 		}

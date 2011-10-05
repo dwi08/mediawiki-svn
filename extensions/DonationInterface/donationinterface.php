@@ -135,6 +135,6 @@ $wgDonationInterfacePaypalURL = '';
 $wgDonationInterfaceRetrySeconds = 5;
 
 function efDonationInterfaceUnitTests( &$files ) {
-	//$files[] = dirname( __FILE__ ) . '/tests/AllTests.php';
+	$files[] = dirname( __FILE__ ) . '/tests/AllTests.php';
 	return true;
 }

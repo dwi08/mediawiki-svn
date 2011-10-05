@@ -24,13 +24,17 @@
 require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'DonationInterfaceTestCase.php';
 
 /**
- * TODO: Something. 
- * Something roughly test-shaped. Here.
- * ...to be more precise: Test that ALL the gateway adapters (Yes: All two of them)
- * are building the XML we think they are, and that they can process sample 
- * return XML the way we think they should. 
+ * TODO: Test everything. 
+ * Make sure all the basic functions in the gateway_adapter are tested here. 
+ * Also, the extras and their hooks firing properly and... that the fail score 
+ * they give back is acted upon in the way we think it does. 
+ * Hint: For that mess, use GatewayAdapter's $debugarray
  * 
- * TODO: Then, write all the other tests as well. :|
+ * Also, note that it barely makes sense to test the functions that need to be 
+ * defined in each gateway as per the abstract class. If we did that here, we'd 
+ * basically be just testing the test code. So, don't do it. 
+ * Those should definitely be tested in the various gateway-specific test 
+ * classes. 
  * 
  * @group Fundraising
  * @group Splunge
@@ -51,7 +55,7 @@ class DonationInterface_Adapter_GatewayAdapterTestCase extends DonationInterface
 		$gateway->publicCurrentTransaction( 'Test1' );
 		$built = $gateway->buildRequestXML();
 		$expected = '<?xml version="1.0"?>' . "\n";
-		$expected .= '<XML><REQUEST><ACTION>Donate</ACTION><ACCOUNT><MERCHANTID>128</MERCHANTID><PASSWORD>k4ftw</PASSWORD><VERSION>3.2</VERSION><RETURNURL>http://' . TESTS_HOSTNAME . '/index.php/Donate-thanks/en</RETURNURL></ACCOUNT><DONATION><DONOR>Tester Testington</DONOR><AMOUNT>35000</AMOUNT><CURRENCYCODE>USD</CURRENCYCODE><LANGUAGECODE>en</LANGUAGECODE><COUNTRYCODE>US</COUNTRYCODE></DONATION></REQUEST></XML>' . "\n";
+		$expected .= '<XML><REQUEST><ACTION>Donate</ACTION><ACCOUNT><MERCHANTID>128</MERCHANTID><PASSWORD>k4ftw</PASSWORD><VERSION>3.2</VERSION><RETURNURL>http://' . TESTS_HOSTNAME . '/index.php/Special:GlobalCollectGatewayResult</RETURNURL></ACCOUNT><DONATION><DONOR>Tester Testington</DONOR><AMOUNT>35000</AMOUNT><CURRENCYCODE>USD</CURRENCYCODE><LANGUAGECODE>en</LANGUAGECODE><COUNTRYCODE>US</COUNTRYCODE></DONATION></REQUEST></XML>' . "\n";
 		$this->assertEquals($built, $expected, "The constructed XML for transaction type Test1 does not match our expected.");
 		
 	}
@@ -320,7 +324,8 @@ class TestAdapter extends GatewayAdapter {
 	public function curl_transaction($data) {
 		$data = "";
 		$data['result'] = 'BLAH BLAH BLAH BLAH whatever something blah blah<?xml version="1.0"?>' . "\n" . '<XML><Response><Status>AOK</Status><ImportantData><thing>stuff</thing><otherthing>12</otherthing></ImportantData><errorswarnings><warning><code>128</code><message>Your shoe\'s untied...</message></warning><warning><code>45</code><message>Low clearance!</message></warning></errorswarnings></Response></XML>';
-		return $data;
+		$this->setTransactionResult( $data );
+		return true;
 	}
 }
 
