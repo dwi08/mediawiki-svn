@@ -47,6 +47,7 @@ class Gateway_Extras_CustomFilters_Source extends Gateway_Extras {
 	}
 
 	static function onFilter( &$custom_filter_object ) {
+		$gateway_adapter->debugarray[] = 'source onFilter hook!';
 		return self::singleton( $custom_filter_object )->filter();
 	}
 

@@ -340,6 +340,11 @@ abstract class GatewayAdapter implements GatewayType {
 		//update the contribution tracking data
 		$this->incrementNumAttempt();
 
+		//if we're supposed to add the donor data to the session, do that. 
+		if ( $this->transaction_option( 'addDonorDataToSession' ) ) {
+			$this->addDonorDataToSession();
+		}
+
 		$this->runPreProcess(); //many hooks get fired here...
 		//TODO: Uhmmm... what if none of the validate hooks are enabled? 
 		//Currently, I think that means the transaction stops here, and that's not quite right.
@@ -359,11 +364,10 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 
 		// expose a hook for external handling of trxns ready for processing		
-		if (array_key_exists('do_processhooks', $this->transactions[$this->currentTransaction()]) && 
-			$this->transactions[$this->currentTransaction()]['do_processhooks'] === 'true'){
+		if ( $this->transaction_option( 'do_processhooks' ) ) {
 			wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
 		}
-		
+
 		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
 		if ( $this->getCommunicationType() === 'xml' ) {
 			$this->getStopwatch( "buildRequestXML" );
@@ -377,11 +381,58 @@ abstract class GatewayAdapter implements GatewayType {
 			$curlme = $this->buildRequestNameValueString();
 			$this->saveCommunicationStats( "buildRequestNameValueString", $transaction );
 		}
-		
-		$txn_ok = $this->curl_transaction( $curlme );
+
+		//start looping here, if we're the sort of transaction that needs to do that. 
+		$stopflag = false;
+		$counter = 0;
+		$statuses = $this->transaction_option( 'loop_for_status' );
+		$this->getStopwatch( __FUNCTION__, true );
+		while ( $stopflag === false ) {
+			$stopflag = true;
+			$counter += 1;
+			$txn_ok = $this->curl_transaction( $curlme );
+
+			if ( $txn_ok === true ) { //We have something to slice and dice. 
+				self::log( "RETURNED FROM CURL:" . print_r( $this->getTransactionAllResults(), true ) );
+
+				//set the status of the response. This is the COMMUNICATION status, and has nothing
+				//to do with the result of the transaction. 
+				$formatted = $this->getFormattedResponse( $this->getTransactionRawResponse() );
+				$this->setTransactionResult( $this->getResponseStatus( $formatted ), 'status' );
+
+				//set errors
+				//TODO: This "errors" business is becoming a bit of a misnomer, as the result code and message
+				//are frequently packaged togther in the same place, whether the transaction passed or failed. 
+				$this->setTransactionResult( $this->getResponseErrors( $formatted ), 'errors' );
+
+				//if we're still okay (hey, even if we're not), get relevent dataz.
+				$pulled_data = $this->getResponseData( $formatted );
+				$this->setTransactionResult( $pulled_data, 'data' );
+
+				//TODO: Death to the pulled_data parameter! 
+				$this->processResponse( $pulled_data ); //now we've set all the transaction results... 
+			} else {
+				self::log( "Transaction Communication failed" . print_r( $this->getTransactionAllResults(), true ) );
+			}
+
+			if ( is_array( $statuses ) ) { //only then will we consider doing this again. 
+				global $wgDonationInterfaceRetrySeconds; //TODO: Deal with this global in the new usual way, once the DI install mess gets cleaned up
+				if ( $this->getStopwatch( __FUNCTION__ ) < $wgDonationInterfaceRetrySeconds ) {
+					if ( $txn_ok === false ) {
+						$stopflag = false;
+					} else {
+						if ( !in_array( $this->getTransactionWMFStatus(), $statuses ) ) {
+							$stopflag = false;
+						}
+					}
+				}
+			}
+		}
+
+		//Log out how many times we looped, and what the clock is now. 
+		$this->saveCommunicationStats( __FUNCTION__, $transaction, "counter = $counter" );
 
 		if ( $txn_ok === false ) { //nothing to process, so we have to build it manually
-			self::log( "Transaction Communication failed" . print_r( $this->getTransactionAllResults(), true ) );
 			return array(
 				'status' => false,
 				'message' => "$transaction Communication Failed!",
@@ -391,28 +442,12 @@ abstract class GatewayAdapter implements GatewayType {
 			);
 		}
 
-		self::log( "RETURNED FROM CURL:" . print_r( $this->getTransactionAllResults(), true ) );
-
-		//set the status of the response
-		$formatted = $this->getFormattedResponse( $this->getTransactionRawResponse() );
-		$this->setTransactionResult( $this->getResponseStatus( $formatted ), 'status' );
-
-		//set errors
-		//TODO: This "errors" business is becoming a bit of a misnomer, as the result code and message
-		//are frequently packaged togther in the same place, whether the transaction passed or failed. 
-		$this->setTransactionResult( $this->getResponseErrors( $formatted ), 'errors' );
-
-		//if we're still okay (hey, even if we're not), get relevent dataz.
-		$pulled_data = $this->getResponseData( $formatted );
-		$this->setTransactionResult( $pulled_data, 'data' );
-
 		// expose a hook for any post processing
-		if (array_key_exists('do_processhooks', $this->transactions[$this->currentTransaction()]) && 
-			$this->transactions[$this->currentTransaction()]['do_processhooks'] === 'true'){
+		if ( $this->transaction_option( 'do_processhooks' ) ) {
 			wfRunHooks( 'GatewayPostProcess', array( &$this ) ); //conversion log (at least)
+			$this->doStompTransaction();
 		}
 
-		$this->processResponse( $pulled_data );
 		$this->dataObj->unsetEditToken();
 
 		//TODO: Actually pull these from somewhere legit. 
@@ -641,14 +676,25 @@ abstract class GatewayAdapter implements GatewayType {
 		return $c::IDENTIFIER;
 	}
 
+	/**
+	 * getStopwatch keeps track of how long things take, for logging, 
+	 * output, determining if we should loop on some method again... whatever. 
+	 * @staticvar array $start The microtime at which a stopwatch was started. 
+	 * @param string $string Some identifier for each stopwatch value we want to 
+	 * keep. Each unique $string passed in will get its own value in $start.
+	 * @param bool $reset If this is set to true, it will reset any $start value 
+	 * recorded for the $string identifier. 
+	 * @return numeric The difference in microtime (rounded to 4 decimal places) 
+	 * between the $start value, and now.  
+	 */
 	public function getStopwatch( $string, $reset = false ) {
-		static $start = null;
+		static $start = array( );
 		$now = microtime( true );
 
-		if ( $start == null || $reset === true ) {
-			$start = $now;
+		if ( empty( $start ) || !array_key_exists( $string, $start ) || $reset === true ) {
+			$start[$string] = $now;
 		}
-		$clock = round( $now - $start, 4 );
+		$clock = round( $now - $start[$string], 4 );
 		self::log( "\nClock at $string: $clock ($now)" );
 		return $clock;
 	}
@@ -752,8 +798,11 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->dataObj->unsetAllDDSessionData();
 	}
 
-	function doStompTransaction( $responseArray, $responseMsg, $status, $useSession = false ) {
+	function doStompTransaction() {
+		$this->debugarray[] = "Attempting Stomp Transaction!";
 		$hook = '';
+
+		$status = $this->getTransactionWMFStatus();
 		switch ( $status ) {
 			case 'complete':
 				$hook = 'gwStomp';
@@ -764,25 +813,18 @@ abstract class GatewayAdapter implements GatewayType {
 				break;
 		}
 		if ( $hook === '' ) {
+			$this->debugarray[] = "No Stomp Hook Found for WMF_Status $status";
 			return;
 		}
 
-		foreach ( $responseArray as $key => $val ) {
-			if ( array_key_exists( $key, $this->var_map ) ) {
-				$responseArray[$this->var_map[$key]] = $val;
-				unset( $responseArray[$key] );
-			}
-		}
+		$data = $this->getTransactionData();
 
 		//Gah. I might want to move all this data prep business upstream more than somewhat. 
 		//...but that's for later. 
 		// Add the session vars to the data object
-		if ( $useSession ) {
+		if ( $this->transaction_option( 'pullDonorDataFromSession' ) ) {
 			$this->dataObj->populateDonorFromSession();
 		}
-
-		// Add our response vars to the data object. 
-		$this->dataObj->addData( $responseArray );
 
 		// refresh our data
 		$this->postdata = $this->dataObj->getData();
@@ -792,7 +834,7 @@ abstract class GatewayAdapter implements GatewayType {
 
 		// send the thing.
 		$transaction = array(
-			'response' => $responseMsg,
+			'response' => $this->getTransactionMessage(),
 			'date' => time(),
 		);
 		$transaction += $this->getData();
@@ -887,6 +929,15 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 	}
 
+	/**
+	 * SetTransactionResult sets the gateway adapter object's 
+	 * $transaction_results value. 
+	 * If a $key is specified, it only sets the specified key's value. If no 
+	 * $key is specified, it resets the value of the entire array.
+	 * @param mixed $value The value to set in $transaction_results
+	 * @param mixed $key Optional: A specific key to set, or false (default) to 
+	 * reset the entire result array. 
+	 */
 	public function setTransactionResult( $value, $key = false ) {
 		if ( $key === false ) {
 			$this->transaction_results = $value;
@@ -903,12 +954,40 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 	}
 
+	/**
+	 * If it has been set: returns the Transaction Status in the 
+	 * $transaction_results array. Otherwise, returns false.
+	 * @return mixed Transaction results status, or false if not set.  
+	 */
 	public function getTransactionStatus() {
 		if ( array_key_exists( 'status', $this->transaction_results ) ) {
 			return $this->transaction_results['status'];
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * If it has been set: returns the WMF Transaction Status in the 
+	 * $transaction_results array. This is the one we care about for switching 
+	 * on overall behavior. Otherwise, returns false.
+	 * @return mixed WMF Transaction results status, or false if not set.  
+	 */
+	public function getTransactionWMFStatus() {
+		if ( array_key_exists( 'data', $this->transaction_results ) &&
+			array_key_exists( 'WMF_STATUS', $this->transaction_results['data'] ) ) {
+			return $this->transaction_results['data']['WMF_STATUS'];
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Sets the WMF Transaction Status. This is the one we care about for 
+	 * switching on behavior. 
+	 */
+	public function setTransactionWMFStatus( $status ) {
+		$this->transaction_results['data']['WMF_STATUS'] = $status;
 	}
 
 	public function getTransactionMessage() {
@@ -919,7 +998,11 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 	}
 
-	public function getTransactionData() {  //this is the FORMATTED data returned from the reply. 
+	/**
+	 * Returns the FORMATTED data harvested from the reply, or false if it is not set. 
+	 * @return mixed An array of returned data, or false.  
+	 */
+	public function getTransactionData() {
 		if ( array_key_exists( 'data', $this->transaction_results ) ) {
 			return $this->transaction_results['data'];
 		} else {
@@ -977,8 +1060,7 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 
 	function runPreProcess() {
-		if (array_key_exists('do_validation', $this->transactions[$this->currentTransaction()]) && 
-			$this->transactions[$this->currentTransaction()]['do_validation'] === 'true'){
+		if ( $this->transaction_option( 'do_validation' ) ) {
 			// allow any external validators to have their way with the data
 			self::log( $this->getData( 'order_id' ) . " Preparing to query MaxMind" );
 			wfRunHooks( 'GatewayValidate', array( &$this ) );
@@ -1003,8 +1085,22 @@ abstract class GatewayAdapter implements GatewayType {
 				$this->dataObj->unsetEditToken();
 			}
 		} else {
-			$this->action = 'process';
+			$this->action = 'process'; //we have to do this so do_transaction doesn't kick out. 
 		}
+	}
+
+	function transaction_option( $option_value ) {
+		//ooo, ugly. 
+		if ( array_key_exists( $option_value, $this->transactions[$this->currentTransaction()] ) ) {
+			if ( $this->transactions[$this->currentTransaction()][$option_value] === true ) {
+				return true;
+			}
+			if ( is_array( $this->transactions[$this->currentTransaction()][$option_value] ) &&
+				!empty( $this->transactions[$this->currentTransaction()][$option_value] ) ) {
+				return $this->transactions[$this->currentTransaction()][$option_value];
+			}
+		}
+		return false;
 	}
 
 }

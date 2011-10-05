@@ -78,8 +78,8 @@ class PayflowProAdapter extends GatewayAdapter {
 				'TENDER' => 'C',
 				'VERBOSITY' => 'MEDIUM',
 			),
-			'do_validation' => 'true',
-			'do_processhooks' => 'true',
+			'do_validation' => true,
+			'do_processhooks' => true,
 		);
 	}
 
@@ -201,12 +201,23 @@ class PayflowProAdapter extends GatewayAdapter {
 		//OUR field names. 
 		$this->staged_vars = array(
 			'card_num',
+			'user_ip'
 		);
 	}
 
 	protected function stage_card_num( $type = 'request' ) {
 		//I realize that the $type isn't used. Voodoo.
 		$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
+	}
+
+	//TODO: Something much fancier here. 
+	protected function stage_user_ip( $type = 'request' ) {
+		if ( $this->postdata['user_ip'] === '127.0.0.1' ) {
+			global $wgDonationInterfaceIPAddress;
+			if ( !empty( $wgDonationInterfaceIPAddress ) ) {
+				$this->postdata['user_ip'] = $wgDonationInterfaceIPAddress;
+			}
+		}
 	}
 
 }

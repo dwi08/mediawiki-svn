@@ -47,6 +47,7 @@ class Gateway_Extras_CustomFilters_Referrer extends Gateway_Extras {
 	}
 
 	static function onFilter( &$custom_filter_object ) {
+		$gateway_adapter->debugarray[] = 'referrer onFilter hook!';
 		return self::singleton( $custom_filter_object )->filter();
 	}
 

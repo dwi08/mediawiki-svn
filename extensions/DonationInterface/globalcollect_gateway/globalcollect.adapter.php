@@ -51,9 +51,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 310, 350 );
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'revised', 400 );
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending_poke', 525 );
-		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 550, 850 );
-		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 900 ); //There's two 900s in the doc. The heck? 
-		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 950, 975 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'pending', 550, 650 );
+		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'complete', 800, 975 ); //these are all post-authorized, but technically pre-settled...
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'complete', 1000, 1050 );
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 1100, 99999 );
 	}
@@ -155,8 +154,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				'HOSTEDINDICATOR' => '1',
 			//'PAYMENTPRODUCTID' => '11',
 			),
-			'do_validation' => 'true',
-			'do_processhooks' => 'true',
+			'do_validation' => true,
+			'addDonorDataToSession' => true,
 		);
 
 		$this->transactions['TEST_CONNECTION'] = array(
@@ -195,6 +194,15 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'values' => array(
 				'ACTION' => 'GET_ORDERSTATUS',
 				'VERSION' => '2.0'
+			),
+			'do_processhooks' => true,
+			'pullDonorDataFromSession' => true,
+			'loop_for_status' => array(
+				//'pending',
+				'pending_poke',
+				'complete',
+				'failed',
+				'revised',
 			)
 		);
 	}

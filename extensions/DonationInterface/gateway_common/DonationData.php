@@ -662,7 +662,8 @@ class DonationData {
 			'state',
 			'zip',
 			'country',
-			'contribution_tracking_id'
+			'contribution_tracking_id',
+			'referrer'
 		);
 
 		foreach ( $donordata as $item ) {
@@ -713,6 +714,7 @@ class DonationData {
 
 	public function decrementNumAttempt() {
 		//minfraud...
+		//TODO: Determine if I killed this or not. 
 		if ( $this->isSomething( 'numAttempt' ) ) {
 			$attempts = $this->getVal( 'numAttempt' );
 			if ( is_numeric( $attempts ) ) {

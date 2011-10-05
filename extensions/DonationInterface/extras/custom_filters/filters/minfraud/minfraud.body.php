@@ -29,6 +29,7 @@ class Gateway_Extras_CustomFilters_MinFraud extends Gateway_Extras_MinFraud {
 	}
 
 	static function onFilter( &$gateway_adapter, &$custom_filter_object ) {
+		$gateway_adapter->debugarray[] = 'minfraud onFilter hook!';
 		return self::singleton( &$gateway_adapter )->filter( $custom_filter_object );
 	}
 

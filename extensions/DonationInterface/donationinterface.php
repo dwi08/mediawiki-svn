@@ -132,6 +132,7 @@ $wgResourceModules['donationInterface.skinOverride'] = array(
  * The URL to redirect a transaction to PayPal
  */
 $wgDonationInterfacePaypalURL = '';
+$wgDonationInterfaceRetrySeconds = 5;
 
 function efDonationInterfaceUnitTests( &$files ) {
 	//$files[] = dirname( __FILE__ ) . '/tests/AllTests.php';

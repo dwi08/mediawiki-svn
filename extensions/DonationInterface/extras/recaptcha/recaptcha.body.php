@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Validates a transaction against MaxMind's minFraud service
  */
-
 class Gateway_Extras_reCaptcha extends Gateway_Extras {
 
 	/**
@@ -18,7 +18,7 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 
 	public function __construct( &$gateway_adapter ) {
 		parent::__construct( $gateway_adapter );
-		
+
 		//stash all the vars that reCaptcha is going to need in a global just for it. 
 		//I know this is vaguely unpleasant, but it's the quickest way back to zero. 
 		global $wgReCaptchaConfData;
@@ -28,7 +28,6 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 		$wgReCaptchaConfData['UseSSL'] = $this->getGlobal( 'RecaptchaUseSSL' );
 		$wgReCaptchaConfData['ComsRetryLimit'] = $this->getGlobal( 'RecaptchaComsRetryLimit' );
 		$wgReCaptchaConfData['GatewayClass'] = $this->gateway_adapter->getGatewayAdapterClass(); //for properly routing the logging
-		
 		// load the reCaptcha API
 		require_once( dirname( __FILE__ ) . '/recaptcha-php/recaptchalib.php' );
 	}
@@ -38,7 +37,7 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 	 */
 	public function challenge() {
 		// if captcha posted, validate
-		if ( isset( $_POST[ 'recaptcha_response_field' ] ) ) {
+		if ( isset( $_POST['recaptcha_response_field'] ) ) {
 			// check the captcha response
 			$captcha_resp = $this->check_captcha();
 			if ( $captcha_resp->is_valid ) {
@@ -72,10 +71,9 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 		$captcha_html .= recaptcha_get_html( $publicKey, $this->recap_err, $useSSL );
 		$captcha_html .= '<span class="creditcard-error-msg">' . wfMsg( $this->gateway_adapter->getIdentifier() . '_gateway-error-msg-captcha-please' ) . '</span>';
 		$captcha_html .= Xml::closeElement( 'div' ); // close div#mw-donate-captcha
-
 		// load up the form class
 		$form_class = $this->gateway_adapter->getFormClass();
-		
+
 		//hmm. Looking at this now, makes me want to say 
 		//TODO: Refactor the Form Class constructors. Again. Because the next three lines of code anger me deeply.
 		//#1 - all three things are clearly in the gateway adapter, and we're passing that already. 
@@ -97,15 +95,13 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 	public function check_captcha() {
 		global $wgRequest;
 		$privateKey = $this->getGlobal( 'RecaptchaPrivateKey' );
-		$resp = recaptcha_check_answer( $privateKey,
-			wfGetIP(),
-			$wgRequest->getText( 'recaptcha_challenge_field' ),
-			$wgRequest->getText( 'recaptcha_response_field' ) );
+		$resp = recaptcha_check_answer( $privateKey, wfGetIP(), $wgRequest->getText( 'recaptcha_challenge_field' ), $wgRequest->getText( 'recaptcha_response_field' ) );
 
 		return $resp;
 	}
 
 	static function onChallenge( &$gateway_adapter ) {
+		$gateway_adapter->debugarray[] = 'recaptcha onChallenge hook!';
 		return self::singleton( $gateway_adapter )->challenge();
 	}
 
@@ -115,4 +111,5 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 		}
 		return self::$instance;
 	}
+
 }

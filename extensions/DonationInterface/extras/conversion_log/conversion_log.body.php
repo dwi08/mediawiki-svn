@@ -27,6 +27,7 @@ class Gateway_Extras_ConversionLog extends Gateway_Extras {
 	}
 
 	static function onPostProcess( &$gateway_adapter ) {
+		$gateway_adapter->debugarray[] = 'conversion log onPostProcess hook!';
 		return self::singleton( $gateway_adapter )->post_process();
 	}
 
