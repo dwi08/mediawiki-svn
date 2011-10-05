@@ -456,6 +456,13 @@ return array(
 			'jquery.cookie',
 		),
 	),
+	'mediawiki.Title' => array(
+		'scripts' => 'resources/mediawiki/mediawiki.Title.js',
+		'dependencies' => 'mediawiki.util',
+	),
+	'mediawiki.Uri' => array( 
+		'scripts' => 'resources/mediawiki/mediawiki.Uri.js',
+	),
 	'mediawiki.page.startup' => array(
 		'scripts' => 'resources/mediawiki.page/mediawiki.page.startup.js',
 		'dependencies' => array(
