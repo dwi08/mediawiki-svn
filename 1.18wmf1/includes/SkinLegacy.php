@@ -484,7 +484,7 @@ class LegacyTemplate extends BaseTemplate {
 
 				if ( $image ) {
 					$link = htmlspecialchars( $image->getURL() );
-					$style = $this->getInternalLinkAttributes( $link, $name );
+					$style = Linker::getInternalLinkAttributes( $link, $name );
 					$s[] = "<a href=\"{$link}\"{$style}>{$name}</a>";
 				}
 			}
