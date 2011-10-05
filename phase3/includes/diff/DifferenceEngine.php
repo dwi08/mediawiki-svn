@@ -963,7 +963,7 @@ CONTROL;
 			$header .= "<tr><td colspan='{$multiColspan}' align='center'>{$notice}</td></tr>";
 		}
 
-		return $header . $diff . "</table>i<!-- /diff -->";
+		return $header . $diff . "</table><!-- /diff -->";
 	}
 
 	/**
