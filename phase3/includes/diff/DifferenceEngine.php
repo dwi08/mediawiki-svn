@@ -937,7 +937,7 @@ CONTROL;
 		// shared.css sets diff in interface language/dir, but the actual content
 		// is often in a different language, mostly the page content language/dir
 		$tableClass = 'diff diff-contentalign-' . htmlspecialchars( $this->mDiffLang->alignStart() );
-		$header = "<table class='$tableClass'>";
+		$header = "<!-- diff --><table class='$tableClass'>";
 		if ( $diff ) { // Safari/Chrome show broken output if cols not used
 			$header .= "
 			<col class='diff-marker' />
@@ -963,7 +963,7 @@ CONTROL;
 			$header .= "<tr><td colspan='{$multiColspan}' align='center'>{$notice}</td></tr>";
 		}
 
-		return $header . $diff . "</table>";
+		return $header . $diff . "</table>i<!-- /diff -->";
 	}
 
 	/**
