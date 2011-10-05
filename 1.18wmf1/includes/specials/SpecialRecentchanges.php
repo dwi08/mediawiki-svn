@@ -28,7 +28,7 @@
  */
 class SpecialRecentChanges extends IncludableSpecialPage {
 	var $rcOptions, $rcSubpage;
-	protected $customFilters;
+	protected $customFilters = array();
 
 	public function __construct( $name = 'Recentchanges' ) {
 		parent::__construct( $name );
