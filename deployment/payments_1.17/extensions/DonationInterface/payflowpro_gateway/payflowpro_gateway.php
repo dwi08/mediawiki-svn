@@ -167,6 +167,51 @@ $wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
 $wgAPIModules[ 'pfp' ] = 'ApiPayflowProGateway';
 $wgAutoloadClasses[ 'ApiPayflowProGateway' ] = $dir . 'api_payflowpro_gateway.php';
 
+// Resources for ResourceLoader
+$wgResourceModules[ 'pfp.form.rapidhtml.webitects' ] = array(
+	'styles' => array(
+		'forms/rapidhtml/css/lp1.css',
+		'forms/rapidhtml/css/Webitects.css',
+	),
+	'scripts' => array(
+		'forms/rapidhtml/js/jquery.ezpz_hint.js',
+	),
+	'dependencies' => array(
+		'jquery.ui.accordion'
+	),
+	'localBasePath' => dirname( __FILE__ ),
+	'remoteExtPath' => 'DonationInterface/payflowpro_gateway'
+);
+
+$wgResourceModules[ 'pfp.form.rapidhtml.lightbox.js' ] = array(
+	'scripts' => array(
+		'forms/rapidhtml/js/lightbox1.js',
+	),
+	'dependencies' => array(
+		'jquery.ui.core',
+		'jquery.ui.widget',
+		'jquery.ui.mouse',
+		'jquery.ui.position',
+		'jquery.ui.draggable',
+		'jquery.ui.resizable',
+		'jquery.ui.button',
+		'jquery.ui.dialog',
+	),
+	'localBasePath' => dirname( __FILE__ ),
+	'remoteExtPath' => 'DonationInterface/payflowpro_gateway',
+	'position' => 'top',
+);
+
+$wgResourceModules[ 'pfp.form.rapidhtml.lightbox.css' ] = array(
+	'styles' => array(
+		'forms/rapidhtml/css/lightbox1.css',	
+	),
+	'localBasePath' => dirname( __FILE__ ),
+	'remoteExtPath' => 'DonationInterface/payflowpro_gateway',
+	'position' => 'top',
+);
+
+
 function payflowGatewayConnection() {
 	global $wgPayflowGatewayDBserver, $wgPayflowGatewayDBname;
 	global $wgPayflowGatewayDBuser, $wgPayflowGatewayDBpassword;
