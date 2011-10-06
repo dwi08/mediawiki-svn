@@ -424,7 +424,7 @@
 
 	function explodeRowspans( $table ) {
 		// Split multi row cells into multiple cells with the same content
-		$table.find( '[rowspan]' ).each(function() {
+		$table.find( 'tbody [rowspan]' ).each(function() {
 			var rowSpan = this.rowSpan;
 			this.rowSpan = 1;
 			var cell = $( this );
@@ -539,6 +539,7 @@
 							return;
 						}
 					}
+					$table.addClass( "jquery-tablesorter" );
 
 					// New config object.
 					table.config = {};

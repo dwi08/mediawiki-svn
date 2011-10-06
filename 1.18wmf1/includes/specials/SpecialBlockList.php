@@ -245,7 +245,7 @@ class BlockListPager extends TablePager {
 
 		switch( $name ) {
 			case 'ipb_timestamp':
-				$formatted = $wgLang->timeanddate( $value );
+				$formatted = $wgLang->timeanddate( $value, /* User preference timezome */ true );
 				break;
 
 			case 'ipb_target':
@@ -271,7 +271,7 @@ class BlockListPager extends TablePager {
 				break;
 
 			case 'ipb_expiry':
-				$formatted = $wgLang->formatExpiry( $value );
+				$formatted = $wgLang->formatExpiry( $value, /* User preference timezome */ true );
 				if( $wgUser->isAllowed( 'block' ) ){
 					if( $row->ipb_auto ){
 						$links[] = $sk->linkKnown(
