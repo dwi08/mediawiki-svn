@@ -108,6 +108,7 @@ class SpecialBlockList extends SpecialPage {
 
 			switch( $type ){
 				case Block::TYPE_ID:
+				case Block::TYPE_AUTO:
 					$conds['ipb_id'] = $target;
 					break;
 
