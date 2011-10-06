@@ -296,8 +296,10 @@ table.os-suggest-results {
 	float: right;
 }
 
-/** Generic minor/bot/newpage styling */
-.newpage, .minor, .bot {
+/** Generic minor/bot/newpage styling (recent changes) */
+.newpage,
+.minoredit,
+.botedit {
 	font-weight: bold;
 }
 
