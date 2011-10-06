@@ -77,7 +77,11 @@ class ApiOpenSearchXml extends ApiOpenSearch {
 
 		$srchres = PrefixSearch::titleSearch( $search, $limit, $namespaces );
 
-		$items = array_filter( array_map( array( $this, 'formatItem' ), $srchres ) );
+		try {
+			$items = array_filter( array_map( array( $this, 'formatItem' ), $srchres ) );
+		} catch (Exception $e) {
+			wfDebugLog( 'bug27452', "exception in " . __METHOD__ . "'s array_map(): " . get_class($e) . ": " . $e->getMessage() );
+		}
 
 		$result = $this->getResult();
 		$result->addValue( null, 'version', '2.0' );
@@ -125,11 +129,15 @@ class ApiOpenSearchXml extends ApiOpenSearch {
 			$item['Url']['*'] = wfExpandUrl( $title->getFullUrl(), PROTO_CURRENT );
 			if( $image ) {
 				$thumb = $image->transform( array( 'width' => 50, 'height' => 50 ), 0 );
-				$item['Image'] = array(
-					'source' => wfExpandUrl( $thumb->getUrl(), PROTO_CURRENT ),
-					//alt
-					'width' => $thumb->getWidth(),
-					'height' => $thumb->getHeight() );
+				if( $thumb ) {
+					$item['Image'] = array(
+						'source' => wfExpandUrl( $thumb->getUrl(), PROTO_CURRENT ),
+						//alt
+						'width' => $thumb->getWidth(),
+						'height' => $thumb->getHeight() );
+				} else {
+					wfDebugLog( 'bug27452', "empty \$thumb, would have fataled us" );
+				}
 			}
 		} else {
 			$item = array( 'Text' => array( '*' => $name ) );
