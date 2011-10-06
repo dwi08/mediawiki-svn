@@ -528,8 +528,7 @@ class ContribsPager extends ReverseChronologicalPager {
 	}
 
 	function getNamespaceCond() {
-		global $wgMiserMode;
-		if( $this->namespace !== '' && !$wgMiserMode ) {
+		if( $this->namespace !== '' ) {
 			return array( 'page_namespace' => (int)$this->namespace );
 		} else {
 			return array();
