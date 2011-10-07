@@ -791,10 +791,17 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @param type $additional
 	 * @param type $vars 
 	 */
-	function saveCommunicationStats( $function = '', $additional = '', $vars = '' ) { //easier than looking at logs...
+	function saveCommunicationStats( $function = '', $additional = '', $vars = '' ) {
 		$params = array( );
-		if ( self::getGlobal( 'SaveCommStats' ) ) { //TODO: I should do this for real at some point. 
+		if ( self::getGlobal( 'SaveCommStats' ) ) { 
 			$db = ContributionTrackingProcessor::contributionTrackingConnection();
+			
+			//TODO: Actually define this table somewhere in the code, once we 
+			//are reasonably certain we know what we want to see in it. 
+			if ( !( $db->tableExists( 'communication_stats' ) ) ){
+				return;
+			}
+			
 			$params['contribution_id'] = $this->dataObj->getVal( 'contribution_tracking_id' );
 			$params['ts'] = $db->timestamp();
 			$params['duration'] = $this->getStopwatch( __FUNCTION__ );
@@ -802,8 +809,6 @@ abstract class GatewayAdapter implements GatewayType {
 			$params['function'] = $function;
 			$params['vars'] = $vars;
 			$params['additional'] = $additional;
-
-			//can we check to see if the table exists? Bah, I should almost certianly do this Fer Reals. 
 
 			$db->insert( 'communication_stats', $params );
 		}
