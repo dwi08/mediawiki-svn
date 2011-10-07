@@ -50,7 +50,7 @@ class AddWiki extends Maintenance {
 	public function execute() {
 		global $IP, $wgDefaultExternalStore, $wmfVersionNumber;
 		if ( !$wmfVersionNumber ) { // set in CommonSettings.php
-			$this->error( '$wgVersionNumber is not set, please use MWScript.php wrapper.', true );
+			$this->error( '$wmfVersionNumber is not set, please use MWScript.php wrapper.', true );
 		}
 
 		$lang = $this->getArg( 0 );
@@ -150,7 +150,7 @@ class AddWiki extends Maintenance {
 
 		# Add to wikiversions.dat
 		$file = fopen( "$common/wikiversions.dat", "a" );
-		fwrite( $file, "$dbName php-$wgVersionNumber\n" );
+		fwrite( $file, "$dbName php-$wmfVersionNumber\n" );
 		fclose( $file );
 		# Rebuild wikiversions.cdb
 		shell_exec( "cd $common/multiversion && ./refreshWikiversionsCDB" );
