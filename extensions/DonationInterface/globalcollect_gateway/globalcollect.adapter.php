@@ -296,15 +296,40 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->setTransactionResult( "Response Status: " . $response['STATUSID'], 'txn_message' ); //TODO: Translate for GC. 
 	}
 
+	/**
+	 * The default section of the switch will be hit on first time forms. This
+	 * should be okay, because we are only concerned with staged_vars that have
+	 * been posted.
+	 *
+	 * Credit cards staged_vars are set to ensure form failures on validation in
+	 * the default case. This should prevent accidental form submission with
+	 * unknown transaction types. 
+	 */
 	function defineStagedVars() {
+
 		//OUR field names. 
 		$this->staged_vars = array(
 			'amount',
-			'card_type',
-			'card_num',
+			//'card_type',
+			//'card_num',
 			'returnto',
 			'order_id', //This may or may not oughta-be-here...
 		);
+		
+		switch ( $this->getTransactionType() ) {
+
+			case 'BANK_TRANSFER':
+				break;
+
+			case 'INSERT_ORDERWITHPAYMENT':
+				$this->staged_vars[] = 'card_type';
+				$this->staged_vars[] = 'card_num';
+				break;
+
+			default:
+				$this->staged_vars[] = 'card_type';
+				$this->staged_vars[] = 'card_num';
+		}
 	}
 
 	protected function stage_amount( $type = 'request' ) {
