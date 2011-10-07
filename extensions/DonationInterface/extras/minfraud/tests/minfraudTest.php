@@ -11,7 +11,6 @@ class minfraudTest extends PHPUnit_Framework_TestCase {
 		$dir = dirname( __FILE__ ) . '/';
 		require_once( $dir . '../../extras.php' );
 		require_once( $dir . '../minfraud.body.php' );
-		require_once( $dir . "../../../includes/countryCodes.inc" );
 		global $wgDonationInterfaceExtrasLog;
 		$wgDonationInterfaceExtrasLog = dirname( __FILE__ ) . "/test_log";
 		$license_key = 'XBCKSF4gnHA7';

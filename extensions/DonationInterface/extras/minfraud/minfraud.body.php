@@ -42,7 +42,6 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 		parent::__construct( $gateway_adapter );
 		$dir = dirname( __FILE__ ) . '/';
 		require_once( $dir . "ccfd/CreditCardFraudDetection.php" );
-		//require_once( $dir . "../../includes/countryCodes.inc" );
 		global $wgMinFraudLicenseKey, $wgMinFraudActionRanges;
 
 		// set the minfraud license key, go no further if we don't have it
