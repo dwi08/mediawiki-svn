@@ -79,7 +79,7 @@ class Gateway_Form_TwoColumnLetter6 extends Gateway_Form_OneStepTwoColumn {
 	}
 
 	protected function generateBillingFields() {
-		global $wgScriptPath, $wgPayflowProGatewayPaypalURL, $wgRequest;
+		global $wgScriptPath, $wgRequest;
 		$scriptPath = "$wgScriptPath/extensions/DonationInterface/payflowpro_gateway/includes";
 
 		$form = '';

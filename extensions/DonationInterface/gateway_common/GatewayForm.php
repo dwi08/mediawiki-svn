@@ -334,8 +334,8 @@ class GatewayForm extends UnlistedSpecialPage {
 	}
 
 	function displayResultsForDebug( $results ) {
-		global $wgOut, $wgDonationInterfaceDisplayDebug;
-		if ( $wgDonationInterfaceDisplayDebug !== true ){
+		global $wgOut;
+		if ( $this->adapter->getGlobal( 'DisplayDebug' ) !== true ){
 			return;
 		}
 		$wgOut->addHTML( $results['message'] );
@@ -496,10 +496,10 @@ class GatewayForm extends UnlistedSpecialPage {
 	 *  This would make this a lot less hack-ish
 	 */
 	public function paypalRedirect() {
-		global $wgOut, $wgDonationInterfacePaypalURL;
+		global $wgOut;
 
 		// if we don't have a URL enabled throw a graceful error to the user
-		if ( !strlen( $wgDonationInterfacePaypalURL ) ) {
+		if ( !strlen( $this->adapter->getGlobal( 'PaypalURL' ) ) ) {
 			$gateway_identifier = $this->adapter->getIdentifier();
 			$this->errors['general']['nopaypal'] = wfMsg( $gateway_identifier . '_gateway-error-msg-nopaypal' );
 			return;

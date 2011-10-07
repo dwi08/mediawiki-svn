@@ -193,7 +193,7 @@ EOT;
 	}
 
 	protected function generateBillingFields() {
-		global $wgScriptPath, $wgDonationInterfaceTest;
+		global $wgScriptPath;
 
 		$form = '';
 		
@@ -238,7 +238,7 @@ EOT;
 		$form .= '</tr>';
 		
 		// card number
-		$card_num = ( $wgDonationInterfaceTest ) ? $this->form_data[ 'card_num' ] : '';
+		$card_num = ( $this->gateway->getGlobal( "Test" ) ) ? $this->form_data[ 'card_num' ] : '';
 		$form .= '';
 		if ( $this->form_errors['card_num'] ) {
 			$form .= '<tr>';

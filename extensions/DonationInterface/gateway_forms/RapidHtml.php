@@ -229,6 +229,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 	 * @param string $file_name
 	 */
 	public function set_html_file_path( $file_name ) {
+		//This ONE TIME, this is okay, because we actually want to compare to the default HTML form dir as well. 
 		global $wgDonationInterfaceHtmlFormDir;
 
 		$g = $this->gateway;

@@ -109,17 +109,13 @@ abstract class GatewayAdapter implements GatewayType {
 	const GLOBAL_PREFIX = 'wgDonationGateway'; //...for example. 
 
 	public function __construct() {
-		global $wgDonationInterfaceTest; //this is so the forms can see it. 
-		//TODO: Alter the forms so they don't need the global?
 		if ( !self::getGlobal( 'Test' ) ) {
 			$this->url = self::getGlobal( 'URL' );
-			$wgDonationInterfaceTest = false;
 		} else {
 			$this->url = self::getGlobal( 'TestingURL' );
-			$wgDonationInterfaceTest = true;
 		}
 
-		$this->dataObj = new DonationData( get_called_class(), $wgDonationInterfaceTest );
+		$this->dataObj = new DonationData( get_called_class(), self::getGlobal( 'Test' ) );
 
 		$this->postdata = $this->dataObj->getData();
 		//TODO: Fix this a bit. 
@@ -196,19 +192,42 @@ abstract class GatewayAdapter implements GatewayType {
 		return $this->dataObj->isCache();
 	}
 
+	/**
+	 * This function is important. 
+	 * All the globals in Donation Interface should be accessed in this manner 
+	 * if they are meant to have a default value, but can be overridden by any 
+	 * of the gateways. It will check to see if a gateway-specific global 
+	 * exists, and if one is not set, it will pull the default from the 
+	 * wgDonationInterface definitions. Through this function, it is no longer 
+	 * necessary to define gateway-specific globals in LocalSettings unless you 
+	 * wish to override the default value for all gateways. 
+	 * @staticvar array $gotten A cache of all the globals we've already... 
+	 * gotten. 
+	 * @param type $varname The global value we're looking for. It will first 
+	 * look for a global named for the instantiated gateway's GLOBAL_PREFIX, 
+	 * plus the $varname value. If that doesn't come up with anything that has 
+	 * been set, it will use the default value for all of donation interface, 
+	 * stored in $wgDonationInterface . $varname. 
+	 * @return mixed The configured value for that gateway if it exists. If not, 
+	 * the configured value for Donation Interface if it exists or not. 
+	 */
 	static function getGlobal( $varname ) {
 		static $gotten = array( ); //cache. 
-		$globalname = self::getGlobalPrefix() . $varname;
-		if ( !array_key_exists( $globalname, $gotten ) ) {
+		if ( !array_key_exists( $varname, $gotten ) ) {
+			$globalname = self::getGlobalPrefix() . $varname;
 			global $$globalname;
-			$gotten[$globalname] = $$globalname;
+			if ( !isset( $$globalname )) {
+				$globalname = "wgDonationInterface" . $varname;
+				global $$globalname; //set or not. This is fine. 
+			}
+			$gotten[$varname] = $$globalname;
 		}
-		return $gotten[$globalname];
+		return $gotten[$varname];		
 	}
 
 	function getValue( $gateway_field_name, $token = false ) {
 		if ( empty( $this->transactions ) ) {
-			//TODO: These dies should all just throw fatal errors instead. 
+			//TODO: These dies should all throw exceptions or something less completely fatal. 
 			die( 'Transactions structure is empty! Aborting.' );
 		}
 		//How do we determine the value of a field asked for in a particular transaction? 
@@ -416,8 +435,7 @@ abstract class GatewayAdapter implements GatewayType {
 			}
 
 			if ( is_array( $statuses ) ) { //only then will we consider doing this again. 
-				global $wgDonationInterfaceRetrySeconds; //TODO: Deal with this global in the new usual way, once the DI install mess gets cleaned up
-				if ( $this->getStopwatch( __FUNCTION__ ) < $wgDonationInterfaceRetrySeconds ) {
+				if ( $this->getStopwatch( __FUNCTION__ ) < self::getGlobal( "RetrySeconds" ) ) {
 					if ( $txn_ok === false ) {
 						$stopflag = false;
 					} else {
@@ -880,8 +898,6 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 
 	function getPaypalRedirectURL() {
-		global $wgDonationInterfacePaypalURL;
-
 		$utm_source = $this->getData( 'utm_source' );
 
 		// update the utm source to set the payment instrument to pp rather than cc
@@ -899,7 +915,7 @@ abstract class GatewayAdapter implements GatewayType {
 		//update contribution tracking
 		$this->dataObj->updateContributionTracking( true );
 
-		$ret = $wgDonationInterfacePaypalURL . "/" . $this->postdata['language'] . "?gateway=paypal&" . http_build_query( $this->postdata );
+		$ret = self::getGlobal( "PaypalURL" ) . "/" . $this->postdata['language'] . "?gateway=paypal&" . http_build_query( $this->postdata );
 		self::log( $ret );
 		return $ret;
 	}
