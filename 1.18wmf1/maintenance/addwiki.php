@@ -48,8 +48,8 @@ class AddWiki extends Maintenance {
 	}
 
 	public function execute() {
-		global $IP, $wgDefaultExternalStore, $wgVersionNumber;
-		if ( !$wgVersionNumber ) { // set in CommonSettings.php
+		global $IP, $wgDefaultExternalStore, $wmfVersionNumber;
+		if ( !$wmfVersionNumber ) { // set in CommonSettings.php
 			$this->error( '$wgVersionNumber is not set, please use MWScript.php wrapper.', true );
 		}
 
