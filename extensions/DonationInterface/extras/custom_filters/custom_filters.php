@@ -10,7 +10,12 @@
  * The actual filters themselves are regular MW extensions and can optional be organized in filters/
  * They should be invoked by using the 'GatewayCustomFilter' hook, which will pass the entire
  * CustomFilter object to the filter.  The gateway object and its data are included in the CustomFilter
- * object.
+ * object. 
+ *
+ *  To install the DontaionInterface extension, put the following line in LocalSettings.php:
+ *	require_once( "\$IP/extensions/DonationInterface/donationinterface.php" );
+ * 
+ * TODO: Remove this file. :)
  */
 if ( !defined( 'MEDIAWIKI' ) ) {
 	die( "This file is part of the MinFraud for Gateway extension. It is not a valid entry point.\n" );
@@ -22,27 +27,3 @@ $wgExtensionCredits['gateway_custom_filters'][] = array(
 	'url' => '',
 	'description' => 'This extension provides a way to define custom filters for incoming transactions for the gateway.'
 );
-
-/**
- * Define the action to take for a given $risk_score
- */
-$wgDonationInterfaceCustomFiltersActionRanges = array(
-	'process' => array( 0, 100 ),
-	'review' => array( -1, -1 ),
-	'challenge' => array( -1, -1 ),
-	'reject' => array( -1, -1 ),
-);
-
-/**
- * A value for tracking the 'riskiness' of a transaction
- *
- * The action to take based on a transaction's riskScore is determined by
- * $action_ranges.  This is built assuming a range of possible risk scores
- * as 0-100, although you can probably bend this as needed.
- */
-$wgDonationInterfaceCustomFiltersRiskScore = 0;
-
-$dir = dirname( __FILE__ ) . "/";
-$wgAutoloadClasses['Gateway_Extras_CustomFilters'] = $dir . "custom_filters.body.php";
-
-$wgHooks["GatewayValidate"][] = array( 'Gateway_Extras_CustomFilters::onValidate' );

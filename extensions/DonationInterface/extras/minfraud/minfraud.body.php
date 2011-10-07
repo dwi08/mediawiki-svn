@@ -157,8 +157,6 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 	 * @return array containing hash for minfraud query
 	 */
 	public function build_query( array $data ) {
-		global $wgDonationInterfaceTest;
-
 		// mapping of data keys -> minfraud array keys
 		$map = array(
 			"city" => "city",
@@ -175,7 +173,7 @@ class Gateway_Extras_MinFraud extends Gateway_Extras {
 		$minfraud_array["license_key"] = $this->minfraud_license_key;
 
 		// user's IP address
-		$minfraud_array["i"] = ( $wgDonationInterfaceTest ) ? '12.12.12.12' : wfGetIP();
+		$minfraud_array["i"] = ( $this->gateway_adapter->getGlobal( "Test" ) ) ? '12.12.12.12' : wfGetIP();
 
 		// user's user agent
 		global $wgRequest;

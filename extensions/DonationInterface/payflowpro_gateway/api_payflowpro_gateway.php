@@ -2,6 +2,7 @@
 /**
  * PayflowPro Gateway API extension
  * Call with api.php?action=pfp
+ * TODO: Determine if this is being used by anything anymore, and if so, what. 
  */
 
 class ApiPayflowProGateway extends ApiBase {
@@ -124,6 +125,8 @@ class ApiPayflowProGateway extends ApiBase {
 		global $wgPayflowProGatewaySalt;
 
 		// fetch the order_id
+		//TODO: This include should be *very* deprecated. All the functionality there has been 
+		//recently eaten by gateway.adapter.php and DontationData.php. 
 		require_once( 'includes/payflowUser.inc' );
 		$payflow_data = payflowUser();
 		$order_id = $payflow_data[ 'order_id' ];

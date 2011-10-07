@@ -29,6 +29,9 @@ class GlobalCollectGateway extends GatewayForm {
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
 			$CSSVersion );
+		
+		// Hide unneeded interface elements
+		$wgOut->addModules( 'donationInterface.skinOverride' );
 
 		$gateway_id = $this->adapter->getIdentifier();
 

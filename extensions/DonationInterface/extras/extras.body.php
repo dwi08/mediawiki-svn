@@ -15,22 +15,10 @@ abstract class Gateway_Extras {
 	public function __construct( &$gateway_adapter ) {
 		$this->gateway_adapter = &$gateway_adapter;
 
-		$extrasLog = $this->getGlobal( 'ExtrasLog' );
+		$extrasLog = $this->gateway_adapter->getGlobal( 'ExtrasLog' );
 		// prepare the log file if the user has specified one
 		if ( strlen( $extrasLog ) > 0 )
 			$this->prepare_log_file( $extrasLog );
-	}
-
-	function getGlobal( $varname ) {
-		//basically, if the global is defined in the adapter, use the overridden value.
-		//otherwise, grab the default. 
-		$ret = $this->gateway_adapter->getGlobal( $varname );
-		if ( empty( $ret ) ) {
-			$globalname = 'wgDonationInterface' . $varname;
-			global $$globalname;
-			$ret = $$globalname;
-		}
-		return $ret;
 	}
 
 	/**
@@ -91,7 +79,7 @@ abstract class Gateway_Extras {
 	 * @return string The hash of the data
 	 */
 	public function generate_hash( $data ) {
-		$salt = $this->getGlobal( 'Salt' );
+		$salt = $this->gateway_adapter->getGlobal( 'Salt' );
 		return hash( "sha512", $salt . $data );
 	}
 

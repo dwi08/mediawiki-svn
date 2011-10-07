@@ -714,20 +714,6 @@ class DonationData {
 		}
 	}
 
-	public function decrementNumAttempt() {
-		//minfraud...
-		//TODO: Determine if I killed this or not. 
-		if ( $this->isSomething( 'numAttempt' ) ) {
-			$attempts = $this->getVal( 'numAttempt' );
-			if ( is_numeric( $attempts ) ) {
-				$this->setVal( 'numAttempt', $attempts - 1 );
-			} else {
-				//I guess...
-				$this->setVal( 'numAttempt', 0 );
-			}
-		}
-	}
-
 }
 
 ?>

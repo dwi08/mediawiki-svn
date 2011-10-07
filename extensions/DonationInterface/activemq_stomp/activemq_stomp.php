@@ -17,14 +17,6 @@ $wgExtensionCredits['other'][] = array(
 	'version' => '1.0.0',
 );
 
-$dir = dirname( __FILE__ ) . '/';
-
-$wgAutoloadClasses['activemq_stomp'] = $dir . 'activemq_stomp.php'; # Tell MediaWiki to load the extension body.
-// default variables that should be set in LocalSettings
-$wgStompServer = "";
-
-$wgHooks['ParserFirstCallInit'][] = 'efStompSetup';
-
 /*
  * Create <donate /> tag to include landing page donation form
  */
@@ -49,16 +41,13 @@ function efStompTest( $input, $args, &$parser ) {
 }
 
 /**
- * Hook to get user provided and order data
- *
+ * Hook to send complete transaction information to ActiveMQ server
+ * @global string $wgStompServer ActiveMQ server name. 
+ * @global string $wgStompQueueName Name of the destination queue for completed transactions. 
+ * @param array $transaction Key-value array of staged and ready donation data. 
+ * @return bool Just returns true all the time. Presumably an indication that 
+ * nothing exploded big enough to kill the whole thing.
  */
-$wgHooks['gwStomp'][] = 'sendSTOMP';
-$wgHooks['gwPendingStomp'][] = 'sendPendingSTOMP';
-
-/*
- * Hook to send transaction information to ActiveMQ server
- */
-
 function sendSTOMP( $transaction ) {
 	global $wgStompServer, $wgStompQueueName;
 
@@ -87,10 +76,16 @@ function sendSTOMP( $transaction ) {
 	return true;
 }
 
-/*
+/**
  * Hook to send transaction information to ActiveMQ server
+ * TODO: Parameterize sendStomp instead of maintaining this copy. 
+ * @global string $wgStompServer ActiveMQ server name. 
+ * @global string $wgPendingStompQueueName Name of the destination queue for 
+ * pending transactions. 
+ * @param array $transaction Key-value array of staged and ready donation data. 
+ * @return bool Just returns true all the time. Presumably an indication that 
+ * nothing exploded big enough to kill the whole thing.
  */
-
 function sendPendingSTOMP( $transaction ) {
 	global $wgStompServer, $wgPendingStompQueueName;
 
@@ -121,6 +116,9 @@ function sendPendingSTOMP( $transaction ) {
 
 /**
  * Assign correct values to the array of data to be sent to the ActiveMQ server
+ * TODO: Probably something else. I don't like the way this works and neither do you.
+ * 
+ * Older notes follow:  
  * TODO: include optout and comments option in the donation page
  * NOTES: includes middle name
  * Currency in receiving module has currency set to USD, should take passed variable for these

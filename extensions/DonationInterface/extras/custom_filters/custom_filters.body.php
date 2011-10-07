@@ -26,8 +26,8 @@ class Gateway_Extras_CustomFilters extends Gateway_Extras {
 	public function __construct( &$gateway_adapter ) {
 		parent::__construct( $gateway_adapter ); //gateway_adapter is set in there. 
 		// load user action ranges and risk score		
-		$this->action_ranges = $this->getGlobal( 'CustomFiltersActionRanges' );
-		$this->risk_score = $this->getGlobal( 'CustomFiltersRiskScore' );
+		$this->action_ranges = $this->gateway_adapter->getGlobal( 'CustomFiltersActionRanges' );
+		$this->risk_score = $this->gateway_adapter->getGlobal( 'CustomFiltersRiskScore' );
 	}
 
 	/**

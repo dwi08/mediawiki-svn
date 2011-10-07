@@ -1,4 +1,12 @@
 <?php
+/**
+ * 
+ *  To install the DontaionInterface extension, put the following line in LocalSettings.php:
+ *	require_once( "\$IP/extensions/DonationInterface/donationinterface.php" );
+ * 
+ * TODO: Remove this file. :)
+ */
+
 # Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
 if ( !defined( 'MEDIAWIKI' ) ) {
 	echo <<<EOT
@@ -16,23 +24,6 @@ $wgExtensionCredits['specialpage'][] = array(
 	'descriptionmsg' => 'paypal_gateway-desc',
 	'version' => '1.0.0',
 );
-
-// Set up i18n
-$dir = dirname( __FILE__ ) . '/';
-$wgExtensionMessagesFiles['PaypalGateway'] = $dir . 'paypal_gateway.i18n.php';
-
-// default variables that should be set in LocalSettings.php
-$wgPaypalEmail = '';
-$wgPaypalUrl = 'http://wikimediafoundation.org/wiki/Special:ContributionTracking?';
-
-/**
- * Hooks required to interface with the donation extension (include <donate> on page)
- *
- * gwValue supplies the value of the form option, the name that appears on the form
- * and the currencies supported by the gateway in the $values array
- */
-$wgHooks['DonationInterface_Value'][] = 'paypalGatewayValue';
-$wgHooks['DonationInterface_Page'][] = 'paypalGatewayPage';
 
 /**
  * Hook to register form value and display name of this gateway

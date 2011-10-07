@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Donation Interface
+ *
+ *  To install the DontaionInterface extension, put the following line in LocalSettings.php:
+ *	require_once( "\$IP/extensions/DonationInterface/donationinterface.php" );
+ * 
+ */
+
+
 # Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
 if ( !defined( 'MEDIAWIKI' ) ) {
 	echo <<<EOT
@@ -20,28 +29,47 @@ $wgExtensionCredits['specialpage'][] = array(
 
 $donationinterface_dir = dirname( __FILE__ ) . '/';
 
-//TODO: It may be a good idea to make all these stop behaving like they're independent extensions. 
-//Better yet, we should decide if they're a required part of this or not, 
-//and split 'em entirely off, or roll 'em all the way in to this file. 
-require_once( $donationinterface_dir . 'donate_interface/donate_interface.php' );
-require_once( $donationinterface_dir . 'activemq_stomp/activemq_stomp.php' );
+/**
+ * Figure out what we've got enabled. 
+ */
 
-require_once( $donationinterface_dir . 'extras/extras.php' );
-require_once( $donationinterface_dir . 'extras/custom_filters/custom_filters.php' );
-require_once( $donationinterface_dir . 'extras/conversion_log/conversion_log.php' );
-require_once( $donationinterface_dir . 'extras/minfraud/minfraud.php' );
-require_once( $donationinterface_dir . 'extras/recaptcha/recaptcha.php' );
+$optionalParts = array( //define as fail closed. This variable will be unset before we leave this file. 
+	'Extras' => false, //this one gets set in the next loop, so don't bother. 
+	'Stomp' => false,
+	'CustomFilters' => false, //this is definitely an Extra
+	'ConversionLog' => false, //this is definitely an Extra
+	'Minfraud' => false, //this is definitely an Extra
+	'Minfraud_as_filter' => false, //extra
+	'Recaptcha' => false, //extra
+	'Paypal' => false, //this is the paypal redirect. TODO: Determine if we're even using this anymore. 
+	'PayflowPro' => false,
+	'GlobalCollect' => false,
+	
+);
+
+foreach ($optionalParts as $subextension => $enabled){
+	$globalname = 'wgDonationInterfaceEnable' . $subextension;
+	global $$globalname;
+	if ( isset( $$globalname ) && $$globalname === true ) {
+		$optionalParts[$subextension] = true;
+		if ( $subextension === 'CustomFilters' ||
+			$subextension === 'ConversionLog' ||
+			$subextension === 'Minfraud' ||
+			$subextension === 'Recaptcha' ) {
+			
+			$optionalParts['Extras'] = true;
+		}
+	}
+}
 
 
 /**
- * Global form dir and whitelist
+ * CLASSES
  */
-$wgDonationInterfaceHtmlFormDir = dirname( __FILE__ ) . "/gateway_forms/html";
-//ffname is the $key from now on. 
-$wgDonationInterfaceAllowedHtmlForms = array(
-	'demo' => $wgDonationInterfaceHtmlFormDir . "/demo.html",
-	'globalcollect_test' => $wgDonationInterfaceHtmlFormDir . "/globalcollect_test.html",
-);
+$wgAutoloadClasses['DonationData'] = $donationinterface_dir . 'gateway_common/DonationData.php';
+$wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/gateway.adapter.php';
+$wgAutoloadClasses['GatewayForm'] = $donationinterface_dir . 'gateway_common/GatewayForm.php';
+$wgAutoloadClasses['DonationApi'] = $donationinterface_dir . 'gateway_common/donation.api.php';
 
 //load all possible form classes
 $wgAutoloadClasses['Gateway_Form'] = $donationinterface_dir . 'gateway_forms/Form.php';
@@ -66,14 +94,58 @@ $wgAutoloadClasses['Gateway_Form_RapidHtml'] = $donationinterface_dir . 'gateway
 $wgAutoloadClasses['Gateway_Form_SingleColumn'] = $donationinterface_dir . 'gateway_forms/SingleColumn.php';
 
 
-$wgAutoloadClasses['DonationData'] = $donationinterface_dir . 'gateway_common/DonationData.php';
-$wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/gateway.adapter.php';
-$wgAutoloadClasses['GatewayForm'] = $donationinterface_dir . 'gateway_common/GatewayForm.php';
-$wgAutoloadClasses['DonationApi'] = $donationinterface_dir . 'gateway_common/donation.api.php';
 
-//THE GATEWAYS WILL RESET THIS when they are instantiated. You can override it, but it won't stick around that way. 
+//Stomp classes
+if ($optionalParts['Stomp'] === true){
+	$wgAutoloadClasses['activemq_stomp'] = $donationinterface_dir . 'activemq_stomp/activemq_stomp.php'; # Tell MediaWiki to load the extension body.
+}
+
+//Extras classes - required for ANY optional class that is considered an "extra". 
+if ($optionalParts['Extras'] === true){
+	$wgAutoloadClasses['Gateway_Extras'] = $donationinterface_dir . "extras/extras.body.php";
+}
+
+//Custom Filters classes
+if ($optionalParts['CustomFilters'] === true){
+	$wgAutoloadClasses['Gateway_Extras_CustomFilters'] = $donationinterface_dir . "extras/custom_filters/custom_filters.body.php";
+}
+
+//Conversion Log classes
+if ($optionalParts['ConversionLog'] === true){
+	$wgAutoloadClasses['Gateway_Extras_ConversionLog'] = $donationinterface_dir . "extras/conversion_log/conversion_log.body.php";
+}
+
+//Minfraud classes
+if ( $optionalParts['Minfraud'] === true || $optionalParts['Minfraud_as_filter'] === true ){
+	$wgAutoloadClasses['Gateway_Extras_MinFraud'] = $donationinterface_dir . "extras/minfraud/minfraud.body.php";
+}
+
+//Minfraud as Filter classes
+if ( $optionalParts['Minfraud_as_filter'] === true ){
+	$wgAutoloadClasses['Gateway_Extras_CustomFilters_MinFraud'] = $donationinterface_dir . "extras/custom_filters/filters/minfraud/minfraud.body.php";
+}
+
+//Recaptcha classes
+if ( $optionalParts['Recaptcha'] === true ){
+	$wgAutoloadClasses['Gateway_Extras_ReCaptcha'] = $donationinterface_dir . "extras/recaptcha/recaptcha.body.php";
+}
+
+
+/**
+ * GLOBALS
+ */
+
+/**
+ * Global form dir and RapidHTML whitelist
+ */
+$wgDonationInterfaceHtmlFormDir = dirname( __FILE__ ) . "/gateway_forms/html";
+//ffname is the $key from now on. 
+$wgDonationInterfaceAllowedHtmlForms = array(
+	'demo' => $wgDonationInterfaceHtmlFormDir . "/demo.html",
+	'globalcollect_test' => $wgDonationInterfaceHtmlFormDir . "/globalcollect_test.html",
+);
+
 $wgDonationInterfaceTest = false;
-
 
 /**
  * Default Thank You and Fail pages for all of donationinterface - language will be calc'd and appended at runtime. 
@@ -82,33 +154,187 @@ $wgDonationInterfaceTest = false;
 $wgDonationInterfaceThankYouPage = 'Donate-thanks';
 $wgDonationInterfaceFailPage = 'Donate-error';
 
-//This is going to be a little funky. 
-//Override this in LocalSettings.php BEFORE you include this file, if you want 
-//to disable gateways.
-//TODO: Unfunktify, if you have a better idea here for auto-loading the classes after LocalSettings.php runs all the way. 
-if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
-	$wgDonationInterfaceEnabledGateways = array(
-		'paypal',
-		'payflowpro',
-		'globalcollect'
-	);
+/**
+ * The URL to redirect a transaction to PayPal
+ */
+$wgDonationInterfacePaypalURL = '';
+$wgDonationInterfaceRetrySeconds = 5;
+
+
+//Paypal gateway globals
+if ( $optionalParts['Paypal'] === true ){
+	// default variables that should be set in LocalSettings.php
+	$wgPaypalEmail = '';
+	$wgPaypalUrl = 'http://wikimediafoundation.org/wiki/Special:ContributionTracking?';
 }
 
-foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
-	//include 'em
-	require_once( $donationinterface_dir . $gateway . '_gateway/' . $gateway . '_gateway.php' );
+//Stomp globals
+if ($optionalParts['Stomp'] === true){
+	$wgStompServer = "";
+	//$wgStompQueueName = ""; //only set this with an actual value. Default is unset. 
+	//$wgPendingStompQueueName = ""; //only set this with an actual value. Default is unset. 
+}
+
+//Extras globals - required for ANY optional class that is considered an "extra". 
+if ($optionalParts['Extras'] === true){
+	$wgDonationInterfaceExtrasLog = '';
+}
+
+//Custom Filters globals
+if ( $optionalParts['CustomFilters'] === true ){
+	//Define the action to take for a given $risk_score
+	$wgDonationInterfaceCustomFiltersActionRanges = array(
+		'process' => array( 0, 100 ),
+		'review' => array( -1, -1 ),
+		'challenge' => array( -1, -1 ),
+		'reject' => array( -1, -1 ),
+	);
+	
+	/**
+	 * A value for tracking the 'riskiness' of a transaction
+	 *
+	 * The action to take based on a transaction's riskScore is determined by
+	 * $action_ranges.  This is built assuming a range of possible risk scores
+	 * as 0-100, although you can probably bend this as needed.
+	 */
+	$wgDonationInterfaceCustomFiltersRiskScore = 0;
+}
+
+//Minfraud globals
+if ( $optionalParts['Minfraud'] === true || $optionalParts['Minfraud_as_filter'] === true ){
+	/**
+	 * Your minFraud license key.
+	 */
+	$wgMinFraudLicenseKey = '';
+
+	/**
+	 * Set the risk score ranges that will cause a particular 'action'
+	 *
+	 * The keys to the array are the 'actions' to be taken (eg 'process').
+	 * The value for one of these keys is an array representing the lower
+	 * and upper bounds for that action.  For instance,
+	 *   $wgMinFraudActionRagnes = array(
+	 * 		'process' => array( 0, 100)
+	 * 		...
+	 * 	);
+	 * means that any transaction with a risk score greather than or equal
+	 * to 0 and less than or equal to 100 will be given the 'process' action.
+	 *
+	 * These are evauluated on a >= or <= basis.  Please refer to minFraud
+	 * documentation for a thorough explanation of the 'riskScore'.
+	 */
+	$wgMinFraudActionRanges = array(
+		'process' => array( 0, 100 ),
+		'review' => array( -1, -1 ),
+		'challenge' => array( -1, -1 ),
+		'reject' => array( -1, -1 )
+	);
+
+	// Timeout in seconds for communicating with MaxMind
+	$wgMinFraudTimeout = 2;
+
+	/**
+	 * Define whether or not to run minFraud in stand alone mode
+	 *
+	 * If this is set to run in standalone, these scripts will be
+	 * accessed directly via the "GatewayValidate" hook.
+	 * You may not want to run this in standalone mode if you prefer
+	 * to use this in conjunction with Custom Filters.  This has the
+	 * advantage of sharing minFraud info with other filters.
+	 */
+	$wgMinFraudStandalone = TRUE;
+	
+}
+
+//Minfraud as Filter globals
+if ( $optionalParts['Minfraud_as_filter'] === true ){
+	$wgMinFraudStandalone = FALSE;
+}
+
+//Recaptcha globals
+if ( $optionalParts['Recaptcha'] === true ){
+	/**
+	 * Public and Private reCaptcha keys
+	 *
+	 * These can be obtained at:
+	 *   http://www.google.com/recaptcha/whyrecaptcha
+	 */
+	$wgDonationInterfaceRecaptchaPublicKey = '';
+	$wgDonationInterfaceRecaptchaPrivateKey = '';
+
+	// Timeout (in seconds) for communicating with reCatpcha
+	$wgDonationInterfaceRecaptchaTimeout = 2;
+
+	/**
+	 * HTTP Proxy settings
+	 * 
+	 * Default to settings in DonationInterface
+	 */
+	//TODO: I think we can get rid of these entirely, due to the way we are now checking for globals in the extras. 
+	//$wgDonationInterfaceRecaptchaUseHTTPProxy = $wgDonationInterfaceUseHTTPProxy;
+	//$wgDonationInterfaceRecaptchaHTTPProxy = $wgDonationInterfaceHTTPProxy;
+
+	/**
+	 * Use SSL to communicate with reCaptcha
+	 */
+	$wgDonationInterfaceRecaptchaUseSSL = 1;
+
+	/**
+	 * The # of times to retry communicating with reCaptcha if communication fails
+	 * @var int
+	 */
+	$wgDonationInterfaceRecaptchaComsRetryLimit = 3;
+}
+
+
+/**
+ * HOOKS
+ */
+
+//Unit tests
+$wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
+
+
+//Paypal gateway globals
+if ( $optionalParts['Paypal'] === true ){
+	//TODO: Determine if this is all cruft. I'm guessing "Probably". 
+	/**
+	 * Hooks required to interface with the donation extension (include <donate> on page)
+	 *
+	 * gwValue supplies the value of the form option, the name that appears on the form
+	 * and the currencies supported by the gateway in the $values array
+	 */
+	$wgHooks['DonationInterface_Value'][] = 'paypalGatewayValue';
+	$wgHooks['DonationInterface_Page'][] = 'paypalGatewayPage';
+}
+
+//Stomp hooks
+if ($optionalParts['Stomp'] === true){
+	$wgHooks['ParserFirstCallInit'][] = 'efStompSetup';
+	$wgHooks['gwStomp'][] = 'sendSTOMP';
+	$wgHooks['gwPendingStomp'][] = 'sendPendingSTOMP';
+}
+
+//Custom Filters hooks
+if ($optionalParts['CustomFilters'] === true){
+	$wgHooks["GatewayValidate"][] = array( 'Gateway_Extras_CustomFilters::onValidate' );
+}
+
+//Conversion Log hooks
+if ($optionalParts['ConversionLog'] === true){
+	// Sets the 'conversion log' as logger for post-processing
+	$wgHooks["GatewayPostProcess"][] = array( "Gateway_Extras_ConversionLog::onPostProcess" );
+}
+
+//Recaptcha hooks
+if ($optionalParts['Recaptcha'] === true){
+	// Set reCpatcha as plugin for 'challenge' action
+	$wgHooks["GatewayChallenge"][] = array( "Gateway_Extras_ReCaptcha::onChallenge" );
 }
 
 /**
- * Hooks required to interface with the donation extension (include <donate> on page)
- *
- * gwValue supplies the value of the form option, the name that appears on the form
- * and the currencies supported by the gateway in the $values array
+ * ADDITIONAL MAGICAL GLOBALS 
  */
-//$wgHooks['DonationInterface_Value'][] = 'pfpGatewayValue';
-//$wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
-# Unit tests
-$wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
 
 // enable the API
 $wgAPIModules['donate'] = 'DonationApi';
@@ -127,14 +353,74 @@ $wgResourceModules['donationInterface.skinOverride'] = array(
 	'position' => 'top'
 	) + $wgResourceTemplate;
 
+$wgExtensionMessagesFiles['DonateInterface'] = $donationinterface_dir . 'donate_interface/donate_interface.i18n.php';
+
+//Paypal magical globals
+if ( $optionalParts['Paypal'] === true ){
+	$wgExtensionMessagesFiles['PaypalGateway'] = $donationinterface_dir . 'paypal_gateway/paypal_gateway.i18n.php';
+}
+
+//Minfraud magical globals
+if ( $optionalParts['Minfraud'] === true ){ //We do not want this in filter mode. 
+	$wgExtensionFunctions[] = 'efMinFraudSetup';
+}
+
+//Minfraud as Filter globals
+if ( $optionalParts['Minfraud_as_filter'] === true ){
+	$wgExtensionFunctions[] = 'efCustomFiltersMinFraudSetup';
+}
+
 
 /**
- * The URL to redirect a transaction to PayPal
+ * FUNCTIONS
  */
-$wgDonationInterfacePaypalURL = '';
-$wgDonationInterfaceRetrySeconds = 5;
+
+//---Stomp functions---
+if ($optionalParts['Stomp'] === true){
+	require_once( $donationinterface_dir . 'activemq_stomp/activemq_stomp.php'  );
+}
+
+//---Minfraud functions---
+if ($optionalParts['Minfraud'] === true){
+	require_once( $donationinterface_dir . 'extras/minfraud/minfraud.php'  );
+}
+
+//---Minfraud as filter functions---
+if ($optionalParts['Minfraud_as_filter'] === true){
+	require_once( $donationinterface_dir . 'extras/custom_filters/filters/minfraud/minfraud.php'  );
+}
+
+//---Paypal functions---
+if ($optionalParts['Paypal'] === true){
+	require_once( $donationinterface_dir . 'paypal_gateway/paypal_gateway.php'  );
+}
+
+
+
+
+
+
+
+//This is going to be a little funky. 
+//Override this in LocalSettings.php BEFORE you include this file, if you want 
+//to disable gateways.
+//TODO: Unfunktify, if you have a better idea here for auto-loading the classes after LocalSettings.php runs all the way. 
+if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
+	$wgDonationInterfaceEnabledGateways = array(
+		'payflowpro',
+		'globalcollect'
+	);
+}
+
+foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
+	//include 'em
+	require_once( $donationinterface_dir . $gateway . '_gateway/' . $gateway . '_gateway.php' );
+}
+
 
 function efDonationInterfaceUnitTests( &$files ) {
-	$files[] = dirname( __FILE__ ) . '/tests/AllTests.php';
+	$files[] = $donationinterface_dir . 'tests/AllTests.php';
 	return true;
 }
+
+unset( $optionalParts );

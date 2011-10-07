@@ -5,9 +5,11 @@
  *
  * For more details on minFraud, go: http://www.maxmind.com/app/minfraud
  *
- * To install:
- *      require_once( "$IP/extensions/DonationInterface/extras/minfraud/minfraud.php" );
- *
+ *  To install the DontaionInterface extension, put the following line in LocalSettings.php:
+ *	require_once( "\$IP/extensions/DonationInterface/donationinterface.php" );
+ *  
+ * TODO: Outline required globals to include this bad boy! 
+ * 
  */
 if ( !defined( 'MEDIAWIKI' ) ) {
 	die( "This file is part of the MinFraud for Gateway extension. It is not a valid entry point.\n" );
@@ -19,53 +21,6 @@ $wgExtensionCredits['gateway_extras_minfraud'][] = array(
 	'url' => '',
 	'description' => 'This extension uses the MaxMind minFraud service as a validator for the gateway.'
 );
-
-/**
- * Your minFraud license key.
- */
-$wgMinFraudLicenseKey = '';
-
-/**
- * Set the risk score ranges that will cause a particular 'action'
- *
- * The keys to the array are the 'actions' to be taken (eg 'process').
- * The value for one of these keys is an array representing the lower
- * and upper bounds for that action.  For instance,
- *   $wgMinFraudActionRagnes = array(
- * 		'process' => array( 0, 100)
- * 		...
- * 	);
- * means that any transaction with a risk score greather than or equal
- * to 0 and less than or equal to 100 will be given the 'process' action.
- *
- * These are evauluated on a >= or <= basis.  Please refer to minFraud
- * documentation for a thorough explanation of the 'riskScore'.
- */
-$wgMinFraudActionRanges = array(
-	'process' => array( 0, 100 ),
-	'review' => array( -1, -1 ),
-	'challenge' => array( -1, -1 ),
-	'reject' => array( -1, -1 )
-);
-
-// Timeout in seconds for communicating with MaxMind
-$wgMinFraudTimeout = 2;
-
-/**
- * Define whether or not to run minFraud in stand alone mode
- *
- * If this is set to run in standalone, these scripts will be
- * accessed directly via the "GatewayValidate" hook.
- * You may not want to run this in standalone mode if you prefer
- * to use this in conjunction with Custom Filters.  This has the
- * advantage of sharing minFraud info with other filters.
- */
-$wgMinFraudStandalone = TRUE;
-
-$dir = dirname( __FILE__ ) . "/";
-$wgAutoloadClasses['Gateway_Extras_MinFraud'] = $dir . "minfraud.body.php";
-
-$wgExtensionFunctions[] = 'efMinFraudSetup';
 
 function efMinFraudSetup() {
 	// if we're in standalone mode, use the GatewayValidate hook

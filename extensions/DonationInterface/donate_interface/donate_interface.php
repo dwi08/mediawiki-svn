@@ -5,6 +5,11 @@
  * @file
  * @ingroup Extensions
  * @link http://www.mediawiki.org/wiki/Extension:DonateInterface Documentation
+ * 
+ *  To install the DontaionInterface extension, put the following line in LocalSettings.php:
+ *	require_once( "\$IP/extensions/DonationInterface/donationinterface.php" );
+ * 
+ * TODO: Remove this file. :)
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {

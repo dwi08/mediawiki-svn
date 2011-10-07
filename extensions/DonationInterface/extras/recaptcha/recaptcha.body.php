@@ -22,11 +22,11 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 		//stash all the vars that reCaptcha is going to need in a global just for it. 
 		//I know this is vaguely unpleasant, but it's the quickest way back to zero. 
 		global $wgReCaptchaConfData;
-		$wgReCaptchaConfData['UseHTTPProxy'] = $this->getGlobal( 'RecaptchaUseHTTPProxy' );
-		$wgReCaptchaConfData['HTTPProxy'] = $this->getGlobal( 'RecaptchaHTTPProxy' );
-		$wgReCaptchaConfData['Timeout'] = $this->getGlobal( 'RecaptchaTimeout' );
-		$wgReCaptchaConfData['UseSSL'] = $this->getGlobal( 'RecaptchaUseSSL' );
-		$wgReCaptchaConfData['ComsRetryLimit'] = $this->getGlobal( 'RecaptchaComsRetryLimit' );
+		$wgReCaptchaConfData['UseHTTPProxy'] = $this->gateway_adapter->getGlobal( 'RecaptchaUseHTTPProxy' );
+		$wgReCaptchaConfData['HTTPProxy'] = $this->gateway_adapter->getGlobal( 'RecaptchaHTTPProxy' );
+		$wgReCaptchaConfData['Timeout'] = $this->gateway_adapter->getGlobal( 'RecaptchaTimeout' );
+		$wgReCaptchaConfData['UseSSL'] = $this->gateway_adapter->getGlobal( 'RecaptchaUseSSL' );
+		$wgReCaptchaConfData['ComsRetryLimit'] = $this->gateway_adapter->getGlobal( 'RecaptchaComsRetryLimit' );
 		$wgReCaptchaConfData['GatewayClass'] = $this->gateway_adapter->getGatewayAdapterClass(); //for properly routing the logging
 		// load the reCaptcha API
 		require_once( dirname( __FILE__ ) . '/recaptcha-php/recaptchalib.php' );
@@ -60,8 +60,8 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 	 */
 	public function display_captcha() {
 		global $wgOut;
-		$publicKey = $this->getGlobal( 'RecaptchaPublicKey' );
-		$useSSL = $this->getGlobal( 'RecaptchaUseSSL' );
+		$publicKey = $this->gateway_adapter->getGlobal( 'RecaptchaPublicKey' );
+		$useSSL = $this->gateway_adapter->getGlobal( 'RecaptchaUseSSL' );
 
 		// log that a captcha's been triggered
 		$this->log( $this->gateway_adapter->getData( 'contribution_tracking_id' ), 'Captcha triggered' );
@@ -94,7 +94,7 @@ class Gateway_Extras_reCaptcha extends Gateway_Extras {
 	 */
 	public function check_captcha() {
 		global $wgRequest;
-		$privateKey = $this->getGlobal( 'RecaptchaPrivateKey' );
+		$privateKey = $this->gateway_adapter->getGlobal( 'RecaptchaPrivateKey' );
 		$resp = recaptcha_check_answer( $privateKey, wfGetIP(), $wgRequest->getText( 'recaptcha_challenge_field' ), $wgRequest->getText( 'recaptcha_response_field' ) );
 
 		return $resp;
