@@ -38,3 +38,10 @@ if ( !defined( 'PHPUNIT_MAIN_METHOD' ) ) {
  */
 define( 'TESTS_HOSTNAME', 'localhost' );
 
+/**
+ * TESTS_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD
+ *
+ * A valid American Express Ccard
+ */
+define( 'TESTS_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD', '378282246310005' );
+
