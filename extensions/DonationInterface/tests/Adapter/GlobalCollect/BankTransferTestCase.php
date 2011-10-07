@@ -104,11 +104,90 @@ class DonationInterface_Adapter_GlobalCollect_BankTransferTestCase extends Donat
 
 	/**
 	 * testSendToGlobalCollect
+	 *
+	 * Adding
 	 */
 	public function testSendToGlobalCollect() {
-
 		$this->markTestIncomplete( TESTS_MESSAGE_NOT_IMPLEMENTED );
 
+		//global $wgContLang, $wgAuth, $wgMemc, $wgRequest, $wgUser, $wgServer;
+		global $wgGlobalCollectGatewayTest;
+		
+		$wgGlobalCollectGatewayTest = true;
+
+		$_SERVER = array();
+		
+		$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
+		$_SERVER['HTTP_HOST'] = TESTS_HOSTNAME;
+		$_SERVER['SERVER_NAME'] = TESTS_HOSTNAME;
+		$_SERVER['REQUEST_URI'] = '/index.php/Special:GlobalCollectGateway?form_name=TwoStepAmount';
+		
+		/**
+		 * @see WebStart.php
+		 */
+		require_once TESTS_WEB_ROOT . '/includes/WebStart.php';
+
+		$options = array();
+		
+		$options['test'] = true;
+		$options['transactionType'] = 'BANK_TRANSFER';
+		
+		$options['postDefaults'] = array(
+			'returnTitle'	=> true,
+			'returnTo'		=> 'http://' . TESTS_HOSTNAME . '/index.php/Special:GlobalCollectGatewayResult',
+		);
+		
+		$options['testData'] = array(
+			'amount' => "35",
+			'amountOther' => '',
+			'email' => 'test@example.com',
+			'fname' => 'Tester',
+			'mname' => 'T.',
+			'lname' => 'Testington',
+			'street' => '548 Market St.',
+			'city' => 'San Francisco',
+			'state' => 'CA',
+			'zip' => '94104',
+			'country' => 'US',
+			'fname2' => 'Testy',
+			'lname2' => 'Testerson',
+			'street2' => '123 Telegraph Ave.',
+			'city2' => 'Berkeley',
+			'state2' => 'CA',
+			'zip2' => '94703',
+			'country2' => 'US',
+			'size' => 'small',
+			'premium_language' => 'es',
+			//'card_num' => TESTS_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD,
+			//'card_type' => 'american',
+			//'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
+			//'cvv' => '001',
+			'currency' => 'USD',
+			'payment_method' => '',
+			'order_id' => '1234567890',
+			'i_order_id' => '1234567890',
+			'numAttempt' => 0,
+			'referrer' => 'http://' . TESTS_HOSTNAME . '/index.php/Special:GlobalCollectGateway?form_name=TwoStepAmount',
+			'utm_source' => '..gc_bt',
+			'utm_medium' => null,
+			'utm_campaign' => null,
+			'language' => 'en',
+			'comment-option' => '',
+			'comment' => '',
+			'email-opt' => 1,
+			'test_string' => '',
+			'token' => '',
+			'contribution_tracking_id' => '',
+			'data_hash' => '',
+			'action' => '',
+			'gateway' => 'globalcollect',
+			'owa_session' => '',
+			'owa_ref' => 'http://localhost/defaultTestData',
+			'transaction_type' => '', // Used by GlobalCollect for payment types
+		);
+		
+		$gateway = new GlobalCollectAdapter( $options );
+		return $gateway->do_transaction( $options['transactionType'] );
 	}
 }
 
