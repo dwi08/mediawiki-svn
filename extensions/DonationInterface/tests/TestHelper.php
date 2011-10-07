@@ -48,6 +48,29 @@ require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'gateway_com
  */
 require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'gateway_common/gateway.adapter.php';
 
+/**
+ * @see GlobalCollectAdapter
+ */
+require_once dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'globalcollect_gateway/globalcollect.adapter.php';
+
+/**
+ * @see ContributionTrackingProcessor
+ */
+require_once dirname( dirname( dirname( __FILE__ ) ) ) . DIRECTORY_SEPARATOR . 'ContributionTracking/ContributionTracking.processor.php';
+
+/**
+ * TESTS_WEB_ROOT
+ *
+ * This is similar to $IP, the installation path in Mediawiki.
+ */
+define( 'TESTS_WEB_ROOT', dirname( dirname( dirname( dirname( __FILE__ ) ) ) ) );
+
+/*
+ * Unit tests are run from the command line.
+ *
+ * It should be confirmed that this will not affect other tests such as Selenium.
+ */
+$wgCommandLineMode = true;
 
 /*
  * Load the user-defined test configuration file, if it exists; otherwise, load
