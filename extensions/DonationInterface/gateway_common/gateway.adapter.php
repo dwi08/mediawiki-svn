@@ -1147,6 +1147,11 @@ abstract class GatewayAdapter implements GatewayType {
 
 	function runPreProcess() {
 		if ( $this->transaction_option( 'do_validation' ) ) {
+			if ( !isset( $wgHooks['GatewayValidate'] ) ) {
+				//if there ARE no validate hooks, we're okay.
+				$this->action = 'process';
+				return;
+			}
 			// allow any external validators to have their way with the data
 			self::log( $this->getData( 'order_id' ) . " Preparing to query MaxMind" );
 			wfRunHooks( 'GatewayValidate', array( &$this ) );

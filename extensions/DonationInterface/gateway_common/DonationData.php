@@ -14,6 +14,7 @@ class DonationData {
 		//TODO: Actually think about this bit.
 		// ...and keep in mind we can re-populate if it's a test or whatever. (But that may not be a good idea either)
 		$this->boss = $owning_class;
+		$this->gatewayID = $this->getGatewayIdentifier();
 		$this->populateData( $test, $data );
 	}
 
@@ -275,21 +276,34 @@ class DonationData {
 	}
 
 	function log( $message, $log_level=LOG_INFO ) {
-		if ( class_exists( $this->boss ) ) {
-			$c = $this->boss;
+		$c = $this->getAdapterClass();
+		if ( $c && is_callable( array( $c, 'log' ) )){
 			$c::log( $message, $log_level );
+		}
+	}
+	
+	function getGatewayIdentifier() {
+		$c = $this->getAdapterClass();
+		if ( $c && is_callable( array( $c, 'getIdentifier' ) ) ){
+			return $c::getIdentifier();
+		} else {
+			return 'DonationData';
+		}
+	}
+	
+	function getGatewayGlobal( $varname ) {
+		$c = $this->getAdapterClass();
+		if ( $c && is_callable( array( $c, 'getGlobal' ) ) ){
+			return $c::getGlobal( $varname );
+		} else {
+			return false;
 		}
 	}
 
 	function setGateway() {
 		//TODO: Hum. If we have some other gateway in the form data, should we go crazy here? (Probably)
-		if ( class_exists( $this->boss ) ) {
-			$c = $this->boss;
-			if ( is_callable( array( $c, 'getIdentifier' ) ) ) {
-				$gateway = $c::getIdentifier();
-				$this->setVal( 'gateway', $gateway );
-			}
-		}
+		$gateway = $this->gatewayID;
+		$this->setVal( 'gateway', $gateway );
 	}
 
 	function doCacheStuff() {
@@ -304,14 +318,11 @@ class DonationData {
 
 			// if we have squid caching enabled, set the maxage
 			global $wgUseSquid, $wgOut;
-			if ( class_exists( $this->boss ) ) {
-				$g = $this->boss; //the 'g' is for "Gateway"!
-				$maxAge = $g::getGlobal( 'SMaxAge' );
+			$maxAge = $this->getGatewayGlobal( 'SMaxAge' );
 
-				if ( $wgUseSquid ) {
-					self::log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Setting s-max-age: ' . $maxAge, LOG_DEBUG );
-					$wgOut->setSquidMaxage( $maxAge );
-				}
+			if ( $wgUseSquid && ( $maxAge !== false ) ) {
+				self::log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Setting s-max-age: ' . $maxAge, LOG_DEBUG );
+				$wgOut->setSquidMaxage( $maxAge );
 			}
 		} else {
 			$this->cache = false; //TODO: Kill this one in the face, too. (see above) 
@@ -341,12 +352,7 @@ class DonationData {
 		// make sure we have a session open for tracking a CSRF-prevention token
 		self::ensureSession();
 
-		if ( class_exists( $this->boss ) ) {
-			$g = $this->boss;
-			$gateway_ident = $g::getIdentifier();
-		} else {
-			$gateway_ident = 'DonationData';
-		}
+		$gateway_ident = $this->gatewayID;
 
 		if ( !isset( $_SESSION[$gateway_ident . 'EditToken'] ) ) {
 			// generate unsalted token to place in the session
@@ -395,12 +401,8 @@ class DonationData {
 	 * Unset the payflow edit token from a user's session
 	 */
 	function unsetEditToken() {
-		if ( class_exists( $this->boss ) ) {
-			$g = $this->boss;
-			$gateway_ident = $g::getIdentifier();
-		} else {
-			$gateway_ident = "DonationData";
-		}
+		$gateway_ident = $this->gatewayID;
+		
 		if ( isset( $_SESSION ) && isset( $_SESSION[$gateway_ident . 'EditToken'] ) ){
 			unset( $_SESSION[$gateway_ident . 'EditToken'] );
 		}
@@ -425,10 +427,8 @@ class DonationData {
 		static $match = null;
 
 		if ( $match === null ) {
-			if ( class_exists( $this->boss ) ) {
-				$g = $this->boss;
-				$salt = $g::getGlobal( 'Salt' );
-			} else {
+			$salt = $this->getGatewayGlobal( 'Salt' );
+			if ( $salt === false ){
 				$salt = 'gotToBeInAUnitTest';
 			}
 
@@ -711,6 +711,14 @@ class DonationData {
 				//assume garbage = 0, so...
 				$this->setVal( 'numAttempt', 1 );
 			}
+		}
+	}
+	
+	function getAdapterClass(){
+		if ( class_exists( $this->boss ) ) {
+			return $this->boss;
+		} else {
+			return false;
 		}
 	}
 
