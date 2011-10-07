@@ -119,11 +119,11 @@ EOT;
 					switch ( $this->adapter->getTransactionType() ) {
 
 						case 'BANK_TRANSFER':
-							$this->executeBankTransfer( $wgOut );
+							$this->executeBankTransfer();
 							break;
 
 						case 'INSERT_ORDERWITHPAYMENT':
-							$this->executeInsertOrderWithPayment( $wgOut );
+							$this->executeInsertOrderWithPayment();
 							break;
 
 						default:
@@ -157,10 +157,10 @@ EOT;
 
 	/**
 	 * Execute BANK_TRANSFER
-	 *
-	 * @param OutputPage $wgOut
 	 */
-	public function executeBankTransfer( &$wgOut ) {
+	public function executeBankTransfer() {
+
+		//global $wgOut;
 
 		$result = $this->adapter->do_transaction( 'BANK_TRANSFER' );
 		$this->adapter->addDonorDataToSession();
@@ -170,11 +170,11 @@ EOT;
 
 	/**
 	 * Execute INSERT_ORDERWITHPAYMENT
-	 *
-	 * @param OutputPage $wgOut
 	 */
-	public function executeInsertOrderWithPayment( &$wgOut ) {
+	public function executeInsertOrderWithPayment() {
 
+		global $wgOut;
+		
 		$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
 		$this->adapter->addDonorDataToSession();
 		//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );
