@@ -27,6 +27,7 @@ class Gateway_Form_TwoStepAmount extends Gateway_Form {
 		global $wgOut;
 
 		$form_data['transaction_type'] = 'BANK_TRANSFER';
+		//Debug::puke($form_data, eval(DUMP) . "\$form_data");
 		parent::__construct( $form_data, $form_errors, $gateway );
 
 		// we only want to load this JS if the form is being rendered

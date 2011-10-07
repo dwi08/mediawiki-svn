@@ -1,5 +1,25 @@
 <?php
+/**
+ * Wikimedia Foundation
+ *
+ * LICENSE
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ */
 
+/**
+ * GatewayType Interface
+ *
+ */
 interface GatewayType {
 	//all the particulars of the child classes. Aaaaall.
 
@@ -36,7 +56,7 @@ interface GatewayType {
 
 	/**
 	 * Should be a list of our variables that need special staging. 
-	 * Define $this->staged_vars
+	 * @see $this->staged_vars
 	 */
 	function defineStagedVars();
 
@@ -74,6 +94,10 @@ interface GatewayType {
 	function defineReturnValueMap();
 }
 
+/**
+ * GatewayAdapter
+ *
+ */
 abstract class GatewayAdapter implements GatewayType {
 
 	//Contains the map of THEIR var names, to OURS.
@@ -91,6 +115,14 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @see GatewayForm::execute()
 	 */
 	protected $transaction_type = false;
+
+	/**
+	 * Staged variables. This is affected by the transaction type.
+	 *
+	 * @var array $staged_vars
+	 */
+	protected $staged_vars = array();
+	
 	protected $return_value_map;
 	protected $postdata;
 	protected $postdatadefaults;
@@ -108,20 +140,44 @@ abstract class GatewayAdapter implements GatewayType {
 	const COMMUNICATION_TYPE = 'xml'; //this needs to be either 'xml' or 'namevalue'
 	const GLOBAL_PREFIX = 'wgDonationGateway'; //...for example. 
 
-	public function __construct() {
+	/**
+	 * Constructor
+	 *
+	 * @param array	$options
+	 *   OPTIONAL - You may set options for testing
+	 *   - testData - Submit test data 
+	 *
+	 * @see DonationData
+	 */
+	public function __construct( $options = array() ) {
+
+		// Extract the options
+		extract( $options );
+		
+		$testData = isset( $testData ) ? $testData : false;
+		$postDefaults = isset( $postDefaults ) ? $postDefaults : false;
+		$transactionType = isset( $transactionType ) ? $transactionType : false;
+		
+		if ( $transactionType ) {
+			$this->setTransactionType( $transactionType );
+		}
+		
 		if ( !self::getGlobal( 'Test' ) ) {
 			$this->url = self::getGlobal( 'URL' );
+			
+			// Only submit test data if we are in test mode.
+			$testData = false;
 		} else {
 			$this->url = self::getGlobal( 'TestingURL' );
 		}
 
-		$this->dataObj = new DonationData( get_called_class(), self::getGlobal( 'Test' ) );
+		$this->dataObj = new DonationData( get_called_class(), self::getGlobal( 'Test' ), $testData );
 
 		$this->postdata = $this->dataObj->getData();
 		//TODO: Fix this a bit. 
 		$this->posted = $this->dataObj->wasPosted();
 
-		$this->setPostDefaults();
+		$this->setPostDefaults( $postDefaults );
 		$this->defineTransactions();
 		$this->defineVarMap();
 		$this->defineAccountInfo();
@@ -134,9 +190,15 @@ abstract class GatewayAdapter implements GatewayType {
 	/**
 	 * Override this in children if you want different defaults. 
 	 */
-	function setPostDefaults() {
-		$returnTitle = Title::newFromText( 'Special:GlobalCollectGatewayResult' );
-		$returnto = $returnTitle->getFullURL();
+	function setPostDefaults( $options = array() ) {
+
+		// Extract the options
+		if ( is_array( $options )) {
+			extract( $options );
+		}
+
+		$returnTitle = isset( $returnTitle ) ? $returnTitle : Title::newFromText( 'Special:GlobalCollectGatewayResult' );
+		$returnTo = isset( $returnTo ) ? $returnTo :  $returnTitle->getFullURL();
 
 		$this->postdatadefaults = array(
 			'order_id' => '112358' . rand(),
@@ -144,7 +206,7 @@ abstract class GatewayAdapter implements GatewayType {
 			'currency' => 'USD',
 			'language' => 'en',
 			'country' => 'US',
-			'returnto' => $returnto,
+			'returnto' => $returnTo,
 			'user_ip' => ( self::getGlobal( 'Test' ) ) ? '12.12.12.12' : wfGetIP(), // current user's IP address
 			'card_type' => 'visa',
 		);
@@ -933,6 +995,8 @@ abstract class GatewayAdapter implements GatewayType {
 	/**
 	 * Set the transaction type
 	 *
+	 * @see GatewayAdapter::currentTransaction()
+	 *
 	 * @param string|false $transaction_type
 	 */
 	public function setTransactionType( $transaction_type ) {
@@ -940,6 +1004,8 @@ abstract class GatewayAdapter implements GatewayType {
 		$transaction_type = empty( $transaction_type ) ? false : $transaction_type;
 
 		$this->transaction_type = $transaction_type;
+		
+		$this->currentTransaction( $this->transaction_type );
 	}
 
 	public function getTransactionAllResults() {
