@@ -41,7 +41,6 @@ $optionalParts = array( //define as fail closed. This variable will be unset bef
 	'Minfraud' => false, //this is definitely an Extra
 	'Minfraud_as_filter' => false, //extra
 	'Recaptcha' => false, //extra
-	'Paypal' => false, //this is the paypal redirect. TODO: Determine if we're even using this anymore. 
 	'PayflowPro' => false,
 	'GlobalCollect' => false,
 	
@@ -159,6 +158,7 @@ $wgDonationInterfaceTest = false;
 
 /**
  * The URL to redirect a transaction to PayPal
+ * This should probably point to ContributionTracking. 
  */
 $wgDonationInterfacePaypalURL = '';
 $wgDonationInterfaceRetrySeconds = 5;
@@ -263,13 +263,6 @@ if ( $optionalParts['PayflowPro'] === true ){
 	$wgPayflowProGatewayHtmlFormDir = $donationinterface_dir . 'payflowpro_gateway/forms/html';
 	//this really should be redefined in LocalSettings. 
 	$wgPayflowProGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
-}
-
-//Paypal gateway globals
-if ( $optionalParts['Paypal'] === true ){
-	// default variables that should be set in LocalSettings.php
-	$wgPaypalEmail = '';
-	$wgPaypalUrl = 'http://wikimediafoundation.org/wiki/Special:ContributionTracking?';
 }
 
 //Stomp globals
@@ -409,26 +402,6 @@ if ( $optionalParts['PayflowPro'] === true ){
 //Unit tests
 $wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
 
-//PayflowPro gateway hooks
-if ( $optionalParts['PayflowPro'] === true ){
-	//TODO: Determine once and for all if this is actually as crufty as it looks. 
-	$wgHooks['DonationInterface_Value'][] = 'pfpGatewayValue';
-	$wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
-}
-
-//Paypal gateway hooks
-if ( $optionalParts['Paypal'] === true ){
-	//TODO: Determine if this is all cruft. I'm guessing "Probably". 
-	/**
-	 * Hooks required to interface with the donation extension (include <donate> on page)
-	 *
-	 * gwValue supplies the value of the form option, the name that appears on the form
-	 * and the currencies supported by the gateway in the $values array
-	 */
-	$wgHooks['DonationInterface_Value'][] = 'paypalGatewayValue';
-	$wgHooks['DonationInterface_Page'][] = 'paypalGatewayPage';
-}
-
 //Stomp hooks
 if ($optionalParts['Stomp'] === true){
 	$wgHooks['ParserFirstCallInit'][] = 'efStompSetup';
@@ -507,11 +480,6 @@ if ( $optionalParts['PayflowPro'] === true ){
 	$wgAjaxExportList[] = "fnPayflowProofofWork";
 }
 
-//Paypal magical globals
-if ( $optionalParts['Paypal'] === true ){
-	$wgExtensionMessagesFiles['PaypalGateway'] = $donationinterface_dir . 'paypal_gateway/paypal_gateway.i18n.php';
-}
-
 //Minfraud magical globals
 if ( $optionalParts['Minfraud'] === true ){ //We do not want this in filter mode. 
 	$wgExtensionFunctions[] = 'efMinFraudSetup';
@@ -542,20 +510,8 @@ if ($optionalParts['Minfraud_as_filter'] === true){
 	require_once( $donationinterface_dir . 'extras/custom_filters/filters/minfraud/minfraud.php'  );
 }
 
-//---Paypal functions---
-if ($optionalParts['Paypal'] === true){
-	require_once( $donationinterface_dir . 'paypal_gateway/paypal_gateway.php'  );
-}
-
-//---PayflowPro functions---
-if ($optionalParts['PayflowPro'] === true){
-	require_once( $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.php'  );
-}
-
-
-
 function efDonationInterfaceUnitTests( &$files ) {
-	$files[] = $donationinterface_dir . 'tests/AllTests.php';
+	$files[] = dirname( __FILE__ ) . '/tests/AllTests.php';
 	return true;
 }
 
