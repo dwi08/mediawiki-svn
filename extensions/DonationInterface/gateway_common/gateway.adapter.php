@@ -150,6 +150,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @see DonationData
 	 */
 	public function __construct( $options = array() ) {
+		global $wgRequest;
 
 		// Extract the options
 		extract( $options );
@@ -175,7 +176,7 @@ abstract class GatewayAdapter implements GatewayType {
 
 		$this->postdata = $this->dataObj->getData();
 		//TODO: Fix this a bit. 
-		$this->posted = $this->dataObj->wasPosted();
+		$this->posted = $wgRequest->wasPosted();
 
 		$this->setPostDefaults( $postDefaults );
 		$this->defineTransactions();

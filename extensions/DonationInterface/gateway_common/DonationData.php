@@ -424,6 +424,7 @@ class DonationData {
 	}
 
 	public function checkTokens() {
+		global $wgRequest;
 		static $match = null;
 
 		if ( $match === null ) {
@@ -440,21 +441,13 @@ class DonationData {
 			// match token
 			$token_check = ( $this->isSomething( 'token' ) ) ? $this->getVal( 'token' ) : $token; //TODO: does this suck as much as it looks like it does? 
 			$match = $this->matchEditToken( $token_check, $salt );
-			if ( $this->wasPosted() ) {
+			if ( $wgRequest->wasPosted() ) {
 				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Submitted edit token: ' . $this->getVal( 'token' ), LOG_DEBUG );
 				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Token match: ' . ($match ? 'true' : 'false' ), LOG_DEBUG );
 			}
 		}
 
 		return $match;
-	}
-
-	function wasPosted() {
-		//TODO: Get rid of these log statements. 
-		if ( $this->isSomething( 'posted' ) ) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
