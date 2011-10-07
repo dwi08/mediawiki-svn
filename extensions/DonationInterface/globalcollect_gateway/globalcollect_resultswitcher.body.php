@@ -36,8 +36,7 @@ class GlobalCollectGatewayResult extends GatewayForm {
 	 * @param $par Mixed: parameter passed to the page or null
 	 */
 	public function execute( $par ) {
-		global $wgRequest, $wgOut, $wgExtensionAssetsPath,
-		$wgPayFlowProGatewayCSSVersion;
+		global $wgRequest, $wgOut, $wgExtensionAssetsPath;
 
 		$referrer = $wgRequest->getHeader( 'referer' );
 
@@ -54,7 +53,7 @@ class GlobalCollectGatewayResult extends GatewayForm {
 
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
-			$wgPayFlowProGatewayCSSVersion );
+			$this->adapter->getGlobal( 'CSSVersion' ) );
 
 		$this->setHeaders();
 

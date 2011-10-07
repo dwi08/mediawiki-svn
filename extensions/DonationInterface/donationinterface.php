@@ -69,7 +69,6 @@ foreach ($optionalParts as $subextension => $enabled){
 $wgAutoloadClasses['DonationData'] = $donationinterface_dir . 'gateway_common/DonationData.php';
 $wgAutoloadClasses['GatewayAdapter'] = $donationinterface_dir . 'gateway_common/gateway.adapter.php';
 $wgAutoloadClasses['GatewayForm'] = $donationinterface_dir . 'gateway_common/GatewayForm.php';
-$wgAutoloadClasses['DonationApi'] = $donationinterface_dir . 'gateway_common/donation.api.php';
 
 //load all possible form classes
 $wgAutoloadClasses['Gateway_Form'] = $donationinterface_dir . 'gateway_forms/Form.php';
@@ -94,6 +93,17 @@ $wgAutoloadClasses['Gateway_Form_RapidHtml'] = $donationinterface_dir . 'gateway
 $wgAutoloadClasses['Gateway_Form_SingleColumn'] = $donationinterface_dir . 'gateway_forms/SingleColumn.php';
 
 
+//GlobalCollect gateway classes
+if ( $optionalParts['GlobalCollect'] === true ){
+	$wgAutoloadClasses['GlobalCollectGateway'] = $donationinterface_dir . 'globalcollect_gateway/globalcollect_gateway.body.php';
+	$wgAutoloadClasses['GlobalCollectGatewayResult'] = $donationinterface_dir . 'globalcollect_gateway/globalcollect_resultswitcher.body.php';
+	$wgAutoloadClasses['GlobalCollectAdapter'] = $donationinterface_dir . 'globalcollect_gateway/globalcollect.adapter.php';
+}
+//PayflowPro gateway classes
+if ( $optionalParts['PayflowPro'] === true ){
+	$wgAutoloadClasses['PayflowProGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.body.php';
+	$wgAutoloadClasses['PayflowProAdapter'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro.adapter.php';
+}
 
 //Stomp classes
 if ($optionalParts['Stomp'] === true){
@@ -148,18 +158,112 @@ $wgDonationInterfaceAllowedHtmlForms = array(
 $wgDonationInterfaceTest = false;
 
 /**
+ * The URL to redirect a transaction to PayPal
+ */
+$wgDonationInterfacePaypalURL = '';
+$wgDonationInterfaceRetrySeconds = 5;
+
+//all of the following variables make sense to override directly, 
+//or change "DonationInterface" to the gateway's id to override just for that gateway. 
+//for instance: To override $wgDonationInterfaceUseSyslog just for GlobalCollect, add
+// $wgGolbalCollectGatewayUseSyslog = true
+// to LocalSettings. 
+//   
+
+$wgDonationInterfaceDisplayDebug = false;
+$wgDonationInterfaceUseSyslog = false;
+$wgDonationInterfaceSaveCommStats = false;
+
+$wgDonationInterfaceCSSVersion = 1;
+$wgDonationInterfaceTimeout = 5;
+$wgDonationInterfaceDefaultForm = 'TwoStepTwoColumn';
+
+/**
+ * A string or array of strings for making tokens more secure
+ *
+ * Please set this!  If you do not, tokens are easy to get around, which can
+ * potentially leave you and your users vulnerable to CSRF or other forms of
+ * attack.
+ */
+$wgDonationInterfaceSalt = $wgSecretKey;
+
+/**
+ * A string that can contain wikitext to display at the head of the credit card form
+ *
+ * This string gets run like so: $wg->addHtml( $wg->Parse( $wgpayflowGatewayHeader ))
+ * You can use '@language' as a placeholder token to extract the user's language.
+ *
+ */
+$wgDonationInterfaceHeader = NULL;
+
+/**
+ * A string containing full URL for Javascript-disabled credit card form redirect
+ */
+$wgDonationInterfaceNoScriptRedirect = null;
+
+/**
+ * Proxy settings
+ *
+ * If you need to use an HTTP proxy for outgoing traffic,
+ * set wgPayflowGatweayUseHTTPProxy=TRUE and set $wgPayflowProGatewayHTTPProxy
+ * to the proxy desination.
+ *  eg:
+ *  $wgPayflowProGatewayUseHTTPProxy=TRUE;
+ *  $wgPayflowProGatewayHTTPProxy='192.168.1.1:3128'
+ */
+$wgDonationInterfaceUseHTTPProxy = FALSE;
+$wgDonationInterfaceHTTPProxy = '';
+
+/**
+ * Set the max-age value for Squid
+ *
+ * If you have Squid enabled for caching, use this variable to configure
+ * the s-max-age for cached requests.
+ * @var int Time in seconds
+ */
+$wgDonationInterfaceSMaxAge = 6000;
+
+/**
+ * Configure price cieling and floor for valid contribution amount.  Values 
+ * should be in USD.
+ */
+$wgDonationInterfacePriceFloor = '1.00';
+$wgDonationInterfacePriceCeiling = '10000.00';
+
+/**
  * Default Thank You and Fail pages for all of donationinterface - language will be calc'd and appended at runtime. 
  */
 //$wgDonationInterfaceThankYouPage = 'https://wikimediafoundation.org/wiki/Thank_You';
 $wgDonationInterfaceThankYouPage = 'Donate-thanks';
 $wgDonationInterfaceFailPage = 'Donate-error';
 
-/**
- * The URL to redirect a transaction to PayPal
- */
-$wgDonationInterfacePaypalURL = '';
-$wgDonationInterfaceRetrySeconds = 5;
 
+//GlobalCollect gateway globals
+if ( $optionalParts['GlobalCollect'] === true ){
+	$wgGlobalCollectGatewayURL = 'https://ps.gcsip.nl/wdl/wdl';
+	$wgGlobalCollectGatewayTestingURL = 'https://'; // GlobalCollect testing URL
+	
+	$wgGlobalCollectGatewayMerchantID = ''; // GlobalCollect ID
+	
+	$wgGlobalCollectGatewayHtmlFormDir = $donationinterface_dir . 'globalcollect_gateway/forms/html';
+	//this really should be redefined in LocalSettings. 
+	$wgGlobalCollectGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
+}
+
+//PayflowPro gateway globals
+if ( $optionalParts['PayflowPro'] === true ){
+	$wgPayflowProGatewayURL = 'https://payflowpro.paypal.com';
+	$wgPayflowProGatewayTestingURL = 'https://pilot-payflowpro.paypal.com'; // Payflow testing URL
+	
+	$wgPayflowProGatewayPartnerID = ''; // PayPal or original authorized reseller
+	$wgPayflowProGatewayVendorID = ''; // paypal merchant login ID
+	$wgPayflowProGatewayUserID = ''; // if one or more users are set up, authorized user ID, else same as VENDOR
+	$wgPayflowProGatewayPassword = ''; // merchant login password
+	
+	$wgPayflowProGatewayHtmlFormDir = $donationinterface_dir . 'payflowpro_gateway/forms/html';
+	//this really should be redefined in LocalSettings. 
+	$wgPayflowProGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
+}
 
 //Paypal gateway globals
 if ( $optionalParts['Paypal'] === true ){
@@ -267,12 +371,9 @@ if ( $optionalParts['Recaptcha'] === true ){
 
 	/**
 	 * HTTP Proxy settings
-	 * 
-	 * Default to settings in DonationInterface
 	 */
-	//TODO: I think we can get rid of these entirely, due to the way we are now checking for globals in the extras. 
-	//$wgDonationInterfaceRecaptchaUseHTTPProxy = $wgDonationInterfaceUseHTTPProxy;
-	//$wgDonationInterfaceRecaptchaHTTPProxy = $wgDonationInterfaceHTTPProxy;
+	$wgDonationInterfaceRecaptchaUseHTTPProxy = false;
+	$wgDonationInterfaceRecaptchaHTTPProxy = false;
 
 	/**
 	 * Use SSL to communicate with reCaptcha
@@ -286,6 +387,20 @@ if ( $optionalParts['Recaptcha'] === true ){
 	$wgDonationInterfaceRecaptchaComsRetryLimit = 3;
 }
 
+/**
+ * SPECIAL PAGES
+ */
+
+//GlobalCollect gateway special pages
+if ( $optionalParts['GlobalCollect'] === true ){
+	$wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
+	$wgSpecialPages['GlobalCollectGatewayResult'] = 'GlobalCollectGatewayResult';
+}
+//PayflowPro gateway special pages
+if ( $optionalParts['PayflowPro'] === true ){
+	$wgSpecialPages['PayflowProGateway'] = 'PayflowProGateway';
+}
+
 
 /**
  * HOOKS
@@ -294,8 +409,14 @@ if ( $optionalParts['Recaptcha'] === true ){
 //Unit tests
 $wgHooks['UnitTestsList'][] = 'efDonationInterfaceUnitTests';
 
+//PayflowPro gateway hooks
+if ( $optionalParts['PayflowPro'] === true ){
+	//TODO: Determine once and for all if this is actually as crufty as it looks. 
+	$wgHooks['DonationInterface_Value'][] = 'pfpGatewayValue';
+	$wgHooks['DonationInterface_Page'][] = 'pfpGatewayPage';
+}
 
-//Paypal gateway globals
+//Paypal gateway hooks
 if ( $optionalParts['Paypal'] === true ){
 	//TODO: Determine if this is all cruft. I'm guessing "Probably". 
 	/**
@@ -333,11 +454,22 @@ if ($optionalParts['Recaptcha'] === true){
 }
 
 /**
- * ADDITIONAL MAGICAL GLOBALS 
+ * APIS 
  */
-
 // enable the API
 $wgAPIModules['donate'] = 'DonationApi';
+$wgAutoloadClasses['DonationApi'] = $donationinterface_dir . 'gateway_common/donation.api.php';
+
+//Payflowpro API
+if ( $optionalParts['PayflowPro'] === true ){
+	$wgAPIModules['pfp'] = 'ApiPayflowProGateway';
+	$wgAutoloadClasses['ApiPayflowProGateway'] = $donationinterface_dir . 'payflowpro_gateway/api_payflowpro_gateway.php';
+}
+
+
+/**
+ * ADDITIONAL MAGICAL GLOBALS 
+ */
 
 // Resource modules
 $wgResourceTemplate = array(
@@ -354,6 +486,26 @@ $wgResourceModules['donationInterface.skinOverride'] = array(
 	) + $wgResourceTemplate;
 
 $wgExtensionMessagesFiles['DonateInterface'] = $donationinterface_dir . 'donate_interface/donate_interface.i18n.php';
+
+
+//GlobalCollect gateway magical globals
+
+//TODO: all the bits where we make the i18n make sense for multiple gateways. This is clearly less than ideal.
+if ( $optionalParts['GlobalCollect'] === true ){
+	$wgExtensionMessagesFiles['GlobalCollectGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.i18n.php';
+	$wgExtensionMessagesFiles['GlobalCollectGatewayCountries'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
+	$wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
+	$wgExtensionAliasesFiles['GlobalCollectGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.alias.php';
+}
+
+//PayflowPro gateway magical globals
+if ( $optionalParts['PayflowPro'] === true ){
+	$wgExtensionMessagesFiles['PayflowProGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.i18n.php';
+	$wgExtensionMessagesFiles['PayflowProGatewayCountries'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
+	$wgExtensionMessagesFiles['PayflowProGatewayUSStates'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
+	$wgExtensionAliasesFiles['PayflowProGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.alias.php';
+	$wgAjaxExportList[] = "fnPayflowProofofWork";
+}
 
 //Paypal magical globals
 if ( $optionalParts['Paypal'] === true ){
@@ -395,27 +547,11 @@ if ($optionalParts['Paypal'] === true){
 	require_once( $donationinterface_dir . 'paypal_gateway/paypal_gateway.php'  );
 }
 
-
-
-
-
-
-
-//This is going to be a little funky. 
-//Override this in LocalSettings.php BEFORE you include this file, if you want 
-//to disable gateways.
-//TODO: Unfunktify, if you have a better idea here for auto-loading the classes after LocalSettings.php runs all the way. 
-if ( !isset( $wgDonationInterfaceEnabledGateways ) ) {
-	$wgDonationInterfaceEnabledGateways = array(
-		'payflowpro',
-		'globalcollect'
-	);
+//---PayflowPro functions---
+if ($optionalParts['PayflowPro'] === true){
+	require_once( $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.php'  );
 }
 
-foreach ( $wgDonationInterfaceEnabledGateways as $gateway ) {
-	//include 'em
-	require_once( $donationinterface_dir . $gateway . '_gateway/' . $gateway . '_gateway.php' );
-}
 
 
 function efDonationInterfaceUnitTests( &$files ) {

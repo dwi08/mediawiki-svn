@@ -1,4 +1,7 @@
 <?php
+/**
+ * TODO: Remove this file. :)
+ */
 
 # Alert the user that this is not a valid entry point to MediaWiki if they try to access the special pages file directly.
 if ( !defined( 'MEDIAWIKI' ) ) {
@@ -18,37 +21,37 @@ $wgExtensionCredits['specialpage'][] = array(
 	'url' => 'http://www.mediawiki.org/wiki/Extension:GlobalCollectGateway',
 );
 
-$wgGlobalCollectGatewayUseSyslog = false;
+//$wgGlobalCollectGatewayUseSyslog = false;
 
 // Set up the new special page
 $dir = dirname( __FILE__ ) . '/';
-$wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
-$wgAutoloadClasses['GlobalCollectGatewayResult'] = $dir . 'globalcollect_resultswitcher.body.php';
-$wgAutoloadClasses['GlobalCollectAdapter'] = $dir . 'globalcollect.adapter.php';
-$wgExtensionMessagesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.i18n.php';
-$wgExtensionMessagesFiles['GlobalCollectGatewayCountries'] = $dir . '../payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
-$wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $dir . '../payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
-$wgExtensionAliasesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.alias.php';
-$wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
-$wgSpecialPages['GlobalCollectGatewayResult'] = 'GlobalCollectGatewayResult';
+//$wgAutoloadClasses['GlobalCollectGateway'] = $dir . 'globalcollect_gateway.body.php';
+//$wgAutoloadClasses['GlobalCollectGatewayResult'] = $dir . 'globalcollect_resultswitcher.body.php';
+//$wgAutoloadClasses['GlobalCollectAdapter'] = $dir . 'globalcollect.adapter.php';
+//$wgExtensionMessagesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.i18n.php';
+//$wgExtensionMessagesFiles['GlobalCollectGatewayCountries'] = $dir . '../payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
+//$wgExtensionMessagesFiles['GlobalCollectGatewayUSStates'] = $dir . '../payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
+//$wgExtensionAliasesFiles['GlobalCollectGateway'] = $dir . '../payflowpro_gateway/payflowpro_gateway.alias.php';
+//$wgSpecialPages['GlobalCollectGateway'] = 'GlobalCollectGateway';
+//$wgSpecialPages['GlobalCollectGatewayResult'] = 'GlobalCollectGatewayResult';
 //$wgAjaxExportList[] = "fnGlobalCollectofofWork";
 // set defaults, these should be assigned in LocalSettings.php
-$wgGlobalCollectGatewayURL = 'https://ps.gcsip.nl/wdl/wdl';
-$wgGlobalCollectGatewayTestingURL = 'https://'; // GlobalCollect testing URL
+//$wgGlobalCollectGatewayURL = 'https://ps.gcsip.nl/wdl/wdl';
+//$wgGlobalCollectGatewayTestingURL = 'https://'; // GlobalCollect testing URL
 
-$wgGlobalCollectGatewayCSSVersion = 1;
+//$wgGlobalCollectGatewayCSSVersion = 1;
 
-$wgGlobalCollectGatewayMerchantID = ''; // GlobalCollect ID
+//$wgGlobalCollectGatewayMerchantID = ''; // GlobalCollect ID
 // a boolean to determine if we're in testing mode
-$wgGlobalCollectGatewayTest = FALSE;
+//$wgGlobalCollectGatewayTest = FALSE;
 
 // timeout in seconds for communicating with [gateway]
-$wgGlobalCollectGatewayTimeout = 2;
+//$wgGlobalCollectGatewayTimeout = 2;
 
 /**
  * The default form to use
  */
-$wgGlobalCollectGatewayDefaultForm = 'TwoStepTwoColumn';
+//$wgGlobalCollectGatewayDefaultForm = 'TwoStepTwoColumn';
 
 /**
  * A string or array of strings for making tokens more secure
@@ -57,7 +60,7 @@ $wgGlobalCollectGatewayDefaultForm = 'TwoStepTwoColumn';
  * potentially leave you and your users vulnerable to CSRF or other forms of
  * attack.
  */
-$wgGlobalCollectGatewaySalt = $wgSecretKey;
+//$wgGlobalCollectGatewaySalt = $wgSecretKey;
 
 
 /**
@@ -67,12 +70,12 @@ $wgGlobalCollectGatewaySalt = $wgSecretKey;
  * You can use '@language' as a placeholder token to extract the user's language.
  *
  */
-$wgGlobalCollectGatewayHeader = NULL;
+//$wgGlobalCollectGatewayHeader = NULL;
 
 /**
  * A string containing full URL for Javascript-disabled credit card form redirect
  */
-$wgGlobalCollectGatewayNoScriptRedirect = null;
+//$wgGlobalCollectGatewayNoScriptRedirect = null;
 
 /**
  * Proxy settings
@@ -84,8 +87,8 @@ $wgGlobalCollectGatewayNoScriptRedirect = null;
  *  $wgGlobalCollectGatewayUseHTTPProxy=TRUE;
  *  $wgGlobalCollectGatewayHTTPProxy='192.168.1.1:3128'
  */
-$wgGlobalCollectGatewayUseHTTPProxy = FALSE;
-$wgGlobalCollectGatewayHTTPProxy = '';
+//$wgGlobalCollectGatewayUseHTTPProxy = FALSE;
+//$wgGlobalCollectGatewayHTTPProxy = '';
 
 /**
  * Set the max-age value for Squid
@@ -94,13 +97,13 @@ $wgGlobalCollectGatewayHTTPProxy = '';
  * the s-max-age for cached requests.
  * @var int Time in seconds
  */
-$wgGlobalCollectGatewaySMaxAge = 6000;
+//$wgGlobalCollectGatewaySMaxAge = 6000;
 
 /**
  * Directory for HTML forms (used by RapidHtml form class)
  * @var string
  */
-$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
+//$wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
 
 /**
  * An array of allowed HTML forms.
@@ -109,17 +112,17 @@ $wgGlobalCollectGatewayHtmlFormDir = dirname( __FILE__ ) . "/forms/html";
  * /never/ be loaded by the rapid html form loader!
  * @var string
  */
-$wgGlobalCollectGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
+//$wgGlobalCollectGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
 
-/**
- * Configure price cieling and floor for valid contribution amount.  Values 
- * should be in USD.
- */
-$wgGlobalCollectGatewayPriceFloor = '1.00';
-$wgGlobalCollectGatewayPriceCeiling = '10000.00';
-
-/**
- * Thank You & Fail pages. 
- */
-$wgGlobalCollectGatewayThankYouPage = $wgDonationInterfaceThankYouPage;
-$wgGlobalCollectGatewayFailPage = $wgDonationInterfaceFailPage;
+///**
+// * Configure price cieling and floor for valid contribution amount.  Values 
+// * should be in USD.
+// */
+//$wgGlobalCollectGatewayPriceFloor = '1.00';
+//$wgGlobalCollectGatewayPriceCeiling = '10000.00';
+//
+///**
+// * Thank You & Fail pages. 
+// */
+//$wgGlobalCollectGatewayThankYouPage = $wgDonationInterfaceThankYouPage;
+//$wgGlobalCollectGatewayFailPage = $wgDonationInterfaceFailPage;
