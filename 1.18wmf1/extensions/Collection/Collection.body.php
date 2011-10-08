@@ -1268,7 +1268,14 @@ class SpecialCollection extends SpecialPage {
 			curl_setopt( $c, CURLOPT_POST, true );
 			curl_setopt( $c, CURLOPT_POSTFIELDS, $postFields );
 		}
-		curl_setopt( $c, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
+
+		# Send the client IP to the server
+		$headers = array(
+			'Expect:',
+			'X-Forwarded-For: ' . wfGetIP()
+		);
+		curl_setopt( $c, CURLOPT_HTTPHEADER, $headers );
+
 		curl_setopt( $c, CURLOPT_HEADER, false );
 		if ( is_object( $wgTitle ) ) {
 			curl_setopt( $c, CURLOPT_REFERER, wfExpandUrl( $wgTitle->getFullURL(), PROTO_CURRENT ) );
