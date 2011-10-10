@@ -516,18 +516,8 @@ class LocalisationUpdate {
 			}
 		}
 
-		try {
-			// Get the real array.
-			$compare_messages = self::parsePHP( $comparefilecontents, 'compare_messages' );
-		} catch ( Exception $e ) {
-			var_dump( $extension, $basefile, $comparefile );
-			throw $e;
-		}
-		// If both files are the same, they can be skipped.
-		if ( $basehash == $comparehash && !$alwaysGetResult ) {
-			self::myLog( "Skipping {$extension} since the remote file is the same as the local file", $verbose );
-			return 0;
-		}
+		// Get the real array.
+		$compare_messages = self::parsePHP( $comparefilecontents, 'compare_messages' );
 
 		// Update counter.
 		$updates = 0;
