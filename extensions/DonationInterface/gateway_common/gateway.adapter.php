@@ -927,6 +927,8 @@ abstract class GatewayAdapter implements GatewayType {
 		$transaction = array(
 			'response' => $this->getTransactionMessage(),
 			'date' => time(),
+			'gateway_txn_id' => $this->getTransactionGatewayTxnID(),
+			'language' => '',
 		);
 		$transaction += $this->getData();
 
@@ -1085,6 +1087,14 @@ abstract class GatewayAdapter implements GatewayType {
 	public function getTransactionMessage() {
 		if ( array_key_exists( 'txn_message', $this->transaction_results ) ) {
 			return $this->transaction_results['txn_message'];
+		} else {
+			return false;
+		}
+	}
+
+	public function getTransactionGatewayTxnID() {
+		if ( array_key_exists( 'gateway_txn_id', $this->transaction_results ) ) {
+			return $this->transaction_results['gateway_txn_id'];
 		} else {
 			return false;
 		}
