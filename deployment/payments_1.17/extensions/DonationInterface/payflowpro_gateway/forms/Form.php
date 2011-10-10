@@ -65,6 +65,7 @@ abstract class PayflowProGateway_Form {
 			$this->setStylePath();
 		}
 		$wgOut->addExtensionStyle( $this->getStylePath() );
+		
 		/**
 		 * if OWA is enabled, load the JS.  
 		 * 
@@ -74,8 +75,19 @@ abstract class PayflowProGateway_Form {
 		if(defined('OWA')){
 			$this->loadOwaJs();
 		}
+		
+		$this->loadLogoLinkOverride();
 	}
 
+	/**
+	 * Override the link in the logo to redirec to a particular form
+	 * rather than the main page
+	 */
+	public function loadLogoLinkOverride() {
+		global $wgOut;
+		$wgOut->addModules( 'pfp.core.logolink_override' );
+	}
+	
 	/**
 	 * Set the path to the CSS file for the form
 	 *
@@ -657,10 +669,8 @@ abstract class PayflowProGateway_Form {
 	}
 
 	protected function loadApiJs() {
-		global $wgOut, $wgScriptPath;
-		$wgOut->addHeadItem( 'pfp_api_call', '<script type="text/javascript" src="' .
-							$wgScriptPath .
-							'/extensions/DonationInterface/payflowpro_gateway/pfp_api_controller.js?284"></script>' );
+		global $wgOut;
+		$wgOut->addModules( 'pfp.form.core.api' );
 	}
 
 	protected function loadOwaJs() {
