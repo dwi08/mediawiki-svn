@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Wikimedia Foundation
  *
@@ -121,8 +122,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 *
 	 * @var array $staged_vars
 	 */
-	protected $staged_vars = array();
-	
+	protected $staged_vars = array( );
 	protected $return_value_map;
 	protected $postdata;
 	protected $postdatadefaults;
@@ -149,23 +149,18 @@ abstract class GatewayAdapter implements GatewayType {
 	 *
 	 * @see DonationData
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $options = array( ) ) {
 		global $wgRequest;
 
 		// Extract the options
 		extract( $options );
-		
+
 		$testData = isset( $testData ) ? $testData : false;
 		$postDefaults = isset( $postDefaults ) ? $postDefaults : false;
-		$transactionType = isset( $transactionType ) ? $transactionType : false;
-		
-		if ( $transactionType ) {
-			$this->setTransactionType( $transactionType );
-		}
-		
+
 		if ( !self::getGlobal( 'Test' ) ) {
 			$this->url = self::getGlobal( 'URL' );
-			
+
 			// Only submit test data if we are in test mode.
 			$testData = false;
 		} else {
@@ -176,6 +171,7 @@ abstract class GatewayAdapter implements GatewayType {
 
 		$this->postdata = $this->dataObj->getData();
 		//TODO: Fix this a bit. 
+
 		$this->posted = $wgRequest->wasPosted();
 
 		$this->setPostDefaults( $postDefaults );
@@ -184,6 +180,11 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->defineAccountInfo();
 		$this->defineReturnValueMap();
 
+		//Don't bother setting the transaction type if it's not something. 
+		if ( $this->dataObj->isSomething( 'transaction_type' ) ) {
+			$this->currentTransaction( $this->postdata['transaction_type'] );
+		}
+
 		$this->displaydata = $this->postdata;
 		$this->stageData();
 	}
@@ -191,15 +192,15 @@ abstract class GatewayAdapter implements GatewayType {
 	/**
 	 * Override this in children if you want different defaults. 
 	 */
-	function setPostDefaults( $options = array() ) {
+	function setPostDefaults( $options = array( ) ) {
 
 		// Extract the options
-		if ( is_array( $options )) {
+		if ( is_array( $options ) ) {
 			extract( $options );
 		}
 
 		$returnTitle = isset( $returnTitle ) ? $returnTitle : Title::newFromText( 'Special:GlobalCollectGatewayResult' );
-		$returnTo = isset( $returnTo ) ? $returnTo :  $returnTitle->getFullURL();
+		$returnTo = isset( $returnTo ) ? $returnTo : $returnTitle->getFullURL();
 
 		$this->postdatadefaults = array(
 			'order_id' => '112358' . rand(),
@@ -279,19 +280,21 @@ abstract class GatewayAdapter implements GatewayType {
 		if ( !array_key_exists( $varname, $gotten ) ) {
 			$globalname = self::getGlobalPrefix() . $varname;
 			global $$globalname;
-			if ( !isset( $$globalname )) {
+			if ( !isset( $$globalname ) ) {
 				$globalname = "wgDonationInterface" . $varname;
 				global $$globalname; //set or not. This is fine. 
 			}
 			$gotten[$varname] = $$globalname;
 		}
-		return $gotten[$varname];		
+		return $gotten[$varname];
 	}
 
 	function getValue( $gateway_field_name, $token = false ) {
 		if ( empty( $this->transactions ) ) {
 			//TODO: These dies should all throw exceptions or something less completely fatal. 
-			die( 'Transactions structure is empty! Aborting.' );
+			$msg = self::getGatewayName() . ': Transactions structure is empty! No transaction can be constructed.';
+			self::log( $msg, LOG_CRIT );
+			throw new MWException( $msg );
 		}
 		//How do we determine the value of a field asked for in a particular transaction? 
 		$transaction = $this->currentTransaction();
@@ -329,8 +332,9 @@ abstract class GatewayAdapter implements GatewayType {
 
 		//not in the map, or hard coded. What then? 
 		//Complain furiously, for your code is faulty. 
-		//TODO: Something that plays nice with others, instead of... 
-		die( "getValue found NOTHING for $gateway_field_name, $transaction." );
+		$msg = self::getGatewayName() . ': Requested value ' . $gateway_field_name . ' cannot be found in the transactions structure.';
+		self::log( $msg, LOG_CRIT );
+		throw new MWException( $msg );
 	}
 
 	function buildRequestNameValueString() {
@@ -418,50 +422,64 @@ abstract class GatewayAdapter implements GatewayType {
 	 * that maps to a first-level key in the $transactions array.
 	 */
 	function do_transaction( $transaction ) {
-		$this->currentTransaction( $transaction );
-		//update the contribution tracking data
-		$this->incrementNumAttempt();
+		try {
+			$this->currentTransaction( $transaction );
+			//update the contribution tracking data
+			$this->incrementNumAttempt();
 
-		//if we're supposed to add the donor data to the session, do that. 
-		if ( $this->transaction_option( 'addDonorDataToSession' ) ) {
-			$this->addDonorDataToSession();
-		}
+			//if we're supposed to add the donor data to the session, do that. 
+			if ( $this->transaction_option( 'addDonorDataToSession' ) ) {
+				$this->addDonorDataToSession();
+			}
 
-		$this->runPreProcess(); //many hooks get fired here...
-		//TODO: Uhmmm... what if none of the validate hooks are enabled? 
-		//Currently, I think that means the transaction stops here, and that's not quite right.
-		//...is it?
-		// if the transaction was NOT flagged for processing by something in runPreProcess()...
-		if ( $this->action != 'process' ) {
-			self::log( "Transaction failed pre-process checks." . print_r( $this->getData(), true ) );
+			$this->runPreProcess(); //many hooks get fired here...
+			//TODO: Uhmmm... what if none of the validate hooks are enabled? 
+			//Currently, I think that means the transaction stops here, and that's not quite right.
+			//...is it?
+			// if the transaction was NOT flagged for processing by something in runPreProcess()...
+			if ( $this->action != 'process' ) {
+				self::log( "Transaction failed pre-process checks." . print_r( $this->getData(), true ) );
+				return array(
+					'status' => false,
+					//TODO: appropriate messages. 
+					'message' => "$transaction : Failed failed pre-process checks. Somebody PLEASE override me!",
+					'errors' => array(
+						'1000000' => 'pre-process failed you.' //...stupid code.
+					),
+					'action' => $this->action,
+				);
+			}
+
+			// expose a hook for external handling of trxns ready for processing		
+			if ( $this->transaction_option( 'do_processhooks' ) ) {
+				wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
+			}
+
+			$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
+
+			if ( $this->getCommunicationType() === 'xml' ) {
+				$this->getStopwatch( "buildRequestXML" );
+				$curlme = $this->buildRequestXML();
+				$this->saveCommunicationStats( "buildRequestXML", $transaction );
+			}
+
+			if ( $this->getCommunicationType() === 'namevalue' ) {
+				//buildRequestNameValueString()
+				$this->getStopwatch( "buildRequestNameValueString" );
+				$curlme = $this->buildRequestNameValueString();
+				$this->saveCommunicationStats( "buildRequestNameValueString", $transaction );
+			}
+		} catch ( MWException $e ) {
+			self::log( "Malformed gateway definition. Cannot continue: Aborting.", LOG_CRIT );
 			return array(
 				'status' => false,
 				//TODO: appropriate messages. 
-				'message' => "$transaction : Failed failed pre-process checks. Somebody PLEASE override me!",
+				'message' => "$transaction : Malformed gateway definition. Cannot continue: Aborting.",
 				'errors' => array(
-					'1000000' => 'pre-process failed you.' //...stupid code.
+					'1000000' => 'Faulty Code! Bad programmer. Bad!' //...please change this.
 				),
 				'action' => $this->action,
 			);
-		}
-
-		// expose a hook for external handling of trxns ready for processing		
-		if ( $this->transaction_option( 'do_processhooks' ) ) {
-			wfRunHooks( 'GatewayProcess', array( &$this ) ); //don't think anybody is using this yet, but you could!
-		}
-
-		$this->dataObj->updateContributionTracking( defined( 'OWA' ) );
-		if ( $this->getCommunicationType() === 'xml' ) {
-			$this->getStopwatch( "buildRequestXML" );
-			$curlme = $this->buildRequestXML();
-			$this->saveCommunicationStats( "buildRequestXML", $transaction );
-		}
-
-		if ( $this->getCommunicationType() === 'namevalue' ) {
-			//buildRequestNameValueString()
-			$this->getStopwatch( "buildRequestNameValueString" );
-			$curlme = $this->buildRequestNameValueString();
-			$this->saveCommunicationStats( "buildRequestNameValueString", $transaction );
 		}
 
 		//start looping here, if we're the sort of transaction that needs to do that. 
@@ -542,7 +560,7 @@ abstract class GatewayAdapter implements GatewayType {
 
 		// log that the transaction is essentially complete
 		self::log( $this->getData( 'order_id' ) . " Transaction complete." );
-		
+
 		//if we're not actively adding the donor data to the session, kill it. 
 		if ( !$this->transaction_option( 'addDonorDataToSession' ) ) {
 			$this->unsetAllGatewaySessionData();
@@ -598,6 +616,11 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 		if ( !isset( $current_transaction ) ) {
 			return false;
+		}
+		if ( empty( $this->transactions ) || !is_array( $this->transactions ) || !array_key_exists( $current_transaction, $this->transactions ) ) {
+			$msg = self::getGatewayName() . ': Transactions structure is malformed! ' . $current_transaction . ' transaction cannot be constructed.';
+			self::log( $msg, LOG_CRIT );
+			throw new MWException( $msg );
 		}
 		return $current_transaction;
 	}
@@ -793,15 +816,15 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	function saveCommunicationStats( $function = '', $additional = '', $vars = '' ) {
 		$params = array( );
-		if ( self::getGlobal( 'SaveCommStats' ) ) { 
+		if ( self::getGlobal( 'SaveCommStats' ) ) {
 			$db = ContributionTrackingProcessor::contributionTrackingConnection();
-			
+
 			//TODO: Actually define this table somewhere in the code, once we 
 			//are reasonably certain we know what we want to see in it. 
-			if ( !( $db->tableExists( 'communication_stats' ) ) ){
+			if ( !( $db->tableExists( 'communication_stats' ) ) ) {
 				return;
 			}
-			
+
 			$params['contribution_id'] = $this->dataObj->getVal( 'contribution_tracking_id' );
 			$params['ts'] = $db->timestamp();
 			$params['duration'] = $this->getStopwatch( __FUNCTION__ );
@@ -988,32 +1011,6 @@ abstract class GatewayAdapter implements GatewayType {
 		$ret = self::getGlobal( "PaypalURL" ) . "/" . $this->postdata['language'] . "?gateway=paypal&" . http_build_query( $this->postdata );
 		self::log( $ret );
 		return $ret;
-	}
-
-	/**
-	 * Get the transaction type
-	 *
-	 * @return string|false
-	 */
-	public function getTransactionType() {
-
-		return $this->transaction_type;
-	}
-
-	/**
-	 * Set the transaction type
-	 *
-	 * @see GatewayAdapter::currentTransaction()
-	 *
-	 * @param string|false $transaction_type
-	 */
-	public function setTransactionType( $transaction_type ) {
-
-		$transaction_type = empty( $transaction_type ) ? false : $transaction_type;
-
-		$this->transaction_type = $transaction_type;
-		
-		$this->currentTransaction( $this->transaction_type );
 	}
 
 	public function getTransactionAllResults() {

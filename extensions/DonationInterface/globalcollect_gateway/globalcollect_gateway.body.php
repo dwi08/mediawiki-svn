@@ -29,7 +29,7 @@ class GlobalCollectGateway extends GatewayForm {
 		$wgOut->addExtensionStyle(
 			$wgExtensionAssetsPath . '/DonationInterface/gateway_forms/css/gateway.css?284' .
 			$CSSVersion );
-		
+
 		// Hide unneeded interface elements
 		$wgOut->addModules( 'donationInterface.skinOverride' );
 
@@ -73,10 +73,7 @@ EOT;
 		 * will be set as the default.
 		 */
 		$transactionType = false;
-		$transactionType = 'INSERT_ORDERWITHPAYMENT';
-		$data['transaction_type'] = (isset( $data['transaction_type'] ) && !empty( $data['transaction_type'] ) ) ? $data['transaction_type'] : $transactionType;
-		$this->adapter->setTransactionType( $data['transaction_type'] );
-		unset( $transactionType );
+		$transactionType = ( isset( $data['transaction_type'] ) && !empty( $data['transaction_type'] ) ) ? $data['transaction_type'] : 'INSERT_ORDERWITHPAYMENT';
 
 		$this->adapter->log( '$transactionType: Default is set to: INSERT_ORDERWITHPAYMENT, this is a temporary hack for backwards compatibility.' );
 		$this->adapter->log( 'Setting transaction type: ' . ( string ) $data['transaction_type'] );
@@ -91,7 +88,7 @@ EOT;
 				// Check form for errors
 
 				$options = array( );
-				switch ( $this->adapter->getTransactionType() ) {
+				switch ( $transactionType ) {
 
 					case 'BANK_TRANSFER':
 						$options['creditCard'] = false;
@@ -116,7 +113,7 @@ EOT;
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
 					// Execute the proper transaction code:
-					switch ( $this->adapter->getTransactionType() ) {
+					switch ( $transactionType ) {
 
 						case 'BANK_TRANSFER':
 							$this->executeBankTransfer();
@@ -128,7 +125,7 @@ EOT;
 
 						default:
 
-							$message = 'The transaction type [ ' . $this->adapter->getTransactionType() . ' ] was not found.';
+							$message = 'The transaction type [ ' . $transactionType . ' ] was not found.';
 							throw new Exception( $message );
 					}
 
@@ -174,7 +171,7 @@ EOT;
 	public function executeInsertOrderWithPayment() {
 
 		global $wgOut;
-		
+
 		$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
 		$this->adapter->addDonorDataToSession();
 		//$result = $this->adapter->do_transaction( 'TEST_CONNECTION' );

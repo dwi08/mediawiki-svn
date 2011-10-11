@@ -316,21 +316,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'returnto',
 			'order_id', //This may or may not oughta-be-here...
 		);
-		
-		switch ( $this->getTransactionType() ) {
-
-			case 'BANK_TRANSFER':
-				break;
-
-			case 'INSERT_ORDERWITHPAYMENT':
-				$this->staged_vars[] = 'card_type';
-				$this->staged_vars[] = 'card_num';
-				break;
-
-			default:
-				$this->staged_vars[] = 'card_type';
-				$this->staged_vars[] = 'card_num';
-		}
 	}
 
 	protected function stage_amount( $type = 'request' ) {
@@ -357,7 +342,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			$types = array_flip( $types );
 		}
 
-		if ( array_key_exists( $this->postdata['card_type'], $types ) ) {
+		if ( ( array_key_exists( 'card_type', $this->postdata ) ) && array_key_exists( $this->postdata['card_type'], $types ) ) {
 			$this->postdata['card_type'] = $types[$this->postdata['card_type']];
 		} else {
 			//$this->postdata['card_type'] = '';
@@ -367,7 +352,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 
 	protected function stage_card_num( $type = 'request' ) {
 		//I realize that the $type isn't used. Voodoo.
-		$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
+		if ( array_key_exists( 'card_num', $this->postdata ) ) {
+			$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
+		}
 	}
 
 	protected function stage_returnto( $type = 'request' ) {
