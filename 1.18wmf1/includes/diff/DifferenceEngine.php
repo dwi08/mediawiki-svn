@@ -189,11 +189,11 @@ class DifferenceEngine {
 			global $wgCanonicalServer, $wgScript, $wgLang;
 			$wgOut->disable();
 			header ( "Content-type: application/x-external-editor; charset=UTF-8" );
-			$url1 = $this->mTitle->getCanonical( array(
+			$url1 = $this->mTitle->getCanonicalUrl( array(
 				'action' => 'raw',
 				'oldid' => $this->mOldid
 			) );
-			$url2 = $this->mTitle->getCanonical( array(
+			$url2 = $this->mTitle->getCanonicalUrl( array(
 				'action' => 'raw',
 				'oldid' => $this->mNewid
 			) );
