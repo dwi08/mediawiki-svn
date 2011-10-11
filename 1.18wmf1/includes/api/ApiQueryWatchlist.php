@@ -135,8 +135,8 @@ class ApiQueryWatchlist extends ApiQueryGeneratorBase {
 		$db = $this->getDB();
 
 		$this->addWhereRange( 'rc_timestamp', $params['dir'],
-			$db->timestamp( $params['start'] ),
-			$db->timestamp( $params['end'] ) );
+			$db->timestampOrNull( $params['start'] ),
+			$db->timestampOrNull( $params['end'] ) );
 		$this->addWhereFld( 'wl_namespace', $params['namespace'] );
 
 		if ( !$params['allrev'] ) {
