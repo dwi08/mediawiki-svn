@@ -1212,9 +1212,15 @@ class FlaggedPageView {
 		if ( $pendingEdits ) {
 			if ( isset( $views['edit'] ) ) {
 				$views['edit']['text'] = wfMsg( 'revreview-edit' );
+				if ( $this->showingStable() ) { // bug 31489
+					$views['edit']['href'] = $skin->getTitle()->getFullURL( 'action=edit' );
+				}
 			}
-			if ( isset( $views['viewsource'] ) ) {
+			if ( isset( $views['viewsource'] ) ) { // bug 31489
 				$views['viewsource']['text'] = wfMsg( 'revreview-source' );
+				if ( $this->showingStable() ) {
+					$views['viewsource']['href'] = $skin->getTitle()->getFullURL( 'action=edit' );
+				}
 			}
 		}
 		# Add "pending changes" tab if the page is not synced
