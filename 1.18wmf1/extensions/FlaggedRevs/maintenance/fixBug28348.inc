@@ -19,12 +19,20 @@ function update_images_bug_28348( $start = null ) {
 	$end += $BATCH_SIZE - 1;
 	$blockStart = $start;
 	$blockEnd = $start + $BATCH_SIZE - 1;
-	
+
+	$logDump = '';
+
 	$count = $changed = 0;
 	while( $blockEnd <= $end ) {
 		echo "...doing fi_rev_id from $blockStart to $blockEnd\n";
-		$cond = "fi_rev_id BETWEEN $blockStart AND $blockEnd";
-		$res = $db->select( 'flaggedimages', '*', $cond, __FUNCTION__ );
+		$cond = "fi_rev_id BETWEEN $blockStart AND $blockEnd" .
+			" AND fi_img_timestamp IS NOT NULL AND img_name IS NULL"; // optimize
+		$res = $db->select( array( 'flaggedimages', 'image' ), '*', $cond,
+			__FUNCTION__,
+			array(),
+			array( 'image' => array( 'LEFT JOIN',
+				'img_sha1 = fi_img_sha1 AND img_timestamp = fi_img_timestamp' ) )
+		);
 		
 		$db->begin();
 		# Go through and clean up missing items, as well as correct fr_quality...
@@ -51,14 +59,19 @@ function update_images_bug_28348( $start = null ) {
 						__METHOD__
 					);
 					$changed++;
+					$logDump .= "{$row->fi_rev_id} {$row->fi_name} {$fi_img_timestamp}\n";
 				}
 			}
 		}
 		$db->commit();
+
 		$db->freeResult( $res );
 		$blockStart += $BATCH_SIZE;
 		$blockEnd += $BATCH_SIZE;
 		wfWaitForSlaves( 5 );
 	}
+
+	file_put_contents( "bug28348-fixed-" . wfWikiID(), $logDump );
+
 	echo "fi_img_timestamp column fixes complete ... {$count} rows [{$changed} changed]\n";
 }
