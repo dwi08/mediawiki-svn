@@ -338,12 +338,12 @@ class GatewayForm extends UnlistedSpecialPage {
 		if ( $this->adapter->getGlobal( 'DisplayDebug' ) !== true ){
 			return;
 		}
-		$wgOut->addHTML( $results['message'] );
+		$wgOut->addHTML( HTML::element( 'span', null, $results['message'] ) );
 
 		if ( !empty( $results['errors'] ) ) {
 			$wgOut->addHTML( "<ul>" );
 			foreach ( $results['errors'] as $code => $value ) {
-				$wgOut->addHTML( "<li>Error $code: $value" );
+				$wgOut->addHTML( HTML::element('li', null, "Error $code: $value" ) );
 			}
 			$wgOut->addHTML( "</ul>" );
 		}
@@ -352,13 +352,13 @@ class GatewayForm extends UnlistedSpecialPage {
 			$wgOut->addHTML( "<ul>" );
 			foreach ( $results['data'] as $key => $value ) {
 				if ( is_array( $value ) ) {
-					$wgOut->addHTML( "<li>$key:<ul>" );
+					$wgOut->addHTML( HTML::element('li', null, $key ) . '<ul>' );
 					foreach ( $value as $key2 => $val2 ) {
-						$wgOut->addHTML( "<li>$key2: $val2" );
+						$wgOut->addHTML( HTML::element('li', null, "$key2: $val2" ) );
 					}
 					$wgOut->addHTML( "</ul>" );
 				} else {
-					$wgOut->addHTML( "<li>$key: $value" );
+					$wgOut->addHTML( HTML::element('li', null, "$key: $value" ) );
 				}
 			}
 			$wgOut->addHTML( "</ul>" );
@@ -368,7 +368,7 @@ class GatewayForm extends UnlistedSpecialPage {
 		if ( array_key_exists( 'Donor', $_SESSION ) ) {
 			$wgOut->addHTML( "Session Donor Vars:<ul>" );
 			foreach ( $_SESSION['Donor'] as $key => $val ) {
-				$wgOut->addHTML( "<li>$key: $val" );
+				$wgOut->addHTML( HTML::element('li', null, "$key: $val" ) );
 			}
 			$wgOut->addHTML( "</ul>" );
 		} else {
@@ -378,7 +378,7 @@ class GatewayForm extends UnlistedSpecialPage {
 		if ( is_array( $this->adapter->debugarray ) ) {
 			$wgOut->addHTML( "Debug Array:<ul>" );
 			foreach ( $this->adapter->debugarray as $val ) {
-				$wgOut->addHTML( "<li>$val" );
+				$wgOut->addHTML( HTML::element('li', null, $val ) );
 			}
 			$wgOut->addHTML( "</ul>" );
 		} else {
