@@ -63,7 +63,7 @@ abstract class Job {
 			'*',
 			array( 'job_cmd' => $type ),
 			__METHOD__,
-			array( 'LIMIT' => 1, 'FOR UPDATE' )
+			array( 'LIMIT' => 1 )
 		);
 
 		if ( $row === false ) {
