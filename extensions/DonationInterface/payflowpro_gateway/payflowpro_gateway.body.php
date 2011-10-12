@@ -213,7 +213,7 @@ EOT;
 
 	//TODO: Remember why the heck I decided to leave this here...
 	//arguably, it's because it's slightly more "view" related, but... still, shouldn't you get stashed 
-	//in the new GatewayForm class so we can override in chlidren if we feel like it? Odd. 
+	//in the new GatewayForm class so we can override in children if we feel like it? Odd. 
 	function addErrorMessageScript() {
 		global $wgOut;
 		$gateway_id = $this->adapter->getIdentifier();

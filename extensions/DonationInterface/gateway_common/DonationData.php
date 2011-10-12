@@ -520,7 +520,9 @@ class DonationData {
 	 *
 	 * because the form elements for comment anonymization and email opt-out
 	 * are backwards (they are really opt-in) relative to contribution_tracking
-	 * (which is opt-out), we need to reverse the values
+	 * (which is opt-out), we need to reverse the values.
+	 * NOTE: If you prune here, and there is a paypal redirect, you will have 
+	 * problems with the email-opt/optout and comment-option/anonymous. 
 	 */
 	function setNormalizedOptOuts( $prune = false ) {
 		$optout['optout'] = ( $this->isSomething( 'email-opt' ) && $this->getVal( 'email-opt' ) == "1" ) ? '0' : '1';
