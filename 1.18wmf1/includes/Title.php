@@ -855,7 +855,7 @@ class Title {
 
 			// Ugly quick hack to avoid duplicate prefixes (bug 4571 etc)
 			// Correct fix would be to move the prepending elsewhere.
-			if ( $wgRequest->getVal( 'action' ) != 'render' && $wgRequest->getVal( 'action' ) != 'parse' ) {
+			if ( $wgRequest->getVal( 'action' ) != 'render' ) {
 				$url = $wgServer . $url;
 			}
 		} else {
@@ -952,12 +952,6 @@ class Title {
 			// actually expected a local URL and end up with dupe prefixes.
 			if ( $wgRequest->getVal( 'action' ) == 'render' ) {
 				$url = $wgServer . $url;
-			}
-			
-			// HACK for iOS issue: expand URLs to absolute in API action=parse
-			// See http://lists.wikimedia.org/pipermail/mediawiki-api/2011-September/002361.html for details
-			if ( $wgRequest->getVal( 'action' ) == 'parse' ) {
-				$url = wfExpandUrl( $url, PROTO_CANONICAL );
 			}
 		}
 		wfRunHooks( 'GetLocalURL', array( &$this, &$url, $query ) );
