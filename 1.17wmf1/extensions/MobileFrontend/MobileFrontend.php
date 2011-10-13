@@ -412,7 +412,7 @@ class ExtMobileFrontend {
 
 		$xDevice = isset( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
 
-		$acceptHeader = $_SERVER["HTTP_ACCEPT"];
+		$acceptHeader = isset( $_SERVER["HTTP_ACCEPT"] ) ? $_SERVER["HTTP_ACCEPT"] : '';
 		$device = new DeviceDetection();
 
 		if ( !empty( $xDevice ) ) {
@@ -1018,7 +1018,7 @@ class ExtMobileFrontend {
 		} elseif ( $this->contentFormat == 'WML' ) {
 			$homeButton = self::$messages['mobile-frontend-home-button'];
 			$randomButton = self::$messages['mobile-frontend-random-button'];
-			header( 'Content-Type: text/vnd.wap.wml' );
+			// header( 'Content-Type: text/vnd.wap.wml' );
 
 			// TODO: Content transformations required
 			// WML Validator:
