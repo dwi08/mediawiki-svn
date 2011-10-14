@@ -8,12 +8,13 @@ $homeButton = self::$messages['mobile-frontend-home-button'];
 $randomButton = self::$messages['mobile-frontend-random-button'];
 
 $scriptUrl = wfScript();
+$searchBoxDisplayNone = ( self::$hideSearchBox ) ? ' style="display: none;" ' : '';
 
 $searchWebkitHtml = <<<EOD
 <div id='header'>
 	<div id='searchbox'>
 	<img width="35" height="22" alt='Logo' id='logo' src='{$wgMobileFrontendLogo}' />
-	<form action='{$scriptUrl}' class='search_bar' method='get'>
+	<form action='{$scriptUrl}' class='search_bar' method='get' {$searchBoxDisplayNone}>
 	  <input type="hidden" value="Special:Search" name="title" />
 		<div id="sq" class="divclearable">
 			<input type="text" name="search" id="search" size="22" value="{$searchField}" />
