@@ -211,7 +211,6 @@ class DonationData {
 	}
 
 	function setNormalizedAmount() {
-
 		if ( !($this->isSomething( 'amount' )) || !(preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal( 'amount' ) ) ) ) {
 			if ( $this->isSomething( 'amountGiven' ) && preg_match( '/^\d+(\.(\d+)?)?$/', $this->getVal( 'amountGiven' ) ) ) {
 				$this->setVal( 'amount', number_format( $this->getVal( 'amountGiven' ), 2, '.', '' ) );
@@ -221,9 +220,6 @@ class DonationData {
 				$this->setVal( 'amount', '0.00' );
 			}
 		}
-
-		$this->expunge( 'amountGiven' );
-		$this->expunge( 'amountOther' );
 	}
 
 	function setOwaRefId() {
