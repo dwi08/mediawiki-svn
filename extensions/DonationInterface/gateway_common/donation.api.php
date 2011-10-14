@@ -10,24 +10,27 @@ class DonationApi extends ApiBase {
 		
 		$params = $this->extractRequestParams();
 		
+		$gateway = $params['gateway'];
+		
 		// If you want to test with fake data, pass a 'test' param set to true.
 		// You still have to set the gateway you are testing though.
 		if ( array_key_exists( 'test', $params ) && $params['test'] ) {
-			$params = $this->getTestData();
+			$params = $this->getTestData( $gateway );
 		}
 		
-		$gateway = $params['gateway'];
 		$method = $params['payment_method'];
 		
 		if ( $gateway == 'payflowpro' ) {
 			$gatewayObj = new PayflowProAdapter();
 			switch ( $method ) {
+				// TODO: add other payment methods
 				default:
 					$result = $gatewayObj->do_transaction( 'Card' );
 			}
 		} else if ( $gateway == 'globalcollect' ) {
 			$gatewayObj = new GlobalCollectAdapter();
 			switch ( $method ) {
+				// TODO: add other payment methods
 				default:
 					$result = $gatewayObj->do_transaction( 'TEST_CONNECTION' );
 			}
@@ -35,16 +38,18 @@ class DonationApi extends ApiBase {
 			$this->dieUsage( "Invalid gateway <<<$gateway>>> passed to Donation API.", 'unknown_gateway' );
 		}
 		
-		$normalizedData = $gatewayObj->getData();
+		//$normalizedData = $gatewayObj->getData();
 		
 		// Some output
 		$this->getResult()->setIndexedTagName( $result, 'response' );
+		$this->getResult()->addValue( 'data', 'request', $params );
 		$this->getResult()->addValue( 'data', 'result', $result );
 	}
 
 	public function getAllowedParams() {
 		return array(
 			'gateway' => $this->defineParam( 'gateway', true ),
+			'test' => $this->defineParam( 'test', false  ),
 			'amount' => $this->defineParam( 'amount', false ),
 			'currency' => $this->defineParam( 'currency', false ),
 			'fname' => $this->defineParam( 'fname', false ),
@@ -74,8 +79,9 @@ class DonationApi extends ApiBase {
 		return $param;
 	}
 	
-	private function getTestData() {
+	private function getTestData( $gateway ) {
 		$params = array(
+			'gateway' => $gateway,
 			'amount' => "35",
 			'currency' => 'USD',
 			'fname' => 'Tester',
