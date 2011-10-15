@@ -160,7 +160,7 @@ class RebuildInterwiki extends Maintenance {
 
 				# Links to multilanguage sites
 				foreach ( $sites as $targetSite ) {
-					$sql .= $this->makeLink( array( $targetSite->lateral, $targetSite->getURL( 'en' ), 1 ), $first, $db );
+					$sql .= $this->makeLink( array( $targetSite->lateral, $targetSite->getURL( 'en', '' ), 1 ), $first, $db );
 				}
 
 				# Interlanguage links to wikipedia
@@ -209,7 +209,7 @@ class RebuildInterwiki extends Maintenance {
 				foreach ( $sites as $targetSite ) {
 					# Suppress link to self
 					if ( $targetSite->suffix != $site->suffix ) {
-						$sql .= $this->makeLink( array( $targetSite->lateral, $targetSite->getURL( $lang ), 1 ), $first, $db );
+						$sql .= $this->makeLink( array( $targetSite->lateral, $targetSite->getURL( $lang, '' ), 1 ), $first, $db );
 					}
 				}
 
