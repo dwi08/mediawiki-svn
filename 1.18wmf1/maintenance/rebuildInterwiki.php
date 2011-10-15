@@ -240,12 +240,12 @@ class RebuildInterwiki extends Maintenance {
 
 		# Actual languages with their own databases
 		foreach ( $this->langlist as $targetLang ) {
-			$sql .= $this->makeLink( array( $targetLang, $site->getURL( $targetLang ), 1 ), $first, $source );
+			$sql .= $this->makeLink( array( $targetLang, $site->getURL( $targetLang, '' ), 1 ), $first, $source );
 		}
 
 		# Language aliases
 		foreach ( $this->languageAliases as $alias => $lang ) {
-			$sql .= $this->makeLink( array( $alias, $site->getURL( $lang ), 1 ), $first, $source );
+			$sql .= $this->makeLink( array( $alias, $site->getURL( $lang, '' ), 1 ), $first, $source );
 		}
 		return $sql;
 	}
