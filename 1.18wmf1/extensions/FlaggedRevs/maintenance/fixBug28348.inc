@@ -3,8 +3,14 @@
 function update_images_bug_28348( $start = null ) {
 	echo "Correcting fi_img_timestamp column in flaggedimages\n";
 	
-	$BATCH_SIZE = 1000;
+	$BATCH_SIZE = 5000;
 	
+	$logFilePath = "bug28348-fixed-" . wfWikiID();
+	if ( 0 && file_exists( $logFilePath ) ) {
+		echo "Already done\n";
+		return;
+	}
+
 	$db = wfGetDB( DB_MASTER );
 	
 	if( $start === null ) {
@@ -63,15 +69,18 @@ function update_images_bug_28348( $start = null ) {
 				}
 			}
 		}
+		$didAnything = ( $res->numRows() > 0 );
+		file_put_contents( $logFilePath, $logDump, FILE_APPEND );
+		$logDump = '';
 		$db->commit();
 
 		$db->freeResult( $res );
 		$blockStart += $BATCH_SIZE;
 		$blockEnd += $BATCH_SIZE;
-		wfWaitForSlaves( 5 );
+		if ( $didAnything ) {
+			wfWaitForSlaves( 5 );
+		}
 	}
-
-	file_put_contents( "bug28348-fixed-" . wfWikiID(), $logDump );
 
 	echo "fi_img_timestamp column fixes complete ... {$count} rows [{$changed} changed]\n";
 }
