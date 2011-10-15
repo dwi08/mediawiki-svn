@@ -89,7 +89,7 @@ abstract class Gateway_Form {
 		global $wgScriptPath;
 		if ( !$style_path ) {
 			// load the default form CSS if the style path not explicitly set
-			$style_path = $wgScriptPath . '/extensions/DonationInterface/payflowpro_gateway/forms/css/Form.css';
+			$style_path = $wgScriptPath . '/extensions/DonationInterface/gateway_forms/css/Form.css';
 		}
 		$this->style_path = $style_path;
 	}
