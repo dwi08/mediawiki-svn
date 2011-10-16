@@ -1,0 +1,21 @@
+/*
+ * The !important is to make sure someone doesn't use element styling
+ * to set the background or padding of a headercell and
+ * accidently override all these options.
+ */
+table.jquery-tablesorter th.headerSort {
+	/* @embed */
+	background-image: url(images/sort_both.gif) !important;
+	cursor: pointer;
+	background-repeat: no-repeat !important;
+	background-position: center right !important;
+	padding-right: 21px !important;
+}
+table.jquery-tablesorter th.headerSortUp {
+	/* @embed */
+	background-image: url(images/sort_up.gif) !important;
+}
+table.jquery-tablesorter th.headerSortDown {
+	/* @embed */
+	background-image: url(images/sort_down.gif) !important;
+}
