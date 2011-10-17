@@ -80,6 +80,15 @@ $wgGroupPermissions['sysop']['centralnotice-admin'] = true; // Only sysops can m
 # Unit tests
 $wgHooks['UnitTestsList'][] = 'efCentralNoticeUnitTests';
 
+// Register ResourceLoader modules
+$wgResourceModules['ext.centralNotice.interface'] = array(
+	'localBasePath' => dirname( __FILE__ ),
+	'remoteExtPath' => 'CentralNotice',
+	'scripts' => 'centralnotice.js',
+	'styles' => 'centralnotice.css',
+	'messages' => 'centralnotice-documentwrite-error'
+);
+
 function efCentralNoticeUnitTests( &$files ) {
 	$files[] = dirname( __FILE__ ) . '/tests/CentralNoticeTest.php';
 	return true;
@@ -161,6 +170,8 @@ function efCentralNoticeSchema( $updater = null ) {
 				$base . '/patches/patch-notice_log.sql' );
 			$wgExtNewTables[] = array( 'cn_template_log',
 				$base . '/patches/patch-template_log.sql' );
+			$wgExtNewFields[] = array( 'cn_templates', 'tmp_autolink',
+				$base . '/patches/patch-template_autolink.sql' );
 		}
 	} else {
 		if ( $updater->getDB()->getType() == 'mysql' ) {
@@ -182,6 +193,8 @@ function efCentralNoticeSchema( $updater = null ) {
 				$base . '/patches/patch-notice_log.sql', true ) );
 			$updater->addExtensionUpdate( array( 'addTable', 'cn_template_log',
 				$base . '/patches/patch-template_log.sql', true ) );
+			$updater->addExtensionUpdate( array( 'addField', 'cn_templates', 'tmp_autolink',
+				$base . '/patches/patch-template_autolink.sql', true ) );
 		}
 	}
 	return true;
@@ -190,10 +203,10 @@ function efCentralNoticeSchema( $updater = null ) {
 function efCentralNoticeLoader( $out, $skin ) {
 	global $wgOut;
 
-	// Include '.js' to exempt script from squid cache override
+	// Include '.js' to exempt script from squid cache expiration override
 	$centralLoader = SpecialPage::getTitleFor( 'BannerController' )->getLocalUrl( 'cache=/cn.js' );
 
-	// Insert the banner controller Javascript into the <head>
+	// Insert the banner controller Javascript into the page
 	$wgOut->addScriptFile( $centralLoader );
 
 	return true;
@@ -201,7 +214,7 @@ function efCentralNoticeLoader( $out, $skin ) {
 
 function efCentralNoticeGeoLoader( $skin, &$text ) {
 	// Insert the geo IP lookup
-	$text .= '<script type="text/javascript" src="//geoiplookup.wikimedia.org/"></script>';
+	$text .= Html::linkedScript( "//geoiplookup.wikimedia.org/" );
 	return true;
 }
 
