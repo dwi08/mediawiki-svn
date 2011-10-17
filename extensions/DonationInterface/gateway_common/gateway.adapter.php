@@ -956,8 +956,13 @@ abstract class GatewayAdapter implements GatewayType {
 		$transaction += $this->getData();
 
 		self::log( "Intended STOMP transaction: " . print_r( $transaction, true ) );
-
-		wfRunHooks( $hook, array( $transaction ) );
+		
+		try {
+			wfRunHooks( $hook, array( $transaction ) );
+		} catch ( Exception $e ) {
+			self::log( "STOMP ERROR. Could not add message. " . $e->getMessage() , LOG_CRIT );
+		}
+		
 	}
 
 	function smooshVarsForStaging() {
