@@ -312,7 +312,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		//OUR field names. 
 		$this->staged_vars = array(
 			'amount',
-			//'card_type',
+			'card_type',
 			//'card_num',
 			'returnto',
 			'order_id', //This may or may not oughta-be-here...
