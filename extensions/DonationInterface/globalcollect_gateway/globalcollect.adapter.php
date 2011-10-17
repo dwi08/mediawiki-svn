@@ -103,9 +103,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				)
 			),
 			'values' => array(
-				'ACTION' => 'BANK_TRANSFER',
+				'ACTION' => 'INSERT_ORDERWITHPAYMENT',
 				'HOSTEDINDICATOR' => '1',
-				'PAYMENTPRODUCTID' => '7',
+				'PAYMENTPRODUCTID' => '11',
 			),
 		);
 
