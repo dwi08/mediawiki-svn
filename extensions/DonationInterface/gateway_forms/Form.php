@@ -339,7 +339,7 @@ abstract class Gateway_Form {
 				'email-opt' => $this->form_data['email-opt'],
 				'size' => $this->form_data['size'],
 				'premium_language' => $this->form_data['premium_language'],
-				'process' => 'CreditCard',
+				'process' => isset( $this->form_data['process'] ) ? $this->form_data['process'] : 'CreditCard',
 				'payment_method' => 'processed',
 				'token' => $this->form_data['token'],
 				'order_id' => $this->form_data['order_id'],
