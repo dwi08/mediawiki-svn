@@ -293,7 +293,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 
 	function processResponse( $response ) {
 		//set the transaction result message
-		$responseStatus = isset( $response['STATUSID'] ) ? $response['STATUSID'] : '';
+		$responseStatus = array_key_exists( 'STATUSID', $response ) ? $response['STATUSID'] : 'Internal Error';
 		$this->setTransactionResult( "Response Status: " . $responseStatus, 'txn_message' ); //TODO: Translate for GC. 
 		$this->setTransactionResult( $this->getData( 'order_id' ), 'gateway_txn_id' );
 	}
