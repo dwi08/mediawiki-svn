@@ -137,7 +137,7 @@ class GatewayForm extends UnlistedSpecialPage {
 			$this->setValidateFormResult( false );
 		}
 
-		if ( empty( $data['zip'] ) ) {
+		if ( empty( $data['zip'] ) && $data['state'] != 'XX') {
 
 			$error['zip'] = wfMsg( $this->adapter->getIdentifier() . '_gateway-error-msg-zip' );
 
