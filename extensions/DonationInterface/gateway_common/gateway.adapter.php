@@ -326,7 +326,16 @@ abstract class GatewayAdapter implements GatewayType {
 				return $this->postdata[$this->var_map[$gateway_field_name]];
 			} else {
 				//return the default for that form value
-				return $this->postdatadefaults[$this->var_map[$gateway_field_name]];
+				
+				$tempField = isset( $this->var_map[ $gateway_field_name ] ) ? $this->var_map[ $gateway_field_name ] : false;
+				
+				$tempValue = '';
+				
+				if ( $tempField && isset( $this->postdatadefaults[ $tempField ] ) ) {
+					$tempValue = $this->postdatadefaults[ $tempField ];
+				}
+				
+				return $tempValue;
 			}
 		}
 
