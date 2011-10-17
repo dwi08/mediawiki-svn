@@ -129,6 +129,7 @@ $(function() {
 			)
 			
 			/* Submit the form */
+			/* TODO: Replace this with AJAX request */
 			document.donationForm.action = $( "input[name='action']" ).val();
 			document.donationForm.submit();
 		}
