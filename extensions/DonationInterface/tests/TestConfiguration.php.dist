@@ -27,9 +27,7 @@
  *
  * Message for code that has not been implemented.
  */
-if ( !defined( 'PHPUNIT_MAIN_METHOD' ) ) {
-	define( 'TESTS_MESSAGE_NOT_IMPLEMENTED', 'Not implemented yet!' );
-}
+define( 'TESTS_MESSAGE_NOT_IMPLEMENTED', 'Not implemented yet!' );
 
 /**
  * TESTS_HOSTNAME
@@ -39,9 +37,16 @@ if ( !defined( 'PHPUNIT_MAIN_METHOD' ) ) {
 define( 'TESTS_HOSTNAME', 'localhost' );
 
 /**
- * TESTS_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD
+ * TESTS_EMAIL
  *
- * A valid American Express Ccard
+ * An email address to use in case test send mail
  */
-define( 'TESTS_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD', '378282246310005' );
+define( 'TESTS_EMAIL', 'no-reply@wikimedia.org' );
+
+/**
+ * TESTS_PFP_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD
+ *
+ * A "valid" test American Express Card for PayFlowPro.
+ */
+define( 'TESTS_PFP_CREDIT_CARDS_AMEREICAN_EXPRESS_VALID_CARD', '378282246310005' );
 
