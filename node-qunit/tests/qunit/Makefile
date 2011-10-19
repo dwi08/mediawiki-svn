@@ -1,8 +1,10 @@
 test:
-	node launch.js
+	# --use-legacy for issue https://github.com/joyent/node/issues/1771
+	# Try again once issue is solved
+	node --use-legacy launch.js
 
 dumb:
-	node dumb-launch.js
+	node --use-legacy dumb-launch.js
 
 test-old:
 	node_modules/.bin/qunit \
