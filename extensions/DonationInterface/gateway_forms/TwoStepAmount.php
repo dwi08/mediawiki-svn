@@ -28,12 +28,12 @@ class Gateway_Form_TwoStepAmount extends Gateway_Form {
 
 		$form_data['transaction_type'] = 'BANK_TRANSFER';
 		$form_data['process'] = 'BANK_TRANSFER';
-		parent::__construct( $form_data, $form_errors, $gateway );
 
 		// we only want to load this JS if the form is being rendered
 		$this->loadValidateJs(); // validation JS
 
 		$this->loadPlaceholders();
+		parent::__construct( $form_data, $form_errors, $gateway );
 	}
 
 	public function loadPlaceholders() {
@@ -152,8 +152,6 @@ EOT;
 		$form .= $this->generateFormSubmit();
 		$form .= Xml::closeElement( 'div' ); // close div#left-column
 
-		//$form .= Xml::openElement( 'div', array( 'id' => 'right-column', 'class' => 'payflow-cc-form-section' ) );
-
 		return $form;
 	}
 
@@ -179,9 +177,6 @@ EOT;
 			$form .= Html::hidden( $field, $value );
 		}
 
-		$value = 'BANK_TRANSFER';
-		//$form .= Html::hidden( $field, $value );
-		//$form .= Xml::closeElement( 'div' ); // close div#right-column
 		$form .= Xml::closeElement( 'form' );
 		$form .= Xml::closeElement( 'div' ); // close div#mw-creditcard-form
 		$form .= $this->generateDonationFooter();
