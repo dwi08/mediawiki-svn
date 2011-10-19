@@ -130,8 +130,49 @@ $(function() {
 			
 			/* Submit the form */
 			/* TODO: Replace this with AJAX request */
-			document.donationForm.action = $( "input[name='action']" ).val();
-			document.donationForm.submit();
+			var sendData = {
+				'action': 'donate',
+				'gateway': 'payflowpro',
+				'currency': 'USD',
+				'amount': $( "input[name='amount']" ).val(),
+				'fname': $( "input[name='fname']" ).val(),
+				'lname': $( "input[name='lname']" ).val(),
+				'street': $( "input[name='street']" ).val(),
+				'city': $( "input[name='city']" ).val(),
+				'state': $( "input[name='state']" ).val(),
+				'zip': $( "input[name='zip']" ).val(),
+				'emailAdd': $( "input[name='emailAdd']" ).val(),
+				'country': $( "input[name='country']" ).val(),
+				'payment_method': 'card',
+				'language': 'en',
+				
+				'expiration': $( "input[name='expiration']" ).val(),
+				'card_num': $( "input[name='card_num']" ).val(),
+				'cvv': $( "input[name='cvv']" ).val(),
+				'card_type': '',
+				
+				'format': 'json'
+			};
+	
+			$.ajax( {
+				'url': mw.util.wikiScript( 'api' ),
+				'data': sendData,
+				'dataType': 'json',
+				'type': 'GET',
+				'success': function( data ) {
+					if ( data.result.errors ) {
+						var errors = new Array();
+						for( var key in data.result.errors ){ 
+							errors.push( data.result.errors[key] );
+						}
+						alert ( errors.join( '\r\n' ) );
+					} else {
+						/* Load the thank you page */
+					}
+				}
+			} );
+			//document.donationForm.action = $( "input[name='action']" ).val();
+			//document.donationForm.submit();
 		}
 	}
 
