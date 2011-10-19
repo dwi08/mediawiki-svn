@@ -151,7 +151,7 @@ class Contest extends ContestDBObject {
 			'signup_email' => $defaultPage,
 			'reminder_email' => $defaultPage,
 
-//			'submission_count' => 0,
+			'submission_count' => 0,
 		);
 	}
 
