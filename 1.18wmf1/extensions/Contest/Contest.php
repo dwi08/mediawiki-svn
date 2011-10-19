@@ -28,7 +28,7 @@ if ( version_compare( $wgVersion, '1.18c', '<' ) ) { // Needs to be 1.18c becaus
 	die( '<b>Error:</b> Contest requires MediaWiki 1.18 or above.' );
 }
 
-define( 'CONTEST_VERSION', '0.1alpha' );
+define( 'CONTEST_VERSION', '0.1' );
 
 $wgExtensionCredits['other'][] = array(
 	'path' => __FILE__,
@@ -153,6 +153,26 @@ $wgResourceModules['contest.special.contests'] = $moduleTemplate + array(
 	'messages' => array(
 		'contest-special-confirm-delete',
 		'contest-special-delete-failed',
+	)
+);
+
+$wgResourceModules['contest.special.contest'] = $moduleTemplate + array(
+	'scripts' => array(
+		'contest.special.contest.js'
+	),
+	'messages' => array(
+		'contest-contest-reminder-title',
+		'contest-contest-reminder-cancel',
+		'contest-contest-reminder-send',
+		'contest-contest-reminder-preview',
+		'contest-contest-reminder-sending',
+		'contest-contest-reminder-success', 
+		'contest-contest-reminder-close',
+		'contest-contest-reminder-retry',
+		'contest-contest-reminder-failed',
+	),
+	'dependencies' => array(
+		'jquery.ui.button', 'jquery.ui.dialog',
 	)
 );
 
