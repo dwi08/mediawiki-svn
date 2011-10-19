@@ -56,10 +56,35 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'complete', 1000, 1050 );
 		$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 1100, 99999 );
 	}
+	
+	/**
+	 * Define Transactions
+	 *
+	 * @todo
+	 * - This is going to get really big. It might be appropriate to turn this into a factory.
+	 *
+	 */
+	public function defineTransactions() {
 
-	function defineTransactions() {
+		/*
+		// Example factory pattern
+		
+		// $this->defineTransaction( $transactionType = 'BANK_TRANSFER', $options = array() );
+		
+		// $this->transactionTypes = array( 'BANK_TRANSFER', 'INSERT_ORDERWITHPAYMENT', 'TEST_CONNECTION', 'GET_ORDERSTATUS');
+		
+		// foreach ( $this->transactionTypes as $transactionType ) { $this->defineTransaction( $transactionType); }
+		
+		// $this->transactions[ $transactionType ] = GlobalCollectTransactionFactory::factory( $transactionType, $options );
+		
+		//*/
+		
+		// Initialize the array
 		$this->transactions = array( );
 
+		/* BANK_TRANSFER
+		 *
+		 */
 		$this->transactions['BANK_TRANSFER'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -109,6 +134,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			),
 		);
 
+		/* INSERT_ORDERWITHPAYMENT
+		 *
+		 */
 		$this->transactions['INSERT_ORDERWITHPAYMENT'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -158,6 +186,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'addDonorDataToSession' => true,
 		);
 
+		/* TEST_CONNECTION
+		 *
+		 */
 		$this->transactions['TEST_CONNECTION'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -175,6 +206,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			)
 		);
 
+		/* GET_ORDERSTATUS
+		 *
+		 */
 		$this->transactions['GET_ORDERSTATUS'] = array(
 			'request' => array(
 				'REQUEST' => array(
@@ -204,6 +238,60 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				'failed',
 				'revised',
 			)
+		);
+
+		/* REAL_TIME_BANK_TRANSFER_IDEAL
+		 *
+		 * PAYMENTPRODUCTID: 809
+		 */
+		$this->transactions['REAL_TIME_BANK_TRANSFER_IDEAL'] = array(
+			'request' => array(
+				'REQUEST' => array(
+					'ACTION',
+					'META' => array(
+						'MERCHANTID',
+						// 'IPADDRESS',
+						'VERSION'
+					),
+					'PARAMS' => array(
+						'ORDER' => array(
+							'ORDERID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'MERCHANTREFERENCE'
+						),
+						'PAYMENT' => array(
+							'PAYMENTPRODUCTID',
+							'AMOUNT',
+							'CURRENCYCODE',
+							'LANGUAGECODE',
+							'COUNTRYCODE',
+							'HOSTEDINDICATOR',
+							'RETURNURL',
+							'ISSUERID',
+//							'INVOICENUMBER',
+//							'CUSTOMERBANKNAME',
+//							'CUSTOMERACCOUNTHOLDERNAME',
+//							'CUSTOMERBANKACCOUNT',
+//							'CUSTOMERBANKCITY',
+							'FIRSTNAME',
+							'SURNAME',
+							'STREET',
+							'CITY',
+							'STATE', // Optional
+							'ZIP',
+							'EMAIL',
+						)
+					)
+				)
+			),
+			'values' => array(
+				'ACTION' => 'INSERT_ORDERWITHPAYMENT',
+				'HOSTEDINDICATOR' => '1',
+				'PAYMENTPRODUCTID' => '809',
+			),
 		);
 	}
 
@@ -275,6 +363,11 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				$data['PAYMENT'] = $this->xmlChildrenToArray( $response, 'PAYMENT' );
 				break;
 			case 'INSERT_ORDERWITHPAYMENT':
+				$data = $this->xmlChildrenToArray( $response, 'ROW' );
+				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
+				$data['PAYMENT'] = $this->xmlChildrenToArray( $response, 'PAYMENT' );
+				break;
+			case 'REAL_TIME_BANK_TRANSFER_IDEAL':
 				$data = $this->xmlChildrenToArray( $response, 'ROW' );
 				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
 				$data['PAYMENT'] = $this->xmlChildrenToArray( $response, 'PAYMENT' );
