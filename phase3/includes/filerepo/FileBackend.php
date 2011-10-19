@@ -69,34 +69,75 @@ abstract class FileBackend {
      * @param Array $ops - Array of arrays containing N operations to execute IN ORDER
      * @return Status
      */
-    public function doOps($ops) {
+    public function doOps( $ops, $reversed = 0 ) {
         if(!is_array($ops)) {
             throw new MWException(__METHOD__ . " not provided with an operations array");
         }
 
         $statusObject = ''; // some sort of status object that can hold other status objects
 
-        foreach($ops AS $op) {
-            switch ($op['operation']) {
+        foreach( $ops AS $i => $op ) {
+            switch ( $op['operation'] ) {
                 case 'move':
-                    $statusObject->append($this->commonCaller('move', $op));
+                    $st = $this->commonCaller('move', $op);
                     break;
                 case 'delete':
-                    $statusObject->append($this->commonCaller('delete', $op));
+                    $st = $this->commonCaller('delete', $op);
                     break;
                 case 'copy':
-                    $statusObject->append($this->copy());
+                    $st = $this->copy();
                     break;
                 case 'getFileProps':
                     $tmpFile = $this->getLocalCopy();
-                    $statusObject->append($this->getFileProps($tmpFile));
+                    $st = $this->getFileProps( $tmpFile );
                 default:
-                    $statusObject->append('Unknown data store operation ' . $op['operation']);
-
+                    $st = 'Unknown data store operation ' . $op['operation']);
             }
-        }
+			$statusObject->append( $st );
+            if ( $st && $reversed) {
+				// oh noes! Something went wrong AGAIN.
+				// pray to gods.
+				return 'STATUS OBJECT';
+            elseif ( $st ) {
+				// oh crap, something went wrong. Try to unwind.
+				return $this->doOps( $this->unwind( $ops, $i ), 1);
+			}
+		}
 
-        return 'STATUS OBJECT';
+		return 'STATUS OBJECT';
+	}
+
+	/**
+	 * Unwinds an array of operations, attempting to reverse their action.
+     * @param Array $ops - Array of arrays containing N operations to execute IN ORDER
+     * @param Integer $i - index of first operation that failed.
+     * @return Array
+     */
+	protected function unwind( $ops, $i ) {
+		$outops = array();
+
+        foreach( $ops AS $k => $op ) {
+			$newop = null;
+            switch ( $op['operation'] ) {
+                case 'move':
+					$newop = $op;
+                    $newop['source'] = $op['source'];
+                    $newop['dest'] = $op['dest'];
+                    break;
+                case 'delete':
+                    // sigh.
+                    break;
+                case 'copy':
+					$newop = $op;
+                    $newop['operation'] = 'delete';
+                    $newop['source'] = $op['dest'];
+                    break;
+			} 
+			if ($newop) {
+				array_unshift($outops, $newop);
+			}
+		}
+		return $outops;
     }
 
     /**
@@ -219,7 +260,7 @@ abstract class FileBackend {
 //     * Please overload this class inside your storage module
 //     *
 //     * @param String $file - Name of file to retreive thumbnail listing for
-//     * @retrun Array
+//     * @return Array
 //     */
 //    abstract function getThumbnailList( $file );
 //
@@ -229,4 +270,44 @@ abstract class FileBackend {
 //    public function concatenateChunks() { throw new MWException( __METHOD__ . ' not yet implemented.' ); }
 
     
+} // end class
+
+
+/**
+ * A helper class for FileBackend. Some filestores won't have files in the filesystem,
+ * so we can't count on being able to hand out the filename. Instead, we hand out an
+ * instance of this class, which will DTRT for all filestores.
+ */
+class TempLocalFile {
+
+	/**
+	 * @param String $file - mwrepo:// url for the file to hand out.
+ 	 */
+	public function __construct( $file ) {
+		$this->tempPath = $file;
+	}
+
+	/**
+	 * Returns a file path pointing to our file or a copy thereof.
+	 * @return String
+ 	 */
+	public function path() {
+		return $this->tempPath;
+	}
+
+	/**
+	 * we don't have a close() method. Just let the instance go out of scope.
+ 	 */
+
+	/**
+	 * if we need to delete the file, do so now.
+ 	 */
+	public function __destruct() {
+		if ( $this->tempPath ) {
+			// Clean up temporary data.
+			// Only if we actually made a local copy!! unlink( $this->tempPath );
+			$this->tempPath = null;
+		}
+	}
+
 } // end class
