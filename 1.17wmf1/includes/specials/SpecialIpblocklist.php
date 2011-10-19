@@ -450,6 +450,13 @@ class IPUnblockForm extends SpecialPage {
 		# Prepare links to the blocker's user and talk pages
 		$blocker_id = $block->getBy();
 		$blocker_name = $block->getByName();
+
+		# WMF patch as above
+		if ( IP::isIPAddress( $blocker_name ) ) {
+			$blocker_name = '(steward)';
+		}
+		# End patch
+
 		$blocker = $sk->userLink( $blocker_id, $blocker_name );
 		$blocker .= $sk->userToolLinks( $blocker_id, $blocker_name );
 
@@ -548,6 +555,12 @@ class IPBlocklistPager extends ReverseChronologicalPager {
 		# The last few lines of Title::secureAndSplit() tell the story.
 		foreach ( $this->mResult as $row ) {
 			$name = str_replace( ' ', '_', $row->ipb_by_text );
+			# WMF patch for privacy leak in 1.18 CentralAuth -- TS 2011-09-29
+			if ( IP::isIPAddress( $name ) ) {
+				$name = '(steward)';
+			}
+			# End patch
+
 			$lb->add( NS_USER, $name );
 			$lb->add( NS_USER_TALK, $name );
 			$name = str_replace( ' ', '_', $row->ipb_address );
