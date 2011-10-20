@@ -208,16 +208,14 @@ class ResourceLoader {
 			// Get core test suites
 			$testModules = array();
 			$testModules['qunit'] = include( "$IP/tests/qunit/QUnitTestResources.php" );
+			// Add the testrunner to the dependencies to make sure it's loaded first
+			$testModules['qunit']['mediawiki.tests.qunit.suites']['dependencies'][]
+				= 'mediawiki.tests.qunit.testrunner';
+
 			// Allow extensions to add test suites
 			wfRunHooks( 'ResourceLoaderTestModules', array( &$testModules, &$this ) );
 
 			foreach( $testModules as $id => $names ) {
-
-				// Add the testrunner to the dependencies to make sure it's loaded first
-				foreach( $names as $name ) {
-					$testModules[$id][$name]['dependencies'][] = 'mediawiki.tests.qunit.testrunner';
-				}
-
 				// Register test modules
 				$this->register( $testModules[$id] );
 
