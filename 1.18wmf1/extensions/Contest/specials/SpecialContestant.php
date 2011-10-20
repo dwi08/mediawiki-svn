@@ -121,7 +121,8 @@ class SpecialContestant extends SpecialContestPage {
 
 		$this->showGeneralInfo( $contestant );
 
-		$out->addHTML( '<form method="post" action="' . htmlspecialchars( $wgScript ) . '">' );
+		$action = SpecialPage::getTitleFor( 'Contestant', $contestant->getField( 'id' )  );
+		$out->addHTML( '<form method="post" action="' . $action->getLocalURL() . '">' );
 		$out->addHTML( Html::hidden( 'title', $this->getTitle( $this->subPage )->getPrefixedDBkey() ) );
 		$out->addHTML( Html::hidden( 'wpEditToken', $this->getUser()->editToken() ) );
 
