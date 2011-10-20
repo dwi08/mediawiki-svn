@@ -16,6 +16,19 @@ test( 'options', function() {
 test( 'User login status', function() {
 	expect(5);
 
+	/**
+	 * Tests can be run under three different conditions:
+	 *   1) From tests/qunit/index.html, user will be anonymous.
+	 *   2) Logged in on [[Special:JavaScriptTest/qunit]]
+	 *   3) Anonymously at the same special page.
+	 */
+
+	// remember current user to restore it later on.
+	var savedUsername = mw.config.get( 'wgUserName' );
+
+	// Forge an anonymous user:
+	mw.config.set( 'wgUserName', null);
+
 	strictEqual( mw.user.name(), null, 'user.name should return null when anonymous' );
 	ok( mw.user.anonymous(), 'user.anonymous should reutrn true when anonymous' );
 
@@ -26,4 +39,7 @@ test( 'User login status', function() {
 	ok( !mw.user.anonymous(), 'user.anonymous returns false when logged-in' );
 
 	equal( mw.user.id(), 'John', 'user.id Returns username when logged-in' );
+
+	// restore previous user
+	mw.config.set( 'wgUserName', savedUsername );
 });
