@@ -696,6 +696,7 @@ return array(
 			'javascripttest-pagetext-skins',
 		) ),
 		'dependencies' => array( 'jquery.qunit' ),
+		'position' => 'top',
 	),
 
 	/* Tests */
