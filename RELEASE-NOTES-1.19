@@ -72,6 +72,9 @@ production.
 * (bug 31297) Add support for namespaces in Special:RecentChanges subpage filter syntax.
 * The default user signature now contains a talk link in addition to the user link.
 * (bug 25306) Add link of old page title to MediaWiki:Delete_and_move_reason
+* (bug 30339) Implement SpecialPage for running javascript tests. Disabled by default, due to
+  tests potentially being harmful, not to be run on a production wiki.
+  Enable by setting $wgEnableJavaScriptTest to true.
 
 === Bug fixes in 1.19 ===
 * $wgUploadNavigationUrl should be used for file redlinks if
