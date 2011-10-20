@@ -392,6 +392,7 @@ $specialPageAliases = array(
 	'Filepath'                  => array( 'FilePath' ),
 	'Import'                    => array( 'Import' ),
 	'Invalidateemail'           => array( 'InvalidateEmail' ),
+	'JavaScriptTest'            => array( 'JavaScriptTest' ),
 	'BlockList'                 => array( 'BlockList', 'ListBlocks', 'IPBlockList' ),
 	'LinkSearch'                => array( 'LinkSearch' ),
 	'Listadmins'                => array( 'ListAdmins' ),
@@ -2956,6 +2957,18 @@ It may have already been undeleted.',
 $1',
 'undelete-show-file-confirm'   => 'Are you sure you want to view the deleted revision of the file "<nowiki>$1</nowiki>" from $2 at $3?',
 'undelete-show-file-submit'    => 'Yes',
+
+# JavaScriptTest
+'javascripttest'                           => 'JavaScript Test',
+'javascripttest-disabled'                  => 'This function is disabled.',
+'javascripttest-title'                     => 'Running $1 tests',
+'javascripttest-pagetext-noframework'      => 'This page is reserved for running javascript tests.',
+'javascripttest-pagetext-unknownframework' => 'Unknown framework "$1".',
+'javascripttest-pagetext-frameworks'       => 'Please choose one of the following frameworks: $1',
+'javascripttest-pagetext-skins'            => 'Available skins: ',
+'javascripttest-qunit-name'                => 'QUnit', // Ignore, do not translate
+'javascripttest-qunit-intro'               => 'See [$1 testing documentation] on mediawiki.org.',
+'javascripttest-qunit-heading'             => 'MediaWiki JavaScript Test Suite', // Optional, translate if needed
 
 # Namespace form on various pages
 'namespace'                     => 'Namespace:',

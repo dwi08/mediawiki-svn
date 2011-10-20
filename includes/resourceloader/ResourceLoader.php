@@ -38,6 +38,10 @@ class ResourceLoader {
 	/** Associative array mapping module name to info associative array */
 	protected $moduleInfos = array();
 
+	/** Associative array mapping framework ids to list of test suite module(s) */
+	/** like array( 'qunit' => array( 'mediawiki.tests.qunit.suites', 'ext.foo.tests', .. ), .. ) */
+	protected $testModuleNames = array();
+
 	/** array( 'source-id' => array( 'loadScript' => 'http://.../load.php' ) ) **/
 	protected $sources = array();
 
@@ -183,7 +187,7 @@ class ResourceLoader {
 	 * Registers core modules and runs registration hooks.
 	 */
 	public function __construct() {
-		global $IP, $wgResourceModules, $wgResourceLoaderSources, $wgLoadScript;
+		global $IP, $wgResourceModules, $wgResourceLoaderSources, $wgLoadScript, $wgEnableJavaScriptTest;
 
 		wfProfileIn( __METHOD__ );
 
@@ -198,6 +202,29 @@ class ResourceLoader {
 		// Register extension modules
 		wfRunHooks( 'ResourceLoaderRegisterModules', array( &$this ) );
 		$this->register( $wgResourceModules );
+
+		if ( $wgEnableJavaScriptTest === true ) {
+
+			// Get core test suites
+			$testModules = array();
+			$testModules['qunit'] = include( "$IP/tests/qunit/QUnitTestResources.php" );
+			// Allow extensions to add test suites
+			wfRunHooks( 'ResourceLoaderTestModules', array( &$testModules, &$this ) );
+
+			foreach( $testModules as $id => $names ) {
+
+				// Add the testrunner to the dependencies to make sure it's loaded first
+				foreach( $names as $name ) {
+					$testModules[$id][$name]['dependencies'][] = 'mediawiki.tests.qunit.testrunner';
+				}
+
+				// Register test modules
+				$this->register( $testModules[$id] );
+
+				// Keep track of their names so that they can be loaded together
+				$this->testModuleNames[$id] = array_keys( $testModules[$id] );
+			}
+		}
 
 		wfProfileOut( __METHOD__ );
 	}
@@ -304,6 +331,21 @@ class ResourceLoader {
 	 */
 	public function getModuleNames() {
 		return array_keys( $this->moduleInfos );
+	}
+
+	/**
+	 * Get a list of test module names for one (or all) frameworks.
+	 *
+	 * @return Array
+	 */
+	public function getTestModuleNames( $framework = 'all' ) {
+		if ( $framework == 'all' ) {
+			return $this->testModuleNames;
+		} elseif ( isset( $this->testModuleNames[$framework] ) && is_array( $this->testModuleNames[$framework] ) ) {
+			return $this->testModuleNames[$framework];
+		} else {
+			return array();
+		}
 	}
 
 	/**

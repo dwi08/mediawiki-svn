@@ -2613,6 +2613,16 @@ This message was something like "unlock move protection" in the past.',
 {{identical|Are you sure you want to view the deleted revision of the file...}}',
 'undelete-show-file-submit'  => '{{Identical|Yes}}',
 
+# JavaScriptTest
+'javascripttest'                           => 'Title of the special page',
+'javascripttest-disabled'                  => '{{Identical|Function disabled}}.',
+'javascripttest-title'                     => 'Title of the special page when running a test suite. $1 is the name of the framework.',
+'javascripttest-pagetext-unknownframework' => 'Error message when given framework id is not found. $1 is the if of the framework.',
+'javascripttest-pagetext-frameworks'       => '$1 is the if of the framework.',
+'javascripttest-qunit-name'                => '{{Ignore}}',
+'javascripttest-qunit-intro'               => '$1 is the configured url to the documentation.',
+'javascripttest-qunit-heading'             => '{{Optional}}',
+
 # Namespace form on various pages
 'namespace'                     => 'This message is located at [[Special:Contributions]].',
 'invert'                        => 'Displayed in [[Special:RecentChanges|RecentChanges]], [[Special:RecentChangesLinked|RecentChangesLinked]] and [[Special:Watchlist|Watchlist]]

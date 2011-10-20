@@ -4160,6 +4160,18 @@ $wgParserTestRemote = false;
  */
 $wgWikiID = false;
 
+/**
+ * Allow running of javascript test suites via [[Special:JavaScriptTest]] (such as QUnit).
+ */
+$wgEnableJavaScriptTest = false;
+
+/**
+ * Configuration for QUnit testing (ie. through [[Special:JavaScriptTest/qunit]]).
+ */
+$wgQUnitConfig = array(
+	'documentation' => 'http://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing',
+);
+
 /** @} */ # end of profiling, testing and debugging }
 
 /************************************************************************//**
@@ -5203,6 +5215,7 @@ $wgSpecialPageGroups = array(
 	'Specialpages'              => 'other',
 	'Blockme'                   => 'other',
 	'Booksources'               => 'other',
+	'JavaScriptTest'            => 'other',
 );
 
 /** Whether or not to sort special pages in Special:Specialpages */

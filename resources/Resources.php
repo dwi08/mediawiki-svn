@@ -666,6 +666,13 @@ return array(
 	'mediawiki.special.undelete' => array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.undelete.js',
 	),
+	'mediawiki.special.javaScriptTest' => array(
+		'scripts' => 'resources/mediawiki.special/mediawiki.special.javaScriptTest.js',
+		'messages' => array_merge( Skin::getSkinNameMessages(), array(
+			'javascripttest-pagetext-skins'
+		) ),
+		'dependencies' => array( 'jquery.qunit' ),
+	),
 	'mediawiki.special.movePage' => array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.movePage.js',
 		'dependencies' => 'jquery.byteLimit',
@@ -687,6 +694,17 @@ return array(
 			'largefileserver',
 		),
 		'dependencies' => array( 'mediawiki.libs.jpegmeta' ),
+	),
+
+	/* Testing */
+
+	'mediawiki.tests.qunit.testrunner' => array(
+		'scripts' => 'tests/qunit/data/testrunner.js',
+		'dependencies' => array(
+			'jquery.qunit',
+			'jquery.qunit.completenessTest',
+		),
+		'position' => 'top',
 	),
 
 	/* MediaWiki Legacy */
