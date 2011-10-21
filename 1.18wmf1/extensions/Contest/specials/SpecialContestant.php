@@ -46,6 +46,10 @@ class SpecialContestant extends SpecialContestPage {
 				$this->handleSubmission( $contestant->getId() );
 			}
 
+			if ( $this->getRequest()->wasPosted() ) {
+				$contestant->setReadDb( DB_MASTER );
+			}
+			
 			$contestant->loadFields();
 			$this->showPage( $contestant );
 		}
@@ -190,11 +194,11 @@ class SpecialContestant extends SpecialContestPage {
 			$stats['submission'] = htmlspecialchars( wfMsg( 'contest-contestant-notsubmitted' ) );
 		}
 		else {
-			$stats['submission'] = '<b>' . Html::element(
+			$stats['submission'] = Html::element(
 				'a',
-				array( 'href' => $contestant->getField( 'submission' ) ),
-				wfMsg( 'contest-contestant-submission-url' )
-			) . '</b>';
+				array( 'href' => $contestant->getField( 'submission'  ) ),
+				$contestant->getField( 'submission'  )
+			);
 		}
 
 		$countries = ContestContestant::getCountries();
