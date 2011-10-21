@@ -23,14 +23,14 @@ abstract class ContestDBObject {
 	 * @var array
 	 */
 	protected $fields = array( 'id' => null );
-	
+
 	/**
 	 * The database connection to use for read operations.
-	 * 
+	 *
 	 * @since 0.2
 	 * @var integer DB_ enum
 	 */
-	protected $readDb = DB_SLAVE;
+	protected static $readDb = DB_SLAVE;
 
 	/**
 	 * Constructor.
@@ -281,28 +281,7 @@ abstract class ContestDBObject {
 			return $this->insertIntoDB();
 		}
 	}
-	
-	/**
-	 * Get the database type used for read operations.
-	 * 
-	 * @since 0.2
-	 * @return integer DB_ enum
-	 */
-	public function getReadDb() {
-		return $this->readDb;
-	}
-	
-	/**
-	 * Set the database type to use for read operations.
-	 * 
-	 * @param integer $db
-	 * 
-	 * @since 0.2
-	 */
-	public function setReadDb( $db ) {
-		$this->readDb = $db;
-	}
-	
+
 	/**
 	 * Updates the object in the database.
 	 *
@@ -351,13 +330,13 @@ abstract class ContestDBObject {
 	 * @return boolean Success indicator
 	 */
 	public function removeFromDB() {
-		$sucecss = $this->delete( array( 'id' => $this->getId() ) );
+		$success = $this->delete( array( 'id' => $this->getId() ) );
 
-		if ( $sucecss ) {
+		if ( $success ) {
 			$this->setField( 'id', null );
 		}
 
-		return $sucecss;
+		return $success;
 	}
 
 	/**
@@ -479,6 +458,27 @@ abstract class ContestDBObject {
 	// All below methods ought to be static, but can't be since this would require LSB introduced in PHP 5.3.
 	//
 	//
+
+	/**
+	 * Get the database type used for read operations.
+	 *
+	 * @since 0.2
+	 * @return integer DB_ enum
+	 */
+	public function getReadDb() {
+		return self::$readDb;
+	}
+
+	/**
+	 * Set the database type to use for read operations.
+	 *
+	 * @param integer $db
+	 *
+	 * @since 0.2
+	 */
+	public function setReadDb( $db ) {
+		self::$readDb = $db;
+	}
 
 	/**
 	 * Gets if the object can take a certain field.

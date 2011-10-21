@@ -27,13 +27,16 @@ class SpecialContestant extends SpecialContestPage {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $arg
+	 * @param string $subPage
 	 */
 	public function execute( $subPage ) {
 		if ( !parent::execute( $subPage ) ) {
 			return;
 		}
 
+		/**
+		 * @var $contestant ContestContestant
+		 */
 		$contestant = ContestContestant::s()->selectRow( 'id', array( 'id' => (int)$subPage ) );
 
 		if ( $contestant === false ) {
@@ -47,10 +50,12 @@ class SpecialContestant extends SpecialContestPage {
 			}
 
 			if ( $this->getRequest()->wasPosted() ) {
-				$contestant->setReadDb( DB_MASTER );
+				ContestContestant::s()->setReadDb( DB_MASTER );
 			}
 			
 			$contestant->loadFields();
+			ContestContestant::s()->setReadDb( DB_SLAVE );
+			
 			$this->showPage( $contestant );
 		}
 	}
@@ -293,7 +298,14 @@ class SpecialContestant extends SpecialContestPage {
 
 		$out->addHTML( '<div class="contestant-comments">' );
 
-		foreach ( $contestant->getComments() as /* ContestComment */ $comment ) {
+		if ( $this->getRequest()->wasPosted() ) {
+			ContestComment::s()->setReadDb( DB_MASTER );
+		}
+		
+		$comments = $contestant->getComments();
+		ContestComment::s()->setReadDb( DB_SLAVE );
+		
+		foreach ( $comments as /* ContestComment */ $comment ) {
 			$out->addHTML( $this->getCommentHTML( $comment ) );
 		}
 

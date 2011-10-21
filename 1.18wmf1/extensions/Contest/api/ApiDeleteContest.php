@@ -19,6 +19,9 @@ class ApiDeleteContest extends ApiBase {
 	}
 
 	public function execute() {
+		if ( !ContestSettings::get( 'contestDeletionEnabled' ) ) {
+			$this->dieUsage( 'Contest deletion is disabled', 'contestdeletiondisabled' );
+		}
 		global $wgUser;
 
 		if ( !$wgUser->isAllowed( 'contestadmin' ) || $wgUser->isBlocked() ) {
@@ -80,7 +83,7 @@ class ApiDeleteContest extends ApiBase {
 
 	public function getPossibleErrors() {
 		return array_merge( parent::getPossibleErrors(), array(
-			array( 'missingparam', 'ids' ),
+			array( 'code' => 'contestdeletiondisabled', 'info' => 'Contest deletion is disabled' ),
 		) );
 	}
 
