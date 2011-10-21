@@ -48,8 +48,6 @@ class PdfImage {
 	}
 
 	public static function getPageSize( $data, $page ) {
-		global $wgPdfHandlerDpi;
-
 		if( isset( $data['pages'][$page]['Page size'] ) ) {
 			$o = $data['pages'][$page]['Page size'];
 		} elseif( isset( $data['Page size'] ) ) {
@@ -62,9 +60,9 @@ class PdfImage {
 			$size = explode( 'x', $o, 2 );
 
 			if ( $size ) {
-				$width  = intval( trim( $size[0] ) / 72 * $wgPdfHandlerDpi );
+				$width  = intval( trim( $size[0] ) );
 				$height = explode( ' ', trim( $size[1] ), 2 );
-				$height = intval( trim( $height[0] ) / 72 * $wgPdfHandlerDpi );
+				$height = intval( trim( $height[0] ) );
 
 				return array(
 					'width' => $width,

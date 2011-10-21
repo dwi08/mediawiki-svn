@@ -4,7 +4,7 @@
  *
  * @file
  * @ingroup Extensions
- * @author Martin Seidel (Xarax) <jodeldi@gmx.de>
+ * @author Martin Seidel (Xarax) <jodeldi@gmx.de>, Vitaliy Filippov (vitalif) <vitalif@yourcmc.ru>
  * @copyright Copyright © 2007 Martin Seidel (Xarax) <jodeldi@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,13 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
+#########################################################################
+# WARNING: pdfinfo does not respect page rotation, so if you don't want #
+# to see ugly thumbnails with incorrect aspect ratio on landscape PDFs, #
+# you must build your own poppler-utils with "poppler-utils.diff" patch #
+# applied.                                                              #
+#########################################################################
+
 # Not a valid entry point, skip unless MEDIAWIKI is defined
 if ( !defined( 'MEDIAWIKI' ) ) {
 	echo 'PdfHandler extension';
@@ -32,27 +39,32 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $wgExtensionCredits['media'][] = array(
 	'path' => __FILE__,
 	'name' => 'PDF Handler',
-	'author' => array( 'Martin Seidel', 'Mike Połtyn'),
+	'author' => array( 'Martin Seidel', 'Mike Połtyn', 'Vitaliy Filippov' ),
 	'descriptionmsg' => 'pdf-desc',
 	'url' => 'http://www.mediawiki.org/wiki/Extension:PdfHandler',
 );
 
 // External program requirements...
-$wgPdfProcessor     = 'gs';
-$wgPdfPostProcessor = 'convert';
-$wgPdfInfo          = 'pdfinfo';
-$wgPdftoText        = 'pdftotext';
+if ( !isset( $wgPdfProcessor ) ) $wgPdfProcessor = 'gs';
+if ( !isset( $wgPdfInfo ) ) $wgPdfInfo = 'pdfinfo';
+if ( !isset( $wgPdftoText ) ) $wgPdftoText = 'pdftotext';
 
-$wgPdfOutputExtension = 'jpg';
-$wgPdfHandlerDpi = 150;
+// GhostScript's output device name and file extension
+if ( !isset( $wgPdfOutputDevice ) ) $wgPdfOutputDevice = 'jpeg';
+if ( !isset( $wgPdfOutputExtension ) ) $wgPdfOutputExtension = 'jpg';
+
+// Now PdfHandler selects output DPI by itself, based on requested image size
+// If you want more quality, specify a power of 2 here.
+// Generated images will be downscaled by browser.
+if ( !isset( $wgPdfDpiRatio ) ) $wgPdfDpiRatio = 2;
 
 // This setting, if enabled, will put creating thumbnails into a job queue,
 // so they do not have to be created on-the-fly,
 // but rather inconspicuously during normal wiki browsing
-$wgPdfCreateThumbnailsInJobQueue = false;
+if ( !isset( $wgPdfCreateThumbnailsInJobQueue ) ) $wgPdfCreateThumbnailsInJobQueue = false;
 
-// To upload new PDF files you'll need to do this too:
-// $wgFileExtensions[] = 'pdf';
+// Enable PDF upload by default. If you want to forbid PDF upload - do so in your LocalSettings.php
+$wgFileExtensions[] = 'pdf';
 
 $dir = dirname( __FILE__ ) . '/';
 $wgExtensionMessagesFiles['PdfHandler'] = $dir . 'PdfHandler.i18n.php';
