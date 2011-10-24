@@ -93,7 +93,10 @@ class PdfHandler extends ImageHandler {
 			return false;
 		}
 		if ( strpos( $page, '-' ) !== false ) {
-			$page = '$N';
+			list( $page, $endpage ) = explode( '-', $page, 2 );
+			if( !$page ) {
+				$page = 1;
+			}
 		}
 		return "page{$page}-{$params['width']}px";
 	}
@@ -101,7 +104,7 @@ class PdfHandler extends ImageHandler {
 	function parseParamString( $str ) {
 		$m = false;
 
-		if ( preg_match( '/^page(\d+|\$N)-(\d+)px$/', $str, $m ) ) {
+		if ( preg_match( '/^page(\d+)-(\d+)px$/', $str, $m ) ) {
 			return array( 'width' => $m[2], 'page' => $m[1] );
 		}
 
@@ -147,7 +150,8 @@ class PdfHandler extends ImageHandler {
 			if ( $endpage === '' ) {
 				$endpage = $n;
 			}
-			$dstUrl = str_replace( 'page%24N', 'page$N', $dstUrl );
+			$dstPath = preg_replace( '/page\d+-/', 'page$N-', $dstPath );
+			$dstUrl = preg_replace( '/page\d+-/', 'page$N-', $dstUrl );
 		} else {
 			$endpage = $page;
 		}
@@ -178,7 +182,9 @@ class PdfHandler extends ImageHandler {
 
 		// GhostScript fails (sometimes even crashes) if output filename length is > 255 bytes.
 		// Sometimes even when it's shorter. Workaround it by generating files in temporary directory.
+		// Also, filenames include the sequence number of generated image, not the page number.
 		$dst = tempnam( wfTempDir(), 'pdf-' );
+		unlink( $dst );
 		if ( $endpage > $page ) {
 			$dst .= '%d';
 		}
@@ -196,7 +202,7 @@ class PdfHandler extends ImageHandler {
 		// Move files from temporary directory to the destination
 		$removed = false;
 		for ( $i = $page; $i <= $endpage; $i++ ) {
-			$tmp = sprintf( $dst, $i );
+			$tmp = sprintf( $dst, $i-$page+1 );
 			$real = str_replace( '$N', $i, $dstPath );
 			if ( file_exists( $tmp ) ) {
 				rename( $tmp, $real );
