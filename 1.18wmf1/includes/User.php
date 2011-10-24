@@ -2920,6 +2920,7 @@ class User {
 	 * @return bool A block was spread
 	 */
 	protected function spreadBlock() {
+		global $wgRequest;
 		wfDebug( __METHOD__ . "()\n" );
 		$this->load();
 		if ( $this->mId == 0 ) {
@@ -2931,7 +2932,7 @@ class User {
 			return false;
 		}
 
-		return (bool)$userblock->doAutoblock( $this->getRequest()->getIP() );
+		return (bool)$userblock->doAutoblock( $wgRequest->getIP() );
 	}
 
 	/**
