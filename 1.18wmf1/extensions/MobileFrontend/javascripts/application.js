@@ -1,5 +1,7 @@
 var search = document.getElementById( 'search' );
 var clearSearch = document.getElementById( 'clearsearch' );
+var results = document.getElementById( 'results' );
+var languageSelection = document.getElementById( 'languageselection' );
 
 initClearSearchLink();
 
@@ -9,12 +11,25 @@ function initClearSearchLink() {
 	search.addEventListener( 'keyup', _handleClearSearchLink, false );
 }
 
+function navigateToLanguageSelection() {
+	var url;
+	if ( languageSelection ) {
+		url = languageSelection.options[languageSelection.selectedIndex].value;
+		if ( url ) {
+			location.href = url;
+		}
+	}
+}
+
 function _handleClearSearchLink() {
 	if ( clearSearch ) {
 		if ( search.value.length > 0 ) {
 			clearSearch.style.display = 'block';
 		} else {
 			clearSearch.style.display = 'none';
+			if ( results ) {
+				results.style.display = 'none';
+			}
 		}
 	}
 }
@@ -22,6 +37,9 @@ function _handleClearSearchLink() {
 function clearSearchBox( event ) {
 	search.value = '';
 	clearSearch.style.display = 'none';
+	if ( results ) {
+		results.style.display = 'none';
+	}
 	if ( event ) {
 		event.preventDefault();
 	}
@@ -33,6 +51,14 @@ function clearSearchBox( event ) {
 document.getElementById( 'logo' ).onclick = function() {
 	var n = document.getElementById( 'nav' ).style;
 	n.display = n.display == 'block' ? 'none' : 'block';
+	if (n.display == 'block') {
+		if ( languageSelection ) {
+			if ( languageSelection.offsetWidth > 175 ) {
+				var newWidth = languageSelection.offsetWidth + 30;
+				n.width = newWidth + 'px';
+			}
+		}
+	}
 };
 
 // Also problematic, not working until the page loads...
