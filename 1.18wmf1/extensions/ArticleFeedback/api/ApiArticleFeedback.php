@@ -5,7 +5,7 @@ class ApiArticleFeedback extends ApiBase {
 	}
 
 	public function execute() {
-		global $wgUser, $wgArticleFeedbackRatings, $wgArticleFeedbackSMaxage,
+		global $wgUser, $wgArticleFeedbackRatingTypes, $wgArticleFeedbackSMaxage,
 			$wgArticleFeedbackNamespaces;
 		$params = $this->extractRequestParams();
 
@@ -49,13 +49,13 @@ class ApiArticleFeedback extends ApiBase {
 				'aa_user_id' => $wgUser->getId(),
 				'aa_user_text' => $wgUser->getName(),
 				'aa_page_id' => $params['pageid'],
-				'aa_rating_id' => $wgArticleFeedbackRatings,
+				'aa_rating_id' => array_keys( $wgArticleFeedbackRatingTypes ),
 				'aa_user_anon_token' => $token,
 			),
 			__METHOD__,
 			array(
 				'ORDER BY' => 'aa_revision DESC',
-				'LIMIT' => count( $wgArticleFeedbackRatings ),
+				'LIMIT' => count( $wgArticleFeedbackRatingTypes ),
 			)
 		);
 
@@ -69,7 +69,7 @@ class ApiArticleFeedback extends ApiBase {
 		$pageId = $params['pageid'];
 		$revisionId = $params['revid'];
 
-		foreach( $wgArticleFeedbackRatings as $rating ) {
+		foreach( $wgArticleFeedbackRatingTypes as $rating => $unused ) {
 			$lastRating = false;
 			if ( isset( $lastRatings[$rating] ) ) {
 				$lastRating = intval( $lastRatings[$rating]['value'] );
@@ -396,7 +396,7 @@ class ApiArticleFeedback extends ApiBase {
 			),
 		);
 
-		foreach( $wgArticleFeedbackRatings as $rating ) {
+		foreach( $wgArticleFeedbackRatingsTypes as $rating => $unused ) {
 			$ret["r{$rating}"] = array(
 				ApiBase::PARAM_TYPE => 'integer',
 				ApiBase::PARAM_REQUIRED => true,
@@ -410,7 +410,7 @@ class ApiArticleFeedback extends ApiBase {
 	}
 
 	public function getParamDescription() {
-		global $wgArticleFeedbackRatings;
+		global $wgArticleFeedbackRatingTypes;
 		$ret = array(
 			'pageid' => 'Page ID to submit feedback for',
 			'revid' => 'Revision ID to submit feedback for',
@@ -418,7 +418,7 @@ class ApiArticleFeedback extends ApiBase {
 			'bucket' => 'Which rating widget was shown to the user',
 			'expertise' => 'What kinds of expertise does the user claim to have',
 		);
-		foreach( $wgArticleFeedbackRatings as $rating ) {
+		foreach( $wgArticleFeedbackRatingTypes as $rating => $unused ) {
 			$ret["r{$rating}"] = "Rating {$rating}";
 		}
 		return $ret;
