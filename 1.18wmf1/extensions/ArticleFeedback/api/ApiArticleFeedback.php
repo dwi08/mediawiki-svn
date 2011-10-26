@@ -372,7 +372,7 @@ class ApiArticleFeedback extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-		global $wgArticleFeedbackRatings;
+		global $wgArticleFeedbackRatingTypes;
 		$ret = array(
 			'pageid' => array(
 				ApiBase::PARAM_TYPE => 'integer',
