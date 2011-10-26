@@ -396,7 +396,7 @@ class ApiArticleFeedback extends ApiBase {
 			),
 		);
 
-		foreach( $wgArticleFeedbackRatingsTypes as $rating => $unused ) {
+		foreach( $wgArticleFeedbackRatingTypes as $rating => $unused ) {
 			$ret["r{$rating}"] = array(
 				ApiBase::PARAM_TYPE => 'integer',
 				ApiBase::PARAM_REQUIRED => true,
