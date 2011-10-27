@@ -23,7 +23,7 @@ EOT;
 $wgExtensionCredits['specialpage'][] = array(
 	'name' => 'Donation Interface - Language Only',
 	'author' => array( 'Katie Horn', 'Ryan Kaldari' , 'Arthur Richards', 'Jeremy Postlethwaite' ),
-	'version' => '1.0.0',
+	'version' => '2.0.0',
 	'descriptionmsg' => 'donate_interface-langonly-desc',
 	'url' => 'http://www.mediawiki.org/wiki/Extension:DonationInterface',
 );
@@ -31,10 +31,10 @@ $wgExtensionCredits['specialpage'][] = array(
 $donationinterface_dir = dirname( __FILE__ ) . '/';
 
 // Load the interface messages that are shared across all gateways
-$wgExtensionMessagesFiles['DonateInterface'] = $donationinterface_dir . 'donate_interface/donate_interface.i18n.php';
+$wgExtensionMessagesFiles['DonateInterface'] = $donationinterface_dir . 'gateway_common/interface.i18n.php';
+$wgExtensionMessagesFiles['GatewayCountries'] = $donationinterface_dir . 'gateway_common/countries.i18n.php';
+$wgExtensionMessagesFiles['GatewayUSStates'] = $donationinterface_dir . 'gateway_common/us-states.i18n.php';
 
 // PayflowPro-specific messaging
 $wgExtensionMessagesFiles['PayflowProGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.i18n.php';
-$wgExtensionMessagesFiles['PayflowProGatewayCountries'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.countries.i18n.php';
-$wgExtensionMessagesFiles['PayflowProGatewayUSStates'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.us-states.i18n.php';
 $wgExtensionAliasesFiles['PayflowProGateway'] = $donationinterface_dir . 'payflowpro_gateway/payflowpro_gateway.alias.php';
