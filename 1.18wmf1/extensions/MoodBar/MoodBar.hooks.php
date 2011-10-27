@@ -74,6 +74,25 @@ class MoodBarHooks {
 		$updater->addExtensionUpdate( array( 'addField', 'moodbar_feedback',
 			'mbf_user_editcount', dirname(__FILE__).'/sql/mbf_user_editcount.sql', true )
 		);
+		
+		$db = $updater->getDB();
+		if ( $db->tableExists( 'moodbar_feedback' ) && 
+				$db->indexExists( 'moodbar_feedback', 'type_timestamp', __METHOD__ ) )
+		{
+			$updater->addExtensionUpdate( array( 'addIndex', 'moodbar_feedback',
+				'mbf_type_timestamp_id', dirname( __FILE__ ) . '/sql/AddIDToIndexes.sql', true )
+			);
+		}
+		$updater->addExtensionUpdate( array( 'dropIndex', 'moodbar_feedback',
+			'mbf_timestamp', dirname( __FILE__ ) . '/sql/AddIDToIndexes2.sql', true )
+		);
+		
+		$updater->addExtensionUpdate( array( 'addIndex', 'moodbar_feedback',
+			'mbf_timestamp_id', dirname( __FILE__ ) . '/sql/mbf_timestamp_id.sql', true )
+		);
+		
+		$updater->addExtensionUpdate( array( 'addField', 'moodbar_feedback',
+			'mbf_hidden_state', dirname(__FILE__).'/sql/mbf_hidden_state.sql', true ) );
 
 		return true;
 	}

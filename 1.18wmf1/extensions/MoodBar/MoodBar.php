@@ -20,6 +20,10 @@ $wgAutoloadClasses['MoodBarFormatter'] = dirname(__FILE__).'/Formatter.php';
 // API
 $wgAutoloadClasses['ApiMoodBar'] = dirname(__FILE__).'/ApiMoodBar.php';
 $wgAPIModules['moodbar'] = 'ApiMoodBar';
+$wgAutoloadClasses['ApiQueryMoodBarComments'] = dirname( __FILE__ ). '/ApiQueryMoodBarComments.php';
+$wgAPIListModules['moodbarcomments'] = 'ApiQueryMoodBarComments';
+$wgAutoloadClasses['ApiFeedbackDashboard'] = dirname(__FILE__).'/ApiFeedbackDashboard.php';
+$wgAPIModules['feedbackdashboard'] = 'ApiFeedbackDashboard';
 
 // Hooks
 $wgAutoloadClasses['MoodBarHooks'] = dirname(__FILE__).'/MoodBar.hooks.php';
@@ -28,15 +32,35 @@ $wgHooks['ResourceLoaderGetConfigVars'][] = 'MoodBarHooks::resourceLoaderGetConf
 $wgHooks['MakeGlobalVariablesScript'][] = 'MoodBarHooks::makeGlobalVariablesScript';
 $wgHooks['LoadExtensionSchemaUpdates'][] = 'MoodBarHooks::onLoadExtensionSchemaUpdates';
 
-// Special page
+// Special pages
 $wgAutoloadClasses['SpecialMoodBar'] = dirname(__FILE__).'/SpecialMoodBar.php';
 $wgSpecialPages['MoodBar'] = 'SpecialMoodBar';
+$wgAutoloadClasses['SpecialFeedbackDashboard'] = dirname( __FILE__ ) . '/SpecialFeedbackDashboard.php';
+$wgSpecialPages['FeedbackDashboard'] = 'SpecialFeedbackDashboard';
+
+$dashboardFormsPath = dirname(__FILE__) . '/DashboardForms.php';
+$wgAutoloadClasses['MBDashboardForm'] = $dashboardFormsPath;
+$wgAutoloadClasses['MBActionForm'] = $dashboardFormsPath;
+$wgAutoloadClasses['MBHideForm'] = $dashboardFormsPath;
+$wgAutoloadClasses['MBRestoreForm'] = $dashboardFormsPath;
+
+$wgLogTypes[] = 'moodbar';
+$wgLogNames['moodbar'] = 'moodbar-log-name';
+$wgLogHeaders['moodbar'] = 'moodbar-log-header';
+$wgLogActions += array(
+	'moodbar/hide' => 'moodbar-log-hide',
+	'moodbar/restore' => 'moodbar-log-restore',
+);
 
 // User rights
 $wgAvailableRights[] = 'moodbar-view';
+$wgAvailableRights[] = 'moodbar-admin';
+
+$wgGroupPermissions['sysop']['moodbar-admin'] = true;
 
 // Internationalisation
 $wgExtensionMessagesFiles['MoodBar'] = dirname(__FILE__).'/MoodBar.i18n.php';
+$wgExtensionMessagesFiles['MoodBarAliases'] = dirname( __FILE__ ) . '/MoodBar.alias.php';
 
 // Resources
 $mbResourceTemplate = array(
@@ -111,6 +135,20 @@ $wgResourceModules['ext.moodBar.core'] = $mbResourceTemplate + array(
 	'position' => 'bottom',
 );
 
+$wgResourceModules['ext.moodBar.dashboard'] = $mbResourceTemplate + array(
+	'scripts' => 'ext.moodBar.dashboard/ext.moodBar.dashboard.js',
+	'dependencies' => array( 'mediawiki.util' ),
+	'messages' => array(
+		'moodbar-feedback-nomore',
+		'moodbar-feedback-noresults',
+		'moodbar-feedback-ajaxerror',
+		'moodbar-feedback-action-error',
+	),
+);
+
+$wgResourceModules['ext.moodBar.dashboard.styles'] = $mbResourceTemplate + array(
+	'styles' => 'ext.moodBar.dashboard/ext.moodBar.dashboard.css',
+);
 
 $wgResourceModules['jquery.moodBar'] = $mbResourceTemplate + array(
 	'scripts' => 'jquery.moodBar/jquery.moodBar.js',
