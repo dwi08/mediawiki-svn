@@ -223,19 +223,36 @@
 	 * This only treats a row as a header row if it contains only <th>s (no <td>s)
 	 * and if it is preceded entirely by header rows. The algorithm stops when
 	 * it encounters the first non-header row.
+	 * 
+	 * After this, it will look at all rows at the bottom for footer rows
+	 * And place these in a tfoot using similar rules.
 	 * @param $table jQuery object for a <table>
 	 */ 
-	function emulateTHead( $table ) {
-		var $thead = $( '<thead>' );
-		$table.find( 'tr' ).each( function() {
-			if ( $(this).children( 'td' ).length > 0 ) {
-				// This row contains a <td>, so it's not a header row
-				// Stop here
-				return false;
-			}
-			$thead.append( this );
-		} );
-		$table.prepend( $thead );
+	function emulateTHeadAndFoot( $table ) {
+		var $rows = $table.find( 'tr' );
+		if( !$table.get(0).tHead ) {
+			var $thead = $( '<thead>' );
+			$rows.each( function() {
+				if ( $(this).children( 'td' ).length > 0 ) {
+					// This row contains a <td>, so it's not a header row
+					// Stop here
+					return false;
+				}
+				$thead.append( this );
+			} );
+			$table.prepend( $thead );
+		}
+		if( !$table.get(0).tFoot ) {
+			var $tfoot = $( '<tfoot>' );
+			var len = $rows.length;
+			for ( var i = len-1; i >= 0; i-- ) {
+				if( $( $rows[i] ).children( 'td' ).length > 0 ){
+					break;
+				}
+				$tfoot.prepend( $( $rows[i] ));
+			} 
+			$table.append( $tfoot );
+		}
 	}
 
 	function buildHeaders( table, msg ) {
@@ -531,8 +548,8 @@
 					}
 					if ( !table.tHead ) {
 						// No thead found. Look for rows with <th>s and
-						// move them into a <thead> tag
-						emulateTHead( $table );
+						// move them into a <thead> tag or a <tfoot> tag
+						emulateTHeadAndFoot( $table );
 						
 						// Still no thead? Then quit
 						if ( !table.tHead ) {
@@ -567,8 +584,13 @@
 					cacheRegexs();
 
 					// Apply event handling to headers
-					// this is to big, perhaps break it out?
+					// this is too big, perhaps break it out?
 					$headers.click( function( e ) {
+						if ( e.target.nodeName.toLowerCase() == 'a' ) {
+							// The user clicked on a link inside a table header
+							// Do nothing and let the default link click action continue
+							return true;
+						}
 
 						if ( firstTime ) {
 							firstTime = false;
@@ -578,7 +600,12 @@
 							// and put the <tfoot> at the end of the <table>
 							var $sortbottoms = $table.find( 'tr.sortbottom' );
 							if ( $sortbottoms.length ) {
-								$table.append( $( '<tfoot>' ).append( $sortbottoms ) )
+								var $tfoot = $table.find( 'tfoot' );
+								if( $tfoot.length ) {
+									$tfoot.eq(0).prepend( $sortbottoms );
+								} else {
+									$table.append( $( '<tfoot>' ).append( $sortbottoms ) )
+								}
 							}
 							
 							explodeRowspans( $table );
@@ -645,12 +672,7 @@
 							};
 							return false;
 						}
-					} )
-					// Allow links in headers to be clicked
-					.find( 'a' ).click( function( e ) {
-						e.stopPropagation();
 					} );
-
 				} );
 			},
 
