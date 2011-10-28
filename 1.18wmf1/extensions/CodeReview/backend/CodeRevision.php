@@ -447,6 +447,9 @@ class CodeRevision {
 
 				$rowUrl = $revision->getCanonicalUrl();
 
+				// Live hack: always make the URL use https:
+				$rowUrl = str_replace( 'http:', 'https:', $rowUrl );
+
 				$revisionAuthor = $revision->getWikiUser();
 
 				$revisionCommitSummary = $revision->getMessage();
