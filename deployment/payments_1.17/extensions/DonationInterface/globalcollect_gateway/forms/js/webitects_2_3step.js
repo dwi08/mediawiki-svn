@@ -140,7 +140,7 @@ function displayCreditCardForm() {
 	showStep3(); // Open the 3rd section
 	var language = 'en'; // default value is English
 	var matches = document.location.href.match(/uselang=(\w+)/i); // fine the real language
-	if ( matches[1] ) {
+	if ( matches && matches[1] ) {
 		language = matches[1];
 	}
 	var sendData = {
@@ -162,26 +162,28 @@ function displayCreditCardForm() {
 		'format': 'json'
 	};
 	$.ajax( {
-		'url': mw.util.wikiScript( 'api' ),
+		'url': mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
 		'data': sendData,
 		'dataType': 'json',
 		'type': 'GET',
 		'success': function( data ) {
-			if ( data.result.errors ) {
-				var errors = new Array();
-				$.each( data.result.errors, function( index, value ) {
-					alert( value ); // Show them the error
-					$( "#paymentContinue" ).show(); // Show continue button in 2nd section
-					showStep2(); // Switch back to 2nd section of form
-				} );
-			} else {
-				if ( data.result.formaction ) {
-					$( '#payment' ).empty();
-					// Insert the iframe into the form
-					$( '#payment' ).append( 
-						'<iframe src="'+data.result.formaction+'" width="318" height="300" frameborder="0"></iframe>'
-					);
-					
+			if ( typeof data.result !== 'undefined' ) {
+				if ( data.result.errors ) {
+					var errors = new Array();
+					$.each( data.result.errors, function( index, value ) {
+						alert( value ); // Show them the error
+						$( "#paymentContinue" ).show(); // Show continue button in 2nd section
+						showStep2(); // Switch back to 2nd section of form
+					} );
+				} else {
+					if ( data.result.formaction ) {
+						$( '#payment' ).empty();
+						// Insert the iframe into the form
+						$( '#payment' ).append( 
+							'<iframe src="'+data.result.formaction+'" width="318" height="300" frameborder="0"></iframe>'
+						);
+						
+					}
 				}
 			}
 		}
