@@ -441,6 +441,9 @@ class CodeRevision {
 			// Get repo and build comment title (for url)
 			$url = $this->getCanonicalUrl();
 
+			// Live hack: always make the URL use https:
+			$url = str_replace( 'http:', 'https:', $url );
+
 			foreach ( $res as $row ) {
 				$revision = CodeRevision::newFromRow( $this->repo, $row );
 				$users = $revision->getCommentingUsers();
@@ -627,6 +630,9 @@ class CodeRevision {
 		$dbw->commit();
 
 		$url = $this->getCanonicalUrl( $commentId );
+
+		// Live hack: always make the URL use https:
+		$url = str_replace( 'http:', 'https:', $url );
 
 		$this->sendCommentToUDP( $commentId, $text, $url );
 
@@ -1267,6 +1273,9 @@ class CodeRevision {
 		if( $wgCodeReviewUDPAddress ) {
 			if( is_null( $url ) ) {
 				$url = $this->getCanonicalUrl( $commentId );
+
+				// Live hack: always make the URL use https:
+				$url = str_replace( 'http:', 'https:', $url );
 			}
 
 			$line = wfMsg( 'code-rev-message' ) . " \00314(" . $this->repo->getName() .
@@ -1286,6 +1295,9 @@ class CodeRevision {
 
 		if( $wgCodeReviewUDPAddress ) {
 			$url = $this->getCanonicalUrl();
+
+			// Live hack: always make the URL use https:
+			$url = str_replace( 'http:', 'https:', $url );
 
 			$line = wfMsg( 'code-rev-status' ) . " \00314(" . $this->repo->getName() .
 					")\00303 " . RecentChange::cleanupForIRC( $wgUser->getName() ) . "\003 " .
