@@ -3372,7 +3372,7 @@ Please try again.',
  
 # JavaScriptTest
 'javascripttest'                           => 'JavaScript Test',
-'javascripttest-backlink'                  => '← $1',
+'javascripttest-backlink'                  => '< $1',
 'javascripttest-disabled'                  => 'This function is disabled.',
 'javascripttest-title'                     => 'Running $1 tests',
 'javascripttest-pagetext-noframework'      => 'This page is reserved for running javascript tests.',

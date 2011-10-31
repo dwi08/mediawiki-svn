@@ -47,7 +47,9 @@ class SpecialJavaScriptTest extends SpecialPage {
 		// Matched! Display proper title and initialize the framework
 		} elseif ( isset( self::$frameworks[$framework] ) ) {
 			$out->setPagetitle( wfMsg( 'javascripttest-title', wfMsg( "javascripttest-$framework-name" ) ) );
-			$out->setSubtitle(  wfMsg( 'javascripttest-backlink',  Linker::linkKnown( $this->getTitle() ) ) );
+			$out->setSubtitle(
+				wfMessage( 'javascripttest-backlink' )->rawParams( Linker::linkKnown( $this->getTitle() ) )->escaped()
+			);
 			$this->{self::$frameworks[$framework]}();
 
 		// Framework not found, display error
