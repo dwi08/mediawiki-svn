@@ -200,6 +200,11 @@ class ResourceLoader {
 		// Register core modules
 		$this->register( include( "$IP/resources/Resources.php" ) );
 
+		// Register test Modules
+		// TODO: figures out how to register them conditionally and not
+		// for every page requests.
+		$this->registerTestModules();
+
 		// Register extension modules
 		wfRunHooks( 'ResourceLoaderRegisterModules', array( &$this ) );
 		$this->register( $wgResourceModules );
