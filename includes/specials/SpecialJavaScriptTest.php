@@ -29,6 +29,8 @@ class SpecialJavaScriptTest extends SpecialPage {
 			return;
 		}
 
+		$out->getResourceLoader()->registerTestModules();
+
 		$out->addModules( 'mediawiki.special.javaScriptTest' );
 
 		// Determine framework

@@ -187,7 +187,7 @@ class ResourceLoader {
 	 * Registers core modules and runs registration hooks.
 	 */
 	public function __construct() {
-		global $IP, $wgResourceModules, $wgResourceLoaderSources, $wgLoadScript, $wgEnableJavaScriptTest;
+		global $IP, $wgResourceModules, $wgResourceLoaderSources, $wgLoadScript;
 
 		wfProfileIn( __METHOD__ );
 
@@ -199,33 +199,10 @@ class ResourceLoader {
 
 		// Register core modules
 		$this->register( include( "$IP/resources/Resources.php" ) );
+
 		// Register extension modules
 		wfRunHooks( 'ResourceLoaderRegisterModules', array( &$this ) );
 		$this->register( $wgResourceModules );
-
-		if ( $wgEnableJavaScriptTest === true ) {
-
-			// Get core test suites
-			$testModules = array();
-			$testModules['qunit'] = include( "$IP/tests/qunit/QUnitTestResources.php" );
-			// Get other test suites (e.g. from extensions)
-			wfRunHooks( 'ResourceLoaderTestModules', array( &$testModules, &$this ) );
-
-			// Add the testrunner (which configures QUnit) to the dependencies.
-			// Since it must be ready before any of the test suites are executed.
-			foreach( $testModules['qunit'] as $moduleName => $moduleProps ) {
-				$testModules['qunit'][$moduleName]['dependencies'][] = 'mediawiki.tests.qunit.testrunner';
-			}
-
-			foreach( $testModules as $id => $names ) {
-				// Register test modules
-				$this->register( $testModules[$id] );
-
-				// Keep track of their names so that they can be loaded together
-				$this->testModuleNames[$id] = array_keys( $testModules[$id] );
-			}
-
-		}
 
 
 
@@ -286,6 +263,39 @@ class ResourceLoader {
 		} else {
 			// New calling convention
 			$this->moduleInfos[$name] = $info;
+		}
+
+		wfProfileOut( __METHOD__ );
+	}
+
+	/**
+	 */
+	public function registerTestModules() {
+		global $wgEnableJavaScriptTest, $IP;
+		if ( $wgEnableJavaScriptTest === false ) {
+			throw new MWException( 'Attempt to register JavaScript test modules but <tt>$wgEnableJavaScriptTest</tt> is false. Edit your <tt>LocalSettings.php</tt> to enable it.' );
+		}
+
+		wfProfileIn( __METHOD__ );
+
+		// Get core test suites
+		$testModules = array();
+		$testModules['qunit'] = include( "$IP/tests/qunit/QUnitTestResources.php" );
+		// Get other test suites (e.g. from extensions)
+		wfRunHooks( 'ResourceLoaderTestModules', array( &$testModules, &$this ) );
+
+		// Add the testrunner (which configures QUnit) to the dependencies.
+		// Since it must be ready before any of the test suites are executed.
+		foreach( $testModules['qunit'] as $moduleName => $moduleProps ) {
+			$testModules['qunit'][$moduleName]['dependencies'][] = 'mediawiki.tests.qunit.testrunner';
+		}
+
+		foreach( $testModules as $id => $names ) {
+			// Register test modules
+			$this->register( $testModules[$id] );
+
+			// Keep track of their names so that they can be loaded together
+			$this->testModuleNames[$id] = array_keys( $testModules[$id] );
 		}
 
 		wfProfileOut( __METHOD__ );
