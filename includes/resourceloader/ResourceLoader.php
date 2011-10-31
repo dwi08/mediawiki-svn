@@ -187,7 +187,7 @@ class ResourceLoader {
 	 * Registers core modules and runs registration hooks.
 	 */
 	public function __construct() {
-		global $IP, $wgResourceModules, $wgResourceLoaderSources, $wgLoadScript;
+		global $IP, $wgResourceModules, $wgResourceLoaderSources, $wgLoadScript, $wgEnableJavaScriptTest;
 
 		wfProfileIn( __METHOD__ );
 
@@ -199,16 +199,13 @@ class ResourceLoader {
 
 		// Register core modules
 		$this->register( include( "$IP/resources/Resources.php" ) );
-
-		// Register test Modules
-		// TODO: figures out how to register them conditionally and not
-		// for every page requests.
-		$this->registerTestModules();
-
 		// Register extension modules
 		wfRunHooks( 'ResourceLoaderRegisterModules', array( &$this ) );
 		$this->register( $wgResourceModules );
 
+		if ( $wgEnableJavaScriptTest === true ) {
+			$this->registerTestModules();
+		}
 
 
 		wfProfileOut( __METHOD__ );
@@ -276,9 +273,10 @@ class ResourceLoader {
 	/**
 	 */
 	public function registerTestModules() {
-		global $wgEnableJavaScriptTest, $IP;
+		global $IP, $wgEnableJavaScriptTest;
+
 		if ( $wgEnableJavaScriptTest === false ) {
-			return false;
+			throw new MWException( 'Attempt to register JavaScript test modules but <tt>$wgEnableJavaScriptTest</tt> is false. Edit your <tt>LocalSettings.php</tt> to enable it.' );
 		}
 
 		wfProfileIn( __METHOD__ );
