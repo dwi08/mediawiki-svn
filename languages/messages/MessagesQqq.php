@@ -2972,6 +2972,7 @@ Related messages: {{msg|right-importupload|pl=yes}} (the user right for this).',
 
 # JavaScriptTest
 'javascripttest'                           => 'Title of the special page',
+'javascripttest-backlink'                  => '{{optional}}',
 'javascripttest-disabled'                  => '{{Identical|Function disabled}}.',
 'javascripttest-title'                     => 'Title of the special page when running a test suite. $1 is the name of the framework.',
 'javascripttest-pagetext-unknownframework' => 'Error message when given framework id is not found. $1 is the if of the framework.',
