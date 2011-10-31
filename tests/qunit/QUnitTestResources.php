@@ -25,7 +25,7 @@ return array(
 			'tests/qunit/suites/resources/mediawiki.special/mediawiki.special.recentchanges.test.js',
 
 			// *has mw-config def:
-			// This means the module overwrites/stes mw.config variables, reason being that
+			// This means the module overwrites/sets mw.config variables, reason being that
 			// the static /qunit/index.html has an empty mw.config since it's static.
 			// Until /qunit/index.html is fully replaceable and WMF's TestSwarm is up and running
 			// with Special:JavaScriptTest, untill it is important that tests do not depend on anything
