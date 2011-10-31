@@ -275,7 +275,7 @@ class ResourceLoader {
 	public function registerTestModules() {
 		global $IP, $wgEnableJavaScriptTest;
 
-		if ( $wgEnableJavaScriptTest === false ) {
+		if ( $wgEnableJavaScriptTest !== true ) {
 			throw new MWException( 'Attempt to register JavaScript test modules but <tt>$wgEnableJavaScriptTest</tt> is false. Edit your <tt>LocalSettings.php</tt> to enable it.' );
 		}
 
