@@ -17,7 +17,7 @@ class CheckUserHooks {
 		// Our squid XFFs can flood this up sometimes
 		$isSquidOnly = self::XFFChainIsSquid( $xff );
 		// Get agent
-		$agent = $wgRequest->getHeader( 'User-Agent' );
+		$agent = wfGetAgent();
 		// Store the log action text for log events
 		// $rc_comment should just be the log_comment
 		// BC: check if log_type and log_action exists
@@ -80,7 +80,7 @@ class CheckUserHooks {
 		// Our squid XFFs can flood this up sometimes
 		$isSquidOnly = self::XFFChainIsSquid( $xff );
 		// Get agent
-		$agent = $wgRequest->getHeader( 'User-Agent' );
+		$agent = wfGetAgent();
 		$dbw = wfGetDB( DB_MASTER );
 		$cuc_id = $dbw->nextSequenceValue( 'cu_changes_cu_id_seq' );
 		$rcRow = array(
@@ -127,7 +127,7 @@ class CheckUserHooks {
 		// Our squid XFFs can flood this up sometimes
 		$isSquidOnly = self::XFFChainIsSquid( $xff );
 		// Get agent
-		$agent = $wgRequest->getHeader( 'User-Agent' );
+		$agent = wfGetAgent();
 		$dbw = wfGetDB( DB_MASTER );
 		$cuc_id = $dbw->nextSequenceValue( 'cu_changes_cu_id_seq' );
 		$rcRow = array(
@@ -182,7 +182,7 @@ class CheckUserHooks {
 		// Our squid XFFs can flood this up sometimes
 		$isSquidOnly = self::XFFChainIsSquid( $xff );
 		// Get agent
-		$agent = $wgRequest->getHeader( 'User-Agent' );
+		$agent = wfGetAgent();
 		$dbw = wfGetDB( DB_MASTER );
 		$cuc_id = $dbw->nextSequenceValue( 'cu_changes_cu_id_seq' );
 		$rcRow = array(
