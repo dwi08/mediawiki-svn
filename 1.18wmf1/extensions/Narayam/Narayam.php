@@ -141,7 +141,6 @@ $wgResourceModules['ext.narayam.core'] = $narayamTpl + array(
 		'narayam-menu',
 		'narayam-menu-tooltip',
 		'narayam-help',
-		'narayam-help-page',
 		'narayam-toggle-ime',
 	),
 	'dependencies' => array( 'mediawiki.util', 'jquery.textSelection' ),

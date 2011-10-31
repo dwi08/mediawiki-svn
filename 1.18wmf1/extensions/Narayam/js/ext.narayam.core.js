@@ -501,7 +501,7 @@ $.narayam = new ( function() {
 			.prepend( $checkbox )
 			.attr( 'title', mw.msg( 'narayam-checkbox-tooltip' ) );
 			
-		var helppage = mw.msg( 'narayam-help-page' );
+		var helppage = mw.config.get( 'wgNarayamHelpPage' );
 		if ( helppage ) {
 			$narayamMenuItems.append( $( '<li class="narayam-help-link" />')
 				.append(
@@ -509,7 +509,7 @@ $.narayam = new ( function() {
 						.text( mw.msg( 'narayam-help' ) )
 						.attr( 
 							'href',
-							mw.util.wikiGetlink( mw.msg( 'narayam-help-page' ) )
+							mw.util.wikiGetlink( helppage )
 						)
 					)
 				);
