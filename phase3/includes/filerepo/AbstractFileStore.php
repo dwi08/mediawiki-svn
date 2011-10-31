@@ -1,42 +1,131 @@
 <?php
 
 /**
- * A particular data store may not support every operation. If it does not support
- * an operation that should return -1. It should not throw an exception as
- * the operation in question may be naively called from a loop that does not
- * check for support
+ * This class defines the methods as abstract that should be implemented in 
+ * child classes if the target store supports the operation.
  */
 abstract class AbstractFileStore {
 
-    abstract store( $params ) {
+    /**
+     * Array of operations that are supported by this data store
+     * 
+     * This could potentially be populated via reflection at some point
+     * 
+     * <code>
+     * $supportedOperations = array('store', 'copy', 'delete')
+     * </code>
+     * 
+     * @var Array
+     */
+    protected $supportedOperations;
+    
+    /**
+     * Setup the FileStore. The operations in this constructor are required for
+     * the object to operate properly. If any subclasses use a constructor they
+     * must call this parent constructor as well
+     */
+    public function __construct() {
+        // Make sure the getFileProps is in the supportedOperations array
+        // The support for this only exists in this parent class
+        $this->supportedOperations[] = 'getFileProps';
+    }
+    
+    /**
+     * Returns a list of supported operations
+     * 
+     * @return Array
+     */
+    public function getSupportedOperations() {
+        return $this->supportedOperations;
+    }
+    
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * store functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function store( $params ) {
         return -1;
     }
 
-    abstract relocate( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * relocate functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function relocate( $params ) {
         return -1;
     }
 
-    abstract copy( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * copy functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function copy( $params ) {
         return -1;
     }
 
-    abstract delete( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * delete functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function delete( $params ) {
         return -1;
     }
 
-    abstract move( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * move functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function move( $params ) {
         return -1;
     }
 
-    abstract concatinate( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * concatinate functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function concatinate( $params ) {
         return -1;
     }
 
-    abstract fileExists( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * file exists functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function fileExists( $params ) {
         return -1;
     }
 
-    abstract getLocalCopy( $params ) {
+    /**
+     * Use this function in subclasses to define the specific FileStore 
+     * retreive functionality
+     * 
+     * @param Array $params 
+     */
+    abstract function getLocalCopy( $params ) {
         return -1;
+    }
+    
+    /**
+     * Get the properties of a file
+     * 
+     * @param Array $params 
+     * @return Array
+     */
+    public function getFileProps( $params ) {
+        throw new MWException(__METHOD__ . " has not yet been implemented in AbstractFileStore");
     }
 } // end class
