@@ -151,6 +151,11 @@ class SrConverter extends LanguageConverter {
 
 	/**
 	 * Guess if a text is written in Cyrillic or Latin.
+	 * Overrides LanguageConverter::guessVariant()
+	 *
+	 * @param string  $text The text to be checked
+	 * @param string  $variant Language code of the variant to be checked for
+	 * @return bool  true if $text appears to be written in $variant
 	 *
 	 * @author Nikola Smolenski <smolensk@eunet.rs>
 	 * @since 1.18
@@ -160,9 +165,9 @@ class SrConverter extends LanguageConverter {
 		$numLatin = preg_match_all("/[šđčćžŠĐČĆŽ]/u", $text, $dummy);
 
 		if( $variant == 'sr-ec' ) {
-			return $numCyrillic > $numLatin;
+			return (boolean) ($numCyrillic > $numLatin);
 		} else if( $variant == 'sr-el' ) {
-			return $numLatin > $numCyrillic;
+			return (boolean) ($numLatin > $numCyrillic);
 		} else {
 			return false;
 		}
