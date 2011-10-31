@@ -18,10 +18,7 @@ return array(
 			# jquery.tablesorter.test.js: Broken
 			#'tests/qunit/suites/resources/jquery/jquery.tablesorter.test.js', // has mw-config def
 			'tests/qunit/suites/resources/jquery/jquery.textSelection.test.js',
-			# mediawiki.test.js: Tries to load from /data/ directory, fails when ran from the
-			# SpecialPage since it uses regex to get the current path and loads from that + /data/
-			# (index.php/Data in this case..)
-			#'tests/qunit/suites/resources/mediawiki/mediawiki.test.js',
+			'tests/qunit/suites/resources/mediawiki/mediawiki.test.js',
 			'tests/qunit/suites/resources/mediawiki/mediawiki.title.test.js', // has mw-config def
 			'tests/qunit/suites/resources/mediawiki/mediawiki.user.test.js',
 			'tests/qunit/suites/resources/mediawiki/mediawiki.util.test.js',
