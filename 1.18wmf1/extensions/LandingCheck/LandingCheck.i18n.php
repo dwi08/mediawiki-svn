@@ -16,12 +16,29 @@ $messages['en'] = array(
 	'landingcheck' => 'LandingCheck',
 );
 
+/** Message documentation (Message documentation)
+ * @author Yekrats
+ */
+$messages['qqq'] = array(
+	'landingcheck-desc' => '{{desc}}
+See http://www.mediawiki.org/wiki/Extension:LandingCheck',
+	'landingcheck' => 'The name of the extension LandingCheck. See: http://www.mediawiki.org/wiki/Extension:LandingCheck',
+);
+
 /** Afrikaans (Afrikaans)
  * @author Naudefj
  */
 $messages['af'] = array(
 	'landingcheck-desc' => 'Fasiliteer die gebruik van "geotargeted" gelokaliseerde bestemmingsbladsye',
 	'landingcheck' => 'Landingskontrole',
+);
+
+/** Arabic (العربية)
+ * @author زكريا
+ */
+$messages['ar'] = array(
+	'landingcheck-desc' => 'لتيسير استعمال صفحات تحديد موقع الوصول الجغرافي',
+	'landingcheck' => 'LandingCheck',
 );
 
 /** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
@@ -82,6 +99,36 @@ $messages['en-gb'] = array(
 	'landingcheck-desc' => 'Facilitates the use of geotargeted localised landing pages',
 );
 
+/** Esperanto (Esperanto)
+ * @author Yekrats
+ */
+$messages['eo'] = array(
+	'landingcheck-desc' => 'Faciligos la uzon de geografie asimilitaj celpaĝoj',
+	'landingcheck' => 'LandingCheck',
+);
+
+/** Spanish (Español)
+ * @author MetalBrasil
+ */
+$messages['es'] = array(
+	'landingcheck-desc' => 'Facilita el uso de páginas de aterrizaje localizada localización geográfica',
+);
+
+/** Persian (فارسی)
+ * @author Mjbmr
+ */
+$messages['fa'] = array(
+	'landingcheck-desc' => 'تسهیل استفاده از صفحات فرود هدف جغرافیایی محلی',
+	'landingcheck' => 'بررسی فرود',
+);
+
+/** Finnish (Suomi)
+ * @author Olli
+ */
+$messages['fi'] = array(
+	'landingcheck' => 'Saapumisen tarkistus',
+);
+
 /** French (Français)
  * @author Peter17
  */
@@ -94,6 +141,7 @@ $messages['fr'] = array(
  * @author ChrisPtDe
  */
 $messages['frp'] = array(
+	'landingcheck-desc' => 'Facilite l’usâjo de les pâges d’arrevâ g·eolocalisâs.',
 	'landingcheck' => 'LandingCheck',
 );
 
@@ -258,6 +306,13 @@ $messages['pt-br'] = array(
 	'landingcheck' => 'LandingCheck',
 );
 
+/** Romanian (Română)
+ * @author Firilacroco
+ */
+$messages['ro'] = array(
+	'landingcheck' => 'LandingCheck',
+);
+
 /** Tarandíne (Tarandíne)
  * @author Joetaras
  */
@@ -270,6 +325,14 @@ $messages['roa-tara'] = array(
  */
 $messages['ru'] = array(
 	'landingcheck-desc' => 'Облегчает использование геозависимых локализованных целевых страниц',
+	'landingcheck' => 'LandingCheck',
+);
+
+/** Rusyn (Русиньскый)
+ * @author Gazeb
+ */
+$messages['rue'] = array(
+	'landingcheck-desc' => 'Злегчує хоснованя ґеоґрафічно цїленых локалізованых вступных сторінок',
 	'landingcheck' => 'LandingCheck',
 );
 
@@ -297,12 +360,27 @@ $messages['sl'] = array(
 	'landingcheck' => 'PreverjanjePristajališča',
 );
 
+/** Swedish (Svenska)
+ * @author WikiPhoenix
+ */
+$messages['sv'] = array(
+	'landingcheck' => 'LandingCheck',
+);
+
 /** Tagalog (Tagalog)
  * @author AnakngAraw
  */
 $messages['tl'] = array(
 	'landingcheck-desc' => 'Nagpapadali sa paggamit ng pinuntiryang pangheograpiyang katutubong mga pahina ng pahinang lapagan',
 	'landingcheck' => 'Pagsusuri ng Paglapag',
+);
+
+/** Ukrainian (Українська)
+ * @author Dim Grits
+ */
+$messages['uk'] = array(
+	'landingcheck-desc' => 'Полегшує використання геозалежних локалізованих цільових сторінок',
+	'landingcheck' => 'LandingCheck',
 );
 
 /** Vietnamese (Tiếng Việt)
