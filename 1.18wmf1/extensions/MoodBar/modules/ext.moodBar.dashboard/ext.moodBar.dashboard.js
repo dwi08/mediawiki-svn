@@ -35,7 +35,6 @@ jQuery( function( $ ) {
 	 */
 	function setCookies() {
 		$.cookie( 'moodbar-feedback-types', formState.types.join( '|' ), { 'path': '/', 'expires': 7 } );
-		$.cookie( 'moodbar-feedback-username', formState.username, { 'path': '/', 'expires': 7 } );
 	}
 	
 	/**
@@ -45,15 +44,7 @@ jQuery( function( $ ) {
 	 */
 	function loadFromCookies() {
 		var	cookieTypes = $.cookie( 'moodbar-feedback-types' ),
-			$username = $( '#fbd-filters-username' ),
 			changed = false;
-		if ( $username.val() == '' ) {
-			var cookieUsername = $.cookie( 'moodbar-feedback-username' );
-			if ( cookieUsername != '' && cookieUsername !== null ) {
-				$username.val( cookieUsername );
-				changed = true;
-			}
-		}
 		
 		if ( cookieTypes ) {
 			// Because calling .indexOf() on an array doesn't work in all browsers,
@@ -331,12 +322,6 @@ jQuery( function( $ ) {
 		saveFormState();
 		setCookies();
 		loadComments( 'filter' );
-	} );
-	
-	$( '.fbd-item-userLink' ).live( 'click', function( e ) {
-		e.preventDefault();
-		$('#fbd-filters-username').val( $(this).text() );
-		$('#fbd-filters').children('form').submit();
 	} );
 	
 	$( '#fbd-list-more' ).children( 'a' ).click( function( e ) {

@@ -35,7 +35,9 @@ class ArticleFeedbackHooks {
 				'articlefeedback-survey-title',
 				'articlefeedback-survey-message-success',
 				'articlefeedback-survey-message-error',
-				'articlefeedback-survey-disclaimer'
+				'articlefeedback-survey-disclaimer',
+				'articlefeedback-survey-disclaimerlink',
+				'articlefeedback-privacyurl'
 			),
 			'dependencies' => array(
 				'jquery.ui.dialog',
@@ -72,7 +74,6 @@ class ArticleFeedbackHooks {
 				'articlefeedback-form-panel-helpimprove-note',
 				'articlefeedback-form-panel-helpimprove-email-placeholder',
 				'articlefeedback-form-panel-helpimprove-privacy',
-				'articlefeedback-form-panel-helpimprove-privacylink',
 				'articlefeedback-form-panel-submit',
 				'articlefeedback-form-panel-success',
 				'articlefeedback-form-panel-pending',
@@ -83,7 +84,7 @@ class ArticleFeedbackHooks {
 				'articlefeedback-report-panel-description',
 				'articlefeedback-report-empty',
 				'articlefeedback-report-ratings',
-				'parentheses',
+				'articlefeedback-privacyurl'
 			),
 			'dependencies' => array(
 				'jquery.appear',

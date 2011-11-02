@@ -116,7 +116,21 @@ var survey = new ( function() {
 					$form.find( '#prefswitch-survey-origin' ).text( mw.config.get( 'wgTitle' ) );
 					
 					// Insert disclaimer message
-					$button.before( $( '<div>' ).addClass( 'articleFeedback-survey-disclaimer' ).text( mw.msg( 'articlefeedback-survey-disclaimer' ) ) );
+					$button.before(
+						$( '<div>' )
+							.addClass( 'articleFeedback-survey-disclaimer' )
+							// Can't use .text() with mw.message(, /* $1 */ link).toString(),
+							// because 'link' should not be re-escaped (which would happen if done by mw.message)
+							.html( function() {
+								var link = mw.html.element(
+									'a', {
+										href: mw.msg( 'articlefeedback-privacyurl' )
+									}, mw.msg( 'articlefeedback-survey-disclaimerlink' )
+								);
+								return mw.html.escape( mw.msg( 'articlefeedback-survey-disclaimer' ) )
+									.replace( /\$1/, link );
+							})
+					);
 					
 					// Take dialog out of loading state
 					$dialog.removeClass( 'loading' );
