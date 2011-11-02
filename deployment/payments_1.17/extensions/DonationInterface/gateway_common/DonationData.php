@@ -64,7 +64,8 @@ class DonationData {
 				'i_order_id' => $wgRequest->getText( 'i_order_id', null ), //internal id for each contribution attempt
 				'numAttempt' => $wgRequest->getVal( 'numAttempt', '0' ),
 				'referrer' => ( $wgRequest->getVal( 'referrer' ) ) ? $wgRequest->getVal( 'referrer' ) : $wgRequest->getHeader( 'referer' ),
-				'utm_source' => self::getUtmSource(), //TODO: yes. That.
+				'utm_source' => $wgRequest->getText( 'utm_source' ),
+				'utm_source_id' => $wgRequest->getVal( 'utm_source_id', null ),
 				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
 				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
 				// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
@@ -154,59 +155,58 @@ class DonationData {
 			// randomly select a credit card #
 			$card_num_index = array_rand( $card_nums[$cards[$card_index]] );
 
-			global $wgRequest; //TODO: ARRRGHARGHARGH. That is all.
-
-			$this->normalized = array(
-				'amount' => "35",
-				'amountOther' => '',
-				'email' => 'test@example.com',
-				'fname' => 'Tester',
-				'mname' => 'T.',
-				'lname' => 'Testington',
-				'street' => '548 Market St.',
-				'city' => 'San Francisco',
-				'state' => 'CA',
-				'zip' => '94104',
-				'country' => 'US',
-				'fname2' => 'Testy',
-				'lname2' => 'Testerson',
-				'street2' => '123 Telegraph Ave.',
-				'city2' => 'Berkeley',
-				'state2' => 'CA',
-				'zip2' => '94703',
-				'country2' => 'US',
-				'size' => 'small',
-				'premium_language' => 'es',
-				'card_num' => $card_nums[$cards[$card_index]][$card_num_index],
-				'card_type' => $cards[$card_index],
-				'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
-				'cvv' => '001',
-				'currency' => 'USD',
-				'payment_method' => $wgRequest->getText( 'payment_method' ),
-				'payment_submethod' => $wgRequest->getText( 'payment_submethod' ),
-				'issuer_id' => $wgRequest->getText( 'issuer_id' ),
-				'order_id' => '1234567890',
-				'i_order_id' => '1234567890',
-				'numAttempt' => 0,
-				'referrer' => 'http://www.baz.test.com/index.php?action=foo&action=bar',
-				'utm_source' => self::getUtmSource(),
-				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
-				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
-				'language' => 'en',
-				'comment-option' => $wgRequest->getText( 'comment-option' ),
-				'comment' => $wgRequest->getText( 'comment' ),
-				'email-opt' => $wgRequest->getText( 'email-opt' ),
-				// test_string has been disabled - may no longer be needed.
-				//'test_string' => $wgRequest->getText( 'process' ),
-				'token' => '',
-				'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
-				'data_hash' => $wgRequest->getText( 'data_hash' ),
-				'action' => $wgRequest->getText( 'action' ),
-				'gateway' => 'payflowpro',
-				'owa_session' => $wgRequest->getText( 'owa_session', null ),
-				'owa_ref' => 'http://localhost/defaultTestData',
-			);
-		}
+		//This array should be populated with general test defaults, or 
+		//(preferably)  mappings to random stuff... if we keep this around at all.
+		//Certainly nothing pulled from a form post or get. 
+		$this->normalized = array(
+			'amount' => "35",
+			'amountOther' => '',
+			'email' => 'test@example.com',
+			'fname' => 'Tester',
+			'mname' => 'T.',
+			'lname' => 'Testington',
+			'street' => '548 Market St.',
+			'city' => 'San Francisco',
+			'state' => 'CA',
+			'zip' => '94104',
+			'country' => 'US',
+			'fname2' => 'Testy',
+			'lname2' => 'Testerson',
+			'street2' => '123 Telegraph Ave.',
+			'city2' => 'Berkeley',
+			'state2' => 'CA',
+			'zip2' => '94703',
+			'country2' => 'US',
+			'size' => 'small',
+			'premium_language' => 'es',
+			'card_num' => $card_nums[$cards[$card_index]][$card_num_index],
+			'card_type' => $cards[$card_index],
+			'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
+			'cvv' => '001',
+			'currency' => 'USD',
+			'payment_method' => 'cc',
+			'payment_submethod' => '', //cards have no payment submethods. 
+			'issuer_id' => '',
+			'order_id' => '1234567890',
+			'i_order_id' => '1234567890',
+			'numAttempt' => 0,
+			'referrer' => 'http://www.baz.test.com/index.php?action=foo&action=bar',
+			'utm_source' => 'test_src',
+			'utm_source_id' => null,
+			'utm_medium' => 'test_medium',
+			'utm_campaign' => 'test_campaign',
+			'language' => 'en',
+			'comment-option' => 0,
+			'comment' => 0,
+			'email-opt' => 0,
+			'token' => '',
+			'contribution_tracking_id' => '',
+			'data_hash' => '',
+			'action' => '',
+			'gateway' => 'payflowpro',
+			'owa_session' => '',
+			'owa_ref' => 'http://localhost/defaultTestData',
+		);
 	}
 
 	/**
@@ -280,7 +280,17 @@ class DonationData {
 			$this->saveContributionTracking();
 		} 
 	}
-
+	
+	
+	function canCache(){
+		if ( $this->getVal( '_cache_' ) === 'true' ){ //::head. hit. keyboard.::
+			if ( $this->isSomething( 'utm_source_id' ) && !is_null( 'utm_source_id' ) ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * normalizeAndSanitize helper function.
 	 * Takes all possible sources for the intended donation amount, and 
