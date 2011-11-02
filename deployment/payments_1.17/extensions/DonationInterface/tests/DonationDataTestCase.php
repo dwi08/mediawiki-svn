@@ -317,7 +317,7 @@ class DonationInterface_DonationDataTestCase extends DonationInterfaceTestCase {
 	public static function ensureSession() {
 	public function checkTokens() {
 	function wasPosted(){
-	function setUtmSource() {
+	public static function getUtmSource( $utm_source = null, $utm_source_id = null ) {
 	public function getOptOuts() {
 	public function getCleanTrackingData( $clean_optouts = false ) {
 	function saveContributionTracking() {
