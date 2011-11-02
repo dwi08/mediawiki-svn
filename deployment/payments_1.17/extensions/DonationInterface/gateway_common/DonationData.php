@@ -18,14 +18,15 @@ class DonationData {
 		$this->populateData( $test, $data );
 	}
 
-	function populateData( $test = false, $testdata = false ) {
+	function populateData( $test = false, $external_data = false ) {
 		global $wgRequest;
 		$this->normalized = array( );
-		if ( $test ) {
-			$this->populateData_Test( $testdata );
+		if ( is_array( $external_data ) ){
+			$this->normalized = $external_data;
+		} elseif ( $test ) {
+			$this->populateData_Test();
 		} else {
 			$this->normalized = array(
-				'posted' => 'true', //moderately sneaky.
 				'amount' => $wgRequest->getText( 'amount', null ),
 				'amountGiven' => $wgRequest->getText( 'amountGiven', null ),
 				'amountOther' => $wgRequest->getText( 'amountOther', null ),
@@ -57,14 +58,15 @@ class DonationData {
 				'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
 				'cvv' => $wgRequest->getText( 'cvv' ),
 				'currency' => $wgRequest->getText( 'currency_code', 'USD' ),
-				'payment_method' => $wgRequest->getText( 'payment_method' ),
+				'payment_method' => $wgRequest->getText( 'payment_method', 'cc' ),
 				'payment_submethod' => $wgRequest->getText( 'payment_submethod', null ), // Used by GlobalCollect for payment types
 				'issuer_id' => $wgRequest->getText( 'issuer_id' ),
 				'order_id' => $wgRequest->getText( 'order_id', null ), //as far as I know, this won't actually ever pull anything back.
 				'i_order_id' => $wgRequest->getText( 'i_order_id', null ), //internal id for each contribution attempt
 				'numAttempt' => $wgRequest->getVal( 'numAttempt', '0' ),
 				'referrer' => ( $wgRequest->getVal( 'referrer' ) ) ? $wgRequest->getVal( 'referrer' ) : $wgRequest->getHeader( 'referer' ),
-				'utm_source' => self::getUtmSource(), //TODO: yes. That.
+				'utm_source' => $wgRequest->getText( 'utm_source' ),
+				'utm_source_id' => $wgRequest->getVal( 'utm_source_id', null ),
 				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
 				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
 				// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
@@ -82,6 +84,19 @@ class DonationData {
 				'gateway' => $wgRequest->getText( 'gateway' ), //likely to be reset shortly by setGateway();
 				'owa_session' => $wgRequest->getText( 'owa_session', null ),
 				'owa_ref' => $wgRequest->getText( 'owa_ref', null ),
+
+				'account_name' => $wgRequest->getText( 'account_name', null ),
+				'account_number' => $wgRequest->getText( 'account_number', null ),
+				'authorization_id' => $wgRequest->getText( 'authorization_id', null ),
+				'bank_check_digit' => $wgRequest->getText( 'bank_check_digit', null ),
+				'bank_name' => $wgRequest->getText( 'bank_name', null ),
+				'bank_code' => $wgRequest->getText( 'bank_code', null ),
+				'branch_code' => $wgRequest->getText( 'branch_code', null ),
+				'country_code_bank' => $wgRequest->getText( 'country_code_bank', null ),
+				'date_collect' => $wgRequest->getText( 'date_collect', null ),
+				'direct_debit_text' => $wgRequest->getText( 'direct_debit_text', null ),
+				'iban' => $wgRequest->getText( 'iban', null ),
+				'transaction_type' => $wgRequest->getText( 'transaction_type', null ),
 			);
 			if ( !$wgRequest->wasPosted() ) {
 				$this->setVal( 'posted', false );
@@ -110,10 +125,6 @@ class DonationData {
 			//if it is: assume that the session data was meant to be replaced 
 			//with better data.  
 			//...unless it's referrer. 
-			//TODO: Keep an eye on anything that is calculated programmatically 
-			//during the form data pull, and not afterward in the normalize bits.  
-			//TODO: Stop calculating things during the actual data pull, because 
-			//that's totally bogus.  
 			foreach ( $_SESSION['Donor'] as $key => $val ){
 				if ( !$this->isSomething( $key ) ){
 					$this->setVal( $key, $val );
@@ -137,76 +148,72 @@ class DonationData {
 	}
 
 	function populateData_Test( $testdata = false ) {
-		if ( is_array( $testdata ) ) {
-			$this->normalized = $testdata;
-		} else {
-			// define arrays of cc's and cc #s for random selection
-			$cards = array( 'american' );
-			$card_nums = array(
-				'american' => array(
-					378282246310005
-				),
-			);
+		// define arrays of cc's and cc #s for random selection
+		$cards = array( 'american' );
+		$card_nums = array(
+			'american' => array(
+				378282246310005
+			),
+		);
 
-			// randomly select a credit card
-			$card_index = array_rand( $cards );
+		// randomly select a credit card
+		$card_index = array_rand( $cards );
 
-			// randomly select a credit card #
-			$card_num_index = array_rand( $card_nums[$cards[$card_index]] );
+		// randomly select a credit card #
+		$card_num_index = array_rand( $card_nums[$cards[$card_index]] );
 
-			global $wgRequest; //TODO: ARRRGHARGHARGH. That is all.
-
-			$this->normalized = array(
-				'amount' => "35",
-				'amountOther' => '',
-				'email' => 'test@example.com',
-				'fname' => 'Tester',
-				'mname' => 'T.',
-				'lname' => 'Testington',
-				'street' => '548 Market St.',
-				'city' => 'San Francisco',
-				'state' => 'CA',
-				'zip' => '94104',
-				'country' => 'US',
-				'fname2' => 'Testy',
-				'lname2' => 'Testerson',
-				'street2' => '123 Telegraph Ave.',
-				'city2' => 'Berkeley',
-				'state2' => 'CA',
-				'zip2' => '94703',
-				'country2' => 'US',
-				'size' => 'small',
-				'premium_language' => 'es',
-				'card_num' => $card_nums[$cards[$card_index]][$card_num_index],
-				'card_type' => $cards[$card_index],
-				'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
-				'cvv' => '001',
-				'currency' => 'USD',
-				'payment_method' => $wgRequest->getText( 'payment_method' ),
-				'payment_submethod' => $wgRequest->getText( 'payment_submethod' ),
-				'issuer_id' => $wgRequest->getText( 'issuer_id' ),
-				'order_id' => '1234567890',
-				'i_order_id' => '1234567890',
-				'numAttempt' => 0,
-				'referrer' => 'http://www.baz.test.com/index.php?action=foo&action=bar',
-				'utm_source' => self::getUtmSource(),
-				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
-				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
-				'language' => 'en',
-				'comment-option' => $wgRequest->getText( 'comment-option' ),
-				'comment' => $wgRequest->getText( 'comment' ),
-				'email-opt' => $wgRequest->getText( 'email-opt' ),
-				// test_string has been disabled - may no longer be needed.
-				//'test_string' => $wgRequest->getText( 'process' ),
-				'token' => '',
-				'contribution_tracking_id' => $wgRequest->getText( 'contribution_tracking_id' ),
-				'data_hash' => $wgRequest->getText( 'data_hash' ),
-				'action' => $wgRequest->getText( 'action' ),
-				'gateway' => 'payflowpro',
-				'owa_session' => $wgRequest->getText( 'owa_session', null ),
-				'owa_ref' => 'http://localhost/defaultTestData',
-			);
-		}
+		//This array should be populated with general test defaults, or 
+		//(preferably)  mappings to random stuff... if we keep this around at all.
+		//Certainly nothing pulled from a form post or get. 
+		$this->normalized = array(
+			'amount' => "35",
+			'amountOther' => '',
+			'email' => 'test@example.com',
+			'fname' => 'Tester',
+			'mname' => 'T.',
+			'lname' => 'Testington',
+			'street' => '548 Market St.',
+			'city' => 'San Francisco',
+			'state' => 'CA',
+			'zip' => '94104',
+			'country' => 'US',
+			'fname2' => 'Testy',
+			'lname2' => 'Testerson',
+			'street2' => '123 Telegraph Ave.',
+			'city2' => 'Berkeley',
+			'state2' => 'CA',
+			'zip2' => '94703',
+			'country2' => 'US',
+			'size' => 'small',
+			'premium_language' => 'es',
+			'card_num' => $card_nums[$cards[$card_index]][$card_num_index],
+			'card_type' => $cards[$card_index],
+			'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
+			'cvv' => '001',
+			'currency' => 'USD',
+			'payment_method' => 'cc',
+			'payment_submethod' => '', //cards have no payment submethods. 
+			'issuer_id' => '',
+			'order_id' => '1234567890',
+			'i_order_id' => '1234567890',
+			'numAttempt' => 0,
+			'referrer' => 'http://www.baz.test.com/index.php?action=foo&action=bar',
+			'utm_source' => 'test_src',
+			'utm_source_id' => null,
+			'utm_medium' => 'test_medium',
+			'utm_campaign' => 'test_campaign',
+			'language' => 'en',
+			'comment-option' => 0,
+			'comment' => 0,
+			'email-opt' => 0,
+			'token' => '',
+			'contribution_tracking_id' => '',
+			'data_hash' => '',
+			'action' => '',
+			'gateway' => 'payflowpro',
+			'owa_session' => '',
+			'owa_ref' => 'http://localhost/defaultTestData',
+		);
 	}
 
 	/**
@@ -245,6 +252,7 @@ class DonationData {
 
 	function normalizeAndSanitize() {
 		if ( !empty( $this->normalized ) ) {
+			$this->setUtmSource();
 			$this->setNormalizedAmount();
 			$this->setNormalizedOrderIDs();
 			$this->setGateway();
@@ -264,23 +272,22 @@ class DonationData {
 	 * assigned. 
 	 */
 	function handleContributionTrackingID(){
-		//TODO: test with _cache_ on. 
-		
-		//what follows here is the original horrible if statement for comparison to the new line (below). 
-		//TODO: whack this when we know the replacement is solid. 
-//		if ( !empty( $this->normalized ) && 
-//		( $this->getVal( 'numAttempt' ) == '0' && 
-//			((!$this->getVal( 'utm_source_id' ) == false ) || 
-//			is_null($this->getVal( '_cache_' )) ) ) ) {
-//			$this->saveContributionTracking();
-//			}
-		
 		if ( !$this->isSomething( 'contribution_tracking_id' ) && 
-			( $this->getVal( 'utm_source_id' ) !== false || !$this->isSomething( '_cache_' ) ) ){
+			( !$this->canCache() ) ){
 			$this->saveContributionTracking();
 		} 
 	}
-
+	
+	
+	function canCache(){
+		if ( $this->getVal( '_cache_' ) === 'true' ){ //::head. hit. keyboard.::
+			if ( $this->isSomething( 'utm_source_id' ) && !is_null( 'utm_source_id' ) ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * normalizeAndSanitize helper function.
 	 * Takes all possible sources for the intended donation amount, and 
@@ -324,7 +331,7 @@ class DonationData {
 	/**
 	 * Generate an order id exactly once for this go-round.
 	 */
-	function generateOrderId() {
+	static function generateOrderId() {
 		static $order_id = null;
 		if ( $order_id === null ) {
 			$order_id = ( double ) microtime() * 1000000 . mt_rand( 1000, 9999 );
@@ -430,10 +437,9 @@ class DonationData {
 	 * resolved in $wgUser, we'll use our own methods for token
 	 * handling.
 	 *
-	 * @var mixed $salt
 	 * @return string
 	 */
-	public function getEditToken( $salt = '' ) {
+	public function token_getSaltedSessionToken() {
 
 		// make sure we have a session open for tracking a CSRF-prevention token
 		self::ensureSession();
@@ -442,57 +448,66 @@ class DonationData {
 
 		if ( !isset( $_SESSION[$gateway_ident . 'EditToken'] ) ) {
 			// generate unsalted token to place in the session
-			$token = self::generateToken();
+			$token = self::token_generateToken();
 			$_SESSION[$gateway_ident . 'EditToken'] = $token;
 		} else {
 			$token = $_SESSION[$gateway_ident . 'EditToken'];
 		}
 
+		return $this->token_applyMD5AndSalt( $token );
+	}
+	
+	/**
+	 * In the case where we have an expired session (token mismatch), we go 
+	 * ahead and fix it for 'em for their next post. 
+	 */
+	function token_refreshAllTokenEverything(){
+		$unsalted = self::token_generateToken();	
+		$gateway_ident = $this->gatewayID;
+		self::ensureSession();
+		$_SESSION[$gateway_ident . 'EditToken'] = $unsalted;
+		$salted = $this->token_getSaltedSessionToken();
+		$this->setVal( 'token', $salted );
+	}
+	
+	function token_applyMD5AndSalt( $clear_token ){
+		$salt = $this->getGatewayGlobal( 'Salt' );
+		
 		if ( is_array( $salt ) ) {
 			$salt = implode( "|", $salt );
 		}
-		return md5( $token . $salt ) . EDIT_TOKEN_SUFFIX;
+		
+		$salted = md5( $clear_token . $salt ) . EDIT_TOKEN_SUFFIX;
+		return $salted;
 	}
+
 
 	/**
 	 * Generate a token string
 	 *
-	 * @var mixed $salt
+	 * @var mixed $padding
 	 * @return string
 	 */
-	public static function generateToken( $salt = '' ) {
+	public static function token_generateToken( $padding = '' ) {
 		$token = dechex( mt_rand() ) . dechex( mt_rand() );
-		return md5( $token . $salt );
+		return md5( $token . $padding );
 	}
 
 	/**
 	 * Determine the validity of a token
 	 *
 	 * @var string $val
-	 * @var mixed $salt
 	 * @return bool
 	 */
-	function matchEditToken( $val, $salt = '' ) {
+	function token_matchEditToken( $val ) {
 		// fetch a salted version of the session token
-		$sessionToken = $this->getEditToken( $salt );
-		if ( $val != $sessionToken ) {
+		$sessionSaltedToken = $this->token_getSaltedSessionToken();
+		if ( $val != $sessionSaltedToken ) {
 			wfDebug( "DonationData::matchEditToken: broken session data\n" );
 			//and reset the token for next time. 
-			$this->expunge( 'token' );	
+			$this->token_refreshAllTokenEverything();
 		}
-		return $val == $sessionToken;
-	}
-
-
-	/**
-	 * unsets the edit token in the user's session. 
-	 */
-	function unsetEditToken() {
-		$gateway_ident = $this->gatewayID;
-
-		if ( isset( $_SESSION ) && isset( $_SESSION[$gateway_ident . 'EditToken'] ) ){
-			unset( $_SESSION[$gateway_ident . 'EditToken'] );
-		}
+		return $val == $sessionSaltedToken;
 	}
 
 	/**
@@ -510,18 +525,14 @@ class DonationData {
 		wfSetupSession();
 	}
 
-	public function checkTokens() {
+	public function token_checkTokens() {
 		global $wgRequest;
 		static $match = null;
 
 		if ( $match === null ) {
-			$salt = $this->getGatewayGlobal( 'Salt' );
-			if ( $salt === false ){
-				$salt = 'gotToBeInAUnitTest';
-			}
 
 			// establish the edit token to prevent csrf
-			$token = $this->getEditToken( $salt );
+			$token = $this->token_getSaltedSessionToken();
 
 			$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' editToken: ' . $token, LOG_DEBUG );
 
@@ -531,7 +542,7 @@ class DonationData {
 			}
 			$token_check = $this->getVal( 'token' );
 			
-			$match = $this->matchEditToken( $token_check, $salt );
+			$match = $this->token_matchEditToken( $token_check );
 			if ( $wgRequest->wasPosted() ) {
 				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Submitted edit token: ' . $this->getVal( 'token' ), LOG_DEBUG );
 				$this->log( $this->getAnnoyingOrderIDLogLinePrefix() . ' Token match: ' . ($match ? 'true' : 'false' ), LOG_DEBUG );
@@ -542,50 +553,33 @@ class DonationData {
 	}
 
 	/**
-	 * Get the utm_source string
-	 *
+	 * normalizeAndSanitize helper function.
+	 * 
 	 * Checks to see if the utm_source is set properly for the credit card
 	 * form including any cc form variants (identified by utm_source_id).  If
 	 * anything cc form related is out of place for the utm_source, this
 	 * will fix it.
 	 *
 	 * the utm_source is structured as: banner.landing_page.payment_instrument
-	 *
-	 * @param string $utm_source The utm_source for tracking - if not passed directly,
-	 * 	we try to figure it out from the request object
-	 * @param int $utm_source_id The utm_source_id for tracking - if not passed directly,
-	 * 	we try to figure it out from the request object
-	 * @return string The full utm_source
 	 */
-	public static function getUtmSource( $utm_source = null, $utm_source_id = null ) {
-		global $wgRequest;
-
-		/**
-		 * fetch whatever was passed in as the utm_source
-		 *
-		 * if utm_source was not passed in as a param, we try to divine it from
-		 * the request.  if it's not set there, no big deal, we'll just be
-		 * missing some tracking data.
-		 */
-		if ( is_null( $utm_source ) ) {
-			$utm_source = $wgRequest->getText( 'utm_source' );
+	protected function setUtmSource() {
+		
+		$utm_source = $this->getVal( 'utm_source' );
+		$utm_source_id = $this->getVal( 'utm_source_id' );
+		
+		//TODO: Seriously, you need to move this. 
+		if ( $this->isSomething('payment_method') ){
+			$payment_method = $this->getVal( 'payment_method' );
+		} else {
+			$payment_method = 'cc';
 		}
-
-		/**
-		 * if we have a utm_source_id, then the user is on a single-step credit card form.
-		 * if that's the case, we treat the single-step credit card form as a landing page,
-		 * which we label as cc#, where # = the utm_source_id
-		 */
-		if ( is_null( $utm_source_id ) ) {
-			$utm_source_id = $wgRequest->getVal( 'utm_source_id', 0 );
-		}
-
-		// this is how the CC portion of the utm_source should be defined
-		$correct_cc_source = ( $utm_source_id ) ? 'cc' . $utm_source_id . '.cc' : 'cc';
+		
+		// this is how the payment method portion of the utm_source should be defined
+		$correct_payment_method_source = ( $utm_source_id ) ? $payment_method . $utm_source_id . '.' . $payment_method : $payment_method;
 
 		// check to see if the utm_source is already correct - if so, return
-		if ( preg_match( '/' . str_replace( ".", "\.", $correct_cc_source ) . '$/', $utm_source ) ) {
-			return $utm_source;
+		if ( !is_null( $utm_source ) && preg_match( '/' . str_replace( ".", "\.", $correct_payment_method_source ) . '$/', $utm_source ) ) {
+			return; //nothing to do. 
 		}
 
 		// split the utm_source into its parts for easier manipulation
@@ -597,13 +591,14 @@ class DonationData {
 			$source_parts[0] = '';
 
 		// if the utm_source_id is set, set the landing page portion of the string to cc#
-		$source_parts[1] = ( $utm_source_id ) ? 'cc' . $utm_source_id : ( isset( $source_parts[1] ) ? $source_parts[1] : '' );
+		$source_parts[1] = ( $utm_source_id ) ? $payment_method . $utm_source_id : ( isset( $source_parts[1] ) ? $source_parts[1] : '' );
 
 		// the payment instrument portion should always be 'cc' if this method is being accessed
-		$source_parts[2] = 'cc';
+		$source_parts[2] = $payment_method;
 
-		// return a reconstructed string
-		return implode( ".", $source_parts );
+		// reconstruct, and set the value.
+		$utm_source = implode( ".", $source_parts );
+		$this->setVal( 'utm_source' , $utm_source );
 	}
 
 	/**
@@ -633,9 +628,11 @@ class DonationData {
 	 * Compares tracking data array to list of valid tracking fields and
 	 * removes any extra tracking fields/data.  Also sets empty values to
 	 * 'null' values.
-	 * @param bool $clean_opouts
+	 * @param bool $unset If set to true, empty values will be unset from the 
+	 * return array, rather than set to null. (default: false)
+	 * @return array Clean tracking data 
 	 */
-	public function getCleanTrackingData() {
+	public function getCleanTrackingData( $unset = false ) {
 
 		// define valid tracking fields
 		$tracking_fields = array(
@@ -654,7 +651,9 @@ class DonationData {
 			if ( $this->isSomething( $value ) ) {
 				$tracking_data[$value] = $this->getVal( $value );
 			} else {
-				$tracking_data[$value] = null;
+				if ( !$unset ){
+					$tracking_data[$value] = null;
+				}
 			}
 		}
 
@@ -666,7 +665,7 @@ class DonationData {
 	 * @return boolean true if we got a contribution tracking # back, false if 
 	 * something went wrong.  
 	 */
-	function saveContributionTracking() {
+	public function saveContributionTracking() {
 
 		$tracked_contribution = $this->getCleanTrackingData();
 
@@ -713,9 +712,6 @@ class DonationData {
 	 * @param array $data Form data
 	 * @param bool $force If set to true, will ensure that contribution tracking is updated
 	 */
-	//Looks like two places: Either right before a paypal redirect (if that's still a thing) or
-	//just prior to curling something up to some server somewhere.
-	//I took care of the one just prior to curling.
 	public function updateContributionTracking( $force = false ) {
 		// ony update contrib tracking if we're coming from a single-step landing page
 		// which we know with cc# in utm_source or if force=true or if contribution_tracking_id is not set
@@ -731,12 +727,12 @@ class DonationData {
 			return true;
 		}  ///wait, what? TODO: This line was straight copied from the _gateway.body. Find out if there's a good reason we're not returning false here.
 
-		$tracked_contribution = $this->getCleanTrackingData();
-
 		// if contrib tracking id is not already set, we need to insert the data, otherwise update
 		if ( !$this->getVal( 'contribution_tracking_id' ) ) {
+			$tracked_contribution = $this->getCleanTrackingData();
 			$this->setVal( 'contribution_tracking_id', $this->insertContributionTracking( $tracked_contribution ) );
 		} else {
+			$tracked_contribution = $this->getCleanTrackingData( true );
 			$db->update( 'contribution_tracking', $tracked_contribution, array( 'id' => $this->getVal( 'contribution_tracking_id' ) ) );
 		}
 	}
@@ -744,7 +740,7 @@ class DonationData {
 	public function addDonorDataToSession() {
 		self::ensureSession();
 		$donordata = $this->getStompMessageFields();
-
+		
 		foreach ( $donordata as $item ) {
 			if ( $this->isSomething( $item ) ) {
 				$_SESSION['Donor'][$item] = $this->getVal( $item );
@@ -851,7 +847,6 @@ class DonationData {
 		);
 		return $stomp_fields;
 	}
-
 }
 
 ?>

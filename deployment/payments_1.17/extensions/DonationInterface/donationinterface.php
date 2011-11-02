@@ -119,9 +119,10 @@ if ( $optionalParts['GlobalCollect'] === true ){
 	$wgResourceModules[ 'gc.form.core.validate' ] = array(
 		// scripts are not being picked up properly. These are currently only being loaded in TwoStepAmount.php
 		//'scripts' => array( 'js/validate.js',  'js/jquery.validate.js', 'js/jquery.validate.additional-methods.js', ),
-		'dependencies' => array( 'ext.donationInterface.errorMessages' ),
+		'dependencies' => array( 'ext.donationInterface.errorMessages', 'jquery.ui.accordion', ),
 		'localBasePath' => $donationinterface_dir . 'globalcollect_gateway/modules',
-		'remoteExtPath' => 'DonationInterface/globalcollect_gateway/modules'
+		'remoteExtPath' => 'DonationInterface/globalcollect_gateway/modules',
+		'styles' => 'css/style.css',
 	);
 
 }
@@ -547,6 +548,7 @@ $wgResourceModules[ 'ext.donationInterface.errorMessages' ] = array(
 		'donate_interface-error-msg-city',
 		'donate_interface-error-msg-state',
 		'donate_interface-error-msg-zip',
+		'donate_interface-error-msg-postal',
 		'donate_interface-error-msg-country',
 		'donate_interface-error-msg-card_type',
 		'donate_interface-error-msg-card_num',
@@ -554,6 +556,15 @@ $wgResourceModules[ 'ext.donationInterface.errorMessages' ] = array(
 		'donate_interface-error-msg-cvv',
 		'donate_interface-error-msg-captcha',
 		'donate_interface-error-msg-captcha-please',
+		'donate_interface-donor-fname',
+		'donate_interface-donor-lname',
+		'donate_interface-donor-street',
+		'donate_interface-donor-city',
+		'donate_interface-donor-state',
+		'donate_interface-donor-zip',
+		'donate_interface-donor-postal',
+		'donate_interface-donor-country',
+		'donate_interface-donor-emailAdd',
 	)
 );
 
