@@ -269,6 +269,14 @@ abstract class GatewayAdapter implements GatewayType {
 			}
 		}
 	}
+	
+	/**
+	 * A helper function to let us stash extra data after the form has been submitted.
+	 * @param array $dataArray An associative array of data.
+	 */
+	public function addData( $dataArray ) {
+		$this->dataObj->addData( $dataArray );
+	}
 
 	/**
 	 * Returns the variable $this->dataObj which should be an instance of
@@ -293,8 +301,8 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 	}
 
-	function isCache() {
-		return $this->dataObj->isCache();
+	function isCaching() {
+		return $this->dataObj->isCaching();
 	}
 
 	/**
