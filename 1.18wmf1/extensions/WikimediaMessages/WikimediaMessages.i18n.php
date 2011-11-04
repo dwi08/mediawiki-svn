@@ -62,28 +62,28 @@ $messages['en'] = array(
 	'group-transwiki'             => 'Transwiki importers',
 	'group-trusted'               => 'Trusted users',
 
-	'group-abusefilter-member'    => 'abuse filter editor',
-	'group-accountcreator-member' => 'account creator',
-	'group-arbcom-member'         => 'arbitration committee member',
-	'group-autopatrolled-member'  => 'autopatroller',
-	'group-autoreviewer-member'   => 'autoreviewer',
-	'group-bigexport-member'      => 'big exporter',
-	'group-confirmed-member'      => 'confirmed user',
-	'group-editprotected-member'  => 'protected page editor',
-	'group-eliminator-member'     => 'eliminator',
-	'group-filemover-member'      => 'file mover',
-	'group-flood-member'          => 'bot user',
-	'group-founder-member'        => 'founder',
-	'group-Image-reviewer-member' => 'image reviewer',
-	'group-import-member'         => 'importer',
-	'group-interface_editors-member' => 'interface editor',
-	'group-ipblock-exempt-member' => 'IP block exempt',
-	'group-OTRS-member-member'    => 'OTRS member',
-	'group-patroller-member'      => 'patroller',
-	'group-researcher-member'     => 'researcher',
-	'group-rollbacker-member'     => 'rollbacker',
-	'group-transwiki-member'      => 'transwiki importer',
-	'group-trusted-member'        => 'trusted user',
+	'group-abusefilter-member'    => '{{GENDER:$1|abuse filter editor}}',
+	'group-accountcreator-member' => '{{GENDER:$1|account creator}}',
+	'group-arbcom-member'         => '{{GENDER:$1|arbitration committee member}}',
+	'group-autopatrolled-member'  => '{{GENDER:$1|autopatroller}}',
+	'group-autoreviewer-member'   => '{{GENDER:$1|autoreviewer}}',
+	'group-bigexport-member'      => '{{GENDER:$1|big exporter}}',
+	'group-confirmed-member'      => '{{GENDER:$1|confirmed user}}',
+	'group-editprotected-member'  => '{{GENDER:$1|protected page editor}}',
+	'group-eliminator-member'     => '{{GENDER:$1|eliminator}}',
+	'group-filemover-member'      => '{{GENDER:$1|file mover}}',
+	'group-flood-member'          => '{{GENDER:$1|bot user}}',
+	'group-founder-member'        => '{{GENDER:$1|founder}}',
+	'group-Image-reviewer-member' => '{{GENDER:$1|image reviewer}}',
+	'group-import-member'         => '{{GENDER:$1|importer}}',
+	'group-interface_editors-member' => '{{GENDER:$1|interface editor}}',
+	'group-ipblock-exempt-member' => '{{GENDER:$1|IP block exempt}}',
+	'group-OTRS-member-member'    => '{{GENDER:$1|OTRS member}}',
+	'group-patroller-member'      => '{{GENDER:$1|patroller}}',
+	'group-researcher-member'     => '{{GENDER:$1|researcher}}',
+	'group-rollbacker-member'     => '{{GENDER:$1|rollbacker}}',
+	'group-transwiki-member'      => '{{GENDER:$1|transwiki importer}}',
+	'group-trusted-member'        => '{{GENDER:$1|trusted user}}',
 
 	'grouppage-abusefilter'    => '{{ns:project}}:Abuse filter editors',
 	'grouppage-accountcreator' => '{{ns:project}}:Account creators',
@@ -118,14 +118,14 @@ $messages['en'] = array(
 	'group-Ombudsmen'       => 'Ombudsmen',
 	'group-Staff'           => 'Staff',
 
-	'group-steward-member'         => 'steward',
-	'group-sysadmin-member'        => 'system administrator',
-	'group-editinterface-member'   => 'interface editor',
-	'group-Global_bot-member'      => 'global bot',
-	'group-Global_rollback-member' => 'global rollbacker',
-	'group-Global_sysops-member'   => 'global sysop',
-	'group-Ombudsmen-member'       => 'ombudsman',
-	'group-Staff-member'           => 'staff',
+	'group-steward-member'         => '{{GENDER:$1|steward}}',
+	'group-sysadmin-member'        => '{{GENDER:$1|system administrator}}',
+	'group-editinterface-member'   => '{{GENDER:$1|interface editor}}',
+	'group-Global_bot-member'      => '{{GENDER:$1|global bot}}',
+	'group-Global_rollback-member' => '{{GENDER:$1|global rollbacker}}',
+	'group-Global_sysops-member'   => '{{GENDER:$1|global sysop}}',
+	'group-Ombudsmen-member'       => '{{GENDER:$1|ombudsman}}',
+	'group-Staff-member'           => '{{GENDER:$1|staff}}',
 
 	'grouppage-steward'         => 'm:Stewards', # only translate this message to other languages if you have to change it
 	'grouppage-sysadmin'        => 'm:System administrators', # only translate this message to other languages if you have to change it
@@ -144,12 +144,12 @@ $messages['en'] = array(
 	# mediawiki.org specific user group
 
 	'group-coder'        => 'Coders',
-	'group-coder-member' => 'coder',
+	'group-coder-member' => '{{GENDER:$1|coder}}',
 	'grouppage-coder'    => 'Project:Coder', # only translate this message to other languages if you have to change it
 
 	# Private and fishbowl wikis
 	'group-inactive'        => 'Inactive users',
-	'group-inactive-member' => 'inactive user',
+	'group-inactive-member' => '{{GENDER:$1|inactive user}}',
 	'grouppage-inactive'    => '{{ns:project}}:Inactive users',
 
 	# The name for the common shared repo 'shared'
@@ -158,15 +158,14 @@ $messages['en'] = array(
 	# Copyright fun!
 	'wikimedia-copyright' => 'Text is available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution/Share-Alike License</a>;
 additional terms may apply.
-See <a href="http://wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> for details.',
-	'wikimedia-copyrightwarning' => 'By saving, you agree to irrevocably release your contribution under the [http://creativecommons.org/licenses/by-sa/3.0/ Creative Commons Attribution/Share-Alike License 3.0] and the [http://www.gnu.org/copyleft/fdl.html GFDL].
-You agree to be credited by re-users, at minimum, through a hyperlink or URL to the page you are contributing to.
-See the [http://wikimediafoundation.org/wiki/Terms_of_Use Terms of Use] for details.',
+See <a href="http://wikimediafoundation.org/wiki/Terms_of_use">Terms of use</a> for details.',
+	'wikimedia-copyrightwarning' => 'By clicking the "{{int:savearticle}}" button, you agree to the [http://wikimediafoundation.org/wiki/Terms_of_use Terms of use], and you irrevocably agree to release your contribution under the [http://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License CC-BY-SA 3.0 License] and the [http://en.wikipedia.org/wiki/Wikipedia:Text_of_the_GNU_Free_Documentation_License GFDL].
+You agree that a hyperlink or URL is sufficient attribution under the Creative Commons license.',
 	'wikimedia-editpage-tos-summary' => 'If you do not want your writing to be edited and redistributed at will, then do not submit it here.
 If you did not write this yourself, it must be available under terms consistent with the [http://wikimediafoundation.org/wiki/Terms_of_Use Terms of Use], and you agree to follow any relevant licensing requirements.',
 
 	# Custom message for enwiki to stop from deleting the mainpage
-	'cant-delete-main-page' => "You can't delete or move the main page.",
+	'cant-delete-main-page' => 'You cannot delete or move the main page.',
 );
 
 /** Message documentation (Message documentation)
