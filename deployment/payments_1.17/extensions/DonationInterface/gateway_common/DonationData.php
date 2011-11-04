@@ -244,6 +244,29 @@ class DonationData {
 			unset( $this->normalized[$key] );
 		}
 	}
+	
+	/**
+	 * Returns an array of all the fields that get re-calculated during a 
+	 * normalizeAndSanitize. 
+	 * This will most likely be used on the outside when in the process of 
+	 * adding data.
+	 * @return array An array of values matching all recauculated fields.  
+	 */
+	function getCalculatedFields() {
+		$fields = array(
+			'utm_source',
+			'amount',
+			'order_id',
+			'i_order_id',
+			'gateway',
+			'optout',
+			'anonymous',
+			'language',
+			'contribution_tracking_id', //sort of...
+			'currency'
+		);
+		return $fields;
+	}
 
 	function normalizeAndSanitize() {
 		if ( !empty( $this->normalized ) ) {
@@ -254,7 +277,22 @@ class DonationData {
 			$this->setNormalizedOptOuts();
 			$this->setLanguage();
 			$this->handleContributionTrackingID();
+			$this->setCurrencyCode();
 			array_walk( $this->normalized, array( $this, 'sanitizeInput' ) );
+		}
+	}
+	
+	/**
+	 * normalizeAndSanitize helper function
+	 * Setting the currency code correctly. 
+	 */
+	function setCurrencyCode() {
+		global $wgRequest;
+		if ( !$this->isSomething('currency') ){
+			$code = $wgRequest->getVal('currency', null);
+			if (!is_null($code)){
+				$this->setVal('currency', $code);
+			}
 		}
 	}
 	
