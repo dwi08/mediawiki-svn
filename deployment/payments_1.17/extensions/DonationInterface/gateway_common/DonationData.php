@@ -268,6 +268,10 @@ class DonationData {
 		return $fields;
 	}
 
+	/**
+	 * Normalizes and Sanitizes the current set of data, just after it's been 
+	 * pulled (or re-pulled) from a source. 
+	 */
 	function normalizeAndSanitize() {
 		if ( !empty( $this->normalized ) ) {
 			$this->setUtmSource();

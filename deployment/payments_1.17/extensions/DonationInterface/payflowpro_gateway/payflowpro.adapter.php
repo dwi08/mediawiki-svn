@@ -15,6 +15,20 @@ class PayflowProAdapter extends GatewayAdapter {
 		);
 	}
 
+	/**
+	 * Define error_map
+	 *
+	 * @todo
+	 * - Add: Error messages
+	 * - error_map is not used by PayflowProAdapter
+	 */
+	public function defineErrorMap() {
+		
+		$this->error_map = array(
+			0		=> 'payflowpro_gateway-response-default',	
+		);
+	}
+
 	function defineVarMap() {
 		$this->var_map = array(
 			'ACCT' => 'card_num',
@@ -78,8 +92,6 @@ class PayflowProAdapter extends GatewayAdapter {
 				'TENDER' => 'C',
 				'VERBOSITY' => 'MEDIUM',
 			),
-			'do_validation' => true,
-			'do_processhooks' => true,
 		);
 	}
 
@@ -199,6 +211,22 @@ class PayflowProAdapter extends GatewayAdapter {
 			return $response;
 		}
 	}
+	
+	/**
+	 * Gets all the currency codes appropriate for this gateway
+	 * @return array of currency codes
+	 */
+	function getCurrencies() {
+		$currencies = array(
+			'USD', // U.S. Dollar
+			'GBP', // British Pound
+			'EUR', // Euro
+			'AUD', // Australian Dollar
+			'CAD', // Canadian Dollar
+			'JPY', // Japanese Yen
+		);
+		return $currencies;
+	}
 
 	/**
 	 * Actually do... stuff. Here. 
@@ -207,8 +235,12 @@ class PayflowProAdapter extends GatewayAdapter {
 	 */
 	function processResponse( $response ) {
 		//set the transaction result message
-		$this->setTransactionResult( $response['RESPMSG'], 'txn_message' );
-		$this->setTransactionResult( $response['PNREF'], 'gateway_txn_id' );
+		if ( isset( $response['RESPMSG'] ) ){
+			$this->setTransactionResult( $response['RESPMSG'], 'txn_message' );
+		}
+		if ( isset( $response['PNREF'] ) ){
+			$this->setTransactionResult( $response['PNREF'], 'gateway_txn_id' );
+		}
 	}
 
 	function defineStagedVars() {
@@ -221,17 +253,26 @@ class PayflowProAdapter extends GatewayAdapter {
 
 	protected function stage_card_num( $type = 'request' ) {
 		//I realize that the $type isn't used. Voodoo.
-		$this->postdata['card_num'] = str_replace( ' ', '', $this->postdata['card_num'] );
+		$this->staged_data['card_num'] = str_replace( ' ', '', $this->staged_data['card_num'] );
 	}
 
 	//TODO: Something much fancier here. 
 	protected function stage_user_ip( $type = 'request' ) {
-		if ( $this->postdata['user_ip'] === '127.0.0.1' ) {
-			global $wgDonationInterfaceIPAddress;
-			if ( !empty( $wgDonationInterfaceIPAddress ) ) {
-				$this->postdata['user_ip'] = $wgDonationInterfaceIPAddress;
+		if ( $this->staged_data['user_ip'] === '127.0.0.1' ) {
+			$ipAddress = $this->getGlobal( 'IPAddress' );
+			if ( !empty( $ipAddress ) ) {
+				$this->staged_data['user_ip'] = $ipAddress;
 			}
 		}
+	}
+	
+	protected function pre_process_card(){
+		$this->incrementNumAttempt();
+		$this->runPreProcessHooks();
+	}
+	
+	protected function post_process_card(){
+		$this->runPostProcessHooks();
 	}
 
 }

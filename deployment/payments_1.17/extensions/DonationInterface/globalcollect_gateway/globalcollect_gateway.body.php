@@ -34,9 +34,7 @@ class GlobalCollectGateway extends GatewayForm {
 	 * Show the special page
 	 *
 	 * @todo
-	 * - Add transaction type handler
-	 * - What should a failure on transaction_type issues do? log & message client 
-	 * - Set up BANK_TRANSFER: Story #308
+	 * - Finish error handling
 	 *
 	 * @param $par Mixed: parameter passed to the page or null
 	 */
@@ -81,29 +79,19 @@ EOT;
 			$this->paypalRedirect();
 			return;
 		}
-
+		
 
 		// dispatch forms/handling
 		if ( $this->adapter->checkTokens() ) {	
-			
-			//TODO: Get rid of $data out here completely, by putting this logic inside the adapter somewhere. 
-			//All we seem to be doing with it now, is internal adapter logic outside of the adapter. 
-			$data = $this->adapter->getDisplayData();
-				
+
 			if ( $this->adapter->posted ) {
-				// The form was submitted and the payment method has been set
-				/*
-				 * The $payment_method should default to false.
-				 *
-				 * An invalid $payment_method will cause an error.
-				 */
-				$payment_method = ( isset( $data['payment_method'] ) && !empty( $data['payment_method'] ) ) ? $data['payment_method'] : 'cc';
-				$payment_submethod = ( isset( $data['payment_submethod'] ) && !empty( $data['payment_submethod'] ) ) ? $data['payment_submethod'] : '';
-		
-				$payment_submethodMeta = $this->adapter->getPaymentSubmethodMeta( $payment_submethod, array( 'log' => true, ) );
 				
+				// The form was submitted and the payment method has been set
+				$payment_method = $this->adapter->getPaymentMethod();
+				$payment_submethod = $this->adapter->getPaymentSubmethod();
+
 				// Check form for errors
-				$form_errors = $this->validateForm( $this->errors, $payment_submethodMeta['validation'] );
+				$form_errors = $this->validateForm( $this->errors, $this->adapter->getPaymentSubmethodFormValidation() );
 				
 				// If there were errors, redisplay form, otherwise proceed to next step
 				if ( $form_errors ) {
@@ -113,25 +101,69 @@ EOT;
 					// allow any external validators to have their way with the data
 					// Execute the proper transaction code:
 
-					$result = $this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
-			
-					$this->displayResultsForDebug( $result );
-
 					if ( $payment_method == 'cc' ) {
 
-						$this->executeIframeForCreditCard( $result );
+						$this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+						
+						// Display an iframe for credit cards
+						if ( $this->executeIframeForCreditCard() ) {
+							$this->displayResultsForDebug();
+							// Nothing left to process
+							return;
+						}
 					}
+					elseif ( $payment_method == 'bt' ) {
+
+						$this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+
+						if ( in_array( $this->adapter->getTransactionWMFStatus(), $this->adapter->getGoToThankYouOn() ) ) {
+						
+							return $this->displayBankTransferInformation();
+						}
+
+					}
+					elseif ( $payment_method == 'rtbt' ) {
+
+						$this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+
+						$formAction = $this->adapter->getTransactionDataFormAction();
+						
+						// Redirect to the bank
+						if ( !empty( $formAction ) ) {
+							return $wgOut->redirect( $formAction );
+						}
+
+					}
+					elseif ( $payment_method == 'dd' ) {
+
+						$this->adapter->do_transaction( 'DO_BANKVALIDATION' );
+
+						if ( $this->adapter->getTransactionStatus() ) {
+
+							$this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+						}
+						
+					}
+					else {
+						$this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+					}
+			
+					return $this->resultHandler();
 
 				}
 			} else {
 				// Display form
 				
-				// Not sure what this is for.
+				// See GlobalCollectAdapter::stage_returnto()
 				$oid = $wgRequest->getText( 'order_id' );
 				if ( $oid ) {
-					$result = $this->adapter->do_transaction( 'GET_ORDERSTATUS' );
-					$this->displayResultsForDebug( $result );
+					$this->adapter->do_transaction( 'GET_ORDERSTATUS' );
+					$this->displayResultsForDebug();
 				}
+
+				//TODO: Get rid of $data out here completely, by putting this logic inside the adapter somewhere. 
+				//All we seem to be doing with it now, is internal adapter logic outside of the adapter. 
+				$data = $this->adapter->getData_Raw();
 				
 				// If the result of the previous transaction was failure, set the retry message.
 				if ( $data && array_key_exists( 'response', $data ) && $data['response'] == 'failure' ) {
@@ -152,33 +184,91 @@ EOT;
 	/**
 	 * Execute iframe for credit card
 	 *
-	 * @param array	$result	The result array from the gateway adapter
-	 *
-	 * @todo
-	 * - this needs to be moved out of @see GlobalCollectGateway and into the adapter.
+	 * @return boolean	Returns true if formaction exists for iframe.
 	 */
-	public function executeIframeForCreditCard( $result ) {
+	protected function executeIframeForCreditCard() {
 
 		global $wgOut;
 
-		if ( !empty( $result['data'] ) ) {
+		$formAction = $this->adapter->getTransactionDataFormAction();
+		
+		if ( $formAction ) {
 
-			if ( array_key_exists( 'FORMACTION', $result['data'] ) ) {
-				$paymentFrame = Xml::openElement( 'iframe', array(
-						'id' => 'globalcollectframe',
-						'name' => 'globalcollectframe',
-						'width' => '680',
-						'height' => '300',
-						'frameborder' => '0',
-						'style' => 'display:block;',
-						'src' => $result['data']['FORMACTION']
-						)
-				);
-				$paymentFrame .= Xml::closeElement( 'iframe' );
+			$paymentFrame = Xml::openElement( 'iframe', array(
+					'id' => 'globalcollectframe',
+					'name' => 'globalcollectframe',
+					'width' => '680',
+					'height' => '300',
+					'frameborder' => '0',
+					'style' => 'display:block;',
+					'src' => $formAction,
+				)
+			);
+			$paymentFrame .= Xml::closeElement( 'iframe' );
 
-				$wgOut->addHTML( $paymentFrame );
+			$wgOut->addHTML( $paymentFrame );
+			
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Display information for bank transfer
+	 */
+	protected function displayBankTransferInformation() {
+
+		global $wgOut;
+
+		$results = $this->adapter->getTransactionAllResults();
+
+		$return = '';
+		$fields = array(
+			'ACCOUNTHOLDER'			=> array('translation' => 'donate_interface-bt-account_holder', ),
+			'BANKNAME'				=> array('translation' => 'donate_interface-dd-bank_name', ),
+			'BANKACCOUNTNUMBER'		=> array('translation' => 'donate_interface-bt-bank_account_number', ),
+			'CITY'					=> array('translation' => 'donate_interface-donor-city', ),
+			'COUNTRYDESCRIPTION'	=> array('translation' => 'donate_interface-bt-country_description', ),
+			'IBAN'					=> array('translation' => 'donate_interface-dd-iban', ),
+			'PAYMENTREFERENCE'		=> array('translation' => 'donate_interface-bt-payment_reference', ),
+			'SWIFTCODE'				=> array('translation' => 'donate_interface-bt-swift_code', ),
+			'SPECIALID'				=> array('translation' => 'donate_interface-bt-special_id', ),
+		);
+		
+		$id = 'bank_transfer_information';
+		
+		$return .= Xml::openElement( 'div', array( 'id' => $id ) ); // $id
+
+		$return .= Xml::tags( 'h2', array(), wfMsg( 'donate_interface-bt-information' ) );
+		
+		$return .= Xml::openElement( 'table', array( 'id' => $id . '_table' ) );
+
+		foreach ( $fields as $field => $meta ) {
+			
+			if ( isset( $results['data'][ $field ] ) ) {
+				$return .= Xml::openElement( 'tr', array() );
+		
+				$return .= Xml::tags( 'th', array(), wfMsg( $meta['translation'] ) );
+				$return .= Xml::tags( 'td', array(), $results['data'][ $field ] );
+		
+				$return .= Xml::closeElement( 'tr' );
 			}
 		}
+
+		$return .= Xml::closeElement( 'table' ); // close $id . '_table'
+
+		$queryString = '?payment_method=' . $this->adapter->getPaymentMethod() . '&payment_submethod=' . $this->adapter->getPaymentSubmethod();
+
+		$url = $this->adapter->getGlobal( 'ThankYouPage' ) . '/' . $this->adapter->getTransactionDataLanguage() . $queryString;
+		
+		$link = Xml::tags( 'a', array( 'href' => $url ), wfMsg( 'donate_interface-bt-finished' ) );
+		
+		$return .= Xml::tags( 'p', array(), $link );
+		
+		$return .= Xml::closeElement( 'div' );  // $id
+		
+		return $wgOut->addHTML( $return );
 	}
 
 }

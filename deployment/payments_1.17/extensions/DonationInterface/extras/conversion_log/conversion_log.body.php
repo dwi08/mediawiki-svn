@@ -9,9 +9,9 @@ class Gateway_Extras_ConversionLog extends Gateway_Extras {
 	 */
 	public function post_process() {
 		// if the trxn has been outright rejected, log it
-		if ( $this->gateway_adapter->action == 'reject' ) {
+		if ( $this->gateway_adapter->getValidationAction() == 'reject' ) {
 			$this->log(
-				$this->gateway_adapter->getData( 'contribution_tracking_id' ), 'Rejected'
+				$this->gateway_adapter->getData_Raw( 'contribution_tracking_id' ), 'Rejected'
 			);
 			return TRUE;
 		}
@@ -21,12 +21,15 @@ class Gateway_Extras_ConversionLog extends Gateway_Extras {
 			return FALSE;
 
 		$this->log(
-			$this->gateway_adapter->getData( 'contribution_tracking_id' ), "Gateway response: " . addslashes( $this->gateway_adapter->getTransactionMessage() ), '"' . addslashes( json_encode( $this->gateway_adapter->getTransactionData() ) ) . '"'
+			$this->gateway_adapter->getData_Raw( 'contribution_tracking_id' ), "Gateway response: " . addslashes( $this->gateway_adapter->getTransactionMessage() ), '"' . addslashes( json_encode( $this->gateway_adapter->getTransactionData() ) ) . '"'
 		);
 		return TRUE;
 	}
 
 	static function onPostProcess( &$gateway_adapter ) {
+		if ( !$gateway_adapter->getGlobal( 'EnableConversionLog' ) ){
+			return true;
+		}
 		$gateway_adapter->debugarray[] = 'conversion log onPostProcess hook!';
 		return self::singleton( $gateway_adapter )->post_process();
 	}

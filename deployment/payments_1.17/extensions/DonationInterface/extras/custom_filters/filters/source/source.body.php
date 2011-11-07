@@ -21,11 +21,11 @@ class Gateway_Extras_CustomFilters_Source extends Gateway_Extras {
 
 	public function filter() {
 		// pull out the source from the filter object
-		$source = $this->gateway_adapter->getData( 'utm_source' );
+		$source = $this->gateway_adapter->getData_Raw( 'utm_source' );
 
 		// a very complex filtering algorithm for sources
-		global $wgCustomFiltersSrcRules;
-		foreach ( $wgCustomFiltersSrcRules as $regex => $risk_score_modifier ) {
+		$srcRules = $this->gateway_adapter->getGlobal( 'CustomFiltersSrcRules' );
+		foreach ( $srcRules as $regex => $risk_score_modifier ) {
 			/**
 			 * Note that regex pattern does not include delimiters.
 			 * These will need to be included in your custom regex patterns.
@@ -38,7 +38,7 @@ class Gateway_Extras_CustomFilters_Source extends Gateway_Extras {
 				$log_msg .= "\t\"" . addslashes( $regex ) . "\"";
 				$log_msg .= "\t\"" . $this->cfo->risk_score . "\"";
 				$this->log(
-					$this->gateway_adapter->getData( 'contribution_tracking_id' ), 'Filter: Source', $log_msg
+					$this->gateway_adapter->getData_Raw( 'contribution_tracking_id' ), 'Filter: Source', $log_msg
 				);
 			}
 		}
@@ -47,6 +47,10 @@ class Gateway_Extras_CustomFilters_Source extends Gateway_Extras {
 	}
 
 	static function onFilter( &$gateway_adapter, &$custom_filter_object ) {
+		if ( !$gateway_adapter->getGlobal( 'EnableSourceFilter' ) ||
+			!count( $gateway_adapter->getGlobal( 'CustomFiltersSrcRules' ) ) ){
+			return true;
+		}
 		$gateway_adapter->debugarray[] = 'source onFilter hook!';
 		return self::singleton( $gateway_adapter, $custom_filter_object )->filter();
 	}

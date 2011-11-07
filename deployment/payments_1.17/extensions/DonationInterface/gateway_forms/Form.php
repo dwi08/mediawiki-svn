@@ -84,7 +84,7 @@ abstract class Gateway_Form {
 
 		$this->gateway = & $gateway;
 		$this->test = $this->gateway->getGlobal( "Test" );
-		$this->form_data = $this->gateway->getDisplayData();
+		$this->form_data = $this->gateway->getData_Raw();
 		$this->form_errors = & $error;
 
 		/**
@@ -348,45 +348,131 @@ abstract class Gateway_Form {
 	/**
 	 * Generates the dropdown list for available currencies
 	 *
+	 * @param string $defaultCurrencyCode default currency code to select
+	 * @param boolean $showCardsOnCurrencyChange Allow javascript onchange="showCards();" to be executed.
+	 *
 	 * @fixme The list of available currencies should NOT be defined here but rather
 	 * 	be customizable
 	 * @fixme It would be great to default the currency to a locale's currency
 	 * @return string The entire HTML select for the currency dropdown
 	 */
-	public function generateCurrencyDropdown( $options = array() ) {
+	public function generateCurrencyDropdown( $defaultCurrencyCode = 'USD', $showCardsOnCurrencyChange = false ) {
 		
-		extract( $options );
+		// Get an array of currency codes from the current payment gateway
+		$availableCurrencies = $this->gateway->getCurrencies();
 		
-		$showCardsOnCurrencyChange = isset( $showCardsOnCurrencyChange ) ? (boolean) $showCardsOnCurrencyChange : true;
+		// If a currency has already been posted, use that, otherwise use the default.
+		if ( $this->form_data['currency'] ) {
+			$selectedCurrency = $this->form_data['currency'];
+		} else {
+			$selectedCurrency = $defaultCurrencyCode;
+		}
 		
-		$available_currencies = array(
-			'USD' => 'USD: U.S. Dollar',
-			'GBP' => 'GBP: British Pound',
-			'EUR' => 'EUR: Euro',
-			'AUD' => 'AUD: Australian Dollar',
-			'CAD' => 'CAD: Canadian Dollar',
-			'JPY' => 'JPY: Japanese Yen'
-		);
-
-		$currency_opts = '';
+		$currencyOpts = ''; // Initialize variable for the select list options
 
 		// generate dropdown of currency opts
-		foreach ( $available_currencies as $value => $currency_name ) {
-			$selected = ( $this->form_data['currency'] == $value ) ? true : false;
-			$currency_opts .= Xml::option( wfMsg( 'donate_interface-' . $value ), $value, $selected );
+		foreach ( $availableCurrencies as $currencyCode ) {
+		
+			// Should this option be selected?
+			$selected = ( $selectedCurrency == $currencyCode ) ? true : false;
+			
+			$optionText = wfMsg( 'donate_interface-' . $currencyCode ); // name of the currency
+			/* uncomment this to get currency name and code in the drop-down list
+			$optionText = wfMsg(
+				'donate_interface-currency-display', // formatting
+				wfMsg( 'donate_interface-' . $currencyCode ), // name of the currency
+				$currencyCode // code of the currency
+			);
+			*/
+			
+			$currencyOpts .= Xml::option( $optionText, $currencyCode, $selected );
 		}
 
-		$currency_menu = Xml::openElement(
+		$currencyMenu = Xml::openElement(
 			'select',
 			array(
 				'name' => 'currency_code',
 				'id' => 'input_currency_code',
 				'onchange' => $showCardsOnCurrencyChange ? 'showCards()' : '',
 			) );
-		$currency_menu .= $currency_opts;
-		$currency_menu .= Xml::closeElement( 'select' );
+		$currencyMenu .= $currencyOpts;
+		$currencyMenu .= Xml::closeElement( 'select' );
 
-		return $currency_menu;
+		return $currencyMenu;
+	}
+
+	/**
+	 * Generates the radio buttons for selecting a donation amount
+	 *
+	 * @param	array	$options
+	 *
+	 * $options:
+	 * - displayCurrencyDropdown: Display the currency dropdown selector
+	 * - showCardsOnCurrencyChange: Passed to @see Gateway_Form::generateStateDropdown()
+	 *
+	 * @todo
+	 * - Use Xml object to generate form elements.
+	 *
+	 * @return string Returns an html table of radio buttons for the amount. 
+	 */
+	public function generateAmountByRadio( $options = array() ) {
+		
+		extract( $options );
+
+		$showCardsOnCurrencyChange = isset( $showCardsOnCurrencyChange ) ? (boolean) $showCardsOnCurrencyChange : true;
+		$displayCurrencyDropdown = isset( $displayCurrencyDropdown ) ? (boolean) $displayCurrencyDropdown : true;
+		$setCurrency = isset( $setCurrency ) ? (string) $setCurrency : '';
+		$displayCurrencyDropdown = empty( $setCurrency ) ? $displayCurrencyDropdown : false;
+
+		$amount = isset( $this->form_data['amount'] ) ? (string) $this->form_data['amount'] : '0';
+
+		// Treat values as string for comparison
+		$amountValues = array('5', '10', '20', '35', '50', '100', '250',);
+		
+		$isOther = in_array( $amount, $amountValues) ? false : true;
+		$amountOther = $isOther ? $amount : '';
+		
+		$checked = 'checked="checked" ';
+		// The text to return
+		$return  = '';
+		
+		$return .= '<table id="amount-radio">';
+		$return .= '	<tr>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="5" ' . ( $amount == '5' ? $checked : '' ) . '/> 5</label></td>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="10" ' . ( $amount == '10' ? $checked : '' ) . '/> 10</label></td>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="20" ' . ( $amount == '20' ? $checked : '' ) . '/> 20</label></td>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="35" ' . ( $amount == '35' ? $checked : '' ) . '/> 35</label></td>';
+		$return .= '	</tr>';
+		$return .= '	<tr>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="50" ' . ( $amount == '50' ? $checked : '' ) . '/> 50</label></td>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="100" ' . ( $amount == '100' ? $checked : '' ) . '/> 100</label></td>';
+		$return .= '		<td><label><input type="radio" name="amountRadio" value="250" ' . ( $amount == '250' ? $checked : '' ) . '/> 250</label></td>';
+		$return .= '		<td>';
+		$return .= '			<input type="radio" name="amountRadio" id="input_amount_other" value="other" ' . ( $isOther ? $checked : '' ) . ' />';
+		$return .= '			<label><input type="text" class="txt-sm hint"  name="amountGiven" size="4" id="other-amount" title="Other..."  onfocus="" value="' . $amountOther . '" /></label>';
+		
+		// Add hidden amount field for validation
+		$return .= Html::hidden( 'amount', $amount );
+		
+		// Set currency
+		if ( !empty( $setCurrency ) ) {
+			$return .= Html::hidden( 'currency_code', $setCurrency );
+		}
+		
+		$return .= '		</td>';
+		$return .= '	</tr>';
+		
+		if ( $displayCurrencyDropdown ) {
+			$return .= '	<tr>';
+			$return .= '		<td colspan="4" >';
+			$return .= $this->generateCurrencyDropdown( null, $showCardsOnCurrencyChange );
+			$return .= '		</td>';
+			$return .= '	</tr>';
+		}
+		
+		$return .= '</table>';
+		
+		return $return;
 	}
 
 	/**

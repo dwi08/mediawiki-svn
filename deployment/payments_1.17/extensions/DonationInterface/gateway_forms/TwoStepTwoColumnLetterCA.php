@@ -95,7 +95,7 @@ class Gateway_Form_TwoStepTwoColumnLetterCA extends Gateway_Form_TwoStepTwoColum
 		$form .= '<tr>';
 		$form .= '<td class="label">' . Xml::label( wfMsg( 'donate_interface-donor-amount' ), 'amount' ) . '</td>';
 		$form .= '<td>' . Xml::input( 'amount', '7', $this->form_data['amount'], array( 'type' => 'text', 'maxlength' => '10', 'id' => 'amount' ) ) .
-			' ' . $this->generateCurrencyDropdown() . '</td>';
+			' ' . $this->generateCurrencyDropdown( 'CAD' ) . '</td>';
 		$form .= '</tr>';
 
 		// card logos
@@ -183,7 +183,7 @@ class Gateway_Form_TwoStepTwoColumnLetterCA extends Gateway_Form_TwoStepTwoColum
 		// generate dropdown of state opts
 		foreach ( $states as $value => $state_name ) {
 			$selected = ( $this->form_data[ 'state' ] == $value ) ? true : false;
-			$state_opts .= Xml::option( $state_name, $value, $selected );
+			$state_opts .= Xml::option( wfMsg( 'donate_interface-province-dropdown-' . $value ), $value, $selected );
 		}
 
 		$state_menu = Xml::openElement(

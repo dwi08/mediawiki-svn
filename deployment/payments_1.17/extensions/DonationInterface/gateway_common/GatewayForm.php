@@ -50,7 +50,6 @@ class GatewayForm extends UnlistedSpecialPage {
 	 */
 	public $validateFormResult = true;
 
-
 	/**
 	 * Constructor
 	 */
@@ -78,7 +77,7 @@ class GatewayForm extends UnlistedSpecialPage {
 	 */
 	public function validateForm( &$error, $options = array() ) {
 		
-		$data = $this->adapter->getDisplayData();
+		$data = $this->adapter->getData_Raw();
 		
 		extract( $options );
 
@@ -122,6 +121,13 @@ class GatewayForm extends UnlistedSpecialPage {
 	/**
 	 * Validates the address
 	 *
+	 * Required:
+	 * - street
+	 * - city
+	 * - state
+	 * - zip
+	 * - country
+	 *
 	 * @param array	$data	Reference to the data of the form
 	 * @param array	$error	Reference to the error messages of the form
 	 *
@@ -143,14 +149,23 @@ class GatewayForm extends UnlistedSpecialPage {
 			$this->setValidateFormResult( false );
 		}
 
-		if ( empty( $data['state'] ) ) {
+		if ( empty( $data['state'] ) || $data['state'] == 'YY' ) {
 
-			$error['state'] = wfMsg( 'donate_interface-error-msg', wfMsg( 'donate_interface-error-msg-state' ) );
+			$error['state'] = wfMsg( 'donate_interface-error-msg', wfMsg( 'donate_interface-state-province' ) );
 
 			$this->setValidateFormResult( false );
 		}
 
-		if ( empty( $data['zip'] ) && $data['state'] != 'XX') {
+		if ( empty( $data['country'] ) || !array_key_exists( $data['country'], $this->getCountries() )) {
+
+			$error['country'] = wfMsg( 'donate_interface-error-msg', wfMsg( 'donate_interface-error-msg-country' ) );
+
+			$this->setValidateFormResult( false );
+		}
+
+		$ignoreCountries = array();
+		
+		if ( empty( $data['zip'] ) && !in_array( $data['country'], $ignoreCountries ) ) {
 
 			$error['zip'] = wfMsg( 'donate_interface-error-msg', wfMsg( 'donate_interface-error-msg-zip' ) );
 
@@ -345,8 +360,18 @@ class GatewayForm extends UnlistedSpecialPage {
 		return $this->form_class;
 	}
 
-	function displayResultsForDebug( $results ) {
+	/**
+	 * Get the currently set form class
+	 *
+	 * Will set the form class if the form class not already set
+	 * Using logic in setFormClass()
+	 * @return string
+	 */
+	protected function displayResultsForDebug( $results = array() ) {
 		global $wgOut;
+		
+		$results = empty( $results ) ? $this->adapter->getTransactionAllResults() : $results;
+		
 		if ( $this->adapter->getGlobal( 'DisplayDebug' ) !== true ){
 			return;
 		}
@@ -430,68 +455,19 @@ class GatewayForm extends UnlistedSpecialPage {
 	 * In reality, this probably ought to use some sort of webservice to get real-time
 	 * conversion rates.
 	 *
-	 * @param $currency_code
-	 * @param $amount
-	 * @return unknown_type
+	 * @param string $currency_code
+	 * @param float $amount
+	 * @return float
 	 */
-	public function convert_to_usd( $currency_code, $amount ) {
-		switch ( strtoupper( $currency_code ) ) {
-			case 'USD':
-				$usd_amount = $amount / 1;
-				break;
-			case 'GBP':
-				$usd_amount = $amount / 1;
-				break;
-			case 'EUR':
-				$usd_amount = $amount / 1;
-				break;
-			case 'AUD':
-				$usd_amount = $amount / 2;
-				break;
-			case 'CAD':
-				$usd_amount = $amount / 1;
-				break;
-			case 'CHF':
-				$usd_amount = $amount / 1;
-				break;
-			case 'CZK':
-				$usd_amount = $amount / 20;
-				break;
-			case 'DKK':
-				$usd_amount = $amount / 5;
-				break;
-			case 'HKD':
-				$usd_amount = $amount / 10;
-				break;
-			case 'HUF':
-				$usd_amount = $amount / 200;
-				break;
-			case 'JPY':
-				$usd_amount = $amount / 100;
-				break;
-			case 'NZD':
-				$usd_amount = $amount / 2;
-				break;
-			case 'NOK':
-				$usd_amount = $amount / 10;
-				break;
-			case 'PLN':
-				$usd_amount = $amount / 5;
-				break;
-			case 'SGD':
-				$usd_amount = $amount / 2;
-				break;
-			case 'SEK':
-				$usd_amount = $amount / 10;
-				break;
-			case 'ILS':
-				$usd_amount = $amount / 5;
-				break;
-			default:
-				$usd_amount = $amount;
-				break;
+	static function convert_to_usd( $currency_code, $amount ) {
+		require_once( dirname( __FILE__ ) . '/currencyRates.inc' );
+		$rates = getCurrencyRates();
+		$code = strtoupper( $currency_code );
+		if ( array_key_exists( $code, $rates ) ) {
+			$usd_amount = $amount / $rates[$code];
+		} else {
+			$usd_amount = $amount;
 		}
-
 		return $usd_amount;
 	}
 
@@ -547,6 +523,63 @@ class GatewayForm extends UnlistedSpecialPage {
 	public function setValidateFormResult( $validateFormResult ) {
 
 		$this->validateFormResult = empty( $validateFormResult ) ? false : ( boolean ) $validateFormResult;
+	}
+
+	/**
+	 * Handle the result from the gateway
+	 *
+	 * If there are errors, then this will return to the form.
+	 *
+	 * @todo
+	 * - This is being implemented in GlobalCollect
+	 * - Do we need to implement this for PayFlow Pro? Not yet!
+	 * - Do we only want to skip the Thank you page on getTransactionWMFStatus() => failed?
+	 *
+	 * @return null
+	 */
+	protected function resultHandler() {
+		
+		global $wgOut;
+
+		// If transaction is anything, except failed, go to the thank you page.
+		
+		if ( in_array( $this->adapter->getTransactionWMFStatus(), $this->adapter->getGoToThankYouOn() ) ) {
+
+			$thankyoupage = $this->adapter->getGlobal( 'ThankYouPage' );
+	
+			if ( $thankyoupage ) {
+				
+				$queryString = '?payment_method=' . $this->adapter->getPaymentMethod() . '&payment_submethod=' . $this->adapter->getPaymentSubmethod();
+				
+				return $wgOut->redirect( $thankyoupage . '/' . $this->adapter->getTransactionDataLanguage() . $queryString );
+			}
+		}
+		
+		// If we did not go to the Thank you page, there must be an error.
+		return $this->resultHandlerError();
+	}
+
+	/**
+	 * Handle the error result from the gateway
+	 *
+	 * @todo
+	 * - logging may need be added to this method
+	 *
+	 * @return null
+	 */
+	protected function resultHandlerError() {
+
+		// Display debugging results
+		$this->displayResultsForDebug();
+
+		$this->errors['general'] = ( !isset( $this->errors['general'] ) || empty( $this->errors['general'] ) ) ? array() : (array) $this->errors['general'];
+
+		foreach ( $this->adapter->getTransactionErrors() as $code => $message ) {
+			
+			$this->errors['general'][ $code ] = $message;
+		}
+		
+		return $this->displayForm( $this->errors );
 	}
 
 }

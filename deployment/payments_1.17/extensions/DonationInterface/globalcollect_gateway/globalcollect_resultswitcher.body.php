@@ -62,11 +62,12 @@ class GlobalCollectGatewayResult extends GatewayForm {
 		if ( $this->adapter->checkTokens() ) {
 			// Display form for the first time
 			$oid = $wgRequest->getText( 'order_id' );
-			$adapter_oid = $this->adapter->getData();
-			$adapter_oid = $adapter_oid['order_id'];
-			if ( $oid && !empty( $oid ) && $oid === $adapter_oid ) {
+			$adapter_oid = $this->adapter->getData_Raw( 'order_id' );
+			
+			//this next block is for credit card coming back from GC. Only that. Nothing else, ever. 
+			if ( $this->adapter->getData_Raw( 'payment_method') === 'cc' && $oid && !empty( $oid ) && $oid === $adapter_oid ) {
 				if ( !array_key_exists( 'order_status', $_SESSION ) || !array_key_exists( $oid, $_SESSION['order_status'] ) ) {
-					$_SESSION['order_status'][$oid] = $this->adapter->do_transaction( 'GET_ORDERSTATUS' );
+					$_SESSION['order_status'][$oid] = $this->adapter->do_transaction( 'Confirm_CreditCard' );
 					$_SESSION['order_status'][$oid]['data']['count'] = 0;
 				} else {
 					$_SESSION['order_status'][$oid]['data']['count'] = $_SESSION['order_status'][$oid]['data']['count'] + 1;
@@ -75,19 +76,21 @@ class GlobalCollectGatewayResult extends GatewayForm {
 				$this->displayResultsForDebug( $result );
 				//do the switching between the... stuff. 
 
-				switch ( $this->adapter->getTransactionWMFStatus() ) {
-					case 'complete':
-					case 'pending':
-					case 'pending-poke':
-						$go = $this->adapter->getThankYouPage();
-						break;
-					case 'failed':
-						$go = $this->getDeclinedResultPage();
-						break;
-				}
+				if ( $this->adapter->getTransactionWMFStatus() ){
+					switch ( $this->adapter->getTransactionWMFStatus() ) {
+						case 'complete':
+						case 'pending':
+						case 'pending-poke':
+							$go = $this->adapter->getThankYouPage();
+							break;
+						case 'failed':
+							$go = $this->getDeclinedResultPage();
+							break;
+					}
 
-				$wgOut->addHTML( "<br>Redirecting to page $go" );
-				$wgOut->redirect( $go );
+					$wgOut->addHTML( "<br>Redirecting to page $go" );
+					$wgOut->redirect( $go );
+				}
 			}
 		} else {
 			if ( !$this->adapter->isCaching() ) {
@@ -104,7 +107,7 @@ class GlobalCollectGatewayResult extends GatewayForm {
 	function getDeclinedResultPage() {
 		global $wgOut;
 		
-		$displayData = $this->adapter->getDisplayData();
+		$displayData = $this->adapter->getData_Raw();
 		$failpage = $this->adapter->getFailPage();
 
 		if ( $failpage ) {

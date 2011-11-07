@@ -44,6 +44,7 @@ $optionalParts = array( //define as fail closed. This variable will be unset bef
 	'GlobalCollect' => false,
 	'ReferrerFilter' => false, //extra
 	'SourceFilter' => false, //extra
+	'FunctionsFilter' => false, //extra
 	'Minfraud_as_filter' => false, //extra
 
 );
@@ -56,6 +57,7 @@ foreach ($optionalParts as $subextension => $enabled){
 		//this is getting annoying.
 		if ( $subextension === 'ReferrerFilter' ||
 			$subextension === 'SourceFilter' ||
+			$subextension === 'FunctionsFilter' ||
 			$subextension === 'Minfraud_as_filter' ||
 			$subextension === 'ConversionLog' ||
 			$subextension === 'Minfraud' ||
@@ -66,10 +68,12 @@ foreach ($optionalParts as $subextension => $enabled){
 
 			if ( $subextension === 'ReferrerFilter' ||
 				$subextension === 'SourceFilter' ||
+				$subextension === 'FunctionsFilter' ||
 				$subextension === 'Minfraud_as_filter' ){
 
 				//and at least one of them is a custom filter.
 				$optionalParts['CustomFilters'] = true;
+				$wgDonationInterfaceEnableCustomFilters = true; //override this for specific gateways to disable
 			}
 		}
 
@@ -119,7 +123,7 @@ if ( $optionalParts['GlobalCollect'] === true ){
 
 	$wgResourceModules[ 'gc.form.core.validate' ] = array(
 		// scripts are not being picked up properly. These are currently only being loaded in TwoStepAmount.php
-		//'scripts' => array( 'js/validate.js',  'js/jquery.validate.js', 'js/jquery.validate.additional-methods.js', ),
+		'scripts' => array( 'js/validate.js',  'js/jquery.validate.js', 'js/jquery.validate.additional-methods.js', ),
 		'dependencies' => array( 'ext.donationInterface.errorMessages', 'jquery.ui.accordion', ),
 		'localBasePath' => $donationinterface_dir . 'globalcollect_gateway/modules',
 		'remoteExtPath' => 'DonationInterface/globalcollect_gateway/modules',
@@ -171,6 +175,11 @@ if ( $optionalParts['ReferrerFilter'] === true ){
 //Source Filter classes
 if ( $optionalParts['SourceFilter'] === true ){
 	$wgAutoloadClasses['Gateway_Extras_CustomFilters_Source'] = $donationinterface_dir . "extras/custom_filters/filters/source/source.body.php";
+}
+
+//Functions Filter classes
+if ( $optionalParts['FunctionsFilter'] === true ){
+	$wgAutoloadClasses['Gateway_Extras_CustomFilters_Functions'] = $donationinterface_dir . "extras/custom_filters/filters/functions/functions.body.php";
 }
 
 //Recaptcha classes
@@ -288,6 +297,39 @@ if ( $optionalParts['GlobalCollect'] === true ){
 	//this really should be redefined in LocalSettings.
 	$wgGlobalCollectGatewayAllowedHtmlForms = $wgDonationInterfaceAllowedHtmlForms;
 	$wgGlobalCollectGatewayAllowedHtmlForms['lightbox1'] = $wgGlobalCollectGatewayHtmlFormDir .'/lightbox1.html';
+	
+	$wgGlobalCollectGatewayCvvMap = array(
+		'M' => true, //CVV check performed and valid value.
+		'N' => false, //CVV checked and no match.
+		'P' => true, //CVV check not performed, not requested
+		'S' => false, //Card holder claims no CVV-code on card, issuer states CVV-code should be on card. 
+		'U' => true, //? //Issuer not certified for CVV2.
+		'Y' => false, //Server provider did not respond.
+		'0' => true, //No service available.
+	);
+	
+	$wgGlobalCollectGatewayAvsMap = array(
+		'A' => 50, //Address (Street) matches, Zip does not.
+		'B' => 50, //Street address match for international transactions. Postal code not verified due to incompatible formats.
+		'C' => 50, //Street address and postal code not verified for international transaction due to incompatible formats.
+		'D' => 0, //Street address and postal codes match for international transaction.
+		'E' => 100, //AVS Error.
+		'F' => 0, //Address does match and five digit ZIP code does match (UK only).
+		'G' => 50, //Address information is unavailable; international transaction; non-AVS participant. 
+		'I' => 50, //Address information not verified for international transaction.
+		'M' => 0, //Street address and postal codes match for international transaction.
+		'N' => 100, //No Match on Address (Street) or Zip.
+		'P' => 50, //Postal codes match for international transaction. Street address not verified due to incompatible formats.
+		'R' => 100, //Retry, System unavailable or Timed out.
+		'S' => 50, //Service not supported by issuer.
+		'U' => 50, //Address information is unavailable.
+		'W' => 50, //9 digit Zip matches, Address (Street) does not.
+		'X' => 0, //Exact AVS Match.
+		'Y' => 0, //Address (Street) and 5 digit Zip match.
+		'Z' => 50, //5 digit Zip matches, Address (Street) does not.
+		'0' => 50, //No service available.
+	);	
+	
 }
 
 //PayflowPro gateway globals
@@ -364,7 +406,7 @@ if ( $optionalParts['Minfraud'] === true || $optionalParts['Minfraud_as_filter']
 	 * These are evauluated on a >= or <= basis.  Please refer to minFraud
 	 * documentation for a thorough explanation of the 'riskScore'.
 	 */
-	$wgMinFraudActionRanges = array(
+	$wgDonationInterfaceMinFraudActionRanges = array(
 		'process' => array( 0, 100 ),
 		'review' => array( -1, -1 ),
 		'challenge' => array( -1, -1 ),
@@ -394,12 +436,17 @@ if ( $optionalParts['Minfraud_as_filter'] === true ){
 
 //Referrer Filter globals
 if ( $optionalParts['ReferrerFilter'] === true ){
-	$wgCustomFiltersRefRules = array( );
+	$wgDonationInterfaceCustomFiltersRefRules = array( );
 }
 
 //Source Filter globals
 if ( $optionalParts['SourceFilter'] === true ){
-	$wgCustomFiltersSrcRules = array( );
+	$wgDonationInterfaceCustomFiltersSrcRules = array( );
+}
+
+//Functions Filter globals
+if ( $optionalParts['FunctionsFilter'] === true ){
+	$wgDonationInterfaceCustomFiltersFunctions = array( );
 }
 
 //Recaptcha globals
@@ -476,7 +523,12 @@ if ( $optionalParts['ReferrerFilter'] === true ){
 //Source Filter hooks
 if ( $optionalParts['SourceFilter'] === true ){
 	$wgHooks["GatewayCustomFilter"][] = array( 'Gateway_Extras_CustomFilters_Source::onFilter' );
-}
+} 
+
+//Functions Filter hooks
+if ( $optionalParts['FunctionsFilter'] === true ){
+	$wgHooks["GatewayCustomFilter"][] = array( 'Gateway_Extras_CustomFilters_Functions::onFilter' );
+} 
 
 //Conversion Log hooks
 if ($optionalParts['ConversionLog'] === true){
@@ -566,6 +618,7 @@ $wgResourceModules[ 'ext.donationInterface.errorMessages' ] = array(
 		'donate_interface-donor-postal',
 		'donate_interface-donor-country',
 		'donate_interface-donor-emailAdd',
+		'donate_interface-state-province',
 	)
 );
 
@@ -631,7 +684,8 @@ $wgResourceModules[ 'pfp.core.logolink_override' ] = array(
 $wgExtensionMessagesFiles['DonateInterface'] = $donationinterface_dir . 'gateway_common/interface.i18n.php';
 $wgExtensionMessagesFiles['GatewayCountries'] = $donationinterface_dir . 'gateway_common/countries.i18n.php';
 $wgExtensionMessagesFiles['GatewayUSStates'] = $donationinterface_dir . 'gateway_common/us-states.i18n.php';
-	
+$wgExtensionMessagesFiles['GatewayCAProvinces'] = $donationinterface_dir . 'gateway_common/canada-provinces.i18n.php';
+
 //GlobalCollect gateway magical globals
 //TODO: all the bits where we make the i18n make sense for multiple gateways. This is clearly less than ideal.
 if ( $optionalParts['GlobalCollect'] === true ){
