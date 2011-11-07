@@ -39,7 +39,7 @@ class NarayamHooks {
 	}
 
 	public static function addVariables( &$vars ) {
-		global $wgUser;
+		global $wgUser, $wgNarayamSchemes;
 
 		if ( $wgUser->getOption( 'narayamDisable' ) ) {
 			// User disabled Narayam
@@ -47,7 +47,7 @@ class NarayamHooks {
 		}
 
 		$vars['wgNarayamAvailableSchemes'] = self::getSchemes(); // Note: scheme names must be keys, not values
-
+		$vars['wgNarayamAllSchemes'] = $wgNarayamSchemes;
 		$vars['wgNarayamHelpPage'] = wfMsgForContent( 'narayam-help-page' );
 		return true;
 	}
@@ -57,15 +57,29 @@ class NarayamHooks {
 	 * @return array( scheme name => module name )
 	 */
 	protected static function getSchemes() {
-		global $wgLanguageCode, $wgLang, $wgNarayamSchemes;
+		global $wgLanguageCode, $wgLang, $wgNarayamSchemes, $wgRequest;
 
 		$userlangCode = $wgLang->getCode();
 		$contlangSchemes = isset( $wgNarayamSchemes[$wgLanguageCode] ) ?
 				$wgNarayamSchemes[$wgLanguageCode] : array();
 		$userlangSchemes = isset( $wgNarayamSchemes[$userlangCode] ) ?
 				$wgNarayamSchemes[$userlangCode] : array();
+				
+		$schemes = $userlangSchemes + $contlangSchemes;
+		
+		// Get user selected scheme from cookie
+		$lastScheme = $wgRequest->getCookie( 'narayam-scheme', '', null );
+		// If user selected scheme is not in the array of schemes to be loaded
+		// Add it
+		if ( $lastScheme && !array_key_exists( $lastScheme, $schemes ) ) {
+			// scheme names are of patten <language-code>[-<some-name>]
+			list( $lastSchemeLanguageCode ) = explode( '-', $lastScheme, 2 );
+			if ( isset( $wgNarayamSchemes[$lastSchemeLanguageCode][$lastScheme] ) ) {
+				$schemes[$lastScheme] = $wgNarayamSchemes[$lastSchemeLanguageCode][$lastScheme];
+			}
+		}
 
-		return $userlangSchemes + $contlangSchemes;
+		return $schemes;
 	}
 
 	public static function addPreference( $user, &$preferences ) {
