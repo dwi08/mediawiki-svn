@@ -1,0 +1,31 @@
+This extension adds the Candy chat client to Mediawiki, and includes some
+helpful stuff for making ejabberd work too.
+
+Candy comes from here:
+http://amiadogroup.github.com/candy/
+
+A copy of version 1.0.1 is included for convenience.  To replace it, download and unpack the tarball in the lib/candy/ directory.
+
+
+To make this work:
+
+Follow the instructions here to set up ejabberd with HTTP binding (BOSH) turned on:
+https://github.com/amiadogroup/candy/wiki/Installing-a-Jabber-server
+
+Add this to your webserver config (make sure mod_rewrite is on):
+
+AddDefaultCharset UTF-8
+Options +MultiViews
+RewriteEngine On
+RewriteRule http-bind/ http://yourhost.com:5280/http-bind/ [P]
+
+If your API lives someplace other than /w/api.php, update utils/mw-ejabberd-auth.php
+to point at the correct location.
+
+Add the following lines to LocalSettings.php:
+require_once( "$IP/extensions/IdentityApi/IdentityApi.php" );
+require_once( "$IP/extensions/CandyChat/CandyChat.php" );
+
+mw-ejabberd-auth.php depends on the IdentityApi extension.
+
+Sample ejabberd configuration is provided in docs/ejabberd-config-example

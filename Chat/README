@@ -1,0 +1,30 @@
+This is Wikia's chat module, hacked into working with mediawiki 1.17 by Tomek at Wikia, and further hacked to (kinda) work with MW trunk by Ian Baker.  i18n is still broken (it should probably be switched to use the jQueryMsg extension), but you can chat with it.
+
+The original can be found here:
+https://svn.wikia-code.com/wikia/branches/chat_mwf_hack/extensions/wikia/Chat
+
+To make client work you need
+- mw17
+- put Chat to extensions  dir
+- enable mamc for media wiki (need for authorization )
+- change        value of NodeApiClient:API_HOST_AND_PORT_PRODUCTION;
+- change        value of NodeApiClient:HOST_PRODUCTION_FROM_CLIENT;
+
+To make server work:
+
+- change value of wgScript in server_config.js
+- install all of this:
+sudo port install npm
+sudo port install memcached
+http://loganleger.com/redis-resque-mac-os
+npm install redis
+npm install express
+npm install jade
+npm install socket.io-client
+npm install underscore
+npm install backbone
+npm install policyfile
+/usr/bin/memcached -d -u root -p 11211 -m 64
+
+Once that's all done, run:
+node js/server.js
