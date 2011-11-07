@@ -7,6 +7,23 @@ $(function() {
         modal: true,
         title: 'Donate by Credit Card'
 	} );
+	
+	// If the form is being reloaded, restore the amount
+	var previousAmount = $( 'input[name="amount"]' ).val();
+	if ( previousAmount && previousAmount > 0  ) {
+		var matched = false;
+		$( 'input[name="amountRadio"]' ).each( function( index ) {
+			if ( $( this ).val() == previousAmount ) {
+				$( this ).attr( 'checked', true );
+				matched = true;
+			}
+		} );
+		if ( !matched ) {
+			$( 'input#input_amount_other' ).attr( 'checked', true );
+			$( 'input#other-amount' ).val( previousAmount );
+		}
+	}
+	
 	$( '#cc' ).click( function() {
 		if ( validateAmount( document.paypalcontribution ) ) {
 			$( '#dialog' ).dialog( 'open' );
@@ -156,9 +173,6 @@ $(function() {
 	}
 	
 	function validateAmount(){
-		var minimums = {
-			'USD' : 1
-		};
 		var error = true;
 		var amount = $( "input[name='amount']" ).val(); // get the amount
 		var otherAmount = amount // create a working copy
@@ -174,11 +188,11 @@ $(function() {
 		// Check amount is at least the minimum
 		var currency = 'USD'; // hard-coded for these forms and tests
 		$( "input[name='currency']" ).val( currency );
-		if ( typeof( minimums[currency] ) == 'undefined' ) {
-			minimums[currency] = 1;
+		if ( typeof( wgCurrencyMinimums[currency] ) == 'undefined' ) {
+			wgCurrencyMinimums[currency] = 1;
 		}
-		if ( amount < minimums[currency] || error ) {
-			alert( 'You must contribute at least $1'.replace('$1', minimums[currency] + ' ' + currency ) );
+		if ( amount < wgCurrencyMinimums[currency] || error ) {
+			alert( 'You must contribute at least $1'.replace('$1', wgCurrencyMinimums[currency] + ' ' + currency ) );
 			error = true;
 		}
 		return !error;

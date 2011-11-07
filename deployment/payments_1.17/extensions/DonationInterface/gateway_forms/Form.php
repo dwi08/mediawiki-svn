@@ -163,11 +163,15 @@ abstract class Gateway_Form {
 	 * @return string of HTML
 	 */
 	public function generateDonationFooter() {
-		global $wgScriptPath;
+		global $wgScriptPath, $wgServer;
 		$form = '';
 		$form .= Xml::openElement( 'div', array( 'class' => 'payflow-cc-form-section', 'id' => 'payflowpro_gateway-donate-addl-info' ) );
 		$form .= Xml::openElement( 'div', array( 'id' => 'payflowpro_gateway-donate-addl-info-secure-logos' ) );
-		$form .= Xml::tags( 'p', array( 'class' => '' ), Xml::openElement( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/rapidssl_ssl_certificate-nonanimated.png" ) ) );
+		if ($wgServer =="https://payments.wikimedia.org") { 
+			$form .= $this ->getSmallSecureLogo(); 
+		} else { 
+			$form .= Xml::tags( 'p', array( 'class' => '' ), Xml::openElement( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/rapidssl_ssl_certificate-nonanimated.png" ) ) ); 
+		}
 		$form .= Xml::closeElement( 'div' ); // close div#payflowpro_gateway-donate-addl-info-secure-logos
 		$form .= Xml::openElement( 'div', array( 'id' => 'payflowpro_gateway-donate-addl-info-text' ) );
 		$form .= Xml::tags( 'p', array( 'class' => '' ), wfMsg( 'donate_interface-otherways-short' ) );
@@ -796,7 +800,7 @@ abstract class Gateway_Form {
 
 	protected function loadValidateJs() {
 		global $wgOut;
-		$wgOut->addModules( 'pfp.form.core.validate' );
+		$wgOut->addModules( 'di.form.core.validate' );
 	}
 
 	protected function loadApiJs() {
@@ -948,4 +952,18 @@ abstract class Gateway_Form {
 		$this->payment_submethod = (string) $value;
 	}
 
+	/**
+	 * Create the Verisign logo (small size)
+	 *
+	 */
+	protected function getSmallSecureLogo() {
+
+		$form = '<table id="secureLogo" width="135" border="0" cellpadding="2" cellspacing="0" title=' . wfMsg('donate_interface-securelogo-title') . '>';
+		$form .= '<tr>';
+		$form .= '<td width="135" align="center" valign="top"><script type="text/javascript" src="https://seal.verisign.com/getseal?host_name=payments.wikimedia.org&size=S&use_flash=NO&use_transparent=NO&lang=en"></script><br /><a href="http://www.verisign.com/ssl-certificate/" target="_blank"  style="color:#000000; text-decoration:none; font:bold 7px verdana,sans-serif; letter-spacing:.5px; text-align:center; margin:0px; padding:0px;">' . wfMsg('donate_interface-secureLogo-text') . '</a></td>';
+		$form .= '</tr>';
+		$form .= '</table>';
+	return $form;
+	}
 }
+

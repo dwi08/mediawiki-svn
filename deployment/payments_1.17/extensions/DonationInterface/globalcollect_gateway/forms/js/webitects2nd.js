@@ -56,50 +56,7 @@ $( document ).ready( function () {
 		}
 		showAmount( $( 'input[name="amount"]' ) ); // lets go ahead and assume there is something to show
 	}
-	
-	// If the form is being reloaded, restore the amount
-	var previousAmount = $( 'input[name="amount"]' ).val();
-	if ( previousAmount && previousAmount > 0  ) {
-		var matched = false;
-		$( 'input[name="amountRadio"]' ).each( function( index ) {
-			if ( $( this ).val() == previousAmount ) {
-				$( this ).attr( 'checked', true );
-				matched = true;
-			}
-		} );
-		if ( !matched ) {
-			$( 'input#input_amount_other' ).attr( 'checked', true );
-			$( 'input#other-amount' ).val( previousAmount );
-		}
-	}
 
-	$( "#cc" ).click( function() {
-		/* safety check for people who hit the back button */
-		checkedValue = $( "input[name='amountRadio']:checked" ).val();
-		if ( $( 'input[name="amount"]' ).val() == '0.00' && checkedValue && !isNaN( checkedValue ) ) {
-			setAmount( checkedValue );
-		}
-		if ( validateAmount() ) {
-			showAmount( $( 'input[name="amount"]' ) );
-			showStep2();
-		}
-	} );
-
-	$( "#pp" ).click( function() {
-		/* safety check for people who hit the back button */
-		checkedValue = $( "input[name='amountRadio']:checked" ).val();
-		if ( $( 'input[name="amount"]' ).val() == '0.00' && checkedValue && !isNaN( checkedValue ) ) {
-			setAmount( checkedValue );
-		}
-		if ( validateAmount() ) {
-			// set the action to go to PayPal
-			$( 'input[name="gateway"]' ).val( "paypal" );
-			$( 'input[name="PaypalRedirect"]' ).val( "1" );
-			$( "#loading" ).html( '<img alt="loading" src="'+mw.config.get( 'wgScriptPath' )+'/extensions/DonationInterface/gateway_forms/includes/loading-white.gif" /> Redirecting to PayPal…' );
-			document.paypalcontribution.action = actionURL;
-			document.paypalcontribution.submit();
-		}
-	} );
 	$( "#paymentContinueBtn" ).live( "click", function() {
 		if ( validate_personal( document.paypalcontribution ) ) {
 			displayCreditCardForm()
@@ -116,17 +73,7 @@ $( document ).ready( function () {
 			$( "#paymentContinue" ).show();
 		}
 	} );
-
-	$( "#submitcreditcard" ).click( function() {
-		if ( validate_cc() ) {
-			// set the hidden expiration date input from the two selects
-			$( 'input[name="expiration"]' ).val(
-				$( 'select[name="mos"]' ).val() + $( 'select[name="year"]' ).val().substring( 2, 4 )
-			);
-			document.paypalcontribution.action = actionURL;
-			document.paypalcontribution.submit();
-		}
-	} );
+	
 	// init all of the header actions
 	$( "#step1header" ).click( function() {
 		showStep1();
@@ -134,15 +81,12 @@ $( document ).ready( function () {
 	$( "#step2header" ).click( function() {
 		showStep2();
 	} );
-	$( "#step3header" ).click( function() {
-		displayCreditCardForm();
-	} );
 	// Set selected amount to amount
 	$( 'input[name="amountRadio"]' ).click( function() {
 		setAmount( $( this ) );
 	} );
 	// reset the amount field when "other" is changed
-	$( "#other-amount" ).keyup( function() {
+	$( "#other-amount" ).change( function() {
 		setAmount( $( this ) );
 	} );
 
@@ -153,6 +97,7 @@ $( document ).ready( function () {
 	} );
 
 } );
+
 
 window.showStep1 = function() {
 	// show the correct sections
@@ -189,6 +134,3 @@ window.showStep3 = function() {
 	$( "#change-payment" ).hide();
 	$( "#step3header" ).show(); // just in case
 }
-// Fix behavior of images in labels
-// TODO: check that disabling this is okay in things other than Chrome
-// $("label img").live("click", function() { $("#" + $(this).parents( "label" ).attr( "for" )).click(); });
