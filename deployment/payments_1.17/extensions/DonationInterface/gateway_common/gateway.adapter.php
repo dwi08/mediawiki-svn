@@ -249,12 +249,8 @@ abstract class GatewayAdapter implements GatewayType {
 
 	function getThankYouPage() {
 		global $wgLang;
-		$page = self::getGlobal( "ThankYouPage" );
-		if ( is_null( $page ) ){
-			return false;
-		}
 		$language = $wgLang->getCode();
-		$page .= "/$language";
+		$page = self::getGlobal( "ThankYouPage" ) . "/$language";
 //		$returnTitle = Title::newFromText( $page );
 //		$returnto = $returnTitle->getFullURL();
 		return $page;
@@ -262,12 +258,8 @@ abstract class GatewayAdapter implements GatewayType {
 
 	function getFailPage() {
 		global $wgLang;
-		$page = self::getGlobal( "FailPage" );
-		if ( is_null( $page ) ){
-			return false;
-		}
 		$language = $wgLang->getCode();
-		$page .= "/$language";
+		$page = self::getGlobal( "FailPage" ) . "/$language";
 		$returnTitle = Title::newFromText( $page );
 		$returnto = $returnTitle->getFullURL();
 		return $returnto;
