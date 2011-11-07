@@ -58,7 +58,7 @@ window.displayCreditCardForm = function() {
 		'format': 'json'
 	};
 	$.ajax( {
-		'url': mw.config.get( 'wgServer' ) + mw.config.get( 'wgScriptPath' ) + '/api.php?',
+		'url': mw.util.wikiScript( 'api' ),
 		'data': sendData,
 		'dataType': 'json',
 		'type': 'GET',
@@ -117,35 +117,6 @@ window.validateAmount = function() {
 	}
 	if ( amount < wgCurrencyMinimums[currency_code] || error ) {
 		alert( 'You must contribute at least $1'.replace( '$1', wgCurrencyMinimums[currency_code] + ' ' + currency_code ) );
-		error = true;
-	}
-	return !error;
-}
-
-window.validate_cc = function() {
-	// reset the errors
-	$( "#paymentErrorMessages" ).html( '' );
-	var error = false;
-	if ( $( 'input[name="card_num"]' ).val() == '' ) {
-		$( "#paymentErrorMessages" ).append( "Please enter a valid credit card number" );
-		error = true;
-	}
-	if ( $( 'select[name="mos"]' ).val() == '' ) {
-		if ( $( "#paymentErrorMessages" ).html() != "" )
-			$( "#paymentErrorMessages" ).append( "<br />" );
-		$( "#paymentErrorMessages" ).append( "Please enter a valid month for the expiration date" );
-		error = true;
-	}
-	if ( $( 'select[name="year"]' ).val() == '' ) {
-		if ( $( "#paymentErrorMessages" ).html() != "" )
-			$( "#paymentErrorMessages" ).append( "<br />" );
-		$( "#paymentErrorMessages" ).append( "Please enter a valid year for the expiration date" );
-		error = true;
-	}
-	if ( $( 'input[name="cvv"]' ).val() == '' ) {
-		if ( $( "#paymentErrorMessages" ).html() != "" )
-			$( "#paymentErrorMessages" ).append( "<br />" );
-		$( "#paymentErrorMessages" ).append( "Please enter a valid security code" );
 		error = true;
 	}
 	return !error;
