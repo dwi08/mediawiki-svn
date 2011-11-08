@@ -81,6 +81,11 @@ class DumpInterwiki extends Maintenance {
 			'wikiversity' => new Site( 'wikiversity', 'v', 'wikiversity.org' ),
 		);
 
+		# Site overrides for wikis whose DB names end in 'wiki' but that really belong to another site
+		$siteOverrides = array(
+			'sourceswiki' => 'wikisource',
+		);
+
 		# Extra interwiki links that can't be in the intermap for some reason
 		$extraLinks = array(
 			array( 'm', $this->urlprotocol . '//meta.wikimedia.org/wiki/$1', 1 ),
@@ -168,13 +173,18 @@ class DumpInterwiki extends Maintenance {
 			} else {
 				# Find out which site this DB belongs to
 				$site = false;
-				foreach ( $sites as $candidateSite ) {
-					$suffix = $candidateSite->suffix;
-					if ( preg_match( "/(.*)$suffix$/", $db, $matches ) ) {
-						$site = $candidateSite;
-						break;
+				if ( isset( $siteOverrides[$db] ) ) {
+					$site = $sites[$siteOverrides[$db]];
+				} else {
+					foreach ( $sites as $candidateSite ) {
+						$suffix = $candidateSite->suffix;
+						if ( preg_match( "/(.*)$suffix$/", $db, $matches ) ) {
+							$site = $candidateSite;
+							break;
+						}
 					}
 				}
+
 				$this->makeLink( array( 'iw_prefix' => $db, 'iw_url' => $site->suffix ), "__sites" );
 				if ( !$site ) {
 					$this->error( "Invalid database $db\n" );
