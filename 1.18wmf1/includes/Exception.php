@@ -337,8 +337,13 @@ class UserBlockedError extends ErrorPageError {
 	public function __construct( Block $block ){
 		global $wgLang;
 
-		$blockerUserpage = $block->getBlocker()->getUserPage();
-		$link = "[[{$blockerUserpage->getPrefixedText()}|{$blockerUserpage->getText()}]]";
+		$blocker = $block->getBlocker();
+		if ( $blocker instanceof User ) { // local user
+			$blockerUserpage = $block->getBlocker()->getUserPage();
+			$link = "[[{$blockerUserpage->getPrefixedText()}|{$blockerUserpage->getText()}]]";
+		} else { // foreign user
+			$link = $blocker;
+		}
 
 		$reason = $block->mReason;
 		if( $reason == '' ) {
@@ -356,7 +361,7 @@ class UserBlockedError extends ErrorPageError {
 				$link,
 				$reason,
 				wfGetIP(),
-				$block->getBlocker()->getName(),
+				$block->getByName(),
 				$block->getId(),
 				$wgLang->formatExpiry( $block->mExpiry ),
 				$intended,
