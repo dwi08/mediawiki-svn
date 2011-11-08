@@ -15,8 +15,6 @@ class FixBug32198 extends Maintenance {
 			die( "Must run on metawiki.\n" ); // sanity
 		}
 
-		$fixedBlockees = array();
-
 		$db = wfGetDB( DB_SLAVE );
 		$res = $db->select( 'logging', '*',
 			array(
@@ -40,44 +38,39 @@ class FixBug32198 extends Maintenance {
 			// Given the ORDER BY clause in the logging table query, we can make sure
 			// that the last admin to change the block status of a user "owns" it via
 			// ipb_by_text. If we hit changes to the block status for the same user again
-			// we will have already set $fixedBlockees and will skip it.
-			if ( isset( $fixedBlockees[$blockeeName] ) ) {
-				$blocksFixed++; // blocking admin name already set
-				$this->output( "Skipped a block of `{$blockeeName}`, block was later overridden.\n" );
-				continue;
-			}
+			// we will have already set ipb_by_text to a non-IP so it would be skipped.
 			$blockee = new CentralAuthUser( $blockeeName ); // the bad user
 
 			$blockerName = $row->log_user_text; // the blocking admin
 
-			$rowsFixedForBlock = 0;
 			// Search block log on all wikis with local accounts for this user...
-			foreach ( $blockee->listAttached() as $wiki ) {
+			foreach ( $blockee->listAttached() as $wiki ) { // assumes user was not unattached
 				$wikiDB = wfGetDB( DB_MASTER, array(), $wiki ); // DB used by $wiki
-				// Dry run
-				$res = $wikiDB->select( 'ipblocks', '*',
+				$sRes = $wikiDB->select( 'ipblocks', '*',
 					array(
 						'ipb_address' => $blockeeName,
 						'ipb_by'      => 0,
 						'ipb_timestamp > ' . $wikiDB->addQuotes( $wikiDB->timestamp( $epoch ) ) ),
 					__METHOD__
 				);
-				$rowsFixedForBlock = $res->numRows();
-				/*
-				$wikiDB->update( 'ipblocks',
-					array( 'ipb_by_text' => $blockerName ),
-					array(
-						'ipb_address' => $blockeeName,
-						'ipb_by'      => 0,
-						'ipb_timestamp > ' . $wikiDB->addQuotes( $wikiDB->timestamp( $epoch ) ) ),
-					__METHOD__
-				);
-				*/
-				unset( $wikiDB ); // outer loop is fast so this is just for fun :)
-			}
 
-			if ( $res->numRows() ) { // normally 1 row
-				$this->output( "Fixed $rowsFixedForBlock row(s) for `{$blockeeName}` on $wiki.\n" );
+				$rowsFixedForBlock = 0; // per wiki
+				foreach ( $sRes as $row ) {
+					if ( IP::isIPAddress( $row->ipb_by_text ) ) { // broken row
+						$wikiDB->update( 'ipblocks',
+							array( 'ipb_by_text' => $blockerName ),
+							array( 'ipb_id'      => $row->ipb_id, 'ipb_by' => 0 ), // ipb_by for sanity
+							__METHOD__
+						);
+						$rowsFixedForBlock++;
+					}
+				}
+
+				if ( $rowsFixedForBlock > 0 ) { // should be 1 row
+					$this->output( "$rowsFixedForBlock row(s) for `{$blockeeName}` on $wiki.\n" );
+				}
+
+				unset( $wikiDB ); // outer loop is fast, here for sanity
 			}
 
 			$blocksFixed++;
