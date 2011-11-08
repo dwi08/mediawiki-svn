@@ -1106,7 +1106,68 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'payment_submethod',
 			'issuer_id',
 			'order_id', //This may or may not oughta-be-here...
+			'language',
 		);
+	}
+	
+	protected function stage_language( $type = 'request' ) {
+		$language = strtolower( $this->staged_data['language'] );
+		
+		$count = 0;
+		//Count's just there making sure we don't get stuck here. 
+		while ( !in_array( $language, $this->getAvailableLanguages() ) && $count < 3 ){
+			//find the failback. 
+			$language = $this->dataObj->getFailbackLanguage( $language );
+			$count += 1;
+		}
+		
+		if ( !in_array( $language, $this->getAvailableLanguages() ) ){
+			$language = 'en';
+		}
+		
+		if ( $language === 'zh' ) { //Handles GC's mutant Chinese code.
+			$language = 'sc';
+		}
+		
+		$this->staged_data['language'] = $language;
+	}
+	
+	/**
+	 * OUR language codes which are available to use in GlobalCollect. 
+	 * @return string 
+	 */
+	function getAvailableLanguages(){
+		$languages = array(
+			'ar', //Arabic
+			'cz', //Czech
+			'da', //Danish
+			'nl', //Dutch
+			'en', //English
+			'fa', //Farsi
+			'fi', //Finish
+			'fr', //French
+			'de', //German
+			'he', //Hebrew
+			'hi', //Hindi
+			'hu', //Hungarian
+			'it', //Italian
+			'ja', //Japanese
+			'ko', //Korean
+			'no', //Norwegian
+			'po', //Polish
+			'pt', //Portuguese
+			'ro', //Romanian
+			'sl', //Slovene
+			'es', //Spanish
+			'sw', //Swahili
+			'sv', //Swedish
+			'th', //Thai
+			'tr', //Turkish
+			'ur', //Urdu
+			'vi', //Vietnamese
+			'zh', //the REAL chinese code. 
+		);
+		return $languages;
 	}
 
 	/**
