@@ -250,6 +250,9 @@ class Language {
 		return User::getDefaultOptions();
 	}
 
+	/**
+	 * Get the fallback for the current language
+	 */
 	function getFallbackLanguageCode() {
 		if ( $this->mCode === 'en' ) {
 			return false;
@@ -2841,6 +2844,7 @@ class Language {
 
 	/**
 	 * Get the fallback for a given language
+	 * @param string $code The language that you want a fallback language for (ISO 639 code)
 	 */
 	static function getFallbackFor( $code ) {
 		if ( $code === 'en' ) {
