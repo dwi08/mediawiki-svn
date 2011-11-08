@@ -10,11 +10,11 @@ $randomButton = self::$messages['mobile-frontend-random-button'];
 $scriptUrl = wfScript();
 $searchBoxDisplayNone = ( self::$hideSearchBox ) ? ' style="display: none;" ' : '';
 
-$openSearchResults = ( self::$isBetaGroupMember ) ? '<div id="results"></div>' : '';
+$openSearchResults = '<div id="results"></div>';
 
 $languageSelection = self::buildLanguageSelection() . '<br/>';
 $languageSelectionText = '<b>' . self::$messages['mobile-frontend-language'] . ':</b><br/>';
-$languageSelectionDiv = ( self::$isBetaGroupMember ) ? '<div id="languageselectionsection">' . $languageSelectionText . $languageSelection . '</div>' : '';
+$languageSelectionDiv = '<div id="languageselectionsection">' . $languageSelectionText . $languageSelection . '</div>';
 
 $logoOnClick = ( self::$device['supports_javascript'] ) ? 'onclick="javascript:logoClick();"' : '';
 
@@ -25,7 +25,7 @@ $searchWebkitHtml = <<<EOD
 	<form action='{$scriptUrl}' class='search_bar' method='get' {$searchBoxDisplayNone}>
 	  <input type="hidden" value="Special:Search" name="title" />
 		<div id="sq" class="divclearable">
-			<input type="text" name="search" id="search" size="22" value="{$searchField}" autocomplete="off" />
+			<input type="text" name="search" id="search" size="22" value="{$searchField}" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="1024" />
 			<div class="clearlink" id="clearsearch"></div>
 		</div>
 	  <button id='goButton' type='submit'></button>
