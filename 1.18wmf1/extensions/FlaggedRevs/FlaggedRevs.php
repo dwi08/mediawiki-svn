@@ -114,7 +114,6 @@ $wgGroupPermissions['editor']['review']          = true;
 $wgGroupPermissions['editor']['autoreview']      = true;
 $wgGroupPermissions['editor']['autoconfirmed']   = true;
 $wgGroupPermissions['editor']['unreviewedpages'] = true;
-$wgGroupPermissions['editor']['patrolmarks']     = true;
 
 # Define when users get automatically promoted to Editors. Set as false to disable.
 # Once users meet these requirements they will be promoted, unless previously demoted.
@@ -161,7 +160,6 @@ $wgGroupPermissions['reviewer']['review']          = true;
 $wgGroupPermissions['reviewer']['autoreview']      = true;
 $wgGroupPermissions['reviewer']['autoconfirmed']   = true;
 $wgGroupPermissions['reviewer']['unreviewedpages'] = true;
-$wgGroupPermissions['reviewer']['patrolmarks']     = true;
 
 # Sysops have their edits autoreviewed
 $wgGroupPermissions['sysop']['autoreview'] = true;
