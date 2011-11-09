@@ -77,15 +77,42 @@ $messages['ar'] = array(
  */
 $messages['cy'] = array(
 	'globalcollectgateway' => 'Rhoddwch nawr',
+	'globalcollect_gateway-desc' => 'Prosesu taliadau trwy GlobalCollect',
 	'globalcollect_gateway-response-9130' => 'Gwlad annilys.',
 	'globalcollect_gateway-response-9140' => 'Arian breiniol annilys.',
 	'globalcollect_gateway-response-9150' => 'Iaith annilys.',
 	'globalcollect_gateway-response-400530' => 'Modd talu annilys.',
 	'globalcollect_gateway-response-430306' => 'Mae eich cerdyn credyd wedi dod i ben. Defnyddiwch gerdyn arall neu fodd gwahanol o dalu.',
 	'globalcollect_gateway-response-430330' => 'Rhif annilys i gerdyn.',
+	'globalcollect_gateway-response-430360' => "Ni ellid awdurdodi'r gweithrediad hwn. Rhowch gynnig ar gerdyn arall neu defnyddiwch modd arall o dalu.",
+	'globalcollect_gateway-response-430285' => "Ni ellid awdurdodi'r gweithrediad hwn. Rhowch gynnig ar gerdyn arall neu defnyddiwch modd arall o dalu.",
 	'globalcollect_gateway-response-21000150' => 'Rhif annilys i gyfrif banc.',
 	'globalcollect_gateway-response-21000155' => 'Côd banc annilys.',
 	'globalcollect_gateway-response-21000160' => 'Rhif annilys i gyfrif giro.',
+	'globalcollect_gateway-response-default' => 'Cafwyd gwall wrth drin eich gweithrediad.
+Ceisiwch eto ymhen tipyn.',
+);
+
+/** Danish (Dansk)
+ * @author Peter Alberti
+ */
+$messages['da'] = array(
+	'globalcollectgateway' => 'Doner nu',
+	'globalcollect_gateway-desc' => 'Håndtering af betaling via GlobalCollect',
+	'globalcollect_gateway-response-9130' => 'Ugyldigt land.',
+	'globalcollect_gateway-response-9140' => 'Ugyldig valuta.',
+	'globalcollect_gateway-response-9150' => 'Ugyldigt sprog.',
+	'globalcollect_gateway-response-400530' => 'Ugyldig betalingsmetode.',
+	'globalcollect_gateway-response-430306' => 'Dit kreditkort er udløbet. Vær så venlig at prøve et andet kort eller en af vores andre betalingsmetoder.',
+	'globalcollect_gateway-response-430330' => 'Ugyldigt kortnummer.',
+	'globalcollect_gateway-response-430421' => 'Dit kreditkort kunne ikke valideres. Vær så venlig at kontrollere, at al information stemmer overens med dit kort, eller prøv med et andet kort.',
+	'globalcollect_gateway-response-430360' => 'Transaktionen kunne ikke godkendes. Vær så venlig at prøve et andet kort eller en af vores andre betalingsmetoder.',
+	'globalcollect_gateway-response-430285' => 'Transaktionen kunne ikke godkendes. Vær så venlig at prøve et andet kort eller en af vores andre betalingsmetoder.',
+	'globalcollect_gateway-response-21000150' => 'Ugyldigt kontonummer.',
+	'globalcollect_gateway-response-21000155' => 'Ugyldig bankkode.',
+	'globalcollect_gateway-response-21000160' => 'Ugyldigt girokontonummer.',
+	'globalcollect_gateway-response-default' => 'Der opstod en fejl under behandlingen af din transaktion.
+Prøv venligst igen senere.',
 );
 
 /** German (Deutsch)
@@ -140,6 +167,13 @@ $messages['es'] = array(
 	'globalcollect_gateway-response-21000155' => 'Codigo bancario no válido',
 	'globalcollect_gateway-response-default' => 'Hubo un error procesando su transacción.
 Por favor intentelo de nuevo mas tarde.',
+);
+
+/** Estonian (Eesti)
+ * @author Pikne
+ */
+$messages['et'] = array(
+	'globalcollectgateway' => 'Anneta kohe',
 );
 
 /** French (Français)
@@ -454,6 +488,8 @@ $messages['sw'] = array(
 	'globalcollect_gateway-response-9150' => 'Lugha batili.',
 	'globalcollect_gateway-response-430330' => 'Namba batili ya kadi.',
 	'globalcollect_gateway-response-21000155' => 'Kodi batili ya benki.',
+	'globalcollect_gateway-response-default' => 'Ilitokea hitilafu wakati wa kufanya malipo yako.
+Tafadhali jaribu tena baadaye.',
 );
 
 /** Vietnamese (Tiếng Việt)
