@@ -18,6 +18,8 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 
 	protected $successMessage;
 
+	protected $toc;
+
 	public function __construct(){
 		parent::__construct( 'EditWatchlist' );
 	}
@@ -86,6 +88,8 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 				if( $form->show() ){
 					$out->addHTML( $this->successMessage );
 					$out->returnToMain();
+				} elseif ( $this->toc !== false ) {
+					$out->prependHTML( $this->toc );
 				}
 				break;
 		}
@@ -391,6 +395,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 		global $wgContLang;
 
 		$fields = array();
+		$count = 0;
 
 		$haveInvalidNamespaces = false;
 		foreach( $this->getWatchlistInfo() as $namespace => $pages ){
@@ -398,13 +403,9 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 				$haveInvalidNamespaces = true;
 				continue;
 			}
-		
-			$namespace == NS_MAIN
-				? wfMsgHtml( 'blanknamespace' )
-				: htmlspecialchars( $wgContLang->getFormattedNsText( $namespace ) );
 
 			$fields['TitlesNs'.$namespace] = array(
-				'type' => 'multiselect',
+				'class' => 'EditWatchlistCheckboxSeriesField',
 				'options' => array(),
 				'section' => "ns$namespace",
 			);
@@ -413,6 +414,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 				$title = Title::makeTitleSafe( $namespace, $dbkey );
 				$text = $this->buildRemoveLine( $title, $redirect );
 				$fields['TitlesNs'.$namespace]['options'][$text] = $title->getEscapedText();
+				$count++;
 			}
 		}
 		if ( $haveInvalidNamespaces ) {
@@ -420,7 +422,22 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 			$this->getContext()->getUser()->cleanupWatchlist();
 		}
 
-		$form = new EditWatchlistNormalHTMLForm( $fields );
+		if ( count( $fields ) > 1 && $count > 30 ) {
+			$this->toc = Linker::tocIndent();
+			$tocLength = 0;
+			foreach( $fields as $key => $data ) {
+				$ns = substr( $data['section'], 2 );
+				$nsText = $ns == NS_MAIN
+					? wfMsgHtml( 'blanknamespace' )
+					: htmlspecialchars( $wgContLang->getFormattedNsText( $ns ) );
+				$this->toc .= Linker::tocLine( "mw-htmlform-{$data['section']}", $nsText, ++$tocLength, 1 ) . Linker::tocLineEnd();
+			}
+			$this->toc = Linker::tocList( $this->toc );
+		} else {
+			$this->toc = false;
+		}
+
+		$form = new EditWatchlistNormalHTMLForm( $fields, $this->getContext() );
 		$form->setTitle( $this->getTitle() );
 		$form->setSubmitText( wfMessage( 'watchlistedit-normal-submit' )->text() );
 		$form->setWrapperLegend( wfMessage( 'watchlistedit-normal-legend' )->text() );
@@ -554,5 +571,23 @@ class EditWatchlistNormalHTMLForm extends HTMLForm {
 		return $namespace == NS_MAIN
 			? wfMsgHtml( 'blanknamespace' )
 			: htmlspecialchars( $this->getContext()->getLang()->getFormattedNsText( $namespace ) );
+	}
+}
+
+class EditWatchlistCheckboxSeriesField extends HTMLMultiSelectField {
+	/**
+	 * HTMLMultiSelectField throws validation errors if we get input data
+	 * that doesn't match the data set in the form setup. This causes
+	 * problems if something gets removed from the watchlist while the
+	 * form is open (bug 32126), but we know that invalid items will
+	 * be harmless so we can override it here.
+	 *
+	 * @param $value String the value the field was submitted with
+	 * @param $alldata Array the data collected from the form
+	 * @return Mixed Bool true on success, or String error to display.
+	 */
+	function validate( $value, $alldata ) {
+		// Need to call into grandparent to be a good citizen. :)
+		return HTMLFormField::validate( $value, $alldata );
 	}
 }

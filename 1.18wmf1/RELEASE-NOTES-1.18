@@ -457,6 +457,7 @@ production.
 * (bug 28545) When using the uca-default collation, sortkey's starting with a
   space (U+20) will sort under an invisible header like in 1.16 rather than a U+6DE
 * (bug 31674) Can't edit watchlist if it contains special pages
+* (bug 31990) justify paragraphs pref adds extra space to category listing
 
 === API changes in 1.18 ===
 * BREAKING CHANGE: action=watch now requires POST and token.
