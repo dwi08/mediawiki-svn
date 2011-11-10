@@ -87,7 +87,13 @@ $egFundraiserStatisticsFundraisers = array(
 	array(
 		'id' => '2010',
 		'title' => '2010 Fundraiser',
-		'start' => 'Nov 12 2010',
+		'start' => 'Nov 11 2010',
+		'end' => 'Jan 15 2011',
+	),
+	array(
+		'id' => '2011',
+		'title' => '2011 Fundraiser',
+		'start' => 'Nov 13 2011',
 		'end' => 'Jan 15 2011',
 	),
 );
@@ -168,31 +174,31 @@ function efContributionReportingTotal( $start, $fudgeFactor ) {
 
 	# Output
 	$output = $row['ttl'] ? $row['ttl'] : '0';
-	
+
 	$output += $fudgeFactor;
-	
+
 	return $output;
 }
 
 function efContributionReportingTotal_Render() {
 	$args = func_get_args();
-	$parser = array_shift( $args );
-	
+	array_shift( $args );
+
 	$fudgeFactor = false;
 	$start = false;
-	
+
 	foreach( $args as $arg ) {
 		if ( strpos($arg,'=') === false )
 			continue;
-		
+
 		list($key,$value) = explode( '=', trim($arg), 2 );
-		
+
 		if ($key == 'fudgefactor') {
 			$fudgeFactor = $value;
 		} elseif ($key == 'start') {
 			$start = $value;
 		}
 	}
-	
+
 	return efContributionReportingTotal( $start, $fudgeFactor );
 }

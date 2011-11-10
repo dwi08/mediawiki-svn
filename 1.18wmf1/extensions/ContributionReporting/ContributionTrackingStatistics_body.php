@@ -15,9 +15,6 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 	public function __construct() {
 		// Initialize special page
 		parent::__construct( 'ContributionTrackingStatistics' );
-
-		// Internationalization
-		wfLoadExtensionMessages( 'ContributionReporting' );
 	}
 
 	public function execute( $sub ) {
@@ -30,6 +27,7 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 		// Begin output
 		$this->setHeaders();
 
+		$wgOut->addWikiMsg('contribstats-header');
 		// Build Header
 		$htmlOut = Xml::openElement( 'table',
 				array(
@@ -40,18 +38,18 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 		);
 
 		$htmlOut .=  Xml::tags( 'tr', null,
-				Xml::element( 'td', array( 'align' => 'left' ), 
+				Xml::element( 'td', array( 'align' => 'left' ),
 					wfMsg( 'contribstats-imperfect-data' ) ) .
-				Xml::element( 'td', array( 'align' => 'right' ), 
+				Xml::element( 'td', array( 'align' => 'right' ),
 					wfTimestamp( TS_DB ) . ' (UTC)')
 		);
 		$htmlOut .= Xml::tags( 'tr', null,
-				Xml::element( 'td', array( 'align' => 'left' ), 
-					wfMsg( 'contribstats-fraud-note' ) . " " . 
+				Xml::element( 'td', array( 'align' => 'left' ),
+					wfMsg( 'contribstats-fraud-note' ) . " " .
 						wfMsg( 'contribstats-unaudited' ) )
 		);
 		$htmlOut .= Xml::tags( 'tr', null,
-				Xml::element(  'td', array( 'align' => 'left' ), 
+				Xml::element(  'td', array( 'align' => 'left' ),
 					'PP = ' . wfMsg( 'contribstats-paypal-donations' ) . ', ' .
 							'CC = ' . wfMsg( 'contribstats-credit-card' ) )
 		);
@@ -68,6 +66,7 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 			$offset = SpecialContributionTrackingStatistics::$number_of_days_to_show * 24 * 60 * 60;
 			$this->showTotalsForRange( array( ( $end - $offset ), $end ), $format );
 		}
+		$wgOut->addWikiMsg('contribstats-footer');
 	}
 
 	/* Display Functions */
@@ -75,17 +74,13 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 	// Generic Table Display for Totals
 	// FORMAT: 1 daily, 2 weekly, 3 Monthly, 4 Combined
 	public function showTotalsForRange( $range, $format ) {
-		global $wgOut;
-		global $wgAllowedTempaltes, $wgAllowedSupport, 
-			$wgAllowedPaymentMethod, $wgContributionReportingBaseURL;
-
 		list( $start, $end ) = $range;
 		$current = $end;
-		
+
 		switch( $format ) {
 			case 1:
 				while( $current > $start ) {
-					$this->showDayTotals( $current ); 
+					$this->showDayTotals( $current );
 					$current = $current - 24 * 60 * 60;
 				}
 				break;
@@ -98,7 +93,7 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 				$this->showCombinedTotals( $totals, $range );
 				break;
 
-		}	
+		}
 	}
 
 	// Display tracking information for one day
@@ -121,7 +116,7 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 
 	public function createTable( $totals ) {
 		// Table headers
-		global $wgOut, $wgAllowedTemplates, $wgAllowedSupport;
+		global $wgAllowedTemplates, $wgAllowedSupport;
 		global $wgAllowedPaymentMethod, $wgContributionReportingBaseURL;
 
 		$htmlOut = Xml::openElement( 'table',
@@ -145,11 +140,16 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 		foreach( $totals as $template ) {
 			//grab info from utm_src, 'unpack' template, landing page, donation page thus far
 			$expanded_template = explode(".", $template[0]);
-			if(!isset($expanded_template[1])){ $expanded_template[1] = "";}
-			if(!isset($expanded_template[2])){ $expanded_template[2] = "";}
+			if(!isset($expanded_template[1])) {
+				$expanded_template[1] = "";
+			}
+			if(!isset($expanded_template[2])) {
+				$expanded_template[2] = "";
+			}
 
-			if ( ! in_array($expanded_template[0], $wgAllowedTemplates ) )
+			if ( ! in_array($expanded_template[0], $wgAllowedTemplates ) ) {
 				continue;
+			}
 			if( ($expanded_template[1] != "") && (! in_array($expanded_template[1], $wgAllowedSupport)) ){
 				continue;
 			}
@@ -189,7 +189,7 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 	public function showCombinedTotals( $totals, $range ) {
 		global $wgOut;
 
-		$msg = date( 'o-m-d', wfTimestamp( TS_UNIX, $range[0] ) ) . ' - ' . 
+		$msg = date( 'o-m-d', wfTimestamp( TS_UNIX, $range[0] ) ) . ' - ' .
 			date( 'o-m-d', wfTimestamp( TS_UNIX, $range[1] ) ) ;
 		$htmlOut = Xml::element( 'h3', null, $msg );
 
@@ -226,7 +226,7 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 
 		$res = $dbr->select(
 			array( 'contribution_tracking',
-			       'civicrm.public_reporting',
+				   'civicrm.public_reporting',
 			),
 			array(
 				'utm_source',
@@ -244,13 +244,13 @@ class SpecialContributionTrackingStatistics extends SpecialPage {
 			array( 'civicrm.public_reporting' =>
 				array(
 					'LEFT JOIN',
-				 	'contribution_tracking.contribution_id = civicrm.public_reporting.contribution_id',
+					'contribution_tracking.contribution_id = civicrm.public_reporting.contribution_id',
 				)
 			)
 
 		);
 
-		while ( $row = $dbr->fetchRow( $res ) ) {
+		foreach ( $res as $row ) {
 			$result[] = array(
 					$row[0],
 					$row[1],
