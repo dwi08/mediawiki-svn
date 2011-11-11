@@ -52,12 +52,12 @@ class DonationData {
 				 */
 				'country2' => ( strlen( $wgRequest->getText( 'country2' ) ) ) ? $wgRequest->getText( 'country2' ) : $wgRequest->getText( 'country' ),
 				'size' => $wgRequest->getText( 'size' ),
-				'premium_language' => $wgRequest->getText( 'premium_language', "en" ),
+				'premium_language' => $wgRequest->getText( 'premium_language', null ),
 				'card_num' => str_replace( ' ', '', $wgRequest->getText( 'card_num' ) ),
 				'card_type' => $wgRequest->getText( 'card_type' ),
 				'expiration' => $wgRequest->getText( 'mos' ) . substr( $wgRequest->getText( 'year' ), 2, 2 ),
 				'cvv' => $wgRequest->getText( 'cvv' ),
-				//Leave both of these here. 
+				//Leave both of the currencies here, in case something external didn't get the memo.
 				'currency' => $wgRequest->getVal( 'currency' ),
 				'currency_code' => $wgRequest->getVal( 'currency_code' ),
 				'payment_method' => $wgRequest->getText( 'payment_method', 'cc' ),
@@ -71,8 +71,9 @@ class DonationData {
 				'utm_source_id' => $wgRequest->getVal( 'utm_source_id', null ),
 				'utm_medium' => $wgRequest->getText( 'utm_medium' ),
 				'utm_campaign' => $wgRequest->getText( 'utm_campaign' ),
-				// try to honor the user-set language (uselang), otherwise the language set in the URL (language)
-				'language' => $wgRequest->getText( 'uselang', $wgRequest->getText( 'language' ) ),
+				// Pull both of these here. We can logic out which one to use in the normalize bits. 
+				'language' => $wgRequest->getText( 'language', null ),
+				'uselang' => $wgRequest->getText( 'uselang', null ),
 				'comment-option' => $wgRequest->getText( 'comment-option' ),
 				'comment' => $wgRequest->getText( 'comment' ),
 				'email-opt' => $wgRequest->getText( 'email-opt' ),
@@ -187,7 +188,7 @@ class DonationData {
 			'card_type' => $cards[$card_index],
 			'expiration' => date( 'my', strtotime( '+1 year 1 month' ) ),
 			'cvv' => '001',
-			'currency' => 'USD',
+			'currency_code' => 'USD',
 			'payment_method' => 'cc',
 			'payment_submethod' => '', //cards have no payment submethods. 
 			'issuer_id' => '',
@@ -237,6 +238,11 @@ class DonationData {
 		}
 	}
 
+	/**
+	 * Sets a key in the normalized data array, to a new value.
+	 * @param string $key The key you want to set.
+	 * @param string $val The value you'd like to assign to the key. 
+	 */
 	function setVal( $key, $val ) {
 		$this->normalized[$key] = $val;
 	}
@@ -264,8 +270,9 @@ class DonationData {
 			'optout',
 			'anonymous',
 			'language',
+			'premium_language',
 			'contribution_tracking_id', //sort of...
-			'currency'
+			'currency_code',
 		);
 		return $fields;
 	}
@@ -323,17 +330,15 @@ class DonationData {
 			$currency = $this->getVal( 'currency_code' );
 		} elseif ( $this->isSomething( 'currency' ) ) {
 			$currency = $this->getVal( 'currency' );
+			$this->expunge( 'currency' );
 		}
 		
 		if ( $currency ){
-			//set them both.
 			$this->setVal( 'currency_code', $currency );
-			$this->setVal( 'currency', $currency );
 		} else {
-			//we want these unset if neither of them was anything, so things 
-			//using this data know to use their own defaults. 
-			$this->expunge( 'currency_code' );
-			$this->expunge( 'currency' );
+			//we want this set tu null if neither of them was anything, so 
+			//things using this data know to use their own defaults. 
+			$this->setVal( 'currency_code', null );
 		}
 	}
 	
@@ -473,14 +478,34 @@ class DonationData {
 	
 	/**
 	 * normalizeAndSanitize helper function.
-	 * If the language has not yet been set, pulls the language code 
+	 * If the language has not yet been set or is not valid, pulls the language code 
 	 * from the current global language object. 
+	 * Also sets the premium_language as the calculated language if it's not 
+	 * already set coming in (had been defaulting to english). 
 	 */
 	function setLanguage() {
 		global $wgLang;
-		if ( !$this->isSomething( 'language' ) ) {
-			$this->setVal( 'language', $wgLang->getCode() );
+		$language = false;
+		
+		if ( $this->isSomething( 'uselang' ) ) {
+			$language = $this->getVal( 'uselang' );
+		} elseif ( $this->isSomething( 'language' ) ) {
+			$language = $this->getVal( 'language' );
 		}
+		
+		if ( $language == false
+			|| !Language::isValidBuiltInCode( $this->normalized['language'] ) )
+		{
+			$language = $wgLang->getCode() ;
+		}
+		
+		$this->setVal( 'language', $language );
+		$this->expunge( 'uselang' );
+		
+		if ( !$this->isSomething( 'premium_language' ) ){
+			$this->setVal( 'premium_language', $language );
+		}
+		
 	}
 
 	/**
@@ -940,30 +965,11 @@ class DonationData {
 			'gateway',
 			'gateway_txn_id',
 			'response',
-			'currency',
+			'currency_code',
 			'amount',
 			'date',
 		);
 		return $stomp_fields;
-	}
-	
-	/**
-	 * getFailbackLanguage should return the code for a next-best-language, in 
-	 * the event it is deemed unavailable by the gateway. 
-	 * @param string $unavailable_language
-	 * @return string The code which the unavailable language should fail back 
-	 * to.
-	 */
-	function getFailbackLanguage( $unavailable_language ){
-		$unavailable_language = strtolower($unavailable_language);
-		
-		//TODO: Something in here more complicated than defaulting to English. 
-		//Probably get a failback from MediaWiki if one exists, and if the code 
-		//doesn't change as part of that process, have a next-best language 
-		//identifier that we write? 
-		
-		$failback = 'en';
-		return strtolower($failback);
 	}
 }
 

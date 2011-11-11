@@ -144,7 +144,7 @@ $(function() {
 			var sendData = {
 				'action': 'donate',
 				'gateway': 'globalcollect',
-				'currency': 'USD',
+				'currency_code': 'USD',
 				'amount': $( "input[name='amount']" ).val(),
 				'fname': $( "input[name='fname']" ).val(),
 				'lname': $( "input[name='lname']" ).val(),
@@ -167,17 +167,31 @@ $(function() {
 				'dataType': 'json',
 				'type': 'GET',
 				'success': function( data ) {
-					if ( data.result.errors ) {
-						var errors = new Array();
-						for( var key in data.result.errors ){ 
-							errors.push( data.result.errors[key] );
-						}
-						alert ( errors.join( '\r\n' ) );
-					} else {
-						if ( data.result.returnurl ) {
-							window.location = data.result.returnurl;
+					if ( typeof data.error !== 'undefined' ) {
+						alert( ajaxError );
+						// Send them back to the beginning
+					} else if ( typeof data.result !== 'undefined' ) {
+						if ( data.result.errors ) {
+							var errors = new Array();
+							$.each( data.result.errors, function( index, value ) {
+								alert( value ); // Show them the error
+								// Send them back to the beginning
+							} );
+						} else {
+							if ( data.result.formaction ) {
+								$( '#payment' ).empty();
+								// Insert the iframe into the form
+								$( '#payment' ).append(
+									'<iframe src="'+data.result.formaction+'" width="318" height="314" frameborder="0"></iframe>'
+								);
+		
+							}
 						}
 					}
+				},
+				'error': function( xhr ) {
+					alert( ajaxError );
+					// Send them back to the beginning
 				}
 			} );
 			//document.donationForm.action = $( "input[name='action']" ).val();
@@ -221,7 +235,7 @@ $(function() {
 		error = ( amount == null || isNaN( amount ) || amount.value <= 0 );
 		// Check amount is at least the minimum
 		var currency = 'USD'; // hard-coded for these forms and tests
-		$( "input[name='currency']" ).val( currency );
+		$( "input[name='currency_code']" ).val( currency );
 		if ( typeof( wgCurrencyMinimums[currency] ) == 'undefined' ) {
 			wgCurrencyMinimums[currency] = 1;
 		}

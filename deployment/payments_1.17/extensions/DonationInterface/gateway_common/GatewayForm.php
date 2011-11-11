@@ -194,8 +194,8 @@ class GatewayForm extends UnlistedSpecialPage {
 		$priceFloor = $this->adapter->getGlobal( 'PriceFloor' );
 		$priceCeiling = $this->adapter->getGlobal( 'PriceCeiling' );
 		if ( !preg_match( '/^\d+(\.(\d+)?)?$/', $data['amount'] ) ||
-			( ( float ) $this->convert_to_usd( $data['currency'], $data['amount'] ) < ( float ) $priceFloor ||
-			( float ) $this->convert_to_usd( $data['currency'], $data['amount'] ) > ( float ) $priceCeiling ) ) {
+			( ( float ) $this->convert_to_usd( $data['currency_code'], $data['amount'] ) < ( float ) $priceFloor ||
+			( float ) $this->convert_to_usd( $data['currency_code'], $data['amount'] ) > ( float ) $priceCeiling ) ) {
 
 			$error['invalidamount'] = wfMsg( 'donate_interface-error-msg-invalid-amount' );
 
@@ -545,13 +545,13 @@ class GatewayForm extends UnlistedSpecialPage {
 		
 		if ( in_array( $this->adapter->getTransactionWMFStatus(), $this->adapter->getGoToThankYouOn() ) ) {
 
-			$thankyoupage = $this->adapter->getGlobal( 'ThankYouPage' );
+			$thankyoupage = $this->adapter->getThankYouPage();
 	
 			if ( $thankyoupage ) {
 				
 				$queryString = '?payment_method=' . $this->adapter->getPaymentMethod() . '&payment_submethod=' . $this->adapter->getPaymentSubmethod();
 				
-				return $wgOut->redirect( $thankyoupage . '/' . $this->adapter->getTransactionDataLanguage() . $queryString );
+				return $wgOut->redirect( $thankyoupage . $queryString );
 			}
 		}
 		

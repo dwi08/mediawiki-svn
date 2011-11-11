@@ -40,7 +40,19 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->error_map = array(
 			0		=> 'globalcollect_gateway-response-default',	
 			430452	=> 'globalcollect_gateway-response-default', // Not authorised :: This message was generated when trying to attempt a direct debit transaction from Belgium.	
-			430900	=> 'globalcollect_gateway-response-default', // NO VALID PROVIDERS FOUND FOR COMBINATION MERCHANTID: NNNN, PAYMENTPRODUCT: NNN, COUNTRYCODE: XX, CURRENCYCODE: XXX	
+			430900	=> 'globalcollect_gateway-response-default', // NO VALID PROVIDERS FOUND FOR COMBINATION MERCHANTID: NNNN, PAYMENTPRODUCT: NNN, COUNTRYCODE: XX, CURRENCYCODE: XXX
+			
+			// Internal messages
+			'internal-0000' => 'donate_interface-processing-error', // Failed failed pre-process checks.
+			'internal-0001' => 'donate_interface-processing-error', // Transaction could not be processed due to an internal error.
+			'internal-0002' => 'donate_interface-processing-error', // Communication failure
+			
+			// Do bank validation messages
+			//'dbv-50'	=> 'globalcollect_gateway-response-dbv-50', // Account number format incorrect
+			//'dbv-80'	=> 'globalcollect_gateway-response-dbv-80', // Account details missing
+			//'dbv-330'	=> 'globalcollect_gateway-response-dbv-330', // Check digit format is incorrect
+			//'dbv-340'	=> 'globalcollect_gateway-response-dbv-340', // Branch code not submitted
+			
 		);
 	}
 
@@ -79,7 +91,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'CUSTOMERBANKNUMBER'=> 'customer_bank_number', // dd
 			'CUSTOMERBANKZIP'	=> 'customer_bank_zip', // dd
 			'CREDITCARDNUMBER'	=> 'card_num',
-			'CURRENCYCODE'		=> 'currency',
+			'CURRENCYCODE'		=> 'currency_code',
 			'CVV'				=> 'cvv',
 			'DATECOLLECT'		=> 'date_collect',
 			'DIRECTDEBITTEXT'	=> 'direct_debit_text',
@@ -177,7 +189,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 * Please do not add more transactions to this array.
 	 *
 	 * @todo
-	 * - Does DO_BANKVALIDATION need IPADDRESS? What about the other transactions. Is this the user's IPA?
+	 * - Does  need IPADDRESS? What about the other transactions. Is this the user's IPA?
 	 * - Does DO_BANKVALIDATION need HOSTEDINDICATOR?
 	 *
 	 * This method should define:
@@ -427,6 +439,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Any',
 			'group'	=> 'cc',
 			'validation' => array( 'address' => true, 'amount' => true, 'email' => true, 'name' => true, ),
+			'keys' => array(),
 		);
 
 		/*
@@ -439,6 +452,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Bank Transfer',
 			'group'	=> 'bt',
 			'validation' => array(),
+			'keys' => array(),
 		);
 
 		/*
@@ -451,6 +465,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Visa',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// MasterCard
@@ -459,6 +474,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'MasterCard',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// American Express
@@ -467,6 +483,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'American Express',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// Maestro
@@ -475,6 +492,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Maestro',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// Solo
@@ -483,6 +501,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Solo',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// Laser
@@ -491,6 +510,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Laser',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// JCB
@@ -499,6 +519,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'JCB',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// Discover
@@ -507,6 +528,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Discover',
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// CB
@@ -515,6 +537,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'CB', // Carte Bancaire OR Carte Bleue
 			'group'	=> 'cc',
 			'validation' => array(),
+			'keys' => array(),
 		);
 
 		/*
@@ -540,7 +563,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Direct debit: BE',
 			'group'	=> 'dd',
 			'validation' => array(),
-			'keys' => array( 'ACCOUNTNAME', 'ACCOUNTNUMBER', 'AUTHORIZATIONID', 'BANKNAME', 'DIRECTDEBITTEXT', ),
+			'keys' => array( 'ACCOUNTNAME', 'ACCOUNTNUMBER', 'AUTHORIZATIONID', 'BANKCHECKDIGIT', 'BANKCODE', 'BANKNAME', 'DIRECTDEBITTEXT', ),
 		);
 		 
 		// Direct debit: CH
@@ -616,6 +639,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Nordea (Sweden)',
 			'group'	=> 'rtbt',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// Ideal
@@ -624,6 +648,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Ideal',
 			'group'	=> 'rtbt',
 			'validation' => array(),
+			'keys' => array(),
 			'issuerids' => array( 
 				771	=> 'SNS Regio Bank',
 				161	=> 'Van Lanschot Bankiers',
@@ -644,6 +669,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'eNETS',
 			'group'	=> 'rtbt',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// Sofortuberweisung/DIRECTebanking
@@ -652,6 +678,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'Sofortuberweisung/DIRECTebanking',
 			'group'	=> 'rtbt',
 			'validation' => array(),
+			'keys' => array(),
 		);
 		 
 		// eps Online-Überweisung
@@ -660,6 +687,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'label'	=> 'eps Online-Überweisung',
 			'group'	=> 'rtbt',
 			'validation' => array(),
+			'keys' => array(),
 			'issuerids' => array( 
 				824	=> 'Bankhaus Spängler',
 				825	=> 'Hypo Tirol Bank',
@@ -796,7 +824,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		//can't communicate or internal error
 			$problemflag = true;
 		}
-
+		
+		$order_status_results = false;
 		if ( !$cancelflag && !$problemflag ) {
 			$order_status_results = $this->getTransactionWMFStatus();
 			$txn_data = $this->getTransactionData();
@@ -806,10 +835,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				$problemmessage = "We don't have a Transaction WMF Status after doing a GET_ORDERSTATUS.";
 			}
 			switch ( $order_status_results ){
-				//status says no - probably no need to cancel, but why not be explicit? 
 				case 'failed' : 
 				case 'revised' :  
-					$cancelflag = true;
+					$cancelflag = true; //makes sure we don't try to confirm.
 					break;
 			}
 		}
@@ -846,14 +874,20 @@ class GlobalCollectAdapter extends GatewayAdapter {
 					$problemmessage = "SET_PAYMENT couldn't communicate properly!";
 				}
 			} else {
-				$final = $this->do_transaction( 'CANCEL_PAYMENT' );
-				if ( isset( $final['status'] ) && $final['status'] === true ) {
-					$this->setTransactionWMFStatus( $order_status_results );
-					$this->unsetAllSessionData();
-				} else {
-					$problemflag = true;
-					$problemmessage = "CANCEL_PAYMENT couldn't communicate properly!";
+				if ($order_status_results === false){
+					//we didn't do the check, because we're going to fail the thing. 
+					$final = $this->do_transaction( 'CANCEL_PAYMENT' );
+					if ( isset( $final['status'] ) && $final['status'] === true ) {
+						$this->setTransactionWMFStatus( $order_status_results );
+						$this->unsetAllSessionData();
+					} else {
+						$problemflag = true;
+						$problemmessage = "CANCEL_PAYMENT couldn't communicate properly!";
+					}
 				}
+				//No else. We can't be in here if we've had problems, so the 
+				//GET_STATUS must have told us no. No action required (in fact, 
+				//GC will complain if we try to can something at this point). 
 			}
 		}
 		
@@ -949,7 +983,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 * When we set lookup error code ranges, we use GET_ORDERSTATUS as the key for search
 	 * because they are only defined for that transaction type.
 	 *
-	 * @param array	$response	The response array
+	 * @param DOMDocument	$response	The response object
 	 */
 	public function getResponseData( $response ) {
 		$data = array( );
@@ -970,6 +1004,19 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				}
 
 				break;
+			case 'DO_BANKVALIDATION':
+				$data = $this->xmlChildrenToArray( $response, 'RESPONSE' );
+				unset( $data['META'] );
+				$data['errors'] = array();
+				$data['CHECKSPERFORMED'] = $this->xmlGetChecks( $response );
+				$data['VALIDATIONID'] = $this->xmlChildrenToArray( $response, 'VALIDATIONID' );
+
+				// WMFStatus will already be set if the transaction was unable to communicate properly.
+				if ( $this->getTransactionStatus() ) {
+					$this->setTransactionWMFStatus( $this->checkDoBankValidation( $data ) );
+				}
+
+				break;
 			case 'GET_ORDERSTATUS':
 				$data = $this->xmlChildrenToArray( $response, 'STATUS' );
 				$this->setTransactionWMFStatus( $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $data['STATUSID'] ) );
@@ -978,6 +1025,183 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Parse the response object for the checked validations 
+	 *
+	 * @param DOMDocument	$response	The response object
+	 */
+	protected function xmlGetChecks( $response ) {
+		
+		$data = array(
+			'CHECKS' => array(),
+		);
+
+		$checks = $response->getElementsByTagName( 'CHECK' );
+
+		foreach ( $checks as $check ) {
+			
+			// Get the check code
+			$checkCode = $check->getElementsByTagName('CHECKCODE')->item(0)->nodeValue;
+			
+			// Remove zero paddding
+			$checkCode = ltrim( $checkCode, '0');
+			
+			// Convert it too an integer
+			settype( $checkCode, 'integer' );
+			
+			$data['CHECKS'][ $checkCode ] = $check->getElementsByTagName('CHECKRESULT')->item(0)->nodeValue;
+		}
+		
+		// Sort the error codes
+		ksort( $data['CHECKS'] );
+
+		return $data;
+	}
+
+	/**
+	 * Interpret DO_BANKVALIDATION checks performed.
+	 *
+	 * The check results are returned as follows:
+	 * 
+	 * 	 <code>
+	 * 		<RESPONSE>
+	 * 			<RESULT>OK</RESULT>
+	 * 			<META>
+	 * 			<REQUESTID>207326</REQUESTID>
+	 * 			<RESPONSEDATETIME>20111106054547</RESPONSEDATETIME>
+	 * 			<CHECKSPERFORMED>
+	 * 				<CHECK>
+	 * 					<CHECKCODE>0030</CHECKCODE>
+	 * 					<CHECKRESULT>NOTCHECKED</CHECKRESULT></CHECK>
+	 * 				<CHECK>
+	 * 					<CHECKCODE>0050</CHECKCODE>
+	 * 					<CHECKRESULT>ERROR</CHECKRESULT></CHECK>
+	 * 				<CHECK>
+	 * 					<CHECKCODE>0051</CHECKCODE>
+	 * 					<CHECKRESULT>NOTCHECKED</CHECKRESULT>
+	 * 				</CHECK>
+	 * 			</CHECKSPERFORMED>
+	 * 		</RESPONSE>
+	 * 	 </code>
+	 *
+	 * This will use the error map.
+	 *
+	 * PASSED is a successful validation.
+	 *
+	 * ERROR is a validation failure.
+	 *
+	 * WARNING: For now, this will be treated as failed.
+	 *
+	 * NOTCHECKED does not need to be worried about in the check results. These
+	 * are supposed to appear if a validation failed, rendering the other
+	 * validations pointless to check.
+	 *
+	 * @todo
+	 * - There is a problem with the manual for DO_BANKVALIDATION. Failure should return NOK. Is this only on development?
+	 * - Messages are not being translated by the provider.
+	 * - What do we do about WARNING? For now, it is fail?
+	 * - Get the validation id
+	 *
+	 * @param array	$data	The data array
+	 *
+	 * @return boolean
+	 */
+	public function checkDoBankValidation( &$data ) {
+		
+		$checks = &$data['CHECKSPERFORMED'];
+		
+		$hasValidationId = false;
+		$isPass = 0;
+		$isError = 0;
+		$isWarning = 0;
+		$isNotChecked = 0;
+		
+		$return = 'failed';
+		
+		if ( !is_array( $checks['CHECKS'] ) ) {
+		
+			// Should we trigger an error if no checks are performed?
+			// For now, just return failed.
+			return $return;
+		}
+
+		// We only mark validation as a failure if we have warnings or errors.
+		$return = 'complete';
+		
+		foreach ( $checks['CHECKS'] as $checkCode => $checkResult ) {
+			
+			// Prefix error codes with dbv for DO_BANKVALIDATION
+			$code = 'dbv-' . $checkCode;
+			
+			if ( $checkResult == 'ERROR' ) {
+				$isError++;
+
+				// Message might need to be put somewhere else.
+				$data['errors'][ $code ] = $this->getErrorMap( $code );
+
+			} elseif ( $checkResult == 'NOTCHECKED' ) {
+
+				$isNotChecked++;
+
+			} elseif ( $checkResult == 'PASSED' ) {
+
+				$isPass++;
+
+			} elseif ( $checkResult == 'WARNING' ) {
+
+				$isWarning++;
+
+				// Message might need to be put somewhere else.
+				$data['errors'][ $code ] = $this->getErrorMap( $code );
+
+			} else {
+				
+				$message = 'Unknown check result: (' . $checkResult . ')';
+				
+				throw new MWException( $message );
+			}
+		}
+		
+		// The return text needs to match something in @see $this->defineGoToThankYouOn()
+		if ( $isPass ) {
+			$return = 'complete';
+		}
+		
+		if ( $isWarning ) {
+			// This should be logged.
+			$return = 'failed';
+		}
+		
+		if ( $isError ) {
+			$return = 'failed';
+		}
+
+		// Check to see if a validation id exists
+		$hasValidationId = isset( $data['VALIDATIONID'] ) ? (boolean) $data['VALIDATIONID'] : false;
+		
+		// Do we have a validation ID?
+		//$return = $hasValidationId ? $return : 'failed';
+		
+		return $return;
+	}
+	
+	/**
+	 * Set the bank validation error messages for the client.
+	 *
+	 * The messages have already been generated at this point. The purpose of
+	 * this method is to pass them to the view.
+	 */
+	public function setBankValidationErrors() {
+
+		$results = $this->getTransactionAllResults();
+
+		$checks = $results['data'];
+
+		$errors = isset( $checks['errors'] ) ? $checks['errors'] : array();
+
+		$this->setTransactionResult( $errors, 'errors' );
 	}
 	
 	/**
@@ -1116,8 +1340,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$count = 0;
 		//Count's just there making sure we don't get stuck here. 
 		while ( !in_array( $language, $this->getAvailableLanguages() ) && $count < 3 ){
-			//find the failback. 
-			$language = $this->dataObj->getFailbackLanguage( $language );
+			// Get the fallback language
+			$language = Language::getFallbackFor( $language );
 			$count += 1;
 		}
 		
@@ -1298,6 +1522,8 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			case 'rtbt_ideal':
 				$this->staged_data['payment_product'] = $this->payment_submethods[ $payment_submethod ]['paymentproductid'];
 				$this->var_map['PAYMENTPRODUCTID'] = 'payment_product';
+
+				$this->addKeysToTransactionForSubmethod( $payment_submethod );
 				
 				$this->addKeyToTransaction('ISSUERID');
 				break;
@@ -1315,8 +1541,15 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	 *
 	 */
 	protected function addKeysToTransactionForSubmethod( $payment_submethod ) {
+
+		// If there are no keys to add, do not proceed.
+		if ( !is_array( $this->payment_submethods[ $payment_submethod ]['keys'] ) ) {
+			
+			return;
+		}
 		
 		foreach ( $this->payment_submethods[ $payment_submethod ]['keys'] as $key ) {
+
 			$this->addKeyToTransaction( $key );
 		}
 	}

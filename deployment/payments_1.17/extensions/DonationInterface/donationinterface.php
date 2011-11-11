@@ -214,7 +214,7 @@ $wgDonationInterfaceRetrySeconds = 5;
 //all of the following variables make sense to override directly,
 //or change "DonationInterface" to the gateway's id to override just for that gateway.
 //for instance: To override $wgDonationInterfaceUseSyslog just for GlobalCollect, add
-// $wgGolbalCollectGatewayUseSyslog = true
+// $wgGlobalCollectGatewayUseSyslog = true
 // to LocalSettings.
 //
 
@@ -585,6 +585,7 @@ $wgResourceTemplate = array(
 
 $wgResourceModules[ 'ext.donationInterface.errorMessages' ] = array(
 	'messages' => array(
+		'donate_interface-error-msg-general',
 		'donate_interface-error-msg-js',
 		'donate_interface-error-msg-invalid-amount',
 		'donate_interface-error-msg-email',

@@ -138,9 +138,15 @@ EOT;
 
 						$this->adapter->do_transaction( 'DO_BANKVALIDATION' );
 
-						if ( $this->adapter->getTransactionStatus() ) {
+						// Check to see if validations were successful, if so, proceed with order.
+						if ( in_array( $this->adapter->getTransactionWMFStatus(), $this->adapter->getGoToThankYouOn() ) ) {
 
 							$this->adapter->do_transaction( 'INSERT_ORDERWITHPAYMENT' );
+						}
+						else {
+
+							// Attach the error messages to the form
+							$this->adapter->setBankValidationErrors();
 						}
 						
 					}
@@ -262,7 +268,7 @@ EOT;
 
 		$queryString = '?payment_method=' . $this->adapter->getPaymentMethod() . '&payment_submethod=' . $this->adapter->getPaymentSubmethod();
 
-		$url = $this->adapter->getGlobal( 'ThankYouPage' ) . '/' . $this->adapter->getTransactionDataLanguage() . $queryString;
+		$url = $this->adapter->getThankYouPage() . $queryString;
 		
 		$link = Xml::tags( 'a', array( 'href' => $url ), wfMsg( 'donate_interface-bt-finished' ) );
 		

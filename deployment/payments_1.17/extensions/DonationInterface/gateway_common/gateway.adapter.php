@@ -238,7 +238,7 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->postdatadefaults = array(
 			'order_id' => '112358' . rand(),
 			'amount' => '11.38',
-			'currency' => 'USD',
+			'currency_code' => 'USD',
 			'language' => 'en',
 			'country' => 'US',
 			'returnto' => $returnTo,
@@ -247,22 +247,56 @@ abstract class GatewayAdapter implements GatewayType {
 		);
 	}
 
-	function getThankYouPage() {
-		global $wgLang;
-		$language = $wgLang->getCode();
-		$page = self::getGlobal( "ThankYouPage" ) . "/$language";
-//		$returnTitle = Title::newFromText( $page );
-//		$returnto = $returnTitle->getFullURL();
+	/**
+	 * getThankYouPage should either return a full page url, or false. 
+	 * @global type $wgLang
+	 * @return mixed Page URL in string format, or false if none is set. 
+	 */
+	public function getThankYouPage() {
+		$page = self::getGlobal( "ThankYouPage" );
+		if ( $page ) {
+			$page = $this->appendLanguageAndMakeURL( $page );
+		}
 		return $page;
 	}
 
-	function getFailPage() {
-		global $wgLang;
-		$language = $wgLang->getCode();
-		$page = self::getGlobal( "FailPage" ) . "/$language";
-		$returnTitle = Title::newFromText( $page );
-		$returnto = $returnTitle->getFullURL();
-		return $returnto;
+	/**
+	 * getFailPage should either return a full page url, or false. 
+	 * @global type $wgLang
+	 * @return mixed Page URL in string format, or false if none is set.  
+	 */
+	public function getFailPage() {
+		$page = self::getGlobal( "FailPage" );
+		if ( $page ) {
+			$page = $this->appendLanguageAndMakeURL( $page );
+		}
+		return $page;
+	}
+	
+	/**
+	 * For pages we intend to redirect to. This function will take either a full 
+	 * URL or a page title, and turn it into a URL with the appropriate language 
+	 * appended onto the end. 
+	 * @param string $url Either a wiki page title, or a URL to an external wiki 
+	 * page title. 
+	 * @return string A URL  
+	 */
+	protected function appendLanguageAndMakeURL( $url ){
+		$language = $this->getData_Raw( 'language' );
+		//make sure we don't already have the language in there...
+		$dirs = explode('/', $url);
+		if ( !is_array($dirs) || !in_array( $language, $dirs ) ){
+			$url = $url . "/$language";
+		}
+		
+		error_log("Position: " . strpos( $url, 'http' ));
+		if ( strpos( $url, 'http' ) === 0) { 
+			return $url;
+		} else { //this isn't a url yet.
+			$returnTitle = Title::newFromText( $url );
+			$url = $returnTitle->getFullURL();
+			return $url;
+		}
 	}
 
 	/**
@@ -300,7 +334,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @return mixed All the staged data held by the adapter, or if a key was 
 	 * set, the staged value for that key. 
 	 */
-	function getData_Staged( $val = '' ) {
+	protected function getData_Staged( $val = '' ) {
 		if ( $val === '' ) {
 			return $this->staged_data;
 		} else {
@@ -542,7 +576,7 @@ abstract class GatewayAdapter implements GatewayType {
 			} else {
 				//return the default for that form value
 
-				$tempField = isset( $this->var_map[ $gateway_field_name ] ) ? $this->var_map[ $gateway_field_name ] : false;
+				$tempField = $this->var_map[ $gateway_field_name ];
 
 				$tempValue = '';
 
@@ -1476,7 +1510,7 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 
 	function getPaypalRedirectURL() {
-		$currency = $this->getData_Raw( 'currency' );
+		$currency = $this->getData_Raw( 'currency_code' );
 
 		// update the utm source to set the payment instrument to pp rather than cc
 		$data['payment_method'] = 'pp';
@@ -1664,46 +1698,6 @@ abstract class GatewayAdapter implements GatewayType {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * Returns false if language does not exist or string if it does exist
-	 *
-	 * @todo
-	 * - Can we just get the language from somewhere else to make this simpler?
-	 *
-	 * @return false|string  
-	 */
-	public function getTransactionDataLanguage() {
-		
-		$data = $this->getTransactionData();
-		
-		$return = false;
-		
-		// Check for language in $data
-		if ( is_array( $data ) ) {
-			if ( array_key_exists( 'language', $data ) ) {
-				$return = $data['language'];
-			} 
-		}
-
-		// Check for language in $data['ORDER']['LANGUAGECODE']
-		if ( empty( $return ) && array_key_exists( 'ORDER', $data ) ) {
-			
-			if ( array_key_exists( 'LANGUAGECODE', $data['ORDER'] ) ) {
-				$return = $data['ORDER']['LANGUAGECODE'];
-			}
-		}
-
-		// Check for language in $data['PAYMENT']['LANGUAGECODE']
-		if ( empty( $return ) && array_key_exists( 'PAYMENT', $data ) ) {
-			
-			if ( array_key_exists( 'LANGUAGECODE', $data['PAYMENT'] ) ) {
-				$return = $data['PAYMENT']['LANGUAGECODE'];
-			}
-		}
-		
-		return $return;
 	}
 
 	/**
