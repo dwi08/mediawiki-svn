@@ -75,9 +75,10 @@ void dumpData(FILE *fd) {
 		} else { 
 			points = entry->pf_count;
 		}
-		for (i=0; i<points; i++) { 
+		for (i=0; i<points-1; i++) { 
 			fprintf(fd,"%lf ", entry->pf_reals[i]);
 		}
+		fprintf(fd,"%lf", entry->pf_reals[points-1]);
 		fprintf(fd,"\" />\n" \
 				"</stats></event>\n");
 	}
