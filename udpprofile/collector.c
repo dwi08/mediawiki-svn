@@ -151,9 +151,17 @@ void handleMessage(char *buf,ssize_t l) {
 			old->pf_cpu_sq  += incoming.pf_cpu_sq;
 			old->pf_real    += incoming.pf_real;
 			old->pf_real_sq += incoming.pf_real_sq;
+			old->pf_reals[old->pf_real_pointer] = incoming.pf_real;
+			if (old->pf_real_pointer == POINTS-1) {
+				old->pf_real_pointer = 0;
+			} else { 
+				old->pf_real_pointer++;
+			}
 			db->put(db,NULL,&key,&data,0);	
 		} else {
 			/* Put in fresh data */
+			incoming.pf_real_pointer = 1;
+			incoming.pf_reals[0] = incoming.pf_real;
 			data.data=&incoming;
 			data.size=sizeof(incoming);
 			db->put(db,NULL,&key,&data,0);

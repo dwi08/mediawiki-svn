@@ -23,6 +23,7 @@ void dumpData(FILE *fd) {
 	
 	char *p, oldhost[128]="",olddb[128]="",*pp;
 	int indb=0,inhost=0;
+	int i, points;
 
 	struct pfstats *entry;
 
@@ -65,11 +66,20 @@ void dumpData(FILE *fd) {
 				"<stats count=\"%lu\">\n" \
 				"<cputime total=\"%lf\" totalsq=\"%lf\" />\n" \
 				"<realtime total=\"%lf\" totalsq=\"%lf\" />\n" \
-				"</stats></event>\n",
+				"<samples real=\"",
 				(int)(key.size - ((void *)p-(void *)key.data)),p,
 				entry->pf_count, entry->pf_cpu, entry->pf_cpu_sq,
 				entry->pf_real, entry->pf_real_sq);
-
+		if (entry->pf_count >= POINTS) { 
+			points = POINTS;
+		} else { 
+			points = entry->pf_count;
+		}
+		for (i=0; i<points; i++) { 
+			fprintf(fd,"%lf ", entry->pf_reals[i]);
+		}
+		fprintf(fd,"\" />\n" \
+				"</stats></event>\n");
 	}
 	fprintf(fd,"</host>\n</db>\n</pfdump>\n");
 	c->c_close(c);
