@@ -55,10 +55,12 @@ window.validate_personal = function( form ){
 	var fields = ['fname','lname','street','city','zip', 'emailAdd'],
 		numFields = fields.length;
 	for( i = 0; i < numFields; i++ ) {
-		// See if the field is empty or equal to the placeholder
-		if( document.getElementById( fields[i] ).value == '' || document.getElementById( fields[i] ).value == mw.msg( 'donate_interface-donor-'+fields[i] ) ) {
-			currField = mw.msg( 'donate_interface-error-msg-' + fields[i] );
-			output += mw.msg( 'donate_interface-error-msg-js' ) + ' ' + currField + '.\r\n';
+		if ( document.getElementById( fields[i] ) ) { // Make sure field exists
+			// See if the field is empty or equal to the placeholder
+			if( document.getElementById( fields[i] ).value == '' || document.getElementById( fields[i] ).value == mw.msg( 'donate_interface-donor-'+fields[i] ) ) {
+				currField = mw.msg( 'donate_interface-error-msg-' + fields[i] );
+				output += mw.msg( 'donate_interface-error-msg-js' ) + ' ' + currField + '.\r\n';
+			}
 		}
 	}
 	
@@ -82,11 +84,21 @@ window.validate_personal = function( form ){
 	}
 
 	// validate email address
-	var apos = form.emailAdd.value.indexOf("@");
-	var dotpos = form.emailAdd.value.lastIndexOf(".");
-
-	if( apos < 1 || dotpos-apos < 2 ) {
-		output += mw.msg( 'donate_interface-error-msg-email' );
+	if( document.getElementById( 'emailAdd' ).value != '' && document.getElementById( 'emailAdd' ).value != mw.msg( 'donate_interface-donor-emailAdd' ) ) {
+		var apos = form.emailAdd.value.indexOf("@");
+		var dotpos = form.emailAdd.value.lastIndexOf(".");
+	
+		if( apos < 1 || dotpos-apos < 2 ) {
+			output += mw.msg( 'donate_interface-error-msg-email' ) + '.\r\n';
+		}
+	}
+	
+	// Make sure cookies are enabled
+	document.cookie = 'wmf_test=1;';
+	if ( document.cookie.indexOf( 'wmf_test=1' ) != -1 ) {
+		document.cookie = 'wmf_test=; expires=Thu, 01-Jan-70 00:00:01 GMT;'; // unset the cookie
+	} else {
+		output += mw.msg( 'donate_interface-error-msg-cookies' ); // display error
 	}
 
 	if( output ) {
@@ -108,10 +120,12 @@ window.validate_form = function( form ) {
 	var fields = ['fname','lname','street','city','zip', 'emailAdd', 'card_num','cvv'],
 		numFields = fields.length;
 	for( i = 0; i < numFields; i++ ) {
-		// See if the field is empty or equal to the placeholder
-		if( document.getElementById( fields[i] ).value == '' || document.getElementById( fields[i] ).value == mw.msg( 'donate_interface-donor-'+fields[i] ) ) {
-			currField = mw.msg( 'donate_interface-error-msg-' + fields[i] );
-			output += mw.msg( 'donate_interface-error-msg-js' ) + ' ' + currField + '.\r\n';
+		if ( document.getElementById( fields[i] ) ) { // Make sure field exists
+			// See if the field is empty or equal to the placeholder
+			if( document.getElementById( fields[i] ).value == '' || document.getElementById( fields[i] ).value == mw.msg( 'donate_interface-donor-'+fields[i] ) ) {
+				currField = mw.msg( 'donate_interface-error-msg-' + fields[i] );
+				output += mw.msg( 'donate_interface-error-msg-js' ) + ' ' + currField + '.\r\n';
+			}
 		}
 	}
 	
@@ -138,11 +152,21 @@ window.validate_form = function( form ) {
 	}
 
 	// validate email address
-	var apos = form.emailAdd.value.indexOf("@");
-	var dotpos = form.emailAdd.value.lastIndexOf(".");
-
-	if( apos < 1 || dotpos-apos < 2 ) {
-		output += mw.msg( 'donate_interface-error-msg-email' );
+	if( document.getElementById( 'emailAdd' ).value != '' && document.getElementById( 'emailAdd' ).value != mw.msg( 'donate_interface-donor-emailAdd' ) ) {
+		var apos = form.emailAdd.value.indexOf("@");
+		var dotpos = form.emailAdd.value.lastIndexOf(".");
+	
+		if( apos < 1 || dotpos-apos < 2 ) {
+			output += mw.msg( 'donate_interface-error-msg-email' ) + '.\r\n';
+		}
+	}
+	
+	// Make sure cookies are enabled
+	document.cookie = 'wmf_test=1;';
+	if ( document.cookie.indexOf( 'wmf_test=1' ) != -1 ) {
+		document.cookie = 'wmf_test=; expires=Thu, 01-Jan-70 00:00:01 GMT;'; // unset the cookie
+	} else {
+		output += mw.msg( 'donate_interface-error-msg-cookies' ); // display error
 	}
 
 	if( output ) {
