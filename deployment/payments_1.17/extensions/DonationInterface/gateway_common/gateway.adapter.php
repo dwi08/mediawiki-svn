@@ -289,7 +289,6 @@ abstract class GatewayAdapter implements GatewayType {
 			$url = $url . "/$language";
 		}
 		
-		error_log("Position: " . strpos( $url, 'http' ));
 		if ( strpos( $url, 'http' ) === 0) { 
 			return $url;
 		} else { //this isn't a url yet.
@@ -799,15 +798,19 @@ abstract class GatewayAdapter implements GatewayType {
 			$this->executeIfFunctionExists( 'pre_process_' . $transaction );
 
 			if ( $this->getValidationAction() != 'process' ) {
-				return array(
+
+				self::log( "Failed failed pre-process checks.", LOG_CRIT );
+				
+				$this->transaction_results = array(
 					'status' => false,
-					//TODO: appropriate messages. 
-					'message' => "$transaction : Failed failed pre-process checks. Somebody PLEASE override me!",
+					'message' => $this->getErrorMapByCodeAndTranslate( 'internal-0000' ),
 					'errors' => array(
-						'1000000' => 'pre-process failed you.' //...stupid code.
+						'internal-0000' => $this->getErrorMapByCodeAndTranslate( 'internal-0000' ),
 					),
 					'action' => $this->getValidationAction(),
 				);
+			
+				return $this->getTransactionAllResults();
 			}
 
 			//TODO: Maybe move this to the pre_process functions? 
@@ -827,16 +830,19 @@ abstract class GatewayAdapter implements GatewayType {
 				$this->saveCommunicationStats( "buildRequestNameValueString", $transaction ); // save profiling data
 			}
 		} catch ( MWException $e ) {
+			
 			self::log( "Malformed gateway definition. Cannot continue: Aborting.\n" . $e->getMessage(), LOG_CRIT );
-			return array(
+			
+			$this->transaction_results = array(
 				'status' => false,
-				//TODO: appropriate messages. 
-				'message' => "$transaction : Malformed gateway definition. Cannot continue: Aborting.\n" . $e->getMessage(),
+				'message' => $this->getErrorMapByCodeAndTranslate( 'internal-0001' ),
 				'errors' => array(
-					'1000000' => 'Transaction could not be processed due to an internal error.'
+					'internal-0001' => $this->getErrorMapByCodeAndTranslate( 'internal-0001' ),
 				),
 				'action' => $this->getValidationAction(),
 			);
+			
+			return $this->getTransactionAllResults();
 		}
 
 		//start looping here, if we're the sort of transaction that needs to do that. 
@@ -892,14 +898,19 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->saveCommunicationStats( __FUNCTION__, $transaction, "counter = $counter" );
 
 		if ( $txn_ok === false ) { //nothing to process, so we have to build it manually
-			return array(
+			
+			self::log( "$transaction Communication Failed!", LOG_CRIT );
+			
+			$this->transaction_results = array(
 				'status' => false,
-				'message' => "$transaction Communication Failed!",
+				'message' => $this->getErrorMapByCodeAndTranslate( 'internal-0002' ),
 				'errors' => array(
-					'1000000' => 'communication failure' //...stupid code.
+					'internal-0002' => $this->getErrorMapByCodeAndTranslate( 'internal-0002' ),
 				),
 				'action' => $this->getValidationAction(),
 			);
+			
+			return $this->getTransactionAllResults();
 		}
 
 		//If we have any special post-process instructions for this 
@@ -1509,6 +1520,41 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 	}
 
+	/**
+	 * Format staged data
+	 *
+	 * Formatting:
+	 * - trim - all strings
+	 * - truncate - all strings to the maximum length permitted by the gateway
+	 */
+	public function formatStagedData() {
+
+		foreach ( $this->staged_data as $field => $value ) {
+
+			// Trim all values if they are a string
+			$value = is_string( $value ) ? trim( $value ) : $value;
+			
+			if ( isset( $this->dataConstraints[ $field ] ) && is_string( $value ) ) {
+			
+				// Truncate the field if it has a length specified
+				if ( isset( $this->dataConstraints[ $field ]['length'] ) ) {
+					$length = (integer) $this->dataConstraints[ $field ]['length'];
+				} else {
+					$length = false;
+				}
+				
+				if ( !empty( $length ) && !empty( $value ) ) {
+					$value = substr( $value, 0, $length );
+				}
+				
+			} else {
+				//$this->log( 'Field does not exist in $this->dataConstraints[ ' . ( string ) $field . ' ]', LOG_DEBUG );
+			}
+			
+			$this->staged_data[ $field ] = $value;
+		}
+	}
+	
 	function getPaypalRedirectURL() {
 		$currency = $this->getData_Raw( 'currency_code' );
 
@@ -1907,6 +1953,25 @@ abstract class GatewayAdapter implements GatewayType {
 			$this->action = 'process';
 		}
 		return $this->action;
+	}
+	
+	/**
+	 * Checks to see if we have donor data in our session. 
+	 * This can be useful for determining if a user should be at a certain point 
+	 * in the workflow for certain gateways. For example: This is used on the 
+	 * outside of the adapter in GlobalCollect's resultswitcher page, to 
+	 * determine if the user is actually in the process of making a credit card 
+	 * transaction. 
+	 * @param string $key Optional: A particular key to check against the 
+	 * donor data in session. 
+	 * @param string $value Optional (unless $key is set): A value that the $key 
+	 * should contain, in the donor session.  
+	 * @return boolean true if the session contains donor data (and if the data 
+	 * key matches, when key and value are set), and false if there is no donor 
+	 * data (or if the key and value do not match)
+	 */
+	public function hasDonorDataInSession( $key = false, $value= '' ){
+		return $this->dataObj->hasDonorDataInSession( $key, $value );
 	}
 
 }
