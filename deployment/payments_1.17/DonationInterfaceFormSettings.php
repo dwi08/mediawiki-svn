@@ -57,3 +57,4 @@ $wgPayflowProGatewayAllowedHtmlForms['webitects_2_3step-CA'] = $wgPayflowProGate
 // Credit Card - Two Step
 $wgPayflowProGatewayAllowedHtmlForms['webitects_2_2step-US'] = $wgPayflowProGatewayHtmlFormDir .'/webitects_2_2step-US.html';
 $wgPayflowProGatewayAllowedHtmlForms['webitects_2_2stepB-US'] = $wgPayflowProGatewayHtmlFormDir .'/webitects_2_2stepB-US.html';
+$wgPayflowProGatewayAllowedHtmlForms['webitects2nd_green-US'] = $wgPayflowProGatewayHtmlFormDir . '/webitects2nd_green-US.html';
