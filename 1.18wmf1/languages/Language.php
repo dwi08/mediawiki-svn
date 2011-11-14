@@ -2573,15 +2573,21 @@ class Language {
 		}
 		else {
 			// Ref: http://cldr.unicode.org/translation/number-patterns
+			$sign = "";
+			if ( intval( $_ ) < 0 ) {
+				// For negative numbers apply the algorithm like positive number and add sign.
+				$sign =   $_[0];
+				$_ = substr( $_,1 );
+			}
 			$numberpart = array();
 			$decimalpart = array();
 			$numMatches = preg_match_all( "/(#+)/", $digitGroupingPattern, $matches );
 			preg_match( "/\d+/", $_, $numberpart );
 			preg_match( "/\.\d*/", $_, $decimalpart );
 			$groupedNumber = ( count( $decimalpart ) > 0 ) ? $decimalpart[0]:"";
-			if ( $groupedNumber  === $_){
-			    //the string does not have any number part. Eg: .12345
-			    return $groupedNumber;
+			if ( $groupedNumber  === $_ ) {
+				// the string does not have any number part. Eg: .12345
+				return $sign . $groupedNumber;
 			}
 			$start = $end = strlen( $numberpart[0] );
 			while ( $start > 0 )
@@ -2602,7 +2608,7 @@ class Language {
 				$groupedNumber = "," . $groupedNumber;
 			    }
 			}
-			return $groupedNumber;
+			return $sign . $groupedNumber;
 		}
 	}
 	/**
