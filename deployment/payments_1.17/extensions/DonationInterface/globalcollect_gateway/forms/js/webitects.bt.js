@@ -88,6 +88,8 @@ $( document ).ready( function () {
 		}
 	}
 
+	showAmount( $( 'input[name="amount"]' ) );
+
 } );
 
 // set the hidden amount input to the value of the selected element
@@ -119,7 +121,7 @@ function validateAmount() {
 		wgCurrencyMinimums[currency_code] = 1;
 	}
 	if ( amount < wgCurrencyMinimums[currency_code] || error ) {
-		alert( 'You must contribute at least $1'.replace( '$1', wgCurrencyMinimums[currency_code] + ' ' + currency_code ) );
+		alert( mw.msg( 'donate_interface-smallamount-error' ).replace( '$1', wgCurrencyMinimums[currency_code] + ' ' + currency_code ) );
 		error = true;
 	}
 	return !error;
