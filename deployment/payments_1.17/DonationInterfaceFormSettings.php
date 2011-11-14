@@ -44,6 +44,7 @@ $wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3stepB-US'] = $wgGlobalColl
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd-US.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd_green-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd_green-US.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-amex'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd-amex.html';
 
 /**
  * PayflowPro RapidHTML whitelist additions
