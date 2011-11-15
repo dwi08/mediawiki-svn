@@ -98,7 +98,7 @@ input {
 	padding: 4px;
 	padding-right: 16px;
 	
-	background-image: url(images/icons/athena_icon_000000_search.png);
+	background-image: url(images/icons/athena_icon_999999_search.png);
 	background-position: center right;
 	background-repeat: no-repeat;
 }
@@ -146,4 +146,24 @@ input {
 	color: black;
 	background: white;
 }
+
+
+@media all and (min-width: 640px) {
+	/* "Tablet mode" */
+	.bar button {
+		width: auto;
+		height: 48px;
+		padding: 0;
+		padding-left: 40px;
+		padding-right: 8px;
+		background-repeat: no-repeat;
+		background-position: 8px center;
+		background-color: transparent;
+		/* background-image added per class */
+		border: none;
+		color: white;
+		font-size: 13px;
+	}
+}
+
 
