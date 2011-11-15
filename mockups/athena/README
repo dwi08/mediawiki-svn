@@ -29,7 +29,27 @@ automatic switching to inline in the page layout when you reach the footer.
 
 == Known issues ==
 
-* position: fixed elements don't work on iOS 4.3 (ok on 5.0)
-* on iOS, bottom bar doesn't switch between position:fixed and inline in the footer during scrolling; event isn't called until scroll finishes
-* hash links like references and 'jump back a section' don't appear to be working
+* hash links like references and 'jump back a section' don't appear to be working consistently?
+
+
+Firefox 7 / Desktop
+* phone & tablet sizes ok
+
+Firefox 8 / Android
+* position: fixed elements scroll along with the document, don't restore to proper position until scrolling is complete
+
+Opera Mobile 11.50 / Android
+* position: fixed elements scroll along with the document, don't restore to proper position until scrolling is complete
+
+Mobile Safari - iOS 4.3 simulator
+* position: fixed elements behave as position: absolute
+
+Mobile Safari - iOS 5 simulator
+* bottom bar docking/undocking happens after ending a scroll, instead of as you scroll past the boundary ('scroll' event not fired until the end)
+
+Android 2.3.6 stock browser
+* position: fixed elements work, but sometimes update slowly or don't refresh properly onscreen
+
+IE 10 (Windows 8 Developer Preview)
+* position: fixed elements work, but update slowly
 
