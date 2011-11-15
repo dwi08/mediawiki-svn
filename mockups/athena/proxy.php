@@ -30,7 +30,9 @@ $url = str_replace(
 $context = stream_context_create(
 	array(
 		'http' => array(
-			'user_agent' => 'Wikipedia Mobile (Athena mockup)',
+			// fake "iPhone" in there to force a mode where show/hide works
+			// this should not be required, grrrr!
+			'user_agent' => 'Wikipedia Mobile (Athena mockup; iPhone)',
 		),
 	)
 );

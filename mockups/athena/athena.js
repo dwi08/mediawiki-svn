@@ -44,9 +44,63 @@ var ui = {
 	}
 };
 
+var embed = {
+	init: function() {
+		var $embed = $('#embed');
+		$(window).bind('message', function(event) {
+			var src = event.originalEvent.source,
+				msg = event.originalEvent.data;
+			if (src !== $embed[0].contentWindow) {
+				// not from our iframe; ignore
+				return;
+			}
+			var key = '[wiki-mobile-embed]';
+			if (msg.substr(0, key.length) !== key) {
+				// not from our iframe's protocol; ignore
+				return;
+			}
+			var data = JSON.parse(msg.substr(key.length));
+			if ('event' in data && typeof data.event === 'string') {
+				$embed.trigger('embed:' + data.event, data);
+			}
+		});
+		$embed.bind('embed:navigate', function(event, data) {
+			// hack hack hack!
+			var matches = data.url.match(/^\/wiki\/(.*)$/);
+			if (matches) {
+				app.loadPage(decodeURIComponent(matches[1]));
+			} else {
+				// external!
+				document.location = data.url;
+			}
+		});
+	},
+
+	/**
+	 * @return promise
+	 */
+	loadPage: function(title) {
+		var $embed = $('#embed');
+		$embed.attr('src', 'proxy.php?title=' + encodeURIComponent(title.replace(' ', '_')));
+		var deferred = new $.Deferred();
+		$embed.bind('embed:load', function() {
+			deferred.resolve();
+			$embed.unbind('embed:load');
+		});
+		return deferred.promise();
+	}
+};
+
+
 var app = {
+	init: function() {
+		embed.init();
+		app.loadPage('While My Guitar Gently Weeps');
+	},
+
 	loadPage: function(title) {
 		ui.startSpinner();
+		/*
 		wiki.api({
 			action: 'query',
 			prop: 'revisions',
@@ -68,11 +122,15 @@ var app = {
 			ui.showPage(page.title, rev['*']);
 			ui.stopSpinner();
 		});
-	},
+		*/
+		embed.loadPage(title).then(function() {
+			ui.stopSpinner();
+		});
+	}
 };
 
 $(function() {
-	app.loadPage('While My Guitar Gently Weeps');
+	app.init();
 });
 
 })(jQuery);
