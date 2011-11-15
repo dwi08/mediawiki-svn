@@ -1,2 +1,86 @@
 /* stub */
+.bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	height: 48px;
+	
+	color: white;
+	background: black;
+}
+
+#top-bar {
+	top: 0;
+}
+
+#bottom-bar {
+	bottom: 0;
+}
+
+.bar .detail {
+	background-color: gray;
+}
+
+.bar button {
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	padding-top: 24px;
+	background-repeat: no-repeat;
+	background-position: center 0px;
+	background-color: transparent;
+	/* background-image added per class */
+	border: none;
+	color: white;
+	font-size: 11px;
+}
+
+.bar button:active {
+	background-color: blue;
+}
+
+.stretch {
+	max-width: 99999px;
+}
+
+input {
+}
+
+#search-box input {
+	border: none;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	font-size: 16px;
+	vertical-align: top;
+	margin-top: 10px;
+	padding: 4px;
+	padding-right: 16px;
+	
+	background-image: url(images/icons/athena_icon_000000_search.png);
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
+.button-main {
+	background-image: url(images/icons/athena_icon_efefef_w.png);
+}
+.button-you {
+	background-image: url(images/icons/athena_icon_efefef_user.png);
+}
+.button-article {
+	background-image: url(images/icons/athena_icon_efefef_puzzle.png);
+}
+.button-history {
+	background-image: url(images/icons/athena_icon_efefef_history.png);
+}
+.button-more {
+	background-image: url(images/icons/athena_icon_efefef_more.png);
+}
+.button-discuss {
+	background-image: url(images/icons/athena_icon_efefef_discussion.png);
+}
+.button-language {
+	background-image: url(images/icons/athena_icon_efefef_globe.png);
+}
 
