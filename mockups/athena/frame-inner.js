@@ -73,5 +73,14 @@ wm_toggle_section = function(section) {
 	sendSize();
 };
 
+
+// Send generic unhandled taps up to parent
+// May need to show/hide toolbars etc
+document.addEventListener('click', function(event) {
+	messageParent({
+		event: 'click'
+	});
+}, false);
+
 })();
 

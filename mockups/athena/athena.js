@@ -84,6 +84,10 @@ var embed = {
 		$embed.bind('embed:resize', function(event, data) {
 			$embed.height(data.height);
 		});
+		$embed.bind('embed:click', function(event, data) {
+			// toggle the floating state
+			$('.bar').toggleClass('bar-float');
+		});
 	},
 
 	/**

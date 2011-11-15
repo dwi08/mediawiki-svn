@@ -12,26 +12,58 @@
 
 <body>
 
-<div id="top-bar" class="bar">
-	<button class="button-main">Main</button>
-	<span id="search-box" class="stretch">
-		<input id="search" placeholder="Search Wikipedia">
-	</span>
-	<button class="button-you">You</button>
+<div class="bar-wrapper">
+	<div id="top-bar" class="bar">
+		<button class="button-main">Main</button>
+		<span class="search-box" class="stretch">
+			<input class="search" placeholder="Search Wikipedia">
+		</span>
+		<button class="button-you">You</button>
+	</div>
 </div>
 
 <iframe id="embed" width="100%" height="100%" src="proxy.php?title=While_My_Guitar_Gently_Weeps"></iframe>
 
 <div id="page-content"></div>
 
-<div id="bottom-bar" class="bar">
-	<button class="button-article">Article</button>
-	<span class="detail stretch">
-		<button class="button-history">History</button>
-		<button class="button-more">More</button>
-	</span>
-	<button class="button-discuss">Discuss</button>
-	<button class="button-language">Language</button>
+<div class="bar-wrapper">
+	<div id="bottom-bar" class="bar">
+		<button class="button-article">Article</button>
+		<span class="detail stretch">
+			<button class="button-history">History</button>
+			<button class="button-more">More</button>
+		</span>
+		<button class="button-discuss">Discuss</button>
+		<button class="button-language">Language</button>
+	</div>
+	<div class="footer">
+		<div>
+			<span class="search-box" class="stretch">
+				<input class="search" placeholder="Search Wikipedia">
+			</span>
+		</div>
+		<div>
+			<a href="#recentchanges">Recent Changes</a> -
+			<a href="#special">Special Pages</a> -
+			<a href="#random">Random Article</a> -
+			<a href="#donate">Donate to Wikipedia</a>
+		</div>
+		<div>
+			<a href="#about">About Wikipedia</a> -
+			<a href="#contact">Contact Wikipedia</a> -
+			<a href="#privacy">Privacy policy</a> -
+			<a href="#disclaimers">Disclaiimers</a>
+		</div>
+		<div>
+			Text is available under the <a href="#cc">Creative Commons Attribution-ShareAlike License</a>, additional terms may apply.
+			See <a href="#terms">Terms of Use</a> for details.
+			Wikipedia is a registered trademark of the <a href="#wmf">Wikimedia Foundation, Inc.</a>, a non-profit organization.
+		</div>
+		<div class="poweredby-logos">
+			<img src="https://bits.wikimedia.org/images/wikimedia-button.png">
+			<img src="https://bits.wikimedia.org/skins-1.18/common/images/poweredby_mediawiki_88x31.png">
+		</div>
+	</div>
 </div>
 
 </body>
