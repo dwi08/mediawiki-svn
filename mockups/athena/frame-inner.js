@@ -38,12 +38,18 @@ window.addEventListener('load', function(event) {
 window.addEventListener('click', function(event) {
 	var target = event.target;
 	if (target.nodeName.toLowerCase() == 'a') {
-		event.stopPropagation();
-		event.preventDefault();
-		messageParent({
-			event: 'navigate',
-			url: target.getAttribute('href')
-		});
+		var href = target.getAttribute('href');
+		if (href.substr(0, 1) == '#') {
+			// Allow local #hashlinks
+		} else {
+			// Send any actual 
+			event.stopPropagation();
+			event.preventDefault();
+			messageParent({
+				event: 'navigate',
+				url: href
+			});
+		}
 	}
 }, true );
 

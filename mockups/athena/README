@@ -1,1 +1,35 @@
 See https://www.mediawiki.org/wiki/Athena
+
+
+Implementation notes on this mockup:
+
+== Data source ==
+
+Pages are loaded in an <iframe> from http://en.wikipedia.org using ?useformat=mobile.
+They are currently loaded through a local .php proxy which hides the mobile-view header/footer and injects a script to modify behavior to cooperate with the parent frame.
+
+This frame embedding (using HTML5 postMessage) style, if integrated into the regular raw views, could make it easier for mockups and alternate UI tools to hook in without modification in future, without exposing direct XSS vectors between the two sides...
+
+
+
+== Screen size ==
+
+CSS media queries are used to check the screen. If 640px or wider, we enable the 'tablet' mode with wider buttons, more visible entries on the top bar.
+
+If smaller, we use the 'mobile' mode with more compact buttons, things folded etc.
+
+
+== Scrolling ==
+
+The embedding iframe is sized to match its content, so the outer document as a whole scrolls.
+
+Top & bottom toolbars float using position: fixed (warning: limited browser support!), with
+automatic switching to inline in the page layout when you reach the footer.
+
+
+== Known issues ==
+
+* position: fixed elements don't work on iOS 4.3 (ok on 5.0)
+* on iOS, bottom bar doesn't switch between position:fixed and inline in the footer during scrolling; event isn't called until scroll finishes
+* hash links like references and 'jump back a section' don't appear to be working
+
