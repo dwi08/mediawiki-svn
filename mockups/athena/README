@@ -29,6 +29,13 @@ automatic switching to inline in the page layout when you reach the footer.
 
 == Known issues ==
 
+* search not yet implemented
+* footer buttons & links not yet implemented
+* pretty gradients and such not yet implemented
+* login-y features not yet implemented
+* "you" pop-up menu details in mobile view not yet implemented
+* tap to show toolbars in mobile view not yet implemented
+* icons only at medium density (will be blocky or blurry on high-res phones)
 * hash links like references and 'jump back a section' don't appear to be working consistently?
 
 
