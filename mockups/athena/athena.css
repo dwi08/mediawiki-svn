@@ -51,6 +51,12 @@ a:visited {
 	bottom: 0;
 }
 
+#bottom-bar.inplace {
+	position: relative;
+	top: inherit;
+}
+
+
 .bar .detail {
 	background-color: gray;
 }

@@ -111,6 +111,29 @@ var embed = {
 var app = {
 	init: function() {
 		embed.init();
+		
+		$('.button-main').click(function() {
+			// temp hack
+			// toggle the floating state
+			$('.bar').toggleClass('bar-float');
+		});
+		
+		// Fancy footwork to rebind a position-fixed footer bar when scrolling to bottom
+		$(window).bind('scroll', function() {
+			var viewportTop = $(document).scrollTop(),
+				windowHeight = $(window).height(),
+				viewportBottom = viewportTop + windowHeight,
+				barHeight = $('#bottom-bar').height(),
+				barTop = $('#bottom').position().top;
+
+			if (viewportBottom - barHeight >= barTop) {
+				console.log('should unfix');
+				$('#bottom-bar').addClass('inplace');
+			} else {
+				$('#bottom-bar').removeClass('inplace');
+			}
+		});
+		
 		app.loadPage('While My Guitar Gently Weeps');
 	},
 
