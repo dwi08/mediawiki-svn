@@ -129,12 +129,45 @@ var app = {
 	init: function() {
 		embed.init();
 		
+		/*
 		$('.button-main').click(function() {
 			// temp hack
 			// toggle the floating state
 			$('.bar').toggleClass('bar-float');
 		});
+		*/
 		
+		$('.button-main').click(function() {
+			app.loadPage('Main Page');
+		});
+		$('.button-you').click(function() {
+			app.loadPage('User:Jorm (WMF)');
+		});
+
+		var linkMap = {
+			main: 'Main Page',
+			you: 'User:Jorm (WMF)',
+			notifications: 'User talk:Jorm (WMF)',
+			contributions: 'Special:Contributions',
+			preferences: 'Special:Preferences',
+			help: 'Help:Contents',
+			contents: 'Portal:Contents',
+			featured: 'Portal:Featured content',
+			current: 'Portal:Current events',
+			community: 'Wikipedia:Community portal',
+			upload: 'Special:Upload'
+		};
+		$('a').click(function(event) {
+			var $a = $(this),
+				href = $a.attr('href');
+			if (href.substr(0, 1) == '#') {
+				var target = href.substr(1);
+				if (target in linkMap) {
+					app.loadPage(linkMap[target]);
+					event.preventDefault();
+				}
+			}
+		});
 		app.loadPage('While My Guitar Gently Weeps');
 	},
 
