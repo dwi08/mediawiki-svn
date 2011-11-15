@@ -77,6 +77,10 @@ class LanguageSrTest extends MediaWikiTestCase {
 		$this->assertEquals( 'абвгшђжчћ',
 			$this->convertToCyrillic( 'абвгšđžčć' )
 		);
+		//Roman numerals are not converted
+		$this->assertEquals( 'а I б II в III г IV шђжчћ',
+			$this->convertToCyrillic( 'a I b II v III g IV šđžčć' )
+		);
 	}
 
 	function testConversionToLatin() {
