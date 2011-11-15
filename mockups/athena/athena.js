@@ -61,8 +61,15 @@ var embed = {
 			}
 			var data = JSON.parse(msg.substr(key.length));
 			if ('event' in data && typeof data.event === 'string') {
+				console.log(data);
 				$embed.trigger('embed:' + data.event, data);
 			}
+		});
+		$embed.bind('embed:ready', function(event, data) {
+			// Reset scroll height/position
+			// Will be sized shortly. :)
+			//$embed.height(0);
+			$(document).scrollTop(0);
 		});
 		$embed.bind('embed:navigate', function(event, data) {
 			// hack hack hack!
@@ -74,6 +81,9 @@ var embed = {
 				document.location = data.url;
 			}
 		});
+		$embed.bind('embed:resize', function(event, data) {
+			$embed.height(data.height);
+		});
 	},
 
 	/**
@@ -81,6 +91,8 @@ var embed = {
 	 */
 	loadPage: function(title) {
 		var $embed = $('#embed');
+		
+		// Load that URL...
 		$embed.attr('src', 'proxy.php?title=' + encodeURIComponent(title.replace(' ', '_')));
 		var deferred = new $.Deferred();
 		$embed.bind('embed:load', function() {

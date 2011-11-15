@@ -43,10 +43,15 @@ $dom = new DOMDocument();
 $dom->loadHTML($content);
 
 // Inject our frame client API
-$head = $dom->getElementsByTagName('head')->item(0);
+$body = $dom->getElementsByTagName('body')->item(0);
+
 $script = $dom->createElement('script');
 $script->setAttribute('src', 'frame-inner.js');
-$head->appendChild($script);
+$body->appendChild($script);
+
+$final = $dom->createElement('div');
+$final->setAttribute('id', 'document-final');
+$body->appendChild($final);
 
 // Hide header/footer
 function hide($element) {
