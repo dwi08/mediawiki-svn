@@ -3,14 +3,13 @@
 html, body {
 	margin: 0;
 	padding: 0;
+	color: white;
+	background: black;
 }
 
 .bar {
 	width: 100%;
 	height: 48px;
-	
-	color: white;
-	background: black;
 	
 	z-index: 9999;
 }
@@ -108,5 +107,7 @@ input {
 	*/
 	overflow: hidden;
 	border: none;
+	color: black;
+	background: white;
 }
 
