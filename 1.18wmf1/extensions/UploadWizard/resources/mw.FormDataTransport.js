@@ -31,7 +31,7 @@ mw.FormDataTransport.prototype = {
             file = this.uploadObject.file,
             bytesAvailable = file.size;
 
-        if( mw.UploadWizard.config[ 'enableChunked' ] && file.size > this.chunkSize ) {
+        if(file.size > this.chunkSize) {
             this.uploadChunk(0);
         } else {
             this.xhr = new XMLHttpRequest();
