@@ -79,12 +79,22 @@ a:visited {
 	background-color: blue;
 }
 
-.stretch {
-	max-width: 99999px;
+/* Magic sizing */
+.bar-wrapper {
+}
+.bar {
+	display: table;
+}
+.bar-stripe {
+	display: table-row;
+}
+.bar-stripe > span {
+	display: table-cell;
+	vertical-align: middle;
 	width: auto;
 }
-
-input {
+.stretch {
+	width: 100%;
 }
 
 .search-box input {
@@ -93,14 +103,14 @@ input {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	font-size: 16px;
-	vertical-align: top;
-	margin-top: 10px;
 	padding: 4px;
 	padding-right: 16px;
 	
 	background-image: url(images/icons/athena_icon_999999_search.png);
 	background-position: center right;
 	background-repeat: no-repeat;
+
+	width: 95%;
 }
 
 .button-main {
@@ -147,11 +157,14 @@ input {
 	background: white;
 }
 
-#personal-menu {
-	display: none;
-}
-#master-menu {
-	display: none;
+
+@media all and (max-width: 639px) {
+	#personal-menu {
+		display: none;
+	}
+	#master-menu {
+		display: none;
+	}
 }
 
 @media all and (min-width: 640px) {
@@ -179,8 +192,6 @@ input {
 		font-size: 13px;
 	}
 	#personal-menu, #master-menu {
-		display: block;
-		padding-left: 92px;
 		font-size: 12px;
 	}
 	#personal-menu {
