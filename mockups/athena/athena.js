@@ -69,7 +69,7 @@ var embed = {
 			// Reset scroll height/position
 			// Will be sized shortly. :)
 			//$embed.height(0);
-			$(document).scrollTop(0);
+			$(document).scrollTop(1);
 		});
 		$embed.bind('embed:navigate', function(event, data) {
 			// hack hack hack!
