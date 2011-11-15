@@ -76,11 +76,15 @@ wm_toggle_section = function(section) {
 
 // Send generic unhandled taps up to parent
 // May need to show/hide toolbars etc
-document.addEventListener('click', function(event) {
+/*
+// doesn't trigger on generic background bits, haven't got it working with touch events yet
+// also triggers when clicking buttons and sections which is wrong!
+document.documentElement.addEventListener('click', function(event) {
 	messageParent({
 		event: 'click'
 	});
 }, false);
+*/
 
 })();
 

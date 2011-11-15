@@ -81,8 +81,25 @@ var embed = {
 				document.location = data.url;
 			}
 		});
+		
+		// Fancy footwork to rebind a position-fixed footer bar when scrolling to bottom
+		$(window).bind('scroll', function() {
+			var viewportTop = $(document).scrollTop(),
+				windowHeight = $(window).height(),
+				viewportBottom = viewportTop + windowHeight,
+				barHeight = $('#bottom-bar').height(),
+				barTop = $('#bottom').position().top;
+
+			if (viewportBottom - barHeight >= barTop) {
+				$('#bottom-bar').addClass('inplace');
+			} else {
+				$('#bottom-bar').removeClass('inplace');
+			}
+		});
+
 		$embed.bind('embed:resize', function(event, data) {
 			$embed.height(data.height);
+			$(window).trigger('scroll');
 		});
 		$embed.bind('embed:click', function(event, data) {
 			// toggle the floating state
@@ -118,50 +135,11 @@ var app = {
 			$('.bar').toggleClass('bar-float');
 		});
 		
-		// Fancy footwork to rebind a position-fixed footer bar when scrolling to bottom
-		$(window).bind('scroll', function() {
-			var viewportTop = $(document).scrollTop(),
-				windowHeight = $(window).height(),
-				viewportBottom = viewportTop + windowHeight,
-				barHeight = $('#bottom-bar').height(),
-				barTop = $('#bottom').position().top;
-
-			if (viewportBottom - barHeight >= barTop) {
-				console.log('should unfix');
-				$('#bottom-bar').addClass('inplace');
-			} else {
-				$('#bottom-bar').removeClass('inplace');
-			}
-		});
-		
 		app.loadPage('While My Guitar Gently Weeps');
 	},
 
 	loadPage: function(title) {
 		ui.startSpinner();
-		/*
-		wiki.api({
-			action: 'query',
-			prop: 'revisions',
-			titles: title,
-			rvprop: 'timestamp|content',
-			rvparse: 1
-		}).then(function(data) {
-			console.log('page!', data);
-			var pageId, page;
-			$.each(data.query.pages, function() {
-				pageId = this.id;
-				page = this;
-			});
-			var revId, rev;
-			$.each(page.revisions, function() {
-				revId = this.revid;
-				rev = this;
-			});
-			ui.showPage(page.title, rev['*']);
-			ui.stopSpinner();
-		});
-		*/
 		embed.loadPage(title).then(function() {
 			ui.stopSpinner();
 		});
