@@ -48,6 +48,14 @@ $( document ).ready( function () {
 			displayCreditCardForm()
 		}
 	} );
+
+	$( "#bt-continueBtn" ).live( "click", function() {
+		if ( validate_personal( document.paypalcontribution ) && validateAmount() ) {
+			document.paypalcontribution.action = actionURL;
+			document.paypalcontribution.submit();
+		}
+	} );
+
 	// Set the cards to progress to step 3
 	$( ".cardradio" ).live( "click", function() {
 		if ( validate_personal( document.paypalcontribution ) && validateAmount() ) {
@@ -106,7 +114,7 @@ $( document ).ready( function () {
 	$( "#other-amount" ).focus( function() {
 		$( '#input_amount_other' ).attr( 'checked', true );
 		var otherAmount = $( 'input#other-amount' ).val();
-		if ( otherAmount && !isNaN( otherAmount ) ) {
+		if ( otherAmount ) {
 			setAmount( $( 'input#other-amount' ) );
 		}
 	} );
@@ -146,31 +154,7 @@ function showAmount( e ) {
 	$( "#selected-amount" ).html( + e.val() + " " + $( 'input[name="currency_code"]' ).val() );
 	$( "#change-amount" ).show();
 }
-function validateAmount() {
-	var error = true;
-	var amount = $( 'input[name="amount"]' ).val(); // get the amount
-	// Normalize weird amount formats.
-	// Don't mess with these unless you know what you're doing.
-	amount = amount.replace( /[,.](\d)$/, '\:$10' );
-	amount = amount.replace( /[,.](\d)(\d)$/, '\:$1$2' );
-	amount = amount.replace( /[,.]/g, '' );
-	amount = amount.replace( /:/, '.' );
-	$( 'input[name="amount"]' ).val( amount ); // set the new amount back into the form
 
-	// Check amount is a real number, sets error as true (good) if no issues
-	error = ( amount == null || isNaN( amount ) || amount.value <= 0 );
-
-	// Check amount is at least the minimum
-	var currency_code = $( 'input[name="currency_code"]' ).val();
-	if ( typeof( wgCurrencyMinimums[currency_code] ) == 'undefined' ) {
-		wgCurrencyMinimums[currency_code] = 1;
-	}
-	if ( amount < wgCurrencyMinimums[currency_code] || error ) {
-		alert( mw.msg( 'donate_interface-smallamount-error' ).replace( '$1', wgCurrencyMinimums[currency_code] + ' ' + currency_code ) );
-		error = true;
-	}
-	return !error;
-}
 window.showStep1 = function() {
 	// show the correct sections
 	$( "#step1wrapper" ).slideDown();

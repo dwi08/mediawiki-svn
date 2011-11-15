@@ -6,7 +6,7 @@
  */
 
 $wgDonationInterfaceRapidHtmlRemoteExtPath = 'DonationInterface/gateway_forms/rapidhtml';
-$wgPayflowRapidHtmlRemoteExtPath = 'DonationInterface/payflowpro_gateway/rapidhtml';
+$wgPayflowRapidHtmlRemoteExtPath = 'DonationInterface/payflowpro_gateway/forms';
 $wgGlobalCollectRapidHtmlRemoteExtPath = 'DonationInterface/globalcollect_gateway/forms';
 
 /**
@@ -194,5 +194,16 @@ $wgResourceModules[ 'pfp.form.rapidhtml.globalcollect_test_2' ] = array(
 	'scripts' => 'js/globalcollect_test_2.js',
 	'dependencies' => 'pfp.form.rapidhtml.globalcollect_test',
 	'localBasePath' => dirname( __FILE__ ),
+	'remoteExtPath' => $wgPayflowRapidHtmlRemoteExtPath,
+);
+
+/**
+ * TwoStepTwoColumnLetter3 Deathmatch
+ */
+$wgResourceModules[ 'pfp.form.rapidhtml.TwoStepTwoColumnLetter3' ] = array(
+	'styles' => 'css/TwoStepTwoColumnLetter3.css',
+	'scripts' => 'js/TwoStepTwoColumnLetter3.js',
+	'dependencies' => array( 'di.form.core.validate' ),
+	'localBasePath' => dirname( __FILE__ ).'/../../payflowpro_gateway/forms',
 	'remoteExtPath' => $wgPayflowRapidHtmlRemoteExtPath,
 );
