@@ -10,9 +10,27 @@ cd $dir
 
 . config
 
+
 echo Current master: $master
 echo New master: $newmaster
 echo "Slaves (must not contain either of the above): $slaves"
+# testing to make sure we can connect to mysql on the master and slaves
+for i in $master $newmaster $slaves
+do
+	echo -n "checking mysql connection to $i... "
+	mysql -h $i -e 'select 1' > /dev/null
+	ret=$?
+	if [ $ret -ne 0 ]
+	then
+		echo "failed!"
+		echo "Please make it so 'mysql -h $i' will work."
+		echo "Bailing out."
+		exit 1
+	else
+		echo "done."
+	fi
+done
+
 pause "Ready? Press enter to continue, or ctrl-c to exit"
 
 echo "Setting master to read only..."
