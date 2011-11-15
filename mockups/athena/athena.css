@@ -36,7 +36,7 @@ a:visited {
 	
 	color: white;
 	background: black;
-	z-index: 9999;
+	z-index: 99999;
 }
 
 .bar-float {
@@ -147,9 +147,23 @@ input {
 	background: white;
 }
 
+#personal-menu {
+	display: none;
+}
+#master-menu {
+	display: none;
+}
 
 @media all and (min-width: 640px) {
 	/* "Tablet mode" */
+	#top-bar.bar-float {
+		/* Disable top bar floater */
+		top: inherit;
+		position: relative;
+	}
+	#top {
+		height: auto;
+	}
 	.bar button {
 		width: auto;
 		height: 48px;
@@ -163,6 +177,23 @@ input {
 		border: none;
 		color: white;
 		font-size: 13px;
+	}
+	#personal-menu, #master-menu {
+		display: block;
+		padding-left: 92px;
+		font-size: 12px;
+	}
+	#personal-menu {
+		padding-top: 6px;
+	}
+	#personal-menu a {
+		padding-right: 16px;
+	}
+	#master-menu {
+		padding-bottom: 6px;
+	}
+	.button-you {
+		display: none;
 	}
 }
 
