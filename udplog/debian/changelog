@@ -1,3 +1,12 @@
+udplog (1.8-1) lucid; urgency=low
+
+  * Added a non-blocking write mode. Not recommended for use at this time.
+  * Improved CPU usage by using tee to write to unsampled pipes.
+  * Allow configuration of SO_RCVBUF on the UDP socket on startup.
+  * Added a status report, sent to stdout at regular intervals.
+
+ -- Tim Starling <tstarling@wikimedia.org>  Thu, 17 Nov 2011 10:40:35 +1100
+
 udplog (1.7-1) lucid; urgency=low
 
   * Rewrite multicast listen support
