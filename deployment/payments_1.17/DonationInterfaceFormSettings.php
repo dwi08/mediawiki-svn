@@ -63,3 +63,4 @@ $wgPayflowProGatewayAllowedHtmlForms['webitects2nd_green-US'] = $wgPayflowProGat
 $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3.html';
 $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-legal'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-legal.html';
 $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-nolabels'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-nolabels.html';
+$wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-order'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-order.html';
