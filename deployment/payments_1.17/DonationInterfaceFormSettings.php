@@ -67,3 +67,4 @@ $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-order'] = $wgPayfl
 $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-noheader'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-noheader.html';
 $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-simpleamount'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-simpleamount.html';
 $wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-smallbutton'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-smallbutton.html';
+$wgPayflowProGatewayAllowedHtmlForms['TwoStepTwoColumnLetter3-orig'] = $wgPayflowProGatewayHtmlFormDir . '/TwoStepTwoColumnLetter3-orig.html';
