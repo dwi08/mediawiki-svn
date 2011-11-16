@@ -1,0 +1,20 @@
+#
+Hello!
+
+The packagng magic you see before is intended for the 5.1 branch 
+of mysqlatfacebook.  
+
+It was drawn from package-foo from Percona, Debian, other random places, and 
+hacked on somewhat extensively to fit the facebook patchset, and for 
+deployment in a production environment where one doesn't want most of the
+Debian addon crap or upgrade logic.  
+
+When building a new version, make sure the changelog entry follows the
+current pattern in placing the launchpad revision number.  If this 
+becomes a frequent occurence, perhaps we should modify this to handles
+the lp checkout and set the revision automatically.  Unfortunately,
+as of this writing, lp bzr checkouts via http are so slow on massive
+repos as to be unusable - you must log into to lp and use ssh which
+complicates automation. Boo.
+
+-Asher Feldman, Nov 16 2011

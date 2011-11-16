@@ -1,0 +1,6 @@
+mysql (5.1.53-fb3753-wm1) unstable; urgency=low
+
+  * mysql-at-facebook 5.1 r3753 
+
+ -- Asher Feldman <afeldman@wikimedia.org>  Sat, 15 Oct 2011 19:12:00 +0000
+
