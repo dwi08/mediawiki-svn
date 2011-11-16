@@ -8,10 +8,6 @@
 	var scriptPath = "@script_path";
 </script>
 
-
-<style type="text/css">
-	td.label { width: 40px !important; }
-</style>
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tbody>
 	<tr>
@@ -26,7 +22,7 @@
 				</div>
 			</noscript>
 
-			<h2 id="donate-head">Please complete your donation below ...</h2>
+			<!--<h2 id="donate-head">Please complete your donation below ...</h2>-->
 
 			<p id="topError" class="creditcard-error-msg"></p>
 
@@ -35,24 +31,10 @@
 					<table id="payflow-table-donor">
 						<tbody>
 						<tr>
-							<td colspan="2"><span class="creditcard-error-msg"></span></td>
-						</tr>
-						<tr>
 							<td colspan="2">
-								<table cellspacing="0" cellpadding="4" border="1" id="donation_amount">
-									<tbody>
-									<tr>
-										<td class="amount_header">Description</td>
-										<td class="amount_header" style="text-align:right;width:75px;">Amount</td>
-										<td class="amount_header" style="text-align:right;width:75px;">Currency</td>
-									</tr>
-									<tr>
-										<td class="amount_data">Donation</td>
-										<td class="amount_data" style="text-align:right;width:75px;">@amount</td>
-										<td class="amount_data" style="text-align:right;width:75px;">@currency_code</td>
-									</tr>
-									</tbody>
-								</table>
+								<div id="step1header">
+									<h3 class="amount_header">Donation amount&#160;&#160;<span id="selected-amount">$@amount</span></h3>
+								</div>
 							</td>
 						</tr>
 						<tr>
@@ -63,11 +45,11 @@
 							<td><img src="@script_path/extensions/DonationInterface/gateway_forms/includes/credit_card_logos.gif"></td>
 						</tr>
 						<tr>
-							<td class="label"></td>
-							<td><input name="card_num" size="30" value="@card_num" placeholder="Card number" type="text" maxlength="100" id="card_num" class="fullwidth" autocomplete="off"></td>
+							<td class="label"><label for="card_num">Card number</label></td>
+							<td><input name="card_num" size="30" value="@card_num" type="text" maxlength="100" id="card_num" class="fullwidth" autocomplete="off"></td>
 						</tr>
 						<tr>
-							<td class="label"></td>
+							<td class="label"><label for="mos">Expiration date</label></td>
 							<td><select name="mos" id="mos"><option value="01">1 (January)</option><option value="02">2 (February)</option><option value="03">3 (March)</option><option value="04">4 (April)</option><option value="05">5 (May)</option><option value="06">6 (June)</option><option value="07">7 (July)</option><option value="08">8 (August)</option><option value="09">9 (September)</option><option value="10">10 (October)</option><option value="11">11 (November)</option><option value="12">12 (December)</option></select> / <select name="year" id="year">
 								<!--<option value="">Year</option>-->
 								<option value="2011">2011</option>
@@ -87,8 +69,8 @@
 							<td colspan="2"><span class="creditcard-error-msg"></span></td>
 						</tr>
 						<tr>
-							<td class="label"></td>
-							<td><input name="cvv" size="5" value="@cvv" placeholder="CVV" type="text" maxlength="10" id="cvv" autocomplete="off"> <a href="javascript:PopupCVV();">Where is this?</a></td>
+							<td class="label"><label for="cvv">Security code</label></td>
+							<td><input name="cvv" size="5" value="@cvv" type="text" maxlength="10" id="cvv" autocomplete="off"> <a href="javascript:PopupCVV();">Where is this?</a></td>
 						</tr>
 						<tr>
 							<td colspan="2"><span class="creditcard-error-msg"></span></td>
@@ -97,15 +79,15 @@
 							<td colspan="2"><span class="creditcard-error-msg"></span></td>
 						</tr>
 						<tr>
-							<td class="label"></td>
-							<td><input name="fname" size="30" value="@fname" placeholder="First name" type="text" placeholder="First name" maxlength="25" class="required" id="fname"><input name="lname" size="30" value="@lname" type="text" placeholder="Last name" maxlength="25" id="lname">
+							<td class="label"><label for="fname">Name on card</label></td>
+							<td><input name="fname" size="30" value="@fname" type="text" placeholder="First name" maxlength="25" class="required" id="fname"><input name="lname" size="30" value="@lname" type="text" placeholder="Last name" maxlength="25" id="lname">
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2"><span class="creditcard-error-msg"></span></td>
 						</tr>
 						<tr>
-							<td class="label"></td>
+							<td class="label"><label for="street">Billing address</label></td>
 							<td><input name="street" size="30" value="@street" type="text" placeholder="Street" maxlength="100" id="street" class="fullwidth"></td>
 						</tr>
 						<tr>
@@ -125,7 +107,7 @@
 							<td colspan="2"><span class="creditcard-error-msg"></span></td>
 						</tr>
 						<tr>
-							<td class="label"></td>
+							<td class="label"><label for="emailAdd">E-mail receipt to</label></td>
 							<td><input name="emailAdd" size="30" value="@emailAdd" type="text" placeholder="Email address" maxlength="64" id="emailAdd" class="fullwidth"></td>
 						</tr>
 						<tr>
