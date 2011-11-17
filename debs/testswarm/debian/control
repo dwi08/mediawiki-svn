@@ -1,0 +1,12 @@
+Source: testswarm
+Section: misc
+Priority: extra
+Maintainer: Chad Horohoe <chad@wikimedia.org>
+Build-Depends: debhelper (>= 6), libapache2-mod-php5, mysql-server, dbconfig-common
+Standards-Version: 3.8.0
+Homepage: https://github.com/jquery/testswarm
+
+Package: testswarm
+Architecture: any
+Depends: ${shlibs:Depends}
+Description:Javascript unit test runner
