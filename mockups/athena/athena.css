@@ -39,12 +39,11 @@ a:visited {
 	z-index: 99999;
 }
 
-#top-bar {
+#top-bar, #bottom-bar {
     background: -webkit-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
-}
-
-#bottom-bar {
-    background: -webkit-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+    background: -moz-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+    background: -ms-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+    background: -o-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
 }
 
 .bar-float {
@@ -68,6 +67,9 @@ a:visited {
 .bar .detail {
 	background-color: gray;
     background: -webkit-linear-gradient(top, #6D6D6D 0%,#676767 15%,#5A5A5A 36%,#494949 77%,#282828 100%);
+    background: -moz-linear-gradient(top, #6D6D6D 0%,#676767 15%,#5A5A5A 36%,#494949 77%,#282828 100%);
+    background: -ms-linear-gradient(top, #6D6D6D 0%,#676767 15%,#5A5A5A 36%,#494949 77%,#282828 100%);
+    background: -o-linear-gradient(top, #6D6D6D 0%,#676767 15%,#5A5A5A 36%,#494949 77%,#282828 100%);
 }
 
 .bar button {
