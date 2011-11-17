@@ -49,6 +49,7 @@ a:visited {
 
 .bar-float {
 	position: fixed;
+	left: 0;
 }
 
 #top-bar.bar-float {
