@@ -218,12 +218,14 @@ HTML;
 				
 		$userPageUrl = htmlspecialchars($user->getUserPage()->getLocalURL());
 		
+		$userLink = Linker::userLink( $user->getId(), $username );
+		
 		return <<<HTML
 			<div class="fbd-item-userName">
-				<a href="$userPageUrl" class="fbd-item-userLink">$username</a>
-				<sup class="fbd-item-userLinks">
+				$userLink
+				<span class="fbd-item-userLinks">
 					$links
-				</sup>
+				</span>
 			</div>
 HTML;
 	}
@@ -248,6 +250,8 @@ HTML;
 	 * @return string HTML
 	 */
 	protected static function getHiddenFooter( $feedbackItem, $mode ) {
+		global $wgLang;
+		
 		$id = $feedbackItem->getProperty('id');
 		$permalinkTitle = SpecialPage::getTitleFor( 'FeedbackDashboard', $id );
 		if ( $mode === 'shown' ) {
@@ -257,7 +261,21 @@ HTML;
 					->link( $permalinkTitle, $linkText, array(), $query );
 			$link = Xml::tags( 'span', array( 'class' => 'fbd-item-restore' ), "($link)" );
 			
-			$footer = wfMessage('moodbar-hidden-footer')->rawParams($link)->escaped();
+			$feedback_hidden_detail = self::getFeedbackHiddenDetail($id);
+
+			if($feedback_hidden_detail === false) {
+				$footer = wfMessage('moodbar-hidden-footer-without-log')->
+			                    rawParams( $link )->escaped();	
+			}
+			else {
+				$footer = wfMessage('moodbar-hidden-footer')->
+			                    rawParams( htmlspecialchars( $feedback_hidden_detail->log_user_text ), 
+				                       $wgLang->date($feedback_hidden_detail->log_timestamp), 
+				                       $wgLang->time($feedback_hidden_detail->log_timestamp),  
+				                       htmlspecialchars( $feedback_hidden_detail->log_comment ), 
+				                       $link )->escaped();	
+			}
+						
 			return Xml::tags( 'div', array( 'class' => 'error' ), $footer );
 		} elseif ( $mode === 'hidden' ) {
 			$linkText = wfMessage('moodbar-feedback-show')->escaped();
@@ -487,4 +505,24 @@ HTML;
 		}
 		return $query;
 	}
+	
+	/**
+	 * Get admin's username/timestamp/reason for hiding a feedback
+	 * @param $mbf_id primary key for moodbar_feedback
+	 * @return ResultWrapper|bool
+	 */
+	protected static function getFeedbackHiddenDetail( $mbf_id ) {
+		$dbr = wfGetDB( DB_SLAVE );
+		
+		return $dbr->selectRow( array( 'logging' ), 
+			             array( 'log_user_text', 'log_timestamp', 'log_comment' ),
+			             array( 'log_namespace' => NS_SPECIAL,  
+			             	    'log_title' => 'FeedbackDashboard/' . intval( $mbf_id ),  
+			             	    'log_action' => 'hide', 
+			             	    'log_type' => 'moodbar' ),
+			             __METHOD__,
+			             array( 'LIMIT' => 1, 'ORDER BY' => "log_timestamp DESC" )
+		);
+	}
+	
 }

@@ -111,7 +111,6 @@
 									.localize()
 									.click( function( e ) {
 										var $el = $( this );
-										mb.ui.overlay.find( '.mw-moodBar-formSubmit').removeAttr('disabled');
 										mb.ui.overlay.find( '.mw-moodBar-formInput' ).focus();
 										$mwMoodBarTypes.addClass( 'mw-moodBar-types-select' );
 										mb.feedbackItem.type = $el.attr( 'rel' );
@@ -120,6 +119,7 @@
 											.find( '.mw-moodBar-selected' )
 												.not( $el )
 												.removeClass( 'mw-moodBar-selected' );
+										mb.validate();
 									} )
 									.get( 0 )
 							);
@@ -214,7 +214,7 @@
 							var message, counterElement;
 							message = mw.msg( 'moodbar-form-note-dynamic' );							
 							counterElement = mw.html.element( 'span', {
-									'id': 'mw-moodBar-charCount',
+									'id': 'mw-moodBar-charCount'
 								} );
 							return mw.html.escape( message )
 								.replace( /\$1/, counterElement );
@@ -228,9 +228,18 @@
 					.val( mw.msg( 'moodbar-form-submit' ) )
 					.click( function() {
 						mb.feedbackItem.comment = mb.ui.overlay.find( '.mw-moodBar-formInput' ).val();
-						mb.swapContent( mb.tpl.loading );
-						$.moodBar.submit( mb.feedbackItem );
+						if(mb.feedbackItem.comment){
+							mb.swapContent( mb.tpl.loading );
+							$.moodBar.submit( mb.feedbackItem );
+						}
 					} )
+					.end()
+					
+				// Keypress
+				.find( '#mw-moodBar-feedbackInput' )
+					.keyup( function(event) {							
+						mb.validate();
+					})
 					.end();
 			
 				// Set up character counter
@@ -298,6 +307,14 @@
 				mb.prepareUserinputContent( mb.ui.overlay );
 			}
 			return true;
+		},
+		
+		validate: function() {
+			if( $( '#mw-moodBar-feedbackInput' ).val() !== "" && $( '.mw-moodBar-selected').length ) {
+				mb.ui.overlay.find( '.mw-moodBar-formSubmit').removeAttr('disabled');
+			} else {
+				mb.ui.overlay.find( '.mw-moodBar-formSubmit').attr({'disabled':'true'});		
+			}
 		}
 	} );
 

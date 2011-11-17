@@ -1,7 +1,7 @@
 /**
  * AJAX code for Special:MoodBarFeedback
  */
-jQuery( function( $ ) {
+jQuery( function( $ ) {	
 	/**
 	 * Saved form state
 	 */
@@ -249,6 +249,44 @@ jQuery( function( $ ) {
 	}
 	
 	/**
+	 * Do this before administrative action to provide reason
+	 */
+	function beforeAction(params, $item){
+		var inlineForm = '<span class="fbd-item-reason">\
+					$1\
+					<input class="fbd-action-reason" name="fb-action-reason" />\
+					<button class="fbd-action-confirm">Confirm</button>\
+					<button class="fbd-action-cancel">Cancel</button>\
+				  </span>'
+				.replace( /\$1/g, mw.msg( 'moodbar-action-reason' ));
+				   
+		var storedParams = params;
+		var $storedItem = $item;
+		
+		$item.find('.fbd-item-hide, .fbd-item-restore, .fbd-item-permalink')
+			.empty();
+			
+		$item.find('.fbd-item-message')
+			.append(inlineForm)
+			.end();
+		
+		$('.fbd-action-confirm').click( function() {
+			storedParams.reason = $item.find('.fbd-action-reason').val();
+			
+			if( storedParams.reason ) {
+				doAction(storedParams, $storedItem);	
+			} else {
+				alert( mw.msg( 'moodbar-action-reason-required' ) );
+			}
+			
+		});
+		$('.fbd-action-cancel').click( function() {
+			reloadItem( $storedItem, true );
+		});
+		
+	}
+	
+	/**
 	 * Execute an action on an item
 	 */
 	function doAction( params, $item ) {
@@ -257,6 +295,9 @@ jQuery( function( $ ) {
 		var errorHandler = function(error_str) {
 			showItemError( $item, error_str );
 		};
+		
+		var $spinner = $('<span class="mw-ajax-loader">&nbsp;</span>');
+		$item.find('.fbd-item-hide').empty().append( $spinner );
 		
 		$.post( mw.util.wikiScript('api'),
 			$.extend( {
@@ -287,11 +328,7 @@ jQuery( function( $ ) {
 	function restoreItem(e) {
 		var $item = $(this).closest('.fbd-item');
 		
-		var $spinner = $('<span class="mw-ajax-loader">&nbsp;</span>');
-		$item.find('.fbd-item-restore').empty().append( $spinner );
-		
-		doAction( { 'mbaction' : 'restore' }, $item );
-		
+		beforeAction( { 'mbaction' : 'restore' }, $item );
 		e.preventDefault();
 	}
 	
@@ -300,12 +337,8 @@ jQuery( function( $ ) {
 	 */
 	function hideItem(e) {
 		var $item = $(this).closest('.fbd-item');
-		
-		var $spinner = $('<span class="mw-ajax-loader">&nbsp;</span>');
-		$item.find('.fbd-item-hide').empty().append( $spinner );
-		
-		doAction( { 'mbaction' : 'hide' }, $item );
-		
+
+		beforeAction( { 'mbaction' : 'hide' }, $item );
 		e.preventDefault();
 	}
 	
@@ -342,4 +375,5 @@ jQuery( function( $ ) {
 			loadComments( 'filter' );
 		}
 	}
+
 } );
