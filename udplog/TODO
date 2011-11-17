@@ -1,3 +1,8 @@
+* Fix non-blocking writes (see email below)
+* Use inotify or some other polling mechanism to do automatic log file rotations, removing the need for HUP signals
+* Allow launching multiple daemons listening on different ports with different configurations. Parent process with parent configuration file?
+
+
 -------- Original Message --------
 Subject: 	udp2log status and future
 Date: 	Tue, 08 Nov 2011 10:58:19 +1100
