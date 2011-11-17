@@ -162,6 +162,7 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $current_transaction;
 	protected $action;
 	public $debugarray; 
+	protected $batch = false;
 
 	//ALL OF THESE need to be redefined in the children. Much voodoo depends on the accuracy of these constants. 
 	const GATEWAY_NAME = 'Donation Gateway';
@@ -194,23 +195,25 @@ abstract class GatewayAdapter implements GatewayType {
 		extract( $options );
 
 		$testData = isset( $testData ) ? $testData : false;
+		$external_data = isset( $external_data ) ? $external_data : false; //not test data: Regular type. 
 		$postDefaults = isset( $postDefaults ) ? $postDefaults : false;
-
+		
 		if ( !self::getGlobal( 'Test' ) ) {
 			$this->url = self::getGlobal( 'URL' );
-
 			// Only submit test data if we are in test mode.
-			$testData = false;
 		} else {
 			$this->url = self::getGlobal( 'TestingURL' );
+			if ( $testData ){
+				$external_data = $testData;
+			}
 		}
-
-		$this->dataObj = new DonationData( get_called_class(), self::getGlobal( 'Test' ), $testData );
+		
+		$this->dataObj = new DonationData( get_called_class(), self::getGlobal( 'Test' ), $external_data );
 
 		$this->raw_data = $this->dataObj->getData();
 		$this->staged_data = $this->raw_data;
-
-		$this->posted = ( $wgRequest->wasPosted() && ( !is_null( $wgRequest->getVal( 'numAttempt', null ) ) ) );
+		
+		$this->posted = ( $this->dataObj->wasPosted() && ( !is_null( $wgRequest->getVal( 'numAttempt', null ) ) ) );
 
 		$this->setPostDefaults( $postDefaults );
 		$this->defineTransactions();
@@ -1653,7 +1656,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @return mixed Transaction results status, or false if not set.  
 	 */
 	public function getTransactionStatus() {
-		if ( array_key_exists( 'status', $this->transaction_results ) ) {
+		if ( is_array( $this->transaction_results ) && array_key_exists( 'status', $this->transaction_results ) ) {
 			return $this->transaction_results['status'];
 		} else {
 			return false;
@@ -1972,6 +1975,19 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	public function hasDonorDataInSession( $key = false, $value= '' ){
 		return $this->dataObj->hasDonorDataInSession( $key, $value );
+	}
+	
+	/**
+	 * Lets the outside world (particularly hooks that accumulate points scores)
+	 * know if we are a batch processor. 
+	 * @return type 
+	 */
+	public function isBatchProcessor(){
+		if (!property_exists($this, 'batch')){
+			return false;
+		} else {
+			return $this->batch;
+		}
 	}
 
 }

@@ -101,7 +101,7 @@ class DonationData {
 				'iban' => $wgRequest->getText( 'iban', null ),
 				'transaction_type' => $wgRequest->getText( 'transaction_type', null ),
 			);
-			if ( !$wgRequest->wasPosted() ) {
+			if ( !$this->wasPosted() ) {
 				$this->setVal( 'posted', false );
 			}
 		}
@@ -1003,6 +1003,23 @@ class DonationData {
 			'date',
 		);
 		return $stomp_fields;
+	}
+	
+	/**
+	 * Basically, this is a wrapper for the $wgRequest wasPosted function that 
+	 * won't give us notices if we weren't even a web request. 
+	 * I realize this is pretty lame. 
+	 * Notices, however, are more lame. 
+	 * @global type $wgRequest
+	 * @staticvar string $posted Keeps track so we don't have to figure it out twice. 
+	 */
+	public function wasPosted(){
+		global $wgRequest;
+		static $posted = null;
+		if ($posted === null){
+			$posted = (array_key_exists('REQUEST_METHOD', $_SERVER) && $wgRequest->wasPosted());
+		}
+		return $posted; 
 	}
 }
 
