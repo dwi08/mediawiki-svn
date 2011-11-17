@@ -53,12 +53,18 @@ automatic switching to inline in the page layout when you reach the footer.
 
 * search not yet implemented
 * footer buttons & links not yet implemented
-* pretty gradients and such not yet implemented
 * login-y features not yet implemented
 * "you" pop-up menu details in mobile view not yet implemented
 * tap to show toolbars in mobile view not yet implemented
 * icons only at medium density (will be blocky or blurry on high-res phones)
 * hash links like references and 'jump back a section' don't appear to be working consistently?
+* no blue selected background gradient for buttons yet
+** CSS gradients go into the background-image slot, which is being used for the icons. may need to turn the icons into <img>s or something
+* clicking article/discuss doesn't switch the sliders around yet
+** this may require restructuring :)
+* 2-3 pixels of empty space appear between the bottom of the <iframe> and the top of the toolbar below it when docked. These appear as black (outer document background) :(
+** related: pretty sliders in mockups have a transparent part, not implemented
+* sizing of buttons/sliders isn't right yet
 
 
 Firefox 7 / Desktop
