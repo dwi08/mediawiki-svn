@@ -174,15 +174,14 @@ def makePatch(patchFileName, dir1, dir2, type):
 		dir2 += '/languages/messages'
 	else:
 		print "Generating normal patch file..."
-		excludedExtensions = ['messages', '*.png', '*.jpg', '*.xcf', '*.gif', '*.svg', '*.tiff']
+		excludedExtensions = ['messages', '*.png', '*.jpg', '*.xcf', '*.gif', '*.svg', '*.tiff', '*.zip', '*.xmp']
 		for ext in excludedExtensions:
 			args.extend(['-x', ext])
 
 	args.extend([dir1, dir2])
 	print ' '.join(args)
 	diffProc = subprocess.Popen(args, stdout = subprocess.PIPE)
-	gzipProc = subprocess.Popen(['gzip', '-9'],
-		stdin = diffProc.stdout, stdout = patchFile)
+	gzipProc = subprocess.Popen(['gzip', '-9'], stdin = diffProc.stdout, stdout = patchFile)
 
 	diffStatus = diffProc.wait()
 
@@ -270,7 +269,7 @@ def makeRelease(version, branch, dir, prevVersion = None, prevBranch = None):
 	# TODO: Change RELEASE-NOTES to use http://www.mediawiki.org/wiki/Release_notes/
 	print
 	print "Full release notes:"
-	print 'http://svn.wikimedia.org/svnroot/mediawiki/'+branch+'/phase3/RELEASE-NOTES'
+	print 'http://svn.wikimedia.org/svnroot/mediawiki/' +branch+ '/phase3/RELEASE-NOTES'
 	print
 	print
 	print '**********************************************************************'
