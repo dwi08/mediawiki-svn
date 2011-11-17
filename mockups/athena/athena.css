@@ -39,6 +39,14 @@ a:visited {
 	z-index: 99999;
 }
 
+#top-bar {
+    background: -webkit-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+}
+
+#bottom-bar {
+    background: -webkit-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+}
+
 .bar-float {
 	position: fixed;
 }
@@ -59,6 +67,7 @@ a:visited {
 
 .bar .detail {
 	background-color: gray;
+    background: -webkit-linear-gradient(top, #6D6D6D 0%,#676767 15%,#5A5A5A 36%,#494949 77%,#282828 100%);
 }
 
 .bar button {
@@ -110,6 +119,9 @@ a:visited {
 	background-image: url(images/icons/athena_icon_999999_search.png);
 	background-position: center right;
 	background-repeat: no-repeat;
+
+    box-shadow: 0px 3px 7px #BBBBBB inset;
+    -webkit-box-shadow: 0px 3px 7px #BBBBBB inset;
 
 	width: 95%;
 }
