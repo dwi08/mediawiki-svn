@@ -5,18 +5,40 @@ Implementation notes on this mockup:
 
 == Data source ==
 
-Pages are loaded in an <iframe> from http://en.wikipedia.org using ?useformat=mobile.
-They are currently loaded through a local .php proxy which hides the mobile-view header/footer and injects a script to modify behavior to cooperate with the parent frame.
+Pages are loaded in an <iframe> from http://en.wikipedia.org using
+?useformat=mobile. They are currently loaded through a local .php proxy
+which hides the mobile-view header/footer and injects a script to modify
+behavior to cooperate with the parent frame.
 
-This frame embedding (using HTML5 postMessage) style, if integrated into the regular raw views, could make it easier for mockups and alternate UI tools to hook in without modification in future, without exposing direct XSS vectors between the two sides...
+This frame embedding (using HTML5 postMessage) style, if integrated into
+the regular raw views, could make it easier for mockups and alternate UI
+tools to hook in without modification in future, without exposing direct
+XSS vectors between the two sides...
 
 
 
 == Screen size ==
 
-CSS media queries are used to check the screen. If 640px or wider, we enable the 'tablet' mode with wider buttons, more visible entries on the top bar.
+CSS media queries are used to check the screen. If 640px or wider, we
+enable the 'tablet' mode with wider buttons, more visible entries on the
+top bar.
 
-If smaller, we use the 'mobile' mode with more compact buttons, things folded etc.
+If smaller, we use the 'mobile' mode with more compact buttons, things
+folded etc.
+
+
+Using CSS media queries lets a lot of the layout logic happen on its own
+without having to ship separate code for small and medium screens. For
+mobile web and PhoneGap-style apps this makes it easier to ship a single
+codebase that runs on both sizes.
+
+Some systems may also allow dynamically resizing the screen, such as the
+side-by-side "snapped" application view in Windows 8's Metro environment.
+This allows the app to automatically retool itself to fit a smaller or
+larger subset of the screen.
+
+When testing in a regular browser, you can see this in action by sizing
+the browser window to wider or narrower than 640px.
 
 
 == Scrolling ==
