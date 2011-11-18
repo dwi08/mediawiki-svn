@@ -18,10 +18,9 @@ $wgResourceModules[ 'pfp.form.rapidhtml.lightbox' ] = array(
 		'js/lightbox1.js',
 	),
 	'styles' => array(
-		'css/lightbox1.css',	
+		'css/lightbox1.css',
 	),
 	'dependencies' => array(
-		'jquery.ui.core',
 		'jquery.ui.widget',
 		'jquery.ui.mouse',
 		'jquery.ui.position',
@@ -29,10 +28,15 @@ $wgResourceModules[ 'pfp.form.rapidhtml.lightbox' ] = array(
 		'jquery.ui.resizable',
 		'jquery.ui.button',
 		'jquery.ui.dialog',
+		'ext.donationInterface.errorMessages',
 	),
-	'localBasePath' => dirname( __FILE__ ),
+	'messages' => array(
+		'donate_interface-cc-button',
+		'donate_interface-ccdc-button',
+		'donate_interface-paypal-button',
+	),
+	'localBasePath' => dirname( __FILE__ ).'/../../payflowpro_gateway/forms',
 	'remoteExtPath' => $wgPayflowRapidHtmlRemoteExtPath,
-	'position' => 'top',
 );
 
 /**
