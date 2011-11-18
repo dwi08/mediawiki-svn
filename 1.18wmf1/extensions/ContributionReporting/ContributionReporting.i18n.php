@@ -2521,6 +2521,7 @@ $messages['hsb'] = array(
 /** Hungarian (Magyar)
  * @author Bdamokos
  * @author Dani
+ * @author Dj
  * @author Enbéká
  * @author Glanthor Reviol
  * @author Misibacsi
@@ -2592,6 +2593,7 @@ $messages['hu'] = array(
 	'fundraiserstats-tab-averages' => 'Átlagosan (USD)',
 	'fundraiserstats-tab-maximums' => 'Maximum (USD)',
 	'fundraiserstats-tab-ytd' => 'Ebben az évben a mai napig (USD)',
+	'fundraiserstats-time-zone' => 'Időzóna:',
 );
 
 /** Interlingua (Interlingua)
@@ -3588,7 +3590,7 @@ $messages['mk'] = array(
 	'contribstats-template' => 'Шаблон',
 	'contribstats-nodata' => 'Нема внесено податоци',
 	'contribstats-landingpage' => 'Целна страница',
-	'contribstats-donatepage' => 'Страница за донирање',
+	'contribstats-donatepage' => 'Страница за дарување',
 	'contribstats-average' => 'Просечно',
 	'contribstats-imperfect-data' => 'Овие податоци не се апсолутно точни бидејќи следењето на дарители без да се користи следење на сесии има свои ограничувања.',
 	'contribstats-paypal-donations' => 'Прилози преку PayPal',
