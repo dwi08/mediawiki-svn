@@ -1,3 +1,10 @@
+udpprofile (1.2-1) lucid-wikimedia; urgency=low
+
+  * collector now stores a cyclic buffer of sample times 
+  * graphite injector calculates timing percentiles via the sample buffer
+
+ -- Asher Feldman <afeldman@wikimedia.org>  Thu, 18 Nov 2011 01:12:00 +0000
+
 udpprofile (1.1-2) lucid-wikimedia; urgency=low
 
   * init also starts carbon collector if installed

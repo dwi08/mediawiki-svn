@@ -38,6 +38,8 @@ class ExtractProfile(xml.sax.handler.ContentHandler):
 		if name=="realtime":
 			self.event["real"]=float(attrs.get("total"))
 			self.event["realsq"]=float(attrs.get("totalsq"))
+		if name=="samples":
+			self.event["samples"]=attrs.get("real").split(" ")
 			
 	def endElement(self,name):
 		if name=="eventname":
