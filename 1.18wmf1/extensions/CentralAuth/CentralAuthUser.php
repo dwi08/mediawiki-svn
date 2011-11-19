@@ -1512,10 +1512,15 @@ class CentralAuthUser extends AuthPluginUser {
 				'attachedMethod' => $row->lu_attached_method,
 			);
 
+			$localUser = $this->localUserData( $row->lu_wiki );
+
+			if ( $localUser === false ) {
+				continue;
+			}
 			// Just for fun, add local user data.
 			// Displayed in the steward interface.
 			$wikis[$row->lu_wiki] = array_merge( $wikis[$row->lu_wiki],
-												$this->localUserData( $row->lu_wiki ) );
+				$localUser );
 		}
 
 		return $wikis;
@@ -1545,6 +1550,9 @@ class CentralAuthUser extends AuthPluginUser {
 
 	/**
 	 * Fetch a row of user data needed for migration.
+	 *
+	 * @param $wikiID String
+	 * @return Array|bool
 	 */
 	protected function localUserData( $wikiID ) {
 		$lb = wfGetLB( $wikiID );
