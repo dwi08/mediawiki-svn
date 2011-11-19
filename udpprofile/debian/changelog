@@ -1,3 +1,9 @@
+udpprofile (1.2-2) lucid-wikimedia; urgency=low
+
+  * exception handing in profiler-to-carbon, for when collector has no data
+
+ -- Asher Feldman <afeldman@wikimedia.org>  Fri, 19 Nov 2011 01:48:00 +0000
+
 udpprofile (1.2-1) lucid-wikimedia; urgency=low
 
   * collector now stores a cyclic buffer of sample times 

@@ -109,7 +109,13 @@ while True:
 		time.sleep(delay)
 		continue
 
-	fullprofile=ExtractProfile().extract(profsock)
+	try: 
+		fullprofile=ExtractProfile().extract(profsock)
+	except Exception as detail:
+		logging.debug ("failed extracting data from collector: %s", detail)
+		time.sleep(delay)
+		continue
+
 	profsock.shutdown(socket.SHUT_RDWR)
 	profsock.close()
 
