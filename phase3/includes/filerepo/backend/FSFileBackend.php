@@ -14,13 +14,13 @@ class FSFileBackend extends FileBackend {
 	protected $fileMode;
 
 	function __construct( array $config ) {
-		$this->fileMode = isset( $config['fileMode'] ) ? $config['fileMode'] : 0644;
+		$this->fileMode = isset( $config['fileMode'] )
+			? $config['fileMode']
+			: 0644;
 	}
 
 	public function store( array $params ) {
 		$status = Status::newGood();
-
-		wfMakeDirParents( $params['dest'] );
 
 		if ( file_exists( $params['dest'] ) ) {
 			if ( $params['overwriteDest'] ) {
@@ -30,17 +30,16 @@ class FSFileBackend extends FileBackend {
 					return $status;
 				}
 			} elseif ( $params['overwriteSame'] ) {
-				if ( // check size first since it's faster
-					filesize( $params['dest'] ) != filesize( $params['source'] ) ||
-					sha1_file( $params['dest'] ) != sha1_file( $params['source'] )
-				) {
+				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
-					return $status;
 				}
+				return $status; // do nothing; either OK or bad status
 			} else {
 				$status->fatal( "Destination file already exists." );
 				return $status;
 			}
+		} else {
+			wfMakeDirParents( $params['dest'] );
 		}
 
 		wfSuppressWarnings();
@@ -48,29 +47,74 @@ class FSFileBackend extends FileBackend {
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( "Could not copy file to destination." );
+			return $status;
+		}
+
+		$this->chmod( $params['dest'] );
+
+		return $status;
+	}
+
+	public function copy( array $params ) {
+		return $this->store( $params ); // both source and dest are on FS
+	}
+
+	public function move( array $params ) {
+		$status = Status::newGood();
+
+		if ( file_exists( $params['dest'] ) ) {
+			if ( $params['overwriteDest'] ) {
+				$ok = unlink( $params['dest'] );
+				if ( !$ok ) {
+					$status->fatal( "Could not delete destination file." );
+					return $status;
+				}
+			} elseif ( $params['overwriteSame'] ) {
+				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
+					$status->fatal( "Non-identical destination file already exists." );
+				}
+				return $status; // do nothing; either OK or bad status
+			} else {
+				$status->fatal( "Destination file already exists." );
+				return $status;
+			}
+		} else {
+			wfMakeDirParents( $params['dest'] );
+		}
+
+		wfSuppressWarnings();
+		$ok = rename( $params['source'], $params['dest'] );
+		wfRestoreWarnings();
+		if ( !$ok ) {
+			$status->fatal( "Could not move file to destination." );
+			return $status;
 		}
 
 		return $status;
 	}
 
-    public function copy( array $params ) {
-		return $this->store( $params ); // both source and dest are on FS
-	}
-
-    public function delete( array $params ) {
+	public function delete( array $params ) {
 		$status = Status::newGood();
+
+		if ( !file_exists( $params['source'] ) ) {
+			if ( !$params['ignoreMissingSource'] ) {
+				$status->fatal( "Could not delete source because it does not exist." );
+			}
+			return $status; // do nothing; either OK or bad status
+		}
 
 		wfSuppressWarnings();
 		$ok = unlink( $params['dest'] );
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( "Could not delete source file." );
+			return $status;
 		}
 
 		return $status;
 	}
 
-    public function concatenate( array $params ) {
+	public function concatenate( array $params ) {
 		$status = Status::newGood();
 
 		// Check if the destination file exists and we can't handle that
@@ -129,13 +173,10 @@ class FSFileBackend extends FileBackend {
 					return $status;
 				}
 			} elseif ( $params['overwriteSame'] ) {
-				if ( // check size first since it's faster
-					filesize( $params['dest'] ) != filesize( $params['source'] ) ||
-					sha1_file( $params['dest'] ) != sha1_file( $params['source'] )
-				) {
+				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
-					return $status;
 				}
+				return $status; // do nothing; either OK or bad status
 			}
 		} else {
 			// Make sure destination directory exists
@@ -151,18 +192,20 @@ class FSFileBackend extends FileBackend {
 			return $status;
 		}
 
+		$this->chmod( $params['dest'] );
+
 		return $status;
 	}
 
-    public function fileExists( array $params ) {
+	public function fileExists( array $params ) {
 		return file_exists( $params['source'] );
 	}
 
-    public function getFileProps( array $params ) {
+	public function getFileProps( array $params ) {
 		return File::getPropsFromPath( $params['source'] );
 	}
 
-    public function getLocalCopy( array $params ) {
+	public function getLocalCopy( array $params ) {
 		// Create a new temporary file...
 		wfSuppressWarnings();
 		$tmpPath = tempnam( wfTempDir(), 'file_localcopy' );
@@ -179,17 +222,34 @@ class FSFileBackend extends FileBackend {
 			return null;
 		}
 
+		$this->chmod( $tmpPath );
+
 		return $tmpPath;
 	}
 
 	/**
-	 * Chmod a file, supressing the warnings.
-	 * @param $path String: the path to change
-	 * @return void
+	 * Check if two files are identical
+	 * @param $path1 string
+	 * @param $path2 string
+	 * @return bool
+	 */
+	protected function filesAreSame( $path1, $path2 ) {
+		return ( // check size first since it's faster
+			filesize( $path1 ) === filesize( $path2 ) &&
+			sha1_file( $path1 ) === sha1_file( $path2 )
+		);
+	}
+
+	/**
+	 * Chmod a file, suppressing the warnings
+	 * @param $path string The path to change
+	 * @return bool Success
 	 */
 	protected function chmod( $path ) {
 		wfSuppressWarnings();
-		chmod( $path, $this->fileMode );
+		$ok = chmod( $path, $this->fileMode );
 		wfRestoreWarnings();
+
+		return $ok;
 	}
 }

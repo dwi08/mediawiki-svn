@@ -22,128 +22,151 @@ interface IFileBackend {
 	 */
 	public function getName();
 
-    /**
-     * This is the main entry point into the file system back end. Callers will
-     * supply a list of operations to be performed (almost like a script) as an
-     * array. This class will then handle handing the operations off to the
-     * correct file store module.
-     *
-     * Using $ops
-     * $ops is an array of arrays. The first array holds a list of operations.
-     * The inner array contains the parameters, E.G:
-     * <code>
-     * $ops = array(
-     *		array(
-	 *					'operation' => 'store',
-     *					'src'       => '/tmp/uploads/picture.png',
-     *					'dest'      => 'zone/uploadedFilename.png'
-     *      )
-     * );
-     * </code>
+	/**
+	 * This is the main entry point into the file system back end. Callers will
+	 * supply a list of operations to be performed (almost like a script) as an
+	 * array. This class will then handle handing the operations off to the
+	 * correct file store module.
+	 *
+	 * Using $ops
+	 * $ops is an array of arrays. The first array holds a list of operations.
+	 * The inner array contains the parameters, E.G:
+	 * <code>
+	 * $ops = array(
+	 *      array(
+	 *          'operation' => 'store',
+	 *          'src'       => '/tmp/uploads/picture.png',
+	 *          'dest'      => 'zone/uploadedFilename.png'
+	 *      )
+	 * );
+	 * </code>
 	 * 
-     * @param Array $ops Array of arrays containing N operations to execute IN ORDER
-     * @return Status
-     */
-    public function doOperations( array $ops );
+	 * @param Array $ops Array of arrays containing N operations to execute IN ORDER
+	 * @return Status
+	 */
+	public function doOperations( array $ops );
 
 	/**
 	 * Return a list of FileOp objects from a list of operations.
 	 * An exception is thrown if an unsupported operation is requested.
 	 * 
-     * @param Array $ops Same format as doOperations()
-     * @return Array
+	 * @param Array $ops Same format as doOperations()
+	 * @return Array
 	 * @throws MWException
 	 */
 	public function getOperations( array $ops );
 
 	/**
-     * Store a file into the backend from a file on disk.
-	 * Do not call these from places other than FileOp.
+	 * Store a file into the backend from a file on disk.
+	 * Do not call this function from places other than FileOp.
 	 * $params include:
-	 *		source        : source path on disk
-	 *		dest          : destination storage path
-	 *		overwriteDest : do nothing and pass if an identical file exists at destination
-	 *		overwriteSame : override any existing file at destination
+	 *      source        : source path on disk
+	 *      dest          : destination storage path
+	 *      overwriteDest : do nothing and pass if an identical file exists at destination
+	 *      overwriteSame : override any existing file at destination
 	 * 
-     * @param Array $params
+	 * @param Array $params
 	 * @return Status
-     */
-    public function store( array $params );
+	 */
+	public function store( array $params );
 
 	/**
-     * Copy a file from one storage path to another in the backend.
-	 * Do not call these from places other than FileOp.
+	 * Copy a file from one storage path to another in the backend.
+	 * Do not call this function from places other than FileOp.
 	 * $params include:
-	 *		source        : source storage path
-	 *		dest          : destination storage path
-	 *		overwriteDest : do nothing and pass if an identical file exists at destination
-	 *		overwriteSame : override any existing file at destination
+	 *      source        : source storage path
+	 *      dest          : destination storage path
+	 *      overwriteDest : do nothing and pass if an identical file exists at destination
+	 *      overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params 
 	 * @return Status
 	 */
-    public function copy( array $params );
+	public function copy( array $params );
 
 	/**
-     * Delete a file at the storage path.
-	 * Do not call these from places other than FileOp.
+	 * Copy a file from one storage path to another in the backend.
+	 * This can be left as a dummy function as long as hasNativeMove() returns false.
+	 * Do not call this function from places other than FileOp.
 	 * $params include:
-	 *		source              : source storage path
-	 *		ignoreMissingSource : don't return an error if the file does not exist
+	 *      source        : source storage path
+	 *      dest          : destination storage path
+	 *      overwriteDest : do nothing and pass if an identical file exists at destination
+	 *      overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params 
 	 * @return Status
 	 */
-    public function delete( array $params );
+	public function move( array $params );
 
 	/**
-     * Combines files from severals storage paths into a new file in the backend.
-	 * Do not call these from places other than FileOp.
+	 * Delete a file at the storage path.
+	 * Do not call this function from places other than FileOp.
 	 * $params include:
-	 *		source        : source storage path
-	 *		dest          : destination storage path
-	 *		overwriteDest : do nothing and pass if an identical file exists at destination
-	 *		overwriteSame : override any existing file at destination
+	 *      source              : source storage path
+	 *      ignoreMissingSource : don't return an error if the file does not exist
 	 * 
 	 * @param Array $params 
 	 * @return Status
 	 */
-    public function concatenate( array $params );
+	public function delete( array $params );
 
 	/**
-     * Check if a file exits at a storage path in the backend.
-	 * Do not call these from places other than FileOp.
+	 * Combines files from severals storage paths into a new file in the backend.
+	 * Do not call this function from places other than FileOp.
 	 * $params include:
-	 *		source : source storage path
+	 *      source        : source storage path
+	 *      dest          : destination storage path
+	 *      overwriteDest : do nothing and pass if an identical file exists at destination
+	 *      overwriteSame : override any existing file at destination
+	 * 
+	 * @param Array $params 
+	 * @return Status
+	 */
+	public function concatenate( array $params );
+
+	/**
+	 * Whether this backend has a move() implementation.
+	 * Do not call this function from places other than FileOp.
+	 *
+	 * @return bool
+	 */
+	public function hasNativeMove();
+
+	/**
+	 * Check if a file exits at a storage path in the backend.
+	 * Do not call this function from places other than FileOp.
+	 * $params include:
+	 *      source : source storage path
 	 * 
 	 * @param Array $params 
 	 * @return bool
 	 */
-    public function fileExists( array $params );
+	public function fileExists( array $params );
 
 	/**
-     * Get the properties of the file that exists at a storage path in the backend
+	 * Get the properties of the file that exists at a storage path in the backend
 	 * $params include:
-	 *		source : source storage path
+	 *      source : source storage path
 	 * 
 	 * @param Array $params 
 	 * @return Array|null Gives null if the file does not exist
 	 */
-    public function getFileProps( array $params );
+	public function getFileProps( array $params );
 
 	/**
-     * Get a local copy on dist of the file at a storage path in the backend
+	 * Get a local copy on dist of the file at a storage path in the backend
 	 * $params include:
-	 *		source : source storage path
+	 *      source : source storage path
 	 * 
 	 * @param Array $params 
 	 * @return string|null Path to temporary file or null on failure
 	 */
-    public function getLocalCopy( array $params );
+	public function getLocalCopy( array $params );
 
 	/**
-     * Lock the files at the given storage paths in the backend.
-	 * Do not call these from places other than FileOp.
+	 * Lock the files at the given storage paths in the backend.
+	 * Do not call this function from places other than FileOp.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
@@ -151,8 +174,8 @@ interface IFileBackend {
 	public function lockFiles( array $sources );
 
 	/**
-     * Unlock the files at the given storage paths in the backend.
-	 * Do not call these from places other than FileOp.
+	 * Unlock the files at the given storage paths in the backend.
+	 * Do not call this function from places other than FileOp.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
@@ -182,6 +205,14 @@ abstract class FileBackend implements IFileBackend {
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
 		$this->lockManager = $config['lockManger'];
+	}
+
+	function move( array $params ) {
+		throw new MWException( "This function is not implemented." );
+	}
+
+	function hasNativeMove() {
+		return false; // not implemented
 	}
 
 	/**
@@ -221,14 +252,14 @@ abstract class FileBackend implements IFileBackend {
 		return $performOps;
 	}
 
-    final public function doOperations( array $ops ) {
+	final public function doOperations( array $ops ) {
 		$status = Status::newGood();
 		// Build up a list of FileOps...
 		$performOps = $this->getOperations( $ops );
 		// Attempt each operation; abort on failure...
 		foreach ( $performOps as $index => $transaction ) {
 			$tStatus = $transaction->attempt();
-			if ( !$tStatus->isOk() ) {
+			if ( !$tStatus->isOK() ) {
 				// merge $tStatus with $status
 				// Revert everything done so far and error out
 				$tStatus = $this->revertOperations( $performOps, $index );
@@ -286,12 +317,14 @@ abstract class FileBackend implements IFileBackend {
  * Access use of large fields should be avoided as we want to be able to support
  * potentially many FileOp classes in large arrays in memory.
  */
-class FileOp {
-	protected $state;
+abstract class FileOp {
 	/** $var Array */
 	protected $params;
 	/** $var FileBackend */
 	protected $backend;
+
+	protected $state;
+	protected $failedAttempt;
 
 	const STATE_NEW = 1;
 	const STATE_ATTEMPTED = 2;
@@ -299,6 +332,7 @@ class FileOp {
 
 	/**
 	 * Build a new file operation transaction
+	 *
 	 * @params $backend FileBackend
 	 * @params $params Array
 	 */
@@ -306,25 +340,12 @@ class FileOp {
 		$this->backend = $backend;
 		$this->params = $params;
 		$this->state = self::STATE_NEW;
-		$this->initialize();
+		$this->failedAttempt = false;
 	}
 
 	/**
-	 * Set any custom fields on construction
-	 * @return void
-	 */
-	protected function initialize() {}
-
-	/**
-	 * Get a list of storage paths to lock for this operation
-	 * @return Array
-	 */
-	protected function storagePathsToLock() {
-		return array();
-	}
-
-	/**
-	 * Attempt the operation, maintaining the source file
+	 * Attempt the operation; this must be reversible
+	 *
 	 * @return Status
 	 */
 	final public function attempt() {
@@ -333,14 +354,17 @@ class FileOp {
 		}
 		$this->state = self::STATE_ATTEMPTED;
 		$status = $this->setLocks();
-		if ( $status->isOk() ) {
+		if ( $status->isOK() ) {
 			$status = $this->doAttempt();
+		} else {
+			$this->failedAttempt = true;
 		}
 		return $status;
 	}
 
 	/**
-	 * Revert the operation
+	 * Revert the operation; affected files are restored
+	 *
 	 * @return Status
 	 */
 	final public function revert() {
@@ -348,13 +372,18 @@ class FileOp {
 			throw new MWException( "Cannot rollback an unstarted or finished operation." );
 		}
 		$this->state = self::STATE_DONE;
-		$status = $this->doRevert();
+		if ( !$this->failedAttempt ) {
+			$status = $this->doRevert();
+		} else {
+			$status = Status::newGood(); // nothing to revert
+		}
 		$this->unsetLocks();
 		return $status;
 	}
 
 	/**
-	 * Finish the operation, altering original files
+	 * Finish the operation; this may be irreversible
+	 *
 	 * @return Status
 	 */
 	final public function finish() {
@@ -362,50 +391,40 @@ class FileOp {
 			throw new MWException( "Cannot cleanup an unstarted or finished operation." );
 		}
 		$this->state = self::STATE_DONE;
-		$status = $this->doFinish();
+		if ( !$this->failedAttempt ) {
+			$status = $this->doFinish();
+		} else {
+			$status = Status::newGood(); // nothing to revert
+		}
 		$this->unsetLocks();
 		return $status;
 	}
 
 	/**
 	 * Try to lock any files before changing them
+	 *
 	 * @return Status
 	 */
 	private function setLocks() {
-		$status = Status::newGood();
 		return $this->backend->lockFiles( $this->storagePathsToLock() );
-		
-		
-		$lockedFiles = array(); // files actually locked
-		foreach ( $this->storagePathsToLock() as $file ) {
-			$lockStatus = $this->backend->lockFile( $file );
-			if ( $lockStatus->isOk() ) {
-				$lockedFiles[] = $file;
-			} else {
-				foreach ( $lockedFiles as $file ) {
-					$this->backend->unlockFile( $file );
-				}
-				return $lockStatus; // abort
-			}
-		}
-		return $status;
 	}
 
 	/**
 	 * Try to unlock any files that this locked
+	 *
 	 * @return Status
 	 */
 	private function unsetLocks() {
-		$status = Status::newGood();
 		return $this->backend->unlockFiles( $this->storagePathsToLock() );
-		
-		foreach ( $this->storagePathsToLock() as $file ) {
-			$lockStatus = $this->backend->unlockFile( $file );
-			if ( !$lockStatus->isOk() ) {
-				// append $lockStatus to $status
-			}
-		}
-		return $status;
+	}
+
+	/**
+	 * Get a list of storage paths to lock for this operation
+	 *
+	 * @return Array
+	 */
+	protected function storagePathsToLock() {
+		return array();
 	}
 
 	/**
@@ -427,92 +446,123 @@ class FileOp {
 /**
  * Store a file into the backend from a file on disk.
  * $params include:
- *		source        : source path on disk
- *		dest          : destination storage path
- *		overwriteDest : do nothing and pass if an identical file exists at destination
- *		overwriteSame : override any existing file at destination
+ *      source        : source path on disk
+ *      dest          : destination storage path
+ *      overwriteDest : do nothing and pass if an identical file exists at destination
+ *      overwriteSame : override any existing file at destination
  */
 class FileStoreOp extends FileOp {
 	protected $tmpDestPath; // temp copy of existing destination file
 
 	function doAttempt() {
-		// Check if a file already exists at the destination
-		if ( $this->backend->fileExists( $this->params['dest'] ) ) {
-			if ( $this->params['overwriteDest'] ) {
-				$this->tmpDestPath = $this->getLocalCopy( $this->params['dest'] );
-				if ( $this->tmpDestPath === null ) {
-					// error out	
-				}
-			}
+		// Create a backup copy of any file that exists at destination
+		$status = $this->backupDest();
+		if ( !$status->isOK() ) {
+			return $status;
 		}
+		// Store the file at the destination
 		$status = $this->backend->store( $this->params );
 		return $status;
 	}
 
 	function doRevert() {
-		$status = Status::newGood();
 		// Remove the file saved to the destination
 		$params = array( 'source' => $this->params['dest'] );
-		$subStatus = $this->backend->delete( $params );
-		// merge $subStatus with $status
+		$status = $this->backend->delete( $params );
+		if ( !$status->isOK() ) {
+			return $status;
+		}
+		// Restore any file that was at the destination
+		$status = $this->restoreDest();
+		return $status;
+	}
+
+	function doFinish() {
+		return Status::newGood();
+	}
+
+	function storagePathsToLock() {
+		return array( $this->params['dest'] );
+	}
+
+	/**
+	 * Backup any file at destination to a temporary file.
+	 * Don't bother backing it up unless we might overwrite the file.
+	 *
+	 * @return Status
+	 */
+	protected function backupDest() {
+		$status = Status::newGood();
+		// Check if a file already exists at the destination...
+		if ( $this->backend->fileExists( $this->params['dest'] ) ) {
+			if ( $this->params['overwriteDest'] ) {
+				// Create a temporary backup copy...
+				$this->tmpDestPath = $this->getLocalCopy( $this->params['dest'] );
+				if ( $this->tmpDestPath === null ) {
+					$status->fatal( "Could not backup destination file." );
+					return $status;
+				}
+			}
+		}
+		return $status;
+	}
+
+	/**
+	 * Restore any temporary destination backup file
+	 *
+	 * @return Status
+	 */
+	protected function restoreDest() {
+		$status = Status::newGood();
 		// Restore any file that was at the destination
 		if ( $this->tmpDestPath !== null ) {
 			$params = array(
 				'source' => $this->tmpDestPath,
 				'dest'   => $this->params['dest']
 			);
-			$subStatus = $this->backend->store( $params );
-			// merge $subStatus with $status
+			$status = $this->backend->store( $params );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
 		}
 		return $status;
-	}
-
-	function storagePathsToLock() {
-		return array( $this->params['dest'] );
 	}
 }
 
 /**
  * Copy a file from one storage path to another in the backend.
  * $params include:
- *		source        : source storage path
- *		dest          : destination storage path
- *		overwriteDest : do nothing and pass if an identical file exists at destination
- *		overwriteSame : override any existing file at destination
+ *      source        : source storage path
+ *      dest          : destination storage path
+ *      overwriteDest : do nothing and pass if an identical file exists at destination
+ *      overwriteSame : override any existing file at destination
  */
-class FileCopyOp extends FileOp {
-	protected $tmpDestPath; // temp copy of existing destination file
-
+class FileCopyOp extends FileStoreOp {
 	function doAttempt() {
-		// Check if a file already exists at the destination
-		if ( $this->backend->fileExists( $this->params['dest'] ) ) {
-			if ( $this->params['overwriteDest'] ) {
-				$this->tmpDestPath = $this->getLocalCopy( $this->params['dest'] );
-				if ( $this->tmpDestPath === null ) {
-					// error out	
-				}
-			}
+		// Create a backup copy of any file that exists at destination
+		$status = $this->backupDest();
+		if ( !$status->isOK() ) {
+			return $status;
 		}
+		// Copy the file into the destination
 		$status = $this->backend->copy( $this->params );
 		return $status;
 	}
 
 	function doRevert() {
-		$status = Status::newGood();
 		// Remove the file saved to the destination
 		$params = array( 'source' => $this->params['dest'] );
-		$subStatus = $this->backend->delete( $params );
-		// merge $subStatus with $status
-		// Restore any file that was at the destination
-		if ( $this->tmpDestPath !== null ) {
-			$params = array(
-				'source' => $this->tmpDestPath,
-				'dest'   => $this->params['dest']
-			);
-			$subStatus = $this->backend->store( $params );
-			// merge $subStatus with $status
+		$status = $this->backend->delete( $params );
+		if ( !$status->isOK() ) {
+			return $status;
 		}
+		// Restore any file that was at the destination
+		$status = $this->restoreDest();
 		return $status;
+	}
+
+	function doFinish() {
+		return Status::newGood();
 	}
 
 	function storagePathsToLock() {
@@ -523,80 +573,135 @@ class FileCopyOp extends FileOp {
 /**
  * Move a file from one storage path to another in the backend.
  * $params include:
- *		source        : source storage path
- *		dest          : destination storage path
- *		overwriteDest : do nothing and pass if an identical file exists at destination
- *		overwriteSame : override any existing file at destination
+ *      source        : source storage path
+ *      dest          : destination storage path
+ *      overwriteDest : do nothing and pass if an identical file exists at destination
+ *      overwriteSame : override any existing file at destination
  */
-class FileMoveOp extends FileCopyOp {
-	function doFinish() {
-		$params = array( 'source' => $this->params['source'] );
-		$status = $this->backend->delete( $params );
-		return $status;
-	}
-}
-
-/**
- * Delete a file at the storage path.
- * $params include:
- *		source              : source storage path
- *		ignoreMissingSource : don't return an error if the file does not exist
- */
-class FileDeleteOp extends FileOp {
-	function doFinish() {
-		$status = $this->fileBackend->delete( $this->params );
+class FileMoveOp extends FileStoreOp {
+	function doAttempt() {
+		// Create a backup copy of any file that exists at destination
+		$status = $this->backupDest();
+		if ( !$status->isOK() ) {
+			return $status;
+		}
+		// Native moves: move the file into the destination
+		if ( $this->backend->hasNativeMove() ) {
+			$status = $this->backend->move( $this->params );
+		// Non-native moves: copy the file into the destination
+		} else {
+			$status = $this->backend->copy( $this->params );
+		}
 		return $status;
 	}
 
-	function storagePathsToLock() {
-		return array( $this->params['source'] );
+	function doRevert() {
+		// Native moves: move the file back to the source
+		if ( $this->backend->hasNativeMove() ) {
+			$params = array(
+				'source' => $this->params['dest'],
+				'dest'   => $this->params['source']
+			);
+			$status = $this->backend->move( $params );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
+		// Non-native moves: remove the file saved to the destination
+		} else {
+			$params = array( 'source' => $this->params['dest'] );
+			$status = $this->backend->delete( $params );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
+		}
+		// Restore any file that was at the destination
+		$status = $this->restoreDest();
+		return $status;
+	}
+
+	function doFinish() {
+		// Native moves: nothing is at the source anymore
+		if ( $this->backend->hasNativeMove() ) {
+			$status = Status::newGood();
+		// Non-native moves: delete the source file
+		} else {
+			$params = array( 'source' => $this->params['source'] );
+			$status = $this->backend->delete( $params );
+		}
+		return $status;
 	}
 }
 
 /**
  * Combines files from severals storage paths into a new file in the backend.
  * $params include:
- *		sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
- *		dest          : destination storage path
- *		overwriteDest : do nothing and pass if an identical file exists at destination
- *		overwriteSame : override any existing file at destination
+ *      sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
+ *      dest          : destination storage path
+ *      overwriteDest : do nothing and pass if an identical file exists at destination
+ *      overwriteSame : override any existing file at destination
  */
-class FileConcatenateOp extends FileOp {
-	protected $tmpDestPath; // temp copy of existing destination file
-
+class FileConcatenateOp extends FileStoreOp {
 	function doAttempt() {
-		// Check if a file already exists at the destination
-		if ( $this->backend->fileExists( $this->params['dest'] ) ) {
-			if ( $this->params['overwriteDest'] ) {
-				$this->tmpDestPath = $this->getLocalCopy( $this->params['dest'] );
-				if ( $this->tmpDestPath === null ) {
-					// error out	
-				}
-			}
+		// Create a backup copy of any file that exists at destination
+		$status = $this->backupDest();
+		if ( !$status->isOK() ) {
+			return $status;
 		}
+		// Concatenate the file at the destination
 		$status = $this->backend->concatenate( $this->params );
 		return $status;
 	}
 
 	function doRevert() {
-		$status = Status::newGood();
 		// Remove the file saved to the destination
 		$params = array( 'source' => $this->params['dest'] );
-		$subStatus = $this->backend->delete( $params );
-		// merge $subStatus with $status
-		// Restore any file that was at the destination
-		if ( $this->tmpDestPath !== null ) {
-			$params = array(
-				'source' => $this->tmpDestPath,
-				'dest'   => $this->params['dest']
-			);
-			$subStatus = $this->backend->store( $params );
-			// merge $subStatus with $status
+		$status = $this->backend->delete( $params );
+		if ( !$status->isOK() ) {
+			return $status;
 		}
+		// Restore any file that was at the destination
+		$status = $this->restoreDest();
 		return $status;
+	}
+
+	function doFinish() {
+		return Status::newGood();
 	}
 
 	function storagePathsToLock() {
 		return array_merge( $this->params['sources'], $this->params['dest'] );
+	}
+}
+
+/**
+ * Delete a file at the storage path.
+ * $params include:
+ *      source              : source storage path
+ *      ignoreMissingSource : don't return an error if the file does not exist
+ */
+class FileDeleteOp extends FileOp {
+	function doAttempt() {
+		$status = Status::newGood();
+		if ( !$this->params['ignoreMissingSource'] ) {
+			if ( !$this->backend->fileExists( $this->params['source'] ) ) {
+				$status->fatal( "Cannot delete file because it does not exist." );
+				return $status;
+			}
+		}
+		return $status;
+	}
+
+	function doRevert() {
+		return Status::newGood();
+	}
+
+	function doFinish() {
+		// Delete the source file
+		$status = $this->fileBackend->delete( $this->params );
+		return $status;
+	}
+
+	function storagePathsToLock() {
+		return array( $this->params['source'] );
 	}
 }

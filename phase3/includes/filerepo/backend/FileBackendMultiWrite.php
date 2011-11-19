@@ -1,6 +1,6 @@
 <?php
 /**
- * Prioritized list of file repositories
+ * Class for a "backend" consisting of a orioritized list of backend
  *
  * @file
  * @ingroup FileRepo
@@ -21,6 +21,8 @@
  */
 class FileBackendMultiWrite implements IFileBackend {
 	protected $name;
+	/** @var Array Prioritized list of FileBackend classes */
+	protected $fileBackends = array();
 
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
@@ -30,11 +32,9 @@ class FileBackendMultiWrite implements IFileBackend {
 		return $this->name;
 	}
 
-    /**
-     * This should be an array of FileBackend classes
-     * @var Array
-     */
-    protected $fileBackends = array();
+	function hasNativeMove() {
+		return true; // this is irrelevant
+	}
 
 	final public function doOperations( array $ops ) {
 		$status = Status::newGood();
@@ -85,27 +85,32 @@ class FileBackendMultiWrite implements IFileBackend {
 		return $status;
 	}
 
-    public function store( array $params ) {
+	public function store( array $params ) {
 		$op = array( 'operation' => 'store' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-    public function copy( array $params ) {
+	public function copy( array $params ) {
 		$op = array( 'operation' => 'copy' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-    public function delete( array $params ){
+	public function move( array $params ) {
+		$op = array( 'operation' => 'move' ) + $params;
+		return $this->doOperation( array( $op ) );
+	}
+
+	public function delete( array $params ){
 		$op = array( 'operation' => 'delete' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-    public function concatenate( array $params ){
+	public function concatenate( array $params ){
 		$op = array( 'operation' => 'concatenate' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-    public function fileExists( array $params ) {
+	public function fileExists( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {
 				return true;
@@ -114,7 +119,7 @@ class FileBackendMultiWrite implements IFileBackend {
 		return false;
 	}
 
-    public function getLocalCopy( array $params ) {
+	public function getLocalCopy( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			$tmpPath = $backend->getLocalCopy( $params );
 			if ( $tmpPath !== null ) {
@@ -124,7 +129,7 @@ class FileBackendMultiWrite implements IFileBackend {
 		return null;
 	}
  
-    public function getFileProps( array $params ) {
+	public function getFileProps( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			$props = $backend->getFileProps( $params );
 			if ( $props !== null ) {
