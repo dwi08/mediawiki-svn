@@ -74,11 +74,9 @@ class FileBackendMultiWrite implements IFileBackend {
 	 */
 	private function revertOperations( array $ops, $index = false ) {
 		$status = Status::newGood();
-		if ( $index === false ) {
-			$pos = count( $ops ) - 1; // last element (or -1)
-		} else {
-			$pos = $index;
-		}
+		$pos = ( $index !== false )
+			? $index // use provided index
+			: $pos = count( $ops ) - 1; // last element (or -1)
 		while ( $pos >= 0 ) {
 			$tStatus = $ops[$pos]->revert();
 			// merge $tStatus with $status

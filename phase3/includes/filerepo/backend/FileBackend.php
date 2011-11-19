@@ -142,22 +142,22 @@ interface IFileBackend {
     public function getLocalCopy( array $params );
 
 	/**
-     * Lock the file at a storage path in the backend.
+     * Lock the files at the given storage paths in the backend.
 	 * Do not call these from places other than FileOp.
 	 * 
-	 * @param $source string Source storage path
+	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
-	public function lockFile( $source );
+	public function lockFiles( array $sources );
 
 	/**
-     * Unlock the file at a storage path in the backend.
+     * Unlock the files at the given storage paths in the backend.
 	 * Do not call these from places other than FileOp.
 	 * 
-	 * @param $source string Source storage path
+	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
-	public function unlockFile( $source );
+	public function unlockFiles( array $sources );
 }
 
 /**
@@ -169,7 +169,7 @@ abstract class FileBackend implements IFileBackend {
 	/** @var FileLockManager */
 	protected $lockManager;
 
-	public function getName() {
+	final public function getName() {
 		return $this->name;
 	}
 
@@ -255,11 +255,9 @@ abstract class FileBackend implements IFileBackend {
 	 */
 	private function revertOperations( array $ops, $index = false ) {
 		$status = Status::newGood();
-		if ( $index === false ) {
-			$pos = count( $ops ) - 1; // last element (or -1)
-		} else {
-			$pos = $index;
-		}
+		$pos = ( $index !== false )
+			? $index // use provided index
+			: $pos = count( $ops ) - 1; // last element (or -1)
 		while ( $pos >= 0 ) {
 			$tStatus = $ops[$pos]->revert();
 			// merge $tStatus with $status
@@ -268,16 +266,16 @@ abstract class FileBackend implements IFileBackend {
 		return $status;
 	}
 
-	final public function lockFile( array $path ) {
+	final public function lockFiles( array $paths ) {
 		// Locks should be specific to this backend location
 		$backendKey = get_class( $this ) . '-' . $this->getName();
-		return $this->lockManager->lockFile( $backendKey, $path ); // not supported
+		return $this->lockManager->lock( $backendKey, $paths ); // not supported
 	}
 
-	final public function unlockFile( array $path ) {
+	final public function unlockFiles( array $paths ) {
 		// Locks should be specific to this backend location
 		$backendKey = get_class( $this ) . '-' . $this->getName();
-		return $this->lockManager->unlockFile( $backendKey, $path ); // not supported
+		return $this->lockManager->unlock( $backendKey, $paths ); // not supported
 	}
 }
 
@@ -375,6 +373,9 @@ class FileOp {
 	 */
 	private function setLocks() {
 		$status = Status::newGood();
+		return $this->backend->lockFiles( $this->storagePathsToLock() );
+		
+		
 		$lockedFiles = array(); // files actually locked
 		foreach ( $this->storagePathsToLock() as $file ) {
 			$lockStatus = $this->backend->lockFile( $file );
@@ -396,6 +397,8 @@ class FileOp {
 	 */
 	private function unsetLocks() {
 		$status = Status::newGood();
+		return $this->backend->unlockFiles( $this->storagePathsToLock() );
+		
 		foreach ( $this->storagePathsToLock() as $file ) {
 			$lockStatus = $this->backend->unlockFile( $file );
 			if ( !$lockStatus->isOk() ) {
@@ -553,7 +556,7 @@ class FileDeleteOp extends FileOp {
 /**
  * Combines files from severals storage paths into a new file in the backend.
  * $params include:
- *		source        : source storage path
+ *		sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
  *		dest          : destination storage path
  *		overwriteDest : do nothing and pass if an identical file exists at destination
  *		overwriteSame : override any existing file at destination
