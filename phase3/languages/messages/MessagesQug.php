@@ -12,6 +12,8 @@
  * @author Sylvain2803
  */
 
+$fallback = 'qu, es';
+
 $messages = array(
 # Dates
 'sunday'        => 'Hawkay',
@@ -712,7 +714,7 @@ Shuk aspipi, shukniki tinkika ima tinkita wichkashkami kanka nin, kay aspipi shu
 
 # External editor support
 'edit-externally'      => 'Kay archiwuta shuk hawa antanawan llankana',
-'edit-externally-help' => 'Ashtawan yachakunkakak [http://www.mediawiki.org/wiki/Manual:External_editors kay yanapata] (inlish shimipi) killkakatipay',
+'edit-externally-help' => 'Ashtawan yachakunkakak [//www.mediawiki.org/wiki/Manual:External_editors kay yanapata] (inlish shimipi) killkakatipay',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tukuy',

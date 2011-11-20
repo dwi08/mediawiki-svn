@@ -460,16 +460,16 @@ class DatabaseIbm_db2 extends DatabaseBase {
 	 */
 	protected function doQuery( $sql ) {
 		$this->applySchema();
-		
+
 		// Needed to handle any UTF-8 encoding issues in the raw sql
 		// Note that we fully support prepared statements for DB2
 		// prepare() and execute() should be used instead of doQuery() whenever possible
 		$sql = utf8_decode($sql);
-		
+
 		$ret = db2_exec( $this->mConn, $sql, $this->mStmtOptions );
 		if( $ret == false ) {
 			$error = db2_stmt_errormsg();
-			
+
 			$this->installPrint( "<pre>$sql</pre>" );
 			$this->installPrint( $error );
 			throw new DBUnexpectedError( $this, 'SQL error: '
@@ -492,10 +492,10 @@ class DatabaseIbm_db2 extends DatabaseBase {
 	 * Queries whether a given table exists
 	 * @return boolean
 	 */
-	public function tableExists( $table ) {
+	public function tableExists( $table, $fname = __METHOD__ ) {
 		$schema = $this->mSchema;
-		
-		$sql = "SELECT COUNT( * ) FROM SYSIBM.SYSTABLES ST WHERE ST.NAME = '" . 
+
+		$sql = "SELECT COUNT( * ) FROM SYSIBM.SYSTABLES ST WHERE ST.NAME = '" .
 			strtoupper( $table ) .
 			"' AND ST.CREATOR = '" .
 			strtoupper( $schema ) . "'";
@@ -939,14 +939,14 @@ class DatabaseIbm_db2 extends DatabaseBase {
 	 */
 	private function removeNullPrimaryKeys( $table, $args ) {
 		$schema = $this->mSchema;
-		
+
 		// find out the primary keys
-		$keyres = $this->doQuery( "SELECT NAME FROM SYSIBM.SYSCOLUMNS WHERE TBNAME = '" 
-		  . strtoupper( $table ) 
-		  . "' AND TBCREATOR = '" 
-		  . strtoupper( $schema ) 
+		$keyres = $this->doQuery( "SELECT NAME FROM SYSIBM.SYSCOLUMNS WHERE TBNAME = '"
+		  . strtoupper( $table )
+		  . "' AND TBCREATOR = '"
+		  . strtoupper( $schema )
 		  . "' AND KEYSEQ > 0" );
-		
+
 		$keys = array();
 		for (
 			$row = $this->fetchRow( $keyres );
@@ -984,7 +984,11 @@ class DatabaseIbm_db2 extends DatabaseBase {
 	public function update( $table, $values, $conds, $fname = 'DatabaseIbm_db2::update',
 		$options = array() )
 	{
-		$table = $this->tableName( $table );
+		if ( is_array( $table ) ) {
+			$table =  implode( ',', array_map( array( $this, 'tableName' ), $table ) );
+		} else {
+			$table = $this->tableName( $table );
+		}
 		$opts = $this->makeUpdateOptions( $options );
 		$sql = "UPDATE $opts $table SET "
 			. $this->makeList( $values, LIST_SET_PREPARED );
@@ -1046,7 +1050,7 @@ class DatabaseIbm_db2 extends DatabaseBase {
 		if ( $res instanceof ResultWrapper ) {
 			$res = $res->result;
 		}
-		
+
 		if ( $this->mNumRows ) {
 			return $this->mNumRows;
 		} else {

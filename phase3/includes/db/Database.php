@@ -610,7 +610,7 @@ abstract class DatabaseBase implements DatabaseType {
 
 	/**
 	 * Called by serialize. Throw an exception when DB connection is serialized.
-	 * This causes problems on some database engines because the connection is 
+	 * This causes problems on some database engines because the connection is
 	 * not restored on unserialize.
 	 */
 	public function __sleep() {
@@ -807,7 +807,7 @@ abstract class DatabaseBase implements DatabaseType {
 			# that would delay transaction initializations to once connection
 			# is really used by application
 			$sqlstart = substr( $sql, 0, 10 ); // very much worth it, benchmark certified(tm)
-			if ( strpos( $sqlstart, "SHOW " ) !== 0 and strpos( $sqlstart, "SET " ) !== 0 )
+			if ( strpos( $sqlstart, "SHOW " ) !== 0 && strpos( $sqlstart, "SET " ) !== 0 )
 				$this->begin();
 		}
 
@@ -1528,13 +1528,14 @@ abstract class DatabaseBase implements DatabaseType {
 	 * Query whether a given table exists
 	 *
 	 * @param $table string
+	 * @param $fname string
 	 *
 	 * @return bool
 	 */
-	function tableExists( $table ) {
+	function tableExists( $table, $fname = __METHOD__ ) {
 		$table = $this->tableName( $table );
 		$old = $this->ignoreErrors( true );
-		$res = $this->query( "SELECT 1 FROM $table LIMIT 1", __METHOD__ );
+		$res = $this->query( "SELECT 1 FROM $table LIMIT 1", $fname );
 		$this->ignoreErrors( $old );
 
 		return (bool)$res;
@@ -1682,28 +1683,32 @@ abstract class DatabaseBase implements DatabaseType {
 	/**
 	 * UPDATE wrapper. Takes a condition array and a SET array.
 	 *
-	 * @param $table  String name of the table to UPDATE. This will be passed through
+	 * @param $table  String|array name of the table to UPDATE. This will be passed through
 	 *                DatabaseBase::tableName().
 	 *
-	 * @param $values Array:  An array of values to SET. For each array element,
+	 * @param $values Array An array of values to SET. For each array element,
 	 *                the key gives the field name, and the value gives the data
 	 *                to set that field to. The data will be quoted by
 	 *                DatabaseBase::addQuotes().
 	 *
-	 * @param $conds  Array:  An array of conditions (WHERE). See
+	 * @param $conds  Array  An array of conditions (WHERE). See
 	 *                DatabaseBase::select() for the details of the format of
 	 *                condition arrays. Use '*' to update all rows.
 	 *
-	 * @param $fname  String: The function name of the caller (from __METHOD__),
+	 * @param $fname  String The function name of the caller (from __METHOD__),
 	 *                for logging and profiling.
 	 *
-	 * @param $options Array: An array of UPDATE options, can be:
+	 * @param $options Array An array of UPDATE options, can be:
 	 *                   - IGNORE: Ignore unique key conflicts
 	 *                   - LOW_PRIORITY: MySQL-specific, see MySQL manual.
 	 * @return Boolean
 	 */
 	function update( $table, $values, $conds, $fname = 'DatabaseBase::update', $options = array() ) {
-		$table = $this->tableName( $table );
+		if ( is_array( $table ) ) {
+			$table =  implode( ',', array_map( array( $this, 'tableName' ), $table ) );
+		} else {
+			$table = $this->tableName( $table );
+		}
 		$opts = $this->makeUpdateOptions( $options );
 		$sql = "UPDATE $opts $table SET " . $this->makeList( $values, LIST_SET );
 
@@ -2257,6 +2262,10 @@ abstract class DatabaseBase implements DatabaseType {
 	 * Returns an appropriately quoted sequence value for inserting a new row.
 	 * MySQL has autoincrement fields, so this is just NULL. But the PostgreSQL
 	 * subclass will return an integer, and save the value for insertId()
+	 *
+	 * Any implementation of this function should *not* involve reusing
+	 * sequence numbers created for rolled-back transactions.
+	 * See http://bugs.mysql.com/bug.php?id=30767 for details.
 	 */
 	function nextSequenceValue( $seqName ) {
 		return null;
@@ -2531,7 +2540,10 @@ abstract class DatabaseBase implements DatabaseType {
 			" FROM $srcTable $useIndex ";
 
 		if ( $conds != '*' ) {
-			$sql .= ' WHERE ' . $this->makeList( $conds, LIST_AND );
+			if ( is_array( $conds ) ) {
+				$conds = $this->makeList( $conds, LIST_AND );
+			}
+			$sql .= " WHERE $conds";
 		}
 
 		$sql .= " $tailOpts";
@@ -3192,6 +3204,8 @@ abstract class DatabaseBase implements DatabaseType {
 	/**
 	 * Get schema variables. If none have been set via setSchemaVars(), then
 	 * use some defaults from the current object.
+	 *
+	 * @return array
 	 */
 	protected function getSchemaVars() {
 		if ( $this->mSchemaVars ) {
@@ -3303,9 +3317,10 @@ abstract class DatabaseBase implements DatabaseType {
 	 * @param $tableName string
 	 * @param $fName string
 	 * @return bool|ResultWrapper
+	 * @since 1.18
 	 */
 	public function dropTable( $tableName, $fName = 'DatabaseBase::dropTable' ) {
-		if( !$this->tableExists( $tableName ) ) {
+		if( !$this->tableExists( $tableName, $fName ) ) {
 			return false;
 		}
 		$sql = "DROP TABLE " . $this->tableName( $tableName );

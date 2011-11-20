@@ -220,9 +220,11 @@ class FSRepo extends FileRepo {
 					$hashDest = sha1_file( $dstPath );
 					if ( $hashSource != $hashDest ) {
 						$status->fatal( 'fileexistserror', $dstPath );
+						$status->failCount++;
 					}
 				} else {
 					$status->fatal( 'fileexistserror', $dstPath );
+					$status->failCount++;
 				}
 			}
 		}
@@ -599,7 +601,6 @@ class FSRepo extends FileRepo {
 			list( $srcRel, $archiveRel ) = $pair;
 			$srcPath = "{$this->directory}/$srcRel";
 			$archivePath = "{$this->deletedDir}/$archiveRel";
-			$good = true;
 			if ( file_exists( $archivePath ) ) {
 				# A file with this content hash is already archived
 				wfSuppressWarnings();

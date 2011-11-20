@@ -10,6 +10,7 @@
  * @author 334a
  * @author A2raya07
  * @author Basharh
+ * @author Man2fly2002
  * @author Michaelovic
  * @author The Thadman
  */
@@ -227,6 +228,7 @@ $messages = array(
 'searcharticle'     => 'ܙܠ',
 'history'           => 'ܬܫܥܝܬܐ ܕܦܐܬܐ',
 'history_short'     => 'ܬܫܥܝܬܐ',
+'updatedmarker'     => 'ܐܬܚܕܬ ܗܐ ܡܢ ܬܦܩܬܝ ܐܚܪܝܬܐ',
 'printableversion'  => 'ܨܚܚܐ ܡܬܛܒܥܢܐ',
 'permalink'         => 'ܐܣܘܪܐ ܦܝܘܫܐ',
 'print'             => 'ܛܒܘܥ',
@@ -237,6 +239,7 @@ $messages = array(
 'delete'            => 'ܫܘܦ',
 'deletethispage'    => 'ܫܘܦ ܦܐܬܐ ܗܕܐ',
 'undelete_short'    => 'ܠܐ ܫܘܦ {{PLURAL:$1|ܚܕ ܫܘܚܠܦܐ|$1 ܫܘܚܠܦ̈ܐ}}',
+'viewdeleted_short' => 'ܚܙܝ {{PLURAL:$1|ܚܕ ܫܘܚܠܦܐ ܫܝܦܐ|$1 ܫܘܚܠܦ̈ܐ ܫܝܦ̈ܐ}}',
 'protect'           => 'ܢܛܘܪ',
 'protect_change'    => 'ܫܚܠܦ',
 'protectthispage'   => 'ܢܛܘܪ ܗܕܐ ܦܐܬܐ',
@@ -269,6 +272,11 @@ $messages = array(
 'jumpto'            => 'ܫܘܪ ܠ:',
 'jumptonavigation'  => 'ܐܠܦܪܘܬܐ',
 'jumptosearch'      => 'ܒܨܝܐ',
+'view-pool-error'   => 'ܬܘܝܚܐ، ܚܕܡ̈ܐ ܗܘܐ ܓܗ̈ܝܐ ܗܫܐܝܬ
+ܣܓܝ ܡܦܠܚܢ̈ܐ ܩܫܕܘܪܐ ܠܡܛܐ ܠܗܢܐ ܦܐܬܐ
+ܦܝܣܐ ܡܢܟ ܣܟܝ ܩܠܝܠ ܡܢ ܩܕܡ ܕܓܪܒܬ ܠܡܛܝܐ ܠܐܗܐ ܦܐܬܐ ܬܢܝܢܘܬ.
+
+$1',
 'pool-errorunknown' => 'ܦܘܕܐ ܠܐ ܝܕܝܥܐ',
 
 # All link text and link target definitions of links into project namespace that get used by other message strings, with the exception of user group pages (see grouppage) and the disambiguation template definition (see disambiguations).
@@ -338,7 +346,13 @@ $messages = array(
 'internalerror_info'  => 'ܦܘܕܐ ܓܘܝܐ: $1',
 'badtitle'            => 'ܟܘܢܝܐ ܠܐ ܛܒܐ',
 'viewsource'          => 'ܚܙܝ ܡܒܘܥܐ',
-'viewsourcefor'       => 'ܕ $1',
+'actionthrottled'     => 'ܠܐ ܘܪܕ ܠܡܥܒܕ ܝܬܝܪ ܡܢ ܐܗܐ ܥܒܕܐ',
+'viewsourcetext'      => 'ܡܨܐ ܐܢܬ ܠܚܙܝܐ ܘܢܣܚܐ ܠܡܒܘܥ̈ܐ ܕܐܗܐ ܦܐܬܐ:',
+'protectedinterface'  => 'ܐܗܐ ܦܐܬܐ ܡܘܬܪܐ ܟܬܝܒܬܐ ܕܦܐܬܐ ܠܚܘܪܙܐ, ܘܐܝܠܗ ܢܛܪܬܐ ܠܡܘܢܥܐ ܚܪܒܐ.',
+'editinginterface'    => "''ܙܘܗܪܐ:''' ܐܢܬ ܥܒܕܬ ܫܚܠܦܬܐ ܒܦܐܬܐ ܡܬܦܠܚܬ ܠܡܘܬܘܪ̈ܐ ܦܐܬܘܬ̈ܐ ܟܬܝܒ̈ܐ ܠܚܘܪܙܐ.
+ܟܠ ܫܘܚܠܦܐ ܒܐܗܐ ܦܐܬܐ ܒܕ ܥܒܕ ܟܪ ܥܠ ܡܚܙܝܬܐ ܦܐܬܐ ܕܡܦܠܚܢܐ ܠܡܦܠܚܢ̈ܐ ܐܚܪ̈ܝܢܐ.
+ܠܬܘܪ̈ܓܡܐ، ܡܦܠܚ ܬܪܡܝܬܐ ܬܘܪܓܡܐ ܕܡܝܕܝܐܘܝܩܝ [//translatewiki.net/wiki/Main_Page?setlang=ar translatewiki.net].",
+'sqlhidden'           => '(ܒܘܬܬܐ SQL ܛܫܝܐ)',
 'namespaceprotected'  => "ܠܝܬ ܠܟ ܦܣܣܐ ܠܫܚܠܦܬܐ ܕܦܐܬܬ̈ܐ ܒܚܩܠܐ ܕ'''$1'''.",
 
 # Login and logout pages
@@ -367,12 +381,14 @@ $messages = array(
 'createaccount'           => 'ܒܪܝ ܚܘܫܒܢܐ',
 'gotaccount'              => "ܐܝܬ ܠܟ ܚܘܫܒܢܐ؟ '''$1'''.",
 'gotaccountlink'          => 'ܥܘܠ',
+'userlogin-resetlink'     => 'ܐܬܢܫܝܬ ܝܕ̈ܥܬܐ ܕܥܠܠܐ؟',
 'createaccountmail'       => 'ܒܝܕ ܒܝܠܕܪܐ ܐܠܩܛܪܘܢܝܐ',
 'createaccountreason'     => 'ܥܠܬܐ',
 'badretype'               => 'ܡܠܬܐ ܕܥܠܠܐ ܟܬܒܬ ܐܢܬ ܠܐ ܐܘܝܢܬܐ.',
 'userexists'              => 'ܫܡܐ ܕܡܦܠܚܢܐ ܕܐܥܠܬ ܫܩܝܠܐ ܐܝܬܘܗܝ.
 ܫܦܝܪܐܝܬ ܓܒܝ ܫܡܐ ܐܚܪܢܐ.',
 'loginerror'              => 'ܦܘܕܐ ܒܥܠܠܐ',
+'createaccounterror'      => 'ܠܐ ܡܫܟܚ ܠܒܪܝܐ ܚܘܫܒܢܐ: $1',
 'noname'                  => 'ܠܐ ܦܪܫ ܐܢܬ ܫܡܐ ܕܡܦܠܚܢܐ ܬܪܝܨܐ',
 'loginsuccesstitle'       => 'ܥܠܠܐ ܓܡܪ',
 'loginsuccess'            => "'''ܗܫܐ ܥܠܝܠܐ ܐܢܬ ܒ{{SITENAME}} ܒܫܡ \"\$1\".'''",
@@ -430,14 +446,13 @@ $messages = array(
 'summary-preview'                  => 'ܚܝܪܐ ܩܕܡܝܐ ܕܦܣܝܩܬ̈ܐ :',
 'blockedtitle'                     => 'ܡܦܠܚܢܐ ܗܘ ܡܚܪܡܐ',
 'blockednoreason'                  => 'ܠܝܬ ܥܠܬܐ ܝܗܝܒܬܐ',
-'blockedoriginalsource'            => "ܡܒܘܥܐ ܕ'''$1''' ܓܠܝܚܐ ܠܬܚܬ:",
 'nosuchsectiontitle'               => 'ܠܐ ܡܨܐ ܐܫܟܚ ܡܢܬܐ',
 'loginreqlink'                     => 'ܥܘܠ',
 'accmailtitle'                     => 'ܡܠܬܐ ܕܥܠܠܐ ܫܕܪܬ',
 'newarticle'                       => '(ܚܕܬܐ)',
 'updated'                          => '(ܐܬܚܕܬ)',
 'note'                             => "'''ܡܥܝܪܢܘܬܐ:'''",
-'previewnote'                      => "'''ܕܟܘܪ ܗܢܘ ܚܝܪܐ ܩܕܡܝܐ ܒܠܚܘܕ''' ܫܘܚܠܦ̈ܐ ܕܝܠܟ ܠܐ ܐܬܠܒܟܬ ܥܕܡܐ ܠܗܫܐ",
+'previewnote'                      => "'''ܕܟܪ ܕܗܢܘ ܚܝܪܐ ܩܕܡܝܐ ܒܠܚܘܕ'''. ܫܘܚܠܦ̈ܐ ܕܝܠܟ ܠܐ ܐܬܠܒܟܘ ܥܕܡܐ ܠܗܫܐ!",
 'editing'                          => 'ܫܚܠܦܬܐ ܕ $1',
 'editingsection'                   => 'ܫܚܠܦܬܐ ܕ $1 (ܡܢܬܐ)',
 'editingcomment'                   => 'ܫܚܠܦܬܐ ܕ $1 (ܡܢܬܐ ܚܕܬܐ)',
@@ -564,7 +579,7 @@ $messages = array(
 'searchprofile-images'           => 'ܡܝܕ̈ܝܐ ܣܓܝܐ̈ܐ (Multimedia)',
 'searchprofile-everything'       => 'ܟܠ ܡܕܡ',
 'searchprofile-advanced'         => 'ܡܬܩܕܡܢܐ',
-'searchprofile-articles-tooltip' => 'Search in $1',
+'searchprofile-articles-tooltip' => '',
 'searchprofile-project-tooltip'  => '',
 'search-result-size'             => '$1 ({{PLURAL:$2|1 ܡܠܬܐ|$2 ܡܠ̈ܐ}})',
 'search-redirect'                => '(ܨܝܒ $1)',
@@ -943,7 +958,7 @@ $1',
 'listusers-editsonly'     => 'ܚܘܝ ܡܦܠܚܢ̈ܐ ܥܡ ܫܘܚܠܦ̈ܐ ܒܠܚܘܕ',
 'listusers-creationsort'  => 'ܛܟܣ ܐܝܟ ܣܝܩܘܡܐ ܕܒܪܝܐ',
 'usereditcount'           => '$1 {{PLURAL:$1|ܫܘܚܠܦܐ|ܫܘܚܠܦ̈ܐ}}',
-'usercreated'             => 'ܒܪܐ ܒܣܝܩܘܡ $1 ܫܥܬܐ $2',
+'usercreated'             => '{{ܓܢܣܐ:$3|ܒܪܐ}} ܒܣܝܩܘܡ $1 ܒܫܥܬܐ $2',
 'newpages'                => 'ܦܐܬܬ̈ܐ ܚܕ̈ܬܬܐ',
 'newpages-username'       => 'ܫܡܐ ܕܡܦܠܚܢܐ:',
 'ancientpages'            => 'ܦܐܬܬ̈ܐ ܥܬܝܩ ܡܢ ܟܠ',
@@ -995,7 +1010,7 @@ $1',
 'sp-deletedcontributions-contribs' => 'ܫܘܬܦܘܝܬ̈ܐ',
 
 # Special:LinkSearch
-'linksearch'    => 'ܐܣܘܪܐ ܒܪܝܐ',
+'linksearch'    => 'ܐܣܘܪ̈ܐ ܒܪ̈ܝܐ ܒܨܝܐ',
 'linksearch-ns' => 'ܚܩܠܐ:',
 'linksearch-ok' => 'ܒܨܝ',
 
@@ -1206,7 +1221,6 @@ $1',
 'blockip'                    => 'ܚܪܘܡ ܡܦܠܚܢܐ',
 'blockip-title'              => 'ܚܪܘܡ ܡܦܠܚܢܐ',
 'blockip-legend'             => 'ܚܪܘܡ ܡܦܠܚܢܐ',
-'ipaddress'                  => 'ܐܝ ܦܝ (IP):',
 'ipadressorusername'         => 'ܐܝ ܦܝ (IP) ܐܘ ܫܡܐ ܕܡܦܠܚܢܐ:',
 'ipbreason'                  => 'ܥܠܬܐ:',
 'ipbreasonotherlist'         => 'ܥܠܬܐ ܐܚܪܬܐ',
@@ -1355,6 +1369,7 @@ $1',
 'exif-gpstrack'            => 'ܨܘܒܐ ܕܫܘܢܝܐ',
 'exif-gpsimgdirectionref'  => 'ܓܒܝܬܐ ܕܨܘܒܐ ܕܫܘܢܝܐ',
 'exif-gpsimgdirection'     => 'ܨܘܒܐ ܕܨܘܪܬܐ',
+'exif-languagecode'        => 'ܠܫܢܐ',
 
 'exif-unknowndate' => 'ܣܝܩܘܡܐ ܠܐ ܝܕܝܥܐ',
 

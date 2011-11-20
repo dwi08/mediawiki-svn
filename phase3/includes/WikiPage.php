@@ -24,12 +24,21 @@ class WikiPage extends Page {
 	public $mCounter = -1;               // !< Integer (-1 means "not loaded")
 	public $mDataLoaded = false;         // !< Boolean
 	public $mIsRedirect = false;         // !< Boolean
-	public $mLatest = false;             // !< Boolean
+	public $mLatest = false;             // !< Integer (false means "not loaded")
 	public $mPreparedEdit = false;		 // !< Array
-	public $mRedirectTarget = null;		 // !< Title object
-	public $mLastRevision = null;		 // !< Revision object
-	public $mTimestamp = '';             // !< String
-	public $mTouched = '19700101000000'; // !< String
+
+	/**
+	 * @var Title
+	 */
+	protected $mRedirectTarget = null;
+
+	/**
+	 * @var Revision
+	 */
+	protected $mLastRevision = null;
+
+	protected $mTimestamp = '';             // !< String
+	protected $mTouched = '19700101000000'; // !< String
 	/**@}}*/
 
 	/**
@@ -196,7 +205,7 @@ class WikiPage extends Page {
 					return $rt->getFullURL( 'rdfrom=' . urlencode( $source ) );
 				}
 			} else {
-				if ( $rt->getNamespace() == NS_SPECIAL ) {
+				if ( $rt->isSpecialPage() ) {
 					// Gotta handle redirects to special pages differently:
 					// Fill the HTTP response "Location" header and ignore
 					// the rest of the page we're on.
@@ -699,17 +708,59 @@ class WikiPage extends Page {
 	/**
 	 * Should the parser cache be used?
 	 *
-	 * @param $user User The relevant user
+	 * @param $parserOptions ParserOptions to check
+	 * @param $oldid int
 	 * @return boolean
 	 */
-	public function isParserCacheUsed( User $user, $oldid ) {
+	public function isParserCacheUsed( ParserOptions $parserOptions, $oldid ) {
 		global $wgEnableParserCache;
 
 		return $wgEnableParserCache
-			&& $user->getStubThreshold() == 0
+			&& $parserOptions->getStubThreshold() == 0
 			&& $this->exists()
-			&& empty( $oldid )
+			&& ( $oldid === null || $oldid === 0 || $oldid === $this->getLatest() )
 			&& $this->mTitle->isWikitextPage();
+	}
+
+	/**
+	 * Get a ParserOutput for the given ParserOptions and revision ID.
+	 * The the parser cache will be used if possible.
+	 *
+	 * @since 1.19
+	 * @param $parserOptions ParserOptions to use for the parse operation
+	 * @param $oldid Revision ID to get the text from, passing null or 0 will
+	 *               get the current revision (default value)
+	 * @return ParserOutput or false if the revision was not found
+	 */
+	public function getParserOutput( ParserOptions $parserOptions, $oldid = null ) {
+		global $wgParser;
+
+		wfProfileIn( __METHOD__ );
+
+		$useParserCache = $this->isParserCacheUsed( $parserOptions, $oldid );
+		wfDebug( __METHOD__ . ': using parser cache: ' . ( $useParserCache ? 'yes' : 'no' ) . "\n" );
+		if ( $parserOptions->getStubThreshold() ) {
+			wfIncrStats( 'pcache_miss_stub' );
+		}
+
+		if ( $useParserCache ) {
+			$parserOutput = ParserCache::singleton()->get( $this, $parserOptions );
+			if ( $parserOutput !== false ) {
+				wfProfileOut( __METHOD__ );
+				return $parserOutput;
+			}
+		}
+
+		if ( $oldid === null || $oldid === 0 ) {
+			$oldid = $this->getLatest();
+		}
+
+		$pool = new PoolWorkArticleView( $this, $parserOptions, $oldid, $useParserCache );
+		$pool->execute();
+
+		wfProfileOut( __METHOD__ );
+
+		return $pool->getParserOutput();
 	}
 
 	/**
@@ -745,6 +796,7 @@ class WikiPage extends Page {
 
 			MessageCache::singleton()->replace( $this->mTitle->getDBkey(), $text );
 		}
+		return true;
 	}
 
 	/**
@@ -756,7 +808,6 @@ class WikiPage extends Page {
 	 *
 	 * @param $dbw DatabaseBase
 	 * @return int The newly created page_id key, or false if the title already existed
-	 * @private
 	 */
 	public function insertOn( $dbw ) {
 		wfProfileIn( __METHOD__ );
@@ -806,6 +857,7 @@ class WikiPage extends Page {
 		wfProfileIn( __METHOD__ );
 
 		$text = $revision->getText();
+		$len = strlen( $text );
 		$rt = Title::newFromRedirectRecurse( $text );
 
 		$conditions = array( 'page_id' => $this->getId() );
@@ -822,7 +874,7 @@ class WikiPage extends Page {
 				'page_touched'     => $dbw->timestamp( $now ),
 				'page_is_new'      => ( $lastRevision === 0 ) ? 1 : 0,
 				'page_is_redirect' => $rt !== null ? 1 : 0,
-				'page_len'         => strlen( $text ),
+				'page_len'         => $len,
 			),
 			$conditions,
 			__METHOD__ );
@@ -830,7 +882,12 @@ class WikiPage extends Page {
 		$result = $dbw->affectedRows() != 0;
 		if ( $result ) {
 			$this->updateRedirectOn( $dbw, $rt, $lastRevIsRedirect );
+			$this->setLastEdit( $revision );
 			$this->setCachedLastEditTime( $now );
+			$this->mLatest = $revision->getId();
+			$this->mIsRedirect = (bool)$rt;
+			# Update the LinkCache.
+			LinkCache::singleton()->addGoodLinkObj( $this->getId(), $this->mTitle, $len, $this->mIsRedirect, $this->mLatest );
 		}
 
 		wfProfileOut( __METHOD__ );
@@ -968,9 +1025,11 @@ class WikiPage extends Page {
 			if ( $section == 'new' ) {
 				# Inserting a new section
 				$subject = $summary ? wfMsgForContent( 'newsectionheaderdefaultlevel', $summary ) . "\n\n" : '';
-				$text = strlen( trim( $oldtext ) ) > 0
+				if ( wfRunHooks( 'PlaceNewSection', array( $this, $oldtext, $subject, &$text ) ) ) {
+					$text = strlen( trim( $oldtext ) ) > 0
 						? "{$oldtext}\n\n{$subject}{$text}"
 						: "{$subject}{$text}";
+				}
 			} else {
 				# Replacing an existing section; roll out the big guns
 				global $wgParser;
@@ -1083,6 +1142,8 @@ class WikiPage extends Page {
 
 		$oldtext = $this->getRawText(); // current revision
 		$oldsize = strlen( $oldtext );
+		$oldid = $this->getLatest();
+		$oldIsRedirect = $this->isRedirect();
 		$oldcountable = $this->isCountable();
 
 		# Provide autosummaries if one is not provided and autosummaries are enabled.
@@ -1112,7 +1173,7 @@ class WikiPage extends Page {
 				'comment'    => $summary,
 				'minor_edit' => $isminor,
 				'text'       => $text,
-				'parent_id'  => $this->mLatest,
+				'parent_id'  => $oldid,
 				'user'       => $user->getId(),
 				'user_text'  => $user->getName(),
 				'timestamp'  => $now
@@ -1140,7 +1201,7 @@ class WikiPage extends Page {
 				# edit conflicts reliably, either by $ok here, or by $article->getTimestamp()
 				# before this function is called. A previous function used a separate query, this
 				# creates a window where concurrent edits can cause an ignored edit conflict.
-				$ok = $this->updateRevisionOn( $dbw, $revision, $this->mLatest );
+				$ok = $this->updateRevisionOn( $dbw, $revision, $oldid, $oldIsRedirect );
 
 				if ( !$ok ) {
 					/* Belated edit conflict! Run away!! */
@@ -1163,7 +1224,7 @@ class WikiPage extends Page {
 							$this->mTitle->getUserPermissionsErrors( 'autopatrol', $user ) );
 						# Add RC row to the DB
 						$rc = RecentChange::notifyEdit( $now, $this->mTitle, $isminor, $user, $summary,
-							$this->mLatest, $this->getTimestamp(), $bot, '', $oldsize, $newsize,
+							$oldid, $this->getTimestamp(), $bot, '', $oldsize, $newsize,
 							$revisionId, $patrolled
 						);
 
@@ -1229,11 +1290,6 @@ class WikiPage extends Page {
 				'timestamp'  => $now
 			) );
 			$revisionId = $revision->insertOn( $dbw );
-
-			$this->mTitle->resetArticleID( $newid );
-			# Update the LinkCache. Resetting the Title ArticleID means it will rely on having that already cached
-			# @todo FIXME?
-			LinkCache::singleton()->addGoodLinkObj( $newid, $this->mTitle, strlen( $text ), (bool)Title::newFromRedirect( $text ), $revisionId );
 
 			# Update the page record with revision data
 			$this->updateRevisionOn( $dbw, $revision, 0 );
@@ -1520,10 +1576,6 @@ class WikiPage extends Page {
 	 */
 	public function estimateRevisionCount() {
 		$dbr = wfGetDB( DB_SLAVE );
-
-		// For an exact count...
-		// return $dbr->selectField( 'revision', 'COUNT(*)',
-		//	array( 'rev_page' => $this->getId() ), __METHOD__ );
 		return $dbr->estimateRowCount( 'revision', '*',
 			array( 'rev_page' => $this->getId() ), __METHOD__ );
 	}
@@ -1585,7 +1637,7 @@ class WikiPage extends Page {
 	 * Deletes the article with database consistency, writes logs, purges caches
 	 *
 	 * @param $reason string delete reason for deletion log
-	 * @param suppress bitfield
+	 * @param $suppress bitfield
 	 * 	Revision::DELETED_TEXT
 	 * 	Revision::DELETED_COMMENT
 	 * 	Revision::DELETED_USER
@@ -1599,7 +1651,7 @@ class WikiPage extends Page {
 	public function doDeleteArticle(
 		$reason, $suppress = false, $id = 0, $commit = true, &$error = '', User $user = null
 	) {
-		global $wgDeferredUpdateList, $wgUseTrackbacks, $wgUser;
+		global $wgUseTrackbacks, $wgUser;
 		$user = is_null( $user ) ? $wgUser : $user;
 
 		wfDebug( __METHOD__ . "\n" );
@@ -1658,7 +1710,8 @@ class WikiPage extends Page {
 				'ar_flags'      => '\'\'', // MySQL's "strict mode"...
 				'ar_len'        => 'rev_len',
 				'ar_page_id'    => 'page_id',
-				'ar_deleted'    => $bitfield
+				'ar_deleted'    => $bitfield,
+				'ar_sha1'       => 'rev_sha1'
 			), array(
 				'page_id' => $id,
 				'page_id = rev_page'
@@ -1750,6 +1803,8 @@ class WikiPage extends Page {
 	 * roll back to, e.g. user is the sole contributor. This function
 	 * performs permissions checks on $user, then calls commitRollback()
 	 * to do the dirty work
+	 * 
+	 * @todo: seperate the business/permission stuff out from backend code
 	 *
 	 * @param $fromP String: Name of the user whose edits to rollback.
 	 * @param $summary String: Custom summary. Set to default summary if empty.
@@ -1950,7 +2005,7 @@ class WikiPage extends Page {
 	 * Returns a stdclass with source, pst and output members
 	 */
 	public function prepareTextForEdit( $text, $revid = null, User $user = null ) {
-		global $wgParser, $wgUser;
+		global $wgParser, $wgContLang, $wgUser;
 		$user = is_null( $user ) ? $wgUser : $user;
 		// @TODO fixme: check $user->getId() here???
 		if ( $this->mPreparedEdit
@@ -1961,13 +2016,13 @@ class WikiPage extends Page {
 			return $this->mPreparedEdit;
 		}
 
-		$popts = ParserOptions::newFromUser( $user );
+		$popts = ParserOptions::newFromUserAndLang( $user, $wgContLang );
 		wfRunHooks( 'ArticlePrepareTextForEdit', array( $this, $popts ) );
 
 		$edit = (object)array();
 		$edit->revid = $revid;
 		$edit->newText = $text;
-		$edit->pst = $this->preSaveTransform( $text, $user, $popts );
+		$edit->pst = $wgParser->preSaveTransform( $text, $this->mTitle, $user, $popts );
 		$edit->popts = $this->makeParserOptions( 'canonical' );
 		$edit->output = $wgParser->parse( $edit->pst, $this->mTitle, $edit->popts, true, true, $revid );
 		$edit->oldText = $this->getRawText();
@@ -2121,6 +2176,7 @@ class WikiPage extends Page {
 	 * This function is called right before saving the wikitext,
 	 * so we can do things like signatures and links-in-context.
 	 *
+	 * @deprecated in 1.19; use Parser::preSaveTransform() instead
 	 * @param $text String article contents
 	 * @param $user User object: user doing the edit
 	 * @param $popts ParserOptions object: parser options, default options for
@@ -2130,6 +2186,9 @@ class WikiPage extends Page {
 	 */
 	public function preSaveTransform( $text, User $user = null, ParserOptions $popts = null ) {
 		global $wgParser, $wgUser;
+
+		wfDeprecated( __METHOD__ );
+
 		$user = is_null( $user ) ? $wgUser : $user;
 
 		if ( $popts === null ) {
@@ -2225,7 +2284,6 @@ class WikiPage extends Page {
 		$title->touchLinks();
 		$title->purgeSquid();
 		$title->deleteTitleProtection();
-		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 	}
 
 	/**
@@ -2269,7 +2327,6 @@ class WikiPage extends Page {
 
 		# Image redirects
 		RepoGroup::singleton()->getLocalRepo()->invalidateImageRedirect( $title );
-		$wgDeferredUpdateList[] = new HTMLCacheUpdate( $title, 'globaltemplatelinks' );
 	}
 
 	/**
@@ -2509,12 +2566,11 @@ class WikiPage extends Page {
 	* @return ParserOptions
 	*/
 	public function makeParserOptions( $user ) {
-		global $wgLanguageCode;
+		global $wgContLang;
 		if ( $user instanceof User ) { // settings per user (even anons)
 			$options = ParserOptions::newFromUser( $user );
 		} else { // canonical settings
-			$options = ParserOptions::newFromUser( new User );
-			$options->setUserLang( $wgLanguageCode ); # Must be set explicitily
+			$options = ParserOptions::newFromUserAndLang( new User, $wgContLang );
 		}
 		$options->enableLimitReport(); // show inclusion/loop reports
 		$options->setTidy( true ); // fix bad HTML
@@ -2588,7 +2644,7 @@ class WikiPage extends Page {
 	 * Updates cascading protections
 	 *
 	 * @param $parserOutput ParserOutput object for the current version
-	 **/
+	 */
 	public function doCascadeProtectionUpdates( ParserOutput $parserOutput ) {
 		if ( wfReadOnly() || !$this->mTitle->areRestrictionsCascading() ) {
 			return;
@@ -2635,27 +2691,206 @@ class WikiPage extends Page {
 		}
 	}
 
-	/*
-	* @deprecated since 1.18
-	*/
+	/**
+	 * @deprecated since 1.18
+	 */
 	public function quickEdit( $text, $comment = '', $minor = 0 ) {
 		global $wgUser;
 		return $this->doQuickEdit( $text, $wgUser, $comment, $minor );
 	}
 
-	/*
-	* @deprecated since 1.18
-	*/
+	/**
+	 * @deprecated since 1.18
+	 */
 	public function viewUpdates() {
 		global $wgUser;
 		return $this->doViewUpdates( $wgUser );
 	}
 
-	/*
-	* @deprecated since 1.18
-	*/
+	/**
+	 * @deprecated since 1.18
+	 */
 	public function useParserCache( $oldid ) {
 		global $wgUser;
-		return $this->isParserCacheUsed( $wgUser, $oldid );
+		return $this->isParserCacheUsed( ParserOptions::newFromUser( $wgUser ), $oldid );
+	}
+}
+
+class PoolWorkArticleView extends PoolCounterWork {
+
+	/**
+	 * @var Page
+	 */
+	private $page;
+
+	/**
+	 * @var string
+	 */
+	private $cacheKey;
+
+	/**
+	 * @var integer
+	 */
+	private $revid;
+
+	/**
+	 * @var ParserOptions
+	 */
+	private $parserOptions;
+
+	/**
+	 * @var string|null
+	 */
+	private $text;
+
+	/**
+	 * @var ParserOutput|false
+	 */
+	private $parserOutput = false;
+
+	/**
+	 * @var bool
+	 */
+	private $isDirty = false;
+
+	/**
+	 * @var Status|false
+	 */
+	private $error = false;
+
+	/**
+	 * Constructor
+	 *
+	 * @param $page Page
+	 * @param $revid Integer: ID of the revision being parsed
+	 * @param $useParserCache Boolean: whether to use the parser cache
+	 * @param $parserOptions parserOptions to use for the parse operation
+	 * @param $text String: text to parse or null to load it
+	 */
+	function __construct( Page $page, ParserOptions $parserOptions, $revid, $useParserCache, $text = null ) {
+		$this->page = $page;
+		$this->revid = $revid;
+		$this->cacheable = $useParserCache;
+		$this->parserOptions = $parserOptions;
+		$this->text = $text;
+		$this->cacheKey = ParserCache::singleton()->getKey( $page, $parserOptions );
+		parent::__construct( 'ArticleView', $this->cacheKey . ':revid:' . $revid );
+	}
+
+	/**
+	 * Get the ParserOutput from this object, or false in case of failure
+	 *
+	 * @return ParserOutput
+	 */
+	public function getParserOutput() {
+		return $this->parserOutput;
+	}
+
+	/**
+	 * Get whether the ParserOutput is a dirty one (i.e. expired)
+	 *
+	 * @return bool
+	 */
+	public function getIsDirty() {
+		return $this->isDirty;
+	}
+
+	/**
+	 * Get a Status object in case of error or false otherwise
+	 *
+	 * @return Status|false
+	 */
+	public function getError() {
+		return $this->error;
+	}
+
+	/**
+	 * @return bool
+	 */
+	function doWork() {
+		global $wgParser, $wgUseFileCache;
+
+		$isCurrent = $this->revid === $this->page->getLatest();
+
+		if ( $this->text !== null ) {
+			$text = $this->text;
+		} elseif ( $isCurrent ) {
+			$text = $this->page->getRawText();
+		} else {
+			$rev = Revision::newFromTitle( $this->page->getTitle(), $this->revid );
+			if ( $rev === null ) {
+				return false;
+			}
+			$text = $rev->getText();
+		}
+
+		$time = - wfTime();
+		$this->parserOutput = $wgParser->parse( $text, $this->page->getTitle(),
+			$this->parserOptions, true, true, $this->revid );
+		$time += wfTime();
+
+		# Timing hack
+		if ( $time > 3 ) {
+			wfDebugLog( 'slow-parse', sprintf( "%-5.2f %s", $time,
+				$this->page->getTitle()->getPrefixedDBkey() ) );
+		}
+
+		if ( $this->cacheable && $this->parserOutput->isCacheable() ) {
+			ParserCache::singleton()->save( $this->parserOutput, $this->page, $this->parserOptions );
+		}
+
+		// Make sure file cache is not used on uncacheable content.
+		// Output that has magic words in it can still use the parser cache
+		// (if enabled), though it will generally expire sooner.
+		if ( !$this->parserOutput->isCacheable() || $this->parserOutput->containsOldMagic() ) {
+			$wgUseFileCache = false;
+		}
+
+		if ( $isCurrent ) {
+			$this->page->doCascadeProtectionUpdates( $this->parserOutput );
+		}
+
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	function getCachedWork() {
+		$this->parserOutput = ParserCache::singleton()->get( $this->page, $this->parserOptions );
+
+		if ( $this->parserOutput === false ) {
+			wfDebug( __METHOD__ . ": parser cache miss\n" );
+			return false;
+		} else {
+			wfDebug( __METHOD__ . ": parser cache hit\n" );
+			return true;
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	function fallback() {
+		$this->parserOutput = ParserCache::singleton()->getDirty( $this->page, $this->parserOptions );
+
+		if ( $this->parserOutput === false ) {
+			wfDebugLog( 'dirty', "dirty missing\n" );
+			wfDebug( __METHOD__ . ": no dirty cache\n" );
+			return false;
+		} else {
+			wfDebug( __METHOD__ . ": sending dirty output\n" );
+			wfDebugLog( 'dirty', "dirty output {$this->cacheKey}\n" );
+			$this->isDirty = true;
+			return true;
+		}
+	}
+
+	/**
+	 * @param $status Status
+	 */
+	function error( $status ) {
+		$this->error = $status;
+		return false;
 	}
 }

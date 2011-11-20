@@ -432,7 +432,6 @@ Wan réy fu spesrutu papira de fu feni na [[Special:SpecialPages|{{int:specialpa
 'badtitletext'         => 'A nen fu a papira san ben aksi no bun, leygi, noso abi wan miti go na inter-tongo noso inter-wiki nen san no bun.
 A kan taki a abi wan noso moro karakter san no bun fu kebroiki gi nen.',
 'viewsource'           => 'Luku a source',
-'viewsourcefor'        => 'fu $1',
 'protectedpagetext'    => 'A papira disi sroto gi kenki.',
 'viewsourcetext'       => 'Yu kan luku nanga kopi a source fu a papira disi:',
 'ns-specialprotected'  => 'Spesrutu papira no kan kenki.',
@@ -556,7 +555,6 @@ $1 tapu pasi gi yu. Disi na fu sanede ''$2''.
 Yu kan skrifi $1 noso wan tra [[{{MediaWiki:Grouppage-sysop}}|beheerder]] fu taki abra a tapu pasi disi.
 Yu n'o man kebroiki 'e-mail a kebroikiman disi', efu yu no abi wan bun email-nen ini yu [[Special:Preferences|seti]] én pasi tapu fu yu kebroiki en.
 Yu IP now na $3 en a tapu pasi ID na #$5. Gi wan, noso ala tu, ini yu brifi te yu o skrifi fu aksi san psa.",
-'whitelistedittitle'         => 'Yu mu kon fu a kenki',
 'whitelistedittext'          => 'Yu mu $1 fu a kenki fu peprewoysi.',
 'loginreqtitle'              => 'Yu mu kon',
 'loginreqlink'               => 'kon',
@@ -1212,7 +1210,7 @@ Trawan o kibri.
 
 # External editor support
 'edit-externally'      => 'Kenki a file disi ini wan dorosey wrokosani.',
-'edit-externally-help' => 'Luku ini a [http://www.mediawiki.org/wiki/Manual:External_editors skorobuku fu den seti] gi moro yepi.',
+'edit-externally-help' => 'Luku ini a [//www.mediawiki.org/wiki/Manual:External_editors skorobuku fu den seti] gi moro yepi.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ala',

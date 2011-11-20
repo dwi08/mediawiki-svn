@@ -82,8 +82,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'निगरानी गरिरहेका प्रयोगकर्ताहरुको संख्या देखाउने',
 'tog-oldsig'                  => 'वर्तमान हस्ताक्षर:',
 'tog-fancysig'                => 'मेरो दस्तखतलाई विकि पाठको रुपमा लिने(स्वत सम्वन्ध बिना)',
-'tog-externaleditor'          => 'पूर्वनिर्धारित रुपमा बाह्य सम्पादक प्रयोग गर्नुहोस् (विज्ञहरुको लागि मात्र, तपाईको कम्प्युटरमा विशेष अनुकुलता आवश्यक हुन्छ [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
-'tog-externaldiff'            => 'पूर्वनिर्धारित रुपमा बाह्य diff प्रयोग गर्नुहोस (विज्ञ प्रयोगकर्ताहरुको लागि मात्र, तपाईंको कम्प्युटरमा विशेष अनुकुलता आवश्यक हुन्छ [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaleditor'          => 'पूर्वनिर्धारित रुपमा बाह्य सम्पादक प्रयोग गर्नुहोस् (विज्ञहरुको लागि मात्र, तपाईको कम्प्युटरमा विशेष अनुकुलता आवश्यक हुन्छ [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaldiff'            => 'पूर्वनिर्धारित रुपमा बाह्य diff प्रयोग गर्नुहोस (विज्ञ प्रयोगकर्ताहरुको लागि मात्र, तपाईंको कम्प्युटरमा विशेष अनुकुलता आवश्यक हुन्छ [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
 'tog-showjumplinks'           => '"जाने" पहुँच सम्वन्ध सक्रिय पार्ने',
 'tog-uselivepreview'          => 'प्रत्यक्ष पूर्वरुप प्रयोग गर्नुहोस् ( जाभा स्क्रिप्ट आवश्यक) (प्रयोगात्मक)',
 'tog-forceeditsummary'        => 'खाली सम्पादन सार प्रविष्टि गरेमा मलाई सोध्ने',
@@ -424,7 +424,6 @@ $1',
 कार्य: $1<br />
 खोज: $2',
 'viewsource'           => 'स्रोत हेर्नुहोस',
-'viewsourcefor'        => '$1 को लागि',
 'actionthrottled'      => 'कार्य रोकियो',
 'actionthrottledtext'  => 'स्पामबाट बच्ने तरिकाको रुपमा , तपाईँलाई यो कार्य थोरै समयमा धेरै पटक गर्नबाट सिमित गरिएको छ, र तपाईले आफ्नो सिमा पार गरिसक्नु भयो ।
 कृपया केही मिनेटहरु पछि पुन: प्रयास गर्नुहोस्  ।',
@@ -433,7 +432,7 @@ $1',
 'protectedinterface'   => 'यो पृष्ठले सफ्टवेयरको लागि अन्तरमोहडा पाठ प्रदान गर्दछ , र यसलाई दुरुपयोग हुनबाट बचाउन ताल्चा मारिएको छ।',
 'editinginterface'     => "'''चेतावनी:''' तपाईं यस्तो पृष्ठलाई सम्पादन गर्नुहुँदैछ, जसले सफ्टवेयरको लागि अन्तरमोहोड़ा (interface) पाठ प्रदान गर्दछ।
 यसको परिवर्तनले अरु प्रयोगकर्ताको अन्तरमोहोड़ाको प्रदर्शनमा प्रभाव पार्छ।
-मीडियाविकिको स्थानीयकरण परियोजना निम्ति अनुवाद गर्न कृपया यहाँ जानुहोस् [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]",
+मीडियाविकिको स्थानीयकरण परियोजना निम्ति अनुवाद गर्न कृपया यहाँ जानुहोस् [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]",
 'sqlhidden'            => '(SQL क्वेरी लुकाएको)',
 'cascadeprotected'     => 'यो पृष्ठ सम्पादन गर्नबाट सुरक्षित गरिएकोछ किनभनें   {{PLURAL:$1|पृष्ठ |पृष्ठहरु}}मा  सुरक्षित गर्नुका साथै प्रपात ("cascading") विकल्प खुल्ला राखिएकोछ:
 $2',
@@ -671,9 +670,6 @@ $2
 तपाईंको वर्तमान IP ठेगाना हो- $3, अनि रोक लगाइएको ID हो- #$5.
 कृपया कुनै बेला सोधनी गर्नु परे उपर्युक्त विवरण दर्शाउनु होला।",
 'blockednoreason'                  => 'कारण दिइएको छैन',
-'blockedoriginalsource'            => "'''$1''' को स्रोत तल देखाइएको छ:",
-'blockededitsource'                => "'''$1'''को '''तपाईँको सम्पादन'''को पाठ तल देखाइएको छ:",
-'whitelistedittitle'               => 'सम्पादन गर्नको लागि प्रवेश (लग इन) आवश्यक छ',
 'whitelistedittext'                => 'पाना सम्पादन गर्न तपाँईले $1 गर्नु पर्दछ।',
 'confirmedittext'                  => 'तपाईंले पृष्ठ संपादन गर्नअघि आफ्नो ई-मेल ठेगानाको पुष्टि गर्नुपर्छ।
 कृपया ई-मेल ठेगाना तयार गरी [[Special:Preferences|प्रयोगकर्ता अभिरूचि]] मार्फत मंजुर गराउनुहोस्।',
@@ -1383,7 +1379,6 @@ HTML ट्यागहरु जाँच्नुहोस् ।',
 'recentchangeslinked-feed'     => 'संबन्धित परिवर्तनहरु',
 'recentchangeslinked-toolbox'  => 'संबन्धित परिवर्तनहरु',
 'recentchangeslinked-title'    => '"$1"सम्वन्धित परिवर्तनसँग',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'जोडिएका पृष्ठहरुमा दिइएको समयावधीमा कुनै पनि परिवर्तन भएको छैन ।',
 'recentchangeslinked-summary'  => "यो सूची निर्दिष्ट पृष्ठ (वा निर्दिष्ट श्रेणी)सित जोड़िएका  भर्खरै परिवर्तन भएका पृष्ठको  हो। [[Special:Watchlist|तपाईँको निगरानी सूची]]का पृष्ठहरु '''गाढा अक्षरमा''' छन्।",
 'recentchangeslinked-page'     => 'पृष्ठ नाम:',
@@ -1929,7 +1924,6 @@ $UNWATCHURL
 'exbeforeblank'          => 'खालि गर्नु भन्दा अघिको सामग्री थियो: "$1"',
 'exblank'                => 'पृष्ठ खाली छ',
 'delete-confirm'         => 'मेट्नुहोस् "$1"',
-'delete-backlink'        => '← $1 \\',
 'delete-legend'          => 'मेट्नुहोस्',
 'historywarning'         => ' चेतावनी: तपाईंले मेटाउन लाग्नुभएको पृष्ठको इतिहासको लगभग $1 {{PLURAL:$1|पुनरावृत्ति छ|पुनरावृत्तिहरु छन्}}:',
 'confirmdeletetext'      => 'तपाई यो पृष्ठ र यसको इतिहास मेट्न गइरहनु भएकोछ। कृपया पुष्टि गर्नुहोस् कि [[{{MediaWiki:Policy-url}}|नियम]] मुताबिक तपाईं मेट्न गइरहनु भएकोछ।',
@@ -2116,7 +2110,6 @@ $3द्वारा $1को ($4को  समय $5 मा) मेटाइए
 'whatlinkshere'            => 'यहाँ के जोडिन्छ',
 'whatlinkshere-title'      => '$1 सँग जोडिएका पानाहरू',
 'whatlinkshere-page'       => 'पृष्ठ:',
-'whatlinkshere-backlink'   => '← $1',
 'linkshere'                => "निम्न पृष्ठहरु '''[[:$1]]''' मा जोडिन्छ :",
 'nolinkshere'              => " '''[[:$1]]'''मा लिंक भएका प्याकेजेजहरु छैनन्",
 'nolinkshere-ns'           => "चुनिएको नामस्थानमा '''[[:$1]]''' सित जोड़िने पृष्ठहरु छैनन्।",
@@ -2142,7 +2135,6 @@ $3द्वारा $1को ($4को  समय $5 मा) मेटाइए
 'blockiptext'                     => 'विशेष IP ठेगाना अथवा प्रयोगकर्तालाई रोक लगाउन निम्न प्रपत्र (form) प्रयोग गर्नुहोस्।
 यसो गर्नुको कारण [[{{MediaWiki:Policy-url}}|नीति]] अनुरुप विकिमा गरिने बर्बरताका कार्य रोक्नु मात्र हो।
 विशेष कारण देखाउँदै तलको प्रपत्र भर्नुहोस्  (उदाहरण, बर्बरताको कार्य गरिएको पृष्ठ दर्शाउँदै)',
-'ipaddress'                       => 'आई पी ठेगाना',
 'ipadressorusername'              => ' ip ठेगाना या प्रयोगकर्ता नाम :',
 'ipbexpiry'                       => 'समाप्ति:',
 'ipbreason'                       => 'कारण:',
@@ -2368,7 +2360,7 @@ $1को बन्देजको कारण : "$2" हो',
 'allmessagesdefault'            => 'डिफल्ट सन्देश पाठ',
 'allmessagescurrent'            => 'वर्तमान सन्देश पाठ',
 'allmessagestext'               => 'यो मीडियाविकि नेमस्पेसमा पाइने सिस्टम सन्देशहरूको सूची हो।
-यदि तपाईं व्यापक मीडिया विकि स्थानीयकरणमा योगदान गर्न चाहनुहुन्छ भनें कृपया [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]मा र [http://translatewiki.net translatewiki.net]मा जानुहोस्।',
+यदि तपाईं व्यापक मीडिया विकि स्थानीयकरणमा योगदान गर्न चाहनुहुन्छ भनें कृपया [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation]मा र [//translatewiki.net translatewiki.net]मा जानुहोस्।',
 'allmessages-filter-legend'     => 'फिल्टर',
 'allmessages-filter-unmodified' => 'असंशोधित',
 'allmessages-filter-all'        => 'सबै',
@@ -3008,7 +3000,7 @@ $8',
 
 # External editor support
 'edit-externally'      => 'यो फाइललाई बाह्य अनुप्रयोग प्रयोग गरेर सम्पादन गर्ने',
-'edit-externally-help' => '(थप जानकारीको लागि [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] मा हेर्नुहोस् )',
+'edit-externally-help' => '(थप जानकारीको लागि [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] मा हेर्नुहोस् )',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'सबै',
@@ -3270,7 +3262,7 @@ $1',
 'version-version'               => '(संस्करण $1)',
 'version-svn-revision'          => '(r$2)',
 'version-license'               => 'इजाजतपत्र',
-'version-poweredby-credits'     => "यो विकी '''[http://www.mediawiki.org/ मिडियाविकि]''' द्वारा सशक्तिकरण गरिएको छ, copyright © सन् २००१-$1 $2.",
+'version-poweredby-credits'     => "यो विकी '''[//www.mediawiki.org/ मिडियाविकि]''' द्वारा सशक्तिकरण गरिएको छ, copyright © सन् २००१-$1 $2.",
 'version-poweredby-others'      => 'अन्य',
 'version-software'              => 'स्थापना गरिएको सफ्टवेयर',
 'version-software-product'      => 'उत्पादन',

@@ -209,8 +209,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Amostrar el karar de usadores que están akavidando cada hoja',
 'tog-oldsig'                  => 'Previsteo de la firma presente',
 'tog-fancysig'                => 'Tratar la firma como un vikiteksto (sin un atamiento otomatiko)',
-'tog-externaleditor'          => 'Ir usando un ēdditor esterno (sólo es para usadores adelantados; tiene menester de arreglamientos especiales en vuestro contador [http://www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
-'tog-externaldiff'            => 'Ir usando un comparador (diff) esterno (sólo es para usadores adelantados; tiene menester de arreglamientos especiales en vuestro contador [http://www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
+'tog-externaleditor'          => 'Ir usando un ēdditor esterno (sólo es para usadores adelantados; tiene menester de arreglamientos especiales en vuestro contador [//www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
+'tog-externaldiff'            => 'Ir usando un comparador (diff) esterno (sólo es para usadores adelantados; tiene menester de arreglamientos especiales en vuestro contador [//www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
 'tog-showjumplinks'           => 'Aktivar los atamientos de ayudo "Saltar a"',
 'tog-uselivepreview'          => 'Usar el "previsteo bivo" (JavaScript es menester) (eksperimental)',
 'tog-forceeditsummary'        => 'Avizarme cuando dexo el somaryo vazío',
@@ -476,7 +476,6 @@ Si puede ser, enfórmaselo a un [[Special:ListUsers/sysop|administrator]], anota
 'badtitletext'        => 'El título de la hoja demandada está vazío, no es valible, o es un link interlingua o interwiki incorrecto.
 Puede ser que contiene uno o más caracteres que no se pueden usar en los títulos.',
 'viewsource'          => 'Ver el codd fuente',
-'viewsourcefor'       => 'para $1',
 
 # Login and logout pages
 'yourname'                => 'Su nombre de usuario',
@@ -1097,7 +1096,7 @@ Los otros campos se van a guardar por defecto.
 
 # External editor support
 'edit-externally'      => 'Trocar esto arxivo usando una aplicación eksterna',
-'edit-externally-help' => '(Melda las [http://www.mediawiki.org/wiki/Manual:External_editors enstruksiones de configuración] -en inglés- para saber más)',
+'edit-externally-help' => '(Melda las [//www.mediawiki.org/wiki/Manual:External_editors enstruksiones de configuración] -en inglés- para saber más)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'todos',

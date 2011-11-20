@@ -348,7 +348,6 @@ Lutfan inro ba [[Special:ListUsers/sysop|mudir]] bo işora kardani nişonai URL 
 Amal: $1<br />
 Pursuçū: $2',
 'viewsource'           => 'Namoişi matni viki',
-'viewsourcefor'        => 'baroi $1',
 'actionthrottled'      => 'Çilavi amali şumo girifta şud',
 'actionthrottledtext'  => 'Ba manzuri çilavgirī az spam, şumo içoza nadored, ki cunin amalero beş az cand bor dar jak muddati zamoni kūtoh ançom bidihed. Lutfan pas az cand daqiqa dubora taloş kuned.',
 'protectedpagetext'    => 'In sahifa baroi çilavgirī az viroiş qufl şudaast.',
@@ -500,9 +499,6 @@ Tavaççūh kuned, ki az qobilijati 'firistodai poctai elektronī ba in korbar' 
 Nişonai kununiji IP Şumo $3 ast, va şinosai qat'i dastrasiji Şumo #$5 ast.
 Lutfan in jo onro va jo hardui onro dar darxosthoi xud zikr kuned.",
 'blockednoreason'                  => 'dalele muşaxxas naşudaast',
-'blockedoriginalsource'            => "Matni manbai '''$1''' dar zer namoiş doda şudaast:",
-'blockededitsource'                => "Matni '''viroişhoi şumo''' dar '''$1''' dar zer nişon doda şudaast:",
-'whitelistedittitle'               => 'Baroi viroiş vurud bojad kard',
 'whitelistedittext'                => 'Baroi viroişi maqola bojad ba sistem $1 şaved.',
 'confirmedittext'                  => 'Şumo bojad nişonai poctai elektroniatonro peş az viroiş kardani sahifaho, tasdiq kuned. Lutfan in korro tariqi [[Special:Preferences|tarçihoti korbar]] surat dihed.',
 'nosuchsectiontitle'               => 'Cunin baxşe vuçud nadorad',
@@ -1472,7 +1468,6 @@ $1',
 'blockiptext'                 => "Baroi bastani dastrasiji viroişi nişonai IP jo nomi korbarī muşaxxas az formi zerin istifoda kuned.
 In kor faqat bojad baroi çilavgirī az xarobkori va muvofiqi bo [[{{MediaWiki:Policy-url}}|sijosati qat'i dastrasī]] ançom şavad.
 Daleli muşaxxas baroi in korro dar zer zikr kuned (baroi misol, zikri sahifahoe, ki xarobkorī şudaand).",
-'ipaddress'                   => 'Nişonai IP:',
 'ipadressorusername'          => 'IP nişona jo nomi korbar:',
 'ipbexpiry'                   => 'Xotima:',
 'ipbreason'                   => 'Sabab:',
@@ -1649,7 +1644,7 @@ Dar holati oxir şumo metavoned pajvandero istifoda bared, namuna. [[{{#Special:
 'allmessagesdefault'        => 'Matni qarordodī',
 'allmessagescurrent'        => 'Matni kununī',
 'allmessagestext'           => 'In fehristi pajomhoi sistemaviji dastras dar fazoi nomi MediaWiki meboşad.
-Agar majli hissaguzorī kardanro ba mahallikunoniji MediaWiki dored, pas lutan sahifahoi [http://www.mediawiki.org/wiki/Localisation Mahallikunoniji MediaWiki] va [http://translatewiki.net translatewiki.net] nigared.',
+Agar majli hissaguzorī kardanro ba mahallikunoniji MediaWiki dored, pas lutan sahifahoi [//www.mediawiki.org/wiki/Localisation Mahallikunoniji MediaWiki] va [//translatewiki.net translatewiki.net] nigared.',
 'allmessagesnotsupportedDB' => "Az in sahifa nametavon istifoda burd, cun '''\$wgUseDatabaseMessages''' ƣajrifa'ol gardonida şudaast.",
 'allmessages-filter-legend' => 'Filtr',
 'allmessages-filter-all'    => 'Hama',
@@ -2118,7 +2113,7 @@ Faqat satrhoe, ki bo * şurū' şavand ba nazar girifta meşavand. Avvalin pajva
 
 # External editor support
 'edit-externally'      => 'In fajlro bo barnomai beruna tahrir kuned',
-'edit-externally-help' => '(Baroi ittilooti beştar [http://www.mediawiki.org/wiki/Manual:External_editors rohnamoi tanzimotro oidi viroişgaroni beruna] nigared)',
+'edit-externally-help' => '(Baroi ittilooti beştar [//www.mediawiki.org/wiki/Manual:External_editors rohnamoi tanzimotro oidi viroişgaroni beruna] nigared)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'hama',

@@ -57,7 +57,7 @@ TEXT;
 		$this->stderr = fopen( "php://stderr", "wt" );
 		$this->addOption( 'report',
 			'Report position and speed after every n pages processed', false, true );
-		$this->addOption( 'namespaces', 
+		$this->addOption( 'namespaces',
 			'Import only the pages from namespaces belonging to the list of ' .
 			'pipe-separated namespace names or namespace indexes', false, true );
 		$this->addOption( 'dry-run', 'Parse dump without actually importing pages' );
@@ -117,6 +117,10 @@ TEXT;
 		$this->error( "Unknown namespace text / index specified: $namespace", true );
 	}
 
+	/**
+	 * @param $obj Title|Revision
+	 * @return bool
+	 */
 	private function skippedNamespace( $obj ) {
 		if ( $obj instanceof Title ) {
 			$ns = $obj->getNamespace();
@@ -135,6 +139,10 @@ TEXT;
 		$this->pageCount++;
 	}
 
+	/**
+	 * @param $rev Revision
+	 * @return mixed
+	 */
 	function handleRevision( $rev ) {
 		$title = $rev->getTitle();
 		if ( !$title ) {
@@ -154,6 +162,10 @@ TEXT;
 		}
 	}
 
+	/**
+	 * @param $revision Revision
+	 * @return bool
+	 */
 	function handleUpload( $revision ) {
 		if ( $this->uploads ) {
 			if ( $this->skippedNamespace( $revision ) ) {
@@ -219,11 +231,9 @@ TEXT;
 	function importFromFile( $filename ) {
 		if ( preg_match( '/\.gz$/', $filename ) ) {
 			$filename = 'compress.zlib://' . $filename;
-		}
-		elseif ( preg_match( '/\.bz2$/', $filename ) ) {
+		} elseif ( preg_match( '/\.bz2$/', $filename ) ) {
 			$filename = 'compress.bzip2://' . $filename;
-		}
-		elseif ( preg_match( '/\.7z$/', $filename ) ) {
+		} elseif ( preg_match( '/\.7z$/', $filename ) ) {
 			$filename = 'mediawiki.compress.7z://' . $filename;
 		}
 

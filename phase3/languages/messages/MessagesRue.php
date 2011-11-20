@@ -72,8 +72,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Вказати кілько хоснователїв придало сторінку до свого списку слїдованых',
 'tog-oldsig'                  => 'Екзістуючій підпис:',
 'tog-fancysig'                => 'Хосновати про підпис вікітекст (без автоматічного одказу)',
-'tog-externaleditor'          => 'Імпліцітно хосновати екстерный едітор (лем про скусеных, выжадує шпеціалне наштелёваня компютера; [http://www.mediawiki.org/wiki/Manual:External_editors далшы інформації])',
-'tog-externaldiff'            => 'Імпліцітно хосновати проґрам про порівнаваня (лем про скусеных, выжадує шпеціалне наштелёваня компютера; [http://www.mediawiki.org/wiki/Manual:External_editors далшы інформації])',
+'tog-externaleditor'          => 'Імпліцітно хосновати екстерный едітор (лем про скусеных, выжадує шпеціалне наштелёваня компютера; [//www.mediawiki.org/wiki/Manual:External_editors далшы інформації])',
+'tog-externaldiff'            => 'Імпліцітно хосновати проґрам про порівнаваня (лем про скусеных, выжадує шпеціалне наштелёваня компютера; [//www.mediawiki.org/wiki/Manual:External_editors далшы інформації])',
 'tog-showjumplinks'           => 'Актівізовати помічны одказы "перейти дo"',
 'tog-uselivepreview'          => 'Хосновати швыдкый нагляд (JavaScript, експеріментално)',
 'tog-forceeditsummary'        => 'Упозорнити ня, кідь не є выповнене згорнутя едітованя',
@@ -397,6 +397,7 @@ $1',
 'badarticleerror'      => 'Тота дїя не може быти выконана на тій сторінцї.',
 'cannotdelete'         => 'Не є можне вымазати сторінку або файл "$1".
 Може уж быв(а)  змазаный(а) дакым іншым.',
+'cannotdelete-title'   => 'Не годен змазати сторінку "$1"',
 'badtitle'             => 'Неприпустна назва',
 'badtitletext'         => 'Пожадована назва сторінкы неправилна, порожня, або неправилно одказована як міджі-язычного ці міджі-вікі назва.
 Може ся хоснують сімболы, котры не можуть быти хоснованы в назвах.',
@@ -407,13 +408,12 @@ $1',
 Функція: $1<br />
 Запрос: $2',
 'viewsource'           => 'Видїти код',
-'viewsourcefor'        => 'Сторінка «$1»',
 'actionthrottled'      => 'Акція была придушена',
 'actionthrottledtext'  => 'Взглядом ку протиспамовым опатрїням не можете жадану акцію провести барз часто в короткім часї. Спробуйте то знову о пару мінут.',
 'protectedpagetext'    => 'Тота сторінка была замкнута, также ся не дасть едітовати',
 'viewsourcetext'       => 'Можете видїти і копіровати код той сторінкы:',
 'protectedinterface'   => 'Тота сторінка є частинов інтрефейсу проґрамового забезпечіня і єй можуть едітовати лем адміністраторы проєкту.',
-'editinginterface'     => "'''Увага:''' Едітуєте сторінку,котра є частинов текстового інтерфейсу. Зміны той сторінкы выкличуть зміну інтерфейсу про іншых хоснователїв. Про переклад увідомлїня хоснуйте [http://translatewiki.net/wiki/Main_Page?setlang=uk translatewiki.net] — проєкт, што ся занимає локалізаціёв MediaWiki.",
+'editinginterface'     => "'''Увага:''' Едітуєте сторінку,котра є частинов текстового інтерфейсу. Зміны той сторінкы выкличуть зміну інтерфейсу про іншых хоснователїв. Про переклад увідомлїня хоснуйте [//translatewiki.net/wiki/Main_Page?setlang=uk translatewiki.net] — проєкт, што ся занимає локалізаціёв MediaWiki.",
 'sqlhidden'            => '(SQL запрос скрытый)',
 'cascadeprotected'     => 'Сторінка є замнкута, бо є вложена до  {{PLURAL:$1|наслїдуючой сторінкы замкнуты|наслїдуючіх сторінок замнкнутых|наслїдуючіх сторінок замнкнутых}} каскадовым замком:
 $2',
@@ -509,6 +509,7 @@ $2',
 'emailconfirmlink'           => 'Підтвердьте свою адресу ел. пошты',
 'invalidemailaddress'        => 'Уведена адреса ел. пошты не може быти прията, бо она не має правилный формат.
 Просиме Вас, уведьте коректну адесу або зохабте поле порожнє.',
+'cannotchangeemail'          => 'В тій вікі не годен мінити імейловы адресы.',
 'accountcreated'             => 'Конто вытворене',
 'accountcreatedtext'         => 'Конто хоснователя $1 было вытворене.',
 'createaccount-title'        => 'Вытвориня конта про  {{SITENAME}}',
@@ -544,16 +545,18 @@ $2',
 'resetpass-temp-password'   => 'Дочасне гесло:',
 
 # Special:PasswordReset
-'passwordreset'                => 'Ресет гесла',
-'passwordreset-text'           => 'Выповньте тот формуларь, жебы обтримати  припомянутя детайлів вашого конта',
-'passwordreset-legend'         => 'Знову наставити гесло',
-'passwordreset-disabled'       => 'Зновунаставлїня гесла є на тій вікі заказане',
-'passwordreset-pretext'        => '{{PLURAL:$1||Задайте єден з дат ниже}}',
-'passwordreset-username'       => 'Мено хоснователя:',
-'passwordreset-domain'         => 'Домена:',
-'passwordreset-email'          => 'Адреса електронічной пошты:',
-'passwordreset-emailtitle'     => 'Детайлы конта на {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'Дахто (асі вы, з IP адресы $1) пожадав о припомянутя інформацій ку вашому 
+'passwordreset'                    => 'Ресет гесла',
+'passwordreset-text'               => 'Выповньте тот формуларь, жебы обтримати  припомянутя детайлів вашого конта',
+'passwordreset-legend'             => 'Знову наставити гесло',
+'passwordreset-disabled'           => 'Зновунаставлїня гесла є на тій вікі заказане',
+'passwordreset-pretext'            => '{{PLURAL:$1||Задайте єден з дат ниже}}',
+'passwordreset-username'           => 'Мено хоснователя:',
+'passwordreset-domain'             => 'Домена:',
+'passwordreset-capture'            => 'Посмотрити выслїдный імейл?',
+'passwordreset-capture-help'       => 'Кідь означіте тото поличко, буде імейл (з дочасным геслом) оркем посланя хоснователёви указаный і вам.',
+'passwordreset-email'              => 'Адреса електронічной пошты:',
+'passwordreset-emailtitle'         => 'Детайлы конта на {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'Дахто (асі вы, з IP адресы $1) пожадав о припомянутя інформацій ку вашому 
 конту на {{grammar:6sg|{{SITENAME}}}} ($4). Ку тій адресї {{PLURAL:$3|є спрягнуте наступне конто|суть спрягнуты наступны конта}}:
 
 $2
@@ -562,7 +565,7 @@ $2
 Нынї бы сьте ся мав(а) приголосити і зволити нове гесло. Як тоту пожадавку
 послав дахто другый або сьте собі на своє старе гесло спомянув(а), і не хочете го
 змінити, можете тото повідомлїня іґноровати і надале хосновати старе гесло.',
-'passwordreset-emailtext-user' => '{{gender:$1|Хоснователь|Хоснователька|Хоснователь}} $1 {{grammar:2sg|{{SITENAME}}}} {{gender:$1|попросив|попросила|попросив}} о припомянутя інформацій ку вашому
+'passwordreset-emailtext-user'     => '{{gender:$1|Хоснователь|Хоснователька|Хоснователь}} $1 {{grammar:2sg|{{SITENAME}}}} {{gender:$1|попросив|попросила|попросив}} о припомянутя інформацій ку вашому
 конту на {{grammar:6sg|{{SITENAME}}}} ($4). Ку тій адресї {{PLURAL:$3|є спряжене наступне конто|суть спряжены наступну конта}}:
 
 $2
@@ -571,9 +574,11 @@ $2
 Нынї бы сьте ся мав(а) приголосити у зволити собі нове гесло. Кідь тоту пожадавку
 послав дахто другый або сьте собі на своє старе гесло спомянув(а),і не хочете го
 змінити, можете тото повідомлїня іґноровати і надале хосновати старе гесло.',
-'passwordreset-emailelement'   => 'Імя хоснователя: $1
+'passwordreset-emailelement'       => 'Імя хоснователя: $1
 Дочасне гесло: $2',
-'passwordreset-emailsent'      => 'Імейл з геслом быв посланый.',
+'passwordreset-emailsent'          => 'Імейл з геслом быв посланый.',
+'passwordreset-emailsent-capture'  => 'Быв выґенерованый припоминаючій імейл, котрый є указаный ниже.',
+'passwordreset-emailerror-capture' => 'Быв выґенерованый припоминаючій імейл, котрый є указаный ниже, але одослати хоснователёви ся го не подарило: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'Зміна імейловой адресы',
@@ -650,9 +655,6 @@ $2
 Ваша IP адреса є $3, і ID блокованя є #$5.
 Просиме Вас, пиште тоты детайлы во вшыткых запытах на адміністратора.",
 'blockednoreason'                  => 'причіна не была задана',
-'blockedoriginalsource'            => "Здройовый текст сторінкы '''$1''' є вказаный ниже:",
-'blockededitsource'                => "Текст '''вашых едітовань''' сторінкы «$1» наслїдує:",
-'whitelistedittitle'               => 'Про едітованя є выжадоване приголошіня',
 'whitelistedittext'                => 'Про едітованя ся мусите $1.',
 'confirmedittext'                  => 'Мусите підтвердити вашу адресу ел. пошты передтым як будете едітовати сторінкы.
 На сторінцї [[Special:Preferences|наставлїня]] задайте і зохабте собі підтвердити свою адресу ел. пошты.',
@@ -1131,6 +1133,8 @@ $1",
 'prefs-registration'            => 'Час реґістрації:',
 'yourrealname'                  => 'Скуточне мено:',
 'yourlanguage'                  => 'Язык:',
+'yourvariant'                   => 'Варіант языка обсягу:',
+'prefs-help-variant'            => 'Вами преферованый варіант або правопис, як ся мають на тій вікі зображати обсяговы сторінкы.',
 'yournick'                      => 'Підпис:',
 'prefs-help-signature'          => 'Коментарї на діскузіях бы ся мали підписовати помочов „<nowiki>~~~~</nowiki>“, што ся змінить на ваш підпис і актуалный час.',
 'badsig'                        => 'Неправилний підпис.
@@ -1198,12 +1202,12 @@ $1",
 'group-suppress'      => 'Ревізоры',
 'group-all'           => '(вшыткы)',
 
-'group-user-member'          => 'хоснователь',
-'group-autoconfirmed-member' => 'автопідтвердженый хоснователь',
-'group-bot-member'           => 'бот',
-'group-sysop-member'         => 'адміністратор',
-'group-bureaucrat-member'    => 'бірократ',
-'group-suppress-member'      => 'ревізор',
+'group-user-member'          => '{{GENDER:$1|хоснователь|хоснователька|хоснователь}}',
+'group-autoconfirmed-member' => '{{GENDER:$1|автопотвердженый хоснователь|автопотверджена хоснователька|автопотвердженый хоснователь}}',
+'group-bot-member'           => '{{GENDER:$1|бот|ботка|бот}}',
+'group-sysop-member'         => '{{GENDER:$1|адміністратор|адміністраторка|адміністратор}}',
+'group-bureaucrat-member'    => '{{GENDER:$1|бюрократ|бюрократка|бюрократ}}',
+'group-suppress-member'      => '{{GENDER:$1|ревізор|ревізорка|ревізор}}',
 
 'grouppage-user'          => '{{ns:project}}:Хоснователї',
 'grouppage-autoconfirmed' => '{{ns:project}}:Автопідтверджены хоснователї',
@@ -1305,6 +1309,7 @@ $1",
 'action-suppressionlog'       => 'перегляд того пріватного лоґу',
 'action-block'                => 'блокованя того хоснователя',
 'action-protect'              => 'змінити рівень охраны той сторінкы',
+'action-rollback'             => 'швыдко вернути управы послїднёго хоснователя едітуючого дану сторінку',
 'action-import'               => 'імпорт той сторінкы з іншой вікі',
 'action-importupload'         => 'імпорт той сторінкы з файлу',
 'action-patrol'               => 'позначіти чуджі едітованя як перевірены',
@@ -1397,6 +1402,7 @@ $1",
 'ignorewarnings'              => 'Іґноровати вшыткы варованя',
 'minlength1'                  => 'Назва файлу мусить мати холем єдну літеру.',
 'illegalfilename'             => 'Назва файлу "$1" обсягує буквы, котры не суть поволены в назвах сторінок. Просиме, переменуйте файл і спробуйте го награти зясь.',
+'filename-toolong'            => 'Назвы файлів не можуть быти довшы, як 240 байтів.',
 'badfilename'                 => 'Назва файлу была змінена на „$1“.',
 'filetype-mime-mismatch'      => 'Росшырїня файлу ".$1" не одповідать ёго MIME тіпу ($2).',
 'filetype-badmime'            => 'Не є поволене начітати файлы MIME тіп „$1“.',
@@ -1575,7 +1581,7 @@ $1',
 'filehist-filesize'         => 'Розмір файлу',
 'filehist-comment'          => 'Коментарь',
 'filehist-missing'          => 'Файл хыбіть',
-'imagelinks'                => 'Одказы на файл',
+'imagelinks'                => 'Выужытя файлу',
 'linkstoimage'              => '{{PLURAL:$1|Далша сторінка ся одказує|Далшы сторінкы ся одказують}} на тот файл:',
 'linkstoimage-more'         => 'На тот файл {{PLURAL:$1|одказує веце сторінок|одказує веце як $1 сторінок|одказує веце як $1 сторінок}}.
 Наслїдуючій список зображує лем {{PLURAL:$1|тоту першу|першы $1|першых $1}}.
@@ -1742,7 +1748,7 @@ $1',
 'listusers-editsonly'     => 'Вказати лем хоснователїв з едітованями',
 'listusers-creationsort'  => 'Сортовати подля датуму створїня',
 'usereditcount'           => '$1 {{PLURAL:$1|едітованя|едітованя|едітовань}}',
-'usercreated'             => 'Створеный $1 о $2',
+'usercreated'             => '{{GENDER:$3|Реґістрованый|Реґістрована|Реґістрованый(а)}} $1 в $2',
 'newpages'                => 'Новы сторінкы',
 'newpages-username'       => 'Мено хоснователя:',
 'ancientpages'            => 'Сторінкы, якы ся найдовше не едітовали',
@@ -1809,7 +1815,7 @@ $1',
 'sp-deletedcontributions-contribs' => 'приспевкы',
 
 # Special:LinkSearch
-'linksearch'       => 'Екстерны одказы',
+'linksearch'       => 'Гляданя екстерных одказів',
 'linksearch-pat'   => 'Шаблона про ґлядяня:',
 'linksearch-ns'    => 'Простор назв:',
 'linksearch-ok'    => 'Глядати',
@@ -1940,7 +1946,7 @@ $1',
 'enotif_anon_editor'           => 'анонімный хоснователь $1',
 'enotif_body'                  => 'Дорогый хоснователю $WATCHINGUSERNAME,
 
-У $PAGEEDITDATE $CHANGEDORCREATED $PAGEEDITOR сторінку $PAGETITLE, смотьте актуалну верзію на $PAGETITLE_URL .
+У $PAGEEDITDATE была хоснователём $PAGEEDITOR $CHANGEDORCREATED сторінка $PAGETITLE, смотьте актуалну верзію на $PAGETITLE_URL .
 
 $NEWPAGE
 Куртый опис змін: $PAGESUMMARY $PAGEMINOREDIT
@@ -2027,7 +2033,10 @@ $UNWATCHURL
 'unprotectedarticle'          => 'знята охрана з "[[$1]]"',
 'movedarticleprotection'      => 'наставлїня замків пересунуто з „[[$2]]“ на „[[$1]]“',
 'protect-title'               => 'Зміна уровнї охраны сторінкы „$1“',
+'protect-title-notallowed'    => 'Указати уровни охраны сторінкы „$1“',
 'prot_1movedto2'              => '«[[$1]]» переменована на «[[$2]]»',
+'protect-badnamespace-title'  => 'Незамыкательный простор назв',
+'protect-badnamespace-text'   => 'Сторінкы в тім просторї назв не годен замыкати.',
 'protect-legend'              => 'Підтвердити замкнутя',
 'protectcomment'              => 'Причіна:',
 'protectexpiry'               => 'Кінчіть:',
@@ -2191,7 +2200,6 @@ $1',
 'blockiptext'                     => 'Тот формуларь служыть про заблокованя едітованя з конкретной IP адресы або мена хоснователя.
 Тото бы мало быти хосноване лем в згодї з [[{{MediaWiki:Policy-url}}|правилами]].
 Задайте причіну ниже (наприклад вкажте, котры сторінкы были пошкоджены).',
-'ipaddress'                       => 'IP-адреса:',
 'ipadressorusername'              => 'IP-адреса або мено хоснователя:',
 'ipbexpiry'                       => 'Кінчіть:',
 'ipbreason'                       => 'Причіна:',
@@ -2444,7 +2452,7 @@ $1',
 'allmessagesdefault'            => 'Штандартный текст',
 'allmessagescurrent'            => 'Актуалный текст',
 'allmessagestext'               => 'Тото є список вшыткых повідомлїнь доступных в просторї назв «MediaWiki».
-Кідь хочете приспівати ку локалізації софтверу MediaWiki, навщівте [http://www.mediawiki.org/wiki/Localisation локалізачну сторінку на mediawiki.org] і [http://translatewiki.net сервер server translatewiki.net].',
+Кідь хочете приспівати ку локалізації софтверу MediaWiki, навщівте [//www.mediawiki.org/wiki/Localisation локалізачну сторінку на mediawiki.org] і [//translatewiki.net сервер server translatewiki.net].',
 'allmessagesnotsupportedDB'     => '{{ns:special}}:AllMessages не є підпороване, бо wgUseDatabaseMessages є выпнуте.',
 'allmessages-filter-legend'     => 'Філтер',
 'allmessages-filter'            => 'Філтер подля ставу:',
@@ -2662,7 +2670,7 @@ $1',
 'svg-long-desc'          => 'SVG-файл, номінално $1 × $2 пікселів, розмір файлу: $3',
 'show-big-image'         => 'Повне розлишіня',
 'show-big-image-preview' => 'Розмір того нагляду: $1.',
-'show-big-image-other'   => 'Іншы розлишіня: $1.',
+'show-big-image-other'   => '{{PLURAL:$2|Інше|іншы}} розлишіня: $1.',
 'show-big-image-size'    => '$1 × $2 пікселів',
 'file-info-gif-looped'   => 'в слючцї',
 'file-info-gif-frames'   => '$1 {{PLURAL:$1|снимок|снимкы|снимків}}',
@@ -2681,6 +2689,13 @@ $1',
 'ilsubmit'              => 'Глядати',
 'bydate'                => 'подля датуму',
 'sp-newimages-showfrom' => 'Вказати новы файлы почінаючі од $2, $1',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'seconds' => '{{PLURAL:$1|$1 секунда|$1 секунды|$1 секунд}}',
+'minutes' => '{{PLURAL:$1|$1 минута|$1 минуты|$1 минут}}',
+'hours'   => '{{PLURAL:$1|$1 година|$1 годины|$1 годин}}',
+'days'    => '{{PLURAL:$1|$1 день|$1 днї|$1 днїв}}',
+'ago'     => '$1 тому',
 
 # Bad image list
 'bad_image_list' => 'Формат має быти наступным:
@@ -3102,7 +3117,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'Едітовати тот файл хоснувчі екстерну аплікацію',
-'edit-externally-help' => '(Вецей інформації найдете в [http://www.mediawiki.org/wiki/Manual:External_editors інштрукції про наставлїня].)',
+'edit-externally-help' => '(Вецей інформації найдете в [//www.mediawiki.org/wiki/Manual:External_editors інштрукції про наставлїня].)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'вшыткы',
@@ -3262,6 +3277,9 @@ $1',
 'watchlisttools-edit' => 'Нагляд і едітованя списку',
 'watchlisttools-raw'  => 'Едітовати як текст',
 
+# Signatures
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|діскузія]])',
+
 # Core parser functions
 'unknown_extension_tag' => 'Незнама значка росшырїня: „$1“',
 'duplicate-defaultsort' => 'Увага: Імпліцітный ключ сортованя (DEFAULTSORTKEY) „$2“ переписує скоре наставлену годноту „$1“.',
@@ -3284,13 +3302,13 @@ $1',
 'version-hook-subscribedby'     => 'Підписаный на',
 'version-version'               => '(Верзія $1)',
 'version-license'               => 'Ліценція',
-'version-poweredby-credits'     => "Тота вікі біжыть на '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001–$1 $2.",
+'version-poweredby-credits'     => "Тота вікі біжыть на '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001–$1 $2.",
 'version-poweredby-others'      => 'іншы',
-'version-license-info'          => 'MediaWiki є слободный софтвер; можете го шырити або управляти подля подмінок GNU General Public License, выдаваной Free Software Foundation; будь верзія 2 той ліценції або (подля вашого уважіня) будьяка пізнїша верзія.
+'version-license-info'          => 'MediaWiki є слободный софтвер; можете го шырити або управляти подля условій GNU General Public License, выдаваной Free Software Foundation; будь верзія 2 той ліценції або (подля вашого уважіня) будьяка пізнїша верзія.
 
 MediaWiki є дістрібуована в надїї, же буде хосновна, але БЕЗ БУДЬЯКОЙ ЗАРУКЫ; не давають ся ани зарукы ПРОДАЙНОСТИ або ВАЛУШНОСТИ ПРО СТАНОВЛЕНЫЙ ЦІЛЬ. Детайлы ся дочітате в текстї  GNU General Public License.
 
-[{{SERVER}}{{SCRIPTPATH}}/COPYING Kopii GNU General Public License] сьте мали обтримати вєдно з тым проґрамом, кідь нїт, напиште на  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA або [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html сі єй прочітайте онлайн].',
+[{{SERVER}}{{SCRIPTPATH}}/COPYING Kopii GNU General Public License] сьте мали обтримати вєдно з тым проґрамом, кідь нїт, напиште на  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA або [//www.gnu.org/licenses/old-licenses/gpl-2.0.html сі єй прочітайте онлайн].',
 'version-software'              => 'Іншталованый софтвер',
 'version-software-product'      => 'Продукт',
 'version-software-version'      => 'Верзія',

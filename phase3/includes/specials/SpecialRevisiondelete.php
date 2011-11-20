@@ -111,14 +111,11 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 	}
 
 	public function execute( $par ) {
+		$this->checkPermissions();
+		$this->checkReadOnly();
+
 		$output = $this->getOutput();
 		$user = $this->getUser();
-
-		if( !$user->isAllowed( 'deletedhistory' ) ) {
-			throw new PermissionsError( 'deletedhistory' );
-		} elseif( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
 
 		$this->mIsAllowed = $user->isAllowed('deleterevision'); // for changes
 		$this->setHeaders();
@@ -228,7 +225,7 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 				array(),
 				array( 'page' => $this->targetObj->getPrefixedText() )
 			);
-			if ( $this->targetObj->getNamespace() != NS_SPECIAL ) {
+			if ( !$this->targetObj->isSpecialPage() ) {
 				# Give a link to the page history
 				$links[] = Linker::linkKnown(
 					$this->targetObj,
@@ -248,7 +245,7 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 				}
 			}
 			# Logs themselves don't have histories or archived revisions
-			$this->getOutput()->setSubtitle( '<p>' . $this->getLang()->pipeList( $links ) . '</p>' );
+			$this->getOutput()->addSubtitle( $this->getLang()->pipeList( $links ) );
 		}
 	}
 
@@ -297,7 +294,7 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 					'action' => $this->getTitle()->getLocalUrl(
 						'target=' . urlencode( $oimage->getName() ) .
 						'&file=' . urlencode( $archiveName ) .
-						'&token=' . urlencode( $this->getUser()->editToken( $archiveName ) ) )
+						'&token=' . urlencode( $this->getUser()->getEditToken( $archiveName ) ) )
 					)
 				) .
 				Xml::submitButton( wfMsg( 'revdelete-show-file-submit' ) ) .
@@ -407,7 +404,7 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 					'</td>' .
 				"</tr>\n" .
 				Xml::closeElement( 'table' ) .
-				Html::hidden( 'wpEditToken', $this->getUser()->editToken() ) .
+				Html::hidden( 'wpEditToken', $this->getUser()->getEditToken() ) .
 				Html::hidden( 'target', $this->targetObj->getPrefixedText() ) .
 				Html::hidden( 'type', $this->typeName ) .
 				Html::hidden( 'ids', implode( ',', $this->ids ) ) .
@@ -538,7 +535,7 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 	 * Report that the submit operation succeeded
 	 */
 	protected function success() {
-		$this->getOutput()->setPagetitle( wfMsg( 'actioncomplete' ) );
+		$this->getOutput()->setPageTitle( $this->msg( 'actioncomplete' ) );
 		$this->getOutput()->wrapWikiMsg( "<span class=\"success\">\n$1\n</span>", $this->typeInfo['success'] );
 		$this->list->reloadFromMaster();
 		$this->showForm();
@@ -548,7 +545,7 @@ class SpecialRevisionDelete extends UnlistedSpecialPage {
 	 * Report that the submit operation failed
 	 */
 	protected function failure( $status ) {
-		$this->getOutput()->setPagetitle( wfMsg( 'actionfailed' ) );
+		$this->getOutput()->setPageTitle( $this->msg( 'actionfailed' ) );
 		$this->getOutput()->addWikiText( $status->getWikiText( $this->typeInfo['failure'] ) );
 		$this->showForm();
 	}

@@ -787,15 +787,19 @@ class DatabaseMysql extends DatabaseBase {
 	 * @return bool|ResultWrapper
 	 */
 	public function dropTable( $tableName, $fName = 'DatabaseMysql::dropTable' ) {
-		if( !$this->tableExists( $tableName ) ) {
+		if( !$this->tableExists( $tableName, $fName ) ) {
 			return false;
 		}
 		return $this->query( "DROP TABLE IF EXISTS " . $this->tableName( $tableName ), $fName );
 	}
 
+	/**
+	 * @return array
+	 */
 	protected function getDefaultSchemaVars() {
 		$vars = parent::getDefaultSchemaVars();
-		$vars['wgDBTableOptions'] = $GLOBALS['wgDBTableOptions'];
+		$vars['wgDBTableOptions'] = str_replace( 'TYPE', 'ENGINE', $GLOBALS['wgDBTableOptions'] );
+		$vars['wgDBTableOptions'] = str_replace( 'CHARSET=mysql4', 'CHARSET=binary', $GLOBALS['wgDBTableOptions'] );
 		return $vars;
 	}
 

@@ -379,6 +379,7 @@ $messages = array(
 لطفاً د دې مخ د کتلو د بيا هڅې نه دمخه يو څو شېبې صبر وکړۍ.
 
 $1',
+'pool-queuefull'    => 'د بهير صف ډک دی',
 'pool-errorunknown' => 'ناجوته ستونزه',
 
 # All link text and link target definitions of links into project namespace that get used by other message strings, with the exception of user group pages (see grouppage) and the disambiguation template definition (see disambiguations).
@@ -494,14 +495,13 @@ $1',
 'badtitletext'         => 'ستاسې د غوښتل شوي مخ سرليک سم نه وو، يا مو د سرليک ځای تش وو او يا هم د ژبو خپلمنځي تړنې څخه يا د ويکي ګانو خپلمنځي سرليکونو څخه يو ناسم توری مو پکې کارولی وي.
 کېدای شي چې ستاسې په ورکړ شوي سرليک کې يو يا څو داسې توري وي چې د سرليک په توګه بايد و نه کارېږي.',
 'viewsource'           => 'سرچينه کتل',
-'viewsourcefor'        => 'د $1 لپاره',
 'actionthrottled'      => 'د دې کړنې مخنيوی وشو',
 'protectedpagetext'    => 'دا مخ د بدلون او سمون د مخنيوي په تکل تړل شوی دی.',
 'viewsourcetext'       => 'تاسې د دې مخ سرچينه کتلی او لمېسلی شی:',
 'protectedinterface'   => 'په همدې مخ کې د پوستکالي د ليدنمخ متن دی او دا متن د ناسمو کارولو د مخنيوي په تکل تړل شوی.',
 'editinginterface'     => "'''ګواښنه:''' تاسو په يوه داسې مخ کې بدلون راولی کوم چې د يوې پوستکالی د ليدنمخ متن په توګه کارېږي.
 په همدې مخ کې بدلون راوستل به د نورو کارنانو د ليدنمخ بڼه اغېزمنه کړي.
-د ژباړې لپاره، مهرباني وکړی د [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]، وېبځي ته ولاړ شی. دا وېبځی د ميډياويکي د ځايتابه پروژه ده او د همدې پر کارولو غور وکړی.",
+د ژباړې لپاره، مهرباني وکړی د [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]، وېبځي ته ولاړ شی. دا وېبځی د ميډياويکي د ځايتابه پروژه ده او د همدې پر کارولو غور وکړی.",
 'sqlhidden'            => '(د SQL پوښتن پټ دی)',
 'namespaceprotected'   => "تاسې د '''$1''' په نوم-تشيال کې د مخونو د سمولو اجازه نه لرۍ.",
 'ns-specialprotected'  => 'ځانګړي مخونو کې سمون او بدلون نه شی راوستلای.',
@@ -700,8 +700,6 @@ $1',
 ستاسې IP پته $3 ده او ستاسې د بنديز پېژند #$5 دی.
 د بنديز اړونده د اړيکو نيولو په وخت کې لطفاً د پورتني مالوماتو يادونه وکړۍ.',
 'blockednoreason'                  => 'هېڅ سبب نه دی ورکړ شوی',
-'blockedoriginalsource'            => "د '''$1''' سرچينې لاندې ښودل شوي:",
-'whitelistedittitle'               => 'که د سمادولو تکل لری نو بايد غونډال ته ورننوځۍ.',
 'whitelistedittext'                => 'ددې لپاره چې سمادول ترسره کړی تاسو بايد $1.',
 'nosuchsectiontitle'               => 'برخه و نه موندل شوه',
 'nosuchsectiontext'                => 'تاسې د يوې داسې برخې د سمون هڅه کړې چې تر اوسه پورې نشته.
@@ -836,6 +834,7 @@ $1',
 'revdelete-no-file'          => 'ځانګړې شوې دوتنه نشته.',
 'revdelete-show-file-submit' => 'هو',
 'revdelete-selected'         => "'''د [[:$1]] {{PLURAL:$2|ټاکلې بڼه|ټاکلې بڼې}}:'''",
+'revdelete-legend'           => 'د ښکارېدنې محدوديتونه ټاکل',
 'revdelete-hide-text'        => 'د مخکتنې متن پټول',
 'revdelete-hide-image'       => 'د دوتنې مېنځپانګه پټول',
 'revdelete-hide-name'        => 'کړنه او موخه پټول',
@@ -943,6 +942,7 @@ $1',
 'search-external'                  => 'باندنۍ پلټنه',
 
 # Quickbar
+'qbsettings'               => 'چټک پټه',
 'qbsettings-none'          => 'هېڅ',
 'qbsettings-fixedleft'     => 'ثابته کيڼ',
 'qbsettings-fixedright'    => 'ثابته ښي',
@@ -961,6 +961,7 @@ $1',
 'datedefault'                   => 'هېڅ نه ټاکل',
 'prefs-beta'                    => 'د آزمېښتي بڼې ځانګړنې',
 'prefs-datetime'                => 'نېټه او وخت',
+'prefs-labs'                    => 'د آزمېنتون ځانګړنې',
 'prefs-personal'                => 'د کارن پېژنليک',
 'prefs-rc'                      => 'وروستي بدلونونه',
 'prefs-watchlist'               => 'کتنلړ',
@@ -1077,7 +1078,7 @@ $1',
 'group-bot-member'        => '{{doc-group|روباټ|غړی}}',
 'group-sysop-member'      => '{{doc-group|پازوال|غړی}}',
 'group-bureaucrat-member' => '{{doc-group|بيوروکراټ|غړی}}',
-'group-suppress-member'   => 'څارن',
+'group-suppress-member'   => '{{GENDER:$1|څارن}}',
 
 'grouppage-user'       => '{{ns:project}}:کارنان',
 'grouppage-bot'        => '{{ns:project}}:روباټان',
@@ -1096,6 +1097,7 @@ $1',
 'right-move-subpages'        => 'مخونه د خپلو څېرمه مخونو سره لېږدول',
 'right-movefile'             => 'دوتنې لېږدول',
 'right-upload'               => 'دوتنې پورته کول',
+'right-writeapi'             => 'د API کښنې کارېدنه',
 'right-delete'               => 'مخونه ړنګول',
 'right-bigdelete'            => 'د اوږدو پېښليکونو مخونه ړنګول',
 'right-browsearchive'        => 'ړنګ شوي مخونه پلټل',
@@ -1291,7 +1293,7 @@ $1',
 'filehist-filesize'         => 'د دوتنې کچه',
 'filehist-comment'          => 'تبصره',
 'filehist-missing'          => 'دوتنه ورکه ده',
-'imagelinks'                => 'د دوتنې تړنې',
+'imagelinks'                => 'د دوتنې کارېدنه',
 'linkstoimage'              => 'دا {{PLURAL:$1|لاندينی مخ|$1 لانديني مخونه}} د همدې دوتنې سره تړنې لري:',
 'nolinkstoimage'            => 'داسې هېڅ کوم مخ نه شته چې د دغې دوتنې سره تړنې ولري.',
 'duplicatesoffile'          => 'دا لاندينۍ {{PLURAL:$1| دوتنه د همدې دوتنې غبرګونې لمېسه ده|$1 دوتنې د همدې دوتنې غبرګونې لمېسې دي}} ([[Special:FileDuplicateSearch/$2|نور تفصيل]]):',
@@ -1412,7 +1414,7 @@ $1',
 'listusers-editsonly'     => 'يوازې هغه کارنان چې سمونونه يې کړي ښکاره کول',
 'listusers-creationsort'  => 'د جوړېدو د نېټې له مخې اوډل',
 'usereditcount'           => '{{PLURAL:$1|سمون|سمونونه}}',
-'usercreated'             => 'په $1 نېټه په $2 بجو جوړ شو',
+'usercreated'             => 'په $1 نېټه په $2 بجو {{GENDER:$3|جوړ شو}}',
 'newpages'                => 'نوي مخونه',
 'newpages-username'       => 'کارن-نوم:',
 'ancientpages'            => 'تر ټولو زاړه مخونه',
@@ -1468,7 +1470,7 @@ $1',
 'sp-deletedcontributions-contribs' => 'ونډې',
 
 # Special:LinkSearch
-'linksearch'      => 'باندنۍ تړنې',
+'linksearch'      => 'د باندنيو تړنو پلټنه',
 'linksearch-pat'  => 'د پلټنې مخبېلګه:',
 'linksearch-ns'   => 'نوم-تشيال:',
 'linksearch-ok'   => 'پلټل',
@@ -1658,6 +1660,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'protect-level-sysop'         => 'يواځې پازوالان',
 'protect-summary-cascade'     => 'ځوړاوبيز',
 'protect-expiring'            => 'په $1 (UTC) پای ته رسېږي',
+'protect-expiring-local'      => 'پای نېټه $1',
 'protect-expiry-indefinite'   => 'لامحدوده',
 'protect-cascade'             => 'په همدې مخ کې د ټولو ګډو مخونو نه ژغورنه کېږي (ځوړاوبيزه ژغورنه)',
 'protect-cantedit'            => 'تاسې نه شی کولای چې د دې مخ د ژغورنې په کچه کې بدلون راولی، دا ځکه چې تاسې د دې مخ د سمولو اجازه نه لری.',
@@ -1754,7 +1757,6 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'blockip'                    => 'په کارن بنديز لګول',
 'blockip-title'              => 'په کارن بنديز لګول',
 'blockip-legend'             => 'په کارن بنديز لګول',
-'ipaddress'                  => 'IP پته',
 'ipadressorusername'         => 'IP پته يا کارن نوم',
 'ipbexpiry'                  => 'د پای نېټه:',
 'ipbreason'                  => 'سبب:',
@@ -1789,6 +1791,9 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'blocklist'                  => 'بنديز لګېدلي کارنان',
 'ipblocklist'                => 'بنديز لګېدلي کارنان',
 'ipblocklist-legend'         => 'يو بنديز شوی کارن موندل',
+'blocklist-timestamp'        => 'وخت ټاپه',
+'blocklist-target'           => 'موخه',
+'blocklist-expiry'           => 'پای نېټه',
 'blocklist-by'               => 'بنديز لګونکی پازوال',
 'blocklist-reason'           => 'سبب',
 'ipblocklist-submit'         => 'پلټل',
@@ -1881,6 +1886,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 
 # Export
 'export'            => 'مخونه صادرول',
+'export-submit'     => 'صادرول',
 'export-addcattext' => 'مخونو د ورګډولو وېشنيزه:',
 'export-addcat'     => 'ورګډول',
 'export-addnstext'  => 'د نوم-تشيال نه مخونه ورګډول:',
@@ -1893,7 +1899,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'allmessagesdefault'            => 'ټاکل شوی متن',
 'allmessagescurrent'            => 'اوسنی متن',
 'allmessagestext'               => 'دا د مېډياويکي په نوم-تشيال کې د غونډال د پيغامونو لړليک دی.
-که چېرته تاسو د ميډياويکي په ځايتابه کې ونډې ترسره کول غواړۍ نو لطفاً [http://www.mediawiki.org/wiki/Localisation د ويډياويکي ځايتابه] او [http://translatewiki.net translatewiki.net] نه ليدنه وکړۍ.',
+که چېرته تاسو د ميډياويکي په ځايتابه کې ونډې ترسره کول غواړۍ نو لطفاً [//www.mediawiki.org/wiki/Localisation د ويډياويکي ځايتابه] او [//translatewiki.net translatewiki.net] نه ليدنه وکړۍ.',
 'allmessagesnotsupportedDB'     => "'''Special:Allmessages''' ترېنه کار نه اخيستل کېږي ځکه چې '''\$wgUseDatabaseMessages''' مړ دی.",
 'allmessages-filter-legend'     => 'چاڼګر',
 'allmessages-filter-unmodified' => 'نابدلېدلي',
@@ -1989,6 +1995,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'others'           => 'نور',
 'siteusers'        => 'د {{SITENAME}} {{PLURAL:$2|کارن|کارنان}} $1',
 'anonusers'        => 'د {{SITENAME}} {{PLURAL:$2|ورکنومی کارن|ورکنومي کارنان}} $1',
+'creditspage'      => 'د دې مخ کرېډټونه',
 
 # Info page
 'pageinfo-title'            => 'د "$1" مالومات',
@@ -2022,12 +2029,14 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'nextdiff'     => 'بل توپير →',
 
 # Media information
-'thumbsize'       => 'د بټنوک کچه:',
-'widthheightpage' => '$1×$2, $3 {{PLURAL:$3|مخ|مخونه}}',
-'file-info-size'  => '$1 × $2 پېکسل, د دوتنې کچه: $3, MIME بڼه: $4',
-'file-nohires'    => 'تر دې کچې لوړې بېلن نښې نشته.',
-'svg-long-desc'   => 'SVG دوتنه، نومېنلي $1 × $2 پېکسل، د دوتنې کچه: $3',
-'show-big-image'  => 'بشپړ بېلن نښې',
+'thumbsize'            => 'د بټنوک کچه:',
+'widthheightpage'      => '$1×$2, $3 {{PLURAL:$3|مخ|مخونه}}',
+'file-info-size'       => '$1 × $2 پېکسل, د دوتنې کچه: $3, MIME بڼه: $4',
+'file-nohires'         => 'تر دې کچې لوړې بېلن نښې نشته.',
+'svg-long-desc'        => 'SVG دوتنه، نومېنلي $1 × $2 پېکسل، د دوتنې کچه: $3',
+'show-big-image'       => 'بشپړ بېلن نښې',
+'file-info-gif-frames' => '$1 {{PLURAL:$1|چوکاټ|چوکاټونه}}',
+'file-info-png-frames' => '$1 {{PLURAL:$1|چوکاټ|چوکاټونه}}',
 
 # Special:NewFiles
 'newimages'             => 'د نوو دوتنو انځورتون',
@@ -2042,7 +2051,12 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'sp-newimages-showfrom' => 'هغه نوې دوتنې چې په $1 په $2 بجو پيلېږي ښکاره کول',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
-'hours-abbrev' => '$1ساعتونه',
+'hours-abbrev' => '$1ګ',
+'seconds'      => '{{PLURAL:$1|$1 ثانيه|$1 ثانيې}}',
+'minutes'      => '{{PLURAL:$1|$1 دقيقه|$1 دقيقې}}',
+'hours'        => '{{PLURAL:$1|$1 ساعت|$1 ساعتونه}}',
+'days'         => '{{PLURAL:$1|$1 ورځ|$1 ورځې}}',
+'ago'          => '$1 دمخه',
 
 # Bad image list
 'bad_image_list' => 'بڼه يې په لاندې توګه ده:
@@ -2082,7 +2096,9 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'exif-model'              => 'د کامرې ماډل',
 'exif-software'           => 'کارېدلې ساوترۍ',
 'exif-artist'             => 'ليکوال',
+'exif-colorspace'         => 'رنګ تشيال',
 'exif-pixelydimension'    => 'د انځور سور',
+'exif-pixelxdimension'    => 'د انځور جګوالی',
 'exif-usercomment'        => 'د کارونکي تبصرې',
 'exif-datetimedigitized'  => 'د ګڼياليز کېدنې وخت او نېټه',
 'exif-fnumber'            => 'F شمېره',
@@ -2090,6 +2106,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'exif-filesource'         => 'د دوتنې سرچينه',
 'exif-gpsaltituderef'     => 'د لوړوالي سرچينه',
 'exif-gpsaltitude'        => 'لوړوالی',
+'exif-gpsspeedref'        => 'د سرعت يوون',
 'exif-gpsimgdirection'    => 'د انځور لوری',
 'exif-gpsareainformation' => 'د جي پي اس د سيمې نوم',
 'exif-gpsdatestamp'       => 'د جي پي اس نېټه',
@@ -2098,11 +2115,14 @@ $UNWATCHURL  نه ليدنه وکړۍ
 'exif-countrydest'        => 'ښکاره شوی هېواد',
 'exif-citydest'           => 'ښکاره شوی ښار',
 'exif-objectname'         => 'لنډ سرليک',
+'exif-headline'           => 'سرليک',
 'exif-source'             => 'سرچينه',
 'exif-contact'            => 'د اړيکې مالومات',
 'exif-writer'             => 'ليکوال',
 'exif-languagecode'       => 'ژبه',
 'exif-iimcategory'        => 'وېشنيزه',
+'exif-identifier'         => 'پېژندنه',
+'exif-lens'               => 'کارېدلې لېنز',
 'exif-serialnumber'       => 'د کامرې پرله پسې شمېره',
 'exif-cameraownername'    => 'د کامرې خاوند',
 'exif-label'              => 'نښکه',
@@ -2206,7 +2226,7 @@ $UNWATCHURL  نه ليدنه وکړۍ
 
 # External editor support
 'edit-externally'      => 'د باندنيو پروګرامونو په کارولو سره دا دوتنه سمول',
-'edit-externally-help' => 'د نورو مالوماتو لپاره [http://www.mediawiki.org/wiki/Manual:External_editors د امستنو لارښوونې] وګورۍ.',
+'edit-externally-help' => 'د نورو مالوماتو لپاره [//www.mediawiki.org/wiki/Manual:External_editors د امستنو لارښوونې] وګورۍ.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ټول',
@@ -2324,13 +2344,13 @@ $5
 'version-other'             => 'بل',
 'version-version'           => '(بڼه $1)',
 'version-license'           => 'منښتليک',
-'version-poweredby-credits' => "دا ويکي د '''[http://www.mediawiki.org/ مېډياويکي]''' په سېک چلېږي، ټولې رښتې خوندي دي © 2001-$1 $2.",
+'version-poweredby-credits' => "دا ويکي د '''[//www.mediawiki.org/ مېډياويکي]''' په سېک چلېږي، ټولې رښتې خوندي دي © 2001-$1 $2.",
 'version-poweredby-others'  => 'نور',
 'version-license-info'      => 'مېډياويکي يو وړيا ساوتری دی؛ تاسې يې په ډاډه زړه د GNU د ټولګړو کارېدنو د منښتليک چې د وړيا ساوتريو د بنسټ له مخې خپور شوی، خپرولی او/يا بدلولی شی؛ د منښتليک ۲ بڼه او يا (ستاسې د خوښې) هر يوه وروستۍ بڼه.
 
 مېډياويکي د ښه کارېدنې په نيت خپور شوی، خو د ضمني سوداګريز او يا د کوم ځانګړي کار د ضمانت نه پرته. د نورو مالوماتو لپاره د GNU د ټولګړو کارېدنو منښتليک وګورۍ.
 
-تاسې بايد د دې پروګرام سره يو [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] ترلاسه کړی وي؛ که داسې نه وي، نو د وړيا ساوتريو بنسټ، Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA ته يو ليک وليکۍ، او يا يې [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html پرليکه ولولۍ].',
+تاسې بايد د دې پروګرام سره يو [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] ترلاسه کړی وي؛ که داسې نه وي، نو د وړيا ساوتريو بنسټ، Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA ته يو ليک وليکۍ، او يا يې [//www.gnu.org/licenses/old-licenses/gpl-2.0.html پرليکه ولولۍ].',
 'version-software'          => 'نصب شوی ساوتری',
 'version-software-product'  => 'اېبره',
 'version-software-version'  => 'بڼه',
@@ -2366,6 +2386,16 @@ $5
 # Special:BlankPage
 'blankpage'              => 'تش مخ',
 'intentionallyblankpage' => 'همدا مخ په لوی لاس تش پرېښودل شوی دی',
+
+# External image whitelist
+'external_image_whitelist' => ' #دا کرښه چې څنګه ده، همداسې پرېږدۍ<pre>
+#لاندې د منظمو اصطلاحګانو ټوټې (يوازې هغه برخه چې د // په مېنځ کې ليکلې) ځای پر ځای کړی
+#دا به د باندنيو انځورونو د يو آر اېل (hotlinked) سره مطابقه شي 
+#هغه څه چې مطابقت لري هغه به د انځورونو په توګه ښکاره شي، کوم چې مطابقت نلري نو يوازې د انځور تړنه به ښکاره کېږي
+#هغه کرښې چې په # پيل کېږي د تبصرو په توګه په نظر کې نيول کېږي
+#دا کرښې د غټو تورو او وړو تورو سره حساسې نه دي
+
+#ټولې regex ټوټې د دغې کرښې نه پورته ځای پر ځای کړی. دا کرښه چې څنګه ده، همداسې يې پرېږدۍ</pre>',
 
 # Special:Tags
 'tag-filter-submit'       => 'چاڼګر',

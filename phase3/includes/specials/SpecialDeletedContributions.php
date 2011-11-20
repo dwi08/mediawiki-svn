@@ -257,6 +257,7 @@ class DeletedContributionsPage extends SpecialPage {
 	 * @param	$par	String: (optional) user name of the user for which to show the contributions
 	 */
 	function execute( $par ) {
+		global $wgQueryPageDefaultLimit;
 		$this->setHeaders();
 
 		$user = $this->getUser();
@@ -268,7 +269,7 @@ class DeletedContributionsPage extends SpecialPage {
 
 		$request = $this->getRequest();
 		$out = $this->getOutput();
-		$out->setPageTitle( wfMsgExt( 'deletedcontributions-title', array( 'parsemag' ) ) );
+		$out->setPageTitle( $this->msg( 'deletedcontributions-title' ) );
 
 		$options = array();
 
@@ -283,7 +284,7 @@ class DeletedContributionsPage extends SpecialPage {
 			return;
 		}
 
-		$options['limit'] = $request->getInt( 'limit', 50 );
+		$options['limit'] = $request->getInt( 'limit', $wgQueryPageDefaultLimit );
 		$options['target'] = $target;
 
 		$nt = Title::makeTitleSafe( NS_USER, $target );
@@ -294,7 +295,7 @@ class DeletedContributionsPage extends SpecialPage {
 		$id = User::idFromName( $nt->getText() );
 
 		$target = $nt->getText();
-		$out->setSubtitle( $this->getSubTitle( $nt, $id ) );
+		$out->addSubtitle( $this->getSubTitle( $nt, $id ) );
 
 		if ( ( $ns = $request->getVal( 'namespace', null ) ) !== null && $ns !== '' ) {
 			$options['namespace'] = intval( $ns );
@@ -437,10 +438,11 @@ class DeletedContributionsPage extends SpecialPage {
 		// languages that want to put the "for" bit right after $user but before
 		// $links.  If 'contribsub' is around, use it for reverse compatibility,
 		// otherwise use 'contribsub2'.
-		if( wfEmptyMsg( 'contribsub' ) ) {
-			return wfMsgHtml( 'contribsub2', $user, $links );
+		$oldMsg = $this->msg( 'contribsub' );
+		if ( $oldMsg->exists() ) {
+			return $oldMsg->rawParams( "$user ($links)" );
 		} else {
-			return wfMsgHtml( 'contribsub', "$user ($links)" );
+			return $this->msg( 'contribsub2' )->rawParams( $user, $links );
 		}
 	}
 

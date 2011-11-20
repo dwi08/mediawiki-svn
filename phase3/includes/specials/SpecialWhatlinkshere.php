@@ -47,7 +47,7 @@ class SpecialWhatLinksHere extends SpecialPage {
 	}
 
 	function execute( $par ) {
-		global $wgWhatlinkshereLimit;
+		global $wgQueryPageDefaultLimit;
 		$out = $this->getOutput();
 
 		$this->setHeaders();
@@ -56,7 +56,7 @@ class SpecialWhatLinksHere extends SpecialPage {
 
 		$opts->add( 'target', '' );
 		$opts->add( 'namespace', '', FormOptions::INTNULL );
-		$opts->add( 'limit', $wgWhatlinkshereLimit );
+		$opts->add( 'limit', $wgQueryPageDefaultLimit );
 		$opts->add( 'from', 0 );
 		$opts->add( 'back', 0 );
 		$opts->add( 'hideredirs', false );
@@ -83,11 +83,10 @@ class SpecialWhatLinksHere extends SpecialPage {
 
 		$this->getSkin()->setRelevantTitle( $this->target );
 
-
 		$this->selfTitle = $this->getTitle( $this->target->getPrefixedDBkey() );
 
-		$out->setPageTitle( wfMsg( 'whatlinkshere-title', $this->target->getPrefixedText() ) );
-		$out->setSubtitle( wfMsg( 'whatlinkshere-backlink', Linker::link( $this->target, $this->target->getPrefixedText(), array(), array( 'redirect' => 'no'  ) ) ) );
+		$out->setPageTitle( $this->msg( 'whatlinkshere-title', $this->target->getPrefixedText() ) );
+		$out->addBacklinkSubtitle( $this->target );
 
 		$this->showIndirectLinks( 0, $this->target, $opts->getValue( 'limit' ),
 			$opts->getValue( 'from' ), $opts->getValue( 'back' ) );

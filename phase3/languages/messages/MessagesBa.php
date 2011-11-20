@@ -407,7 +407,6 @@ $1',
 Функция: $1<br />
 Һоратыу: $2',
 'viewsource'           => 'Сығанаҡты ҡарау',
-'viewsourcefor'        => '«$1» бите',
 'actionthrottled'      => 'Тиҙлек сикләнгән',
 'actionthrottledtext'  => 'Спам менән көрәшеү өсөн, был ғәмәлде ҡыҫҡа ваҡыт эсендә күп тапҡыр ҡабатлауға сикләү ҡуйылған. Зинһар, бер нисә минуттан яңынан ҡабатлап ҡарағыҙ.',
 'protectedpagetext'    => 'Был бит мөхәррирләү өсөн ябыҡ.',
@@ -415,7 +414,7 @@ $1',
 'protectedinterface'   => 'Был биттә программа арайөҙө белдереүҙәре бар. Вандализмға ҡаршы көрәш сәбәпле, был битте үҙгәртеү тыйыла.',
 'editinginterface'     => "'''Иғтибар.''' Һеҙ программаның арайөҙ тексты булған битте мөхәррирләйһегеҙ.
 Уны үҙгәртеү, башҡа ҡулланыусыларҙын арайөҙ күренешен үҙгәртәсәктер.
-Тәржемә өсөн [http://translatewiki.net/wiki/Main_Page?setlang=ba translatewiki.net] адресын, MediaWiki-ны локалләштереү проектын ҡулланыу яҡшыраҡ буласаҡтыр.",
+Тәржемә өсөн [//translatewiki.net/wiki/Main_Page?setlang=ba translatewiki.net] адресын, MediaWiki-ны локалләштереү проектын ҡулланыу яҡшыраҡ буласаҡтыр.",
 'sqlhidden'            => '(SQL-һорау йәшерелгән)',
 'cascadeprotected'     => 'Был бит үҙгәртеүҙәрҙән һаҡланған, сөнки ул эҙмә-эҙлекле һаҡлау ҡуйылған {{PLURAL:$1|биткә|биттәргә}} керә:
 $2',
@@ -617,9 +616,6 @@ $2',
 Һеҙҙең IP-адрес — $3, блоклау идентификаторы — #$5.
 Хаттарҙа был мәғлүмәттәрҙе күрһәтергә онотмағыҙ.",
 'blockednoreason'                  => 'сәбәп белдерелмәгән',
-'blockedoriginalsource'            => "Аҫта '''$1''' битенең тексты күрһәтелгән.",
-'blockededitsource'                => "Аҫта '''$1''' битенең '''һеҙ үҙгәрткән''' тексты күрһәтелгән.",
-'whitelistedittitle'               => 'Үҙгәртеү өсөн танылыу кәрәк',
 'whitelistedittext'                => 'Биттәрҙә үҙгәртеү өсөн $1 кәрәк.',
 'confirmedittext'                  => 'Биттәрҙе үҙгәртерҙән алда электрон почта адресығыҙҙы раҫларға тейешһегеҙ.
 Быны [[Special:Preferences|көйләүҙәр битендә]] эшләй алаһығыҙ.',
@@ -2164,7 +2160,6 @@ $1',
 'blockiptext'                     => 'Билдәләнгән IP адрестан яҙыу мөмкинлеген бикләү өсөн, түбәндәге форманы ҡулланығыҙ.
 Был бары тик вандаллыҡҡа юл ҡуймау өсөн генә һәм [[{{MediaWiki:Policy-url}}|ҡағиҙәләр]] буйынса ғына эшләнергә тейеш.
 Түбәндә бикләү сәбәбен күрһәтегеҙ (мәҫәлән, вандаллыҡ эҙҙәре булған бер нисә биттең цитатаһын килтерегеҙ).',
-'ipaddress'                       => 'IP-адрес:',
 'ipadressorusername'              => 'Ҡатнашыусының IP-адресы йәки исеме:',
 'ipbexpiry'                       => 'Тамамлана:',
 'ipbreason'                       => 'Сәбәп:',
@@ -2407,7 +2402,7 @@ $1 ҡатнашыусыһын бикләү сәбәбе: "$2"',
 'allmessagesdefault'            => 'Ғәҙәттәге яҙма',
 'allmessagescurrent'            => 'Хәҙерге яҙма',
 'allmessagestext'               => 'Түбәндә MediaWiki исемдәр арауығында ҡулланылған система хәбәрҙәре исемлеге килтерелгән.
-Әгәр MediaWiki программаһын дөйөм локалләштереү эшенә үҙ өлөшөгөҙҙө керетергә теләһәгеҙ, [http://www.mediawiki.org/wiki/Localisation MediaWiki программаһын локалләштереү] битен һәм [http://translatewiki.net translatewiki.net] проектын ҡарап сығығыҙ.',
+Әгәр MediaWiki программаһын дөйөм локалләштереү эшенә үҙ өлөшөгөҙҙө керетергә теләһәгеҙ, [//www.mediawiki.org/wiki/Localisation MediaWiki программаһын локалләштереү] битен һәм [//translatewiki.net translatewiki.net] проектын ҡарап сығығыҙ.',
 'allmessagesnotsupportedDB'     => "Был бит ҡулланыла алмай, сөнки '''\$wgUseDatabaseMessages''' мөмкинлеге һүндерелгән.",
 'allmessages-filter-legend'     => 'Һайлау',
 'allmessages-filter'            => 'Үҙгәртеү торошо буйынса һайлау:',
@@ -2934,7 +2929,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'Был файлды тышҡы программа ҡулланып мөхәррирләргә',
-'edit-externally-help' => '(Тулыраҡ мәғлүмәт өсөн металағы [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] (инглизсә) битен ҡарағыҙ)',
+'edit-externally-help' => '(Тулыраҡ мәғлүмәт өсөн металағы [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] (инглизсә) битен ҡарағыҙ)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'бөтә',
@@ -3117,13 +3112,13 @@ $1',
 'version-hook-subscribedby'     => 'Яҙҙырылған',
 'version-version'               => '($1 өлгөһө)',
 'version-license'               => 'Рөхсәтнамә',
-'version-poweredby-credits'     => "Был вики проект '''[http://www.mediawiki.org/ MediaWiki]''' нигеҙендә эшләй, copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Был вики проект '''[//www.mediawiki.org/ MediaWiki]''' нигеҙендә эшләй, copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'башҡалар',
 'version-license-info'          => 'MediaWiki — ирекле программа, һеҙ уны Ирекле программалар фонды тарафынан баҫтырылған GNU General Public License рөхсәтнамәһенә ярашлы тарата һәм/йәки үҙгәртә алаһығыҙ (рөхсәтнамәнең йә исенсе өлгөһө, йә унан һуңғы өлгөләре).
 
 MediaWiki файҙалы булыр, тигән өмөттә, ләкин БЕР НИДӘЙ ҘӘ ЯУАПЛЫЛЫҠ ЙӨКЛӘМӘҺЕҘ, хатта фараз ителгән ҺАТЫУ ӨСӨН ЯРАҠЛЫЛЫҠ йәки БИЛДӘЛӘНГӘН МАҠСАТ ӨСӨН ЯРАҠЛЫТЫҠ тураһында яуаплылыҡ йөкләмәһеҙ таратыла. Ентекле мәғлүмәт алыр өсөн, GNU General Public License рөхсәтнамәһе тураһында уҡығыҙ.
 
-Был программа менән ҡуша һеҙ [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public License рөхсәтнамәһенең күсермәһен] алырға тейеш инегеҙ, әгәр юҡ икән, Ирекле программалар фондына 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA адресы буйынса яҙығыҙ, йәки рөхсәтнамәнең [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html онлайн өлгөһөн] уҡығыҙ.',
+Был программа менән ҡуша һеҙ [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public License рөхсәтнамәһенең күсермәһен] алырға тейеш инегеҙ, әгәр юҡ икән, Ирекле программалар фондына 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA адресы буйынса яҙығыҙ, йәки рөхсәтнамәнең [//www.gnu.org/licenses/old-licenses/gpl-2.0.html онлайн өлгөһөн] уҡығыҙ.',
 'version-software'              => 'Ҡуйылған программалар',
 'version-software-product'      => 'Продукт',
 'version-software-version'      => 'Өлгөһө',

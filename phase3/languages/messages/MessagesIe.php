@@ -162,8 +162,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Monstrar li númere de usatores vigilant',
 'tog-oldsig'                  => 'Prevision de signature in existentie:',
 'tog-fancysig'                => 'Tractar signature quam textu wiki (sin un catenun auto-crate)',
-'tog-externaleditor'          => 'Usar redactor extern per contumacie (solmen por usatores expert, besona de colocationes special in tui computator. [http://www.mediawiki.org/wiki/Manual:External_editors Plu information.])',
-'tog-externaldiff'            => 'Usar diferentie extern per contumacie (solmen por usatores expert, besona de colocationes special in tui computator. [http://www.mediawiki.org/wiki/Manual:External_editors Plu information.])',
+'tog-externaleditor'          => 'Usar redactor extern per contumacie (solmen por usatores expert, besona de colocationes special in tui computator. [//www.mediawiki.org/wiki/Manual:External_editors Plu information.])',
+'tog-externaldiff'            => 'Usar diferentie extern per contumacie (solmen por usatores expert, besona de colocationes special in tui computator. [//www.mediawiki.org/wiki/Manual:External_editors Plu information.])',
 'tog-showjumplinks'           => 'Permisser catenunes de accessebilitá "saltar a"',
 'tog-uselivepreview'          => 'Usar prevision in vivi (exige JavaScript) (experimental)',
 'tog-forceeditsummary'        => 'Suggester me quande intrar un redaction che summarium in blanc',
@@ -412,7 +412,6 @@ It posse contene un o plu carácteres quel ne posse esser usat in titules.',
 Function: $1<br />
 Question: $2',
 'viewsource'           => 'Vider fonte',
-'viewsourcefor'        => 'por $1',
 'viewsourcetext'       => 'Vu posse vider e copiar li contenete de ti págine:',
 
 # Virus scanner
@@ -501,7 +500,6 @@ Por preventer misusa, solmen un parol-clave amemora va esser inviat per {{PLURAL
 'showdiff'                         => 'Monstrar changes',
 'anoneditwarning'                  => "'''Advertiment:''' Vu ne esser registrat.
 Tui adresse de IP va esser registrat in historico de redactiones de ti págine.",
-'whitelistedittitle'               => 'Exige que vu es identificat por redacter',
 'whitelistedittext'                => 'Vu have que $1 por redacter págines.',
 'loginreqtitle'                    => 'Apertion de session obligatori',
 'accmailtitle'                     => 'Li passa-parol es inviat.',
@@ -1258,7 +1256,7 @@ Altri va esser ocultat per contumacie.
 
 # External editor support
 'edit-externally'      => 'Redacter ti file usant un aplication extern',
-'edit-externally-help' => '(Vider li [http://www.mediawiki.org/wiki/Manual:External_editors instructiones de installation] por plu information)',
+'edit-externally-help' => '(Vider li [//www.mediawiki.org/wiki/Manual:External_editors instructiones de installation] por plu information)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'omni',

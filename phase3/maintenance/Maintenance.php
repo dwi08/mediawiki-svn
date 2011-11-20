@@ -309,10 +309,11 @@ abstract class Maintenance {
 		}
 		if ( $channel === null ) {
 			$this->cleanupChanneled();
-
-			$f = fopen( 'php://stdout', 'w' );
-			fwrite( $f, $out );
-			fclose( $f );
+			if( php_sapi_name() == 'cli' ) {
+				fwrite( STDOUT, $out );
+			} else {
+				print( $out );
+			}
 		}
 		else {
 			$out = preg_replace( '/\n\z/', '', $out );
@@ -331,9 +332,7 @@ abstract class Maintenance {
 		if ( php_sapi_name() == 'cli' ) {
 			fwrite( STDERR, $err . "\n" );
 		} else {
-			$f = fopen( 'php://stderr', 'w' );
-			fwrite( $f, $err . "\n" );
-			fclose( $f );
+			print $err;
 		}
 		$die = intval( $die );
 		if ( $die > 0 ) {
@@ -349,9 +348,11 @@ abstract class Maintenance {
 	 */
 	public function cleanupChanneled() {
 		if ( !$this->atLineStart ) {
-			$handle = fopen( 'php://stdout', 'w' );
-			fwrite( $handle, "\n" );
-			fclose( $handle );
+			if( php_sapi_name() == 'cli' ) {
+				fwrite( STDOUT, "\n" );
+			} else {
+				print "\n";
+			}
 			$this->atLineStart = true;
 		}
 	}
@@ -370,25 +371,34 @@ abstract class Maintenance {
 			return;
 		}
 
-		$handle = fopen( 'php://stdout', 'w' );
+		$cli = php_sapi_name() == 'cli';
 
 		// End the current line if necessary
 		if ( !$this->atLineStart && $channel !== $this->lastChannel ) {
-			fwrite( $handle, "\n" );
+			if( $cli ) {
+				fwrite( STDOUT, "\n" );
+			} else {
+				print "\n";
+			}
 		}
 
-		fwrite( $handle, $msg );
+		if( $cli ) {
+			fwrite( STDOUT, $msg );
+		} else {
+			print $msg;
+		}
 
 		$this->atLineStart = false;
 		if ( $channel === null ) {
 			// For unchanneled messages, output trailing newline immediately
-			fwrite( $handle, "\n" );
+			if( $cli ) {
+				fwrite( STDOUT, "\n" );
+			} else {
+				print "\n";
+			}
 			$this->atLineStart = true;
 		}
 		$this->lastChannel = $channel;
-
-		// Cleanup handle
-		fclose( $handle );
 	}
 
 	/**
@@ -456,6 +466,9 @@ abstract class Maintenance {
 			}
 		}
 
+		/**
+		 * @var $child Maintenance
+		 */
 		$child = new $maintClass();
 		$child->loadParamsAndArgs( $this->mSelf, $this->mOptions, $this->mArgs );
 		if ( !is_null( $this->mDb ) ) {
@@ -526,6 +539,7 @@ abstract class Maintenance {
 	 * to allow sysadmins to explicitly set one if they'd prefer to override
 	 * defaults (or for people using Suhosin which yells at you for trying
 	 * to disable the limits)
+	 * @return string
 	 */
 	public function memoryLimit() {
 		$limit = $this->getOption( 'memory-limit', 'max' );
@@ -852,6 +866,9 @@ abstract class Maintenance {
 			$wgDBpassword = $wgDBadminpassword;
 
 			if ( $wgDBservers ) {
+				/**
+				 * @var $wgDBservers array
+				 */
 				foreach ( $wgDBservers as $i => $server ) {
 					$wgDBservers[$i]['user'] = $wgDBuser;
 					$wgDBservers[$i]['password'] = $wgDBpassword;
@@ -980,6 +997,7 @@ abstract class Maintenance {
 
 	/**
 	 * Get the maintenance directory.
+	 * @return string
 	 */
 	protected function getDir() {
 		return dirname( __FILE__ );
@@ -1127,6 +1145,7 @@ abstract class Maintenance {
 	 * Update the searchindex table for a given pageid
 	 * @param $dbw Database: a database write handle
 	 * @param $pageId Integer: the page ID to update.
+	 * @return null|string
 	 */
 	public function updateSearchIndexForPage( $dbw, $pageId ) {
 		// Get current revision
@@ -1271,6 +1290,15 @@ abstract class LoggedUpdateMaintenance extends Maintenance {
 	}
 
 	/**
+	 * Message to show that the update was done already and was just skipped
+	 * @return String
+	 */
+	protected function updateSkippedMessage() {
+		$key = $this->getUpdateKey();
+		return "Update '{$key}' already logged as completed.";
+	}
+
+	/**
 	 * Message to show the the update log was unable to log the completion of this update
 	 * @return String
 	 */
@@ -1291,10 +1319,4 @@ abstract class LoggedUpdateMaintenance extends Maintenance {
 	 * @return String
 	 */
 	abstract protected function getUpdateKey();
-
-	/**
-	 * Message to show that the update was done already and was just skipped
-	 * @return String
-	 */
-	abstract protected function updateSkippedMessage();
 }

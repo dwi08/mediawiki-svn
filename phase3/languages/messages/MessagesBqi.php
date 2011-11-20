@@ -252,7 +252,6 @@ $1',
 'badtitletext'   => 'عنوان درخواستی نامعتبر، خالی، یا عنوانی بین زبانی یا بین‌ویکی‌ای با پیوند نادرسته
 و ممکنه دارای یک یا چند کاراکتر بوه که در عنوان مربوط نوا زش استفاده کنین',
 'viewsource'     => 'مشاهده منبع',
-'viewsourcefor'  => 'سی $1',
 'viewsourcetext' => 'ایسا ترین بوینین وکپی کنین منبع ای صفحه را:',
 
 # Login and logout pages
@@ -803,7 +802,7 @@ $2',
 
 # External editor support
 'edit-externally'      => 'اصلاح ای صفحه با استفاده زه یه ویرایشگر خارجی',
-'edit-externally-help' => ' سی اطلاعات بیشتر [http://www.mediawiki.org/wiki/Manual:External_editors راهنمایی‌های تنظیمات] اصلاح کننده خارجی را بوینین.',
+'edit-externally-help' => ' سی اطلاعات بیشتر [//www.mediawiki.org/wiki/Manual:External_editors راهنمایی‌های تنظیمات] اصلاح کننده خارجی را بوینین.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'همه',

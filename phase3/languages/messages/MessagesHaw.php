@@ -317,7 +317,6 @@ $messages = array(
 'filenotfound'        => '‘A‘ole hiki ke loa‘a waihona "$1".',
 'badtitle'            => 'Inoa ‘ino',
 'viewsource'          => 'E nānā i ka molekumu',
-'viewsourcefor'       => 'no $1',
 'cascadeprotected'    => 'Ho‘omalu ‘ia kēia ‘ao‘ao mai e ho‘opololei ana, no ka mea, hoʻokomo pū ‘ia ‘oia ma aia {{PLURAL:$1|‘ao‘ao|nā ‘ao‘ao}} i lalo, ho‘omalu ‘ia me ka "e wailele ana" koho:
 $2',
 'ns-specialprotected' => '‘A‘ole hiki ke ho‘opololei i nā ‘ao‘ao kūikawā',
@@ -394,9 +393,6 @@ E ʻoluʻolu, e kūlia hou.',
 E hoʻopaʻa ʻia ana kou IP ma ko kēia ʻaoʻao mōʻaukala.",
 'blockedtitle'                     => 'Ua ke‘a ‘ia ka mea ho‘ohana',
 'blockednoreason'                  => '‘a‘ohe kumu',
-'blockedoriginalsource'            => "Aia ke kumu o '''$1'''
-hō‘ike ‘ia i lalo:",
-'blockededitsource'                => "Aia ka mo‘olelo o '''kou mau ho‘opololei''' i '''$1''' hō‘ike ‘ia i lalo:",
 'loginreqlink'                     => 'ʻeʻe',
 'accmailtitle'                     => 'Ua ho‘ouna ‘ia ka hua‘ōlelo huna',
 'newarticle'                       => '(Hou)',
@@ -828,7 +824,7 @@ Hiki iā ʻoe ke ʻikena i kāna molekumu.',
 'ilsubmit' => 'Huli',
 
 # External editor support
-'edit-externally-help' => '(E ʻike i nā [http://www.mediawiki.org/wiki/Manual:External_editors aʻo palapala no ka hoʻokuene ʻana])',
+'edit-externally-help' => '(E ʻike i nā [//www.mediawiki.org/wiki/Manual:External_editors aʻo palapala no ka hoʻokuene ʻana])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'apau',

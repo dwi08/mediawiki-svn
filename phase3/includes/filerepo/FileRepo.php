@@ -71,14 +71,12 @@ abstract class FileRepo {
 	 *              current file. Repositories not supporting version control
 	 *              should return false if this parameter is set.
 	 *
-	 * @return File
+	 * @return File|null A File, or null if passed an invalid Title
 	 */
 	function newFile( $title, $time = false ) {
-		if ( !($title instanceof Title) ) {
-			$title = Title::makeTitleSafe( NS_FILE, $title );
-			if ( !is_object( $title ) ) {
-				return null;
-			}
+		$title = File::normalizeTitle( $title );
+		if ( !$title ) {
+			return null;
 		}
 		if ( $time ) {
 			if ( $this->oldFileFactory ) {
@@ -111,13 +109,11 @@ abstract class FileRepo {
 	 * @return File|false
 	 */
 	function findFile( $title, $options = array() ) {
-		$time = isset( $options['time'] ) ? $options['time'] : false;
-		if ( !($title instanceof Title) ) {
-			$title = Title::makeTitleSafe( NS_FILE, $title );
-			if ( !is_object( $title ) ) {
-				return false;
-			}
+		$title = File::normalizeTitle( $title );
+		if ( !$title ) {
+			return false;
 		}
+		$time = isset( $options['time'] ) ? $options['time'] : false;
 		# First try the current version of the file to see if it precedes the timestamp
 		$img = $this->newFile( $title );
 		if ( !$img ) {
@@ -130,9 +126,9 @@ abstract class FileRepo {
 		if ( $time !== false ) {
 			$img = $this->newFile( $title, $time );
 			if ( $img && $img->exists() ) {
-				if ( !$img->isDeleted(File::DELETED_FILE) ) {
-					return $img;
-				} elseif ( !empty( $options['private'] )  && $img->userCan(File::DELETED_FILE) ) {
+				if ( !$img->isDeleted( File::DELETED_FILE ) ) {
+					return $img; // always OK
+				} elseif ( !empty( $options['private'] ) && $img->userCan( File::DELETED_FILE ) ) {
 					return $img;
 				}
 			}
@@ -187,30 +183,6 @@ abstract class FileRepo {
 	}
 
 	/**
-	 * Create a new File object from the local repository
-	 * @param $sha1 Mixed: base 36 SHA-1 hash
-	 * @param $time Mixed: time at which the image was uploaded.
-	 *              If this is specified, the returned object will be an
-	 *              of the repository's old file class instead of a current
-	 *              file. Repositories not supporting version control should
-	 *              return false if this parameter is set.
-	 *
-	 * @return File
-	 */
-	function newFileFromKey( $sha1, $time = false ) {
-		if ( $time ) {
-			if ( $this->oldFileFactoryKey ) {
-				return call_user_func( $this->oldFileFactoryKey, $sha1, $this, $time );
-			}
-		} else {
-			if ( $this->fileFactoryKey ) {
-				return call_user_func( $this->fileFactoryKey, $sha1, $this );
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Find an instance of the file with this key, created at the specified time
 	 * Returns false if the file does not exist. Repositories not supporting
 	 * version control should return false if the time is specified.
@@ -221,21 +193,22 @@ abstract class FileRepo {
 	function findFileFromKey( $sha1, $options = array() ) {
 		$time = isset( $options['time'] ) ? $options['time'] : false;
 
-		# First try the current version of the file to see if it precedes the timestamp
-		$img = $this->newFileFromKey( $sha1 );
-		if ( !$img ) {
-			return false;
+		# First try to find a matching current version of a file...
+		if ( $this->fileFactoryKey ) {
+			$img = call_user_func( $this->fileFactoryKey, $sha1, $this, $time );
+		} else {
+			return false; // find-by-sha1 not supported
 		}
-		if ( $img->exists() && ( !$time || $img->getTimestamp() == $time ) ) {
+		if ( $img && $img->exists() ) {
 			return $img;
 		}
-		# Now try an old version of the file
-		if ( $time !== false ) {
-			$img = $this->newFileFromKey( $sha1, $time );
+		# Now try to find a matching old version of a file...
+		if ( $time !== false && $this->oldFileFactoryKey ) { // find-by-sha1 supported?
+			$img = call_user_func( $this->oldFileFactoryKey, $sha1, $this, $time );
 			if ( $img && $img->exists() ) {
-				if ( !$img->isDeleted(File::DELETED_FILE) ) {
-					return $img;
-				} elseif ( !empty( $options['private'] ) && $img->userCan(File::DELETED_FILE) ) {
+				if ( !$img->isDeleted( File::DELETED_FILE ) ) {
+					return $img; // always OK
+				} elseif ( !empty( $options['private'] ) && $img->userCan( File::DELETED_FILE ) ) {
 					return $img;
 				}
 			}
@@ -272,7 +245,7 @@ abstract class FileRepo {
 	 * Get the name of an image from its title object
 	 * @param $title Title
 	 */
-	function getNameFromTitle( $title ) {
+	function getNameFromTitle( Title $title ) {
 		if ( $this->initialCapital != MWNamespace::isCapitalized( NS_FILE ) ) {
 			global $wgContLang;
 			$name = $title->getUserCaseDBKey();
@@ -484,7 +457,7 @@ abstract class FileRepo {
 	 *
 	 * @param $srcPath String: the source path or URL
 	 * @param $dstRel String: the destination relative path
-	 * @param $archiveRel String: rhe relative path where the existing file is to
+	 * @param $archiveRel String: the relative path where the existing file is to
 	 *        be archived, if there is one. Relative to the public zone root.
 	 * @param $flags Integer: bitfield, may be FileRepo::DELETE_SOURCE to indicate
 	 *        that the source file should be deleted if possible
@@ -667,7 +640,7 @@ abstract class FileRepo {
 	 * @param $title Title of image
 	 * @return Bool
 	 */
-	function checkRedirect( $title ) {
+	function checkRedirect( Title $title ) {
 		return false;
 	}
 
@@ -678,7 +651,7 @@ abstract class FileRepo {
 	 * STUB
 	 * @param $title Title of image
 	 */
-	function invalidateImageRedirect( $title ) {}
+	function invalidateImageRedirect( Title $title ) {}
 
 	/**
 	 * Get an array or iterator of file objects for files that have a given

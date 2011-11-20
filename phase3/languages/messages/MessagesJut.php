@@ -303,7 +303,6 @@ MySQL æ returnerede fejl "$3: $4".',
 Funksje: $1<br />
 Førespørgsel: $2',
 'viewsource'           => 'Ves æ kelde',
-'viewsourcefor'        => 'før $1',
 'viewsourcetext'       => "Du ken dog se og åfskreve'n keldekode til æ side:",
 
 # Login and logout pages
@@ -839,7 +838,7 @@ Kun endholtet åf æ liste (lenjer startende ve *) bliver brugt. Den første hen
 
 # External editor support
 'edit-externally'      => "Redigær denne gøret ve'n utsende redigærstøme",
-'edit-externally-help' => 'Se [http://www.mediawiki.org/wiki/Manual:External_editors setup hjælpje] før mære informasje.',
+'edit-externally-help' => 'Se [//www.mediawiki.org/wiki/Manual:External_editors setup hjælpje] før mære informasje.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'åle',

@@ -185,7 +185,6 @@ $messages = array(
 Ɖewomahĩ ame aɖe tutui xoxo.',
 'badtitle'        => 'Tanya gbegblẽ',
 'viewsource'      => 'Kpɔ alesi wowɔe',
-'viewsourcefor'   => '$1 tɔwo',
 
 # Login and logout pages
 'remembermypassword'         => 'Ɖo ŋku nyeƒe dzesi ŋkɔ dzi le mɔ sia dzi (vaseɖe {{PLURAL:$1|ŋkeke|ŋkeke}} $1 megbe)',
@@ -564,7 +563,7 @@ Wòateŋu akpɔ alesi woŋlɔe.',
 'ilsubmit'  => 'Dii',
 
 # External editor support
-'edit-externally-help' => '(Kpɔ [http://www.mediawiki.org/wiki/Manual:External_editors gɔmedzedze sewo] na kpekpeɖeŋu bubuwo.)',
+'edit-externally-help' => '(Kpɔ [//www.mediawiki.org/wiki/Manual:External_editors gɔmedzedze sewo] na kpekpeɖeŋu bubuwo.)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'katã',

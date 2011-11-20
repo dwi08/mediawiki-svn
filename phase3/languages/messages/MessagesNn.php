@@ -9,6 +9,7 @@
  *
  * @author Boivie
  * @author Dittaeva
+ * @author Diupwijk
  * @author Eirik
  * @author Finnrind
  * @author Frokor
@@ -18,6 +19,7 @@
  * @author Harald Khan
  * @author Jon Harald Søby
  * @author Jorunn
+ * @author Marinsb
  * @author Najami
  * @author Nghtwlkr
  * @author Olve Utne
@@ -313,8 +315,9 @@ $messages = array(
 'tog-shownumberswatching'     => 'Vis kor mange som overvakar sida',
 'tog-oldsig'                  => 'Noverande signatur:',
 'tog-fancysig'                => 'Handsam signaturar som wikitekst (utan automatisk lenking)',
-'tog-externaleditor'          => 'Eksternt handsamingsprogram som standard',
-'tog-externaldiff'            => 'Eksternt skilnadprogram som standard',
+'tog-externaleditor'          => 'Bruk eit eksternt handsamingsprogram som standard (berre for vidarekomne, krev eit spesielt oppsett på maskina di. [//www.mediawiki.org/wiki/Manual:External_editors Meir informasjon.])',
+'tog-externaldiff'            => 'Bruk eit eksternt skilnadprogram som standard (berre for vidarekomne, krev eit spesielt oppsett på maskina di.
+[//www.mediawiki.org/wiki/Manual:External_editors Meir informasjon.])',
 'tog-showjumplinks'           => 'Slå på «gå til»-lenkjer',
 'tog-uselivepreview'          => 'Bruk levande førehandsvising (eksperimentelt JavaScript)',
 'tog-forceeditsummary'        => 'Spør meg når eg ikkje har skrive noko i endringssamandraget',
@@ -640,13 +643,12 @@ Ho kan allereie vere sletta av andre.',
 'querypage-no-updates' => 'Oppdatering av denne sida er slått av, og data her vil ikkje verte fornya.',
 'wrong_wfQuery_params' => 'Feil parameter gjevne til wfQuery()<br />Funksjon: $1<br />Førespurnad: $2',
 'viewsource'           => 'Vis kjeldetekst',
-'viewsourcefor'        => 'for $1',
 'actionthrottled'      => 'Handlinga vart stoppa',
 'actionthrottledtext'  => 'For å hindre spamming kan du ikkje utføre denne handlinga for mange gonger på kort tid. Ver venleg og prøv igjen litt seinare.',
 'protectedpagetext'    => 'Denne sida er verna for å hindre endring.',
 'viewsourcetext'       => 'Du kan sjå og kopiere kjeldekoden til denne sida:',
 'protectedinterface'   => 'Denne sida inneheld tekst som er brukt av brukargrensesnittet for programvara, og er difor låst for å hindre hærverk.',
-'editinginterface'     => "'''Åtvaring:''' Du endrar på ei side som inneheld tekst som er brukt av brukargrensesnittet for programvara. Endringar på denne sida påverkar utsjånaden til sida for dei andre brukarane. Dersom du ynskjer å setje om, ver venleg og vurder å bruke [http://translatewiki.net/wiki/Main_Page?setlang=nn translatewiki.net], prosjektet for omsetjing av MediaWiki.",
+'editinginterface'     => "'''Åtvaring:''' Du endrar på ei side som inneheld tekst som er brukt av brukargrensesnittet for programvara. Endringar på denne sida påverkar utsjånaden til sida for dei andre brukarane. Dersom du ynskjer å setje om, ver venleg og vurder å bruke [//translatewiki.net/wiki/Main_Page?setlang=nn translatewiki.net], prosjektet for omsetjing av MediaWiki.",
 'sqlhidden'            => '(SQL-førespurnaden er gøymd)',
 'cascadeprotected'     => 'Denne sida er verna mot endring fordi ho er inkludert i {{PLURAL:$1|den opplista sida|dei opplista sidene}} som har djupvern slått på:
 $2',
@@ -673,7 +675,7 @@ Hugs at du kan endre på [[Special:Preferences|innstillingane]] dine.',
 'yourname'                   => 'Brukarnamn:',
 'yourpassword'               => 'Passord:',
 'yourpasswordagain'          => 'Skriv opp att passordet',
-'remembermypassword'         => 'Hugs innlogginga mi på denne datamaskinen (i høgst {{PLURAL:$1|éin dag|$1 dagar}})',
+'remembermypassword'         => 'Hugs innlogginga mi på denne datamaskinen (høgst {{PLURAL:$1|éin dag|$1 dagar}})',
 'securelogin-stick-https'    => 'Fortset HTTPS-tilkopling etter innlogging.',
 'yourdomainname'             => 'Domenet ditt',
 'externaldberror'            => 'Det var anten ein ekstern databasefeil i tilgjengekontrollen, eller du har ikkje løyve til å oppdatere den eksterne kontoen din.',
@@ -737,6 +739,7 @@ Grunna dette vil ikkje vitjande som nyttar denne IP-adressa kunna oppretta nye k
 'noemailprefs'               => 'Oppgje ei e-postadresse i innstillingane dine for at desse funksjonane skal verke.',
 'emailconfirmlink'           => 'Stadfest e-post-adressa di',
 'invalidemailaddress'        => 'E-postadressa kan ikkje nyttast sidan formatet truleg er feil. Skriv ei fungerande adresse eller tøm feltet.',
+'cannotchangeemail'          => 'Epost-adresser knytta til brukarkonti kan ikkje endrast på denne wikien.',
 'accountcreated'             => 'Brukarkonto oppretta',
 'accountcreatedtext'         => 'Brukarkontoen til $1 er oppretta.',
 'createaccount-title'        => 'Oppretting av brukarkonto på {{SITENAME}}',
@@ -772,17 +775,27 @@ Du kan allereie ha byta passordet, eller ha bede om å få eit nytt mellombels p
 'resetpass-temp-password'   => 'Mellombels passord:',
 
 # Special:PasswordReset
-'passwordreset'              => 'Attendestilling av passord',
-'passwordreset-text'         => '↓Fyll ut dette skjemaet for å motta ei påminning om kontoopplysningane dine i ein e-post.',
-'passwordreset-legend'       => '↓Nullstill passordet',
-'passwordreset-disabled'     => '↓Tilbakestilling av passord er ikkje aktivert på denne wikien',
-'passwordreset-pretext'      => '↓{{PLURAL:$1||Tast inn ein av datadelane nedanfor}}',
-'passwordreset-username'     => 'Brukarnamn:',
-'passwordreset-email'        => '↓E-postadresse:',
-'passwordreset-emailtitle'   => '↓Kontodetaljar på {{SITENAME}}',
-'passwordreset-emailelement' => '↓Brukarnamn: $1
+'passwordreset'                   => 'Attendestilling av passord',
+'passwordreset-text'              => '↓Fyll ut dette skjemaet for å motta ei påminning om kontoopplysningane dine i ein e-post.',
+'passwordreset-legend'            => '↓Nullstill passordet',
+'passwordreset-disabled'          => '↓Tilbakestilling av passord er ikkje aktivert på denne wikien',
+'passwordreset-pretext'           => '↓{{PLURAL:$1||Tast inn ein av datadelane nedanfor}}',
+'passwordreset-username'          => 'Brukarnamn:',
+'passwordreset-domain'            => 'Domene:',
+'passwordreset-capture'           => 'Vis resulterande epost',
+'passwordreset-capture-help'      => 'Huk av her dersom du vil sjå eposten (med førebels passord) i tillegg til at han blir sendt til brukaren.',
+'passwordreset-email'             => '↓E-postadresse:',
+'passwordreset-emailtitle'        => '↓Kontodetaljar på {{SITENAME}}',
+'passwordreset-emailtext-ip'      => 'Nokon (sannsynleg deg, frå IP-adresse $1) ba om ei påminning om kontodetaljane dine for {{SITENAME}} ($4). Følgjane brukar {{PLURAL:$3|brukar|brukarar}} er assosiert med denne epost-adressa:
+
+$2
+
+{{PLURAL:$3|Dette førebelse passordet|Desse førebelse passorda}} vil løpe ut om {{PLURAL:$5|ein dag|$5 dagar}}.
+Du bør logge inn og velje eit nytt passord no. Dersom nokon andre kom med denne førespurnaden, eller dersom du hugsar ditt opprinnelege passord, og du ikkje ynskjar å endre det, kan du ignorere denne eposten, og halde fram med å bruke ditt gamle passord.',
+'passwordreset-emailelement'      => '↓Brukarnamn: $1
 Mellombels passord: $2',
-'passwordreset-emailsent'    => '↓Ei påminning har vorte sendt på e-post.',
+'passwordreset-emailsent'         => '↓Ei påminning har vorte sendt på e-post.',
+'passwordreset-emailsent-capture' => 'Eposten under er sendt ut som ei påminning.',
 
 # Special:ChangeEmail
 'changeemail'          => '↓Endre e-postadresse',
@@ -858,9 +871,6 @@ Du kan kontakte $1 eller ein annan [[{{MediaWiki:Grouppage-sysop}}|administrator
 IP-adressa di er $3, og blokkeringnummeret ditt er #$5.
 Ver venleg og opplyse dette ved eventuelle førespurnader.",
 'blockednoreason'                  => 'inga grunngjeving',
-'blockedoriginalsource'            => "Kjeldekoden til '''$1''' er vist nedanfor:",
-'blockededitsource'                => "Teksten i '''endringane dine''' på '''$1''' er vist nedanfor:",
-'whitelistedittitle'               => 'Du lyt logge inn for å gjera endringar',
 'whitelistedittext'                => 'Du lyt $1 for å endre sider.',
 'confirmedittext'                  => 'Du må stadfeste e-postadressa di før du kan endre sidene. Ver venleg og legg inn og stadfest e-postadressa di i [[Special:Preferences|innstillingane dine]].',
 'nosuchsectiontitle'               => 'Kan ikkje finna bolk',
@@ -891,7 +901,7 @@ eller <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}
 'userpage-userdoesnotexist-view'   => 'Brukarkontoen «$1» er ikkje oppretta.',
 'blocked-notice-logextract'        => 'Denne brukaren er for tida blokkert.
 Det siste elementet i blokkeringsloggen er oppgjeve nedanfor:',
-'clearyourcache'                   => "'''Merk: Etter lagring vil det kanskje vera naudsynt at nettlesaren slettar mellomlageret sitt for at endringane skal tre i kraft.''' '''Firefox og Safari:''' Hald ''Shift'' nede medan du trykkjer anten ''Ctrl-F5'' eller ''Ctrl-R'' (''Command-R'' på Mac). '''Konqueror:''' Trykk ''Oppdater'' eller på ''F5''. '''Opera:''' Tøm mellomlageret i ''Verktøy → Innstillingar''. '''Internet Explorer:''' Hald nede ''Ctrl'' medan du trykkjer ''Oppdater'', eler trykk ''Ctrl-F5.''",
+'clearyourcache'                   => "Merk: Etter lagring vil det kanskje vera naudsynt at nettlesaren slettar mellomlageret sitt for at endringane skal tre i kraft.''' '''Firefox og Safari:''' Hald ''Shift'' nede medan du trykkjer anten ''Ctrl-F5'' eller ''Ctrl-R'' (''Command-R'' på Mac). '''Konqueror:''' Trykk ''Oppdater'' eller på ''F5''. '''Opera:''' Tøm mellomlageret i ''Verktøy → Innstillingar''. '''Internet Explorer:''' Hald nede ''Ctrl'' medan du trykkjer ''Oppdater'', eler trykk ''Ctrl-F5.''",
 'usercssyoucanpreview'             => "'''Tips:''' Bruk «{{int:showpreview}}»-knappen for å teste den nye CSS- eller JavaScript-koden din før du lagrar.",
 'userjsyoucanpreview'              => "''Tips:''' Bruk «{{int:showpreview}}»-knappen for å teste den nye CSS- eller JavaScript-koden din før du lagrar.",
 'usercsspreview'                   => "'''Hugs at dette berre er ei førehandsvising av din eigen CSS og at han ikkje er lagra enno!'''",
@@ -912,6 +922,7 @@ Det siste elementet i blokkeringsloggen er oppgjeve nedanfor:',
 
 '''Dersom dette er eit heilt vanleg forsøk på endring, prøv ein gong til. Dersom det framleis ikkje går, prøv å logge deg ut og inn att.'''",
 'token_suffix_mismatch'            => "'''Endringa di vart avvist fordi klienten/nettlesaren din lagar teiknfeil i teksten. Dette vart gjort for å hindre øydelegging av teksten på sida. Slikt kan av og til hende når ein brukar feilprogrammerte og vevbaserte anonyme proxytenester.'''",
+'edit_form_incomplete'             => 'Delar av redigeringsskjemaet nådde ikkje fram til tenaren; dobbelsjekk at redigeringa er korrekt, og prøv om att.',
 'editing'                          => 'Endrar $1',
 'editingsection'                   => 'Endrar $1 (bolk)',
 'editingcomment'                   => 'Endrar $1 (ny bolk)',
@@ -1043,12 +1054,12 @@ Det kan vere detaljar i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}
 'rev-deleted-text-unhide'     => "Denne sideversjonen er vorten '''sletta'''.
 Det finst kanskje detaljar i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} sletteloggen].
 Som administrator kan du framleis [$1 sjå denne versjonen] om du ynskjer å halde fram.",
-'rev-suppressed-text-unhide'  => "Denne versjonen har vorten '''utelatt'''.
+'rev-suppressed-text-unhide'  => "Denne versjonen har vorten '''gøymd'''.
 Det finst kanskje meir informasjon i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} utelatingsloggen].
 Som administrator kan du framleis [$1 sjå versjonen] om du ynskjer å halde fram.",
 'rev-deleted-text-view'       => "Denne sideversjonen er vorten '''sletta'''.
 Som administrator kan du sjå han. Det finst kanskje detaljar i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} sletteloggen].",
-'rev-suppressed-text-view'    => "Denne sideversjonen har vorten '''utelatt'''.
+'rev-suppressed-text-view'    => "Denne sideversjonen har vorten '''gøymd'''.
 Som administrator kan du sjå han. Det finst kanskje meir informasjon i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} utelatingsloggen].",
 'rev-deleted-no-diff'         => "Du kan ikkje vise denne skilnaden fordi ein av versjonane er vorten '''sletta'''.
 Det finst kanskje detaljar i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} sletteloggen].",
@@ -1555,7 +1566,6 @@ Dette kan ikke tilbakestillast.',
 'recentchangeslinked-feed'     => 'Relaterte endringar',
 'recentchangeslinked-toolbox'  => 'Relaterte endringar',
 'recentchangeslinked-title'    => 'Endringar relaterte til «$1»',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'Det er ikkje gjort endringar på sidene som var lenkja hit i den oppgjevne perioden.',
 'recentchangeslinked-summary'  => "Denne spesialsida inneheld alle endringane som er gjort på sider som vert ''lenkja til'' frå denne (eller på sider i ein viss kategori). Dei av sidene du har på [[Special:Watchlist|overvakingslista]] di er '''utheva'''.",
 'recentchangeslinked-page'     => 'Sidenamn:',
@@ -1767,7 +1777,7 @@ For best tryggleik, er img_auth.php sett ut av funksjon.',
 'filehist-filesize'         => 'Filstorleik',
 'filehist-comment'          => 'Kommentar',
 'filehist-missing'          => 'Fila manglar',
-'imagelinks'                => 'Fillenkjer',
+'imagelinks'                => 'Filbruk',
 'linkstoimage'              => '{{PLURAL:$1|Den følgjande sida|Dei følgjande $1 sidene}} har lenkjer til denne fila:',
 'linkstoimage-more'         => 'Meir enn $1 {{PLURAL:$1|side|sider}} lenkjer til denne fila.
 Følgjande liste viser {{PLURAL:$1|den første sida|dei $1 første sidene}}.
@@ -1930,7 +1940,7 @@ Skildringa frå [$2 filskildringssida] der er vist nedanfor.',
 'listusers-editsonly'     => 'Vis berre brukarar med endringar',
 'listusers-creationsort'  => 'Sorter etter opprettingsdato',
 'usereditcount'           => '{{PLURAL:$1|éi endring|$1 endringar}}',
-'usercreated'             => 'Oppretta den $1 $2',
+'usercreated'             => '{{GENDER:$3|Oppretta}} den $1 $2',
 'newpages'                => 'Nye sider',
 'newpages-username'       => 'Brukarnamn:',
 'ancientpages'            => 'Eldste sider',
@@ -2048,7 +2058,7 @@ Sjå òg [[Special:WantedCategories|ønska kategoriar]].',
 'emailpagetext'        => 'Du kan nytte skjemaet nedanfor til å sende ein e-post til denne brukaren.
 E-postadressa du har sett i [[Special:Preferences|innstillingane dine]] vil dukke opp i «frå»-feltet på denne e-posten, så mottakaren er i stand til å svare.',
 'usermailererror'      => 'E-post systemet gav feilmelding:',
-'defemailsubject'      => '{{SITENAME}} e-post',
+'defemailsubject'      => '{{SITENAME}} epost frå brukar "$1"',
 'usermaildisabled'     => 'Brukare-post slegen av',
 'usermaildisabledtext' => 'Du kan ikkje senda e-postar til andre brukarar på wikien',
 'noemailtitle'         => 'Inga e-postadresse',
@@ -2361,7 +2371,6 @@ $1',
 'blockip-title'                   => 'Blokker brukar',
 'blockip-legend'                  => 'Blokker brukar',
 'blockiptext'                     => 'Bruk skjemaet nedanfor for å blokkere skrivetilgangen frå ei spesifikk IP-adresse eller brukarnamn. Dette bør berre gjerast for å hindre hærverk, og i samsvar med [[{{MediaWiki:Policy-url}}|retningslinene]].',
-'ipaddress'                       => 'IP-adresse',
 'ipadressorusername'              => 'IP-adresse eller brukarnamn',
 'ipbexpiry'                       => 'Opphøyrstid:',
 'ipbreason'                       => 'Årsak:',
@@ -2384,6 +2393,7 @@ $1',
 'ipbotherreason'                  => 'Annan grunn/tilleggsgrunn:',
 'ipbhidename'                     => 'Gøym brukarnamnet frå endringar og lister',
 'ipbwatchuser'                    => 'Overvak brukarsida og diskusjonssida til brukaren',
+'ipb-disableusertalk'             => 'Hindra brukaren i å endra eiga diskusjonsside medan blokkeringa gjeld',
 'ipb-change-block'                => 'Blokker brukaren på nytt med desse innstillingane',
 'ipb-confirm'                     => 'Stadfest blokkering',
 'badipaddress'                    => 'IP-adressa er ugyldig eller blokkering av brukarar er slått av på tenaren.',
@@ -2391,6 +2401,7 @@ $1',
 'blockipsuccesstext'              => '«[[Special:Contributions/$1|$1]]» er blokkert.<br />
 Sjå [[Special:IPBlockList|blokkeringslista]] for alle blokkeringane.',
 'ipb-blockingself'                => 'Du er i ferd med å blokkera deg sjølv. Er du viss på at du ynskjer gjera dette?',
+'ipb-confirmhideuser'             => 'Du er i ferd med å blokkere ein brukar med "skjult brukar" aktivert. Brukarens namn vil verte skjult i alle lister og loggoppføringar. Er du sikker på at du vil gjere dette?',
 'ipb-edit-dropdown'               => 'Endre grunnane for blokkering',
 'ipb-unblock-addr'                => 'Opphev blokkeringa av $1',
 'ipb-unblock'                     => 'Opphev blokkeringa av eit brukarnamn eller ei IP-adresse',
@@ -2404,6 +2415,12 @@ Sjå [[Special:IPBlockList|blokkeringslista]] for alle blokkeringane.',
 'blocklist'                       => 'Blokkerte brukarar',
 'ipblocklist'                     => 'Blokkerte IP-adresser og brukarnamn',
 'ipblocklist-legend'              => 'Finn ein blokkert brukar',
+'blocklist-userblocks'            => 'Gøym kontoblokkeringar',
+'blocklist-tempblocks'            => 'Gøym førebelse blokkeringar',
+'blocklist-addressblocks'         => 'Gøym enkle IP-blokkeringar',
+'blocklist-rangeblocks'           => 'Gøym intervallblokkeringar',
+'blocklist-timestamp'             => 'Tidsmerkje',
+'blocklist-target'                => 'Mål',
 'blocklist-expiry'                => 'Endar',
 'blocklist-by'                    => 'Blokkerande admin',
 'blocklist-reason'                => 'Årsak',
@@ -2449,6 +2466,7 @@ IP-adresser som blir automatisk blokkerte er ikkje lista her. Sjå [[Special:Blo
 'ipb_already_blocked'             => '«$1» er allereie blokkert',
 'ipb-needreblock'                 => '$1 er alt blokkert. Vil du endre innstillingane?',
 'ipb-otherblocks-header'          => '{{PLURAL:$1|Anna blokkering|Andre blokkeringar}}',
+'unblock-hideuser'                => 'Du kan ikkje heve blokkeringa av denne brukaren, av di brukarnamnet har blitt gøymd.',
 'ipb_cant_unblock'                => 'Feil: Fann ikkje blokkeringsnummeret $1. Blokkeringa kan vere oppheva allereie.',
 'ipb_blocked_as_range'            => 'Feil: IP-en $1 er ikkje direkte blokkert og kan ikkje opphevast. Adressa er blokkert som ein del av blokkeringa av IP-intervallet $2. Denne blokkeringa kan opphevast.',
 'ip_range_invalid'                => 'Ugyldig IP-adresseserie.',
@@ -2481,6 +2499,7 @@ IP-adresser som blir automatisk blokkerte er ikkje lista her. Sjå [[Special:Blo
 'unlockdbsuccesstext' => 'Skrivevernet er oppheva.',
 'lockfilenotwritable' => 'Kan ikkje skrive til databasen si låsefil. For å låse eller opne databasen, må tenaren kunne skrive til denne fila.',
 'databasenotlocked'   => 'Databasen er ikkje låst.',
+'lockedbyandtime'     => 'av $1 den $2 kl. $3',
 
 # Move page
 'move-page'                    => 'Flytt $1',
@@ -2543,7 +2562,7 @@ I desse falla lyt du flytte eller flette saman sida manuelt.",
 
 Målsida «[[:$1]]» finst allereie. Vil du slette ho for å gje rom for flytting?',
 'delete_and_move_confirm'      => 'Ja, slett sida',
-'delete_and_move_reason'       => 'Sletta for å gje rom for flytting',
+'delete_and_move_reason'       => 'Sletta for å gi rom for flytting frå "[[$1]]"',
 'selfmove'                     => 'Kjelde- og måltitlane er like; kan ikkje flytte sida over seg sjølv.',
 'immobile-source-namespace'    => 'Kan ikkje flytte sider i namnerommet «$1»',
 'immobile-target-namespace'    => 'Kan ikkje flytte sider til namnerommet «$1»',
@@ -2591,7 +2610,7 @@ Dersom du berre vil ha noverande versjon, kan du også bruke ei lenkje, til døm
 'allmessagesdefault'            => 'Standardtekst',
 'allmessagescurrent'            => 'Noverande tekst',
 'allmessagestext'               => 'Dette er ei liste over systemmeldingar i MediaWiki-namnerommet.
-Vitja [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] og [http://translatewiki.net translatewiki.net] om du ynskjer å bidra til den generelle omsetjinga av MediaWiki.',
+Vitja [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] og [//translatewiki.net translatewiki.net] om du ynskjer å bidra til den generelle omsetjinga av MediaWiki.',
 'allmessagesnotsupportedDB'     => "Denne sida kan ein ikkje bruka fordi «'''\$wgUseDatabaseMessages'''» er slått av.",
 'allmessages-filter-legend'     => 'Filtrer',
 'allmessages-filter'            => 'Filtrer etter tilpassingsgrad:',
@@ -2649,6 +2668,8 @@ Vitja [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] og [ht
 'import-upload'              => 'Last opp XML-data',
 'import-token-mismatch'      => 'Mista sesjonsdata. Ver venleg og prøv om att.',
 'import-invalid-interwiki'   => 'Kan ikkje importera frå den valde wikien.',
+'import-error-edit'          => '«$1» blei ikkje importert av di du ikkje har løyve til å redigere henne.',
+'import-error-create'        => 'Side $1 blei ikkje importert av di du ikkje har løyve til å redigere henne.',
 
 # Import log
 'importlogpage'                    => 'Importeringslogg',
@@ -3223,7 +3244,7 @@ Dei andre felta er gøymde som standard.
 
 # External editor support
 'edit-externally'      => 'Endre denne fila med eit eksternt program',
-'edit-externally-help' => '(Sjå [http://www.mediawiki.org/wiki/Manual:External_editors oppsettsinstruksjonane] for meir informasjon)',
+'edit-externally-help' => '(Sjå [//www.mediawiki.org/wiki/Manual:External_editors oppsettsinstruksjonane] for meir informasjon)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'alle',
@@ -3381,7 +3402,7 @@ Du kan òg [[Special:EditWatchlist|nytte standardverktøyet]].',
 'version-hook-subscribedby'     => 'Brukt av',
 'version-version'               => '(versjon $1)',
 'version-license'               => 'Lisens',
-'version-poweredby-credits'     => "Denne wikien er dreven av '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Denne wikien er dreven av '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'andre',
 'version-software'              => 'Installert programvare',
 'version-software-product'      => 'Produkt',

@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiBase.php" );
-}
-
 /**
  * A module that allows for editing and creating pages.
  *
@@ -43,7 +38,7 @@ class ApiEditPage extends ApiBase {
 	}
 
 	public function execute() {
-		global $wgUser;
+		$user = $this->getUser();
 		$params = $this->extractRequestParams();
 
 		if ( is_null( $params['text'] ) && is_null( $params['appendtext'] ) &&
@@ -87,10 +82,6 @@ class ApiEditPage extends ApiBase {
 			}
 		}
 
-		// Some functions depend on $wgTitle == $ep->mTitle
-		global $wgTitle;
-		$wgTitle = $titleObj;
-
 		if ( $params['createonly'] && $titleObj->exists() ) {
 			$this->dieUsageMsg( 'createonly-exists' );
 		}
@@ -99,15 +90,16 @@ class ApiEditPage extends ApiBase {
 		}
 
 		// Now let's check whether we're even allowed to do this
-		$errors = $titleObj->getUserPermissionsErrors( 'edit', $wgUser );
+		$errors = $titleObj->getUserPermissionsErrors( 'edit', $user );
 		if ( !$titleObj->exists() ) {
-			$errors = array_merge( $errors, $titleObj->getUserPermissionsErrors( 'create', $wgUser ) );
+			$errors = array_merge( $errors, $titleObj->getUserPermissionsErrors( 'create', $user ) );
 		}
 		if ( count( $errors ) ) {
 			$this->dieUsageMsg( $errors[0] );
 		}
 
-		$articleObj = new Article( $titleObj );
+		$articleObj = Article::newFromTitle( $titleObj, $this->getContext() );
+
 		$toMD5 = $params['text'];
 		if ( !is_null( $params['appendtext'] ) || !is_null( $params['prependtext'] ) )
 		{
@@ -178,9 +170,6 @@ class ApiEditPage extends ApiBase {
 			$this->dieUsageMsg( 'hashcheckfailed' );
 		}
 
-		$ep = new EditPage( $articleObj );
-		$ep->setContextTitle( $titleObj );
-
 		// EditPage wants to parse its stuff from a WebRequest
 		// That interface kind of sucks, but it's workable
 		$reqArr = array(
@@ -207,7 +196,7 @@ class ApiEditPage extends ApiBase {
 			$reqArr['wpStarttime'] = wfTimestampNow();	// Fake wpStartime
 		}
 
-		if ( $params['minor'] || ( !$params['notminor'] && $wgUser->getOption( 'minordefault' ) ) )	{
+		if ( $params['minor'] || ( !$params['notminor'] && $user->getOption( 'minordefault' ) ) )	{
 			$reqArr['wpMinoredit'] = '';
 		}
 
@@ -238,12 +227,20 @@ class ApiEditPage extends ApiBase {
 			$reqArr['wpWatchthis'] = '';
 		}
 
-		$req = new FauxRequest( $reqArr, true );
+		global $wgTitle, $wgRequest;
+
+		$req = new DerivativeRequest( $this->getRequest(), $reqArr, true );
+
+		// Some functions depend on $wgTitle == $ep->mTitle
+		// TODO: Make them not or check if they still do
+		$wgTitle = $titleObj;
+
+		$ep = new EditPage( $articleObj );
+		$ep->setContextTitle( $titleObj );
 		$ep->importFormData( $req );
 
 		// Run hooks
 		// Handle CAPTCHA parameters
-		global $wgRequest;
 		if ( !is_null( $params['captchaid'] ) ) {
 			$wgRequest->setVal( 'wpCaptchaId', $params['captchaid'] );
 		}
@@ -270,7 +267,7 @@ class ApiEditPage extends ApiBase {
 		$oldRequest = $wgRequest;
 		$wgRequest = $req;
 
-		$status = $ep->internalAttemptSave( $result, $wgUser->isAllowed( 'bot' ) && $params['bot'] );
+		$status = $ep->internalAttemptSave( $result, $user->isAllowed( 'bot' ) && $params['bot'] );
 		$wgRequest = $oldRequest;
 		global $wgMaxArticleSize;
 
@@ -333,19 +330,14 @@ class ApiEditPage extends ApiBase {
 				$r['result'] = 'Success';
 				$r['pageid'] = intval( $titleObj->getArticleID() );
 				$r['title'] = $titleObj->getPrefixedText();
-				// HACK: We create a new Article object here because getRevIdFetched()
-				// refuses to be run twice, and because Title::getLatestRevId()
-				// won't fetch from the master unless we select for update, which we
-				// don't want to do.
-				$newArticle = new Article( $titleObj );
-				$newRevId = $newArticle->getRevIdFetched();
+				$newRevId = $articleObj->getLatest();
 				if ( $newRevId == $oldRevId ) {
 					$r['nochange'] = '';
 				} else {
 					$r['oldrevid'] = intval( $oldRevId );
 					$r['newrevid'] = intval( $newRevId );
 					$r['newtimestamp'] = wfTimestamp( TS_ISO_8601,
-						$newArticle->getTimestamp() );
+						$articleObj->getTimestamp() );
 				}
 				break;
 

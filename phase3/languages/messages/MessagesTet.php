@@ -288,7 +288,6 @@ Lista ida pájina espesiál nian [[Special:SpecialPages|iha ne'e]].",
 'missingarticle-rev'  => '(version#: $1)',
 'missingarticle-diff' => '(Dif.: $1, $2)',
 'viewsource'          => 'Lee testu',
-'viewsourcefor'       => 'ba $1',
 'viewsourcetext'      => 'Ó bele lee no kopia testu pájina nian:',
 'namespaceprotected'  => "Ó la iha priviléjiu ba edita pájina sira iha espasu '''$1'''.",
 'ns-specialprotected' => 'La ema ida bele edita pájina espesiál sira.',
@@ -731,7 +730,6 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 # Block/unblock
 'blockip'                  => "Blokeiu uza-na'in",
 'blockip-legend'           => "Blokeiu uza-na'in",
-'ipaddress'                => 'Diresaun IP:',
 'ipbreason'                => 'Motivu:',
 'ipbreasonotherlist'       => 'Motivu seluk',
 'ipbsubmit'                => "Blokeiu uza-na'in ne'e",
@@ -883,7 +881,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'exif-urgency-high'   => 'Aas ($1)',
 
 # External editor support
-'edit-externally-help' => "(Haree [http://www.mediawiki.org/wiki/Manual:External_editors iha ne'e] ba informasaun barak liu)",
+'edit-externally-help' => "(Haree [//www.mediawiki.org/wiki/Manual:External_editors iha ne'e] ba informasaun barak liu)",
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'hotu',

@@ -136,16 +136,12 @@ class LocalRepo extends FSRepo {
 	 * Checks if there is a redirect named as $title
 	 *
 	 * @param $title Title of file
+	 * @return bool
 	 */
-	function checkRedirect( $title ) {
+	function checkRedirect( Title $title ) {
 		global $wgMemc;
 
-		if( is_string( $title ) ) {
-			$title = Title::newFromText( $title );
-		}
-		if( $title instanceof Title && $title->getNamespace() == NS_MEDIA ) {
-			$title = Title::makeTitle( NS_FILE, $title->getText() );
-		}
+		$title = File::normalizeTitle( $title, 'exception' );
 
 		$memcKey = $this->getSharedCacheKey( 'image_redirect', md5( $title->getDBkey() ) );
 		if ( $memcKey === false ) {
@@ -211,6 +207,7 @@ class LocalRepo extends FSRepo {
 	/**
 	 * Get an array or iterator of file objects for files that have a given 
 	 * SHA-1 content hash.
+	 * @return Array
 	 */
 	function findBySha1( $hash ) {
 		$dbr = $this->getSlaveDB();
@@ -247,6 +244,7 @@ class LocalRepo extends FSRepo {
 	 * Get a key on the primary cache for this repository.
 	 * Returns false if the repository's cache is not accessible at this site. 
 	 * The parameters are the parts of the key, as for wfMemcKey().
+	 * @return string
 	 */
 	function getSharedCacheKey( /*...*/ ) {
 		$args = func_get_args();
@@ -257,8 +255,9 @@ class LocalRepo extends FSRepo {
 	 * Invalidates image redirect cache related to that image
 	 *
 	 * @param $title Title of page
+	 * @return void
 	 */
-	function invalidateImageRedirect( $title ) {
+	function invalidateImageRedirect( Title $title ) {
 		global $wgMemc;
 		$memcKey = $this->getSharedCacheKey( 'image_redirect', md5( $title->getDBkey() ) );
 		if ( $memcKey ) {

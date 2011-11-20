@@ -331,8 +331,8 @@ $messages = array(
 'tog-shownumberswatching'     => 't Antal gebrukers bekieken die disse pagina volgt',
 'tog-oldsig'                  => 'Bestaonde haandtekening:',
 'tog-fancysig'                => 'Ondertekening zien as wikitekste (zonder automatiese verwiezing)',
-'tog-externaleditor'          => 'Standard n externe tekstbewarker gebruken (allinnig veur gevorderden - veur disse funksie bin spesiale instellingen neudig. [http://www.mediawiki.org/wiki/Manual:External_editors Meer informasie]).',
-'tog-externaldiff'            => 'Standard n extern vergeliekingsprogramma gebruken (allinnig veur gevorderden - veur disse funksie bin spesiale instellingen neudig. [http://www.mediawiki.org/wiki/Manual:External_editors Meer informasie]).',
+'tog-externaleditor'          => 'Standard n externe tekstbewarker gebruken (allinnig veur gevorderden - veur disse funksie bin spesiale instellingen neudig. [//www.mediawiki.org/wiki/Manual:External_editors Meer informasie]).',
+'tog-externaldiff'            => 'Standard n extern vergeliekingsprogramma gebruken (allinnig veur gevorderden - veur disse funksie bin spesiale instellingen neudig. [//www.mediawiki.org/wiki/Manual:External_editors Meer informasie]).',
 'tog-showjumplinks'           => '"Gao naor"-verwiezingen toelaoten',
 'tog-uselivepreview'          => 'Gebruuk "rechtstreeks naokieken" (mö\'j JavaScript veur hebben - experimenteel)',
 'tog-forceeditsummary'        => 'Geef n melding bie n lege samenvatting',
@@ -658,6 +658,7 @@ Meld t dan effen bie n [[Special:ListUsers/sysop|systeembeheerder]] van {{SITENA
 'badarticleerror'      => 'Disse haandeling kan op disse pagina niet uutevoerd wörden.',
 'cannotdelete'         => 'De pagina of t bestaand "$1" kon niet vortedaon wörden.
 t Kan ween dat n aander t al vortedaon hef.',
+'cannotdelete-title'   => 'Pagina "$1" kan niet vortedaon wörden',
 'badtitle'             => 'Ongeldige naam',
 'badtitletext'         => 'De naam van de op-evreugen pagina is niet geldig, leeg, of n interwiki-verwiezing naor n onbekende of ongeldige wiki.',
 'perfcached'           => 'Disse gegevens kwammen uut t tussengeheugen en bin warschienlik niet aktueel:',
@@ -667,13 +668,14 @@ t Kan ween dat n aander t al vortedaon hef.',
 Funksie: $1<br />
 Zeukopdrachte: $2',
 'viewsource'           => 'Brontekste bekieken',
-'viewsourcefor'        => 'veur "$1"',
+'viewsource-title'     => 'Bron bekieken van $1',
 'actionthrottled'      => 'Haandeling tegen-ehuilen',
 'actionthrottledtext'  => "As maotregel tegen t plaotsen van ongewunste verwiezingen, is t antal keren da'j disse haandeling in n korte tied uutvoeren kunnen beteund. Je hebben de limiet overschrejen. Probeer t over n antal minuten weer.",
 'protectedpagetext'    => 'Disse pagina is beveiligd um bewarkingen te veurkoemen.',
 'viewsourcetext'       => 'Je kunnen de brontekste van disse pagina bewarken en bekieken:',
+'viewyourtext'         => "Je kunnen '''joew bewarkingen''' an de brontekste van disse pagina bekieken en kopiëren:",
 'protectedinterface'   => 'Op disse pagina steet n tekste die gebruukt wörden veur systeemteksten van de wiki. Allinnig beheerders kunnen disse pagina bewarken.',
-'editinginterface'     => "'''Waorschuwing:''' je bewarken n pagina die gebruukt wörden deur de programmatuur. Wa'j hier wiezigen, is van invleud op de hele wiki. Overweeg veur vertalingen um [http://translatewiki.net/wiki/Main_Page?setlang=nds-nl translatewiki.net] te gebruken, t vertalingsprojekt veur MediaWiki.",
+'editinginterface'     => "'''Waorschuwing:''' je bewarken n pagina die gebruukt wörden deur de programmatuur. Wa'j hier wiezigen, is van invleud op de hele wiki. Overweeg veur vertalingen um [//translatewiki.net/wiki/Main_Page?setlang=nds-nl translatewiki.net] te gebruken, t vertalingsprojekt veur MediaWiki.",
 'sqlhidden'            => '(SQL-zeukopdrachte verbörgen)',
 'cascadeprotected'     => 'Disse pagina is beveiligd umdat t veurkump in de volgende {{PLURAL:$1|pagina|pagina\'s}}, die beveiligd {{PLURAL:$1|is|bin}} mit de "kaskade"-opsie:
 $2',
@@ -923,9 +925,6 @@ NB: je kunnen de opsie "n bericht sturen" niet gebruken, behalven a\'j n geldig 
 Joew IP-adres is $3 en joew blokkeernummer is $5.
 Geef disse nummers deur a\'j kontakt mit ene opnemen over de blokkering.',
 'blockednoreason'                  => 'gien reden op-egeven',
-'blockedoriginalsource'            => "De brontekste van '''$1''' steet hieronder:",
-'blockededitsource'                => "De tekste van '''joew eigen bewarkingen''' an '''$1''' steet hieronder:",
-'whitelistedittitle'               => "Um disse pagina te bewarken, mö'j je anmelden",
 'whitelistedittext'                => "Um pagina's te kunnen wiezigen, mö'j $1 ween",
 'confirmedittext'                  => "Je mutten je netpostadres bevestigen veurda'j bewarken kunnen. Vul je adres in en bevestig t via [[Special:Preferences|mien veurkeuren]].",
 'nosuchsectiontitle'               => 'Disse seksie besteet niet',
@@ -1576,6 +1575,7 @@ Disse informasie is zichtbaor veur aandere gebrukers.',
 'action-suppressionlog'       => 'dit bescharmde logboek bekieken',
 'action-block'                => 'disse gebruker blokkeren',
 'action-protect'              => 't beveiligingsnivo van disse pagina anpassen',
+'action-rollback'             => 'bewarkingen van de leste gebruker die n pagina hef ewiezigd rap weerummedreien',
 'action-import'               => 'disse pagina van n aandere wiki invoeren',
 'action-importupload'         => 'disse pagina invoeren vanaof n op-estuurd bestaand',
 'action-patrol'               => 'bewarkingen van aander volk as ekontroleerd markeren',
@@ -1785,10 +1785,10 @@ De veiligheid kan niet ekontroleerd wörden.',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Toegang eweigerd',
-'img-auth-nopathinfo'       => 'PATH_INFO onbreek.
+'img-auth-nopathinfo'       => 'PATH_INFO ontbrik.
 Joew server is niet in-esteld um disse informasie deur te geven.
-Misschien gebruuk disse CGI, en dan wörden img_auth niet ondersteund.
-Zie http://www.mediawiki.org/wiki/Manual:Image_Authorization veur meer informasie',
+Misschien gebruukt disse CGI, en dan wörden img_auth niet ondersteund.
+[//www.mediawiki.org/wiki/Manual:Image_Authorization Zie aofbeeldingsauthorisasie.]',
 'img-auth-notindir'         => 't Op-evreugen pad is niet de in-estelde bestaandinlaodmap',
 'img-auth-badtitle'         => 'Kon gien geldige paginanaam maken van "$1".',
 'img-auth-nologinnWL'       => 'Je bin niet an-emeld en "$1" steet niet op de witte lieste.',
@@ -1950,7 +1950,7 @@ Vergeet niet de verwiezingen nao te kieken veurda\'j de mal vortdoon.',
 'statistics-users-active-desc' => 'Gebrukers die de veurbieje {{PLURAL:$1|dag|$1 dagen}} n haandeling uutevoerd hebben',
 'statistics-mostpopular'       => "Meestbekeken pagina's",
 
-'disambiguations'      => "Deurverwiespagina's",
+'disambiguations'      => "Pagina's die verwiezen naor deurverwiespagina's",
 'disambiguationspage'  => 'Template:Dv',
 'disambiguations-text' => "De onderstaonde pagina's verwiezen naor n '''deurverwiespagina'''. Disse verwiezingen mutten eigenliks rechtstreeks verwiezen naor t juuste onderwarp.
 
@@ -2023,7 +2023,7 @@ Meestentieds is leste pagina de gewunste doelpagina, waor oek de eerste pagina h
 'listusers-editsonly'     => 'Allinnig gebrukers mit bewarkingen laoten zien',
 'listusers-creationsort'  => 'Sorteren op inschriefdaotum',
 'usereditcount'           => '$1 {{PLURAL:$1|bewarking|bewarkingen}}',
-'usercreated'             => 'An-emaakt op $1 um $2',
+'usercreated'             => '{{GENDER:$3|Eregistreerd}} op $1 um $2',
 'newpages'                => 'Nieje artikels',
 'newpages-username'       => 'Gebrukersnaam:',
 'ancientpages'            => 'Oudste artikels',
@@ -2093,7 +2093,7 @@ Zie oek [[Special:WantedCategories|gewunste kategorieën]].",
 'sp-deletedcontributions-contribs' => 'biedragen',
 
 # Special:LinkSearch
-'linksearch'       => 'Uutgaonde verwiezingen',
+'linksearch'       => 'Uutgaonde verwiezingen zeuken',
 'linksearch-pat'   => 'Zeukpetroon:',
 'linksearch-ns'    => 'Naamruumte:',
 'linksearch-ok'    => 'Zeuken',
@@ -2203,7 +2203,7 @@ Toekomstige wiezigingen op disse pagina en de overlegpagina zullen hier vermeld 
 'watchmethod-list'     => 'Kik joew nao volglieste veur de leste wiezigingen',
 'watchlistcontains'    => "Der {{PLURAL:$1|steet 1 pagina|staon $1 pagina's}} op joew volglieste.",
 'iteminvalidname'      => "Verkeerde naam '$1'",
-'wlnote'               => 'Hieronder {{PLURAL:$1|steet de leste wieziging|staon de leste $1 wiezigingen}} in {{PLURAL:$2|t aofeleupen ure|de leste $2 uren}}.',
+'wlnote'               => 'Hieronder {{PLURAL:$1|steet de leste wieziging|staon de leste $1 wiezigingen}} in {{PLURAL:$2|t aofeleupen ure|de leste $2 uren}} vanaof $3 um $4.',
 'wlshowlast'           => 'Laot de aofeleupen $1 ure $2 dagen $3 zien',
 'watchlist-options'    => 'Opsies veur de volglieste',
 
@@ -2313,7 +2313,10 @@ Zie de [[Special:ProtectedPages|lieste mit pagina's die beveiligd bin]] veur t h
 'unprotectedarticle'          => 'hef de beveiliging van "[[$1]]" deraof ehaold',
 'movedarticleprotection'      => 'hef de beveiligingsinstellingen over-ezet van "[[$2]]" naor "[[$1]]"',
 'protect-title'               => 'Instellen van beveiligingsnivo veur "$1"',
+'protect-title-notallowed'    => 'Beveiligingsnivo veur "$1" bekieken',
 'prot_1movedto2'              => '[[$1]] is ewiezigd naor [[$2]]',
+'protect-badnamespace-title'  => 'Niet te beveiligen naamruumte',
+'protect-badnamespace-text'   => "Pagina's in disse naamruumte kunnen niet beveiligd wörden.",
 'protect-legend'              => 'Beveiliging bevestigen',
 'protectcomment'              => 'Reden:',
 'protectexpiry'               => 'Duur',
@@ -2398,6 +2401,7 @@ In dat geval mö'j de leste versie as zichtbaor instellen.",
 
 Bekiek t [[Special:Log/delete|vortdologboek]] veur n overzichte van pagina's die kortens vortedaon en weerummeplaotst bin.",
 'undelete-header'              => 'Zie t [[Special:Log/delete|vortdologboek ]] veur spul dat krek vortedaon is.',
+'undelete-search-title'        => "Vortedaone pagina's zeuken",
 'undelete-search-box'          => "Deurzeuk vortedaone pagina's",
 'undelete-search-prefix'       => "Bekiek pagina's vanaof:",
 'undelete-search-submit'       => 'Zeuk',
@@ -2407,6 +2411,7 @@ Bekiek t [[Special:Log/delete|vortdologboek]] veur n overzichte van pagina's die
 'undelete-cleanup-error'       => 'Fout bie t herstellen van t ongebruukten archiefbestaand "$1".',
 'undelete-missing-filearchive' => 't Lokten niet um ID $1 weerumme te plaotsen umdat t niet in de databanke is.
 Misschien is t al weerummeplaotst.',
+'undelete-error'               => 'Der is wat fout egaon bie t vortdoon van de pagina',
 'undelete-error-short'         => 'Fout bie t herstellen van t bestaand: $1',
 'undelete-error-long'          => 'Fouten bie t herstellen van t bestaand:
 
@@ -2477,7 +2482,6 @@ De leste regel uut t blokkeerlogboek steet as referensie',
 'blockip-title'                   => 'Gebruker blokkeren',
 'blockip-legend'                  => 'n Gebruker of IP-adres blokkeren',
 'blockiptext'                     => "Gebruuk dit formulier um n IP-adres of gebrukersnaam te blokkeren. t Is bedoeld um vandelisme te veurkoemen en mit in akkerderen mit t [[{{MediaWiki:Policy-url}}|beleid]]. Geef hieronder n reden op (bieveurbeeld op welke pagina's de vandelisme epleeg is)",
-'ipaddress'                       => 'IP-adres:',
 'ipadressorusername'              => 'IP-adres of gebrukersnaam',
 'ipbexpiry'                       => 'Verlöp nao',
 'ipbreason'                       => 'Reden:',
@@ -2684,7 +2688,7 @@ De overige pagina's wörden niet automaties herneumd.",
 'delete_and_move_text'         => '==Mut vortedaon wörden==
 <div style="color: red"> Onder de nieje naam "[[:$1]]" besteet al n artikel. Wi\'j t vortdoon um plaotse te maken veur t herneumen?</div>',
 'delete_and_move_confirm'      => 'Ja, disse pagina vortdoon',
-'delete_and_move_reason'       => 'Vortedaon vanwegen naamwieziging',
+'delete_and_move_reason'       => 'Vortedaon vanwegen de herneuming van "[[$1]]"',
 'selfmove'                     => 'De naam kan niet ewiezigd wörden naor de naam die t al hef.',
 'immobile-source-namespace'    => 'Pagina\'s in de naamruumte "$1" kunnen niet herneumd wörden',
 'immobile-target-namespace'    => 'Pagina\'s kunnen niet herneumd wörden naor de naamruumte "$1"',
@@ -2730,7 +2734,7 @@ A'j dat leste doon willen dan ku'j oek n verwiezing gebruken, bieveurbeeld [[{{#
 'allmessagesdefault'            => 'Standardtekste',
 'allmessagescurrent'            => 'De leste versie',
 'allmessagestext'               => "Hieronder steet n lieste mit alle systeemteksten in de MediaWiki-naamruumte.
-Kiek oek effen bie [http://www.mediawiki.org/wiki/Localisation MediaWiki-lokalisasie] en [http://translatewiki.net translatewiki.net] a'j biedragen willen an de algemene vertaling veur MediaWiki.",
+Kiek oek effen bie [//www.mediawiki.org/wiki/Localisation MediaWiki-lokalisasie] en [//translatewiki.net translatewiki.net] a'j biedragen willen an de algemene vertaling veur MediaWiki.",
 'allmessagesnotsupportedDB'     => "Disse pagina kan niet gebruukt wörden umdat '''\$wgUseDatabaseMessages''' uuteschakeld is.",
 'allmessages-filter-legend'     => 'Filter',
 'allmessages-filter'            => 'Filtreer op wiezigingen:',
@@ -3410,7 +3414,7 @@ Aandere velden wörden verbörgen.
 
 # External editor support
 'edit-externally'      => 'Wiezig dit bestaand mit n extern programma',
-'edit-externally-help' => '(Zie de [http://www.mediawiki.org/wiki/Manual:External_editors installasie-instruksies] veur meer informasie)',
+'edit-externally-help' => '(Zie de [//www.mediawiki.org/wiki/Manual:External_editors installasie-instruksies] veur meer informasie)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'alles',
@@ -3569,7 +3573,7 @@ Je kunnen oek [[Special:EditWatchlist|t standardbewarkingsscharm gebruken]].",
 'watchlisttools-raw'  => 'Roewe volglieste bewarken',
 
 # Signatures
-'signature' => '[[{{ns:user}}:$1|$2]] <sup>([[{{ns:user_talk}}:$1|overleg]])</sup>',
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|overleg]])',
 
 # Core parser functions
 'unknown_extension_tag' => 'Onbekende tag "$1"',
@@ -3594,13 +3598,13 @@ Je kunnen oek [[Special:EditWatchlist|t standardbewarkingsscharm gebruken]].",
 'version-hook-subscribedby'     => 'In-eschreven deur',
 'version-version'               => '(Versie $1)',
 'version-license'               => 'Lisensie',
-'version-poweredby-credits'     => "Disse wiki wörden an-estuurd deur '''[http://www.mediawiki.org/ MediaWiki]''', auteursrecht © 2001-$1 $2.",
+'version-poweredby-credits'     => "Disse wiki wörden an-estuurd deur '''[//www.mediawiki.org/ MediaWiki]''', auteursrecht © 2001-$1 $2.",
 'version-poweredby-others'      => 'aanderen',
 'version-license-info'          => 'MediaWiki is vrieje programmatuur; je kunnen MediaWiki verspreien en/of anpassen onder de veurweerden van de GNU General Public License zo as epubliceerd deur de Free Software Foundation; of versie 2 van de Lisensie, of - naor eigen wuns - n laotere versie.
 
 MediaWiki wörden verspreid in de hoop dat t nuttig is, mer ZONDER ENIGE GARANSIE; zonder zelfs de daoronder begrepen garansie van VERKOOPBAORHEID of GESCHIKTHEID VEUR ENIG DOEL IN T BIEZUNDER. Zie de GNU General Public License veur meer informasie.
 
-Samen mit dit programma heur je n [{{SERVER}}{{SCRIPTPATH}}/COPYING kopie van de GNU General Public License] te hebben ekregen; as dat niet zo is, schrief dan naor de Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA of [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html lees de lisensie op t internet].',
+Samen mit dit programma heur je n [{{SERVER}}{{SCRIPTPATH}}/COPYING kopie van de GNU General Public License] te hebben ekregen; as dat niet zo is, schrief dan naor de Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA of [//www.gnu.org/licenses/old-licenses/gpl-2.0.html lees de lisensie op t internet].',
 'version-software'              => 'Programmatuur die installeerd is',
 'version-software-product'      => 'Produkt',
 'version-software-version'      => 'Versie',

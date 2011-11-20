@@ -18,6 +18,8 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 
 	protected $successMessage;
 
+	protected $toc;
+
 	public function __construct(){
 		parent::__construct( 'EditWatchlist' );
 	}
@@ -34,7 +36,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 
 		# Anons don't get a watchlist
 		if( $this->getUser()->isAnon() ) {
-			$out->setPageTitle( wfMsg( 'watchnologin' ) );
+			$out->setPageTitle( $this->msg( 'watchnologin' ) );
 			$llink = Linker::linkKnown(
 				SpecialPage::getTitleFor( 'Userlogin' ),
 				wfMsgHtml( 'loginreqlink' ),
@@ -45,19 +47,12 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 			return;
 		}
 
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkPermissions();
 
 		$this->outputHeader();
 
-		$sub  = wfMsgExt(
-			'watchlistfor2',
-			array( 'parseinline', 'replaceafter' ),
-			$this->getUser()->getName(),
-			SpecialEditWatchlist::buildTools( null )
-		);
-		$out->setSubtitle( $sub );
+		$out->addSubtitle( $this->msg( 'watchlistfor2', $this->getUser()->getName()
+			)->rawParams( SpecialEditWatchlist::buildTools( null ) ) );
 
 		# B/C: $mode used to be waaay down the parameter list, and the first parameter
 		# was $wgUser
@@ -75,7 +70,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 				// Pass on to the raw editor, from which it's very easy to clear.
 
 			case self::EDIT_RAW:
-				$out->setPageTitle( wfMsg( 'watchlistedit-raw-title' ) );
+				$out->setPageTitle( $this->msg( 'watchlistedit-raw-title' ) );
 				$form = $this->getRawForm();
 				if( $form->show() ){
 					$out->addHTML( $this->successMessage );
@@ -85,11 +80,13 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 
 			case self::EDIT_NORMAL:
 			default:
-				$out->setPageTitle( wfMsg( 'watchlistedit-normal-title' ) );
+				$out->setPageTitle( $this->msg( 'watchlistedit-normal-title' ) );
 				$form = $this->getNormalForm();
 				if( $form->show() ){
 					$out->addHTML( $this->successMessage );
 					$out->returnToMain();
+				} elseif ( $this->toc !== false ) {
+					$out->prependHTML( $this->toc );
 				}
 				break;
 		}
@@ -138,7 +135,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 			}
 
 			if( count( $toWatch ) > 0 ) {
-				$this->successMessage .= wfMessage(
+				$this->successMessage .= ' ' . wfMessage(
 					'watchlistedit-raw-added',
 					$this->getLang()->formatNum( count( $toWatch ) )
 				);
@@ -146,7 +143,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 			}
 
 			if( count( $toUnwatch ) > 0 ) {
-				$this->successMessage .= wfMessage(
+				$this->successMessage .= ' ' . wfMessage(
 					'watchlistedit-raw-removed',
 					$this->getLang()->formatNum( count( $toUnwatch ) )
 				);
@@ -233,8 +230,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 
 	/**
 	 * Get a list of titles on a user's watchlist, excluding talk pages,
-	 * and return as a two-dimensional array with namespace, title and
-	 * redirect status
+	 * and return as a two-dimensional array with namespace and title.
 	 *
 	 * @return array
 	 */
@@ -254,7 +250,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 		foreach ( $res as $row ) {
 			$lb->add( $row->wl_namespace, $row->wl_title );
 			if ( !MWNamespace::isTalk( $row->wl_namespace ) ) {
-				$titles[$row->wl_namespace][$row->wl_title] = false;
+				$titles[$row->wl_namespace][$row->wl_title] = 1;
 			}
 		}
 
@@ -375,6 +371,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 		global $wgContLang;
 
 		$fields = array();
+		$count = 0;
 
 		$haveInvalidNamespaces = false;
 		foreach( $this->getWatchlistInfo() as $namespace => $pages ){
@@ -382,13 +379,9 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 				$haveInvalidNamespaces = true;
 				continue;
 			}
-		
-			$namespace == NS_MAIN
-				? wfMsgHtml( 'blanknamespace' )
-				: htmlspecialchars( $wgContLang->getFormattedNsText( $namespace ) );
 
 			$fields['TitlesNs'.$namespace] = array(
-				'type' => 'multiselect',
+				'class' => 'EditWatchlistCheckboxSeriesField',
 				'options' => array(),
 				'section' => "ns$namespace",
 			);
@@ -397,11 +390,31 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 				$title = Title::makeTitleSafe( $namespace, $dbkey );
 				$text = $this->buildRemoveLine( $title );
 				$fields['TitlesNs'.$namespace]['options'][$text] = $title->getEscapedText();
+				$count++;
 			}
 		}
 		if ( $haveInvalidNamespaces ) {
 			wfDebug( "User {$this->getContext()->getUser()->getId()} has invalid watchlist entries, cleaning up...\n" );
 			$this->getContext()->getUser()->cleanupWatchlist();
+		}
+
+		if ( count( $fields ) > 1 && $count > 30 ) {
+			$this->toc = Linker::tocIndent();
+			$tocLength = 0;
+			foreach( $fields as $key => $data ) {
+
+				# strip out the 'ns' prefix from the section name:
+				$ns = substr( $data['section'], 2 );
+
+				$nsText = ($ns == NS_MAIN)
+					? wfMsgHtml( 'blanknamespace' )
+					: htmlspecialchars( $wgContLang->getFormattedNsText( $ns ) );
+				$this->toc .= Linker::tocLine( "mw-htmlform-{$data['section']}", $nsText,
+					$this->getLang()->formatNum( ++$tocLength ), 1 ) . Linker::tocLineEnd();
+			}
+			$this->toc = Linker::tocList( $this->toc );
+		} else {
+			$this->toc = false;
 		}
 
 		$form = new EditWatchlistNormalHTMLForm( $fields, $this->getContext() );
@@ -538,5 +551,23 @@ class EditWatchlistNormalHTMLForm extends HTMLForm {
 		return $namespace == NS_MAIN
 			? wfMsgHtml( 'blanknamespace' )
 			: htmlspecialchars( $this->getContext()->getLang()->getFormattedNsText( $namespace ) );
+	}
+}
+
+class EditWatchlistCheckboxSeriesField extends HTMLMultiSelectField {
+	/**
+	 * HTMLMultiSelectField throws validation errors if we get input data
+	 * that doesn't match the data set in the form setup. This causes
+	 * problems if something gets removed from the watchlist while the
+	 * form is open (bug 32126), but we know that invalid items will
+	 * be harmless so we can override it here.
+	 *
+	 * @param $value String the value the field was submitted with
+	 * @param $alldata Array the data collected from the form
+	 * @return Mixed Bool true on success, or String error to display.
+	 */
+	function validate( $value, $alldata ) {
+		// Need to call into grandparent to be a good citizen. :)
+		return HTMLFormField::validate( $value, $alldata );
 	}
 }

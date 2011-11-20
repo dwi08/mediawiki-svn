@@ -853,7 +853,12 @@ abstract class Installer {
 	 * Environment check for the server hostname.
 	 */
 	protected function envCheckServer() {
-		$server = WebRequest::detectServer();
+		if ( $this->getVar( 'wgServer' ) ) {
+			// wgServer was pre-defined, perhaps by the cli installer
+			$server = $this->getVar( 'wgServer' );
+		} else {
+			$server = WebRequest::detectServer();
+		}
 		$this->showMessage( 'config-using-server', $server );
 		$this->setVar( 'wgServer', $server );
 	}
@@ -981,7 +986,10 @@ abstract class Installer {
 	protected function envCheckSuhosinMaxValueLength() {
 		$maxValueLength = ini_get( 'suhosin.get.max_value_length' );
 		if ( $maxValueLength > 0 ) {
-			$this->showMessage( 'config-suhosin-max-value-length', $maxValueLength );
+			if( $maxValueLength < 1024 ) {
+				# Only warn if the value is below the sane 1024
+				$this->showMessage( 'config-suhosin-max-value-length', $maxValueLength );
+			}
 		} else {
 			$maxValueLength = -1;
 		}
@@ -1118,6 +1126,9 @@ abstract class Installer {
 	/**
 	 * Same as locateExecutable(), but checks in getPossibleBinPaths() by default
 	 * @see locateExecutable()
+	 * @param $names
+	 * @param $versionInfo bool
+	 * @return bool|string
 	 */
 	public static function locateExecutableInDefaultPaths( $names, $versionInfo = false ) {
 		foreach( self::getPossibleBinPaths() as $path ) {
@@ -1199,11 +1210,13 @@ abstract class Installer {
 	 */
 	public function setParserLanguage( $lang ) {
 		$this->parserOptions->setTargetLanguage( $lang );
-		$this->parserOptions->setUserLang( $lang->getCode() );
+		$this->parserOptions->setUserLang( $lang );
 	}
 
 	/**
 	 * Overridden by WebInstaller to provide lastPage parameters.
+	 * @param $page stirng
+	 * @return string
 	 */
 	protected function getDocUrl( $page ) {
 		return "{$_SERVER['PHP_SELF']}?page=" . urlencode( $page );
@@ -1491,6 +1504,7 @@ abstract class Installer {
 	/**
 	 * Insert Main Page with default content.
 	 *
+	 * @param $installer DatabaseInstaller
 	 * @return Status
 	 */
 	protected function createMainpage( DatabaseInstaller $installer ) {

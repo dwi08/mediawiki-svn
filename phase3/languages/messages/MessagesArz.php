@@ -660,13 +660,12 @@ $1',
 الخاصّيه: $1<br />
 الاستعلام: $2',
 'viewsource'           => 'عرض المصدر',
-'viewsourcefor'        => 'لـ $1',
 'actionthrottled'      => 'العمليه دى اتزنقت',
 'actionthrottledtext'  => 'علشان نمنع ال سبام ،أنت ممنوع تعمل  الفعل دا عدد كبير من المرات فى فترة زمنية قصيرة، و انت ا تجاوزت  الحد دا . لو سمحت تحاول مرة ثانية بعد دقائق.',
 'protectedpagetext'    => 'الصفحة دى اتقفلت فى وش التعديل.',
 'viewsourcetext'       => 'ممكن تشوف وتنسخ مصدر  الصفحه دى:',
 'protectedinterface'   => 'الصفحة دى هى اللى بتوفر نص الواجهة بتاعة البرنامج،وهى مقفولة لمنع التخريب.',
-'editinginterface'     => "'''تحذير''': أنت بتعدل صفحة بتستخدم فى الواجهة النصية  بتاعة البرنامج. التغييرات فى الصفحة دى ها تأثر على مظهر واجهة اليوزر لليوزرز التانيين. للترجمات، لو سمحت استخدم [http://translatewiki.net/wiki/Main_Page?setlang=ar بيتاويكى]، مشروع ترجمة الميدياويكى.",
+'editinginterface'     => "'''تحذير''': أنت بتعدل صفحة بتستخدم فى الواجهة النصية  بتاعة البرنامج. التغييرات فى الصفحة دى ها تأثر على مظهر واجهة اليوزر لليوزرز التانيين. للترجمات، لو سمحت استخدم [//translatewiki.net/wiki/Main_Page?setlang=ar بيتاويكى]، مشروع ترجمة الميدياويكى.",
 'sqlhidden'            => '(استعلام إس‌كيو‌إل متخبي)',
 'cascadeprotected'     => 'الصفحة دى محمية من التعديل، بسبب انها مدمجة فى {{PLURAL:$1|الصفحة|الصفحات}} دي، اللى مستعمل فيها خاصية "حماية الصفحات المدمجة" :
 $2',
@@ -861,9 +860,6 @@ $2',
 
 عنوان الأيبى الحالى الخاص بك هو $3، رقم المنع هو $5. لو سمحت تذكر الرقم دا فى اى استفسار.',
 'blockednoreason'                  => 'ما فيش سبب',
-'blockedoriginalsource'            => "المصدر بتاع '''$1''' معروض تحت:",
-'blockededitsource'                => "نص '''تعديلاتك''' فى '''$1''' معروض هنا:",
-'whitelistedittitle'               => 'لازم تسجل دخولك علشان تقدر تعدل',
 'whitelistedittext'                => 'لازم $1 علشان تقدر تعدل الصفحات.',
 'confirmedittext'                  => 'قبل ما تبتدى تعدل لازم نتأكد من الايميل بتاعك. لو سمحت تكتب وتأكد الايميل بتاعك  في[[Special:Preferences|تفضيلاتك]]',
 'nosuchsectiontitle'               => 'مافيش قسم بالاسم ده',
@@ -2369,7 +2365,6 @@ $1',
 دا لازم يحصل بس علشان تمنع التخريب ،و على حسب
 [[{{MediaWiki:Policy-url}}|السياسة]].
 اكتب سبب محدد تحت (يعنى مثلا، اكتب الصفحات المعينة اللى اتخربت بسببه).',
-'ipaddress'                       => 'عنوان الأيبي:',
 'ipadressorusername'              => 'عنوان الأيبى أو اسم اليوزر:',
 'ipbexpiry'                       => 'مدة المنع:',
 'ipbreason'                       => 'السبب:',
@@ -2596,7 +2591,7 @@ $1',
 'allmessagesdefault'            => 'النص الاوتوماتيكي',
 'allmessagescurrent'            => 'النص دلوقتى',
 'allmessagestext'               => 'دى لستة برسايل النظام المتوفرة فى نطاق ميدياويكي.
-لو سمحت تزور[http://www.mediawiki.org/wiki/Localisation ترجمة ميدياويكي] و [http://translatewiki.net بيتاويكي] لو كنت عايز تساهم فى ترجمة ميدياويكى الاصلية.',
+لو سمحت تزور[//www.mediawiki.org/wiki/Localisation ترجمة ميدياويكي] و [//translatewiki.net بيتاويكي] لو كنت عايز تساهم فى ترجمة ميدياويكى الاصلية.',
 'allmessagesnotsupportedDB'     => "الصفحة دى مش يمكن حد يستعملها علشان'''\$wgUseDatabaseMessages''' متعطل.",
 'allmessages-filter-legend'     => 'فيلتر',
 'allmessages-filter'            => 'فلتره بحالة التهيئه:',
@@ -3157,7 +3152,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'استعمل تطبيق من بره علشان تعدل الملف دا',
-'edit-externally-help' => '(بص على [http://www.mediawiki.org/wiki/Manual:External_editors  تعليمات الاعداد] علشان معلومات اكتر.)',
+'edit-externally-help' => '(بص على [//www.mediawiki.org/wiki/Manual:External_editors  تعليمات الاعداد] علشان معلومات اكتر.)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'الكل',

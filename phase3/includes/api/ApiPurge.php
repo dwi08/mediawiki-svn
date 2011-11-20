@@ -25,10 +25,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	require_once( 'ApiBase.php' );
-}
-
 /**
  * API interface for page purging
  * @ingroup API
@@ -43,10 +39,10 @@ class ApiPurge extends ApiBase {
 	 * Purges the cache of a page
 	 */
 	public function execute() {
-		global $wgUser;
+		$user = $this->getUser();
 		$params = $this->extractRequestParams();
-		if ( !$wgUser->isAllowed( 'purge' ) && !$this->getMain()->isInternalMode() &&
-				!$this->getMain()->getRequest()->wasPosted() ) {
+		if ( !$user->isAllowed( 'purge' ) && !$this->getMain()->isInternalMode() &&
+				!$this->getRequest()->wasPosted() ) {
 			$this->dieUsageMsg( array( 'mustbeposted', $this->getModuleName() ) );
 		}
 
@@ -68,17 +64,17 @@ class ApiPurge extends ApiBase {
 				$result[] = $r;
 				continue;
 			}
-			$context = $this->createContext();
-			$context->setTitle( $title );
-			$article = Article::newFromTitle( $title, $context );
-			$article->doPurge(); // Directly purge and skip the UI part of purge().
+
+			$page = WikiPage::factory( $title );
+			$page->doPurge(); // Directly purge and skip the UI part of purge().
 			$r['purged'] = '';
 
 			if( $forceLinkUpdate ) {
-				if ( !$wgUser->pingLimiter() ) {
+				if ( !$user->pingLimiter() ) {
 					global $wgParser, $wgEnableParserCache;
-					$popts = new ParserOptions();
-					$p_result = $wgParser->parse( $article->getContent(), $title, $popts );
+
+					$popts = ParserOptions::newFromContext( $this->getContext() );
+					$p_result = $wgParser->parse( $page->getRawText(), $title, $popts );
 
 					# Update the links tables
 					$u = new LinksUpdate( $title, $p_result );
@@ -88,7 +84,7 @@ class ApiPurge extends ApiBase {
 
 					if ( $wgEnableParserCache ) {
 						$pcache = ParserCache::singleton();
-						$pcache->save( $p_result, $article, $popts );
+						$pcache->save( $p_result, $page, $popts );
 					}
 				} else {
 					$this->setWarning( $this->parseMsg( array( 'actionthrottledtext' ) ) );

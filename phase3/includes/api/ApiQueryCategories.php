@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiQueryBase.php" );
-}
-
 /**
  * A query module to enumerate categories the set of pages belong to.
  *
@@ -127,11 +122,16 @@ class ApiQueryCategories extends ApiQueryGeneratorBase {
 		}
 
 		$this->addOption( 'USE INDEX', array( 'categorylinks' => 'cl_from' ) );
+
+		$dir = ( $params['dir'] == 'descending' ? ' DESC' : '' );
 		// Don't order by cl_from if it's constant in the WHERE clause
 		if ( count( $this->getPageSet()->getGoodTitles() ) == 1 ) {
-			$this->addOption( 'ORDER BY', 'cl_to' );
+			$this->addOption( 'ORDER BY', 'cl_to' . $dir );
 		} else {
-			$this->addOption( 'ORDER BY', "cl_from, cl_to" );
+			$this->addOption( 'ORDER BY', array(
+						'cl_from' . $dir,
+						'cl_to' . $dir
+			));
 		}
 
 		$res = $this->select( __METHOD__ );
@@ -213,6 +213,13 @@ class ApiQueryCategories extends ApiQueryGeneratorBase {
 			'categories' => array(
 				ApiBase::PARAM_ISMULTI => true,
 			),
+			'dir' => array(
+				ApiBase::PARAM_DFLT => 'ascending',
+				ApiBase::PARAM_TYPE => array(
+					'ascending',
+					'descending'
+				)
+			),
 		);
 	}
 
@@ -228,6 +235,7 @@ class ApiQueryCategories extends ApiQueryGeneratorBase {
 			'show' => 'Which kind of categories to show',
 			'continue' => 'When more results are available, use this to continue',
 			'categories' => 'Only list these categories. Useful for checking whether a certain page is in a certain category',
+			'dir' => 'The direction in which to list',
 		);
 	}
 

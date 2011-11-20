@@ -58,6 +58,8 @@ class LocalFile extends File {
 
 	/**#@-*/
 
+	protected $repoClass = 'LocalRepo';
+
 	/**
 	 * Create a LocalFile from a title
 	 * Do not call this except from inside a repo class.
@@ -95,22 +97,21 @@ class LocalFile extends File {
 	 * Create a LocalFile from a SHA-1 key
 	 * Do not call this except from inside a repo class.
 	 *
-	 * @param $sha1 string
+	 * @param $sha1 string base-36 SHA-1
 	 * @param $repo LocalRepo
-	 * @param $timestamp string
+	 * @param string|bool $timestamp MW_timestamp (optional)
 	 *
-	 * @return LocalFile
+	 * @return bool|LocalFile
 	 */
 	static function newFromKey( $sha1, $repo, $timestamp = false ) {
-		$conds = array( 'img_sha1' => $sha1 );
+		$dbr = $repo->getSlaveDB();
 
+		$conds = array( 'img_sha1' => $sha1 );
 		if ( $timestamp ) {
-			$conds['img_timestamp'] = $timestamp;
+			$conds['img_timestamp'] = $dbr->timestamp( $timestamp );
 		}
 
-		$dbr = $repo->getSlaveDB();
 		$row = $dbr->selectRow( 'image', self::selectFields(), $conds, __METHOD__ );
-
 		if ( $row ) {
 			return self::newFromRow( $row, $repo );
 		} else {
@@ -145,16 +146,15 @@ class LocalFile extends File {
 	 * Do not call this except from inside a repo class.
 	 */
 	function __construct( $title, $repo ) {
-		if ( !is_object( $title ) ) {
-			throw new MWException( __CLASS__ . ' constructor given bogus title.' );
-		}
-
 		parent::__construct( $title, $repo );
 
 		$this->metadata = '';
 		$this->historyLine = 0;
 		$this->historyRes = null;
 		$this->dataLoaded = false;
+
+		$this->assertRepoDefined();
+		$this->assertTitleDefined();
 	}
 
 	/**
@@ -675,24 +675,24 @@ class LocalFile extends File {
 	/**
 	 * Delete all previously generated thumbnails, refresh metadata in memcached and purge the squid
 	 */
-	function purgeCache( $options = array() ) {
+	function purgeCache() {
 		// Refresh metadata cache
 		$this->purgeMetadataCache();
 
 		// Delete thumbnails
-		$this->purgeThumbnails( $options );
+		$this->purgeThumbnails();
 
 		// Purge squid cache for this file
 		SquidUpdate::purge( array( $this->getURL() ) );
 	}
 
 	/**
-	 * Delete cached transformed files for archived files
+	 * Delete cached transformed files for an archived version only.
 	 * @param $archiveName string name of the archived file
 	 */
 	function purgeOldThumbnails( $archiveName ) {
 		global $wgUseSquid;
-		// get a list of old thumbnails and URLs
+		// Get a list of old thumbnails and URLs
 		$files = $this->getThumbnails( $archiveName );
 		$dir = array_shift( $files );
 		$this->purgeThumbList( $dir, $files );
@@ -705,6 +705,9 @@ class LocalFile extends File {
 			wfDebug( __METHOD__ . ": unable to remove archive directory: $dir\n" );
 		}
 		wfRestoreWarnings();
+
+		// Purge any custom thumbnail caches
+		wfRunHooks( 'LocalFilePurgeThumbnails', array( $this, $archiveName ) );
 
 		// Purge the squid
 		if ( $wgUseSquid ) {
@@ -720,20 +723,16 @@ class LocalFile extends File {
 	/**
 	 * Delete cached transformed files for the current version only.
 	 */
-	function purgeThumbnails( $options = array() ) {
+	function purgeThumbnails() {
 		global $wgUseSquid;
-		
-		// Get a list of thumbnails and URLs
+
+		// Delete thumbnails
 		$files = $this->getThumbnails();
-		
-		// Give media handler a chance to filter the purge list
-		$handler = $this->getHandler();
-		if ( $handler ) {
-			$handler->filterThumbnailPurgeList( $files, $options );
-		}
-		
 		$dir = array_shift( $files );
 		$this->purgeThumbList( $dir, $files );
+
+		// Purge any custom thumbnail caches
+		wfRunHooks( 'LocalFilePurgeThumbnails', array( $this, false ) );
 
 		// Purge the squid
 		if ( $wgUseSquid ) {
@@ -750,17 +749,9 @@ class LocalFile extends File {
 	 * @param $dir string base dir of the files.
 	 * @param $files array of strings: relative filenames (to $dir)
 	 */
-	function purgeThumbList($dir, $files) {
-		global $wgExcludeFromThumbnailPurge;
-
+	protected function purgeThumbList($dir, $files) {
 		wfDebug( __METHOD__ . ": " . var_export( $files, true ) . "\n" );
 		foreach ( $files as $file ) {
-			// Only remove files not in the $wgExcludeFromThumbnailPurge configuration variable
-			$ext = pathinfo( "$dir/$file", PATHINFO_EXTENSION );
-			if ( in_array( $ext, $wgExcludeFromThumbnailPurge ) ) {
-				continue;
-			}
-
 			# Check that the base file name is part of the thumb name
 			# This is a basic sanity check to avoid erasing unrelated directories
 			if ( strpos( $file, $this->getName() ) !== false ) {
@@ -873,7 +864,6 @@ class LocalFile extends File {
 		}
 	}
 
-	/** getFullPath inherited */
 	/** getHashPath inherited */
 	/** getRel inherited */
 	/** getUrlRel inherited */
@@ -903,6 +893,11 @@ class LocalFile extends File {
 	 *     archive name, or an empty string if it was a new file.
 	 */
 	function upload( $srcPath, $comment, $pageText, $flags = 0, $props = false, $timestamp = false, $user = null ) {
+		global $wgContLang;
+		// truncate nicely or the DB will do it for us
+		// non-nicely (dangling multi-byte chars, non-truncated
+		// version in cache).
+		$comment = $wgContLang->truncate( $comment, 255 );
 		$this->lock();
 		$status = $this->publish( $srcPath, $flags );
 
@@ -1061,8 +1056,8 @@ class LocalFile extends File {
 		}
 
 		$descTitle = $this->getTitle();
-		$article = new ImagePage( $descTitle );
-		$article->setFile( $this );
+		$wikiPage = new WikiFilePage( $descTitle );
+		$wikiPage->setFile( $this );
 
 		# Add the log entry
 		$log = new LogPage( 'upload' );
@@ -1081,8 +1076,8 @@ class LocalFile extends File {
 			if (!is_null($nullRevision)) {
 				$nullRevision->insertOn( $dbw );
 
-				wfRunHooks( 'NewRevisionFromEditComplete', array( $article, $nullRevision, $latest, $user ) );
-				$article->updateRevisionOn( $dbw, $nullRevision );
+				wfRunHooks( 'NewRevisionFromEditComplete', array( $wikiPage, $nullRevision, $latest, $user ) );
+				$wikiPage->updateRevisionOn( $dbw, $nullRevision );
 			}
 			# Invalidate the cache for the description page
 			$descTitle->invalidateCache();
@@ -1091,7 +1086,7 @@ class LocalFile extends File {
 			# New file; create the description page.
 			# There's already a log entry, so don't make a second RC entry
 			# Squid and file cache for the description page are purged by doEdit.
-			$article->doEdit( $pageText, $comment, EDIT_NEW | EDIT_SUPPRESS_RC );
+			$wikiPage->doEdit( $pageText, $comment, EDIT_NEW | EDIT_SUPPRESS_RC );
 		}
 
 		# Commit the transaction now, in case something goes wrong later

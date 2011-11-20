@@ -49,11 +49,13 @@
  * @author Zanatos
  * @author ترجمان05
  * @author خالد حسني
+ * @author روخو
  * @author زكريا
  * @author عصام بايزيدي
  * @author عمرو
  * @author محمد الجداوي
  * @author نصوح
+ * @author وهراني
  */
 
 $linkPrefixExtension = true;
@@ -476,8 +478,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'اعرض عدد المستخدمين المراقبين',
 'tog-oldsig'                  => 'التوقيع الحالي:',
 'tog-fancysig'                => 'عامل التوقيع كنص ويكي (بدون وصلة أوتوماتيكية)',
-'tog-externaleditor'          => 'استخدم محررا خارجيا بشكل افتراضي (للخبراء فقط، يحتاج إعدادات خاصة على حاسوبك) ([http://www.mediawiki.org/wiki/Manual:External_editors مزيد من المعلومات.])',
-'tog-externaldiff'            => 'استخدم فرقا خارجيا بشكل افتراضي (للخبراء فقط، يحتاج إعدادات خاصة على حاسوبك) ([http://www.mediawiki.org/wiki/Manual:External_editors للمزيد من المعلومات.])',
+'tog-externaleditor'          => 'استخدم محررا خارجيا بشكل افتراضي (للخبراء فقط، يحتاج إعدادات خاصة على حاسوبك) ([//www.mediawiki.org/wiki/Manual:External_editors مزيد من المعلومات.])',
+'tog-externaldiff'            => 'استخدم فرقا خارجيا بشكل افتراضي (للخبراء فقط، يحتاج إعدادات خاصة على حاسوبك) ([//www.mediawiki.org/wiki/Manual:External_editors للمزيد من المعلومات.])',
 'tog-showjumplinks'           => 'مكن وصلات "اذهب إلى" المساعدة',
 'tog-uselivepreview'          => 'استخدم الاستعراض السريع (جافاسكريبت) (تجريبي)',
 'tog-forceeditsummary'        => 'نبهني عند إدخال ملخص تعديل فارغ',
@@ -805,6 +807,7 @@ $1',
 'badarticleerror'      => 'لا يمكن إجراء هذا الفعل على هذه الصفحة.',
 'cannotdelete'         => 'تعذر حذف الصفحة أو الملف "$1".
 ربما حذفها شحص آخر.',
+'cannotdelete-title'   => 'لا يمكن حذف الصفحة "$1"',
 'badtitle'             => 'عنوان سيء',
 'badtitletext'         => 'عنوان الصفحة المطلوب إما غير صحيح أو فارغ، وربما الوصلة بين اللغات أو بين المشاريع خاطئة.
 ومن الممكن وجود رموز لا تصلح للاستخدام في العناوين.',
@@ -816,16 +819,17 @@ $1',
 الدالة: $1<br />
 الاستعلام: $2',
 'viewsource'           => 'اعرض المصدر',
-'viewsourcefor'        => 'ل$1',
+'viewsource-title'     => 'إظهار مصدر $1',
 'actionthrottled'      => 'لا يمكن عمل المزيد من هذا الفعل',
 'actionthrottledtext'  => 'كإجراء ضد السبام، أنت ممنوع من إجراء هذا الفعل عدد كبير من المرات في فترة زمنية قصيرة، ولقد تجاوزت هذا الحد.
 من فضلك حاول مرة ثانية خلال عدة دقائق.',
 'protectedpagetext'    => 'هذه الصفحة تمت حمايتها لمنع التعديل.',
 'viewsourcetext'       => 'يمكنك رؤية ونسخ مصدر هذه الصفحة:',
+'viewyourtext'         => "يمكنك رؤية ونسخ مصدر ''' تعديلاتك ''' في هذه الصفحة:",
 'protectedinterface'   => 'هذه الصفحة توفر نص الواجهة للبرنامج، وهي مقفلة لمنع التخريب.',
 'editinginterface'     => "'''تحذير:''' أنت تقوم بتحرير صفحة تستخدم في الواجهة النصية للبرنامج.
 سوف تؤثر التغييرات على هذه الصفحة على مظهر واجهة المستخدم للمستخدمين الآخرين.
-للترجمات، من فضلك استخدم مشروع ترجمة ميدياويكي [http://translatewiki.net/wiki/Main_Page?setlang=ar translatewiki.net].",
+للترجمات، من فضلك استخدم مشروع ترجمة ميدياويكي [//translatewiki.net/wiki/Main_Page?setlang=ar translatewiki.net].",
 'sqlhidden'            => '(استعلام SQL مخفي)',
 'cascadeprotected'     => 'تمت حماية هذه الصفحة من التعديل لأنها مدمجة في {{PLURAL:$1||الصفحة التالية، والتي|الصفحتين التاليتين، واللتين|الصفحات التالية، والتي}} تم استعمال خاصية "حماية الصفحات المدمجة" {{PLURAL:$1||بها|بهما|بها}}:
 $2',
@@ -930,6 +934,7 @@ $2',
 'emailconfirmlink'           => 'أكد عنوان بريدك الإلكتروني',
 'invalidemailaddress'        => 'لا يمكن قبول عنوان البريد الإلكتروني حيث تبدو صيغته خاطئة.
 ضع عنوانا مضبوطا أو أفرغ هذا الحقل.',
+'cannotchangeemail'          => 'تغيير عنوان البريد الإلكتروني لهذا الحساب غير ممكن على هذا الويكي',
 'accountcreated'             => 'تم إنشاء الحساب',
 'accountcreatedtext'         => 'تم إنشاء الحساب الخاص ب$1.',
 'createaccount-title'        => 'إنشاء حساب في {{SITENAME}}',
@@ -1078,9 +1083,6 @@ $2
 عنوان آيبيك الحالي $3، ورقم المنع #$5.
 من فضلك اذكر كل التفاصيل بالأعلى في أي استعلامات تقوم بها.',
 'blockednoreason'                  => 'لا سبب معطى',
-'blockedoriginalsource'            => "مصدر '''$1''' معروض بالأسفل:",
-'blockededitsource'                => "نص '''تعديلاتك''' في '''$1''' معروض بالأسفل:",
-'whitelistedittitle'               => 'تسجيل الدخول مطلوب للتحرير',
 'whitelistedittext'                => 'يجب عليك $1 لتتمكن من تعديل الصفحات.',
 'confirmedittext'                  => 'يجب عليك تأكيد بريدك الإلكتروني قبل تعديل الصفحات.
 من فضلك اكتب وأكد بريدك الإلكتروني من خلال [[Special:Preferences|تفضيلاتك]].',
@@ -1648,12 +1650,12 @@ $1",
 'group-suppress'      => 'نظار',
 'group-all'           => '(الكل)',
 
-'group-user-member'          => 'مستخدم',
-'group-autoconfirmed-member' => 'مستخدم مؤكد تلقائيا',
+'group-user-member'          => '{{GENDER:$1|مستخدم|مستخدمة}}',
+'group-autoconfirmed-member' => '{{GENDER:$1|مستخدم مؤكد تلقائيًا|مستخدمة مؤكدة تلقائيًا}}',
 'group-bot-member'           => 'بوت',
-'group-sysop-member'         => 'مدير نظام',
+'group-sysop-member'         => '{{GENDER:$1|إداري|إدارية}}',
 'group-bureaucrat-member'    => 'بيروقراط',
-'group-suppress-member'      => 'ناظر',
+'group-suppress-member'      => '{{GENDER:$1|ناظر|ناظرة}}',
 
 'grouppage-user'          => '{{ns:project}}:مستخدمون',
 'grouppage-autoconfirmed' => '{{ns:project}}:مستخدمون مؤكدون تلقائيا',
@@ -1852,6 +1854,7 @@ $1",
 'minlength1'                  => 'أسماء الملفات يجب أن تتكون من حرف واحد على الأقل.',
 'illegalfilename'             => 'اسم الملف "$1" يحتوي على حروف غير مسموح بها في عناوين الصفحات.
 من فضلك أعد تسمية الملف وحاول رفعه مرة أخرى.',
+'filename-toolong'            => 'طول أسماء الملفات يجب أن لا يتجاوز 240 حرف (بايت)',
 'badfilename'                 => 'تم تغيير اسم الملف إلى "$1".',
 'filetype-mime-mismatch'      => 'امتداد الملف ".$1" لا يطابق نوع MIME للملف ($2).',
 'filetype-badmime'            => 'من غير المسموح به رفع ملفات من النوع "$1".',
@@ -2156,7 +2159,7 @@ $1',
 'statistics-users-active-desc' => 'المستخدمون الذين قاموا بفعل في آخر {{PLURAL:$1|يوم|$1 يوم}}',
 'statistics-mostpopular'       => 'أكثر الصفحات مشاهدة',
 
-'disambiguations'      => 'صفحات التوضيح',
+'disambiguations'      => 'الصفحات التي ترتبط بصفحات توضيح',
 'disambiguationspage'  => 'Template:توضيح',
 'disambiguations-text' => "الصفحات التالية تصل إلى '''صفحة توضيح'''.
 ينبغي في المقابل أن تصل إلى الصفحة الملائمة. <br />
@@ -2229,7 +2232,7 @@ $1',
 'listusers-editsonly'     => 'اعرض المستخدمين الذين قاموا بتعديلات فقط',
 'listusers-creationsort'  => 'رتب حسب تاريخ الإنشاء',
 'usereditcount'           => '$1 {{PLURAL:$1|تعديل|تعديل}}',
-'usercreated'             => 'تم إنشاؤه في $1 الساعة $2',
+'usercreated'             => '{{GENDER:$3|أنشأه|أنشأته}} في $1 الساعة $2',
 'newpages'                => 'صفحات جديدة',
 'newpages-username'       => 'اسم المستخدم:',
 'ancientpages'            => 'أقدم الصفحات',
@@ -2298,7 +2301,7 @@ $1',
 'sp-deletedcontributions-contribs' => 'مساهمات',
 
 # Special:LinkSearch
-'linksearch'       => 'وصلات خارجية',
+'linksearch'       => 'بحث في الوصلات الخارجية',
 'linksearch-pat'   => 'نمط البحث:',
 'linksearch-ns'    => 'النطاق:',
 'linksearch-ok'    => 'ابحث',
@@ -2388,7 +2391,7 @@ $1',
 'watchlistanontext'    => 'الرجاء $1 لعرض أو تعديل الصفحات في قائمة مراقبتك.',
 'watchnologin'         => 'غير مسجل',
 'watchnologintext'     => 'يجب أن تكون [[Special:UserLogin|مسجلا الدخول]] لتعدل قائمة مراقبتك.',
-'addwatch'             => 'إضافة إلى قائمة الرغبات',
+'addwatch'             => 'إضافة إلى قائمة المراقبة',
 'addedwatchtext'       => "أضيفت الصفحة  \"[[:\$1]]\" إلى [[Special:Watchlist|قائمة مراقبتك]].
 التغييرات القادمة على هذه الصفحة وصفحة نقاشها سيتم وضعها هناك، وسيتم إظهار اسم الصفحة بخط '''غليظ''' في صفحة [[Special:RecentChanges|أحدث التغييرات]] لتسهيل تحديدها واكتشافها.",
 'removewatch'          => 'إزالة من قائمة المراقبة',
@@ -2426,29 +2429,29 @@ $1',
 'enotif_lastvisited'           => 'انظر $1 لكل التغييرات منذ زيارتك الأخيرة.',
 'enotif_lastdiff'              => 'انظر $1 لرؤية هذا التغيير.',
 'enotif_anon_editor'           => 'مستخدم مجهول $1',
-'enotif_body'                  => 'عزيزي $ WATCHINGUSERNAMEE
-صفحة  $PAGETITLE قد  $ CHANGEDORCREATEDفي $PAGEEDITDATE ب$PAGEEDITOR, انظر$PAGETITLE_URL للمراجعة الحالية
-موجز للمحرر: $PAGESUMMARY $PAGEMINOREDIT
+'enotif_body'                  => 'عزيزي $WATCHINGUSERNAME
+صفحة  $PAGETITLE قد  $CHANGEDORCREATED في $PAGEEDITDATE بواسطة $PAGEEDITOR, انظر $PAGETITLE_URL للنسخة الحالية
+ملخص التعديل: $PAGESUMMARY $PAGEMINOREDIT
 
 
 الاتصال بالمحرر:
- البريد: $PAGEEDITOR_EMAIL
- ويكي: $PAGEEDITOR_WIKI
+البريد: $PAGEEDITOR_EMAIL
+ويكي: $PAGEEDITOR_WIKI
 
-لن يكون هناك لا إخطارات أخرى في حالة حدوث مزيد من التغييرات إلا إذا قمت بزيارة هذه الصفحة.
+لن يكون هناك إخطارات أخرى في حالة حدوث مزيد من التغييرات إلا إذا قمت بزيارة تلك الصفحة.
 يمكن أيضا تعيين إشارات الإعلام لجميع صفحات شاهد على هيئة الرصد الخاصة بك.
 
-			 {{SITENAME}} إعلام النظام الخاص بك ودية
+			 {{SITENAME}} إعلام البريد الإلكتروني لموقع
 
 --
 لتغيير إعدادات إعلام البريد الإلكتروني الخاص بك، قم بزيارة
-{{canonicalurl: {{# الخاص: تفضيلات}}}}
+{{canonicalurl:{{#special:Preferences}}}}
 
-لتغيير إعدادات الرصد الخاصة بك، قم بزيارة
-{{canonicalurl: {{# الخاص: الرصد}}/تحرير}}
+لتغيير إعدادات المراقبة الخاصة بك، قم بزيارة
+{{canonicalurl:{{#special:EditWatchlist}}}}
 
-لحذف الصفحة من هيئة الرصد الخاصة بك، قم بزيارة
-$ أونواتشورل
+لحذف الصفحة من قائمة المراقبة الخاصة بك، قم بزيارة
+$UNWATCHURL
 
 التغذية المرتدة، والحصول على مساعدة إضافية:
 {{canonicalurl: {{MediaWiki:Helppage}}}}',
@@ -2519,6 +2522,7 @@ $ أونواتشورل
 'unprotectedarticle'          => 'أزال الحماية من "[[$1]]"',
 'movedarticleprotection'      => 'نقل إعدادات الحماية من "[[$2]]" إلى "[[$1]]"',
 'protect-title'               => 'ضبط مستوى الحماية ل"$1"',
+'protect-title-notallowed'    => 'عرض مستوى الحماية ل "$1"',
 'prot_1movedto2'              => '[[$1]] تم نقلها إلى [[$2]]',
 'protect-legend'              => 'تأكيد الحماية',
 'protectcomment'              => 'السبب:',
@@ -2611,6 +2615,7 @@ $ أونواتشورل
 
 راجع [[Special:Log/delete|سجل الحدف]] لمعاينة عمليات الحذف والاسترجاعات الحديثة.",
 'undelete-header'              => 'انظر الصفحات المحذوفة حديثا في [[Special:Log/delete|سجل الحذف]].',
+'undelete-search-title'        => 'البحث في الصفحات المحذوفة',
 'undelete-search-box'          => 'ابحث في الصفحات المحذوفة',
 'undelete-search-prefix'       => 'عرض الصفحات التي تبدأ بـ:',
 'undelete-search-submit'       => 'ابحث',
@@ -2690,7 +2695,6 @@ $1',
 'blockip-title'                   => 'منع مستخدم',
 'blockip-legend'                  => 'منع المستخدم',
 'blockiptext'                     => 'استخدم النموذج التالي لمنع مستخدم، أو عنوان آيبي، معين من التعديل أو إنشاء حسابات جديدة. تُستخدم هذه العملية لمنع التخريب فقط، ويجب أن تتماشى مع [[{{MediaWiki:Policy-url}}|سياسة المنع]]. أدخل تعليلاً واضحًا لسبب المنع في الخانة المخصصة لذلك (مثلاً: ذكر صفحات محددة تمّ تخريبها من قبل المستخدم).',
-'ipaddress'                       => 'عنوان الأيبي:',
 'ipadressorusername'              => 'عنوان الأيبي أو اسم المستخدم:',
 'ipbexpiry'                       => 'مدة المنع:',
 'ipbreason'                       => 'السبب:',
@@ -2907,7 +2911,7 @@ $1',
 الصفحة الهدف "[[:$1]]" موجودة بالفعل.
 هل تريد حذفها لإفساح المجال للنقل؟',
 'delete_and_move_confirm'      => 'نعم، احذف الصفحة',
-'delete_and_move_reason'       => 'تم الحذف لإفساح مجال للنقل',
+'delete_and_move_reason'       => 'حُذِفت لإفساح مجال لنقل "[[$1]]"',
 'selfmove'                     => 'لا يوجد اختلاف في عنوان المصدر والهدف؛
 لا يمكن نقل الصفحة على نفسها.',
 'immobile-source-namespace'    => 'غير قادر على نقل الصفحات في النطاق "$1"',
@@ -2955,7 +2959,7 @@ $1',
 'allmessagesdefault'            => 'النص الافتراضي',
 'allmessagescurrent'            => 'النص الحالي',
 'allmessagestext'               => 'هذه قائمة برسائل النظام المتوفرة في نطاق ميدياويكي.
-من فضلك زر [http://www.mediawiki.org/wiki/Localisation ترجمة ميدياويكي] و [http://translatewiki.net بيتاويكي] لو كنت ترغب في المساهمة في ترجمة ميدياويكي الأساسية.',
+من فضلك زر [//www.mediawiki.org/wiki/Localisation ترجمة ميدياويكي] و [//translatewiki.net بيتاويكي] لو كنت ترغب في المساهمة في ترجمة ميدياويكي الأساسية.',
 'allmessagesnotsupportedDB'     => "هذه الصفحة لا يمكن استخدامها لأن '''\$wgUseDatabaseMessages''' تم تعطيله.",
 'allmessages-filter-legend'     => 'المرشح',
 'allmessages-filter'            => 'رشح حسب حالة التخصيص:',
@@ -3018,6 +3022,8 @@ $1',
 'import-upload'              => 'رفع بيانات XML',
 'import-token-mismatch'      => 'فقد لبيانات الجلسة. من فضلك حاول مرة أخرى.',
 'import-invalid-interwiki'   => 'لم يمكن الاستيراد من الويكي المحدد.',
+'import-error-edit'          => 'الصفحة "$1" لم يتم استيرادها لأنه لا يمكن لك تحريرها.',
+'import-error-create'        => 'الصفحة "$1" لم يتم استيرادها لأنه لا يمكن لك استحداثها أصلا.',
 
 # Import log
 'importlogpage'                    => 'سجل الاستيراد',
@@ -3701,7 +3707,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'عدل هذا الملف باستخدام تطبيق خارجي',
-'edit-externally-help' => '(انظر [http://www.mediawiki.org/wiki/Manual:External_editors تعليمات الإعداد] لمزيد من المعلومات)',
+'edit-externally-help' => '(انظر [//www.mediawiki.org/wiki/Manual:External_editors تعليمات الإعداد] لمزيد من المعلومات)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'الكل',
@@ -3944,6 +3950,7 @@ $1',
 'hebrew-calendar-m12-gen' => 'أيلول',
 
 # Signatures
+'signature'    => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|نقاش]])',
 'timezone-utc' => 'ت ع م',
 
 # Core parser functions
@@ -3969,13 +3976,13 @@ $1',
 'version-version'               => '(نسخة $1)',
 'version-svn-revision'          => '(&رلم;r$2)',
 'version-license'               => 'الرخصة',
-'version-poweredby-credits'     => "تدار هذه الويكي ب'''[http://www.mediawiki.org/ ميدياويكي]''', حقوق النشر © 2001-$1 $2.",
+'version-poweredby-credits'     => "تدار هذه الويكي ب'''[//www.mediawiki.org/ ميدياويكي]''', حقوق النشر © 2001-$1 $2.",
 'version-poweredby-others'      => 'آخرون',
 'version-license-info'          => "ميدياويكي برنامج حر، يحق لك توزيعه و/أو تعديله وفقاً لبنود رخصة غنو العمومية كما نشرتها مؤسسة البرمجيات الحرة، الإصدار الثاني أو (وفقا لاختيارك أنت) أي إصدار لاحق.
 
 هذا البرنامج يوزع على أمل أن يكون مفيداً، ولكن '''دون أية ضمانات'''، بما في ذلك ضمانات '''التسويق''' أو '''الملاءمة لغرض معين'''. انظر رخصة غنو العمومية لمزيد من التفاصيل.
 
-ينبغي أن تكون قد تلقيت نسخة من رخصة غنو العمومية إذا لم يتم ذلك، اكتب إلى: Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA أو [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html اقرأ على الإنترنت].",
+ينبغي أن تكون قد تلقيت نسخة من رخصة غنو العمومية إذا لم يتم ذلك، اكتب إلى: Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA أو [//www.gnu.org/licenses/old-licenses/gpl-2.0.html اقرأ على الإنترنت].",
 'version-software'              => 'البرنامج المثبت',
 'version-software-product'      => 'المنتج',
 'version-software-version'      => 'النسخة',
@@ -4084,12 +4091,26 @@ $1',
 # New logging system
 'logentry-delete-delete'              => '{{GENDER:$2|حذف|حذفت}} $1 صفحة $3',
 'logentry-delete-restore'             => '{{GENDER:$2|استعاد|استعادت}} $1 صفحة $3',
+'logentry-delete-event'               => '$1 {{GENDER:$2|changed}} بإمكانك رؤية {{PLURAL:$5|a log event|$5 log events}} على $3: $4',
+'logentry-delete-event-legacy'        => '$1 {{GENDER:$2|changed}} رؤية أحداث تسجيل الدخول على $3',
+'logentry-delete-revision-legacy'     => '$1 {{GENDER:$2|changed}} رؤية المراجعات على صفحة $3',
+'logentry-suppress-delete'            => '$1 {{GENDER:$2|suppressed}} صفحة $3',
+'revdelete-content-hid'               => 'محتوى مخفي',
+'revdelete-summary-hid'               => 'ملخص التحرير مخفي',
+'revdelete-uname-hid'                 => 'اسم المستخدم مخفي',
+'revdelete-content-unhid'             => 'محتوى غير مخفي',
+'revdelete-summary-unhid'             => 'ملخص التحرير غير مخفي',
+'revdelete-uname-unhid'               => 'اسم المستخدم غير مخفي',
 'revdelete-restricted'                => 'طبق الضوابط لمديري النظام',
 'revdelete-unrestricted'              => 'أزال الضوابط لمديري النظام',
 'logentry-move-move'                  => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى $4',
 'logentry-move-move-noredirect'       => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى $4 دون ترك تحويلة',
 'logentry-move-move_redir'            => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى التحويلة $4',
 'logentry-move-move_redir-noredirect' => '{{GENDER:$2|نقل|نقلت}} $1 صفحة $3 إلى التحويلة $4 دون ترك تحويلة',
+'logentry-newusers-newusers'          => '$1 {{GENDER:$2|created}} حساب أحد المستخدمين',
+'logentry-newusers-create'            => '$1 {{GENDER:$2|created}} حساب أحد المستخدمين',
+'logentry-newusers-create2'           => '$1 {{GENDER:$2|created}} {{GENDER:$4|حساب أحد المستخدمين }} $3',
+'logentry-newusers-autocreate'        => 'حساب  $1  قد  {{GENDER:$2| استحدث}} تلقائياً',
 'newuserlog-byemail'                  => 'كلمة السر تم إرسالها بواسطة البريد الإلكتروني',
 
 );

@@ -143,7 +143,6 @@ class User {
 		'reupload',
 		'reupload-shared',
 		'rollback',
-		'selenium',
 		'sendemail',
 		'siteadmin',
 		'suppressionlog',
@@ -200,7 +199,7 @@ class User {
 	 */
 	var $mNewtalk, $mDatePreference, $mBlockedby, $mHash, $mRights,
 		$mBlockreason, $mEffectiveGroups, $mImplicitGroups, $mFormerGroups, $mBlockedGlobally,
-		$mLocked, $mHideName, $mOptions;
+		$mLocked, $mHideName, $mOptions, $mDisplayName;
 
 	/**
 	 * @var WebRequest
@@ -448,9 +447,9 @@ class User {
 	/**
 	 * Get the username corresponding to a given user ID
 	 * @param $id Int User ID
-	 * @return String The corresponding username
+	 * @return String|false The corresponding username
 	 */
-	static function whoIs( $id ) {
+	public static function whoIs( $id ) {
 		$dbr = wfGetDB( DB_SLAVE );
 		return $dbr->selectField( 'user', 'user_name', array( 'user_id' => $id ), __METHOD__ );
 	}
@@ -459,7 +458,7 @@ class User {
 	 * Get the real name of a user given their user ID
 	 *
 	 * @param $id Int User ID
-	 * @return String The corresponding user's real name
+	 * @return String|false The corresponding user's real name
 	 */
 	public static function whoIsReal( $id ) {
 		$dbr = wfGetDB( DB_SLAVE );
@@ -1192,6 +1191,7 @@ class User {
 		$this->mEffectiveGroups = null;
 		$this->mImplicitGroups = null;
 		$this->mOptions = null;
+		$this->mDisplayName = null;
 
 		if ( $reloadFrom ) {
 			$this->mLoadedItems = array();
@@ -1218,6 +1218,12 @@ class User {
 		}
 		$defOpt['skin'] = $wgDefaultSkin;
 
+		// FIXME: Ideally we'd cache the results of this function so the hook is only run once,
+		// but that breaks the parser tests because they rely on being able to change $wgContLang
+		// mid-request and see that change reflected in the return value of this function.
+		// Which is insane and would never happen during normal MW operation, but is also not
+		// likely to get fixed unless and until we context-ify everything.
+		// See also https://www.mediawiki.org/wiki/Special:Code/MediaWiki/101488#c25275
 		wfRunHooks( 'UserGetDefaultOptions', array( &$defOpt ) );
 
 		return $defOpt;
@@ -2128,6 +2134,32 @@ class User {
 	public function setRealName( $str ) {
 		$this->load();
 		$this->mRealName = $str;
+	}
+
+	/**
+	 * Return the name of this user we should used to display in the user interface
+	 * @return String The user's display name
+	 */
+	public function getDisplayName() {
+		global $wgRealNameInInterface;
+		if ( is_null( $this->mDisplayName ) ) {
+			$displayName = null;
+			
+			// Allow hooks to set a display name
+			wfRunHooks( 'UserDisplayName', array( $this, &$displayName ) );
+
+			if ( is_null( $displayName ) && $wgRealNameInInterface && $this->getRealName() ) {
+				// If $wgRealNameInInterface is true use the real name as the display name if it's set
+				$displayName = $this->getRealName();
+			}
+			
+			if ( is_null( $displayName ) ) {
+				$displayName = $this->getName();
+			}
+
+			$this->mDisplayName = $displayName;
+		}
+		return $this->mDisplayName;
 	}
 
 	/**
@@ -3160,16 +3192,30 @@ class User {
 	}
 
 	/**
-	 * Initialize (if necessary) and return a session token value
-	 * which can be used in edit forms to show that the user's
-	 * login credentials aren't being hijacked with a foreign form
-	 * submission.
-	 *
+	 * Alias for getEditToken.
+	 * @deprecated since 1.19, use getEditToken instead. 
+	 * 
 	 * @param $salt String|Array of Strings Optional function-specific data for hashing
 	 * @param $request WebRequest object to use or null to use $wgRequest
 	 * @return String The new edit token
 	 */
 	public function editToken( $salt = '', $request = null ) {
+		return $this->getEditToken( $salt, $request );
+	}
+	
+	/**
+	 * Initialize (if necessary) and return a session token value
+	 * which can be used in edit forms to show that the user's
+	 * login credentials aren't being hijacked with a foreign form
+	 * submission.
+	 *
+	 * @since 1.19
+	 *
+	 * @param $salt String|Array of Strings Optional function-specific data for hashing
+	 * @param $request WebRequest object to use or null to use $wgRequest
+	 * @return String The new edit token
+	 */
+	public function getEditToken( $salt = '', $request = null ) {
 		if ( $request == null ) {
 			$request = $this->getRequest();
 		}
@@ -3212,7 +3258,7 @@ class User {
 	 * @return Boolean: Whether the token matches
 	 */
 	public function matchEditToken( $val, $salt = '', $request = null ) {
-		$sessionToken = $this->editToken( $salt, $request );
+		$sessionToken = $this->getEditToken( $salt, $request );
 		if ( $val != $sessionToken ) {
 			wfDebug( "User::matchEditToken: broken session data\n" );
 		}
@@ -3229,7 +3275,7 @@ class User {
 	 * @return Boolean: Whether the token matches
 	 */
 	public function matchEditTokenNoSuffix( $val, $salt = '', $request = null ) {
-		$sessionToken = $this->editToken( $salt, $request );
+		$sessionToken = $this->getEditToken( $salt, $request );
 		return substr( $sessionToken, 0, 32 ) == substr( $val, 0, 32 );
 	}
 
@@ -4061,10 +4107,8 @@ class User {
 			}
 		}
 
-		$dbw->begin();
 		$dbw->delete( 'user_properties', array( 'up_user' => $this->getId() ), __METHOD__ );
 		$dbw->insert( 'user_properties', $insert_rows, __METHOD__ );
-		$dbw->commit();
 	}
 
 	/**

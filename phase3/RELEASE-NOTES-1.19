@@ -11,12 +11,19 @@ MediaWiki 1.19 is an alpha-quality branch and is not recommended for use in
 production.
 
 === Configuration changes in 1.19 ===
+* Changed LoginAuthenticateAudit hook so that it may be called before a
+  valid user is available.  In those cases, an anonymouse user object
+  will be supplied
 * Removed SkinTemplateSetupPageCss hook; use BeforePageDisplay instead.
 * (bug 27132) movefile right granted by default to registered users.
 * Default cookie lifetime ($wgCookieExpiration) is increased to 180 days.
 * (bug 31204) Removed old user.user_options
 * $wgMaxImageArea now applies to jpeg files if they are not scaled with
-  ImageMagick. 
+  ImageMagick.
+* Introduced $wgQueryPageDefaultLimit (defaults to 50) for the number of
+  items to show by default on query pages (special pages such as Whatlinkshere).
+* (bug 32470) Increase the length of ug_group
+* (bug 32239) Removed wgEnableTooltipsAndAccesskeys
 
 === New features in 1.19 ===
 * (bug 19838) Possibility to get all interwiki prefixes if the interwiki
@@ -51,7 +58,6 @@ production.
 * Hook added to check for exempt from account creation throttle
 * (bug 30344) Add configuration variable for setting custom priorities when
   generating sitemaps
-* (bug 16428) Include permalink in printable version
 * (bug 96170) Add array support for space-separated list attributes (like
   'class') in the Html helper class.
 * (bug 26470) Add checkered background image on hover on files pages.
@@ -68,11 +74,22 @@ production.
   in outdated text browsers.
 * New common*.css files usable by skins instead of having to copy piles
   of generic styles from MonoBook or Vector's css.
-* Some deprecated presentational html attributes will now be automatically converted to css.
-* (bug 31233) New OutputPage::addJsConfigVars() method to make the output page specific
-  mw.config map extendable.
-* (bug 31297) Add support for namespaces in Special:RecentChanges subpage filter syntax.
+* Some deprecated presentational html attributes will now be automatically
+  converted to css.
+* (bug 31297) Add support for namespaces in Special:RecentChanges subpage filter
+  syntax.
 * The default user signature now contains a talk link in addition to the user link.
+* (bug 25306) Add link of old page title to MediaWiki:Delete_and_move_reason
+* Added hook BitmapHandlerCheckImageArea
+* (experimental) $wgRealNameInInterface can be enabled to display a user's
+  real name in some parts of the interface instead of a username.
+* (bug 30062) Add $wgDBprefix option to cli installer
+* getUserPermissionsErrors and getUserPermissionsErrorsExpensive hooks are now
+  also called when checking for 'read' permission
+* Introduce $wgEnableSearchContributorsByIP which controls whether searching
+  for an IP address redirects to the contributions list for that IP
+* (bug 8859) Database::update should take array of tables too
+* (bug 19698) Inverse selection for Special:Contributions
 
 === Bug fixes in 1.19 ===
 * $wgUploadNavigationUrl should be used for file redlinks if
@@ -98,19 +115,41 @@ production.
 * Show --batch-size option in help of maintenance scripts that support it
 * (bug 4381) Magic quotes cleaning was not comprehensive, key strings were not
   unescaped
-* (bug 30684) Fix bad escaping in mw.message for inexistent messages (i.e. <key>)
 * (bug 23057) Importers no longer can 'edit' or 'create' a fully-protected page by
   importing a new revision into it
-* Allowing moving the associated talk pages of subpages even if the base page
+* Allow moving the associated talk pages of subpages even if the base page
   has no subpage.
-* (bug 30907) Special:Unusedcategories should sort ascendingly.
 * Per page edit-notices now work in namespaces without subpages enabled.
 * (bug 30245) Use the correct way to construct a log page title
-* (bug 31081) $wgEnotifUseJobQ causes many unnecessary jobs to be queued
+* (bug 31081) $wgEnotifUseJobQ caused many unnecessary jobs to be queued
 * (bug 30202) File names are now restricted on upload to 240 bytes, because of
   restrictions on some of the database fields.
 * Timezones are now recognised in user preferences when offset is different
   due to DST
+* (bug 31692) "summary" parameter now also work when undoing revisions
+* (bug 18823) "move succeeded" text displayed bluelinks even when redirect was
+   suppressed
+* (bug 31921) Magic words REVISIONDAY, REVISIONMONTH and REVISIONYEAR now give
+  current values on preview
+* (bug 19186) Special:UserLogin's title on Special:SpecialPages now says
+  "create account" when the user cannot create an account
+* (bug 31818) 'usercreated' message now supports GENDER
+* (bug 32022) Our phpunit.php script can now be executed from another directory
+* (bug 26020) Setting $wgEmailConfirmToEdit to true no longer removes diffs
+  from recent changes feeds
+* (bug 30232) add current time to message wlnote on Special:Watchlist
+* (bug 29110) $wgFeedDiffCutoff did not affect new pages
+* (bug 32168) Add wfRemoveDotSegments for use in wfExpandUrl
+* (bug 32358) Do not display "No higher resolution available" for dimensionless
+  files (like audio files)
+* (bug 32168) Add wfAssembleUrl for use in wfExpandUrl
+* (bug 32168) fixed - wfExpandUrl expands dot segments now
+* (bug 31535) Upload comments now truncated properly, and don't have brackets
+* (bug 32450) Scripts pages in MediaWiki: namespace parse [[Category:#]] links
+* (bug 32086) Special:PermanentLink now show an error message when no subpage
+  was specified.
+* (bug 30368) Special:Newpages now shows the new page name for moved pages
+* (bug 1697) The way to search blocked usernames in block log should be clearer
 
 === API changes in 1.19 ===
 * (bug 19838) siprop=interwikimap can now use the interwiki cache.
@@ -125,19 +164,22 @@ production.
 * (bug 26885) Allow show/hide of account blocks, temporary blocks and single IP
   address blocks for list=blocks.
 * (bug 30591) Add support to only return keys in ApiAllMessages.
-* (bug 29392) Setting the start or end parameter now works with lists blocks,
-  categorymembers, deletedrevs, logevents, protectedtitles, usercontributions 
-  and watchlist in Postgres
+* The API now respects $wgShowHostnames and won't share the hostname in
+  severedby if it's set to false
+* wlexcludeuser parameter added to ApiFeedWatchlist
 
 === Languages updated in 1.19 ===
 
-MediaWiki supports over 330 languages. Many localisations are updated
+MediaWiki supports over 350 languages. Many localisations are updated
 regularly. Below only new and removed languages are listed, as well as
 changes to languages because of Bugzilla reports.
 
+* Canadian English (en-ca) (new).
 * Uighur (Latin) (ug-latn) was incorrectly marked as right-to-left language.
-* (bug 30217) Make pt-br a fallback of pt
-* (bug 31193) Set fallback language of Assamese from Bengali to English
+* (bug 30217) Make pt-br a fallback of pt.
+* (bug 31193) Set fallback language of Assamese from Bengali to English.
+* Update date format for dsb and hsb: month names need the genitive.
+* (bug 28643) Serbian variant conversion improvements (Nikola Smolenski)
 
 === Other changes in 1.19 ===
 * jquery.mwPrototypes module was renamed to jquery.mwExtension.
@@ -145,9 +187,11 @@ changes to languages because of Bugzilla reports.
   populateImageSha1.php
 * The Client-IP header is no longer checked for when trying to resolve a client's
   real IP address.
-* Although IE5.x was already unsupported officially, stylesheets existing
-  exclusively for IE5.0 and IE5.5 have now been removed (were in skins 'chick'
-  and 'monobook').
+* (bug 22096) Although IE5.x and below was already unsupported officially, stylesheets
+  existing exclusively for IE5.0 and IE5.5 have now been removed (which were in skins
+  'chick' and 'monobook').
+* The constructor for CategoryView has changed, the second parameter is now a
+  Context source and is required.
 
 == Compatibility ==
 
@@ -182,7 +226,7 @@ break. Don't forget to always back up your database before upgrading!
 
 See the file UPGRADE for more detailed upgrade instructions.
 
-For notes on 1.15.x and older releases, see HISTORY.
+For notes on 1.17.x and older releases, see HISTORY.
 
 == Online documentation ==
 

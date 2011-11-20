@@ -475,13 +475,12 @@ $messages = array(
 Функцие: $1<br />
 Вешфкс: $2',
 'viewsource'           => 'Ваномс лисьмоть',
-'viewsourcefor'        => 'Лопа $1',
 'actionthrottled'      => 'Куроксшись кирьфтаф',
 'actionthrottledtext'  => 'Лудна мархта тюрема туфталонкса тя тевть ламоксть тиемась нюрьхконя ётка пингста кардаф. Эняльттяма мърдамс тя тевти мъзярошка минутода меле.',
 'protectedpagetext'    => 'Тя лопас сувама пякстаф лопань петнема кардамать сюнеда.',
 'viewsourcetext'       => 'Тейть ули кода ваномс эди копиямс тя лопать лисьмоц:',
 'protectedinterface'   => 'Тя лопаса ащи лопать ванфонц програмонь текстоц, сон пякстаф кальдяв тевда араламать сюнеда.',
-'editinginterface'     => "'''Инголе кардама:''' Тон петнесак лопать конань эса ащи лопать ванфонц програмонь текстоц. Петнематне полафтсазь сонь ванфоц кода сон няеви иля тиихненди. Ётафтома тиеманкса эняльттяма ваномс [http://translatewiki.net/wiki/Main_Page?setlang=mdf translatewiki.net] МедиаВикить локализациеть проектть.",
+'editinginterface'     => "'''Инголе кардама:''' Тон петнесак лопать конань эса ащи лопать ванфонц програмонь текстоц. Петнематне полафтсазь сонь ванфоц кода сон няеви иля тиихненди. Ётафтома тиеманкса эняльттяма ваномс [//translatewiki.net/wiki/Main_Page?setlang=mdf translatewiki.net] МедиаВикить локализациеть проектть.",
 'sqlhidden'            => '(SQL вешфкс кяшф)',
 'cascadeprotected'     => 'Тя лопать аралазь петнемада сяс мес сон сувафни {{PLURAL:$1|сай лопас, кона путфоль|сай лопас, конат путфольхть}} каскад араламас:
 $2',
@@ -651,9 +650,6 @@ $2',
 Тонь ID тяни $3, сёлгомать ID #$5.
 Сувафтт ня анцяйнятне эрь кодама тонь вешфксот.',
 'blockednoreason'                  => 'туфтал апак макст',
-'blockedoriginalsource'            => "Ванк '''$1'''-ть лисьмоц ала:",
-'blockededitsource'                => "'''$1''' лопанди '''тонь петнематнень''' текстсна ала:",
-'whitelistedittitle'               => 'Петнема тиеманди эряви сувама лемсь',
 'whitelistedittext'                => 'Лопань петнеманкса эряви $1.',
 'confirmedittext'                  => 'Тондейть эряви кемокстамс тонь электрононь адресцень лопань петнемада инголе. Эняльттяма, путт эди кемокстак тонь электрононь адресце тонь [[Special:Preferences|тиить арафнематне|тиить арафнематнень]] вельде.',
 'nosuchsectiontitle'               => 'Стама секцие аш',
@@ -1895,7 +1891,6 @@ $1',
 'blockiptext'                     => 'Эряви нолдамс тевс форм ала башка IP адресста эли тиить лем вельде  сёрмадомань сувамать сёлгоманкса.
 Тя эряви тиемс аньцек колендемада аралама туфталонкса ди [[{{MediaWiki:Policy-url}}|политик]]-ть коряс.
 Путт туфталть алу (кепотьксонди, лятфнек лопатне конатнень эса колендесть).',
-'ipaddress'                       => 'IP адрес:',
 'ipadressorusername'              => 'IP адрес эли тиить лемоц:',
 'ipbexpiry'                       => 'Сирелгоды:',
 'ipbreason'                       => 'Туфтал:',
@@ -2094,7 +2089,7 @@ $1',
 'allmessagesdefault'        => 'Апак полафтт текст',
 'allmessagescurrent'        => 'Тяниень текст',
 'allmessagestext'           => 'Тя MediaWiki-са васьфневи системонь пачфтематнень лувомась.
-Эняльттяма, сувак [http://www.mediawiki.org/wiki/Localisation MediaWiki Локализациес] ди [http://translatewiki.net translatewiki.net-с] кда тонь мяльце тиемс эсь путксце марстонь MediaWiki локализациес.',
+Эняльттяма, сувак [//www.mediawiki.org/wiki/Localisation MediaWiki Локализациес] ди [//translatewiki.net translatewiki.net-с] кда тонь мяльце тиемс эсь путксце марстонь MediaWiki локализациес.',
 'allmessagesnotsupportedDB' => "Тя лопас аш кода кунцемс сяс мес '''\$wgUseDatabaseMessages'''лоткафоль.",
 
 # Thumbnails
@@ -2577,7 +2572,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'Петнемс тя файлть ушеширень програмонь вельде',
-'edit-externally-help' => '(Ванк [http://www.mediawiki.org/wiki/Manual:External_editors арафнемань вятемовалсь] сяда лама содаманкса)',
+'edit-externally-help' => '(Ванк [//www.mediawiki.org/wiki/Manual:External_editors арафнемань вятемовалсь] сяда лама содаманкса)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'сембе',

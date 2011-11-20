@@ -189,11 +189,13 @@ class SpecialPage {
 	 * Return categorised listable special pages which are available
 	 * for the current user, and everyone.
 	 *
+	 * @param $user User object to check permissions, $wgUser will be used
+	 *              if not provided
 	 * @return Associative array mapping page's name to its SpecialPage object
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
-	static function getUsablePages() {
-		return SpecialPageFactory::getUsablePages();
+	static function getUsablePages( User $user = null ) {
+		return SpecialPageFactory::getUsablePages( $user );
 	}
 
 	/**
@@ -509,6 +511,29 @@ class SpecialPage {
 	}
 
 	/**
+	 * Checks if userCanExecute, and if not throws a PermissionsError
+	 *
+	 * @since 1.19
+	 */
+	public function checkPermissions() {
+		if ( !$this->userCanExecute( $this->getUser() ) ) {
+			$this->displayRestrictionError();
+		}
+	}
+
+	/**
+	 * If the wiki is currently in readonly mode, throws a ReadOnlyError
+	 *
+	 * @since 1.19
+	 * @throws ReadOnlyError
+	 */
+	public function checkReadOnly() {
+		if ( wfReadOnly() ) {
+			throw new ReadOnlyError;
+		}
+	}
+
+	/**
 	 * Sets headers - this should be called from the execute() method of all derived classes!
 	 */
 	function setHeaders() {
@@ -528,18 +553,15 @@ class SpecialPage {
 	 */
 	function execute( $par ) {
 		$this->setHeaders();
+		$this->checkPermissions();
 
-		if ( $this->userCanExecute( $this->getUser() ) ) {
-			$func = $this->mFunction;
-			// only load file if the function does not exist
-			if( !is_callable($func) && $this->mFile ) {
-				require_once( $this->mFile );
-			}
-			$this->outputHeader();
-			call_user_func( $func, $par, $this );
-		} else {
-			$this->displayRestrictionError();
+		$func = $this->mFunction;
+		// only load file if the function does not exist
+		if( !is_callable($func) && $this->mFile ) {
+			require_once( $this->mFile );
 		}
+		$this->outputHeader();
+		call_user_func( $func, $par, $this );
 	}
 
 	/**
@@ -558,7 +580,7 @@ class SpecialPage {
 		} else {
 			$msg = $summaryMessageKey;
 		}
-		if ( !wfMessage( $msg )->isBlank() and ! $this->including() ) {
+		if ( !$this->msg( $msg )->isBlank() && !$this->including() ) {
 			$this->getOutput()->wrapWikiMsg(
 				"<div class='mw-specialpage-summary'>\n$1\n</div>", $msg );
 		}
@@ -576,7 +598,7 @@ class SpecialPage {
 	 * @return String
 	 */
 	function getDescription() {
-		return wfMsg( strtolower( $this->mName ) );
+		return $this->msg( strtolower( $this->mName ) )->text();
 	}
 
 	/**
@@ -742,9 +764,9 @@ abstract class FormSpecialPage extends SpecialPage {
 
 		$form = new HTMLForm( $this->fields, $this->getContext() );
 		$form->setSubmitCallback( array( $this, 'onSubmit' ) );
-		$form->setWrapperLegend( wfMessage( strtolower( $this->getName() ) . '-legend' ) );
+		$form->setWrapperLegend( $this->msg( strtolower( $this->getName() ) . '-legend' ) );
 		$form->addHeaderText(
-			wfMessage( strtolower( $this->getName() ) . '-text' )->parseAsBlock() );
+			$this->msg( strtolower( $this->getName() ) . '-text' )->parseAsBlock() );
 
 		// Retain query parameters (uselang etc)
 		$params = array_diff_key(
@@ -784,7 +806,7 @@ abstract class FormSpecialPage extends SpecialPage {
 		$this->setHeaders();
 
 		// This will throw exceptions if there's a problem
-		$this->userCanExecute( $this->getUser() );
+		$this->checkExecutePermissions( $this->getUser() );
 
 		$form = $this->getForm();
 		if ( $form->show() ) {
@@ -799,26 +821,22 @@ abstract class FormSpecialPage extends SpecialPage {
 	protected function setParameter( $par ){}
 
 	/**
-	 * Checks if the given user (identified by an object) can perform this action.  Can be
-	 * overridden by sub-classes with more complicated permissions schemes.  Failures here
-	 * must throw subclasses of ErrorPageError
-	 *
-	 * @param $user User: the user to check, or null to use the context user
+	 * Called from execute() to check if the given user can perform this action.
+	 * Failures here must throw subclasses of ErrorPageError.
+	 * @param $user User
 	 * @return Bool true
 	 * @throws ErrorPageError
 	 */
-	public function userCanExecute( User $user ) {
-		if ( $this->requiresWrite() && wfReadOnly() ) {
-			throw new ReadOnlyError();
-		}
-
-		if ( $this->getRestriction() !== null && !$user->isAllowed( $this->getRestriction() ) ) {
-			throw new PermissionsError( $this->getRestriction() );
-		}
+	protected function checkExecutePermissions( User $user ) {
+		$this->checkPermissions();
 
 		if ( $this->requiresUnblock() && $user->isBlocked() ) {
 			$block = $user->mBlock;
 			throw new UserBlockedError( $block );
+		}
+
+		if ( $this->requiresWrite() ) {
+			$this->checkReadOnly();
 		}
 
 		return true;
@@ -963,20 +981,20 @@ abstract class SpecialRedirectToSpecial extends RedirectSpecialPage {
 }
 
 /**
- * ListAdmins --> ListUsers/admin
+ * ListAdmins --> ListUsers/sysop
  */
 class SpecialListAdmins extends SpecialRedirectToSpecial {
 	function __construct(){
-		parent::__construct( 'ListAdmins', 'ListUsers', 'sysop' );
+		parent::__construct( 'Listadmins', 'Listusers', 'sysop' );
 	}
 }
 
 /**
- * ListBots --> ListUsers/admin
+ * ListBots --> ListUsers/bot
  */
 class SpecialListBots extends SpecialRedirectToSpecial {
 	function __construct(){
-		parent::__construct( 'ListAdmins', 'ListUsers', 'bot' );
+		parent::__construct( 'Listbots', 'Listusers', 'bot' );
 	}
 }
 
@@ -1080,6 +1098,10 @@ class SpecialPermanentLink extends RedirectSpecialPage {
 
 	function getRedirect( $subpage ) {
 		$subpage = intval( $subpage );
+		if( $subpage === 0 ) {
+			# throw an error page when no subpage was given
+			throw new ErrorPageError( 'nopagetitle', 'nopagetext' );
+		}
 		$this->mAddedRedirectParams['oldid'] = $subpage;
 		return true;
 	}

@@ -294,7 +294,6 @@ A list of valid special pages can be found at [[Special:SpecialPages]].',
 'internalerror_info' => 'ਅੰਦਰੂਨੀ ਗਲਤੀ: $1',
 'badtitle'           => 'ਗਲਤ ਟਾਇਟਲ',
 'viewsource'         => 'ਸਰੋਤ ਵੇਖੋ',
-'viewsourcefor'      => '$1 ਲਈ',
 
 # Login and logout pages
 'logouttext'                 => "'''ਹੁਣ ਤੁਸੀਂ ਲਾਗਆਉਟ ਹੋ ਗਏ ਹੋ।'''
@@ -412,7 +411,6 @@ $1 ਘੰਟੇ ਵਿੱਚ। ਨੁਕਸਾਨ ਤੋਂ ਬਚਣ ਲਈ, $
 'summary-preview'        => 'ਸੰਖੇਪ ਝਲਕ:',
 'subject-preview'        => 'ਵਿਸ਼ਾ/ਹੈੱਡਲਾਈਨ ਝਲਕ:',
 'blockedtitle'           => 'ਯੂਜ਼ਰ ਬਲਾਕ ਕੀਤਾ ਗਿਆ',
-'whitelistedittitle'     => 'ਸੋਧਣ ਲਈ ਲਾਗਇਨ ਕਰਨਾ ਪਵੇਗਾ',
 'whitelistedittext'      => 'ਪੇਜ ਸੋਧਣ ਲਈ ਤੁਹਾਨੂੰ $1 ਕਰਨਾ ਪਵੇਗਾ।',
 'nosuchsectiontitle'     => 'ਇੰਝ ਦਾ ਕੋਈ ਸ਼ੈਕਸ਼ਨ ਨਹੀਂ ਹੈ।',
 'loginreqtitle'          => 'ਲਾਗਇਨ ਚਾਹੀਦਾ ਹੈ',
@@ -881,7 +879,6 @@ to upload files.',
 
 # Block/unblock
 'blockip'            => 'ਯੂਜ਼ਰ ਬਲਾਕ ਕਰੋ',
-'ipaddress'          => 'IP ਐਡਰੈੱਸ:',
 'ipadressorusername' => 'IP ਐਡਰੈਸ ਜਾਂ ਯੂਜ਼ਰ ਨਾਂ:',
 'ipbexpiry'          => 'ਮਿਆਦ:',
 'ipbreason'          => 'ਕਾਰਨ:',

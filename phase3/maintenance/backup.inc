@@ -217,6 +217,8 @@ class BackupDumper {
 		} else if ( is_null( $this->pages ) ) {
 			if ( $this->startId || $this->endId ) {
 				$exporter->pagesByRange( $this->startId, $this->endId );
+			} elseif ( $this->revStartId || $this->revEndId ) {
+				$exporter->revsByRange( $this->revStartId, $this->revEndId );
 			} else {
 				$exporter->allPages();
 			}
@@ -252,6 +254,7 @@ class BackupDumper {
 	 * @todo Fixme: the --server parameter is currently not respected, as it
 	 * doesn't seem terribly easy to ask the load balancer for a particular
 	 * connection by name.
+	 * @return DatabaseBase
 	 */
 	function backupDb() {
 		$this->lb = wfGetLBFactory()->newMainLB();

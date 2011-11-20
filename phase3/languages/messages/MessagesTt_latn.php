@@ -457,13 +457,12 @@ Zinhar öçen, URLnı kürsätep, bu turıda [[Special:ListUsers/sysop|idaräçe
 Funksiä: $1<br />
 Soraw: $2',
 'viewsource'           => 'Qaraw',
-'viewsourcefor'        => '«$1» bite',
 'actionthrottled'      => 'Tizlek kimetelgän',
 'actionthrottledtext'  => 'Spamğa qarşı köräş öçen az waqıt eçendä bu ğämälne yış qullanu tıyılğan. Zinhar, soñaraq qabatlağız.',
 'protectedpagetext'    => 'Bu bit üzgärtü öçen yabıq.',
 'viewsourcetext'       => 'Sez bu bitneñ başlanğıç tekstın qarıy häm küçerä alasız:',
 'protectedinterface'   => 'Bu bittä programma interfeysı xäbärläre bar. Vandalizmğa qarşı köräş säbäple, bu bitne üzgärtü tıyıla.',
-'editinginterface'     => "'''İğtibar:''' Sez MediaWiki sistemasınıñ interfeys biten üzgärtäsez. Bu başqa qullanuçılarğa da tä'sir itäçäk. Tärcemä öçen [http://translatewiki.net/wiki/Main_Page?setlang=tt-latn translatewiki.net] lokalizatsiäläw proyektın qullanığız.",
+'editinginterface'     => "'''İğtibar:''' Sez MediaWiki sistemasınıñ interfeys biten üzgärtäsez. Bu başqa qullanuçılarğa da tä'sir itäçäk. Tärcemä öçen [//translatewiki.net/wiki/Main_Page?setlang=tt-latn translatewiki.net] lokalizatsiäläw proyektın qullanığız.",
 'sqlhidden'            => '(SQL-soraw yäşerelgän)',
 'cascadeprotected'     => 'Bu bit üzgärtülärdän saqlanğan, çönki ul kaskadlı saqlaw qabul itelgän {{PLURAL:$1|bitkä|bitlärgä}} östälgän:
 $2',
@@ -643,9 +642,6 @@ Sez $1 yäki başqa [[{{MediaWiki:Grouppage-sysop}}|idaräçegä]] tıyu buyın�
 Sezneñ IP adresı — $3, tıyu identifikatorı — #$5.
 Xatlarda bu mäğlümatnı kürsätergä onıtmağız.",
 'blockednoreason'                  => 'säbäp kürsätelmägän',
-'blockedoriginalsource'            => "Asta '''$1''' biteneñ tekstı kürsätelgän.",
-'blockededitsource'                => "Asta '''$1''' biteneñ '''sez üzgärtkän''' tekstı kürsätelgän.",
-'whitelistedittitle'               => 'Üzgärtü öçen üz isemegez belän kerergä kiräk',
 'whitelistedittext'                => 'Sez bitlärne üzgärtü öçen $1 tieş.',
 'confirmedittext'                  => 'Bitlärne üzgärtü aldınnan sez elektron poçta adresığıznı dälillärgä tieş.
 Sez monı [[Special:Preferences|köyläwlär bitendä]] başqara alasız.',
@@ -1175,7 +1171,6 @@ Ul $1 {{PLURAL:$1|xäreftän}} kübräk bulırğa tieş tügel.',
 'recentchangeslinked-feed'     => 'Bäyläneşle üzgärtülär',
 'recentchangeslinked-toolbox'  => 'Bäyläneşle üzgärtülär',
 'recentchangeslinked-title'    => '"$1" bitenä bäyläneşle üzgärtülär',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'Kürsätelgän waqıtta sıltaşqan bitlärneñ üzgärtelmäläre yuq ide.',
 'recentchangeslinked-summary'  => "Bu kürsätelgän bit belän sıltalğan (yä kürsätelgän törkemgä kertkän) bitlärneñ üzgärtelmäläre isemlege.
 [[Special:Watchlist|Küzätü isemlegegezgä]] kerä torğan bitlär '''qalın'''.",
@@ -1597,7 +1592,6 @@ Soñğı beterelgän bitlärne kürer öçen, $2 qarağız.',
 'movedarticleprotection'      => 'yaqlaw köylänmälären «[[$2]]» bitennän «[[$1]]» bitenä küçerde',
 'protect-title'               => '«$1» öçen yaqlaw däräcäsen bilgeläw',
 'prot_1movedto2'              => '«[[$1]]» bite «[[$2]]» bitenä küçerelde',
-'protect-backlink'            => '← $1',
 'protect-legend'              => 'Bitne yaqlaw turında raslağız',
 'protectcomment'              => 'Säbäp:',
 'protectexpiry'               => 'Betä:',
@@ -1701,7 +1695,6 @@ $1',
 'blockip'                    => 'Qullanuçını tıyu',
 'blockip-title'              => 'Qullanuçını tıyu',
 'blockip-legend'             => 'Qullanuçını tıyu',
-'ipaddress'                  => 'IP adresı:',
 'ipadressorusername'         => 'IP adresı yäki qullanuçı iseme:',
 'ipbexpiry'                  => 'Betä:',
 'ipbreason'                  => 'Säbäp:',
@@ -1810,7 +1803,7 @@ Zinhar başqa isem saylağız.',
 'allmessagesdefault'            => 'Töpcay yazma',
 'allmessagescurrent'            => 'Eligi yazma',
 'allmessagestext'               => 'Bu isemlek MediaWiki isemnär mäydanında bulğan sistema xäbärläreneñ isemlege.
-Ğomumi MediaWiki lokalizatsiäsendä qatnaşırğa teläsägez, zinhar [http://www.mediawiki.org/wiki/Localisation MediaWiki Lokalizatsiäse] häm [http://translatewiki.net translatewiki.net] säxifälärne qullanığız.',
+Ğomumi MediaWiki lokalizatsiäsendä qatnaşırğa teläsägez, zinhar [//www.mediawiki.org/wiki/Localisation MediaWiki Lokalizatsiäse] häm [//translatewiki.net translatewiki.net] säxifälärne qullanığız.',
 'allmessages-filter-legend'     => 'Filtr',
 'allmessages-filter-unmodified' => 'Üzgärtelmägän',
 'allmessages-filter-all'        => 'Barısı',
@@ -2100,7 +2093,7 @@ Yulnıñ berençe sıltaması quyma öçen tıyılğan räsemgä sıltama bulır
 
 # External editor support
 'edit-externally'      => 'Bu faylnı tışqı quşımtanı qullanıp üzgärtü',
-'edit-externally-help' => '(tulıraq mäğlümat öçen [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] biten qarağız)',
+'edit-externally-help' => '(tulıraq mäğlümat öçen [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] biten qarağız)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'barlıq',

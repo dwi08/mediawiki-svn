@@ -266,9 +266,9 @@ $messages = array(
 'tog-oldsig'                  => 'Преглед на съществуващия подпис:',
 'tog-fancysig'                => 'Без превръщане на подписа в препратка към потребителската страница',
 'tog-externaleditor'          => 'Използване на външен редактор по подразбиране (само за експерти, необходими са специални настройки на компютъра.
-[http://www.mediawiki.org/wiki/Manual:External_editors Повече информация.])',
+[//www.mediawiki.org/wiki/Manual:External_editors Повече информация.])',
 'tog-externaldiff'            => 'Използване на външна програма за разлики по подразбиране (само за експерти, необходими са специални настройки на компютъра.
-[http://www.mediawiki.org/wiki/Manual:External_editors Повече информация.])',
+[//www.mediawiki.org/wiki/Manual:External_editors Повече информация.])',
 'tog-showjumplinks'           => 'Показване на препратки за достъпност от типа „Към…“',
 'tog-uselivepreview'          => 'Използване на бърз предварителен преглед (изисква Джаваскрипт; експериментално)',
 'tog-forceeditsummary'        => 'Предупреждаване при празно поле за резюме на редакцията',
@@ -602,14 +602,13 @@ $1',
 Функция: $1<br />
 Заявка: $2',
 'viewsource'           => 'Преглед на кода',
-'viewsourcefor'        => 'за $1',
 'actionthrottled'      => 'Ограничение в скоростта',
 'actionthrottledtext'  => 'Като част от защитата против спам, многократното повтаряне на това действие за кратък период от време е ограничено и вие вече сте надвишили лимита си. Опитайте отново след няколко минути.',
 'protectedpagetext'    => 'Тази страница е заключена за редактиране.',
 'viewsourcetext'       => 'Можете да разгледате и да копирате кодa на страницата:',
 'protectedinterface'   => 'Тази страница съдържа текст, нужен за работата на системата. Тя е защитена против редактиране, за да се предотвратят възможни злоупотреби.',
 'editinginterface'     => "'''Внимание:''' Редактирате страница, която се използва за интерфейса на софтуера. Промяната й ще повлияе на външния вид на уикито.
-За превеждане обмислете използването на [http://translatewiki.net/wiki/Main_Page?setlang=bg translatewiki.net], проектът за локализиране на MediaWiki.",
+За превеждане обмислете използването на [//translatewiki.net/wiki/Main_Page?setlang=bg translatewiki.net], проектът за локализиране на MediaWiki.",
 'sqlhidden'            => '(Заявка на SQL — скрита)',
 'cascadeprotected'     => 'Тази страница е защитена против редактиране, защото е включена в {{PLURAL:$1|следната страница, която от своя страна има|следните страници, които от своя страна имат}} каскадна защита:
 $2',
@@ -850,9 +849,6 @@ $2
 
 Текущият ви IP-адрес е $3, а номерът на блокирането ви е $5. Включвайте ги във всяко питане, което правите.",
 'blockednoreason'                  => 'не е указана причина',
-'blockedoriginalsource'            => "По-долу е показано съдържанието на '''$1''':",
-'blockededitsource'                => "По-долу е показан текстът на '''вашите редакции''' на '''$1''':",
-'whitelistedittitle'               => 'Необходимо е да влезете, за да може да редактирате',
 'whitelistedittext'                => 'Редактирането на страници изисква $1 в системата.',
 'confirmedittext'                  => 'Необходимо е да потвърдите електронната си поща, преди да редактирате страници.
 Въведете и потвърдете адреса си на [[Special:Preferences|страницата с настройките]].',
@@ -2380,7 +2376,6 @@ $1',
 Това трябва да се направи само за да се предотвратят прояви на вандализъм
 и в съответствие с [[{{MediaWiki:Policy-url}}|политиката за поведение]] в {{SITENAME}}.
 Необходимо е да се посочи и причина за блокирането (например заглавия на страници, станали обект на вандализъм).',
-'ipaddress'                       => 'IP-адрес:',
 'ipadressorusername'              => 'IP-адрес или потребител:',
 'ipbexpiry'                       => 'Срок:',
 'ipbreason'                       => 'Причина:',
@@ -2629,7 +2624,7 @@ $1',
 'allmessagesdefault'            => 'Текст по подразбиране',
 'allmessagescurrent'            => 'Текущ текст',
 'allmessagestext'               => 'Тази страница съдържа списък на системните съобщения от именното пространство „МедияУики“.
-Посетете [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] и [http://translatewiki.net translatewiki.net], ако желаете да допринесете за общата локализация на софтуера МедияУики.',
+Посетете [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] и [//translatewiki.net translatewiki.net], ако желаете да допринесете за общата локализация на софтуера МедияУики.',
 'allmessagesnotsupportedDB'     => "Тази страница не може да бъде използвана, тъй като е изключена възможността '''\$wgUseDatabaseMessages'''.",
 'allmessages-filter-legend'     => 'Филтър',
 'allmessages-filter'            => 'Филтриране по ниво на персонализация:',
@@ -3242,7 +3237,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'Редактиране на файла чрез външно приложение',
-'edit-externally-help' => '(За повече информация прегледайте [http://www.mediawiki.org/wiki/Manual:External_editors указанията за настройките]).',
+'edit-externally-help' => '(За повече информация прегледайте [//www.mediawiki.org/wiki/Manual:External_editors указанията за настройките]).',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'всички',
@@ -3417,13 +3412,13 @@ $1',
 'version-hook-subscribedby'     => 'Ползвана от',
 'version-version'               => '(Версия $1)',
 'version-license'               => 'Лиценз',
-'version-poweredby-credits'     => "Това уики се задвиждва от '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Това уики се задвиждва от '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'други',
 'version-license-info'          => 'MediaWiki е свободен софтуер, можете да го разпространявате и/или променяте съгласно условията на GNU General Public License, както е публикуван от Free Software Foundation, версия 2 на лиценза или (по ваше усмотрение) която и да е следваща версия.
 
 MediaWiki се разпространява с надеждата, че ще бъде полезен, но БЕЗ НИКАКВИ ГАРАНЦИИ, без дори косвена гаранция за ПРОДАВАЕМОСТ или ПРИГОДНОСТ ЗА КОНКРЕТНА УПОТРЕБА. Вижте GNU General Public License за повече подробности.
 
-Трябва да сте получили [{{SERVER}}{{SCRIPTPATH}}/COPYING копие на GNU General Public License] заедно с тази програма. Ако не сте, пишете на Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA или го [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html прочетете в мрежата].',
+Трябва да сте получили [{{SERVER}}{{SCRIPTPATH}}/COPYING копие на GNU General Public License] заедно с тази програма. Ако не сте, пишете на Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA или го [//www.gnu.org/licenses/old-licenses/gpl-2.0.html прочетете в мрежата].',
 'version-software'              => 'Инсталиран софтуер',
 'version-software-product'      => 'Продукт',
 'version-software-version'      => 'Версия',

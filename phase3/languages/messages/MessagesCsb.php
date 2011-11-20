@@ -351,9 +351,8 @@ Mòże to zgłoszëc [[Special:ListUsers/sysop|sprôwnikòwi]], pòdając adres�
 'badtitle'           => 'Òchëbny titel',
 'badtitletext'       => 'Pòdóny titel starnë je òchëbny. Gwësno są w nim znaczi, chtërnëch brëkòwanié je zakôzané abò je pùsti.',
 'viewsource'         => 'Zdrojowi tekst',
-'viewsourcefor'      => 'dlô $1',
 'editinginterface'   => "'''ÒSTRZÉGA:''' Editëjesz starnã, jakô zamëkô w se tekst interfejsu softwôrë. Wszëtczé zmianë tu zrobioné bãdze widzec na interfejse jinszëch brëkòwników.
-Przemëszlë dolmaczënié na [http://translatewiki.net/wiki/Main_Page?setlang=csb translatewiki.net], ekstra ùdbie lokalizacëji softwôrë MediaWiki.",
+Przemëszlë dolmaczënié na [//translatewiki.net/wiki/Main_Page?setlang=csb translatewiki.net], ekstra ùdbie lokalizacëji softwôrë MediaWiki.",
 
 # Login and logout pages
 'logouttext'                 => "'''Jes wëlogòwóny.'''
@@ -468,9 +467,6 @@ Bë zgwësnic sprawã zablokòwaniô mòżesz skòntaktowac sã z $1 abò jińsz
 Boczë, że të ni mòżesz stądka sélac e-mailów, jeżlë nié môsz jesz zaregisterowóné e-mailowé adresë w [[Special:Preferences|nastôwach]].
 Twòjô aktualnô adresa IP to $3, a zablokòwónô adresa ID to #$5.
 Proszëmë pòdac wëższé pòdôłczi przë wszëtczich pëtaniach.",
-'blockedoriginalsource'            => "Zdrój '''$1''' je niżi:",
-'blockededitsource'                => "Tekst '''Twòjëch edicëji''' do '''$1''' je niżi:",
-'whitelistedittitle'               => 'Bë editowac je nót sã wlogòwac',
 'loginreqlink'                     => 'Wlogùjë',
 'loginreqpagetext'                 => '$1 sã, żebë przezérac jinszé starnë.',
 'accmailtitle'                     => 'Parola wësłónô.',
@@ -757,15 +753,14 @@ Mòżesz zezwòlëc jinszim brëkòwniką na łączbã z Tobą przez Twòją sta
 'rc-enhanced-hide'               => 'Zatacë detale',
 
 # Recent changes linked
-'recentchangeslinked'          => 'Zmianë w dolënkòwónëch',
-'recentchangeslinked-feed'     => 'Zmianë w dolënkòwónëch',
-'recentchangeslinked-toolbox'  => 'Zmianë w dolënkòwónëch',
-'recentchangeslinked-title'    => 'Zjinaczi w lënkòwónëch z "$1"',
-'recentchangeslinked-backlink' => '← $1',
-'recentchangeslinked-summary'  => "Niżi nachôdô sã lësta slédnëch zjinaków na lënkòwónëch starnach z pòdóny starnë (abò we wszëtczich starnach przënôleżącëch do pòdóny kategòrëji).
+'recentchangeslinked'         => 'Zmianë w dolënkòwónëch',
+'recentchangeslinked-feed'    => 'Zmianë w dolënkòwónëch',
+'recentchangeslinked-toolbox' => 'Zmianë w dolënkòwónëch',
+'recentchangeslinked-title'   => 'Zjinaczi w lënkòwónëch z "$1"',
+'recentchangeslinked-summary' => "Niżi nachôdô sã lësta slédnëch zjinaków na lënkòwónëch starnach z pòdóny starnë (abò we wszëtczich starnach przënôleżącëch do pòdóny kategòrëji).
 Starnë z [[Special:Watchlist|lëstë ùzérónëch artiklów]] są '''pògrëbioné'''.",
-'recentchangeslinked-page'     => 'Miono starnë:',
-'recentchangeslinked-to'       => 'Wëskrzëni zjinaczi nié na lënkòwónëch starnach, blós na starnach lënkùjącëch do pòdóny starnë',
+'recentchangeslinked-page'    => 'Miono starnë:',
+'recentchangeslinked-to'      => 'Wëskrzëni zjinaczi nié na lënkòwónëch starnach, blós na starnach lënkùjącëch do pòdóny starnë',
 
 # Upload
 'upload'              => 'Wladënk lopka',
@@ -1115,7 +1110,7 @@ W taczich przëtrôfkach zamkłosc diskùsëji mòże przeniesc blós rãczno.',
 'allmessagesdefault'        => 'Domëslny tekst',
 'allmessagescurrent'        => 'Aktualny tekst',
 'allmessagestext'           => 'To je zestôwk systemòwëch ògłosów przistãpnëch w rumie mionów MediaWiki.
-Proszã zazdrzë na [http://www.mediawiki.org/wiki/Localisation Lokalizacëjô MediaWiki] ë [http://translatewiki.net translatewiki.net] jeżlë chcesz dolmaczëc softwôrã MediaWiki.',
+Proszã zazdrzë na [//www.mediawiki.org/wiki/Localisation Lokalizacëjô MediaWiki] ë [//translatewiki.net translatewiki.net] jeżlë chcesz dolmaczëc softwôrã MediaWiki.',
 'allmessagesnotsupportedDB' => "'''{{ns:special}}:Allmessages''' nie mòże bëc brëkòwónô, temù że '''\$wgUseDatabaseMessages''' je wëłączony.",
 
 # Thumbnails
@@ -1249,7 +1244,7 @@ Jinszé pòla bãdą domëslno zataconé.
 
 # External editor support
 'edit-externally'      => 'Editëjë nen lopk brëkùjąc bùtnowi aplikacëji',
-'edit-externally-help' => '(Zdrzë na [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] dlô dobëcô wicy wëdowiédzë).',
+'edit-externally-help' => '(Zdrzë na [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] dlô dobëcô wicy wëdowiédzë).',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'wszëtczé',

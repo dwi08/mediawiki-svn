@@ -16,6 +16,8 @@ class ForeignAPIFile extends File {
 
 	private $mExists;
 
+	protected $repoClass = 'ForeignApiRepo';
+
 	/**
 	 * @param $title
 	 * @param $repo ForeignApiRepo
@@ -24,8 +26,11 @@ class ForeignAPIFile extends File {
 	 */
 	function __construct( $title, $repo, $info, $exists = false ) {
 		parent::__construct( $title, $repo );
+
 		$this->mInfo = $info;
 		$this->mExists = $exists;
+
+		$this->assertRepoDefined();
 	}
 
 	/**
@@ -33,13 +38,13 @@ class ForeignAPIFile extends File {
 	 * @param $repo ForeignApiRepo
 	 * @return ForeignAPIFile|null
 	 */
-	static function newFromTitle( $title, $repo ) {
+	static function newFromTitle( Title $title, $repo ) {
 		$data = $repo->fetchImageQuery( array(
-                        'titles' => 'File:' . $title->getDBKey(),
-                        'iiprop' => self::getProps(),
-                        'prop' => 'imageinfo',
+			'titles' => 'File:' . $title->getDBKey(),
+			'iiprop' => self::getProps(),
+			'prop'   => 'imageinfo',
 			'iimetadataversion' => MediaHandler::getMetadataVersion()
-			 ) );
+		) );
 
 		$info = $repo->getImageInfo( $data );
 
@@ -49,12 +54,12 @@ class ForeignAPIFile extends File {
 				: -1;
 			if( $lastRedirect >= 0 ) {
 				$newtitle = Title::newFromText( $data['query']['redirects'][$lastRedirect]['to']);
-				$img = new ForeignAPIFile( $newtitle, $repo, $info, true );
+				$img = new self( $newtitle, $repo, $info, true );
 				if( $img ) {
 					$img->redirectedFrom( $title->getDBkey() );
 				}
 			} else {
-				$img = new ForeignAPIFile( $title, $repo, $info, true );
+				$img = new self( $title, $repo, $info, true );
 			}
 			return $img;
 		} else {
@@ -209,11 +214,8 @@ class ForeignAPIFile extends File {
 		return $files;
 	}
 
-	/**
-	 * @see File::purgeCache()
-	 */
-	function purgeCache( $options = array() ) {
-		$this->purgeThumbnails( $options );
+	function purgeCache() {
+		$this->purgeThumbnails();
 		$this->purgeDescriptionPage();
 	}
 
@@ -224,18 +226,11 @@ class ForeignAPIFile extends File {
 		$wgMemc->delete( $key );
 	}
 
-	function purgeThumbnails( $options = array() ) {
+	function purgeThumbnails() {
 		global $wgMemc;
 		$key = $this->repo->getLocalCacheKey( 'ForeignAPIRepo', 'ThumbUrl', $this->getName() );
 		$wgMemc->delete( $key );
-		
 		$files = $this->getThumbnails();
-		// Give media handler a chance to filter the purge list
-		$handler = $this->getHandler();
-		if ( $handler ) {
-			$handler->filterThumbnailPurgeList( $files, $options );
-		}
-		
 		$dir = $this->getThumbPath( $this->getName() );
 		foreach ( $files as $file ) {
 			unlink( $dir . $file );

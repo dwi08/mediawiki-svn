@@ -52,17 +52,6 @@ input[dir="rtl"] {
 	direction: rtl;
 }
 
-/* The scripts of these languages are very hard to read with underlines */
-[lang="ar"] a,
-[lang="ckb"] a,
-[lang="fa"] a,
-[lang="kk-arab"] a,
-[lang="mzn"] a,
-[lang="ps"] a,
-[lang="ur"] a {
-	text-decoration: none;
-}
-
 /* Default style for semantic tags */
 abbr,
 acronym,
@@ -259,6 +248,7 @@ tr.mw-htmlform-vertical-label td.mw-label {
 .mw-htmlform-invalid-input td.mw-input input {
 	border-color: red;
 }
+.mw-htmlform-radio-flatlist div.mw-htmlform-radio-item,
 .mw-htmlform-multiselect-flatlist div.mw-htmlform-multiselect-item {
 	display: inline;
 	margin-right: 1em;
@@ -282,6 +272,13 @@ input#wpSummary {
 /**
  * Categories
  */
+#catlinks {
+	/**
+	 * Overrides text justification (user preference)
+	 * See bug 31990
+	 */
+	text-align: left;
+}
 .catlinks ul {
 	display: inline;
 	margin: 0;
@@ -294,16 +291,16 @@ input#wpSummary {
 
 .catlinks li {
 	display: inline-block;
-	line-height: 1.35em;
-	padding: 0 .7em;
+	line-height: 1.25em;
 	border-left: 1px solid #AAA;
-	margin: 0.3em 0;
+	margin: 0.125em 0;
+	padding: 0 0.5em;
 	zoom: 1;
 	display: inline !ie;
 }
 
 .catlinks li:first-child {
-	padding-left: .4em;
+	padding-left: 0.25em;
 	border-left: none;
 }
 /**
@@ -973,8 +970,10 @@ ol:lang(or) li {
 }
 
 #mw-revision-info,
+#mw-revision-info-current,
 #mw-revision-nav {
 	direction: ltr;
+	display: inline;
 }
 
 /* Images */

@@ -99,24 +99,19 @@ class UserrightsPage extends SpecialPage {
 			$this->isself = true;
 		}
 
-		$out = $this->getOutput();
-
 		if( !$this->userCanChangeRights( $user, true ) ) {
 			// @todo FIXME: There may be intermediate groups we can mention.
-			$out->showPermissionsErrorPage( array( array(
-				$user->isAnon()
-					? 'userrights-nologin'
-					: 'userrights-notallowed' ) ) );
-			return;
+			$msg = $user->isAnon() ? 'userrights-nologin' : 'userrights-notallowed';
+			throw new PermissionsError( null, array( array( $msg ) ) );
 		}
 
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkReadOnly();
 
-		$this->outputHeader();
-		$out->addModuleStyles( 'mediawiki.special' );
 		$this->setHeaders();
+		$this->outputHeader();
+
+		$out = $this->getOutput();
+		$out->addModuleStyles( 'mediawiki.special' );
 
 		// show the general form
 		if ( count( $available['add'] ) || count( $available['remove'] ) ) {
@@ -444,7 +439,7 @@ class UserrightsPage extends SpecialPage {
 		$this->getOutput()->addHTML(
 			Xml::openElement( 'form', array( 'method' => 'post', 'action' => $this->getTitle()->getLocalURL(), 'name' => 'editGroup', 'id' => 'mw-userrights-form2' ) ) .
 			Html::hidden( 'user', $this->mTarget ) .
-			Html::hidden( 'wpEditToken', $this->getUser()->editToken( $this->mTarget ) ) .
+			Html::hidden( 'wpEditToken', $this->getUser()->getEditToken( $this->mTarget ) ) .
 			Xml::openElement( 'fieldset' ) .
 			Xml::element( 'legend', array(), wfMsg( 'userrights-editusergroup' ) ) .
 			wfMessage( 'editinguser' )->params( wfEscapeWikiText( $user->getName() ) )->rawParams( $userToolLinks )->parse() .

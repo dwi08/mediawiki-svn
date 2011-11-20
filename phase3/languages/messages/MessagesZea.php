@@ -353,7 +353,6 @@ De beheêrder ei de volhende reeën opeheven: $1',
 Functie: $1<br />
 Zoekopdracht: $2',
 'viewsource'           => 'brontekst bekieken',
-'viewsourcefor'        => 'vò $1',
 'actionthrottled'      => 'Handelienge tehenehouwen',
 'actionthrottledtext'  => "As maetrehel tehen spam is 't antal keern per tiedseêneid da je deêze handelienge kan verrichen beperkt.
 De limiet is overschreeën.
@@ -361,7 +360,7 @@ Probeer 't over een antal menuten wee.",
 'protectedpagetext'    => 'Deêze pagina is beveiligd. Bewerken is nie meuhlijk.',
 'viewsourcetext'       => 'Je kan de brontekst van deêze pagina bekieken en kopiëren:',
 'protectedinterface'   => "Deêze pagina bevat tekst voe berichen van de software en is beveiligd om misbruuk te voorkomm'n.",
-'editinginterface'     => "'''Waerschuwienge:''' Je bewerk een pagina die a gebruukt wor deur de software. Bewerkiengen op deêze pagina beïnvloeden de gebrukersinterface van iedereên. Overweeg voe vertaeliengen om [http://translatewiki.net/wiki/Main_Page?setlang=zea translatewiki.net] te gebruken, 't vertaeliengsproject voe MediaWiki.",
+'editinginterface'     => "'''Waerschuwienge:''' Je bewerk een pagina die a gebruukt wor deur de software. Bewerkiengen op deêze pagina beïnvloeden de gebrukersinterface van iedereên. Overweeg voe vertaeliengen om [//translatewiki.net/wiki/Main_Page?setlang=zea translatewiki.net] te gebruken, 't vertaeliengsproject voe MediaWiki.",
 'sqlhidden'            => '(SQL-zoekopdracht verborhen)',
 'cascadeprotected'     => "Deêze pagina kan nie bewerkt worn, omda 't een is openomen in de volhende {{PLURAL:$1|pagina|pagina's}} die beveiligd {{PLURAL:$1|is|zien}} mie de cascaode-optie:
 $2",
@@ -518,9 +517,6 @@ Je kan hin gebruuk maeken van de functie 'e-mail deêze gebruker', tenzie a je e
 Je blokkaodenummer is #$5.
 Vermeld dat a je erhens over deêze blokkaode wil reaheern.",
 'blockednoreason'            => 'hin reeën opeheven',
-'blockedoriginalsource'      => "De brontekst van '''$1''' staet ieronder:",
-'blockededitsource'          => "D'n tekst van '''joen biedragen''' an '''$1''' staet ieronder:",
-'whitelistedittitle'         => 'Voe bewerken is anmelden verplicht',
 'whitelistedittext'          => "Je mò $1 om pagina's te bewerken.",
 'confirmedittext'            => "Je mò jen e-mailadres bevestihen voe da je kan bewerken.
 Voer jen e-mailadres in en bevestig 't via [[Special:Preferences|je vòkeuren]].",

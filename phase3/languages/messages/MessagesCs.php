@@ -378,8 +378,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Zobrazovat počet sledujících uživatelů',
 'tog-oldsig'                  => 'Stávající podpis:',
 'tog-fancysig'                => 'Používat v podpisu wikitext (bez automatického odkazu)',
-'tog-externaleditor'          => 'Implicitně používat externí editor (pouze pro pokročilé, vyžaduje speciální nastavení počítače; [http://www.mediawiki.org/wiki/Manual:External_editors další informace])',
-'tog-externaldiff'            => 'Implicitně používat externí porovnávací program (pouze pro pokročilé, vyžaduje speciální nastavení počítače; [http://www.mediawiki.org/wiki/Manual:External_editors další informace])',
+'tog-externaleditor'          => 'Implicitně používat externí editor (pouze pro pokročilé, vyžaduje speciální nastavení počítače; [//www.mediawiki.org/wiki/Manual:External_editors další informace])',
+'tog-externaldiff'            => 'Implicitně používat externí porovnávací program (pouze pro pokročilé, vyžaduje speciální nastavení počítače; [//www.mediawiki.org/wiki/Manual:External_editors další informace])',
 'tog-showjumplinks'           => 'Používat odkazy „skočit na“ pro vyšší přístupnost',
 'tog-uselivepreview'          => 'Používat rychlý náhled (JavaScript) (Experimentální)',
 'tog-forceeditsummary'        => 'Upozornit, když nevyplním shrnutí editace',
@@ -705,6 +705,7 @@ Pokud toto není váš případ, možná jste nalezli chybu v software. Prosíme
 'badarticleerror'      => 'Tento úkon nelze použít na tuto stránku.',
 'cannotdelete'         => 'Nebylo možné smazat stránku nebo soubor „$1“.
 Možná už byl(a) smazán(a) někým jiným.',
+'cannotdelete-title'   => 'Stránku „$1“ nelze smazat',
 'badtitle'             => 'Neplatný název',
 'badtitletext'         => 'Požadovaný název stránky byl neplatný, prázdný nebo obsahoval nesprávnou předponu mezijazykového či interwiki odkazu. Možná obsahoval znaky, které v názvu nejsou dovoleny.',
 'perfcached'           => 'Následující data jsou z cache a nemusí být plně aktuální:',
@@ -714,13 +715,14 @@ Možná už byl(a) smazán(a) někým jiným.',
 Funkce: $1<br />
 Dotaz: $2',
 'viewsource'           => 'Zobrazit zdroj',
-'viewsourcefor'        => 'stránky $1',
+'viewsource-title'     => 'Zobrazení zdroje stránky $1',
 'actionthrottled'      => 'Akce byla pozastavena',
 'actionthrottledtext'  => 'Vzhledem k protispamovým opatřením nemůžete požadovanou akci provádět příliš častokrát v krátké době. Zkuste to znovu za několik minut.',
 'protectedpagetext'    => 'Tato stránka byla zamčena, takže ji nelze editovat.',
 'viewsourcetext'       => 'Můžete si prohlédnout a zkopírovat zdrojový kód této stránky:',
+'viewyourtext'         => "Můžete si prohlédnout a zkopírovat zdrojový kód '''vašich změn''' této stránky:",
 'protectedinterface'   => 'Tato stránka obsahuje text softwarového rozhraní a smějí ji editovat jen správci.',
-'editinginterface'     => "'''Upozornění:''' Editujete stránku, která definuje texty rozhraní. Změny této stránky ovlivní vzhled uživatelského rozhraní všem uživatelům. Při úpravách českého překladu zvažte použití [http://translatewiki.net/wiki/Main_Page?setlang=cs translatewiki.net], projektu pro lokalizaci MediaWiki.",
+'editinginterface'     => "'''Upozornění:''' Editujete stránku, která definuje texty rozhraní. Změny této stránky ovlivní vzhled uživatelského rozhraní všem uživatelům. Při úpravách českého překladu zvažte použití [//translatewiki.net/wiki/Main_Page?setlang=cs translatewiki.net], projektu pro lokalizaci MediaWiki.",
 'sqlhidden'            => '(SQL dotaz skryt)',
 'cascadeprotected'     => 'Tato stránka je zamčena, neboť je vložena do {{PLURAL:$1|následující stránky zamčené|následujících stránek zamčených|následujících stránek zamčených}} kaskádovým zámkem:
 $2',
@@ -966,9 +968,6 @@ Uvědomte si však, že funkci „Poslat e-mail tomuto uživateli“ nemůžete 
 Vaše současná IP adresa je $3, číslo vašeho zablokování je #$5.
 Prosíme, uveďte tyto údaje při komunikaci se správci.",
 'blockednoreason'                  => 'důvod nebyl zadán',
-'blockedoriginalsource'            => "Zdrojový text stránky '''$1''' následuje:",
-'blockededitsource'                => "Text '''vašich editací''' stránky '''$1''' následuje:",
-'whitelistedittitle'               => 'Pro editaci je vyžadováno přihlášení',
 'whitelistedittext'                => 'Pro editaci se musíte $1.',
 'confirmedittext'                  => 'Pro editaci stránek je vyžadováno potvrzení vaší e-mailové adresy. Na stránce [[Special:Preferences|nastavení]] zadejte a nechte potvrdit svou e-mailovou adresu.',
 'nosuchsectiontitle'               => 'Sekce nenalezena',
@@ -1531,8 +1530,8 @@ Tuto operaci nelze vrátit zpět.',
 'right-createtalk'            => 'Zakládání diskusních stránek',
 'right-createaccount'         => 'Vytváření nových uživatelských účtů',
 'right-minoredit'             => 'Označování editací jako malé',
-'right-move'                  => 'Přesun stránek',
-'right-move-subpages'         => 'Přesunování stránek i s jejich podstránkami',
+'right-move'                  => 'Přesouvání stránek',
+'right-move-subpages'         => 'Přesouvání stránek i s jejich podstránkami',
 'right-move-rootuserpages'    => 'Přesouvání kořenových uživatelských stránek',
 'right-movefile'              => 'Přesouvání souborů',
 'right-suppressredirect'      => 'Nevytváření přesměrování po přesunu stránky',
@@ -1618,6 +1617,7 @@ Tuto operaci nelze vrátit zpět.',
 'action-suppressionlog'       => 'prohlížet si tento skrytý protokolovací záznam',
 'action-block'                => 'znemožnit tomuto uživateli editování',
 'action-protect'              => 'změnit úrovně ochrany této stránky',
+'action-rollback'             => 'rychle revertovat úpravy posledního uživatele editujícího danou stránku',
 'action-import'               => 'importovat tuto stránku z jiné wiki',
 'action-importupload'         => 'importovat tuto stránku z nahraného souboru',
 'action-patrol'               => 'označit úpravy ostatních jako zhlédnuté',
@@ -1833,9 +1833,9 @@ Nelze náležitě zkontrolovat jeho bezpečnost.',
 # img_auth script messages
 'img-auth-accessdenied'     => 'Přístup odepřen',
 'img-auth-nopathinfo'       => 'Chybí PATH_INFO.
-Váš server není nastaven tak, aby poskytoval tuto informaci.
+Váš server není nastaven tak, aby tuto informaci poskytoval.
 Možná funguje pomocí CGI a img_auth na něm nemůže fungovat.
-Vizte http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+Vizte [//www.mediawiki.org/wiki/Manual:Image_Authorization Manual:Image Authorization].',
 'img-auth-notindir'         => 'Požadovaná cesta nespadá pod nakonfigurovaný adresář s načtenými soubory.',
 'img-auth-badtitle'         => 'Z „$1“ nelze vytvořit platný název stránky.',
 'img-auth-nologinnWL'       => 'Nejste přihlášen(a) a „$1“ není na bílé listině.',
@@ -1934,23 +1934,24 @@ Níže jsou zobrazeny informace, které obsahuje jeho [$2 tamější stránka s 
 'filerevert-badversion'     => 'Není dostupná předchozí verze tohoto souboru s odpovídající časovou značkou.',
 
 # File deletion
-'filedelete'                  => 'Smazání souboru $1',
-'filedelete-legend'           => 'Smazat soubor',
-'filedelete-intro'            => "Chystáte se smazat soubor '''[[Media:$1|$1]]''' i s celou historií.",
-'filedelete-intro-old'        => "Chystáte se smazat verzi souboru '''[[Media:$1|$1]]''' z [$4 $3 $2].",
-'filedelete-comment'          => 'Důvod:',
-'filedelete-submit'           => 'Smazat',
-'filedelete-success'          => "Soubor '''$1''' byl smazán.",
-'filedelete-success-old'      => "Verze souboru '''[[Media:$1|$1]]''' z $3 $2 byla smazána.",
-'filedelete-nofile'           => "Soubor '''$1''' neexistuje.",
-'filedelete-nofile-old'       => "Neexistuje archivní verze souboru '''$1''' s udávanými atributy.",
-'filedelete-otherreason'      => 'Jiný/další důvod:',
-'filedelete-reason-otherlist' => 'Jiný důvod',
-'filedelete-reason-dropdown'  => '*Obvyklé důvody smazání
+'filedelete'                   => 'Smazání souboru $1',
+'filedelete-legend'            => 'Smazat soubor',
+'filedelete-intro'             => "Chystáte se smazat soubor '''[[Media:$1|$1]]''' i s celou historií.",
+'filedelete-intro-old'         => "Chystáte se smazat verzi souboru '''[[Media:$1|$1]]''' z [$4 $3 $2].",
+'filedelete-comment'           => 'Důvod:',
+'filedelete-submit'            => 'Smazat',
+'filedelete-success'           => "Soubor '''$1''' byl smazán.",
+'filedelete-success-old'       => "Verze souboru '''[[Media:$1|$1]]''' z $3 $2 byla smazána.",
+'filedelete-nofile'            => "Soubor '''$1''' neexistuje.",
+'filedelete-nofile-old'        => "Neexistuje archivní verze souboru '''$1''' s udávanými atributy.",
+'filedelete-otherreason'       => 'Jiný/další důvod:',
+'filedelete-reason-otherlist'  => 'Jiný důvod',
+'filedelete-reason-dropdown'   => '*Obvyklé důvody smazání
 ** Porušení autorských práv
 ** Nadbytečná kopie',
-'filedelete-edit-reasonlist'  => 'Editovat důvody smazání',
-'filedelete-maintenance'      => 'Mazání a obnovování souborů je kvůli údržbě dočasně vypnuto.',
+'filedelete-edit-reasonlist'   => 'Editovat důvody smazání',
+'filedelete-maintenance'       => 'Mazání a obnovování souborů je kvůli údržbě dočasně vypnuto.',
+'filedelete-maintenance-title' => 'Soubor nelze smazat',
 
 # MIME search
 'mimesearch'         => 'Hledání podle MIME typu',
@@ -2070,7 +2071,7 @@ Každý řádek obsahuje odkaz na první a druhé přesměrování a k tomu cíl
 'listusers-editsonly'     => 'Zobrazit pouze uživatele s editacemi',
 'listusers-creationsort'  => 'Seřadit podle data registrace',
 'usereditcount'           => '$1 {{PLURAL:$1|editace|editace|editací}}',
-'usercreated'             => 'Registrován(a) $1 v $2',
+'usercreated'             => '{{GENDER:$3|Registrován|Registrována|Registrován(a)}} $1 v $2',
 'newpages'                => 'Nejnovější stránky',
 'newpages-username'       => 'Uživatelské jméno:',
 'ancientpages'            => 'Nejdéle needitované stránky',
@@ -2137,7 +2138,7 @@ Podívejte se také na [[Special:WantedCategories|žádané kategorie]].',
 'sp-deletedcontributions-contribs' => 'příspěvky',
 
 # Special:LinkSearch
-'linksearch'       => 'Externí odkazy',
+'linksearch'       => 'Hledání externích odkazů',
 'linksearch-pat'   => 'Vyhledávací vzor:',
 'linksearch-ns'    => 'Jmenný prostor:',
 'linksearch-ok'    => 'Hledat',
@@ -2246,7 +2247,7 @@ E-mailová adresa, kterou máte uvedenu v [[Special:Preferences|nastavení]], se
 'watchmethod-list'     => 'hledají se nejnovější editace sledovaných stránek',
 'watchlistcontains'    => 'Na svém seznamu sledovaných stránek máte $1 {{PLURAL:$1|položku|položky|položek}}.',
 'iteminvalidname'      => 'Problém s položkou „$1“, neplatný název…',
-'wlnote'               => 'Níže je {{PLURAL:$1|poslední změna|poslední $1 změny|posledních $1 změn}} za {{PLURAL:$2|poslední|poslední|posledních}} <b>$2</b> {{PLURAL:$2|hodinu|hodiny|hodin}}.',
+'wlnote'               => "Níže {{PLURAL:$1|je poslední změna|jsou poslední '''$1''' změny|je posledních '''$1''' změn}} za {{PLURAL:$2|poslední hodinu|poslední '''$2''' hodiny|posledních '''$2''' hodin}} do $4, $3.",
 'wlshowlast'           => 'Ukázat posledních $1 hodin $2 dnů $3',
 'watchlist-options'    => 'Možnosti sledovaných stránek',
 
@@ -2353,7 +2354,10 @@ Můžete si prohlédnout též [[Special:ProtectedPages|seznam aktuálně platn�
 'unprotectedarticle'          => 'odemyká „[[$1]]“',
 'movedarticleprotection'      => 'nastavení zámků přesunuto z „[[$2]]“ na „[[$1]]“',
 'protect-title'               => 'Zamyká se „$1“',
+'protect-title-notallowed'    => 'Zobrazení zámků na „$1“',
 'prot_1movedto2'              => 'Stránka [[$1]] přemístěna na stránku [[$2]]',
+'protect-badnamespace-title'  => 'Nezamykatelný jmenný prostor',
+'protect-badnamespace-text'   => 'Stránky v tomto jmenném prostoru nelze zamykat.',
 'protect-legend'              => 'Potvrdit zamčení',
 'protectcomment'              => 'Důvod:',
 'protectexpiry'               => 'Čas vypršení:',
@@ -2437,6 +2441,7 @@ Pro částečné obnovení zaškrtněte čtverečky u obnovovaných revizí a kl
 
 Záznam o posledních mazáních a obnoveních najdete v [[Special:Log/delete|knize smazaných stránek]].",
 'undelete-header'              => 'Vizte nedávno smazané stránky v [[Special:Log/delete|knize smazaných stránek]].',
+'undelete-search-title'        => 'Hledání smazaných stránek',
 'undelete-search-box'          => 'Hledání smazaných stránek',
 'undelete-search-prefix'       => 'Zobraz stránky začínající na:',
 'undelete-search-submit'       => 'Hledat',
@@ -2445,6 +2450,7 @@ Záznam o posledních mazáních a obnoveních najdete v [[Special:Log/delete|kn
 'undelete-bad-store-key'       => 'Nelze obnovit verzi souboru s časovou značkou $1: soubor před smazáním chyběl.',
 'undelete-cleanup-error'       => 'Chyba při mazání nepoužívaného archivního souboru „$1“.',
 'undelete-missing-filearchive' => 'Nepodařilo se obnovit soubor archivu s identifikací $1 , protože není v databázi. Možná již byl obnoven.',
+'undelete-error'               => 'Chyba při obnovování stránky',
 'undelete-error-short'         => 'Chyba při obnovování souboru: $1',
 'undelete-error-long'          => 'Vyskytla se chyba při obnovování souboru:
 
@@ -2496,7 +2502,7 @@ Zde je pro přehled zobrazen nejnovější záznam z knihy zablokování:',
 'nolinkshere-ns'           => "Ve zvoleném jmenném prostoru na '''[[:$1]]''' neodkazuje žádná stránka.",
 'isredirect'               => 'přesměrování',
 'istemplate'               => 'vložení',
-'isimage'                  => 'odkaz na soubor',
+'isimage'                  => 'vložení souboru',
 'whatlinkshere-prev'       => '{{PLURAL:$1|předchozí|předchozí $1|předchozích $1}}',
 'whatlinkshere-next'       => '{{PLURAL:$1|následující|následující $1|následujících $1}}',
 'whatlinkshere-links'      => '← odkazy',
@@ -2516,7 +2522,6 @@ Zde je pro přehled zobrazen nejnovější záznam z knihy zablokování:',
 'blockiptext'                     => 'Tento formulář slouží k zablokování editací z konkrétní IP adresy nebo uživatelského jména.
 Toto by mělo být používáno jen v souladu s [[{{MediaWiki:Policy-url}}|pravidly]].
 Udejte přesný důvod níže (například ocitujte, které stránky byly poškozeny).',
-'ipaddress'                       => 'IP adresa:',
 'ipadressorusername'              => 'IP adresa nebo uživatelské jméno:',
 'ipbexpiry'                       => 'Čas vypršení:',
 'ipbreason'                       => 'Důvod:',
@@ -2716,7 +2721,7 @@ V těchto případech musíte přesunout nebo sloučit stránky manuálně, jest
 
 Cílová stránka „[[:$1]]“ již existuje. Přejete si ji smazat pro uvolnění místa pro přesun?',
 'delete_and_move_confirm'      => 'Ano, smazat cílovou stránku',
-'delete_and_move_reason'       => 'Smazáno pro umožnění přesunu',
+'delete_and_move_reason'       => 'Smazáno pro umožnění přesunu z „[[$1]]“',
 'selfmove'                     => 'Původní a nový název jsou stejné; nelze stránku přesunout na sebe samu.',
 'immobile-source-namespace'    => 'Stránky ve jmenném prostoru „$1“ nelze přesouvat',
 'immobile-target-namespace'    => 'Stránky nelze přesouvat do jmenného prostoru „$1“',
@@ -2763,7 +2768,7 @@ V druhém případě můžete také používat přímý odkaz, např. pomocí [[
 'allmessagesdefault'            => 'Původní text',
 'allmessagescurrent'            => 'Aktuální text',
 'allmessagestext'               => 'Toto je seznam všech hlášení dostupných ve jmenném prostoru MediaWiki.
-Pokud si přejete přispívat k lokalizaci softwaru MediaWiki, navštivte [http://www.mediawiki.org/wiki/Localisation lokalizační stránku na mediawiki.org] a [http://translatewiki.net server translatewiki.net].',
+Pokud si přejete přispívat k lokalizaci softwaru MediaWiki, navštivte [//www.mediawiki.org/wiki/Localisation lokalizační stránku na mediawiki.org] a [//translatewiki.net server translatewiki.net].',
 'allmessagesnotsupportedDB'     => '{{ns:special}}:AllMessages není podporováno, neboť wgUseDatabaseMessages je vypnuto.',
 'allmessages-filter-legend'     => 'Filtr',
 'allmessages-filter'            => 'Filtr podle stavu:',
@@ -3461,7 +3466,7 @@ Obsahuje pouze seznam s odrážkami (řádka začíná s *). První odkaz na ř�
 
 # External editor support
 'edit-externally'      => 'Editovat tento soubor v externím programu',
-'edit-externally-help' => '(Více informací najdete v [http://www.mediawiki.org/wiki/Manual:External_editors nápovědě pro nastavení].)',
+'edit-externally-help' => '(Více informací najdete v [//www.mediawiki.org/wiki/Manual:External_editors nápovědě pro nastavení].)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'všechny',
@@ -3685,7 +3690,7 @@ Seznam editovaných stránek můžete také [[Special:EditWatchlist|editovat ve 
 'hebrew-calendar-m12-gen' => 'elulu',
 
 # Signatures
-'signature' => '[[{{ns:user}}:$1|$2]] <sup>([[{{ns:user_talk}}:$1|diskuse]])</sup>',
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|diskuse]])',
 
 # Core parser functions
 'unknown_extension_tag' => 'Neznámá značka rozšíření: „$1“',
@@ -3709,13 +3714,13 @@ Seznam editovaných stránek můžete také [[Special:EditWatchlist|editovat ve 
 'version-hook-subscribedby'     => 'Volán z',
 'version-version'               => '(Verze $1)',
 'version-license'               => 'Licence',
-'version-poweredby-credits'     => "Tato wiki běží na '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001–$1 $2.",
+'version-poweredby-credits'     => "Tato wiki běží na '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001–$1 $2.",
 'version-poweredby-others'      => 'další',
 'version-license-info'          => 'MediaWiki je svobodný software; můžete jej šířit nebo modifikovat podle podmínek GNU General Public License, vydávané Free Software Foundation; buď verze 2 této licence anebo (podle vašeho uvážení) kterékoli pozdější verze.
 
 MediaWiki je distribuována v naději, že bude užitečná, avšak BEZ JAKÉKOLI ZÁRUKY; neposkytují se ani odvozené záruky PRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL. Podrobnosti se dočtete v textu GNU General Public License.
 
-[{{SERVER}}{{SCRIPTPATH}}/COPYING Kopii GNU General Public License] jste měli obdržet spolu s tímto programem, pokud ne, napište na Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA nebo [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html si ji přečtěte online].',
+[{{SERVER}}{{SCRIPTPATH}}/COPYING Kopii GNU General Public License] jste měli obdržet spolu s tímto programem, pokud ne, napište na Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA nebo [//www.gnu.org/licenses/old-licenses/gpl-2.0.html si ji přečtěte online].',
 'version-software'              => 'Nainstalovaný software',
 'version-software-product'      => 'Název',
 'version-software-version'      => 'Verze',

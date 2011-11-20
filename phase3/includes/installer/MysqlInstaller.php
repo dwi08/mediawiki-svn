@@ -113,6 +113,9 @@ class MysqlInstaller extends DatabaseInstaller {
 		if ( !$status->isOK() ) {
 			return $status;
 		}
+		/**
+		 * @var $conn DatabaseBase
+		 */
 		$conn = $status->value;
 
 		// Check version
@@ -154,11 +157,14 @@ class MysqlInstaller extends DatabaseInstaller {
 			$this->parent->showStatusError( $status );
 			return;
 		}
+		/**
+		 * @var $conn DatabaseBase
+		 */
 		$conn = $status->value;
 		$conn->selectDB( $this->getVar( 'wgDBname' ) );
 
 		# Determine existing default character set
-		if ( $conn->tableExists( "revision" ) ) {
+		if ( $conn->tableExists( "revision", __METHOD__ ) ) {
 			$revision = $conn->buildLike( $this->getVar( 'wgDBprefix' ) . 'revision' );
 			$res = $conn->query( "SHOW TABLE STATUS $revision", __METHOD__ );
 			$row = $conn->fetchObject( $res );
@@ -212,6 +218,9 @@ class MysqlInstaller extends DatabaseInstaller {
 		if ( !$status->isOK() ) {
 			return $engines;
 		}
+		/**
+		 * @var $conn DatabaseBase
+		 */
 		$conn = $status->value;
 
 		$version = $conn->getServerVersion();
@@ -259,6 +268,9 @@ class MysqlInstaller extends DatabaseInstaller {
 		if ( !$status->isOK() ) {
 			return false;
 		}
+		/**
+		 * @var $conn DatabaseBase
+		 */
 		$conn = $status->value;
 
 		// Check version, need INFORMATION_SCHEMA and CREATE USER

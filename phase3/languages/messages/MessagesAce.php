@@ -410,7 +410,6 @@ Meunyo kön nyoë sababjih, Droëneuh kadang ka neuteumèë saboh bug lam softwa
 'badtitle'           => 'Nan hana sah',
 'badtitletext'       => 'Nan ôn nyang neulakèë hana sah, soh, atawa nan antarabahsa atawa antarawiki nyang salah sambông.',
 'viewsource'         => 'Eu nè',
-'viewsourcefor'      => 'keu $1',
 'viewsourcetext'     => 'Droëneuh  jeuët neu’eu',
 
 # Login and logout pages
@@ -1022,7 +1021,7 @@ Hubông-hubông lheuëh nyan bak baréh nyang saban geukira sibagoë keucuali, n
 
 # External editor support
 'edit-externally'      => 'Andam beureukah nyoë ngön aplikasi luwa',
-'edit-externally-help' => '(Ngiëng [http://meta.wikimedia.org/wiki/Help:External_editors arah atô] keu beurita leubèh lanjôt)',
+'edit-externally-help' => '(Ngiëng [//meta.wikimedia.org/wiki/Help:External_editors arah atô] keu beurita leubèh lanjôt)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ban dum',

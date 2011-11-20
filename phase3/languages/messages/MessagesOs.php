@@ -334,7 +334,6 @@ $messages = array(
 Æндæр исчи йæ аппæрста мыййаг.',
 'badtitle'             => 'Æнæмбæлон сæргонд',
 'viewsource'           => 'Код кæсын',
-'viewsourcefor'        => 'Фарс «$1»',
 'protectedpagetext'    => 'Ацы фарс у ивынæй æхгæд.',
 'viewsourcetext'       => 'Ацы фарсы код фенæн æмæ халдих кæнæн ис:',
 'ns-specialprotected'  => 'Сæрмагонд фæрстæ ({{ns:special}}) баивæн нæй.',
@@ -427,7 +426,6 @@ $messages = array(
 'summary-preview'                  => 'Ивд афыст уыдзæн:',
 'blockedtitle'                     => 'Архайæг хъодыгонд æрцыд',
 'blockednoreason'                  => 'аххос амынд не ’рцыд',
-'whitelistedittitle'               => 'Ацы текст ивынмæ хъуамæ дæхи бацамонай системæйæн',
 'loginreqtitle'                    => 'Хъуамæ дæхи бацамонай',
 'accmailtitle'                     => 'Пароль рарвыст у.',
 'newarticle'                       => '(Ног)',
@@ -659,7 +657,7 @@ $messages = array(
 'rclistfrom'                      => 'Равдисын ивдтытæ амæй фæстæ: $1',
 'rcshowhideminor'                 => '$1 чысыл ивдтытæ',
 'rcshowhidebots'                  => '$1 роботты куыст',
-'rcshowhideliu'                   => '$1 ырбахизгæ архайджыты',
+'rcshowhideliu'                   => '$1, йæхи чи бацамыдта, уыцы архайджыты',
 'rcshowhideanons'                 => '$1 æнæном архайджыты',
 'rcshowhidemine'                  => '$1 мæ ивдтытæ',
 'rclinks'                         => 'Фæстаг $1 ивдтытæ (афæстаг $2 боны дæргъы чи ’рцыдысты) равдис;
@@ -1100,7 +1098,7 @@ $3',
 
 # External editor support
 'edit-externally'      => 'Ивын ацы файл æддаг программæйæ',
-'edit-externally-help' => '(Кæс [http://www.mediawiki.org/wiki/Manual:External_editors сывæрыны уагæвæрдтæ] фылдæр базонынæн)',
+'edit-externally-help' => '(Кæс [//www.mediawiki.org/wiki/Manual:External_editors сывæрыны уагæвæрдтæ] фылдæр базонынæн)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'иууылдæр',

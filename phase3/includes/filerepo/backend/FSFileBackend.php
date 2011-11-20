@@ -18,14 +18,6 @@ class FSFileBackend extends FileBackend {
 			: 0644;
 	}
 
-	protected function fullStoragePath( $path ) {
-		if ( $this->root == '' ) {
-			return "/$path"; // absolute, don't use "current directory"
-		} else {
-			return "{$root}/{$path}";
-		}
-	}
-
 	public function store( array $params ) {
 		$status = Status::newGood();
 

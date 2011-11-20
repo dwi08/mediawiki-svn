@@ -188,6 +188,9 @@ class GenerateSitemap extends Maintenance {
 
 		// Custom priorities
 		if ( $wgSitemapNamespacesPriorities !== false ) {
+			/**
+			 * @var $wgSitemapNamespacesPriorities array
+			 */
 			foreach ( $wgSitemapNamespacesPriorities as $namespace => $priority ) {
 				$float = floatval( $priority );
 				if ( $float > 1.0 ) {
@@ -202,6 +205,8 @@ class GenerateSitemap extends Maintenance {
 
 	/**
 	 * Create directory if it does not exist and return pathname with a trailing slash
+	 * @param $fspath string
+	 * @return null|string
 	 */
 	private static function init_path( $fspath ) {
 		if ( !isset( $fspath ) ) {
@@ -342,13 +347,20 @@ class GenerateSitemap extends Maintenance {
 	 * @return Resource
 	 */
 	function open( $file, $flags ) {
-		return $this->compress ? gzopen( $file, $flags ) : fopen( $file, $flags );
+		$resource = $this->compress ? gzopen( $file, $flags ) : fopen( $file, $flags );
+		if( $resource === false ) {
+			wfDebugDieBacktrace( __METHOD__ . " error opening file $file with flags $flags. Check permissions?" );
+		}
+		return $resource;
 	}
 
 	/**
 	 * gzwrite() / fwrite() wrapper
 	 */
 	function write( &$handle, $str ) {
+		if( $handle === true || $handle === false ) {
+			wfDebugDieBacktrace( __METHOD__ . " was passed a boolean as a file handle.\n" );
+		}
 		if ( $this->compress )
 			gzwrite( $handle, $str );
 		else

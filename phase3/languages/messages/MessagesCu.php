@@ -232,6 +232,7 @@ $messages = array(
 'portal'               => 'обьщєниꙗ съвѣтъ',
 'portal-url'           => 'Project:Обьщєниꙗ съвѣтъ',
 
+'pagetitle'           => '$1 · {{SITENAME}}',
 'retrievedfrom'       => 'поѩто иꙁ ⁖ $1 ⁖',
 'youhavenewmessages'  => '$1 тєбѣ напьсанꙑ сѫтъ ($2)',
 'newmessageslink'     => 'нови напьсаниꙗ',
@@ -261,9 +262,8 @@ $messages = array(
 'nstab-category'  => 'катигорїꙗ',
 
 # General errors
-'error'         => 'блаꙁна',
-'viewsource'    => 'страницѧ источьнъ обраꙁъ',
-'viewsourcefor' => '$1 дѣлꙗ',
+'error'      => 'блаꙁна',
+'viewsource' => 'страницѧ источьнъ обраꙁъ',
 
 # Login and logout pages
 'yourname'                => 'твоѥ имѧ',
@@ -496,7 +496,7 @@ $messages = array(
 'filehist-user'      => 'польꙃєватєл҄ь',
 'filehist-filesize'  => 'дѣла мѣра',
 'filehist-comment'   => 'опьсаниѥ',
-'imagelinks'         => 'дѣла съвѧꙁи',
+'imagelinks'         => 'дѣла польꙃєваниѥ',
 'sharedupload'       => 'сѥ дѣло въ $1 съхранѥно ѥстъ дѣла · ѥгожє дроугꙑ опꙑтьствованиѩ польꙃєвати могѫтъ',
 
 # File reversion

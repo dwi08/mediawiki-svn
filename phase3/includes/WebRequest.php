@@ -946,7 +946,7 @@ HTML;
 
 	/**
 	 * Parse the Accept-Language header sent by the client into an array
-	 * @return array( languageCode => q-value ) sorted by q-value in descending order
+	 * @return array array( languageCode => q-value ) sorted by q-value in descending order
 	 * May contain the "language" '*', which applies to languages other than those explicitly listed.
 	 * This is aligned with rfc2616 section 14.4
 	 */
@@ -962,7 +962,7 @@ HTML;
 
 		// Break up string into pieces (languages and q factors)
 		$lang_parse = null;
-		preg_match_all( '/([a-z]{1,8}(-[a-z]{1,8})?|\*)\s*(;\s*q\s*=\s*(1|0(\.[0-9]+)?)?)?/',
+		preg_match_all( '/([a-z]{1,8}(-[a-z]{1,8})*|\*)\s*(;\s*q\s*=\s*(1(\.0{0,3})?|0(\.[0-9]{0,3})?)?)?/',
 			$acceptLang, $lang_parse );
 
 		if ( !count( $lang_parse[1] ) ) {
@@ -1192,6 +1192,10 @@ class FauxRequest extends WebRequest {
 			$this->session = $session;
 	}
 
+	/**
+	 * @param $method string
+	 * @throws MWException
+	 */
 	private function notImplemented( $method ) {
 		throw new MWException( "{$method}() not implemented" );
 	}
@@ -1255,15 +1259,26 @@ class FauxRequest extends WebRequest {
 		$this->headers[$name] = $val;
 	}
 
+	/**
+	 * @param $key
+	 * @return mixed
+	 */
 	public function getSessionData( $key ) {
 		if( isset( $this->session[$key] ) )
 			return $this->session[$key];
 	}
 
+	/**
+	 * @param $key
+	 * @param $data
+	 */
 	public function setSessionData( $key, $data ) {
 		$this->session[$key] = $data;
 	}
 
+	/**
+	 * @return array|Mixed|null
+	 */
 	public function getSessionArray() {
 		return $this->session;
 	}
@@ -1289,5 +1304,53 @@ class FauxRequest extends WebRequest {
 	 */
 	protected function getRawIP() {
 		return '127.0.0.1';
+	}
+}
+
+/**
+ * Similar to FauxRequest, but only fakes URL parameters and method
+ * (POST or GET) and use the base request for the remaining stuff
+ * (cookies, session and headers).
+ *
+ * @ingroup HTTP
+ */
+class DerivativeRequest extends FauxRequest {
+	private $base;
+
+	public function __construct( WebRequest $base, $data, $wasPosted = false ) {
+		$this->base = $base;
+		parent::__construct( $data, $wasPosted );
+	}
+
+	public function getCookie( $key, $prefix = null, $default = null ) {
+		return $this->base->getCookie( $key, $prefix, $default );
+	}
+
+	public function checkSessionCookie() {
+		return $this->base->checkSessionCookie();
+	}
+
+	public function getHeader( $name ) {
+		return $this->base->getHeader( $name );
+	}
+
+	public function getAllHeaders() {
+		return $this->base->getAllHeaders();
+	}
+
+	public function getSessionData( $key ) {
+		return $this->base->getSessionData( $key );
+	}
+
+	public function setSessionData( $key, $data ) {
+		return $this->base->setSessionData( $key, $data );
+	}
+
+	public function getAcceptLang() {
+		return $this->base->getAcceptLang();
+	}
+
+	public function getIP() {
+		return $this->base->getIP();
 	}
 }

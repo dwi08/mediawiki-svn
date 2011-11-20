@@ -200,6 +200,7 @@ class DatabasePostgres extends DatabaseBase {
 		$this->query( "SET client_encoding='UTF8'", __METHOD__ );
 		$this->query( "SET datestyle = 'ISO, YMD'", __METHOD__ );
 		$this->query( "SET timezone = 'GMT'", __METHOD__ );
+		$this->query( "SET standard_conforming_strings = on", __METHOD__ );
 
 		global $wgDBmwschema;
 		if ( $this->schemaExists( $wgDBmwschema ) ) {
@@ -564,7 +565,7 @@ class DatabasePostgres extends DatabaseBase {
 		$ignore = in_array( 'IGNORE', $insertOptions ) ? 'mw' : '';
 
 		if( is_array( $insertOptions ) ) {
-			$insertOptions = implode( ' ', $insertOptions );
+			$insertOptions = implode( ' ', $insertOptions ); // FIXME: This is unused
 		}
 		if( !is_array( $selectOptions ) ) {
 			$selectOptions = array( $selectOptions );
@@ -687,6 +688,24 @@ class DatabasePostgres extends DatabaseBase {
 		return $this->query( 'CREATE ' . ( $temporary ? 'TEMPORARY ' : '' ) . " TABLE $newName (LIKE $oldName INCLUDING DEFAULTS)", $fname );
 	}
 
+	function listTables( $prefix = null, $fname = 'DatabasePostgres::listTables' ) {
+		global $wgDBmwschema;
+		$eschema = $this->addQuotes( $wgDBmwschema );
+		$result = $this->query( "SELECT tablename FROM pg_tables WHERE schemaname = $eschema", $fname );
+
+		$endArray = array();
+
+		foreach( $result as $table ) {
+			$vars = get_object_vars($table);
+			$table = array_pop( $vars );
+			if( !$prefix || strpos( $table, $prefix ) === 0 ) {
+				$endArray[] = $table;
+			}
+		}
+
+		return $endArray;
+	}
+
 	function timestamp( $ts = 0 ) {
 		return wfTimestamp( TS_POSTGRES, $ts );
 	}
@@ -752,7 +771,7 @@ class DatabasePostgres extends DatabaseBase {
 	 * For backward compatibility, this function checks both tables and
 	 * views.
 	 */
-	function tableExists( $table, $schema = false ) {
+	function tableExists( $table, $fname = __METHOD__, $schema = false ) {
 		return $this->relationExists( $table, array( 'r', 'v' ), $schema );
 	}
 
@@ -878,11 +897,7 @@ SQL;
 		} elseif ( is_bool( $s ) ) {
 			return intval( $s );
 		} elseif ( $s instanceof Blob ) {
-			$ret = "'" . $s->fetch( $s ) . "'";
-			if ( $this->numeric_version >= 8.1 ) {
-				$ret = "E$ret";
-			}
-			return $ret;
+			return "'" . $s->fetch( $s ) . "'";
 		}
 		return "'" . pg_escape_string( $this->mConn, $s ) . "'";
 	}

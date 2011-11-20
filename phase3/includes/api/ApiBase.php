@@ -39,7 +39,7 @@
  *
  * @ingroup API
  */
-abstract class ApiBase {
+abstract class ApiBase extends ContextSource {
 
 	// These constants allow modules to specify exactly how to treat incoming parameters.
 
@@ -72,6 +72,10 @@ abstract class ApiBase {
 		$this->mMainModule = $mainModule;
 		$this->mModuleName = $moduleName;
 		$this->mModulePrefix = $modulePrefix;
+
+		if ( !$this->isMain() ) {
+			$this->setContext( $mainModule->getContext() );
+		}
 	}
 
 	/*****************************************************************************
@@ -179,16 +183,11 @@ abstract class ApiBase {
 	 * The object will have the WebRequest and the User object set to the ones
 	 * used in this instance.
 	 *
-	 * @return RequestContext
+	 * @deprecated since 1.19 use getContext to get the current context
+	 * @return DerivativeContext
 	 */
 	public function createContext() {
-		global $wgUser;
-
-		$context = new RequestContext;
-		$context->setRequest( $this->getMain()->getRequest() );
-		$context->setUser( $wgUser ); /// @todo FIXME: we should store the User object
-
-		return $context;
+		return new DerivativeContext( $this->getContext() );
 	}
 
 	/**
@@ -437,6 +436,7 @@ abstract class ApiBase {
 	 * Callback for preg_replace_callback() call in makeHelpMsg().
 	 * Replaces a source file name with a link to ViewVC
 	 *
+	 * @param $matches array
 	 * @return string
 	 */
 	public function makeHelpMsg_callback( $matches ) {
@@ -674,7 +674,6 @@ abstract class ApiBase {
 
 		$userWatching = $titleObj->userIsWatching();
 
-		global $wgUser;
 		switch ( $watchlist ) {
 			case 'watch':
 				return true;
@@ -693,7 +692,7 @@ abstract class ApiBase {
 						? 'watchdefault' : 'watchcreations';
 				}
 				# Watch the article based on the user preference
-				return (bool)$wgUser->getOption( $userOption );
+				return (bool)$this->getUser()->getOption( $userOption );
 
 			case 'nochange':
 				return $userWatching;
@@ -715,11 +714,11 @@ abstract class ApiBase {
 			return;
 		}
 
-		global $wgUser;
+		$user = $this->getUser();
 		if ( $value ) {
-			WatchAction::doWatch( $titleObj, $wgUser );
+			WatchAction::doWatch( $titleObj, $user );
 		} else {
-			WatchAction::doUnwatch( $titleObj, $wgUser );
+			WatchAction::doUnwatch( $titleObj, $user );
 		}
 	}
 
@@ -767,9 +766,9 @@ abstract class ApiBase {
 				ApiBase::dieDebug( __METHOD__, "Boolean param $encParamName's default is set to '$default'" );
 			}
 
-			$value = $this->getMain()->getRequest()->getCheck( $encParamName );
+			$value = $this->getRequest()->getCheck( $encParamName );
 		} else {
-			$value = $this->getMain()->getRequest()->getVal( $encParamName, $default );
+			$value = $this->getRequest()->getVal( $encParamName, $default );
 
 			if ( isset( $value ) && $type == 'namespace' ) {
 				$type = MWNamespace::getValidNamespaces();
@@ -1149,6 +1148,8 @@ abstract class ApiBase {
 		'mustbeposted' => array( 'code' => 'mustbeposted', 'info' => "The \$1 module requires a POST request" ),
 		'show' => array( 'code' => 'show', 'info' => 'Incorrect parameter - mutually exclusive values may not be supplied' ),
 		'specialpage-cantexecute' => array( 'code' => 'specialpage-cantexecute', 'info' => "You don't have permission to view the results of this special page" ),
+		'invalidoldimage' => array( 'code' => 'invalidoldimage', 'info' => 'The oldimage parameter has invalid format' ),
+		'nodeleteablefile' => array( 'code' => 'nodeleteablefile', 'info' => 'No such old version of the file' ),
 
 		// ApiEditPage messages
 		'noimageredirect-anon' => array( 'code' => 'noimageredirect-anon', 'info' => "Anonymous users can't create image redirects" ),
@@ -1180,6 +1181,7 @@ abstract class ApiBase {
 		'copyuploaddisabled' => array( 'code' => 'copyuploaddisabled', 'info' => 'Uploads by URL is not enabled.  Make sure $wgAllowCopyUploads is set to true in LocalSettings.php.' ),
 
 		'filename-tooshort' => array( 'code' => 'filename-tooshort', 'info' => 'The filename is too short' ),
+		'filename-toolong' => array( 'code' => 'filename-toolong', 'info' => 'The filename is too long' ),
 		'illegal-filename' => array( 'code' => 'illegal-filename', 'info' => 'The filename is not allowed' ),
 		'filetype-missing' => array( 'code' => 'filetype-missing', 'info' => 'The file is missing an extension' ),
 	);
@@ -1297,7 +1299,6 @@ abstract class ApiBase {
 	 * @return User
 	 */
 	public function getWatchlistUser( $params ) {
-		global $wgUser;
 		if ( !is_null( $params['owner'] ) && !is_null( $params['token'] ) ) {
 			$user = User::newFromName( $params['owner'], false );
 			if ( !$user->getId() ) {
@@ -1308,10 +1309,10 @@ abstract class ApiBase {
 				$this->dieUsage( 'Incorrect watchlist token provided -- please set a correct token in Special:Preferences', 'bad_wltoken' );
 			}
 		} else {
-			if ( !$wgUser->isLoggedIn() ) {
+			if ( !$this->getUser()->isLoggedIn() ) {
 				$this->dieUsage( 'You must be logged-in to have a watchlist', 'notloggedin' );
 			}
-			$user = $wgUser;
+			$user = $this->getUser();
 		}
 		return $user;
 	}

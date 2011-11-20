@@ -117,8 +117,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Ozutada niiden kävutajiden lugu, kudambad oma mülütanuded lehtpolen ičeze kaclendnimikirjutesihe',
 'tog-oldsig'                  => 'Olijan allekirjutesen ezikacund:',
 'tog-fancysig'                => 'Ičeze allekirjutesen wiki-znamišt (avtomatižeta kosketuseta)',
-'tog-externaleditor'          => 'Kävutada irdredaktor augotižjärgendusen mödhe (vaiše ekspertoiden täht; pidab järgeta specialižikš kompjuter; [http://www.mediawiki.org/wiki/Manual:External_editors Enamb informacijad.])',
-'tog-externaldiff'            => 'Kävutada irdredaktor augotižjärgendusen mödhe (vaiše ekspertoiden täht; pidab järgeta specialižikš kompjuter; [http://www.mediawiki.org/wiki/Manual:External_editors Enamb informacijad.])',
+'tog-externaleditor'          => 'Kävutada irdredaktor augotižjärgendusen mödhe (vaiše ekspertoiden täht; pidab järgeta specialižikš kompjuter; [//www.mediawiki.org/wiki/Manual:External_editors Enamb informacijad.])',
+'tog-externaldiff'            => 'Kävutada irdredaktor augotižjärgendusen mödhe (vaiše ekspertoiden täht; pidab järgeta specialižikš kompjuter; [//www.mediawiki.org/wiki/Manual:External_editors Enamb informacijad.])',
 'tog-showjumplinks'           => 'Ližata "hüpähtada..."-abukosketused',
 'tog-uselivepreview'          => 'Kävutada hered ezikacund (JavaScript) (Eksperimentaline)',
 'tog-forceeditsummary'        => 'Varutada, kunz toižetusen ümbrikirjutandan pöud ei ole täuttud',
@@ -439,14 +439,13 @@ Anttud naku andmused ei udištugoi.",
 Funkcii: $1<br />
 Ecind: $2',
 'viewsource'           => 'Kc. purde',
-'viewsourcefor'        => '$1-lehtpolele',
 'actionthrottled'      => 'Tegendan piguz om kaidetud',
 'protectedpagetext'    => "Nece lehtpol' om luklostadud, miše kaita se redaktiruindaspäi.",
 'viewsourcetext'       => 'Sab lugeda da kopiruida necen lehtpolen augotižtekst:',
 'protectedinterface'   => 'Necil lehtpolel om programman interfeistedotuz. Se om luklostadud, miše kaita se vandalizmaspäi.',
 'editinginterface'     => "'''Homaikat:''' Tö ladit redaktiruida lehtpol't, kudambal om programman interfeistekst.
 Mugoi tegend toižetab interfeisan irdnägu toižiden kävutajiden täht.
-Kändmižen täht om paremb kävutada [http://translatewiki.net/wiki/Main_Page?setlang=vep translatewiki.net] - MediaWikin lokalizacijan projekt.",
+Kändmižen täht om paremb kävutada [//translatewiki.net/wiki/Main_Page?setlang=vep translatewiki.net] - MediaWikin lokalizacijan projekt.",
 'sqlhidden'            => '(SQL-küzelend om peittud)',
 'namespaceprotected'   => "Teil ei ole oiktust redaktiruida lehtpolid '''$1'''-nimiavaruses.",
 'ns-specialprotected'  => 'Ei sa redaktiruida specialižid lehtpolid.',
@@ -622,9 +621,6 @@ Otkat sil'mnägubale, miše teile ei sa oigeta kirješt [[{{MediaWiki:Grouppage-
 Teiden IP-adres om $3, teiden blokiruindan ID om #$5.
 Olgat hüväd, kirjutagat nened andmused kaikiš kirjeižiš administratorile.",
 'blockednoreason'                  => 'Ei ole kirjutadud ni-mittušt süd.',
-'blockedoriginalsource'            => "'''$1'''-lehtpolen tekst:",
-'blockededitsource'                => "'''Teiden $1-lehtpolen toižetusiden''' tekst:",
-'whitelistedittitle'               => 'Kirjutagatoiš sistemha, miše redaktiruida',
 'whitelistedittext'                => 'Teile pidab $1, miše redaktiruida lehtpolid.',
 'confirmedittext'                  => 'Tarbiž vahvištoitta e-počtan adres, miše redaktiruida lehtpolid.
 Olgat hüväd, kirjutagat da vahvištoitkat teiden e-počtan adres [[Special:Preferences|järgendusiden lehtpolel]].',
@@ -1236,7 +1232,6 @@ Ku tö kirjutat sen, nece nimi kävutadas, miše ozutada lehtpolen toižetajad.'
 'recentchangeslinked-feed'     => 'Sidotud toižetused',
 'recentchangeslinked-toolbox'  => 'Sidotud toižetused',
 'recentchangeslinked-title'    => '"$1"-lehtpol\'he sidotud toižetused',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'Sidotud lehtpolil ei olend toižetusid anttud pordon aigan.',
 'recentchangeslinked-summary'  => "Neciš nimikirjuteses om tantoižid toižetusid lehtpoliš, kudambid kosketab ozutadud lehtpol'.
 [[Special:Watchlist|Teiden kaclendnimikirjutesen]] lehtpoled oma erigoittud lihavoitud šriftal.",
@@ -1412,7 +1407,6 @@ Informacijad sen [$2 andmusiden lehtpolelpäi] om anttud alemba.',
 
 # File deletion
 'filedelete'                  => 'Čuta $1',
-'filedelete-backlink'         => '← $1',
 'filedelete-legend'           => 'Čuta poiš fail',
 'filedelete-intro'            => "Tö takait čuta fail '''[[Media:$1|$1]]''' kaiken sen istorijanke.",
 'filedelete-comment'          => 'Sü:',
@@ -1727,7 +1721,6 @@ Pid\'oitelend da joksii abu:
 'exbeforeblank'          => "südäimišt edel puhtastamišt oli: '$1'",
 'exblank'                => "lehtpol' oli pall'az",
 'delete-confirm'         => '"$1"-lehtpolen čudand',
-'delete-backlink'        => '← $1',
 'delete-legend'          => 'Čuta poiš',
 'historywarning'         => 'Homaikat: lehtpolel, kudamb tö takait čuta, om istorii {{PLURAL:$1|ühtes redakcijaspäi|$1 redakcijoišpäi}}:',
 'confirmdeletetext'      => "Tö takait čuta poiš lehtpol' kaiken sen istorijanke.
@@ -1782,7 +1775,6 @@ Kc. [[Special:ProtectedPages|kaitud lehtpoliden nimikirjutez]].',
 'movedarticleprotection'      => 'Kaičendan järgendused oma sirtud "[[$2]]"-lehtpolespäi "[[$1]]"-lehtpol\'he.',
 'protect-title'               => '"$1"-lehtpolen kaičendpindan toižetuz',
 'prot_1movedto2'              => '[[$1]] om nimitadud [[$2]]-nimel',
-'protect-backlink'            => '← $1',
 'protect-legend'              => 'Vahvištoitkat kaičendan augotiž',
 'protectcomment'              => 'Sü:',
 'protectexpiry'               => 'lopstrok:',
@@ -1902,7 +1894,6 @@ Alemba om anttud jälgmäine kirjutuz blokiruindaiglehtesespäi:",
 'whatlinkshere'            => 'Kosketused - nakhu',
 'whatlinkshere-title'      => 'Lehtpoled, kudambad kosketadas "$1"-lehtpolen',
 'whatlinkshere-page'       => 'Lehtpol’:',
-'whatlinkshere-backlink'   => '← $1',
 'linkshere'                => "Nened lehtpoled kosketadas '''[[:$1]]''':",
 'nolinkshere'              => "'''[[:$1]]'''-lehtpol't ei kosketa ni üks' lehtpol'.",
 'nolinkshere-ns'           => "'''[[:$1]]'''-lehtpol't ei kosketa ni üks' lehtpol' valitud nimiavarudes.",
@@ -1925,7 +1916,6 @@ Alemba om anttud jälgmäine kirjutuz blokiruindaiglehtesespäi:",
 'blockiptext'                     => 'Kävutagat alemba anttud form, miše blokiruida kirjutandan voimuz märitud IP-adresaspäi.
 Nece sab tehta vaiše sen täht, miše borcuidas vandalizmanke, kut om kirjutadud [[{{MediaWiki:Policy-url}}|ohjandimiš]].
 Kirjutagat sü alemba (ozutesikš, citiruigat vandaliziruidud lehtpoled).',
-'ipaddress'                       => 'IP-adres:',
 'ipadressorusername'              => 'IP-adres vai kävutajan nimi:',
 'ipbexpiry'                       => 'Lopindan strok:',
 'ipbreason'                       => 'Sü:',
@@ -2600,7 +2590,7 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 
 # External editor support
 'edit-externally'      => 'Redaktiruida nece fail irdprogrammal',
-'edit-externally-help' => '(Kc. [http://www.mediawiki.org/wiki/Manual:External_editors seižutamižinstrukcijoid])',
+'edit-externally-help' => '(Kc. [//www.mediawiki.org/wiki/Manual:External_editors seižutamižinstrukcijoid])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'kaik',

@@ -32,9 +32,9 @@
  *     Removes <noinclude> sections, and <includeonly> tags.
  *
  * Globals used:
- *    objects:   $wgLang, $wgContLang
+ *    object: $wgContLang
  *
- * NOT $wgUser or $wgTitle or $wgRequest. Keep them away!
+ * NOT $wgUser or $wgTitle or $wgRequest or $wgLang. Keep them away!
  *
  * settings:
  *  $wgUseDynamicDates*, $wgInterwikiMagic*,
@@ -698,8 +698,7 @@ class Parser {
 		if ( $target !== null ) {
 			return $target;
 		} elseif( $this->mOptions->getInterfaceMessage() ) {
-			global $wgLang;
-			return $wgLang;
+			return $this->mOptions->getUserLangObj();
 		} elseif( is_null( $this->mTitle ) ) {
 			throw new MWException( __METHOD__.': $this->mTitle is null' );
 		}
@@ -1914,6 +1913,14 @@ class Parser {
 
 				if ( $ns == NS_CATEGORY ) {
 					wfProfileIn( __METHOD__."-category" );
+					if( $this->getTitle()->isCssOrJsPage() ) {
+						# bug 32450 : js and script pages in MediaWiki: namespace do not want
+						# to get their code or comments altered. Think about js string:
+						# var foobar = "[[Category:" + $catname + "]];
+						$s .= "[[$text]]$trail";
+						wfProfileOut( __METHOD__."-category" );
+						continue;
+					}
 					$s = rtrim( $s . "\n" ); # bug 87
 
 					if ( $wasblank ) {
@@ -3022,7 +3029,7 @@ class Parser {
 	 * @private
 	 */
 	function braceSubstitution( $piece, $frame ) {
-		global $wgContLang, $wgNonincludableNamespaces;
+		global $wgNonincludableNamespaces;
 		wfProfileIn( __METHOD__ );
 		wfProfileIn( __METHOD__.'-setup' );
 
@@ -3035,7 +3042,7 @@ class Parser {
 		$isLocalObj = false;        # $text is a DOM node needing expansion in the current frame
 
 		# Title object, where $text came from
-		$title = null;
+		$title = false;
 
 		# $part1 is the bit before the first |, and must contain only title characters.
 		# Various prefixes will be stripped from it later.
@@ -3050,7 +3057,8 @@ class Parser {
 		# @todo FIXME: If piece['parts'] is null then the call to getLength() below won't work b/c this $args isn't an object
 		$args = ( null == $piece['parts'] ) ? array() : $piece['parts'];
 		wfProfileOut( __METHOD__.'-setup' );
-		wfProfileIn( __METHOD__."-title-$originalTitle" );
+
+		$titleProfileIn = null; // profile templates
 
 		# SUBST
 		wfProfileIn( __METHOD__.'-modifiers' );
@@ -3132,6 +3140,7 @@ class Parser {
 					}
 				}
 				if ( $function ) {
+					wfProfileIn( __METHOD__ . '-pfunc-' . $function );
 					list( $callback, $flags ) = $this->mFunctionHooks[$function];
 					$initialArgs = array( &$this );
 					$funcArgs = array( trim( substr( $part1, $colonPos + 1 ) ) );
@@ -3153,6 +3162,7 @@ class Parser {
 
 					# Workaround for PHP bug 35229 and similar
 					if ( !is_callable( $callback ) ) {
+						wfProfileOut( __METHOD__ . '-pfunc-' . $function );
 						wfProfileOut( __METHOD__ . '-pfunc' );
 						wfProfileOut( __METHOD__ );
 						throw new MWException( "Tag hook for $function is not callable\n" );
@@ -3178,6 +3188,7 @@ class Parser {
 						$text = $this->preprocessToDom( $text, $preprocessFlags );
 						$isChildObj = true;
 					}
+					wfProfileOut( __METHOD__ . '-pfunc-' . $function );
 				}
 			}
 			wfProfileOut( __METHOD__ . '-pfunc' );
@@ -3213,9 +3224,11 @@ class Parser {
 
 		# Load from database
 		if ( !$found && $title ) {
+			$titleProfileIn = __METHOD__ . "-title-" . $title->getDBKey();
+			wfProfileIn( $titleProfileIn ); // template in
 			wfProfileIn( __METHOD__ . '-loadtpl' );
 			if ( !$title->isExternal() ) {
-				if ( $title->getNamespace() == NS_SPECIAL
+				if ( $title->isSpecialPage()
 					&& $this->mOptions->getAllowSpecialInclusion()
 					&& $this->ot['html'] )
 				{
@@ -3237,7 +3250,7 @@ class Parser {
 					$context->setTitle( $title );
 					$context->setRequest( new FauxRequest( $pageArgs ) );
 					$context->setUser( $this->getUser() );
-					$context->setLang( Language::factory( $this->mOptions->getUserLang() ) );
+					$context->setLang( $this->mOptions->getUserLangObj() );
 					$ret = SpecialPageFactory::capturePath( $title, $context );
 					if ( $ret ) {
 						$text = $context->getOutput()->getHTML();
@@ -3290,7 +3303,9 @@ class Parser {
 		# Recover the source wikitext and return it
 		if ( !$found ) {
 			$text = $frame->virtualBracketedImplode( '{{', '|', '}}', $titleWithSpaces, $args );
-			wfProfileOut( __METHOD__."-title-$originalTitle" );
+			if ( $titleProfileIn ) {
+				wfProfileOut( $titleProfileIn ); // template out
+			}
 			wfProfileOut( __METHOD__ );
 			return array( 'object' => $text );
 		}
@@ -3318,6 +3333,10 @@ class Parser {
 		if ( $isLocalObj && $nowiki ) {
 			$text = $frame->expand( $text, PPFrame::RECOVER_ORIG );
 			$isLocalObj = false;
+		}
+
+		if ( $titleProfileIn ) {
+			wfProfileOut( $titleProfileIn ); // template out
 		}
 
 		# Replace raw HTML by a placeholder
@@ -3359,7 +3378,6 @@ class Parser {
 			$ret = array( 'text' => $text );
 		}
 
-		wfProfileOut( __METHOD__."-title-$originalTitle" );
 		wfProfileOut( __METHOD__ );
 		return $ret;
 	}
@@ -3884,8 +3902,9 @@ class Parser {
 
 		# Inhibit editsection links if requested in the page
 		if ( isset( $this->mDoubleUnderscores['noeditsection'] ) ) {
-			$showEditLink = 0;
+			$maybeShowEditLink = $showEditLink = false;
 		} else {
+			$maybeShowEditLink = true; /* Actual presence will depend on ParserOptions option */
 			$showEditLink = $this->mOptions->getEditSection();
 		}
 		if ( $showEditLink ) {
@@ -4032,9 +4051,9 @@ class Parser {
 			#     link text with suffix
 			$safeHeadline = $this->replaceLinkHoldersText( $safeHeadline );
 
-			# Strip out HTML (other than plain <sup> and <sub>: bug 8393)
+			# Strip out HTML (other than plain <sup> and <sub>: bug 8393, or <i>: bug 26375)
 			$tocline = preg_replace(
-				array( '#<(?!/?(sup|sub)).*?'.'>#', '#<(/?(sup|sub)).*?'.'>#' ),
+				array( '#<(?!/?(sup|sub|i)).*?'.'>#', '#<(/?(sup|sub|i)).*?'.'>#' ),
 				array( '',                          '<$1>' ),
 				$safeHeadline
 			);
@@ -4140,7 +4159,7 @@ class Parser {
 			);
 
 			# give headline the correct <h#> tag
-			if ( $sectionIndex !== false ) {
+			if ( $maybeShowEditLink && $sectionIndex !== false ) {
 				// Output edit section links as markers with styles that can be customized by skins
 				if ( $isTemplate ) {
 					# Put a T flag in the section identifier, to indicate to extractSections()
@@ -4184,7 +4203,7 @@ class Parser {
 			if ( $prevtoclevel > 0 && $prevtoclevel < $wgMaxTocLevel ) {
 				$toc .= Linker::tocUnindent( $prevtoclevel - 1 );
 			}
-			$toc = Linker::tocList( $toc, $this->mOptions->getUserLang() );
+			$toc = Linker::tocList( $toc, $this->mOptions->getUserLangObj() );
 			$this->mOutput->setTOCHTML( $toc );
 		}
 
@@ -5369,20 +5388,18 @@ class Parser {
 		if ( is_null( $this->mRevisionTimestamp ) ) {
 			wfProfileIn( __METHOD__ );
 
+			global $wgContLang;
+
 			$revObject = $this->getRevisionObject();
-			$timestamp = $revObject ? $revObject->getTimestamp() : false;
+			$timestamp = $revObject ? $revObject->getTimestamp() : wfTimestampNow();
 
-			if( $timestamp !== false ) {
-				global $wgContLang;
-
-				# The cryptic '' timezone parameter tells to use the site-default
-				# timezone offset instead of the user settings.
-				#
-				# Since this value will be saved into the parser cache, served
-				# to other users, and potentially even used inside links and such,
-				# it needs to be consistent for all visitors.
-				$this->mRevisionTimestamp = $wgContLang->userAdjust( $timestamp, '' );
-			}
+			# The cryptic '' timezone parameter tells to use the site-default
+			# timezone offset instead of the user settings.
+			#
+			# Since this value will be saved into the parser cache, served
+			# to other users, and potentially even used inside links and such,
+			# it needs to be consistent for all visitors.
+			$this->mRevisionTimestamp = $wgContLang->userAdjust( $timestamp, '' );
 
 			wfProfileOut( __METHOD__ );
 		}

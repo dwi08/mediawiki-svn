@@ -379,7 +379,6 @@ MySQL回到错误“$3: $4”。',
 函数： $1<br />
 查询： $2',
 'viewsource'           => '源代码',
-'viewsourcefor'        => '$1 𠮶源代码',
 'protectedpagetext'    => '个页锁到嘞，改伓正。',
 'viewsourcetext'       => '倷可以眵吖或复制个页𠮶源代码：',
 'protectedinterface'   => '个页给正嘞软件𠮶界面文本，佢拖锁到怕人乱扤。',
@@ -529,9 +528,6 @@ $2',
 
 倷𠮶封锁ID系$5。请到查询𠮶时间都要紧标到佢。',
 'blockednoreason'                  => '冇话理由',
-'blockedoriginalsource'            => "底下系'''$1'''𠮶源代码:",
-'blockededitsource'                => "底下系倷对'''$1'''𠮶'''编辑'''内容:",
-'whitelistedittitle'               => '登入后才编得正',
 'whitelistedittext'                => '起先倷要$1才编得正个页。',
 'confirmedittext'                  => '确认嘞email才能编写个页。麻烦用[[Special:Preferences|参数设置]]设置同确认倷𠮶email。',
 'nosuchsectiontitle'               => '冇个只段落',
@@ -1440,7 +1436,6 @@ $1',
 # Block/unblock
 'blockip'                     => '封到IP地址',
 'blockiptext'                 => '用下底𠮶表格去阻止某一IP𠮶修改权限。除非倷系为到怕佢乱扤，接到非要符合[[{{MediaWiki:Policy-url}}|守则]]𠮶条件下才能啖做。请到下底话只确切原因（比如引用一只拖破坏𠮶页面）。',
-'ipaddress'                   => 'IP地址:',
 'ipadressorusername'          => 'IP地址或用户名:',
 'ipbexpiry'                   => '期限:',
 'ipbreason'                   => '原因:',
@@ -1592,7 +1587,7 @@ $1',
 'allmessagesdefault'        => '默认文字',
 'allmessagescurrent'        => '眼前𠮶文字',
 'allmessagestext'           => '个首列到全部制定得正𠮶系统界面。
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
 'allmessagesnotsupportedDB' => "'''{{ns:special}}:系统界面功能'''关卟嘞（'''\$wgUseDatabaseMessages'''）。",
 
 # Thumbnails
@@ -2060,7 +2055,7 @@ $1',
 
 # External editor support
 'edit-externally'      => '用外部程式来编辑个只档案',
-'edit-externally-help' => '请参看[http://www.mediawiki.org/wiki/Manual:External_editors 设置步骤]了解别𠮶内容。',
+'edit-externally-help' => '请参看[//www.mediawiki.org/wiki/Manual:External_editors 设置步骤]了解别𠮶内容。',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => '全部',

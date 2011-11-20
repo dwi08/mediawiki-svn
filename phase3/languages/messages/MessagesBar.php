@@ -385,7 +385,6 @@ Méglicherweis iss schoh vohram åndern gléschd worn.',
 Funkzión: $1<br />
 Obfrog: $2',
 'viewsource'           => 'an Quötext åschauh',
-'viewsourcefor'        => 'fyr $1',
 'actionthrottled'      => 'Akziónszoi limitird',
 'actionthrottledtext'  => 'Im Råmen voh ner Anti-Spam-Moossnåm kå dé Akzión do in am kurzen Zeidobstånd netter begrenzd ausgfyrd wern. Dé Grenzen host ywerschritten.
 Bittscheh vasuachs in a por Minunten nuamoi.',
@@ -394,9 +393,20 @@ Bittscheh vasuachs in a por Minunten nuamoi.',
 'protectedinterface'   => "Dé Seiten do enthoit Text fyr d' Benutzerówerflächen voh da Software und is gschytzd, um an Missbrauch vurzbeing.",
 'editinginterface'     => "'''Ówocht:''' Dé Seiten do enthoit voh da MediaWiki-Software gnutzden Text. 
 Änderrungen auf derer Seiten wirken sé auf d' Benutzerówerflächen aus.
-Ziag bittscheh im Foi voh Ywersétzungen in Betrocht, dé bei [http://translatewiki.net/wiki/Main_Page?setlang=de translatewiki.net], da Lókaalisiarungsblottform fyr MediaWiki, durchzfyrn.",
+Ziag bittscheh im Foi voh Ywersétzungen in Betrocht, dé bei [//translatewiki.net/wiki/Main_Page?setlang=de translatewiki.net], da Lókaalisiarungsblottform fyr MediaWiki, durchzfyrn.",
 'sqlhidden'            => '(SQL-Obfrog vastéckt)',
+'cascadeprotected'     => "Dé Seiten is zua da Beorweitung gsperrd worn. Sie is in d' {{PLURAL:$1|fóigande Seiten|fóiganden Seiten}} eihbunden, dé mid da Kaskaadensperrópzión gschytzd {{PLURAL:$1|is|san}}:
+$2",
+'namespaceprotected'   => "Du host néd d' daforderliche Berechtigung, Seiten im Náumensraum '''$1''' b'orweiden z' kenner.",
+'customcssprotected'   => "Du host néd d' Berechtigung dé CSS enthoitende Seiten z' b'orweiden, weis d' persénlichen Eihstöungen vohram aundern Benutzer enthoitt.",
+'customjsprotected'    => "Du host néd d' Berechtigung dé JavaScript enthoitende Seiten z' b'orweiden, weis d' persénlichen Eihstöungen vohram aundern Benutzer enthoitt.",
+'ns-specialprotected'  => "Speziaalseiten kennern néd b'orweidt wern.",
 'titleprotected'       => "A Seiten mid dém Nåm kå néd åglégd wern. Dé Sperrn is durch [[User:$1|$1]] mid da Begryndung ''„$2“'' eihgerichtt worn.",
+
+# Virus scanner
+'virus-badscanner'     => "Feelerhofte Kónfigurazión: unbekaunnter Virnscanner: ''$1''",
+'virus-scanfailed'     => 'Scan is föögschlong (code $1)',
+'virus-unknownscanner' => 'Néd bekaunnter Virnscanner:',
 
 # Login and logout pages
 'logouttext'                 => "'''Iatzerd bist obgmödt.'''
@@ -411,6 +421,7 @@ Vagiss bittscheh néd, deine [[Special:Preferences|{{SITENAME}}-Eishtellungen]] 
 'yourpassword'               => 'Posswort:',
 'yourpasswordagain'          => 'Posswort nóamoi',
 'remembermypassword'         => 'Mid dém Browser dauerhoft ågmödt bleim (maximoi $1 {{PLURAL:$1|Dog|Dog}})',
+'securelogin-stick-https'    => "Noch'm Auhmöden mid HTTPS vabunden bleim",
 'yourdomainname'             => 'Eanerne Domain:',
 'externaldberror'            => 'Entweder es ligt a Feeler bai da externen Authentifiziarung vur oder du derfst dai externs Benytzerkonto ned aktualisirn.',
 'login'                      => 'Åmöden',
@@ -435,6 +446,8 @@ Vagiss bittscheh néd, deine [[Special:Preferences|{{SITENAME}}-Eishtellungen]] 
 'createaccounterror'         => 'Des Benutzerkonto hod ned erstöd wern kenner: $1',
 'nocookiesnew'               => "Da Benytzerzuagång is erstöid worn, du bist ower ned ågmöidt. {{SITENAME}} benedigt fyr de Funkzion Cookies, bittschee aktiviar de und möidt de danoch mid daim naichn Benytzernåm und 'm dazuaghering Posswort å.",
 'nocookieslogin'             => '{{SITENAME}} nimmt Cookies zum Ailoggen vo de Benytzer her. Du host Cookies deaktivird, bittschee aktivir de und vasuchs nuamoi.',
+'nocookiesfornew'            => "Dés Benutzerkóntó is néd erstöd worn, wei d' Daatenherkumft néd damittelt wern hod kenner.
+Es muass sichergstöd seih, daas Cookies aktivierd san. Danoch bittscheh d' Seiten daneit loon und wieder vasuacher.",
 'loginsuccesstitle'          => "D' Åmöidung is erfoigraich gween",
 'loginsuccess'               => 'Du bist jetzad ois „$1“ bai {{SITENAME}} ågmöidt.',
 'wrongpassword'              => 'Des Posswort is foisch! Bitschee prowirs nuamoi.',
@@ -492,7 +505,6 @@ Vagiss bittscheh néd, deine [[Special:Preferences|{{SITENAME}}-Eishtellungen]] 
 'summary-preview'                  => 'Vurschau vo da Zåmmfossung:',
 'subject-preview'                  => 'Vurschau vom Bedreff:',
 'blockedtitle'                     => 'Da Benytzer is gsperrt',
-'whitelistedittitle'               => 'Zum Beorwaiten muasst de åmöiden',
 'whitelistedittext'                => "Du muasst de $1, um Saiten beorwaiten z' kenna.",
 'loginreqtitle'                    => "'s braucht a Åmöidung",
 'loginreqlink'                     => 'åmöiden',
@@ -572,6 +584,9 @@ Zua deiner Informazión fóigts Lésch- und Vaschiawungs-Logbiaché mid da Begry
 'post-expand-template-argument-warning'   => "'''Ówocht:''' Dé Seiten enthoit minderstens oah Argument in ner Vurlog, dés expandird z' gróss is. Dé Argumentt wern ignorird.",
 'post-expand-template-argument-category'  => 'Seiten, dé ignorirde Vurlongargumentt enthoiden',
 
+# "Undo" feature
+'undo-summary' => 'Änderrung $1 voh [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussión]]) ryckgängig gmocht.',
+
 # Account creation failure
 'cantcreateaccounttitle' => 'Benutzerkonto kå ned erstöd wern',
 
@@ -587,9 +602,11 @@ Zua deiner Informazión fóigts Lésch- und Vaschiawungs-Logbiaché mid da Begry
 'cur'                    => 'Aktuö',
 'next'                   => 'Naxte',
 'last'                   => 'Vurherige',
-'histlegend'             => 'Zum Ozoagn vo Änderungen einfach de zwoa Versionen auswähln und auf de Schaltfläche „{{int:compareselectedversions}}“ klicken.<br />
-* (Aktuell) = Untaschied zur aktuellen Version, (Vorherige) = Untaschied zur vorherigen Version
-* Uhrzeit/Datum = Version zu dera Zeit, Benutzername/IP-Adresse vom Bearbeiter, K = Kloane Änderung',
+'page_first'             => 'Auhfaung',
+'page_last'              => 'End',
+'histlegend'             => "Zur da Auhzoag voh dé Änderrungen oahfoch dé z' vagleichenden Versiónen auswön und d' Schoitflächen „{{int:compareselectedversions}}“ drucken.<br />
+* ({{int:cur}}) = Unterschiad zua da aktuön Versión, ({{int:last}}) = Unterschiad zua da vurhering Versión
+* Uarzeid/Daatum = Versión zua derer Zeid, Benutzernaum/IP-Adress vom Beorweiter, {{int:minoreditletter}} = Kloane Änderrung",
 'history-fieldset-title' => 'Suach in da Versiónsgschicht',
 'history-show-deleted'   => 'netter gléschde Versiónen',
 'histfirst'              => 'Öderste',
@@ -719,12 +736,12 @@ Details stehen im [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} 
 'group-suppress'   => 'Oversighter',
 'group-all'        => '(olle)',
 
-'group-user-member'          => 'Benutzer',
-'group-autoconfirmed-member' => 'Autómaatisch bstätigter Benutzer',
+'group-user-member'          => '{{GENDER:$1|Benutzer|Benutzerrin}}',
+'group-autoconfirmed-member' => '{{GENDER:$1|Autómaatisch bstätigter Benutzer|Autómaatisch bstätigter Benutzerrin}}',
 'group-bot-member'           => 'Bot',
-'group-sysop-member'         => 'Administraator',
-'group-bureaucrat-member'    => 'Byrokraat',
-'group-suppress-member'      => 'Oversighter',
+'group-sysop-member'         => '{{GENDER:$1|Administraator|Administraatorin}}',
+'group-bureaucrat-member'    => '{{GENDER:$1|Byrókraat|Byrókraatin}}',
+'group-suppress-member'      => '{{GENDER:$1|Oversighter|Oversighterrin}}',
 
 'grouppage-user'          => '{{ns:project}}:Benutzer',
 'grouppage-autoconfirmed' => '{{ns:project}}:Autómaatisch bstätigte Benutzer',
@@ -759,9 +776,9 @@ Details stehen im [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} 
 'rcnote'                            => "Untn {{PLURAL:$1|is de letzte Ändarung|san de letztn '''$1''' Ändarungen}} {{PLURAL:$2|vum letztn|vu de letztn '''$2'''}} Tåg aufglist. Stãnd vum $4 um $5.",
 'rcnotefrom'                        => "Åzoagt wern d' Änderrungen seid  '''$2''' (max. '''$1''' Eihtrég).",
 'rclistfrom'                        => 'Netter Änderrungen seid $1 åzoang.',
-'rcshowhideminor'                   => 'kloane Ändarungen $1',
+'rcshowhideminor'                   => 'kloane Änderrungen $1',
 'rcshowhidebots'                    => 'Bots $1',
-'rcshowhideliu'                     => 'Ãgmödte Benutzer $1',
+'rcshowhideliu'                     => 'Ågmödte Benutzer $1',
 'rcshowhideanons'                   => 'Anónyme Benutzer $1',
 'rcshowhidepatr'                    => 'Kontróilirde Änderrungen $1',
 'rcshowhidemine'                    => 'Eigerne Beiträg $1',
@@ -782,7 +799,7 @@ Details stehen im [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} 
 
 # Recent changes linked
 'recentchangeslinked'          => 'Änderrungen ån valinkte Seiten',
-'recentchangeslinked-feed'     => 'Valinkts priafm',
+'recentchangeslinked-feed'     => 'Valinkts priaffm',
 'recentchangeslinked-toolbox'  => 'Valinkts priaffm',
 'recentchangeslinked-title'    => 'Änderrungen ån Seiten, dé voh „$1“ valinkt san',
 'recentchangeslinked-noresult' => 'Im ausgwöden Zeidraum san an dé valinkden Seiten koane Änderrungen vurgnummer worn.',
@@ -793,38 +810,52 @@ Details stehen im [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} 
 # Upload
 'upload'              => 'Aufféloon',
 'uploadbtn'           => 'Daatei aufféloon',
-'uploadnologin'       => 'Ned ågmöidt',
+'uploadnologin'       => 'Néd ågmödt',
 'uploadnologintext'   => 'Du muasst [[Special:UserLogin|ågmödt]] seih, wånn Du Daatein auffeloon wüst.',
 'uploadlog'           => 'Daatei-Logbiache',
 'uploadlogpage'       => 'Daatei-Logbiache',
 'uploadlogpagetext'   => 'Des is des Logbuach voh de auffegloodanen Daatein, schaug aa unter [[Special:NewFiles|neiche Daatein]].',
 'filename'            => 'Daateinåm',
 'filedesc'            => 'Bschreiwung',
+'fileuploadsummary'   => 'Bschreiwung/Quön',
 'filereuploadsummary' => 'Daateiänderrungen:',
 'filestatus'          => 'Copyright-Staatus:',
 'filesource'          => 'Quön:',
 'uploadedfiles'       => 'Aufféglooderne Daatein',
+'ignorewarning'       => "D' Warnung ignoriern und d' Daatei speichern",
+'ignorewarnings'      => 'Warnung ignoriern',
+'minlength1'          => 'Dé Daateinaumen miassen minderstens aan Buachstom laung seih.',
 'badfilename'         => 'Da Daateinåm is auf „$1“ gänderd worn.',
 'large-file'          => 'De Daateigreess soidad noch Meeglichkeid $1 ned ywerschreiten. De Daatei is $2 grooss.',
-'emptyfile'           => "De hochgladene Datei is laar. Da Grund konn a Tippfehler im Dateinam sei. Bitte kontrollieren'S, ob Sie de Datei wirklich hochladn woin.",
-'uploadwarning'       => 'Obacht',
+'largefileserver'     => 'Dé Daatei is greesser ois dé vom Server eihgstöde Maximaalgreessen.',
+'emptyfile'           => 'Dé aufféglooderne Daatei is laar. Da Grund kauh a Tippfeeler im Daateinaum seih. Bittscheh kóntróllier, ób du dé Daatei wirklé aufféloon wüst.',
+'uploadwarning'       => 'Ówocht',
+'savefile'            => 'Daatei speichern',
 'uploadedimage'       => 'hod „[[$1]]“ auffégloon',
-'uploaddisabled'      => "'tschuldigung, as Hochladn is deaktiviert.",
-'uploadscripted'      => 'De Datei enthalt HTML- oda Scriptcode, der irrtümlichaweis von am Webbrowser ausgführt wern kinnat.',
-'watchthisupload'     => 'De Saiten beowochten',
-'filewasdeleted'      => 'A Datei mit dem Nama is scho oamoi hochgladn worn und zwischenzeitlich wieda glöscht worn. Bitte schaug erscht den Eintrag im $1 oo, bevor du de Datei wirklich speicherst.',
-'upload-success-subj' => 'Erfolgreich hoachgladn',
+'uploaddisabled'      => "'s aufféloon is deaktivierd",
+'uploadscripted'      => 'Dé Datei enthoit HTML- óder Scriptcode, der wos irrtymlicherweis voram Webbrowser ausgfyrd wern kunnterd.',
+'watchthisupload'     => 'Dé Seiten beówochten',
+'filewasdeleted'      => "A Daatei mid dém Naum is schoh oamoi auffégloon und zwischenzeidlé wieder gléschd worn. Bittscheh schaug erscht 'n Eihtrog im $1 auh, bevur du dé Daatei wirklé speicherdst.",
+'upload-success-subj' => 'Erfóigreich auffégloon',
+'upload-failure-subj' => 'A Feeler beim Aufféloon',
+'upload-warning-subj' => 'Auffélood-Warnung',
+
+'upload-file-error'   => 'Interner Feeler',
+'upload-unknown-size' => 'Néd bekaunnte Greess',
+
+# img_auth script messages
+'img-auth-accessdenied' => 'Zuagrif vaweigerd',
 
 # Some likely curl errors. More could be added from <http://curl.haxx.se/libcurl/c/libcurl-errors.html>
-'upload-curl-error6' => 'URL is net erreichbar',
+'upload-curl-error6' => "D' URL is néd dareichbor",
 
 'license'            => 'Lizenz:',
 'license-header'     => 'Lizenz',
-'license-nopreview'  => '(es gibt koa Vorschau)',
-'upload_source_file' => ' (a Datei auf deim Computa)',
+'license-nopreview'  => '(es gibt koah Vurschau)',
+'upload_source_file' => ' (a Daatei auf deim Computer)',
 
 # Special:ListFiles
-'listfiles_search_for' => 'Suach noch da Datai:',
+'listfiles_search_for' => 'Suach noch da Daatei:',
 
 # File description page
 'file-anchor-link'          => 'Daatei',
@@ -837,7 +868,7 @@ Details stehen im [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} 
 'filehist-thumbtext'        => "Vurschaubüdel fyr d' Versión vom $1, $3 Uar",
 'filehist-user'             => 'Benutzer',
 'filehist-dimensions'       => 'Moosse',
-'filehist-filesize'         => 'Dataigress',
+'filehist-filesize'         => 'Dateigreess',
 'filehist-comment'          => 'Kommentar',
 'imagelinks'                => 'Daateivawendung',
 'linkstoimage'              => "{{PLURAL:$1|D'foignde Seitn vawendt|De foigndn $1 Seitn vawendn}} de Datei:",
@@ -850,15 +881,15 @@ A [[Special:WhatLinksHere/$2|voiständige Listn]] gibt's aa.",
 'sharedupload'              => 'De Datei stãmmt aus $1 und deaf bei ãndare Projekte vawendt wean.',
 'sharedupload-desc-there'   => "De Datei stãmmt aus $1 und deaf bei ãndera Projekte vawendt wean. Schau auf'd [$2 Dateibeschreibungsseitn] fia weidare Infoamazionen.",
 'sharedupload-desc-here'    => "Dé Daatei ståmmt aus $1 und derf voh åndre Prójektt vawendt wern. D' Bschreiwung voh da [$2 Daateibschreiwungsseiten] werd unten åzoagt.",
-'uploadnewversion-linktext' => 'A neie Version vo dera Datei hoachladn',
+'uploadnewversion-linktext' => 'A neiche Versión voh derer Daatei aufféloon',
 
 # File reversion
-'filerevert-defaultcomment' => 'zruckgsetzt auf de Version vom $1, $2',
+'filerevert-defaultcomment' => 'zruckgsétzd auf dé Versión vom $1, $2',
 'filerevert-submit'         => 'Zrucksetzen',
 
 # File deletion
-'filedelete-legend' => 'Lösch de Datei',
-'filedelete-intro'  => "Du löschst de Datei '''„[[Media:$1|$1]]“'''.",
+'filedelete-legend' => 'Lésch dé Daatei',
+'filedelete-intro'  => "Du léschst dé Daatei '''„[[Media:$1|$1]]“'''.",
 
 # MIME search
 'mimesearch-summary' => 'Auf dieser Spezialseite können die Dateien nach dem MIME-Typ gefiltert werden. Die Eingabe muss immer den Medien- und Subtyp beinhalten: <tt>image/jpeg</tt> (siehe Bildbeschreibungsseite).',
@@ -875,11 +906,11 @@ A [[Special:WhatLinksHere/$2|voiständige Listn]] gibt's aa.",
 'statistics-articles'      => 'Inhoidsseiten',
 'statistics-pages'         => 'Seiten',
 'statistics-pages-desc'    => 'Olle Seiten in dém Wiki, inklusiav da Dischkrirseiten, Weiderloatungen usw.',
-'statistics-files'         => 'Auffegloodane Daatein',
+'statistics-files'         => 'Aufféglooderne Daatein',
 'statistics-edits'         => 'Seitenbeorweitungen',
 'statistics-edits-average' => 'Beorweitungen pró Seiten im Durchschnit',
 'statistics-views-total'   => 'Seitenaufruaff gsåmmt',
-'statistics-mostpopular'   => 'Am meistn bsuachte Seitn',
+'statistics-mostpopular'   => 'Dé am moastbsuachten Seiten',
 
 'disambiguationspage'  => 'Template:Begriffsklärung',
 'disambiguations-text' => 'De folgenden Seitn valinkn auf a Seitn zur Begriffsklärung.
@@ -911,7 +942,7 @@ Links aus Namensräume wern da net aufglistet.',
 'uncategorizedtemplates'  => 'Néd kategorisirde Vurlong',
 'unusedcategories'        => 'Néd bnutzde Kategorien',
 'unusedimages'            => 'Néd bnutzde Daatein',
-'popularpages'            => 'Dé bliabersten Seiten',
+'popularpages'            => 'Dé bliabtersten Seiten',
 'wantedcategories'        => 'Bnutzde, ower néd åglégte Kategorien',
 'wantedpages'             => 'Gwynschde Seiten',
 'wantedpages-badtitle'    => 'Ungütiger Titel im Ergeewnis: $1',
@@ -927,6 +958,10 @@ Links aus Namensräume wern da net aufglistet.',
 'shortpages'              => 'Kurze Seiten',
 'longpages'               => 'Långe Seiten',
 'deadendpages'            => 'Néd valinkende Seiten',
+'deadendpagestext'        => 'Dé fóigénden Seiten vaweisen néd auf aundre Seiten voh {{SITENAME}}.',
+'protectedpages'          => 'Gschytzde Seiten',
+'protectedpages-indef'    => 'Netter néd bschränkde gschytzde Seiten zoang',
+'protectedpages-cascade'  => 'Netter Seiten mid Kaskadenschutz',
 'usercreated'             => 'Erstöd am $1 um $2 Ur',
 'newpages'                => 'Neiche Seiten',
 'newpages-username'       => 'Benutzernåm:',
@@ -951,18 +986,18 @@ Links aus Namensräume wern da net aufglistet.',
 # Special:AllPages
 'allpages'          => 'Olle Seiten',
 'alphaindexline'    => '$1 bis $2',
-'prevpage'          => 'Voaherige Seitn ($1)',
-'allpagesfrom'      => 'Seitn zoang ab:',
-'allpagesto'        => 'Seitn ãnzoang bis:',
+'prevpage'          => 'Vurherige Seiten ($1)',
+'allpagesfrom'      => 'Seiten auhzoang ob:',
+'allpagesto'        => 'Seiten auhzoang bis:',
 'allarticles'       => 'Olle Seiten',
-'allinnamespace'    => 'Alle Seitn (Namensraum: $1)',
-'allnotinnamespace' => 'Alle Seitn (net im $1 Namensraum)',
-'allpagesprev'      => 'Vorige',
+'allinnamespace'    => 'Olle Seiten (Naumensraum: $1)',
+'allnotinnamespace' => 'Ollte Seiten  (néd im $1 Naumensraum)',
+'allpagesprev'      => 'Vurige',
 'allpagesnext'      => 'Naxde',
-'allpagessubmit'    => 'Åwenden',
-'allpagesprefix'    => 'Seitn zoagn mit Präfix:',
-'allpagesbadtitle'  => 'Da eigemne Seitennam is net gültig: Er håt entweda an vorogestellts Språch-, a Interwiki-Kürzel oda oa oda mehrere Zeichn, de im Seitnnam net verwendt wern derfan.',
-'allpages-bad-ns'   => "Den Namensraum „$1“ gibt's in {{SITENAME}} net.",
+'allpagessubmit'    => 'Auhwenden',
+'allpagesprefix'    => 'Seiten zoang mid Präfix:',
+'allpagesbadtitle'  => "Da eihgeewerne Seitennaum is néd gütig: Er hod éntwéder a vurauhgstöds Sprooch-, a Interwiki-Kyrzel óder enthoitt oah óder mererne Zeichen, dé in d' Seitennaumen néd vawendt wern derffm.",
+'allpages-bad-ns'   => 'Dén Naumensraum „$1“ gibts in {{SITENAME}} néd.',
 
 # Special:Categories
 'categories' => 'Kategorien',
@@ -972,7 +1007,7 @@ Links aus Namensräume wern da net aufglistet.',
 
 # Special:LinkSearch
 'linksearch'      => 'Weblinks suachen',
-'linksearch-ok'   => 'Suacha',
+'linksearch-ok'   => 'Suacher',
 'linksearch-line' => '$1 is valinkt voh $2',
 
 # Special:ListUsers
@@ -986,9 +1021,10 @@ Links aus Namensräume wern da net aufglistet.',
 'listgrouprights-members' => '(Mitgliaderlisten)',
 
 # E-mail user
-'mailnologin'   => 'Sie san net oogmeidt.',
+'mailnologin'   => 'Du bist néd auhgmödt',
 'emailuser'     => 'E-Póst an dén Benutzer',
-'noemailtitle'  => 'Koa E-Mail-Adress',
+'emailpage'     => 'E-Mail aun Benutzer',
+'noemailtitle'  => 'Koah E-Mail-Adress',
 'emailfrom'     => 'Vo',
 'emailsend'     => 'Senden',
 'emailccme'     => 'Schick a Kopii vo da E-Mail an mi söiwer',
@@ -1055,23 +1091,28 @@ Um d\' Seiten voh deiner Beówochtungslisten ower z\' doah, bsuachst $UNWATCHURL
 Ryckmödungen und a weidre Hüf: {{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
-'deletepage'            => 'Seiten leschen',
-'confirm'               => 'Bstäting',
-'excontent'             => "Oider Inhoid: '$1'",
-'exblank'               => "D' Seiten is laar gween",
-'historywarning'        => "'''Ochtung:''' De Saiten, de du leschen mechst, hod a Versionsgschicht mid epper $1 {{PLURAL:$1|Version|Versionen}}:",
-'confirmdeletetext'     => 'Sie san dabei, a Seitn oda a Datei und alle zughörigen ältern Versionen
+'deletepage'             => 'Seiten leschen',
+'confirm'                => 'Bstäting',
+'excontent'              => "Oider Inhoid: '$1'",
+'exblank'                => "D' Seiten is laar gween",
+'historywarning'         => "'''Ochtung:''' De Saiten, de du leschen mechst, hod a Versionsgschicht mid epper $1 {{PLURAL:$1|Version|Versionen}}:",
+'confirmdeletetext'      => 'Sie san dabei, a Seitn oda a Datei und alle zughörigen ältern Versionen
 zum löschen. Bitte bestätigen Sie da dazu, dass Sie des wirklich tuan wolln, dass Sie de Konsequenzen verstengan
 und dass Sie in Übaeinstimmung mit de [[{{MediaWiki:Policy-url}}|Richtlinien]] handeln.',
-'actioncomplete'        => 'Akzión beéndt',
-'actionfailed'          => 'Akzión föögschlong',
-'deletedtext'           => '„$1“ is glöscht worn. Im $2 findn Sie a Listn vo de letzten Löschungen.',
-'dellogpage'            => 'Lésch-Logbiache',
-'deletionlog'           => 'Lösch-Logbuach',
-'reverted'              => 'Auf a oide Version zruckgesetzt',
-'deletecomment'         => 'Grund:',
-'deleteotherreason'     => 'Ånderner/ergänzender Grund:',
-'deletereasonotherlist' => 'Åndrer Grund:',
+'actioncomplete'         => 'Akzión beéndt',
+'actionfailed'           => 'Akzión föögschlong',
+'deletedtext'            => '„$1“ is glöscht worn. Im $2 findn Sie a Listn vo de letzten Löschungen.',
+'dellogpage'             => 'Lésch-Logbiache',
+'deletionlog'            => 'Lösch-Logbuach',
+'reverted'               => 'Auf a oide Version zruckgesetzt',
+'deletecomment'          => 'Grund:',
+'deleteotherreason'      => 'Ånderner/ergänzender Grund:',
+'deletereasonotherlist'  => 'Åndrer Grund:',
+'deletereason-dropdown'  => '* Oigmoane Léschgrynd
+** Wunsch vom Autór
+** Urhéwerrechtsvalétzung
+** Vandalismus',
+'delete-edit-reasonlist' => 'Léschgrynd beorwaten',
 
 # Rollback
 'rollbacklink' => 'Zrucksétzen',
@@ -1098,11 +1139,13 @@ und dass Sie in Übaeinstimmung mit de [[{{MediaWiki:Policy-url}}|Richtlinien]] 
 'protect-expiring'            => 'bis zum $2 um $3 Uhr (UTC)',
 'protect-cascade'             => 'Kaskadiarade Sperr – ålle Voalång, de in dea Seitn eibundn han, wean emfåis gspead.',
 'protect-cantedit'            => "Du kãnnst de Spea vu dea Seitn ned ändan, weu'st dafia ned de passnde Berechtigung håst.",
+'protect-expiry-options'      => '1 Stund:1 hour,1 Dog:1 day,1 Wóch:1 week,2 Wócher:2 weeks,1 Mónad:1 month,3 Mónadt:3 months,6 Mónadt:6 months,1 Jor:1 year, Unbschränkt:infinite',
 'restriction-type'            => 'Schutzstaatus:',
 'restriction-level'           => 'Schutzheechen:',
 'minimum-size'                => 'Mindestgress',
 
 # Restrictions (nouns)
+'restriction-edit' => 'Werkeln',
 'restriction-move' => 'vaschiam',
 
 # Undelete
@@ -1119,9 +1162,10 @@ Da aktuelle Text vo da glöschtn Seitn is nur fia Administratoren zum seng.',
 'undelete-search-submit' => 'Suach',
 
 # Namespace form on various pages
-'namespace'      => 'Nåmensraum:',
-'invert'         => 'Auswoi umdraan',
-'blanknamespace' => '(Seiten)',
+'namespace'             => 'Nåmensraum:',
+'invert'                => 'Auswoi umdraan',
+'namespace_association' => 'Zuagordnéter Nåmensraum',
+'blanknamespace'        => '(Seiten)',
 
 # Contributions
 'contributions'       => 'Benutzerbeiträg',
@@ -1163,18 +1207,17 @@ Da aktuelle Text vo da glöschtn Seitn is nur fia Administratoren zum seng.',
 'whatlinkshere-filters'    => 'Füter',
 
 # Block/unblock
-'blockip'                  => 'IP-Adress/Benytzer sperrn',
-'blockip-title'            => 'Benytzer sperrn',
-'blockip-legend'           => 'IP-Adresse/Benutzer sperrn',
-'blockiptext'              => "Mid dem Formular sperrst a IP-Adress oder an Benytzernåmen, das vo durten aus koane Endarungen mer vurgnumma wern kennan.
+'blockip'                     => 'IP-Adress/Benytzer sperrn',
+'blockip-title'               => 'Benytzer sperrn',
+'blockip-legend'              => 'IP-Adresse/Benutzer sperrn',
+'blockiptext'                 => "Mid dem Formular sperrst a IP-Adress oder an Benytzernåmen, das vo durten aus koane Endarungen mer vurgnumma wern kennan.
 Des soid nur dafoing, um an Vandalismus z' vahindern und in Yweraistimmung mid d' [[{{MediaWiki:Policy-url}}|Richtlinien]].
 Gib bittschee an Grund fyr d' Sperrn å.",
-'ipaddress'                => 'IP-Adressen:',
-'ipadressorusername'       => 'IP-Adress oder Benytzernåm:',
-'ipbexpiry'                => 'Sperrdauer:',
-'ipbreason'                => 'Grund:',
-'ipbreasonotherlist'       => 'Åndarer Grund:',
-'ipbreason-dropdown'       => '* Oigmoahne Sperrgrynd
+'ipadressorusername'          => 'IP-Adress oder Benytzernåm:',
+'ipbexpiry'                   => 'Sperrdauer:',
+'ipbreason'                   => 'Grund:',
+'ipbreasonotherlist'          => 'Åndarer Grund:',
+'ipbreason-dropdown'          => '* Oigmoahne Sperrgrynd
 ** Eihfyng voh voische Informaziónen
 ** Laarn voh Seiten
 ** Massenweiss Eihfyng voh externe Links
@@ -1182,49 +1225,54 @@ Gib bittschee an Grund fyr d' Sperrn å.",
 ** néd åbrochts Vahoiden
 ** Missbrauch mid mererne Benutzerkontós
 ** néd geigneter Benutzernåm',
-'ipbcreateaccount'         => "D' Erstöiung vo Benytzerkontos vahindern",
-'ipbemailban'              => 'E-Mäil-Vasånd sperrn',
-'ipbenableautoblock'       => "Sperr de aktuöi vo dem Benytzer gnytzte IP-Adress sowia automaatisch olle foiganden, vo denen aus er Beorwaitungen oder 's Åleeng vo naiche Benytzerkontos vasuacht",
-'ipbsubmit'                => 'IP-Adress/Benytzer sperrn',
-'ipbother'                 => 'Åndare Dauer (auf englisch):',
-'ipboptions'               => '2 Stund:2 hours,1 Dog:1 day,3 Dog:3 days,1 Woch:1 week,2 Wochen:2 weeks,1 Monad:1 month,3 Monad:3 months,6 Monad:6 months,1 Jor:1 year,Leemslång:infinite',
-'ipbotheroption'           => 'Åndre Dauer:',
-'ipbotherreason'           => 'Ånderner/ergenznder Grund:',
-'ipbhidename'              => 'An Benytzernåmen in Beorwaitungen und Linsten vastecken',
-'ipbwatchuser'             => 'De Benytzer(diskussions)saiten beowochten',
-'ipb-change-block'         => "D' Sperrn mid de Sperrparameter danaiern",
-'badipaddress'             => 'De IP-Adress hod a foischs Format.',
-'blockipsuccesssub'        => 'De Sperrn is erfoigraich gween',
-'blockipsuccesstext'       => 'Da Benytzer/de IP-Adress [[Special:Contributions/$1|$1]] is gsperrt worn.<br />
+'ipbcreateaccount'            => "D' Erstöiung vo Benytzerkontos vahindern",
+'ipbemailban'                 => 'E-Mäil-Vasånd sperrn',
+'ipbenableautoblock'          => "Sperr de aktuöi vo dem Benytzer gnytzte IP-Adress sowia automaatisch olle foiganden, vo denen aus er Beorwaitungen oder 's Åleeng vo naiche Benytzerkontos vasuacht",
+'ipbsubmit'                   => 'IP-Adress/Benytzer sperrn',
+'ipbother'                    => 'Åndare Dauer (auf englisch):',
+'ipboptions'                  => '2 Stund:2 hours,1 Dog:1 day,3 Dog:3 days,1 Woch:1 week,2 Wochen:2 weeks,1 Monad:1 month,3 Monad:3 months,6 Monad:6 months,1 Jor:1 year,Leemslång:infinite',
+'ipbotheroption'              => 'Åndre Dauer:',
+'ipbotherreason'              => 'Ånderner/ergenznder Grund:',
+'ipbhidename'                 => 'An Benytzernåmen in Beorwaitungen und Linsten vastecken',
+'ipbwatchuser'                => 'De Benytzer(diskussions)saiten beowochten',
+'ipb-change-block'            => "D' Sperrn mid de Sperrparameter danaiern",
+'badipaddress'                => 'De IP-Adress hod a foischs Format.',
+'blockipsuccesssub'           => 'De Sperrn is erfoigraich gween',
+'blockipsuccesstext'          => 'Da Benytzer/de IP-Adress [[Special:Contributions/$1|$1]] is gsperrt worn.<br />
 Zur da Aufheewung vo da Sperrn schau unter da [[Special:IPBlockList|Listen vo olle aktivm Sperrn]].',
-'ipb-edit-dropdown'        => 'Sperrgrynd beorwaiten',
-'ipb-unblock-addr'         => '„$1“ fraigeem',
-'ipb-unblock'              => 'IP-Adress/Benytzer fraigeem',
-'ipb-blocklist'            => 'Olle aktuöin Sperrn åzaang',
-'ipb-blocklist-contribs'   => 'Benytzerbaiträg vo „$1“',
-'unblockip'                => 'IP-Adress fraigeem',
-'unblockiptext'            => 'Mid dem Formular do kååst du a IP-Adress oder an Benytzer fraigeem.',
-'ipusubmit'                => 'Freigem',
-'unblocked'                => '[[User:$1|$1]] is freigem worn',
-'unblocked-id'             => 'Sperr-ID $1 is fraigeem worn',
-'ipblocklist'              => 'Gsperrde Benutzer',
-'ipblocklist-legend'       => 'Suach noch am gsperrden Benytzer',
-'createaccountblock'       => 'Erstellung vo Benutzakonten gsperrt',
-'emailblock'               => 'E-Post vaschicka gspead',
-'blocklink'                => 'sperrn',
-'unblocklink'              => 'freigeem',
-'change-blocklink'         => 'Sperr ändern',
-'contribslink'             => 'Beitrég',
-'autoblocker'              => "Automatische Sperre, weil s' a gmeinsame IP-Adressn mit „$1“ hernehma. Grund: „$2“.",
-'blocklogpage'             => 'Benutzersperrlogbiaché',
-'blocklogentry'            => 'hod „[[$1]]“ fyrn fóigenden Zeidraum gsperrd: $2; $3',
-'unblocklogentry'          => "håd d'Spear vu „$1“ aufghom",
-'block-log-flags-anononly' => 'netta Anonyme',
-'block-log-flags-nocreate' => "'s erstön voh Benutzerkontós is gsperrd",
-'block-log-flags-noemail'  => 'E-Post vaschicka gspead',
+'ipb-edit-dropdown'           => 'Sperrgrynd beorwaiten',
+'ipb-unblock-addr'            => '„$1“ fraigeem',
+'ipb-unblock'                 => 'IP-Adress/Benytzer fraigeem',
+'ipb-blocklist'               => 'Olle aktuöin Sperrn åzaang',
+'ipb-blocklist-contribs'      => 'Benytzerbaiträg vo „$1“',
+'unblockip'                   => 'IP-Adress fraigeem',
+'unblockiptext'               => 'Mid dem Formular do kååst du a IP-Adress oder an Benytzer fraigeem.',
+'ipusubmit'                   => 'Freigem',
+'unblocked'                   => '[[User:$1|$1]] is freigem worn',
+'unblocked-id'                => 'Sperr-ID $1 is fraigeem worn',
+'ipblocklist'                 => 'Gsperrde Benutzer',
+'ipblocklist-legend'          => 'Suach noch am gsperrden Benytzer',
+'createaccountblock'          => "'s erstön voh Benutzerkóntós is gsperrd",
+'emailblock'                  => 'E-Póst vaschicker is gsperrd',
+'blocklink'                   => 'sperrn',
+'unblocklink'                 => 'Freigeem',
+'change-blocklink'            => 'Sperr ändern',
+'contribslink'                => 'Beitrég',
+'emaillink'                   => 'E-Póst schicker',
+'autoblocker'                 => 'Autómaatische Sperr, wei du a gmoahsaume IP-Adress mim [[User:$1|$1]] bnutzd. Grund voh da Benutzersperrn: „$2“.',
+'blocklogpage'                => 'Benutzersperrlogbiaché',
+'blocklog-showlog'            => "{{GENDER:$1|Der Benutzer|Dé Benutzerrin|Der Benutzer}} do is schoh friarer gsperrd worn. Es fóigt a Eihtrog aus'm Benutzersperrlogbiaché:",
+'blocklog-showsuppresslog'    => "{{GENDER:$1|Der Benutzer|Dé Benutzerrin|Der Benutzer}} do is schoh friarer gsperrd und vastéckt worn. Es fóigt a Eihtrog aus'm Benutzersperrlogbiaché:",
+'blocklogentry'               => 'hod „[[$1]]“ fyrn fóigenden Zeidraum gsperrd: $2; $3',
+'reblock-logentry'            => "hod d' Sperrn voh „[[$1]]“ fyrn Zeidraum: $2 $3 gänderd.",
+'unblocklogentry'             => "hod d' Sperr voh „$1“ aufghóm",
+'block-log-flags-anononly'    => 'netter Anónyme',
+'block-log-flags-nocreate'    => "'s erstön voh Benutzerkontós is gsperrd",
+'block-log-flags-noautoblock' => 'Autóblóck deaktivierd',
+'block-log-flags-noemail'     => 'E-Post vaschicka gspead',
 
 # Developer tools
-'unlockdb'            => 'Datenbank freigem',
+'unlockdb'            => 'Daatenbaunk freigeem',
 'unlockconfirm'       => 'Ja, i mecht de Datenbank freigem.',
 'unlockbtn'           => 'Datenbank freigem',
 'locknoconfirm'       => 'Sie ham des Bestätigungsfeld net markiert.',
@@ -1232,48 +1280,49 @@ Zur da Aufheewung vo da Sperrn schau unter da [[Special:IPBlockList|Listen vo ol
 'databasenotlocked'   => 'De Datenbank is net gsperrt.',
 
 # Move page
-'move-page-legend'       => 'Seitn vaschiam',
-'movepagetext'           => "Mid dem Foamular kãnnst a Seitn umbenenna (midsãmt ålle Veasionen).
-Vum åidn Titl wiad ma nåchand zum neichn weidagschickd.
-Du kãnnst Weidaleitungen, de auf'n Originaltitl valinkn, automatisch korrigian låssn.
-Fåis'd des ned tuast, schau bitte nåch ob's [[Special:DoubleRedirects|doppide]] oda [[Special:BrokenRedirects|hiniche Weidaleitungen]] gibt.
-Du bist dafia vaãntwoatlich, dass ålle Links aa nåch'm Vaschiam auf's richtige Züi zoang.
+'move-page-legend'        => 'Seiten vaschiam',
+'movepagetext'            => "Mid dém Formular kauhst a Seiten umbenénner, waunnstas mid olle Versiónen auf an neichen Titel vaschiabst.
+Da oide Titel werd danoch zum neichen weiderloaten.
+Du kauhst Weiderloatungen, dé auf dén Originoititel valinken, autómaatisch koarigiern lossen.
+Stö sicher, daas du im Auhschlus olle [[Special:DoubleRedirects|dóppéden]] óder [[Special:BrokenRedirects|dé hienigen Weiderloatungen]] ywerpriaffst.
+Du bist dodafyr vaauntwortlich, daas Links weiderhih aufs richtige Zü vaweisen.
 
-De Seitn wiad '''ned''' vaschom, wãnn's schãu a Seitn mid genau dem Nãm gibt, den'st mechst dass'd Seitn iatst kriagt, außa de Seitn is laa oda a Weidaleitung ohne Veasionsgschicht. Des haaßt, dass'd a Seitn zruckvaschiam kãnnst, wãnn'st an Fehla gmåcht håst. A Seitn üwaschreim kãnnst åwa ned.
+Dé Seiten werd '''néd''' vaschóm, waunns bereits a Seiten mim vurgseegernen Titel gibt, ausser dé is laar óder a Weiderloatung óne a Versiónsgschicht. 
+Dés bdeitt, daas du d' Umbenénnung ryckgängig mochen kauhst, waunn du an Feeler gmocht host.  Du kauhst hihgéng koah Seiten ywerschreim.
 
-'''Wårnung'''
-D'Vaschiebung kãu weidreichade und ned eawårtete Foing fia beliebte Seitn håm.
-Es warad åiso guat, wãnn'st ålle Konsequenzn vastãndn håst, bevoa'st a Seitn wiakli vaschiabst.",
-'movepagetalktext'       => "De dazuaghearade Dischgria-Seitn wiad, fåis's ane gibt, midvaschom, '''außa'''
+'''Ówocht!'''
+D' Vaschiawung kauh weidreichende und néd daworterde Fóing fyr haiffig bsuachde Seiten haum.
+Du sóiderst désswéng d' Kónsequenzen vastaunden haum, bevur du iatz weider duast.",
+'movepagetalktext'        => "De dazuaghearade Dischgria-Seitn wiad, fåis's ane gibt, midvaschom, '''außa'''
 *unta'm neichn Nãm gibt's schãu an Eintråg oda
 *du tuast s'Hakal bei da unting Opzion außa.
 
 In de zwoa Fälle miaßadst, fåis des gwünscht is, de Seitn händisch vaschiam oda zsãmmfüng.
 
 Bittschee gib außadem druntn in '''neichn''' Nãm vu da Seitn ei und schreib kuaz '''wieso'''<nowiki>'st</nowiki> de Seitn vaschiam mechst.",
-'movearticle'            => 'Seitn vaschiam:',
-'movenologin'            => 'Du bist ned ãngmöidt',
-'movenologintext'        => 'Zum Vaschiam muaßt a registriada und [[Special:UserLogin|ãngmöideta Benutza]] sei.',
-'movenotallowed'         => 'Du håst ka Berechtigung zum Vaschiam vu Seitn.',
-'movenotallowedfile'     => 'Du håst ka Berechtigung zum Vaschiam vu Datein.',
-'cant-move-user-page'    => 'Du håst ka Berechtigung zum Vaschiam vu Benutzahauptseitn.',
-'cant-move-to-user-page' => 'Du håst ka Berechtigung zum Vaschiam vu Seitn auf a Benutzaseitn (Ausnãhmen han Benutza-Untaseitn).',
-'newtitle'               => 'Züi:',
-'move-watch'             => 'De Seitn beobachten',
-'movepagebtn'            => 'Seitn vaschiam',
-'pagemovedsub'           => "s'Vaschiam håd highaud",
-'movepage-moved'         => "'''D'Seitn „$1“ is nåch „$2“ vaschom woan.'''",
-'articleexists'          => 'Unter dem Nam existiert bereits a Seitn.
-Bitte nehmans an andern Nam.',
-'talkexists'             => "D'Seitn söiwa is eafoigreich vaschom woan, de dazuaghearade Diskussionsseitn åwa ned, weu's unta dea iahm neichn Nãm schãu a Seitn gibt. Bittschee kümmat di händisch um's Zsãmmfüahn.",
-'movedto'                => 'vaschom nåch',
-'movetalk'               => "Wãun's gehd de Dischgria-Seitn midvaschiam",
-'movelogpage'            => 'Vaschiawungs-Logbiaché',
-'movereason'             => 'Grund:',
-'revertmove'             => 'zruck vaschiam',
-'delete_and_move'        => 'Löschn und vaschiam',
-'delete_and_move_reason' => 'glöscht, um Plåtz fia Vaschiam zum macha',
-'selfmove'               => 'Ursprungs- und Zielname sand gleich; a Seitn kann net auf sich selber verschom wern.',
+'movearticle'             => 'Seitn vaschiam:',
+'movenologin'             => 'Du bist néd ågmödt',
+'movenologintext'         => 'Zum Vaschiam muaßt a registriada und [[Special:UserLogin|ãngmöideta Benutza]] sei.',
+'movenotallowed'          => 'Du håst ka Berechtigung zum Vaschiam vu Seitn.',
+'movenotallowedfile'      => 'Du håst ka Berechtigung zum Vaschiam vu Datein.',
+'cant-move-user-page'     => 'Du håst ka Berechtigung zum Vaschiam vu Benutzahauptseitn.',
+'cant-move-to-user-page'  => 'Du håst ka Berechtigung zum Vaschiam vu Seitn auf a Benutzaseitn (Ausnãhmen han Benutza-Untaseitn).',
+'newtitle'                => 'Züi:',
+'move-watch'              => "D' Seiten beówochten",
+'movepagebtn'             => 'Seitn vaschiam',
+'pagemovedsub'            => "s'Vaschiam håd highaud",
+'movepage-moved'          => "'''D'Seitn „$1“ is nåch „$2“ vaschom woan.'''",
+'movepage-moved-redirect' => 'Es is a Weiderloatung erstöd worn.',
+'articleexists'           => 'Unter dém Naum existierd schoh a Seiten. Bittscheh nimm an aundern Naumen her.',
+'talkexists'              => "D' Seiten söwer is erfóigreich vaschóm worn, ower d' zuagherige Dischkrierseiten néd, weis mid dém Titel schoh oane gibt. Bittscheh kymmerd dé händisch ums zaummfyrn.",
+'movedto'                 => 'vaschóm auf',
+'movetalk'                => "Waunns geet, d' Dischkrierseiten aa midvaschiam",
+'movelogpage'             => 'Vaschiawungs-Logbiaché',
+'movereason'              => 'Grund:',
+'revertmove'              => 'zruck vaschiam',
+'delete_and_move'         => 'Löschn und vaschiam',
+'delete_and_move_reason'  => 'glöscht, um Plåtz fia Vaschiam zum macha',
+'selfmove'                => 'Ursprungs- und Zielname sand gleich; a Seitn kann net auf sich selber verschom wern.',
 
 # Export
 'export' => 'Seiten exportirn',
@@ -1283,7 +1332,7 @@ Bitte nehmans an andern Nam.',
 'allmessagesdefault'        => 'Standardtext',
 'allmessagescurrent'        => 'Aktuella Text',
 'allmessagestext'           => 'Des is a Listen vo de MediaWiki-Systemtextt.
-Bsuach bittschee de Saiten [http://www.mediawiki.org/wiki/Localisation MediaWiki-Lokalisiarung] und [http://translatewiki.net translatewiki.net], wånn du de ån da Lokalisiarung vo MediaWiki betailing mechadst.',
+Bsuach bittschee de Saiten [//www.mediawiki.org/wiki/Localisation MediaWiki-Lokalisiarung] und [//translatewiki.net translatewiki.net], wånn du de ån da Lokalisiarung vo MediaWiki betailing mechadst.',
 'allmessagesnotsupportedDB' => "'''Special:Allmessages''' is im Moment net möglich, wei de Datenbank offline is.",
 
 # Thumbnails
@@ -1310,7 +1359,9 @@ Bsuach bittschee de Saiten [http://www.mediawiki.org/wiki/Localisation MediaWiki
 'tooltip-ca-viewsource'           => 'Dé Seiten is gschytzd. Da Quötext kå ower ågschaud wern.',
 'tooltip-ca-history'              => 'Friarerne Versiónen voh derer Seiten',
 'tooltip-ca-protect'              => 'Seiten schytzen',
+'tooltip-ca-unprotect'            => 'Seitenschutz ändern',
 'tooltip-ca-delete'               => 'De Seitn löschen',
+'tooltip-ca-undelete'             => 'Eihträg wiederherstön, bevur dé Seiten gléscht worn is.',
 'tooltip-ca-move'                 => 'Dé Seiten vaschiam',
 'tooltip-ca-watch'                => 'Dé Seiten zua persénlichen Beówochtungslisten dazua doah',
 'tooltip-ca-unwatch'              => 'Dé Seiten voh da persénlichen Beówochtungslisten entferner',
@@ -1352,6 +1403,7 @@ Bsuach bittschee de Saiten [http://www.mediawiki.org/wiki/Localisation MediaWiki
 'tooltip-compareselectedversions' => 'Unterschiade zwischen zwoa ausgwöde Versiónen voh derer  Seiten vagleichen.',
 'tooltip-watch'                   => 'Dé Seiten zua persénlichen Beówochtungslisten dazua doah',
 'tooltip-recreate'                => 'Seitn nei erstelln, obwoi sie glöscht worn is.',
+'tooltip-upload'                  => 'Start as Aufféloon',
 'tooltip-rollback'                => 'Sétzd olle Beiträg, dé vom gleichen Benutzer gmocht worn san, mid am oanzing Klick auf dé Versión zruck, dé aktuö gwén is, bevur der oane zum werkeln ågfånger hod.',
 'tooltip-undo'                    => 'Mocht netter dé oane Änderrung ryckgängég und zoagts Resuitot in da Vurschau å, damid in da Zåmmfossungszeiln a Begryndung ågeem wern kå.',
 'tooltip-summary'                 => 'Gib a kurze Zåmmfossung eih',
@@ -1360,6 +1412,9 @@ Bsuach bittschee de Saiten [http://www.mediawiki.org/wiki/Localisation MediaWiki
 'lastmodifiedatby' => 'Dé Seiten is zletzt am $1 um $2 voh $3 gänderd worn.',
 'othercontribs'    => 'Basiard auf da Orweid voh $1',
 'creditspage'      => 'Seiteninformaziónen',
+
+# Info page
+'pageinfo-subjectpage' => 'Seiten',
 
 # Patrolling
 'markedaspatrollederrortext' => 'Du muasst a Seitenänderrung auswön',
@@ -1379,9 +1434,9 @@ Bsuach bittschee de Saiten [http://www.mediawiki.org/wiki/Localisation MediaWiki
 'show-big-image' => 'Versión in heecherner Auflésung',
 
 # Special:NewFiles
-'newimages'         => 'Neie Dateien',
-'newimages-summary' => 'De Spezialseitn zoagt de zletzt hochgeladena Buidl und Dateien o.',
-'noimages'          => 'Koane Datein gfunden.',
+'newimages'         => 'Neiche Daatein',
+'newimages-summary' => "Dé Speziaalseiten zoagt d' zlétzd aufféglooderne Daatei auh.",
+'noimages'          => 'Koane Daatein gfunden.',
 'ilsubmit'          => 'Suach',
 
 # Bad image list
@@ -1418,7 +1473,7 @@ Weiderne wern standardmässig néd åzoagt.
 
 # External editor support
 'edit-externally'      => 'Dé Daatei mid am externen Prógramm beorweiden',
-'edit-externally-help' => '(Schaug unter [http://www.mediawiki.org/wiki/Manual:External_editors Installaziónsåweisungen] fyr weiderne Informaziónen)',
+'edit-externally-help' => '(Schaug unter [//www.mediawiki.org/wiki/Manual:External_editors Installaziónsåweisungen] fyr weiderne Informaziónen)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'olle',
@@ -1428,12 +1483,14 @@ Weiderne wern standardmässig néd åzoagt.
 # E-mail address confirmation
 'confirmemail'           => 'E-Post-Adressn bestäting (Authentifiziarung)',
 'confirmemail_noemail'   => 'Du håst ka güitige E-Post-Adressn in deine [[Special:Preferences|persönlichn Eistellungen]] eitrång.',
-'confirmemail_send'      => 'Bestätigungscode zuaschicka',
-'confirmemail_needlogin' => 'Sie miassn si $1 um Eana E-Mail-Adress zum bestätigen.',
+'confirmemail_send'      => 'Bstätigungscode zuaschicker',
+'confirmemail_needlogin' => "Du muasst dé $1 um d' E-Mail-Adress zum bstäting.",
 
 # Multipage image navigation
-'imgmultipageprev' => '← vorige Seitn',
-'imgmultipagenext' => 'nächste Seitn →',
+'imgmultipageprev' => '← vurige Seiten',
+'imgmultipagenext' => 'naxde Seiten →',
+'imgmultigo'       => 'OK',
+'imgmultigoto'     => 'Gee zua Seiten $1',
 
 # Table pager
 'ascending_abbrev'         => 'auf',
@@ -1564,6 +1621,7 @@ Bittscheh d' noraale Vurschau bnutzen.",
 'dberr-outofdate' => 'Beochtt, daas da Suachindex voh inserne Inhoitt bei Google vaoiterd seih kunnt.',
 
 # HTML forms
+'htmlform-required'            => 'Der Wert do werd braucht.',
 'htmlform-submit'              => 'Speichern',
 'htmlform-reset'               => 'Änderrungen ryckgängég mochen',
 'htmlform-selectorother-other' => 'Åndre',

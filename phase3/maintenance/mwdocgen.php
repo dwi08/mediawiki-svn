@@ -33,7 +33,7 @@
  * @todo document
  * @ingroup Maintenance
  *
- * @author Ashar Voultoiz <hashar at free dot fr>
+ * @author Antoine Musso <hashar at free dot fr>
  * @author Brion Vibber
  * @author Alexandre Emsenhuber
  * @version first release
@@ -89,6 +89,7 @@ require_once( "$mwPath/includes/GlobalFunctions.php" );
 /**
  * Read a line from the shell
  * @param $prompt String
+ * @return string
  */
 function readaline( $prompt = '' ) {
 	print $prompt;
@@ -151,8 +152,11 @@ function getSvnRevision( $dir ) {
  * @param $exclude String: Additionals path regex to exclude
  * @param $exclude_patterns String: Additionals path regex to exclude
  *                 (LocalSettings.php, AdminSettings.php, .svn and .git directories are always excluded)
+ * @return string
  */
 function generateConfigFile( $doxygenTemplate, $outputDirectory, $stripFromPath, $currentVersion, $svnstat, $input, $exclude, $exclude_patterns ) {
+
+	global $wgDoxyGenerateMan;
 
 	$template = file_get_contents( $doxygenTemplate );
 
@@ -166,6 +170,7 @@ function generateConfigFile( $doxygenTemplate, $outputDirectory, $stripFromPath,
 		'{{EXCLUDE}}'          => $exclude,
 		'{{EXCLUDE_PATTERNS}}' => $exclude_patterns,
 		'{{HAVE_DOT}}'         => `which dot` ? 'YES' : 'NO',
+		'{{GENERATE_MAN}}'     => $wgDoxyGenerateMan ? 'YES' : 'NO',
 	);
 	$tmpCfg = str_replace( array_keys( $replacements ), array_values( $replacements ), $template );
 	$tmpFileName = tempnam( wfTempDir(), 'mwdocgen-' );
@@ -202,6 +207,9 @@ if ( is_array( $argv ) ) {
 				$doxyOutput = realpath( $argv[$i] );
 			}
 			break;
+		case '--generate-man':
+			$wgDoxyGenerateMan = true;
+			break;
 		case '--help':
 			print <<<END
 Usage: php mwdocgen.php [<command>] [<options>]
@@ -218,6 +226,7 @@ If no command is given, you will be prompted.
 
 Other options:
     --output <dir>  Set output directory (default $doxyOutput)
+    --generate-man  Generates man page documentation
     --help          Show this help and exit.
 
 

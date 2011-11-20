@@ -60,10 +60,6 @@ class SpecialImport extends SpecialPage {
 			throw new PermissionsError( 'import' );
 		}
 
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
-
 		# @todo Allow Title::getUserPermissionsErrors() to take an array
 		# @todo FIXME: Title::checkSpecialsAndNSPermissions() has a very wierd expectation of what
 		# getUserPermissionsErrors() might actually be used for, hence the 'ns-specialprotected'
@@ -78,10 +74,11 @@ class SpecialImport extends SpecialPage {
 			)
 		);
 
-		if( $errors ){
-			$this->getOutput()->showPermissionsErrorPage( $errors );
-			return;
+		if ( $errors ) {
+			throw new PermissionsError( 'import', $errors );
 		}
+
+		$this->checkReadOnly();
 
 		$request = $this->getRequest();
 		if ( $request->wasPosted() && $request->getVal( 'action' ) == 'submit' ) {
@@ -213,7 +210,7 @@ class SpecialImport extends SpecialPage {
 					"</td>
 				</tr>" .
 				Xml::closeElement( 'table' ).
-				Html::hidden( 'editToken', $user->editToken() ) .
+				Html::hidden( 'editToken', $user->getEditToken() ) .
 				Xml::closeElement( 'form' ) .
 				Xml::closeElement( 'fieldset' )
 			);
@@ -243,7 +240,7 @@ class SpecialImport extends SpecialPage {
 				wfMsgExt( 'import-interwiki-text', array( 'parse' ) ) .
 				Html::hidden( 'action', 'submit' ) .
 				Html::hidden( 'source', 'interwiki' ) .
-				Html::hidden( 'editToken', $user->editToken() ) .
+				Html::hidden( 'editToken', $user->getEditToken() ) .
 				Xml::openElement( 'table', array( 'id' => 'mw-import-table' ) ) .
 				"<tr>
 					<td class='mw-label'>" .
@@ -391,10 +388,10 @@ class ImportReporter extends ContextSource {
 			$nullRevision = Revision::newNullRevision( $dbw, $title->getArticleId(), $comment, true );
 			if (!is_null($nullRevision)) {
 				$nullRevision->insertOn( $dbw );
-				$article = new Article( $title );
+				$page = WikiPage::factory( $title );
 				# Update page record
-				$article->updateRevisionOn( $dbw, $nullRevision );
-				wfRunHooks( 'NewRevisionFromEditComplete', array( $article, $nullRevision, $latest, $this->getUser() ) );
+				$page->updateRevisionOn( $dbw, $nullRevision );
+				wfRunHooks( 'NewRevisionFromEditComplete', array( $page, $nullRevision, $latest, $this->getUser() ) );
 			}
 		} else {
 			$this->getOutput()->addHTML( "<li>" . Linker::linkKnown( $title ) . " " .

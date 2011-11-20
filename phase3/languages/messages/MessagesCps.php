@@ -358,7 +358,6 @@ Pwede nga naga-unod mini sang isa ukon madamo pa nga mga karakter nga indi pwede
 'querypage-no-updates' => '',
 'wrong_wfQuery_params' => '',
 'viewsource'           => 'Lantawon ang ginhalinan',
-'viewsourcefor'        => 'para sa $1',
 'actionthrottled'      => 'Ginpunggan ang ulubrahon',
 'actionthrottledtext'  => '',
 'protectedpagetext'    => 'Ginkandaduhan ang mini nga pahina para indi ma-islan.',
@@ -901,7 +900,7 @@ Ang iban ay pagataguon sang default.
 
 # External editor support
 'edit-externally'      => 'Islan ang mini nga file gamit ang panluwas nga aplikasyon',
-'edit-externally-help' => '(Tan-awa ang [http://www.mediawiki.org/wiki/Manual:External_editors mga pama-agi sa paghanda kag pag-ayos] para sa mga dugang nga impormasyon)',
+'edit-externally-help' => '(Tan-awa ang [//www.mediawiki.org/wiki/Manual:External_editors mga pama-agi sa paghanda kag pag-ayos] para sa mga dugang nga impormasyon)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tanan',

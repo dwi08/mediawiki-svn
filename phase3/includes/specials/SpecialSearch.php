@@ -407,7 +407,7 @@ class SpecialSearch extends SpecialPage {
 			$this->getOutput()->addHtml( '<p></p>' );
 			return;
 		}
-		$messageName = '';
+
 		if( $t->isKnown() ) {
 			$messageName = 'searchmenu-exists';
 		} elseif( $t->userCan( 'create' ) ) {
@@ -435,8 +435,8 @@ class SpecialSearch extends SpecialPage {
 		$this->searchAdvanced = ($this->profile === 'advanced');
 		$out = $this->getOutput();
 		if( strval( $term ) !== ''  ) {
-			$out->setPageTitle( wfMsg( 'searchresults') );
-			$out->setHTMLTitle( wfMsg( 'pagetitle', wfMsg( 'searchresults-title', $term ) ) );
+			$out->setPageTitle( $this->msg( 'searchresults' ) );
+			$out->setHTMLTitle( $this->msg( 'pagetitle', $this->msg( 'searchresults-title', $term )->plain() ) );
 		}
 		// add javascript specific to special:search
 		$out->addModules( 'mediawiki.special.search' );
@@ -1069,7 +1069,8 @@ class SpecialSearch extends SpecialPage {
 	 * @return string
 	 */
 	protected function shortDialog( $term ) {
-		$out = Html::hidden( 'title', $this->getTitle()->getPrefixedText() ) . "\n";
+		$out = Html::hidden( 'title', $this->getTitle()->getPrefixedText() );
+		$out .= Html::hidden( 'profile', $this->profile ) . "\n";
 		// Term box
 		$out .= Html::input( 'search', $term, 'search', array(
 			'id' => $this->profile === 'advanced' ? 'powerSearchText' : 'searchText',

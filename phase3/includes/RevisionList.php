@@ -250,19 +250,19 @@ class RevisionList extends RevisionListBase {
 	 * @return mixed
 	 */
 	public function doQuery( $db ) {
-		$conds = array(
-			'rev_page' => $this->title->getArticleID(),
-			'rev_page = page_id'
-		);
+		$conds = array( 'rev_page' => $this->title->getArticleID() );
 		if ( $this->ids !== null ) {
 			$conds['rev_id'] = array_map( 'intval', $this->ids );
 		}
 		return $db->select(
-			array( 'revision', 'page' ),
-			'*',
+			array( 'revision', 'page', 'user' ),
+			array_merge( Revision::selectFields(), Revision::selectUserFields() ),
 			$conds,
 			__METHOD__,
-			array( 'ORDER BY' => 'rev_id DESC' )
+			array( 'ORDER BY' => 'rev_id DESC' ),
+			array(
+				'page' => Revision::pageJoinCond(),
+				'user' => Revision::userJoinCond() )
 		);
 	}
 
@@ -296,7 +296,7 @@ class RevisionItem extends RevisionItemBase {
 	}
 
 	public function getAuthorNameField() {
-		return 'rev_user_text';
+		return 'user_name'; // see Revision::selectUserFields()
 	}
 
 	public function canView() {

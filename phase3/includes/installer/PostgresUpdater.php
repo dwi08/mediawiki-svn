@@ -33,6 +33,7 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'renameSequence', 'rc_rc_id_seq',        'recentchanges_rc_id_seq'     ),
 			array( 'renameSequence', 'log_log_id_seq',      'logging_log_id_seq'          ),
 			array( 'renameSequence', 'pr_id_val',           'page_restrictions_pr_id_seq' ),
+			array( 'renameSequence', 'us_id_seq',           'uploadstash_us_id_seq' ),
 
 			# new tables
 			array( 'addTable', 'category',          'patch-category.sql' ),
@@ -54,6 +55,8 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'addTable', 'msg_resource',      'patch-msg_resource.sql' ),
 			array( 'addTable', 'msg_resource_links','patch-msg_resource_links.sql' ),
 			array( 'addTable', 'module_deps',       'patch-module_deps.sql' ),
+			array( 'addTable', 'uploadstash',       'patch-uploadstash.sql' ),
+			array( 'addTable', 'user_former_groups','patch-user_former_groups.sql' ),
 
 			# Needed before new field
 			array( 'convertArchive2' ),
@@ -106,6 +109,8 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'addPgField', 'logging',       'log_page',             'INTEGER' ),
 			array( 'addPgField', 'interwiki',     'iw_api',               "TEXT NOT NULL DEFAULT ''"),
 			array( 'addPgField', 'interwiki',     'iw_wikiid',            "TEXT NOT NULL DEFAULT ''"),
+			array( 'addPgField', 'revision',      'rev_sha1',             "TEXT NOT NULL DEFAULT ''" ),
+			array( 'addPgField', 'archive',       'ar_sha1',              "TEXT NOT NULL DEFAULT ''" ),
 
 			# type changes
 			array( 'changeField', 'archive',       'ar_deleted',      'smallint', '' ),

@@ -36,7 +36,7 @@ class LogFormatter {
 			$handler = $wgLogActionsHandlers[$wildcard];
 		}
 
-		if ( $handler !== '' && class_exists( $handler ) ) {
+		if ( $handler !== '' && is_string( $handler ) && class_exists( $handler ) ) {
 			return new $handler( $entry );
 		}
 
@@ -154,7 +154,7 @@ class LogFormatter {
 
 	/**
 	 * Extract parameters intented for action message from
-	 * array of all parameters. The are three hardcoded
+	 * array of all parameters. There are three hardcoded
 	 * parameters (array zero-indexed, this list not):
 	 *  - 1: user name with premade link
 	 *  - 2: usable for gender magic function
@@ -481,7 +481,6 @@ class NewUsersLogFormatter extends LogFormatter {
 	}
 
 	public function getComment() {
-		$subtype = $this->entry->getSubtype();
 		$timestamp = wfTimestamp( TS_MW, $this->entry->getTimestamp() );
 		if ( $timestamp < '20080129000000' ) {
 			# Suppress $comment from old entries (before 2008-01-29),

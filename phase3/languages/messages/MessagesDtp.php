@@ -45,8 +45,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Pokitono ginumu do momomoguno minongintong',
 'tog-oldsig'                  => 'Poduluon kokikitanai do sain pinosuang',
 'tog-fancysig'                => 'Pokitono sain sobaagi do tikwiki (ingaa oporian toput )',
-'tog-externaleditor'          => 'Pomoguno pongigidit poinlabus sobaagi do pongoiso (montok di angasampin nopo, mongoguno do nuludan pointantu id kompiutonu. [http://www.mediawiki.org/wiki/Manual:External_editors Lobi pomoilaan.])',
-'tog-externaldiff'            => 'Pomoguno pongigidit poinlabus sobaagi do pongoiso (montok di angasampin nopo, mongoguno do nuludan pointantu id kompiutonu. [http://www.mediawiki.org/wiki/Manual:External_editors Lobi pomoilaan.])',
+'tog-externaleditor'          => 'Pomoguno pongigidit poinlabus sobaagi do pongoiso (montok di angasampin nopo, mongoguno do nuludan pointantu id kompiutonu. [//www.mediawiki.org/wiki/Manual:External_editors Lobi pomoilaan.])',
+'tog-externaldiff'            => 'Pomoguno pongigidit poinlabus sobaagi do pongoiso (montok di angasampin nopo, mongoguno do nuludan pointantu id kompiutonu. [//www.mediawiki.org/wiki/Manual:External_editors Lobi pomoilaan.])',
 'tog-showjumplinks'           => 'Pasagao "tumopik hilo" noputan awayaan',
 'tog-uselivepreview'          => 'Momoguno pongingintong poimpasi (momoguno JawaSikrip) (pogumbalan)',
 'tog-forceeditsummary'        => 'Posoroho oku no nung awu nosuangan kutak koinibaan niditan',
@@ -379,7 +379,6 @@ Awu nodi posikapon do popointalang iri data kawawagu.',
 Kopomogunoon: $1<br />
 Pongimuhatan: $2',
 'viewsource'           => 'Intaai wowonod',
-'viewsourcefor'        => 'montok $1',
 'actionthrottled'      => 'Momilos',
 'actionthrottledtext'  => 'Pinapanau lumawan-singkarap, Nantaban ko do mingguli momonsoi miagal dilo id timpu do osikap, om nagampot nu noh gisom diti.
 Umbalan kawagu do katalib poh pipiro minit.',
@@ -388,7 +387,7 @@ Umbalan kawagu do katalib poh pipiro minit.',
 'protectedinterface'   => 'Bolikon diti kiharo sinuratan pongurasan montok posusuang-suangon, om notingoligan do momiara mantad pomirumbakan.',
 'editinginterface'     => "'''Panansarahan :''' Mongidit ko diti bolikon di gunoon do poposodia diri sinuratan montok posuang-suangon.
 Sinuratan id bolikon diti kopogoit do pongitanan  kourasan momoguno  montok momomoguno wokon.
-Montok pangawaliwboros, pomusarahai no do mongoguno [http://translatewiki.net/wiki/Main_Page?setlang=dtp translatewiki.net], purujik popodusun ModiaWiki.",
+Montok pangawaliwboros, pomusarahai no do mongoguno [//translatewiki.net/wiki/Main_Page?setlang=dtp translatewiki.net], purujik popodusun ModiaWiki.",
 'sqlhidden'            => '(Pongimuhatan SQL poinlisok)',
 'cascadeprotected'     => 'Notingoligan bolikon diti mantad do pingiditan tu nokosuang  id bolikon, {{PLURAL:$1 | do | it}} pinilian tingolig  "kasading" poinsikit:
 $2',
@@ -604,9 +603,6 @@ Awu ko milo do mongoguno kakamot 'ponurat-i montok momoguno diti' nung ingaa kin
 Kinoyonon IPnu nopo nga $3, on ID nantaban nopo nga #$5.
 Alansan do potonudon oinsanan kointalangan id sawat montok nunu-nunu ponguhatannu.",
 'blockednoreason'                  => 'ingaa pinatahak sabab',
-'blockedoriginalsource'            => "Tadon do '''$1''' pokitonon id siriba:",
-'blockededitsource'                => "Tik do '''niditannu''' gisom '''$1''' pokitonon id siriba:",
-'whitelistedittitle'               => 'Sumuang log no do mongidit',
 'whitelistedittext'                => 'Mositi do $1 do mongidit bobolikon.',
 'confirmedittext'                  => 'Potontuo no do nokogirotnu no kinoyonon surat-i pogulu mongidit do bobolikon.
 Maai posoino om pogiroto kinoiyonon surat-i hilo id [[Special:Preferences|komoisaan momomogunonu]].',
@@ -1377,7 +1373,7 @@ Iri suai sinandad do poinlisok.
 
 # External editor support
 'edit-externally'      => 'Idito pail diti momoguno do kangkaraja pongi-ngidit poinlabus',
-'edit-externally-help' => '(Intaai [http://www.mediawiki.org/wiki/Manual:External_editors karalan-ralanon papasang] do lobi gumu kointalangan)',
+'edit-externally-help' => '(Intaai [//www.mediawiki.org/wiki/Manual:External_editors karalan-ralanon papasang] do lobi gumu kointalangan)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'oinsanan',

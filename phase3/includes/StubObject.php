@@ -60,6 +60,7 @@ class StubObject {
 
 	/**
 	 * Create a new object to replace this stub object.
+	 * @return object
 	 */
 	function _newObject() {
 		return MWFunction::newObj( $this->mClass, $this->mParams );
@@ -89,9 +90,10 @@ class StubObject {
 	function _unstub( $name = '_unstub', $level = 2 ) {
 		static $recursionLevel = 0;
 
-		if ( !($GLOBALS[$this->mGlobal] instanceof StubObject) )
+		if ( !($GLOBALS[$this->mGlobal] instanceof StubObject) ) {
 			return $GLOBALS[$this->mGlobal]; // already unstubbed.
-		
+		}
+
 		if ( get_class( $GLOBALS[$this->mGlobal] ) != $this->mClass ) {
 			$fname = __METHOD__.'-'.$this->mGlobal;
 			wfProfileIn( $fname );
@@ -123,6 +125,9 @@ class StubContLang extends StubObject {
 		return $this->_call( $name, $args );
 	}
 
+	/**
+	 * @return Language
+	 */
 	function _newObject() {
 		global $wgLanguageCode;
 		$obj = Language::factory( $wgLanguageCode );
@@ -147,6 +152,9 @@ class StubUserLang extends StubObject {
 		return $this->_call( $name, $args );
 	}
 
+	/**
+	 * @return Language
+	 */
 	function _newObject() {
 		return RequestContext::getMain()->getLang();
 	}

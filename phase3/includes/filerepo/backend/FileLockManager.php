@@ -179,9 +179,9 @@ class FSFileLockManager extends FileLockManager {
  *
  * This is meant for multi-wiki systems that may share share some files.
  * One or several lock database servers are set up having a `file_locking`
- * table with one field, fl_key, the PRIMARY. The table engine should have
- * row-level locking support. For performance, deadlock detection should be
- * disabled and a very low lock-wait timeout should be put in server config.
+ * table with one field, fl_key, the PRIMARY KEY. The table engine should
+ * have row-level locking. For performance, deadlock detection should be
+ * disabled and a low lock-wait timeout should be put in the server config.
  *
  * All lock requests for an item (identified by an abstract key string) will
  * map to one bucket. Each bucket maps to a single server, and each server can
@@ -352,7 +352,8 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Get the bucket for lock key
+	 * Get the bucket for lock key.
+	 * This should avoid throwing any exceptions.
 	 *
 	 * @param $key string
 	 * @return int
@@ -364,7 +365,8 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Get the server name for lock key
+	 * Get the server name for lock key.
+	 * This should avoid throwing any exceptions.
 	 *
 	 * @param $key string
 	 * @return string|null

@@ -158,7 +158,6 @@ $messages = array(
 # General errors
 'error'         => 'Errore',
 'internalerror' => 'Errore internu',
-'viewsourcefor' => 'di $1',
 
 # Login and logout pages
 'yourname'                   => 'Nome di utilizatore:',
@@ -423,7 +422,6 @@ U to indirizzu IP serà registratu indu a cronolugia di ista pagina.",
 'istemplate' => 'inclusione',
 
 # Block/unblock
-'ipaddress'                => 'Adrizzu IP',
 'ipadressorusername'       => 'Adrizzu IP o nome di cuntributore',
 'ipbreason'                => 'Mutivu:',
 'blocklist-reason'         => 'Mutivu',

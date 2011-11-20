@@ -78,7 +78,12 @@ class MediaWiki {
 			$ret = Title::newMainPage();
 		} else {
 			$ret = Title::newFromURL( $title );
-			// check variant links so that interwiki links don't have to worry
+			// Alias NS_MEDIA page URLs to NS_FILE...we only use NS_MEDIA
+			// in wikitext links to tell Parser to make a direct file link
+			if ( !is_null( $ret ) && $ret->getNamespace() == NS_MEDIA ) {
+				$ret = Title::makeTitle( NS_FILE, $ret->getDBkey() );
+			}
+			// Check variant links so that interwiki links don't have to worry
 			// about the possible different language variants
 			if ( count( $wgContLang->getVariants() ) > 1
 				&& !is_null( $ret ) && $ret->getArticleID() == 0 )
@@ -87,7 +92,7 @@ class MediaWiki {
 			}
 		}
 		// For non-special titles, check for implicit titles
-		if ( is_null( $ret ) || $ret->getNamespace() != NS_SPECIAL ) {
+		if ( is_null( $ret ) || !$ret->isSpecialPage() ) {
 			// We can have urls with just ?diff=,?oldid= or even just ?diff=
 			$oldid = $request->getInt( 'oldid' );
 			$oldid = $oldid ? $oldid : $request->getInt( 'diff' );
@@ -141,8 +146,6 @@ class MediaWiki {
 			$output->setPrintable();
 		}
 
-		$pageView = false; // was an article or special page viewed?
-
 		wfRunHooks( 'BeforeInitialize',
 			array( &$title, null, &$output, &$user, $request, $this ) );
 
@@ -151,14 +154,23 @@ class MediaWiki {
 			$title->isSpecial( 'Badtitle' ) )
 		{
 			$this->context->setTitle( SpecialPage::getTitleFor( 'Badtitle' ) );
+			wfProfileOut( __METHOD__ );
 			throw new ErrorPageError( 'badtitle', 'badtitletext' );
-		// If the user is not logged in, the Namespace:title of the article must be in
-		// the Read array in order for the user to see it. (We have to check here to
-		// catch special pages etc. We check again in Article::view())
-		} elseif ( !$title->userCanRead() ) {
-			$output->loginToUse();
+		}
+
+		// Check user's permissions to read this page.
+		// We have to check here to catch special pages etc.
+		// We will check again in Article::view().
+		$permErrors = $title->getUserPermissionsErrors( 'read', $user );
+		if ( count( $permErrors ) ) {
+			wfProfileOut( __METHOD__ );
+			throw new PermissionsError( 'read', $permErrors );
+		}
+
+		$pageView = false; // was an article or special page viewed?
+
 		// Interwiki redirects
-		} elseif ( $title->getInterwiki() != '' ) {
+		if ( $title->getInterwiki() != '' ) {
 			$rdfrom = $request->getVal( 'rdfrom' );
 			if ( $rdfrom ) {
 				$url = $title->getFullURL( 'rdfrom=' . urlencode( $rdfrom ) );
@@ -185,7 +197,7 @@ class MediaWiki {
 			&& !count( $request->getValueNames( array( 'action', 'title' ) ) )
 			&& wfRunHooks( 'TestCanonicalRedirect', array( $request, $title, $output ) ) )
 		{
-			if ( $title->getNamespace() == NS_SPECIAL ) {
+			if ( $title->isSpecialPage() ) {
 				list( $name, $subpage ) = SpecialPageFactory::resolveAlias( $title->getDBkey() );
 				if ( $name ) {
 					$title = SpecialPage::getTitleFor( $name, $subpage );
@@ -438,7 +450,7 @@ class MediaWiki {
 	 * @param $article Article
 	 */
 	private function performAction( Page $article ) {
-		global $wgSquidMaxage, $wgUseExternalEditor;
+		global $wgSquidMaxage;
 
 		wfProfileIn( __METHOD__ );
 
@@ -468,12 +480,6 @@ class MediaWiki {
 				$output->setSquidMaxage( $wgSquidMaxage );
 				$article->view();
 				break;
-			case 'raw': // includes JS/CSS
-				wfProfileIn( __METHOD__ . '-raw' );
-				$raw = new RawPage( $article );
-				$raw->view();
-				wfProfileOut( __METHOD__ . '-raw' );
-				break;
 			case 'delete':
 			case 'protect':
 			case 'unprotect':
@@ -488,31 +494,17 @@ class MediaWiki {
 				// Continue...
 			case 'edit':
 				if ( wfRunHooks( 'CustomEditor', array( $article, $user ) ) ) {
-					$internal = $request->getVal( 'internaledit' );
-					$external = $request->getVal( 'externaledit' );
-					$section = $request->getVal( 'section' );
-					$oldid = $request->getVal( 'oldid' );
-					if ( !$wgUseExternalEditor || $act == 'submit' || $internal ||
-					   $section || $oldid ||
-					   ( !$user->getOption( 'externaleditor' ) && !$external ) )
+					if ( ExternalEdit::useExternalEngine( $this->context, 'edit' )
+						&& $act == 'edit' && !$request->getVal( 'section' )
+						&& !$request->getVal( 'oldid' ) )
 					{
+						$extedit = new ExternalEdit( $this->context );
+						$extedit->execute();
+					} else {
 						$editor = new EditPage( $article );
-						$editor->submit();
-					} elseif ( $wgUseExternalEditor
-						&& ( $external || $user->getOption( 'externaleditor' ) ) )
-					{
-						$mode = $request->getVal( 'mode' );
-						$extedit = new ExternalEdit( $article->getTitle(), $mode );
-						$extedit->edit();
+						$editor->edit();
 					}
 				}
-				break;
-			case 'history':
-				if ( $request->getFullRequestURL() == $title->getInternalURL( 'action=history' ) ) {
-					$output->setSquidMaxage( $wgSquidMaxage );
-				}
-				$history = new HistoryPage( $article, $this->context );
-				$history->history();
 				break;
 			default:
 				if ( wfRunHooks( 'UnknownAction', array( $act, $article ) ) ) {
@@ -528,7 +520,7 @@ class MediaWiki {
 	 */
 	public function run() {
 		try {
-			$this->checkMaxLag( true );
+			$this->checkMaxLag();
 			$this->main();
 			$this->restInPeace();
 		} catch ( Exception $e ) {
@@ -539,38 +531,28 @@ class MediaWiki {
 	/**
 	 * Checks if the request should abort due to a lagged server,
 	 * for given maxlag parameter.
-	 *
-	 * @param boolean $abort True if this class should abort the
-	 * script execution. False to return the result as a boolean.
-	 * @return boolean True if we passed the check, false if we surpass the maxlag
 	 */
-	private function checkMaxLag( $abort ) {
+	private function checkMaxLag() {
 		global $wgShowHostnames;
 
 		wfProfileIn( __METHOD__ );
 		$maxLag = $this->context->getRequest()->getVal( 'maxlag' );
 		if ( !is_null( $maxLag ) ) {
-			$lb = wfGetLB(); // foo()->bar() is not supported in PHP4
-			list( $host, $lag ) = $lb->getMaxLag();
+			list( $host, $lag ) = wfGetLB()->getMaxLag();
 			if ( $lag > $maxLag ) {
-				if ( $abort ) {
-					$resp = $this->context->getRequest()->response();
-					$resp->header( 'HTTP/1.1 503 Service Unavailable' );
-					$resp->header( 'Retry-After: ' . max( intval( $maxLag ), 5 ) );
-					$resp->header( 'X-Database-Lag: ' . intval( $lag ) );
-					$resp->header( 'Content-Type: text/plain' );
-					if( $wgShowHostnames ) {
-						echo "Waiting for $host: $lag seconds lagged\n";
-					} else {
-						echo "Waiting for a database server: $lag seconds lagged\n";
-					}
+				$resp = $this->context->getRequest()->response();
+				$resp->header( 'HTTP/1.1 503 Service Unavailable' );
+				$resp->header( 'Retry-After: ' . max( intval( $maxLag ), 5 ) );
+				$resp->header( 'X-Database-Lag: ' . intval( $lag ) );
+				$resp->header( 'Content-Type: text/plain' );
+				if( $wgShowHostnames ) {
+					echo "Waiting for $host: $lag seconds lagged\n";
+				} else {
+					echo "Waiting for a database server: $lag seconds lagged\n";
 				}
 
 				wfProfileOut( __METHOD__ );
 
-				if ( !$abort ) {
-					return false;
-				}
 				exit;
 			}
 		}

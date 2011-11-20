@@ -285,7 +285,7 @@ $messages = array(
 'tog-editsection'             => 'Ցույց տալ [խմբագրել] հղումը ամեն բաժնի համար',
 'tog-editsectiononrightclick' => 'Խմբագրել բաժինները վերնագրի աջ մատնահարմամբ (JavaScript)',
 'tog-showtoc'                 => 'Ցույց տալ բովանդակությունը (3  կամ ավել վերնագրեր ունեցող էջերի համար)',
-'tog-rememberpassword'        => 'Հիշել իմ մասնակցի հաշիվը այս համակարգչում (for a maximum of $1 {{PLURAL:$1|day|days}})',
+'tog-rememberpassword'        => 'Հիշել իմ մուտքագրված տվյալներն այս համակարգչում ($1 {{PLURAL:$1|օրից}} ոչ ավել ժամկետով)',
 'tog-watchcreations'          => 'Ավելացնել իմ ստեղծած էջերը հսկացանկին',
 'tog-watchdefault'            => 'Ավելացնել իմ խմբագրած էջերը հսկացանկին',
 'tog-watchmoves'              => 'Ավելացնել իմ տեղափոխած էջերը հսկացանկին',
@@ -451,6 +451,7 @@ $messages = array(
 'printableversion'  => 'Տպելու տարբերակ',
 'permalink'         => 'Մշտական հղում',
 'print'             => 'Տպել',
+'view'              => 'Դիտել',
 'edit'              => 'Խմբագրել',
 'create'            => 'Ստեղծել',
 'editthispage'      => 'Խմբագրել այս էջը',
@@ -458,11 +459,12 @@ $messages = array(
 'delete'            => 'Ջնջել',
 'deletethispage'    => 'Ջնջել այս էջը',
 'undelete_short'    => 'Վերականգնել {{PLURAL:$1|մեկ խմբագրում|$1 խմբագրում}}',
+'viewdeleted_short' => 'Դիտել {{PLURAL:$1|ջնջված խմբագրում}}',
 'protect'           => 'Պաշտպանել',
 'protect_change'    => 'փոխել',
 'protectthispage'   => 'Պաշտպանել այս էջը',
-'unprotect'         => 'Հանել պաշտպանումից',
-'unprotectthispage' => 'Հանել այս էջը պաշտպանումից',
+'unprotect'         => 'Փոխել պաշտպանումը',
+'unprotectthispage' => 'Փոխել այս էջի պաշտպանումը',
 'newpage'           => 'Նոր էջ',
 'talkpage'          => 'Քննարկել այս էջը',
 'talkpagelinktext'  => 'Քննարկում',
@@ -626,14 +628,13 @@ $1',
 Ֆունկցիա. $1<br />
 Հայցում. $2',
 'viewsource'           => 'Դիտել ելատեքստը',
-'viewsourcefor'        => '«$1» էջի',
 'actionthrottled'      => 'Գործողությունը արգելափակվեց',
 'actionthrottledtext'  => 'Որպես հակա-սպամային միջոց, այս գործողության չափից շատ կատարումը կարճ ժամանակահատվածի ընթացքում սահմանափակված է։ Խնդրում ենք փորձել կրկին մի քանի րոպե անց։',
 'protectedpagetext'    => 'Այս էջը կողպված խմբագրման համար։',
 'viewsourcetext'       => 'Դուք կարող եք դիտել և պատճենել այս էջի ելատեքստը.',
 'protectedinterface'   => 'Այս էջը պարունակում է ծրագրային ապահովման ինտերֆեյսի ուզերձ և կողպված է չարաշահումների կանխարգելման նպատակով։.',
 'editinginterface'     => "'''Զգուշացում.''' Դուք խմբագրում եք ծրագրային ապահովման ինտերֆեյսի տեքստ պարունակող էջ։ Այս էջի փոփոխությունը կանդրադառնա այլ մասնակիցներին տեսանելի ինտերֆեյսի տեսքի վրա։
-Թարգմանությունների համար նախընտրելի է օգտագործել [http://translatewiki.net/wiki/Main_Page?setlang=hy translatewiki.net]՝ MediaWiki ծրագրի տեղայնացման նախագիծը։",
+Թարգմանությունների համար նախընտրելի է օգտագործել [//translatewiki.net/wiki/Main_Page?setlang=hy translatewiki.net]՝ MediaWiki ծրագրի տեղայնացման նախագիծը։",
 'sqlhidden'            => '(SQL հայցումը թաքցված է)',
 'cascadeprotected'     => 'Այս էջը պաշտպանված է խմբագրումից, քանի որ ընդգրկված է հետևյալ {{PLURAL:$1|էջի|էջերի}} տեքստում, {{PLURAL:$1|որը|որոնք}} պաշտպանվել {{PLURAL:$1|է|են}} կասկադային հնարավորությամբ.
 $2',
@@ -811,9 +812,6 @@ $2',
 Ձեր ընթացիկ IP-հասցեն է $3, արգելափակման իդենտիֆիկատորը՝ $5։
 Խնդրում ենք նշել այս տվյալները ձեր հարցումների ժամանակ։",
 'blockednoreason'                  => 'պատճառ չի տրվել',
-'blockedoriginalsource'            => "«'''$1'''» էջի տեքստը բերված է ստորև։",
-'blockededitsource'                => "«'''$1'''» էջի '''ձեր խմբագրումները''' հետևյալն են.",
-'whitelistedittitle'               => 'Խմբագրման համար հարկավոր է մտնել համակարգ',
 'whitelistedittext'                => 'Անհրաժեշտ է $1 էջերը խմբագրելու համար։',
 'confirmedittext'                  => 'Էջերի խմբագրումից առաջ անհրաժեշտ է վավերացնել էլ-հասցեն։
 Խնդրում ենք նշել և վավերացնել ձեր էլ-փոստի հասցեն ձեր [[Special:Preferences|նախընտրությունների]] մեջ։',
@@ -1863,7 +1861,6 @@ $1',
 'blockiptext'                 => 'Օգտագործեք ստորև բերված ձևը որոշակի IP-հասցեից կամ մասնակցի անունից գրելու հնարավորությունը արգելափակելու համար։
 Նման բան հարկավոր է անել միայն վանդալության կանխարգելման նպատակով և համաձայն [[{{MediaWiki:Policy-url}}|կանոնակարգի]]։
 Նշեք արգելափակման որոշակի պատճառը ստորև (օրինակ՝ նշեք այն էջը, որում վանդալություն է տեղի ունեցել)։',
-'ipaddress'                   => 'IP-հասցե.',
 'ipadressorusername'          => 'IP-հասցե կամ մասնակցի անուն.',
 'ipbexpiry'                   => 'Մարման ժամկետ.',
 'ipbreason'                   => 'Պատճառ.',
@@ -2024,7 +2021,7 @@ $1',
 'allmessagesdefault'        => 'Լռությամբ տեքստ',
 'allmessagescurrent'        => 'Ընթացիկ տեքստ',
 'allmessagestext'           => 'Ստորև բերված է «MediaWiki» անվանատարածքի բոլոր համակարգային ուղերձների ցանկը։
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
 'allmessagesnotsupportedDB' => "Այս էջը չի գործում, քանի որ '''\$wgUseDatabaseMessages''' հատկանիշը անջատված է։",
 
 # Thumbnails
@@ -2221,9 +2218,9 @@ $1',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'     => '$1, $2 × $3',
-'seconds-abbrev' => '$1վ',
-'minutes-abbrev' => '$1ր',
-'hours-abbrev'   => '$1ժ',
+'seconds-abbrev' => '$1 վ',
+'minutes-abbrev' => '$1 ր',
+'hours-abbrev'   => '$1 ժ',
 
 # Bad image list
 'bad_image_list' => 'Գրաձևը հետևյալն է.
@@ -2262,7 +2259,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'Խմբագրել այս նիշքը արտաքին խմբագրիչով',
-'edit-externally-help' => '(Մանրամասնությունների համար տես [http://www.mediawiki.org/wiki/Manual:External_editors տեղակայման հրահանգները])',
+'edit-externally-help' => '(Մանրամասնությունների համար տես [//www.mediawiki.org/wiki/Manual:External_editors տեղակայման հրահանգները])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'բոլոր',

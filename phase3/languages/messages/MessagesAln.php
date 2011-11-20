@@ -423,7 +423,6 @@ Shenimet këtu nuk do të rifreskohen.',
 Funksioni: $1<br />
 Kërkesa: $2',
 'viewsource'           => 'Shih kodin',
-'viewsourcefor'        => 'e $1',
 'actionthrottled'      => 'Veprimi âsht i kufizuem',
 'actionthrottledtext'  => 'Si masë kunder spamit, jeni të kufizuem me kry këtë veprim shumë herë për nji kohë shumë të shkurtë, dhe e keni tejkalue këtë kufizim.
 Ju lutemi provoni prap mbas disa minutave.',
@@ -432,7 +431,7 @@ Ju lutemi provoni prap mbas disa minutave.',
 'protectedinterface'   => 'Kjo faqe përmban tekst të interfaceit të softwareit dhe âsht e mbrojtun për me pengue keqpërdorimin.',
 'editinginterface'     => "'''Kujdes:''' Po redaktoni nji faqe që përdoret për me ofrue tekst të interfaceit të softwareit.
 Ndryshimet në këtë faqe do të prekin pamjen e interfaceit për të gjithë përdoruesit tjerë.
-Për përkthim, konsideroni ju lutem përdorimin e [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], projektin e MediaWiki për përshtatje gjuhësore.",
+Për përkthim, konsideroni ju lutem përdorimin e [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], projektin e MediaWiki për përshtatje gjuhësore.",
 'sqlhidden'            => '(Kërkesa SQL e msheftë)',
 'cascadeprotected'     => 'Kjo faqe âsht e mbrojtun prej redaktimit, për shkak se âsht e përfshime në {{PLURAL:$1|faqen, e cila âsht e mbrojtun|faqet, të cilat janë të mbrojtuna}} me opcionin "zinxhir" të zgjedhun:
 $2',
@@ -640,9 +639,6 @@ Nuk mundeni me shfrytëzue funksionin 'dërgo email këtij përdoruesi' përveç
 Adresa juej aktuale e IP âsht $3, dhe ID e bllokimit âsht #$5.
 Ju lutemi përfshini këto shenime në të gjitha shkresat që i bâni.",
 'blockednoreason'                  => 'nuk âsht dhânë arsye',
-'blockedoriginalsource'            => "Kodi burimor i '''$1''' âsht mâ poshtë:",
-'blockededitsource'                => "Teksti i '''redaktimeve tueja''' të '''$1''' âsht mâ poshtë:",
-'whitelistedittitle'               => 'Lypet kyçje për me mujtë me redaktue',
 'whitelistedittext'                => 'Duheni me u $1 për me redaktue artikuj.',
 'confirmedittext'                  => 'Duheni me vërtetue adresën tuej të emailit para se me redaktue.
 Ju lutemi vërtetoni adresën tuej të emailit përmjet [[Special:Preferences|parapëlqimeve]] tueja.',
@@ -1604,7 +1600,7 @@ Tjerat kanë me mbetë të mshefuna.
 
 # External editor support
 'edit-externally'      => 'Ndryshoni kët figurë/skedë me një mjet të jashtëm',
-'edit-externally-help' => '(Shih [http://www.mediawiki.org/wiki/Manual:External_editors udhëzimet e instalimit] për mâ shumë informata)',
+'edit-externally-help' => '(Shih [//www.mediawiki.org/wiki/Manual:External_editors udhëzimet e instalimit] për mâ shumë informata)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'krejt',

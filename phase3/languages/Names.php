@@ -86,7 +86,8 @@
 	'el' => 'Ελληνικά',	# Greek
 	'eml' => 'Emiliàn e rumagnòl',	# Emiliano-Romagnolo / Sammarinese
 	'en' => 'English',		# English
-	'en-gb' => 'British English',		# British English
+	'en-ca' => 'Canadian English',	# Canadian English
+	'en-gb' => 'British English',	# British English
 	'eo' => 'Esperanto',	# Esperanto
 	'es' => 'Español',	# Spanish
 	'et' => 'Eesti',		# Estonian
@@ -179,9 +180,9 @@
 	'krc' => 'Къарачай-Малкъар', # Karachay-Balkar
 	'kri' => 'Krio', # Krio
 	'krj' => 'Kinaray-a', # Kinaray-a
-	'ks' => 'कश्मीरी - (كشميري)',	# Kashmiri (multiple scripts - defaults to Perso-Arabic)
-	'ks-arab' => 'كشميري',	# Kashmiri (Perso-Arabic script)
-	'ks-deva' => 'कश्मीरी',	# Kashmiri (Devanagari script)
+	'ks' => 'कॉशुर - کٲشُر',	# Kashmiri (multiple scripts - defaults to Perso-Arabic)
+	'ks-arab' => 'کٲشُر',	# Kashmiri (Perso-Arabic script)
+	'ks-deva' => 'कॉशुर',	# Kashmiri (Devanagari script)
 	'ksh' => 'Ripoarisch',	# Ripuarian
 	'ku'  => 'Kurdî',	# Kurdish (multiple scripts - defaults to Latin)
 	'ku-latn' => "\xE2\x80\xAAKurdî (latînî)\xE2\x80\xAC",	# Northern Kurdish (Latin script)
@@ -197,7 +198,7 @@
 	'lfn' => 'Lingua Franca Nova',	# Lingua Franca Nova
 	'lg' => 'Luganda',		# Ganda
 	'li' => 'Limburgs',	# Limburgian
-	'lij' => 'Líguru',	# Ligurian
+	'lij' => 'Ligure',	# Ligurian
 	'liv' => 'Līvõ kēļ',	# Livonian
 	'lmo' => 'Lumbaart',	# Lombard
 	'ln' => 'Lingála',		# Lingala
@@ -289,7 +290,7 @@
 	# 'ruq-grek' => 'Βλαεστε',	# Megleno-Romanian (Greek script)
 	'ruq-latn' => 'Vlăheşte',	# Megleno-Romanian (Latin script)
 	'rw' => 'Kinyarwanda',	# Kinyarwanda, should possibly be Kinyarwandi
-	'sa' => 'संस्कृत',	# Sanskrit
+	'sa' => 'संस्कृतम्',	# Sanskrit
 	'sah' => 'Саха тыла', # Sakha
 	'sc' => 'Sardu',		# Sardinian
 	'scn' => 'Sicilianu',	# Sicilian
@@ -336,6 +337,7 @@
 	'ti' => 'ትግርኛ',		# Tigrinya
 	'tk' => 'Türkmençe',	# Turkmen
 	'tl' => 'Tagalog',		# Tagalog
+	'tly' => 'толышә зывон',	# Talysh
 	'tn' => 'Setswana',		# Setswana
 	'to' => 'lea faka-Tonga',		# Tonga (Tonga Islands)
 	'tokipona' => 'Toki Pona',      # Toki Pona

@@ -25,14 +25,18 @@ class RevDel_RevisionList extends RevDel_List {
 	 */
 	public function doQuery( $db ) {
 		$ids = array_map( 'intval', $this->ids );
-		$live = $db->select( array('revision','page'), '*',
+		$live = $db->select(
+			array( 'revision', 'page', 'user' ),
+			array_merge( Revision::selectFields(), Revision::selectUserFields() ),
 			array(
 				'rev_page' => $this->title->getArticleID(),
 				'rev_id'   => $ids,
-				'rev_page = page_id'
 			),
 			__METHOD__,
-			array( 'ORDER BY' => 'rev_id DESC' )
+			array( 'ORDER BY' => 'rev_id DESC' ),
+			array(
+				'page' => Revision::pageJoinCond(),
+				'user' => Revision::userJoinCond() )
 		);
 
 		if ( $live->numRows() >= count( $ids ) ) {
@@ -128,7 +132,7 @@ class RevDel_RevisionItem extends RevDel_Item {
 	}
 
 	public function getAuthorNameField() {
-		return 'rev_user_text';
+		return 'user_name'; // see Revision::selectUserFields()
 	}
 
 	public function canView() {
@@ -140,7 +144,7 @@ class RevDel_RevisionItem extends RevDel_Item {
 	}
 
 	public function getBits() {
-		return $this->revision->mDeleted;
+		return $this->revision->getVisibility();
 	}
 
 	public function setBits( $bits ) {
@@ -580,7 +584,7 @@ class RevDel_FileItem extends RevDel_Item {
 					array(
 						'target' => $this->list->title->getPrefixedText(),
 						'file'   => $this->file->getArchiveName(),
-						'token'  => $this->list->getUser()->editToken(
+						'token'  => $this->list->getUser()->getEditToken(
 							$this->file->getArchiveName() )
 					)
 				);
@@ -729,7 +733,7 @@ class RevDel_ArchivedFileItem extends RevDel_FileItem {
 				array(
 					'target' => $this->list->title->getPrefixedText(),
 					'file' => $key,
-					'token' => $this->list->getUser()->editToken( $key )
+					'token' => $this->list->getUser()->getEditToken( $key )
 				)
 			);
 		}

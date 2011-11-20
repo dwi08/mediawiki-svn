@@ -355,6 +355,7 @@ class WebInstaller extends Installer {
 
 	/**
 	 * Show an error message in a box. Parameters are like wfMsg().
+	 * @param $msg
 	 */
 	public function showError( $msg /*...*/ ) {
 		$args = func_get_args();
@@ -366,6 +367,8 @@ class WebInstaller extends Installer {
 
 	/**
 	 * Temporary error handler for session start debugging.
+	 * @param $errno
+	 * @param $errstr string
 	 */
 	public function errorHandler( $errno, $errstr ) {
 		$this->phpErrors[] = $errstr;
@@ -630,6 +633,7 @@ class WebInstaller extends Installer {
 	 * Get small text indented help for a preceding form field.
 	 * Parameters like wfMsg().
 	 *
+	 * @param $msg
 	 * @return string
 	 */
 	public function getHelpBox( $msg /*, ... */ ) {
@@ -637,13 +641,12 @@ class WebInstaller extends Installer {
 		array_shift( $args );
 		$args = array_map( 'htmlspecialchars', $args );
 		$text = wfMsgReal( $msg, $args, false, false, false );
-		$html = htmlspecialchars( $text );
 		$html = $this->parse( $text, true );
 
 		return "<div class=\"mw-help-field-container\">\n" .
-			   "<span class=\"mw-help-field-hint\">" . wfMsgHtml( 'config-help' ) . "</span>\n" .
-			   "<span class=\"mw-help-field-data\">" . $html . "</span>\n" .
-			   "</div>\n";
+			"<span class=\"mw-help-field-hint\">" . wfMsgHtml( 'config-help' ) . "</span>\n" .
+			"<span class=\"mw-help-field-data\">" . $html . "</span>\n" .
+			"</div>\n";
 	}
 
 	/**
@@ -687,6 +690,10 @@ class WebInstaller extends Installer {
 	 * Label a control by wrapping a config-input div around it and putting a
 	 * label before it.
 	 *
+	 * @param $msg
+	 * @param $forId
+	 * @param $contents
+	 * @param $helpData string
 	 * @return string
 	 */
 	public function label( $msg, $forId, $contents, $helpData = "" ) {
@@ -1013,6 +1020,7 @@ class WebInstaller extends Installer {
 	/**
 	 * Helper for Installer::docLink()
 	 *
+	 * @param $page
 	 * @return string
 	 */
 	protected function getDocUrl( $page ) {
@@ -1028,6 +1036,9 @@ class WebInstaller extends Installer {
 	/**
 	 * Extension tag hook for a documentation link.
 	 *
+	 * @param $linkText
+	 * @param $attribs
+	 * @param $parser
 	 * @return string
 	 */
 	public function docLink( $linkText, $attribs, $parser ) {
@@ -1040,6 +1051,9 @@ class WebInstaller extends Installer {
 	/**
 	 * Helper for "Download LocalSettings" link on WebInstall_Complete
 	 *
+	 * @param $text
+	 * @param $attribs
+	 * @param $parser
 	 * @return String Html for download link
 	 */
 	public function downloadLinkHook( $text, $attribs, $parser  ) {

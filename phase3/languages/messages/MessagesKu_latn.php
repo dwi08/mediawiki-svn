@@ -238,7 +238,7 @@ $messages = array(
 'vector-view-history'      => 'Dîrokê bibîne',
 'vector-view-view'         => 'Bixwîne',
 'vector-view-viewsource'   => 'Çavkaniyan bibîne',
-'actions'                  => 'Xebat',
+'actions'                  => 'Çalakî',
 'namespaces'               => 'Valahiya nav',
 'variants'                 => 'Variyant',
 
@@ -359,7 +359,7 @@ $messages = array(
 'nstab-main'      => 'Rûpel',
 'nstab-user'      => 'Bikarhêner',
 'nstab-media'     => 'Medya',
-'nstab-special'   => 'Taybet',
+'nstab-special'   => 'Rûpela taybet',
 'nstab-project'   => 'Rûpela projeyê',
 'nstab-image'     => 'Wêne',
 'nstab-mediawiki' => 'Peyam',
@@ -415,13 +415,12 @@ Dibe ku di sernavê de karakterên nayên bikaranîn hatibin nivîsandin.',
 Fonksiyon: $1<br />
 Pirs: $2',
 'viewsource'           => 'Çavkaniyê bibîne',
-'viewsourcefor'        => 'ji $1 re',
 'actionthrottled'      => 'Hejmara guherandinên hatine hesibandin',
 'actionthrottledtext'  => 'Te ev tişt di demeke gelekî kin de kir. Ji kerema xwe çend xulekan bisekine û carekî din biceribîne.',
 'protectedpagetext'    => 'Ev rûpel ji bo nenivîsandinê hatiye parastin.',
 'viewsourcetext'       => 'Tu dikarî li çavkaniya vê rûpelê binêrî û wê kopî bikî:',
 'protectedinterface'   => "Di vê rûpelê da nivîsandin ji bo interface'î zimanan yê vê software'ê ye. Ew tê parstin ji bo vandalîzm li vê derê çênebe.",
-'editinginterface'     => "'''Hişyarî:''' Tu rûpeleke ku di Wîkîpediya de ji bo sîstemê girîng e diguherînî. Guherandinên di vê rûpelê de wê ji aliyê hemû bikarhêneran ve werin dîtin. Ji bo wergerê ji kerema xwe di [http://translatewiki.net/wiki/Main_Page?setlang=ku translatewiki.net] de bixebite, projeya MediaWiki.",
+'editinginterface'     => "'''Hişyarî:''' Tu rûpeleke ku di Wîkîpediya de ji bo sîstemê girîng e diguherînî. Guherandinên di vê rûpelê de wê ji aliyê hemû bikarhêneran ve werin dîtin. Ji bo wergerê ji kerema xwe di [//translatewiki.net/wiki/Main_Page?setlang=ku translatewiki.net] de bixebite, projeya MediaWiki.",
 'sqlhidden'            => '(Jêpirskirina SQL hatiye veşartin)',
 'cascadeprotected'     => '<strong>Ev rûpel hatiye parastin ji ber guherandinê, ji ber ku ev rûpela di {{PLURAL:$1|vê rûpelê|van rûpelan da}} tê bikaranîn:
 $2
@@ -611,9 +610,6 @@ Zanibe ku tu nikarî e-nameya bişînî heta tu di [[Special:Preferences|tercih�
 *Sedema astengkirinê: $2
 *ID'ya astengkirinê: #$5",
 'blockednoreason'                  => 'sedem nehatiye gotin',
-'blockedoriginalsource'            => "Çavkaniya '''$1''' tê weşandin:",
-'blockededitsource'                => "Nivîsarên '''guherandinên te''' di '''$1''' da tê wêşandan:",
-'whitelistedittitle'               => 'Ji bo guherandinê vê gotarê tu gireke xwe qeydbikê.',
 'whitelistedittext'                => 'Ji bo guherandina rûpelan, $1 pêwîst e.',
 'confirmedittext'                  => 'Tu gireke adrêsa e-nameya xwe nasbikê berî tu rûpelan diguherînê. Xêra xwe adrêsa e-nameya ya xwe di [[Special:Preferences|tercihên xwe]] da binivisîne û nasbike.',
 'nosuchsectiontitle'               => 'Beşekî wisa tune ye',
@@ -908,6 +904,7 @@ Sedema qedexekirina $3 ev e: ''$2''",
 'prefs-help-email-required'   => 'Navnîşana e-nameyê hewce ye.',
 'prefs-info'                  => 'Agahiyên sereke',
 'prefs-signature'             => 'Îmze',
+'prefs-dateformat'            => 'Formata dîrokê',
 'prefs-advancedediting'       => 'Vebijarkên berfireh',
 'prefs-advancedrc'            => 'Vebijarkên berfireh',
 'prefs-advancedrendering'     => 'Vebijarkên berfireh',
@@ -1110,7 +1107,7 @@ Xêra xwe navekî din bibîne.",
 'upload-file-error'   => 'Çewtiya navxweyî',
 'upload-unknown-size' => 'Mezinahiya nayê zanîn',
 
-'license'           => 'Lîsens:',
+'license'           => 'Lîsans:',
 'license-header'    => 'Lîsens:',
 'nolicense'         => 'ya hilbijartî nîne',
 'license-nopreview' => 'Pêşdîtin ne gengaz e.',
@@ -1123,7 +1120,7 @@ Xêra xwe navekî din bibîne.",
 'listfiles_name'        => 'Nav',
 'listfiles_user'        => 'Bikarhêner',
 'listfiles_size'        => 'Mezinbûn',
-'listfiles_description' => 'Wesif',
+'listfiles_description' => 'Danasîn',
 'listfiles_count'       => 'Versiyon',
 
 # File description page
@@ -1555,7 +1552,7 @@ Ji bo jêbirinan û çêkirinên nuh ra, xêra xwe di [[Special:Log/delete|reşa
 'sp-contributions-submit'        => 'Lêbigere',
 
 # What links here
-'whatlinkshere'            => 'Lînk yê tên ser vê rûpelê',
+'whatlinkshere'            => 'Girêdanên li ser vê rûpelê',
 'whatlinkshere-title'      => 'Rûpelan, yê berve $1 tên',
 'whatlinkshere-page'       => 'Rûpel:',
 'linkshere'                => "Ev rûpel tên ser vê rûpelê '''„[[:$1]]“''':",
@@ -1582,7 +1579,6 @@ Ji bo jêbirinan û çêkirinên nuh ra, xêra xwe di [[Special:Log/delete|reşa
 Ev bes gireke were bikaranîn ji bo vandalîzmê biskinîne (bi vê [[{{MediaWiki:Policy-url}}|qebûlkirinê]]).
 
 Sedemekê binivîse!',
-'ipaddress'                   => "adresê IP'yekê",
 'ipadressorusername'          => "adresê IP'yekê ya navekî bikarhênerekî",
 'ipbexpiry'                   => 'Dem:',
 'ipbreason'                   => 'Sedem',
@@ -1767,7 +1763,7 @@ Rûpela "[[:$1]]" berê heye. Tu rast dixazê wê jêbibê ji bo navguherandinê
 'tooltip-pt-watchlist'            => 'The list of pages you',
 'tooltip-pt-mycontris'            => 'Lîsteya beşdariyên min',
 'tooltip-pt-logout'               => 'Derkeve (Log out)',
-'tooltip-ca-talk'                 => 'guftûgo û şîrove ser vê rûpelê',
+'tooltip-ca-talk'                 => 'Guftûgo li ser rûpela naverokê',
 'tooltip-ca-edit'                 => 'Vê rûpelê biguherîne! Berê qeydkirinê bişkoka "Pêşdîtin',
 'tooltip-ca-addsection'           => 'Beşekê zêde bike.',
 'tooltip-ca-viewsource'           => 'Ev rûpela tê parastin. Tu dikarê bes li çavkanîyê sekê.',
@@ -1778,13 +1774,13 @@ Rûpela "[[:$1]]" berê heye. Tu rast dixazê wê jêbibê ji bo navguherandinê
 'tooltip-ca-move'                 => 'Navekî nû bide vê rûpelê',
 'tooltip-ca-watch'                => 'Vê rûpelê têke nav lîsteya te ya şopandinê',
 'tooltip-ca-unwatch'              => 'Vê rûpelê ji lîsteya te ya şopandinê rake',
-'tooltip-search'                  => 'Li vê wikiyê bigêre',
+'tooltip-search'                  => 'Li {{SITENAME}} bigere',
 'tooltip-search-go'               => 'Here rûpeleke tev bi vî navî, heke hebe',
 'tooltip-search-fulltext'         => 'Di nav rûpelan de li vê nivîsê bigerre',
 'tooltip-p-logo'                  => 'Biçe Destpêkê',
 'tooltip-n-mainpage'              => 'Biçe Destpêkê',
 'tooltip-n-mainpage-description'  => 'Biçe Destpêkê',
-'tooltip-n-portal'                => 'Înformasyon li ser {{SITENAME}}, tu çi dikarê bikê, tu çi li ku dikarê bîbînê',
+'tooltip-n-portal'                => 'Agahdarî li ser {{SITENAME}}, tu dikarî çi bikî, tu dikarî çi li ku bîbînî',
 'tooltip-n-recentchanges'         => "Lîsteya guherandinên dawî di vê Wîkî'yê da.",
 'tooltip-n-randompage'            => 'Rûpelekî helkeft biwêşîne',
 'tooltip-n-help'                  => 'Bersivên ji bo pirsên te.',
@@ -1796,7 +1792,7 @@ Rûpela "[[:$1]]" berê heye. Tu rast dixazê wê jêbibê ji bo navguherandinê
 'tooltip-t-emailuser'             => 'Jê re name bişîne',
 'tooltip-t-upload'                => 'Wêneyan bar bike',
 'tooltip-t-specialpages'          => 'Lîsteya hemû rûpelên taybetî',
-'tooltip-t-print'                 => 'Versiyona çapkirinê a vê rûpelê',
+'tooltip-t-print'                 => 'Versiyona çapkirinê ya vê rûpelê',
 'tooltip-ca-nstab-main'           => 'Li rûpela naverokê binêre',
 'tooltip-ca-nstab-user'           => 'Rûpela bikarhênerê/î temaşe bike',
 'tooltip-ca-nstab-special'        => 'This is a special page, you can',
@@ -2014,7 +2010,7 @@ if (wgUserLanguage == "ku-arab")
 'exif-iimcategory-wea' => 'Hewa',
 
 # External editor support
-'edit-externally-help' => '(Ji bo agahîyên zav [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] li vir binêre)',
+'edit-externally-help' => '(Ji bo agahîyên zav [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] li vir binêre)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'hemû',

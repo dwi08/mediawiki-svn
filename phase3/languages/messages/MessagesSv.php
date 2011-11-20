@@ -341,9 +341,9 @@ $messages = array(
 'tog-shownumberswatching'     => 'Visa antalet användare som bevakar',
 'tog-oldsig'                  => 'Nuvarande signatur:',
 'tog-fancysig'                => 'Rå signatur som wikitext (utan en automatisk länk)',
-'tog-externaleditor'          => 'Använd extern editor som standard (endast för avancerade användare, speciella inställningar på din dator krävs. [http://www.mediawiki.org/wiki/Manual:External_editors Mer information.])',
+'tog-externaleditor'          => 'Använd extern editor som standard (endast för avancerade användare, speciella inställningar på din dator krävs. [//www.mediawiki.org/wiki/Manual:External_editors Mer information.])',
 'tog-externaldiff'            => 'Använd externt diff-verktyg som förval (endast för avancerade användare, kräver speciella inställningar i din dator.
-[http://www.mediawiki.org/wiki/Manual:External_editors Mer information.])',
+[//www.mediawiki.org/wiki/Manual:External_editors Mer information.])',
 'tog-showjumplinks'           => 'Aktivera "hoppa till"-tillgänglighetslänkar',
 'tog-uselivepreview'          => 'Använd direktuppdaterad förhandsgranskning (Javascript, på försöksstadiet)',
 'tog-forceeditsummary'        => 'Påminn mig om jag inte fyller i en redigeringskommentar',
@@ -669,6 +669,7 @@ Rapportera gärna problemet till någon [[Special:ListUsers/sysop|administratör
 'badarticleerror'      => 'Den åtgärden kan inte utföras på den här sidan.',
 'cannotdelete'         => 'Sidan eller filen "$1" kunde inte raderas.
 Den kanske redan har raderats av någon annan.',
+'cannotdelete-title'   => 'Sidan "$1" kan inte raderas',
 'badtitle'             => 'Felaktig titel',
 'badtitletext'         => 'Den begärda sidtiteln är antingen ogiltig eller tom, eller så är titeln felaktigt länkad från en annan wiki.
 Den kan innehålla ett eller flera tecken som inte får användas i sidtitlar.',
@@ -677,14 +678,15 @@ Den kan innehålla ett eller flera tecken som inte får användas i sidtitlar.',
 'querypage-no-updates' => 'Uppdatering av den här sidan är inte aktiverad. Datan kommer i nuläget inte att uppdateras.',
 'wrong_wfQuery_params' => 'Felaktiga parametrar för wfQuery()<br /> Funktion: $1<br /> Förfrågan: $2',
 'viewsource'           => 'Visa wikitext',
-'viewsourcefor'        => 'för $1',
+'viewsource-title'     => 'Visa källkod för $1',
 'actionthrottled'      => 'Åtgärden stoppades',
 'actionthrottledtext'  => 'Som skydd mot spam, finns det en begränsning av hur många gånger du kan utföra den här åtgärden under en viss tid. Du har överskridit den gränsen. Försök igen om några minuter.',
 'protectedpagetext'    => 'Den här sidan har skrivskyddats för att förhindra redigering.',
 'viewsourcetext'       => 'Du kan se och kopiera denna sidas källtext:',
+'viewyourtext'         => "Du kan se och kopiera källan för '''dina redigeringar''' på denna sida:",
 'protectedinterface'   => 'Denna sida innehåller text för mjukvarans gränssnitt, och är skrivskyddad för att förebygga missbruk.',
 'editinginterface'     => "'''Varning:''' Du redigerar en sida som används till texten i gränssnittet. Ändringar på denna sida kommer att påverka gränssnittets utseende för alla användare.
-För översättningar, använd gärna [http://translatewiki.net/wiki/Main_Page?setlang=sv translatewiki.net], översättningsprojektet för MediaWiki.",
+För översättningar, använd gärna [//translatewiki.net/wiki/Main_Page?setlang=sv translatewiki.net], översättningsprojektet för MediaWiki.",
 'sqlhidden'            => '(gömd SQL-förfrågan)',
 'cascadeprotected'     => 'Den här sidan har skyddats från redigering eftersom den inkluderas på följande {{PLURAL:$1|sida|sidor}} som skrivskyddats med "kaskaderande skydd":
 $2',
@@ -928,9 +930,6 @@ Observera att du inte kan använda dig av funktionen "skicka e-post till använd
 Din nuvarande IP-adress är $3, och blockerings-ID är #$5.
 Vänligen ange informationen ovan i alla förfrågningar som du gör i ärendet.',
 'blockednoreason'                  => 'ingen motivering angavs',
-'blockedoriginalsource'            => "Källkoden för '''$1''' visas nedan:",
-'blockededitsource'                => "Texten för '''dina ändringar''' av '''$1''' visas nedanför:",
-'whitelistedittitle'               => 'Du måste logga in för att redigera',
 'whitelistedittext'                => 'Du måste $1 för att kunna redigera sidor.',
 'confirmedittext'                  => 'Du måste bekräfta din e-postadress innan du kan redigera sidor. Var vänlig ställ in och validera din e-postadress genom dina [[Special:Preferences|användarinställningar]].',
 'nosuchsectiontitle'               => 'Kan inte hitta avsnitt',
@@ -1594,6 +1593,7 @@ Om du väljer att ange ditt riktiga namn, kommer det att användas för att till
 'action-suppressionlog'       => 'se denna privata logg',
 'action-block'                => 'blockera denna användare från redigering',
 'action-protect'              => 'ändra skyddsnivå för denna sida',
+'action-rollback'             => 'snabbt rulla tillbaka ändringarna gjorda av den användare som senast redigerade en viss sida',
 'action-import'               => 'importera denna sida från en annan wiki',
 'action-importupload'         => 'importera denna sida från en uppladdad fil',
 'action-patrol'               => 'märka annans redigering som patrullerad',
@@ -1815,10 +1815,10 @@ Den kan inte säkerhetskontrolleras ordentligt.',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Åtkomst nekad',
-'img-auth-nopathinfo'       => 'Saknad PATH_INFO.
+'img-auth-nopathinfo'       => 'PATH_INFO saknas.
 Din server är inte inställd för att ge denna information.
 Den kan vara CGI-baserad och stöttar inte img_auth.
-Se http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+[//www.mediawiki.org/wiki/Manual:Image_Authorization Se bildbehörighet.]',
 'img-auth-notindir'         => 'Den önskade sökvägen finns inte i den inställda uppladdningskatalogen.',
 'img-auth-badtitle'         => 'Kan inte skapa en giltig titel från "$1"',
 'img-auth-nologinnWL'       => 'Du är inte inloggad och "$1" finns inte i vitlistan.',
@@ -2054,7 +2054,7 @@ En sida anses vara en förgreningssida om den inkluderar en mall som länkas til
 'listusers-editsonly'     => 'Visa endast användare som redigerat',
 'listusers-creationsort'  => 'Sortera efter datum skapat',
 'usereditcount'           => '$1 {{PLURAL:$1|redigering|redigeringar}}',
-'usercreated'             => 'Skapat $1 $2',
+'usercreated'             => '{{GENDER:$3|Skapat}} $1 $2',
 'newpages'                => 'Nya sidor',
 'newpages-username'       => 'Användare:',
 'ancientpages'            => 'Äldsta sidorna',
@@ -2121,7 +2121,7 @@ Se även [[Special:WantedCategories|önskade kategorier]].',
 'sp-deletedcontributions-contribs' => 'bidrag',
 
 # Special:LinkSearch
-'linksearch'       => 'Externa länkar',
+'linksearch'       => 'Sökning i externa länkar',
 'linksearch-pat'   => 'Sökmönster:',
 'linksearch-ns'    => 'Namnrymd:',
 'linksearch-ok'    => 'Sök',
@@ -2230,7 +2230,7 @@ Framtida ändringar av den här sidan och dess diskussionssida kommer att listas
 'watchmethod-list'     => 'letar efter nyligen gjorda ändringar bland bevakade sidor',
 'watchlistcontains'    => 'Din bevakningslista innehåller $1 {{PLURAL:$1|sida|sidor}}.',
 'iteminvalidname'      => "Problem med sidan '$1', ogiltigt namn...",
-'wlnote'               => "Nedan finns {{PLURAL:$1|den senaste ändringen|de senaste '''$1''' ändringarna}} under {{PLURAL:$2|den senaste timmen|de senaste '''$2''' timmarna}}.",
+'wlnote'               => "Nedan finns {{PLURAL:$1|den senaste ändringen|de senaste '''$1''' ändringarna}} under {{PLURAL:$2|den senaste timmen|de senaste '''$2''' timmarna}} från den $3, kl. $4.",
 'wlshowlast'           => 'Visa senaste $1 timmarna $2 dygnen $3',
 'watchlist-options'    => 'Alternativ för bevakningslistan',
 
@@ -2338,7 +2338,10 @@ Se [[Special:ProtectedPages|listan över skyddade sidor]] för listan över akti
 'unprotectedarticle'          => 'tog bort skydd från "[[$1]]"',
 'movedarticleprotection'      => 'flyttade skyddsinställningar från "[[$2]]" till "[[$1]]"',
 'protect-title'               => 'Skyddsinställningar för "$1"',
+'protect-title-notallowed'    => 'Visa skyddsnivån för "$1"',
 'prot_1movedto2'              => 'flyttade [[$1]] till [[$2]]',
+'protect-badnamespace-title'  => 'Namnrymd som inte kan skrivskyddas',
+'protect-badnamespace-text'   => 'Sidor i den här namnrymden kan inte skrivskyddas.',
 'protect-legend'              => 'Bekräfta skrivskydd av sida',
 'protectcomment'              => 'Anledning:',
 'protectexpiry'               => 'Varaktighet:',
@@ -2426,6 +2429,7 @@ I sådana fall måste du se till att den senaste raderade versionen inte är ikr
 
 Se [[Special:Log/delete|raderingsloggen]] för en förteckning över de senaste raderingarna och återställningarna.",
 'undelete-header'              => 'Se [[Special:Log/delete|raderingsloggen]] för nyligen raderade sidor.',
+'undelete-search-title'        => 'Sök efter raderade sidor',
 'undelete-search-box'          => 'Sök efter raderade sidor',
 'undelete-search-prefix'       => 'Sidor som börjar med:',
 'undelete-search-submit'       => 'Sök',
@@ -2434,6 +2438,7 @@ Se [[Special:Log/delete|raderingsloggen]] för en förteckning över de senaste 
 'undelete-bad-store-key'       => 'Filversionen med tidsstämpeln $1 kan inte återställas: filen saknades före radering.',
 'undelete-cleanup-error'       => 'Fel vid radering av den oanvända arkivfilen "$1".',
 'undelete-missing-filearchive' => 'Filen med arkiv-ID $1 kunde inte återställas eftersom den inte finns i databasen. Filen kanske redan har återställts.',
+'undelete-error'               => 'Kunde inte återställa sidan',
 'undelete-error-short'         => 'Fel vid filåterställning: $1',
 'undelete-error-long'          => 'Fel inträffade när vid återställning av filen:
 
@@ -2445,7 +2450,7 @@ $1',
 'namespace'                     => 'Namnrymd:',
 'invert'                        => 'Uteslut vald namnrymd',
 'tooltip-invert'                => 'Markera denna ruta för att dölja ändringar på sidor inom det valda namnrymden (och tillhörande namnrymden om det är markerat)',
-'namespace_association'         => 'Associerade namnutrymmen',
+'namespace_association'         => 'Associerad namnrymd',
 'tooltip-namespace_association' => 'Markera denna ruta för att även inkludera diskussions- eller ämnesnamnrymden som är associerad med den valda namnrymden',
 'blanknamespace'                => '(Huvudnamnrymden)',
 
@@ -2506,7 +2511,6 @@ Den senaste posten i blockeringsloggen visas nedan som referens:',
 'blockiptext'                     => 'Använd formuläret nedan för att blockera möjligheten att redigera sidor från en specifik IP-adress eller ett användarnamn.
 Detta bör endast göras för att förhindra vandalisering, och i överensstämmelse med gällande [[{{MediaWiki:Policy-url}}|policy]].
 Ange orsak nedan (exempelvis genom att nämna sidor som blivit vandaliserade).',
-'ipaddress'                       => 'IP-adress',
 'ipadressorusername'              => 'IP-adress eller användarnamn:',
 'ipbexpiry'                       => 'Varaktighet:',
 'ipbreason'                       => 'Anledning:',
@@ -2715,7 +2719,7 @@ Försök att sammanfoga dem manuellt.'''",
 'delete_and_move_text'         => '==Radering krävs==
 Den titel du vill flytta sidan till, "[[:$1]]", finns redan. Vill du radera den för att möjliggöra flytt av denna sida dit?',
 'delete_and_move_confirm'      => 'Ja, radera sidan',
-'delete_and_move_reason'       => 'Raderad för att flytta hit en annan sida.',
+'delete_and_move_reason'       => 'Raderad för att göra plats till flyttning av "[[$1]]"',
 'selfmove'                     => 'Ursprungstitel och destinationstitel är identiska. Sidan kan inte flyttas till sig själv.',
 'immobile-source-namespace'    => 'Kan inte flytta sidor i namnrymden "$1"',
 'immobile-target-namespace'    => 'Kan inte flytta sidor till namnrymden "$1"',
@@ -2764,7 +2768,7 @@ I det senare fallet kan du även använda en länk, exempel [[{{#Special:Export}
 'allmessagesdefault'            => 'Standardtext',
 'allmessagescurrent'            => 'Nuvarande text',
 'allmessagestext'               => 'Detta är en lista över alla meddelanden i namnrymden MediaWiki.
-Besök [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] eller [http://translatewiki.net translatewiki.net] om du vill bidra till översättningen av MediaWiki.',
+Besök [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] eller [//translatewiki.net translatewiki.net] om du vill bidra till översättningen av MediaWiki.',
 'allmessagesnotsupportedDB'     => "Den här sidan kan inte användas eftersom '''\$wgUseDatabaseMessages''' är avstängd.",
 'allmessages-filter-legend'     => 'Filtrera',
 'allmessages-filter'            => 'Filtrera efter anpassningsgrad:',
@@ -3469,7 +3473,7 @@ Andra kommer att gömmas som standard
 
 # External editor support
 'edit-externally'      => 'Redigera denna fil med hjälp av extern programvara',
-'edit-externally-help' => '(Se [http://www.mediawiki.org/wiki/Manual:External_editors installationsinstruktionerna] för mer information)',
+'edit-externally-help' => '(Se [//www.mediawiki.org/wiki/Manual:External_editors installationsinstruktionerna] för mer information)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'alla',
@@ -3639,7 +3643,7 @@ Du kan också [[Special:EditWatchlist|använda standardeditorn]].',
 'watchlisttools-raw'  => 'Redigera bevakningslistan i råformat',
 
 # Signatures
-'signature' => '[[{{ns:user}}:$1|$2]] <sup>([[{{ns:user_talk}}:$1|diskussion]])</sup>',
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|diskussion]])',
 
 # Core parser functions
 'unknown_extension_tag' => 'Okänd tagg "$1"',
@@ -3663,13 +3667,13 @@ Du kan också [[Special:EditWatchlist|använda standardeditorn]].',
 'version-hook-subscribedby'     => 'Används av',
 'version-version'               => '(Version $1)',
 'version-license'               => 'Licens',
-'version-poweredby-credits'     => "Den här wikin drivs av '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Den här wikin drivs av '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'andra',
 'version-license-info'          => 'MediaWiki är fri programvara; du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation; antingen version 2 av licensen, eller (om du önskar) någon senare version. 
 
 MediaWiki distribueras i hopp om att det ska vara användbart, men UTAN NÅGON GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR ETT VISST SYFTE. Se GNU General Public License för fler detaljer. 
 
-Du bör ha fått [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopia av GNU General Public License] tillsammans med detta program; om inte, skriv till Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA eller [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html läs den online].',
+Du bör ha fått [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopia av GNU General Public License] tillsammans med detta program; om inte, skriv till Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA eller [//www.gnu.org/licenses/old-licenses/gpl-2.0.html läs den online].',
 'version-software'              => 'Installerad programvara',
 'version-software-product'      => 'Produkt',
 'version-software-version'      => 'Version',

@@ -41,9 +41,7 @@ class SpecialChangeEmail extends UnlistedSpecialPage {
 	 */
 	function execute( $par ) {
 		global $wgAuth;
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkReadOnly();
 
 		$request = $this->getRequest();
 		$this->mPassword = $request->getVal( 'wpPassword' );
@@ -120,7 +118,7 @@ class SpecialChangeEmail extends UnlistedSpecialPage {
 					'method' => 'post',
 					'action' => $this->getTitle()->getLocalUrl(),
 					'id' => 'mw-changeemail-form' ) ) . "\n" .
-			Html::hidden( 'token', $user->editToken() ) . "\n" .
+			Html::hidden( 'token', $user->getEditToken() ) . "\n" .
 			Html::hidden( 'returnto', $this->getRequest()->getVal( 'returnto' ) ) . "\n" .
 			wfMsgExt( 'changeemail-text', array( 'parse' ) ) . "\n" .
 			Xml::openElement( 'table', array( 'id' => 'mw-changeemail-table' ) ) . "\n" .

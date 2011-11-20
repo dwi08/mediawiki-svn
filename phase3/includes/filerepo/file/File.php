@@ -30,7 +30,14 @@ abstract class File {
 	const DELETED_COMMENT = 2;
 	const DELETED_USER = 4;
 	const DELETED_RESTRICTED = 8;
-	const RENDER_NOW = 1;
+
+	/** Force rendering in the current process */
+	const RENDER_NOW   = 1;
+	/**
+	 * Force rendering even if thumbnail already exist and using RENDER_NOW
+	 * I.e. you have to pass both flags: File::RENDER_NOW | File::RENDER_FORCE 
+	 */
+	const RENDER_FORCE = 2;
 
 	const DELETE_SOURCE = 1;
 
@@ -54,12 +61,12 @@ abstract class File {
 	 */
 
 	/**
-	 * @var LocalRepo
+	 * @var FileRepo|false
 	 */
 	var $repo;
 
 	/**
-	 * @var Title
+	 * @var Title|false
 	 */
 	var $title;
 
@@ -78,14 +85,53 @@ abstract class File {
 	protected $canRender, $isSafeFile;
 
 	/**
-	 * Call this constructor from child classes
+	 * @var string Required Repository class type
+	 */
+	protected $repoClass = 'FileRepo';
+
+	/**
+	 * Call this constructor from child classes.
+	 * 
+	 * Both $title and $repo are optional, though some functions
+	 * may return false or throw exceptions if they are not set.
+	 * Most subclasses will want to call assertRepoDefined() here.
 	 *
-	 * @param $title
-	 * @param $repo
+	 * @param $title Title|string|false
+	 * @param $repo FileRepo|false
 	 */
 	function __construct( $title, $repo ) {
+		if ( $title !== false ) { // subclasses may not use MW titles
+			$title = self::normalizeTitle( $title, 'exception' );
+		}
 		$this->title = $title;
 		$this->repo = $repo;
+	}
+
+	/**
+	 * Given a string or Title object return either a
+	 * valid Title object with namespace NS_FILE or null
+	 * @param $title Title|string
+	 * @param $exception string|false Use 'exception' to throw an error on bad titles
+	 * @return Title|null
+	 */
+	static function normalizeTitle( $title, $exception = false ) {
+		$ret = $title;
+		if ( $ret instanceof Title ) {
+			# Normalize NS_MEDIA -> NS_FILE
+			if ( $ret->getNamespace() == NS_MEDIA ) {
+				$ret = Title::makeTitleSafe( NS_FILE, $ret->getDBkey() );
+			# Sanity check the title namespace
+			} elseif ( $ret->getNamespace() !== NS_FILE ) {
+				$ret = null;
+			}
+		} else {
+			# Convert strings to Title objects
+			$ret = Title::makeTitleSafe( NS_FILE, (string)$ret );
+		}
+		if ( !$ret && $exception !== false ) {
+			throw new MWException( "`$title` is not a valid file title." );
+		}
+		return $ret;
 	}
 
 	function __get( $name ) {
@@ -168,6 +214,7 @@ abstract class File {
 	 */
 	public function getName() {
 		if ( !isset( $this->name ) ) {
+			$this->assertRepoDefined();
 			$this->name = $this->repo->getNameFromTitle( $this->title );
 		}
 		return $this->name;
@@ -189,7 +236,7 @@ abstract class File {
 
 	/**
 	 * Return the associated title object
-	 * @return Title
+	 * @return Title|false
 	 */
 	public function getTitle() { return $this->title; }
 
@@ -212,6 +259,7 @@ abstract class File {
 	 */
 	public function getUrl() {
 		if ( !isset( $this->url ) ) {
+			$this->assertRepoDefined();
 			$this->url = $this->repo->getZoneUrl( 'public' ) . '/' . $this->getUrlRel();
 		}
 		return $this->url;
@@ -266,21 +314,10 @@ abstract class File {
 	*/
 	public function getPath() {
 		if ( !isset( $this->path ) ) {
-			$this->path = $this->repo->getZonePath('public') . '/' . $this->getRel();
+			$this->assertRepoDefined();
+			$this->path = $this->repo->getZonePath( 'public' ) . '/' . $this->getRel();
 		}
 		return $this->path;
-	}
-
-	/**
-	 * Alias for getPath()
-	 *
-	 * @deprecated since 1.18 Use getPath().
-	 *
-	 * @return string
-	 */
-	public function getFullPath() {
-		wfDeprecated( __METHOD__ );
-		return $this->getPath();
 	}
 
 	/**
@@ -684,18 +721,21 @@ abstract class File {
 
 		$thumbPath = $this->getThumbPath( $thumbName );
 		if ( $this->repo && $this->repo->canTransformVia404() && !($flags & self::RENDER_NOW ) ) {
+			wfDebug( __METHOD__ . " transformation deferred." );
 			return $this->handler->getTransform( $this, $thumbPath, $thumbUrl, $params );
 		}
 
 		wfDebug( __METHOD__.": Doing stat for $thumbPath\n" );
 		$this->migrateThumbFile( $thumbName );
-		if ( file_exists( $thumbPath )) {
+		if ( file_exists( $thumbPath ) && !($flags & self::RENDER_FORCE) ) { 
 			$thumbTime = filemtime( $thumbPath );
 			if ( $thumbTime !== FALSE &&
 			     gmdate( 'YmdHis', $thumbTime ) >= $wgThumbnailEpoch ) { 
 
 				return $this->handler->getTransform( $this, $thumbPath, $thumbUrl, $params );
 			}
+		} elseif( $flags & self::RENDER_FORCE ) {
+			wfDebug( __METHOD__ . " forcing rendering per flag File::RENDER_FORCE\n" ); 
 		}
 		$thumb = $this->handler->doTransform( $this, $thumbPath, $thumbUrl, $params );
 
@@ -722,7 +762,7 @@ abstract class File {
 	 * @return MediaTransformOutput | false
 	 */
 	function transform( $params, $flags = 0 ) {
-		global $wgUseSquid, $wgServer;
+		global $wgUseSquid;
 
 		wfProfileIn( __METHOD__ );
 		do {
@@ -823,9 +863,8 @@ abstract class File {
 	 * Purge shared caches such as thumbnails and DB data caching
 	 * STUB
 	 * Overridden by LocalFile
-	 * @param array $options Array with options, currently undefined
 	 */
-	function purgeCache( $options = array() ) {}
+	function purgeCache() {}
 
 	/**
 	 * Purge the file description page, but don't go after
@@ -901,6 +940,7 @@ abstract class File {
 	 */
 	function getHashPath() {
 		if ( !isset( $this->hashPath ) ) {
+			$this->assertRepoDefined();
 			$this->hashPath = $this->repo->getHashPath( $this->getName() );
 		}
 		return $this->hashPath;
@@ -968,6 +1008,7 @@ abstract class File {
 	 * @return string
 	 */
 	function getArchivePath( $suffix = false ) {
+		$this->assertRepoDefined();
 		return $this->repo->getZonePath( 'public' ) . '/' . $this->getArchiveRel( $suffix );
 	}
 
@@ -980,7 +1021,9 @@ abstract class File {
 	 * @return string
 	 */
 	function getArchiveThumbPath( $archiveName, $suffix = false ) {
-		return $this->repo->getZonePath( 'thumb' ) . '/' . $this->getArchiveThumbRel( $archiveName, $suffix );
+		$this->assertRepoDefined();
+		return $this->repo->getZonePath( 'thumb' ) . '/' .
+			$this->getArchiveThumbRel( $archiveName, $suffix );
 	}
 
 	/**
@@ -991,6 +1034,7 @@ abstract class File {
 	 * @return string
 	 */
 	function getThumbPath( $suffix = false ) {
+		$this->assertRepoDefined();
 		$path = $this->repo->getZonePath( 'thumb' ) . '/' . $this->getRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . $suffix;
@@ -1006,7 +1050,8 @@ abstract class File {
 	 * @return string
 	 */
 	function getArchiveUrl( $suffix = false ) {
-		$path = $this->repo->getZoneUrl('public') . '/archive/' . $this->getHashPath();
+		$this->assertRepoDefined();
+		$path = $this->repo->getZoneUrl( 'public' ) . '/archive/' . $this->getHashPath();
 		if ( $suffix === false ) {
 			$path = substr( $path, 0, -1 );
 		} else {
@@ -1024,7 +1069,9 @@ abstract class File {
 	 * @return string
 	 */
 	function getArchiveThumbUrl( $archiveName, $suffix = false ) {
-		$path = $this->repo->getZoneUrl('thumb') . '/archive/' . $this->getHashPath() . rawurlencode( $archiveName ) . "/";
+		$this->assertRepoDefined();
+		$path = $this->repo->getZoneUrl( 'thumb' ) . '/archive/' .
+			$this->getHashPath() . rawurlencode( $archiveName ) . "/";
 		if ( $suffix === false ) {
 			$path = substr( $path, 0, -1 );
 		} else {
@@ -1041,6 +1088,7 @@ abstract class File {
 	 * @return path
 	 */
 	function getThumbUrl( $suffix = false ) {
+		$this->assertRepoDefined();
 		$path = $this->repo->getZoneUrl('thumb') . '/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . rawurlencode( $suffix );
@@ -1056,6 +1104,7 @@ abstract class File {
 	 * @return string
 	 */
 	function getArchiveVirtualUrl( $suffix = false ) {
+		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/public/archive/' . $this->getHashPath();
 		if ( $suffix === false ) {
 			$path = substr( $path, 0, -1 );
@@ -1073,6 +1122,7 @@ abstract class File {
 	 * @return string
 	 */
 	function getThumbVirtualUrl( $suffix = false ) {
+		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/thumb/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . rawurlencode( $suffix );
@@ -1088,6 +1138,7 @@ abstract class File {
 	 * @return string
 	 */
 	function getVirtualUrl( $suffix = false ) {
+		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/public/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . rawurlencode( $suffix );
@@ -1099,6 +1150,7 @@ abstract class File {
 	 * @return bool
 	 */
 	function isHashed() {
+		$this->assertRepoDefined();
 		return $this->repo->isHashed();
 	}
 
@@ -1178,7 +1230,7 @@ abstract class File {
 	/**
 	 * Returns the repository
 	 *
-	 * @return FileRepo
+	 * @return FileRepo|false
 	 */
 	function getRepo() {
 		return $this->repo;
@@ -1357,7 +1409,7 @@ abstract class File {
 	 */
 	function getDescriptionText() {
 		global $wgMemc, $wgLang;
-		if ( !$this->repo->fetchDescription ) {
+		if ( !$this->repo || !$this->repo->fetchDescription ) {
 			return false;
 		}
 		$renderUrl = $this->repo->getDescriptionRenderUrl( $this->getName(), $wgLang->getCode() );
@@ -1608,11 +1660,24 @@ abstract class File {
 	function isMissing() {
 		return false;
 	}
+
+	/**
+	 * Assert that $this->repo is set to a valid FileRepo instance
+	 * @throws MWException
+	 */
+	protected function assertRepoDefined() {
+		if ( !( $this->repo instanceof $this->repoClass ) ) {
+			throw new MWException( "A {$this->repoClass} object is not set for this File.\n" );
+		}
+	}
+
+	/**
+	 * Assert that $this->title is set to a Title
+	 * @throws MWException
+	 */
+	protected function assertTitleDefined() {
+		if ( !( $this->title instanceof Title ) ) {
+			throw new MWException( "A Title object is not set for this File.\n" );
+		}
+	}
 }
-/**
- * Aliases for backwards compatibility with 1.6
- */
-define( 'MW_IMG_DELETED_FILE', File::DELETED_FILE );
-define( 'MW_IMG_DELETED_COMMENT', File::DELETED_COMMENT );
-define( 'MW_IMG_DELETED_USER', File::DELETED_USER );
-define( 'MW_IMG_DELETED_RESTRICTED', File::DELETED_RESTRICTED );

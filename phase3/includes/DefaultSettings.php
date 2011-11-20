@@ -8,10 +8,10 @@
  * To customize your installation, edit "LocalSettings.php". If you make
  * changes here, they will be lost on next upgrade of MediaWiki!
  *
- * Note that since all these string interpolations are expanded
- * before LocalSettings is included, if you localize something
- * like $wgScriptPath, you must also localize everything that
- * depends on it.
+ * In this file, variables whose default values depend on other
+ * variables are set to false. The actual default value of these variables
+ * will only be set in Setup.php, taking into account any custom settings
+ * performed in LocalSettings.php.
  *
  * Documentation is in the source and on:
  * http://www.mediawiki.org/wiki/Manual:Configuration_settings
@@ -78,7 +78,7 @@ $wgCanonicalServer = false;
  * Other paths will be set to defaults based on it unless they are directly
  * set in LocalSettings.php
  */
-$wgScriptPath	    = '/wiki';
+$wgScriptPath       = '/wiki';
 
 /**
  * Whether to support URLs like index.php/Page_title These often break when PHP
@@ -113,7 +113,7 @@ $wgScriptExtension  = '.php';
 /**
  * The URL path to index.php.
  *
- * Defaults to "{$wgScriptPath}/index{$wgScriptExtension}".
+ * Will default to "{$wgScriptPath}/index{$wgScriptExtension}" in Setup.php
  */
 $wgScript           = false;
 
@@ -121,7 +121,7 @@ $wgScript           = false;
  * The URL path to redirect.php. This is a script that is used by the Nostalgia
  * skin.
  *
- * Defaults to "{$wgScriptPath}/redirect{$wgScriptExtension}".
+ * Will default to "{$wgScriptPath}/redirect{$wgScriptExtension}" in Setup.php
  */
 $wgRedirectScript   = false;
 
@@ -140,7 +140,6 @@ $wgLoadScript           = false;
  *
  * These various web and file path variables are set to their defaults
  * in Setup.php if they are not explicitly set from LocalSettings.php.
- * If you do override them, be sure to set them all!
  *
  * These will relatively rarely need to be set manually, unless you are
  * splitting style sheets or images outside the main document root.
@@ -155,7 +154,7 @@ $wgLoadScript           = false;
  */
 
 /**
- * The URL path of the skins directory. Defaults to "{$wgScriptPath}/skins"
+ * The URL path of the skins directory. Will default to "{$wgScriptPath}/skins" in Setup.php
  */
 $wgStylePath   = false;
 $wgStyleSheetPath = &$wgStylePath;
@@ -174,7 +173,7 @@ $wgLocalStylePath   = false;
 $wgExtensionAssetsPath = false;
 
 /**
- * Filesystem stylesheets directory. Defaults to "{$IP}/skins"
+ * Filesystem stylesheets directory. Will default to "{$IP}/skins" in Setup.php
  */
 $wgStyleDirectory = false;
 
@@ -182,13 +181,13 @@ $wgStyleDirectory = false;
  * The URL path for primary article page views. This path should contain $1,
  * which is replaced by the article title.
  *
- * Defaults to "{$wgScript}/$1" or "{$wgScript}?title=$1", depending on
- * $wgUsePathInfo.
+ * Will default to "{$wgScript}/$1" or "{$wgScript}?title=$1" in Setup.php,
+ * depending on $wgUsePathInfo.
  */
 $wgArticlePath      = false;
 
 /**
- * The URL path for the images directory. Defaults to "{$wgScriptPath}/images"
+ * The URL path for the images directory. Will default to "{$IP}/images" in Setup.php
  */
 $wgUploadPath       = false;
 
@@ -204,7 +203,7 @@ $wgUploadDirectory	= false;
 
 /**
  * The URL path of the wiki logo. The logo size should be 135x135 pixels.
- * Defaults to "{$wgStylePath}/common/images/wiki.png".
+ * Will default to "{$wgStylePath}/common/images/wiki.png" in Setup.php
  */
 $wgLogo				= false;
 
@@ -223,7 +222,7 @@ $wgAppleTouchIcon   = false;
  * The local filesystem path to a temporary directory. This is not required to
  * be web accessible.
  *
- * Defaults to "{$wgUploadDirectory}/tmp".
+ * Will default to "{$wgUploadDirectory}/tmp" in Setup.php
  */
 $wgTmpDirectory     = false;
 
@@ -302,7 +301,7 @@ $wgImgAuthPublicTest = true;
  *   - class            The class name for the repository. May come from the core or an extension.
  *                      The core repository classes are LocalRepo, ForeignDBRepo, FSRepo.
  *
- *   - name	            A unique name for the repository (but $wgLocalFileRepo should be 'local').
+ *   - name             A unique name for the repository (but $wgLocalFileRepo should be 'local').
  *
  * For most core repos:
  *   - url              Base public URL
@@ -431,10 +430,10 @@ $wgAllowAsyncCopyUploads = false;
  * for non-specified types.
  *
  * For example:
- * 	$wgMaxUploadSize = array(
- * 		'*' => 250 * 1024,
- * 		'url' => 500 * 1024,
- * 	);
+ * $wgMaxUploadSize = array(
+ *     '*' => 250 * 1024,
+ *     'url' => 500 * 1024,
+ * );
  * Sets the maximum for all uploads to 250 kB except for upload-by-url, which
  * will have a maximum of 500 kB.
  *
@@ -679,9 +678,17 @@ $wgSVGMetadataCutoff = 262144;
 $wgAllowTitlesInSVG = false;
 
 /**
- * Don't thumbnail an image if it will use too much working memory.
- * Default is 50 MB if decompressed to RGBA form, which corresponds to
- * 12.5 million pixels or 3500x3500
+ * The maximum number of pixels a source image can have if it is to be scaled
+ * down by a scaler that requires the full source image to be decompressed
+ * and stored in decompressed form, before the thumbnail is generated.
+ *
+ * This provides a limit on memory usage for the decompression side of the
+ * image scaler. The limit is used when scaling PNGs with any of the
+ * built-in image scalers, such as ImageMagick or GD. It is ignored for
+ * JPEGs with ImageMagick, and when using the VipsScaler extension.
+ *
+ * The default is 50 MB if decompressed to RGBA form, which corresponds to
+ * 12.5 million pixels or 3500x3500.
  */
 $wgMaxImageArea = 1.25e7;
 /**
@@ -869,11 +876,11 @@ $wgTrivialMimeDetection = false;
  * array = ( 'rootElement' => 'associatedMimeType' )
  */
 $wgXMLMimeTypes = array(
-		'http://www.w3.org/2000/svg:svg'    			=> 'image/svg+xml',
-		'svg'                               			=> 'image/svg+xml',
-		'http://www.lysator.liu.se/~alla/dia/:diagram' 	=> 'application/x-dia-diagram',
-		'http://www.w3.org/1999/xhtml:html'				=> 'text/html', // application/xhtml+xml?
-		'html'                              			=> 'text/html', // application/xhtml+xml?
+		'http://www.w3.org/2000/svg:svg'               => 'image/svg+xml',
+		'svg'                                          => 'image/svg+xml',
+		'http://www.lysator.liu.se/~alla/dia/:diagram' => 'application/x-dia-diagram',
+		'http://www.w3.org/1999/xhtml:html'            => 'text/html', // application/xhtml+xml?
+		'html'                                         => 'text/html', // application/xhtml+xml?
 );
 
 /**
@@ -1164,7 +1171,7 @@ $wgDBpassword       = '';
 $wgDBtype           = 'mysql';
 
 /** Separate username for maintenance tasks. Leave as null to use the default. */
-$wgDBadminuser = null;
+$wgDBadminuser      = null;
 /** Separate password for maintenance tasks. Leave as null to use the default. */
 $wgDBadminpassword = null;
 
@@ -1174,7 +1181,7 @@ $wgDBadminpassword = null;
  * selected database type (eg SearchMySQL), or set to a class
  * name to override to a custom search engine.
  */
-$wgSearchType	    = null;
+$wgSearchType       = null;
 
 /** Table name prefix */
 $wgDBprefix         = '';
@@ -1415,6 +1422,8 @@ $wgQueryCacheLimit = 1000;
 $wgWantedPagesThreshold = 1;
 /** Enable slow parser functions */
 $wgAllowSlowParserFunctions = false;
+/** Allow schema updates */
+$wgAllowSchemaUpdates = true;
 
 /**
  * Do DELETE/INSERT for link updates instead of incremental
@@ -1653,7 +1662,7 @@ $wgUseFileCache = false;
 
 /**
  * Directory where the cached page will be saved.
- * Defaults to "{$wgUploadDirectory}/cache".
+ * Will default to "{$wgUploadDirectory}/cache" in Setup.php
  */
 $wgFileCacheDirectory = false;
 
@@ -1867,19 +1876,19 @@ $wgExtraLanguageNames = array();
  * and excludes them when running the transstat.php script.
  */
 $wgDummyLanguageCodes = array(
-	'als',		# => 'gsw'
-	'bat-smg',	# => 'sgs'
-	'be-x-old',	# => 'be-tarask'
-	'bh',		# => 'bho'
-	'fiu-vro',	# => 'vro'
-	'nb',		# => 'no'
-	'qqq',		# Used for message documentation.
-	'qqx',		# Used for viewing message keys.
-	'roa-rup',	# => 'rup'
-	'simple',	# => 'en'
-	'zh-classical',	# => 'lzh'
-	'zh-min-nan',	# => 'nan'
-	'zh-yue',	# => 'yue'
+	'als' => 'gsw',
+	'bat-smg' => 'sgs',
+	'be-x-old' => 'be-tarask',
+	'bh' => 'bho',
+	'fiu-vro' => 'vro',
+	'nb' => 'no',
+	'qqq' => 'qqq', # Used for message documentation.
+	'qqx' => 'qqx', # Used for viewing message keys.
+	'roa-rup' => 'rup',
+	'simple' => 'en',
+	'zh-classical' => 'lzh',
+	'zh-min-nan' => 'nan',
+	'zh-yue' => 'yue',
 );
 
 /**
@@ -2235,6 +2244,12 @@ $wgXhtmlNamespaces = array();
 $wgShowIPinHeader	= true;
 
 /**
+ * Use a user's real name inside the user interface for display instead of the username
+ * (experimental)
+ */
+$wgRealNameInInterface = true;
+
+/**
  * Site notice shown at the top of each page
  *
  * MediaWiki:Sitenotice page, which will override this. You can also
@@ -2330,13 +2345,6 @@ $wgUseSiteJs = true;
 $wgUseSiteCss = true;
 
 /**
- * Set to false to disable application of access keys and tooltips,
- * eg to avoid keyboard conflicts with system keys or as a low-level
- * optimization.
- */
-$wgEnableTooltipsAndAccesskeys = true;
-
-/**
  * Break out of framesets. This can be used to prevent clickjacking attacks,
  * or to prevent external sites from framing your site with ads.
  */
@@ -2413,7 +2421,7 @@ $wgFooterIcons = array(
 	"poweredby" => array(
 		"mediawiki" => array(
 			"src" => null, // Defaults to "$wgStylePath/common/images/poweredby_mediawiki_88x31.png"
-			"url" => "http://www.mediawiki.org/",
+			"url" => "//www.mediawiki.org/",
 			"alt" => "Powered by MediaWiki",
 		)
 	),
@@ -2637,12 +2645,12 @@ $wgMetaNamespaceTalk = false;
  * Custom namespaces should start at 100 to avoid conflicting with standard
  * namespaces, and should always follow the even/odd main/talk pattern.
  */
-#$wgExtraNamespaces =
-#	array(100 => "Hilfe",
-#	      101 => "Hilfe_Diskussion",
-#	      102 => "Aide",
-#	      103 => "Discussion_Aide"
-#	      );
+# $wgExtraNamespaces = array(
+#     100 => "Hilfe",
+#     101 => "Hilfe_Diskussion",
+#     102 => "Aide",
+#     103 => "Discussion_Aide"
+# );
 $wgExtraNamespaces = array();
 
 /**
@@ -3091,11 +3099,6 @@ $wgPasswordSalt = true;
 $wgMinimalPasswordLength = 1;
 
 /**
- * Enabes or disables JavaScript-based suggestions of password strength
- */
-$wgLivePasswordStrengthChecks = false;
-
-/**
  * Whether to allow password resets ("enter some identifying data, and we'll send an email
  * with a temporary password you can use to get back into the account") identified by
  * various bits of data.  Setting all of these to false (or the whole variable to false)
@@ -3364,6 +3367,13 @@ $wgEmailConfirmToEdit = false;
 
 /**
  * Permission keys given to users in each group.
+ * This is an array where the keys are all groups and each value is either:
+ *    a) An array of the format (right => boolean)
+ *    b) An array of the format (right => namespace => boolean)
+ *
+ * The second format is used to support per-namespace permissions.
+ * Note that this feature does not fully work for all permission types.
+ *
  * All users are implicitly in the '*' group including anonymous visitors;
  * logged-in users are all implicitly in the 'user' group. These will be
  * combined with the permissions of all groups that a given user is listed
@@ -3374,14 +3384,10 @@ $wgEmailConfirmToEdit = false;
  * unable to perform certain essential tasks or access new functionality
  * when new permissions are introduced and default grants established.
  *
- * If set to an array instead of a boolean, it is assumed that the array is in
- * NS => bool form in order to support per-namespace permissions. Note that
- * this feature does not fully work for all permission types.
- *
  * Functionality to make pages inaccessible has not been extensively tested
  * for security. Use at your own risk!
  *
- * This replaces wgWhitelistAccount and wgWhitelistEdit
+ * This replaces $wgWhitelistAccount and $wgWhitelistEdit
  */
 $wgGroupPermissions = array();
 
@@ -3805,9 +3811,9 @@ $wgPutIPinRC = true;
 
 /**
  * Integer defining default number of entries to show on
- * Special:Whatlinkshere
+ * special pages which are query-pages such as Special:Whatlinkshere.
  */
-$wgWhatlinkshereLimit = 50;
+$wgQueryPageDefaultLimit  = 50;
 
 /**
  * Limit password attempts to X attempts per Y seconds per IP per account.
@@ -4317,6 +4323,13 @@ $wgSitemapNamespaces = false;
  */
 $wgSitemapNamespacesPriorities = false;
 
+/**
+ * If true, searches for IP addresses will be redirected to that IP's
+ * contributions page. E.g. searching for "1.2.3.4" will redirect to
+ * [[Special:Contributions/1.2.3.4]]
+ */
+$wgEnableSearchContributorsByIP = true;
+
 /** @} */ # end of search settings
 
 /************************************************************************//**
@@ -4409,7 +4422,7 @@ $wgReadOnly             = null;
  * Its contents will be shown to users as part of the read-only warning
  * message.
  *
- * Defaults to "{$wgUploadDirectory}/lock_yBgMBwiR".
+ * Will default to "{$wgUploadDirectory}/lock_yBgMBwiR" in Setup.php
  */
 $wgReadOnlyFile         = false;
 
@@ -4543,9 +4556,9 @@ $wgFeedClasses = array(
 $wgAdvertisedFeedTypes = array( 'atom' );
 
 /** Show watching users in recent changes, watchlist and page history views */
-$wgRCShowWatchingUsers 				= false; # UPO
+$wgRCShowWatchingUsers				= false; # UPO
 /** Show watching users in Page views */
-$wgPageShowWatchingUsers 			= false;
+$wgPageShowWatchingUsers			= false;
 /** Show the amount of changed characters in recent changes */
 $wgRCShowChangedSize				= true;
 
@@ -4559,7 +4572,7 @@ $wgRCChangedSizeThreshold			= 500;
 /**
  * Show "Updated (since my last visit)" marker in RC view, watchlist and history
  * view for watched pages with new changes */
-$wgShowUpdatedMarker 				= true;
+$wgShowUpdatedMarker				= true;
 
 /**
  * Disable links to talk pages of anonymous users (IPs) in listings on special
@@ -4780,13 +4793,13 @@ $wgAutoloadClasses = array();
  *
  * <code>
  * $wgExtensionCredits[$type][] = array(
- * 	'name' => 'Example extension',
- *	'version' => 1.9,
- *	'path' => __FILE__,
- *	'author' => 'Foo Barstein',
- *	'url' => 'http://wwww.example.com/Example%20Extension/',
- *	'description' => 'An example extension',
- *	'descriptionmsg' => 'exampleextension-desc',
+ *     'name' => 'Example extension',
+ *     'version' => 1.9,
+ *     'path' => __FILE__,
+ *     'author' => 'Foo Barstein',
+ *     'url' => 'http://wwww.example.com/Example%20Extension/',
+ *     'description' => 'An example extension',
+ *     'descriptionmsg' => 'exampleextension-desc',
  * );
  * </code>
  *
@@ -4827,12 +4840,6 @@ $wgJobClasses = array(
 	'fixDoubleRedirect' => 'DoubleRedirectJob',
 	'uploadFromUrl' => 'UploadFromUrlJob',
 );
-
-/**
- * Extensions of "thumbnails" that are very expensive to regenerate and should be
- * excluded from normal action=purge thumbnail removal.
- */
-$wgExcludeFromThumbnailPurge = array();
 
 /**
 
@@ -5241,9 +5248,11 @@ $wgMaxRedirectLinksRetrieved = 500;
 $wgActions = array(
 	'credits' => true,
 	'deletetrackback' => true,
+	'history' => true,
 	'info' => true,
 	'markpatrolled' => true,
 	'purge' => true,
+	'raw' => true,
 	'revert' => true,
 	'revisiondelete' => true,
 	'rollback' => true,

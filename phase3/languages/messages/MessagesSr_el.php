@@ -572,6 +572,7 @@ U tom slučaju, prijavite grešku [[Special:ListUsers/sysop|administratoru]] uz 
 'badarticleerror'      => 'Ova akcija ne može biti izvršena na ovoj stranici.',
 'cannotdelete'         => 'Ova strana ili fajl nije mogla biti obrisana: "$1".
 Moguće je da ju je neko već obrisao.',
+'cannotdelete-title'   => 'Ne mogu da obrišem stranicu „$1“',
 'badtitle'             => 'Loš naslov',
 'badtitletext'         => 'Zahtevani naslov stranice je bio neispravan, prazan ili
 neispravno povezan međujezički ili interviki naslov. Možda sadrži jedan ili više karaktera koji ne mogu da se upotrebljavaju u naslovima.',
@@ -582,15 +583,16 @@ neispravno povezan međujezički ili interviki naslov. Možda sadrži jedan ili 
 Funkcija: $1<br />
 Pretraga: $2',
 'viewsource'           => 'pogledaj kod',
-'viewsourcefor'        => 'za $1',
+'viewsource-title'     => 'Prikaz izvora stranice $1',
 'actionthrottled'      => 'Akcija je usporena',
 'actionthrottledtext'  => 'U cilju borbe protiv spama, niste u mogućnosti da učinite to više puta u kratkom vremenu, a upravo ste prešli to ograničenje. Pokušajte ponovo za par minuta.',
 'protectedpagetext'    => 'Ova stranica je zaključana kako se ne bi vršile izmene na njoj.',
 'viewsourcetext'       => 'Možete da pregledate i kopirate sadržaj ove stranice:',
+'viewyourtext'         => "Možete da pogledate i umnožite izvor '''vaših izmena''' na ovoj stranici:",
 'protectedinterface'   => 'Ova stranica pruža tekst interfejsa za softver i zaključana je kako bi se sprečila zloupotreba.',
 'editinginterface'     => "'''Upozorenje:''' Uređujete stranu koja se koristi da pruži tekst za interfejs ovog softvera.
 Izmene na ovoj strani će uticati na prikaz izgleda korisničkog interfejsa za sve korisnike.
-Za prevode, posetite [http://translatewiki.net/wiki/Main_Page?setlang=sr_ec translatewiki.net], projekat lokalizacije MedijaViki softvera.",
+Za prevode, posetite [//translatewiki.net/wiki/Main_Page?setlang=sr_ec translatewiki.net], projekat lokalizacije MedijaViki softvera.",
 'sqlhidden'            => '(SQL pretraga sakrivena)',
 'cascadeprotected'     => 'Ova stranica je zaključana i njeno uređivanje je onemogućeno jer je uključena u sadržaj {{PLURAL:$1|sledeće stranice|sledećih stranica}}, koji je zaštićen sa opcijom „prenosive“ zaštite:
 $2',
@@ -838,9 +840,6 @@ u vašim [[Special:Preferences|korisničkim podešavanjima]] i ukoliko vam bloka
 IP adresa koja je blokirana je $3, a ID vaše blokade je $5.
 Molimo vas navedite ovaj ID broj prilikom pravljenja bilo kakvih upita.',
 'blockednoreason'                  => 'nije dat razlog',
-'blockedoriginalsource'            => "Izvor '''$1''' je prikazan ispod:",
-'blockededitsource'                => "Tekst '''vaših izmena''' za '''$1''' je prikazan ispod:",
-'whitelistedittitle'               => 'Obavezno je prijavljivanje za uređivanje',
 'whitelistedittext'                => 'Za uređivanje stranice je potrebno da budete $1.',
 'confirmedittext'                  => 'Morate potvrditi svoju e-adresu pre uređivanja stranica.
 Postavite i potvrdite je putem [[Special:Preferences|podešavanja]].',
@@ -1495,6 +1494,7 @@ Ova informacija će biti javna.',
 'action-suppressionlog'       => 'pregledaj ovu privatnu istoriju',
 'action-block'                => 'blokiraj dalje izmene ovog korisnika',
 'action-protect'              => 'menjanje nivoa zaštite za ovu stranu',
+'action-rollback'             => 'brzo vraćanje izmena poslednjeg korisnika koji je menjao određenu stranicu',
 'action-import'               => 'uvezi ovu stranu sa druge Viki',
 'action-importupload'         => 'uvezi ovu stranu preko poslatog fajla',
 'action-patrol'               => 'označavanje tuđih izmena kao patroliranih',
@@ -1704,7 +1704,7 @@ Ona se ne može ispravno proveriti u vezi sa sigurnošću.',
 'img-auth-nopathinfo'       => 'Nedostaje PATH_INFO.
 Vaš server nije podešen da prosleđuje ovakve podatke.
 Možda je zasnovan na CGI-ju koji ne podržava img_auth.
-Pogledajte http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+Pogledajte [//www.mediawiki.org/wiki/Manual:Image_Authorization?uselang=sr-el odobravanje slika.]',
 'img-auth-notindir'         => 'Zahtevana putanja nije u podešenoj fascikli za slanje.',
 'img-auth-badtitle'         => 'Stvaranje ispravnog naslova za „$1“ nije uspelo.',
 'img-auth-nologinnWL'       => 'Niste prijavljeni i „$1“ nije na spisku dozvoljenih.',
@@ -1803,23 +1803,24 @@ Opis na [$2 stranici datoteke] je prikazan ispod.',
 'filerevert-badversion'     => 'Ne postoji prethodna lokalna verzija fajla sa unesenim vremenom.',
 
 # File deletion
-'filedelete'                  => 'Obriši $1',
-'filedelete-legend'           => 'Obriši fajl',
-'filedelete-intro'            => "Na putu ste da obrišete fajl '''[[Media:$1|$1]]''' zajedno sa njegovom istorijom.",
-'filedelete-intro-old'        => "Brišete verziju fajla '''[[Media:$1|$1]]''' od [$4 $3, $2].",
-'filedelete-comment'          => 'Razlog:',
-'filedelete-submit'           => 'Obriši',
-'filedelete-success'          => "'''$1''' je obrisan.",
-'filedelete-success-old'      => "Verzija fajla '''[[Media:$1|$1]]''' od $3, $2 je obrisana.",
-'filedelete-nofile'           => "'''$1''' ne postoji.",
-'filedelete-nofile-old'       => "Ne postoji skladištena verzija fajla '''$1''' sa datim osobinama.",
-'filedelete-otherreason'      => 'Drugi/dodatni razlog:',
-'filedelete-reason-otherlist' => 'Drugi razlog',
-'filedelete-reason-dropdown'  => '*Najčešći razlozi brisanja
+'filedelete'                   => 'Obriši $1',
+'filedelete-legend'            => 'Obriši fajl',
+'filedelete-intro'             => "Na putu ste da obrišete fajl '''[[Media:$1|$1]]''' zajedno sa njegovom istorijom.",
+'filedelete-intro-old'         => "Brišete verziju fajla '''[[Media:$1|$1]]''' od [$4 $3, $2].",
+'filedelete-comment'           => 'Razlog:',
+'filedelete-submit'            => 'Obriši',
+'filedelete-success'           => "'''$1''' je obrisan.",
+'filedelete-success-old'       => "Verzija fajla '''[[Media:$1|$1]]''' od $3, $2 je obrisana.",
+'filedelete-nofile'            => "'''$1''' ne postoji.",
+'filedelete-nofile-old'        => "Ne postoji skladištena verzija fajla '''$1''' sa datim osobinama.",
+'filedelete-otherreason'       => 'Drugi/dodatni razlog:',
+'filedelete-reason-otherlist'  => 'Drugi razlog',
+'filedelete-reason-dropdown'   => '*Najčešći razlozi brisanja
 ** Kršenje autorskih prava
 ** Duplikat',
-'filedelete-edit-reasonlist'  => 'Uredi razloge za brisanje',
-'filedelete-maintenance'      => 'Brisanje i vraćanje fajlova je temporalno onemogućeno zbog održavanja.',
+'filedelete-edit-reasonlist'   => 'Uredi razloge za brisanje',
+'filedelete-maintenance'       => 'Brisanje i vraćanje fajlova je temporalno onemogućeno zbog održavanja.',
+'filedelete-maintenance-title' => 'Ne mogu da obrišem datoteku',
 
 # MIME search
 'mimesearch'         => 'MIME pretraga',
@@ -1868,7 +1869,7 @@ Ne zaboravite da proverite ostale poveznice ka šablonima pre nego što ih obri�
 'statistics-users-active-desc' => 'Korisnici koji su izvršili makar jednu akciju tokom {{PLURAL:$1|zadnjeg dana|$1 zadnjih dana}}',
 'statistics-mostpopular'       => 'Najposećenije stranice',
 
-'disambiguations'      => 'Stranice za višeznačne odrednice',
+'disambiguations'      => 'Stranice do višeznačnih odrednica',
 'disambiguationspage'  => '{{ns:template}}:Višeznačna odrednica',
 'disambiguations-text' => "Sledeće stranice imaju veze ka '''višeznačnim odrednicama'''. Potrebno je da upućuju na odgovarajući članak.
 
@@ -1941,7 +1942,7 @@ Svaki red sadrži veze prema prvom i drugom preusmerenju, kao i ciljanu stranicu
 'listusers-editsonly'     => 'Prikaži korisnike koji imaju izmene',
 'listusers-creationsort'  => 'Sortiraj po datumu pravljenja',
 'usereditcount'           => '$1 {{PLURAL:$1|izmena|izmena}}',
-'usercreated'             => 'Napravljeno $1, u $2',
+'usercreated'             => '{{GENDER:$3|je napravio|je napravila|je napravio}} dana $1 u $2',
 'newpages'                => 'Nove stranice',
 'newpages-username'       => 'Korisničko ime:',
 'ancientpages'            => 'Najstariji članci',
@@ -2009,12 +2010,13 @@ Takođe pogledajte [[Special:WantedCategories|tražene kategorije]].',
 'sp-deletedcontributions-contribs' => 'doprinosi',
 
 # Special:LinkSearch
-'linksearch'       => 'Veb linkovi',
+'linksearch'       => 'Pretraga spoljnih veza',
 'linksearch-pat'   => 'Obrazac pretrage:',
 'linksearch-ns'    => 'Imenski prostor:',
 'linksearch-ok'    => 'Pretraga',
-'linksearch-text'  => 'Džokeri poput „*.wikipedia.org“ mogu biti korišćeni.<br />
-Podržani protokoli: <tt>$1</tt>',
+'linksearch-text'  => 'Mogu se koristiti džokeri poput „*.wikipedia.org“.<br />
+Potreban je najviši domen, kao „*.org“.<br />
+Podržani protokoli: <tt>$1</tt> (ne stavljajte u pretragu)',
 'linksearch-line'  => 'stranica $1 je povezana sa stranice $2',
 'linksearch-error' => 'Džokeri se mogu pojaviti samo na početku imena hosta.',
 
@@ -2121,7 +2123,7 @@ Ukoliko budete želeli da uklonite stranicu sa spiska nadgledanja, kliknite opet
 'watchmethod-list'     => 'proveravam ima li skorašnjih izmena u nadgledanim stranicama',
 'watchlistcontains'    => 'Vaš spisak nadgledanja sadrži $1 {{PLURAL:$1|stranicu|stranice|stranica}}.',
 'iteminvalidname'      => "Problem sa stavkom '$1', neispravno ime...",
-'wlnote'               => "Ispod {{PLURAL:$1|je poslednja izmena|su poslednje '''$1''' izmene|je poslednjih '''$1''' izmena}} načinjenih {{PLURAL:$2|prethodni sat|u poslednja '''$2''' sata|u poslednjih '''$2''' sati}}.",
+'wlnote'               => "Ispod {{PLURAL:$1|je poslednja izmena|su poslednje '''$1''' izmene|je poslednjih '''$1''' izmena}} u {{PLURAL:$2|prethodnom satu|prethodna '''$2''' sata|prethodnih '''$2''' sati}}, zaključno sa $3, $4.",
 'wlshowlast'           => 'Prikaži poslednjih $1 sati $2 dana $3',
 'watchlist-options'    => 'Podešavanja spiska nadgledanja',
 
@@ -2237,7 +2239,10 @@ Pogledajte [[Special:ProtectedPages|spisak zaštićenih stranica]] za više deta
 'unprotectedarticle'          => '{{GENDER:|je uklonio|je uklonila|je uklonio}} zaštitu sa stranice „[[$1]]“',
 'movedarticleprotection'      => 'premestio podešavanja zaštite sa "[[$2]]" na "[[$1]]"',
 'protect-title'               => 'Nivo zaštite za „$1”',
+'protect-title-notallowed'    => 'Pregled stepena zaštite za „$1“',
 'prot_1movedto2'              => 'je promenio ime članku [[$1]] u [[$2]]',
+'protect-badnamespace-title'  => 'Nezaštitljiv imenski prostor',
+'protect-badnamespace-text'   => 'Stranice u ovom imenskom prostoru se ne mogu zaštititi.',
 'protect-legend'              => 'Potvrdite zaštitu',
 'protectcomment'              => 'Razlog:',
 'protectexpiry'               => 'Ističe:',
@@ -2325,6 +2330,7 @@ U ovakvim slučajevima morate skinuti oznaku sa ili ponovo prikazati najnoviju o
 
 Pogledajte [[Special:Log/delete|istoriju brisanja]] za zapise o skorašnjim brisanjima i vraćanjima.",
 'undelete-header'              => 'Vidi [[Special:Log/delete|istoriju brisanja]] za nedavno obrisane stranice.',
+'undelete-search-title'        => 'Pretraga obrisanih stranica',
 'undelete-search-box'          => 'Pretraži obrisane stranice',
 'undelete-search-prefix'       => 'Prikaži stranice koje počinju sa:',
 'undelete-search-submit'       => 'Pretraga',
@@ -2334,6 +2340,7 @@ Pogledajte [[Special:Log/delete|istoriju brisanja]] za zapise o skorašnjim bris
 'undelete-cleanup-error'       => 'Greška prilikom brisanja nekorišćenog fajla iz arhive "$1".',
 'undelete-missing-filearchive' => 'Nije moguće vratiti arhivu fajlova ID $1 zato što nije u bazi.
 Možda je već bila vraćena.',
+'undelete-error'               => 'Došlo je do greške pri vraćanju obrisane stranice',
 'undelete-error-short'         => 'Greška pri vraćanju fajla: $1',
 'undelete-error-long'          => 'Desila se greška pri vraćanju fajla:
 
@@ -2409,7 +2416,6 @@ Ovo bi trebalo da bude urađeno samo da bi se sprečio vandalizam, i u skladu
 sa [[{{MediaWiki:Policy-url}}|politikom]].
 Unesite konkretan razlog ispod (na primer, navodeći koje
 stranice su vandalizovane).',
-'ipaddress'                       => 'IP adresa',
 'ipadressorusername'              => 'IP adresa ili korisničko ime',
 'ipbexpiry'                       => 'Trajanje',
 'ipbreason'                       => 'Razlog:',
@@ -2629,7 +2635,7 @@ stranica za razgovor nije mogla biti premeštena jer takva već postoji na novom
 
 Ciljani članak "[[:$1]]" već postoji. Da li želite da ga obrišete da biste napravili mesto za premeštanje?',
 'delete_and_move_confirm'      => 'Da, obriši stranicu',
-'delete_and_move_reason'       => 'Obrisano kako bi se napravilo mesto za premeštanje',
+'delete_and_move_reason'       => 'Obrisano da se oslobodi mesto za premeštanje iz „[[$1]]“',
 'selfmove'                     => 'Izvorni i ciljani naziv su isti; stranica ne može da se premesti preko same sebe.',
 'immobile-source-namespace'    => 'Strane iz imenskog prostora "$1" nisu mogle biti premeštene',
 'immobile-target-namespace'    => 'Ne može da premesti stranice u imenski prostor „$1”',
@@ -2662,6 +2668,7 @@ U drugom slučaju, možete koristiti i vezu, na primer [[{{#Special:Export}}/{{M
 'exportcuronly'     => 'Uključi samo trenutnu reviziju, ne celu istoriju',
 'exportnohistory'   => "----
 '''Napomena:''' izvoženje pune istorije strana preko ovog formulara je onemogućeno zbog serverskih razloga.",
+'exportlistauthors' => 'Uključi celokupan spisak doprinosilaca za svaku stranicu',
 'export-submit'     => 'Izvoz',
 'export-addcattext' => 'Dodaj stranice iz kategorije:',
 'export-addcat'     => 'Dodaj',
@@ -2677,7 +2684,7 @@ U drugom slučaju, možete koristiti i vezu, na primer [[{{#Special:Export}}/{{M
 'allmessagesdefault'            => 'Standardni tekst',
 'allmessagescurrent'            => 'Trenutni tekst',
 'allmessagestext'               => 'Ovo je spisak sistemskih poruka koje su u MedijaViki imenskom prostoru.
-Posetite [http://translatewiki.net translatewiki.net] ukoliko želite da pomognete u lokalizaciji.',
+Posetite [//translatewiki.net translatewiki.net] ukoliko želite da pomognete u lokalizaciji.',
 'allmessagesnotsupportedDB'     => "Ova stranica ne može biti upotrebljena zato što je '''\$wgUseDatabaseMessages''' isključen.",
 'allmessages-filter-legend'     => 'Filter',
 'allmessages-filter'            => 'Filtriraj po stanju prilagođenosti:',
@@ -3351,7 +3358,7 @@ Sve druge veze u istoj liniji se smatraju izuzecima tj. članci u kojima se slik
 
 # External editor support
 'edit-externally'      => 'Izmenite ovaj fajl koristeći spoljašnju aplikaciju',
-'edit-externally-help' => '(Pogledajte [http://www.mediawiki.org/wiki/Manual:External_editors uputstvo za podešavanje] za više informacija)',
+'edit-externally-help' => '(Pogledajte [//www.mediawiki.org/wiki/Manual:External_editors uputstvo za podešavanje] za više informacija)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'sve',
@@ -3510,7 +3517,7 @@ Takođe, možete [[Special:EditWatchlist|koristiti standardan uređivač spiska]
 'watchlisttools-raw'  => 'Izmeni sirov spisak nadgledanja',
 
 # Signatures
-'signature' => '[[{{ns:user}}:$1|$2]] <sup>([[{{ns:user_talk}}:$1|razgovor]])</sup>',
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|razgovor]])',
 
 # Core parser functions
 'unknown_extension_tag' => 'Nepoznati tag za ekstenziju: "$1".',
@@ -3534,13 +3541,13 @@ Takođe, možete [[Special:EditWatchlist|koristiti standardan uređivač spiska]
 'version-hook-subscribedby'     => 'prijavljeni',
 'version-version'               => '(Verzija $1)',
 'version-license'               => 'Licenca',
-'version-poweredby-credits'     => "Ovaj viki pokreće '''[http://www.mediawiki.org/ Medijaviki]''', autorska prava © 2001-$1 $2.",
+'version-poweredby-credits'     => "Ovaj viki pokreće '''[//www.mediawiki.org/ Medijaviki]''', autorska prava © 2001-$1 $2.",
 'version-poweredby-others'      => 'ostali',
 'version-license-info'          => 'Medijaviki je slobodan softver; možete ga raspodeljivati i menjati pod uslovima GNU-ove opšte javne licence (OJL) koju je objavila Zadužbina za slobodan softver, bilo da je u pitanju drugo ili novije izdanje licence.
 
 Medijaviki se raspodeljuje u nadi da će biti koristan, ali BEZ IKAKVE GARANCIJE; čak i bez implicitne garancije o PRODAJI ili POGODNOSTI ZA ODREĐENE NAMENE. Pogledajte GNU-ovu opštu javnu licencu za više detalja.
 
-Trebalo bi da ste primili [{{SERVER}}{{SCRIPTPATH}}/COPYING primerak GNU-ove opšte javne licence] zajedno s ovim programom. Ako niste, pišite Zadužbini za slobodan softver, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA ili [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html pročitajte na mreži].',
+Trebalo bi da ste primili [{{SERVER}}{{SCRIPTPATH}}/COPYING primerak GNU-ove opšte javne licence] zajedno s ovim programom. Ako niste, pišite Zadužbini za slobodan softver, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA ili [//www.gnu.org/licenses/old-licenses/gpl-2.0.html pročitajte na mreži].',
 'version-software'              => 'Instaliran softver',
 'version-software-product'      => 'Proizvod',
 'version-software-version'      => 'Verzija',

@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * A query action to enumerate revisions of a given page, or show top revisions of multiple pages.
  * Various pieces of information may be shown - flags, comments, and the actual wiki markup of the rev.
@@ -84,8 +79,8 @@ class ApiQueryRevisions extends ApiQueryBase {
 		if ( !$wgUser->isAllowed( 'rollback' ) ) {
 			return false;
 		}
-		return $wgUser->editToken( array( $title->getPrefixedText(),
-						$rev->getUserText() ) );
+		return $wgUser->getEditToken(
+			array( $title->getPrefixedText(), $rev->getUserText() ) );
 	}
 
 	public function execute() {
@@ -493,11 +488,13 @@ class ApiQueryRevisions extends ApiQueryBase {
 			static $n = 0; // Number of uncached diffs we've had
 			if ( $n < $wgAPIMaxUncachedDiffs ) {
 				$vals['diff'] = array();
+				$context = new DerivativeContext( $this->getContext() );
+				$context->setTitle( $title );
 				if ( !is_null( $this->difftotext ) ) {
-					$engine = new DifferenceEngine( $title );
+					$engine = new DifferenceEngine( $context );
 					$engine->setText( $text, $this->difftotext );
 				} else {
-					$engine = new DifferenceEngine( $title, $revision->getID(), $this->diffto );
+					$engine = new DifferenceEngine( $context, $revision->getID(), $this->diffto );
 					$vals['diff']['from'] = $engine->getOldid();
 					$vals['diff']['to'] = $engine->getNewid();
 				}
@@ -609,9 +606,9 @@ class ApiQueryRevisions extends ApiQueryBase {
 			'endid' => 'Stop revision enumeration on this revid (enum)',
 			'start' => 'From which revision timestamp to start enumeration (enum)',
 			'end' => 'Enumerate up to this timestamp (enum)',
-			'dir' => $this->getDirectionDescription( $p ),
-			'user' => 'Only include revisions made by user',
-			'excludeuser' => 'Exclude revisions made by user',
+			'dir' => $this->getDirectionDescription( $p, ' (enum)' ),
+			'user' => 'Only include revisions made by user (enum)',
+			'excludeuser' => 'Exclude revisions made by user (enum)',
 			'expandtemplates' => 'Expand templates in revision content',
 			'generatexml' => 'Generate XML parse tree for revision content',
 			'parse' => 'Parse revision content. For performance reasons if this option is used, rvlimit is enforced to 1.',

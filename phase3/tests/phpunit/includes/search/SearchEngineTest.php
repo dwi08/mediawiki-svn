@@ -12,7 +12,7 @@ class SearchEngineTest extends MediaWikiTestCase {
 		unset( $this->search );
 	}
 
-	/*
+	/**
 	 * Checks for database type & version.
 	 * Will skip current test if DB does not support search.
 	 */
@@ -85,7 +85,6 @@ class SearchEngineTest extends MediaWikiTestCase {
 	 * @param $n Integer: unused
 	 */
 	function insertPage( $pageName, $text, $ns ) {
-		$dbw = $this->db;
 		$title = Title::newFromText( $pageName );
 
 		$user = User::newFromName( 'WikiSysop' );

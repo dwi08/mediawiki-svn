@@ -334,8 +334,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Vis antall overvåkende brukere',
 'tog-oldsig'                  => 'Nåværende signatur:',
 'tog-fancysig'                => 'Signatur som wikitekst uten automatisk lenke',
-'tog-externaleditor'          => 'Bruk ekstern behandler som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin. [http://www.mediawiki.org/wiki/Manual:External_editors Mer informasjon.])',
-'tog-externaldiff'            => 'Bruk ekstern differanse som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin. [http://www.mediawiki.org/wiki/Manual:External_editors Mer informasjon.])',
+'tog-externaleditor'          => 'Bruk ekstern behandler som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin. [//www.mediawiki.org/wiki/Manual:External_editors Mer informasjon.])',
+'tog-externaldiff'            => 'Bruk ekstern differanse som standard (kun for viderekomne, krever spesielle innstillinger på din datamaskin. [//www.mediawiki.org/wiki/Manual:External_editors Mer informasjon.])',
 'tog-showjumplinks'           => 'Slå på «gå til»-lenker',
 'tog-uselivepreview'          => 'Bruk levende forhåndsvisning (eksperimentell JavaScript)',
 'tog-forceeditsummary'        => 'Advar meg når jeg ikke gir noen redigeringsforklaring',
@@ -616,7 +616,7 @@ Det kan også være en bug i {{SITENAME}}.',
 
 # General errors
 'error'                => 'Feil',
-'databaseerror'        => 'databasefeil',
+'databaseerror'        => 'Databasefeil',
 'dberrortext'          => 'Det har oppstått en syntaksfeil i en databaseforespørsel.
 Dette kan tyde på en feil i programvaren.
 Forrige databaseforespørsel var:
@@ -657,6 +657,7 @@ Vennligst rapporter dette til en [[Special:ListUsers/sysop|administrator]], oppg
 'formerror'            => 'Feil: klarte ikke å sende skjema',
 'badarticleerror'      => 'Handlingen kan ikke utføres på denne siden.',
 'cannotdelete'         => 'Kunne ikke slette filen «$1». Den kan ha blitt slettet av noen andre.',
+'cannotdelete-title'   => 'Kan ikke slette siden «$1»',
 'badtitle'             => 'Ugyldig tittel',
 'badtitletext'         => 'Den ønskede tittelen var ugyldig, tom eller feilaktig lenket fra en annen wiki.
 Det kan inneholder en eller flere tegn som ikke kan brukes i titler.',
@@ -667,13 +668,14 @@ Det kan inneholder en eller flere tegn som ikke kan brukes i titler.',
 Funksjon: $1<br />
 Spørring: $2',
 'viewsource'           => 'Vis kildetekst',
-'viewsourcefor'        => 'for $1',
+'viewsource-title'     => 'Vis kilden til $1',
 'actionthrottled'      => 'Handlingsgrense overskredet',
 'actionthrottledtext'  => 'For å beskytte mot spam, kan du ikke utføre denne handlingen for mange ganger i løpet av et kort tidssrom, og du har overskredet denne grensen. Prøv igjen om noen minutter.',
 'protectedpagetext'    => 'Denne siden har blitt låst for redigeringer.',
 'viewsourcetext'       => 'Du kan se og kopiere kilden til denne siden:',
+'viewyourtext'         => "Du kan se og kopiere kilden til '''dine endringer''' på denne siden:",
 'protectedinterface'   => 'Denne siden viser brukergrensesnittet for programvaren, og er låst for å hindre misbruk.',
-'editinginterface'     => "'''Advarsel:''' Du redigerer en side som brukes i grensesnittet for programvaren. Endringer på denne siden vil påvirke hvordan grensesnittet vil se ut. For oversettelser er det best om du bruker [http://translatewiki.net/wiki/Main_Page?setlang=no translatewiki.net], prosjektet for oversettelse av MediaWiki.",
+'editinginterface'     => "'''Advarsel:''' Du redigerer en side som brukes i grensesnittet for programvaren. Endringer på denne siden vil påvirke hvordan grensesnittet vil se ut. For oversettelser er det best om du bruker [//translatewiki.net/wiki/Main_Page?setlang=no translatewiki.net], prosjektet for oversettelse av MediaWiki.",
 'sqlhidden'            => '(SQL-spørring skjult)',
 'cascadeprotected'     => 'Denne siden er låst for redigering fordi den inkluderes på følgende sider som har dypbeskyttelse slått på:<!--{{PLURAL:$1}}-->
 $2',
@@ -923,9 +925,6 @@ Merk at du ikke kan bruke «E-post til denne brukeren»-funksjonen med mindre du
 Din IP-adresse er $3, og blokkerings-ID-en er #$5.
 Vennligst ta med all denne informasjonen ved henvendelser.",
 'blockednoreason'                  => 'ingen grunn gitt',
-'blockedoriginalsource'            => "Kildekoden til '''$1''' vises nedenfor:",
-'blockededitsource'                => "Kildekoden '''dine endringer''' på '''$1''' vises nedenfor:",
-'whitelistedittitle'               => 'Du må logge inn for å redigere',
 'whitelistedittext'                => 'Du må $1 for å redigere artikler.',
 'confirmedittext'                  => 'Du må bekrefte e-postadressen din før du kan redigere sider. Vennligst oppgi og bekreft e-postadressen din via [[Special:Preferences|innstillingene dine]].',
 'nosuchsectiontitle'               => 'Finner ikke avsnittet',
@@ -1112,29 +1111,29 @@ Forklaring: '''({{int:cur}})''' = forskjell fra nåværende revisjon, '''({{int:
 'rev-deleted-user-contribs'   => '[brukernavn eller IP-adresse fjernet – redigeringen vises ikke blant bidragene]',
 'rev-deleted-text-permission' => "Denne revisjonen har blitt '''slettet'''.
 Det kan være detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} slettingsloggen].",
-'rev-deleted-text-unhide'     => "Denne sideversjonen har blitt '''slettet'''.
-Det kan være detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} slettingsloggen].
-Som administrator kan du fortsatt [$1 se revisjonen] om du ønsker å fortsette.",
-'rev-suppressed-text-unhide'  => "Denne revisjonen har blitt '''unndratt'''.
-Det kan være mer informasjon i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} unndragelseslogg].
-Som administrator kan du fortsatt [$1 se revisjonen] om du ønsker å fortsette.",
-'rev-deleted-text-view'       => "Denne sideversjonen har blitt '''slettet'''.
-Som administrator kan du se den. Det kan finnes flere detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} slettingsloggen].",
-'rev-suppressed-text-view'    => "Denne revisjonen har blitt '''unndratt'''.
-Som administrator kan du se den; det kan være mer informasjon i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} unndragelsesloggen].",
+'rev-deleted-text-unhide'     => "Denne siderevisjonen har blitt '''slettet'''.
+Se etter detaljer i slettingsloggen: [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}}].
+Som administrator kan du fortsatt [$1 se revisjonen] om du ønsker det.",
+'rev-suppressed-text-unhide'  => "Denne siderevisjonen har blitt '''skjult'''.
+Informasjon om dette kan finnes i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} skjulingsloggen].
+Som administrator kan du fortsatt [$1 se revisjonen] om du ønsker det.",
+'rev-deleted-text-view'       => "Denne siderevisjonen har blitt '''slettet'''.
+Som administrator kan du fortsatt se den. Detaljer finnes i slettingsloggen: [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}}].",
+'rev-suppressed-text-view'    => "!Denne siderevisjonen har blitt '''skjult'''.
+Som administrator kan du se den; detaljer kan finnes i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} skjulingsloggen].",
 'rev-deleted-no-diff'         => "Du kan ikke vise forskjellen fordi en av versjonene har blitt '''slettet'''.
 Det kan finnes flere detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} slettingsloggen].",
 'rev-suppressed-no-diff'      => "Du kanne ikke se revisjonsforskjellen fordi en av revisjonene har blitt '''slettet'''.",
-'rev-deleted-unhide-diff'     => "Én av versjonene i denne forskjellen har blitt '''slettet'''.
-Det kan finnes flere detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} slettingsloggen].
-Som administrator kan du fortsatt [$1 se forskjellen] om du ønsker å fortsette.",
-'rev-suppressed-unhide-diff'  => "En av sideversjonene i denne diffen har blitt '''skjul'''.
+'rev-deleted-unhide-diff'     => "Én av revisjonene i denne diffen har blitt '''slettet'''.
+Det finnes flere detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} slettingsloggen].
+Som administrator kan du fortsatt [$1 se diffen] om du ønsker å gå videre.",
+'rev-suppressed-unhide-diff'  => "En av siderevisjonene i denne diffen har blitt '''skjult'''.
 Det kan være detaljer i [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} skjulingsloggen].
-Som administrator kan du fortsatt [$1 se diffen] om du ønsker det.",
+Som administrator kan du fortsatt [$1 se diffen] om du ønsker å gå videre.",
 'rev-deleted-diff-view'       => "En av revisjonene i denne diffen har blitt '''slettet'''.
-Som administrator kan du se diffen; det kan være detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} sletteloggen].",
+Som administrator kan du se diffen; det kan finnes detaljer i [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} sletteloggen].",
 'rev-suppressed-diff-view'    => "En av revisjonene i denne diffen har blitt '''skjult'''.
-Som administrator kan du se denne diffen; det kan være detaljer i [{{fullurl:{{#Special:Log}}/suppcess|page={{FULLPAGENAMEE}}}} skjulingsloggen].",
+Som administrator kan du se denne diffen; det kan finnes detaljer i [{{fullurl:{{#Special:Log}}/suppcess|page={{FULLPAGENAMEE}}}} skjulingsloggen].",
 'rev-delundel'                => 'vis/skjul',
 'rev-showdeleted'             => 'vis',
 'revisiondelete'              => 'Slett/gjenopprett revisjoner',
@@ -1152,9 +1151,10 @@ Som administrator kan du se denne diffen; det kan være detaljer i [{{fullurl:{{
 'revdelete-text'              => "'''Slettede versjoner og oppføringer vil fortsatt vises i sidehistorikken og loggene, men deler av innholdet vil ikke lenger bli offentliggjort.'''
 Andre administratorer på {{SITENAME}} vil fortsatt kunne se det skjulte innholdet, og kan gjenopprette det, med mindre videre begrensninger blir gitt av sideoperatørene.",
 'revdelete-confirm'           => 'Bekreft at du ønsker å gjøre dette, at du forstår konsekvensene, og at du gjør det i samsvar med [[{{MediaWiki:Policy-url}}|retningslinjene]].',
-'revdelete-suppress-text'     => "Utelatelse bør '''kun''' brukes i følgende tilfeller:
-* Upassende personlige opplysninger
-*: ''hjemmeadresser og -telefonnummer, personnummer og lignende''",
+'revdelete-suppress-text'     => "Skjuling bør '''kun''' brukes i følgende tilfeller:
+* Mulig injurierende utsagn
+* Upassende personlige opplysninger, herunder
+*: ''privatadresser og -telefonnumre, fødselsnumre og lignende''",
 'revdelete-legend'            => 'Fastsett synlighetsbegrensninger',
 'revdelete-hide-text'         => 'Skjul revisjonstekst',
 'revdelete-hide-image'        => 'Skjul filinnhold',
@@ -1165,7 +1165,7 @@ Andre administratorer på {{SITENAME}} vil fortsatt kunne se det skjulte innhold
 'revdelete-radio-same'        => '(ikke endre)',
 'revdelete-radio-set'         => 'Ja',
 'revdelete-radio-unset'       => 'Nei',
-'revdelete-suppress'          => 'Fjern informasjon også fra administratorer',
+'revdelete-suppress'          => 'Skjul informasjon også fra administratorer',
 'revdelete-unsuppress'        => 'Fjern betingelser på gjenopprettede revisjoner',
 'revdelete-log'               => 'Årsak:',
 'revdelete-submit'            => 'Utfør på {{PLURAL:$1|valgt revisjon|valgte revisjoner}}',
@@ -1201,9 +1201,9 @@ Vennligst sjekk loggen.',
 'revdelete-offender'          => 'Forfatter av denne versjonen:',
 
 # Suppression log
-'suppressionlog'     => 'Sidefjerningslogg',
-'suppressionlogtext' => 'Nedenfor er en liste over sider og blokkeringer med innhold skjult fra administratorer.
-Se [[Special:IPBlockList|blokkeringslisten]] for oversikten over nåværende blokkeringer.',
+'suppressionlog'     => 'Sideskjulingslogg',
+'suppressionlogtext' => 'Under er en liste over sider som er slettet eller blokkert med innhold skjult fra administratorer.
+Se [[Special:BlockList|IP-blokkeringsliste]] for oversikt over aktuelle utelukkelser og blokkeringer.',
 
 # History merging
 'mergehistory'                     => 'Flett sidehistorikker',
@@ -1483,7 +1483,7 @@ Den kan maks inneholde $1 {{PLURAL:$1|tegn|tegn}}.',
 'grouppage-bot'           => '{{ns:project}}:Roboter',
 'grouppage-sysop'         => '{{ns:project}}:Administratorer',
 'grouppage-bureaucrat'    => '{{ns:project}}:Byråkrater',
-'grouppage-suppress'      => '{{ns:project}}:Sidefjerning',
+'grouppage-suppress'      => '{{ns:project}}:Historikkrydding',
 
 # Rights
 'right-read'                  => 'Se sider',
@@ -1545,7 +1545,7 @@ Den kan maks inneholde $1 {{PLURAL:$1|tegn|tegn}}.',
 'right-siteadmin'             => 'Låse og låse opp databasen',
 'right-override-export-depth' => 'Eksporter sider inkludert lenkede sider til en dypde på 5',
 'right-sendemail'             => 'Send e-post til andre brukere',
-'right-passwordreset'         => 'Tilbakestille en brukers passord ([[Special:PasswordReset|spesialside]])',
+'right-passwordreset'         => 'Vis e-poster over tilbakestilte passord',
 
 # User rights log
 'rightslog'                  => 'Brukerrettighetslogg',
@@ -1579,6 +1579,7 @@ Den kan maks inneholde $1 {{PLURAL:$1|tegn|tegn}}.',
 'action-suppressionlog'       => 'se denne private loggen',
 'action-block'                => 'blokkere denne brukeren fra å redigere',
 'action-protect'              => 'endre denne sidens beskyttelsesnivåer',
+'action-rollback'             => 'tilbakestill raskt endringene til den siste brukeren som redigerte en bestemt side',
 'action-import'               => 'importere denne siden fra en annen wiki',
 'action-importupload'         => 'importere denne siden fra en opplastet fil',
 'action-patrol'               => 'merke andre brukeres redigeringer som patruljert',
@@ -1673,6 +1674,7 @@ Se [[Special:NewFiles|galleriet over nye filer]] for en mer visuell visning',
 'ignorewarnings'              => 'Ignorer eventuelle advarsler',
 'minlength1'                  => 'Filnavn må være på minst én bokstav.',
 'illegalfilename'             => 'Filnavnet «$1» inneholder ugyldige tegn. Gi filen et nytt navn og prøv igjen.',
+'filename-toolong'            => 'Filnavn kan ikke overstige 240 bytes.',
 'badfilename'                 => 'Navnet på filen er blitt endret til «$1».',
 'filetype-mime-mismatch'      => 'Filendelsen «.$1» tilsvarer ikke MIME-typen som oppgis i filen ($2).',
 'filetype-badmime'            => 'Filer av typen «$1» kan ikke lastes opp.',
@@ -1796,10 +1798,10 @@ Den kan ikke sikkerhetskontrolleres.',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Ingen tilgang',
-'img-auth-nopathinfo'       => 'PATH_INFO mangler.
+'img-auth-nopathinfo'       => 'Manglende PATH_INFO.
 Tjeneren din er ikke satt opp til å gi denne informasjonen.
 Den er kanskje CGI-basert og støtter ikke img_auth.
-Se http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+[//www.mediawiki.org/wiki/Manual:Image_Authorization Se bildeautorisasjon.]',
 'img-auth-notindir'         => 'Den ønskede stien finnes ikke i den oppsatte opplastingsmappa.',
 'img-auth-badtitle'         => 'Kunne ikke lage en gyldig tittel ut fra «$1».',
 'img-auth-nologinnWL'       => 'Du er ikke logget inn, og «$1» er ikke på hvitelista.',
@@ -1962,7 +1964,7 @@ Beskrivelsen fra [$2 filbeskrivelsessida] vises nedenfor.',
 'statistics-users-active-desc' => 'Brukere som har utført handlinger {{PLURAL:$1|det siste døgnet|de siste $1 dagene}}',
 'statistics-mostpopular'       => 'Mest viste sider',
 
-'disambiguations'      => 'Artikler med flertydige titler',
+'disambiguations'      => 'Sider som lenker til artikler med flertydige titler',
 'disambiguationspage'  => 'Template:Peker',
 'disambiguations-text' => "Følgende sider lenker til en '''pekerside'''.
 De burde i stedet lenke til en passende innholdsside.<br />
@@ -2035,7 +2037,7 @@ Hver rad inneholder lenker til første og andre omdirigering, samt målet for de
 'listusers-editsonly'     => 'Vis bare brukere med redigeringer',
 'listusers-creationsort'  => 'Sorter etter opprettelsesdato',
 'usereditcount'           => '{{PLURAL:$1|én redigering|$1 redigeringer}}',
-'usercreated'             => 'Opprettet den $1 $2',
+'usercreated'             => '{{GENDER:$3|Opprettet}} $2 $1',
 'newpages'                => 'Nye sider',
 'newpages-username'       => 'Brukernavn:',
 'ancientpages'            => 'Eldste sider',
@@ -2050,7 +2052,7 @@ Merk at andre sider kanskje lenker til en fil med en direkte lenke, så filen li
 'nopagetext'              => 'Siden du ville flytte finnes ikke.',
 'pager-newer-n'           => '{{PLURAL:$1|1 nyere|$1 nyere}}',
 'pager-older-n'           => '{{PLURAL:$1|1 eldre|$1 eldre}}',
-'suppress'                => 'Sidefjerning',
+'suppress'                => 'Historikkrydding',
 'querypage-disabled'      => 'Denne spesialsiden er deaktivert av ytelsesårsaker.',
 
 # Book sources
@@ -2102,7 +2104,7 @@ Se også [[Special:WantedCategories|ønskede kategorier]].',
 'sp-deletedcontributions-contribs' => 'bidrag',
 
 # Special:LinkSearch
-'linksearch'       => 'Eksterne lenker',
+'linksearch'       => 'Søk i eksterne lenker',
 'linksearch-pat'   => 'Søkemønster:',
 'linksearch-ns'    => 'Navnerom:',
 'linksearch-ok'    => 'Søk',
@@ -2210,7 +2212,7 @@ Fremtidige endringer til denne siden og den tilhørende diskusjonssiden blir lis
 'watchmethod-list'     => 'sjekker siste endringer for sider i overvåkningslisten',
 'watchlistcontains'    => 'Overvåkningslisten inneholder $1 {{PLURAL:$1|side|sider}}.',
 'iteminvalidname'      => 'Problem med «$1», ugyldig navn&nbsp;…',
-'wlnote'               => "Nedenfor er {{PLURAL:$1|den siste endringen|de siste $1 endringene}} {{PLURAL:$2|den siste timen|de siste '''$2''' timene}}.",
+'wlnote'               => "Nedenfor er {{PLURAL:$1|den siste endringen|de siste '''$1''' endringene}} {{PLURAL:$2|den siste timen|de siste '''$2''' timene}}, fra den $3, kl. $4",
 'wlshowlast'           => 'Vis siste $1 timer $2 dager $3',
 'watchlist-options'    => 'Alternativ for overvåkningslisten',
 
@@ -2318,7 +2320,10 @@ Se [[Special:ProtectedPages|listen over beskyttede sider]] for listen over gjeld
 'unprotectedarticle'          => 'fjernet beskyttelse av «[[$1]]»',
 'movedarticleprotection'      => 'flyttet beskyttelsesinnstillinger fra «[[$2]]» til «[[$1]]»',
 'protect-title'               => 'Låser «$1»',
+'protect-title-notallowed'    => 'Vis beskyttelsesnivået til «$1»',
 'prot_1movedto2'              => '[[$1]] flyttet til [[$2]]',
+'protect-badnamespace-title'  => 'Navnerom som ikke kan beskyttes',
+'protect-badnamespace-text'   => 'Sider i dette navnerommet kan ikke beskyttes.',
 'protect-legend'              => 'Bekreft låsing',
 'protectcomment'              => 'Årsak:',
 'protectexpiry'               => 'Utløper:',
@@ -2402,6 +2407,7 @@ Dersom en ny side ved samme navn har blitt oprettet etter slettingen, vil de gje
 
 Sjekk [[Special:Log/delete|slettingsloggen]] for en liste over nylige slettinger og gjenopprettelser.",
 'undelete-header'              => 'Se [[Special:Log/delete|slettingsloggen]] for nylig slettede sider.',
+'undelete-search-title'        => 'Søk i slettede sider',
 'undelete-search-box'          => 'Søk i slettede sider',
 'undelete-search-prefix'       => 'Vis sider som starter med:',
 'undelete-search-submit'       => 'Søk',
@@ -2410,6 +2416,7 @@ Sjekk [[Special:Log/delete|slettingsloggen]] for en liste over nylige slettinger
 'undelete-bad-store-key'       => 'Kan ikke gjenopprette filrevisjon med tidstrykk $1: fil manglet før sletting',
 'undelete-cleanup-error'       => 'Feil i sletting av ubrukt arkivfil «$1».',
 'undelete-missing-filearchive' => 'Klarte ikke å gjenopprette filarkivet med ID $1 fordi det ikke er i databasen. Det kan ha blitt gjenopprettet tidligere.',
+'undelete-error'               => 'Feil under gjenoppretting av siden',
 'undelete-error-short'         => 'Feil under filgjenoppretting: $1',
 'undelete-error-long'          => 'Feil oppsto under filgjenoppretting:
 
@@ -2480,7 +2487,6 @@ Den siste oppføringen i blokkeringsloggen er vist nedenfor som referanse:',
 'blockip-title'                   => 'Blokker bruker',
 'blockip-legend'                  => 'Blokker bruker',
 'blockiptext'                     => 'Bruk skjemaet under for å blokkere en IP-adresses tilgang til å redigere artikler. Dette må kun gjøres for å forhindre hærverk, og i overensstemmelse med [[{{MediaWiki:Policy-url}}|retningslinjene]]. Fyll ut en spesiell begrunnelse under.',
-'ipaddress'                       => 'IP-adresse',
 'ipadressorusername'              => 'IP-adresse eller brukernavn',
 'ipbexpiry'                       => 'Varighet:',
 'ipbreason'                       => 'Årsak:',
@@ -2690,7 +2696,7 @@ Du er nødt til å flette dem manuelt.'''",
 'delete_and_move_text'         => '==Sletting nødvendig==
 Målsiden «[[:$1]]» finnes allerede. Vil du slette den så denne siden kan flyttes dit?',
 'delete_and_move_confirm'      => 'Ja, slett siden',
-'delete_and_move_reason'       => 'Slettet grunnet flytting',
+'delete_and_move_reason'       => 'Slettet for å muliggjøre flytting fra "[[$1]]"',
 'selfmove'                     => 'Kilde- og destinasjonstittel er den samme; kan ikke flytte siden.',
 'immobile-source-namespace'    => 'Kan ikke flytte sider i navnerommet «$1»',
 'immobile-target-namespace'    => 'Kan ikke flytte sider til navnerommet «$1»',
@@ -2738,7 +2744,7 @@ Dersom du bare vil ha nåværende versjon, kan du også bruke en lenke, for ekse
 'allmessagesdefault'            => 'Standardtekst',
 'allmessagescurrent'            => 'Nåværende tekst',
 'allmessagestext'               => 'Dette er en liste over tilgjengelige systemmeldinger i MediaWiki-navnerommet.
-Besøk [http://translatewiki.net translatewiki.net] om du ønsker å bidra med oversettelse av MediaWiki.',
+Besøk [//translatewiki.net translatewiki.net] om du ønsker å bidra med oversettelse av MediaWiki.',
 'allmessagesnotsupportedDB'     => "''{{ns:special}}:Allmessages'' kan ikke brukes fordi '''\$wgUseDatabaseMessages''' er slått av.",
 'allmessages-filter-legend'     => 'Filtrér',
 'allmessages-filter'            => 'Filtrér etter tilpassningsgrad',
@@ -3438,7 +3444,7 @@ Rotert 90° mot klokka og vridd vertikalt',
 
 # External editor support
 'edit-externally'      => 'Rediger denne filen med et eksternt program',
-'edit-externally-help' => '(Se [http://www.mediawiki.org/wiki/Manual:External_editors oppsettsinstruksjonene] for mer informasjon)',
+'edit-externally-help' => '(Se [//www.mediawiki.org/wiki/Manual:External_editors oppsettsinstruksjonene] for mer informasjon)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'alle',
@@ -3623,6 +3629,9 @@ Du kan også [[Special:EditWatchlist|bruke standardverktøyet]].',
 'hebrew-calendar-m11-gen' => 'Ab',
 'hebrew-calendar-m12-gen' => 'Elúl',
 
+# Signatures
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|diskusjon]])',
+
 # Core parser functions
 'unknown_extension_tag' => 'Ukjent tilleggsmerking «$1»',
 'duplicate-defaultsort' => 'Advarsel: Standardsorteringen «$2» tar over for den tidligere sorteringen «$1».',
@@ -3645,13 +3654,13 @@ Du kan også [[Special:EditWatchlist|bruke standardverktøyet]].',
 'version-hook-subscribedby'     => 'Brukes av',
 'version-version'               => '(versjon $1)',
 'version-license'               => 'Lisens',
-'version-poweredby-credits'     => "Denne wikien er drevet av '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Denne wikien er drevet av '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'andre',
 'version-license-info'          => 'MediaWiki er fri programvare; du kan redistribuere det og/eller modifisere det under betingelsene i GNU General Public License som publisert av Free Software Foundation; enten versjon 2 av lisensen, eller (etter eget valg) enhver senere versjon.
 
 MediaWiki er distribuert i håp om at det vil være nyttig, men UTEN NOEN GARANTI; ikke engang implisitt garanti av SALGBARHET eller EGNETHET FOR ET BESTEMT FORMÅL. Se GNU General Public License for flere detaljer.
 
-Du skal ha mottatt [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopi av GNU General Public License] sammen med dette programmet; hvis ikke, skriv til Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA eller [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html les det på nettet].',
+Du skal ha mottatt [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopi av GNU General Public License] sammen med dette programmet; hvis ikke, skriv til Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA eller [//www.gnu.org/licenses/old-licenses/gpl-2.0.html les det på nettet].',
 'version-software'              => 'Installert programvare',
 'version-software-product'      => 'Produkt',
 'version-software-version'      => 'Versjon',

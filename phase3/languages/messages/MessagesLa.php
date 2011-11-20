@@ -186,8 +186,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Numerum usorum custodientium monstrare',
 'tog-oldsig'                  => 'Subscriptio ad tempus adhibita:',
 'tog-fancysig'                => 'Subscriptio vicitext (sine nexu automatico)',
-'tog-externaleditor'          => 'Utere editore externo semper (pro peritus solo, requirat speciales optiones in calculone. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
-'tog-externaldiff'            => 'Utere editore dissimilitudine externa semper (pro peritus solo, requirat speciales optiones in calculone. [http://www.mediawiki.org/wiki/Manial:External_editors More information.])',
+'tog-externaleditor'          => 'Utere editore externo semper (pro peritus solo, requirat speciales optiones in calculone. [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaldiff'            => 'Utere editore dissimilitudine externa semper (pro peritus solo, requirat speciales optiones in calculone. [//www.mediawiki.org/wiki/Manial:External_editors More information.])',
 'tog-showjumplinks'           => 'Sinere nexus ostendi forma "salire ad" monstrata',
 'tog-uselivepreview'          => 'Praevisum viventem adhibere (JavaScript)',
 'tog-forceeditsummary'        => 'Si recensionem non summatim descripsero, me roga si continuare velim',
@@ -470,12 +470,11 @@ Fortasse usor alius iam deleverat.',
 Functio: $1<br />
 Inquisitio: $2',
 'viewsource'           => 'Fontem inspicere',
-'viewsourcefor'        => 'pro $1',
 'actionthrottled'      => 'Actio strangulata',
 'protectedpagetext'    => 'Haec pagina protecta est, ut emendationes prohibeantur.',
 'viewsourcetext'       => 'Fontem videas et exscribeas:',
 'protectedinterface'   => 'Haec pagina dat textum interfaciei pro logiciali, et est protecta ad vandalismum vetandum.',
-'editinginterface'     => "'''Caveat censor:''' Emendas iam paginam quae textum interfaciei logicialem dat. Mutationes vultum {{grammar:genitive|{{SITENAME}}}} omnibus usoribus afficient. In nuntia MediaWiki vertendo, quaesumus te uti [http://translatewiki.net/wiki/Main_Page?setlang=la translatewiki.net].",
+'editinginterface'     => "'''Caveat censor:''' Emendas iam paginam quae textum interfaciei logicialem dat. Mutationes vultum {{grammar:genitive|{{SITENAME}}}} omnibus usoribus afficient. In nuntia MediaWiki vertendo, quaesumus te uti [//translatewiki.net/wiki/Main_Page?setlang=la translatewiki.net].",
 'sqlhidden'            => '(inquisitio SQL celata)',
 'namespaceprotected'   => "Tibi non licet paginas spatii nominalis '''$1''' recensere.",
 'ns-specialprotected'  => 'Paginae speciales recenseri non possunt.',
@@ -641,9 +640,6 @@ Nota bene te non posse proprietate "Litteras electronicas usori mittere" uti, ni
 
 Locus IP tuus temporarius $3 est et numerus obstructionis tuus est #$5. Quaesumus te eos scripturum si quaestiones ullas roges.',
 'blockednoreason'                  => 'nulla causa data',
-'blockedoriginalsource'            => "Fons '''$1''' subter monstratur:",
-'blockededitsource'                => "Textus '''tuarum emendationum''' in '''$1''' subter monstratur:",
-'whitelistedittitle'               => 'Conventum aperiendum ut recenseas',
 'whitelistedittext'                => 'Necesse est tibi $1 priusquam paginas recenseas.',
 'confirmedittext'                  => 'Tua inscriptio electronica est adfirmanda priusquam paginas recenseas. Quaesumus eam selige et adfirma per tuas [[Special:Preferences|praeferentias]].',
 'nosuchsectiontitle'               => 'Haec pars inveniri non potest',
@@ -1281,7 +1277,7 @@ Contenta [$2 paginae descriptionis fasciculi] subter monstrantur.',
 'statistics-users-active-desc' => 'Usores qui {{PLURAL:$1|proxima die|proximis $1 diebus}} actionem perfecerunt',
 'statistics-mostpopular'       => 'Paginae plurimum visae',
 
-'disambiguations'      => 'Paginae disambiguationis',
+'disambiguations'      => 'Paginae quae ad paginas discretivas nectunt',
 'disambiguationspage'  => 'Template:Discretiva',
 'disambiguations-text' => "Paginae subter ad '''paginam discretivam''' nectunt.
 Eae ad aptas paginas magis nectendae sunt.<br />
@@ -1483,7 +1479,7 @@ Si paginam ex indice paginarum custoditarum removere vis, imprime \"decustodire\
 'watchmethod-list'   => 'paginas custoditas quaerens pro recensitis recentibus',
 'watchlistcontains'  => 'Index paginarum custoditarum tuus $1 {{PLURAL:$1|paginam|paginas}} habet.',
 'iteminvalidname'    => "Aerumna cum pagina '$1', nomen non est rectum...",
-'wlnote'             => "Subter {{PLURAL:$1|est mutatio proxima|sunt '''$1''' mutationes proximae}} in {{PLURAL:$2|proxima hora|proximis '''$2''' horis}}.",
+'wlnote'             => "Subter {{PLURAL:$1|est mutatio proxima|sunt '''$1''' mutationes proximae}} in {{PLURAL:$2|proxima hora|proximis '''$2''' horis}} ex $4, $3.",
 'wlshowlast'         => 'Monstrare proximas $1 horas $2 dies $3',
 'watchlist-options'  => 'Indicis paginarum custoditarum praeferentiae',
 
@@ -1695,7 +1691,6 @@ Si pagina nova cum ipso nomine post deletionem creata est, emendationes restitut
 'blockip'                     => 'Usorem obstruere',
 'blockip-legend'              => 'Usorem vel locum IP obstruere',
 'blockiptext'                 => 'Forma infera utere ut quendam usorem vel locum IP obstruas ne plus scribere potest. Hoc non nisi secundum [[{{MediaWiki:Policy-url}}|consilium]] fieri potest. Rationem certam subscribe (exempli gratia titulos paginarum quas iste usor modo vandalorum recensuit).',
-'ipaddress'                   => 'Locus IP:',
 'ipadressorusername'          => 'Locus IP aut nomen usoris:',
 'ipbexpiry'                   => 'Exitus:',
 'ipbreason'                   => 'Causa:',
@@ -1841,7 +1836,7 @@ Quaesumus, titulum alterum elige.',
 'delete_and_move_text'      => '==Deletio necesse est==
 Paginae nomen petitum "[[:$1]]" iam existit. Vin tu eam delere ut pagina illic moveatur?',
 'delete_and_move_confirm'   => 'Ita, paginam delere',
-'delete_and_move_reason'    => 'Deleta ut moveatur',
+'delete_and_move_reason'    => 'Deleta ut moveatur ex "[[$1]]"',
 'immobile-source-namespace' => 'Paginae spatii nominalis "$1" moveri non possunt.',
 'immobile-target-namespace' => 'Paginae in spatium nominale "$1" moveri non possunt.',
 'immobile-source-page'      => 'Haec pagina moveri non potest.',
@@ -2205,7 +2200,7 @@ Paginae nomen petitum "[[:$1]]" iam existit. Vin tu eam delere ut pagina illic m
 
 # External editor support
 'edit-externally'      => 'Hunc fasciculum in programmate externali recensere',
-'edit-externally-help' => '(Vide et [http://www.mediawiki.org/wiki/Manual:External_editors paginas adiutorias] programmatis externalis)',
+'edit-externally-help' => '(Vide et [//www.mediawiki.org/wiki/Manual:External_editors paginas adiutorias] programmatis externalis)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'omnes',

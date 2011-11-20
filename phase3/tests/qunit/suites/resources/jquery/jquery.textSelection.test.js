@@ -222,3 +222,62 @@ encapsulateTest({
 	},
 	replace: ulist
 });
+
+
+var caretTest = function(options) {
+	test(options.description, function() {
+		expect(2);
+
+		var $fixture = $( '<div id="qunit-fixture"></div>' );
+		var $textarea = $( '<textarea>' ).text(options.text);
+
+		$fixture.append($textarea);
+		$( 'body' ).append($fixture);
+
+		if (options.mode == 'set') {
+			$textarea.textSelection('setSelection', {
+				start: options.start,
+				end: options.end
+			});
+		}
+
+		var among = function(actual, expected, message) {
+			if ($.isArray(expected)) {
+				ok($.inArray(actual, expected) !== -1 , message + ' (got ' + actual + '; expected one of ' + expected.join(', ') + ')');
+			} else {
+				equal(actual, expected, message);
+			}
+		};
+
+		var pos = $textarea.textSelection('getCaretPosition', {startAndEnd: true});
+		among(pos[0], options.start, 'Caret start should be where we set it.');
+		among(pos[1], options.end, 'Caret end should be where we set it.');
+	});
+}
+
+var caretSample = "Some big text that we like to work with. Nothing fancy... you know what I mean?";
+
+caretTest({
+	description: 'getCaretPosition with original/empty selection - bug 31847 with IE 6/7/8',
+	text: caretSample,
+	start: [0, caretSample.length], // Opera and Firefox (prior to FF 6.0) default caret to the end of the box (caretSample.length)
+	end: [0, caretSample.length], // Other browsers default it to the beginning (0), so check both.
+	mode: 'get'
+});
+
+caretTest({
+	description: 'set/getCaretPosition with forced empty selection',
+	text: caretSample,
+	start: 7,
+	end: 7,
+	mode: 'set'
+});
+
+caretTest({
+	description: 'set/getCaretPosition with small selection',
+	text: caretSample,
+	start: 6,
+	end: 11,
+	mode: 'set'
+});
+

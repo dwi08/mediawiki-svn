@@ -55,7 +55,7 @@ class SpecialWatchlist extends SpecialPage {
 
 		# Anons don't get a watchlist
 		if( $user->isAnon() ) {
-			$output->setPageTitle( wfMsg( 'watchnologin' ) );
+			$output->setPageTitle( $this->msg( 'watchnologin' ) );
 			$llink = Linker::linkKnown(
 				SpecialPage::getTitleFor( 'Userlogin' ),
 				wfMsgHtml( 'loginreqlink' ),
@@ -69,13 +69,8 @@ class SpecialWatchlist extends SpecialPage {
 		$this->setHeaders();
 		$this->outputHeader();
 
-		$sub = wfMsgExt(
-			'watchlistfor2',
-			array( 'parseinline', 'replaceafter' ),
-			$user->getName(),
-			SpecialEditWatchlist::buildTools( $this->getSkin() )
-		);
-		$output->setSubtitle( $sub );
+		$output->addSubtitle( $this->msg( 'watchlistfor2', $this->getUser()->getName()
+			)->rawParams( SpecialEditWatchlist::buildTools( null ) ) );
 
 		$request = $this->getRequest();
 
@@ -298,19 +293,13 @@ class SpecialWatchlist extends SpecialPage {
 		/* Start bottom header */
 
 		$wlInfo = '';
-		if( $values['days'] >= 1 ) {
+		if( $values['days'] > 0 ) {
 			$timestamp = wfTimestampNow();
-			$wlInfo = wfMsgExt( 'rcnote', 'parseinline',
-					$lang->formatNum( $numRows ),
-					$lang->formatNum( $values['days'] ),
-					$lang->timeAndDate( $timestamp, true ),
-					$lang->date( $timestamp, true ),
-					$lang->time( $timestamp, true )
-				) . '<br />';
-		} elseif( $values['days'] > 0 ) {
 			$wlInfo = wfMsgExt( 'wlnote', 'parseinline',
 					$lang->formatNum( $numRows ),
-					$lang->formatNum( round( $values['days'] * 24 ) )
+					$lang->formatNum( round( $values['days'] * 24 ) ),
+					$lang->date( $timestamp, true ),
+					$lang->time( $timestamp, true )
 				) . '<br />';
 		}
 

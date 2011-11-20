@@ -15,6 +15,7 @@
  * @author Huji
  * @author Ibrahim
  * @author Ladsgroup
+ * @author Leyth
  * @author Mardetanha
  * @author Meisam
  * @author Meno25
@@ -448,8 +449,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'شمار کاربران پی‌گیری‌کننده نمایش یابد',
 'tog-oldsig'                  => 'امضای کنونی:',
 'tog-fancysig'                => 'امضا به صورت ویکی‌متن در نظر گرفته شود (بدون درج خودکار پیوند)',
-'tog-externaleditor'          => 'استفاده از ویرایشگر خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [http://www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
-'tog-externaldiff'            => 'استفاده از تفاوت‌گیر (diff) خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [http://www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
+'tog-externaleditor'          => 'استفاده از ویرایشگر خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [//www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
+'tog-externaldiff'            => 'استفاده از تفاوت‌گیر (diff) خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [//www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
 'tog-showjumplinks'           => 'پیوندهای دسترسی‌پذیری «پرش به» فعال باشد',
 'tog-uselivepreview'          => 'استفاده از پیش‌نمایش زنده (نیازمند جاوااسکریپت) (آزمایشی)',
 'tog-forceeditsummary'        => 'هنگامی که خلاصهٔ ویرایش ننوشته‌ام به من اطلاع داده شود',
@@ -680,6 +681,7 @@ $1',
 به [[Special:Version|این صفحه]] مراجعه کنید.',
 
 'ok'                      => 'تأیید',
+'backlinksubtitle'        => '← $1',
 'retrievedfrom'           => 'برگرفته از «$1»',
 'youhavenewmessages'      => '$1 دارید ($2).',
 'newmessageslink'         => 'پیام‌های جدید',
@@ -791,7 +793,6 @@ $1',
 تابع: $1<br />
 پرس‌وجو: $2',
 'viewsource'           => 'نمایش مبدأ',
-'viewsourcefor'        => 'برای $1',
 'actionthrottled'      => 'جلوی عمل شما گرفته شد',
 'actionthrottledtext'  => 'به منظور جلوگیری از هرزنگاری، شما اجازه ندارید که چنین عملی را بیش از چند بار در یک مدت زمان کوتاه انجام بدهید.
 لطفاً پس از چند دقیقه دوباره تلاش کنید.',
@@ -800,7 +801,7 @@ $1',
 'protectedinterface'   => 'این صفحه ارائه‌دهندهٔ متنی برای واسط کاربر این نرم‌افزار است و به منظور پیشگیری از خرابکاری قفل شده‌است.',
 'editinginterface'     => "'''هشدار:''' شما صفحه‌ای را ویرایش می‌کنید که شامل  متنی است که در واسط کاربر این نرم‌افزار به کار رفته‌است.
 تغییر این صفحه منجر به تغییر ظاهر واسط کاربر این نرم‌افزار برای دیگر کاربران خواهد شد.
-برای ترجمه، لطفاً از [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]، پروژهٔ ترجمهٔ مدیاویکی، استفاده کنید.",
+برای ترجمه، لطفاً از [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]، پروژهٔ ترجمهٔ مدیاویکی، استفاده کنید.",
 'sqlhidden'            => '(دستور اس‌کیوال پنهان شده)',
 'cascadeprotected'     => 'این صفحه در مقابل ویرایش محافظت شده‌است برای اینکه در {{PLURAL:$1|صفحهٔ|صفحه‌های}} محافظت‌شدهٔ زیر که گزینهٔ «آبشاری» در {{PLURAL:$1|آن|آنها}} انتخاب شده‌است، قرار گرفته‌است:
 $2',
@@ -954,7 +955,7 @@ $2',
 'passwordreset-domain'         => 'دامنه:',
 'passwordreset-email'          => 'نشانی پست الکترونیک:',
 'passwordreset-emailtitle'     => 'جزئیات حساب در {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'یک فرد (احتمالاً شما، از نشانی آی‌پی $1) درخواست یادآور جزئیات حساب شما را برای وبگاه {{SITENAME}} ($4) درخواست کرده است. {{PLURAL:$3|حساب|حساب‌های}} کاربری زیر با این رایانشانی مرتبط هستند:
+'passwordreset-emailtext-ip'   => 'یک فرد (احتمالاً شما، از نشانی آی‌پی $1) درخواست یادآور جزئیات حساب شما را برای تارنمای {{SITENAME}} ($4) درخواست کرده است. {{PLURAL:$3|حساب|حساب‌های}} کاربری زیر با این رایانشانی مرتبط هستند:
 
 $2
 
@@ -1058,9 +1059,6 @@ $2
 نشانی آی‌پی فعلی شما $3 است و شماره قطع دسترسی $5 است.
 لطفاً این شماره را در هر درخواستی که در این باره مطرح می‌کنید قید کنید.",
 'blockednoreason'                  => 'دلیلی مشخص نشده‌است',
-'blockedoriginalsource'            => "متن مبدأ '''$1''' در زیر نمایش داده شده است:",
-'blockededitsource'                => "متن '''ویرایش‌های شما''' در '''$1''' در زیر نشان داده شده‌است:",
-'whitelistedittitle'               => 'برای ویرایش باید به سامانه وارد شوید',
 'whitelistedittext'                => 'برای ویرایش مقاله‌ها باید $1.',
 'confirmedittext'                  => 'شما باید، پیش از ویرایش صفحه‌ها، نشانی پست الکترونیکی خود را مشخص و تأیید کنید. لطفاً از طریق [[Special:Preferences|ترجیحات کاربر]] این کار را صورت دهید.',
 'nosuchsectiontitle'               => 'چنین بخشی پیدا نشد',
@@ -1279,7 +1277,7 @@ $2
 'rev-suppressed-no-diff'      => "شما نمی‌توانید این تفاوت را مشاهده کنید چون یکی از نسخه‌ها '''حذف شده‌است'''.",
 'rev-deleted-unhide-diff'     => "یکی از دو نسخهٔ این تفاوت '''حذف شده‌است'''.
 ممکن است اطلاعات مرتبط با آن در [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} سیاههٔ حذف] موجود باشد.
-شما به عنوان یک مدیر کماکان می‌توانید در صورت تمایل [$1 این تفاوت را ببینید].",
+شما کماکان می‌توانید در صورت تمایل [$1 این تفاوت را ببینید].",
 'rev-suppressed-unhide-diff'  => "یکی از نسخه‌های این تفاوت '''فرونشانی شده‌است'''.
 ممکن است جزئیاتی در [{{fullurl:{{#Special:Log}}/suppress|page=سیاههٔ فرونشانی{{FULLPAGENAMEE}}}}] موجود باشد.
 شما به عنوان یک مدیر کماکان می‌توانید در صورت تمایل [$1 این تفاوت را ببینید].",
@@ -1353,7 +1351,7 @@ $1",
 # Suppression log
 'suppressionlog'     => 'سیاههٔ فرونشانی',
 'suppressionlogtext' => 'در زیر فهرستی از آخرین حذف‌ها و قطع دسترسی‌هایی که حاوی محتوایی هستند که از مدیران پنهان شده‌اند را می‌بینید.
-برای مشاهدهٔ فهرستی از قطع دسترسی‌های فعال [[Special:IPBlockList|فهرست قطع‌دسترسی‌ها]] را ببینید.',
+برای مشاهدهٔ فهرستی از قطع دسترسی‌های فعال [[Special:BlockList|IP block list]] را ببینید.',
 
 # History merging
 'mergehistory'                     => 'ادغام تاریخچه صفحه‌ها',
@@ -1545,7 +1543,7 @@ $1",
 'prefs-custom-css'              => 'سی‌اس‌اس شخصی',
 'prefs-custom-js'               => 'جاوااسکریپت شخصی',
 'prefs-common-css-js'           => 'سی‌اس‌اس/جاوااسکریپت مشترک برای تمام پوسته‌ها:',
-'prefs-reset-intro'             => 'شما می‌توانید از این صفحه برای بازگرداندن تنظیمات خود به پیش‌فرض وب‌گاه استفاده کنید.
+'prefs-reset-intro'             => 'شما می‌توانید از این صفحه برای بازگرداندن تنظیمات خود به پیش‌فرض تارنما استفاده کنید.
 این کار بازگشت‌ناپذیر است.',
 'prefs-emailconfirm-label'      => 'تأیید پست الکترونیکی:',
 'prefs-textboxsize'             => 'اندازهٔ جعبهٔ ویرایش',
@@ -1628,12 +1626,12 @@ $1",
 'group-suppress'      => 'ناظران',
 'group-all'           => '(همه)',
 
-'group-user-member'          => 'کاربر',
-'group-autoconfirmed-member' => 'کاربر تاییدشده',
-'group-bot-member'           => 'ربات',
-'group-sysop-member'         => 'مدیر',
-'group-bureaucrat-member'    => 'دیوان‌سالار',
-'group-suppress-member'      => 'ناظر',
+'group-user-member'          => '{{GENDER:$1|کاربر}}',
+'group-autoconfirmed-member' => '{{GENDER:$1|کاربر تاییدشده}}',
+'group-bot-member'           => '{{GENDER:$1|{{ربات}}',
+'group-sysop-member'         => '{{GENDER:$1|مدیر}}',
+'group-bureaucrat-member'    => '{{GENDER:$1|دیوانسالار}}',
+'group-suppress-member'      => '{{GENDER:$1|نظارت}}',
 
 'grouppage-user'          => '{{ns:project}}:کاربران',
 'grouppage-autoconfirmed' => '{{ns:project}}:کاربران تاییدشده',
@@ -1735,6 +1733,7 @@ $1",
 'action-suppressionlog'       => 'مشاهدهٔ این سیاههٔ خصوصی',
 'action-block'                => 'قطع دسترسی ویرایش این کاربر',
 'action-protect'              => 'تغییر سطح محافظت این صفحه',
+'action-rollback'             => 'واگردانی سریع ویرایش‌های آخرین کاربری که یک صفحه را ویرایش کرده‌است',
 'action-import'               => 'وارد کردن این صفحه از یک ویکی دیگر',
 'action-importupload'         => 'وارد کردن این صفحه از طریق بارگذاری پرونده',
 'action-patrol'               => 'گشت زدن ویرایش دیگران',
@@ -1786,7 +1785,6 @@ $1",
 'recentchangeslinked-feed'     => 'تغییرات مرتبط',
 'recentchangeslinked-toolbox'  => 'تغییرات مرتبط',
 'recentchangeslinked-title'    => 'تغییرهای مرتبط با $1',
-'recentchangeslinked-backlink' => '→ $1',
 'recentchangeslinked-noresult' => 'در بازهٔ ‌زمانی داده‌شده تغییری در صفحه‌های پیوندداده رخ نداده‌است.',
 'recentchangeslinked-summary'  => "در زیر فهرستی از تغییرات اخیر در صفحه‌های پیوند داده شده به این صفحه (یا اعضای رده مورد نظر) را می‌بینید.
 صفحه‌هایی که در [[Special:Watchlist|فهرست پی‌گیری‌های شما]] باشند به صورت '''ضخیم''' نشان داده می‌شوند.",
@@ -1832,6 +1830,7 @@ $1",
 'minlength1'                  => 'نام پرونده دست کم باید یک حرف باشد.',
 'illegalfilename'             => 'نام پرونده «$1» نویسه‌هایی را شامل می‌شود که در نام صفحه‌ها مجاز نیستند.
 لطفاً نام پرونده را تغییر دهید و آن را دوباره بارگذاری کنید.',
+'filename-toolong'            => 'نام پرونده نباید از ۲۴۰ بایت طولانی‌تر باشد.',
 'badfilename'                 => 'نام پرونده به «$1» تغییر کرد.',
 'filetype-mime-mismatch'      => 'پسوند پرونده «$1.‎» با نوع MIME آن ($2) مطابقت ندارد.',
 'filetype-badmime'            => 'پرونده‌هایی که نوع MIME آن‌ها $1 باشد برای بارگذاری مجاز نیستند.',
@@ -1984,10 +1983,10 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 # Some likely curl errors. More could be added from <http://curl.haxx.se/libcurl/c/libcurl-errors.html>
 'upload-curl-error6'       => 'دسترسی به نشانی اینترنتی ممکن نشد',
 'upload-curl-error6-text'  => 'نشانی اینترنتی داده شده قابل دسترسی نیست.
-لطفاً درستی آن و اینکه وب‌گاه برقرار است را بررسی کنید.',
+لطفاً درستی آن و اینکه تارنما برقرار است را بررسی کنید.',
 'upload-curl-error28'      => 'مهلت بارگذاری به سر رسید',
-'upload-curl-error28-text' => 'این وب‌گاه بیش از اندازه در پاسخ تعلل کرد.
-لطفاً بررسی کنید که آیا وب‌گاه فعال و برخط است یا نه، سپس لختی درنگ کنید و دوباره تلاش نمایید.
+'upload-curl-error28-text' => 'این تارنما بیش از اندازه در پاسخ تعلل کرد.
+لطفاً بررسی کنید که آیا تارنما فعال و برخط است یا نه، سپس لختی درنگ کنید و دوباره تلاش نمایید.
 شاید بد نباشد که در زمان خلوت‌تری دوباره تلاش کنید.',
 
 'license'            => 'اجازه‌نامه:',
@@ -2051,7 +2050,6 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 
 # File reversion
 'filerevert'                => 'واگردانی $1',
-'filerevert-backlink'       => '← $1',
 'filerevert-legend'         => 'واگردانی پرونده',
 'filerevert-intro'          => "شما در حال واگردانی '''[[Media:$1|$1]]''' به [$4 نسخهٔ مورخ $2 ساعت $3] هستید.",
 'filerevert-comment'        => 'دلیل:',
@@ -2062,7 +2060,6 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 
 # File deletion
 'filedelete'                  => 'حذف $1',
-'filedelete-backlink'         => '← $1',
 'filedelete-legend'           => 'حذف پرونده',
 'filedelete-intro'            => "شما در حال حذف کردن پروندهٔ '''[[Media:$1|$1]]''' به همراه تمام تاریخچه‌اش هستید.",
 'filedelete-intro-old'        => "شما در حال حذف نسخه '''[[Media:$1|$1]]''' مورخ [$4 $2 ساعت $3] هستید.",
@@ -2371,7 +2368,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'notanarticle'         => 'صفحه محتوایی نیست',
 'notvisiblerev'        => 'آخرین نسخه توسط کاربری دیگر حذف شده‌است',
 'watchnochange'        => 'هیچ یک از موارد در حال پی‌گیری شما در دورهٔ زمانی نمایش‌یافته ویرایش نشده است.',
-'watchlist-details'    => 'بدون احتساب صفحه‌های بحث، {{PLURAL:$1|$1 صفحه|$1 صفحه}} در فهرست پی‌گیری‌های شما قرار {{PLURAL:$1|دارد|دارتد}}.',
+'watchlist-details'    => 'بدون احتساب صفحه‌های بحث، {{PLURAL:$1|$1 صفحه|$1 صفحه}} در فهرست پی‌گیری‌های شما قرار {{PLURAL:$1|دارد|دارند}}.',
 'wlheader-enotif'      => '*اطلاع‌رسانی از طریق پست الکترونیکی امکان‌پذیر است.',
 'wlheader-showupdated' => "*صفحه‌هایی که پس از آخرین سرزدنتان به آنها تغییر کرده‌اند '''پررنگ''' نشان داده شده‌اند.",
 'watchmethod-recent'   => 'بررسی ویرایش‌های اخیر برای صفحه‌های مورد پی‌گیری',
@@ -2432,7 +2429,6 @@ $NEWPAGE
 'exbeforeblank'          => 'محتوای صفحه قبل از خالی‌کردن «$1» بود.',
 'exblank'                => 'صفحه خالی بود',
 'delete-confirm'         => 'حذف «$1»',
-'delete-backlink'        => '← $1',
 'delete-legend'          => 'حذف',
 'historywarning'         => "'''هشدار!''' صفحه‌ای که قصد دارید حذف کنید تاریخچه‌ای شامل حدود $1 {{PLURAL:$1|نسخه|نسخه}} دارد:",
 'confirmdeletetext'      => 'شما در حال حذف کردن یک صفحه یا تصویر از پایگاه‌ داده همراه با تمام تاریخچهٔ آن هستید.
@@ -2665,7 +2661,6 @@ $1',
 'blockiptext'                     => 'از فرم زیر برای بستن دسترسی ویرایش یک نشانی آی‌پی یا نام کاربری مشخص استفاده کنید.
 این کار فقط فقط باید برای جلوگیری از خرابکاری و بر اساس [[{{MediaWiki:Policy-url}}|سیاست قطع دسترسی]] انجام شود.
 دلیل مشخص این کار را در زیر ذکر کنید (مثلاً با ذکر صفحه‌های به‌خصوصی که مورد خرابکاری واقع شده‌اند).',
-'ipaddress'                       => 'نشانی آی‌پی/نام کاربر',
 'ipadressorusername'              => 'نشانی آی‌پی یا نام کاربری:',
 'ipbexpiry'                       => 'زمان سرآمدن:',
 'ipbreason'                       => 'دلیل:',
@@ -2880,7 +2875,7 @@ $1',
 
 مقالهٔ مقصد «[[:$1]]» وجود دارد. آیا می‌خواهید آن را حذف کنید تا انتقال ممکن شود؟',
 'delete_and_move_confirm'      => 'بله، صفحه حذف شود',
-'delete_and_move_reason'       => 'حذف برای ممکن‌شدن انتقال',
+'delete_and_move_reason'       => 'حذف برای ممکن‌شدن انتقال  «[[$1]]»',
 'selfmove'                     => 'عنوان‌های صفحهٔ مبدأ و مقصد یکی است؛
 انتقال صفحه به خودش ممکن نیست.',
 'immobile-source-namespace'    => 'امکان انتقال صفحه‌ها در فضای نام «$1» وجود ندارد',
@@ -2929,7 +2924,7 @@ $1',
 'allmessagesdefault'            => 'متن پیش‌فرض پیغام',
 'allmessagescurrent'            => 'متن کنونی پیغام',
 'allmessagestext'               => 'این فهرستی از پیغام‌های سامانه‌ای موجود در فضای نام مدیاویکی است.
-چنان‌چه مایل به مشارکت در محلی‌سازی مدیاویکی هستید لطفاً [http://www.mediawiki.org/wiki/Localisation محلی‌سازی مدیاویکی] و [http://translatewiki.net translatewiki.net] را ببینید.',
+چنان‌چه مایل به مشارکت در محلی‌سازی مدیاویکی هستید لطفاً [//www.mediawiki.org/wiki/Localisation محلی‌سازی مدیاویکی] و [//translatewiki.net translatewiki.net] را ببینید.',
 'allmessagesnotsupportedDB'     => "نمی‌توان از '''{{ns:special}}:همهٔ پیغام‌ها''' استفاده کرد چود '''&lrm;\$wgUseDatabaseMessages''' خاموش شده است.",
 'allmessages-filter-legend'     => 'پالایه',
 'allmessages-filter'            => 'پالودن بر اساس وضعیت شخصی‌سازی:',
@@ -3612,7 +3607,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'ویرایش این پرونده با استفاده از ویرایشگر خارجی',
-'edit-externally-help' => '(برای اطلاعات بیشتر [http://www.mediawiki.org/wiki/Manual:External_editors دستورالعمل تنظیم] را ببینید)',
+'edit-externally-help' => '(برای اطلاعات بیشتر [//www.mediawiki.org/wiki/Manual:External_editors دستورالعمل تنظیم] را ببینید)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'همه',
@@ -3861,13 +3856,13 @@ $1',
 'version-version'               => '(نسخه $1)',
 'version-svn-revision'          => '(&رلم;r$2)',
 'version-license'               => 'اجازه‌نامه',
-'version-poweredby-credits'     => "این ویکی توسط '''[http://www.mediawiki.org/ مدیاویکی]''' پشتیبانی می‌شود، کلیهٔ حقوق محفوظ است © 2001-$1 $2.",
+'version-poweredby-credits'     => "این ویکی توسط '''[//www.mediawiki.org/ مدیاویکی]''' پشتیبانی می‌شود، کلیهٔ حقوق محفوظ است © 2001-$1 $2.",
 'version-poweredby-others'      => 'دیگران',
 'version-license-info'          => 'مدیاویکی یک نرم‌افزار رایگان است؛ که شما می‌توانید آن را تحت گنو ال‌جی‌پی‌ال که توسط بنیاد نرم‌افزارهای رایگان منتشر شده‌است، باز نشر کنید؛ یا نسخهٔ ۲ از این محوز، یا (بنا به اختیار) نسخه‌های بعدی.
 
 مدیاویکی منتشر شده‌است به امید اینکه مفید واقع شود، بدون هیچ گونه ضمانتی»؛ بدون ضمانت ضمنی که تجاری یا برای یک کار خاصی مناسب باشد. برای اطلاعات بیشتر مجوز گنو جی‌پی‌ال را مشاهده کنید.
 
-شما می‌بایست یک [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] را همراه این برنامه دریافت کرده باشید؛ اگر نه، بنویسید برای شرکت بنیاد نرم‌افزارهای رایگان، 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA یا آن را [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html به صورت بر خط بخوانید].',
+شما می‌بایست یک [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] را همراه این برنامه دریافت کرده باشید؛ اگر نه، بنویسید برای شرکت بنیاد نرم‌افزارهای رایگان، 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA یا آن را [//www.gnu.org/licenses/old-licenses/gpl-2.0.html به صورت بر خط بخوانید].',
 'version-software'              => 'نسخهٔ نصب‌شده',
 'version-software-product'      => 'محصول',
 'version-software-version'      => 'نسخه',
@@ -3950,7 +3945,7 @@ $1',
 # Database error messages
 'dberr-header'      => 'این ویکی یک ایراد دارد',
 'dberr-problems'    => 'شرمنده!
-این وب‌گاه از مشکلات فنی رنج می‌برد.',
+این تارنما از مشکلات فنی رنج می‌برد.',
 'dberr-again'       => 'چند دقیقه صبر کند و دوباره صفحه را بارگیری کنید.',
 'dberr-info'        => '(امکان برقراری ارتباط با کارساز پایگاه داده وجود ندارد: $1)',
 'dberr-usegoogle'   => 'شما در این مدت می‌توانید با استفاده از گوگل جستجو کنید.',

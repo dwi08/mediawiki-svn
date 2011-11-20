@@ -381,7 +381,6 @@ $messages = array(
 'unexpected'          => 'غير متوقع قدر: "$1"="$2".',
 'badtitle'            => 'غيردرست عنوان',
 'viewsource'          => 'ڪوڊ ڏسو',
-'viewsourcefor'       => 'براءِ $1',
 'protectedpagetext'   => 'هيءُ صفحو ترميمن کان تحفظيل آهي.',
 'viewsourcetext'      => 'توهان هن صفحي جو ڪوڊ ڏسي ۽ نقل ڪري سگھو ٿا:',
 'namespaceprotected'  => "توهان کي نانءُ پولار '''$1''' جا صفحا سنوارڻ جا اختيار ناهن.",
@@ -960,7 +959,7 @@ $1 {{PLURAL:$1|اکر|اکرن}} کان ننڍي هوڻ گھرجي.',
 
 # External editor support
 'edit-externally'      => 'هيءُ فائيل ڪنهن خارجي منتقڪريءَ سان سنواريو',
-'edit-externally-help' => 'وڌيڪ معلومات لاءِ [http://www.mediawiki.org/wiki/Manual:External_editors هدايتون براءِ تنصيبڪاري] ڏسندا.',
+'edit-externally-help' => 'وڌيڪ معلومات لاءِ [//www.mediawiki.org/wiki/Manual:External_editors هدايتون براءِ تنصيبڪاري] ڏسندا.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'سڀ',

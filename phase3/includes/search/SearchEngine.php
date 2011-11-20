@@ -148,7 +148,7 @@ class SearchEngine {
 	 * Really find the title match.
 	 */
 	private static function getNearMatchInternal( $searchterm ) {
-		global $wgContLang;
+		global $wgContLang, $wgEnableSearchContributorsByIP;
 
 		$allSearchTerms = array( $searchterm );
 
@@ -161,8 +161,6 @@ class SearchEngine {
 			return $titleResult;
 		}
 
-		$context = new RequestContext;
-
 		foreach ( $allSearchTerms as $term ) {
 
 			# Exact match? No need to look further.
@@ -171,14 +169,13 @@ class SearchEngine {
 				return null;
 			}
 
-			if ( $title->getNamespace() == NS_SPECIAL || $title->isExternal() || $title->exists() ) {
+			if ( $title->isSpecialPage() || $title->isExternal() || $title->exists() ) {
 				return $title;
 			}
 
 			# See if it still otherwise has content is some sane sense
-			$context->setTitle( $title );
-			$article = Article::newFromTitle( $title, $context );
-			if ( $article->hasViewableContent() ) {
+			$page = WikiPage::factory( $title );
+			if ( $page->hasViewableContent() ) {
 				return $title;
 			}
 
@@ -218,10 +215,13 @@ class SearchEngine {
 
 		$title = Title::newFromText( $searchterm );
 
+
 		# Entering an IP address goes to the contributions page
-		if ( ( $title->getNamespace() == NS_USER && User::isIP( $title->getText() ) )
-			|| User::isIP( trim( $searchterm ) ) ) {
-			return SpecialPage::getTitleFor( 'Contributions', $title->getDBkey() );
+		if ( $wgEnableSearchContributorsByIP ) {
+			if ( ( $title->getNamespace() == NS_USER && User::isIP( $title->getText() ) )
+				|| User::isIP( trim( $searchterm ) ) ) {
+				return SpecialPage::getTitleFor( 'Contributions', $title->getDBkey() );
+			}
 		}
 
 

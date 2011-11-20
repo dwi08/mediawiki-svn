@@ -362,7 +362,6 @@ Akks ad iskrt kra yaḍn',
 'badtitle'             => 'Azwl ur ifulkin',
 'badtitletext'         => 'Azwl n tasna lli trit ur igadda, ixwa, niɣd iga aswl n gr tutlayt niḍ ngr tuwwurins ur izdimzyan. Ẓr urgis tgit kra nu uskkil niɣd mnnaw lli gis ur llanin',
 'viewsource'           => 'Mel iɣbula',
-'viewsourcefor'        => 'l $1',
 
 # Virus scanner
 'virus-unknownscanner' => 'antivirus oritwsan',
@@ -466,9 +465,6 @@ Iɣ tklikkit tiklit yaḍn f tjrrayt « {{int:savearticle}} », aẓṛig rad it
 'summary-preview'                  => 'Tiẓṛi  n tagḍwit:',
 'blockedtitle'                     => 'lmostkhdim ad itbloka',
 'blockednoreason'                  => 'ta yan sabab oritfki',
-'blockedoriginalsource'            => "Tangalt taɣbalut '''$1'''  ar ttuymmal ɣ uzddar.",
-'blockededitsource'                => "Aṭṛiṣ n iẓṛign nk llid tiwid i '''$1''' rad tnin taft ɣiḍ ɣ uzddar",
-'whitelistedittitle'               => 'Illa zwar fllak ad tilit ɣ ifalan bac ad tsbadlt ma trit.',
 'whitelistedittext'                => 'Illa fllak ad tilit ɣ $1 bac adak ittuyskar ad tsbadlt mayllan ɣid',
 'confirmedittext'                  => 'Illa fllak ad talst i tansa nk tbratin urta tsbadalt tisniwin.
 Kcm zwar tft tansan nk tbratin ɣ [[Special:Preferences|Timssusmin n umqdac]].',
@@ -791,7 +787,6 @@ Izdar ad urtili ɣ isbidn n mayllan ɣ {{SITENAME}} .',
 'recentchangeslinked-feed'     => 'Imbddeln zund ɣwid',
 'recentchangeslinked-toolbox'  => 'Imbddeln zund ɣwid',
 'recentchangeslinked-title'    => 'Imbddeln li izdin "$1"',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'Ur illi may budeln ɣ tisniwin li dar izdayn s ɣid',
 'recentchangeslinked-summary'  => 'Ɣid umuɣ iymbddeln li ittyskarnin tigira yad ɣ tisniwin li ittuyzdayn d kra n tasna (ulla i igmamn n kra taggayt ittuyzlayn). Tisniwin  ɣ [[Special:Watchlist|Umuɣ n tisniwin li ttsaggat]].',
 'recentchangeslinked-page'     => 'Assaɣ n tasna',
@@ -999,7 +994,6 @@ Ha riglaj n ɣila lli f tlla tasna '''$1''' :",
 'whatlinkshere'            => 'May izdayn ɣid',
 'whatlinkshere-title'      => 'Tisniwin li izdayn d "$1"',
 'whatlinkshere-page'       => 'Tasna:',
-'whatlinkshere-backlink'   => '← $1',
 'linkshere'                => "Tasnawinad ar slkamnt i '''[[:$1]]''':",
 'nolinkshere'              => "Ur llant tasniwin li izdin d '''[[:$1]]'''.",
 'nolinkshere-ns'           => "Ur tlla kra n tasna izdin d  '''[[:$1]]''' ɣ tɣult l-ittuystayn.",
@@ -1230,7 +1224,7 @@ Wiyyaḍ raggis ḥbun s ɣiklli sttin kkan gantn.
 
 # External editor support
 'edit-externally'      => 'Bddl asdaw ad s wasnas abrrani',
-'edit-externally-help' => '(Ẓṛ [http://www.mediawiki.org/wiki/Manual:External_editors/fr les instructions d’installation] bac ad taf uggar n inɣmisn)',
+'edit-externally-help' => '(Ẓṛ [//www.mediawiki.org/wiki/Manual:External_editors/fr les instructions d’installation] bac ad taf uggar n inɣmisn)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'kraygat (kullu)',

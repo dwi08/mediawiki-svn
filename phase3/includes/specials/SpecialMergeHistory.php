@@ -81,15 +81,8 @@ class SpecialMergeHistory extends SpecialPage {
 	}
 
 	public function execute( $par ) {
-		$user = $this->getUser();
-		if( !$this->userCanExecute( $user ) ) {
-			$this->displayRestrictionError();
-			return;
-		}
-
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkPermissions();
+		$this->checkReadOnly();
 
 		$this->loadRequestParams();
 
@@ -167,9 +160,6 @@ class SpecialMergeHistory extends SpecialPage {
 	}
 
 	private function showHistory() {
-		$out = $this->getOutput();
-		$out->setPageTitle( wfMsg( 'mergehistory' ) );
-
 		$this->showMergeForm();
 
 		# List all stored revisions
@@ -178,6 +168,7 @@ class SpecialMergeHistory extends SpecialPage {
 		);
 		$haveRevisions = $revisions && $revisions->getNumRows() > 0;
 
+		$out = $this->getOutput();
 		$titleObj = $this->getTitle();
 		$action = $titleObj->getLocalURL( array( 'action' => 'submit' ) );
 		# Start the form here
@@ -244,7 +235,7 @@ class SpecialMergeHistory extends SpecialPage {
 		$misc .= Html::hidden( 'destID', $this->mDestObj->getArticleID() );
 		$misc .= Html::hidden( 'target', $this->mTarget );
 		$misc .= Html::hidden( 'dest', $this->mDest );
-		$misc .= Html::hidden( 'wpEditToken', $this->getUser()->editToken() );
+		$misc .= Html::hidden( 'wpEditToken', $this->getUser()->getEditToken() );
 		$misc .= Xml::closeElement( 'form' );
 		$out->addHTML( $misc );
 
@@ -452,8 +443,8 @@ class MergeHistoryPager extends ReverseChronologicalPager {
 		# Give some pointers to make (last) links
 		$this->mForm->prevId = array();
 		foreach ( $this->mResult as $row ) {
-			$batch->addObj( Title::makeTitleSafe( NS_USER, $row->rev_user_text ) );
-			$batch->addObj( Title::makeTitleSafe( NS_USER_TALK, $row->rev_user_text ) );
+			$batch->addObj( Title::makeTitleSafe( NS_USER, $row->user_name ) );
+			$batch->addObj( Title::makeTitleSafe( NS_USER_TALK, $row->user_name ) );
 
 			$rev_id = isset( $rev_id ) ? $rev_id : $row->rev_id;
 			if( $rev_id > $row->rev_id ) {
@@ -479,16 +470,14 @@ class MergeHistoryPager extends ReverseChronologicalPager {
 	function getQueryInfo() {
 		$conds = $this->mConds;
 		$conds['rev_page'] = $this->articleID;
-		$conds[] = 'page_id = rev_page';
 		$conds[] = "rev_timestamp < {$this->maxTimestamp}";
 		return array(
-			'tables' => array( 'revision', 'page' ),
-			'fields' => array(
-				'rev_minor_edit', 'rev_timestamp', 'rev_user', 'rev_user_text',
-				'rev_comment', 'rev_id', 'rev_page', 'rev_parent_id',
-				'rev_text_id', 'rev_len', 'rev_deleted'
-			),
-			'conds' => $conds
+			'tables' => array( 'revision', 'page', 'user' ),
+			'fields' => array_merge( Revision::selectFields(), Revision::selectUserFields() ),
+			'conds'  => $conds,
+			'join_conds' => array(
+				'page' => Revision::pageJoinCond(),
+				'user' => Revision::userJoinCond() )
 		);
 	}
 

@@ -14,6 +14,7 @@
  * @author Crochet.david
  * @author Csisc
  * @author Damouns
+ * @author DavidL
  * @author Delhovlyn
  * @author Dereckson
  * @author Diti
@@ -387,8 +388,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Afficher le nombre d’utilisateurs qui suivent cette page',
 'tog-oldsig'                  => 'Signature existante :',
 'tog-fancysig'                => 'Traiter la signature comme du wikitexte (sans lien automatique)',
-'tog-externaleditor'          => 'Utiliser par défaut un éditeur de texte externe (pour les utilisateurs avancés, nécessite des réglages spécifiques sur votre ordinateur. [http://www.mediawiki.org/wiki/Manual:External_editors/fr Plus d’informations].)',
-'tog-externaldiff'            => 'Utiliser un comparateur externe par défaut (pour les utilisateurs avancés, nécessite des réglages sur votre ordinateur. [http://www.mediawiki.org/wiki/Manual:External_editors/fr Plus d’informations].)',
+'tog-externaleditor'          => 'Utiliser par défaut un éditeur de texte externe (pour les utilisateurs avancés, nécessite des réglages spécifiques sur votre ordinateur. [//www.mediawiki.org/wiki/Manual:External_editors/fr Plus d’informations].)',
+'tog-externaldiff'            => 'Utiliser un comparateur externe par défaut (pour les utilisateurs avancés, nécessite des réglages sur votre ordinateur. [//www.mediawiki.org/wiki/Manual:External_editors/fr Plus d’informations].)',
 'tog-showjumplinks'           => 'Activer les liens « navigation » et « recherche » en haut de page',
 'tog-uselivepreview'          => 'Utiliser l’aperçu rapide (nécessite JavaScript) (expérimental)',
 'tog-forceeditsummary'        => 'M’avertir lorsque je n’ai pas spécifié de résumé de modification',
@@ -714,6 +715,7 @@ Veuillez le signaler à un [[Special:ListUsers/sysop|administrateur]] sans oubli
 'badarticleerror'      => 'Cette action ne peut pas être effectuée sur cette page.',
 'cannotdelete'         => 'Impossible de supprimer la page ou le fichier « $1 ».
 La suppression a peut-être déjà été effectuée par quelqu’un d’autre.',
+'cannotdelete-title'   => 'Impossible de supprimer la page « $1 »',
 'badtitle'             => 'Mauvais titre',
 'badtitletext'         => 'Le titre de la page demandée est invalide, vide, ou il s’agit d’un titre inter-langue ou inter-projet mal lié. Il contient peut-être un ou plusieurs caractères qui ne peuvent pas être utilisés dans les titres.',
 'perfcached'           => 'Les données suivantes sont en cache et peuvent ne pas être à jour.',
@@ -723,14 +725,15 @@ La suppression a peut-être déjà été effectuée par quelqu’un d’autre.',
 Fonction : $1<br />
 Requête : $2',
 'viewsource'           => 'Voir le texte source',
-'viewsourcefor'        => 'pour $1',
+'viewsource-title'     => 'Voir la source de $1',
 'actionthrottled'      => 'Action limitée',
-'actionthrottledtext'  => 'Pour lutter contre les pourriels, la fréquence d’exécution de cette action est limitée dans un laps de temps assez court, et vous avez dépassé cette limite.
-Veuillez essayer de nouveau dans quelques minutes.',
+'actionthrottledtext'  => 'Pour lutter contre les pourriels, l’utilisation de cette action est limitée à un certain nombre de fois dans un laps de temps assez court. Il s’avère que vous avez dépassé cette limite.
+Essayez à nouveau dans quelques minutes.',
 'protectedpagetext'    => 'Cette page a été protégée pour empêcher sa modification.',
 'viewsourcetext'       => 'Vous pouvez voir et copier le contenu de la page :',
+'viewyourtext'         => "Vous pouvez voir et copier le contenu de '''vos modifications''' à cette page :",
 'protectedinterface'   => 'Cette page fournit du texte d’interface pour le logiciel et est protégée pour éviter les abus.',
-'editinginterface'     => "'''Attention :''' vous êtes en train de modifier une page utilisée pour créer le texte de l’interface du logiciel. Les changements se répercuteront, selon le contexte, sur toutes ou certaines pages visibles par les autres utilisateurs. Pour les traductions, nous vous invitons à utiliser le projet MediaWiki d’internationalisation des messages [http://translatewiki.net/wiki/Main_Page?setlang=fr translatewiki.net].",
+'editinginterface'     => "'''Attention :''' vous êtes en train de modifier une page utilisée pour créer le texte de l’interface du logiciel. Les changements se répercuteront, selon le contexte, sur toutes ou certaines pages visibles par les autres utilisateurs. Pour les traductions, nous vous invitons à utiliser le projet MediaWiki d’internationalisation des messages [//translatewiki.net/wiki/Main_Page?setlang=fr translatewiki.net].",
 'sqlhidden'            => '(Requête SQL cachée)',
 'cascadeprotected'     => 'Cette page est protégée car elle est incluse par {{PLURAL:$1|la page suivante, qui a été protégée|les pages suivantes, qui ont été protégées}} avec l’option « protection en cascade » activée :
 $2',
@@ -973,9 +976,6 @@ Notez que vous ne pourrez utiliser la fonctionnalité d’envoi de courriel que 
 Votre adresse IP actuelle est $3, et le numéro de blocage est $5.
 Veuillez préciser ces indications dans toutes les requêtes que vous ferez.",
 'blockednoreason'                  => 'aucune raison donnée',
-'blockedoriginalsource'            => "Le code source de  '''$1''' est indiqué ci-dessous :",
-'blockededitsource'                => "Le contenu de '''vos modifications''' apportées à '''$1''' est indiqué ci-dessous :",
-'whitelistedittitle'               => 'Connexion nécessaire pour modifier le contenu',
 'whitelistedittext'                => 'Vous devez être $1 pour avoir la permission de modifier le contenu.',
 'confirmedittext'                  => 'Vous devez confirmer votre adresse de courriel avant de modifier les pages.
 Veuillez entrer et valider votre adresse de courriel dans vos [[Special:Preferences|préférences]].',
@@ -1099,10 +1099,10 @@ Il semble qu’elle ait été supprimée.',
 Elle existe déjà.',
 
 # Parser/template warnings
-'expensive-parserfunction-warning'        => 'Attention : cette page contient de trop nombreux appels à des fonctions coûteuses du parseur.
+'expensive-parserfunction-warning'        => 'Attention : cette page contient de trop nombreux appels à des fonctions coûteuses de l’analyseur syntaxique.
 
 Il devrait y avoir moins de $2 appel{{PLURAL:$2||s}}, alors qu’il y en a maintenant $1.',
-'expensive-parserfunction-category'       => 'Pages avec trop d’appels dispendieux de fonctions parseurs',
+'expensive-parserfunction-category'       => 'Pages avec trop d’appels dispendieux de fonctions de l’analyseur syntaxique',
 'post-expand-template-inclusion-warning'  => 'Attention : Cette page contient trop d’inclusions de modèles. Certaines inclusions ne seront pas effectuées.',
 'post-expand-template-inclusion-category' => 'Pages contenant trop d’inclusions de modèles',
 'post-expand-template-argument-warning'   => 'Attention : Cette page contient au moins un paramètre de modèle dont l’inclusion est rendue impossible. Après extension, celui-ci aurait produit un résultat trop long, il n’a donc pas été inclus.',
@@ -1627,6 +1627,7 @@ Elle ne doit pas dépasser $1 caractère{{PLURAL:$1||s}}.',
 'action-suppressionlog'       => 'voir ce journal privé',
 'action-block'                => 'bloquer en écriture cet utilisateur',
 'action-protect'              => 'modifier les niveaux de protection pour cette page',
+'action-rollback'             => 'annuler rapidement les modifications du dernier utilisateur qui a modifié une page donnée',
 'action-import'               => 'importer cette page à partir d’un autre wiki',
 'action-importupload'         => 'importer cette page à partir d’un fichier',
 'action-patrol'               => 'marquer la modification des autres comme relue',
@@ -1849,10 +1850,10 @@ Il ne peut pas être correctement vérifé pour la sécurité.',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Accès refusé',
-'img-auth-nopathinfo'       => 'PATH_INFO manquant.
+'img-auth-nopathinfo'       => "PATH_INFO manquant.
 Votre serveur n’est pas paramétré pour passer cette information.
 Il fonctionne peut-être en CGI et ne supporte pas img_auth.
-Consultez http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+[//www.mediawiki.org/wiki/Manual:Image_Authorization Voyez les droits d'image.]",
 'img-auth-notindir'         => "Le chemin demandé n’est pas le répertoire d'import configuré.",
 'img-auth-badtitle'         => 'Impossible de construire un titre valide à partir de « $1 ».',
 'img-auth-nologinnWL'       => 'Vous n’êtes pas connecté et « $1 » n’est pas dans la liste blanche.',
@@ -1952,23 +1953,24 @@ Sa description sur sa [$2 page de description] est affichée ci-dessous.',
 'filerevert-badversion'     => 'Il n’y a pas localement de version antérieure du fichier qui porte la date indiquée.',
 
 # File deletion
-'filedelete'                  => 'Supprimer $1',
-'filedelete-legend'           => 'Supprimer le fichier',
-'filedelete-intro'            => "Vous êtes sur le point de supprimer '''[[Media:$1|$1]]''' ainsi que tout son historique.",
-'filedelete-intro-old'        => "Vous êtes en train d’effacer la version de '''[[Media:$1|$1]]''' du [$4 $2 à $3].",
-'filedelete-comment'          => 'Motif :',
-'filedelete-submit'           => 'Supprimer',
-'filedelete-success'          => "'''$1''' a été supprimé.",
-'filedelete-success-old'      => "La version de '''[[Media:$1|$1]]''' du $2 à $3 a été supprimée.",
-'filedelete-nofile'           => "'''$1''' n’existe pas.",
-'filedelete-nofile-old'       => "Il n’existe aucune version archivée de '''$1''' avec les attributs indiqués.",
-'filedelete-otherreason'      => 'Motif autre / supplémentaire :',
-'filedelete-reason-otherlist' => 'Autre motif',
-'filedelete-reason-dropdown'  => '* Motifs fréquents de suppression de fichiers
+'filedelete'                   => 'Supprimer $1',
+'filedelete-legend'            => 'Supprimer le fichier',
+'filedelete-intro'             => "Vous êtes sur le point de supprimer '''[[Media:$1|$1]]''' ainsi que tout son historique.",
+'filedelete-intro-old'         => "Vous êtes en train d’effacer la version de '''[[Media:$1|$1]]''' du [$4 $2 à $3].",
+'filedelete-comment'           => 'Motif :',
+'filedelete-submit'            => 'Supprimer',
+'filedelete-success'           => "'''$1''' a été supprimé.",
+'filedelete-success-old'       => "La version de '''[[Media:$1|$1]]''' du $2 à $3 a été supprimée.",
+'filedelete-nofile'            => "'''$1''' n’existe pas.",
+'filedelete-nofile-old'        => "Il n’existe aucune version archivée de '''$1''' avec les attributs indiqués.",
+'filedelete-otherreason'       => 'Motif autre / supplémentaire :',
+'filedelete-reason-otherlist'  => 'Autre motif',
+'filedelete-reason-dropdown'   => '* Motifs fréquents de suppression de fichiers
 ** Violation du droit d’auteur
 ** Fichier dupliqué',
-'filedelete-edit-reasonlist'  => 'Modifier les motifs fréquents de suppression',
-'filedelete-maintenance'      => 'La suppression et restauration de fichiers est temporairement désactivée durant la maintenance.',
+'filedelete-edit-reasonlist'   => 'Modifier les motifs fréquents de suppression',
+'filedelete-maintenance'       => 'La suppression et restauration de fichiers est temporairement désactivée durant la maintenance.',
+'filedelete-maintenance-title' => 'Impossible de supprimer le fichier',
 
 # MIME search
 'mimesearch'         => 'Recherche par type de contenu MIME',
@@ -2018,7 +2020,7 @@ N’oubliez pas de vérifier s’il n’y a pas d’autres liens vers les modèl
 'statistics-users-active-desc' => 'Utilisateurs ayant fait au moins une action durant {{PLURAL:$1|le dernier jours|les $1 derniers jours}}',
 'statistics-mostpopular'       => 'Pages les plus consultées',
 
-'disambiguations'      => 'Pages d’homonymie',
+'disambiguations'      => 'Pages ayant des liens vers des pages d’homonymie',
 'disambiguationspage'  => 'Template:Homonymie',
 'disambiguations-text' => "Les pages suivantes comportent un lien vers une '''page d’homonymie'''.
 Ces liens ambigus devraient plutôt pointer vers le bon article.<br />
@@ -2091,7 +2093,7 @@ Les entrées <del>barrées</del> ont été résolues.',
 'listusers-editsonly'     => 'Ne montrer que les utilisateurs ayant au moins une contribution',
 'listusers-creationsort'  => 'Trier par date de création',
 'usereditcount'           => '$1 modification{{PLURAL:$1||s}}',
-'usercreated'             => 'Créé le $1 à $2',
+'usercreated'             => '{{GENDER:$3|Créé}} le $1 à $2',
 'newpages'                => 'Nouvelles pages',
 'newpages-username'       => 'Nom d’utilisateur :',
 'ancientpages'            => 'Pages les plus anciennement modifiées',
@@ -2123,7 +2125,7 @@ Veuillez noter que d’autres sites peuvent avoir un lien direct vers un fichier
 'log'                  => 'Journaux d’opérations',
 'all-logs-page'        => 'Tous les journaux publics',
 'alllogstext'          => 'Affichage combiné de tous les journaux disponibles sur {{SITENAME}}.<br />
-Vous pouvez restreindre la vue en sélectionnant un type de journal, un nom d’utilisateur ou une page affectée (les deux derniers étant sensibles à la casse).',
+Vous pouvez personnaliser l’affichage en sélectionnant le type de journal, le nom d’utilisateur ou la page concernée (ces deux derniers étant sensibles à la casse).',
 'logempty'             => 'Aucune opération correspondante dans les journaux.',
 'log-title-wildcard'   => 'Chercher parmi les titres commençant par ce texte',
 
@@ -2159,12 +2161,13 @@ Voyez aussi [[Special:WantedCategories|les catégories demandées]].',
 'sp-deletedcontributions-contribs' => 'contributions',
 
 # Special:LinkSearch
-'linksearch'       => 'Liens externes',
+'linksearch'       => 'Recherche de liens externes',
 'linksearch-pat'   => 'Expression recherchée :',
 'linksearch-ns'    => 'Espace de noms :',
 'linksearch-ok'    => 'Rechercher',
-'linksearch-text'  => 'Des caractères « jokers » peuvent être utilisés, par exemple <code>*.wikipedia.org</code>.<br />
-Protocoles reconnus : <tt>$1</tt>.',
+'linksearch-text'  => 'Des caractères jokers comme "*.wikipedia.org" peuvent être utilisés.
+Ils nécessitent au moins un domaine de niveau supérieur, par exemple "*.org".<br />
+Protocoles reconnus : <tt>$1</tt> (n\'ajoutez aucun de ceux-ci dans votre recherche).',
 'linksearch-line'  => '$1 est lié depuis $2',
 'linksearch-error' => 'Les caractères jokers ne peuvent être utilisés qu’au début du nom de domaine de l’hôte.',
 
@@ -2267,7 +2270,7 @@ L’adresse électronique que vous avez indiquée dans [[Special:Preferences|vos
 'watchmethod-list'     => 'vérification des pages suivies pour y trouver des modifications récentes',
 'watchlistcontains'    => 'Votre liste de suivi référence $1 page{{PLURAL:$1||s}}.',
 'iteminvalidname'      => 'Problème avec l’élément « $1 » : le nom est invalide.',
-'wlnote'               => "Ci-dessous {{PLURAL:$1|figure la dernière modification effectuée|figurent les '''$1''' dernières modifications effectuées}} durant {{PLURAL:$2|la dernière heure|les '''$2''' dernières heures}}.",
+'wlnote'               => "Ci-dessous {{PLURAL:$1|figure la dernière modification effectuée|figurent les '''$1''' dernières modifications effectuées}} durant {{PLURAL:$2|la dernière heure|les '''$2''' dernières heures}}, depuis $3, $4.",
 'wlshowlast'           => 'Montrer les dernières $1 heures, les derniers $2 jours ou bien $3',
 'watchlist-options'    => 'Options de la liste de suivi',
 
@@ -2381,7 +2384,10 @@ Consultez la [[Special:ProtectedPages|liste des pages protégées]] pour la list
 'unprotectedarticle'          => 'a supprimé la protection de « [[$1]] »',
 'movedarticleprotection'      => 'a déplacé les paramètres de protection depuis « [[$2]] » vers « [[$1]] »',
 'protect-title'               => 'Changer le niveau de protection pour « $1 »',
+'protect-title-notallowed'    => 'Voir le niveau de protection de « $1 »',
 'prot_1movedto2'              => '[[$1]] renommé en [[$2]]',
+'protect-badnamespace-title'  => 'Espace de noms non protégeable',
+'protect-badnamespace-text'   => 'Les pages dans cet espace de noms ne peuvent pas être protégées.',
 'protect-legend'              => 'Confirmer la protection',
 'protectcomment'              => 'Motif :',
 'protectexpiry'               => 'Date d’expiration :',
@@ -2472,6 +2478,7 @@ un autre utilisateur a probablement déjà restauré la page.',
 
 Consultez le [[Special:Log/delete|journal des suppressions]] pour obtenir la liste des récentes suppressions et restaurations.",
 'undelete-header'              => 'Consultez le [[Special:Log/delete|journal des suppressions]] pour lister les pages récemment supprimées.',
+'undelete-search-title'        => 'Rechercher les pages supprimées',
 'undelete-search-box'          => 'Rechercher des pages supprimées',
 'undelete-search-prefix'       => 'Montrer les pages commençant par :',
 'undelete-search-submit'       => 'Rechercher',
@@ -2481,6 +2488,7 @@ Consultez le [[Special:Log/delete|journal des suppressions]] pour obtenir la lis
 'undelete-cleanup-error'       => 'Erreur lors de la suppression du fichier d’archive inutilisé « $1 ».',
 'undelete-missing-filearchive' => 'Impossible de restaurer le fichier d’archive avec l’identifiant $1 parce qu’il n’est pas dans la base de données.
 Il a peut-être déjà été restauré.',
+'undelete-error'               => "Page d'erreur d'annulation",
 'undelete-error-short'         => 'Erreur lors de la restauration du fichier : $1',
 'undelete-error-long'          => 'Des erreurs ont été rencontrées lors de la restauration du fichier :
 
@@ -2552,7 +2560,6 @@ La dernière entrée du journal des blocages est indiquée ci-dessous à titre d
 'blockiptext'                     => 'Utilisez le formulaire ci-dessous pour bloquer l’accès aux modifications faites à partir d’une adresse IP spécifique ou d’un nom d’utilisateur.
 Une telle mesure ne devrait être prise que pour prévenir le vandalisme et en accord avec les [[{{MediaWiki:Policy-url}}|règles internes]].
 Donnez ci-dessous un motif précis (par exemple en citant les pages qui ont été vandalisées).',
-'ipaddress'                       => 'Adresse IP :',
 'ipadressorusername'              => 'Adresse IP ou nom d’utilisateur :',
 'ipbexpiry'                       => 'Durée avant expiration :',
 'ipbreason'                       => 'Motif :',
@@ -2757,7 +2764,7 @@ Veuillez en choisir un autre.',
 La page de destination « [[:$1]] » existe déjà.
 Êtes-vous certain{{GENDER:||e|}} de vouloir la supprimer pour permettre ce renommage ?',
 'delete_and_move_confirm'      => 'Oui, supprimer la page de destination',
-'delete_and_move_reason'       => 'Page supprimée pour permettre le renommage',
+'delete_and_move_reason'       => 'Page supprimée pour permettre le renommage depuis "[[$1]]"',
 'selfmove'                     => 'Les titres d’origine et de destination sont les mêmes ;
 impossible de renommer une page sur elle-même.',
 'immobile-source-namespace'    => 'Vous ne pouvez pas renommer les pages dans l’espace de noms « $1 »',
@@ -2789,6 +2796,7 @@ Dans ce dernier cas vous pouvez aussi utiliser un lien, tel que [[{{#Special:Exp
 'exportcuronly'     => 'Exporter uniquement la version courante, sans l’historique complet',
 'exportnohistory'   => "----
 '''Note :''' l’exportation de l’historique complet des pages à l’aide de ce formulaire a été désactivée pour des raisons de performance.",
+'exportlistauthors' => 'Inclure une liste complète des contributeurs pour chaque page',
 'export-submit'     => 'Exporter',
 'export-addcattext' => 'Ajouter les pages de la catégorie :',
 'export-addcat'     => 'Ajouter',
@@ -2804,7 +2812,7 @@ Dans ce dernier cas vous pouvez aussi utiliser un lien, tel que [[{{#Special:Exp
 'allmessagesdefault'            => 'Message par défaut',
 'allmessagescurrent'            => 'Message actuel',
 'allmessagestext'               => 'Ceci est la liste des messages disponibles dans l’espace MediaWiki.
-Veuillez visiter la [http://www.mediawiki.org/wiki/Localisation Localisation de MediaWiki] et [http://translatewiki.net/ translatewiki.net] si vous désirez contribuer à la localisation générique de MediaWiki.',
+Veuillez visiter la [//www.mediawiki.org/wiki/Localisation Localisation de MediaWiki] et [//translatewiki.net/ translatewiki.net] si vous désirez contribuer à la localisation générique de MediaWiki.',
 'allmessagesnotsupportedDB'     => "Cette page '''{{ns:special}}:Allmessages''' n’est pas utilisable car '''\$wgUseDatabaseMessages''' a été désactivé.",
 'allmessages-filter-legend'     => 'Filtrer',
 'allmessages-filter'            => 'Filtrer par état de modification :',
@@ -3511,7 +3519,7 @@ Les autres liens sur la même ligne sont considérés comme des exceptions, par 
 
 # External editor support
 'edit-externally'      => 'Modifier ce fichier en utilisant une application externe',
-'edit-externally-help' => '(Consulter [http://www.mediawiki.org/wiki/Manual:External_editors/fr les instructions d’installation] pour plus d’informations)',
+'edit-externally-help' => '(Consulter [//www.mediawiki.org/wiki/Manual:External_editors/fr les instructions d’installation] pour plus d’informations)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tout',
@@ -3704,7 +3712,7 @@ Vous pouvez aussi [[Special:EditWatchlist|utiliser l’éditeur normal]].',
 'hijri-calendar-m11' => 'Dhu al-Qi’dah',
 
 # Signatures
-'signature' => '[[{{ns:user}}:$1|$2]] <sup>([[{{ns:user_talk}}:$1|discussion]])</sup>',
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|discussion]])',
 
 # Core parser functions
 'unknown_extension_tag' => 'Balise d’extension « $1 » inconnue',
@@ -3714,7 +3722,7 @@ Vous pouvez aussi [[Special:EditWatchlist|utiliser l’éditeur normal]].',
 'version'                       => 'Version',
 'version-extensions'            => 'Extensions installées',
 'version-specialpages'          => 'Pages spéciales',
-'version-parserhooks'           => 'Greffons du parseur',
+'version-parserhooks'           => 'Greffons de l’analyseur syntaxique',
 'version-variables'             => 'Variables',
 'version-antispam'              => 'Prévention du pourriel',
 'version-skins'                 => 'Habillages',
@@ -3722,19 +3730,19 @@ Vous pouvez aussi [[Special:EditWatchlist|utiliser l’éditeur normal]].',
 'version-mediahandlers'         => 'Manipulateurs de médias',
 'version-hooks'                 => 'Greffons',
 'version-extension-functions'   => 'Fonctions d’extension internes',
-'version-parser-extensiontags'  => 'Balises étendues du parseur',
-'version-parser-function-hooks' => 'Fonctions étendues du parseur',
+'version-parser-extensiontags'  => 'Balises étendues de l’analyseur syntaxique',
+'version-parser-function-hooks' => 'Fonctions étendues de l’analyseur syntaxique',
 'version-hook-name'             => 'Nom du greffon',
 'version-hook-subscribedby'     => 'Abonnés :',
 'version-version'               => '(Version $1)',
 'version-license'               => 'Licence',
-'version-poweredby-credits'     => "Ce wiki fonctionne grâce à '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Ce wiki fonctionne grâce à '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'autres',
 'version-license-info'          => "MediaWiki est un logiciel libre, vous pouvez le redistribuer et / ou le modifier selon les termes de la Licence Publique Générale GNU telle que publiée par la Free Software Foundation ; soit la version 2 de la Licence, ou (à votre choix) toute version ultérieure.
 
 MediaWiki est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE, sans même la garantie implicite de COMMERCIALISATION ou D'ADAPTATION A UN USAGE PARTICULIER. Voir la Licence Publique Générale GNU pour plus de détails.
 
-Vous devriez avoir reçu [{{SERVER}}{{SCRIPTPATH}}/COPYING une copie de la Licence Publique Générale GNU] avec ce programme, sinon, écrivez à la Free Software Foundation, Inc, 51, rue Franklin, cinquième étage, Boston, MA 02110-1301, États-Unis ou [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html lisez-la en ligne].",
+Vous devriez avoir reçu [{{SERVER}}{{SCRIPTPATH}}/COPYING une copie de la Licence Publique Générale GNU] avec ce programme, sinon, écrivez à la Free Software Foundation, Inc, 51, rue Franklin, cinquième étage, Boston, MA 02110-1301, États-Unis ou [//www.gnu.org/licenses/old-licenses/gpl-2.0.html lisez-la en ligne].",
 'version-software'              => 'Logiciels installés',
 'version-software-product'      => 'Produit',
 'version-software-version'      => 'Version',

@@ -444,7 +444,6 @@ Scēawa þīne wrītunge eft, oþþe brūc þā cartan þe is hērunder tō [[Sp
 'showdiff'                         => 'Hƿearfas sēon',
 'summary-preview'                  => 'Scortnesse forescēaƿe:',
 'blockednoreason'                  => 'nānu racu ȝiefen',
-'whitelistedittitle'               => 'Inmeldunge behōfed to ādihtenne',
 'whitelistedittext'                => 'Þū scealt $1 to ādihtenne sīdan.',
 'nosuchsectiontitle'               => 'Ne mæȝ dǣl findan',
 'loginreqtitle'                    => 'Inmeldung ābeden',
@@ -1207,7 +1206,7 @@ Bidde cēos ōðerne naman.',
 'exif-gpsdirection-t' => 'Sōþ rihtung',
 
 # External editor support
-'edit-externally-help' => '(Þā [http://www.mediawiki.org/wiki/Manual:External_editors ȝearƿunga tyhtas] sēon for mā cȳþþe)',
+'edit-externally-help' => '(Þā [//www.mediawiki.org/wiki/Manual:External_editors ȝearƿunga tyhtas] sēon for mā cȳþþe)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'eall',

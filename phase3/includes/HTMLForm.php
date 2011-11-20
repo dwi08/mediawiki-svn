@@ -33,10 +33,10 @@
  *	'help-message'        -- message key for a message to use as a help text.
  *	                         can be an array of msg key and then parameters to
  *	                         the message.
- *                           Overwrites 'help-messages'.
- *  'help-messages'       -- array of message key. As above, each item can
- *                           be an array of msg key and then parameters.
- *                           Overwrites 'help-message'.
+ *	                         Overwrites 'help-messages'.
+ *	'help-messages'       -- array of message key. As above, each item can
+ *	                         be an array of msg key and then parameters.
+ *	                         Overwrites 'help-message'.
  *	'required'            -- passed through to the object, indicating that it
  *	                         is a required field.
  *	'size'                -- the length of text fields
@@ -53,7 +53,7 @@
  *
  * TODO: Document 'section' / 'subsection' stuff
  */
-class HTMLForm {
+class HTMLForm extends ContextSource {
 
 	# A mapping of 'type' inputs onto standard HTMLFormField subclasses
 	static $typeMappings = array(
@@ -81,7 +81,10 @@ class HTMLForm {
 	);
 
 	protected $mMessagePrefix;
+
+	/** @var HTMLFormField[] */
 	protected $mFlatFields;
+
 	protected $mFieldTree;
 	protected $mShowReset = false;
 	public $mFieldData;
@@ -102,7 +105,6 @@ class HTMLForm {
 	protected $mSubmitText;
 	protected $mSubmitTooltip;
 
-	protected $mContext; // <! IContextSource
 	protected $mTitle;
 	protected $mMethod = 'post';
 
@@ -111,6 +113,15 @@ class HTMLForm {
 	protected $mButtons = array();
 
 	protected $mWrapperLegend = false;
+	
+	/**
+	 * If true, sections that contain both fields and subsections will
+	 * render their subsections before their fields.
+	 * 
+	 * Subclasses may set this to false to render subsections after fields
+	 * instead.
+	 */
+	protected $mSubSectionBeforeFields = true;
 
 	/**
 	 * Build a new HTMLForm from an array of field attributes
@@ -121,7 +132,7 @@ class HTMLForm {
 	 */
 	public function __construct( $descriptor, /*IContextSource*/ $context = null, $messagePrefix = '' ) {
 		if( $context instanceof IContextSource ){
-			$this->mContext = $context;
+			$this->setContext( $context );
 			$this->mTitle = false; // We don't need them to set a title
 			$this->mMessagePrefix = $messagePrefix;
 		} else {
@@ -307,7 +318,16 @@ class HTMLForm {
 	 * Set the introductory message, overwriting any existing message.
 	 * @param $msg String complete text of message to display
 	 */
-	function setIntro( $msg ) { $this->mPre = $msg; }
+	function setIntro( $msg ) {
+		$this->setPreText( $msg );
+	}
+
+	/**
+	 * Set the introductory message, overwriting any existing message.
+	 * @since 1.19
+	 * @param $msg String complete text of message to display
+	 */
+	function setPreText( $msg ) { $this->mPre = $msg; }
 
 	/**
 	 * Add introductory text.
@@ -332,6 +352,20 @@ class HTMLForm {
 	}
 
 	/**
+	 * Set header text, inside the form.
+	 * @since 1.19
+	 * @param $msg String complete text of message to display
+	 * @param $section The section to add the header to
+	 */
+	function setHeaderText( $msg, $section = null ) {
+		if ( is_null( $section ) ) {
+			$this->mHeader = $msg;
+		} else {
+			$this->mSectionHeaders[$section] = $msg;
+		}
+	}
+
+	/**
 	 * Add footer text, inside the form.
 	 * @param $msg String complete text of message to display
 	 * @param $section string The section to add the footer text to
@@ -348,10 +382,30 @@ class HTMLForm {
 	}
 
 	/**
+	 * Set footer text, inside the form.
+	 * @since 1.19
+	 * @param $msg String complete text of message to display
+	 * @param $section string The section to add the footer text to
+	 */
+	function setFooterText( $msg, $section = null ) {
+		if ( is_null( $section ) ) {
+			$this->mFooter = $msg;
+		} else {
+			$this->mSectionFooters[$section] = $msg;
+		}
+	}
+
+	/**
 	 * Add text to the end of the display.
 	 * @param $msg String complete text of message to display
 	 */
 	function addPostText( $msg ) { $this->mPost .= $msg; }
+
+	/**
+	 * Set text at the end of the display.
+	 * @param $msg String complete text of message to display
+	 */
+	function setPostText( $msg ) { $this->mPost = $msg; }
 
 	/**
 	 * Add a hidden field to the output
@@ -439,7 +493,7 @@ class HTMLForm {
 
 		$html = '';
 		if( $this->getMethod() == 'post' ){
-			$html .= Html::hidden( 'wpEditToken', $this->getUser()->editToken(), array( 'id' => 'wpEditToken' ) ) . "\n";
+			$html .= Html::hidden( 'wpEditToken', $this->getUser()->getEditToken(), array( 'id' => 'wpEditToken' ) ) . "\n";
 			$html .= Html::hidden( 'title', $this->getTitle()->getPrefixedText() ) . "\n";
 		}
 
@@ -512,6 +566,7 @@ class HTMLForm {
 
 	/**
 	 * Get the whole body of the form.
+	 * @return String
 	 */
 	function getBody() {
 		return $this->displaySection( $this->mFieldTree );
@@ -577,6 +632,15 @@ class HTMLForm {
 	}
 
 	/**
+	 * Set the text for the submit button to a message
+	 * @since 1.19
+	 * @param $msg String message key
+	 */
+	public function setSubmitTextMsg( $msg ) {
+		return $this->setSubmitText( $this->msg( $msg )->escaped() );
+	}
+
+	/**
 	 * Get the text for the submit button, either customised or a default.
 	 * @return unknown_type
 	 */
@@ -615,6 +679,16 @@ class HTMLForm {
 	public function setWrapperLegend( $legend ) { $this->mWrapperLegend = $legend; }
 
 	/**
+	 * Prompt the whole form to be wrapped in a <fieldset>, with
+	 * this message as its <legend> element.
+	 * @since 1.19
+	 * @param $msg String message key
+	 */
+	public function setWrapperLegendMsg( $msg ) {
+		return $this->setWrapperLegend( $this->msg( $msg )->escaped() );
+	}
+
+	/**
 	 * Set the prefix for various default messages
 	 * TODO: currently only used for the <fieldset> legend on forms
 	 * with multiple sections; should be used elsewhre?
@@ -643,36 +717,6 @@ class HTMLForm {
 	}
 
 	/**
-	 * @return IContextSource
-	 */
-	public function getContext(){
-		return $this->mContext instanceof IContextSource
-			? $this->mContext
-			: RequestContext::getMain();
-	}
-
-	/**
-	 * @return OutputPage
-	 */
-	public function getOutput(){
-		return $this->getContext()->getOutput();
-	}
-
-	/**
-	 * @return WebRequest
-	 */
-	public function getRequest(){
-		return $this->getContext()->getRequest();
-	}
-
-	/**
-	 * @return User
-	 */
-	public function getUser(){
-		return $this->getContext()->getUser();
-	}
-
-	/**
 	 * Set the method used to submit the form
 	 * @param $method String
 	 */
@@ -686,9 +730,10 @@ class HTMLForm {
 
 	/**
 	 * TODO: Document
-	 * @param $fields array of fields (either arrays or objects)
+	 * @param $fields array[]|HTMLFormField[] array of fields (either arrays or objects)
 	 * @param $sectionName string ID attribute of the <table> tag for this section, ignored if empty
 	 * @param $fieldsetIDPrefix string ID prefix for the <fieldset> tag of each subsection, ignored if empty
+	 * @return String
 	 */
 	function displaySection( $fields, $sectionName = '', $fieldsetIDPrefix = '' ) {
 		$tableHtml = '';
@@ -739,7 +784,11 @@ class HTMLForm {
 		$tableHtml = Html::rawElement( 'table', $attribs,
 			Html::rawElement( 'tbody', array(), "\n$tableHtml\n" ) ) . "\n";
 
-		return $subsectionHtml . "\n" . $tableHtml;
+		if ( $this->mSubSectionBeforeFields ) {
+			return $subsectionHtml . "\n" . $tableHtml;
+		} else {
+			return $tableHtml . "\n" . $subsectionHtml;
+		}
 	}
 
 	/**
@@ -842,7 +891,7 @@ abstract class HTMLFormField {
 		}
 
 		if ( isset( $this->mValidationCallback ) ) {
-			return call_user_func( $this->mValidationCallback, $value, $alldata );
+			return call_user_func( $this->mValidationCallback, $value, $alldata, $this->mParent );
 		}
 
 		return true;
@@ -850,7 +899,7 @@ abstract class HTMLFormField {
 
 	function filter( $value, $alldata ) {
 		if ( isset( $this->mFilterCallback ) ) {
-			$value = call_user_func( $this->mFilterCallback, $value, $alldata );
+			$value = call_user_func( $this->mFilterCallback, $value, $alldata, $this->mParent );
 		}
 
 		return $value;
@@ -1310,6 +1359,7 @@ class HTMLCheckField extends HTMLFormField {
 	/**
 	 * For a checkbox, the label goes on the right hand side, and is
 	 * added in getInputHTML(), rather than HTMLFormField::getRow()
+	 * @return String
 	 */
 	function getLabel() {
 		return '&#160;';
@@ -1326,7 +1376,10 @@ class HTMLCheckField extends HTMLFormField {
 		}
 
 		// GetCheck won't work like we want for checks.
-		if ( $request->getCheck( 'wpEditToken' ) || $this->mParent->getMethod() != 'post' ) {
+		// Fetch the value in either one of the two following case:
+		// - we have a valid token (form got posted or GET forged by the user)
+		// - checkbox name has a value (false or true), ie is not null
+		if ( $request->getCheck( 'wpEditToken' ) || $request->getVal( $this->mName )!== null ) {
 			// XOR has the following truth table, which is what we want
 			// INVERT VALUE | OUTPUT
 			// true   true  | false
@@ -1700,7 +1753,17 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
 
 		} else {
 			$final = $this->getDefault();
-			$list = $text = '';
+
+			$list = 'other';
+			$text = $final;
+			foreach ( $this->mFlatOptions as $option ) {
+				$match = $option . wfMsgForContent( 'colon-separator' );
+				if( strpos( $text, $match ) === 0 ) {
+					$list = $option;
+					$text = substr( $text, strlen( $match ) );
+					break;
+				}
+			}
 		}
 		return array( $final, $list, $text );
 	}
@@ -1733,6 +1796,14 @@ class HTMLSelectAndOtherField extends HTMLSelectField {
  * Radio checkbox fields.
  */
 class HTMLRadioField extends HTMLFormField {
+	function __construct( $params ) {
+		parent::__construct( $params );
+		if ( isset( $params['flatlist'] ) ) {
+			$this->mClass .= ' mw-htmlform-radio-flatlist';
+		}
+	}
+
+
 	function validate( $value, $alldata ) {
 		$p = parent::validate( $value, $alldata );
 
@@ -1756,6 +1827,8 @@ class HTMLRadioField extends HTMLFormField {
 	/**
 	 * This returns a block of all the radio options, in one cell.
 	 * @see includes/HTMLFormField#getInputHTML()
+	 * @param $value String
+	 * @return String
 	 */
 	function getInputHTML( $value ) {
 		$html = $this->formatOptions( $this->mParams['options'], $value );
@@ -1778,16 +1851,16 @@ class HTMLRadioField extends HTMLFormField {
 				$html .= $this->formatOptions( $info, $value );
 			} else {
 				$id = Sanitizer::escapeId( $this->mID . "-$info" );
-				$html .= Xml::radio(
+				$radio = Xml::radio(
 					$this->mName,
 					$info,
 					$info == $value,
 					$attribs + array( 'id' => $id )
 				);
-				$html .= '&#160;' .
+				$radio .= '&#160;' .
 						Html::rawElement( 'label', array( 'for' => $id ), $label );
 
-				$html .= "<br />\n";
+				$html .= ' ' . Html::rawElement( 'div', array( 'class' => 'mw-htmlform-radio-item' ), $radio );
 			}
 		}
 
@@ -1881,6 +1954,9 @@ class HTMLSubmitField extends HTMLFormField {
 
 	/**
 	 * Button cannot be invalid
+	 * @param $value String
+	 * @param $alldata Array
+	 * @return Bool
 	 */
 	public function validate( $value, $alldata ){
 		return true;
