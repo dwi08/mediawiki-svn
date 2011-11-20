@@ -164,7 +164,7 @@ class FSFileLockManager extends FileLockManager {
 		return $status;
 	}
 
-	function __destruct() {
+	protected function __destruct() {
 		// Make sure remaining files get cleared for sanity
 		foreach ( $this->handles as $key => $handler ) {
 			flock( $handler, LOCK_UN ); // PHP 5.3 will not do this automatically

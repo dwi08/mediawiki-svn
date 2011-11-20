@@ -154,12 +154,25 @@ interface IFileBackend {
 	public function getFileProps( array $params );
 
 	/**
-	 * Get a local copy on dist of the file at a storage path in the backend
+	 * Stream the file that exists at a storage path in the backend.
+	 * Appropriate HTTP headers (Status, Content-Type, Content-Length)
+	 * must be sent on success, while no headers should be sent on failure.
+	 * Implementations should flush the output buffer before sending data.
+	 * $params include:
+	 *      source  : source storage path
+	 * 
+	 * @param Array $params 
+	 * @return Status
+	 */
+	public function streamFile( array $params );
+
+	/**
+	 * Get a local copy on disk of the file at a storage path in the backend
 	 * $params include:
 	 *      source : source storage path
 	 * 
 	 * @param Array $params 
-	 * @return string|null Path to temporary file or null on failure
+	 * @return TempLocalFile|null Temporary file or null on failure
 	 */
 	public function getLocalCopy( array $params );
 
@@ -440,7 +453,8 @@ abstract class FileOp {
  *      overwriteSame : override any existing file at destination
  */
 class FileStoreOp extends FileOp {
-	protected $tmpDestPath; // temp copy of existing destination file
+	/** @var TempLocalFile|null */
+	protected $tmpDestFile; // temp copy of existing destination file
 
 	function doAttempt() {
 		// Create a backup copy of any file that exists at destination
@@ -485,8 +499,8 @@ class FileStoreOp extends FileOp {
 		if ( $this->backend->fileExists( $this->params['dest'] ) ) {
 			if ( $this->params['overwriteDest'] ) {
 				// Create a temporary backup copy...
-				$this->tmpDestPath = $this->getLocalCopy( $this->params['dest'] );
-				if ( $this->tmpDestPath === null ) {
+				$this->tmpDestFile = $this->getLocalCopy( $this->params['dest'] );
+				if ( !$this->tmpDestFile ) {
 					$status->fatal( "Could not backup destination file." );
 					return $status;
 				}
@@ -503,9 +517,9 @@ class FileStoreOp extends FileOp {
 	protected function restoreDest() {
 		$status = Status::newGood();
 		// Restore any file that was at the destination
-		if ( $this->tmpDestPath !== null ) {
+		if ( $this->tmpDestFile ) {
 			$params = array(
-				'source' => $this->tmpDestPath,
+				'source' => $this->tmpDestFile->getPath(),
 				'dest'   => $this->params['dest']
 			);
 			$status = $this->backend->store( $params );

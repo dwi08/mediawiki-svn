@@ -18,7 +18,7 @@ class FSFileBackend extends FileBackend {
 			: 0644;
 	}
 
-	public function store( array $params ) {
+	function store( array $params ) {
 		$status = Status::newGood();
 
 		if ( file_exists( $params['dest'] ) ) {
@@ -54,11 +54,11 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	public function copy( array $params ) {
+	function copy( array $params ) {
 		return $this->store( $params ); // both source and dest are on FS
 	}
 
-	public function move( array $params ) {
+	function move( array $params ) {
 		$status = Status::newGood();
 
 		if ( file_exists( $params['dest'] ) ) {
@@ -92,7 +92,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	public function delete( array $params ) {
+	function delete( array $params ) {
 		$status = Status::newGood();
 
 		if ( !file_exists( $params['source'] ) ) {
@@ -113,7 +113,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	public function concatenate( array $params ) {
+	function concatenate( array $params ) {
 		$status = Status::newGood();
 
 		// Check if the destination file exists and we can't handle that
@@ -196,15 +196,27 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	public function fileExists( array $params ) {
+	function fileExists( array $params ) {
 		return file_exists( $params['source'] );
 	}
 
-	public function getFileProps( array $params ) {
+	function getFileProps( array $params ) {
 		return File::getPropsFromPath( $params['source'] );
 	}
 
-	public function getLocalCopy( array $params ) {
+	function streamFile( array $params ) {
+		$status = Status::newGood();
+
+		$ok = StreamFile::stream( $params['source'], array(), false );
+		if ( !$ok ) {
+			$status->fatal( "Unable to stream file {$params['source']}." );
+			return $status;
+		}
+
+		return $status;
+	}
+
+	function getLocalCopy( array $params ) {
 		// Create a new temporary file...
 		wfSuppressWarnings();
 		$tmpPath = tempnam( wfTempDir(), 'file_localcopy' );
@@ -223,7 +235,7 @@ class FSFileBackend extends FileBackend {
 
 		$this->chmod( $tmpPath );
 
-		return $tmpPath;
+		return new TempLocalFile( $tmpPath );
 	}
 
 	/**

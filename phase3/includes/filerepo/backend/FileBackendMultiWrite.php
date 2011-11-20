@@ -28,9 +28,10 @@ class FileBackendMultiWrite implements IFileBackend {
 
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
+		$this->fileBackends = $config['backends'];
 	}
 
-	public function getName() {
+	function getName() {
 		return $this->name;
 	}
 
@@ -72,32 +73,32 @@ class FileBackendMultiWrite implements IFileBackend {
 		return $status;
 	}
 
-	public function store( array $params ) {
+	function store( array $params ) {
 		$op = array( 'operation' => 'store' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-	public function copy( array $params ) {
+	function copy( array $params ) {
 		$op = array( 'operation' => 'copy' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-	public function move( array $params ) {
+	function move( array $params ) {
 		$op = array( 'operation' => 'move' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-	public function delete( array $params ){
+	function delete( array $params ){
 		$op = array( 'operation' => 'delete' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-	public function concatenate( array $params ){
+	function concatenate( array $params ){
 		$op = array( 'operation' => 'concatenate' ) + $params;
 		return $this->doOperation( array( $op ) );
 	}
 
-	public function fileExists( array $params ) {
+	function fileExists( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {
 				return true;
@@ -105,18 +106,8 @@ class FileBackendMultiWrite implements IFileBackend {
 		}
 		return false;
 	}
-
-	public function getLocalCopy( array $params ) {
-		foreach ( $this->backends as $backend ) {
-			$tmpPath = $backend->getLocalCopy( $params );
-			if ( $tmpPath !== null ) {
-				return $tmpPath;
-			}
-		}
-		return null;
-	}
  
-	public function getFileProps( array $params ) {
+	function getFileProps( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			$props = $backend->getFileProps( $params );
 			if ( $props !== null ) {
@@ -126,7 +117,32 @@ class FileBackendMultiWrite implements IFileBackend {
 		return null;
 	}
 
-	public function lockFiles( array $paths ) {
+	function streamFile( array $params ) {
+		if ( !count( $this->backends ) ) {
+			return Status::newFatal( "No file backends are defined." );
+		}
+		foreach ( $this->backends as $backend ) {
+			$status = $backend->streamFile( $params );
+			if ( $status->isOK() ) {
+				return $status;
+			} else {
+				// @TODO: check if we failed mid-stream and return out if so
+			}
+		}
+		return Status::newFatal( "Could not stream file {$params['source']}." );
+	}
+
+	function getLocalCopy( array $params ) {
+		foreach ( $this->backends as $backend ) {
+			$tmpFile = $backend->getLocalCopy( $params );
+			if ( $tmpFile ) {
+				return $tmpFile;
+			}
+		}
+		return null;
+	}
+
+	function lockFiles( array $paths ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $index => $backend ) {
 			$subStatus = $backend->lockFiles( $paths );
@@ -143,7 +159,7 @@ class FileBackendMultiWrite implements IFileBackend {
 		return $status;
 	}
 
-	public function unlockFiles( array $paths ) {
+	function unlockFiles( array $paths ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
 			$subStatus = $backend->unlockFile( $paths );
