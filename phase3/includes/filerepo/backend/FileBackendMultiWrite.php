@@ -11,13 +11,15 @@
  * implemented in child classes that represent a mutli-write backend.
  * 
  * The order that the backends are defined sets the priority of which
- * backend is read from or written to first.
+ * backend is read from or written to first. Functions like fileExists()
+ * and getFileProps() will return information based on the first backend
+ * that has the file (normally both should have it anyway).
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
  * 
- * Functions like fileExists() and getFileProps() will return information
- * based on the first backend that has the file (normally both should have it anyway).
+ * To avoid excess overhead, set the the highest priority backend to use
+ * a generic FileLockManager and the others to use NullLockManager.
  */
 class FileBackendMultiWrite implements IFileBackend {
 	protected $name;
@@ -46,42 +48,27 @@ class FileBackendMultiWrite implements IFileBackend {
 		}
 		// Attempt each operation; abort on failure...
 		foreach ( $performOps as $index => $transaction ) {
-			$tStatus = $transaction->attempt();
-			if ( !$tStatus->isOk() ) {
-				// merge $tStatus with $status
-				// Revert everything done so far and error out
-				$tStatus = $this->revertOperations( $performOps, $index );
-				// merge $tStatus with $status
+			$subStatus = $transaction->attempt();
+			$status->merge( $subStatus );
+			if ( !$subStatus->isOK() ) { // operation failed?
+				// Revert everything done so far and abort.
+				// Do this by reverting each previous operation in reverse order.
+				$pos = $index - 1; // last one failed; no need to revert()
+				while ( $pos >= 0 ) {
+					$subStatus = $performOps[$pos]->revert();
+					$status->merge( $subStatus );
+					$pos--;
+				}
 				return $status;
 			}
 		}
 		// Finish each operation...
 		foreach ( $performOps as $index => $transaction ) {
-			$tStatus = $transaction->finish();
-			// merge $tStatus with $status
+			$subStatus = $transaction->finish();
+			$status->merge( $subStatus );
 		}
-		return $status;
-	}
-
-	/**
-	 * Revert a series of operations in reverse order.
-	 * If $index is passed, then we revert all items in
-	 * $ops from 0 to $index (inclusive).
-	 * 
-	 * @param $ops Array List of FileOp objects
-	 * @param $index integer
-	 * @return Status
-	 */
-	private function revertOperations( array $ops, $index = false ) {
-		$status = Status::newGood();
-		$pos = ( $index !== false )
-			? $index // use provided index
-			: $pos = count( $ops ) - 1; // last element (or -1)
-		while ( $pos >= 0 ) {
-			$tStatus = $ops[$pos]->revert();
-			// merge $tStatus with $status
-			$pos--;
-		}
+		// Make sure status is OK, despite any finish() fatals
+		$status->setResult( true );
 		return $status;
 	}
 
@@ -139,26 +126,28 @@ class FileBackendMultiWrite implements IFileBackend {
 		return null;
 	}
 
-	public function lockFile( array $path ) {
+	public function lockFiles( array $paths ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $index => $backend ) {
-			$lockStatus = $backend->lockFile( $path );
-			// merge $lockStatus with $status
-			if ( !$lockStatus->isOk() ) {
-				for ( $i=0; $i < $index; $i++ ) {
-					$lockStatus = $this->unlockFile( $path );
-					// merge $lockStatus with $status
+			$subStatus = $backend->lockFiles( $paths );
+			$status->merge( $subStatus );
+			if ( !$subStatus->isOk() ) {
+				// Lock failed: release the locks done so far each backend
+				for ( $i=0; $i < $index; $i++ ) { // don't do backend $index since it failed
+					$subStatus = $backend->unlockFiles( $paths );
+					$status->merge( $subStatus );
 				}
+				return $status;
 			}
 		}
 		return $status;
 	}
 
-	public function unlockFile( array $path ) {
+	public function unlockFiles( array $paths ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$lockStatus = $backend->unlockFile( $path );
-			// merge $lockStatus with $status
+			$subStatus = $backend->unlockFile( $paths );
+			$status->merge( $subStatus );
 		}
 		return $status;
 	}

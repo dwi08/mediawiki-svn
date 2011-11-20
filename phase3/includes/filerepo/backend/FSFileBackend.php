@@ -1,35 +1,42 @@
 <?php
 /**
- * Base class for all file backend classes
- *
  * @file
  * @ingroup FileRepo
  */
 
 /**
- * This class defines the methods as abstract that should be implemented in 
- * child classes if the target store supports the operation.
+ * Class for a file-system based file backend
  */
 class FSFileBackend extends FileBackend {
-	protected $fileMode;
+	protected $fileMode; // file permission mode
 
 	function __construct( array $config ) {
+		$this->name = $config['name'];
+		$this->lockManager = $config['lockManger'];
 		$this->fileMode = isset( $config['fileMode'] )
 			? $config['fileMode']
 			: 0644;
+	}
+
+	protected function fullStoragePath( $path ) {
+		if ( $this->root == '' ) {
+			return "/$path"; // absolute, don't use "current directory"
+		} else {
+			return "{$root}/{$path}";
+		}
 	}
 
 	public function store( array $params ) {
 		$status = Status::newGood();
 
 		if ( file_exists( $params['dest'] ) ) {
-			if ( $params['overwriteDest'] ) {
+			if ( isset( $params['overwriteDest'] ) ) {
 				$ok = unlink( $params['dest'] );
 				if ( !$ok ) {
 					$status->fatal( "Could not delete destination file." );
 					return $status;
 				}
-			} elseif ( $params['overwriteSame'] ) {
+			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
 				}
@@ -63,13 +70,13 @@ class FSFileBackend extends FileBackend {
 		$status = Status::newGood();
 
 		if ( file_exists( $params['dest'] ) ) {
-			if ( $params['overwriteDest'] ) {
+			if ( isset( $params['overwriteDest'] ) ) {
 				$ok = unlink( $params['dest'] );
 				if ( !$ok ) {
 					$status->fatal( "Could not delete destination file." );
 					return $status;
 				}
-			} elseif ( $params['overwriteSame'] ) {
+			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
 				}
@@ -164,7 +171,7 @@ class FSFileBackend extends FileBackend {
 		// Handle overwrite behavior of file destination if applicable.
 		// Note that we already checked if no overwrite params were set above.
 		if ( $destExists ) {
-			if ( $params['overwriteDest'] ) {
+			if ( isset( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
 				$ok = unlink( $params['dest'] );
 				wfRestoreWarnings();
@@ -172,7 +179,7 @@ class FSFileBackend extends FileBackend {
 					$status->fatal( "Could not delete destination file." );
 					return $status;
 				}
-			} elseif ( $params['overwriteSame'] ) {
+			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
 				}

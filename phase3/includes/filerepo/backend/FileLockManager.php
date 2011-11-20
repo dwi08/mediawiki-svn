@@ -73,6 +73,9 @@ abstract class FileLockManager {
 
 /**
  * Simple version of FileLockManager based on using FS lock files
+ *
+ * This should work fine for small sites running off one server.
+ * Do not use this with 'lockDir' set to an NFS mount.
  */
 class FSFileLockManager extends FileLockManager {
 	protected $lockDir; // global dir for all servers
@@ -88,13 +91,15 @@ class FSFileLockManager extends FileLockManager {
 
 		$lockedKeys = array(); // files locked in this attempt
 		foreach ( $keys as $key ) {
-			$lockStatus = $this->doSingleLock( $key );
-			if ( $lockStatus->isOk() ) {
+			$subStatus = $this->doSingleLock( $key );
+			$status->merge( $subStatus );
+			if ( $subStatus->isOk() ) {
 				$lockedKeys[] = $key;
 			} else {
 				// Abort and unlock everything
-				$this->doUnlock( $lockedKeys );
-				return $lockStatus;
+				$subStatus = $this->doUnlock( $lockedKeys );
+				$status->merge( $subStatus );
+				return $status;
 			}
 		}
 
@@ -105,10 +110,8 @@ class FSFileLockManager extends FileLockManager {
 		$status = Status::newGood();
 
 		foreach ( $keys as $key ) {
-			$lockStatus = $this->doSingleUnlock( $key );
-			if ( !$lockStatus->isOk() ) {
-				// append $lockStatus to $status
-			}
+			$subStatus = $this->doSingleUnlock( $key );
+			$status->merge( $subStatus );
 		}
 
 		return $status;
@@ -172,16 +175,30 @@ class FSFileLockManager extends FileLockManager {
 }
 
 /**
- * Version of FileLockManager based on using per-row DB locks
+ * Version of FileLockManager based on using DB table locks.
+ *
+ * This is meant for multi-wiki systems that may share share some files.
+ * One or several lock database servers are set up having a `file_locking`
+ * table with one field, fl_key, the PRIMARY. The table engine should have
+ * row-level locking support. For performance, deadlock detection should be
+ * disabled and a very low lock-wait timeout should be put in server config.
+ *
+ * All lock requests for an item (identified by an abstract key string) will
+ * map to one bucket. Each bucket maps to a single server, and each server can
+ * have several or no fallback servers. Fallback servers recieve the same lock
+ * statements as the servers they are set as fallbacks for. This propagation is
+ * only best-effort; lock requests will not be blocked just because a fallback
+ * server cannot be contacted to recieve a copy of the lock request.
  */
 class DBFileLockManager extends FileLockManager {
 	/** @var Array Map of bucket indexes to server names */
 	protected $serverMap = array(); // (index => server name)
-	protected $shards; // number of severs to shard to
+	/** @var Array Map of servers to fallback server names */
+	protected $serverFallbackMap = array(); // (server => (server1,server2,...))
 
 	/** @var Array List of active lock key names */
 	protected $locksHeld = array(); // (key => 1)
-	/** $var Array Map active database connections (name => Database) */
+	/** $var Array Map Lock-active database connections (name => Database) */
 	protected $activeConns = array();
 
 	/**
@@ -190,27 +207,28 @@ class DBFileLockManager extends FileLockManager {
 	 * integer keys, starting from 0, with server name strings as values.
 	 * It should have no more than 16 items in the array.
 	 * 
-	 * The `file_locking` table could be a MEMORY or innoDB table.
+	 * The `file_locking` table should have row-level locking (e.g. innoDB).
 	 * 
 	 * @param array $config 
 	 */
 	function __construct( array $config ) {
 		$this->serverMap = $config['serverMap'];
-		$this->shards = count( $this->serverMap );
+		$this->serverFallbackMap = $config['serverFallbackMap'];
 	}
 
 	function doLock( array $keys ) {
 		$status = Status::newGood();
 
 		$keysToLock = array();
-		// Get locks that need to be acquired...
+		// Get locks that need to be acquired and which server they map to...
 		foreach ( $keys as $key ) {
 			if ( isset( $this->locksHeld[$key] ) ) {
 				$status->warning( 'File already locked.' );
 			} else {
 				$server = $this->getDBServerFromKey( $key );
-				if ( $server === null ) {
+				if ( $server === null ) { // config error?
 					$status->fatal( "Lock server for $key is not set." );
+					return $status;
 				}
 				$keysToLock[$server][] = $key;
 			}
@@ -218,26 +236,36 @@ class DBFileLockManager extends FileLockManager {
 
 		$lockedKeys = array(); // files locked in this attempt
 		// Attempt to acquire these locks...
-		try {
-			foreach ( $keysToLock as $server => $keys ) {
-				$db = $this->getDB( $server );
-				$db->select( 'file_locking',
-					'1',
-					array( 'fl_key' => $keys ),
-					__METHOD__,
-					array( 'FOR UPDATE' )
-				);
-				// Record locks as active
-				foreach ( $keys as $key ) {
-					$this->locksHeld[$key] = 1; // locked
+		foreach ( $keysToLock as $server => $keys ) {
+			// Acquire the locks for this server. Three main cases can happen:
+			// (a) Server is up; common case
+			// (b) Server is down but a fallback is up
+			// (c) Server is down and no fallbacks are up (or none defined)
+			$propagateToFallbacks = true;
+			try {
+				$this->lockingSelect( $server, $keys ); // SELECT FOR UPDATE
+			} catch ( DBError $e ) {
+				// Can we manage to lock on any of the fallback servers?
+				if ( !$this->lockingSelectFallbacks( $server, $keys ) ) {
+					// Abort and unlock everything
+					$status->fatal( "Could not contact the lock server." );
+					$subStatus = $this->doUnlock( $lockedKeys );
+					$status->merge( $subStatus );
+					return $status;
+				} else { // recovered using fallbacks
+					$propagateToFallbacks = false; // done already
 				}
-				// Keep track of what locks where made in this attempt
-				$lockedKeys = array_merge( $lockedKeys, $keys );
 			}
-		} catch ( DBConnectionError $e ) {
-			// Abort and unlock everything
-			$status->fatal( "Could not contact the lock database." );
-			$this->doUnlock( $lockedKeys );
+			// Propagate any locks to the fallback servers (best effort)
+			if ( $propagateToFallbacks ) {
+				$this->lockingSelectFallbacks( $server, $keys );
+			}
+			// Record locks as active
+			foreach ( $keys as $key ) {
+				$this->locksHeld[$key] = 1; // locked
+			}
+			// Keep track of what locks were made in this attempt
+			$lockedKeys = array_merge( $lockedKeys, $keys );
 		}
 
 		return $status;
@@ -251,10 +279,10 @@ class DBFileLockManager extends FileLockManager {
 				unset( $this->locksHeld[$key] );
 				// Reference count the locks held and COMMIT when zero
 				if ( !count( $this->locksHeld ) ) {
-					$this->commitOpenTransactions();
+					$this->commitLockTransactions();
 				}
 			} else {
-				// append warning to $status
+				$status->warning( "There is no file lock to unlock." );
 			}
 		}
 
@@ -262,43 +290,87 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Get a database connection for $server
+	 * Get a database connection for $server and lock the rows for $keys
+	 *
 	 * @param $server string
-	 * @return Database
+	 * @param $keys Array
+	 * @return void
 	 */
-	protected function getDB( $server ) {
+	protected function lockingSelect( $server, array $keys ) {
 		if ( !isset( $this->activeConns[$server] ) ) {
 			$this->activeConns[$server] = wfGetDB( DB_MASTER, array(), $server );
 			$this->activeConns[$server]->begin(); // start transaction
 		}
-		return $this->activeConns[$server];
+		$this->activeConns[$server]->select(
+			'file_locking',
+			'1',
+			array( 'fl_key' => $keys ),
+			__METHOD__,
+			array( 'FOR UPDATE' )
+		);
 	}
 
 	/**
-	 * Commit all changes to active databases
+	 * Propagate any locks to the fallback servers for $server.
+	 * This should avoid throwing any exceptions.
+	 *
+	 * @param $server string
+	 * @param $keys Array
+	 * @return bool Locks made on at least one fallback server
+	 */
+	protected function lockingSelectFallbacks( $server, array $keys ) {
+		$locksMade = false;
+		if ( isset( $this->serverFallbackMap[$server] ) ) {
+			// Propagate the $server locks to each fallback for $server...
+			foreach ( $this->serverFallbackMap[$server] as $fallbackServer ) {
+				try {
+					$this->doLockingSelect( $fallbackServer, $keys ); // SELECT FOR UPDATE
+					$locksMade = true;
+				} catch ( DBError $e ) {
+					// oh well; best effort
+				}
+			}
+		}
+		return $locksMade;
+	}
+
+	/**
+	 * Commit all changes to lock-active databases.
+	 * This should avoid throwing any exceptions.
+	 *
 	 * @return void
 	 */
-	protected function commitOpenTransactions() {
+	protected function commitLockTransactions() {
 		try {
 			foreach ( $this->activeConns as $server => $db ) {
 				$db->commit(); // finish transaction
 				unset( $this->activeConns[$server] );
 			}
-		} catch ( DBConnectionError $e ) {
+		} catch ( DBError $e ) {
 			// oh well
 		}
 	}
 
 	/**
+	 * Get the bucket for lock key
+	 *
+	 * @param $key string
+	 * @return int
+	 */
+	protected function getBucketFromKey( $key ) {
+		$hash = str_pad( md5( $key ), 32, '0', STR_PAD_LEFT ); // 32 char hash
+		$prefix = substr( $hash, 0, 2 ); // first 2 hex chars (8 bits)
+		return ( intval( base_convert( $prefix, 16, 10 ) ) % count( $this->serverMap ) );
+	}
+
+	/**
 	 * Get the server name for lock key
+	 *
 	 * @param $key string
 	 * @return string|null
 	 */
 	protected function getDBServerFromKey( $key ) {
-		$hash = str_pad( md5( $key ), 32, '0', STR_PAD_LEFT ); // 32 char hash
-		$prefix = substr( $hash, 0, 2 ); // first 2 hex chars (8 bits)
-		$bucket = intval( base_convert( $prefix, 16, 10 ) ) % $this->shards;
-
+		$bucket = $this->getBucketFromKey( $key );
 		if ( isset( $this->serverMap[$bucket] ) ) {
 			return $this->serverMap[$bucket];
 		} else {
@@ -312,11 +384,13 @@ class DBFileLockManager extends FileLockManager {
  * Simple version of FileLockManager that does nothing
  */
 class NullFileLockManager extends FileLockManager {
-	public function doLock( array $keys ) {
+	function __construct( array $config ) {}
+
+	function doLock( array $keys ) {
 		return Status::newGood();
 	}
 
-	public function doUnlock( array $keys ) {
+	function doUnlock( array $keys ) {
 		return Status::newGood();
 	}
 }

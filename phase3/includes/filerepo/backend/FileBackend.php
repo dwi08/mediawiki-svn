@@ -1,12 +1,11 @@
 <?php
 /**
- * Base class for all file backend classes
- *
  * @file
  * @ingroup FileRepo
  */
 
 /**
+ * Base class for all file backend classes.
  * This class defines the methods as abstract that
  * must be implemented in all file backend classes.
  * 
@@ -86,7 +85,7 @@ interface IFileBackend {
 
 	/**
 	 * Copy a file from one storage path to another in the backend.
-	 * This can be left as a dummy function as long as hasNativeMove() returns false.
+	 * This can be left as a dummy function as long as hasMove() returns false.
 	 * Do not call this function from places other than FileOp.
 	 * $params include:
 	 *      source        : source storage path
@@ -131,7 +130,7 @@ interface IFileBackend {
 	 *
 	 * @return bool
 	 */
-	public function hasNativeMove();
+	public function hasMove();
 
 	/**
 	 * Check if a file exits at a storage path in the backend.
@@ -199,6 +198,9 @@ abstract class FileBackend implements IFileBackend {
 	/**
 	 * Build a new object from configuration.
 	 * This should only be called from within FileRepo classes.
+	 * $config includes:
+	 *     'name'        : The name of this backend
+	 *     'lockManager' : The lock manager to use
 	 * 
 	 * @param $config Array
 	 */
@@ -207,12 +209,12 @@ abstract class FileBackend implements IFileBackend {
 		$this->lockManager = $config['lockManger'];
 	}
 
-	function move( array $params ) {
-		throw new MWException( "This function is not implemented." );
+	function hasMove() {
+		return false; // not implemented
 	}
 
-	function hasNativeMove() {
-		return false; // not implemented
+	function move( array $params ) {
+		throw new MWException( "This function is not implemented." );
 	}
 
 	/**
@@ -225,8 +227,8 @@ abstract class FileBackend implements IFileBackend {
 		return array(
 			'store'       => 'FileStoreOp',
 			'copy'        => 'FileCopyOp',
-			'delete'      => 'FileDeleteOp',
 			'move'        => 'FileMoveOp',
+			'delete'      => 'FileDeleteOp',
 			'concatenate' => 'FileConcatenateOp'
 		);
 	}
@@ -235,7 +237,7 @@ abstract class FileBackend implements IFileBackend {
 		$supportedOps = $this->supportedOperations();
 
 		$performOps = array(); // array of FileOp objects
-		//// Build up ordered array of FileOps...
+		// Build up ordered array of FileOps...
 		foreach ( $ops as $operation ) {
 			$opName = $operation['operation'];
 			if ( isset( $supportedOps[$opName] ) ) {
@@ -249,6 +251,7 @@ abstract class FileBackend implements IFileBackend {
 				throw new MWException( "Operation `$opName` is not supported." );
 			}
 		}
+
 		return $performOps;
 	}
 
@@ -258,42 +261,27 @@ abstract class FileBackend implements IFileBackend {
 		$performOps = $this->getOperations( $ops );
 		// Attempt each operation; abort on failure...
 		foreach ( $performOps as $index => $transaction ) {
-			$tStatus = $transaction->attempt();
-			if ( !$tStatus->isOK() ) {
-				// merge $tStatus with $status
-				// Revert everything done so far and error out
-				$tStatus = $this->revertOperations( $performOps, $index );
-				// merge $tStatus with $status
+			$subStatus = $transaction->attempt();
+			$status->merge( $subStatus );
+			if ( !$subStatus->isOK() ) { // operation failed?
+				// Revert everything done so far and abort.
+				// Do this by reverting each previous operation in reverse order.
+				$pos = $index - 1; // last one failed; no need to revert()
+				while ( $pos >= 0 ) {
+					$subStatus = $performOps[$pos]->revert();
+					$status->merge( $subStatus );
+					$pos--;
+				}
 				return $status;
 			}
 		}
 		// Finish each operation...
 		foreach ( $performOps as $index => $transaction ) {
-			$tStatus = $transaction->finish();
-			// merge $tStatus with $status
+			$subStatus = $transaction->finish();
+			$status->merge( $subStatus );
 		}
-		return $status;
-	}
-
-	/**
-	 * Revert a series of operations in reverse order.
-	 * If $index is passed, then we revert all items in
-	 * $ops from 0 to $index (inclusive).
-	 * 
-	 * @param $ops Array List of FileOp objects
-	 * @param $index integer
-	 * @return Status
-	 */
-	private function revertOperations( array $ops, $index = false ) {
-		$status = Status::newGood();
-		$pos = ( $index !== false )
-			? $index // use provided index
-			: $pos = count( $ops ) - 1; // last element (or -1)
-		while ( $pos >= 0 ) {
-			$tStatus = $ops[$pos]->revert();
-			// merge $tStatus with $status
-			$pos--;
-		}
+		// Make sure status is OK, despite any finish() fatals
+		$status->setResult( true );
 		return $status;
 	}
 
@@ -445,7 +433,7 @@ abstract class FileOp {
 
 /**
  * Store a file into the backend from a file on disk.
- * $params include:
+ * Parameters must match FileBackend::store(), which include:
  *      source        : source path on disk
  *      dest          : destination storage path
  *      overwriteDest : do nothing and pass if an identical file exists at destination
@@ -470,7 +458,7 @@ class FileStoreOp extends FileOp {
 		$params = array( 'source' => $this->params['dest'] );
 		$status = $this->backend->delete( $params );
 		if ( !$status->isOK() ) {
-			return $status;
+			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
 		$status = $this->restoreDest();
@@ -531,7 +519,7 @@ class FileStoreOp extends FileOp {
 
 /**
  * Copy a file from one storage path to another in the backend.
- * $params include:
+ * Parameters must match FileBackend::copy(), which include:
  *      source        : source storage path
  *      dest          : destination storage path
  *      overwriteDest : do nothing and pass if an identical file exists at destination
@@ -554,7 +542,7 @@ class FileCopyOp extends FileStoreOp {
 		$params = array( 'source' => $this->params['dest'] );
 		$status = $this->backend->delete( $params );
 		if ( !$status->isOK() ) {
-			return $status;
+			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
 		$status = $this->restoreDest();
@@ -572,7 +560,7 @@ class FileCopyOp extends FileStoreOp {
 
 /**
  * Move a file from one storage path to another in the backend.
- * $params include:
+ * Parameters must match FileBackend::move(), which include:
  *      source        : source storage path
  *      dest          : destination storage path
  *      overwriteDest : do nothing and pass if an identical file exists at destination
@@ -586,7 +574,7 @@ class FileMoveOp extends FileStoreOp {
 			return $status;
 		}
 		// Native moves: move the file into the destination
-		if ( $this->backend->hasNativeMove() ) {
+		if ( $this->backend->hasMove() ) {
 			$status = $this->backend->move( $this->params );
 		// Non-native moves: copy the file into the destination
 		} else {
@@ -597,21 +585,21 @@ class FileMoveOp extends FileStoreOp {
 
 	function doRevert() {
 		// Native moves: move the file back to the source
-		if ( $this->backend->hasNativeMove() ) {
+		if ( $this->backend->hasMove() ) {
 			$params = array(
 				'source' => $this->params['dest'],
 				'dest'   => $this->params['source']
 			);
 			$status = $this->backend->move( $params );
 			if ( !$status->isOK() ) {
-				return $status;
+				return $status; // also can't restore any dest file
 			}
 		// Non-native moves: remove the file saved to the destination
 		} else {
 			$params = array( 'source' => $this->params['dest'] );
 			$status = $this->backend->delete( $params );
 			if ( !$status->isOK() ) {
-				return $status;
+				return $status; // also can't restore any dest file
 			}
 		}
 		// Restore any file that was at the destination
@@ -621,7 +609,7 @@ class FileMoveOp extends FileStoreOp {
 
 	function doFinish() {
 		// Native moves: nothing is at the source anymore
-		if ( $this->backend->hasNativeMove() ) {
+		if ( $this->backend->hasMove() ) {
 			$status = Status::newGood();
 		// Non-native moves: delete the source file
 		} else {
@@ -634,7 +622,7 @@ class FileMoveOp extends FileStoreOp {
 
 /**
  * Combines files from severals storage paths into a new file in the backend.
- * $params include:
+ * Parameters must match FileBackend::concatenate(), which include:
  *      sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
  *      dest          : destination storage path
  *      overwriteDest : do nothing and pass if an identical file exists at destination
@@ -657,7 +645,7 @@ class FileConcatenateOp extends FileStoreOp {
 		$params = array( 'source' => $this->params['dest'] );
 		$status = $this->backend->delete( $params );
 		if ( !$status->isOK() ) {
-			return $status;
+			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
 		$status = $this->restoreDest();
@@ -675,7 +663,7 @@ class FileConcatenateOp extends FileStoreOp {
 
 /**
  * Delete a file at the storage path.
- * $params include:
+ * Parameters must match FileBackend::delete(), which include:
  *      source              : source storage path
  *      ignoreMissingSource : don't return an error if the file does not exist
  */
