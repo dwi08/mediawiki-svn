@@ -258,7 +258,7 @@ abstract class FileBackend implements IFileBackend {
 				// Get params for this operation
 				$params = $operation;
 				unset( $params['operation'] ); // don't need this
-				// Add operation on to the list of things to do
+				// Append the FileOp class
 				$performOps[] = new $class( $params );
 			} else {
 				throw new MWException( "Operation `$opName` is not supported." );
@@ -270,31 +270,49 @@ abstract class FileBackend implements IFileBackend {
 
 	final public function doOperations( array $ops ) {
 		$status = Status::newGood();
+
 		// Build up a list of FileOps...
 		$performOps = $this->getOperations( $ops );
+
+		// Build up a list of files to lock...
+		$filesToLock = array();
+		foreach ( $performOps as $index => $fileOp ) {
+			$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsToLock() );
+		}
+		$filesToLock = array_unique( $filesToLock ); // avoid warnings
+
+		// Try to lock those files...
+		$status->merge( $this->lockFiles( $filesToLock ) );
+		if ( !$status->isOK() ) {
+			return $status; // abort
+		}
+
 		// Attempt each operation; abort on failure...
-		foreach ( $performOps as $index => $transaction ) {
-			$subStatus = $transaction->attempt();
-			$status->merge( $subStatus );
-			if ( !$subStatus->isOK() ) { // operation failed?
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->attempt() );
+			if ( !$status->isOK() ) { // operation failed?
 				// Revert everything done so far and abort.
 				// Do this by reverting each previous operation in reverse order.
 				$pos = $index - 1; // last one failed; no need to revert()
 				while ( $pos >= 0 ) {
-					$subStatus = $performOps[$pos]->revert();
-					$status->merge( $subStatus );
+					$status->merge( $performOps[$pos]->revert() );
 					$pos--;
 				}
 				return $status;
 			}
 		}
+
 		// Finish each operation...
-		foreach ( $performOps as $index => $transaction ) {
-			$subStatus = $transaction->finish();
-			$status->merge( $subStatus );
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->finish() );
 		}
-		// Make sure status is OK, despite any finish() fatals
+
+		// Unlock all the files
+		$status->merge( $this->unlockFiles( $filesToLock ) );
+
+		// Make sure status is OK, despite any finish() or unlockFiles() fatals
 		$status->setResult( true );
+
 		return $status;
 	}
 
@@ -354,10 +372,8 @@ abstract class FileOp {
 			throw new MWException( "Cannot attempt operation called twice." );
 		}
 		$this->state = self::STATE_ATTEMPTED;
-		$status = $this->setLocks();
-		if ( $status->isOK() ) {
-			$status = $this->doAttempt();
-		} else {
+		$status = $this->doAttempt();
+		if ( !$status->isOK() ) {
 			$this->failedAttempt = true;
 		}
 		return $status;
@@ -373,12 +389,11 @@ abstract class FileOp {
 			throw new MWException( "Cannot rollback an unstarted or finished operation." );
 		}
 		$this->state = self::STATE_DONE;
-		if ( !$this->failedAttempt ) {
-			$status = $this->doRevert();
-		} else {
+		if ( $this->failedAttempt ) {
 			$status = Status::newGood(); // nothing to revert
+		} else {
+			$status = $this->doRevert();
 		}
-		$this->unsetLocks();
 		return $status;
 	}
 
@@ -392,31 +407,12 @@ abstract class FileOp {
 			throw new MWException( "Cannot cleanup an unstarted or finished operation." );
 		}
 		$this->state = self::STATE_DONE;
-		if ( !$this->failedAttempt ) {
-			$status = $this->doFinish();
-		} else {
+		if ( $this->failedAttempt ) {
 			$status = Status::newGood(); // nothing to revert
+		} else {
+			$status = $this->doFinish();
 		}
-		$this->unsetLocks();
 		return $status;
-	}
-
-	/**
-	 * Try to lock any files before changing them
-	 *
-	 * @return Status
-	 */
-	private function setLocks() {
-		return $this->backend->lockFiles( $this->storagePathsToLock() );
-	}
-
-	/**
-	 * Try to unlock any files that this locked
-	 *
-	 * @return Status
-	 */
-	private function unsetLocks() {
-		return $this->backend->unlockFiles( $this->storagePathsToLock() );
 	}
 
 	/**
@@ -424,7 +420,7 @@ abstract class FileOp {
 	 *
 	 * @return Array
 	 */
-	protected function storagePathsToLock() {
+	public function storagePathsToLock() {
 		return array();
 	}
 
@@ -631,6 +627,10 @@ class FileMoveOp extends FileStoreOp {
 			$status = $this->backend->delete( $params );
 		}
 		return $status;
+	}
+
+	function storagePathsToLock() {
+		return array( $this->params['source'], $this->params['dest'] );
 	}
 }
 

@@ -1,7 +1,5 @@
 <?php
 /**
- * Class for a "backend" consisting of a orioritized list of backend
- *
  * @file
  * @ingroup FileRepo
  */
@@ -41,35 +39,56 @@ class FileBackendMultiWrite implements IFileBackend {
 
 	final public function doOperations( array $ops ) {
 		$status = Status::newGood();
+
 		// Build up a list of FileOps. The list will have all the ops
 		// for one backend, then all the ops for the next, and so on.
+		// Also build up a list of files to lock...
 		$performOps = array();
-		foreach ( $this->fileBackends as $backend ) {
+		$filesToLock = array();
+		foreach ( $this->fileBackends as $index => $backend ) {
 			$performOps = array_merge( $performOps, $backend->getOperations( $ops ) );
+			// Set $filesToLock from the first backend so we don't try to set all
+			// locks two or three times (depending on the number of backends).
+			if ( $index == 0 ) {
+				foreach ( $performOps as $index => $fileOp ) {
+					$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsToLock() );
+				}
+				$filesToLock = array_unique( $filesToLock ); // avoid warnings
+			}
 		}
+
+		// Try to lock those files...
+		$status->merge( $this->lockFiles( $filesToLock ) );
+		if ( !$status->isOK() ) {
+			return $status; // abort
+		}
+
 		// Attempt each operation; abort on failure...
-		foreach ( $performOps as $index => $transaction ) {
-			$subStatus = $transaction->attempt();
-			$status->merge( $subStatus );
-			if ( !$subStatus->isOK() ) { // operation failed?
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->attempt() );
+			if ( !$status->isOK() ) { // operation failed?
 				// Revert everything done so far and abort.
 				// Do this by reverting each previous operation in reverse order.
 				$pos = $index - 1; // last one failed; no need to revert()
 				while ( $pos >= 0 ) {
-					$subStatus = $performOps[$pos]->revert();
-					$status->merge( $subStatus );
+					$status->merge( $performOps[$pos]->revert() );
 					$pos--;
 				}
 				return $status;
 			}
 		}
+
 		// Finish each operation...
-		foreach ( $performOps as $index => $transaction ) {
-			$subStatus = $transaction->finish();
-			$status->merge( $subStatus );
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->finish() );
 		}
-		// Make sure status is OK, despite any finish() fatals
+
+		// Unlock all the files
+		$status->merge( $this->unlockFiles( $filesToLock ) );
+
+		// Make sure status is OK, despite any finish() or unlockFiles() fatals
 		$status->setResult( true );
+
 		return $status;
 	}
 
@@ -145,13 +164,11 @@ class FileBackendMultiWrite implements IFileBackend {
 	function lockFiles( array $paths ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $index => $backend ) {
-			$subStatus = $backend->lockFiles( $paths );
-			$status->merge( $subStatus );
-			if ( !$subStatus->isOk() ) {
+			$status->merge( $backend->lockFiles( $paths ) );
+			if ( !$status->isOk() ) {
 				// Lock failed: release the locks done so far each backend
 				for ( $i=0; $i < $index; $i++ ) { // don't do backend $index since it failed
-					$subStatus = $backend->unlockFiles( $paths );
-					$status->merge( $subStatus );
+					$status->merge( $backend->unlockFiles( $paths ) );
 				}
 				return $status;
 			}
@@ -162,8 +179,7 @@ class FileBackendMultiWrite implements IFileBackend {
 	function unlockFiles( array $paths ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$subStatus = $backend->unlockFile( $paths );
-			$status->merge( $subStatus );
+			$status->merge( $backend->unlockFile( $paths ) );
 		}
 		return $status;
 	}
