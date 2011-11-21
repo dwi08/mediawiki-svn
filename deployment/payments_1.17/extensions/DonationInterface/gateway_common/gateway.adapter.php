@@ -102,6 +102,17 @@ interface GatewayType {
 abstract class GatewayAdapter implements GatewayType {
 
 	/**
+	 * $dataConstraints provides information on how to handle variables.
+	 *
+	 * 	 <code>
+	 * 		'account_holder'		=> array( 'type' => 'alphanumeric',		'length' => 50, )
+	 * 	 </code>
+	 *
+	 * @var	array	$dataConstraints
+	 */
+	protected $dataConstraints = array();
+
+	/**
 	 * $error_map maps gateway errors to client errors
 	 *
 	 * The index of each error should map to a translation:
@@ -219,6 +230,7 @@ abstract class GatewayAdapter implements GatewayType {
 		$this->defineTransactions();
 		$this->defineErrorMap();
 		$this->defineVarMap();
+		$this->defineDataConstraints();
 		$this->defineAccountInfo();
 		$this->defineReturnValueMap();
 
@@ -309,24 +321,20 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @return boolean true if match, else false.  
 	 */
 	public function checkTokens() {
-		if ( !$this->posted ) { 
-			//we don't care, because we can't possibly have a good one at this
-			//point. 
-			//Additional: If we try for this before we're posted, the squid log 
-			//caching won't work. 
-			return true;
-		} else {
-			$checkResult = $this->dataObj->token_checkTokens();
+		$checkResult = $this->dataObj->token_checkTokens();
 
-			if ( $checkResult ) {
-				$this->debugarray[] = 'Token Match';
+		if ( $checkResult ) {
+			if ($this->dataObj->isCaching()){
+				$this->debugarray[] = 'Token Not Checked (Caching Enabled)';
 			} else {
-				$this->debugarray[] = 'Token MISMATCH';
+				$this->debugarray[] = 'Token Match';
 			}
-
-			$this->refreshGatewayValueFromSource( 'token' );
-			return $checkResult;
+		} else {
+			$this->debugarray[] = 'Token MISMATCH';
 		}
+
+		$this->refreshGatewayValueFromSource( 'token' );
+		return $checkResult;
 	}
 	
 	/**
@@ -1512,7 +1520,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @param type $type Whatever types of staging you feel like having in your child class. 
 	 * ...but usually request and response. I think. 
 	 */
-	function stageData( $type = 'request' ) {
+	protected function stageData( $type = 'request' ) {
 		$this->defineStagedVars();
 		$this->smooshVarsForStaging(); //yup, we do need to do this seperately. 
 		//If we tried to piggyback off the same loop, all the vars wouldn't be ready, and some staging functions will require 
@@ -1521,6 +1529,12 @@ abstract class GatewayAdapter implements GatewayType {
 			$function_name = 'stage_' . $field;
 			$this->executeIfFunctionExists( $function_name, $type );
 		}
+		
+		// Format the staged data
+		if ($type === 'request'){
+			$this->formatStagedData();
+		}
+		
 	}
 
 	/**
