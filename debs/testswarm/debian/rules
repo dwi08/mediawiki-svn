@@ -21,13 +21,11 @@ build-stamp: patch configure-stamp
 	#$(MAKE)
 	touch $@
 
-clean: 
+clean: unpatch 
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
-	#$(MAKE) clean
-
-	dh_clean 
+	rm -f build-stamp configure-stamp
+	dh_clean
 
 install: build
 	dh_testdir
@@ -55,6 +53,7 @@ binary-arch: install
 	dh_installchangelogs 
 	dh_installdocs
 	dh_installman
+	dh_installdebconf
 	dh_link
 	dh_strip
 	dh_compress
@@ -66,4 +65,4 @@ binary-arch: install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install
+.PHONY: build clean binary-indep binary-arch binary install configure patch unpatch

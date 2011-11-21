@@ -2,6 +2,7 @@ dh_installdirs
 dh_installchangelogs
 dh_installdocs
 dh_installman
+dh_installdebconf
 dh_link
 dh_strip
 dh_compress
