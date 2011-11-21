@@ -5,21 +5,29 @@
  */
 
 /**
- * Base class for all file backend classes.
- * This class defines the methods as abstract that
- * must be implemented in all file backend classes.
+ * Base class for all file backend classes (including multi-write backends).
+ * This class defines the methods as abstract that must be implemented subclasses.
  * 
- * All "storage paths" and "storage directories" may be real file system
- * paths or just virtual paths such as object names in Swift.
+ * All "storage paths" are of the format "mwstore://container/path".
+ * The paths use typical file system notation, though any particular backend may
+ * not actually be using a local filesystem. Therefore, the paths are only virtual.
+ *
+ * All functions should avoid throwing exceptions at all costs.
+ * As a corollary, external dependencies should be kept to a minimal.
  */
-interface IFileBackend {
+abstract class FileBackendBase {
+	protected $name; // unique backend name
+
 	/**
 	 * We may have multiple different backends of the same type.
 	 * For example, we can have two Swift backends using different proxies.
+	 * All backend instances must have unique names.
 	 * 
 	 * @return string
 	 */
-	public function getName();
+	final public function getName() {
+		return $this->name;
+	}
 
 	/**
 	 * This is the main entry point into the file system back end. Callers will
@@ -27,7 +35,7 @@ interface IFileBackend {
 	 * array. This class will then handle handing the operations off to the
 	 * correct file store module.
 	 *
-	 * Using $ops
+	 * Using $ops:
 	 * $ops is an array of arrays. The first array holds a list of operations.
 	 * The inner array contains the parameters, E.G:
 	 * <code>
@@ -35,7 +43,7 @@ interface IFileBackend {
 	 *      array(
 	 *          'operation' => 'store',
 	 *          'src'       => '/tmp/uploads/picture.png',
-	 *          'dest'      => 'zone/uploadedFilename.png'
+	 *          'dest'      => 'mwstore://container/uploadedFilename.png'
 	 *      )
 	 * );
 	 * </code>
@@ -43,7 +51,7 @@ interface IFileBackend {
 	 * @param Array $ops Array of arrays containing N operations to execute IN ORDER
 	 * @return Status
 	 */
-	public function doOperations( array $ops );
+	abstract public function doOperations( array $ops );
 
 	/**
 	 * Return a list of FileOp objects from a list of operations.
@@ -53,11 +61,11 @@ interface IFileBackend {
 	 * @return Array
 	 * @throws MWException
 	 */
-	public function getOperations( array $ops );
+	abstract public function getOperations( array $ops );
 
 	/**
 	 * Store a file into the backend from a file on disk.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *      source        : source path on disk
 	 *      dest          : destination storage path
@@ -67,11 +75,11 @@ interface IFileBackend {
 	 * @param Array $params
 	 * @return Status
 	 */
-	public function store( array $params );
+	abstract public function store( array $params );
 
 	/**
 	 * Copy a file from one storage path to another in the backend.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *      source        : source storage path
 	 *      dest          : destination storage path
@@ -81,12 +89,12 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return Status
 	 */
-	public function copy( array $params );
+	abstract public function copy( array $params );
 
 	/**
 	 * Copy a file from one storage path to another in the backend.
 	 * This can be left as a dummy function as long as hasMove() returns false.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *      source        : source storage path
 	 *      dest          : destination storage path
@@ -96,11 +104,11 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return Status
 	 */
-	public function move( array $params );
+	abstract public function move( array $params );
 
 	/**
 	 * Delete a file at the storage path.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *      source              : source storage path
 	 *      ignoreMissingSource : don't return an error if the file does not exist
@@ -108,11 +116,11 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return Status
 	 */
-	public function delete( array $params );
+	abstract public function delete( array $params );
 
 	/**
 	 * Combines files from severals storage paths into a new file in the backend.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *      source        : source storage path
 	 *      dest          : destination storage path
@@ -122,26 +130,30 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return Status
 	 */
-	public function concatenate( array $params );
+	abstract public function concatenate( array $params );
 
 	/**
-	 * Whether this backend has a move() implementation.
-	 * Do not call this function from places other than FileOp.
+	 * Whether this backend implements move() and can handle this potential move.
+	 * For example, moving objects accross containers may not be supported.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *      source        : source storage path
+	 *      dest          : destination storage path
 	 *
 	 * @return bool
 	 */
-	public function hasMove();
+	abstract public function canMove( array $params );
 
 	/**
 	 * Check if a file exits at a storage path in the backend.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *      source : source storage path
 	 * 
 	 * @param Array $params 
 	 * @return bool
 	 */
-	public function fileExists( array $params );
+	abstract public function fileExists( array $params );
 
 	/**
 	 * Get the properties of the file that exists at a storage path in the backend
@@ -151,12 +163,12 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return Array|null Gives null if the file does not exist
 	 */
-	public function getFileProps( array $params );
+	abstract public function getFileProps( array $params );
 
 	/**
 	 * Stream the file that exists at a storage path in the backend.
 	 * Appropriate HTTP headers (Status, Content-Type, Content-Length)
-	 * must be sent on success, while no headers should be sent on failure.
+	 * must be sent if streaming began, while none should be sent otherwise.
 	 * Implementations should flush the output buffer before sending data.
 	 * $params include:
 	 *      source  : source storage path
@@ -164,7 +176,19 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return Status
 	 */
-	public function streamFile( array $params );
+	abstract public function streamFile( array $params );
+
+	/**
+	 * Get an iterator to list out all object files under a storage directory.
+	 * Results should be storage paths relative to the given directory.
+	 * If the directory is of the form "mwstore://container", then all items
+	 * in the container should be listed. If of the form "mwstore://container/dir",
+	 * then all items under that container directory should be listed.
+	 * $params include:
+	 *      directory : storage path directory.
+	 * @return Iterator
+	 */
+	abstract public function getFileList( array $params );
 
 	/**
 	 * Get a local copy on disk of the file at a storage path in the backend
@@ -174,39 +198,33 @@ interface IFileBackend {
 	 * @param Array $params 
 	 * @return TempLocalFile|null Temporary file or null on failure
 	 */
-	public function getLocalCopy( array $params );
+	abstract public function getLocalCopy( array $params );
 
 	/**
 	 * Lock the files at the given storage paths in the backend.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
-	public function lockFiles( array $sources );
+	abstract public function lockFiles( array $sources );
 
 	/**
 	 * Unlock the files at the given storage paths in the backend.
-	 * Do not call this function from places other than FileOp.
+	 * Do not call this function from places outside FileBackend and FileOp.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
-	public function unlockFiles( array $sources );
+	abstract public function unlockFiles( array $sources );
 }
 
 /**
- * This class defines the methods as abstract that should be
- * implemented in child classes that represent a single-write backend.
+ * Base class for all single-write backends
  */
-abstract class FileBackend implements IFileBackend {
-	protected $name;
+abstract class FileBackend extends FileBackendBase {
 	/** @var FileLockManager */
 	protected $lockManager;
-
-	final public function getName() {
-		return $this->name;
-	}
 
 	/**
 	 * Build a new object from configuration.
@@ -222,7 +240,7 @@ abstract class FileBackend implements IFileBackend {
 		$this->lockManager = $config['lockManger'];
 	}
 
-	function hasMove() {
+	function canMove( array $params ) {
 		return false; // not implemented
 	}
 
@@ -232,7 +250,6 @@ abstract class FileBackend implements IFileBackend {
 
 	/**
 	 * Get the list of supported operations and their corresponding FileOp classes.
-	 * Subclasses should implement these using FileOp subclasses
 	 * 
 	 * @return Array
 	 */
@@ -327,6 +344,40 @@ abstract class FileBackend implements IFileBackend {
 		$backendKey = get_class( $this ) . '-' . $this->getName();
 		return $this->lockManager->unlock( $backendKey, $paths ); // not supported
 	}
+
+	/**
+	 * Split a storage path (e.g. "mwstore://container/path/to/object")
+	 * into a container name and a full object name within that container.
+	 *
+	 * @param $storagePath string
+	 * @return Array (container, object name) or (null, null) if path is invalid
+	 */
+	final protected function resolveVirtualPath( $storagePath ) {
+		if ( strpos( $storagePath, 'mwstore://' ) === 0 ) {
+			$m = explode( '/', substr( $storagePath, 10 ), 2 );
+			if ( count( $m ) == 2 ) {
+				list( $container, $relPath ) = $m;
+				$relPath = $this->resolveContainerPath( $container, $relPath );
+				if ( $relPath !== null ) {
+					return array( $container, $relPath ); // (container, path)
+				}
+			}
+		}
+		return array( null, null );
+	}
+
+	/**
+	 * Resolve a storage path relative to a particular container.
+	 * This is for internal use for backends, such as encoding or
+	 * perhaps getting absolute paths (e.g. file system based backends).
+	 *
+	 * @param $container string
+	 * @param $relStoragePath string
+	 * @return string|null Null if path is not valid
+	 */
+	protected function resolveContainerPath( $container, $relStoragePath ) {
+		return $relStoragePath;
+	}
 }
 
 /**
@@ -360,6 +411,7 @@ abstract class FileOp {
 		$this->params = $params;
 		$this->state = self::STATE_NEW;
 		$this->failedAttempt = false;
+		$this->initialize();
 	}
 
 	/**
@@ -423,6 +475,11 @@ abstract class FileOp {
 	public function storagePathsToLock() {
 		return array();
 	}
+
+	/**
+	 * @return void
+	 */
+	protected function initialize() {}
 
 	/**
 	 * @return Status
@@ -577,6 +634,13 @@ class FileCopyOp extends FileStoreOp {
  *      overwriteSame : override any existing file at destination
  */
 class FileMoveOp extends FileStoreOp {
+	protected $usingMove = false; // using backend move() function?
+
+	function initialize() {
+		// Use faster, native, move() if applicable
+		$this->usingMove = $this->backend->canMove( $this->params );
+	}
+
 	function doAttempt() {
 		// Create a backup copy of any file that exists at destination
 		$status = $this->backupDest();
@@ -584,7 +648,7 @@ class FileMoveOp extends FileStoreOp {
 			return $status;
 		}
 		// Native moves: move the file into the destination
-		if ( $this->backend->hasMove() ) {
+		if ( $this->usingMove ) {
 			$status = $this->backend->move( $this->params );
 		// Non-native moves: copy the file into the destination
 		} else {
@@ -595,7 +659,7 @@ class FileMoveOp extends FileStoreOp {
 
 	function doRevert() {
 		// Native moves: move the file back to the source
-		if ( $this->backend->hasMove() ) {
+		if ( $this->usingMove ) {
 			$params = array(
 				'source' => $this->params['dest'],
 				'dest'   => $this->params['source']
@@ -619,7 +683,7 @@ class FileMoveOp extends FileStoreOp {
 
 	function doFinish() {
 		// Native moves: nothing is at the source anymore
-		if ( $this->backend->hasMove() ) {
+		if ( $this->usingMove ) {
 			$status = Status::newGood();
 		// Non-native moves: delete the source file
 		} else {

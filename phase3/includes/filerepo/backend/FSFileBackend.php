@@ -8,28 +8,45 @@
  * Class for a file-system based file backend
  */
 class FSFileBackend extends FileBackend {
+	/** @var Array Map of container names to paths */
+	protected $containerPaths = array();
 	protected $fileMode; // file permission mode
 
 	function __construct( array $config ) {
 		$this->name = $config['name'];
+		$this->containerPaths = (array)$config['containers'];
 		$this->lockManager = $config['lockManger'];
 		$this->fileMode = isset( $config['fileMode'] )
 			? $config['fileMode']
 			: 0644;
 	}
 
+	protected function resolveContainerPath( $container, $relStoragePath ) {
+		// Get absolute path given the container base dir
+		if ( isset( $this->containerPaths[$container] ) ) {
+			return $this->containerPaths[$container] . "/{$relStoragePath}";
+		}
+		return null;
+	}
+
 	function store( array $params ) {
 		$status = Status::newGood();
 
-		if ( file_exists( $params['dest'] ) ) {
+		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		if ( $dest === null ) {
+			$status->fatal( "Invalid storage path {$params['dest']}." );
+			return $status;
+		}
+
+		if ( file_exists( $dest ) ) {
 			if ( isset( $params['overwriteDest'] ) ) {
-				$ok = unlink( $params['dest'] );
+				$ok = unlink( $dest );
 				if ( !$ok ) {
 					$status->fatal( "Could not delete destination file." );
 					return $status;
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
+				if ( !$this->filesAreSame( $params['source'], $dest ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
 				}
 				return $status; // do nothing; either OK or bad status
@@ -38,18 +55,18 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			wfMakeDirParents( $params['dest'] );
+			wfMakeDirParents( $dest );
 		}
 
 		wfSuppressWarnings();
-		$ok = copy( $params['source'], $params['dest'] );
+		$ok = copy( $params['source'], $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( "Could not copy file to destination." );
 			return $status;
 		}
 
-		$this->chmod( $params['dest'] );
+		$this->chmod( $dest );
 
 		return $status;
 	}
@@ -61,15 +78,26 @@ class FSFileBackend extends FileBackend {
 	function move( array $params ) {
 		$status = Status::newGood();
 
-		if ( file_exists( $params['dest'] ) ) {
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			$status->fatal( "Invalid storage path {$params['source']}." );
+			return $status;
+		}
+		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		if ( $dest === null ) {
+			$status->fatal( "Invalid storage path {$params['dest']}." );
+			return $status;
+		}
+
+		if ( file_exists( $dest ) ) {
 			if ( isset( $params['overwriteDest'] ) ) {
-				$ok = unlink( $params['dest'] );
+				$ok = unlink( $dest );
 				if ( !$ok ) {
 					$status->fatal( "Could not delete destination file." );
 					return $status;
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
+				if ( !$this->filesAreSame( $source, $dest ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
 				}
 				return $status; // do nothing; either OK or bad status
@@ -78,11 +106,11 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			wfMakeDirParents( $params['dest'] );
+			wfMakeDirParents( $dest );
 		}
 
 		wfSuppressWarnings();
-		$ok = rename( $params['source'], $params['dest'] );
+		$ok = rename( $source, $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( "Could not move file to destination." );
@@ -95,7 +123,13 @@ class FSFileBackend extends FileBackend {
 	function delete( array $params ) {
 		$status = Status::newGood();
 
-		if ( !file_exists( $params['source'] ) ) {
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			$status->fatal( "Invalid storage path {$params['source']}." );
+			return $status;
+		}
+
+		if ( !file_exists( $source ) ) {
 			if ( !$params['ignoreMissingSource'] ) {
 				$status->fatal( "Could not delete source because it does not exist." );
 			}
@@ -103,7 +137,7 @@ class FSFileBackend extends FileBackend {
 		}
 
 		wfSuppressWarnings();
-		$ok = unlink( $params['dest'] );
+		$ok = unlink( $source );
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( "Could not delete source file." );
@@ -116,8 +150,14 @@ class FSFileBackend extends FileBackend {
 	function concatenate( array $params ) {
 		$status = Status::newGood();
 
+		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		if ( $dest === null ) {
+			$status->fatal( "Invalid storage path {$params['dest']}." );
+			return $status;
+		}
+
 		// Check if the destination file exists and we can't handle that
-		$destExists = file_exists( $params['dest'] );
+		$destExists = file_exists( $dest );
 		if ( $destExists && !$params['overwriteDest'] && !$params['overwriteSame'] ) {
 			$status->fatal( "Destination file already exists." ); // short-circuit
 			return $status;
@@ -140,7 +180,12 @@ class FSFileBackend extends FileBackend {
 			$status->fatal( "Could not open temporary file $tmpPath." );
 			return $status;
 		}
-		foreach ( $params['sources'] as $source ) {
+		foreach ( $params['sources'] as $virtualSource ) {
+			list( $c, $source ) = $this->resolveVirtualPath( $virtualSource );
+			if ( $source === null ) {
+				$status->fatal( "Invalid storage path {$virtualSource}." );
+				return $status;
+			}
 			// Load chunk into memory (it should be a small file)
 			$chunk = file_get_contents( $source );
 			if ( $chunk === false ) {
@@ -165,51 +210,74 @@ class FSFileBackend extends FileBackend {
 		if ( $destExists ) {
 			if ( isset( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
-				$ok = unlink( $params['dest'] );
+				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
 					$status->fatal( "Could not delete destination file." );
 					return $status;
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->filesAreSame( $params['source'], $params['dest'] ) ) {
+				if ( !$this->filesAreSame( $tmpPath, $dest ) ) {
 					$status->fatal( "Non-identical destination file already exists." );
 				}
 				return $status; // do nothing; either OK or bad status
 			}
 		} else {
 			// Make sure destination directory exists
-			wfMakeDirParents( $params['dest'] );
+			wfMakeDirParents( $dest );
 		}
 
 		// Rename the temporary file to the destination path
 		wfSuppressWarnings();
-		$ok = rename( $tmpPath, $params['dest'] );
+		$ok = rename( $tmpPath, $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( "Could not rename temporary file to destination." );
 			return $status;
 		}
 
-		$this->chmod( $params['dest'] );
+		$this->chmod( $dest );
 
 		return $status;
 	}
 
 	function fileExists( array $params ) {
-		return file_exists( $params['source'] );
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			return false; // invalid storage path
+		}
+		return file_exists( $source );
 	}
 
 	function getFileProps( array $params ) {
-		return File::getPropsFromPath( $params['source'] );
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			return null; // invalid storage path
+		}
+		return File::getPropsFromPath( $source );
+	}
+
+	// Not suitable for massive listings
+	function getFileList( array $params ) {
+		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
+		if ( $dir === null ) { // valid storage path
+			return new FileIterator( '' ); // empty result
+		}
+		return new FileIterator( $dir );
 	}
 
 	function streamFile( array $params ) {
 		$status = Status::newGood();
 
-		$ok = StreamFile::stream( $params['source'], array(), false );
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			$status->fatal( "Invalid storage path {$params['source']}." );
+			return $status;
+		}
+
+		$ok = StreamFile::stream( $source, array(), false );
 		if ( !$ok ) {
-			$status->fatal( "Unable to stream file {$params['source']}." );
+			$status->fatal( "Unable to stream file {$source}." );
 			return $status;
 		}
 
@@ -217,6 +285,11 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getLocalCopy( array $params ) {
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			return null;
+		}
+
 		// Create a new temporary file...
 		wfSuppressWarnings();
 		$tmpPath = tempnam( wfTempDir(), 'file_localcopy' );
@@ -227,7 +300,7 @@ class FSFileBackend extends FileBackend {
 
 		// Copy the source file over the temp file
 		wfSuppressWarnings();
-		$ok = copy( $params['source'], $tmpPath );
+		$ok = copy( $source, $tmpPath );
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			return null;
@@ -240,8 +313,9 @@ class FSFileBackend extends FileBackend {
 
 	/**
 	 * Check if two files are identical
-	 * @param $path1 string
-	 * @param $path2 string
+	 *
+	 * @param $path1 string Absolute filesystem path
+	 * @param $path2 string Absolute filesystem path
 	 * @return bool
 	 */
 	protected function filesAreSame( $path1, $path2 ) {
@@ -253,7 +327,8 @@ class FSFileBackend extends FileBackend {
 
 	/**
 	 * Chmod a file, suppressing the warnings
-	 * @param $path string The path to change
+	 *
+	 * @param $path string Absolute file system path
 	 * @return bool Success
 	 */
 	protected function chmod( $path ) {
@@ -262,5 +337,132 @@ class FSFileBackend extends FileBackend {
 		wfRestoreWarnings();
 
 		return $ok;
+	}
+}
+
+/**
+ * Simple DFS based file browsing iterator. The highest number of file handles
+ * open at any given time is proportional to the height of the directory tree.
+ */
+class FileIterator implements Iterator {
+	private $directory; // starting directory
+
+	private $position = 0;
+	private $currentFile = false;
+	private $dirStack = array(); // array of (dir name, dir handle) tuples
+
+	private $loaded = false;
+
+	/**
+	 * Get an iterator to list the files under $directory and its subdirectories
+	 * @param $directory string
+	 */
+	public function __construct( $directory ) {
+		$this->directory = (string)$directory;
+	}
+
+	private function load() {
+		if ( !$this->loaded ) {
+			$this->loaded = true;
+			// If we get an invalid directory then the result is an empty list
+			if ( is_dir( $this->directory ) ) {
+				$handle = opendir( $this->directory );
+				if ( $handle ) {
+					$this->pushDirectory( $this->directory, $handle );
+					$this->currentFile = $this->nextFile();
+				}
+			}
+		}
+	}
+
+	function rewind() {
+		$this->closeDirectories();
+		$this->position = 0;
+		$this->currentFile = false;
+		$this->loaded = false;
+	}
+
+	function current() {
+		$this->load();
+		return $this->currentFile;
+	}
+
+	function key() {
+		$this->load();
+		return $this->position;
+	}
+
+	function next() {
+		$this->load();
+		++$this->position;
+		$this->currentFile = $this->nextFile();
+	}
+
+	function valid() {
+		$this->load();
+		return ( $this->currentFile !== false );
+	}
+
+	function nextFile() {
+		$set = $this->currentDirectory();
+		if ( !$set ) {
+			return false; // nothing else to scan
+		}
+		list( $dir, $handle ) = $set;
+		while ( false !== ( $file = readdir( $handle ) ) ) {
+			// Exclude '.' and '..' as well .svn or .lock type files.
+			// Also excludes symlinks and the like so as to avoid cycles.
+			if ( $file[0] !== '.' && !is_link( $file ) ) {
+				// If the first thing we find is a file, then return it.
+				// If the first thing we find is a directory, then return
+				// the first file that it contains (via recursion).
+				if ( is_dir( "$dir/$file" ) ) {
+					$subHandle = opendir( "$dir/$file" );
+					if ( $subHandle ) {
+						$this->pushDirectory( "{$dir}/{$file}", $subHandle );
+						$nextFile = $this->nextFile();
+						if ( $nextFile !== false ) {
+							return $nextFile; // found the next one!
+						}
+					}
+				} elseif ( is_file( "$dir/$file" ) ) {
+					return "$dir/$file"; // found the next one!
+				}
+			}
+		}
+		# If we didn't find anything in this directory,
+		# then back out and scan the other higher directories
+		$this->popDirectory();
+		return $this->nextFile();
+	}
+
+	private function currentDirectory() {
+		if ( !count( $this->dirStack ) ) {
+			return false;
+		}
+		return $this->dirStack[count( $this->dirStack ) - 1];
+	}
+
+	private function popDirectory() {
+		if ( count( $this->dirStack ) ) {
+			list( $dir, $handle ) = array_pop( $this->dirStack );
+			closedir( $handle );
+		}
+	}
+
+	private function pushDirectory( $dir, $handle ) {
+		$this->dirStack[] = array( $dir, $handle );
+	}
+
+	private function closeDirectories() {
+		foreach ( $this->dirStack as $set ) {
+			list( $dir, $handle ) = $set;
+			closedir( $handle );
+		}
+		$this->dirStack = array();
+	}
+
+	private function __destruct() {
+		$this->closeDirectories();
 	}
 }

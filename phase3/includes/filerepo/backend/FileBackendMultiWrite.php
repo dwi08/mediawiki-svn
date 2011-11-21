@@ -5,8 +5,8 @@
  */
 
 /**
- * This class defines the methods as abstract that should be
- * implemented in child classes that represent a mutli-write backend.
+ * This class defines a multi-write backend. Multiple backends can
+ * be registered to this proxy backend it will act as a single backend.
  * 
  * The order that the backends are defined sets the priority of which
  * backend is read from or written to first. Functions like fileExists()
@@ -17,20 +17,16 @@
  * If an operation fails on one backend it will be rolled back from the others.
  * 
  * To avoid excess overhead, set the the highest priority backend to use
- * a generic FileLockManager and the others to use NullLockManager.
+ * a generic FileLockManager and the others to use NullLockManager. This can
+ * only be done if all access to the backends is through an instance of this class.
  */
-class FileBackendMultiWrite implements IFileBackend {
-	protected $name;
+class FileBackendMultiWrite extends FileBackendBase {
 	/** @var Array Prioritized list of FileBackend classes */
 	protected $fileBackends = array();
 
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
 		$this->fileBackends = $config['backends'];
-	}
-
-	function getName() {
-		return $this->name;
 	}
 
 	function hasNativeMove() {
@@ -144,8 +140,8 @@ class FileBackendMultiWrite implements IFileBackend {
 			$status = $backend->streamFile( $params );
 			if ( $status->isOK() ) {
 				return $status;
-			} else {
-				// @TODO: check if we failed mid-stream and return out if so
+			} elseif ( headers_sent() ) {
+				return $status; // died mid-stream...so this is already fubar
 			}
 		}
 		return Status::newFatal( "Could not stream file {$params['source']}." );

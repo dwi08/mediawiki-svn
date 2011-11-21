@@ -91,9 +91,8 @@ class FSFileLockManager extends FileLockManager {
 
 		$lockedKeys = array(); // files locked in this attempt
 		foreach ( $keys as $key ) {
-			$subStatus = $this->doSingleLock( $key );
-			$status->merge( $subStatus );
-			if ( $subStatus->isOk() ) {
+			$status->merge( $this->doSingleLock( $key ) );
+			if ( $status->isOk() ) {
 				$lockedKeys[] = $key;
 			} else {
 				// Abort and unlock everything
@@ -333,7 +332,7 @@ class DBFileLockManager extends FileLockManager {
 				$this->doLockingSelect( $server, $keys ); // SELECT FOR UPDATE
 				$locksMade = true; // success for this fallback
 			} catch ( DBError $e ) {
-				// oh well; best effort
+				// oh well; best effort (@TODO: logging?)
 			}
 		}
 		return $locksMade;
