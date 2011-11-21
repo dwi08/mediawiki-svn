@@ -1,0 +1,11 @@
+--- a/config/.htaccess-sample
++++ b/config/.htaccess-sample
+@@ -4,7 +4,7 @@
+ </Files>
+ 
+ RewriteEngine On
+-RewriteBase /
++RewriteBase /testswarm
+ 
+ RewriteCond %{REQUEST_FILENAME} -f [OR]
+ RewriteCond %{REQUEST_FILENAME} -d

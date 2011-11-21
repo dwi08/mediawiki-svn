@@ -1,0 +1,8 @@
+testswarm for Debian
+--------------------
+
+This package is still a bit hacky. Please do test it locally and report any
+issue directly to me.
+I will hopefully remove this notice once we have a working testswarm package!
+
+ -- Antoine Musso <amusso@wikimedia.org>  Sun, 20 Nov 2011 14:30:36 +0100

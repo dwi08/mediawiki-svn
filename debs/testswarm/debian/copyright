@@ -1,5 +1,5 @@
-This package was debianized by Chad Horohoe <chad@wikimedia.org> on
-Tue, 15 Nov 2011 14:34:02 -0500.
+This package was debianized by Chad Horohoe <chad@wikimedia.org> and
+Antoine Musso <amusso@wikimedia.org> on Tue, 15 Nov 2011 14:34:02 -0500.
 
 It was downloaded from <https://github.com/jquery/testswarm>
 
@@ -34,3 +34,4 @@ License:
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
     OTHER DEALINGS IN THE SOFTWARE.
     
+

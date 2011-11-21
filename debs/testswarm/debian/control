@@ -1,12 +1,15 @@
 Source: testswarm
-Section: misc
+Section: web
 Priority: extra
-Maintainer: Chad Horohoe <chad@wikimedia.org>
-Build-Depends: debhelper (>= 6), libapache2-mod-php5, mysql-server, dbconfig-common
-Standards-Version: 3.8.0
+Maintainer: Antoine Musso <amusso@wikimedia.org>
+Uploaders: Antoine Musso <amusso@wikimedia.org>, Chad Horohoe <chad@wikimedia.org>
+Build-Depends: debhelper (>= 7), dbconfig-common, quilt
+Standards-Version: 3.8.3
 Homepage: https://github.com/jquery/testswarm
 
 Package: testswarm
 Architecture: any
-Depends: ${shlibs:Depends}
-Description:Javascript unit test runner
+Depends: apache2, libapache2-mod-php5 | php5, php5-mysql, mysql-server, ucf, dbconfig-common, ${shlibs:Depends}, ${misc:Depends}
+Recommends: mysql-client
+Description: Javascript unit test runner
+ <insert long description, indented with spaces>

@@ -1,20 +1,31 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-#export DH_VERBOSE=1
+export DH_VERBOSE=1
+
+# Our fabulous paths:
+TDIR:=debian/testswarm
+SHAREDIR:=${TDIR}/usr/share/testswarm
+SITEDIR:=${SHAREDIR}/site
+
+include /usr/share/quilt/quilt.make
+
+configure: configure-stamp
+configure-stamp: $(QUILT_STAMPFN)
+	dh_testdir
+	touch configure-stamp
 
 build: build-stamp
-
-build-stamp:  
+build-stamp: patch configure-stamp 
 	dh_testdir
 
-	$(MAKE)
+	#$(MAKE)
 	touch $@
 
 clean: 
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
-	$(MAKE) clean
+	#$(MAKE) clean
 
 	dh_clean 
 
@@ -22,7 +33,20 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_installdirs
-
+	# Copy index.php
+	install -p *.php ${SITEDIR}
+	# Copy all php/css/js files:
+	cp -p -R content css images inc js logic ${SITEDIR}
+	# Fix permissions:
+	find ${SITEDIR} -exec chown root:www-data {} \;
+	find ${SITEDIR} -type d -exec chmod 750 {} \;
+	find ${SITEDIR} -type f -exec chmod 640 {} \;
+	# Perl script examples belong to usr/share
+	cp -p -R scripts ${SHAREDIR}
+	# Place SQL scripts in dbconfig-common area
+	cp -p config/testswarm.sql config/useragents.sql ${TDIR}/usr/share/dbconfig-common/data/testswarm/install/mysql
+	cp -p config/.htaccess-sample ${SITEDIR}/.htaccess
+	install -p -m 640 -g www-data config/config.Debian.ini ${TDIR}/etc/testswarm/
 
 binary-indep: install
 binary-arch: install

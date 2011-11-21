@@ -1,0 +1,16 @@
+--- /dev/null
++++ b/config/config.Debian.ini
+@@ -0,0 +1,13 @@
++; This file is a template only. The actual config has been added in testswarm root
++; directory as /usr/share/testswarm/site/config.ini
++; Rename to config.ini
++; and move to the site root
++[database]
++	host = "_DBC_DBSERVER_"
++	username = "_DBC_DBUSER_"
++	password = "_DBC_DBPASS_"
++	database = "_DBC_DBNAME_"
++[web]
++; set to /testswarm/ to run a local copy in a non-root directory, also update .htaccess with RewriteBase /testswarm/
++; include trailing slash!
++	contextpath = "/testswarm/"

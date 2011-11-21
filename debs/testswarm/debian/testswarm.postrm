@@ -1,0 +1,44 @@
+#!/bin/sh
+
+if [ "$1" != "remove" ] && [ "$1" != "purge" ]; then
+	exit 0;
+fi
+
+. /usr/share/debconf/confmodule
+if [ -f /usr/share/dbconfig-common/dpkg/postrm.mysql ]; then
+	. /usr/share/dbconfig-common/dpkg/postrm.mysql
+	dbc_go testswarm $@
+fi
+
+case "$1" in
+purge)
+	# FIXME: add files that need to be removed!
+
+	if which ucf >/dev/null 2>&1; then
+		ucf  --purge /usr/share/testswarm/site/config.ini
+		ucfr --purge testswarm /usr/share/testswarm/site/config.ini
+		ucf  --purge /etc/testswarm/apache.conf
+		ucfr --purge testswarm /etc/testswarm/apache.conf
+	fi
+	rm -f /usr/share/testswarm/site/config.ini
+	rm -f /etc/testswarm/apache.conf
+
+	# unlink testswarm apache conf and restart apache
+	if [ -L "/etc/apache2/conf.d/testswarm.conf" ]; then
+		rm /etc/apache2/conf.d/testswarm.conf
+	fi
+	invoke-rc.d apache2 reload || true
+
+	;;
+
+
+remove)
+	# unlink testswarm apache conf and restart apache
+	if [ -L "/etc/apache2/conf.d/testswarm.conf" ]; then
+		rm /etc/apache2/conf.d/testswarm.conf
+	fi
+	invoke-rc.d apache2 reload || true
+
+	;;
+
+esac
