@@ -1536,7 +1536,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'street',
 			'city',
 			'state',
-			'zip',
 			'email',
 			'amount',
 			'card_type',
@@ -1573,11 +1572,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	protected function stage_state( $type = 'request' ) {
 		// Truncate to 35 characters due to GlobalCollect's field length limit
 		$this->staged_data['state'] = substr( $this->staged_data['state'], 0, 35 );
-	}
-	
-	protected function stage_zip( $type = 'request' ) {
-		// Truncate to 10 characters due to GlobalCollect's field length limit
-		$this->staged_data['zip'] = substr( $this->staged_data['zip'], 0, 10 );
 	}
 	
 	protected function stage_email( $type = 'request' ) {
