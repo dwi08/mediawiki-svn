@@ -218,7 +218,7 @@ abstract class FileBackendBase {
 	 * @return Status
 	 */
 	final public function lockFiles( array $paths ) {
-		return $this->lockManager->lock( $this->getLockResourcePaths( $paths ) );
+		return $this->lockManager->lock( $paths );
 	}
 
 	/**
@@ -229,22 +229,7 @@ abstract class FileBackendBase {
 	 * @return Status
 	 */
 	final public function unlockFiles( array $paths ) {
-		return $this->lockManager->unlock( $this->getLockResourcePaths( $paths ) );
-	}
-
-	/**
-	 * Prefix a list of storage paths to use as resource paths to lock
-	 *
-	 * @param $paths Array
-	 * @return Array 
-	 */
-	private function getLockResourcePaths( array $paths ) {
-		$backendKey = get_class( $this ) . ':' . $this->getName();
-		$res = array();
-		foreach( $paths as $path ) {
-			$res[] = "{$backendKey}:{$path}";
-		}
-		return $res;
+		return $this->lockManager->unlock( $paths );
 	}
 }
 
@@ -354,7 +339,7 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
-	 * Split a storage path (e.g. "mwstore://container/path/to/object")
+	 * Split a storage path (e.g. "mwstore://backend/container/path/to/object")
 	 * into a container name and a full object name within that container.
 	 *
 	 * @param $storagePath string
