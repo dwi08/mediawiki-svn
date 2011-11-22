@@ -8,7 +8,7 @@
  * Base class for all file backend classes (including multi-write backends).
  * This class defines the methods as abstract that must be implemented subclasses.
  * 
- * All "storage paths" are of the format "mwstore://container/path".
+ * All "storage paths" are of the format "mwstore://backend/container/path".
  * The paths use typical file system notation, though any particular backend may
  * not actually be using a local filesystem. Therefore, the paths are only virtual.
  *
@@ -362,12 +362,14 @@ abstract class FileBackend extends FileBackendBase {
 	 */
 	final protected function resolveVirtualPath( $storagePath ) {
 		if ( strpos( $storagePath, 'mwstore://' ) === 0 ) {
-			$m = explode( '/', substr( $storagePath, 10 ), 2 );
-			if ( count( $m ) == 2 ) {
-				list( $container, $relPath ) = $m;
-				$relPath = $this->resolveContainerPath( $container, $relPath );
-				if ( $relPath !== null ) {
-					return array( $container, $relPath ); // (container, path)
+			$m = explode( '/', substr( $storagePath, 10 ), 3 );
+			if ( count( $m ) == 3 ) {
+				list( $backend, $container, $relPath ) = $m;
+				if ( $backend === $this->name ) { // sanity
+					$relPath = $this->resolveContainerPath( $container, $relPath );
+					if ( $relPath !== null ) {
+						return array( $container, $relPath ); // (container, path)
+					}
 				}
 			}
 		}
