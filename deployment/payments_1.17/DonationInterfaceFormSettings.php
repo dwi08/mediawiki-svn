@@ -34,6 +34,9 @@ $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-enets'] = $wgGlobalCollectGatewayH
 $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-eps'] = $wgGlobalCollectGatewayHtmlFormDir . '/rtbt/rtbt-eps.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-ideal-noadd'] = $wgGlobalCollectGatewayHtmlFormDir . '/rtbt/rtbt-ideal-noadd.html';
 
+//BPAY
+$wgGlobalCollectGatewayAllowedHtmlForms['obt-bpay'] = $wgGlobalCollectGatewayHtmlFormDir . '/obt/obt-bpay.html';
+
 // Credit Card - Single Step
 //$wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step-CA'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step-CA.html';
