@@ -344,7 +344,7 @@ class FSFileBackend extends FileBackend {
 }
 
 /**
- * Simple DFS based file browsing iterator. The highest number of file handles
+ * Semi-DFS based file browsing iterator. The highest number of file handles
  * open at any given time is proportional to the height of the directory tree.
  */
 class FileIterator implements Iterator {
@@ -413,13 +413,13 @@ class FileIterator implements Iterator {
 		}
 		list( $dir, $handle ) = $set;
 		while ( false !== ( $file = readdir( $handle ) ) ) {
-			// Exclude '.' and '..' as well .svn or .lock type files.
-			// Also excludes symlinks and the like so as to avoid cycles.
-			if ( $file[0] !== '.' && !is_link( $file ) ) {
+			// Exclude '.' and '..' as well .svn or .lock type files
+			if ( $file[0] !== '.' ) {
 				// If the first thing we find is a file, then return it.
 				// If the first thing we find is a directory, then return
 				// the first file that it contains (via recursion).
-				if ( is_dir( "$dir/$file" ) ) {
+				// We exclude symlink dirs in order to avoid cycles.
+				if ( is_dir( "$dir/$file" ) && !is_link( "$dir/$file" ) ) {
 					$subHandle = opendir( "$dir/$file" );
 					if ( $subHandle ) {
 						$this->pushDirectory( "{$dir}/{$file}", $subHandle );
@@ -465,7 +465,7 @@ class FileIterator implements Iterator {
 		$this->dirStack = array();
 	}
 
-	private function __destruct() {
+	function __destruct() {
 		$this->closeDirectories();
 	}
 }

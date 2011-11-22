@@ -36,7 +36,7 @@ class TempLocalFile {
 	 * Cleans up after the temporary file.
 	 * Currently this means removing it from the local disk.
 	 */
-	protected function __destruct() {
+	function __destruct() {
 		if ( $this->canDelete ) {
 			wfSuppressWarnings();
 			unlink( $this->path );

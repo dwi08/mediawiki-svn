@@ -30,7 +30,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	 * $config contains:
 	 *     'name'       : The name of the proxy backend
 	 *     'lockManger' : FileLockManager instance
-	 *     'backends'   : Array of ( backend object, settings ) pairs.
+	 *     'backends'   : Array of (backend object, settings) pairs.
 	 *                    The settings per backend include:
 	 *                        'isCache': The backend is non-persistent
 	 * @param $config Array

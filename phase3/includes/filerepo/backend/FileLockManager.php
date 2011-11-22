@@ -46,7 +46,7 @@ abstract class FileLockManager {
 	/**
 	 * Lock a resource with the given key
 	 * 
-	 * @param $key Array List of keys to lock
+	 * @param $key Array List of keys to lock (40 char hex hashes)
 	 * @param $type integer FileLockManager::LOCK_EX, FileLockManager::LOCK_SH
 	 * @return string
 	 */
@@ -56,7 +56,7 @@ abstract class FileLockManager {
 	 * Unlock a resource with the given key.
 	 * If $type is given, then only locks of that type should be cleared.
 	 * 
-	 * @param $key Array List of keys to unlock
+	 * @param $key Array List of keys to unlock (40 char hex hashes)
 	 * @param $type integer FileLockManager::LOCK_EX, FileLockManager::LOCK_SH, or 0
 	 * @return string
 	 */
@@ -188,7 +188,7 @@ class FSFileLockManager extends FileLockManager {
 		return $status;
 	}
 
-	protected function __destruct() {
+	function __destruct() {
 		// Make sure remaining files get cleared for sanity
 		foreach ( $this->handles as $key => $locks ) {
 			foreach ( $locks as $type => $handle ) {
@@ -404,12 +404,11 @@ class DBFileLockManager extends FileLockManager {
 	 * Get the bucket for lock key.
 	 * This should avoid throwing any exceptions.
 	 *
-	 * @param $key string
+	 * @param $key string (40 char hex key)
 	 * @return integer
 	 */
 	protected function getBucketFromKey( $key ) {
-		$hash = str_pad( md5( $key ), 32, '0', STR_PAD_LEFT ); // 32 char hash
-		$prefix = substr( $hash, 0, 2 ); // first 2 hex chars (8 bits)
+		$prefix = substr( $key, 0, 2 ); // first 2 hex chars (8 bits)
 		$bucket = intval( base_convert( $prefix, 16, 10 ) ) % count( $this->serverMap );
 		// Sanity check that at least one server is handling this bucket
 		if ( !isset( $this->serverMap[$bucket] ) ) {

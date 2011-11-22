@@ -139,7 +139,8 @@ abstract class FileBackendBase {
 	abstract public function concatenate( array $params );
 
 	/**
-	 * Whether this backend implements move() and can handle a potential move.
+	 * Whether this backend implements move() and is applies to a potential
+	 * move from one storage path to another. No backends hits are required.
 	 * For example, moving objects accross containers may not be supported.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
