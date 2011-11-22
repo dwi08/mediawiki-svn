@@ -81,6 +81,7 @@ def SendStats(db, current, graph):
 
 		message = "%s.tp50 %.3f %d\n" % ( key, float(current[key]['samples'][tp50])*1000, now )
 		logging.debug("sending: %s", message)
+		graph.send(message)
 
 		message = "%s.tp99 %.3f %d\n" % ( key, float(current[key]['samples'][tp99])*1000, now )
 		logging.debug("sending: %s", message)
