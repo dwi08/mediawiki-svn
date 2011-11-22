@@ -7,30 +7,45 @@
 /**
  * This class defines a multi-write backend. Multiple backends can
  * be registered to this proxy backend it will act as a single backend.
+ * Use this only if all access to the backends is through an instance of this class.
  * 
  * The order that the backends are defined sets the priority of which
  * backend is read from or written to first. Functions like fileExists()
  * and getFileProps() will return information based on the first backend
- * that has the file (normally both should have it anyway).
+ * that has the file (normally both should have it anyway). Functions like
+ * getFileList() will return results from the first backend that is not
+ * declared as non-persistent cache. This is done for consistency.
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
- * 
- * To avoid excess overhead, set the the highest priority backend to use
- * a generic FileLockManager and the others to use NullLockManager. This can
- * only be done if all access to the backends is through an instance of this class.
  */
 class FileBackendMultiWrite extends FileBackendBase {
-	/** @var Array Prioritized list of FileBackend classes */
-	protected $fileBackends = array();
+	/** @var Array Prioritized list of FileBackend objects */
+	protected $fileBackends = array(); // array of (backend index => backends)
+	/** @var Array List of FileBackend object informations */
+	protected $fileBackendsInfo = array(); // array (backend index => array of settings)
 
+	/**
+	 * Construct a proxy backend that consist of several internal backends.
+	 * $config contains:
+	 *     'name'       : The name of the proxy backend
+	 *     'lockManger' : FileLockManager instance
+	 *     'backends'   : Array of ( backend object, settings ) pairs.
+	 *                    The settings per backend include:
+	 *                        'isCache': The backend is non-persistent
+	 * @param $config Array
+	 */
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
-		$this->fileBackends = $config['backends'];
-	}
-
-	function hasNativeMove() {
-		return true; // this is irrelevant
+		$this->lockManager = $config['lockManger'];
+		foreach ( $config['backends'] as $index => $info ) {
+			list( $backend, $settings ) = $info;
+			$this->fileBackends[$index] = $backend;
+			// Default backend settings
+			$defaults = array( 'isCache' => false );
+			// Apply custom backend settings to defaults
+			$this->fileBackendsInfo[$index] = $info + $defaults;
+		}
 	}
 
 	final public function doOperations( array $ops ) {
@@ -98,6 +113,10 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $this->doOperation( array( $op ) );
 	}
 
+	function canMove( array $params ) {
+		return true; // this is irrelevant
+	}
+
 	function move( array $params ) {
 		$op = array( 'operation' => 'move' ) + $params;
 		return $this->doOperation( array( $op ) );
@@ -157,26 +176,13 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return null;
 	}
 
-	function lockFiles( array $paths ) {
-		$status = Status::newGood();
+	function getFileList( array $params ) {
 		foreach ( $this->backends as $index => $backend ) {
-			$status->merge( $backend->lockFiles( $paths ) );
-			if ( !$status->isOk() ) {
-				// Lock failed: release the locks done so far each backend
-				for ( $i=0; $i < $index; $i++ ) { // don't do backend $index since it failed
-					$status->merge( $backend->unlockFiles( $paths ) );
-				}
-				return $status;
+			// Skip cache backends (like one using memcached)
+			if ( !$this->fileBackendsInfo[$index]['isCache'] ) {
+				return $backend->getFileList( $params );
 			}
 		}
-		return $status;
-	}
-
-	function unlockFiles( array $paths ) {
-		$status = Status::newGood();
-		foreach ( $this->backends as $backend ) {
-			$status->merge( $backend->unlockFile( $paths ) );
-		}
-		return $status;
+		return array();
 	}
 }

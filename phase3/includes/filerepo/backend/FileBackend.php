@@ -17,6 +17,22 @@
  */
 abstract class FileBackendBase {
 	protected $name; // unique backend name
+	/** @var FileLockManager */
+	protected $lockManager;
+
+	/**
+	 * Build a new object from configuration.
+	 * This should only be called from within FileRepo classes.
+	 * $config includes:
+	 *     'name'        : The name of this backend
+	 *     'lockManager' : The file lock manager to use
+	 * 
+	 * @param $config Array
+	 */
+	public function __construct( array $config ) {
+		$this->name = $config['name'];
+		$this->lockManager = $config['lockManger'];
+	}
 
 	/**
 	 * We may have multiple different backends of the same type.
@@ -40,11 +56,11 @@ abstract class FileBackendBase {
 	 * The inner array contains the parameters, E.G:
 	 * <code>
 	 * $ops = array(
-	 *      array(
-	 *          'operation' => 'store',
-	 *          'src'       => '/tmp/uploads/picture.png',
-	 *          'dest'      => 'mwstore://container/uploadedFilename.png'
-	 *      )
+	 *     array(
+	 *         'operation' => 'store',
+	 *         'src'       => '/tmp/uploads/picture.png',
+	 *         'dest'      => 'mwstore://container/uploadedFilename.png'
+	 *     )
 	 * );
 	 * </code>
 	 * 
@@ -54,23 +70,13 @@ abstract class FileBackendBase {
 	abstract public function doOperations( array $ops );
 
 	/**
-	 * Return a list of FileOp objects from a list of operations.
-	 * An exception is thrown if an unsupported operation is requested.
-	 * 
-	 * @param Array $ops Same format as doOperations()
-	 * @return Array
-	 * @throws MWException
-	 */
-	abstract public function getOperations( array $ops );
-
-	/**
 	 * Store a file into the backend from a file on disk.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source        : source path on disk
-	 *      dest          : destination storage path
-	 *      overwriteDest : do nothing and pass if an identical file exists at destination
-	 *      overwriteSame : override any existing file at destination
+	 *     source        : source path on disk
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 *     overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -81,12 +87,12 @@ abstract class FileBackendBase {
 	 * Copy a file from one storage path to another in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source        : source storage path
-	 *      dest          : destination storage path
-	 *      overwriteDest : do nothing and pass if an identical file exists at destination
-	 *      overwriteSame : override any existing file at destination
+	 *     source        : source storage path
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 *     overwriteSame : override any existing file at destination
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return Status
 	 */
 	abstract public function copy( array $params );
@@ -96,12 +102,12 @@ abstract class FileBackendBase {
 	 * This can be left as a dummy function as long as hasMove() returns false.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source        : source storage path
-	 *      dest          : destination storage path
-	 *      overwriteDest : do nothing and pass if an identical file exists at destination
-	 *      overwriteSame : override any existing file at destination
+	 *     source        : source storage path
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 *     overwriteSame : override any existing file at destination
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return Status
 	 */
 	abstract public function move( array $params );
@@ -110,10 +116,10 @@ abstract class FileBackendBase {
 	 * Delete a file at the storage path.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source              : source storage path
-	 *      ignoreMissingSource : don't return an error if the file does not exist
+	 *     source              : source storage path
+	 *     ignoreMissingSource : don't return an error if the file does not exist
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return Status
 	 */
 	abstract public function delete( array $params );
@@ -122,24 +128,25 @@ abstract class FileBackendBase {
 	 * Combines files from severals storage paths into a new file in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source        : source storage path
-	 *      dest          : destination storage path
-	 *      overwriteDest : do nothing and pass if an identical file exists at destination
-	 *      overwriteSame : override any existing file at destination
+	 *     source        : source storage path
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 *     overwriteSame : override any existing file at destination
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return Status
 	 */
 	abstract public function concatenate( array $params );
 
 	/**
-	 * Whether this backend implements move() and can handle this potential move.
+	 * Whether this backend implements move() and can handle a potential move.
 	 * For example, moving objects accross containers may not be supported.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source        : source storage path
-	 *      dest          : destination storage path
+	 *     source : source storage path
+	 *     dest   : destination storage path
 	 *
+	 * @param Array $params
 	 * @return bool
 	 */
 	abstract public function canMove( array $params );
@@ -148,9 +155,9 @@ abstract class FileBackendBase {
 	 * Check if a file exits at a storage path in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *      source : source storage path
+	 *     source : source storage path
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return bool
 	 */
 	abstract public function fileExists( array $params );
@@ -158,9 +165,9 @@ abstract class FileBackendBase {
 	/**
 	 * Get the properties of the file that exists at a storage path in the backend
 	 * $params include:
-	 *      source : source storage path
+	 *     source : source storage path
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return Array|null Gives null if the file does not exist
 	 */
 	abstract public function getFileProps( array $params );
@@ -171,9 +178,9 @@ abstract class FileBackendBase {
 	 * must be sent if streaming began, while none should be sent otherwise.
 	 * Implementations should flush the output buffer before sending data.
 	 * $params include:
-	 *      source  : source storage path
+	 *     source : source storage path
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return Status
 	 */
 	abstract public function streamFile( array $params );
@@ -185,29 +192,33 @@ abstract class FileBackendBase {
 	 * in the container should be listed. If of the form "mwstore://container/dir",
 	 * then all items under that container directory should be listed.
 	 * $params include:
-	 *      directory : storage path directory.
-	 * @return Iterator
+	 *     directory : storage path directory.
+	 *
+	 * @return Iterator|Array
 	 */
 	abstract public function getFileList( array $params );
 
 	/**
 	 * Get a local copy on disk of the file at a storage path in the backend
 	 * $params include:
-	 *      source : source storage path
+	 *     source : source storage path
 	 * 
-	 * @param Array $params 
+	 * @param Array $params
 	 * @return TempLocalFile|null Temporary file or null on failure
 	 */
 	abstract public function getLocalCopy( array $params );
 
 	/**
 	 * Lock the files at the given storage paths in the backend.
+	 * This should either lock all the files or none (on failure).
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
-	abstract public function lockFiles( array $sources );
+	final public function lockFiles( array $paths ) {
+		return $this->lockManager->lock( $this->getLockResourcePaths( $paths ) );
+	}
 
 	/**
 	 * Unlock the files at the given storage paths in the backend.
@@ -216,30 +227,30 @@ abstract class FileBackendBase {
 	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
-	abstract public function unlockFiles( array $sources );
+	final public function unlockFiles( array $paths ) {
+		return $this->lockManager->unlock( $this->getLockResourcePaths( $paths ) );
+	}
+
+	/**
+	 * Prefix a list of storage paths to use as resource paths to lock
+	 *
+	 * @param $paths Array
+	 * @return Array 
+	 */
+	private function getLockResourcePaths( array $paths ) {
+		$backendKey = get_class( $this ) . ':' . $this->getName();
+		$res = array();
+		foreach( $paths as $path ) {
+			$res[] = "{$backendKey}:{$path}";
+		}
+		return $res;
+	}
 }
 
 /**
  * Base class for all single-write backends
  */
 abstract class FileBackend extends FileBackendBase {
-	/** @var FileLockManager */
-	protected $lockManager;
-
-	/**
-	 * Build a new object from configuration.
-	 * This should only be called from within FileRepo classes.
-	 * $config includes:
-	 *     'name'        : The name of this backend
-	 *     'lockManager' : The lock manager to use
-	 * 
-	 * @param $config Array
-	 */
-	public function __construct( array $config ) {
-		$this->name = $config['name'];
-		$this->lockManager = $config['lockManger'];
-	}
-
 	function canMove( array $params ) {
 		return false; // not implemented
 	}
@@ -263,6 +274,14 @@ abstract class FileBackend extends FileBackendBase {
 		);
 	}
 
+	/**
+	 * Return a list of FileOp objects from a list of operations.
+	 * An exception is thrown if an unsupported operation is requested.
+	 * 
+	 * @param Array $ops Same format as doOperations()
+	 * @return Array
+	 * @throws MWException
+	 */
 	final public function getOperations( array $ops ) {
 		$supportedOps = $this->supportedOperations();
 
@@ -331,27 +350,6 @@ abstract class FileBackend extends FileBackendBase {
 		$status->setResult( true );
 
 		return $status;
-	}
-
-	final public function lockFiles( array $paths ) {
-		return $this->lockManager->lock( $this->getLockResourcePaths( $paths ) );
-	}
-
-	final public function unlockFiles( array $paths ) {
-		return $this->lockManager->unlock( $this->getLockResourcePaths( $paths ) );
-	}
-
-	/**
-	 * Get a prefix to use for locking keys
-	 * @return string 
-	 */
-	private function getLockResourcePaths( array $paths ) {
-		$backendKey = get_class( $this ) . ':' . $this->getName();
-		$res = array();
-		foreach( $paths as $path ) {
-			$res[] = "{$backendKey}:{$path}";
-		}
-		return $res;
 	}
 
 	/**
@@ -509,10 +507,10 @@ abstract class FileOp {
 /**
  * Store a file into the backend from a file on disk.
  * Parameters must match FileBackend::store(), which include:
- *      source        : source path on disk
- *      dest          : destination storage path
- *      overwriteDest : do nothing and pass if an identical file exists at destination
- *      overwriteSame : override any existing file at destination
+ *     source        : source path on disk
+ *     dest          : destination storage path
+ *     overwriteDest : do nothing and pass if an identical file exists at destination
+ *     overwriteSame : override any existing file at destination
  */
 class FileStoreOp extends FileOp {
 	/** @var TempLocalFile|null */
@@ -596,10 +594,10 @@ class FileStoreOp extends FileOp {
 /**
  * Copy a file from one storage path to another in the backend.
  * Parameters must match FileBackend::copy(), which include:
- *      source        : source storage path
- *      dest          : destination storage path
- *      overwriteDest : do nothing and pass if an identical file exists at destination
- *      overwriteSame : override any existing file at destination
+ *     source        : source storage path
+ *     dest          : destination storage path
+ *     overwriteDest : do nothing and pass if an identical file exists at destination
+ *     overwriteSame : override any existing file at destination
  */
 class FileCopyOp extends FileStoreOp {
 	function doAttempt() {
@@ -637,10 +635,10 @@ class FileCopyOp extends FileStoreOp {
 /**
  * Move a file from one storage path to another in the backend.
  * Parameters must match FileBackend::move(), which include:
- *      source        : source storage path
- *      dest          : destination storage path
- *      overwriteDest : do nothing and pass if an identical file exists at destination
- *      overwriteSame : override any existing file at destination
+ *     source        : source storage path
+ *     dest          : destination storage path
+ *     overwriteDest : do nothing and pass if an identical file exists at destination
+ *     overwriteSame : override any existing file at destination
  */
 class FileMoveOp extends FileStoreOp {
 	protected $usingMove = false; // using backend move() function?
@@ -710,10 +708,10 @@ class FileMoveOp extends FileStoreOp {
 /**
  * Combines files from severals storage paths into a new file in the backend.
  * Parameters must match FileBackend::concatenate(), which include:
- *      sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
- *      dest          : destination storage path
- *      overwriteDest : do nothing and pass if an identical file exists at destination
- *      overwriteSame : override any existing file at destination
+ *     sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
+ *     dest          : destination storage path
+ *     overwriteDest : do nothing and pass if an identical file exists at destination
+ *     overwriteSame : override any existing file at destination
  */
 class FileConcatenateOp extends FileStoreOp {
 	function doAttempt() {
@@ -751,8 +749,8 @@ class FileConcatenateOp extends FileStoreOp {
 /**
  * Delete a file at the storage path.
  * Parameters must match FileBackend::delete(), which include:
- *      source              : source storage path
- *      ignoreMissingSource : don't return an error if the file does not exist
+ *     source              : source storage path
+ *     ignoreMissingSource : don't return an error if the file does not exist
  */
 class FileDeleteOp extends FileOp {
 	function doAttempt() {

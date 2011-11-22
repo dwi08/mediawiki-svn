@@ -75,6 +75,10 @@ class FSFileBackend extends FileBackend {
 		return $this->store( $params ); // both source and dest are on FS
 	}
 
+	function canMove( array $params ) {
+		return true;
+	}
+
 	function move( array $params ) {
 		$status = Status::newGood();
 
@@ -257,11 +261,10 @@ class FSFileBackend extends FileBackend {
 		return File::getPropsFromPath( $source );
 	}
 
-	// Not suitable for massive listings
 	function getFileList( array $params ) {
 		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
-		if ( $dir === null ) { // valid storage path
-			return new FileIterator( '' ); // empty result
+		if ( $dir === null ) { // invalid storage path
+			return array(); // empty result
 		}
 		return new FileIterator( $dir );
 	}
