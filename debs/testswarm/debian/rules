@@ -42,7 +42,7 @@ install: build
 	# Perl script examples belong to usr/share
 	cp -p -R scripts ${SHAREDIR}
 	# Place SQL scripts in dbconfig-common area
-	cp -p config/testswarm.sql config/useragents.sql ${TDIR}/usr/share/dbconfig-common/data/testswarm/install/mysql
+	cat config/testswarm.sql config/useragents.sql > ${TDIR}/usr/share/dbconfig-common/data/testswarm/install/mysql
 	cp -p config/.htaccess-sample ${SITEDIR}/.htaccess
 	install -p -m 640 -g www-data config/config.Debian.ini ${TDIR}/etc/testswarm/
 

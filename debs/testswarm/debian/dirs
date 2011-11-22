@@ -2,4 +2,4 @@ etc/testswarm
 var/log/testswarm
 usr/share/doc/testswarm
 usr/share/testswarm/site
-usr/share/dbconfig-common/data/testswarm/install/mysql
+usr/share/dbconfig-common/data/testswarm/install
