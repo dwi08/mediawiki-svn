@@ -34,7 +34,7 @@ class FSFileBackend extends FileBackend {
 
 		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
 		if ( $dest === null ) {
-			$status->fatal( "Invalid storage path {$params['dest']}." );
+			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
 		}
 
@@ -42,16 +42,16 @@ class FSFileBackend extends FileBackend {
 			if ( isset( $params['overwriteDest'] ) ) {
 				$ok = unlink( $dest );
 				if ( !$ok ) {
-					$status->fatal( "Could not delete destination file." );
+					$status->fatal( 'backend-fail-delete', $param['dest'] );
 					return $status;
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $params['source'], $dest ) ) {
-					$status->fatal( "Non-identical destination file already exists." );
+					$status->fatal( 'backend-fail-notsame', $params['source'], $params['dest'] );
 				}
 				return $status; // do nothing; either OK or bad status
 			} else {
-				$status->fatal( "Destination file already exists." );
+				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 				return $status;
 			}
 		} else {
@@ -62,7 +62,7 @@ class FSFileBackend extends FileBackend {
 		$ok = copy( $params['source'], $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( "Could not copy file to destination." );
+			$status->fatal( 'backend-fail-copy', $params['source'], $params['dest'] );
 			return $status;
 		}
 
@@ -80,12 +80,12 @@ class FSFileBackend extends FileBackend {
 
 		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
 		if ( $source === null ) {
-			$status->fatal( "Invalid storage path {$params['source']}." );
+			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
 			return $status;
 		}
 		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
 		if ( $dest === null ) {
-			$status->fatal( "Invalid storage path {$params['dest']}." );
+			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
 		}
 
@@ -93,16 +93,16 @@ class FSFileBackend extends FileBackend {
 			if ( isset( $params['overwriteDest'] ) ) {
 				$ok = unlink( $dest );
 				if ( !$ok ) {
-					$status->fatal( "Could not delete destination file." );
+					$status->fatal( 'backend-fail-delete', $params['dest'] );
 					return $status;
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $source, $dest ) ) {
-					$status->fatal( "Non-identical destination file already exists." );
+					$status->fatal( 'backend-fail-notsame', $params['source'], $params['dest'] );
 				}
 				return $status; // do nothing; either OK or bad status
 			} else {
-				$status->fatal( "Destination file already exists." );
+				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 				return $status;
 			}
 		} else {
@@ -113,7 +113,7 @@ class FSFileBackend extends FileBackend {
 		$ok = rename( $source, $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( "Could not move file to destination." );
+			$status->fatal( 'backend-fail-move', $params['source'], $params['dest'] );
 			return $status;
 		}
 
@@ -125,13 +125,13 @@ class FSFileBackend extends FileBackend {
 
 		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
 		if ( $source === null ) {
-			$status->fatal( "Invalid storage path {$params['source']}." );
+			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
 			return $status;
 		}
 
 		if ( !file_exists( $source ) ) {
 			if ( !$params['ignoreMissingSource'] ) {
-				$status->fatal( "Could not delete source because it does not exist." );
+				$status->fatal( 'backend-fail-delete', $params['source'] );
 			}
 			return $status; // do nothing; either OK or bad status
 		}
@@ -140,7 +140,7 @@ class FSFileBackend extends FileBackend {
 		$ok = unlink( $source );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( "Could not delete source file." );
+			$status->fatal( 'backend-fail-delete', $params['source'] );
 			return $status;
 		}
 
@@ -152,14 +152,14 @@ class FSFileBackend extends FileBackend {
 
 		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
 		if ( $dest === null ) {
-			$status->fatal( "Invalid storage path {$params['dest']}." );
+			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
 		}
 
 		// Check if the destination file exists and we can't handle that
 		$destExists = file_exists( $dest );
 		if ( $destExists && !$params['overwriteDest'] && !$params['overwriteSame'] ) {
-			$status->fatal( "Destination file already exists." ); // short-circuit
+			$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 			return $status;
 		}
 
@@ -168,7 +168,7 @@ class FSFileBackend extends FileBackend {
 		$tmpPath = tempnam( wfTempDir(), 'file_concatenate' );
 		wfRestoreWarnings();
 		if ( $tmpPath === false ) {
-			$status->fatal( "Could not create temporary file $tmpPath." );
+			$status->fatal( 'backend-fail-createtemp' );
 			return $status;
 		}
 
@@ -177,30 +177,30 @@ class FSFileBackend extends FileBackend {
 		$tmpHandle = fopen( $tmpPath, 'a' );
 		wfRestoreWarnings();
 		if ( $tmpHandle === false ) {
-			$status->fatal( "Could not open temporary file $tmpPath." );
+			$status->fatal( 'backend-fail-opentemp', $tmpPath );
 			return $status;
 		}
 		foreach ( $params['sources'] as $virtualSource ) {
 			list( $c, $source ) = $this->resolveVirtualPath( $virtualSource );
 			if ( $source === null ) {
-				$status->fatal( "Invalid storage path {$virtualSource}." );
+				$status->fatal( 'backend-fail-invalidpath', $virtualSource );
 				return $status;
 			}
 			// Load chunk into memory (it should be a small file)
 			$chunk = file_get_contents( $source );
 			if ( $chunk === false ) {
-				$status->fatal( "Could not read source file $source." );
+				$status->fatal( 'backend-fail-read', $virtualSource );
 				return $status;
 			}
 			// Append chunk to file (pass chunk size to avoid magic quotes)
 			if ( !fwrite( $tmpHandle, $chunk, count( $chunk ) ) ) {
-				$status->fatal( "Could not write to temporary file $tmpPath." );
+				$status->fatal( 'backend-fail-writetemp', $tmpPath );
 				return $status;
 			}
 		}
 		wfSuppressWarnings();
 		if ( !fclose( $tmpHandle ) ) {
-			$status->fatal( "Could not close temporary file $tmpPath." );
+			$status->fatal( 'backend-fail-closetemp', $tmpPath );
 			return $status;
 		}
 		wfRestoreWarnings();
@@ -213,12 +213,12 @@ class FSFileBackend extends FileBackend {
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
-					$status->fatal( "Could not delete destination file." );
+					$status->fatal( 'backend-fail-delete', $params['dest'] );
 					return $status;
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $tmpPath, $dest ) ) {
-					$status->fatal( "Non-identical destination file already exists." );
+					$status->fatal( 'backend-fail-notsame', $tmpPath, $params['dest'] );
 				}
 				return $status; // do nothing; either OK or bad status
 			}
@@ -232,7 +232,7 @@ class FSFileBackend extends FileBackend {
 		$ok = rename( $tmpPath, $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( "Could not rename temporary file to destination." );
+			$status->fatal( 'backend-fail-move', $tmpPath, $params['dest'] );
 			return $status;
 		}
 
@@ -271,13 +271,13 @@ class FSFileBackend extends FileBackend {
 
 		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
 		if ( $source === null ) {
-			$status->fatal( "Invalid storage path {$params['source']}." );
+			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
 			return $status;
 		}
 
 		$ok = StreamFile::stream( $source, array(), false );
 		if ( !$ok ) {
-			$status->fatal( "Unable to stream file {$source}." );
+			$status->fatal( 'backend-fail-stream', $params['source'] );
 			return $status;
 		}
 

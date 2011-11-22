@@ -334,15 +334,24 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	final public function lockFiles( array $paths ) {
-		// Locks should be specific to this backend location
-		$backendKey = get_class( $this ) . '-' . $this->getName();
-		return $this->lockManager->lock( $backendKey, $paths ); // not supported
+		return $this->lockManager->lock( $this->getLockResourcePaths( $paths ) );
 	}
 
 	final public function unlockFiles( array $paths ) {
-		// Locks should be specific to this backend location
-		$backendKey = get_class( $this ) . '-' . $this->getName();
-		return $this->lockManager->unlock( $backendKey, $paths ); // not supported
+		return $this->lockManager->unlock( $this->getLockResourcePaths( $paths ) );
+	}
+
+	/**
+	 * Get a prefix to use for locking keys
+	 * @return string 
+	 */
+	private function getLockResourcePaths( array $paths ) {
+		$backendKey = get_class( $this ) . ':' . $this->getName();
+		$res = array();
+		foreach( $paths as $path ) {
+			$res[] = "{$backendKey}:{$path}";
+		}
+		return $res;
 	}
 
 	/**
@@ -554,7 +563,7 @@ class FileStoreOp extends FileOp {
 				// Create a temporary backup copy...
 				$this->tmpDestFile = $this->getLocalCopy( $this->params['dest'] );
 				if ( !$this->tmpDestFile ) {
-					$status->fatal( "Could not backup destination file." );
+					$status->fatal( 'backend-fail-restore', $this->params['dest'] );
 					return $status;
 				}
 			}
@@ -750,7 +759,7 @@ class FileDeleteOp extends FileOp {
 		$status = Status::newGood();
 		if ( !$this->params['ignoreMissingSource'] ) {
 			if ( !$this->backend->fileExists( $this->params['source'] ) ) {
-				$status->fatal( "Cannot delete file because it does not exist." );
+				$status->fatal( 'backend-fail-notexists', $this->params['source'] );
 				return $status;
 			}
 		}
