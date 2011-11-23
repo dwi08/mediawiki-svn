@@ -552,7 +552,7 @@ $1',
 'helppage'             => 'Help:Tartalom',
 'mainpage'             => 'Kezdőlap',
 'mainpage-description' => 'Kezdőlap',
-'policy-url'           => 'Project:Nyilatkozat',
+'policy-url'           => 'Project:Irányelvek',
 'portal'               => 'Közösségi portál',
 'portal-url'           => 'Project:Közösségi portál',
 'privacy'              => 'Adatvédelmi irányelvek',
@@ -587,19 +587,19 @@ További információkat a [[Special:Version|verzióinformációs lapon]] talál
 'viewdeleted'             => '$1 megtekintése',
 'restorelink'             => '{{PLURAL:$1|Egy|$1}} törölt szerkesztés',
 'feedlinks'               => 'Hírcsatorna:',
-'feed-invalid'            => 'Érvénytelen a figyelt hírcsatorna típusa.',
-'feed-unavailable'        => 'Ezen wikin nincs elérhető hírcsatorna',
-'site-rss-feed'           => '$1 RSS csatorna',
-'site-atom-feed'          => '$1 Atom hírcsatorna',
-'page-rss-feed'           => '„$1” RSS hírcsatorna',
-'page-atom-feed'          => '„$1” Atom hírcsatorna',
+'feed-invalid'            => 'A figyelt hírcsatorna típusa érvénytelen.',
+'feed-unavailable'        => 'Nincs elérhető hírcsatorna',
+'site-rss-feed'           => '$1 RSS-hírcsatorna',
+'site-atom-feed'          => '$1 Atom-hírcsatorna',
+'page-rss-feed'           => '„$1” RSS-hírcsatorna',
+'page-atom-feed'          => '„$1” Atom-hírcsatorna',
 'red-link-title'          => '$1 (a lap nem létezik)',
 'sort-descending'         => 'Csökkenő sorrend',
 'sort-ascending'          => 'Növekvő sorrend',
 
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => 'Szócikk',
-'nstab-user'      => 'Szerkesztői lap',
+'nstab-user'      => 'Felhasználói lap',
 'nstab-media'     => 'Média',
 'nstab-special'   => 'Speciális lap',
 'nstab-project'   => 'Projektlap',
@@ -611,19 +611,19 @@ További információkat a [[Special:Version|verzióinformációs lapon]] talál
 
 # Main script and global functions
 'nosuchaction'      => 'Nincs ilyen művelet',
-'nosuchactiontext'  => 'Az URL-ben megadott műveletet érvénytelen.
-Valószínűleg elgépelted, hibás hivatkozásra kattintottál, vagy a
-a(z) {{SITENAME}} által használt szoftver hibája is lehet.',
+'nosuchactiontext'  => 'Az URL-ben megadott művelet érvénytelen.
+Valószínűleg elgépelted vagy hibás hivatkozásra kattintottál.
+Az is előfordulhat, hogy a(z) {{SITENAME}} wiki szoftverében hiba található.',
 'nosuchspecialpage' => 'Nem létezik ilyen speciális lap',
 'nospecialpagetext' => '<strong>Érvénytelen speciális lapot akartál megtekinteni.</strong>
 
-Az érvényes speciális lapok listáját a [[Special:SpecialPages|Speciális lapok]] oldalon találod.',
+Az érvényes speciális lapok listáját a [[Special:SpecialPages|{{int:specialpages}}]] oldalon találod.',
 
 # General errors
 'error'                => 'Hiba',
 'databaseerror'        => 'Adatbázishiba',
 'dberrortext'          => 'Szintaktikai hiba található az adatbázis-lekérdezésben.
-Ez szoftverhiba miatt történhetett.
+Ezt szoftverhiba okozhatta.
 Az utolsó adatbázis-lekérdezés a(z) „<tt>$2</tt>” függvényből történt, és a következő volt:
 <blockquote><tt>$1</tt></blockquote>
 Az adatbázis ezzel a hibával tért vissza: „<tt>$3: $4</tt>”.',
@@ -631,7 +631,7 @@ Az adatbázis ezzel a hibával tért vissza: „<tt>$3: $4</tt>”.',
 Az utolsó adatbázis-lekérdezés a(z) „$2” függvényből történt, és a következő volt:
 „$1”
 Az adatbázis ezzel a hibával tért vissza: „$3: $4”.',
-'laggedslavemode'      => 'Figyelem: Ez a lap nem feltétlenül tartalmazza a legfrissebb változtatásokat!',
+'laggedslavemode'      => "'''Figyelem:''' Ez a lap nem feltétlenül tartalmazza a legfrissebb változtatásokat!",
 'readonly'             => 'Az adatbázis le van zárva',
 'enterlockreason'      => 'Add meg a lezárás okát, valamint egy becslést, hogy mikor kerül a lezárás feloldásra',
 'readonlytext'         => 'A wiki adatbázisa ideiglenesen le van zárva (valószínűleg adatbázis-karbantartás miatt). A lezárás időtartama alatt a lapok nem szerkeszthetők, és új szócikkek sem hozhatóak létre, az oldalak azonban továbbra is böngészhetőek.
@@ -1526,7 +1526,6 @@ A műveletet nem lehet visszavonni.',
 'right-autopatrol'            => 'szerkesztések automatikusan ellenőrzöttként való jelölése',
 'right-patrolmarks'           => 'járőrök jelzéseinek megtekintése a friss változásokban',
 'right-unwatchedpages'        => 'nem figyelt lapok listájának megtekintése',
-'right-trackback'             => 'trackback küldése',
 'right-mergehistory'          => 'laptörténetek egyesítése',
 'right-userrights'            => 'az összes szerkesztő jogainak módosítása',
 'right-userrights-interwiki'  => 'más wikik szerkesztői jogainak módosítása',
@@ -1572,7 +1571,6 @@ A műveletet nem lehet visszavonni.',
 'action-patrol'               => 'mások szerkesztéseinek ellenőrzöttként való megjelölése',
 'action-autopatrol'           => 'saját szerkesztések ellenőrzöttként való megjelölése',
 'action-unwatchedpages'       => 'nem figyelt lapok listájának megtekintése',
-'action-trackback'            => 'trackback küldése',
 'action-mergehistory'         => 'lap laptörténetének egyesítése',
 'action-userrights'           => 'összes szerkesztő jogainak módosítása',
 'action-userrights-interwiki' => 'más wikik szerkesztői jogainak módosítása',
@@ -2886,9 +2884,17 @@ Mentsd el a számítógépedre, majd töltsd fel ide.',
 'tooltip-summary'                 => 'Adj meg egy rövid összefoglalót',
 
 # Stylesheets
-'common.css'   => '/* Közös CSS az összes felületnek */',
-'monobook.css' => '/* Az ide elhelyezett CSS hatással lesz a Monobook felület használóira */',
-'vector.css'   => '/* A Vector felületet használó szerkesztők számára betöltendő JavaScriptek */',
+'common.css'      => '/* Közös CSS az összes felületnek */',
+'standard.css'    => '/* Az ide elhelyezett CSS hatással lesz a Klasszikus felület használóira */',
+'nostalgia.css'   => '/* Az ide elhelyezett CSS hatással lesz a Nosztalgia felület használóira */',
+'cologneblue.css' => '/* Az ide elhelyezett CSS hatással lesz a Kölni kék felület használóira */',
+'monobook.css'    => '/* Az ide elhelyezett CSS hatással lesz a Monobook felület használóira */',
+'myskin.css'      => '/* Az ide elhelyezett CSS hatással lesz a MySkin felület használóira */',
+'chick.css'       => '/* Az ide elhelyezett CSS hatással lesz a Chick felület használóira */',
+'simple.css'      => '/* Az ide elhelyezett CSS hatással lesz a Egyszerű felület használóira */',
+'modern.css'      => '/* Az ide elhelyezett CSS hatással lesz a Modern felület használóira */',
+'vector.css'      => '/* Az ide elhelyezett CSS hatással lesz a Vector felület használóira */',
+'print.css'       => '/* Az ide elhelyezett CSS hatással lesz a nyomtatás kimenetelére */',
 
 # Scripts
 'common.js'      => '/* Az ide elhelyezett JavaScript kód minden felhasználó számára lefut az oldalak betöltésekor. */',
@@ -3195,9 +3201,11 @@ míg a többi elem a táblázat összecsukása után alapértelmezett esetben re
 'exif-morepermissionsurl'          => 'Alternatív licencinformáció',
 'exif-pngfilecomment'              => 'PNG fájlmegjegyzés',
 'exif-disclaimer'                  => 'Jogi nyilatkozat',
+'exif-contentwarning'              => 'Tartalom figyelmeztetés',
 'exif-giffilecomment'              => 'GIF fájlmegjegyzés',
 'exif-intellectualgenre'           => 'Elemtípus',
 'exif-subjectnewscode'             => 'Tárgykód',
+'exif-scenecode'                   => 'IPTC jelenet kód',
 'exif-event'                       => 'Ábrázolt esemény',
 'exif-organisationinimage'         => 'Ábrázolt szervezet',
 'exif-personinimage'               => 'Ábrázolt személy',
@@ -3206,6 +3214,9 @@ míg a többi elem a táblázat összecsukása után alapértelmezett esetben re
 
 # EXIF attributes
 'exif-compression-1' => 'Nem tömörített',
+'exif-compression-2' => 'CCITT Group 3 1 dimenziós módosított Huffman kódolás',
+'exif-compression-3' => 'CCITT Group 3 fax kódolás',
+'exif-compression-4' => 'CCITT Group 4 fax kódolás',
 
 'exif-copyrighted-true'  => 'Szerzői jog által védett',
 'exif-copyrighted-false' => 'Közkincs',
@@ -3488,13 +3499,6 @@ Ez a megerősítő e-mail $4-ig érvényes.',
 'scarytranscludefailed'   => '[$1 sablon letöltése sikertelen]',
 'scarytranscludetoolong'  => '[Az URL túl hosszú]',
 
-# Trackbacks
-'trackbackbox'      => 'Visszakövetések ehhez a szócikkhez:<br />
-$1',
-'trackbackremove'   => '([$1 törlése])',
-'trackbacklink'     => 'Visszakövetés',
-'trackbackdeleteok' => 'A visszakövetés törlése sikerült.',
-
 # Delete conflict
 'deletedwhileediting'      => "'''Figyelmeztetés:''' A lapot a szerkesztés megkezdése után törölték!",
 'confirmrecreate'          => "Miután elkezdted szerkeszteni, [[User:$1|$1]] ([[User talk:$1|vita]]) törölte ezt a lapot a következő indokkal:
@@ -3717,9 +3721,12 @@ A képek teljes méretben jelennek meg, más fájltípusok közvetlenül a hozz�
 'logentry-delete-revision'        => '$1 {{GENDER:$2|módosította}} a(z) $3 című lap {{PLURAL:$5|egy|$1}} lapváltozatának láthatóságát: $4',
 'logentry-delete-event-legacy'    => '$1 {{GENDER:$2|módosította}} a(z) $3 című lap naplóbejegyzéseinek láthatóságát',
 'logentry-delete-revision-legacy' => '$1 {{GENDER:$2|módosította}} a(z) $3 című lap lapváltozatainak láthatóságát',
+'revdelete-content-hid'           => 'rejtett tartalom',
+'revdelete-summary-hid'           => 'elrejtett összefoglaló szerkesztése',
 'revdelete-restricted'            => 'elrejtett az adminisztrátorok elől',
 'revdelete-unrestricted'          => 'felfedett az adminisztrátoroknak',
 'logentry-move-move'              => '$1 {{GENDER:$2|átnevezte}} a(z) $3 lapot a következő névre: $4',
+'logentry-newusers-autocreate'    => '$1 fiók automatikusan létrehozva',
 'newuserlog-byemail'              => 'a jelszót kiküldtük a megadott e-mail címre',
 
 );

@@ -255,7 +255,6 @@ $wgAutoloadLocalClasses = array(
 
 	# includes/actions
 	'CreditsAction' => 'includes/actions/CreditsAction.php',
-	'DeletetrackbackAction' => 'includes/actions/DeletetrackbackAction.php',
 	'HistoryAction' => 'includes/actions/HistoryAction.php',
 	'HistoryPage' => 'includes/actions/HistoryAction.php',
 	'HistoryPager' => 'includes/actions/HistoryAction.php',
@@ -598,7 +597,6 @@ $wgAutoloadLocalClasses = array(
 	'APCBagOStuff' => 'includes/objectcache/APCBagOStuff.php',
 	'BagOStuff' => 'includes/objectcache/BagOStuff.php',
 	'DBABagOStuff' => 'includes/objectcache/DBABagOStuff.php',
-	'eAccelBagOStuff' => 'includes/objectcache/eAccelBagOStuff.php',
 	'EhcacheBagOStuff' => 'includes/objectcache/EhcacheBagOStuff.php',
 	'EmptyBagOStuff' => 'includes/objectcache/EmptyBagOStuff.php',
 	'FakeMemCachedClient' => 'includes/objectcache/EmptyBagOStuff.php',

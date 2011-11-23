@@ -412,10 +412,10 @@ abstract class DatabaseUpdater {
 	 * @param $fullpath Boolean Whether to treat $patch path as a relative or not
 	 */
 	protected function addTable( $name, $patch, $fullpath = false ) {
-		$this->output( "Creating $name table... " );
 		if ( $this->db->tableExists( $name, __METHOD__ ) ) {
-			$this->output( "...$name table already exists. Skipping create table $name\n" );
+			$this->output( "...$name table already exists.\n" );
 		} else {
+			$this->output( "Creating $name table..." );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		}
@@ -429,12 +429,12 @@ abstract class DatabaseUpdater {
 	 * @param $fullpath Boolean Whether to treat $patch path as a relative or not
 	 */
 	protected function addField( $table, $field, $patch, $fullpath = false ) {
-		$this->output( "Adding $field field to table $table..." );
 		if ( !$this->db->tableExists( $table, __METHOD__ ) ) {
 			$this->output( "...$table table does not exist, skipping new field patch.\n" );
 		} elseif ( $this->db->fieldExists( $table, $field, __METHOD__ ) ) {
-			$this->output( "...already have $field field in $table table, skipping new field patch.\n" );
+			$this->output( "...have $field field in $table table.\n" );
 		} else {
+			$this->output( "Adding $field field to table $table..." );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		}
@@ -448,10 +448,10 @@ abstract class DatabaseUpdater {
 	 * @param $fullpath Boolean Whether to treat $patch path as a relative or not
 	 */
 	protected function addIndex( $table, $index, $patch, $fullpath = false ) {
-		$this->output( "Adding $index key to table $table..." );
 		if ( $this->db->indexExists( $table, $index, __METHOD__ ) ) {
-			$this->output( "...$index key already set on $table table, skipping new index patch.\n" );
+			$this->output( "...$index key already set on $table table.\n" );
 		} else {
+			$this->output( "Adding $index key to table $table... " );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		}
@@ -466,12 +466,12 @@ abstract class DatabaseUpdater {
 	 * @param $fullpath Boolean Whether to treat $patch path as a relative or not
 	 */
 	protected function dropField( $table, $field, $patch, $fullpath = false ) {
-		$this->output( "Dropping field $field from table $table..." );
 		if ( $this->db->fieldExists( $table, $field, __METHOD__ ) ) {
+			$this->output( "Table $table contains $field field. Dropping... " );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		} else {
-			$this->output( "...$table table does not contain $field field, skipping drop field.\n" );
+			$this->output( "...$table table does not contain $field field.\n" );
 		}
 	}
 
@@ -484,12 +484,12 @@ abstract class DatabaseUpdater {
 	 * @param $fullpath Boolean: Whether to treat $patch path as a relative or not
 	 */
 	protected function dropIndex( $table, $index, $patch, $fullpath = false ) {
-		$this->output( "Dropping $index key from table $table... " );
 		if ( $this->db->indexExists( $table, $index, __METHOD__ ) ) {
+			$this->output( "Dropping $index key from table $table... " );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		} else {
-			$this->output( "...$index key doesn't exist in table $table, skipping drop key\n" );
+			$this->output( "...$index key doesn't exist.\n" );
 		}
 	}
 
@@ -499,12 +499,12 @@ abstract class DatabaseUpdater {
 	 * @param $fullpath bool
 	 */
 	protected function dropTable( $table, $patch, $fullpath = false ) {
-		$this->output( "Dropping table $table... " );
 		if ( $this->db->tableExists( $table, __METHOD__ ) ) {
+			$this->output( "Dropping table $table... " );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		} else {
-			$this->output( "...$table doesn't exist, skipping drop table.\n" );
+			$this->output( "...$table doesn't exist.\n" );
 		}
 	}
 
@@ -518,7 +518,6 @@ abstract class DatabaseUpdater {
 	 */
 	public function modifyField( $table, $field, $patch, $fullpath = false ) {
 		$updateKey = "$table-$field-$patch";
-		$this->output( "Modifying $field field of table $table... " );
 		if ( !$this->db->tableExists( $table, __METHOD__ ) ) {
 			$this->output( "...$table table does not exist, skipping modify field patch.\n" );
 		} elseif ( !$this->db->fieldExists( $table, $field, __METHOD__ ) ) {
@@ -526,6 +525,7 @@ abstract class DatabaseUpdater {
 		} elseif( $this->updateRowExists( $updateKey ) ) {
 			$this->output( "...$field in table $table already modified by patch $patch.\n" );
 		} else {
+			$this->output( "Modifying $field field of table $table..." );
 			$this->applyPatch( $patch, $fullpath );
 			$this->insertUpdateRow( $updateKey );
 			$this->output( "done.\n" );
@@ -588,7 +588,7 @@ abstract class DatabaseUpdater {
 			$this->output(
 			"Populating log_user_text field, printing progress markers. For large\n" .
 			"databases, you may want to hit Ctrl-C and do this manually with\n" .
-			"maintenance/populateLogUsertext.php..." );
+			"maintenance/populateLogUsertext.php.\n" );
 
 			$task = $this->maintenance->runChild( 'PopulateLogUsertext' );
 			$task->execute();
@@ -616,12 +616,12 @@ abstract class DatabaseUpdater {
 	 * Updates the timestamps in the transcache table
 	 */
 	protected function doUpdateTranscacheField() {
-		$this->output( "Converting tc_time from UNIX epoch to MediaWiki timestamp... " );
 		if ( $this->updateRowExists( 'convert transcache field' ) ) {
 			$this->output( "...transcache tc_time already converted.\n" );
 			return;
 		}
 
+		$this->output( "Converting tc_time from UNIX epoch to MediaWiki timestamp... " );
 		$this->applyPatch( 'patch-tc-timestamp.sql' );
 		$this->output( "done.\n" );
 	}
@@ -630,7 +630,6 @@ abstract class DatabaseUpdater {
 	 * Update CategoryLinks collation
 	 */
 	protected function doCollationUpdate() {
-		$this->output( "Updating category collations..." );
 		global $wgCategoryCollation;
 		if ( $this->db->selectField(
 			'categorylinks',
@@ -642,6 +641,7 @@ abstract class DatabaseUpdater {
 			return;
 		}
 
+		$this->output( "Updating category collations..." );
 		$task = $this->maintenance->runChild( 'UpdateCollation' );
 		$task->execute();
 		$this->output( "...done.\n" );

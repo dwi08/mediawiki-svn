@@ -1676,7 +1676,6 @@ $1",
 'right-autopatrol'            => 'самоозначавање измена као прегледане',
 'right-patrolmarks'           => 'прегледање ознака за патролирање унутар скорашњих измена',
 'right-unwatchedpages'        => 'прегледање списка ненадгледаних страница',
-'right-trackback'             => 'слање извештаја',
 'right-mergehistory'          => 'спајање историја страница',
 'right-userrights'            => 'уређивање свих корисничких права',
 'right-userrights-interwiki'  => 'уређивање корисничких права на другим викијима',
@@ -1723,7 +1722,6 @@ $1",
 'action-patrol'               => 'означавање туђих измена прегледаним',
 'action-autopatrol'           => 'самоозначавање измена прегледаним',
 'action-unwatchedpages'       => 'прегледање списка ненадгледаних страница',
-'action-trackback'            => 'слање извештаја',
 'action-mergehistory'         => 'спајање историје ове странице',
 'action-userrights'           => 'уређивање свих корисничких права',
 'action-userrights-interwiki' => 'уређивање корисничких права на другим викијима',
@@ -2227,8 +2225,8 @@ $1',
 'booksources-invalid-isbn'  => 'Наведени ISBN број није исправан. Проверите да није дошло до грешке при умножавању из првобитног извора.',
 
 # Special:Log
-'specialloguserlabel'  => 'Корисник:',
-'speciallogtitlelabel' => 'Наслов:',
+'specialloguserlabel'  => 'Извршилац:',
+'speciallogtitlelabel' => 'Циљ (наслов или корисник):',
 'log'                  => 'Протоколи',
 'all-logs-page'        => 'Све јавне историје',
 'alllogstext'          => 'Скупни приказ свих доступних историја овог викија.
@@ -3840,15 +3838,6 @@ $5
 'scarytranscludefailed'   => '[Добављање шаблона за $1 није успело]',
 'scarytranscludetoolong'  => '[URL адреса је предугачка]',
 
-# Trackbacks
-'trackbackbox'      => 'Повратне тачке за ову страницу:<br />
-$1',
-'trackback'         => '; $4 $5: [$2 $1]',
-'trackbackexcerpt'  => '; $4 $5: [$2 $1]: <nowiki>$3</nowiki>',
-'trackbackremove'   => '([$1 брисање])',
-'trackbacklink'     => 'Повратне тачке',
-'trackbackdeleteok' => 'Повратна тачка је успешно обрисана.',
-
 # Delete conflict
 'deletedwhileediting'      => "'''Упозорење''': ова страница је обрисана након што сте почели с уређивањем!",
 'confirmrecreate'          => "[[User:$1|$1]] ([[User talk:$1|разговор]]) {{GENDER:$1|је обрисао|је обрисала|обриса}} ову страницу након што сте почели да је уређујете, са следећим разлогом:
@@ -4139,7 +4128,7 @@ $1',
 'htmlform-float-invalid'       => 'Наведена вредност није број.',
 'htmlform-int-toolow'          => 'Наведена вредност је испод минимума од $1',
 'htmlform-int-toohigh'         => 'Наведена вредност је изнад максимума од $1',
-'htmlform-required'            => 'Ова вредност се мора навести',
+'htmlform-required'            => 'Ова вредност је обавезна',
 'htmlform-submit'              => 'Пошаљи',
 'htmlform-reset'               => 'Врати измене',
 'htmlform-selectorother-other' => 'Друго',

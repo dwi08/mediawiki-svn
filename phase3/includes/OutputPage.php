@@ -2204,8 +2204,8 @@ class OutputPage extends ContextSource {
 			$this->addHTML( Html::element( 'textarea', $params, $source ) );
 
 			// Show templates used by this article
-			$article = new Article( $this->getTitle() );
-			$templates = Linker::formatTemplates( $article->getUsedTemplates() );
+			$page = WikiPage::factory( $this->getTitle() );
+			$templates = Linker::formatTemplates( $page->getUsedTemplates() );
 			$this->addHTML( "<div class='templatesUsed'>
 $templates
 </div>
@@ -2244,7 +2244,7 @@ $templates
 				? 'lag-warn-normal'
 				: 'lag-warn-high';
 			$wrap = Html::rawElement( 'div', array( 'class' => "mw-{$message}" ), "\n$1\n" );
-			$this->wrapWikiMsg( "$wrap\n", array( $message, $this->getLang()->formatNum( $lag ) ) );
+			$this->wrapWikiMsg( "$wrap\n", array( $message, $this->getLanguage()->formatNum( $lag ) ) );
 		}
 	}
 
@@ -2327,15 +2327,15 @@ $templates
 	 * @return String: The doctype, opening <html>, and head element.
 	 */
 	public function headElement( Skin $sk, $includeStyle = true ) {
-		global $wgContLang, $wgUseTrackbacks;
-		$userdir = $this->getLang()->getDir();
+		global $wgContLang;
+		$userdir = $this->getLanguage()->getDir();
 		$sitedir = $wgContLang->getDir();
 
 		if ( $sk->commonPrintStylesheet() ) {
 			$this->addModuleStyles( 'mediawiki.legacy.wikiprintable' );
 		}
 
-		$ret = Html::htmlHeader( array( 'lang' => $this->getLang()->getCode(), 'dir' => $userdir, 'class' => 'client-nojs' ) );
+		$ret = Html::htmlHeader( array( 'lang' => $this->getLanguage()->getCode(), 'dir' => $userdir, 'class' => 'client-nojs' ) );
 
 		if ( $this->getHTMLTitle() == '' ) {
 			$this->setHTMLTitle( $this->msg( 'pagetitle', $this->getPageTitle() ) );
@@ -2356,10 +2356,6 @@ $templates
 			$this->getHeadItems()
 		) );
 
-		if ( $wgUseTrackbacks && $this->isArticleRelated() ) {
-			$ret .= $this->getTitle()->trackbackRDF();
-		}
-
 		$closeHead = Html::closeElement( 'head' );
 		if ( $closeHead ) {
 			$ret .= "$closeHead\n";
@@ -2370,7 +2366,7 @@ $templates
 		# Classes for LTR/RTL directionality support
 		$bodyAttrs['class'] = "mediawiki $userdir sitedir-$sitedir";
 
-		if ( $this->getLang()->capitalizeAllNouns() ) {
+		if ( $this->getLanguage()->capitalizeAllNouns() ) {
 			# A <body> class is probably not the best way to do this . . .
 			$bodyAttrs['class'] .= ' capitalize-all-nouns';
 		}
@@ -2476,7 +2472,8 @@ $templates
 		foreach ( (array) $modules as $name ) {
 			$module = $resourceLoader->getModule( $name );
 			# Check that we're allowed to include this module on this page
-			if ( ( $module->getOrigin() > $this->getAllowedModules( ResourceLoaderModule::TYPE_SCRIPTS )
+			if ( !$module
+				|| ( $module->getOrigin() > $this->getAllowedModules( ResourceLoaderModule::TYPE_SCRIPTS )
 					&& $only == ResourceLoaderModule::TYPE_SCRIPTS )
 				|| ( $module->getOrigin() > $this->getAllowedModules( ResourceLoaderModule::TYPE_STYLES )
 					&& $only == ResourceLoaderModule::TYPE_STYLES )
@@ -2504,7 +2501,7 @@ $templates
 			// correct timestamp and emptiness data
 			$query = ResourceLoader::makeLoaderQuery(
 				array(), // modules; not determined yet
-				$this->getLang()->getCode(),
+				$this->getLanguage()->getCode(),
 				$this->getSkin()->getSkinName(),
 				$user,
 				null, // version; not determined yet
@@ -2560,7 +2557,7 @@ $templates
 
 			$url = ResourceLoader::makeLoaderURL(
 				array_keys( $modules ),
-				$this->getLang()->getCode(),
+				$this->getLanguage()->getCode(),
 				$this->getSkin()->getSkinName(),
 				$user,
 				$version,
@@ -3070,7 +3067,7 @@ $templates
 	 * @param $flip String: Set to 'flip' to flip the CSS if needed
 	 */
 	public function addInlineStyle( $style_css, $flip = 'noflip' ) {
-		if( $flip === 'flip' && $this->getLang()->isRTL() ) {
+		if( $flip === 'flip' && $this->getLanguage()->isRTL() ) {
 			# If wanted, and the interface is right-to-left, flip the CSS
 			$style_css = CSSJanus::transform( $style_css, true, false );
 		}
@@ -3127,7 +3124,11 @@ $templates
 		}
 
 		foreach ( $moduleStyles as $name ) {
-			$group = $resourceLoader->getModule( $name )->getGroup();
+			$module = $resourceLoader->getModule( $name );
+			if ( !$module ) {
+				continue;
+			}
+			$group = $module->getGroup();
 			// Modules in groups named "other" or anything different than "user", "site" or "private"
 			// will be placed in the "other" group
 			$styles[isset( $styles[$group] ) ? $group : 'other'][] = $name;
@@ -3189,7 +3190,7 @@ $templates
 	 */
 	protected function styleLink( $style, $options ) {
 		if( isset( $options['dir'] ) ) {
-			if( $this->getLang()->getDir() != $options['dir'] ) {
+			if( $this->getLanguage()->getDir() != $options['dir'] ) {
 				return '';
 			}
 		}

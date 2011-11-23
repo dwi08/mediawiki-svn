@@ -147,8 +147,18 @@ abstract class Action {
 	 *
 	 * @return Skin
 	 */
+	public final function getLanguage() {
+		return $this->getContext()->getLanguage();
+	}
+
+	/**
+	 * Shortcut to get the user Language being used for this instance
+	 *
+	 * @deprecated 1.19 Use getLanguage instead
+	 * @return Skin
+	 */
 	public final function getLang() {
-		return $this->getContext()->getLang();
+		return $this->getLanguage();
 	}
 
 	/**

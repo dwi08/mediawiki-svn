@@ -33,6 +33,7 @@
  * @author Minh Nguyen
  * @author Nuno Tavares
  * @author Paulo Juntas
+ * @author Pedroca cerebral
  * @author Rafael Vargas
  * @author Rei-artur
  * @author Remember the dot
@@ -1380,7 +1381,7 @@ Note, no entanto, que a indexação da {{SITENAME}} neste motor de busca pode es
 'prefs-edit-boxsize'            => 'Dimensões da janela de edição.',
 'rows'                          => 'Linhas:',
 'columns'                       => 'Colunas:',
-'searchresultshead'             => 'Pesquisa',
+'searchresultshead'             => 'Pesquisar',
 'resultsperpage'                => 'Resultados por página:',
 'stub-threshold'                => 'Links para páginas curtas terão <a href="#" class="stub">este formato</a> se elas ocuparem menos de (bytes):',
 'stub-threshold-disabled'       => 'Desactivado',
@@ -1566,7 +1567,6 @@ Esta informação será pública.',
 'right-autopatrol'            => 'Ter edições automaticamente marcadas como patrulhadas',
 'right-patrolmarks'           => 'Usar funcionalidades de patrulhagem das mudanças recentes',
 'right-unwatchedpages'        => 'Ver uma lista de páginas não vigiadas',
-'right-trackback'             => "Submeter um ''trackback''",
 'right-mergehistory'          => 'Fundir o histórico de edições de páginas',
 'right-userrights'            => 'Editar todos os privilégios de utilizador',
 'right-userrights-interwiki'  => 'Editar privilégios de utilizadores noutras wikis',
@@ -1612,7 +1612,6 @@ Esta informação será pública.',
 'action-patrol'               => 'marcar as edições de outros utilizadores como patrulhadas',
 'action-autopatrol'           => 'marcar como patrulhadas as suas próprias edições',
 'action-unwatchedpages'       => 'ver a lista de páginas não-vigiadas',
-'action-trackback'            => "submeter um ''trackback''",
 'action-mergehistory'         => 'fundir o histórico de edições desta página',
 'action-userrights'           => 'editar os privilégios de utilizadores',
 'action-userrights-interwiki' => 'editar privilégios de utilizadores de outras wikis',
@@ -3585,13 +3584,6 @@ Este código de confirmação expira a $4.',
 'scarytranscludedisabled' => '[Transclusão interwikis foi impossibilitada]',
 'scarytranscludefailed'   => '[Não foi possível obter a predefinição a partir de $1]',
 'scarytranscludetoolong'  => '[URL longa demais]',
-
-# Trackbacks
-'trackbackbox'      => "Links ''trackback'' para esta página:<br />
-$1",
-'trackbackremove'   => '([$1 Eliminar])',
-'trackbacklink'     => "''Trackback''",
-'trackbackdeleteok' => "O ''trackback'' foi eliminado com sucesso.",
 
 # Delete conflict
 'deletedwhileediting'      => "'''Aviso''': Esta página foi eliminada após ter começado a editá-la!",

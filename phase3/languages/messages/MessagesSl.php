@@ -1446,7 +1446,6 @@ Podatek bo javno prikazan.',
 'right-autopatrol'            => 'Označevanje urejanj drugih za samodejno nadzarovana',
 'right-patrolmarks'           => 'Ogled oznak nadzorov v zadnjih spremembah',
 'right-unwatchedpages'        => 'Preglejte seznam ne spremljanih strani',
-'right-trackback'             => 'Pošlje sledilnik',
 'right-mergehistory'          => 'Spoji zgodovino strani',
 'right-userrights'            => 'Urejanje vseh uporabniških pravic',
 'right-userrights-interwiki'  => 'Urejanje uporabniških pravic uporabnikov na drugih wikijih',
@@ -1493,7 +1492,6 @@ Podatek bo javno prikazan.',
 'action-patrol'               => 'označevanje sprememb drugih kot nadzorovane',
 'action-autopatrol'           => 'označevanje svojih urejanj kot nadzorovane',
 'action-unwatchedpages'       => 'ogled seznama nenadzorovanih strani',
-'action-trackback'            => 'pošlje sledilnik',
 'action-mergehistory'         => 'združitev zgodovine te strani',
 'action-userrights'           => 'upravljanje vseh uporabnikovih pravic',
 'action-userrights-interwiki' => 'upravljanje uporabniških pravic za uporabnike drugih wikijev',
@@ -1989,8 +1987,8 @@ Prosimo, upoštevajte, da se lahko druge spletne strani povezujejo na datoteko z
 'booksources-invalid-isbn'  => 'Za dani ISBN se ne zdi, da je veljaven; preverite za morebitne napake pri kopiranju iz prvotnega vira.',
 
 # Special:Log
-'specialloguserlabel'  => 'Uporabnik:',
-'speciallogtitlelabel' => 'Naslov:',
+'specialloguserlabel'  => 'Izvajalec:',
+'speciallogtitlelabel' => 'Cilj (naslov ali uporabnik):',
 'log'                  => 'Dnevniki',
 'all-logs-page'        => 'Vsi javni dnevniki',
 'alllogstext'          => 'Združeno so prikazani dnevniki sprememb uporabniških pravic, preimenovanj uporabnikov, nalaganja predstavnostnih datotek, prestavljanja in zaščite strani, brisanja, registracij uporabnikov, sprememb položaja botov ter blokiranja in deblokiranja uporabnikov na strani {{SITENAME}}. Pogled lahko zožite z izbiro dnevnika, uporabniškega imena ali strani. Vedite, da polje »Uporabnik« razlikuje med malimi in velikimi črkami.',
@@ -3451,13 +3449,6 @@ Potrditvena koda poteče $4.',
 'scarytranscludedisabled' => '[Prevključevanje med wikiji je onemogočeno]',
 'scarytranscludefailed'   => '[Pridobivanje predloge za $1 ni uspelo]',
 'scarytranscludetoolong'  => '[Spletni naslov je predolg]',
-
-# Trackbacks
-'trackbackbox'      => 'Sledilniki članka:<br />
-$1',
-'trackbackremove'   => '([$1 Izbris])',
-'trackbacklink'     => 'Sledilnik',
-'trackbackdeleteok' => 'Sledilnik je uspešno izbrisan.',
 
 # Delete conflict
 'deletedwhileediting'      => "'''Opozorilo''': Med vašim urejanjem je bila stran izbrisana!",

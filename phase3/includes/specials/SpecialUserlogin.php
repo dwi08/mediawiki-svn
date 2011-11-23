@@ -744,7 +744,7 @@ class LoginForm extends SpecialPage {
 					$code = $request->getVal( 'uselang', $user->getOption( 'language' ) );
 					$userLang = Language::factory( $code );
 					$wgLang = $userLang;
-					$this->getContext()->setLang( $userLang );
+					$this->getContext()->setLanguage( $userLang );
 					return $this->successfulLogin();
 				} else {
 					return $this->cookieRedirectCheck( 'login' );
@@ -1232,7 +1232,7 @@ class LoginForm extends SpecialPage {
 				}
 			}
 			return count( $links ) > 0 ? $this->msg( 'loginlanguagelabel' )->rawParams(
-				$this->getLang()->pipeList( $links ) )->escaped() : '';
+				$this->getLanguage()->pipeList( $links ) )->escaped() : '';
 		} else {
 			return '';
 		}

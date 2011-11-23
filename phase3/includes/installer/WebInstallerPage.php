@@ -158,7 +158,7 @@ class WebInstaller_Language extends WebInstallerPage {
 	public function execute() {
 		global $wgLang;
 		$r = $this->parent->request;
-		$userLang = $r->getVal( 'UserLang' );
+		$userLang = $r->getVal( 'uselang' );
 		$contLang = $r->getVal( 'ContLang' );
 
 		$lifetime = intval( ini_get( 'session.gc_maxlifetime' ) );
@@ -207,7 +207,7 @@ class WebInstaller_Language extends WebInstallerPage {
 		}
 		$this->startForm();
 		$s = Html::hidden( 'LanguageRequestTime', time() ) .
-			$this->getLanguageSelector( 'UserLang', 'config-your-language', $userLang,
+			$this->getLanguageSelector( 'uselang', 'config-your-language', $userLang,
 				$this->parent->getHelpBox( 'config-your-language-help' ) ) .
 			$this->getLanguageSelector( 'ContLang', 'config-wiki-language', $contLang,
 				$this->parent->getHelpBox( 'config-wiki-language-help' ) );
@@ -464,7 +464,7 @@ class WebInstaller_DBConnect extends WebInstallerPage {
 				$installer->getConnectForm() .
 				"</div>\n";
 		}
-		$types .= "</ul><br clear=\"left\"/>\n";
+		$types .= "</ul><br style=\"clear: left\"/>\n";
 
 		$this->addHTML(
 			$this->parent->label( 'config-db-type', false, $types ) .

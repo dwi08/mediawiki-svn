@@ -1599,7 +1599,6 @@ Dies kann nicht mehr rückgängig gemacht werden.',
 'right-autopatrol'            => 'Eigene Bearbeitungen automatisch als kontrolliert markieren',
 'right-patrolmarks'           => 'Kontrollmarkierungen in den letzten Änderungen sehen',
 'right-unwatchedpages'        => 'Liste der unbeobachteten Seiten ansehen',
-'right-trackback'             => 'Trackback übermitteln',
 'right-mergehistory'          => 'Versionsgeschichten von Seiten vereinen',
 'right-userrights'            => 'Benutzerrechte bearbeiten',
 'right-userrights-interwiki'  => 'Benutzerrechte in anderen Wikis bearbeiten',
@@ -1646,7 +1645,6 @@ Dies kann nicht mehr rückgängig gemacht werden.',
 'action-patrol'               => 'die Bearbeitungen andere Benutzer zu kontrollieren',
 'action-autopatrol'           => 'eigene Bearbeitungen als kontrolliert zu markieren',
 'action-unwatchedpages'       => 'die Liste der unbeobachteten Seiten einzusehen',
-'action-trackback'            => 'einen Trackback zu übertragen',
 'action-mergehistory'         => 'die Versionengeschichten von Seiten zu vereinen',
 'action-userrights'           => 'Benutzerrechte zu ändern',
 'action-userrights-interwiki' => 'die Rechte von Benutzern in anderen Wikis zu ändern',
@@ -2130,8 +2128,8 @@ Jede Zeile enthält Links zu der ersten und zweiten Weiterleitung sowie das Ziel
 Bitte prüfe, ob sie korrekt von der Quelle übertragen wurde.',
 
 # Special:Log
-'specialloguserlabel'  => 'Benutzer:',
-'speciallogtitlelabel' => 'Titel:',
+'specialloguserlabel'  => 'Ausführender Benutzer:',
+'speciallogtitlelabel' => 'Ziel (Titel oder Benutzer):',
 'log'                  => 'Logbücher',
 'all-logs-page'        => 'Alle öffentlichen Logbücher',
 'alllogstext'          => 'Dies ist die kombinierte Anzeige aller in {{SITENAME}} geführten Logbücher.
@@ -3597,13 +3595,6 @@ Dieser Bestätigungscode ist gültig bis $4.',
 'scarytranscludedisabled' => '[Interwiki-Einbindung ist deaktiviert]',
 'scarytranscludefailed'   => '[Vorlageneinbindung für $1 ist gescheitert]',
 'scarytranscludetoolong'  => '[URL ist zu lang]',
-
-# Trackbacks
-'trackbackbox'      => 'Trackbacks für diese Seite:<br />
-$1',
-'trackbackremove'   => '([$1 löschen])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Trackback wurde erfolgreich gelöscht.',
 
 # Delete conflict
 'deletedwhileediting'      => 'Achtung: Diese Seite wurde gelöscht, nachdem du angefangen hast sie zu bearbeiten!

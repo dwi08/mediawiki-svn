@@ -1453,7 +1453,6 @@ Ova informacija će biti javna.',
 'right-autopatrol'            => 'automatsko markiranje svojih izmena kao patroliranih',
 'right-patrolmarks'           => 'viđenje oznaka za patroliranje unutar skorašnjih izmena',
 'right-unwatchedpages'        => 'viđenje spiska nenadgledanih strana',
-'right-trackback'             => 'pošalji izveštaj',
 'right-mergehistory'          => 'spajanje istorija stranica',
 'right-userrights'            => 'Uređivanje svih korisničkih prava',
 'right-userrights-interwiki'  => 'izmena prava korisnika na drugim vikijima',
@@ -1500,7 +1499,6 @@ Ova informacija će biti javna.',
 'action-patrol'               => 'označavanje tuđih izmena kao patroliranih',
 'action-autopatrol'           => 'automatsko patroliranje sopstvenih izmena',
 'action-unwatchedpages'       => 'pregled spiska nenadgledanih stranica',
-'action-trackback'            => 'pošalji izveštaj',
 'action-mergehistory'         => 'spoji istoriju ove stranice',
 'action-userrights'           => 'izmeni sva korisnička prava',
 'action-userrights-interwiki' => 'izmeni prava korisnika sa drugih Vikija',
@@ -1969,8 +1967,8 @@ na kome bi se izvela ova funkcija.',
 'booksources-invalid-isbn'  => 'Naveden ISBN ne izgleda ispravno; proverite da nije došlo do greške prilikom kopiranja iz originalnog izvora.',
 
 # Special:Log
-'specialloguserlabel'  => 'Korisnik:',
-'speciallogtitlelabel' => 'Naslov:',
+'specialloguserlabel'  => 'Izvršilac:',
+'speciallogtitlelabel' => 'Cilj (naslov ili korisnik):',
 'log'                  => 'Protokoli',
 'all-logs-page'        => 'Sve javne istorije',
 'alllogstext'          => 'Kombinovani prikaz svih dostupnih istorija za {{SITENAME}}.
@@ -3428,13 +3426,6 @@ Ovaj potvrdni kôd ističe $6 u $7.',
 'scarytranscludedisabled' => '[Interviki uključivanje je onemogućeno]',
 'scarytranscludefailed'   => '[Donošenje šablona za $1 neuspešno]',
 'scarytranscludetoolong'  => '[URL je predugačak]',
-
-# Trackbacks
-'trackbackbox'      => 'Vraćanja za ovaj članak:<br />
-$1',
-'trackbackremove'   => '([$1 Brisanje])',
-'trackbacklink'     => 'Vraćanje',
-'trackbackdeleteok' => 'Vraćanje je uspešno obrisano.',
 
 # Delete conflict
 'deletedwhileediting'      => "'''Upozorenje''': Ova stranica je obrisana nakon što ste počeli uređivanje!",
