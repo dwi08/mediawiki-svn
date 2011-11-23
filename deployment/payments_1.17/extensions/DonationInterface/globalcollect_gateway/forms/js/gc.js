@@ -1,9 +1,7 @@
-
 window.displayCreditCardForm = function() {
 	$( '#payment' ).empty();
 	// Load wait spinner
 	$( '#payment' ).append( '<br/><br/><br/><img alt="loading" src="'+mw.config.get( 'wgScriptPath' )+'/extensions/DonationInterface/gateway_forms/includes/loading-white.gif" />' );
-	showStep3(); // Open the 3rd section
 	var language = 'en'; // default value is English
 	var matches = document.location.href.match(/uselang=(\w+)/i); // fine the real language
 	if ( matches && matches[1] ) {
@@ -66,14 +64,12 @@ window.displayCreditCardForm = function() {
 			if ( typeof data.error !== 'undefined' ) {
 				alert( mw.msg( 'donate_interface-error-msg-general' ) );
 				$( "#paymentContinue" ).show(); // Show continue button in 2nd section
-				showStep2();
 			} else if ( typeof data.result !== 'undefined' ) {
 				if ( data.result.errors ) {
 					var errors = new Array();
 					$.each( data.result.errors, function( index, value ) {
 						alert( value ); // Show them the error
 						$( "#paymentContinue" ).show(); // Show continue button in 2nd section
-						showStep2(); // Switch back to 2nd section of form
 					} );
 				} else {
 					if ( data.result.formaction ) {
@@ -82,32 +78,12 @@ window.displayCreditCardForm = function() {
 						$( '#payment' ).append(
 							'<iframe src="'+data.result.formaction+'" width="318" height="314" frameborder="0"></iframe>'
 						);
-
 					}
 				}
 			}
 		},
 		'error': function( xhr ) {
 			alert( mw.msg( 'donate_interface-error-msg-general' ) );
-			showStep1();
 		}
 	} );
-}
-
-
-// set the hidden amount input to the value of the selected element
-window.setAmount = function( e ) {
-	$( 'input[name="amount"]' ).val( e.val() );
-}
-// Display selected amount
-window.showAmount = function( e ) {
-    var currency_code = "";
-    if( $( 'input[name="currency_code"]' ).length ){
-        currency_code = $( 'input[name="currency_code"]' ).val();
-    }
-    if( $( 'select[name="currency_code"]' ).length ){
-        currency_code = $( 'select[name="currency_code"]' ).val();
-    }
-	$( "#selected-amount" ).html( + e.val() + " " + currency_code );
-	$( "#change-amount" ).show();
 }
