@@ -283,7 +283,10 @@ abstract class GatewayAdapter implements GatewayType {
 	public function getFailPage() {
 		$page = self::getGlobal( "FailPage" );
 		if ( $page ) {
-			$page = $this->appendLanguageAndMakeURL( $page );
+
+			$language = $this->getData_Raw( 'language' );
+
+			$page .= '?uselang=' . $language;
 		}
 		return $page;
 	}
@@ -1852,13 +1855,13 @@ abstract class GatewayAdapter implements GatewayType {
 		if ( $this->getValidationAction() == 'challenge' ) {
 			// expose a hook for external handling of trxns flagged for challenge (eg captcha)
 			wfRunHooks( 'GatewayChallenge', array( &$this ) );
+		}
 
-			// if the transaction was flagged for rejection
-			if ( $this->getValidationAction() == 'reject' ) {
-				// expose a hook for external handling of trxns flagged for rejection
-				wfRunHooks( 'GatewayReject', array( &$this ) );
-				$this->unsetAllSessionData();
-			}
+		// if the transaction was flagged for rejection
+		if ( $this->getValidationAction() == 'reject' ) {
+			// expose a hook for external handling of trxns flagged for rejection
+			wfRunHooks( 'GatewayReject', array( &$this ) );
+			$this->unsetAllSessionData();
 		}
 	}
 
