@@ -80,7 +80,8 @@ class PrefSwitchSurvey {
 					),
 					call_user_func( array( self::$fieldTypes[$config['type']], 'save' ), $question, $wgRequest )
 				),
-				__METHOD__
+				__METHOD__,
+				array( 'IGNORE' )
 			);
 		}
 	}
