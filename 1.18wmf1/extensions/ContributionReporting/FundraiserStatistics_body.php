@@ -15,7 +15,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 	}
 
 	public function execute( $sub ) {
-		global $wgRequest, $wgOut, $wgUser, $wgLang, $wgScriptPath, $egFundraiserStatisticsFundraisers;
+		global $wgOut, $wgLang, $wgScriptPath, $egFundraiserStatisticsFundraisers;
 
 		$showYear = array();
 		foreach ( $egFundraiserStatisticsFundraisers as $fundraiser ) {
