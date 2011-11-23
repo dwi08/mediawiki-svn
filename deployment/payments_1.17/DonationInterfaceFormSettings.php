@@ -26,6 +26,9 @@ $wgGlobalCollectGatewayAllowedHtmlForms['bt'] = $wgGlobalCollectGatewayHtmlFormD
 $wgGlobalCollectGatewayAllowedHtmlForms['bt-CA'] = $wgGlobalCollectGatewayHtmlFormDir . '/bt/bt-CA.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['bt-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/bt/bt-US.html';
 
+//Electronic Wallet - Webmoney
+$wgGlobalCollectGatewayAllowedHtmlForms['ew-webmoney'] = $wgGlobalCollectGatewayHtmlFormDir .'/ew/ew-webmoney.html';
+
 // RealTime Banking - Two Step
 $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-sofo'] = $wgGlobalCollectGatewayHtmlFormDir . '/rtbt/rtbt-sofo.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-sofo-GB'] = $wgGlobalCollectGatewayHtmlFormDir . '/rtbt/rtbt-sofo-GB.html';
@@ -48,6 +51,9 @@ $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd'] = $wgGlobalCollectGatewa
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd-US.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd_green-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd_green-US.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-amex'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd-amex.html';
+
+//Credit Card - misc.
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-US'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-US.html';
 
 /**
  * PayflowPro RapidHTML whitelist additions
