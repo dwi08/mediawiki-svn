@@ -64,7 +64,7 @@ class ExportManager:
 				hosts = []
 				for host in hostdata:
 					host_ip = host[1]["aRecord"][0]
-					hosts.append(host_ip + "(rw,no_subtree_check)")
+					hosts.append(host_ip + "(rw,no_root_squash,no_subtree_check)")
 				if hosts:
 					projects.append(self.basedir + project_name + "	" + " ".join(hosts) + "\n")
 			exports = open('/etc/exports', 'w')
