@@ -856,15 +856,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			'keys' => array(),
 		);
 		 
-		// eWallets PayPal
-		$this->payment_submethods['ew_paypal'] = array(
-			'paymentproductid'	=> 840,
-			'label'	=> 'eWallets: PayPal',
-			'group'	=> 'ew',
-			'validation' => array(),
-			'keys' => array(),
-		);
-		 
 		// eWallets WebMoney
 		$this->payment_submethods['ew_webmoney'] = array(
 			'paymentproductid'	=> 841,
@@ -1277,8 +1268,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			}
 
 			$errors[ $code ] = ( $this->getGlobal( 'DisplayDebug' ) ) ? '*** ' . $message : $this->getErrorMapByCodeAndTranslate( $code );
-
-			$this->setTransactionWMFStatus( $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $code ) );
 		}
 		return $errors;
 	}
@@ -1298,13 +1287,13 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$transaction = $this->getCurrentTransaction();
 
 		$this->getTransactionStatus();
-		
+
 		switch ( $transaction ) {
 			case 'INSERT_ORDERWITHPAYMENT':
 				$data = $this->xmlChildrenToArray( $response, 'ROW' );
 				$data['ORDER'] = $this->xmlChildrenToArray( $response, 'ORDER' );
 				$data['PAYMENT'] = $this->xmlChildrenToArray( $response, 'PAYMENT' );
-
+		
 				// WMFStatus will already be set if the transaction was unable to communicate properly.
 				if ( $this->getTransactionStatus() ) {
 					$this->setTransactionWMFStatus( $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $data['STATUSID'] ) );
