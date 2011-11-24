@@ -55,7 +55,7 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			wfMakeDirParents( $dest );
+			wfMkdirParents( $dest );
 		}
 
 		wfSuppressWarnings();
@@ -95,10 +95,13 @@ class FSFileBackend extends FileBackend {
 
 		if ( file_exists( $dest ) ) {
 			if ( isset( $params['overwriteDest'] ) ) {
-				$ok = unlink( $dest );
-				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $params['dest'] );
-					return $status;
+				// Windows does not support moving over existing files
+				if ( wfIsWindows() ) {
+					$ok = unlink( $dest );
+					if ( !$ok ) {
+						$status->fatal( 'backend-fail-delete', $params['dest'] );
+						return $status;
+					}
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $source, $dest ) ) {
@@ -110,7 +113,7 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			wfMakeDirParents( $dest );
+			wfMkdirParents( $dest );
 		}
 
 		wfSuppressWarnings();
@@ -213,12 +216,15 @@ class FSFileBackend extends FileBackend {
 		// Note that we already checked if no overwrite params were set above.
 		if ( $destExists ) {
 			if ( isset( $params['overwriteDest'] ) ) {
-				wfSuppressWarnings();
-				$ok = unlink( $dest );
-				wfRestoreWarnings();
-				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $params['dest'] );
-					return $status;
+				// Windows does not support moving over existing files
+				if ( wfIsWindows() ) {
+					wfSuppressWarnings();
+					$ok = unlink( $dest );
+					wfRestoreWarnings();
+					if ( !$ok ) {
+						$status->fatal( 'backend-fail-delete', $params['dest'] );
+						return $status;
+					}
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $tmpPath, $dest ) ) {
@@ -228,7 +234,7 @@ class FSFileBackend extends FileBackend {
 			}
 		} else {
 			// Make sure destination directory exists
-			wfMakeDirParents( $dest );
+			wfMkdirParents( $dest );
 		}
 
 		// Rename the temporary file to the destination path

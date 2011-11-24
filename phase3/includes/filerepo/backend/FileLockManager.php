@@ -128,6 +128,13 @@ class FSFileLockManager extends FileLockManager {
 		} else {
 			wfSuppressWarnings();
 			$handle = fopen( "{$this->lockDir}/{$key}", 'c' );
+			wfRestoreWarnings();
+			if ( !$handle ) { // lock dir missing?
+				wfMkdirParents( "{$this->lockDir}/{$key}" );
+				wfSuppressWarnings();
+				$handle = fopen( "{$this->lockDir}/{$key}", 'c' ); // try again
+				wfRestoreWarnings();
+			}
 			if ( $handle ) {
 				// Either a shared or exclusive lock
 				$lock = ( $type == self::LOCK_SH ) ? LOCK_SH : LOCK_EX;
@@ -140,7 +147,6 @@ class FSFileLockManager extends FileLockManager {
 			} else {
 				$status->fatal( 'lockmanager-fail-openlock', $key );
 			}
-			wfRestoreWarnings();
 		}
 
 		return $status;
@@ -203,19 +209,20 @@ class FSFileLockManager extends FileLockManager {
 /**
  * Version of FileLockManager based on using DB table locks.
  *
- * This is meant for multi-wiki systems that may share share some files.
- * One or several lock database servers are set up having a `file_locking`
+ * This is meant for multi-wiki systems that may share share files.
+ * One or several database servers are set up having a `file_locking`
  * table with one field, fl_key, the PRIMARY KEY. The table engine should
- * have row-level locking. For performance, deadlock detection should be
- * disabled and a low lock-wait timeout should be set via server config.
- *
- * All lock requests for an item (identified by an abstract key string) will
- * map to one bucket. Each bucket maps to a single server, though each server
- * can have several fallback servers.
- *
- * Fallback servers recieve the same lock statements as the servers they standby for.
+ * have row-level locking. All lock requests for a resource, identified by
+ * a hash string, will map to one bucket. Each bucket maps to a single server.
+ * 
+ * Each bucket can also have several fallback servers.
+ * Fallback servers get the same lock statements as the primary bucket server.
  * This propagation is only best-effort; lock requests will not be blocked just
- * because a fallback server cannot recieve a copy of the lock request.
+ * because a fallback server cannot be contacted.
+ * 
+ * For performance, deadlock detection should be disabled and a small
+ * lock-wait timeout should be set via server config. In innoDB, this can
+ * done via the innodb_deadlock_detect and innodb_lock_wait_timeout settings.
  */
 class DBFileLockManager extends FileLockManager {
 	/** @var Array Map of bucket indexes to server names */
@@ -273,29 +280,23 @@ class DBFileLockManager extends FileLockManager {
 		$lockedKeys = array(); // files locked in this attempt
 		// Attempt to acquire these locks...
 		foreach ( $keysToLock as $bucket => $keys ) {
-			$server = $this->serverMap[$bucket][0]; // primary lock server
-			$propagateToFallbacks = true; // give lock statements to fallback servers
 			// Acquire the locks for this server. Three main cases can happen:
-			// (a) Server is up; common case
-			// (b) Server is down but a fallback is up
-			// (c) Server is down and no fallbacks are up (or none defined)
-			try {
-				$this->lockingSelect( $server, $keys, $type );
-			} catch ( DBError $e ) {
-				// Can we manage to lock on any of the fallback servers?
-				if ( $this->lockingSelectFallbacks( $bucket, $keys, $type ) ) {
-					// Recovered; a fallback server is up
-					$propagateToFallbacks = false; // done already
-				} else {
-					// Abort and unlock everything we just locked
-					$status->fatal( 'lockmanager-fail-db', $bucket );
-					$status->merge( $this->doUnlock( $lockedKeys, $type ) );
-					return $status;
-				}
-			}
-			// Propagate any locks to the fallback servers (best effort)
-			if ( $propagateToFallbacks ) {
-				$this->lockingSelectFallbacks( $bucket, $keys, $type );
+			// (a) First server is up; common case
+			// (b) First server is down but a fallback is up
+			// (c) First server is down and no fallbacks are up (or none defined)
+			$count = $this->doLockingSelectAll( $bucket, $keys, $type );
+			if ( $count == -1 ) {
+				// Resources already locked by another process.
+				// Abort and unlock everything we just locked.
+				$status->fatal( 'lockmanager-fail-acquirelocks' );
+				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
+				return $status;
+			} elseif ( $count <= 0 ) {
+				// Couldn't contact any servers for this bucket.
+				// Abort and unlock everything we just locked.
+				$status->fatal( 'lockmanager-fail-db', $bucket );
+				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
+				return $status; // error
 			}
 			// Record locks as active
 			foreach ( $keys as $key ) {
@@ -342,11 +343,22 @@ class DBFileLockManager extends FileLockManager {
 	 * @param $type integer FileLockManager::LOCK_EX or FileLockManager::LOCK_SH
 	 * @return void
 	 */
-	protected function lockingSelect( $server, array $keys, $type ) {
+	protected function doLockingSelect( $server, array $keys, $type ) {
 		if ( !isset( $this->activeConns[$server] ) ) {
 			$this->activeConns[$server] = wfGetDB( DB_MASTER, array(), $server );
 			$this->activeConns[$server]->begin(); // start transaction
+			# If the connection drops, try to avoid letting the DB rollback
+			# and release the locks before the file operations are finished.
+			# This won't handle the case of server reboots however.
+			$options = array();
+			if ( php_sapi_name() == 'cli' ) { // maintenance scripts
+				$options['connTimeout'] = 60; // some sane amount
+			} else { // web requests
+				$options['connTimeout'] = ini_get( 'max_execution_time' );
+			}
+			$this->activeConns[$server]->setSessionOptions( $options );
 		}
+		# Try to get the locks...this should be the last query of this function
 		$lockingClause = ( $type == self::LOCK_SH )
 			? 'LOCK IN SHARE MODE' // reader lock
 			: 'FOR UPDATE'; // writer lock
@@ -360,23 +372,28 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Propagate any locks to the fallback servers for a bucket.
+	 * Attept to acquire a lock on the primary server as well
+	 * as all fallback servers for a bucket. Returns the number
+	 * of servers with locks made or -1 if any of them claimed
+	 * that any of the keys were already locked by another process.
 	 * This should avoid throwing any exceptions.
 	 *
 	 * @param $bucket integer
 	 * @param $keys Array
 	 * @param $type integer FileLockManager::LOCK_EX or FileLockManager::LOCK_SH
-	 * @return bool Locks made on at least one fallback server
+	 * @return integer
 	 */
-	protected function lockingSelectFallbacks( $bucket, array $keys, $type ) {
-		$locksMade = false;
-		// Start at $i=1 to only include fallback servers
-		for ( $i=1; $i < count( $this->serverMap[$bucket] ); $i++ ) {
+	protected function doLockingSelectAll( $bucket, array $keys, $type ) {
+		$locksMade = 0;
+		for ( $i=0; $i < count( $this->serverMap[$bucket] ); $i++ ) {
 			$server = $this->serverMap[$bucket][$i];
 			try {
 				$this->doLockingSelect( $server, $keys, $type );
-				$locksMade = true; // success for this fallback
+				++$locksMade; // success for this fallback
 			} catch ( DBError $e ) {
+				if ( $this->lastErrorIndicatesLocked( $server ) ) {
+					return -1; // resource locked
+				}
 				// oh well; best effort (@TODO: logging?)
 			}
 		}
@@ -394,10 +411,26 @@ class DBFileLockManager extends FileLockManager {
 			try {
 				$db->commit(); // finish transaction
 			} catch ( DBError $e ) {
-				// oh well
+				// oh well; best effort (@TODO: logging?)
 			}
 		}
 		$this->activeConns = array();
+	}
+
+	/**
+	 * Check if the last DB error for $server indicates
+	 * that a requested resource was locked by another process.
+	 * This should avoid throwing any exceptions.
+	 * 
+	 * @param $server string
+	 * @return bool
+	 */
+	protected function lastErrorIndicatesLocked( $server ) {
+		if ( isset( $this->activeConns[$server] ) ) { // sanity
+			$db = $this->activeConns[$server];
+			return ( $db->wasDeadlock() || $db->wasLockTimeout() );
+		}
+		return false;
 	}
 
 	/**
