@@ -12,13 +12,19 @@
  *
  * @ingroup FileRepo
  */
-abstract class FileRepo {
+class FileRepo {
 	const FILES_ONLY = 1;
 	const DELETE_SOURCE = 1;
 	const OVERWRITE = 2;
 	const OVERWRITE_SAME = 4;
 	const SKIP_VALIDATION = 8;
 
+	/** @var FileBackend */
+	protected $backend;
+	/** @var Array Map of zones to config */
+	protected $zones;
+
+	protected $wikiKey; // unique wiki identifier
 	var $thumbScriptUrl, $transformVia404;
 	var $descBaseUrl, $scriptDirUrl, $scriptExtension, $articleUrl;
 	var $fetchDescription, $initialCapital;
@@ -35,19 +41,133 @@ abstract class FileRepo {
 	function __construct( $info ) {
 		// Required settings
 		$this->name = $info['name'];
+		$this->url = $info['url'];
 
-		// Optional settings
-		$this->initialCapital = MWNamespace::isCapitalized( NS_FILE );
-		foreach ( array( 'descBaseUrl', 'scriptDirUrl', 'articleUrl', 'fetchDescription',
-			'thumbScriptUrl', 'initialCapital', 'pathDisclosureProtection',
-			'descriptionCacheExpiry', 'hashLevels', 'url', 'thumbUrl', 'scriptExtension' )
-			as $var )
-		{
+		// Optional settings that can have no value
+		$optionalSettings = array(
+			'descBaseUrl', 'scriptDirUrl', 'articleUrl', 'fetchDescription',
+			'thumbScriptUrl', 'pathDisclosureProtection', 'descriptionCacheExpiry',
+			'scriptExtension'
+		);
+		foreach ( $optionalSettings as $var ) {
 			if ( isset( $info[$var] ) ) {
 				$this->$var = $info[$var];
 			}
 		}
+
+		// Optional settings that have a default
+		$this->initialCapital = isset( $info['initialCapital'] )
+			? $info['initialCapital']
+			: MWNamespace::isCapitalized( NS_FILE );
+		$this->wikiKey = isset( $info['wikiKey'] )
+			? $info['wikiKey']
+			: wfWikiID();
+		$this->thumbUrl = isset( $info['thumbUrl'] )
+			? $info['thumbUrl']
+			: "{$this->url}/thumb";
+		$this->hashLevels = isset( $info['hashLevels'] )
+			? $info['hashLevels']
+			: 2;
+		$this->deletedHashLevels = isset( $info['deletedHashLevels'] )
+			? $info['deletedHashLevels']
+			: $this->hashLevels;
 		$this->transformVia404 = !empty( $info['transformVia404'] );
+
+		// New backend config style
+		if ( isset( $info['backend'] ) ) {
+			$this->backend = $info['backend'];
+			$this->zones = $info['zones'];
+			$prefix = strlen( $this->wikiKey ) ? "{$this->wikiKey}-" : "";
+			// Give defaults for basic zones...
+			foreach ( array( 'public', 'thumb', 'archive', 'temp' ) as $zone ) {
+				if ( !isset( $this->zones[$zone] ) ) {
+					$this->zones[$zone] = array(
+						'container' => "{$prefix}{$zone}",
+						'directory' => '' // container root
+					);
+				}
+			}
+		// Old fashioned backend (FS) config
+		} else {
+			$this->initLegacyConfig( $info );
+		}
+	}
+
+	/**
+	 * Handle backend and zone settings for old config style
+	 * 
+	 * @param $info Array
+	 * @return void
+	 */
+	protected function initLegacyConfig( $info ) {
+		// Local vars that used to be FSRepo members...
+		$directory = $info['directory'];
+		$deletedDir = isset( $info['deletedDir'] )
+			? $info['deletedDir']
+			: false;
+		if ( isset( $info['thumbDir'] ) ) {
+			$thumbDir =  $info['thumbDir'];
+		} else {
+			$thumbDir = "{$directory}/thumb";
+		}
+		$fileMode = isset( $info['fileMode'] )
+			? $info['fileMode']
+			: 0644;
+
+		// Get the FS backend from configuration...
+		$prefix = strlen( $this->wikiKey ) ? "{$this->wikiKey}-" : "";
+		$config = array(
+			'name'           => "{$this->name}-backend",
+			'lockManager'    => new FSFileLockManager(
+				array( 'lockDir' => "{$directory}/locks" )
+			),
+			'containerPaths' => array(
+				"{$prefix}public"  => "{$directory}",
+				"{$prefix}temp"    => "{$directory}/temp",
+				"{$prefix}deleted" => $deletedDir,
+				"{$prefix}thumb"   => $thumbDir
+			),
+			'fileMode'       => $fileMode,
+		);
+		$this->backend = new FSFileBackend( $config );
+	}
+
+	/**
+	 * Prepare all the zones for usage
+	 * 
+	 * @param $doZone string Only do a particular zone
+	 * @return Status
+	 */
+	protected function initZones( $doZone = '' ) {
+		$status = Status::newGood();
+		foreach( $this->zones as $zone => $info ) {
+			if ( $doZone && $zone !== $doZone ) {
+				continue;
+			}
+			$params = array( 'directory' => $this->getZonePath( $zone ) );
+			$status->merge( $this->backend->prepare( $params ) );
+		}
+		return $status;
+	}
+
+	/**
+	 * Take all available measures to prevent web accessibility of new deleted
+	 * directories, in case the user has not configured offline storage
+	 * @return void
+	 */
+	protected function initDeletedDir( $dir ) {
+		if ( !( $this->backend instanceof FSFileBackend ) ) {
+			return; // this is not an apache web dir
+		}
+		// Add a .htaccess file to the root of the deleted zone
+		$root = $this->getZonePath( 'deleted' );
+		if ( !$this->backend->fileExists( array( 'source' => "$root/.htaccess" ) ) ) {
+			$params = array( 'content' => "Deny from all\n", 'dest' => "$root/.htaccess" );
+			$this->backend->create( $params );
+		}
+		// Seed new directories with a blank index.html, to prevent crawling
+		$params = array( 'content' => "$dir/index.html", 'dest' => '' );
+		$this->backend->create( $params );
 	}
 
 	/**
@@ -59,6 +179,97 @@ abstract class FileRepo {
 	 */
 	static function isVirtualUrl( $url ) {
 		return substr( $url, 0, 9 ) == 'mwrepo://';
+	}
+
+	/**
+	 * Get a URL referring to this repository, with the private mwrepo protocol.
+	 * The suffix, if supplied, is considered to be unencoded, and will be
+	 * URL-encoded before being returned.
+	 *
+	 * @param $suffix string
+	 *
+	 * @return string
+	 */
+	function getVirtualUrl( $suffix = false ) {
+		$path = 'mwrepo://' . $this->name;
+		if ( $suffix !== false ) {
+			$path .= '/' . rawurlencode( $suffix );
+		}
+		return $path;
+	}
+
+	/**
+	 * Get the URL corresponding to one of the four basic zones
+	 * @param $zone String: one of: public, deleted, temp, thumb
+	 * @return String or false
+	 */
+	function getZoneUrl( $zone ) {
+		switch ( $zone ) {
+			case 'public':
+				return $this->url;
+			case 'temp':
+				return "{$this->url}/temp";
+			case 'deleted':
+				return false; // no public URL
+			case 'thumb':
+				return $this->thumbUrl;
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Get the backend storage path corresponding to a virtual URL
+	 *
+	 * @param $url string
+	 *
+	 * @return string
+	 */
+	function resolveVirtualUrl( $url ) {
+		if ( substr( $url, 0, 9 ) != 'mwrepo://' ) {
+			throw new MWException( __METHOD__.': unknown protocol' );
+		}
+
+		$bits = explode( '/', substr( $url, 9 ), 3 );
+		if ( count( $bits ) != 3 ) {
+			throw new MWException( __METHOD__.": invalid mwrepo URL: $url" );
+		}
+		list( $repo, $zone, $rel ) = $bits;
+		if ( $repo !== $this->name ) {
+			throw new MWException( __METHOD__.": fetching from a foreign repo is not supported" );
+		}
+		$base = $this->getZonePath( $zone );
+		if ( !$base ) {
+			throw new MWException( __METHOD__.": invalid zone: $zone" );
+		}
+		return $base . '/' . rawurldecode( $rel );
+	}
+
+	/**
+	 * The the storage container and base path of a zone
+	 * 
+	 * @param $zone string
+	 * @return Array (container, base path) or (null, null)
+	 */
+	function getZoneLocation( $zone ) {
+		if ( !isset( $this->zones[$zone] ) ) {
+			return array( null, null ); // bogus
+		}
+		return array( $this->zones[$zone]['container'], $this->zones[$zone]['directory'] );
+	}
+
+	/**
+	 * Get the storage path corresponding to one of the zones
+	 *
+	 * @param $zone string
+	 * @return string|null
+	 */
+	function getZonePath( $zone ) {
+		list( $container, $base ) = $this->getZoneLocation( $zone );
+		if ( $container === null || $base === null ) {
+			return null;
+		}
+		return "mwstore://{$backend}/{$container}/{$base}";
 	}
 
 	/**
@@ -217,19 +428,26 @@ abstract class FileRepo {
 	}
 
 	/**
+	 * Get the public root URL of the repository
+	 * @return string
+	 */
+	function getRootUrl() {
+		return $this->url;
+	}
+
+	/**
+	 * Returns true if the repository uses a multi-level directory structure
+	 * @return string
+	 */
+	function isHashed() {
+		return (bool)$this->hashLevels;
+	}
+
+	/**
 	 * Get the URL of thumb.php
 	 */
 	function getThumbScriptUrl() {
 		return $this->thumbScriptUrl;
-	}
-
-	/**
-	 * Get the URL corresponding to one of the four basic zones
-	 * @param $zone String: one of: public, deleted, temp, thumb
-	 * @return String or false
-	 */
-	function getZoneUrl( $zone ) {
-		return false;
 	}
 
 	/**
@@ -404,10 +622,130 @@ abstract class FileRepo {
 	/**
 	 * Store a batch of files
 	 *
-	 * @param $triplets Array: (src,zone,dest) triplets as per store()
+	 * @param $triplets Array: (src,zone,dest rel) triplets as per store()
 	 * @param $flags Integer: flags as per store
+	 * @return Status
 	 */
-	abstract function storeBatch( $triplets, $flags = 0 );
+	function storeBatch( $triplets, $flags = 0 ) {
+		$backend = $this->backend; // convenience
+
+		wfDebug( __METHOD__  . ': Storing ' . count( $triplets ) .
+			" triplets; flags: {$flags}\n" );
+
+		$status = $this->newGood();
+		// Try creating directories
+		$status->merge( $this->initZones() );
+		if ( !$status->isOK() ) {
+			return $status;
+		}
+
+		// Validate each triplet
+		$status = $this->newGood();
+		foreach ( $triplets as $i => $triplet ) {
+			list( $srcPath, $dstZone, $dstRel ) = $triplet;
+
+			// Resolve destination path
+			$root = $this->getZonePath( $dstZone );
+			if ( !$root ) {
+				throw new MWException( "Invalid zone: $dstZone" );
+			}
+			if ( !$this->validateFilename( $dstRel ) ) {
+				throw new MWException( 'Validation error in $dstRel' );
+			}
+			$dstPath = "$root/$dstRel";
+			$dstDir = dirname( $dstPath );
+
+			// Create destination directories for this triplet
+			$status->merge( $backend->prepare( array( 'directory' => $dstDir ) ) );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
+
+			if ( $dstZone == 'deleted' ) {
+				$this->initDeletedDir( $dstDir );
+			}
+
+			// Resolve source
+			if ( self::isVirtualUrl( $srcPath ) ) {
+				$srcPath = $triplets[$i][0] = $this->resolveVirtualUrl( $srcPath );
+			}
+			if ( !$backend->fileExists( array( 'source' => $srcPath ) ) ) {
+				// Make a list of files that don't exist for return to the caller
+				$status->fatal( 'filenotfound', $srcPath );
+				continue;
+			}
+
+			// Check overwriting
+			if ( !( $flags & self::OVERWRITE ) &&
+				$backend->fileExists( array( 'source' => $dstPath ) ) )
+			{
+				if ( $flags & self::OVERWRITE_SAME ) {
+					$hashSource = sha1_file( $srcPath );
+					$hashDest = sha1_file( $dstPath );
+					if ( $hashSource != $hashDest ) {
+						$status->fatal( 'fileexistserror', $dstPath );
+						$status->failCount++;
+					}
+				} else {
+					$status->fatal( 'fileexistserror', $dstPath );
+					$status->failCount++;
+				}
+			}
+		}
+
+		// Windows does not support moving over existing files, so explicitly delete them
+		$deleteDest = wfIsWindows() && ( $flags & self::OVERWRITE );
+
+		// Abort now on failure
+		if ( !$status->ok ) {
+			return $status;
+		}
+
+		// Execute the store operation for each triplet
+		foreach ( $triplets as $i => $triplet ) {
+			list( $srcPath, $dstZone, $dstRel ) = $triplet;
+			$root = $this->getZonePath( $dstZone );
+			$dstPath = "$root/$dstRel";
+			$good = true;
+
+			if ( $flags & self::DELETE_SOURCE ) {
+				if ( $deleteDest ) {
+					unlink( $dstPath );
+				}
+				if ( !rename( $srcPath, $dstPath ) ) {
+					$status->error( 'filerenameerror', $srcPath, $dstPath );
+					$good = false;
+				}
+			} else {
+				if ( !copy( $srcPath, $dstPath ) ) {
+					$status->error( 'filecopyerror', $srcPath, $dstPath );
+					$good = false;
+				}
+				if ( !( $flags & self::SKIP_VALIDATION ) ) {
+					wfSuppressWarnings();
+					$hashSource = sha1_file( $srcPath );
+					$hashDest = sha1_file( $dstPath );
+					wfRestoreWarnings();
+
+					if ( $hashDest === false || $hashSource !== $hashDest ) {
+						wfDebug( __METHOD__ . ': File copy validation failed: ' .
+							"$srcPath ($hashSource) to $dstPath ($hashDest)\n" );
+
+						$status->error( 'filecopyerror', $srcPath, $dstPath );
+						$good = false;
+					}
+				}
+			}
+			if ( $good ) {
+				$this->chmod( $dstPath );
+				$status->successCount++;
+			} else {
+				$status->failCount++;
+			}
+			$status->success[$i] = $good;
+		}
+		return $status;
+	}
 
 	/**
 	 * Pick a random name in the temp zone and store a file to it.

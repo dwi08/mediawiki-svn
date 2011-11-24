@@ -55,7 +55,10 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			wfMkdirParents( $dest );
+			if ( !wfMkdirParents( $dest ) ) {
+				$status->fatal( 'directorycreateerror', $param['dest'] );
+				return $status;
+			}
 		}
 
 		wfSuppressWarnings();
@@ -113,7 +116,10 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			wfMkdirParents( $dest );
+			if ( !wfMkdirParents( $dest ) ) {
+				$status->fatal( 'directorycreateerror', $param['dest'] );
+				return $status;
+			}
 		}
 
 		wfSuppressWarnings();
@@ -234,7 +240,10 @@ class FSFileBackend extends FileBackend {
 			}
 		} else {
 			// Make sure destination directory exists
-			wfMkdirParents( $dest );
+			if ( !wfMkdirParents( $dest ) ) {
+				$status->fatal( 'directorycreateerror', $param['dest'] );
+				return $status;
+			}
 		}
 
 		// Rename the temporary file to the destination path
@@ -243,6 +252,51 @@ class FSFileBackend extends FileBackend {
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( 'backend-fail-move', $tmpPath, $params['dest'] );
+			return $status;
+		}
+
+		$this->chmod( $dest );
+
+		return $status;
+	}
+
+	function create( array $params ) {
+		$status = Status::newGood();
+
+		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		if ( $dest === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
+			return $status;
+		}
+
+		if ( file_exists( $dest ) ) {
+			if ( isset( $params['overwriteDest'] ) ) {
+				$ok = unlink( $dest );
+				if ( !$ok ) {
+					$status->fatal( 'backend-fail-delete', $param['dest'] );
+					return $status;
+				}
+			} elseif ( isset( $params['overwriteSame'] ) ) {
+				if ( !$this->fileAndDataAreSame( $dest, $params['content'] ) ) {
+					$status->fatal( 'backend-fail-notsame-raw', $params['dest'] );
+				}
+				return $status; // do nothing; either OK or bad status
+			} else {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+				return $status;
+			}
+		} else {
+			if ( !wfMkdirParents( $dest ) ) {
+				$status->fatal( 'directorycreateerror', $param['dest'] );
+				return $status;
+			}
+		}
+
+		wfSuppressWarnings();
+		$ok = file_put_contents( $dest, $params['content'] );
+		wfRestoreWarnings();
+		if ( !$ok ) {
+			$status->fatal( 'backend-fail-create', $params['dest'] );
 			return $status;
 		}
 
@@ -331,6 +385,20 @@ class FSFileBackend extends FileBackend {
 		return ( // check size first since it's faster
 			filesize( $path1 ) === filesize( $path2 ) &&
 			sha1_file( $path1 ) === sha1_file( $path2 )
+		);
+	}
+
+	/**
+	 * Check if a file has identical contents as a string
+	 *
+	 * @param $path string Absolute filesystem path
+	 * @param $content string Raw file data
+	 * @return bool
+	 */
+	protected function fileAndDataAreSame( $path, $content ) {
+		return ( // check size first since it's faster
+			filesize( $path ) === strlen( $content ) &&
+			sha1_file( $path ) === sha1( $content )
 		);
 	}
 

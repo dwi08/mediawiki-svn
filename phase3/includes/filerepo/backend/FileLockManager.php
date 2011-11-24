@@ -235,10 +235,10 @@ class DBFileLockManager extends FileLockManager {
 	/**
 	 * Construct a new instance from configuration.
 	 * $config paramaters include:
-	 * 'serverMap' : Array of no more than 16 consecutive integer keys,
-	 *               starting from 0, with a list of servers as values.
-	 *               The first server in each list is the main server and
-	 *               the others are fallback servers.
+	 *     'serverMap' : Array of no more than 16 consecutive integer keys,
+	 *                   starting from 0, with a list of servers as values.
+	 *                   The first server in each list is the main server and
+	 *                   the others are fallback servers.
 	 *
 	 * @param Array $config 
 	 */

@@ -132,6 +132,11 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $this->doOperation( array( $op ) );
 	}
 
+	function create( array $params ) {
+		$op = array( 'operation' => 'create' ) + $params;
+		return $this->doOperation( array( $op ) );
+	}
+
 	function fileExists( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {
