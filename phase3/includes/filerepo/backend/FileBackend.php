@@ -6,14 +6,16 @@
 
 /**
  * Base class for all file backend classes (including multi-write backends).
- * This class defines the methods as abstract that must be implemented subclasses.
+ * This class defines the methods as abstract that subclasses must implement.
+ *
+ * Outside callers can assume that all backends will have these functions.
  * 
  * All "storage paths" are of the format "mwstore://backend/container/path".
  * The paths use typical file system notation, though any particular backend may
  * not actually be using a local filesystem. Therefore, the paths are only virtual.
  *
- * All functions should avoid throwing exceptions at all costs.
- * As a corollary, external dependencies should be kept to a minimal.
+ * Methods should avoid throwing exceptions at all costs.
+ * As a corollary, external dependencies should be kept to a minimum.
  */
 abstract class FileBackendBase {
 	protected $name; // unique backend name
@@ -82,98 +84,6 @@ abstract class FileBackendBase {
 	abstract public function prepare( array $params );
 
 	/**
-	 * Store a file into the backend from a file on disk.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     source        : source path on disk
-	 *     dest          : destination storage path
-	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 * 
-	 * @param Array $params
-	 * @return Status
-	 */
-	abstract public function store( array $params );
-
-	/**
-	 * Copy a file from one storage path to another in the backend.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     source        : source storage path
-	 *     dest          : destination storage path
-	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 * 
-	 * @param Array $params
-	 * @return Status
-	 */
-	abstract public function copy( array $params );
-
-	/**
-	 * Copy a file from one storage path to another in the backend.
-	 * This can be left as a dummy function as long as hasMove() returns false.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     source        : source storage path
-	 *     dest          : destination storage path
-	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 * 
-	 * @param Array $params
-	 * @return Status
-	 */
-	abstract public function move( array $params );
-
-	/**
-	 * Delete a file at the storage path.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     source              : source storage path
-	 * 
-	 * @param Array $params
-	 * @return Status
-	 */
-	abstract public function delete( array $params );
-
-	/**
-	 * Combines files from severals storage paths into a new file in the backend.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     source        : source storage path
-	 *     dest          : destination storage path
-	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 *     overwriteSame : override any existing file at destination
-	 * 
-	 * @param Array $params
-	 * @return Status
-	 */
-	abstract public function concatenate( array $params );
-
-	/**
-	 * Create a file in the backend with the given contents.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     contents      : the raw file contents
-	 *     dest          : destination storage path
-	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 * 
-	 * @param Array $params
-	 * @return Status
-	 */
-	abstract public function create( array $params );
-
-	/**
-	 * Whether this backend implements move() and is applies to a potential
-	 * move from one storage path to another. No backends hits are required.
-	 * For example, moving objects accross containers may not be supported.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     source : source storage path
-	 *     dest   : destination storage path
-	 *
-	 * @param Array $params
-	 * @return bool
-	 */
-	abstract public function canMove( array $params );
-
-	/**
 	 * Check if a file exits at a storage path in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
@@ -185,15 +95,6 @@ abstract class FileBackendBase {
 	abstract public function fileExists( array $params );
 
 	/**
-	 * Get the format of the hash that getFileHash() uses
-	 *
-	 * @return string (md5, sha1, unknown, ...)
-	 */
-	public function getHashType() {
-		return 'unknown';
-	}
-
-	/**
 	 * Get a hash of the file that exists at a storage path in the backend.
 	 * Typically this will be a SHA-1 hash, MD5 hash, or something similar.
 	 * $params include:
@@ -203,6 +104,15 @@ abstract class FileBackendBase {
 	 * @return string|null Gives null if the file does not exist
 	 */
 	abstract public function getFileHash( array $params );
+
+	/**
+	 * Get the format of the hash that getFileHash() uses
+	 *
+	 * @return string (md5, sha1, unknown, ...)
+	 */
+	public function getHashType() {
+		return 'unknown';
+	}
 
 	/**
 	 * Get the properties of the file that exists at a storage path in the backend
@@ -275,15 +185,104 @@ abstract class FileBackendBase {
 }
 
 /**
- * Base class for all single-write backends
+ * Base class for all single-write backends.
+ * This class defines the methods as abstract that subclasses must implement.
  */
 abstract class FileBackend extends FileBackendBase {
-	function canMove( array $params ) {
-		return false; // not implemented
+	/**
+	 * Store a file into the backend from a file on disk.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     source        : source path on disk
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function store( array $params );
+
+	/**
+	 * Copy a file from one storage path to another in the backend.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     source        : source storage path
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function copy( array $params );
+
+	/**
+	 * Copy a file from one storage path to another in the backend.
+	 * This can be left as a dummy function as long as hasMove() returns false.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     source        : source storage path
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	public function move( array $params ) {
+		throw new MWException( "This function is not implemented." );
 	}
 
-	function move( array $params ) {
-		throw new MWException( "This function is not implemented." );
+	/**
+	 * Delete a file at the storage path.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     source              : source storage path
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function delete( array $params );
+
+	/**
+	 * Combines files from severals storage paths into a new file in the backend.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     source        : source storage path
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 *     overwriteSame : override any existing file at destination
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function concatenate( array $params );
+
+	/**
+	 * Create a file in the backend with the given contents.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     contents      : the raw file contents
+	 *     dest          : destination storage path
+	 *     overwriteDest : do nothing and pass if an identical file exists at destination
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function create( array $params );
+
+	/**
+	 * Whether this backend implements move() and is applies to a potential
+	 * move from one storage path to another. No backends hits are required.
+	 * For example, moving objects accross containers may not be supported.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     source : source storage path
+	 *     dest   : destination storage path
+	 *
+	 * @param Array $params
+	 * @return bool
+	 */
+	public function canMove( array $params ) {
+		return false; // not implemented
 	}
 
 	/**

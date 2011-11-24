@@ -45,11 +45,6 @@ class FSFileBackend extends FileBackend {
 					$status->fatal( 'backend-fail-delete', $param['dest'] );
 					return $status;
 				}
-			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->filesAreSame( $params['source'], $dest ) ) {
-					$status->fatal( 'backend-fail-notsame', $params['source'], $params['dest'] );
-				}
-				return $status; // do nothing; either OK or bad status
 			} else {
 				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 				return $status;
@@ -106,11 +101,6 @@ class FSFileBackend extends FileBackend {
 						return $status;
 					}
 				}
-			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->filesAreSame( $source, $dest ) ) {
-					$status->fatal( 'backend-fail-notsame', $params['source'], $params['dest'] );
-				}
-				return $status; // do nothing; either OK or bad status
 			} else {
 				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 				return $status;
@@ -234,7 +224,7 @@ class FSFileBackend extends FileBackend {
 				}
 			} elseif ( isset( $params['overwriteSame'] ) ) {
 				if ( !$this->filesAreSame( $tmpPath, $dest ) ) {
-					$status->fatal( 'backend-fail-notsame', $tmpPath, $params['dest'] );
+					$status->fatal( 'backend-fail-notsame', $params['dest'] );
 				}
 				return $status; // do nothing; either OK or bad status
 			}
@@ -276,11 +266,6 @@ class FSFileBackend extends FileBackend {
 					$status->fatal( 'backend-fail-delete', $param['dest'] );
 					return $status;
 				}
-			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->fileAndDataAreSame( $dest, $params['content'] ) ) {
-					$status->fatal( 'backend-fail-notsame-raw', $params['dest'] );
-				}
-				return $status; // do nothing; either OK or bad status
 			} else {
 				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 				return $status;

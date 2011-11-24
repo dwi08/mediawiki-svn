@@ -181,8 +181,7 @@ abstract class FileOp {
 				}
 				// Give an error if the files are not identical
 				if ( $shash !== $dhash ) {
-					$status->fatal( 'backend-fail-notsame',
-						$this->params['source'], $this->params['dest'] );
+					$status->fatal( 'backend-fail-notsame', $this->params['dest'] );
 				}
 				return $status; // do nothing; either OK or bad status
 			}
@@ -361,7 +360,7 @@ class CreateFileOp extends FileOp {
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  *     overwriteSame : override any existing file at destination
  */
-class CopyFileOp extends StoreFileOp {
+class CopyFileOp extends FileOp {
 	function doPrecheck() {
 		$status = Status::newGood();
 		// Check if the source files exists on disk
@@ -507,11 +506,6 @@ class ConcatenateFileOp extends FileOp {
 	}
 
 	function doAttempt() {
-		// Create a backup copy of any file that exists at destination
-		$status = $this->checkAndBackupDest();
-		if ( !$status->isOK() ) {
-			return $status;
-		}
 		// Concatenate the file at the destination
 		$status = $this->backend->concatenate( $this->params );
 		return $status;

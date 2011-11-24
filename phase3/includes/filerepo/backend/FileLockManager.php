@@ -214,13 +214,13 @@ class FSFileLockManager extends FileLockManager {
  * This is meant for multi-wiki systems that may share share files.
  * One or several database servers are set up having a `file_locking`
  * table with one field, fl_key, the PRIMARY KEY. The table engine should
- * have row-level locking. All lock requests for a resource, identified by
- * a hash string, will map to one bucket. Each bucket maps to a single server.
+ * have row-level locking. All lock requests for a resource, identified
+ * by a hash string, will map to one bucket.
  * 
- * Each bucket can also have several fallback servers.
- * Fallback servers get the same lock statements as the primary bucket server.
- * This propagation is only best-effort; lock requests will not be blocked just
- * because a fallback server cannot be contacted.
+ * Each bucket maps to one or several pier servers.
+ * All pier servers must agree to a lock in order for it to be acquired.
+ * As long as one pier server is up, lock requests will not be blocked
+ * just because another pier server cannot be contacted.
  * 
  * For performance, deadlock detection should be disabled and a small
  * lock-wait timeout should be set via server config. In innoDB, this can
@@ -228,19 +228,31 @@ class FSFileLockManager extends FileLockManager {
  */
 class DBFileLockManager extends FileLockManager {
 	/** @var Array Map of bucket indexes to server names */
-	protected $serverMap = array(); // (index => (server1,server2,...))
+	protected $serverMap; // (index => (server1, server2, ...))
+	protected $webTimeout; // integer number of seconds
+	protected $cliTimeout; // integer number of seconds
+	protected $resetDelay; // integer number of seconds
 	/** @var Array Map of (locked key => lock type => 1) */
 	protected $locksHeld = array();
-	/** $var Array Map Lock-active database connections (name => Database) */
+	/** $var Array Map Lock-active database connections (server name => Database) */
 	protected $activeConns = array();
 
 	/**
 	 * Construct a new instance from configuration.
 	 * $config paramaters include:
-	 *     'serverMap' : Array of no more than 16 consecutive integer keys,
-	 *                   starting from 0, with a list of servers as values.
-	 *                   The first server in each list is the main server and
-	 *                   the others are fallback servers.
+	 *     'serverMap'  : Array of no more than 16 consecutive integer keys,
+	 *                    starting from 0, with a list of servers as values.
+	 *                    The first server in each list is the main server and
+	 *                    the others are pier servers.
+	 *     'webTimeout' : Connection timeout (seconds) for non-CLI scripts.
+	 *                    This tells the DB server how long to wait before giving up
+	 *                    and releasing all the locks made in a session transaction.
+	 *     'cliTimeout' : Connection timeout (seconds) for CLI scripts.
+	 *                    This tells the DB server how long to wait before giving up
+	 *                    and releasing all the locks made in a session transaction.
+	 *     'resetDelay' : How long (seconds) to avoid using a DB server after it restarted.
+	 *                    This should reflect the highest max_execution_time that a PHP
+	 *                    script might use on this wiki. Locks are lost on server restart.
 	 *
 	 * @param Array $config 
 	 */
@@ -257,6 +269,19 @@ class DBFileLockManager extends FileLockManager {
 				wfWarn( "No key for bucket $i in serverMap or server list is empty." );
 			}
 		}
+		if ( !empty( $config['webTimeout'] ) ) { // disallow 0
+			$this->webTimeout = $config['webTimeout'];
+		} elseif ( ini_get( 'max_execution_time' ) > 0 ) {
+			$this->webTimeout = ini_get( 'max_execution_time' );
+		} else { // cli?
+			$this->webTimeout = 60; // some sane number
+		}
+		$this->cliTimeout = !empty( $config['cliTimeout'] ) // disallow 0
+			? $config['cliTimeout']
+			: 60; // some sane number
+		$this->resetDelay = isset( $config['resetDelay'] )
+			? $config['resetDelay']
+			: max( $this->cliTimeout, $this->webTimeout );
 	}
 
 	function doLock( array $keys, $type ) {
@@ -284,8 +309,8 @@ class DBFileLockManager extends FileLockManager {
 		foreach ( $keysToLock as $bucket => $keys ) {
 			// Acquire the locks for this server. Three main cases can happen:
 			// (a) First server is up; common case
-			// (b) First server is down but a fallback is up
-			// (c) First server is down and no fallbacks are up (or none defined)
+			// (b) First server is down but a pier is up
+			// (c) First server is down and no pier are up (or none defined)
 			$count = $this->doLockingSelectAll( $bucket, $keys, $type );
 			if ( $count == -1 ) {
 				// Resources already locked by another process.
@@ -300,7 +325,7 @@ class DBFileLockManager extends FileLockManager {
 				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
 				return $status; // error
 			}
-			// Record locks as active
+			// Record these locks as active
 			foreach ( $keys as $key ) {
 				$this->locksHeld[$key][$type] = 1; // locked
 			}
@@ -325,6 +350,9 @@ class DBFileLockManager extends FileLockManager {
 						continue; // only unlock locks of type $type
 					}
 					unset( $this->locksHeld[$key][$lockType] );
+				}
+				if ( !count( $this->locksHeld[$key] ) ) {
+					unset( $this->locksHeld[$key] ); // no SH or EX locks left for key
 				}
 			}
 		}
@@ -354,9 +382,9 @@ class DBFileLockManager extends FileLockManager {
 			# This won't handle the case of server reboots however.
 			$options = array();
 			if ( php_sapi_name() == 'cli' ) { // maintenance scripts
-				$options['connTimeout'] = 60; // some sane amount
+				$options['connTimeout'] = $this->cliTimeout;
 			} else { // web requests
-				$options['connTimeout'] = ini_get( 'max_execution_time' );
+				$options['connTimeout'] = $this->webTimeout;
 			}
 			$this->activeConns[$server]->setSessionOptions( $options );
 		}
@@ -375,9 +403,9 @@ class DBFileLockManager extends FileLockManager {
 
 	/**
 	 * Attept to acquire a lock on the primary server as well
-	 * as all fallback servers for a bucket. Returns the number
-	 * of servers with locks made or -1 if any of them claimed
-	 * that any of the keys were already locked by another process.
+	 * as all pier servers for a bucket. Returns the number of
+	 * servers with locks made or -1 if any of them claimed that
+	 * any of the keys were already locked by another process.
 	 * This should avoid throwing any exceptions.
 	 *
 	 * @param $bucket integer
@@ -391,12 +419,14 @@ class DBFileLockManager extends FileLockManager {
 			$server = $this->serverMap[$bucket][$i];
 			try {
 				$this->doLockingSelect( $server, $keys, $type );
-				++$locksMade; // success for this fallback
+				if ( $this->checkServerUptime( $server ) ) {
+					++$locksMade; // success for this pier
+				}
 			} catch ( DBError $e ) {
 				if ( $this->lastErrorIndicatesLocked( $server ) ) {
 					return -1; // resource locked
 				}
-				// oh well; best effort (@TODO: logging?)
+				// oh well; logged via wfLogDBError()
 			}
 		}
 		return $locksMade;
@@ -413,7 +443,7 @@ class DBFileLockManager extends FileLockManager {
 			try {
 				$db->commit(); // finish transaction
 			} catch ( DBError $e ) {
-				// oh well; best effort (@TODO: logging?)
+				// oh well; best effort
 			}
 		}
 		$this->activeConns = array();
@@ -431,6 +461,22 @@ class DBFileLockManager extends FileLockManager {
 		if ( isset( $this->activeConns[$server] ) ) { // sanity
 			$db = $this->activeConns[$server];
 			return ( $db->wasDeadlock() || $db->wasLockTimeout() );
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the DB server has been up long enough to be safe
+	 * to use. This is to get around the problems of locks falling
+	 * off when servers restart.
+	 * 
+	 * @param $server string
+	 * @return bool
+	 */
+	protected function checkServerUptime( $server ) {
+		if ( isset( $this->activeConns[$server] ) ) { // sanity
+			$db = $this->activeConns[$server];
+			return ( $db->getServerUptime() >= $this->resetDelay );
 		}
 		return false;
 	}

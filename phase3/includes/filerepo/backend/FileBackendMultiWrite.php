@@ -27,6 +27,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	/** @var Array List of FileBackend object informations */
 	protected $fileBackendsInfo = array(); // array (backend index => array of settings)
 
+	protected $masterIndex; // index of master backend
+
 	/**
 	 * Construct a proxy backend that consist of several internal backends.
 	 * $config contains:
@@ -39,10 +41,9 @@ class FileBackendMultiWrite extends FileBackendBase {
 	 * @param $config Array
 	 */
 	public function __construct( array $config ) {
-		$this->name = $config['name'];
-		$this->lockManager = $config['lockManger'];
+		parent::__construct( $config );
 
-		$hasMaster = false;
+		$this->masterIndex = -1;
 		foreach ( $config['backends'] as $index => $info ) {
 			list( $backend, $settings ) = $info;
 			$this->fileBackends[$index] = $backend;
@@ -51,13 +52,13 @@ class FileBackendMultiWrite extends FileBackendBase {
 			// Apply custom backend settings to defaults
 			$this->fileBackendsInfo[$index] = $info + $defaults;
 			if ( $info['isMaster'] ) {
-				if ( $hasMaster ) {
+				if ( $this->masterIndex >= 0 ) {
 					throw new MWException( 'More than one master backend defined.' );
 				}
-				$hasMaster = true;
+				$this->masterIndex = $index;
 			}
 		}
-		if ( !$hasMaster ) {
+		if ( $this->masterIndex < 0 ) { // need backends and must have a master
 			throw new MWException( 'No master backend defined.' );
 		}
 	}
@@ -127,40 +128,6 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $status;
 	}
 
-	function store( array $params ) {
-		$op = array( 'operation' => 'store' ) + $params;
-		return $this->doOperation( array( $op ) );
-	}
-
-	function copy( array $params ) {
-		$op = array( 'operation' => 'copy' ) + $params;
-		return $this->doOperation( array( $op ) );
-	}
-
-	function canMove( array $params ) {
-		return true; // this is irrelevant
-	}
-
-	function move( array $params ) {
-		$op = array( 'operation' => 'move' ) + $params;
-		return $this->doOperation( array( $op ) );
-	}
-
-	function delete( array $params ){
-		$op = array( 'operation' => 'delete' ) + $params;
-		return $this->doOperation( array( $op ) );
-	}
-
-	function concatenate( array $params ){
-		$op = array( 'operation' => 'concatenate' ) + $params;
-		return $this->doOperation( array( $op ) );
-	}
-
-	function create( array $params ) {
-		$op = array( 'operation' => 'create' ) + $params;
-		return $this->doOperation( array( $op ) );
-	}
-
 	function prepare( array $params ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
@@ -179,23 +146,13 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function getFileHash( array $params ) {
-		foreach ( $this->backends as $backend ) {
-			// Skip non-master for consistent hash formats
-			if ( $this->fileBackendsInfo[$index]['isMaster'] ) {
-				return $backend->getFileHash( $params );
-			}
-		}
-		return false;
+		// Skip non-master for consistent hash formats
+		return $this->backends[$this->masterIndex]->getFileHash( $params );
 	}
 
 	function getHashType() {
-		foreach ( $this->backends as $backend ) {
-			// Skip non-master for consistent hash formats
-			if ( $this->fileBackendsInfo[$index]['isMaster'] ) {
-				return $backend->getHashType();
-			}
-		}
-		return null; // shouldn't happen
+		// Skip non-master for consistent hash formats
+		return $this->backends[$this->masterIndex]->getHashType();
 	}
 
 	function getFileProps( array $params ) {
@@ -209,9 +166,6 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function streamFile( array $params ) {
-		if ( !count( $this->backends ) ) {
-			return Status::newFatal( "No file backends are defined." );
-		}
 		foreach ( $this->backends as $backend ) {
 			$status = $backend->streamFile( $params );
 			if ( $status->isOK() ) {
@@ -220,7 +174,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 				return $status; // died mid-stream...so this is already fubar
 			}
 		}
-		return Status::newFatal( "Could not stream file {$params['source']}." );
+		return Status::newFatal( 'backend-fail-stream', $params['source'] );
 	}
 
 	function getLocalCopy( array $params ) {
