@@ -12,9 +12,11 @@
  * The order that the backends are defined sets the priority of which
  * backend is read from or written to first. Functions like fileExists()
  * and getFileProps() will return information based on the first backend
- * that has the file (normally both should have it anyway). Functions like
- * getFileList() will return results from the first backend that is not
- * declared as non-persistent cache. This is done for consistency.
+ * that has the file (normally both should have it anyway). Special cases:
+ *     a) getFileList() will return results from the first backend that is
+ *        not declared as non-persistent cache. This is for correctness.
+ *     b) getFileHash() will always check only the master backend to keep the
+ *        result format consistent.
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
@@ -32,19 +34,31 @@ class FileBackendMultiWrite extends FileBackendBase {
 	 *     'lockManger' : FileLockManager instance
 	 *     'backends'   : Array of (backend object, settings) pairs.
 	 *                    The settings per backend include:
-	 *                        'isCache': The backend is non-persistent
+	 *                        'isCache' : The backend is non-persistent
+	 *                        'isMaster': This must be set for one non-persistent backend.
 	 * @param $config Array
 	 */
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
 		$this->lockManager = $config['lockManger'];
+
+		$hasMaster = false;
 		foreach ( $config['backends'] as $index => $info ) {
 			list( $backend, $settings ) = $info;
 			$this->fileBackends[$index] = $backend;
 			// Default backend settings
-			$defaults = array( 'isCache' => false );
+			$defaults = array( 'isCache' => false, 'isMaster' => false );
 			// Apply custom backend settings to defaults
 			$this->fileBackendsInfo[$index] = $info + $defaults;
+			if ( $info['isMaster'] ) {
+				if ( $hasMaster ) {
+					throw new MWException( 'More than one master backend defined.' );
+				}
+				$hasMaster = true;
+			}
+		}
+		if ( !$hasMaster ) {
+			throw new MWException( 'No master backend defined.' );
 		}
 	}
 
@@ -74,6 +88,15 @@ class FileBackendMultiWrite extends FileBackendBase {
 			return $status; // abort
 		}
 
+		// Do pre-checks for each operation; abort on failure...
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->precheck() );
+			if ( !$status->isOK() ) { // operation failed?
+				$status->merge( $this->unlockFiles( $filesToLock ) );
+				return $status;
+			}
+		}
+
 		// Attempt each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
 			$status->merge( $fileOp->attempt() );
@@ -85,6 +108,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 					$status->merge( $performOps[$pos]->revert() );
 					$pos--;
 				}
+				$status->merge( $this->unlockFiles( $filesToLock ) );
 				return $status;
 			}
 		}
@@ -137,6 +161,14 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $this->doOperation( array( $op ) );
 	}
 
+	function prepare( array $params ) {
+		$status = Status::newGood();
+		foreach ( $this->backends as $backend ) {
+			$status->merge( $backend->prepare( $params ) );
+		}
+		return $status;
+	}
+
 	function fileExists( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {
@@ -145,7 +177,27 @@ class FileBackendMultiWrite extends FileBackendBase {
 		}
 		return false;
 	}
- 
+
+	function getFileHash( array $params ) {
+		foreach ( $this->backends as $backend ) {
+			// Skip non-master for consistent hash formats
+			if ( $this->fileBackendsInfo[$index]['isMaster'] ) {
+				return $backend->getFileHash( $params );
+			}
+		}
+		return false;
+	}
+
+	function getHashType() {
+		foreach ( $this->backends as $backend ) {
+			// Skip non-master for consistent hash formats
+			if ( $this->fileBackendsInfo[$index]['isMaster'] ) {
+				return $backend->getHashType();
+			}
+		}
+		return null; // shouldn't happen
+	}
+
 	function getFileProps( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			$props = $backend->getFileProps( $params );

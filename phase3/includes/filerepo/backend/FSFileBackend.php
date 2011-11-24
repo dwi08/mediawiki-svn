@@ -305,12 +305,40 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	function prepare( array $params ) {
+		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
+		if ( $dir === null ) {
+			return false; // invalid storage path
+		}
+		if ( !wfMkdirParents( $dir ) ) {
+			$status->fatal( 'directorycreateerror', $param['directory'] );
+			return $status;
+		}
+		if ( !is_writable( $dir ) ) {
+			$status->fatal( 'directoryreadonlyerror', $param['directory'] );
+			return $status;
+		}
+		return $status;
+	}
+
 	function fileExists( array $params ) {
 		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
 		return file_exists( $source );
+	}
+
+	function getHashType() {
+		return 'md5';
+	}
+
+	function getFileHash( array $params ) {
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			return false; // invalid storage path
+		}
+		return md5_file( $source );
 	}
 
 	function getFileProps( array $params ) {

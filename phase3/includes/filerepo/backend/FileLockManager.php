@@ -67,7 +67,9 @@ abstract class FileLockManager {
  * Simple version of FileLockManager based on using FS lock files
  *
  * This should work fine for small sites running off one server.
- * Do not use this with 'lockDir' set to an NFS mount.
+ * Do not use this with 'lockDir' set to an NFS mount unless the
+ * NFS client is at least version 2.6.12. Otherwise, the BSD flock()
+ * locks will be ignored; see http://nfs.sourceforge.net/#section_d.
  */
 class FSFileLockManager extends FileLockManager {
 	protected $lockDir; // global dir for all servers

@@ -18,11 +18,13 @@ abstract class FileOp {
 	protected $backend;
 
 	protected $state;
-	protected $failedAttempt;
+	protected $failed;
 
+	/* Object life-cycle */
 	const STATE_NEW = 1;
-	const STATE_ATTEMPTED = 2;
-	const STATE_DONE = 3;
+	const STATE_CHECKED = 2;
+	const STATE_ATTEMPTED = 3;
+	const STATE_DONE = 4;
 
 	/**
 	 * Build a new file operation transaction
@@ -34,8 +36,25 @@ abstract class FileOp {
 		$this->backend = $backend;
 		$this->params = $params;
 		$this->state = self::STATE_NEW;
-		$this->failedAttempt = false;
+		$this->failed = false;
 		$this->initialize();
+	}
+
+	/**
+	 * Check preconditions of the operation and possibly stash temp files
+	 *
+	 * @return Status
+	 */
+	final public function precheck() {
+		if ( $this->state !== self::STATE_NEW ) {
+			return Status::newFatal( 'fileop-fail-state', self::STATE_NEW, $this->state );
+		}
+		$this->state = self::STATE_CHECKED;
+		$status = $this->doPrecheck();
+		if ( !$status->isOK() ) {
+			$this->failed = true;
+		}
+		return $status;
 	}
 
 	/**
@@ -44,13 +63,15 @@ abstract class FileOp {
 	 * @return Status
 	 */
 	final public function attempt() {
-		if ( $this->state !== self::STATE_NEW ) {
-			throw new MWException( "Cannot attempt operation called twice." );
+		if ( $this->state !== self::STATE_CHECKED ) {
+			return Status::newFatal( 'fileop-fail-state', self::STATE_CHECKED, $this->state );
+		} elseif ( $this->failed ) { // failed precheck
+			return Status::newFatal( 'fileop-fail-attempt-precheck' );
 		}
 		$this->state = self::STATE_ATTEMPTED;
 		$status = $this->doAttempt();
 		if ( !$status->isOK() ) {
-			$this->failedAttempt = true;
+			$this->failed = true;
 		}
 		return $status;
 	}
@@ -62,10 +83,10 @@ abstract class FileOp {
 	 */
 	final public function revert() {
 		if ( $this->state !== self::STATE_ATTEMPTED ) {
-			throw new MWException( "Cannot rollback an unstarted or finished operation." );
+			return Status::newFatal( 'fileop-fail-state', self::STATE_ATTEMPTED, $this->state );
 		}
 		$this->state = self::STATE_DONE;
-		if ( $this->failedAttempt ) {
+		if ( $this->failed ) {
 			$status = Status::newGood(); // nothing to revert
 		} else {
 			$status = $this->doRevert();
@@ -80,11 +101,11 @@ abstract class FileOp {
 	 */
 	final public function finish() {
 		if ( $this->state !== self::STATE_ATTEMPTED ) {
-			throw new MWException( "Cannot cleanup an unstarted or finished operation." );
+			return Status::newFatal( 'fileop-fail-state', self::STATE_ATTEMPTED, $this->state );
 		}
 		$this->state = self::STATE_DONE;
-		if ( $this->failedAttempt ) {
-			$status = Status::newGood(); // nothing to revert
+		if ( $this->failed ) {
+			$status = Status::newGood(); // nothing to finish
 		} else {
 			$status = $this->doFinish();
 		}
@@ -108,6 +129,11 @@ abstract class FileOp {
 	/**
 	 * @return Status
 	 */
+	abstract protected function doPrecheck();
+
+	/**
+	 * @return Status
+	 */
 	abstract protected function doAttempt();
 
 	/**
@@ -119,71 +145,89 @@ abstract class FileOp {
 	 * @return Status
 	 */
 	abstract protected function doFinish();
-}
-
-/**
- * Store a file into the backend from a file on disk.
- * Parameters must match FileBackend::store(), which include:
- *     source        : source path on disk
- *     dest          : destination storage path
- *     overwriteDest : do nothing and pass if an identical file exists at destination
- *     overwriteSame : override any existing file at destination
- */
-class FileStoreOp extends FileOp {
-	/** @var TempLocalFile|null */
-	protected $tmpDestFile; // temp copy of existing destination file
-
-	function doAttempt() {
-		// Create a backup copy of any file that exists at destination
-		$status = $this->backupDest();
-		if ( !$status->isOK() ) {
-			return $status;
-		}
-		// Store the file at the destination
-		$status = $this->backend->store( $this->params );
-		return $status;
-	}
-
-	function doRevert() {
-		// Remove the file saved to the destination
-		$params = array( 'source' => $this->params['dest'] );
-		$status = $this->backend->delete( $params );
-		if ( !$status->isOK() ) {
-			return $status; // also can't restore any dest file
-		}
-		// Restore any file that was at the destination
-		$status = $this->restoreDest();
-		return $status;
-	}
-
-	function doFinish() {
-		return Status::newGood();
-	}
-
-	function storagePathsToLock() {
-		return array( $this->params['dest'] );
-	}
 
 	/**
-	 * Backup any file at destination to a temporary file.
+	 * Backup any file at the destination to a temporary file.
 	 * Don't bother backing it up unless we might overwrite the file.
+	 * This assumes that the destination is in the backend and that
+	 * the source is either in the backend or on the file system.
 	 *
 	 * @return Status
 	 */
-	protected function backupDest() {
+	protected function checkAndBackupDest() {
 		$status = Status::newGood();
-		// Check if a file already exists at the destination...
-		if ( $this->backend->fileExists( $this->params['dest'] ) ) {
-			if ( $this->params['overwriteDest'] ) {
-				// Create a temporary backup copy...
-				$this->tmpDestFile = $this->getLocalCopy( $this->params['dest'] );
-				if ( !$this->tmpDestFile ) {
-					$status->fatal( 'backend-fail-restore', $this->params['dest'] );
+		// Check if a file already exists at the destination
+		if ( !$this->backend->fileExists( $this->params['dest'] ) ) {
+			return $status; // nothing to do
+		}
+
+		if ( !empty( $this->params['overwriteDest'] ) ) {
+			// Create a temporary backup copy...
+			$this->tmpDestFile = $this->getLocalCopy( $this->params['dest'] );
+			if ( !$this->tmpDestFile ) {
+				$status->fatal( 'backend-fail-backup', $this->params['dest'] );
+				return $status;
+			}
+		} elseif ( !empty( $this->params['overwriteSame'] ) ) {
+			// Get the source content hash (if there is a single source)
+			$shash = $this->getSourceMD5();
+			// If there is a single source, then we can do some checks already.
+			// For things like concatenate(), we need to build a temp file first.
+			if ( $shash !== null ) {
+				$dhash = $this->getFileMD5( $this->params['dest'] );
+				if ( !strlen( $shash ) || !strlen( $dhash ) ) {
+					$status->fatal( 'backend-fail-hashes' );
 					return $status;
 				}
+				// Give an error if the files are not identical
+				if ( $shash !== $dhash ) {
+					$status->fatal( 'backend-fail-notsame',
+						$this->params['source'], $this->params['dest'] );
+				}
+				return $status; // do nothing; either OK or bad status
 			}
+		} else {
+			$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+			return $status;
 		}
+
 		return $status;
+	}
+
+	/**
+	 * checkAndBackupDest() helper function to get the source file MD5.
+	 * Returns false on failure and null if there is no single source.
+	 *
+	 * @return string|false|null
+	 */
+	protected function getSourceMD5() {
+		return null; // N/A
+	}
+
+	/**
+	 * checkAndBackupDest() helper function to get the MD5 of a file.
+	 *
+	 * @return string|false False on failure
+	 */
+	final protected function getFileMD5( $path ) {
+		// Source file is in backend
+		if ( FileBackend::isStoragePath( $path ) ) {
+			// For some backends (e.g. Swift, Azure) we can get
+			// standard hashes to use for this types of comparisons.
+			if ( $this->backend->getHashType() === 'md5' ) {
+				$hash = $this->backend->getFileHash( $path );
+			} else {
+				$tmp = $this->getLocalCopy( $path );
+				if ( !$tmp ) {
+					return false; // error
+				}
+				$hash = md5_file( $tmp->getPath() );
+			}
+		// Source file is on disk (FS)
+		} else {
+			$hash = md5_file( $path );
+		}
+		return $hash;
 	}
 
 	/**
@@ -209,20 +253,76 @@ class FileStoreOp extends FileOp {
 }
 
 /**
+ * Store a file into the backend from a file on disk.
+ * Parameters similar to FileBackend::store(), which include:
+ *     source        : source path on disk (FS)
+ *     dest          : destination storage path
+ *     overwriteDest : do nothing and pass if an identical file exists at destination
+ *     overwriteSame : override any existing file at destination
+ */
+class StoreFileOp extends FileOp {
+	/** @var TempLocalFile|null */
+	protected $tmpDestFile; // temp copy of existing destination file
+
+	function doPrecheck() {
+		$status = Status::newGood();
+		// Check if the source files exists on disk (FS)
+		if ( !file_exists( $this->params['source'] ) ) {
+			$status->fatal( 'backend-fail-notexists', $this->params['source'] );
+			return $status;
+		}
+		// Create a destination backup copy as needed
+		$status->merge( $this->checkAndBackupDest() );
+		return $status;
+	}
+
+	function doAttempt() {
+		// Store the file at the destination
+		$status = $this->backend->store( $this->params );
+		return $status;
+	}
+
+	function doRevert() {
+		// Remove the file saved to the destination
+		$params = array( 'source' => $this->params['dest'] );
+		$status = $this->backend->delete( $params );
+		if ( !$status->isOK() ) {
+			return $status; // also can't restore any dest file
+		}
+		// Restore any file that was at the destination
+		$status = $this->restoreDest();
+		return $status;
+	}
+
+	function doFinish() {
+		return Status::newGood();
+	}
+
+	function storagePathsToLock() {
+		return array( $this->params['dest'] );
+	}
+
+	function getSourceMD5() {
+		return md5_file( $this->params['source'] );
+	}
+}
+
+/**
  * Create a file in the backend with the given content.
- * Parameters must match FileBackend::create(), which include:
+ * Parameters similar to FileBackend::create(), which include:
  *     content       : a string of raw file contents
  *     dest          : destination storage path
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  *     overwriteSame : override any existing file at destination
  */
-class FileCreateOp extends FileStoreOp {
+class CreateFileOp extends FileOp {
+	function doPrecheck() {
+		// Create a destination backup copy as needed
+		$status = $this->checkAndBackupDest();
+		return $status;
+	}
+
 	function doAttempt() {
-		// Create a backup copy of any file that exists at destination
-		$status = $this->backupDest();
-		if ( !$status->isOK() ) {
-			return $status;
-		}
 		// Create the file at the destination
 		$status = $this->backend->create( $this->params );
 		return $status;
@@ -247,23 +347,35 @@ class FileCreateOp extends FileStoreOp {
 	function storagePathsToLock() {
 		return array( $this->params['dest'] );
 	}
+
+	function getSourceMD5() {
+		return md5( $this->params['content'] );
+	}
 }
 
 /**
  * Copy a file from one storage path to another in the backend.
- * Parameters must match FileBackend::copy(), which include:
+ * Parameters similar to FileBackend::copy(), which include:
  *     source        : source storage path
  *     dest          : destination storage path
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  *     overwriteSame : override any existing file at destination
  */
-class FileCopyOp extends FileStoreOp {
-	function doAttempt() {
-		// Create a backup copy of any file that exists at destination
-		$status = $this->backupDest();
-		if ( !$status->isOK() ) {
+class CopyFileOp extends StoreFileOp {
+	function doPrecheck() {
+		$status = Status::newGood();
+		// Check if the source files exists on disk
+		$params = array( 'source' => $this->params['source'] );
+		if ( !$this->backend->fileExists( $params ) ) {
+			$status->fatal( 'backend-fail-notexists', $this->params['source'] );
 			return $status;
 		}
+		// Create a destination backup copy as needed
+		$status->merge( $this->checkAndBackupDest() );
+		return $status;
+	}
+
+	function doAttempt() {
 		// Copy the file into the destination
 		$status = $this->backend->copy( $this->params );
 		return $status;
@@ -288,17 +400,21 @@ class FileCopyOp extends FileStoreOp {
 	function storagePathsToLock() {
 		return array( $this->params['source'], $this->params['dest'] );
 	}
+
+	function getSourceMD5() {
+		return $this->getFileMD5( $this->params['source'] );
+	}
 }
 
 /**
  * Move a file from one storage path to another in the backend.
- * Parameters must match FileBackend::move(), which include:
+ * Parameters similar to FileBackend::move(), which include:
  *     source        : source storage path
  *     dest          : destination storage path
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  *     overwriteSame : override any existing file at destination
  */
-class FileMoveOp extends FileStoreOp {
+class MoveFileOp extends FileOp {
 	protected $usingMove = false; // using backend move() function?
 
 	function initialize() {
@@ -306,12 +422,20 @@ class FileMoveOp extends FileStoreOp {
 		$this->usingMove = $this->backend->canMove( $this->params );
 	}
 
-	function doAttempt() {
-		// Create a backup copy of any file that exists at destination
-		$status = $this->backupDest();
-		if ( !$status->isOK() ) {
+	function doPrecheck() {
+		$status = Status::newGood();
+		// Check if the source files exists on disk
+		$params = array( 'source' => $this->params['source'] );
+		if ( !$this->backend->fileExists( $params ) ) {
+			$status->fatal( 'backend-fail-notexists', $this->params['source'] );
 			return $status;
 		}
+		// Create a destination backup copy as needed
+		$status->merge( $this->checkAndBackupDest() );
+		return $status;
+	}
+
+	function doAttempt() {
 		// Native moves: move the file into the destination
 		if ( $this->usingMove ) {
 			$status = $this->backend->move( $this->params );
@@ -361,20 +485,30 @@ class FileMoveOp extends FileStoreOp {
 	function storagePathsToLock() {
 		return array( $this->params['source'], $this->params['dest'] );
 	}
+
+	function getSourceMD5() {
+		return $this->getFileMD5( $this->params['source'] );
+	}
 }
 
 /**
  * Combines files from severals storage paths into a new file in the backend.
- * Parameters must match FileBackend::concatenate(), which include:
+ * Parameters similar to FileBackend::concatenate(), which include:
  *     sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
  *     dest          : destination storage path
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  *     overwriteSame : override any existing file at destination
  */
-class FileConcatenateOp extends FileStoreOp {
+class ConcatenateFileOp extends FileOp {
+	function doPrecheck() {
+		// Create a destination backup copy as needed
+		$status = $this->checkAndBackupDest();
+		return $status;
+	}
+
 	function doAttempt() {
 		// Create a backup copy of any file that exists at destination
-		$status = $this->backupDest();
+		$status = $this->checkAndBackupDest();
 		if ( !$status->isOK() ) {
 			return $status;
 		}
@@ -402,24 +536,33 @@ class FileConcatenateOp extends FileStoreOp {
 	function storagePathsToLock() {
 		return array_merge( $this->params['sources'], $this->params['dest'] );
 	}
+
+	function getSourceMD5() {
+		return null; // defer this until we finish building the new file
+	}
 }
 
 /**
  * Delete a file at the storage path.
- * Parameters must match FileBackend::delete(), which include:
+ * Parameters similar to FileBackend::delete(), which include:
  *     source              : source storage path
  *     ignoreMissingSource : don't return an error if the file does not exist
  */
-class FileDeleteOp extends FileOp {
-	function doAttempt() {
+class DeleteFileOp extends FileOp {
+	function doPrecheck() {
 		$status = Status::newGood();
-		if ( !$this->params['ignoreMissingSource'] ) {
-			if ( !$this->backend->fileExists( $this->params['source'] ) ) {
+		if ( empty( $this->params['ignoreMissingSource'] ) ) {
+			$params = array( 'source' => $this->params['source'] );
+			if ( !$this->backend->fileExists( $params ) ) {
 				$status->fatal( 'backend-fail-notexists', $this->params['source'] );
 				return $status;
 			}
 		}
 		return $status;
+	}
+
+	function doAttempt() {
+		return Status::newGood();
 	}
 
 	function doRevert() {

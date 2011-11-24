@@ -88,7 +88,6 @@ abstract class FileBackendBase {
 	 *     source        : source path on disk
 	 *     dest          : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 *     overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -102,7 +101,6 @@ abstract class FileBackendBase {
 	 *     source        : source storage path
 	 *     dest          : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 *     overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -117,7 +115,6 @@ abstract class FileBackendBase {
 	 *     source        : source storage path
 	 *     dest          : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 *     overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -129,7 +126,6 @@ abstract class FileBackendBase {
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *     source              : source storage path
-	 *     ignoreMissingSource : don't return an error if the file does not exist
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -157,7 +153,6 @@ abstract class FileBackendBase {
 	 *     contents      : the raw file contents
 	 *     dest          : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 *     overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -188,6 +183,26 @@ abstract class FileBackendBase {
 	 * @return bool
 	 */
 	abstract public function fileExists( array $params );
+
+	/**
+	 * Get the format of the hash that getFileHash() uses
+	 *
+	 * @return string (md5, sha1, unknown, ...)
+	 */
+	public function getHashType() {
+		return 'unknown';
+	}
+
+	/**
+	 * Get a hash of the file that exists at a storage path in the backend.
+	 * Typically this will be a SHA-1 hash, MD5 hash, or something similar.
+	 * $params include:
+	 *     source : source storage path
+	 * 
+	 * @param Array $params
+	 * @return string|null Gives null if the file does not exist
+	 */
+	abstract public function getFileHash( array $params );
 
 	/**
 	 * Get the properties of the file that exists at a storage path in the backend
@@ -278,12 +293,12 @@ abstract class FileBackend extends FileBackendBase {
 	 */
 	protected function supportedOperations() {
 		return array(
-			'store'       => 'FileStoreOp',
-			'copy'        => 'FileCopyOp',
-			'move'        => 'FileMoveOp',
-			'delete'      => 'FileDeleteOp',
-			'concatenate' => 'FileConcatenateOp',
-			'create'      => 'FileCreateOp'
+			'store'       => 'StoreFileOp',
+			'copy'        => 'CopyFileOp',
+			'move'        => 'MoveFileOp',
+			'delete'      => 'DeleteFileOp',
+			'concatenate' => 'ConcatenateFileOp',
+			'create'      => 'CreateFileOp'
 		);
 	}
 
@@ -336,6 +351,15 @@ abstract class FileBackend extends FileBackendBase {
 			return $status; // abort
 		}
 
+		// Do pre-checks for each operation; abort on failure...
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->precheck() );
+			if ( !$status->isOK() ) { // operation failed?
+				$status->merge( $this->unlockFiles( $filesToLock ) );
+				return $status;
+			}
+		}
+
 		// Attempt each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
 			$status->merge( $fileOp->attempt() );
@@ -347,6 +371,7 @@ abstract class FileBackend extends FileBackendBase {
 					$status->merge( $performOps[$pos]->revert() );
 					$pos--;
 				}
+				$status->merge( $this->unlockFiles( $filesToLock ) );
 				return $status;
 			}
 		}
@@ -363,6 +388,16 @@ abstract class FileBackend extends FileBackendBase {
 		$status->setResult( true );
 
 		return $status;
+	}
+
+	/**
+	 * Check if a given path is a mwstore:// path
+	 * 
+	 * @param $path string
+	 * @return bool
+	 */
+	final public static function isStoragePath( $path ) {
+		return ( strpos( $path, 'mwstore://' ) === 0 );
 	}
 
 	/**
