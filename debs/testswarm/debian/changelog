@@ -1,4 +1,4 @@
-testswarm (0.0.20111012-1) unstable; urgency=low
+testswarm (0.1.0-1) unstable; urgency=low
 
   * Initial import from https://github.com/jquery/testswarm
   * Package version uses last commit date
