@@ -77,7 +77,7 @@ class FSFileLockManager extends FileLockManager {
 	protected $handles = array();
 
 	function __construct( array $config ) {
-		$this->lockDir = $config['lockDir'];
+		$this->lockDir = $config['lockDirectory'];
 	}
 
 	function doLock( array $keys, $type ) {
@@ -129,18 +129,18 @@ class FSFileLockManager extends FileLockManager {
 			$status->warning( 'lockmanager-alreadylocked', $key );
 		} else {
 			wfSuppressWarnings();
-			$handle = fopen( "{$this->lockDir}/{$key}", 'c' );
+			$handle = fopen( $this->getLockPath( $key ), 'c' );
 			wfRestoreWarnings();
 			if ( !$handle ) { // lock dir missing?
-				wfMkdirParents( "{$this->lockDir}/{$key}" );
+				wfMkdirParents( $this->lockDir );
 				wfSuppressWarnings();
-				$handle = fopen( "{$this->lockDir}/{$key}", 'c' ); // try again
+				$handle = fopen( $this->getLockPath( $key ), 'c' ); // try again
 				wfRestoreWarnings();
 			}
 			if ( $handle ) {
 				// Either a shared or exclusive lock
 				$lock = ( $type == self::LOCK_SH ) ? LOCK_SH : LOCK_EX;
-				if ( flock( $handle, $lock ) ) {
+				if ( flock( $handle, $lock | LOCK_NB ) ) {
 					$this->handles[$key][$type] = $handle;
 				} else {
 					fclose( $handle );
@@ -186,14 +186,24 @@ class FSFileLockManager extends FileLockManager {
 			if ( !count( $this->handles[$key] ) ) {
 				wfSuppressWarnings();
 				# No locks are held for the lock file anymore
-				if ( !unlink( "{$this->lockDir}/{$key}" ) ) {
+				if ( !unlink( $this->getLockPath( $key ) ) ) {
 					$status->warning( 'lockmanager-fail-deletelock', $key );
 				}
 				wfRestoreWarnings();
+				unset( $this->handles[$key] );
 			}
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Get the path to the lock file for a key
+	 * @param $key string
+	 * @return string
+	 */
+	protected function getLockPath( $key ) {
+		return "{$this->lockDir}/{$key}.lock";
 	}
 
 	function __destruct() {
@@ -203,7 +213,7 @@ class FSFileLockManager extends FileLockManager {
 				flock( $handle, LOCK_UN ); // PHP 5.3 will not do this automatically
 				fclose( $handle );
 			}
-			unlink( "{$this->lockDir}/{$key}" );
+			unlink( $this->getLockPath( $key ) );
 		}
 	}
 }
@@ -388,17 +398,21 @@ class DBFileLockManager extends FileLockManager {
 			}
 			$this->activeConns[$server]->setSessionOptions( $options );
 		}
+		$db = $this->activeConns[$server];
 		# Try to get the locks...this should be the last query of this function
-		$lockingClause = ( $type == self::LOCK_SH )
-			? 'LOCK IN SHARE MODE' // reader lock
-			: 'FOR UPDATE'; // writer lock
-		$this->activeConns[$server]->select(
-			'file_locking',
-			'1',
-			array( 'fl_key' => $keys ),
-			__METHOD__,
-			array( $lockingClause )
-		);
+		if ( $type == self::LOCK_SH ) { // reader locks
+			$db->select( 'file_locking', '1',
+				array( 'fl_key' => $keys ),
+				__METHOD__,
+				array( 'LOCK IN SHARE MODE' ) // single-row gap locks
+			);
+		} else { // writer locks
+			$data = array();
+			foreach ( $keys as $key ) {
+				$data[] = array( 'fl_key' => $key );
+			}
+			$db->insert( 'file_locking', $data, __METHOD__ ); // error on duplicate
+		}
 	}
 
 	/**
@@ -441,7 +455,7 @@ class DBFileLockManager extends FileLockManager {
 	protected function commitLockTransactions() {
 		foreach ( $this->activeConns as $server => $db ) {
 			try {
-				$db->commit(); // finish transaction
+				$db->rollback(); // finish transaction and kill any rows
 			} catch ( DBError $e ) {
 				// oh well; best effort
 			}
