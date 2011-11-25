@@ -923,7 +923,7 @@ abstract class Maintenance {
 
 		# This is for the IRC scripts, which now run as the apache user
 		# The apache user doesn't have access to the wikiadmin_pass command
-		if ( $_ENV['USER'] == 'apache' ) {
+		if ( isset( $_ENV['USER'] ) && $_ENV['USER'] == 'apache' ) {
 		# if ( posix_geteuid() == 48 ) {
 			$wgUseNormalUser = true;
 		}
