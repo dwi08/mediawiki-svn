@@ -303,6 +303,10 @@ class FSFileBackend extends FileBackend {
 			$status->fatal( 'directoryreadonlyerror', $param['directory'] );
 			return $status;
 		}
+		if ( !is_readable( $dir ) ) {
+			$status->fatal( 'directorynotreadableerror', $param['directory'] );
+			return $status;
+		}
 		return $status;
 	}
 
@@ -506,7 +510,7 @@ class FileIterator implements Iterator {
 				// If the first thing we find is a directory, then return
 				// the first file that it contains (via recursion).
 				// We exclude symlink dirs in order to avoid cycles.
-				if ( is_dir( "$dir/$file" ) && !is_link( "$dir/$file" ) ) {
+				if ( is_dir( "{$dir}/{$file}" ) && !is_link( "{$dir}/{$file}" ) ) {
 					$subHandle = opendir( "$dir/$file" );
 					if ( $subHandle ) {
 						$this->pushDirectory( "{$dir}/{$file}", $subHandle );
@@ -515,8 +519,8 @@ class FileIterator implements Iterator {
 							return $nextFile; // found the next one!
 						}
 					}
-				} elseif ( is_file( "$dir/$file" ) ) {
-					return "$dir/$file"; // found the next one!
+				} elseif ( is_file( "{$dir}/{$file}" ) ) {
+					return "{$dir}/{$file}"; // found the next one!
 				}
 			}
 		}
