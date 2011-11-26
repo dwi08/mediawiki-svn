@@ -64,7 +64,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	final public function doOperations( array $ops ) {
-		$status = Status::newGood();
+		$status = Status::newGood( array() );
 
 		// Build up a list of FileOps. The list will have all the ops
 		// for one backend, then all the ops for the next, and so on.
@@ -88,34 +88,63 @@ class FileBackendMultiWrite extends FileBackendBase {
 			return $status; // abort
 		}
 
+		$failedOps = array(); // failed ops with ignoreErrors
 		// Do pre-checks for each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
 			$status->merge( $fileOp->precheck() );
 			if ( !$status->isOK() ) { // operation failed?
-				$status->merge( $this->unlockFiles( $filesToLock ) );
-				return $status;
+				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
+					$failedOps[$index] = 1; // remember not to call attempt()/finish()
+					++$status->failCount;
+					$status->value[$index] = false;
+				} else {
+					$status->merge( $this->unlockFiles( $filesToLock ) );
+					return $status;
+				}
 			}
 		}
 
 		// Attempt each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
+			if ( isset( $failedOps[$index] ) ) {
+				continue; // nothing to do
+			}
 			$status->merge( $fileOp->attempt() );
 			if ( !$status->isOK() ) { // operation failed?
-				// Revert everything done so far and abort.
-				// Do this by reverting each previous operation in reverse order.
-				$pos = $index - 1; // last one failed; no need to revert()
-				while ( $pos >= 0 ) {
-					$status->merge( $performOps[$pos]->revert() );
-					$pos--;
+				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
+					$failedOps[$index] = 1; // remember not to call finish()
+					++$status->failCount;
+					$status->value[$index] = false;
+				} else {
+					// Revert everything done so far and abort.
+					// Do this by reverting each previous operation in reverse order.
+					$pos = $index - 1; // last one failed; no need to revert()
+					while ( $pos >= 0 ) {
+						if ( !isset( $failedOps[$pos] ) ) {
+							$status->merge( $performOps[$pos]->revert() );
+						}
+						$pos--;
+					}
+					$status->merge( $this->unlockFiles( $filesToLock ) );
+					return $status;
 				}
-				$status->merge( $this->unlockFiles( $filesToLock ) );
-				return $status;
 			}
 		}
 
 		// Finish each operation...
 		foreach ( $performOps as $index => $fileOp ) {
-			$status->merge( $fileOp->finish() );
+			if ( isset( $failedOps[$index] ) ) {
+				continue; // nothing to do
+			}
+			$subStatus = $fileOp->finish();
+			if ( $subStatus->isOK() ) {
+				++$status->successCount;
+				$status->value[$index] = true;
+			} else {
+				++$status->failCount;
+				$status->value[$index] = false;
+			}
+			$status->merge( $subStatus );
 		}
 
 		// Unlock all the files

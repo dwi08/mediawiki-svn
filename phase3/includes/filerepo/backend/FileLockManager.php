@@ -73,6 +73,9 @@ abstract class FileLockManager {
  */
 class FSFileLockManager extends FileLockManager {
 	protected $lockDir; // global dir for all servers
+
+	/** @var Array Map of (locked key => lock type => count) */
+	protected $locksHeld = array();
 	/** @var Array Map of (locked key => lock type => lock file handle) */
 	protected $handles = array();
 
@@ -123,10 +126,10 @@ class FSFileLockManager extends FileLockManager {
 	protected function doSingleLock( $key, $type ) {
 		$status = Status::newGood();
 
-		if ( isset( $this->handles[$key][$type] ) ) {
-			$status->warning( 'lockmanager-alreadylocked', $key );
-		} elseif ( isset( $this->handles[$key][self::LOCK_EX] ) ) {
-			$status->warning( 'lockmanager-alreadylocked', $key );
+		if ( isset( $this->locksHeld[$key][$type] ) ) {
+			++$this->locksHeld[$key][$type];
+		} elseif ( isset( $this->locksHeld[$key][self::LOCK_EX] ) ) {
+			$this->locksHeld[$key][$type] = 1;
 		} else {
 			wfSuppressWarnings();
 			$handle = fopen( $this->getLockPath( $key ), 'c' );
@@ -141,6 +144,8 @@ class FSFileLockManager extends FileLockManager {
 				// Either a shared or exclusive lock
 				$lock = ( $type == self::LOCK_SH ) ? LOCK_SH : LOCK_EX;
 				if ( flock( $handle, $lock | LOCK_NB ) ) {
+					// Record this lock as active
+					$this->locksHeld[$key][$type] = 1;
 					$this->handles[$key][$type] = $handle;
 				} else {
 					fclose( $handle );
@@ -164,32 +169,41 @@ class FSFileLockManager extends FileLockManager {
 	protected function doSingleUnlock( $key, $type ) {
 		$status = Status::newGood();
 
-		if ( !isset( $this->handles[$key] ) ) {
+		if ( !isset( $this->locksHeld[$key] ) ) {
 			$status->warning( 'lockmanager-notlocked', $key );
-		} elseif ( $type && !isset( $this->handles[$key][$type] ) ) {
+		} elseif ( $type && !isset( $this->locksHeld[$key][$type] ) ) {
 			$status->warning( 'lockmanager-notlocked', $key );
 		} else {
-			foreach ( $this->handles[$key] as $lockType => $handle ) {
+			foreach ( $this->locksHeld[$key] as $lockType => $count ) {
 				if ( $type && $lockType != $type ) {
 					continue; // only unlock locks of type $type
 				}
-				wfSuppressWarnings();
-				if ( !flock( $this->handles[$key][$lockType], LOCK_UN ) ) {
-					$status->fatal( 'lockmanager-fail-releaselock', $key );
+				--$this->locksHeld[$key][$lockType];
+				if ( $this->locksHeld[$key][$lockType] <= 0 ) {
+					unset( $this->locksHeld[$key][$lockType] );
+					// If a LOCK_SH comes in while we have a LOCK_EX, we don't
+					// actually add a handler, so check for handler existence.
+					if ( isset( $this->handles[$key][$lockType] ) ) {
+						wfSuppressWarnings();
+						if ( !flock( $this->handles[$key][$lockType], LOCK_UN ) ) {
+							$status->fatal( 'lockmanager-fail-releaselock', $key );
+						}
+						if ( !fclose( $this->handles[$key][$lockType] ) ) {
+							$status->warning( 'lockmanager-fail-closelock', $key );
+						}
+						wfRestoreWarnings();
+						unset( $this->handles[$key][$lockType] );
+					}
 				}
-				if ( !fclose( $this->handles[$key][$lockType] ) ) {
-					$status->warning( 'lockmanager-fail-closelock', $key );
-				}
-				wfRestoreWarnings();
-				unset( $this->handles[$key][$lockType] );
 			}
-			if ( !count( $this->handles[$key] ) ) {
+			if ( !count( $this->locksHeld[$key] ) ) {
 				wfSuppressWarnings();
 				# No locks are held for the lock file anymore
 				if ( !unlink( $this->getLockPath( $key ) ) ) {
 					$status->warning( 'lockmanager-fail-deletelock', $key );
 				}
 				wfRestoreWarnings();
+				unset( $this->locksHeld[$key] );
 				unset( $this->handles[$key] );
 			}
 		}
@@ -247,7 +261,7 @@ class DBFileLockManager extends FileLockManager {
 	protected $cliTimeout; // integer number of seconds
 	protected $safeDelay; // integer number of seconds
 
-	/** @var Array Map of (locked key => lock type => 1) */
+	/** @var Array Map of (locked key => lock type => count) */
 	protected $locksHeld = array();
 	/** $var Array Map Lock-active database connections (server name => Database) */
 	protected $activeConns = array();
@@ -274,16 +288,10 @@ class DBFileLockManager extends FileLockManager {
 	 * @param Array $config 
 	 */
 	function __construct( array $config ) {
-		$this->dbsByBucket = $config['dbsByBucket'];
-		// Sanitize against bad config to prevent PHP errors
-		for ( $i=0; $i < count( $this->dbsByBucket ); $i++ ) {
-			if ( !isset( $this->dbsByBucket[$i] ) // not consecutive
-				|| !is_array( $this->dbsByBucket[$i] ) // bad type
-			) {
-				$this->dbsByBucket[$i] = array();
-				wfWarn( "No valid key for bucket $i in dbsByBucket." );
-			}
-		}
+		// Sanitize dbsByBucket config to prevent PHP errors
+		$this->dbsByBucket = array_filter( $config['dbsByBucket'], 'is_array' );
+		$this->dbsByBucket = array_values( $this->dbsByBucket ); // consecutive
+
 		if ( isset( $config['webTimeout'] ) ) {
 			$this->webTimeout = $config['webTimeout'];
 		} else {
@@ -296,6 +304,7 @@ class DBFileLockManager extends FileLockManager {
 		$this->safeDelay = isset( $config['safeDelay'] )
 			? $config['safeDelay']
 			: max( $this->cliTimeout, $this->webTimeout ); // cover worst case
+
 		if ( isset( $config['cache'] ) && $config['cache'] instanceof BagOStuff ) {
 			$this->statusCache = $config['cache'];
 			$this->trustCache = ( !empty( $config['trustCache'] ) && $this->safeDelay > 0 );
@@ -312,9 +321,9 @@ class DBFileLockManager extends FileLockManager {
 		// Get locks that need to be acquired (buckets => locks)...
 		foreach ( $keys as $key ) {
 			if ( isset( $this->locksHeld[$key][$type] ) ) {
-				$status->warning( 'lockmanager-alreadylocked', $key );
+				++$this->locksHeld[$key][$type];
 			} elseif ( isset( $this->locksHeld[$key][self::LOCK_EX] ) ) {
-				$status->warning( 'lockmanager-alreadylocked', $key );
+				$this->locksHeld[$key][$type] = 1;
 			} else {
 				$bucket = $this->getBucketFromKey( $key );
 				$keysToLock[$bucket][] = $key;
@@ -362,11 +371,14 @@ class DBFileLockManager extends FileLockManager {
 			} elseif ( $type && !isset( $this->locksHeld[$key][$type] ) ) {
 				$status->warning( 'lockmanager-notlocked', $key );
 			} else {
-				foreach ( $this->locksHeld[$key] as $lockType => $x ) {
+				foreach ( $this->locksHeld[$key] as $lockType => $count ) {
 					if ( $type && $lockType != $type ) {
 						continue; // only unlock locks of type $type
 					}
-					unset( $this->locksHeld[$key][$lockType] );
+					--$this->locksHeld[$key][$lockType];
+					if ( $this->locksHeld[$key][$lockType] <= 0 ) {
+						unset( $this->locksHeld[$key][$lockType] );
+					}
 				}
 				if ( !count( $this->locksHeld[$key] ) ) {
 					unset( $this->locksHeld[$key] ); // no SH or EX locks left for key
@@ -376,7 +388,7 @@ class DBFileLockManager extends FileLockManager {
 
 		// Reference count the locks held and COMMIT when zero
 		if ( !count( $this->locksHeld ) ) {
-			$this->finishLockTransactions();
+			$status->merge( $this->finishLockTransactions() );
 		}
 
 		return $status;
@@ -439,9 +451,18 @@ class DBFileLockManager extends FileLockManager {
 		$yesVotes = 0; // locks made on trustable servers
 		$votesLeft = count( $this->dbsByBucket[$bucket] ); // remaining servers
 		$quorum = floor( $votesLeft/2 + 1 ); // simple majority
-		foreach ( $this->dbsByBucket[$bucket] as $server ) {
-			// Check that server is not *known* to have issues
-			if ( $this->checkStatusCache( $server ) ) {
+		// Get votes for each server, in order, until we have enough...
+		foreach ( $this->dbsByBucket[$bucket] as $index => $server ) {
+			if ( $this->trustCache && $votesLeft < $quorum ) {
+				// We are now hitting servers that are not normally
+				// hit, meaning that some of the first ones are down.
+				// Delay using these later servers until it's safe.
+				if ( !$this->cacheCheckSkipped( $bucket, $index ) ) {
+					return 'dberrors';
+				}
+			}
+			// Check that server is not *known* to be down
+			if ( $this->cacheCheckFailures( $server ) ) {
 				try {
 					// Attempt to acquire the lock on this server
 					$this->doLockingQuery( $server, $keys, $type );
@@ -449,6 +470,10 @@ class DBFileLockManager extends FileLockManager {
 					if ( $this->checkUptime( $server ) ) {
 						++$yesVotes; // success for this peer
 						if ( $yesVotes >= $quorum ) {
+							if ( $this->trustCache ) {
+								// We didn't bother with the servers after this one
+								$this->cacheRecordSkipped( $bucket, $index + 1 );
+							}
 							return true; // lock obtained
 						}
 					}
@@ -462,7 +487,8 @@ class DBFileLockManager extends FileLockManager {
 			}
 			$votesLeft--;
 			$votesNeeded = $quorum - $yesVotes;
-			if ( $votesNeeded > $votesLeft ) {
+			if ( $votesNeeded > $votesLeft && !$this->trustCache ) {
+				// In "trust cache" mode we don't have to meet the quorum.
 				break; // short-circuit
 			}
 		}
@@ -477,17 +503,20 @@ class DBFileLockManager extends FileLockManager {
 	 * Commit all changes to lock-active databases.
 	 * This should avoid throwing any exceptions.
 	 *
-	 * @return void
+	 * @return Status
 	 */
 	protected function finishLockTransactions() {
+		$status = Status::newGood();
 		foreach ( $this->activeConns as $server => $db ) {
 			try {
 				$db->rollback(); // finish transaction and kill any rows
 			} catch ( DBError $e ) {
+				$status->fatal( 'lockmanager-fail-db-release', $server );
 				// oh well; best effort
 			}
 		}
 		$this->activeConns = array();
+		return $status;
 	}
 
 	/**
@@ -527,19 +556,67 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Checks if the DB server has not recently missed lock queries.
-	 * This curtails the problem of peers occasionally not getting locks.
+	 * Check that DB servers starting at $index for a
+	 * bucket were not recently skipped in obtaining a lock.
+	 *
+	 * @param $bucket
+	 * @param $index
+	 * @return bool
+	 */
+	protected function cacheCheckSkipped( $bucket, $index ) {
+		if ( $this->statusCache && $this->safeDelay > 0 ) {
+			$key = $this->getSkipsKey( $bucket, $index );
+			$skips = $this->statusCache->get( $key );
+			return !$skips;
+		}
+		return true;
+	}
+
+	/**
+	 * Record that DB servers starting at $index for a
+	 * bucket were just skipped in obtaining a lock (quorum met).
+	 *
+	 * @param $bucket
+	 * @param $index
+	 * @return bool Success
+	 */
+	protected function cacheRecordSkipped( $bucket, $index ) {
+		if ( $this->statusCache && $this->safeDelay > 0 ) {
+			$key = $this->getSkipsKey( $bucket, $index );
+			$skips = $this->statusCache->get( $key );
+			if ( $skips ) {
+				return $this->statusCache->incr( $key );
+			} else {
+				return $this->statusCache->add( $key, 1, $this->safeDelay );
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Get a cache key for recent query skips for a bucket
+	 *
+	 * @param $bucket
+	 * @param $index
+	 * @return string
+	 */
+	protected function getSkipsKey( $bucket, $index ) {
+		return "lockmanager:queryskips:$bucket:$index";
+	}
+
+	/**
+	 * Checks if the DB server has not recently had connection/query errors.
+	 * When in "trust cache" mode, this curtails the problem of peers occasionally
+	 * missing locks. Otherwise, it just avoids wasting time on connection attempts.
 	 * 
 	 * @param $server string
 	 * @return bool
 	 */
-	protected function checkStatusCache( $server ) {
+	protected function cacheCheckFailures( $server ) {
 		if ( $this->statusCache && $this->safeDelay > 0 ) {
 			$key = $this->getMissKey( $server );
 			$misses = $this->statusCache->get( $key );
-			if ( $misses > 0 ) {
-				return false;
-			}
+			return !$misses;
 		}
 		return true;
 	}
@@ -568,13 +645,13 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Get a cache key for recent query misses for a server
+	 * Get a cache key for recent query misses for a DB server
 	 *
 	 * @param $server string
 	 * @return string
 	 */
 	protected function getMissKey( $server ) {
-		return "lockmanager:querymisses:srv:$server";
+		return "lockmanager:querymisses:$server";
 	}
 
 	/**
