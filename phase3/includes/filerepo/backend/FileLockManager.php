@@ -28,7 +28,7 @@ abstract class FileLockManager {
 	 * @return Status 
 	 */
 	final public function lock( array $paths, $type = self::LOCK_EX ) {
-		$keys = array_map( 'sha1', $paths );
+		$keys = array_unique( array_map( 'sha1', $paths ) );
 		return $this->doLock( $keys, $type );
 	}
 
@@ -39,7 +39,7 @@ abstract class FileLockManager {
 	 * @return Status 
 	 */
 	final public function unlock( array $paths ) {
-		$keys = array_map( 'sha1', $paths );
+		$keys = array_unique( array_map( 'sha1', $paths ) );
 		return $this->doUnlock( $keys, 0 );
 	}
 
@@ -80,7 +80,7 @@ class FSFileLockManager extends FileLockManager {
 		$this->lockDir = $config['lockDirectory'];
 	}
 
-	function doLock( array $keys, $type ) {
+	protected function doLock( array $keys, $type ) {
 		$status = Status::newGood();
 
 		$lockedKeys = array(); // files locked in this attempt
@@ -103,7 +103,7 @@ class FSFileLockManager extends FileLockManager {
 		return $status;
 	}
 
-	function doUnlock( array $keys, $type ) {
+	protected function doUnlock( array $keys, $type ) {
 		$status = Status::newGood();
 
 		foreach ( $keys as $key ) {
@@ -224,9 +224,9 @@ class FSFileLockManager extends FileLockManager {
  *
  * All lock requests for a resource, identified by a hash string, will
  * map to one bucket. Each bucket maps to one or several peer DB servers,
- * each of which have a `file_locks` table with row-level locking.
+ * each having a `file_locks` table with row-level locking.
  *
- * All peer servers must agree to a lock in order for it to be acquired.
+ * A majority of peer servers must agree for a lock to be acquired.
  * As long as one peer server is up, lock requests will not be blocked
  * just because another peer server cannot be contacted. A global status
  * cache can be setup to track servers that recently missed queries; such
@@ -242,6 +242,7 @@ class DBFileLockManager extends FileLockManager {
 	/** @var BagOStuff */
 	protected $statusCache;
 
+	protected $trustCache; // boolean
 	protected $webTimeout; // integer number of seconds
 	protected $cliTimeout; // integer number of seconds
 	protected $safeDelay; // integer number of seconds
@@ -254,18 +255,21 @@ class DBFileLockManager extends FileLockManager {
 	/**
 	 * Construct a new instance from configuration.
 	 * $config paramaters include:
-	 *     'dbsByBucket' : Array of 1-16 consecutive integer keys, starting from 0,
-	 *                     with a list of database names (peers) as values.
-	 *                     Each DB should be on its own server.
-	 *     'statusCache' : $wgMemc if set to a global memcached instance. [optional]
-	 *                     This tracks peer servers that couldn't be queried recently.
-	 *     'webTimeout'  : Connection timeout (seconds) for non-CLI scripts. [optional]
-	 *                     This tells the DB server how long to wait before giving up
-	 *                     and releasing all the locks made in a session transaction.
-	 *     'cliTimeout'  : Connection timeout (seconds) for CLI scripts. [optional]
+	 *     'dbsByBucket' : Array of 1-16 consecutive integer keys, starting from 0, with
+	 *                     a list of DB names (peers) as values. Each list should have
+	 *                     an odd number of items and each DB should have its own server.
+	 *     'webTimeout'  : Lock timeout (seconds) for non-CLI scripts. [optional]
+	 *                     This tells the DB server how long to wait before assuming
+	 *                     connection failure and releasing all the locks for a session.
+	 *     'cliTimeout'  : Lock timeout (seconds) for CLI scripts. [optional]
+	 *                     This tells the DB server how long to wait before assuming
+	 *                     connection failure and releasing all the locks for a session.
 	 *     'safeDelay'   : Seconds to mistrust a DB after restart/query loss. [optional]
 	 *                     This should reflect the highest max_execution_time that PHP
 	 *                     scripts might use on a wiki. Locks are lost on server restart.
+	 *     'cache'       : $wgMemc (if set to a global memcached instance). [optional]
+	 *                     This tracks peer servers that couldn't be queried recently.
+	 *     'trustCache'  : Assume cache knows all servers missing queries recently. [optional]
 	 *
 	 * @param Array $config 
 	 */
@@ -280,25 +284,28 @@ class DBFileLockManager extends FileLockManager {
 				wfWarn( "No valid key for bucket $i in dbsByBucket." );
 			}
 		}
-		if ( isset( $config['statusCache'] ) ) {
-			$this->statusCache = $config['statusCache'];
-		}
 		if ( isset( $config['webTimeout'] ) ) {
 			$this->webTimeout = $config['webTimeout'];
 		} else {
-			$this->webTimeout = ini_get( 'max_execution_time' ) // disallow 0
-				? ini_get( 'max_execution_time' )
-				: 60; // some sane number
+			$met = ini_get( 'max_execution_time' );
+			$this->webTimeout = $met ? $met : 60; // use some same amount if 0
 		}
 		$this->cliTimeout = isset( $config['cliTimeout'] )
 			? $config['cliTimeout']
-			: 60; // some sane number
+			: 60; // some sane amount
 		$this->safeDelay = isset( $config['safeDelay'] )
 			? $config['safeDelay']
-			: max( $this->cliTimeout, $this->webTimeout );
+			: max( $this->cliTimeout, $this->webTimeout ); // cover worst case
+		if ( isset( $config['cache'] ) && $config['cache'] instanceof BagOStuff ) {
+			$this->statusCache = $config['cache'];
+			$this->trustCache = ( !empty( $config['trustCache'] ) && $this->safeDelay > 0 );
+		} else {
+			$this->statusCache = null;
+			$this->trustCache = false;
+		}
 	}
 
-	function doLock( array $keys, $type ) {
+	protected function doLock( array $keys, $type ) {
 		$status = Status::newGood();
 
 		$keysToLock = array();
@@ -310,10 +317,6 @@ class DBFileLockManager extends FileLockManager {
 				$status->warning( 'lockmanager-alreadylocked', $key );
 			} else {
 				$bucket = $this->getBucketFromKey( $key );
-				if ( !$bucket ) { // config error?
-					$status->fatal( 'lockmanager-fail-config', $key );
-					return $status;
-				}
 				$keysToLock[$bucket][] = $key;
 			}
 		}
@@ -325,19 +328,19 @@ class DBFileLockManager extends FileLockManager {
 			// (a) First server is up; common case
 			// (b) First server is down but a peer is up
 			// (c) First server is down and no peer are up (or none defined)
-			$count = $this->doLockingQueryAll( $bucket, $keys, $type );
-			if ( $count == -1 ) {
+			$res = $this->doLockingQueryAll( $bucket, $keys, $type );
+			if ( $res === 'cantacquire' ) {
 				// Resources already locked by another process.
 				// Abort and unlock everything we just locked.
 				$status->fatal( 'lockmanager-fail-acquirelocks' );
 				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
 				return $status;
-			} elseif ( $count <= 0 ) {
+			} elseif ( $res !== true ) {
 				// Couldn't contact any servers for this bucket.
 				// Abort and unlock everything we just locked.
 				$status->fatal( 'lockmanager-fail-db-bucket', $bucket );
 				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
-				return $status; // error
+				return $status;
 			}
 			// Record these locks as active
 			foreach ( $keys as $key ) {
@@ -350,7 +353,7 @@ class DBFileLockManager extends FileLockManager {
 		return $status;
 	}
 
-	function doUnlock( array $keys, $type ) {
+	protected function doUnlock( array $keys, $type ) {
 		$status = Status::newGood();
 
 		foreach ( $keys as $key ) {
@@ -424,39 +427,50 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Attept to acquire a lock on the primary server as well
-	 * as all peer servers for a bucket. Return value is either:
-	 *    a) The number of servers, considered reliable, where the locks were acquired
-	 *    b) -1; if any server claimed that a resource was already locked
+	 * Attempt to acquire locks with the peers for a bucket.
 	 * This should avoid throwing any exceptions.
 	 *
 	 * @param $bucket integer
 	 * @param $keys Array List of resource keys to lock
 	 * @param $type integer FileLockManager::LOCK_EX or FileLockManager::LOCK_SH
-	 * @return integer
+	 * @return bool|string One of (true, 'cantacquire', 'dberrors')
 	 */
 	protected function doLockingQueryAll( $bucket, array $keys, $type ) {
-		$locksMade = 0; // locks made on trustable servers
+		$yesVotes = 0; // locks made on trustable servers
+		$votesLeft = count( $this->dbsByBucket[$bucket] ); // remaining servers
+		$quorum = floor( $votesLeft/2 + 1 ); // simple majority
 		foreach ( $this->dbsByBucket[$bucket] as $server ) {
-			try {
-				$this->doLockingQuery( $server, $keys, $type );
-				// Servers that have any signs of lock loss are treated as suspect
-				if ( $this->checkReliable( $server ) ) {
-					++$locksMade; // success for this peer
-				} elseif ( !$this->statusCache ) {
-					// If we are only checking for restarts, this won't catch
-					// cases were are only server got a lock and was restarted.
-					return 0;
-				}
-			} catch ( DBError $e ) {
-				if ( $this->lastErrorIndicatesLocked( $server ) ) {
-					return -1; // resource locked
-				} else { // can't connect?
-					$this->recordFailure( $server );
+			// Check that server is not *known* to have issues
+			if ( $this->checkStatusCache( $server ) ) {
+				try {
+					// Attempt to acquire the lock on this server
+					$this->doLockingQuery( $server, $keys, $type );
+					// Check that server has no signs of lock loss
+					if ( $this->checkUptime( $server ) ) {
+						++$yesVotes; // success for this peer
+						if ( $yesVotes >= $quorum ) {
+							return true; // lock obtained
+						}
+					}
+				} catch ( DBError $e ) {
+					if ( $this->lastErrorIndicatesLocked( $server ) ) {
+						return 'cantacquire'; // vetoed; resource locked
+					} else { // can't connect?
+						$this->cacheRecordFailure( $server );
+					}
 				}
 			}
+			$votesLeft--;
+			$votesNeeded = $quorum - $yesVotes;
+			if ( $votesNeeded > $votesLeft ) {
+				break; // short-circuit
+			}
 		}
-		return $locksMade;
+		// At this point, we must not have meet the quorum
+		if ( $yesVotes > 0 && $this->trustCache ) {
+			return true; // we are trusting the cache; may comprimise correctness
+		}
+		return 'dberrors'; // not enough votes to ensure correctness
 	}
 
 	/**
@@ -493,28 +507,18 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Checks if none of the following happened:
-	 * a) The DB server recently restarted.
-	 *    This curtails the problem of locks falling off when servers restart.
-	 * b) The DB server has recently missed lock queries.
-	 *    This curtails the problem of peers occasionally not getting locks.
+	 * Checks if the DB server did not recently restart.
+	 * This curtails the problem of locks falling off when servers restart.
 	 * 
 	 * @param $server string
 	 * @return bool
 	 */
-	protected function checkReliable( $server ) {
+	protected function checkUptime( $server ) {
 		if ( isset( $this->activeConns[$server] ) ) { // sanity
 			if ( $this->safeDelay > 0 ) {
 				$db = $this->activeConns[$server];
 				if ( $db->getServerUptime() < $this->safeDelay ) {
 					return false;
-				}
-				if ( $this->statusCache ) {
-					$key = $this->getMissKey( $server );
-					$misses = $this->statusCache->get( $key );
-					if ( $misses > 0 ) {
-						return false;
-					}
 				}
 			}
 			return true;
@@ -523,7 +527,25 @@ class DBFileLockManager extends FileLockManager {
 	}
 
 	/**
-	 * Log a lock request failure to the log server.
+	 * Checks if the DB server has not recently missed lock queries.
+	 * This curtails the problem of peers occasionally not getting locks.
+	 * 
+	 * @param $server string
+	 * @return bool
+	 */
+	protected function checkStatusCache( $server ) {
+		if ( $this->statusCache && $this->safeDelay > 0 ) {
+			$key = $this->getMissKey( $server );
+			$misses = $this->statusCache->get( $key );
+			if ( $misses > 0 ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Log a lock request failure to the cache.
 	 *
 	 * Worst case scenario is that a resource lock was only
 	 * on one peer and then that peer is restarted or goes down.
@@ -532,7 +554,7 @@ class DBFileLockManager extends FileLockManager {
 	 * @param $server string
 	 * @return bool Success
 	 */
-	protected function recordFailure( $server ) {
+	protected function cacheRecordFailure( $server ) {
 		if ( $this->statusCache && $this->safeDelay > 0 ) {
 			$key = $this->getMissKey( $server );
 			$misses = $this->statusCache->get( $key );
@@ -574,11 +596,11 @@ class DBFileLockManager extends FileLockManager {
 class NullFileLockManager extends FileLockManager {
 	function __construct( array $config ) {}
 
-	function doLock( array $keys, $type ) {
+	protected function doLock( array $keys, $type ) {
 		return Status::newGood();
 	}
 
-	function doUnlock( array $keys, $type ) {
+	protected function doUnlock( array $keys, $type ) {
 		return Status::newGood();
 	}
 }

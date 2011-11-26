@@ -65,6 +65,8 @@ abstract class FileBackendBase {
 	 *     )
 	 * );
 	 * </code>
+	 * If any serious errors occur, the operations will be rolled back.
+	 * However, the 'ignoreErrors' parameter can be used on any operation to ignore errors.
 	 * 
 	 * @param Array $ops Array of arrays containing N operations to execute IN ORDER
 	 * @return Status
@@ -321,6 +323,7 @@ abstract class FileBackend extends FileBackendBase {
 				// Get params for this operation
 				$params = $operation;
 				unset( $params['operation'] ); // don't need this
+				unset( $params['ignoreErrors'] ); // don't need this
 				// Append the FileOp class
 				$performOps[] = new $class( $params );
 			} else {
@@ -342,7 +345,6 @@ abstract class FileBackend extends FileBackendBase {
 		foreach ( $performOps as $index => $fileOp ) {
 			$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsToLock() );
 		}
-		$filesToLock = array_unique( $filesToLock ); // avoid warnings
 
 		// Try to lock those files...
 		$status->merge( $this->lockFiles( $filesToLock ) );
