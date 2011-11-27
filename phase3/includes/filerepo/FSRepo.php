@@ -18,6 +18,5 @@ class FSRepo extends FileRepo {
 		if ( !( $this->backend instanceof FSFileBackend ) ) {
 			throw new MWException( "FSRepo only supports FSFileBackend." );
 		}
-		//wfDeprecated( "FSRepo is deprecated, use FileRepo instead." );
 	}
 }
