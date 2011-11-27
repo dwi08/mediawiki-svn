@@ -234,7 +234,8 @@ class LocalFile extends File {
 	 * Load metadata from the file itself
 	 */
 	function loadFromFile() {
-		$this->setProps( self::getPropsFromPath( $this->getPath() ) );
+		$props = $this->repo->getFileProps( $this->getVirtualUrl() );
+		$this->setProps( $props );
 	}
 
 	function getCacheFields( $prefix = 'img_' ) {
@@ -748,9 +749,8 @@ class LocalFile extends File {
 			# Check that the base file name is part of the thumb name
 			# This is a basic sanity check to avoid erasing unrelated directories
 			if ( strpos( $file, $this->getName() ) !== false ) {
-				wfSuppressWarnings();
-				unlink( "$dir/$file" );
-				wfRestoreWarnings();
+				$op = array( 'operation' => 'delete', 'source' => "$dir/$file" );
+				$this->repo->getBackend()->doOperations( array( $op ) );
 			}
 		}
 	}

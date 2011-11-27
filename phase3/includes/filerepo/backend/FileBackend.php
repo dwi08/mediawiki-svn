@@ -2,6 +2,7 @@
 /**
  * @file
  * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 
 /**
@@ -16,6 +17,9 @@
  *
  * Methods should avoid throwing exceptions at all costs.
  * As a corollary, external dependencies should be kept to a minimum.
+ *
+ * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 abstract class FileBackendBase {
 	protected $name; // unique backend name
@@ -111,13 +115,13 @@ abstract class FileBackendBase {
 	abstract public function fileExists( array $params );
 
 	/**
-	 * Get a hash of the file that exists at a storage path in the backend.
+	 * Get a hash of the file at a storage path in the backend.
 	 * Typically this will be a SHA-1 hash, MD5 hash, or something similar.
 	 * $params include:
 	 *     source : source storage path
 	 * 
 	 * @param Array $params
-	 * @return string|null Gives null if the file does not exist
+	 * @return string|false Hash string or false on failure
 	 */
 	abstract public function getFileHash( array $params );
 
@@ -129,17 +133,28 @@ abstract class FileBackendBase {
 	abstract public function getHashType();
 
 	/**
-	 * Get the properties of the file that exists at a storage path in the backend
+	 * Get the last-modified timestamp of the file at a storage path.
 	 * $params include:
 	 *     source : source storage path
 	 * 
 	 * @param Array $params
-	 * @return Array|null Gives null if the file does not exist
+	 * @return string|false TS_MW timestamp or false on failure
+	 */
+	abstract public function getFileTimestamp( array $params );
+
+	/**
+	 * Get the properties of the file at a storage path in the backend.
+	 * Returns FSFile::placeholderProps() on failure.
+	 * $params include:
+	 *     source : source storage path
+	 * 
+	 * @param Array $params
+	 * @return Array
 	 */
 	abstract public function getFileProps( array $params );
 
 	/**
-	 * Stream the file that exists at a storage path in the backend.
+	 * Stream the file at a storage path in the backend.
 	 * Appropriate HTTP headers (Status, Content-Type, Content-Length)
 	 * must be sent if streaming began, while none should be sent otherwise.
 	 * Implementations should flush the output buffer before sending data.
@@ -202,6 +217,9 @@ abstract class FileBackendBase {
 /**
  * Base class for all single-write backends.
  * This class defines the methods as abstract that subclasses must implement.
+ *
+ * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 abstract class FileBackend extends FileBackendBase {
 	/**
@@ -306,6 +324,15 @@ abstract class FileBackend extends FileBackendBase {
 	 */
 	public function canMove( array $params ) {
 		return false; // not implemented
+	}
+
+	public function getFileProps( array $params ) {
+		$tmpFile = $this->getLocalCopy( $params );
+		if ( !$tmpFile ) {
+			return FSFile::placeholderProps();
+		} else {
+			return $tmpFile->getProps();
+		}
 	}
 
 	/**
@@ -482,7 +509,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *
 	 * @param $container string
 	 * @param $relStoragePath string
-	 * @return string|null Null if path is not valid
+	 * @return string|null Path or null if not valid
 	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {
 		return $relStoragePath;

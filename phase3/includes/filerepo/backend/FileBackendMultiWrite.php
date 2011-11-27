@@ -2,6 +2,7 @@
 /**
  * @file
  * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 
 /**
@@ -20,6 +21,9 @@
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
+ *
+ * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 class FileBackendMultiWrite extends FileBackendBase {
 	/** @var Array Prioritized list of FileBackend objects */

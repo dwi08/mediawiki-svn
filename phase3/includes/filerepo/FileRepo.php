@@ -215,7 +215,7 @@ class FileRepo {
 	 * @param $url string
 	 * @return bool
 	 */
-	static function isVirtualUrl( $url ) {
+	public static function isVirtualUrl( $url ) {
 		return substr( $url, 0, 9 ) == 'mwrepo://';
 	}
 
@@ -227,7 +227,7 @@ class FileRepo {
 	 * @param $suffix string
 	 * @return string
 	 */
-	function getVirtualUrl( $suffix = false ) {
+	public function getVirtualUrl( $suffix = false ) {
 		$path = 'mwrepo://' . $this->name;
 		if ( $suffix !== false ) {
 			$path .= '/' . rawurlencode( $suffix );
@@ -241,7 +241,7 @@ class FileRepo {
 	 * @param $zone String: one of: public, deleted, temp, thumb
 	 * @return String or false
 	 */
-	function getZoneUrl( $zone ) {
+	public function getZoneUrl( $zone ) {
 		switch ( $zone ) {
 			case 'public':
 				return $this->url;
@@ -300,7 +300,7 @@ class FileRepo {
 	 * @param $zone string
 	 * @return string|null
 	 */
-	function getZonePath( $zone ) {
+	public function getZonePath( $zone ) {
 		list( $container, $base ) = $this->getZoneLocation( $zone );
 		if ( $container === null || $base === null ) {
 			return null;
@@ -320,7 +320,7 @@ class FileRepo {
 	 *              should return false if this parameter is set.
 	 * @return File|null A File, or null if passed an invalid Title
 	 */
-	function newFile( $title, $time = false ) {
+	public function newFile( $title, $time = false ) {
 		$title = File::normalizeTitle( $title );
 		if ( !$title ) {
 			return null;
@@ -354,7 +354,7 @@ class FileRepo {
 	 *                     be found.
 	 * @return File|false
 	 */
-	function findFile( $title, $options = array() ) {
+	public function findFile( $title, $options = array() ) {
 		$title = File::normalizeTitle( $title );
 		if ( !$title ) {
 			return false;
@@ -409,7 +409,7 @@ class FileRepo {
 	 *     $repo->findFiles( $findBatch );
 	 * @return array
 	 */
-	function findFiles( $items ) {
+	public function findFiles( $items ) {
 		$result = array();
 		foreach ( $items as $item ) {
 			if ( is_array( $item ) ) {
@@ -437,7 +437,7 @@ class FileRepo {
 	 * @param $options Option array, same as findFile().
 	 * @return File|false
 	 */
-	function findFileFromKey( $sha1, $options = array() ) {
+	public function findFileFromKey( $sha1, $options = array() ) {
 		$time = isset( $options['time'] ) ? $options['time'] : false;
 
 		# First try to find a matching current version of a file...
@@ -468,7 +468,7 @@ class FileRepo {
 	 *
 	 * @return string
 	 */
-	function getRootUrl() {
+	public function getRootUrl() {
 		return $this->url;
 	}
 
@@ -477,7 +477,7 @@ class FileRepo {
 	 *
 	 * @return string
 	 */
-	function isHashed() {
+	public function isHashed() {
 		return (bool)$this->hashLevels;
 	}
 
@@ -486,7 +486,7 @@ class FileRepo {
 	 *
 	 * @return string
 	 */
-	function getThumbScriptUrl() {
+	public function getThumbScriptUrl() {
 		return $this->thumbScriptUrl;
 	}
 
@@ -495,7 +495,7 @@ class FileRepo {
 	 *
 	 * @return bool
 	 */
-	function canTransformVia404() {
+	public function canTransformVia404() {
 		return $this->transformVia404;
 	}
 
@@ -504,9 +504,9 @@ class FileRepo {
 	 *
 	 * @param $title Title
 	 */
-	function getNameFromTitle( Title $title ) {
+	public function getNameFromTitle( Title $title ) {
+		global $wgContLang;
 		if ( $this->initialCapital != MWNamespace::isCapitalized( NS_FILE ) ) {
-			global $wgContLang;
 			$name = $title->getUserCaseDBKey();
 			if ( $this->initialCapital ) {
 				$name = $wgContLang->ucfirst( $name );
@@ -536,11 +536,11 @@ class FileRepo {
 	}
 
 	/**
-	 * Get the public root directory of the repository.
+	 * Get the public zone root directory of the repository.
 	 *
 	 * @return string
 	 */
-	function getRootDirectory() {
+	public function getRootDirectory() {
 		return $this->getZonePath( 'public' );
 	}
 
@@ -551,7 +551,7 @@ class FileRepo {
 	 * @param $name string
 	 * @return string
 	 */
-	function getHashPath( $name ) {
+	public function getHashPath( $name ) {
 		return self::getHashPathForLevel( $name, $this->hashLevels );
 	}
 
@@ -560,7 +560,7 @@ class FileRepo {
 	 *
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return $this->name;
 	}
 
@@ -571,7 +571,7 @@ class FileRepo {
 	 * @param $entry string Entry point; defaults to index
 	 * @return string
 	 */
-	function makeUrl( $query = '', $entry = 'index' ) {
+	public function makeUrl( $query = '', $entry = 'index' ) {
 		$ext = isset( $this->scriptExtension ) ? $this->scriptExtension : '.php';
 		return wfAppendQuery( "{$this->scriptDirUrl}/{$entry}{$ext}", $query );
 	}
@@ -588,7 +588,7 @@ class FileRepo {
 	 * @param $name string
 	 * @return string
 	 */
-	function getDescriptionUrl( $name ) {
+	public function getDescriptionUrl( $name ) {
 		$encName = wfUrlencode( $name );
 		if ( !is_null( $this->descBaseUrl ) ) {
 			# "http://example.com/wiki/Image:"
@@ -623,7 +623,7 @@ class FileRepo {
 	 * @param $lang String: language to fetch it in, if any.
 	 * @return string
 	 */
-	function getDescriptionRenderUrl( $name, $lang = null ) {
+	public function getDescriptionRenderUrl( $name, $lang = null ) {
 		$query = 'action=render';
 		if ( !is_null( $lang ) ) {
 			$query .= '&uselang=' . $lang;
@@ -645,9 +645,10 @@ class FileRepo {
 
 	/**
 	 * Get the URL of the stylesheet to apply to description pages
+	 *
 	 * @return string
 	 */
-	function getDescriptionStylesheetUrl() {
+	public function getDescriptionStylesheetUrl() {
 		if ( $this->scriptDirUrl ) {
 			return $this->makeUrl( 'title=MediaWiki:Filepage.css&' .
 				wfArrayToCGI( Skin::getDynamicStylesheetQuery() ) );
@@ -667,7 +668,7 @@ class FileRepo {
 	 *                             same contents as the source
 	 * @return FileRepoStatus
 	 */
-	function store( $srcPath, $dstZone, $dstRel, $flags = 0 ) {
+	public function store( $srcPath, $dstZone, $dstRel, $flags = 0 ) {
 		$status = $this->storeBatch( array( array( $srcPath, $dstZone, $dstRel ) ), $flags );
 		if ( $status->successCount == 0 ) {
 			$status->ok = false;
@@ -686,7 +687,7 @@ class FileRepo {
 	 *                             same contents as the source
 	 * @return FileRepoStatus
 	 */
-	function storeBatch( $triplets, $flags = 0 ) {
+	public function storeBatch( $triplets, $flags = 0 ) {
 		$backend = $this->backend; // convenience
 
 		// Try creating directories
@@ -767,7 +768,7 @@ class FileRepo {
 	 * @param $pairs array List of files to delete
 	 * @return void
 	 */
-	function cleanupBatch( $files ) {
+	public function cleanupBatch( $files ) {
 		$operations = array();
 		$sourceFSFilesToDelete = array(); // cleanup for disk source files
 		foreach ( $files as $file ) {
@@ -815,7 +816,7 @@ class FileRepo {
 	 * @param $srcPath String: the current location of the file.
 	 * @return FileRepoStatus object with the URL in the value.
 	 */
-	function storeTemp( $originalName, $srcPath ) {
+	public function storeTemp( $originalName, $srcPath ) {
 		$date = gmdate( "YmdHis" );
 		$hashPath = $this->getHashPath( $originalName );
 		$dstRel = "{$hashPath}{$date}!{$originalName}";
@@ -831,7 +832,7 @@ class FileRepo {
 	 * @param $virtualUrl String: the virtual URL returned by storeTemp
 	 * @return Boolean: true on success, false on failure
 	 */
-	function freeTemp( $virtualUrl ) {
+	public function freeTemp( $virtualUrl ) {
 		$temp = "mwrepo://{$this->name}/temp";
 		if ( substr( $virtualUrl, 0, strlen( $temp ) ) != $temp ) {
 			wfDebug( __METHOD__.": Invalid temp virtual URL\n" );
@@ -857,7 +858,7 @@ class FileRepo {
 	 * @param $flags Integer: bitfield, may be FileRepo::DELETE_SOURCE to indicate
 	 *        that the source file should be deleted if possible
 	 */
-	function publish( $srcPath, $dstRel, $archiveRel, $flags = 0 ) {
+	public function publish( $srcPath, $dstRel, $archiveRel, $flags = 0 ) {
 		$status = $this->publishBatch( array( array( $srcPath, $dstRel, $archiveRel ) ), $flags );
 		if ( $status->successCount == 0 ) {
 			$status->ok = false;
@@ -878,7 +879,7 @@ class FileRepo {
 	 *        that the source files should be deleted if possible
 	 * @return FileRepoStatus
 	 */
-	function publishBatch( $triplets, $flags = 0 ) {
+	public function publishBatch( $triplets, $flags = 0 ) {
 		$backend = $this->backend; // convenience
 
 		// Try creating directories
@@ -978,7 +979,7 @@ class FileRepo {
 	 *     self::FILES_ONLY     Mark file as existing only if it is a file (not directory)
 	 * @return bool
 	 */
-	function fileExists( $file, $flags = 0 ) {
+	public function fileExists( $file, $flags = 0 ) {
 		$result = $this->fileExistsBatch( array( $file ), $flags );
 		return $result[0];
 	}
@@ -991,7 +992,7 @@ class FileRepo {
 	 *     self::FILES_ONLY     Mark file as existing only if it is a file (not directory)
 	 * @return Either array of files and existence flags, or false
 	 */
-	function fileExistsBatch( $files, $flags = 0 ) {
+	public function fileExistsBatch( $files, $flags = 0 ) {
 		if ( !$this->initZones() ) {
 			return false;
 		}
@@ -1024,7 +1025,7 @@ class FileRepo {
 	 *        Relative to a private archive directory.
 	 * @return FileRepoStatus object
 	 */
-	function delete( $srcRel, $archiveRel ) {
+	public function delete( $srcRel, $archiveRel ) {
 		return $this->deleteBatch( array( array( $srcRel, $archiveRel ) ) );
 	}
 
@@ -1044,7 +1045,7 @@ class FileRepo {
 	 *        to the deleted zone root in the second element.
 	 * @return FileRepoStatus
 	 */
-	function deleteBatch( $sourceDestPairs ) {
+	public function deleteBatch( $sourceDestPairs ) {
 		$backend = $this->backend; // convenience
 
 		if ( !isset( $this->zones['deleted'] ) ) {
@@ -1111,7 +1112,7 @@ class FileRepo {
 	 *
 	 * @return string
 	 */
-	function getDeletedHashPath( $key ) {
+	public function getDeletedHashPath( $key ) {
 		$path = '';
 		for ( $i = 0; $i < $this->deletedHashLevels; $i++ ) {
 			$path .= $key[$i] . '/';
@@ -1122,12 +1123,12 @@ class FileRepo {
 	/**
 	 * Get properties of a file with a given virtual URL
 	 * The virtual URL must refer to this repo
-	 * Properties should ultimately be obtained via File::getPropsFromPath()
+	 * Properties should ultimately be obtained via FSFile::getProps()
 	 *
 	 * @param $virtualUrl string
 	 * @return Array
 	 */
-	function getFileProps( $virtualUrl ) {
+	public function getFileProps( $virtualUrl ) {
 		$path = $this->resolveVirtualUrl( $virtualUrl );
 		return $this->backend->getFileProps( $path );
 	}
@@ -1139,7 +1140,7 @@ class FileRepo {
 	 * @param $callback Array|string
 	 * @return void
 	 */
-	function enumFiles( $callback ) {
+	public function enumFiles( $callback ) {
 		return $this->enumFilesInStorage( $callback );
 	}
 
@@ -1150,7 +1151,7 @@ class FileRepo {
 	 * @param $callback Array|string
 	 * @return void
 	 */
-	function enumFilesInStorage( $callback ) {
+	protected function enumFilesInStorage( $callback ) {
 		$publicRoot = $this->getZonePath( 'public' );
 		$numDirs = 1 << ( $this->hashLevels * 4 );
 		// Use a priori assumptions about directory structure
@@ -1175,7 +1176,7 @@ class FileRepo {
 	 * @param $filename string
 	 * @return bool
 	 */
-	function validateFilename( $filename ) {
+	public function validateFilename( $filename ) {
 		if ( strval( $filename ) == '' ) {
 			return false;
 		}
@@ -1284,7 +1285,7 @@ class FileRepo {
 	 *
 	 * STUB
 	 */
-	function cleanupDeletedBatch( $storageKeys ) {}
+	public function cleanupDeletedBatch( $storageKeys ) {}
 
 	/**
 	 * Checks if there is a redirect named as $title. If there is, return the
@@ -1294,7 +1295,7 @@ class FileRepo {
 	 * @param $title Title of image
 	 * @return Bool
 	 */
-	function checkRedirect( Title $title ) {
+	public function checkRedirect( Title $title ) {
 		return false;
 	}
 
@@ -1305,7 +1306,7 @@ class FileRepo {
 	 * STUB
 	 * @param $title Title of image
 	 */
-	function invalidateImageRedirect( Title $title ) {}
+	public function invalidateImageRedirect( Title $title ) {}
 
 	/**
 	 * Get an array or iterator of file objects for files that have a given
@@ -1313,7 +1314,7 @@ class FileRepo {
 	 *
 	 * STUB
 	 */
-	function findBySha1( $hash ) {
+	public function findBySha1( $hash ) {
 		return array();
 	}
 
@@ -1336,7 +1337,7 @@ class FileRepo {
 	 *
 	 * @return bool
 	 */
-	function isLocal() {
+	public function isLocal() {
 		return $this->getName() == 'local';
 	}
 
@@ -1355,6 +1356,8 @@ class FileRepo {
 	 * Get a key for this repo in the local cache domain. These cache keys are
 	 * not shared with remote instances of the repo.
 	 * The parameters are the parts of the key, as for wfMemcKey().
+	 *
+	 * @return string
 	 */
 	function getLocalCacheKey( /*...*/ ) {
 		$args = func_get_args();
@@ -1367,7 +1370,7 @@ class FileRepo {
 	 *
 	 * @return UploadStash
 	 */
-	function getUploadStash() {
+	public function getUploadStash() {
 		return new UploadStash( $this );
 	}
 }

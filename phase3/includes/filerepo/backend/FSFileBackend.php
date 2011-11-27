@@ -2,12 +2,16 @@
 /**
  * @file
  * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 
 /**
  * Class for a file-system based file backend.
  * Status messages should avoid mentioning the internal FS paths.
  * Likewise, error suppression should be used to path disclosure.
+ *
+ * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 class FSFileBackend extends FileBackend {
 	/** @var Array Map of container names to paths */
@@ -307,12 +311,10 @@ class FSFileBackend extends FileBackend {
 		if ( !wfMkdirParents( $dir ) ) {
 			$status->fatal( 'directorycreateerror', $param['directory'] );
 			return $status;
-		}
-		if ( !is_writable( $dir ) ) {
+		} elseif ( !is_writable( $dir ) ) {
 			$status->fatal( 'directoryreadonlyerror', $param['directory'] );
 			return $status;
-		}
-		if ( !is_readable( $dir ) ) {
+		} elseif ( !is_readable( $dir ) ) {
 			$status->fatal( 'directorynotreadableerror', $param['directory'] );
 			return $status;
 		}
@@ -373,13 +375,22 @@ class FSFileBackend extends FileBackend {
 		return md5_file( $source );
 	}
 
-	function getFileProps( array $params ) {
-		$tmpFile = $this->getLocalCopy( $params );
-		if ( !$tmpFile ) {
-			return FSFile::placeholderProps();
-		} else {
-			return $tmpFile->getProps();
+	function getFileTimestamp( array $params ) {
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			return false; // invalid storage path
 		}
+		$fsFile = new FSFile( $source );
+		return $fsFile->getTimestamp();
+	}
+
+	function getFileProps( array $params ) {
+		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		if ( $source === null ) {
+			return FSFile::placeholderProps(); // invalid storage path
+		}
+		$fsFile = new FSFile( $source );
+		return $fsFile->getProps();
 	}
 
 	function getFileList( array $params ) {

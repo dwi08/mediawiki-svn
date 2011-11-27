@@ -2,10 +2,14 @@
 /**
  * @file
  * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 
 /**
  * Class representing a non-directory file on the file system
+ *
+ * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 class FSFile {
 	protected $path; // path to file
@@ -35,6 +39,19 @@ class FSFile {
 	 */
 	public function exists() {
 		return ( file_exists( $this->path ) && !is_dir( $this->path ) );
+	}
+
+	/**
+	 * Get the file's last-modified timestamp
+	 *
+	 * @return string|false TS_MW timestamp or false on failure
+	 */
+	public function getTimestamp() {
+		$timestamp = filemtime( $this->path );
+		if ( $timestamp !== false ) {
+			$timestamp = wfTimestamp( TS_MW, $ts );
+		}
+		return $timestamp;
 	}
 
 	/**
