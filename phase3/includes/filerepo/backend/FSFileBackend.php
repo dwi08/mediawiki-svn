@@ -15,9 +15,8 @@ class FSFileBackend extends FileBackend {
 	protected $fileMode; // file permission mode
 
 	function __construct( array $config ) {
-		$this->name = $config['name'];
+		parent::__construct( $config );
 		$this->containerPaths = (array)$config['containerPaths'];
-		$this->lockManager = $config['lockManager'];
 		$this->fileMode = isset( $config['fileMode'] )
 			? $config['fileMode']
 			: 0644;
@@ -359,7 +358,7 @@ class FSFileBackend extends FileBackend {
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
-		return file_exists( $source );
+		return file_exists( $source ) && is_file( $source );
 	}
 
 	function getHashType() {
@@ -375,11 +374,12 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileProps( array $params ) {
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
-		if ( $source === null ) {
-			return null; // invalid storage path
+		$tmpFile = $this->getLocalCopy( $params );
+		if ( !$tmpFile ) {
+			return FSFile::placeholderProps();
+		} else {
+			return $tmpFile->getProps();
 		}
-		return File::getPropsFromPath( $source );
 	}
 
 	function getFileList( array $params ) {
@@ -414,11 +414,19 @@ class FSFileBackend extends FileBackend {
 			return null;
 		}
 
+		// Get source file extension
+		$i = strrpos( $source, '.' );
+		$ext = strtolower( $i ? substr( $source, $i + 1 ) : '' );
 		// Create a new temporary file...
 		wfSuppressWarnings();
-		$tmpPath = tempnam( wfTempDir(), 'file_localcopy' );
+		$initialTmpPath = tempnam( wfTempDir(), 'file_localcopy' );
 		wfRestoreWarnings();
-		if ( $tmpPath === false ) {
+		if ( $initialTmpPath === false ) {
+			return null;
+		}
+		// Apply the original extension
+		$tmpPath = "{$initialTmpPath}.{$ext}";
+		if ( !rename( $initialTmpPath, $tmpPath ) ) {
 			return null;
 		}
 
@@ -432,7 +440,7 @@ class FSFileBackend extends FileBackend {
 
 		$this->chmod( $tmpPath );
 
-		return new TempLocalFile( $tmpPath );
+		return new TempFSFile( $tmpPath );
 	}
 
 	/**

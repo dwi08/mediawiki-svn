@@ -33,7 +33,7 @@ abstract class FileBackendBase {
 	 */
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
-		$this->lockManager = $config['lockManger'];
+		$this->lockManager = $config['lockManager'];
 	}
 
 	/**
@@ -165,12 +165,13 @@ abstract class FileBackendBase {
 	abstract public function getFileList( array $params );
 
 	/**
-	 * Get a local copy on disk of the file at a storage path in the backend
+	 * Get a local copy on disk of the file at a storage path in the backend.
+	 * The temporary copy should have the same file extension as the source.
 	 * $params include:
 	 *     source : source storage path
 	 * 
 	 * @param Array $params
-	 * @return TempLocalFile|null Temporary file or null on failure
+	 * @return TempFSFile|null Temporary file or null on failure
 	 */
 	abstract public function getLocalCopy( array $params );
 

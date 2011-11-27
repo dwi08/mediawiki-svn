@@ -8,8 +8,7 @@
  * This class is used to hold the location and do limited manipulation
  * of files stored temporarily (usually this will be $wgTmpDirectory)
  */
-class TempLocalFile {
-	protected $path; // path to local temp file directory
+class TempFSFile extends FSFile {
 	protected $canDelete; // whether this object should garbage collect the temp file
 
 	/**
@@ -21,15 +20,6 @@ class TempLocalFile {
 	public function __construct( $path, $canDelete = true ) {
 		$this->path = $path;
 		$this->canDelete = $canDelete;
-	}
-
-	/**
-	 * Returns the local path to the temp file
-	 *
-	 * @return String
-	 */
-	public function getPath() {
-		return $this->path;
 	}
 
 	/**
