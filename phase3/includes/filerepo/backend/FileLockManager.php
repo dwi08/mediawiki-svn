@@ -488,7 +488,7 @@ class DBFileLockManager extends FileLockManager {
 			$votesLeft--;
 			$votesNeeded = $quorum - $yesVotes;
 			if ( $votesNeeded > $votesLeft && !$this->trustCache ) {
-				// In "trust cache" mode we don't have to meet the quorum.
+				// In "trust cache" mode we don't have to meet the quorum
 				break; // short-circuit
 			}
 		}

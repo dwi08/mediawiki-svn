@@ -164,6 +164,14 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $status;
 	}
 
+	function secure( array $params ) {
+		$status = Status::newGood();
+		foreach ( $this->backends as $backend ) {
+			$status->merge( $backend->prepare( $params ) );
+		}
+		return $status;
+	}
+
 	function fileExists( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {

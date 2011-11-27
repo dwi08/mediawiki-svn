@@ -5,7 +5,9 @@
  */
 
 /**
- * Class for a file-system based file backend
+ * Class for a file-system based file backend.
+ * Status messages should avoid mentioning the internal FS paths.
+ * Likewise, error suppression should be used to path disclosure.
  */
 class FSFileBackend extends FileBackend {
 	/** @var Array Map of container names to paths */
@@ -14,8 +16,8 @@ class FSFileBackend extends FileBackend {
 
 	function __construct( array $config ) {
 		$this->name = $config['name'];
-		$this->containerPaths = (array)$config['containers'];
-		$this->lockManager = $config['lockManger'];
+		$this->containerPaths = (array)$config['containerPaths'];
+		$this->lockManager = $config['lockManager'];
 		$this->fileMode = isset( $config['fileMode'] )
 			? $config['fileMode']
 			: 0644;
@@ -40,7 +42,9 @@ class FSFileBackend extends FileBackend {
 
 		if ( file_exists( $dest ) ) {
 			if ( isset( $params['overwriteDest'] ) ) {
+				wfSuppressWarnings();
 				$ok = unlink( $dest );
+				wfRestoreWarnings();
 				if ( !$ok ) {
 					$status->fatal( 'backend-fail-delete', $param['dest'] );
 					return $status;
@@ -95,7 +99,9 @@ class FSFileBackend extends FileBackend {
 			if ( isset( $params['overwriteDest'] ) ) {
 				// Windows does not support moving over existing files
 				if ( wfIsWindows() ) {
+					wfSuppressWarnings();
 					$ok = unlink( $dest );
+					wfRestoreWarnings();
 					if ( !$ok ) {
 						$status->fatal( 'backend-fail-delete', $params['dest'] );
 						return $status;
@@ -261,7 +267,9 @@ class FSFileBackend extends FileBackend {
 
 		if ( file_exists( $dest ) ) {
 			if ( isset( $params['overwriteDest'] ) ) {
+				wfSuppressWarnings();
 				$ok = unlink( $dest );
+				wfRestoreWarnings();
 				if ( !$ok ) {
 					$status->fatal( 'backend-fail-delete', $param['dest'] );
 					return $status;
@@ -291,9 +299,11 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function prepare( array $params ) {
+		$status = Status::newGood();
 		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
 		if ( $dir === null ) {
-			return false; // invalid storage path
+			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
+			return $status; // invalid storage path
 		}
 		if ( !wfMkdirParents( $dir ) ) {
 			$status->fatal( 'directorycreateerror', $param['directory'] );
@@ -306,6 +316,40 @@ class FSFileBackend extends FileBackend {
 		if ( !is_readable( $dir ) ) {
 			$status->fatal( 'directorynotreadableerror', $param['directory'] );
 			return $status;
+		}
+		return $status;
+	}
+
+	function secure( array $params ) {
+		$status = Status::newGood();
+		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
+		if ( $dir === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
+			return $status; // invalid storage path
+		}
+		if ( !wfMkdirParents( $dir ) ) {
+			$status->fatal( 'directorycreateerror', $param['directory'] );
+			return $status;
+		}
+		// Add a .htaccess file to the root of the deleted zone
+		if ( !empty( $params['noAccess'] ) && !file_exists( "{$dir}/.htaccess" ) ) {
+			wfSuppressWarnings();
+			$ok = file_put_contents( "{$dir}/.htaccess", "Deny from all\n" );
+			wfRestoreWarnings();
+			if ( !$ok ) {
+				$status->fatal( 'backend-fail-create', $params['directory'] . '/.htaccess' );
+				return $status;
+			}
+		}
+		// Seed new directories with a blank index.html, to prevent crawling
+		if ( !empty( $params['noListing'] ) && !file_exists( "{$dir}/index.html" ) ) {
+			wfSuppressWarnings();
+			$ok = file_put_contents( "{$dir}/index.html", '' );
+			wfRestoreWarnings();
+			if ( !$ok ) {
+				$status->fatal( 'backend-fail-create', $params['dest'] . '/index.html' );
+				return $status;
+			}
 		}
 		return $status;
 	}
@@ -399,24 +443,13 @@ class FSFileBackend extends FileBackend {
 	 * @return bool
 	 */
 	protected function filesAreSame( $path1, $path2 ) {
-		return ( // check size first since it's faster
+		wfSuppressWarnings();
+		$same = ( // check size first since it's faster
 			filesize( $path1 ) === filesize( $path2 ) &&
 			sha1_file( $path1 ) === sha1_file( $path2 )
 		);
-	}
-
-	/**
-	 * Check if a file has identical contents as a string
-	 *
-	 * @param $path string Absolute filesystem path
-	 * @param $content string Raw file data
-	 * @return bool
-	 */
-	protected function fileAndDataAreSame( $path, $content ) {
-		return ( // check size first since it's faster
-			filesize( $path ) === strlen( $content ) &&
-			sha1_file( $path ) === sha1( $content )
-		);
+		wfRestoreWarnings();
+		return $same;
 	}
 
 	/**
@@ -459,7 +492,7 @@ class FileIterator implements Iterator {
 		if ( !$this->loaded ) {
 			$this->loaded = true;
 			// If we get an invalid directory then the result is an empty list
-			if ( is_dir( $this->directory ) ) {
+			if ( file_exists( $this->directory ) && is_dir( $this->directory ) ) {
 				$handle = opendir( $this->directory );
 				if ( $handle ) {
 					$this->pushDirectory( $this->directory, $handle );

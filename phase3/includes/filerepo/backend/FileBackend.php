@@ -86,6 +86,20 @@ abstract class FileBackendBase {
 	abstract public function prepare( array $params );
 
 	/**
+	 * Take measures to block web access to a directory.
+	 * This is not guaranteed to actually do anything.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     directory : destination storage path
+	 *     noAccess  : try to deny file access
+	 *     noListing : try to deny file listing
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function secure( array $params );
+
+	/**
 	 * Check if a file exits at a storage path in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
@@ -112,9 +126,7 @@ abstract class FileBackendBase {
 	 *
 	 * @return string (md5, sha1, unknown, ...)
 	 */
-	public function getHashType() {
-		return 'unknown';
-	}
+	abstract public function getHashType();
 
 	/**
 	 * Get the properties of the file that exists at a storage path in the backend
@@ -141,10 +153,10 @@ abstract class FileBackendBase {
 
 	/**
 	 * Get an iterator to list out all object files under a storage directory.
-	 * Results should be storage paths relative to the given directory.
-	 * If the directory is of the form "mwstore://container", then all items
-	 * in the container should be listed. If of the form "mwstore://container/dir",
+	 * If the directory is of the form "mwstore://container", then all items in
+	 * the container should be listed. If of the form "mwstore://container/dir",
 	 * then all items under that container directory should be listed.
+	 * Results should be storage paths relative to the given directory.
 	 * $params include:
 	 *     directory : storage path directory.
 	 *
@@ -270,6 +282,14 @@ abstract class FileBackend extends FileBackendBase {
 	 * @return Status
 	 */
 	abstract public function create( array $params );
+
+	public function prepare( array $params ) {
+		return Status::newGood();
+	}
+
+	public function secure( array $params ) {
+		return Status::newGood();
+	}
 
 	/**
 	 * Whether this backend implements move() and is applies to a potential
