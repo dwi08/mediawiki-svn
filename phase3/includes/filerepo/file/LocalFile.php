@@ -582,8 +582,9 @@ class LocalFile extends File {
 	 */
 	function migrateThumbFile( $thumbName ) {
 		$thumbDir = $this->getThumbPath();
-		$thumbPath = "$thumbDir/$thumbName";
 
+		/* Old code for bug 2532
+		$thumbPath = "$thumbDir/$thumbName";
 		if ( is_dir( $thumbPath ) ) {
 			// Directory where file should be
 			// This happened occasionally due to broken migration code in 1.5
@@ -598,12 +599,12 @@ class LocalFile extends File {
 			// Doesn't exist anymore
 			clearstatcache();
 		}
+		*/
 
-		if ( is_file( $thumbDir ) ) {
+		if ( $this->repo->fileExists( $thumbDir, FileRepo::FILES_ONLY ) ) {
 			// File where directory should be
-			unlink( $thumbDir );
-			// Doesn't exist anymore
-			clearstatcache();
+			$op = array( 'operation' => 'delete', 'source' => $thumbDir );
+			$this->repo->getBackend()->doOperations( array( $op ) );
 		}
 	}
 
@@ -624,21 +625,13 @@ class LocalFile extends File {
 		} else {
 			$dir = $this->getThumbPath();
 		}
-		$files = array();
-		$files[] = $dir;
 
-		if ( is_dir( $dir ) ) {
-			$handle = opendir( $dir );
+		$backend = $this->repo->getBackend();
 
-			if ( $handle ) {
-				while ( false !== ( $file = readdir( $handle ) ) ) {
-					if ( $file { 0 } != '.' ) {
-						$files[] = $file;
-					}
-				}
-
-				closedir( $handle );
-			}
+		$files = array( $dir );
+		$iterator = $backend->getFileList( array( 'directory' => $dir ) );
+		foreach ( $iterator as $file ) {
+			$files[] = $file;
 		}
 
 		return $files;

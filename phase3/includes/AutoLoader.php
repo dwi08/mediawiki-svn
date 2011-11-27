@@ -480,6 +480,25 @@ $wgAutoloadLocalClasses = array(
 	'LocalFileRestoreBatch' => 'includes/filerepo/file/LocalFile.php',
 	'OldLocalFile' => 'includes/filerepo/file/OldLocalFile.php',
 	'UnregisteredLocalFile' => 'includes/filerepo/file/UnregisteredLocalFile.php',
+	'FSFile' => 'includes/filerepo/file/FSFile.php',
+	'TempFSFile' => 'includes/filerepo/file/TempFSFile.php',
+
+	# includes/filerepo/backend
+	'FileBackendBase' => 'includes/filerepo/backend/FileBackend.php',
+	'FileBackend' => 'includes/filerepo/backend/FileBackend.php',
+	'FileBackendMultiWrite' => 'includes/filerepo/backend/FileBackendMultiWrite.php',
+	'FSFileBackend' => 'includes/filerepo/backend/FSFileBackend.php',
+	'FileLockManager' => 'includes/filerepo/backend/FileLockManager.php',
+	'FSFileLockManager' => 'includes/filerepo/backend/FileLockManager.php',
+	'DBFileLockManager' => 'includes/filerepo/backend/FileLockManager.php',
+	'FileOp' => 'includes/filerepo/backend/FileOp.php',
+	'StoreFileOp' => 'includes/filerepo/backend/FileOp.php',
+	'CopyFileOp' => 'includes/filerepo/backend/FileOp.php',
+	'MoveFileOp' => 'includes/filerepo/backend/FileOp.php',
+	'DeleteFileOp' => 'includes/filerepo/backend/FileOp.php',
+	'ConcatenateFileOp' => 'includes/filerepo/backend/FileOp.php',
+	'CreateFileOp' => 'includes/filerepo/backend/FileOp.php',
+	'NullFileOp' => 'includes/filerepo/backend/FileOp.php',
 
 	# includes/installer
 	'CliInstaller' => 'includes/installer/CliInstaller.php',

@@ -388,4 +388,8 @@ class ForeignAPIRepo extends FileRepo {
 		        return false;
 		}
 	}
+
+	function enumFiles( $callback ) {
+		throw new MWException( 'enumFiles is not supported by ' . get_class( $this ) );
+	}
 }

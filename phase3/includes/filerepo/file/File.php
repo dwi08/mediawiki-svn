@@ -300,7 +300,7 @@ abstract class File {
 	}
 
 	/**
-	* Return the full filesystem path to the file. Note that this does
+	* Return the storage path to the file. Note that this does
 	* not mean that a file actually exists under that location.
 	*
 	* This path depends on whether directory hashing is active or not,
@@ -584,7 +584,7 @@ abstract class File {
 	 * @return bool
 	 */
 	function isTrustedFile() {
-		#this could be implemented to check a flag in the databas,
+		#this could be implemented to check a flag in the database,
 		#look for signatures, etc
 		return false;
 	}
@@ -597,7 +597,7 @@ abstract class File {
 	 * @return boolean Whether file exists in the repository.
 	 */
 	public function exists() {
-		return $this->getPath() && file_exists( $this->path );
+		return $this->getPath() && $this->repo->fileExists( $this->path );
 	}
 
 	/**
@@ -669,7 +669,8 @@ abstract class File {
 			return null;
 		}
 		$extension = $this->getExtension();
-		list( $thumbExt, $thumbMime ) = $this->handler->getThumbType( $extension, $this->getMimeType(), $params );
+		list( $thumbExt, $thumbMime ) = $this->handler->getThumbType(
+			$extension, $this->getMimeType(), $params );
 		$thumbName = $this->handler->makeParamString( $params ) . '-' . $name;
 		if ( $thumbExt != $extension ) {
 			$thumbName .= ".$thumbExt";
@@ -700,7 +701,9 @@ abstract class File {
 			$params['height'] = $height;
 		}
 		$thumb = $this->transform( $params );
-		if( is_null( $thumb ) || $thumb->isError() ) return '';
+		if ( is_null( $thumb ) || $thumb->isError() ) {
+			return '';
+		}
 		return $thumb->getUrl();
 	}
 
@@ -727,7 +730,7 @@ abstract class File {
 
 		wfDebug( __METHOD__.": Doing stat for $thumbPath\n" );
 		$this->migrateThumbFile( $thumbName );
-		if ( file_exists( $thumbPath ) && !($flags & self::RENDER_FORCE) ) { 
+		if ( $this->repo->fileExists( $thumbPath ) && !($flags & self::RENDER_FORCE) ) { 
 			$thumbTime = filemtime( $thumbPath );
 			if ( $thumbTime !== FALSE &&
 			     gmdate( 'YmdHis', $thumbTime ) >= $wgThumbnailEpoch ) { 
@@ -1454,7 +1457,7 @@ abstract class File {
 	 */
 	function getTimestamp() {
 		$path = $this->getPath();
-		if ( !file_exists( $path ) ) {
+		if ( !$this->repo->fileExists( $path ) ) {
 			return false;
 		}
 		return wfTimestamp( TS_MW, filemtime( $path ) );
@@ -1466,7 +1469,12 @@ abstract class File {
 	 * @return string
 	 */
 	function getSha1() {
-		return self::sha1Base36( $this->getPath() );
+		$this->assertRepoDefined();
+		$tmpFile = $this->repo->getBackend()->getLocalCopy( $this->getPath() );
+		if ( !$tmpFile ) {
+			return false;
+		}
+		return $tmpFile->sha1Base36();
 	}
 
 	/**
@@ -1506,67 +1514,11 @@ abstract class File {
 	 * @return array
 	 */
 	static function getPropsFromPath( $path, $ext = true ) {
-		wfProfileIn( __METHOD__ );
 		wfDebug( __METHOD__.": Getting file info for $path\n" );
-		$info = array(
-			'fileExists' => file_exists( $path ) && !is_dir( $path )
-		);
-		$gis = false;
-		if ( $info['fileExists'] ) {
-			$magic = MimeMagic::singleton();
+		wfDeprecated( __METHOD__, '1.19' );
 
-			if ( $ext === true ) {
-				$i = strrpos( $path, '.' );
-				$ext = strtolower( $i ? substr( $path, $i + 1 ) : '' );
-			}
-
-			# mime type according to file contents
-			$info['file-mime'] = $magic->guessMimeType( $path, false );
-			# logical mime type
-			$info['mime'] = $magic->improveTypeFromExtension( $info['file-mime'], $ext );
-
-			list( $info['major_mime'], $info['minor_mime'] ) = self::splitMime( $info['mime'] );
-			$info['media_type'] = $magic->getMediaType( $path, $info['mime'] );
-
-			# Get size in bytes
-			$info['size'] = filesize( $path );
-
-			# Height, width and metadata
-			$handler = MediaHandler::getHandler( $info['mime'] );
-			if ( $handler ) {
-				$tempImage = (object)array();
-				$info['metadata'] = $handler->getMetadata( $tempImage, $path );
-				$gis = $handler->getImageSize( $tempImage, $path, $info['metadata'] );
-			} else {
-				$gis = false;
-				$info['metadata'] = '';
-			}
-			$info['sha1'] = self::sha1Base36( $path );
-
-			wfDebug(__METHOD__.": $path loaded, {$info['size']} bytes, {$info['mime']}.\n");
-		} else {
-			$info['mime'] = null;
-			$info['media_type'] = MEDIATYPE_UNKNOWN;
-			$info['metadata'] = '';
-			$info['sha1'] = '';
-			wfDebug(__METHOD__.": $path NOT FOUND!\n");
-		}
-		if( $gis ) {
-			# NOTE: $gis[2] contains a code for the image type. This is no longer used.
-			$info['width'] = $gis[0];
-			$info['height'] = $gis[1];
-			if ( isset( $gis['bits'] ) ) {
-				$info['bits'] = $gis['bits'];
-			} else {
-				$info['bits'] = 0;
-			}
-		} else {
-			$info['width'] = 0;
-			$info['height'] = 0;
-			$info['bits'] = 0;
-		}
-		wfProfileOut( __METHOD__ );
-		return $info;
+		$fsFile = new FSFile( $path );
+		return $fsFile->getProps();
 	}
 
 	/**
@@ -1581,14 +1533,10 @@ abstract class File {
 	 * @return false|string False on failure
 	 */
 	static function sha1Base36( $path ) {
-		wfSuppressWarnings();
-		$hash = sha1_file( $path );
-		wfRestoreWarnings();
-		if ( $hash === false ) {
-			return false;
-		} else {
-			return wfBaseConvert( $hash, 16, 36, 31 );
-		}
+		wfDeprecated( __METHOD__, '1.19' );
+
+		$fsFile = new FSFile( $path );
+		return $fsFile->sha1Base36();
 	}
 
 	/**
