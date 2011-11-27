@@ -484,6 +484,7 @@ $wgAutoloadLocalClasses = array(
 	'TempFSFile' => 'includes/filerepo/file/TempFSFile.php',
 
 	# includes/filerepo/backend
+	'FileBackendGroup' => 'includes/filerepo/backend/FileBackendGroup',
 	'FileBackendBase' => 'includes/filerepo/backend/FileBackend.php',
 	'FileBackend' => 'includes/filerepo/backend/FileBackend.php',
 	'FileBackendMultiWrite' => 'includes/filerepo/backend/FileBackendMultiWrite.php',

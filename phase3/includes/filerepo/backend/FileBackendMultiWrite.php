@@ -81,7 +81,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 			// locks two or three times (depending on the number of backends).
 			if ( $index == 0 ) {
 				foreach ( $performOps as $index => $fileOp ) {
-					$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsToLock() );
+					$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsUsed() );
 				}
 			}
 		}

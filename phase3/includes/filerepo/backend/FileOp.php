@@ -117,7 +117,7 @@ abstract class FileOp {
 	 *
 	 * @return Array
 	 */
-	public function storagePathsToLock() {
+	public function storagePathsUsed() {
 		return array();
 	}
 
@@ -301,7 +301,7 @@ class StoreFileOp extends FileOp {
 		return md5_file( $this->params['source'] );
 	}
 
-	function storagePathsToLock() {
+	function storagePathsUsed() {
 		return array( $this->params['dest'] );
 	}
 }
@@ -347,7 +347,7 @@ class CreateFileOp extends FileOp {
 		return md5( $this->params['content'] );
 	}
 
-	function storagePathsToLock() {
+	function storagePathsUsed() {
 		return array( $this->params['dest'] );
 	}
 }
@@ -400,7 +400,7 @@ class CopyFileOp extends FileOp {
 		return $this->getFileMD5( $this->params['source'] );
 	}
 
-	function storagePathsToLock() {
+	function storagePathsUsed() {
 		return array( $this->params['source'], $this->params['dest'] );
 	}
 }
@@ -485,7 +485,7 @@ class MoveFileOp extends FileOp {
 		return $this->getFileMD5( $this->params['source'] );
 	}
 
-	function storagePathsToLock() {
+	function storagePathsUsed() {
 		return array( $this->params['source'], $this->params['dest'] );
 	}
 }
@@ -531,7 +531,7 @@ class ConcatenateFileOp extends FileOp {
 		return null; // defer this until we finish building the new file
 	}
 
-	function storagePathsToLock() {
+	function storagePathsUsed() {
 		return array_merge( $this->params['sources'], $this->params['dest'] );
 	}
 }
@@ -569,7 +569,7 @@ class DeleteFileOp extends FileOp {
 		return $status;
 	}
 
-	function storagePathsToLock() {
+	function storagePathsUsed() {
 		return array( $this->params['source'] );
 	}
 }

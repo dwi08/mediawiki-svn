@@ -56,6 +56,7 @@ class LocalRepo extends FileRepo {
 	 * @return FileRepoStatus
 	 */
 	function cleanupDeletedBatch( $storageKeys ) {
+		$backend = $this->backend; // convenience
 		$root = $this->getZonePath( 'deleted' );
 		$dbw = $this->getMasterDB();
 		$status = $this->newGood();
@@ -70,10 +71,8 @@ class LocalRepo extends FileRepo {
 			$hidden = $this->hiddenFileHasKey( $key, 'lock' );
 			if ( !$deleted && !$hidden ) { // not in use now
 				wfDebug( __METHOD__ . ": deleting $key\n" );
-				wfSuppressWarnings();
-				$unlink = unlink( $path );
-				wfRestoreWarnings();
-				if ( !$unlink ) {
+				$op = array( 'operation' => 'delete', 'source' => $path );
+				if ( !$backend->doOperations( array( $op ) )->isOK() ) {
 					$status->error( 'undelete-cleanup-error', $path );
 					$status->failCount++;
 				}

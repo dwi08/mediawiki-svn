@@ -392,7 +392,7 @@ abstract class FileBackend extends FileBackendBase {
 		// Build up a list of files to lock...
 		$filesToLock = array();
 		foreach ( $performOps as $index => $fileOp ) {
-			$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsToLock() );
+			$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsUsed() );
 		}
 
 		// Try to lock those files...
@@ -481,21 +481,37 @@ abstract class FileBackend extends FileBackendBase {
 
 	/**
 	 * Split a storage path (e.g. "mwstore://backend/container/path/to/object")
-	 * into a container name and a full object name within that container.
+	 * into a backend name, a container name, and a relative object path.
+	 *
+	 * @param $storagePath string
+	 * @return Array (backend, container, rel object) or (null, null, null)
+	 */
+	final public static function splitStoragePath( $storagePath ) {
+		if ( self::isStoragePath( $storagePath ) ) {
+			// Note: strlen( 'mwstore://' ) = 10
+			$parts = explode( '/', substr( $storagePath, 10 ), 3 );
+			if ( count( $parts ) == 3 ) {
+				return $parts;
+			}
+		}
+		return array( null, null, null );
+	}
+
+	/**
+	 * Split a storage path (e.g. "mwstore://backend/container/path/to/object")
+	 * into a backend name, a container name and an internal relative object name.
 	 *
 	 * @param $storagePath string
 	 * @return Array (container, object name) or (null, null) if path is invalid
 	 */
-	final protected function resolveVirtualPath( $storagePath ) {
-		if ( strpos( $storagePath, 'mwstore://' ) === 0 ) {
-			$m = explode( '/', substr( $storagePath, 10 ), 3 );
-			if ( count( $m ) == 3 ) {
-				list( $backend, $container, $relPath ) = $m;
-				if ( $backend === $this->name ) { // sanity
-					$relPath = $this->resolveContainerPath( $container, $relPath );
-					if ( $relPath !== null ) {
-						return array( $container, $relPath ); // (container, path)
-					}
+	final protected function resolveStoragePath( $storagePath ) {
+		$parts = self::splitStoragePath( $storagePath );
+		if ( $parts[0] !== null ) { // either all null or all not null
+			list( $backend, $container, $relPath ) = $parts;
+			if ( $backend === $this->name ) { // sanity
+				$relPath = $this->resolveContainerPath( $container, $relPath );
+				if ( $relPath !== null ) {
+					return array( $container, $relPath ); // (container, path)
 				}
 			}
 		}

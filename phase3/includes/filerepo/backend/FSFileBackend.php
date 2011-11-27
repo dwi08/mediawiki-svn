@@ -37,7 +37,7 @@ class FSFileBackend extends FileBackend {
 	function store( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
 		if ( $dest === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
@@ -87,12 +87,12 @@ class FSFileBackend extends FileBackend {
 	function move( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
 			return $status;
 		}
-		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
 		if ( $dest === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
@@ -135,7 +135,7 @@ class FSFileBackend extends FileBackend {
 	function delete( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
 			return $status;
@@ -162,7 +162,7 @@ class FSFileBackend extends FileBackend {
 	function concatenate( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
 		if ( $dest === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
@@ -193,7 +193,7 @@ class FSFileBackend extends FileBackend {
 			return $status;
 		}
 		foreach ( $params['sources'] as $virtualSource ) {
-			list( $c, $source ) = $this->resolveVirtualPath( $virtualSource );
+			list( $c, $source ) = $this->resolveStoragePath( $virtualSource );
 			if ( $source === null ) {
 				$status->fatal( 'backend-fail-invalidpath', $virtualSource );
 				return $status;
@@ -262,7 +262,7 @@ class FSFileBackend extends FileBackend {
 	function create( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $dest ) = $this->resolveVirtualPath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
 		if ( $dest === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
@@ -303,7 +303,7 @@ class FSFileBackend extends FileBackend {
 
 	function prepare( array $params ) {
 		$status = Status::newGood();
-		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
 		if ( $dir === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
 			return $status; // invalid storage path
@@ -323,7 +323,7 @@ class FSFileBackend extends FileBackend {
 
 	function secure( array $params ) {
 		$status = Status::newGood();
-		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
 		if ( $dir === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
 			return $status; // invalid storage path
@@ -356,7 +356,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function fileExists( array $params ) {
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
@@ -368,7 +368,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileHash( array $params ) {
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
@@ -376,7 +376,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileTimestamp( array $params ) {
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
@@ -385,7 +385,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileProps( array $params ) {
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			return FSFile::placeholderProps(); // invalid storage path
 		}
@@ -394,7 +394,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileList( array $params ) {
-		list( $c, $dir ) = $this->resolveVirtualPath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
 		if ( $dir === null ) { // invalid storage path
 			return array(); // empty result
 		}
@@ -404,7 +404,7 @@ class FSFileBackend extends FileBackend {
 	function streamFile( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
 			return $status;
@@ -420,7 +420,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getLocalCopy( array $params ) {
-		list( $c, $source ) = $this->resolveVirtualPath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {
 			return null;
 		}

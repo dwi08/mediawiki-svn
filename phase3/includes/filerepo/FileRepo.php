@@ -753,7 +753,7 @@ class FileRepo {
 		// Cleanup for disk source files...
 		foreach ( $sourceFSFilesToDelete as $file ) {
 			wfSuppressWarnings();
-			unlink( $file );
+			unlink( $file ); // FS cleanup
 			wfRestoreWarnings();
 		}
 
@@ -802,7 +802,7 @@ class FileRepo {
 		// Cleanup for disk source files...
 		foreach ( $sourceFSFilesToDelete as $file ) {
 			wfSuppressWarnings();
-			unlink( $path );
+			unlink( $path ); // FS cleanup
 			wfRestoreWarnings();
 		}
 	}
@@ -964,7 +964,7 @@ class FileRepo {
 		// Cleanup for disk source files...
 		foreach ( $sourceFSFilesToDelete as $file ) {
 			wfSuppressWarnings();
-			unlink( $file );
+			unlink( $file ); // FS cleanup
 			wfRestoreWarnings();
 		}
 
@@ -1005,9 +1005,9 @@ class FileRepo {
 				$result[$key] = $this->backend->fileExists( array( 'source' => $file ) );
 			} else {
 				if ( $flags & self::FILES_ONLY ) {
-					$result[$key] = is_file( $file );
+					$result[$key] = is_file( $file ); // FS only
 				} else {
-					$result[$key] = file_exists( $file ); // @TODO: kill this
+					$result[$key] = file_exists( $file ); // FS only
 				}
 			}
 		}

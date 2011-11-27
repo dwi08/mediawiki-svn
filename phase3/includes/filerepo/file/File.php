@@ -835,10 +835,10 @@ abstract class File {
 		global $wgStylePath, $wgStyleDirectory;
 
 		$try = array( 'fileicon-' . $this->getExtension() . '.png', 'fileicon.png' );
-		foreach( $try as $icon ) {
+		foreach ( $try as $icon ) {
 			$path = '/common/images/icons/' . $icon;
 			$filepath = $wgStyleDirectory . $path;
-			if( file_exists( $filepath ) ) {
+			if ( file_exists( $filepath ) ) { // always FS
 				return new ThumbnailImage( $this, $wgStylePath . $path, 120, 120 );
 			}
 		}
@@ -1450,17 +1450,13 @@ abstract class File {
 	}
 
 	/**
-	 * Get the 14-character timestamp of the file upload, or false if
-	 * it doesn't exist
+	 * Get the 14-character timestamp of the file upload
 	 *
-	 * @return string
+	 * @return string|false TS_MW timestamp or false on failure
 	 */
 	function getTimestamp() {
-		$path = $this->getPath();
-		if ( !$this->repo->fileExists( $path ) ) {
-			return false;
-		}
-		return wfTimestamp( TS_MW, filemtime( $path ) );
+		$this->assertRepoDefined();
+		return $this->repo->getBackend()->getFileTimestamp( $this->getPath() );
 	}
 
 	/**
