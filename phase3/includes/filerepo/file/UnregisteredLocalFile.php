@@ -69,6 +69,7 @@ class UnregisteredLocalFile extends File {
 		if ( $path ) {
 			$this->path = $path;
 		} else {
+			$this->assertRepoDefined();
 			$this->path = $repo->getRootDirectory() . '/' .
 				$repo->getHashPath( $this->name ) . $this->name;
 		}

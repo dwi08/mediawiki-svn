@@ -287,7 +287,7 @@ class FileRepo {
 	 * @param $zone string
 	 * @return Array (container, base path) or (null, null)
 	 */
-	function getZoneLocation( $zone ) {
+	protected function getZoneLocation( $zone ) {
 		if ( !isset( $this->zones[$zone] ) ) {
 			return array( null, null ); // bogus
 		}
@@ -464,6 +464,16 @@ class FileRepo {
 	}
 
 	/**
+	 * Get an array or iterator of file objects for files that have a given
+	 * SHA-1 content hash.
+	 *
+	 * STUB
+	 */
+	public function findBySha1( $hash ) {
+		return array();
+	}
+
+	/**
 	 * Get the public root URL of the repository
 	 *
 	 * @return string
@@ -518,25 +528,7 @@ class FileRepo {
 	}
 
 	/**
-	 * @param $name
-	 * @param $levels
-	 * @return string
-	 */
-	static function getHashPathForLevel( $name, $levels ) {
-		if ( $levels == 0 ) {
-			return '';
-		} else {
-			$hash = md5( $name );
-			$path = '';
-			for ( $i = 1; $i <= $levels; $i++ ) {
-				$path .= substr( $hash, 0, $i ) . '/';
-			}
-			return $path;
-		}
-	}
-
-	/**
-	 * Get the public zone root directory of the repository.
+	 * Get the public zone root storage directory of the repository
 	 *
 	 * @return string
 	 */
@@ -553,6 +545,24 @@ class FileRepo {
 	 */
 	public function getHashPath( $name ) {
 		return self::getHashPathForLevel( $name, $this->hashLevels );
+	}
+
+	/**
+	 * @param $name
+	 * @param $levels
+	 * @return string
+	 */
+	static function getHashPathForLevel( $name, $levels ) {
+		if ( $levels == 0 ) {
+			return '';
+		} else {
+			$hash = md5( $name );
+			$path = '';
+			for ( $i = 1; $i <= $levels; $i++ ) {
+				$path .= substr( $hash, 0, $i ) . '/';
+			}
+			return $path;
+		}
 	}
 
 	/**
@@ -739,7 +749,7 @@ class FileRepo {
 				}
 			}
 			$operations[] = array(
-				'operation'     => $opName,
+				'op'            => $opName,
 				'source'        => $srcPath,
 				'dest'          => $dstPath,
 				'overwriteDest' => $flags & self::OVERWRITE,
@@ -761,9 +771,9 @@ class FileRepo {
 	}
 
 	/**
-	 * Deletes a batch of files. Each file can be a (zone, rel) pairs, a
-	 * virtual url or a real path. It will try to delete each file, but
-	 * ignores any errors that may occur
+	 * Deletes a batch of files.
+	 * Each file can be a (zone, rel) pair, virtual url, storage path, or FS path.
+	 * It will try to delete each file, but ignores any errors that may occur.
 	 *
 	 * @param $pairs array List of files to delete
 	 * @return void
@@ -789,8 +799,8 @@ class FileRepo {
 			// Get a file operation if needed
 			if ( FileBackend::isStoragePath( $path ) ) {
 				$operations[] = array(
-					'operation' => 'delete',
-					'source' => $path,
+					'op'           => 'delete',
+					'source'       => $path,
 					'ignoreErrors' => true
 				);
 			} else {
@@ -829,6 +839,7 @@ class FileRepo {
 
 	/**
 	 * Remove a temporary file or mark it for garbage collection
+	 *
 	 * @param $virtualUrl String: the virtual URL returned by storeTemp
 	 * @return Boolean: true on success, false on failure
 	 */
@@ -839,13 +850,13 @@ class FileRepo {
 			return false;
 		}
 		$path = $this->resolveVirtualUrl( $virtualUrl );
-		$op = array( 'operation' => 'delete', 'source' => $path );
-		$status = $this->backend->doOperations( array( $op ) );
+		$op = array( 'op' => 'delete', 'source' => $path );
+		$status = $this->backend->doOperation( $op );
 		return $status->isOK();
 	}
 
 	/**
-	 * Copy or move a file either from the local filesystem or from an mwrepo://
+	 * Copy or move a file either from a storage path or from a mwrepo://
 	 * virtual URL, into this repository at the specified destination location.
 	 *
 	 * Returns a FileRepoStatus object. On success, the value contains "new" or
@@ -928,11 +939,11 @@ class FileRepo {
 				// publishBatch's caller should prevent races. In Windows there's no
 				// problem because the rename primitive fails if the destination exists.
 				if ( $backend->fileExists( array( 'source' => $archivePath ) ) ) {
-					$operations[] = array( 'operation' => 'null' );
+					$operations[] = array( 'op' => 'null' );
 					continue;
 				} else {
 					$operations[] = array(
-						'operation'    => 'move',
+						'op'           => 'move',
 						'source'       => $dstPath,
 						'dest'         => $archivePath,
 						'ignoreErrors' => true
@@ -944,14 +955,14 @@ class FileRepo {
 			}
 			if ( $flags & self::DELETE_SOURCE ) {
 				$operations[] = array(
-					'operation'    => 'move',
+					'op'           => 'move',
 					'source'       => $srcPath,
 					'dest'         => $dstPath,
 					'ignoreErrors' => true
 				);
 			} else {
 				$operations[] = array(
-					'operation'    => 'copy',
+					'op'           => 'copy',
 					'source'       => $srcPath,
 					'dest'         => $dstPath,
 					'ignoreErrors' => true
@@ -1086,12 +1097,12 @@ class FileRepo {
 
 			if ( $backend->fileExists( array( 'source' => $archivePath ) ) ) {
 				$operations[] = array(
-					'operation' => 'delete',
+					'op'        => 'delete',
 					'source'    => $srcPath
 				);
 			} else {
 				$operations[] = array(
-					'operation' => 'move',
+					'op'        => 'move',
 					'source'    => $srcPath,
 					'dest'      => $archivePath
 				);
@@ -1121,16 +1132,55 @@ class FileRepo {
 	}
 
 	/**
-	 * Get properties of a file with a given virtual URL
-	 * The virtual URL must refer to this repo
-	 * Properties should ultimately be obtained via FSFile::getProps()
+	 * If a path is a virtual URL, resolve it to a storage path.
+	 * Otherwise, just return the path as it is.
+	 *
+	 * @return string
+	 * @throws MWException
+	 */
+	protected function resolveToStoragePath( $path ) {
+		if ( $this->isVirtualUrl( $path ) ) {
+			return $this->resolveVirtualUrl( $path );
+		}
+		return $path;
+	}
+
+	/**
+	 * Get properties of a file with a given virtual URL/storage path.
+	 * Properties should ultimately be obtained via FSFile::getProps().
 	 *
 	 * @param $virtualUrl string
 	 * @return Array
 	 */
 	public function getFileProps( $virtualUrl ) {
-		$path = $this->resolveVirtualUrl( $virtualUrl );
-		return $this->backend->getFileProps( $path );
+		$path = $this->resolveToStoragePath( $virtualUrl );
+		return $this->backend->getFileProps( array( 'source' => $path ) );
+	}
+
+	/**
+	 * Get the timestamp of a file with a given virtual URL/storage path
+	 *
+	 * @param $virtualUrl
+	 * @return string|false
+	 */
+	public function getFileTimestamp( $virtualUrl ) {
+		$path = $this->resolveToStoragePath( $virtualUrl );
+		return $this->backend->getFileTimestamp( array( 'source' => $path ) );
+	}
+
+	/**
+	 * Get the sha1 of a file with a given virtual URL/storage path
+	 *
+	 * @param $virtualUrl
+	 * @return string|false
+	 */
+	public function getFileSha1( $virtualUrl ) {
+		$path = $this->resolveToStoragePath( $virtualUrl );
+		$tmpFile = $this->backend->getLocalCopy( array( 'source' => $path ) );
+		if ( !$tmpFile ) {
+			return false;
+		}
+		return $tmpFile->sha1Base36();
 	}
 
 	/**
@@ -1307,16 +1357,6 @@ class FileRepo {
 	 * @param $title Title of image
 	 */
 	public function invalidateImageRedirect( Title $title ) {}
-
-	/**
-	 * Get an array or iterator of file objects for files that have a given
-	 * SHA-1 content hash.
-	 *
-	 * STUB
-	 */
-	public function findBySha1( $hash ) {
-		return array();
-	}
 
 	/**
 	 * Get the human-readable name of the repo

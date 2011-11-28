@@ -280,9 +280,9 @@ class ForeignAPIRepo extends FileRepo {
 		$localFilename = $localPath . "/" . $fileName;
 		$localUrl =  $this->getZoneUrl( 'thumb' ) . "/" . $this->getHashPath( $name ) . rawurlencode( $name ) . "/" . rawurlencode( $fileName );
 
-		if( file_exists( $localFilename ) && isset( $metadata['timestamp'] ) ) {
+		if( $this->repo->fileExists( $localFilename ) && isset( $metadata['timestamp'] ) ) {
 			wfDebug( __METHOD__ . " Thumbnail was already downloaded before\n" );
-			$modified = filemtime( $localFilename );
+			$modified = $this->repo->getFileTimestamp( $localFilename );
 			$remoteModified = strtotime( $metadata['timestamp'] );
 			$current = time();
 			$diff = abs( $modified - $current );
@@ -299,16 +299,12 @@ class ForeignAPIRepo extends FileRepo {
 			wfDebug( __METHOD__ . " Could not download thumb\n" );
 			return false;
 		}
-		if ( !is_dir($localPath) ) {
-			if( !wfMkdirParents( $localPath, null, __METHOD__ ) ) {
-				wfDebug(  __METHOD__ . " could not create directory $localPath for thumb\n" );
-				return $foreignUrl;
-			}
-		}
 
 		# @todo FIXME: Delete old thumbs that aren't being used. Maintenance script?
 		wfSuppressWarnings();
-		if( !file_put_contents( $localFilename, $thumb ) ) {
+		$backend = $this->repo->getBackend();
+		$op = array( 'op' => 'create', 'dest' => $localFilename, 'content' => $thumb );
+		if( !$backend->doOperation( $op )->isOK() ) {
 			wfRestoreWarnings();
 			wfDebug( __METHOD__ . " could not write to thumb path\n" );
 			return $foreignUrl;

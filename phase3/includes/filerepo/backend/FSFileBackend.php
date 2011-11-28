@@ -355,6 +355,21 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	function clean( array $params ) {
+		$status = Status::newGood();
+		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
+		if ( $dir === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
+			return $status; // invalid storage path
+		}
+		wfSuppressWarnings();
+		if ( is_dir( $dir ) ) {
+			rmdir( $dir ); // Might have already gone away, spews errors if we don't.
+		}
+		wfRestoreWarnings();
+		return $status;
+	}
+
 	function fileExists( array $params ) {
 		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
 		if ( $source === null ) {

@@ -179,8 +179,7 @@ abstract class File {
 	static function checkExtensionCompatibility( File $old, $new ) {
 		$oldMime = $old->getMimeType();
 		$n = strrpos( $new, '.' );
-		$newExt = self::normalizeExtension(
-			$n ? substr( $new, $n + 1 ) : '' );
+		$newExt = self::normalizeExtension( $n ? substr( $new, $n + 1 ) : '' );
 		$mimeMagic = MimeMagic::singleton();
 		return $mimeMagic->isMatchingExtension( $newExt, $oldMime );
 	}
@@ -238,7 +237,9 @@ abstract class File {
 	 * Return the associated title object
 	 * @return Title|false
 	 */
-	public function getTitle() { return $this->title; }
+	public function getTitle() {
+		return $this->title;
+	}
 
 	/**
 	 * Return the title used to find this file
@@ -409,7 +410,7 @@ abstract class File {
 	public function convertMetadataVersion($metadata, $version) {
 		$handler = $this->getHandler();
 		if ( !is_array( $metadata ) ) {
-			//just to make the return type consistant
+			// Just to make the return type consistent
 			$metadata = unserialize( $metadata );
 		}
 		if ( $handler ) {
@@ -454,7 +455,9 @@ abstract class File {
 	 * Overridden by LocalFile,
 	 * STUB
 	 */
-	function getMediaType() { return MEDIATYPE_UNKNOWN; }
+	function getMediaType() {
+		return MEDIATYPE_UNKNOWN;
+	}
 
 	/**
 	 * Checks if the output of transform() for this file is likely
@@ -540,14 +543,14 @@ abstract class File {
 	 * @return bool
 	 */
 	protected function _getIsSafeFile() {
+		global $wgTrustedMediaFormats;
+
 		if ( $this->allowInlineDisplay() ) {
 			return true;
 		}
 		if ($this->isTrustedFile()) {
 			return true;
 		}
-
-		global $wgTrustedMediaFormats;
 
 		$type = $this->getMediaType();
 		$mime = $this->getMimeType();
@@ -731,10 +734,10 @@ abstract class File {
 		wfDebug( __METHOD__.": Doing stat for $thumbPath\n" );
 		$this->migrateThumbFile( $thumbName );
 		if ( $this->repo->fileExists( $thumbPath ) && !($flags & self::RENDER_FORCE) ) { 
-			$thumbTime = filemtime( $thumbPath );
-			if ( $thumbTime !== FALSE &&
-			     gmdate( 'YmdHis', $thumbTime ) >= $wgThumbnailEpoch ) { 
-
+			$thumbTime = $this->repo->getFileTimestamp( $thumbPath );
+			if ( $thumbTime !== false
+				&& gmdate( 'YmdHis', $thumbTime ) >= $wgThumbnailEpoch )
+			{
 				return $this->handler->getTransform( $this, $thumbPath, $thumbUrl, $params );
 			}
 		} elseif( $flags & self::RENDER_FORCE ) {
@@ -1456,7 +1459,7 @@ abstract class File {
 	 */
 	function getTimestamp() {
 		$this->assertRepoDefined();
-		return $this->repo->getBackend()->getFileTimestamp( $this->getPath() );
+		return $this->repo->getFileTimestamp( $this->getVirtualUrl() );
 	}
 
 	/**
@@ -1466,11 +1469,7 @@ abstract class File {
 	 */
 	function getSha1() {
 		$this->assertRepoDefined();
-		$tmpFile = $this->repo->getBackend()->getLocalCopy( $this->getPath() );
-		if ( !$tmpFile ) {
-			return false;
-		}
-		return $tmpFile->sha1Base36();
+		return $this->repo->getFileSha1( $this->getVirtualUrl() );
 	}
 
 	/**

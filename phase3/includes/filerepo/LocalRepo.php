@@ -71,8 +71,8 @@ class LocalRepo extends FileRepo {
 			$hidden = $this->hiddenFileHasKey( $key, 'lock' );
 			if ( !$deleted && !$hidden ) { // not in use now
 				wfDebug( __METHOD__ . ": deleting $key\n" );
-				$op = array( 'operation' => 'delete', 'source' => $path );
-				if ( !$backend->doOperations( array( $op ) )->isOK() ) {
+				$op = array( 'op' => 'delete', 'source' => $path );
+				if ( !$backend->doOperation( $op )->isOK() ) {
 					$status->error( 'undelete-cleanup-error', $path );
 					$status->failCount++;
 				}

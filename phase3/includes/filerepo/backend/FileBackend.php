@@ -63,8 +63,8 @@ abstract class FileBackendBase {
 	 * <code>
 	 * $ops = array(
 	 *     array(
-	 *         'operation' => 'store',
-	 *         'src'       => '/tmp/uploads/picture.png',
+	 *         'op'        => 'store',
+	 *         'source'    => '/tmp/uploads/picture.png',
 	 *         'dest'      => 'mwstore://container/uploadedFilename.png'
 	 *     )
 	 * );
@@ -78,11 +78,21 @@ abstract class FileBackendBase {
 	abstract public function doOperations( array $ops );
 
 	/**
+	 * Same as doOperations() except it takes a single operation array
+	 *
+	 * @param $op Array
+	 * @return Status
+	 */
+	final public function doOperation( $op ) {
+		return $this->doOperation( $op );
+	}
+
+	/**
 	 * Prepare a storage path for usage. This will create containers
 	 * that don't yet exists or, on FS backends, create parent directories.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     directory : destination storage path
+	 *     directory : storage directory
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -94,7 +104,7 @@ abstract class FileBackendBase {
 	 * This is not guaranteed to actually do anything.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     directory : destination storage path
+	 *     directory : storage directory
 	 *     noAccess  : try to deny file access
 	 *     noListing : try to deny file listing
 	 * 
@@ -102,6 +112,18 @@ abstract class FileBackendBase {
 	 * @return Status
 	 */
 	abstract public function secure( array $params );
+
+	/**
+	 * Clean up an empty storage directory.
+	 * On FS backends, the directory will be deleted. Others may do nothing.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     directory : storage directory
+	 * 
+	 * @param Array $params
+	 * @return Status
+	 */
+	abstract public function clean( array $params );
 
 	/**
 	 * Check if a file exits at a storage path in the backend.
@@ -310,6 +332,10 @@ abstract class FileBackend extends FileBackendBase {
 		return Status::newGood();
 	}
 
+	public function clean( array $params ) {
+		return Status::newGood();
+	}
+
 	/**
 	 * Whether this backend implements move() and is applies to a potential
 	 * move from one storage path to another. No backends hits are required.
@@ -366,12 +392,12 @@ abstract class FileBackend extends FileBackendBase {
 		$performOps = array(); // array of FileOp objects
 		// Build up ordered array of FileOps...
 		foreach ( $ops as $operation ) {
-			$opName = $operation['operation'];
+			$opName = $operation['op'];
 			if ( isset( $supportedOps[$opName] ) ) {
 				$class = $supportedOps[$opName];
 				// Get params for this operation
 				$params = $operation;
-				unset( $params['operation'] ); // don't need this
+				unset( $params['op'] ); // don't need this
 				unset( $params['ignoreErrors'] ); // don't need this
 				// Append the FileOp class
 				$performOps[] = new $class( $params );

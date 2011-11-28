@@ -49,7 +49,7 @@ class FSFile {
 	public function getTimestamp() {
 		$timestamp = filemtime( $this->path );
 		if ( $timestamp !== false ) {
-			$timestamp = wfTimestamp( TS_MW, $ts );
+			$timestamp = wfTimestamp( TS_MW, $timestamp );
 		}
 		return $timestamp;
 	}

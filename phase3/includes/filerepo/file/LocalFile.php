@@ -604,8 +604,8 @@ class LocalFile extends File {
 
 		if ( $this->repo->fileExists( $thumbDir, FileRepo::FILES_ONLY ) ) {
 			// File where directory should be
-			$op = array( 'operation' => 'delete', 'source' => $thumbDir );
-			$this->repo->getBackend()->doOperations( array( $op ) );
+			$op = array( 'op' => 'delete', 'source' => $thumbDir );
+			$this->repo->getBackend()->doOperation( $op );
 		}
 	}
 
@@ -749,8 +749,8 @@ class LocalFile extends File {
 			# Check that the base file name is part of the thumb name
 			# This is a basic sanity check to avoid erasing unrelated directories
 			if ( strpos( $file, $this->getName() ) !== false ) {
-				$op = array( 'operation' => 'delete', 'source' => "$dir/$file" );
-				$this->repo->getBackend()->doOperations( array( $op ) );
+				$op = array( 'op' => 'delete', 'source' => "$dir/$file" );
+				$this->repo->getBackend()->doOperation( $op );
 			}
 		}
 	}
