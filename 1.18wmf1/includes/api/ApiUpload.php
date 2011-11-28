@@ -567,7 +567,7 @@ class ApiUpload extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Upload';
+		return 'https://www.mediawiki.org/wiki/API:Upload';
 	}
 
 	public function getVersion() {
