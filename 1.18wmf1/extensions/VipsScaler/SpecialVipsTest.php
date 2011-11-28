@@ -308,8 +308,10 @@ class SpecialVipsTest extends SpecialPage {
 			VipsScaler::doTransform( $handler, $file, $scalerParams, $options, $mto );
 			if ( $mto && !$mto->isError() ) {
 				wfDebug( __METHOD__ . ": streaming thumbnail...\n" );
+				global $IP;
+				require_once( "$IP/includes/StreamFile.php" );
 				$this->getOutput()->disable();
-				StreamFile::stream( $dstPath, array(
+				wfStreamFile( $dstPath, array(
 					"Cache-Control: public, max-age=$wgVipsTestExpiry, s-maxage=$wgVipsTestExpiry",
 					'Expires: ' . gmdate( 'r ', time() + $wgVipsTestExpiry )
 				) );
