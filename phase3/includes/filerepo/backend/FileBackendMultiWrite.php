@@ -8,7 +8,8 @@
 /**
  * This class defines a multi-write backend. Multiple backends can
  * be registered to this proxy backend it will act as a single backend.
- * Use this only if all access to the backends is through an instance of this class.
+ * Use this when all access to the backends is through this proxy backend.
+ * At least one of the backends must be declared the "master" backend.
  * 
  * The order that the backends are defined sets the priority of which
  * backend is read from or written to first. Functions like fileExists()
@@ -16,8 +17,10 @@
  * that has the file (normally both should have it anyway). Special cases:
  *     a) getFileList() will return results from the first backend that is
  *        not declared as non-persistent cache. This is for correctness.
- *     b) getFileHash() will always check only the master backend to keep the
- *        result format consistent.
+ *     b) getFileTimestamp() will always check only the master backend to
+ *        avoid confusing and inconsistent results.
+ *     c) getFileHash() will always check only the master backend to keep
+ *        the result format consistent.
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
@@ -171,7 +174,15 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function secure( array $params ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$status->merge( $backend->prepare( $params ) );
+			$status->merge( $backend->secure( $params ) );
+		}
+		return $status;
+	}
+
+	function clean( array $params ) {
+		$status = Status::newGood();
+		foreach ( $this->backends as $backend ) {
+			$status->merge( $backend->clean( $params ) );
 		}
 		return $status;
 	}
@@ -183,6 +194,11 @@ class FileBackendMultiWrite extends FileBackendBase {
 			}
 		}
 		return false;
+	}
+
+	function getFileTimestamp( array $params ) {
+		// Skip non-master for consistent timestamps
+		return $this->backends[$this->masterIndex]->getFileTimestamp( $params );
 	}
 
 	function getFileHash( array $params ) {
