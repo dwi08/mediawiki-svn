@@ -49,6 +49,7 @@ class SpecialBlockList extends SpecialPage {
 		$request = $this->getRequest();
 		$par = $request->getVal( 'ip', $par );
 		$this->target = trim( $request->getVal( 'wpTarget', $par ) );
+		$request->setVal( 'wpTarget', $this->target );
 
 		$this->options = $request->getArray( 'wpOptions', array() );
 
@@ -61,32 +62,6 @@ class SpecialBlockList extends SpecialPage {
 			return;
 		}
 
-		# Just show the block list
-		$fields = array(
-			'Target' => array(
-				'type' => 'text',
-				'label-message' => 'ipadressorusername',
-				'tabindex' => '1',
-				'size' => '45',
-			),
-			'Options' => array(
-				'type' => 'multiselect',
-				'options' => array(
-					wfMsg( 'blocklist-userblocks' ) => 'userblocks',
-					wfMsg( 'blocklist-tempblocks' ) => 'tempblocks',
-					wfMsg( 'blocklist-addressblocks' ) => 'addressblocks',
-					wfMsg( 'blocklist-rangeblocks' ) => 'rangeblocks',
-				),
-				'flatlist' => true,
-			),
-		);
-		$form = new HTMLForm( $fields, $this->getContext() );
-		$form->setMethod( 'get' );
-		$form->setWrapperLegend( wfMsg( 'ipblocklist-legend' ) );
-		$form->setSubmitText( wfMsg( 'ipblocklist-submit' ) );
-		$form->prepareForm();
-
-		$form->displayForm( '' );
 		$this->showList();
 	}
 
@@ -161,6 +136,7 @@ class SpecialBlockList extends SpecialPage {
 		}
 
 		$pager = new BlockListPager( $this, $conds );
+		$out->addHTML( $pager->buildHTMLForm() );
 		if ( $pager->getNumRows() ) {
 			$out->addHTML(
 				$pager->getNavigationBar() .
@@ -382,6 +358,37 @@ class BlockListPager extends TablePager {
 		}
 
 		return $info;
+	}
+
+	protected function getHTMLFormFields() {
+		return array(
+			'Target' => array(
+				'type' => 'text',
+				'label-message' => 'ipadressorusername',
+				'tabindex' => '1',
+				'size' => '45',
+				//'default' => $this->target,
+			),
+			'Options' => array(
+				'type' => 'multiselect',
+				'options' => array(
+					wfMsg( 'blocklist-userblocks' ) => 'userblocks',
+					wfMsg( 'blocklist-tempblocks' ) => 'tempblocks',
+					wfMsg( 'blocklist-addressblocks' ) => 'addressblocks',
+					wfMsg( 'blocklist-rangeblocks' ) => 'rangeblocks',
+				),
+				'flatlist' => true,
+			),
+			'Limit' => $this->getHTMLFormLimitSelect(),
+		);
+	}
+
+	protected function getHTMLFormSubmit() {
+		return 'ipblocklist-submit';
+	}
+
+	protected function getHTMLFormLegend() {
+		return 'ipblocklist-legend';
 	}
 
 	public function getTableClass(){

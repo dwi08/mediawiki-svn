@@ -997,7 +997,7 @@ Alla on viimeisin lokitapahtuma:",
 'hiddencategories'                 => 'Tämä sivu kuuluu {{PLURAL:$1|seuraavaan piilotettuun luokkaan|seuraaviin piilotettuihin luokkiin}}:',
 'edittools'                        => '<!-- Tässä oleva teksti näytetään muokkauskentän alla. -->',
 'nocreatetitle'                    => 'Sivujen luominen on rajoitettu',
-'nocreatetext'                     => 'Et voi luoda uusia sivuja. Voit muokata olemassa olevia sivuja tai luoda [[Special:UserLogin|käyttäjätunnuksen]].',
+'nocreatetext'                     => 'Et voi luoda uusia sivuja. Voit muokata olemassa olevia sivuja tai [[Special:UserLogin|luoda käyttäjätunnuksen]].',
 'nocreate-loggedin'                => 'Sinulla ei ole oikeuksia luoda uusia sivuja.',
 'sectioneditnotsupported-title'    => 'Osiomuokkaaminen ei ole tuettu.',
 'sectioneditnotsupported-text'     => 'Osiomuokkaaminen ei ole tuettu tällä sivulla.',
@@ -1552,6 +1552,7 @@ Tässä satunnaisesti tuotettu arvo, jota voit käyttää: $1',
 'action-userrights'           => 'muokata kaikkia käyttöoikeuksia',
 'action-userrights-interwiki' => 'muokata muiden wikien käyttäjien käyttöoikeuksia',
 'action-siteadmin'            => 'lukita tai avata tietokantaa',
+'action-sendemail'            => 'lähettää sähköpostia',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|muutos|muutosta}}',
@@ -1605,7 +1606,7 @@ Tässä satunnaisesti tuotettu arvo, jota voit käyttää: $1',
 'uploadnologin'               => 'Et ole kirjautunut sisään',
 'uploadnologintext'           => 'Sinun pitää olla [[Special:UserLogin|kirjautuneena sisään]], jotta voisit tallentaa tiedostoja.',
 'upload_directory_missing'    => 'Tallennushakemisto $1 puuttuu, eikä palvelin pysty luomaan sitä.',
-'upload_directory_read_only'  => 'Palvelimella ei ole kirjoitusoikeuksia tallennushakemistoon ”<tt>$1</tt>”.',
+'upload_directory_read_only'  => 'Palvelimella ei ole kirjoitusoikeuksia tallennushakemistoon $1.',
 'uploaderror'                 => 'Tallennusvirhe',
 'upload-recreate-warning'     => "'''Varoitus: Tiedosto tällä nimellä on poistettu tai siirretty.'''
 
@@ -1741,7 +1742,7 @@ Sitä ei voida tarkistaa tietoturvan varalta kunnolla.',
 'img-auth-nopathinfo'       => 'PATH_INFO puuttuu.
 Palvelintasi ei ole asetettu välittämään tätä tietoa.
 Se saattaa olla CGI-pohjainen eikä voi tukea img_authia.
-Katso http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+[//www.mediawiki.org/wiki/Manual:Image_Authorization Katso lisätietoja].',
 'img-auth-notindir'         => 'Pyydetty polku ei ole asetuksissa tiedostojen tallennushakemistona.',
 'img-auth-badtitle'         => '”$1” ei kelpaa oikean otsikon muodostamiseen.',
 'img-auth-nologinnWL'       => 'Et ole kirjautunut sisään ja tiedosto ”$1” ei ole sallittujen tiedostojen luettelossa.',

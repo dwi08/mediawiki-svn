@@ -104,6 +104,7 @@ $wgAutoloadLocalClasses = array(
 	'HTMLHiddenField' => 'includes/HTMLForm.php',
 	'HTMLInfoField' => 'includes/HTMLForm.php',
 	'HTMLIntField' => 'includes/HTMLForm.php',
+	'HTMLItemsPerPageField' => 'includes/Pager.php',
 	'HTMLMultiSelectField' => 'includes/HTMLForm.php',
 	'HTMLRadioField' => 'includes/HTMLForm.php',
 	'HTMLSelectAndOtherField' => 'includes/HTMLForm.php',

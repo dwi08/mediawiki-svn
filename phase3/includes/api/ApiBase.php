@@ -235,7 +235,7 @@ abstract class ApiBase extends ContextSource {
 	public function makeHelpMsg() {
 		static $lnPrfx = "\n  ";
 
-		$msg = $this->getDescription();
+		$msg = $this->getFinalDescription();
 
 		if ( $msg !== false ) {
 
@@ -463,7 +463,7 @@ abstract class ApiBase extends ContextSource {
 		// This is necessary to make stuff like ApiMain::getVersion()
 		// returning the version string for ApiBase work
 		if ( $path ) {
-			return "{$matches[0]}\n   http://svn.wikimedia.org/" .
+			return "{$matches[0]}\n   https://svn.wikimedia.org/" .
 				"viewvc/mediawiki/trunk/" . dirname( $path ) .
 				"/{$matches[2]}";
 		}
@@ -510,6 +510,7 @@ abstract class ApiBase extends ContextSource {
 	/**
 	 * Get final list of parameters, after hooks have had a chance to
 	 * tweak it as needed.
+	 *
 	 * @return array or false
 	 */
 	public function getFinalParams() {
@@ -519,13 +520,26 @@ abstract class ApiBase extends ContextSource {
 	}
 
 	/**
-	 * Get final description, after hooks have had a chance to tweak it as
+	 * Get final parameter descriptions, after hooks have had a chance to tweak it as
 	 * needed.
+	 *
 	 * @return array
 	 */
 	public function getFinalParamDescription() {
 		$desc = $this->getParamDescription();
 		wfRunHooks( 'APIGetParamDescription', array( &$this, &$desc ) );
+		return $desc;
+	}
+
+	/**
+	 * Get final module description, after hooks have had a chance to tweak it as
+	 * needed.
+	 *
+	 * @return array
+	 */
+	public function getFinalDescription() {
+		$desc = $this->getDescription();
+		wfRunHooks( 'APIGetDescription', array( &$this, &$desc ) );
 		return $desc;
 	}
 

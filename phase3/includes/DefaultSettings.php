@@ -187,7 +187,7 @@ $wgStyleDirectory = false;
 $wgArticlePath      = false;
 
 /**
- * The URL path for the images directory. Will default to "{$IP}/images" in Setup.php
+ * The URL path for the images directory. Will default to "{$wgScriptPath}/images" in Setup.php
  */
 $wgUploadPath       = false;
 
@@ -2250,7 +2250,7 @@ $wgShowIPinHeader	= true;
  * Use a user's real name inside the user interface for display instead of the username
  * (experimental)
  */
-$wgRealNameInInterface = true;
+$wgRealNameInInterface = false;
 
 /**
  * Site notice shown at the top of each page

@@ -1461,6 +1461,7 @@ Hvis du vælger at oplyse dit navn, vil det blive brugt til at tilskrive dig dit
 'action-userrights'           => 'ændre alle brugerrettigheder',
 'action-userrights-interwiki' => 'ændre brugerrettigheder for brugere på andre wikier',
 'action-siteadmin'            => 'låse eller låse databasen op',
+'action-sendemail'            => 'sende email',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|ændring|ændringer}}',
@@ -2788,7 +2789,7 @@ Dette skyldes sandsynligvis en henvisning til et sortlistet eksternt websted.',
 
 # Patrolling
 'markaspatrolleddiff'                 => 'Markér som patruljeret',
-'markaspatrolledtext'                 => 'Markér denne artikel som patruljeret',
+'markaspatrolledtext'                 => 'Markér denne side som patruljeret',
 'markedaspatrolled'                   => 'Markeret som patruljeret',
 'markedaspatrolledtext'               => 'Den valgte redigering af [[:$1]] er nu markeret som patruljeret.',
 'rcpatroldisabled'                    => 'Seneste ændringer-patruljeringen er slået fra',

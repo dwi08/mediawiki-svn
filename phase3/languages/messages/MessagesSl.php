@@ -585,8 +585,8 @@ Morda bodo nekatere strani še naprej prikazane, kot da ste prijavljeni, dokler 
 'welcomecreation'            => '== Dobrodošli, $1! ==
 Ustvarili ste račun.
 Ne pozabite si prilagoditi vaših [[Special:Preferences|nastavitev {{GRAMMAR:rodilnik|{{SITENAME}}}}]].',
-'yourname'                   => 'Uporabniško ime',
-'yourpassword'               => 'Geslo',
+'yourname'                   => 'Uporabniško ime:',
+'yourpassword'               => 'Geslo:',
 'yourpasswordagain'          => 'Ponovno vpišite geslo',
 'remembermypassword'         => 'Zapomni si me na tem računalniku (za največ $1 {{PLURAL:$1|dan|dneva|dni}})',
 'securelogin-stick-https'    => 'Po prijavi ostani povezan preko HTTPS',
@@ -1457,7 +1457,7 @@ Podatek bo javno prikazan.',
 # User rights log
 'rightslog'                  => 'Dnevnik uporabniških pravic',
 'rightslogtext'              => 'Prikazan je dnevnik sprememb uporabniških pravic.',
-'rightslogentry'             => '- sprememba pravic uporabnika $1 iz $2 v $3',
+'rightslogentry'             => 'je spremenil(-a) pravice uporabnika $1 iz $2 v $3',
 'rightslogentry-autopromote' => 'je bil(-a) samodejno povišan(-a) z $2 na $3',
 'rightsnone'                 => '(nobeno)',
 
@@ -1496,6 +1496,7 @@ Podatek bo javno prikazan.',
 'action-userrights'           => 'upravljanje vseh uporabnikovih pravic',
 'action-userrights-interwiki' => 'upravljanje uporabniških pravic za uporabnike drugih wikijev',
 'action-siteadmin'            => 'zaklenitev ali odklepanje podatkovne baze',
+'action-sendemail'            => 'pošiljanje e-sporočil',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|sprememba|spremembi|spremembe|sprememb|sprememb}}',

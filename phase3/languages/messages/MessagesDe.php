@@ -1096,7 +1096,7 @@ Zur Information folgt der aktuelle Logbucheintrag:",
 'sectioneditnotsupported-text'     => 'Die Bearbeitung von Abschnitten wird auf dieser Bearbeitungsseite nicht unterstützt.',
 'permissionserrors'                => 'Berechtigungsfehler',
 'permissionserrorstext'            => 'Du bist nicht berechtigt, die Aktion auszuführen. {{PLURAL:$1|Grund|Gründe}}:',
-'permissionserrorstext-withaction' => 'Du bist nicht berechtigt, $2.
+'permissionserrorstext-withaction' => 'Du bist nicht berechtigt $2.
 {{PLURAL:$1|Grund|Gründe}}:',
 'recreate-moveddeleted-warn'       => "'''Achtung: Du erstellst eine Seite, die bereits früher gelöscht wurde.'''
 
@@ -1649,6 +1649,7 @@ Dies kann nicht mehr rückgängig gemacht werden.',
 'action-userrights'           => 'Benutzerrechte zu ändern',
 'action-userrights-interwiki' => 'die Rechte von Benutzern in anderen Wikis zu ändern',
 'action-siteadmin'            => 'die Datenbank zu sperren oder freizugeben',
+'action-sendemail'            => 'E-Mails zu senden',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|Änderung|Änderungen}}',
@@ -2758,7 +2759,8 @@ Bitte den '''neuen''' Titel unter '''Ziel''' eintragen, darunter die Umbenennung
 Die Seite „[[:$1]]“ existiert bereits. Möchtest du diese löschen, um die Seite verschieben zu können?',
 'delete_and_move_confirm'      => 'Ja, Seite löschen',
 'delete_and_move_reason'       => 'gelöscht, um Platz für die Verschiebung von „[[$1]]“ zu machen',
-'selfmove'                     => 'Ursprungs- und Zielname sind gleich; eine Seite kann nicht auf sich selbst verschoben werden.',
+'selfmove'                     => 'Ursprungs- und Zielname sind gleich.
+Eine Seite kann nicht auf sich selbst verschoben werden.',
 'immobile-source-namespace'    => 'Seiten des „$1“-Namensraums können nicht verschoben werden',
 'immobile-target-namespace'    => 'Seiten können nicht in den „$1“-Namensraum verschoben werden',
 'immobile-target-namespace-iw' => 'Interwiki-Link ist kein gültiges Ziel für Seitenverschiebungen.',
@@ -3682,7 +3684,7 @@ Du kannst auch die [[Special:EditWatchlist|Standardseite]] zum Bearbeiten benutz
 # Watchlist editing tools
 'watchlisttools-view' => 'Beobachtungsliste: Änderungen',
 'watchlisttools-edit' => 'normal bearbeiten',
-'watchlisttools-raw'  => 'Listenformat bearbeiten (Import/Export)',
+'watchlisttools-raw'  => 'im Listenformat bearbeiten (Import/Export)',
 
 # Hijri month names
 'hijri-calendar-m3'  => 'Rabiʿ al-auwal',
@@ -3762,7 +3764,7 @@ Eine [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopie der ''GNU General Public License'']
 'specialpages-group-media'       => 'Medien',
 'specialpages-group-users'       => 'Benutzer und Rechte',
 'specialpages-group-highuse'     => 'Häufig benutzte Seiten',
-'specialpages-group-pages'       => 'Listen von Seiten',
+'specialpages-group-pages'       => 'Seitenlisten',
 'specialpages-group-pagetools'   => 'Seitenwerkzeuge',
 'specialpages-group-wiki'        => 'Systemdaten und Werkzeuge',
 'specialpages-group-redirects'   => 'Weiterleitende Spezialseiten',

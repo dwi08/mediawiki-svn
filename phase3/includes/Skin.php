@@ -538,7 +538,7 @@ abstract class Skin extends ContextSource {
 			$pre = '';
 			if ( $wgDebugTimestamps ) {
 				$matches = array();
-				if ( preg_match( '/^(\d+\.\d+   \d+.\dM\s{2})/', $line, $matches ) ) {
+				if ( preg_match( '/^(\d+\.\d+ {1,3}\d+.\dM\s{2})/', $line, $matches ) ) {
 					$pre = $matches[1];
 					$line = substr( $line, strlen( $pre ) );
 				}
@@ -790,14 +790,14 @@ abstract class Skin extends ContextSource {
 	/**
 	 * Get the timestamp of the latest revision, formatted in user language
 	 *
-	 * @param $article Article object. Used if we're working with the current revision
+	 * @param $page WikiPage object. Used if we're working with the current revision
 	 * @return String
 	 */
-	protected function lastModified( $article ) {
+	protected function lastModified( $page ) {
 		if ( !$this->isRevisionCurrent() ) {
 			$timestamp = Revision::getTimestampFromId( $this->getTitle(), $this->getRevisionId() );
 		} else {
-			$timestamp = $article->getTimestamp();
+			$timestamp = $page->getTimestamp();
 		}
 
 		if ( $timestamp ) {

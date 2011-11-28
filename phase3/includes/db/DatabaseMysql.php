@@ -421,7 +421,7 @@ class DatabaseMysql extends DatabaseBase {
 	/**
 	 * Returns slave lag.
 	 *
-	 * On MySQL 4.1.9 and later, this will do a SHOW SLAVE STATUS
+	 * This will do a SHOW SLAVE STATUS
 	 *
 	 * @return int
 	 */
@@ -607,11 +607,6 @@ class DatabaseMysql extends DatabaseBase {
 			$timeout = (int)$options['connTimeout'];
 			$this->query( "SET net_read_timeout=$timeout" );
 			$this->query( "SET net_write_timeout=$timeout" );
-		}
-		if ( isset( $options['lockTimeout'] ) ) {
-			$timeout = (int)$options['lockTimeout'];
-			$this->query( "SET table_lock_wait_timeout=$timeout" ); // table level
-			$this->query( "SET innodb_lock_wait_timeout=$timeout" ); // row level
 		}
 	}
 

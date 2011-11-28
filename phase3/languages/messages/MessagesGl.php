@@ -9,6 +9,7 @@
  *
  * @author Alma
  * @author Gallaecio
+ * @author Gustronico
  * @author Lameiro
  * @author Prevert
  * @author Toliño
@@ -664,7 +665,7 @@ Os nomes de usuario diferencian entre maiúsculas e minúsculas.
 Verifique o nome que inseriu ou [[Special:UserLogin/signup|cree unha nova conta]].',
 'nosuchusershort'            => 'Non existe ningún usuario chamado "$1".
 Verifique o nome que inseriu.',
-'nouserspecified'            => 'Debe especificar un nome de usuario.',
+'nouserspecified'            => 'Cómpre especificar un nome de usuario.',
 'login-userblocked'          => 'Este usuario está bloqueado. Acceso non autorizado.',
 'wrongpassword'              => 'O contrasinal escrito é incorrecto.
 Por favor, insira outro.',
@@ -731,7 +732,7 @@ Por favor, agarde antes de probar outra vez.',
 'retypenew'                 => 'Insira outra vez o novo contrasinal:',
 'resetpass_submit'          => 'Poñer o contrasinal e entrar',
 'resetpass_success'         => 'O cambio do contrasinal realizouse con éxito! Agora pode entrar...',
-'resetpass_forbidden'       => 'Os contrasinais non poden ser mudados',
+'resetpass_forbidden'       => 'Non se poden mudar os contrasinais',
 'resetpass-no-info'         => 'Debe rexistrarse para acceder directamente a esta páxina.',
 'resetpass-submit-loggedin' => 'Cambiar o contrasinal',
 'resetpass-submit-cancel'   => 'Cancelar',
@@ -1363,7 +1364,7 @@ Ha de ter menos {{PLURAL:$1|dun carácter|de $1 caracteres}}.',
 'prefs-help-realname'           => 'O seu nome real é opcional, pero se escolle dalo utilizarase para atribuírlle o seu traballo.',
 'prefs-help-email'              => 'O enderezo de correo electrónico é opcional, pero permite que se lle envíe un contrasinal novo se se esquece del.',
 'prefs-help-email-others'       => 'Tamén pode optar por deixar aos outros que se poidan poñer en contacto con vostede a través da súa páxina de usuario sen necesidade de revelar a súa identidade.',
-'prefs-help-email-required'     => 'Requírese o enderezo de correo electrónico.',
+'prefs-help-email-required'     => 'Cómpre o enderezo de correo electrónico.',
 'prefs-info'                    => 'Información básica',
 'prefs-i18n'                    => 'Internacionalización',
 'prefs-signature'               => 'Sinatura',
@@ -1532,6 +1533,7 @@ Ha de ter menos {{PLURAL:$1|dun carácter|de $1 caracteres}}.',
 'action-userrights'           => 'editar todos os permisos de usuario',
 'action-userrights-interwiki' => 'editar os permisos de usuario dos usuarios doutros wikis',
 'action-siteadmin'            => 'bloquear ou desbloquear a base de datos',
+'action-sendemail'            => 'enviar correos electrónicos',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|cambio|cambios}}',
@@ -2226,7 +2228,7 @@ Axuda:
 'deletepage'             => 'Borrar a páxina',
 'confirm'                => 'Confirmar',
 'excontent'              => 'o contido era: "$1"',
-'excontentauthor'        => 'o contido era: "$1" (e o único editor foi "[[Special:Contributions/$2|$2]]")',
+'excontentauthor'        => 'o contido era: "$1" (e o único editor foi [[Special:Contributions/$2|$2]])',
 'exbeforeblank'          => 'o contido antes do baleirado era: "$1"',
 'exblank'                => 'a páxina estaba baleira',
 'delete-confirm'         => 'Borrar "$1"',
@@ -2789,7 +2791,7 @@ Gárdeo no seu disco duro e cárgueo aquí.',
 'import-logentry-interwiki-detail' => '$1 {{PLURAL:$1|revisión|revisións}} de $2',
 
 # Tooltip help for the actions
-'tooltip-pt-userpage'             => 'A súa páxina de {{GENDER:{{BASEPAGENAME}}|usuario|usuaria}}',
+'tooltip-pt-userpage'             => 'A súa páxina de {{GENDER:|usuario|usuaria}}',
 'tooltip-pt-anonuserpage'         => 'A páxina de usuario do enderezo IP desde o que está a editar',
 'tooltip-pt-mytalk'               => 'A súa páxina de conversa',
 'tooltip-pt-anontalk'             => 'Conversa acerca de edicións feitas desde este enderezo IP',
