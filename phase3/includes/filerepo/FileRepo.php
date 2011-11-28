@@ -43,7 +43,9 @@ class FileRepo {
 	function __construct( $info ) {
 		// Required settings
 		$this->name = $info['name'];
-		$this->url = $info['url'];
+		$this->url = isset( $info['url'] )
+			? $info['url']
+			: false;  // a subclass will need to set the URL (e.g. ForeignAPIRepo)
 
 		// Optional settings that can have no value
 		$optionalSettings = array(
@@ -306,7 +308,10 @@ class FileRepo {
 			return null;
 		}
 		$backendName = $this->backend->getName();
-		return "mwstore://$backendName/{$container}/{$base}";
+		if ( $base != '' ) { // may not be set
+			$base = "/{$base}";
+		}
+		return "mwstore://$backendName/{$container}{$base}";
 	}
 
 	/**

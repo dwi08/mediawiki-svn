@@ -84,7 +84,7 @@ abstract class FileBackendBase {
 	 * @return Status
 	 */
 	final public function doOperation( $op ) {
-		return $this->doOperation( $op );
+		return $this->doOperations( array( $op ) );
 	}
 
 	/**
@@ -400,7 +400,7 @@ abstract class FileBackend extends FileBackendBase {
 				unset( $params['op'] ); // don't need this
 				unset( $params['ignoreErrors'] ); // don't need this
 				// Append the FileOp class
-				$performOps[] = new $class( $params );
+				$performOps[] = new $class( $this, $params );
 			} else {
 				throw new MWException( "Operation `$opName` is not supported." );
 			}

@@ -38,7 +38,7 @@ class FSFile {
 	 * @return bool
 	 */
 	public function exists() {
-		return ( file_exists( $this->path ) && !is_dir( $this->path ) );
+		return is_file( $this->path );
 	}
 
 	/**
@@ -47,7 +47,9 @@ class FSFile {
 	 * @return string|false TS_MW timestamp or false on failure
 	 */
 	public function getTimestamp() {
+		wfSuppressWarnings();
 		$timestamp = filemtime( $this->path );
+		wfRestoreWarnings();
 		if ( $timestamp !== false ) {
 			$timestamp = wfTimestamp( TS_MW, $timestamp );
 		}

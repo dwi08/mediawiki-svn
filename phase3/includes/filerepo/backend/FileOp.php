@@ -14,7 +14,7 @@
 abstract class FileOp {
 	/** $var Array */
 	protected $params;
-	/** $var FileBackend */
+	/** $var FileBackendBase */
 	protected $backend;
 
 	protected $state;
@@ -32,7 +32,7 @@ abstract class FileOp {
 	 * @params $backend FileBackend
 	 * @params $params Array
 	 */
-	final public function __construct( FileBackend $backend, array $params ) {
+	final public function __construct( FileBackendBase $backend, array $params ) {
 		$this->backend = $backend;
 		$this->params = $params;
 		$this->state = self::STATE_NEW;
@@ -157,7 +157,8 @@ abstract class FileOp {
 	protected function checkAndBackupDest() {
 		$status = Status::newGood();
 		// Check if a file already exists at the destination
-		if ( !$this->backend->fileExists( $this->params['dest'] ) ) {
+		$params = array( 'source' => $this->params['dest'] );
+		if ( !$this->backend->fileExists( $params ) ) {
 			return $status; // nothing to do
 		}
 

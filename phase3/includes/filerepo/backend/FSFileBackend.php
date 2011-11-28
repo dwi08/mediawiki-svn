@@ -375,7 +375,7 @@ class FSFileBackend extends FileBackend {
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
-		return file_exists( $source ) && is_file( $source );
+		return is_file( $source );
 	}
 
 	function getHashType() {
@@ -519,14 +519,18 @@ class FileIterator implements Iterator {
 	 * @param $directory string
 	 */
 	public function __construct( $directory ) {
-		$this->directory = (string)$directory;
+		// Removing any trailing slash
+		if ( substr( $this->directory, -1 ) === '/' ) {
+			$this->directory = substr( $this->directory, 0, -1 );
+		}
+		$this->directory = realpath( $directory );
 	}
 
 	private function load() {
 		if ( !$this->loaded ) {
 			$this->loaded = true;
 			// If we get an invalid directory then the result is an empty list
-			if ( file_exists( $this->directory ) && is_dir( $this->directory ) ) {
+			if ( is_dir( $this->directory ) ) {
 				$handle = opendir( $this->directory );
 				if ( $handle ) {
 					$this->pushDirectory( $this->directory, $handle );
@@ -565,36 +569,49 @@ class FileIterator implements Iterator {
 	}
 
 	function nextFile() {
-		$set = $this->currentDirectory();
-		if ( !$set ) {
+		if ( !$this->currentDirectory() ) {
 			return false; // nothing else to scan
 		}
-		list( $dir, $handle ) = $set;
+		# Next file under the current directory (and subdirectories).
+		# This may advance the current directory down to a descendent.
+		# The current directory is set to the parent if nothing is found.
+		$nextFile = $this->nextFileBelowCurrent();
+		if ( $nextFile !== false ) {
+			return $nextFile;
+		} else {
+			# Scan the higher directories
+			return $this->nextFile();
+		}
+	}
+
+	function nextFileBelowCurrent() {
+		list( $dir, $handle ) = $this->currentDirectory();
 		while ( false !== ( $file = readdir( $handle ) ) ) {
 			// Exclude '.' and '..' as well .svn or .lock type files
 			if ( $file[0] !== '.' ) {
+				$path = "{$dir}/{$file}";
 				// If the first thing we find is a file, then return it.
 				// If the first thing we find is a directory, then return
 				// the first file that it contains (via recursion).
 				// We exclude symlink dirs in order to avoid cycles.
-				if ( is_dir( "{$dir}/{$file}" ) && !is_link( "{$dir}/{$file}" ) ) {
-					$subHandle = opendir( "$dir/$file" );
+				if ( is_dir( $path ) && !is_link( $path ) ) {
+					$subHandle = opendir( $path );
 					if ( $subHandle ) {
-						$this->pushDirectory( "{$dir}/{$file}", $subHandle );
-						$nextFile = $this->nextFile();
+						$this->pushDirectory( $path, $subHandle );
+						$nextFile = $this->nextFileBelowCurrent();
 						if ( $nextFile !== false ) {
 							return $nextFile; // found the next one!
 						}
 					}
-				} elseif ( is_file( "{$dir}/{$file}" ) ) {
-					return "{$dir}/{$file}"; // found the next one!
+				} elseif ( is_file( $path ) ) {
+					return $path; // found the next one!
 				}
 			}
 		}
-		# If we didn't find anything in this directory,
-		# then back out and scan the other higher directories
+		# If we didn't find anything else in this directory,
+		# then back out so we scan the other higher directories
 		$this->popDirectory();
-		return $this->nextFile();
+		return false;
 	}
 
 	private function currentDirectory() {
