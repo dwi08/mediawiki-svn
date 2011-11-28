@@ -21,12 +21,10 @@ class BitmapHandler extends ImageHandler {
 	 * @return bool
 	 */
 	function normaliseParams( $image, &$params ) {
-		global $wgMaxImageArea;
 		if ( !parent::normaliseParams( $image, $params ) ) {
 			return false;
 		}
 
-		$mimeType = $image->getMimeType();
 		# Obtain the source, pre-rotation dimensions
 		$srcWidth = $image->getWidth( $params['page'] );
 		$srcHeight = $image->getHeight( $params['page'] );
@@ -42,15 +40,22 @@ class BitmapHandler extends ImageHandler {
 				return true;
 			}
 		}
-		
-		# Don't thumbnail an image so big that it will fill hard drives and send servers into swap
-		# JPEG has the handy property of allowing thumbnailing without full decompression, so we make
-		# an exception for it.
-		# @todo FIXME: This actually only applies to ImageMagick
-		if ( $mimeType !== 'image/jpeg' &&
-			$srcWidth * $srcHeight > $wgMaxImageArea )
-		{
-			return false;
+
+		# Check if the file is smaller than the maximum image area for thumbnailing
+		$checkImageAreaHookResult = null;
+		wfRunHooks( 'BitmapHandlerCheckImageArea', array( $image, &$params, &$checkImageAreaHookResult ) );
+		if ( is_null( $checkImageAreaHookResult ) ) {
+			global $wgMaxImageArea;
+			
+			if ( $srcWidth * $srcHeight > $wgMaxImageArea &&
+					!( $image->getMimeType() == 'image/jpeg' && 
+						self::getScalerType( false, false ) == 'im' ) ) {
+				# Only ImageMagick can efficiently downsize jpg images without loading
+				# the entire file in memory
+				return false;
+			}
+		} else {
+			return $checkImageAreaHookResult;
 		}
 
 		return true;
