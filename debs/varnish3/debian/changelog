@@ -1,5 +1,11 @@
 varnish3 (3.0.0-1wmf6) lucid; urgency=low
 
+  * remove extra whitespace from log lines
+
+ -- Asher Feldman <afledman@wikimedia.org>  Tue, 29 Nov 2011 19:54:00 +0000
+
+varnish3 (3.0.0-1wmf6) lucid; urgency=low
+
   * make %l log servername instead of always being "-"
 
  -- Asher Feldman <afledman@wikimedia.org>  Wed, 14 Sep 2011 14:22:22 +7000

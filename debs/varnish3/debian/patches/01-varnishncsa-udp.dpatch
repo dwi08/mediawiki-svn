@@ -54,7 +54,7 @@
  			break;
 +			
 +		case 'n':
-+			fprintf(fo, " %ld ", sequence_number);
++			fprintf(fo, "%ld", sequence_number);
 +			break;
  
  		case 'q':
