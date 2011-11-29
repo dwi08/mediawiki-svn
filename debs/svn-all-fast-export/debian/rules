@@ -1,0 +1,34 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+%:
+	dh  $@
+
+#overide_dh_configure:
+#	qmake-qt4
+
+# Copied from /usr/share/cdbs/1/rules/buildvars.mk
+VERSION := $(shell dpkg-parsechangelog | egrep '^Version:' | cut -f 2 -d ' ')
+NOEPOCH_VERSION := $(shell echo $(VERSION) | cut -d: -f2-)
+UPSTREAM_VERSION := $(shell echo $(NOEPOCH_VERSION) | sed 's/-[^-]*$$//')
+
+clean-get-orig-source:
+	@@rm -rf ../tarballs/svn-all-fast-export-$(UPSTREAM_VERSION)
+
+get-orig-source: clean-get-orig-source
+	@@dh_testdir
+	@@[ -d ../tarballs/. ]||mkdir -p ../tarballs
+	@@echo 'Checking out for repacking ...'
+	@@git clone git://gitorious.org/svn2git/svn2git.git \
+		../tarballs/svn-all-fast-export-$(UPSTREAM_VERSION)
+	@@echo 'Getting the changelog ...'
+	@@cd ../tarballs/svn-all-fast-export-$(UPSTREAM_VERSION); \
+		git log > ChangeLog
+	@@echo Creating the tarball ...
+	@@cd ../tarballs/; \
+		rm -rf svn-all-fast-export-$(UPSTREAM_VERSION)/.git; \
+		tar zcf ../tarballs/svn-all-fast-export-$(UPSTREAM_VERSION).tar.gz svn-all-fast-export-$(UPSTREAM_VERSION)
+	@@rm -rf ../tarballs/svn-all-fast-export-$(UPSTREAM_VERSION)
+	@@echo Ready for packaging.

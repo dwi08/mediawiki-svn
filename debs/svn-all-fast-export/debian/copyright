@@ -1,0 +1,36 @@
+This work was packaged for Debian by:
+
+    José Manuel Santamaría Lema <panfaust@gmail.com> on Sun, 25 Apr 2010 19:38:33 +0200
+
+Upstream Authors:
+
+    Thiago Macieira <thiago@kde.org>
+    Thomas Zander <tzander@trolltech.com>
+
+Copyright:
+
+    Copyright © 2007 Thiago Macieira <thiago@kde.org>
+    Copyright © 2008-2009 Thomas Zander <tzander@trolltech.com>
+
+License:
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+  
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+  
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+The Debian packaging is:
+
+    Copyright (C) 2010 José Manuel Santamaría Lema <panfaust@gmail.com>
+
+and is licensed under the GPL version 3 or later,
+see "/usr/share/common-licenses/GPL-3".

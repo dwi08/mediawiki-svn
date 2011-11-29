@@ -1,0 +1,23 @@
+Source: svn-all-fast-export
+Section: devel
+Priority: extra
+Maintainer: José Manuel Santamaría Lema <panfaust@gmail.com>
+Build-Depends: debhelper (>= 7.4.12), libqt4-dev, libsvn-dev
+Build-Conflicts: qt3-dev-tools
+Standards-Version: 3.9.0
+Homepage: http://gitorious.org/svn2git
+
+Package: svn-all-fast-export
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A fast-import based converter to convert repos from svn to git
+ svn-all-fast-export is a tool to convert your svn repositories to git.
+ .
+ You will need to have a copy of your svn repository and to write some rules to
+ specify how the conversion will be done, for instance, you can manage how the
+ tags and branches will be managed writing the appropriate rules. You have
+ examples in /usr/share/doc/svn-all-fast-export/samples
+ .
+ Also, you can provide a file mapping the old svn accounts to the authors names
+ in the format "Author Name <email>" so will not need to use git filter-branch
+ to amend the commiters' names.

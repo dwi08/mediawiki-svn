@@ -1,0 +1,19 @@
+svn-all-fast-export (0~git20100701-1) unstable; urgency=low
+
+  * New upstream release.
+  * Release to unstable.
+  * Add 01_link_explicit.diff to be able to build the package with
+    binutils-gold.
+  * Bump S-V to 3.9.0, no changes needed.
+  * Build-Conflicts on qt3-dev-tools because of #571640.
+  * Removed boilerplate comment in debian/rules.
+  * Updated manpage, noticing that you can use the git-svn format for the
+    account map file and the return values for the program.
+
+ -- José Manuel Santamaría Lema <panfaust@gmail.com>  Thu, 01 Jul 2010 11:54:51 +0200
+
+svn-all-fast-export (0~git20100425-1) experimental; urgency=low
+
+  * Initial release (Closes: #579868)
+
+ -- José Manuel Santamaría Lema <panfaust@gmail.com>  Sun, 25 Apr 2010 19:38:33 +0200

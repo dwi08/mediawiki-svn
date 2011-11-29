@@ -1,0 +1,101 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH SVN-ALL-FAST-EXPORT 1 "April 25, 2010"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+svn-all-fast-export \- tool to convert svn repositories into git
+.SH SYNOPSIS
+.B svn-all-fast-export
+.RI [ options ]
+.RI [ Path\ to\ subversion\ repository ]
+.SH DESCRIPTION
+.B svn-all-fast-export
+is a tool to convert your svn repositories to git.
+.PP
+You will need to have a copy of your svn repository and to write some rules to
+specify how the conversion will be done, for instance, you can manage how the
+tags and branches will be managed writing the appropriate rules. You have
+examples in /usr/share/doc/svn-all-fast-export/samples
+.PP
+.I Path to subversion repository
+is a backup copy of the subversion repository. Note that an svn url will not
+work due to the undistributed nature of svn.
+.PP
+.SH OPTIONS
+.TP
+.B \-\-identity\-map
+Provide map between svn username and email. You can provide a file mapping the
+old svn accounts to the authors names. This file must have a line per each svn
+account, you can use either the svn-all-fast-export native format:
+.br
+janesvnaccountname Jane Doe <jane.doe@example.com>
+.br
+or the git-svn format:
+.br
+janesvnaccountname = Jane Doe <jane.doe@example.com>
+.br
+.TP
+.B \-\-rules
+The rules file that determines what goes where. See
+/usr/share/doc/svn-all-fast-export/samples
+.TP
+.B \-\-add\-metadata
+If passed, each git commit will have svn commit info.
+.TP
+.B \-\-resume\-from
+Start importing at svn revision number.
+.TP
+.B \-\-max\-rev
+Stop importing at svn revision number.
+.TP
+.B \-\-dry\-run
+Don't actually write anything.
+.TP
+.B \-\-debug\-rules
+Print what rule is being used for each file.
+.TP
+.B \-\-commit\-interval number
+If passed the cache will be flushed to git every
+.I number
+of commits.
+.TP
+.B \-h, \-\-help
+Show summary of options.
+.TP
+.B \-v, \-\-version
+Show version of program.
+.SH RETURN VALUES
+This program returns 0 on success, on error something else (numbers in base 10):
+.br
+10 unrecognized option or missing argument
+.br
+.br
+11 no rules file specified
+.br
+.SH BUGS
+All matching rules need to end with a '/', else the tool will crash at some
+point. The only exception are the rules using the recurse-action.
+.SH HOMEPAGE
+http://gitorious.org/svn2git 
+.\" .SH SEE ALSO
+.\" .BR bar (1),
+.\" .BR baz (1).
+.\" .br
+.\" The programs are documented fully by
+.\" .IR "The Rise and Fall of a Fooish Bar" ,
+.\" available via the Info system.
+.SH AUTHORS
+svn-all-fast-export was written by Thiago Macieira and Thomas Zander.
