@@ -485,12 +485,13 @@ $wgAutoloadLocalClasses = array(
 	'TempFSFile' => 'includes/filerepo/file/TempFSFile.php',
 
 	# includes/filerepo/backend
-	'FileBackendGroup' => 'includes/filerepo/backend/FileBackendGroup',
+	'FileBackendGroup' => 'includes/filerepo/backend/FileBackendGroup.php',
 	'FileBackendBase' => 'includes/filerepo/backend/FileBackend.php',
 	'FileBackend' => 'includes/filerepo/backend/FileBackend.php',
 	'FileBackendMultiWrite' => 'includes/filerepo/backend/FileBackendMultiWrite.php',
 	'FSFileBackend' => 'includes/filerepo/backend/FSFileBackend.php',
 	'FileIterator' => 'includes/filerepo/backend/FSFileBackend.php',
+	'FileLockManagerGroup' => 'includes/filerepo/backend/FileLockManagerGroup.php',
 	'FileLockManager' => 'includes/filerepo/backend/FileLockManager.php',
 	'FSFileLockManager' => 'includes/filerepo/backend/FileLockManager.php',
 	'DBFileLockManager' => 'includes/filerepo/backend/FileLockManager.php',

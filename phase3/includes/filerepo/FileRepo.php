@@ -23,8 +23,6 @@ class FileRepo {
 	/** @var Array Map of zones to config */
 	protected $zones = array();
 
-	protected $wikiKey; // unique wiki identifier
-
 	var $thumbScriptUrl, $transformVia404;
 	var $descBaseUrl, $scriptDirUrl, $scriptExtension, $articleUrl;
 	var $fetchDescription, $initialCapital;
@@ -46,6 +44,7 @@ class FileRepo {
 		$this->url = isset( $info['url'] )
 			? $info['url']
 			: false;  // a subclass will need to set the URL (e.g. ForeignAPIRepo)
+		$this->backend = FileBackendGroup::singleton()->get( $info['backend'] );
 
 		// Optional settings that can have no value
 		$optionalSettings = array(
@@ -63,9 +62,6 @@ class FileRepo {
 		$this->initialCapital = isset( $info['initialCapital'] )
 			? $info['initialCapital']
 			: MWNamespace::isCapitalized( NS_FILE );
-		$this->wikiKey = isset( $info['wikiKey'] )
-			? $info['wikiKey']
-			: wfWikiID();
 		$this->thumbUrl = isset( $info['thumbUrl'] )
 			? $info['thumbUrl']
 			: "{$this->url}/thumb";
@@ -76,85 +72,23 @@ class FileRepo {
 			? $info['deletedHashLevels']
 			: $this->hashLevels;
 		$this->transformVia404 = !empty( $info['transformVia404'] );
-
-		$this->zones = array();
-		// New backend & zone config style
-		if ( isset( $info['backend'] ) ) {
-			$this->backend = $info['backend'];
-			if ( isset( $info['zones'] ) ) {
-				$this->zones = $info['zones'];
-			}
-			$prefix = $this->getContainerPrefix();
-			// Give defaults for the basic zones...
-			foreach ( array( 'public', 'thumb', 'temp', 'deleted' ) as $zone ) {
-				if ( !isset( $this->zones[$zone] ) ) {
-					if ( $zone === 'deleted' ) {
-						$this->zones[$zone] = array(
-							'container' => null, // user must set this up
-							'directory' => '' // container root
-						);
-					} else {
-						$this->zones[$zone] = array(
-							'container' => "{$prefix}{$zone}",
-							'directory' => '' // container root
-						);
-					}
-				}
-			}
-		// Old fashioned backend (FS) config
-		} else {
-			$this->initLegacyConfig( $info );
-		}
-	}
-
-	/**
-	 * Handle backend and zone settings for old config style
-	 * 
-	 * @param $info Array
-	 * @return void
-	 */
-	protected function initLegacyConfig( array $info ) {
-		// Local vars that used to be FSRepo members...
-		$directory = $info['directory'];
-		$deletedDir = isset( $info['deletedDir'] )
-			? $info['deletedDir']
-			: false;
-		if ( isset( $info['thumbDir'] ) ) {
-			$thumbDir =  $info['thumbDir'];
-		} else {
-			$thumbDir = "{$directory}/thumb";
-		}
-		$fileMode = isset( $info['fileMode'] )
-			? $info['fileMode']
-			: 0644;
-
-		// Get the FS backend from configuration...
-		$prefix = $this->getContainerPrefix();
-		$config = array(
-			'name'           => "{$this->name}-backend",
-			'lockManager'    => new FSFileLockManager(
-				array( 'lockDirectory' => "{$directory}/locks" )
-			),
-			'containerPaths' => array(
-				"{$prefix}public"  => "{$directory}",
-				"{$prefix}temp"    => "{$directory}/temp",
-				"{$prefix}thumb"   => $thumbDir,
-				"{$prefix}deleted" => $deletedDir
-			),
-			'fileMode'       => $fileMode,
-		);
-		$this->backend = new FSFileBackend( $config );
-
-		// Set the basic zones...
+		$this->zones = isset( $info['zones'] )
+			? $info['zones']
+			: array();
+		// Give defaults for the basic zones...
 		foreach ( array( 'public', 'thumb', 'temp', 'deleted' ) as $zone ) {
 			if ( !isset( $this->zones[$zone] ) ) {
-				if ( $zone === 'deleted' && $deletedDir === false ) {
-					continue; // user must set this up
+				if ( $zone === 'deleted' ) {
+					$this->zones[$zone] = array(
+						'container' => null, // user must set this up
+						'directory' => '' // container root
+					);
+				} else {
+					$this->zones[$zone] = array(
+						'container' => $zone,
+						'directory' => '' // container root
+					);
 				}
-				$this->zones[$zone] = array(
-					'container' => "{$prefix}{$zone}",
-					'directory' => '' // container root
-				);
 			}
 		}
 	}
@@ -166,15 +100,6 @@ class FileRepo {
 	 */
 	public function getBackend() {
 		return $this->backend;
-	}
-
-	/**
-	 * Get the container prefix from the wiki key
-	 *
-	 * @return string
-	 */
-	protected function getContainerPrefix() {
-		return strlen( $this->wikiKey ) ? "{$this->wikiKey}-" : "";
 	}
 
 	/**

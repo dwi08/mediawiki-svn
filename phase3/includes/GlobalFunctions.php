@@ -2379,6 +2379,10 @@ function wfTempDir() {
 function wfMkdirParents( $dir, $mode = null, $caller = null ) {
 	global $wgDirectoryMode;
 
+	if ( FileBackend::isStoragePath( $dir ) ) { // sanity
+		throw new MWException( "Given storage path `$dir`.");
+	}
+
 	if ( !is_null( $caller ) ) {
 		wfDebug( "$caller: called wfMkdirParents($dir)\n" );
 	}

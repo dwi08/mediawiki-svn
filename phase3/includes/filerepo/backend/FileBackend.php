@@ -23,6 +23,7 @@
  */
 abstract class FileBackendBase {
 	protected $name; // unique backend name
+	protected $wikiId; // unique wiki name
 	/** @var FileLockManager */
 	protected $lockManager;
 
@@ -31,12 +32,16 @@ abstract class FileBackendBase {
 	 * This should only be called from within FileRepo classes.
 	 * $config includes:
 	 *     'name'        : The name of this backend
+	 *     'wikiId'      : Prefix to container names that is unique to this wiki
 	 *     'lockManager' : The file lock manager to use
 	 * 
 	 * @param $config Array
 	 */
 	public function __construct( array $config ) {
 		$this->name = $config['name'];
+		$this->wikiId = isset( $config['wikiId'] )
+			? $config['wikiId']
+			: wfWikiID();
 		$this->lockManager = $config['lockManager'];
 	}
 
@@ -535,6 +540,7 @@ abstract class FileBackend extends FileBackendBase {
 		if ( $parts[0] !== null ) { // either all null or all not null
 			list( $backend, $container, $relPath ) = $parts;
 			if ( $backend === $this->name ) { // sanity
+				$container = $this->fullContainerName( $container );
 				$relPath = $this->resolveContainerPath( $container, $relPath );
 				if ( $relPath !== null ) {
 					return array( $container, $relPath ); // (container, path)
@@ -542,6 +548,20 @@ abstract class FileBackend extends FileBackendBase {
 			}
 		}
 		return array( null, null );
+	}
+
+	/**
+	 * Get the full container name, including the wiki ID prefix
+	 * 
+	 * @param $container string
+	 * @return string 
+	 */
+	final protected function fullContainerName( $container ) {
+		if ( $this->wikiId != '' ) {
+			return "{$this->wikiId}-$container";
+		} else {
+			return $container;
+		}
 	}
 
 	/**

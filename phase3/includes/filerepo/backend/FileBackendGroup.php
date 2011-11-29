@@ -28,28 +28,30 @@ class FileBackendGroup {
 	}
 
 	/**
-	 * Register a file backend from configuration
+	 * Register an array of file backend configurations
 	 *
-	 * @param $config Array
+	 * @param $configs Array
 	 * @return void
 	 * @throws MWException
 	 */
-	public function register( array $config ) {
-		if ( !isset( $config['name'] ) ) {
-			throw new MWException( "Cannot register a backend with no name." );
-		}
-		$name = $config['name'];
-		if ( !isset( $config['class'] ) ) {
-			throw new MWException( "Cannot register backend `{$name}` with no class." );
-		}
-		$class = $config['class'];
+	public function register( array $configs ) {
+		foreach ( $configs as $config ) {
+			if ( !isset( $config['name'] ) ) {
+				throw new MWException( "Cannot register a backend with no name." );
+			}
+			$name = $config['name'];
+			if ( !isset( $config['class'] ) ) {
+				throw new MWException( "Cannot register backend `{$name}` with no class." );
+			}
+			$class = $config['class'];
 
-		unset( $config['class'] ); // backend won't need this
-		$this->backends[$name] = array(
-			'class'    => $class,
-			'config'   => $config,
-			'instance' => null
-		);
+			unset( $config['class'] ); // backend won't need this
+			$this->backends[$name] = array(
+				'class'    => $class,
+				'config'   => $config,
+				'instance' => null
+			);
+		}
 	}
 
 	/**
@@ -59,7 +61,7 @@ class FileBackendGroup {
 	 * @return FileBackendBase
 	 * @throws MWException
 	 */
-	public function getBackend( $name ) {
+	public function get( $name ) {
 		if ( !isset( $this->backends[$name] ) ) {
 			throw new MWException( "No backend defined with the name `$name`." );
 		}
