@@ -15,17 +15,22 @@ $messages['en'] = array(
 	// ContributionReporting and ContributionTotal
 	'contributionreporting-desc' => 'Live reporting on the Wikimedia fundraiser',
 	'contributiontotal' => 'Contribution total',
+	
+	'contribstats-header' => '',
+	'contribstats-footer' => '',
+	
+	// DisabledNotice
+	'disablednotice' => 'Contribution reporting',
+	'disablednotice-disabled' => 'This page has been temporarily disabled. Please try again later.',
+	
+	// ContributionHistory
 	'contributionhistory' => 'Contribution history',
-
 	'contrib-hist-header' => 'Donor comments from around the world',
-
 	'contrib-hist-name' => 'Name',
 	'contrib-hist-date' => 'Time and date',
 	'contrib-hist-amount' => 'Amount',
-
 	'contrib-hist-next' => 'Earlier donations',
 	'contrib-hist-previous' => 'Newer donations',
-
 	'contrib-hist-anonymous' => 'Anonymous',
 
 	// ContributionStatistics
@@ -53,8 +58,6 @@ $messages['en'] = array(
 	'contribstats-value-under' => 'Under $1',
 	'contribstats-value-from' => 'From $1 - $2',
 	'contribstats-value-over' => 'Over $1',
-	'contribstats-header' => '',
-	'contribstats-footer' => '',
 
 	// Tracking Statistics
 	'contributiontrackingstatistics' => 'Contribution tracking statistics',
@@ -120,21 +123,21 @@ $messages['qqq'] = array(
 	'contrib-hist-name' => '{{Identical|Name}}',
 	'contrib-hist-date' => '{{Identical|Date}}',
 	'contrib-hist-amount' => '{{Identical|Amount}}',
-	'contributionstatistics' => 'Title on the contribution report for <nowiki>[[Special:ContributionStatistics]]</nowiki>.
+	'contributionstatistics' => 'Title on the contribution report for <nowiki>[[Special:ContributionStatistics]]</nowiki>. 
 You may see an example in context at http://wikimediafoundation.org/wiki/Special:ContributionStatistics',
 	'contribstats-desc' => '{{desc}}',
 	'contribstats-currency-range-totals' => '* $1 is a start date
 * $2 is an end date',
-	'contribstats-contribution-breakdown' => 'Title on the contribution report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>.
+	'contribstats-contribution-breakdown' => 'Title on the contribution report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>. 
 You may see an example in context at http://wikimediafoundation.org/wiki/Special:ContributionStatistics',
-	'contribstats-day' => '"Day" on the contribution report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>.
+	'contribstats-day' => '"Day" on the contribution report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>. 
 You may see an example in context at http://wikimediafoundation.org/wiki/Special:ContributionStatistics
 {{Identical|Day}}',
-	'contribstats-month' => '"Month" on the contribution report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>.
+	'contribstats-month' => '"Month" on the contribution report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>. 
 You may see an example in context at http://wikimediafoundation.org/wiki/Special:ContributionStatistics
 {{Identical|Month}}',
 	'contribstats-currency' => '{{Identical|Currency}}',
-	'contribstats-contributions' => 'The number of contributions (donations) on a report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>.
+	'contribstats-contributions' => 'The number of contributions (donations) on a report for <nowiki>[[</nowiki>Special:ContributionStatistics<nowiki>]]</nowiki>. 
 You may see an example in context at http://wikimediafoundation.org/wiki/Special:ContributionStatistics',
 	'contribstats-day-totals' => 'The day for which the contribution statistics are being displayed.',
 	'contribstats-conversion' => 'Click conversion rate, see [[:wikipedia:Conversion rate|Wikipedia article]].',
@@ -3125,7 +3128,7 @@ $messages['ko'] = array(
 	'contributionreporting-desc' => '위키미디어 모금 현황',
 	'contributiontotal' => '기부 총액',
 	'contributionhistory' => '기부 역사',
-	'contrib-hist-header' => '전세계 기부자들의 실시간 한 마디',
+	'contrib-hist-header' => '전세계 기부자들의 한 마디',
 	'contrib-hist-name' => '이름',
 	'contrib-hist-date' => '날짜와 시각',
 	'contrib-hist-amount' => '금액',
@@ -3188,6 +3191,7 @@ $messages['ko'] = array(
 	'fundraiserstats-tab-averages' => '평균 (USD)',
 	'fundraiserstats-tab-maximums' => '최댓값 (USD)',
 	'fundraiserstats-tab-ytd' => '연간 누계 (USD)',
+	'fundraiserstats-time-zone' => '시간대:',
 );
 
 /** Colognian (Ripoarisch)
@@ -5123,7 +5127,7 @@ $messages['sr-ec'] = array(
 	'fundraiserstats-utc' => '(према UTC-у)',
 );
 
-/** Serbian Latin ekavian (‪Srpski (latinica)‬)
+/** Serbian (Latin script) (‪Srpski (latinica)‬)
  * @author Michaello
  */
 $messages['sr-el'] = array(
@@ -5357,7 +5361,7 @@ $messages['tet'] = array(
 	'fundraiserstats-date' => 'Tempu',
 );
 
-/** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
+/** Tajik (Cyrillic script) (Тоҷикӣ)
  * @author Ibrahim
  */
 $messages['tg-cyrl'] = array(
@@ -5397,7 +5401,7 @@ $messages['tg-cyrl'] = array(
 	'fundraiserstats-tab-maximums' => 'Ҳаддиаксар (USD)',
 );
 
-/** Tajik (Latin) (Тоҷикӣ (Latin))
+/** Tajik (Latin script) (tojikī)
  * @author Liangent
  */
 $messages['tg-latn'] = array(
@@ -5718,7 +5722,7 @@ $messages['tr'] = array(
 	'fundraiserstats-tab-ytd' => 'Bugüne kadarki (USD)',
 );
 
-/** Tatar (Cyrillic) (Татарча/Tatarça (Cyrillic))
+/** Tatar (Cyrillic script) (Татарча)
  * @author Ильнар
  */
 $messages['tt-cyrl'] = array(

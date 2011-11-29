@@ -15,7 +15,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 	}
 
 	public function execute( $sub ) {
-		global $wgRequest, $wgOut, $wgUser, $wgLang, $wgScriptPath, $egFundraiserStatisticsFundraisers;
+		global $wgRequest, $wgOut, $wgLang, $wgScriptPath, $egFundraiserStatisticsFundraisers;
 
 		$showYear = array();
 		foreach ( $egFundraiserStatisticsFundraisers as $fundraiser ) {
@@ -81,14 +81,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 		/* Setup */
 
 		$this->setHeaders();
-		$wgOut->addScriptFile( $wgScriptPath . '/extensions/ContributionReporting/FundraiserStatistics.js' );
-		$wgOut->addLink(
-			array(
-				'rel' => 'stylesheet',
-				'type' => 'text/css',
-				'href' => $wgScriptPath . '/extensions/ContributionReporting/FundraiserStatistics.css',
-			)
-		);
+		$wgOut->addModules( 'ext.fundraiserstatistics' );
 
 		/* Display */
 
@@ -249,7 +242,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 				Xml::tags(
 					'table',
 					array( 'cellpadding' => 0, 'cellspacing' => 0, 'border' => 0 ),
-					Xml::tags( 'tr', null, implode( $chart['data'] ) )
+					Xml::tags( 'tr', null, implode( $chart['data'] ) ) // FIXME: Missing parameter to implode
 				)
 			);
 			$first = false;
@@ -299,7 +292,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 						'max(converted_amount)',
 					),
 					$conditions,
-					__METHOD__,
+					__METHOD__ . '-dailyTotals',
 					array(
 						'ORDER BY' => 'received',
 						'GROUP BY' => "DATE_FORMAT(CONVERT_TZ(FROM_UNIXTIME(received),'+00:00','$this->timezone'),'%Y-%m-%d')"
@@ -307,7 +300,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 				);
 				$result = array();
 				$ytd = 0;
-				while ( $row = $dbr->fetchRow( $select ) ) {
+				foreach( $select as $row ) {
 					$row[] = $ytd += $row[1]; // YTD
 					$result[] = $row;
 				}
@@ -316,7 +309,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 				$result = $dbr->selectField( 'public_reporting',
 					array( 'sum(converted_amount) as sum' ),
 					$conditions,
-					__METHOD__,
+					__METHOD__ . '-dailyTotalMax',
 					array(
 						'ORDER BY' => 'sum DESC',
 						'GROUP BY' => "DATE_FORMAT(CONVERT_TZ(FROM_UNIXTIME(received),'+00:00','$this->timezone'),'%Y-%m-%d')"
@@ -327,14 +320,14 @@ class SpecialFundraiserStatistics extends SpecialPage {
 				$result = $dbr->selectField( 'public_reporting',
 					array( 'sum(converted_amount) as sum' ),
 					$conditions,
-					__METHOD__
+					__METHOD__ . '-yearlyTotalMax'
 				);
 				break;
 			case 'contributionsMax':
 				$result = $dbr->selectField( 'public_reporting',
 					array( 'count(converted_amount) as sum' ),
 					$conditions,
-					__METHOD__,
+					__METHOD__ . '-contributionsMax',
 					array(
 						'ORDER BY' => 'sum DESC',
 						'GROUP BY' => "DATE_FORMAT(CONVERT_TZ(FROM_UNIXTIME(received),'+00:00','$this->timezone'),'%Y-%m-%d')"
@@ -345,7 +338,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 				$result = $dbr->selectField( 'public_reporting',
 					array( 'avg(converted_amount) as sum' ),
 					$conditions,
-					__METHOD__,
+					__METHOD__ . '-averagesMax',
 					array(
 						'ORDER BY' => 'sum DESC',
 						'GROUP BY' => "DATE_FORMAT(CONVERT_TZ(FROM_UNIXTIME(received),'+00:00','$this->timezone'),'%Y-%m-%d')"
@@ -356,7 +349,7 @@ class SpecialFundraiserStatistics extends SpecialPage {
 				$result = $dbr->selectField( 'public_reporting',
 					array( 'max(converted_amount) as sum' ),
 					$conditions,
-					__METHOD__,
+					__METHOD__ . '-maximumsMax',
 					array(
 						'ORDER BY' => 'sum DESC',
 						'GROUP BY' => "DATE_FORMAT(CONVERT_TZ(FROM_UNIXTIME(received),'+00:00','$this->timezone'),'%Y-%m-%d')"
@@ -371,6 +364,10 @@ class SpecialFundraiserStatistics extends SpecialPage {
 		return null;
 	}
 
+	/**
+	 * @param $values
+	 * @return string
+	 */
 	private function dropDownList ( $values ) {
 		$dropDown = '';
 		foreach ( $values as $value ) {
