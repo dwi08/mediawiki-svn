@@ -32,9 +32,6 @@ class ForeignAPIRepo extends FileRepo {
 	var $apiThumbCacheExpiry = 86400; /* 24*60*60 */
 	/* Redownload thumbnail files after a month */
 	var $fileCacheExpiry = 2592000; /* 86400*30 */
-	/* Local image directory */
-	var $directory;
-	var $thumbDir;
 
 	protected $mQueryCache = array();
 	protected $mFileExists = array();
@@ -42,7 +39,7 @@ class ForeignAPIRepo extends FileRepo {
 	function __construct( $info ) {
 		global $wgLocalFileRepo, $wgUploadDirectory;
 		if ( !isset( $info['directory'] ) ) { // b/c
-			$info['directory'] = $wgUploadDirectory;
+			$info['directory'] = $wgUploadDirectory; // Local image directory
 		}
 		parent::__construct( $info );
 
