@@ -113,8 +113,14 @@ class FSFile {
 		return $info;
 	}
 
+	/**
+	 * Placeholder file properties to use for files that don't exist
+	 *
+	 * @return Array
+	 */
 	public static function placeholderProps() {
 		$info = array();
+		$info['fileExists'] = false;
 		$info['mime'] = null;
 		$info['media_type'] = MEDIATYPE_UNKNOWN;
 		$info['metadata'] = '';

@@ -211,12 +211,12 @@ abstract class MediaHandler {
 				return new MediaTransformError( 'thumbnail_error',
 					$params['width'], 0, wfMsg( 'thumbnail-temp-create' ) );
 			}
-			$tmpDest = $tmpFile->getPath();
+			$tmpDest = $tmpFile->getPath(); // path of 0-byte temp file
 			// Create the output thumbnail on the FS
 			$out = $this->doFSTransform( $image, $tmpDest, $dstUrl, $params, $flags );
 			// Copy any thumbnail from FS into storage at $dstpath
 			// Note: no file is created if it's to be rendered client-side.
-			if ( !$out->isError() && is_file( $tmpDest ) ) {
+			if ( !$out->isError() && filesize( $tmpDest ) ) {
 				$op = array( 'op' => 'store',
 					'source' => $tmpDest, 'dest' => $dstPath, 'overwriteDest' => true );
 				if ( !$image->getRepo()->getBackend()->doOperation( $op )->isOK() ) {

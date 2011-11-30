@@ -15,6 +15,9 @@
 class TempFSFile extends FSFile {
 	protected $canDelete = true; // garbage collect the temp file
 
+	/** @var Array of active temp files to purge on shutdown */
+	protected static $instances = array();
+
 	/**
 	 * Make a new temporary file on the file system
 	 * 
@@ -35,7 +38,10 @@ class TempFSFile extends FSFile {
 		} else {
 			$path = $tmpDest;
 		}
-		return new self( $path );
+		$tmpFile = new self( $path );
+		self::$instances[] = $tmpFile;
+
+		return $tmpFile;
 	}
 
 	/**
@@ -48,8 +54,8 @@ class TempFSFile extends FSFile {
 	}
 
 	/**
-	 * Cleans up after the temporary file.
-	 * Currently this means removing it from the local disk.
+	 * Cleans up after the temporary file by deleting it.
+	 * This is done on shutdown after PHP kills self::$instances.
 	 */
 	function __destruct() {
 		if ( $this->canDelete ) {

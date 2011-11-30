@@ -118,6 +118,7 @@ abstract class File {
 	/**
 	 * Given a string or Title object return either a
 	 * valid Title object with namespace NS_FILE or null
+	 *
 	 * @param $title Title|string
 	 * @param $exception string|false Use 'exception' to throw an error on bad titles
 	 * @return Title|null
@@ -243,6 +244,7 @@ abstract class File {
 
 	/**
 	 * Return the associated title object
+	 *
 	 * @return Title|false
 	 */
 	public function getTitle() {
@@ -850,6 +852,7 @@ abstract class File {
 
 	/**
 	 * Get a MediaHandler instance for this file
+	 *
 	 * @return MediaHandler
 	 */
 	function getHandler() {
@@ -861,6 +864,7 @@ abstract class File {
 
 	/**
 	 * Get a ThumbnailImage representing a file type icon
+	 *
 	 * @return ThumbnailImage
 	 */
 	function iconThumb() {

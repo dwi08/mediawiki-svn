@@ -76,6 +76,15 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function copy( array $params ) {
+		$status = Status::newGood();
+
+		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		if ( $source === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
+			return $status;
+		}
+		$params['source'] = $source; // resolve source to FS path
+
 		return $this->store( $params ); // both source and dest are on FS
 	}
 

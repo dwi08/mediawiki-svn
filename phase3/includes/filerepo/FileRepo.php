@@ -786,8 +786,8 @@ class FileRepo {
 	}
 
 	/**
-	 * Copy or move a file either from a storage path or from a mwrepo://
-	 * virtual URL, into this repository at the specified destination location.
+	 * Copy or move a file either from a storage path, virtual URL,
+	 * or FS path, into this repository at the specified destination location.
 	 *
 	 * Returns a FileRepoStatus object. On success, the value contains "new" or
 	 * "archived", to indicate whether the file was new with that name.
@@ -883,20 +883,33 @@ class FileRepo {
 			} else {
 				$status->value[$i] = 'new';
 			}
-			if ( $flags & self::DELETE_SOURCE ) {
+			// Copy (or move) the source file to the destination
+			if ( FileBackend::isStoragePath( $srcPath ) ) {
+				if ( $flags & self::DELETE_SOURCE ) {
+					$operations[] = array(
+						'op'           => 'move',
+						'source'       => $srcPath,
+						'dest'         => $dstPath,
+						'ignoreErrors' => true
+					);
+				} else {
+					$operations[] = array(
+						'op'           => 'copy',
+						'source'       => $srcPath,
+						'dest'         => $dstPath,
+						'ignoreErrors' => true
+					);
+				}
+			} else { // FS source path
 				$operations[] = array(
-					'op'           => 'move',
+					'op'           => 'store',
 					'source'       => $srcPath,
 					'dest'         => $dstPath,
 					'ignoreErrors' => true
 				);
-			} else {
-				$operations[] = array(
-					'op'           => 'copy',
-					'source'       => $srcPath,
-					'dest'         => $dstPath,
-					'ignoreErrors' => true
-				);
+				if ( $flags & self::DELETE_SOURCE ) {
+					$sourceFSFilesToDelete[] = $srcPath;
+				}
 			}
 		}
 
@@ -1229,14 +1242,9 @@ class FileRepo {
 		if ( !isset( $this->simpleCleanPairs ) ) {
 			global $IP;
 			$this->simpleCleanPairs = array(
-				$this->directory => 'public',
-				"{$this->directory}/temp" => 'temp',
 				$IP => '$IP',
 				dirname( __FILE__ ) => '$IP/extensions/WebStore', // WTF
 			);
-			if ( $this->deletedDir ) {
-				$this->simpleCleanPairs[$this->deletedDir] = 'deleted';
-			}
 		}
 		return strtr( $param, $this->simpleCleanPairs );
 	}

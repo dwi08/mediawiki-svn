@@ -233,7 +233,7 @@ class UploadStash {
 			'us_user' => $this->userId,
 			'us_key' => $key,
 			'us_orig_path' => $path,
-			'us_path' => $stashPath,
+			'us_path' => $stashPath, // virtual URL
 			'us_size' => $fileProps['size'],
 			'us_sha1' => $fileProps['sha1'],
 			'us_mime' => $fileProps['mime'],

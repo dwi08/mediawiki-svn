@@ -881,7 +881,7 @@ class LocalFile extends File {
 
 	/**
 	 * Upload a file and record it in the DB
-	 * @param $srcPath String: source path or virtual URL
+	 * @param $srcPath String: source storage path or virtual URL
 	 * @param $comment String: upload description
 	 * @param $pageText String: text to use for the new description page,
 	 *                  if a new description page is created
@@ -1003,6 +1003,7 @@ class LocalFile extends File {
 		if ( $dbw->affectedRows() == 0 ) {
 			$reupload = true;
 
+			#if ( !$oldver ) wfDebugDieBacktrace();
 			# Collision, this is an update of a file
 			# Insert previous contents into oldimage
 			$dbw->insertSelect( 'oldimage', 'image',

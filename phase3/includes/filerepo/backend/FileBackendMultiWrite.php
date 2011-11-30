@@ -6,15 +6,15 @@
  */
 
 /**
- * This class defines a multi-write backend. Multiple backends can
- * be registered to this proxy backend it will act as a single backend.
- * Use this when all access to the backends is through this proxy backend.
+ * This class defines a multi-write backend. Multiple backends can be
+ * registered to this proxy backend and it will act as a single backend.
+ * Use this when all access to those backends is through this proxy backend.
  * At least one of the backends must be declared the "master" backend.
  * 
  * The order that the backends are defined sets the priority of which
  * backend is read from or written to first. Functions like fileExists()
  * and getFileProps() will return information based on the first backend
- * that has the file (normally both should have it anyway). Special cases:
+ * that has the file. Special cases are listed below:
  *     a) getFileList() will return results from the first backend that is
  *        not declared as non-persistent cache. This is for correctness.
  *     b) getFileTimestamp() will always check only the master backend to
@@ -24,6 +24,8 @@
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
+ *
+ * Non-persistent backends used for caching must be declared.
  *
  * @ingroup FileRepo
  * @ingroup FileBackend

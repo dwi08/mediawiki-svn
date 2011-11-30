@@ -287,7 +287,7 @@ class DBLockManager extends LockManager {
 	 *
 	 * @param Array $config 
 	 */
-	function __construct( array $config ) {
+	public function __construct( array $config ) {
 		// Sanitize dbsByBucket config to prevent PHP errors
 		$this->dbsByBucket = array_filter( $config['dbsByBucket'], 'is_array' );
 		$this->dbsByBucket = array_values( $this->dbsByBucket ); // consecutive
@@ -671,8 +671,6 @@ class DBLockManager extends LockManager {
  * Simple version of LockManager that does nothing
  */
 class NullLockManager extends LockManager {
-	function __construct( array $config ) {}
-
 	protected function doLock( array $keys, $type ) {
 		return Status::newGood();
 	}

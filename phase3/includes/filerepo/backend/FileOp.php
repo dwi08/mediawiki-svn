@@ -16,6 +16,8 @@ abstract class FileOp {
 	protected $params;
 	/** $var FileBackendBase */
 	protected $backend;
+	/** @var TempLocalFile|null */
+	protected $tmpSourceFile, $tmpDestFile;
 
 	protected $state;
 	protected $failed;
@@ -145,6 +147,31 @@ abstract class FileOp {
 	 * @return Status
 	 */
 	abstract protected function doFinish();
+	
+	/**
+	 * Backup any file at the source to a temporary file
+	 *
+	 * @return Status
+	 */
+	protected function backupSource() {
+		$status = Status::newGood();
+		// Check if a file already exists at the source...
+		$params = array( 'source' => $this->params['source'] );
+		if ( $this->backend->fileExists( $params ) ) {
+			// Create a temporary backup copy...
+			$this->tmpSourcePath = $this->backend->getLocalCopy( $params );
+			if ( $this->tmpSourcePath === null ) {
+				$status->fatal( 'backend-fail-backup', $this->params['source'] );
+				return $status;
+			}
+		} else {
+			if ( empty( $this->params['ignoreMissingSource'] ) ) {
+				$status->fatal( 'backend-fail-notexists', $this->params['source'] );
+				return $status;
+			}
+		}
+		return $status;
+	}
 
 	/**
 	 * Backup any file at the destination to a temporary file.
@@ -164,7 +191,7 @@ abstract class FileOp {
 
 		if ( !empty( $this->params['overwriteDest'] ) ) {
 			// Create a temporary backup copy...
-			$this->tmpDestFile = $this->getLocalCopy( $this->params['dest'] );
+			$this->tmpDestFile = $this->backend->getLocalCopy( $params );
 			if ( !$this->tmpDestFile ) {
 				$status->fatal( 'backend-fail-backup', $this->params['dest'] );
 				return $status;
@@ -217,7 +244,7 @@ abstract class FileOp {
 			if ( $this->backend->getHashType() === 'md5' ) {
 				$hash = $this->backend->getFileHash( $path );
 			} else {
-				$tmp = $this->getLocalCopy( $path );
+				$tmp = $this->backend->getLocalCopy( array( 'source' => $path ) );
 				if ( !$tmp ) {
 					return false; // error
 				}
@@ -228,6 +255,27 @@ abstract class FileOp {
 			$hash = md5_file( $path );
 		}
 		return $hash;
+	}
+
+	/**
+	 * Restore any temporary source backup file
+	 *
+	 * @return Status
+	 */
+	protected function restoreSource() {
+		$status = Status::newGood();
+		// Restore any file that was at the destination
+		if ( $this->tmpSourcePath !== null ) {
+			$params = array(
+				'source' => $this->tmpSourcePath,
+				'dest'   => $this->params['source']
+			);
+			$status = $this->backend->store( $params );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
+		}
+		return $status;
 	}
 
 	/**
@@ -261,9 +309,6 @@ abstract class FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class StoreFileOp extends FileOp {
-	/** @var TempLocalFile|null */
-	protected $tmpDestFile; // temp copy of existing destination file
-
 	protected function doPrecheck() {
 		$status = Status::newGood();
 		// Check if the source files exists on disk (FS)
@@ -278,8 +323,7 @@ class StoreFileOp extends FileOp {
 
 	protected function doAttempt() {
 		// Store the file at the destination
-		$status = $this->backend->store( $this->params );
-		return $status;
+		return $this->backend->store( $this->params );
 	}
 
 	protected function doRevert() {
@@ -290,7 +334,7 @@ class StoreFileOp extends FileOp {
 			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
-		$status = $this->restoreDest();
+		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -318,14 +362,12 @@ class StoreFileOp extends FileOp {
 class CreateFileOp extends FileOp {
 	protected function doPrecheck() {
 		// Create a destination backup copy as needed
-		$status = $this->checkAndBackupDest();
-		return $status;
+		return $this->checkAndBackupDest();
 	}
 
 	protected function doAttempt() {
 		// Create the file at the destination
-		$status = $this->backend->create( $this->params );
-		return $status;
+		return $this->backend->create( $this->params );
 	}
 
 	protected function doRevert() {
@@ -336,7 +378,7 @@ class CreateFileOp extends FileOp {
 			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
-		$status = $this->restoreDest();
+		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -377,8 +419,7 @@ class CopyFileOp extends FileOp {
 
 	protected function doAttempt() {
 		// Copy the file into the destination
-		$status = $this->backend->copy( $this->params );
-		return $status;
+		return $this->backend->copy( $this->params );
 	}
 
 	protected function doRevert() {
@@ -389,7 +430,7 @@ class CopyFileOp extends FileOp {
 			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
-		$status = $this->restoreDest();
+		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -432,6 +473,9 @@ class MoveFileOp extends FileOp {
 		}
 		// Create a destination backup copy as needed
 		$status->merge( $this->checkAndBackupDest() );
+		if ( !$status->isOK() ) {
+			return $status;
+		}
 		return $status;
 	}
 
@@ -439,9 +483,19 @@ class MoveFileOp extends FileOp {
 		// Native moves: move the file into the destination
 		if ( $this->usingMove ) {
 			$status = $this->backend->move( $this->params );
-		// Non-native moves: copy the file into the destination
+		// Non-native moves: copy the file into the destination & delete source
 		} else {
+			// Copy source to dest
 			$status = $this->backend->copy( $this->params );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
+			// Delete source
+			$params = array( 'source' => $this->params['source'] );
+			$status = $this->backend->delete( $params );
+			if ( !$status->isOK() ) {
+				return $status;
+			}
 		}
 		return $status;
 	}
@@ -459,6 +513,13 @@ class MoveFileOp extends FileOp {
 			}
 		// Non-native moves: remove the file saved to the destination
 		} else {
+			// Copy destination back to source
+			$params = array( 'source' => $this->params['dest'], 'dest' => $this->params['source'] );
+			$status = $this->backend->copy( $params );
+			if ( !$status->isOK() ) {
+				return $status; // also can't restore any dest file
+			}
+			// Delete destination
 			$params = array( 'source' => $this->params['dest'] );
 			$status = $this->backend->delete( $params );
 			if ( !$status->isOK() ) {
@@ -466,20 +527,12 @@ class MoveFileOp extends FileOp {
 			}
 		}
 		// Restore any file that was at the destination
-		$status = $this->restoreDest();
+		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
 	protected function doFinish() {
-		// Native moves: nothing is at the source anymore
-		if ( $this->usingMove ) {
-			$status = Status::newGood();
-		// Non-native moves: delete the source file
-		} else {
-			$params = array( 'source' => $this->params['source'] );
-			$status = $this->backend->delete( $params );
-		}
-		return $status;
+		return Status::newGood();
 	}
 
 	protected function getSourceMD5() {
@@ -502,14 +555,12 @@ class MoveFileOp extends FileOp {
 class ConcatenateFileOp extends FileOp {
 	protected function doPrecheck() {
 		// Create a destination backup copy as needed
-		$status = $this->checkAndBackupDest();
-		return $status;
+		return $this->checkAndBackupDest();
 	}
 
 	protected function doAttempt() {
 		// Concatenate the file at the destination
-		$status = $this->backend->concatenate( $this->params );
-		return $status;
+		return $this->backend->concatenate( $this->params );
 	}
 
 	protected function doRevert() {
@@ -520,7 +571,7 @@ class ConcatenateFileOp extends FileOp {
 			return $status; // also can't restore any dest file
 		}
 		// Restore any file that was at the destination
-		$status = $this->restoreDest();
+		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -546,28 +597,28 @@ class ConcatenateFileOp extends FileOp {
 class DeleteFileOp extends FileOp {
 	protected function doPrecheck() {
 		$status = Status::newGood();
-		if ( empty( $this->params['ignoreMissingSource'] ) ) {
-			$params = array( 'source' => $this->params['source'] );
-			if ( !$this->backend->fileExists( $params ) ) {
-				$status->fatal( 'backend-fail-notexists', $this->params['source'] );
-				return $status;
-			}
+		$params = array( 'source' => $this->params['source'] );
+		if ( $this->backend->fileExists( $params ) ) {
+			// Create a source backup copy as needed
+			$status->merge( $this->backupSource() );
+		} elseif ( empty( $this->params['ignoreMissingSource'] ) ) {
+			$status->fatal( 'backend-fail-notexists', $this->params['source'] );
 		}
 		return $status;
 	}
 
 	protected function doAttempt() {
-		return Status::newGood();
+		// Delete the source file
+		return $this->backend->delete( $this->params );
 	}
 
 	protected function doRevert() {
-		return Status::newGood();
+		// Restore any source file
+		return $this->restoreSource();
 	}
 
 	protected function doFinish() {
-		// Delete the source file
-		$status = $this->backend->delete( $this->params );
-		return $status;
+		return Status::newGood();
 	}
 
 	function storagePathsUsed() {

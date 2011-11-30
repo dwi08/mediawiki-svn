@@ -27,8 +27,8 @@ class UnregisteredLocalFile extends File {
 	var $handler;
 
 	/**
-	 * @param $path
-	 * @param $mime
+	 * @param $path string Storage path
+	 * @param $mime string
 	 * @return UnregisteredLocalFile
 	 */
 	static function newFromPath( $path, $mime ) {
@@ -135,10 +135,11 @@ class UnregisteredLocalFile extends File {
 	}
 
 	function getSize() {
-		if ( file_exists( $this->path ) ) {
-			return filesize( $this->path );
-		} else {
-			return false;
+		$this->assertRepoDefined();
+		$props = $this->repo->getFileProps( $this->path );
+		if ( isset( $props['size'] ) ) {
+			return $props['size'];
 		}
+		return false; // doesn't exist
 	}
 }

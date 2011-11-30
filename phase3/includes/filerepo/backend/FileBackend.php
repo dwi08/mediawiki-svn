@@ -521,7 +521,9 @@ abstract class FileBackend extends FileBackendBase {
 			// Note: strlen( 'mwstore://' ) = 10
 			$parts = explode( '/', substr( $storagePath, 10 ), 3 );
 			if ( count( $parts ) == 3 ) {
-				return $parts;
+				return $parts; // e.g. "backend/container/path"
+			} elseif ( count( $parts ) == 2 ) {
+				return array( $parts[0], $parts[1], '' ); // e.g. "backend/container" 
 			}
 		}
 		return array( null, null, null );
