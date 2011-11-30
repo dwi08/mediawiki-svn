@@ -16,6 +16,29 @@ class TempFSFile extends FSFile {
 	protected $canDelete = true; // garbage collect the temp file
 
 	/**
+	 * Make a new temporary file on the file system
+	 * 
+	 * @param $prefix string
+	 * @param $extension string
+	 * @return TempFSFile|null 
+	 */
+	public static function factory( $prefix, $extension = '' ) {
+		$tmpDest = tempnam( wfTempDir(), $prefix );
+		if ( $tmpDest === false ) {
+			return null;
+		}
+		if ( $extension != '' ) {
+			$path = "{$tmpDest}.{$extension}";
+			if ( !rename( $tmpDest, $path ) ) {
+				return null;
+			}
+		} else {
+			$path = $tmpDest;
+		}
+		return new self( $path );
+	}
+
+	/**
 	 * Flag to not clean up after the temporary file
 	 *
 	 * @return void

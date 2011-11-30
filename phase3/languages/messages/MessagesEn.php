@@ -3311,6 +3311,8 @@ Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and 
 'thumbnail_error'          => 'Error creating thumbnail: $1',
 'djvu_page_error'          => 'DjVu page out of range',
 'djvu_no_xml'              => 'Unable to fetch XML for DjVu file',
+'thumbnail-temp-create'    => 'Unable to create temporary thumbnail file',
+'thumbnail-dest-create'    => 'Unable to save thumbnail to destination',
 'thumbnail_invalid_params' => 'Invalid thumbnail parameters',
 'thumbnail_dest_directory' => 'Unable to create destination directory',
 'thumbnail_image-type'     => 'Image type not supported',

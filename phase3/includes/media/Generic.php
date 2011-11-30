@@ -205,24 +205,25 @@ abstract class MediaHandler {
 	 */
 	final function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
 		if ( FileBackend::isStoragePath( $dstPath ) ) {
-			// Create output on FS
-			$tmpDest = tempnam( wfTempDir(), 'transform' ) . '.' . $image->getExtension();
-			if ( $tmpDest === false ) {
-				throw new MWException( "Could not create temporary thumbnail file." );
+			// Create a temp FS file with the same extension
+			$tmpFile = TempFSFile::factory( 'transform', $image->getExtension() );
+			if ( !$tmpFile ) {
+				return new MediaTransformError( 'thumbnail_error',
+					$params['width'], 0, wfMsg( 'thumbnail-temp-create' ) );
 			}
+			$tmpDest = $tmpFile->getPath();
+			// Create the output thumbnail on the FS
 			$out = $this->doFSTransform( $image, $tmpDest, $dstUrl, $params, $flags );
-			// Copy any thumbnail from FS $tmpDest to $dstpath.
+			// Copy any thumbnail from FS into storage at $dstpath
 			// Note: no file is created if it's to be rendered client-side.
 			if ( !$out->isError() && is_file( $tmpDest ) ) {
 				$op = array( 'op' => 'store',
 					'source' => $tmpDest, 'dest' => $dstPath, 'overwriteDest' => true );
 				if ( !$image->getRepo()->getBackend()->doOperation( $op )->isOK() ) {
-					throw new MWException( "Could not copy thumbnail to $dstPath." );
+					return new MediaTransformError( 'thumbnail_error',
+						$params['width'], 0, wfMsg( 'thumbnail-dest-create' ) );
 				}
 			}
-			wfSuppressWarnings();
-			unlink( $tmpDest );
-			wfRestoreWarnings();
 		} else {
 			$out = $this->doFSTransform( $image, $dstPath, $dstUrl, $params, $flags );
 		}
