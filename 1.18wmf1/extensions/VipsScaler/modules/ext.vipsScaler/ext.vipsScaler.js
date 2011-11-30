@@ -36,7 +36,7 @@ jQuery( function( $ ) {
 			defaultgap: 50,
 			leftgap: 0,
 			rightgap: 0,
-			caption: false, 
+			caption: true, 
 			reveal: 0.5
    		});
 
