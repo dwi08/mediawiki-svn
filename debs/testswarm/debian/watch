@@ -1,2 +1,2 @@
 version=3
-http://githubredir.debian.net/github/jquery/testswarm/ v(.+)\.tar\.gz
+http://githubredir.debian.net/github/jquery/testswarm/v(.+)\.tar\.gz debian uupdate
