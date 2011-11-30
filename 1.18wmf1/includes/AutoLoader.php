@@ -828,6 +828,7 @@ $wgAutoloadLocalClasses = array(
 	'DeleteArchivedRevisionsImplementation' => 'maintenance/deleteArchivedRevisions.inc',
 	'DeleteDefaultMessages' => 'maintenance/deleteDefaultMessages.php',
 	'FakeMaintenance' => 'maintenance/Maintenance.php',
+	'LoggedUpdateMaintenance' => 'maintenance/Maintenance.php',
 	'Maintenance' => 'maintenance/Maintenance.php',
 	'FixExtLinksProtocolRelative' => 'maintenance/fixExtLinksProtocolRelative.php',
 	'PopulateCategory' => 'maintenance/populateCategory.php',
