@@ -54,6 +54,7 @@ $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-amex'] = $wgGlobalCollectG
 
 //Credit Card - misc.
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-US'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-US.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-CA'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-CA.html';
 
 /**
  * PayflowPro RapidHTML whitelist additions
