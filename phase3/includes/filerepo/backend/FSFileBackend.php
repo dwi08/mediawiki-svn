@@ -43,7 +43,7 @@ class FSFileBackend extends FileBackend {
 			return $status;
 		}
 		if ( is_file( $dest ) ) {
-			if ( isset( $params['overwriteDest'] ) ) {
+			if ( !empty( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
@@ -107,7 +107,7 @@ class FSFileBackend extends FileBackend {
 		}
 
 		if ( file_exists( $dest ) ) {
-			if ( isset( $params['overwriteDest'] ) ) {
+			if ( !empty( $params['overwriteDest'] ) ) {
 				// Windows does not support moving over existing files
 				if ( wfIsWindows() ) {
 					wfSuppressWarnings();
@@ -131,6 +131,7 @@ class FSFileBackend extends FileBackend {
 
 		wfSuppressWarnings();
 		$ok = rename( $source, $dest );
+		clearstatcache(); // file no longer at source
 		wfRestoreWarnings();
 		if ( !$ok ) {
 			$status->fatal( 'backend-fail-move', $params['source'], $params['dest'] );
@@ -149,7 +150,7 @@ class FSFileBackend extends FileBackend {
 			return $status;
 		}
 
-		if ( !file_exists( $source ) ) {
+		if ( !is_file( $source ) ) {
 			if ( empty( $params['ignoreMissingSource'] ) ) {
 				$status->fatal( 'backend-fail-delete', $params['source'] );
 			}
@@ -270,7 +271,7 @@ class FSFileBackend extends FileBackend {
 		}
 
 		if ( file_exists( $dest ) ) {
-			if ( isset( $params['overwriteDest'] ) ) {
+			if ( !empty( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
 				$ok = unlink( $dest );
 				wfRestoreWarnings();

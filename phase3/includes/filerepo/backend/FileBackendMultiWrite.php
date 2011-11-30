@@ -98,9 +98,10 @@ class FileBackendMultiWrite extends FileBackendBase {
 		}
 
 		$failedOps = array(); // failed ops with ignoreErrors
+		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
 		// Do pre-checks for each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
-			$status->merge( $fileOp->precheck() );
+			$status->merge( $fileOp->precheck( $predicates ) );
 			if ( !$status->isOK() ) { // operation failed?
 				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
 					$failedOps[$index] = 1; // remember not to call attempt()/finish()

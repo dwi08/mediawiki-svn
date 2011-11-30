@@ -2253,6 +2253,23 @@ It cannot be properly checked for security.',
 'uploadstash-errclear' => 'Clearing the files was unsuccessful.',
 'uploadstash-refresh'  => 'Refresh the list of files',
 
+# file backend
+'backend-fail-stream'        => 'Could not stream file $1.',
+'backend-fail-backup'        => 'Could not backup file $1.',
+'backend-fail-notexists'     => 'The file $1 does not exist.',
+'backend-fail-hashes'        => 'Could not get file hashes for comparison.',
+'backend-fail-notsame'       => 'A non-identical file already exists at $1.',
+'backend-fail-invalidpath'   => '$1 is not a valid storage path.',
+'backend-fail-delete'        => 'Could not delete file $1.',
+'backend-fail-alreadyexists' => 'The file $1 already exists.',
+'backend-fail-copy'          => 'Could not copy file $1 to $2',
+'backend-fail-move'          => 'Could not move file $1 to $2',
+'backend-fail-opentemp'      => 'Could not open temporary file.',
+'backend-fail-writetemp'     => 'Could not write to temporary file.',
+'backend-fail-closetemp'     => 'Could not close temporary file.',
+'backend-fail-read'          => 'Could not read file $1',
+'backend-fail-create'        => 'Could not create file $1',
+
 # img_auth script messages
 'img-auth-accessdenied'     => 'Access denied',
 'img-auth-nopathinfo'       => 'Missing PATH_INFO.

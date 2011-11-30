@@ -45,6 +45,19 @@ class TempFSFile extends FSFile {
 	}
 
 	/**
+	 * Purge this file off the file system
+	 * 
+	 * @return bool Success
+	 */
+	public function purge() {
+		$this->canDelete = false; // done
+		wfSuppressWarnings();
+		$ok = unlink( $this->path );
+		wfRestoreWarnings();
+		return $ok;
+	}
+
+	/**
 	 * Flag to not clean up after the temporary file
 	 *
 	 * @return void
