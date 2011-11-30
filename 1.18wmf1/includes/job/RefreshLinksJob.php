@@ -115,6 +115,22 @@ class RefreshLinksJob2 extends Job {
 			$options = new ParserOptions;
 			$parserOutput = $wgParser->parse( $revision->getText(), $title, $options, true, true, $revision->getId() );
 			wfProfileOut( __METHOD__.'-parse' );
+
+			// HACK for debugging bug 31576 --Roan
+			$templates = $parserOutput->getTemplates();
+			if ( isset( $templates[NS_TEMPLATE] ) ) { 
+				$badStuff = array_intersect( array( 'NAMESPACE', 'PAGENAME', 'SERVER', 'CONTENTLANGUAGE', 'PAGENAMEE' ), array_keys( $templates[NS_TEMPLATE] ) );
+				if ( $badStuff !== array() ) {
+					$hostname = wfHostname();
+					$wiki = wfWikiID();
+					$bad = implode( ', ', $badStuff );
+					$parsedPage = $title->getPrefixedText();
+					$jobPage = $this->title->getPrefixedText();
+					wfErrorLog( "JOB QUEUE bad templates: $bad when parsing [[$parsedPage]] on $wiki by $hostname job for [[$jobPage]]\n", 'udp://10.0.5.8:8420/bug31576jq' );
+				}
+			}
+
+
 			wfProfileIn( __METHOD__.'-update' );
 			$update = new LinksUpdate( $title, $parserOutput, false );
 			$update->doUpdate();
