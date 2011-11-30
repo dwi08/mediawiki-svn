@@ -187,7 +187,7 @@ abstract class MediaHandler {
 	 * @param $dstUrl String: Destination URL to use in output HTML
 	 * @param $params Array: Arbitrary set of parameters validated by $this->validateParam()
 	 */
-	function getTransform( $image, $dstPath, $dstUrl, $params ) {
+	final function getTransform( $image, $dstPath, $dstUrl, $params ) {
 		return $this->doTransform( $image, $dstPath, $dstUrl, $params, self::TRANSFORM_LATER );
 	}
 
@@ -203,7 +203,45 @@ abstract class MediaHandler {
 	 *
 	 * @return MediaTransformOutput
 	 */
-	abstract function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 );
+	final function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
+		if ( FileBackend::isStoragePath( $dstPath ) ) {
+			// Create output on FS
+			$tmpDest = tempnam( wfTempDir(), 'transform' ) . '.' . $image->getExtension();
+			if ( $tmpDest === false ) {
+				throw new MWException( "Could not create temporary thumbnail file." );
+			}
+			$out = $this->doFSTransform( $image, $tmpDest, $dstUrl, $params, $flags );
+			// Copy any thumbnail from FS $tmpDest to $dstpath.
+			// Note: no file is created if it's to be rendered client-side.
+			if ( !$out->isError() && is_file( $tmpDest ) ) {
+				$op = array( 'op' => 'store',
+					'source' => $tmpDest, 'dest' => $dstPath, 'overwriteDest' => true );
+				if ( !$image->getRepo()->getBackend()->doOperation( $op )->isOK() ) {
+					throw new MWException( "Could not copy thumbnail to $dstPath." );
+				}
+			}
+			wfSuppressWarnings();
+			unlink( $tmpDest );
+			wfRestoreWarnings();
+		} else {
+			$out = $this->doFSTransform( $image, $dstPath, $dstUrl, $params, $flags );
+		}
+		return $out;
+	}
+
+	/**
+	 * Get a MediaTransformOutput object representing the transformed output. Does the
+	 * transform unless $flags contains self::TRANSFORM_LATER.
+	 *
+	 * @param $image File: the image object
+	 * @param $dstPath String: filesystem destination path
+	 * @param $dstUrl String: destination URL to use in output HTML
+	 * @param $params Array: arbitrary set of parameters validated by $this->validateParam()
+	 * @param $flags Integer: a bitfield, may contain self::TRANSFORM_LATER
+	 *
+	 * @return MediaTransformOutput
+	 */
+	abstract function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 );
 
 	/**
 	 * Get the thumbnail extension and MIME type for a given source MIME type
@@ -260,7 +298,7 @@ abstract class MediaHandler {
 	 * @param $image File
 	 */
 	function getPageDimensions( $image, $page ) {
-		$gis = $this->getImageSize( $image, $image->getPath() );
+		$gis = $this->getImageSize( $image, $image->getLocalCopyPath() );
 		return array(
 			'width' => $gis[0],
 			'height' => $gis[1]
@@ -640,13 +678,6 @@ abstract class ImageHandler extends MediaHandler {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Get a transform output object without actually doing the transform
-	 */
-	function getTransform( $image, $dstPath, $dstUrl, $params ) {
-		return $this->doTransform( $image, $dstPath, $dstUrl, $params, self::TRANSFORM_LATER );
 	}
 
 	/**

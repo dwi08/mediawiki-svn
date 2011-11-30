@@ -86,7 +86,7 @@ class FSFile {
 			# logical mime type
 			$info['mime'] = $magic->improveTypeFromExtension( $info['file-mime'], $ext );
 
-			list( $info['major_mime'], $info['minor_mime'] ) = self::splitMime( $info['mime'] );
+			list( $info['major_mime'], $info['minor_mime'] ) = File::splitMime( $info['mime'] );
 			$info['media_type'] = $magic->getMediaType( $this->path, $info['mime'] );
 
 			# Get size in bytes
@@ -99,7 +99,7 @@ class FSFile {
 				$info['metadata'] = $handler->getMetadata( $tempImage, $this->path );
 				$gis = $handler->getImageSize( $tempImage, $this->path, $info['metadata'] );
 				if ( is_array( $gis ) ) {
-					$info = $this->extractImageSizeInfo() + $info;
+					$info = $this->extractImageSizeInfo( $gis ) + $info;
 				}
 			}
 			$info['sha1'] = $this->sha1Base36();

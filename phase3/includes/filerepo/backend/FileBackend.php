@@ -24,7 +24,7 @@
 abstract class FileBackendBase {
 	protected $name; // unique backend name
 	protected $wikiId; // unique wiki name
-	/** @var FileLockManager */
+	/** @var LockManager */
 	protected $lockManager;
 
 	/**
@@ -42,7 +42,7 @@ abstract class FileBackendBase {
 		$this->wikiId = isset( $config['wikiId'] )
 			? $config['wikiId']
 			: wfWikiID();
-		$this->lockManager = $config['lockManager'];
+		$this->lockManager = LockManagerGroup::singleton()->get( $config['lockManager'] );
 	}
 
 	/**
@@ -309,7 +309,6 @@ abstract class FileBackend extends FileBackendBase {
 	 *     source        : source storage path
 	 *     dest          : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
-	 *     overwriteSame : override any existing file at destination
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -540,9 +539,9 @@ abstract class FileBackend extends FileBackendBase {
 		if ( $parts[0] !== null ) { // either all null or all not null
 			list( $backend, $container, $relPath ) = $parts;
 			if ( $backend === $this->name ) { // sanity
-				$container = $this->fullContainerName( $container );
 				$relPath = $this->resolveContainerPath( $container, $relPath );
 				if ( $relPath !== null ) {
+					$container = $this->fullContainerName( $container );
 					return array( $container, $relPath ); // (container, path)
 				}
 			}

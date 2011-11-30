@@ -1076,6 +1076,17 @@ class FileRepo {
 	}
 
 	/**
+	 * Get a local FS copy of a file with a given virtual URL/storage path.
+	 * Returns null on failure.
+	 * 
+	 * @return TempFSFile|null
+	 */
+	public function getLocalCopy( $virtualUrl ) {
+		$path = $this->resolveToStoragePath( $virtualUrl );
+		return $this->backend->getLocalCopy( array( 'source' => $path ) );
+	}
+
+	/**
 	 * Get properties of a file with a given virtual URL/storage path.
 	 * Properties should ultimately be obtained via FSFile::getProps().
 	 *

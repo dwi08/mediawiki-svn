@@ -2,7 +2,7 @@
 /**
  * Class to handle file lock manager registration
  */
-class FileLockManagerGroup {
+class LockManagerGroup {
 	protected static $instance = null;
 
 	/** @var Array of (name => ('class' =>, 'config' =>, 'instance' =>)) */
@@ -25,7 +25,7 @@ class FileLockManagerGroup {
 	 * @return void
 	 * @throws MWException
 	 */
-	final public function register( array $configs ) {
+	public function register( array $configs ) {
 		foreach ( $configs as $config ) {
 			if ( !isset( $config['name'] ) ) {
 				throw new MWException( "Cannot register a lock manager with no name." );
@@ -35,7 +35,6 @@ class FileLockManagerGroup {
 				throw new MWException( "Cannot register lock manager `{$name}` with no class." );
 			}
 			$class = $config['class'];
-
 			unset( $config['class'] ); // lock manager won't need this
 			$this->managers[$name] = array(
 				'class'    => $class,
@@ -45,12 +44,11 @@ class FileLockManagerGroup {
 		}
 	}
 
-
 	/**
 	 * Get the lock manager object with a given name
 	 *
 	 * @param $name string
-	 * @return FileLockManager
+	 * @return LockManager
 	 * @throws MWException
 	 */
 	public function get( $name ) {

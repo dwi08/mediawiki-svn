@@ -85,7 +85,7 @@ class SvgHandler extends ImageHandler {
 	 * @param int $flags
 	 * @return bool|MediaTransformError|ThumbnailImage|TransformParameterError
 	 */
-	function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
+	function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
 		if ( !$this->normaliseParams( $image, $params ) ) {
 			return new TransformParameterError( $params );
 		}
@@ -93,7 +93,7 @@ class SvgHandler extends ImageHandler {
 		$clientHeight = $params['height'];
 		$physicalWidth = $params['physicalWidth'];
 		$physicalHeight = $params['physicalHeight'];
-		$srcPath = $image->getPath();
+		$srcPath = $image->getLocalCopyPath();
 
 		if ( $flags & self::TRANSFORM_LATER ) {
 			return new ThumbnailImage( $image, $dstUrl, $clientWidth, $clientHeight, $dstPath );

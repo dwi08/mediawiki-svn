@@ -106,7 +106,7 @@ class BitmapHandler extends ImageHandler {
 	 * @param int $flags
 	 * @return MediaTransformError|ThumbnailImage|TransformParameterError
 	 */
-	function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
+	function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
 		if ( !$this->normaliseParams( $image, $params ) ) {
 			return new TransformParameterError( $params );
 		}
@@ -126,7 +126,7 @@ class BitmapHandler extends ImageHandler {
 			'srcWidth' => $image->getWidth(),
 			'srcHeight' => $image->getHeight(),
 			'mimeType' => $image->getMimeType(),
-			'srcPath' => $image->getPath(),
+			'srcPath' => $image->getLocalCopyPath(),
 			'dstPath' => $dstPath,
 			'dstUrl' => $dstUrl,
 		);

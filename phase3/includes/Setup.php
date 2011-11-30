@@ -115,11 +115,11 @@ $wgNamespaceAliases['Image'] = NS_FILE;
 $wgNamespaceAliases['Image_talk'] = NS_FILE_TALK;
 
 /**
- * Initialise $wgFileLockManagers to include basic FS version
+ * Initialise $wgLockManagers to include basic FS version
  */
-$wgFileLockManagers[] = array(
+$wgLockManagers[] = array(
 	'name'          => 'fsLockManager',
-	'class'         => 'FSFileLockManager',
+	'class'         => 'FSLockManager',
 	'lockDirectory' => $wgUploadDirectory,
 );
 
@@ -234,9 +234,7 @@ function wfBackendForLegacyRepoConf( &$info ) {
 	return array(
 		'name'           => $backendName,
 		'class'          => 'FSFileBackend',
-		'lockManager'    => new FSFileLockManager(
-			array( 'lockDirectory' => "{$directory}/locks" )
-		),
+		'lockManager'    => 'fsLockManager',
 		'containerPaths' => array(
 			"public"  => "{$directory}",
 			"temp"    => "{$directory}/temp",
@@ -520,7 +518,7 @@ if ( !is_object( $wgAuth ) ) {
 }
 
 # Register file lock managers
-FileLockManagerGroup::singleton()->register( $wgFileLockManagers );
+LockManagerGroup::singleton()->register( $wgLockManagers );
 # Register file backends
 FileBackendGroup::singleton()->register( $wgFileBackends );
 

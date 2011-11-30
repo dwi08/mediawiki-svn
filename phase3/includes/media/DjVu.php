@@ -113,7 +113,7 @@ class DjVuHandler extends ImageHandler {
 	 * @param int $flags
 	 * @return MediaTransformError|ThumbnailImage|TransformParameterError
 	 */
-	function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
+	function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
 		global $wgDjvuRenderer, $wgDjvuPostProcessor;
 
 		// Fetch XML and check it, to give a more informative error message than the one which
@@ -131,7 +131,7 @@ class DjVuHandler extends ImageHandler {
 		}
 		$width = $params['width'];
 		$height = $params['height'];
-		$srcPath = $image->getPath();
+		$srcPath = $image->getLocalCopyPath();
 		$page = $params['page'];
 		if ( $page > $this->pageCount( $image ) ) {
 			return new MediaTransformError( 'thumbnail_error', $width, $height, wfMsg( 'djvu_page_error' ) );

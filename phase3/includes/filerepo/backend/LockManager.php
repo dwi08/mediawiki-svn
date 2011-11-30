@@ -8,7 +8,7 @@
  * 
  * Subclasses should avoid throwing exceptions at all costs.
  */
-abstract class FileLockManager {
+abstract class LockManager {
 	/* Lock types; stronger locks have high values */
 	const LOCK_SH = 1; // shared lock (for reads)
 	const LOCK_EX = 2; // exclusive lock (for writes)
@@ -24,7 +24,7 @@ abstract class FileLockManager {
 	 * Lock the resources at the given abstract paths
 	 * 
 	 * @param $paths Array List of resource names
-	 * @param $type integer FileLockManager::LOCK_EX, FileLockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @return Status 
 	 */
 	final public function lock( array $paths, $type = self::LOCK_EX ) {
@@ -47,7 +47,7 @@ abstract class FileLockManager {
 	 * Lock a resource with the given key
 	 * 
 	 * @param $key Array List of keys to lock (40 char hex hashes)
-	 * @param $type integer FileLockManager::LOCK_EX, FileLockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @return string
 	 */
 	abstract protected function doLock( array $keys, $type );
@@ -57,21 +57,21 @@ abstract class FileLockManager {
 	 * If $type is given, then only locks of that type should be cleared.
 	 * 
 	 * @param $key Array List of keys to unlock (40 char hex hashes)
-	 * @param $type integer FileLockManager::LOCK_EX, FileLockManager::LOCK_SH, or 0
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH, or 0
 	 * @return string
 	 */
 	abstract protected function doUnlock( array $keys, $type );
 }
 
 /**
- * Simple version of FileLockManager based on using FS lock files
+ * Simple version of LockManager based on using FS lock files
  *
  * This should work fine for small sites running off one server.
  * Do not use this with 'lockDir' set to an NFS mount unless the
  * NFS client is at least version 2.6.12. Otherwise, the BSD flock()
  * locks will be ignored; see http://nfs.sourceforge.net/#section_d.
  */
-class FSFileLockManager extends FileLockManager {
+class FSLockManager extends LockManager {
 	protected $lockDir; // global dir for all servers
 
 	/** @var Array Map of (locked key => lock type => count) */
@@ -233,7 +233,7 @@ class FSFileLockManager extends FileLockManager {
 }
 
 /**
- * Version of FileLockManager based on using DB table locks.
+ * Version of LockManager based on using DB table locks.
  * This is meant for multi-wiki systems that may share share files.
  *
  * All lock requests for a resource, identified by a hash string, will
@@ -250,7 +250,7 @@ class FSFileLockManager extends FileLockManager {
  * lock-wait timeout should be set via server config. In innoDB, this can
  * done via the innodb_deadlock_detect and innodb_lock_wait_timeout settings.
  */
-class DBFileLockManager extends FileLockManager {
+class DBLockManager extends LockManager {
 	/** @var Array Map of bucket indexes to peer sets */
 	protected $dbsByBucket; // (bucket index => (ldb1, ldb2, ...))
 	/** @var BagOStuff */
@@ -399,7 +399,7 @@ class DBFileLockManager extends FileLockManager {
 	 *
 	 * @param $server string
 	 * @param $keys Array
-	 * @param $type integer FileLockManager::LOCK_EX or FileLockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_EX or LockManager::LOCK_SH
 	 * @return void
 	 */
 	protected function doLockingQuery( $server, array $keys, $type ) {
@@ -444,7 +444,7 @@ class DBFileLockManager extends FileLockManager {
 	 *
 	 * @param $bucket integer
 	 * @param $keys Array List of resource keys to lock
-	 * @param $type integer FileLockManager::LOCK_EX or FileLockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_EX or LockManager::LOCK_SH
 	 * @return bool|string One of (true, 'cantacquire', 'dberrors')
 	 */
 	protected function doLockingQueryAll( $bucket, array $keys, $type ) {
@@ -668,9 +668,9 @@ class DBFileLockManager extends FileLockManager {
 }
 
 /**
- * Simple version of FileLockManager that does nothing
+ * Simple version of LockManager that does nothing
  */
-class NullFileLockManager extends FileLockManager {
+class NullLockManager extends LockManager {
 	function __construct( array $config ) {}
 
 	protected function doLock( array $keys, $type ) {

@@ -628,7 +628,6 @@ class LocalFile extends File {
 		}
 
 		$backend = $this->repo->getBackend();
-
 		$files = array( $dir );
 		$iterator = $backend->getFileList( array( 'directory' => $dir ) );
 		foreach ( $iterator as $file ) {
@@ -713,7 +712,6 @@ class LocalFile extends File {
 		}
 	}
 
-
 	/**
 	 * Delete cached transformed files for the current version only.
 	 */
@@ -722,7 +720,7 @@ class LocalFile extends File {
 
 		// Delete thumbnails
 		$files = $this->getThumbnails();
-		
+
 		// Give media handler a chance to filter the purge list
 		if ( !empty( $options['forRefresh'] ) ) {
 			$handler = $this->getHandler();
@@ -730,7 +728,7 @@ class LocalFile extends File {
 				$handler->filterThumbnailPurgeList( $files, $options );
 			}
 		}
-		
+
 		$dir = array_shift( $files );
 		$this->purgeThumbList( $dir, $files );
 
@@ -752,16 +750,19 @@ class LocalFile extends File {
 	 * @param $dir string base dir of the files.
 	 * @param $files array of strings: relative filenames (to $dir)
 	 */
-	protected function purgeThumbList($dir, $files) {
+	protected function purgeThumbList( $dir, $files ) {
 		wfDebug( __METHOD__ . ": " . var_export( $files, true ) . "\n" );
+		$backend = $this->repo->getBackend();
 		foreach ( $files as $file ) {
 			# Check that the base file name is part of the thumb name
 			# This is a basic sanity check to avoid erasing unrelated directories
 			if ( strpos( $file, $this->getName() ) !== false ) {
-				$op = array( 'op' => 'delete', 'source' => "$dir/$file" );
-				$this->repo->getBackend()->doOperation( $op );
+				$op = array( 'op' => 'delete', 'source' => "{$dir}/{$file}" );
+				$backend->doOperation( $op );
 			}
 		}
+		# Clear out directory if empty
+		$backend->clean( array( 'directory' => $dir ) );
 	}
 
 	/** purgeDescription inherited */

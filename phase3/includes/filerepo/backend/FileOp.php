@@ -187,7 +187,7 @@ abstract class FileOp {
 				return $status; // do nothing; either OK or bad status
 			}
 		} else {
-			$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+			$status->fatal( 'backend-fail-alreadyexists', $this->params['dest'] );
 			return $status;
 		}
 
@@ -566,7 +566,7 @@ class DeleteFileOp extends FileOp {
 
 	protected function doFinish() {
 		// Delete the source file
-		$status = $this->fileBackend->delete( $this->params );
+		$status = $this->backend->delete( $this->params );
 		return $status;
 	}
 

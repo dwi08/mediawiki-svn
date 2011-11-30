@@ -73,10 +73,18 @@ abstract class File {
 	var $lastError, $redirected, $redirectedTitle;
 
 	/**
+	 * @var TempFSFile|false 
+	 */
+	protected $tmpFile;
+
+	/**
 	 * @var MediaHandler
 	 */
 	protected $handler;
 
+	/**
+	 * @var string
+	 */
 	protected $url, $extension, $name, $path, $hashPath, $pageCount, $transformScript;
 
 	/**
@@ -319,6 +327,27 @@ abstract class File {
 			$this->path = $this->repo->getZonePath( 'public' ) . '/' . $this->getRel();
 		}
 		return $this->path;
+	}
+
+	/**
+	 * Get a local FS copy of this file and return the path.
+	 * Returns false on failure.
+	 * 
+	 * @return string|false
+	 */
+	public function getLocalCopyPath() {
+		$this->assertRepoDefined();
+		if ( !isset( $this->tmpFile ) ) {
+			$this->tmpFile = $this->repo->getLocalCopy( $this->getVirtualUrl() );
+			if ( !$this->tmpFile ) {
+				$this->tmpFile = false; // null => false; cache negative hits
+			}
+		}
+		if ( $this->tmpFile ) {
+			return $this->tmpFile->getPath();
+		} else {
+			return false;
+		}
 	}
 
 	/**

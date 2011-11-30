@@ -42,14 +42,13 @@ class FSFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
 			return $status;
 		}
-
-		if ( file_exists( $dest ) ) {
+		if ( is_file( $dest ) ) {
 			if ( isset( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $param['dest'] );
+					$status->fatal( 'backend-fail-delete', $params['dest'] );
 					return $status;
 				}
 			} else {
@@ -57,7 +56,7 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			if ( !wfMkdirParents( $dest ) ) {
+			if ( !wfMkdirParents( dirname( $dest ) ) ) {
 				$status->fatal( 'directorycreateerror', $param['dest'] );
 				return $status;
 			}
@@ -115,7 +114,7 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			if ( !wfMkdirParents( $dest ) ) {
+			if ( !wfMkdirParents( dirname( $dest ) ) ) {
 				$status->fatal( 'directorycreateerror', $param['dest'] );
 				return $status;
 			}
@@ -142,7 +141,7 @@ class FSFileBackend extends FileBackend {
 		}
 
 		if ( !file_exists( $source ) ) {
-			if ( !$params['ignoreMissingSource'] ) {
+			if ( empty( $params['ignoreMissingSource'] ) ) {
 				$status->fatal( 'backend-fail-delete', $params['source'] );
 			}
 			return $status; // do nothing; either OK or bad status
@@ -170,14 +169,14 @@ class FSFileBackend extends FileBackend {
 
 		// Check if the destination file exists and we can't handle that
 		$destExists = file_exists( $dest );
-		if ( $destExists && !$params['overwriteDest'] && !$params['overwriteSame'] ) {
+		if ( $destExists && empty( $params['overwriteDest'] ) ) {
 			$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
 			return $status;
 		}
 
 		// Create a new temporary file...
 		wfSuppressWarnings();
-		$tmpPath = tempnam( wfTempDir(), 'file_concatenate' );
+		$tmpPath = tempnam( wfTempDir(), 'concatenate' );
 		wfRestoreWarnings();
 		if ( $tmpPath === false ) {
 			$status->fatal( 'backend-fail-createtemp' );
@@ -220,26 +219,19 @@ class FSFileBackend extends FileBackend {
 		// Handle overwrite behavior of file destination if applicable.
 		// Note that we already checked if no overwrite params were set above.
 		if ( $destExists ) {
-			if ( isset( $params['overwriteDest'] ) ) {
-				// Windows does not support moving over existing files
-				if ( wfIsWindows() ) {
-					wfSuppressWarnings();
-					$ok = unlink( $dest );
-					wfRestoreWarnings();
-					if ( !$ok ) {
-						$status->fatal( 'backend-fail-delete', $params['dest'] );
-						return $status;
-					}
+			// Windows does not support moving over existing files
+			if ( wfIsWindows() ) {
+				wfSuppressWarnings();
+				$ok = unlink( $dest );
+				wfRestoreWarnings();
+				if ( !$ok ) {
+					$status->fatal( 'backend-fail-delete', $params['dest'] );
+					return $status;
 				}
-			} elseif ( isset( $params['overwriteSame'] ) ) {
-				if ( !$this->filesAreSame( $tmpPath, $dest ) ) {
-					$status->fatal( 'backend-fail-notsame', $params['dest'] );
-				}
-				return $status; // do nothing; either OK or bad status
 			}
 		} else {
 			// Make sure destination directory exists
-			if ( !wfMkdirParents( $dest ) ) {
+			if ( !wfMkdirParents( dirname( $dest ) ) ) {
 				$status->fatal( 'directorycreateerror', $param['dest'] );
 				return $status;
 			}
@@ -282,7 +274,7 @@ class FSFileBackend extends FileBackend {
 				return $status;
 			}
 		} else {
-			if ( !wfMkdirParents( $dest ) ) {
+			if ( !wfMkdirParents( dirname( $dest ) ) ) {
 				$status->fatal( 'directorycreateerror', $param['dest'] );
 				return $status;
 			}
@@ -364,7 +356,7 @@ class FSFileBackend extends FileBackend {
 		}
 		wfSuppressWarnings();
 		if ( is_dir( $dir ) ) {
-			rmdir( $dir ); // Might have already gone away, spews errors if we don't.
+			rmdir( $dir ); // remove directory if empty
 		}
 		wfRestoreWarnings();
 		return $status;
@@ -413,7 +405,7 @@ class FSFileBackend extends FileBackend {
 		if ( $dir === null ) { // invalid storage path
 			return array(); // empty result
 		}
-		return new FileIterator( $dir );
+		return new FSFileIterator( $dir );
 	}
 
 	function streamFile( array $params ) {
@@ -445,7 +437,7 @@ class FSFileBackend extends FileBackend {
 		$ext = strtolower( $i ? substr( $source, $i + 1 ) : '' );
 		// Create a new temporary file...
 		wfSuppressWarnings();
-		$initialTmpPath = tempnam( wfTempDir(), 'file_localcopy' );
+		$initialTmpPath = tempnam( wfTempDir(), 'localcopy' );
 		wfRestoreWarnings();
 		if ( $initialTmpPath === false ) {
 			return null;
@@ -470,23 +462,6 @@ class FSFileBackend extends FileBackend {
 	}
 
 	/**
-	 * Check if two files are identical
-	 *
-	 * @param $path1 string Absolute filesystem path
-	 * @param $path2 string Absolute filesystem path
-	 * @return bool
-	 */
-	protected function filesAreSame( $path1, $path2 ) {
-		wfSuppressWarnings();
-		$same = ( // check size first since it's faster
-			filesize( $path1 ) === filesize( $path2 ) &&
-			sha1_file( $path1 ) === sha1_file( $path2 )
-		);
-		wfRestoreWarnings();
-		return $same;
-	}
-
-	/**
 	 * Chmod a file, suppressing the warnings
 	 *
 	 * @param $path string Absolute file system path
@@ -505,8 +480,9 @@ class FSFileBackend extends FileBackend {
  * Semi-DFS based file browsing iterator. The highest number of file handles
  * open at any given time is proportional to the height of the directory tree.
  */
-class FileIterator implements Iterator {
+class FSFileIterator implements Iterator {
 	private $directory; // starting directory
+	private $itemStart = 0;
 
 	private $position = 0;
 	private $currentFile = false;
@@ -524,6 +500,8 @@ class FileIterator implements Iterator {
 			$this->directory = substr( $this->directory, 0, -1 );
 		}
 		$this->directory = realpath( $directory );
+		// Remove internal base directory and trailing slash from results
+		$this->itemStart = strlen( $this->directory ) + 1;
 	}
 
 	private function load() {
@@ -549,7 +527,8 @@ class FileIterator implements Iterator {
 
 	function current() {
 		$this->load();
-		return $this->currentFile;
+		// Remove internal base directory and trailing slash from results
+		return substr( $this->currentFile, $this->itemStart );
 	}
 
 	function key() {
