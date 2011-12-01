@@ -1,0 +1,1057 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0038)http://en.wikipedia.org/wiki/Main_Page -->
+<html lang="en" dir="ltr" class="client-chrome client-chrome-12 client-webkit client-win client-js" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Wikipedia, the free encyclopedia</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="Minimalistic Slideshow Gallery with jQuery" />
+        <meta name="keywords" content="minimalistic, slideshow, jquery, gallery, thumbnails, css3"/>
+		<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen"/>
+        
+
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta name="generator" content="MediaWiki 1.18wmf1">
+<link rel="apple-touch-icon" href="http://en.wikipedia.org/apple-touch-icon.png">
+<link rel="shortcut icon" href="http://en.wikipedia.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="http://en.wikipedia.org/w/opensearch_desc.php" title="Wikipedia (en)">
+<link rel="EditURI" type="application/rsd+xml" href="http://en.wikipedia.org/w/api.php?action=rsd">
+<link rel="copyright" href="http://creativecommons.org/licenses/by-sa/3.0/">
+<link rel="alternate" type="application/atom+xml" title="Wikipedia Atom feed" href="http://en.wikipedia.org/w/index.php?title=Special:RecentChanges&feed=atom">
+<link rel="stylesheet" href="res/mw.css" type="text/css" media="all">
+<style type="text/css" media="all">body.page-Wikipedia_2011Appeal1 #mw-panel div.portal,body.page-Wikipedia_2011Appeal1 #p-namespaces,body.page-Wikipedia_2011Appeal1 #p-views,body.page-Wikipedia_2011Appeal1 #p-cactions,body.page-Wikipedia_2011Appeal1 #p-search,body.page-Wikipedia_2011Appeal1 #p-personal,body.page-Wikipedia_2011Appeal1 #catlinks,body.page-Wikipedia_2011Appeal1 #siteNotice,body.page-Wikipedia_2011Appeal1 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal1 div#content,body.page-Wikipedia_2011Appeal1 div#mw-head-base,body.page-Wikipedia_2011Appeal1 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal2 #mw-panel div.portal,body.page-Wikipedia_2011Appeal2 #p-namespaces,body.page-Wikipedia_2011Appeal2 #p-views,body.page-Wikipedia_2011Appeal2 #p-cactions,body.page-Wikipedia_2011Appeal2 #p-search,body.page-Wikipedia_2011Appeal2 #p-personal,body.page-Wikipedia_2011Appeal2 #catlinks,body.page-Wikipedia_2011Appeal2 #siteNotice,body.page-Wikipedia_2011Appeal2 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal2 div#content,body.page-Wikipedia_2011Appeal2 div#mw-head-base,body.page-Wikipedia_2011Appeal2 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal3 #mw-panel div.portal,body.page-Wikipedia_2011Appeal3 #p-namespaces,body.page-Wikipedia_2011Appeal3 #p-views,body.page-Wikipedia_2011Appeal3 #p-cactions,body.page-Wikipedia_2011Appeal3 #p-search,body.page-Wikipedia_2011Appeal3 #p-personal,body.page-Wikipedia_2011Appeal3 #catlinks,body.page-Wikipedia_2011Appeal3 #siteNotice,body.page-Wikipedia_2011Appeal3 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal3 div#content,body.page-Wikipedia_2011Appeal3 div#mw-head-base,body.page-Wikipedia_2011Appeal3 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal4 #mw-panel div.portal,body.page-Wikipedia_2011Appeal4 #p-namespaces,body.page-Wikipedia_2011Appeal4 #p-views,body.page-Wikipedia_2011Appeal4 #p-cactions,body.page-Wikipedia_2011Appeal4 #p-search,body.page-Wikipedia_2011Appeal4 #p-personal,body.page-Wikipedia_2011Appeal4 #catlinks,body.page-Wikipedia_2011Appeal4 #siteNotice,body.page-Wikipedia_2011Appeal4 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal4 div#content,body.page-Wikipedia_2011Appeal4 div#mw-head-base,body.page-Wikipedia_2011Appeal4 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal5 #mw-panel div.portal,body.page-Wikipedia_2011Appeal5 #p-namespaces,body.page-Wikipedia_2011Appeal5 #p-views,body.page-Wikipedia_2011Appeal5 #p-cactions,body.page-Wikipedia_2011Appeal5 #p-search,body.page-Wikipedia_2011Appeal5 #p-personal,body.page-Wikipedia_2011Appeal5 #catlinks,body.page-Wikipedia_2011Appeal5 #siteNotice,body.page-Wikipedia_2011Appeal5 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal5 div#content,body.page-Wikipedia_2011Appeal5 div#mw-head-base,body.page-Wikipedia_2011Appeal5 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal6 #mw-panel div.portal,body.page-Wikipedia_2011Appeal6 #p-namespaces,body.page-Wikipedia_2011Appeal6 #p-views,body.page-Wikipedia_2011Appeal6 #p-cactions,body.page-Wikipedia_2011Appeal6 #p-search,body.page-Wikipedia_2011Appeal6 #p-personal,body.page-Wikipedia_2011Appeal6 #catlinks,body.page-Wikipedia_2011Appeal6 #siteNotice,body.page-Wikipedia_2011Appeal6 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal6 div#content,body.page-Wikipedia_2011Appeal6 div#mw-head-base,body.page-Wikipedia_2011Appeal6 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal7 #mw-panel div.portal,body.page-Wikipedia_2011Appeal7 #p-namespaces,body.page-Wikipedia_2011Appeal7 #p-views,body.page-Wikipedia_2011Appeal7 #p-cactions,body.page-Wikipedia_2011Appeal7 #p-search,body.page-Wikipedia_2011Appeal7 #p-personal,body.page-Wikipedia_2011Appeal7 #catlinks,body.page-Wikipedia_2011Appeal7 #siteNotice,body.page-Wikipedia_2011Appeal7 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal7 div#content,body.page-Wikipedia_2011Appeal7 div#mw-head-base,body.page-Wikipedia_2011Appeal7 div#footer{background-color:transparent !important;background-image:none !important} body.page-Wikipedia_2011Appeal8 #mw-panel div.portal,body.page-Wikipedia_2011Appeal8 #p-namespaces,body.page-Wikipedia_2011Appeal8 #p-views,body.page-Wikipedia_2011Appeal8 #p-cactions,body.page-Wikipedia_2011Appeal8 #p-search,body.page-Wikipedia_2011Appeal8 #p-personal,body.page-Wikipedia_2011Appeal8 #catlinks,body.page-Wikipedia_2011Appeal8 #siteNotice,body.page-Wikipedia_2011Appeal8 #firstHeading{display:none !important}body.page-Wikipedia_2011Appeal8 div#content,body.page-Wikipedia_2011Appeal8 div#mw-head-base,body.page-Wikipedia_2011Appeal8 div#footer{background-color:transparent !important;background-image:none !important}
+
+/* cache key: enwiki:resourceloader:filter:minify-css:4:dde7479d0eee8bc570d33c801c3a5d73 */</style><style type="text/css" media="all">.mw-collapsible-toggle{float:right} li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+
+/* cache key: enwiki:resourceloader:filter:minify-css:4:4250852ed2349a0d4d0fc6509a3e7d4c */</style><style type="text/css" media="all">.js-messagebox{margin:1em 5%;padding:0.5em 2.5%;border:1px solid #ccc;background-color:#fcfcfc;font-size:0.8em}.js-messagebox .js-messagebox-group{margin:1px;padding:0.5em 2.5%;border-bottom:1px solid #ddd}.js-messagebox .js-messagebox-group:last-child{border-bottom:thin none transparent}
+
+/* cache key: enwiki:resourceloader:filter:minify-css:4:8b08bdc91c52a9ffba396dccfb5b473c */</style><style type="text/css" media="all">.suggestions{overflow:hidden;position:absolute;top:0px;left:0px;width:0px;border:none;z-index:1099;padding:0;margin:-1px -1px 0 0} html > body .suggestions{margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:Window;font-size:0.8em;cursor:pointer;border:solid 1px #aaaaaa;padding:0;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:white;background-color:Window;font-size:0.8em;cursor:pointer;border:solid 1px #aaaaaa;padding:0;margin:0}.suggestions-result{color:black;color:WindowText;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left}.suggestions-result-current{background-color:#4C59A6;background-color:Highlight;color:white;color:HighlightText}.suggestions-special .special-label{font-size:0.8em;color:gray;text-align:left}.suggestions-special .special-query{color:black;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:silver}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:white;color:HighlightText}.autoellipsis-matched,.highlight{font-weight:bold}
+
+/* cache key: enwiki:resourceloader:filter:minify-css:4:1421bbe1922a44daa3fbb100d858b3d8 */</style><style type="text/css" media="all">#mw-panel.collapsible-nav div.portal{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIwAAAABCAMAAAA7MLYKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEtQTFRF29vb2tra4ODg6urq5OTk4uLi6+vr7e3t7Ozs8PDw5+fn4+Pj4eHh3d3d39/f6Ojo5eXl6enp8fHx8/Pz8vLy7+/v3Nzc2dnZ2NjYnErj7QAAAD1JREFUeNq0wQUBACAMALDj7hf6JyUFGxzEnYhC9GaNPG1xVffGDErk/iCigLl1XV2xM49lfAxEaSM+AQYA9HMKuv4liFQAAAAASUVORK5CYII=);background-image:url(//bits.wikimedia.org/w/extensions-1.18/Vector/modules/images/portal-break.png?2011-09-19T16:38:20Z)!ie;background-position:left top;background-repeat:no-repeat;padding:0.25em 0 !important;margin:-11px 9px 10px 11px}#mw-panel.collapsible-nav div.portal h5{color:#4D4D4D;font-weight:normal;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA9QTFRFeXl53d3dmpqasbGx////GU0iEgAAAAV0Uk5T/////wD7tg5TAAAAK0lEQVQI12NwgQIG0hhCDAwMTCJAhqMCA4MiWEoIJABiOCooQhULi5BqMgB2bh4svs8t+QAAAABJRU5ErkJggg==) left center no-repeat;background:url(//bits.wikimedia.org/w/extensions-1.18/Vector/modules/images/open.png?2011-09-19T16:38:20Z) left center no-repeat!ie;padding:4px 0 3px 1.5em;margin-bottom:0px}#mw-panel.collapsible-nav div.collapsed h5{color:#0645AD;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF3d3deXl5////nZ2dQA6SoAAAAAN0Uk5T//8A18oNQQAAADNJREFUeNpiYEIDDMQKMKALMDOgCTDCRWACcBG4AEwEIcDITEAFuhnotmC4g4EEzwEEGAADqgHmQSPJKgAAAABJRU5ErkJggg==) left center no-repeat;background:url(//bits.wikimedia.org/w/extensions-1.18/Vector/modules/images/closed-ltr.png?2011-09-19T16:38:20Z) left center no-repeat!ie;margin-bottom:0px}#mw-panel.collapsible-nav div h5:hover{cursor:pointer;text-decoration:none}#mw-panel.collapsible-nav div.collapsed h5:hover{text-decoration:underline}#mw-panel.collapsible-nav div.portal div.body{background:none !important;padding-top:0px;display:none}#mw-panel.collapsible-nav div.persistent div.body{display:block}#mw-panel.collapsible-nav div.first h5{display:none}#mw-panel.collapsible-nav div.persistent h5{background:none !important;padding-left:0.7em;cursor:default}#mw-panel.collapsible-nav div.portal div.body ul li{padding:0.25em 0}#mw-panel.collapsible-nav div.first{background-image:none;margin-top:0px}#mw-panel.collapsible-nav div.persistent div.body{margin-left:0.5em}
+
+/* cache key: enwiki:resourceloader:filter:minify-css:4:c8be98782f5923ebff49ad2985ebc275 */</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="res/mw2.css" type="text/css" media="all">
+<style type="text/css" media="all">a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: enwiki:resourceloader:filter:minify-css:4:f2a9127573a22335c2a9102b208c73e7 */</style>
+<!--[if lt IE 7]><style type="text/css">body{behavior:url("/w/skins-1.18/vector/csshover.min.htc")}</style><![endif]--><link type="text/css" rel="stylesheet" href="res/index.php"></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Main_Page action-view skin-vector">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<!-- content -->
+		<div id="content">
+			<a id="top"></a>
+			<div id="mw-js-message" style="display:none;" class="js-messagebox"></div>
+						<!-- sitenotice -->
+			<div id="siteNotice"><div id="centralNotice" class="expanded cn-default"><style type="text/css">
+
+#centralNotice.collapsed {
+  display: none;
+ }
+#cn-toggle-box {
+  float: right;
+ }
+.wci_image {
+border: 0;
+}
+
+body{
+				background:#ddd;
+				font-family:Arial;
+			}
+			h1{
+				position:relative;
+				text-indent:-9000px;
+				width:557px;
+				height:103px;
+				margin:20px auto 20px auto;
+				background:transparent url(title.png) no-repeat top left;
+			}
+			span.reference{
+				position:fixed;
+				left:10px;
+				bottom:10px;
+				font-size:12px;
+			}
+			span.reference a{
+				color:#666;
+				text-shadow:1px 1px 1px #fff;
+				text-transform:uppercase;
+				text-decoration:none;
+				margin-right:30px;
+			}
+			span.reference a:hover{
+				color:#333;
+			}
+			.content{
+				width:700px;
+				margin:0 auto;
+			}
+			
+			.msg_slideshow{
+				margin:0 auto;
+			}
+			a.back{
+				background:transparent url(back.png) no-repeat top left;
+				height:13px;
+				width:248px;
+				display:block;
+				clear:both;
+				text-indent:-9000px;
+				margin:20px auto;
+			}
+			a.back:hover{
+				background-position:0px -13px;
+			}
+</style>
+
+<div id="wlm-banner" class="plainlinks" style="background:#FCFCFC; border:1px solid #38AA43; margin:0 auto 1em auto; width:100%; font-size: 110%; overflow: hidden; text-align: center; padding: 0.5ex;">
+<div id="cn-toggle-box">
+    <a href="http://en.wikipedia.org/wiki/Main_Page#" onclick="toggleNotice();return false;"><img border="0" src="res/closewindow.png" alt="Close"></a>
+</div>
+<a class="wlm-mainlink" href="http://meta.wikimedia.org/wiki/WikiConference_India_2011/Registration">
+<img src="res/80px-Wiki_Conference_India_logo.svg.png" class="wci_image" style="float:left; margin-left: 15px; ">
+<img src="res/60px-Wikimedia_India_logo.svg.png" class="wci_image" style="float:right; margin-right: 15px;"></a><br>
+Registration for WikiConference India 2011, Mumbai is now open. <a class="wlm-mainlink" href="http://meta.wikimedia.org/wiki/WikiConference_India_2011/Registration">Click here to register.</a>
+
+</div></div><!-- centralNotice loads here --></div>
+			<!-- /sitenotice -->
+						<!-- firstHeading -->
+			<h1 id="firstHeading" class="firstHeading">Main Page</h1>
+			<!-- /firstHeading -->
+			<!-- bodyContent -->
+			<div id="bodyContent">
+								<!-- tagline -->
+				<div id="siteSub">From Wikipedia, the free encyclopedia</div>
+				<!-- /tagline -->
+								<!-- subtitle -->
+				<div id="contentSub"></div>
+				<!-- /subtitle -->
+																<!-- jumpto -->
+				<div id="jump-to-nav">
+					Jump to: <a href="http://en.wikipedia.org/wiki/Main_Page#mw-head">navigation</a>,
+					<a href="http://en.wikipedia.org/wiki/Main_Page#p-search">search</a>
+				</div>
+				<!-- /jumpto -->
+								<!-- bodycontent -->
+				<div lang="en" dir="ltr" class="mw-content-ltr"><table id="mp-topbanner" style="width:100%; background:#f9f9f9; margin:1.2em 0 6px 0; border:1px solid #ddd;">
+<tbody><tr>
+<td style="width:61%; color:#000;">
+<table style="width:280px; border:none; background:none;">
+<tbody><tr>
+<td style="width:280px; text-align:center; white-space:nowrap; color:#000;">
+<div style="font-size:162%; border:none; margin:0; padding:.1em; color:#000;">Welcome to <a href="http://en.wikipedia.org/wiki/Wikipedia" title="Wikipedia">Wikipedia</a>,</div>
+<div style="top:+0.2em; font-size:95%;">the <a href="http://en.wikipedia.org/wiki/Free_content" title="Free content">free</a> <a href="http://en.wikipedia.org/wiki/Encyclopedia" title="Encyclopedia">encyclopedia</a> that <a href="http://en.wikipedia.org/wiki/Wikipedia:Introduction" title="Wikipedia:Introduction">anyone&nbsp;can&nbsp;edit</a>.</div>
+<div id="articlecount" style="font-size:85%;"><a href="http://en.wikipedia.org/wiki/Special:Statistics" title="Special:Statistics">3,779,019</a> articles in <a href="http://en.wikipedia.org/wiki/English_language" title="English language">English</a></div>
+</td>
+</tr>
+</tbody></table>
+</td>
+<td style="width:13%; font-size:95%;">
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Arts" title="Portal:Arts">Arts</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Biography" title="Portal:Biography">Biography</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Geography" title="Portal:Geography">Geography</a></li>
+</ul>
+</td>
+<td style="width:13%; font-size:95%;">
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Portal:History" title="Portal:History">History</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Mathematics" title="Portal:Mathematics">Mathematics</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Science" title="Portal:Science">Science</a></li>
+</ul>
+</td>
+<td style="width:13%; font-size:95%;">
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Society" title="Portal:Society">Society</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Portal:Technology" title="Portal:Technology">Technology</a></li>
+<li><b><a href="http://en.wikipedia.org/wiki/Portal:Contents/Portals" title="Portal:Contents/Portals">All&nbsp;portals</a></b></li>
+</ul>
+</td>
+</tr>
+</tbody></table>
+<table id="mp-upper" style="width: 100%; margin:4px 0 0 0; background:none; border-spacing: 0px;">
+<tbody><tr>
+<td class="MainPageBG" style="width:55%; border:1px solid #cef2e0; background:#f5fffa; vertical-align:top; color:#000;" width='100px';>
+<table width="457" height="1185" id="mp-left" style="vertical-align:top; background:#f5fffa;">
+<tbody><tr>
+<th width="448" style="padding:2px;">
+<h2 id="mp-tfa-h2" style="margin:3px; background:#cef2e0; font-size:120%; font-weight:bold; border:1px solid #a3bfb1; text-align:left; color:#000; padding:0.2em 0.4em;"><span class="mw-headline" id="Today.27s_featured_article">Today's featured article</span></h2>
+</th>
+</tr>
+<tr>
+<td style="color:#000;">
+<div id="mp-tfa" style="padding:2px 5px;">
+
+
+<!-- shivansh -->
+
+<div class="content">
+		<div id="msg_slideshow" class="msg_slideshow">
+	  <div id="msg_wrapper" class="msg_wrapper">
+				</div>
+			<div id="msg_controls" class="msg_controls"><!-- right has to animate to 15px, default -110px -->
+				<a href="#" id="msg_grid" class="msg_grid"></a>
+				<a href="#" id="msg_prev" class="msg_prev"></a>
+				<a href="#" id="msg_pause_play" class="msg_pause"></a><!-- has to change to msg_play if paused-->
+				<a href="#" id="msg_next" class="msg_next"></a>
+			</div>
+			<div id="msg_thumbs" class="msg_thumbs"><!-- top has to animate to 0px, default -230px -->
+					<div class="msg_thumb_wrapper">
+					<a href="#"><img src="images/thumbs/1.jpg" alt="images/1.jpg"/></a>
+					<a href="#"><img src="images/thumbs/2.jpg" alt="images/2.jpg"/></a>
+					<a href="#"><img src="images/thumbs/3.jpg" alt="images/3.jpg"/></a>
+				</div>
+				<a href="#" id="msg_thumb_next" class="msg_thumb_next"></a>
+				<a href="#" id="msg_thumb_prev" class="msg_thumb_prev"></a>
+				<a href="#" id="msg_thumb_close" class="msg_thumb_close"></a>
+				<span class="msg_loading"></span><!-- show when next thumb wrapper loading -->
+				</div>
+			</div>
+
+
+			<div>
+				
+        <div>
+				</div>
+		</div>
+
+        <!-- The JavaScript -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+				/**
+				* interval : time between the display of images
+				* playtime : the timeout for the setInterval function
+				* current  : number to control the current image
+				* current_thumb : the index of the current thumbs wrapper
+				* nmb_thumb_wrappers : total number	of thumbs wrappers
+				* nmb_images_wrapper : the number of images inside of each wrapper
+				*/
+				var interval			= 4000;
+				var playtime;
+				var current 			= 0;
+				var current_thumb 		= 0;
+				var nmb_thumb_wrappers	= $('#msg_thumbs .msg_thumb_wrapper').length;
+				var nmb_images_wrapper  = 6;
+				/**
+				* start the slideshow
+				*/
+				play();
+				
+				/**
+				* show the controls when 
+				* mouseover the main container
+				*/
+				slideshowMouseEvent();
+				function slideshowMouseEvent(){
+					$('#msg_slideshow').unbind('mouseenter')
+									   .bind('mouseenter',showControls)
+									   .andSelf()
+									   .unbind('mouseleave')
+									   .bind('mouseleave',hideControls);
+					}
+				
+				/**
+				* clicking the grid icon,
+				* shows the thumbs view, pauses the slideshow, and hides the controls
+				*/
+				$('#msg_grid').bind('click',function(e){
+					hideControls();
+					$('#msg_slideshow').unbind('mouseenter').unbind('mouseleave');
+					pause();
+					$('#msg_thumbs').stop().animate({'top':'0px'},500);
+					e.preventDefault();
+				});
+				
+				/**
+				* closing the thumbs view,
+				* shows the controls
+				*/
+				$('#msg_thumb_close').bind('click',function(e){
+					showControls();
+					slideshowMouseEvent();
+					$('#msg_thumbs').stop().animate({'top':'-230px'},500);
+					e.preventDefault();
+				});
+				
+				/**
+				* pause or play icons
+				*/
+				$('#msg_pause_play').bind('click',function(e){
+					var $this = $(this);
+					if($this.hasClass('msg_play'))
+						play();
+					else
+						pause();
+					e.preventDefault();	
+				});
+				
+				/**
+				* click controls next or prev,
+				* pauses the slideshow, 
+				* and displays the next or prevoius image
+				*/
+				$('#msg_next').bind('click',function(e){
+					pause();
+					next();
+					e.preventDefault();
+				});
+				$('#msg_prev').bind('click',function(e){
+					pause();
+					prev();
+					e.preventDefault();
+				});
+				
+				/**
+				* show and hide controls functions
+				*/
+				function showControls(){
+					$('#msg_controls').stop().animate({'right':'15px'},500);
+				}
+				function hideControls(){
+					$('#msg_controls').stop().animate({'right':'-110px'},500);
+				}
+				
+				/**
+				* start the slideshow
+				*/
+				function play(){
+					next();
+					$('#msg_pause_play').addClass('msg_pause').removeClass('msg_play');
+					playtime = setInterval(next,interval)
+				}
+				
+				/**
+				* stops the slideshow
+				*/
+				function pause(){
+					$('#msg_pause_play').addClass('msg_play').removeClass('msg_pause');
+					clearTimeout(playtime);
+				}
+				
+				/**
+				* show the next image
+				*/
+				function next(){
+					++current;
+					showImage('r');
+				}
+				
+				/**
+				* shows the previous image
+				*/
+				function prev(){
+					--current;
+					showImage('l');
+				}
+				
+				/**
+				* shows an image
+				* dir : right or left
+				*/
+				function showImage(dir){
+					/**
+					* the thumbs wrapper being shown, is always 
+					* the one containing the current image
+					*/
+					alternateThumbs();
+					
+					/**
+					* the thumb that will be displayed in full mode
+					*/
+					var $thumb = $('#msg_thumbs .msg_thumb_wrapper:nth-child('+current_thumb+')')
+								.find('a:nth-child('+ parseInt(current - nmb_images_wrapper*(current_thumb -1)) +')')
+								.find('img');
+					if($thumb.length){
+						var source = $thumb.attr('alt');
+						var $currentImage = $('#msg_wrapper').find('img');
+						if($currentImage.length){
+							$currentImage.fadeOut(function(){
+								$(this).remove();
+								$('<img />').load(function(){
+									var $image = $(this);
+									resize($image);
+									$image.hide();
+									$('#msg_wrapper').empty().append($image.fadeIn());
+								}).attr('src',source);
+							});
+						}
+						else{
+							$('<img />').load(function(){
+									var $image = $(this);
+									resize($image);
+									$image.hide();
+									$('#msg_wrapper').empty().append($image.fadeIn());
+							}).attr('src',source);
+						}
+								
+					}
+					else{ //this is actually not necessary since we have a circular slideshow
+						if(dir == 'r')
+							--current;
+						else if(dir == 'l')
+							++current;	
+						alternateThumbs();
+						return;
+					}
+				}
+				
+				/**
+				* the thumbs wrapper being shown, is always 
+				* the one containing the current image
+				*/
+				function alternateThumbs(){
+					$('#msg_thumbs').find('.msg_thumb_wrapper:nth-child('+current_thumb+')')
+									.hide();
+					current_thumb = Math.ceil(current/nmb_images_wrapper);
+					/**
+					* if we reach the end, start from the beggining
+					*/
+					if(current_thumb > nmb_thumb_wrappers){
+						current_thumb 	= 1;
+						current 		= 1;
+					}	
+					/**
+					* if we are at the beggining, go to the end
+					*/					
+					else if(current_thumb == 0){
+						current_thumb 	= nmb_thumb_wrappers;
+						current 		= current_thumb*nmb_images_wrapper;
+					}
+					
+					$('#msg_thumbs').find('.msg_thumb_wrapper:nth-child('+current_thumb+')')
+									.show();	
+				}
+				
+				/**
+				* click next or previous on the thumbs wrapper
+				*/
+				$('#msg_thumb_next').bind('click',function(e){
+					next_thumb();
+					e.preventDefault();
+				});
+				$('#msg_thumb_prev').bind('click',function(e){
+					prev_thumb();
+					e.preventDefault();
+				});
+				function next_thumb(){
+					var $next_wrapper = $('#msg_thumbs').find('.msg_thumb_wrapper:nth-child('+parseInt(current_thumb+1)+')');
+					if($next_wrapper.length){
+						$('#msg_thumbs').find('.msg_thumb_wrapper:nth-child('+current_thumb+')')
+										.fadeOut(function(){
+											++current_thumb;
+											$next_wrapper.fadeIn();									
+										});
+					}
+				}
+				function prev_thumb(){
+					var $prev_wrapper = $('#msg_thumbs').find('.msg_thumb_wrapper:nth-child('+parseInt(current_thumb-1)+')');
+					if($prev_wrapper.length){
+						$('#msg_thumbs').find('.msg_thumb_wrapper:nth-child('+current_thumb+')')
+										.fadeOut(function(){
+											--current_thumb;
+											$prev_wrapper.fadeIn();									
+										});
+					}				
+				}
+				
+				/**
+				* clicking on a thumb, displays the image (alt attribute of the thumb)
+				*/
+				$('#msg_thumbs .msg_thumb_wrapper > a').bind('click',function(e){
+					var $this 		= $(this);
+					$('#msg_thumb_close').trigger('click');
+					var idx			= $this.index();
+					var p_idx		= $this.parent().index();
+					current			= parseInt(p_idx*nmb_images_wrapper + idx + 1);
+					showImage();
+					e.preventDefault();
+				}).bind('mouseenter',function(){
+					var $this 		= $(this);
+					$this.stop().animate({'opacity':1});
+				}).bind('mouseleave',function(){
+					var $this 		= $(this);	
+					$this.stop().animate({'opacity':0.5});
+				});
+				
+				/**
+				* resize the image to fit in the container (400 x 400)
+				*/
+				function resize($image){
+					var theImage 	= new Image();
+					theImage.src 	= $image.attr("src");
+					var imgwidth 	= theImage.width;
+					var imgheight 	= theImage.height;
+					
+					var containerwidth  = 400;
+					var containerheight = 400;
+                
+					if(imgwidth	> containerwidth){
+						var newwidth = containerwidth;
+						var ratio = imgwidth / containerwidth;
+						var newheight = imgheight / ratio;
+						if(newheight > containerheight){
+							var newnewheight = containerheight;
+							var newratio = newheight/containerheight;
+							var newnewwidth =newwidth/newratio;
+							theImage.width = newnewwidth;
+							theImage.height= newnewheight;
+						}
+						else{
+							theImage.width = newwidth;
+							theImage.height= newheight;
+						}
+					}
+					else if(imgheight > containerheight){
+						var newheight = containerheight;
+						var ratio = imgheight / containerheight;
+						var newwidth = imgwidth / ratio;
+						if(newwidth > containerwidth){
+							var newnewwidth = containerwidth;
+							var newratio = newwidth/containerwidth;
+							var newnewheight =newheight/newratio;
+							theImage.height = newnewheight;
+							theImage.width= newnewwidth;
+						}
+						else{
+							theImage.width = newwidth;
+							theImage.height= newheight;
+						}
+					}
+					$image.css({
+						'width'	:theImage.width,
+						'height':theImage.height
+					});
+				}
+            });
+        </script>
+
+
+
+
+<p>The <b><a href="http://en.wikipedia.org/wiki/Statue_of_Liberty" title="Statue of Liberty">Statue of Liberty</a></b> is a <a href="http://en.wiktionary.org/wiki/colossus#English" class="extiw" title="wikt:colossus">colossal</a> <a href="http://en.wikipedia.org/wiki/Neoclassicism" title="Neoclassicism">neoclassical</a> sculpture on <a href="http://en.wikipedia.org/wiki/Liberty_Island" title="Liberty Island">Liberty Island</a> in <a href="http://en.wikipedia.org/wiki/New_York_Harbor" title="New York Harbor">New York Harbor</a>, designed by <a href="http://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Bartholdi" title="Frédéric Bartholdi" class="mw-redirect">Frédéric Bartholdi</a> and dedicated on October 28, 1886. The statue, a gift to the United States from the people of France, is of a robed female figure representing <a href="http://en.wikipedia.org/wiki/Libertas" title="Libertas">Libertas</a>, the <a href="http://en.wikipedia.org/wiki/Roman_god" title="Roman god" class="mw-redirect">Roman goddess</a> of freedom, who bears a torch and a <i><a href="http://en.wikipedia.org/wiki/Tabula_ansata" title="Tabula ansata">tabula ansata</a></i> (a tablet evoking the law) upon which is inscribed the date of <a href="http://en.wikipedia.org/wiki/United_States_Declaration_of_Independence" title="United States Declaration of Independence">American independence</a>. It has become an iconic symbol of freedom and of the United States. Fundraising for the statue proved difficult, especially for the Americans, and by 1885 work on the statue's pedestal was threatened due to lack of funds. Publisher <a href="http://en.wikipedia.org/wiki/Joseph_Pulitzer" title="Joseph Pulitzer">Joseph Pulitzer</a> of the <i><a href="http://en.wikipedia.org/wiki/New_York_World" title="New York World">World</a></i> initiated a drive for donations to complete the project, and the campaign inspired over 120,000&nbsp;contributors, most of whom gave less than a dollar. The statue was constructed in France, shipped overseas in crates, and reassembled on the completed pedestal on what was then called Bedloe's Island. Its completion was marked by New York's first <a href="http://en.wikipedia.org/wiki/Ticker-tape_parade" title="Ticker-tape parade">ticker-tape parade</a> and a dedication ceremony presided over by <a href="http://en.wikipedia.org/wiki/President_of_the_United_States" title="President of the United States">President</a> <a href="http://en.wikipedia.org/wiki/Grover_Cleveland" title="Grover Cleveland">Grover Cleveland</a>. (<a href="http://en.wikipedia.org/wiki/Statue_of_Liberty" title="Statue of Liberty"><b>more...</b></a>)</p>
+<p>Recently featured: <a href="http://en.wikipedia.org/wiki/Rudolph_Cartier" title="Rudolph Cartier">Rudolph Cartier</a> – <a href="http://en.wikipedia.org/wiki/Northern_Bald_Ibis" title="Northern Bald Ibis">Northern Bald Ibis</a> – <a href="http://en.wikipedia.org/wiki/HMAS_Australia_(1911)" title="HMAS Australia (1911)">HMAS <i>Australia</i></a></p>
+<div style="float:right" class="noprint"><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Today%27s_featured_article/October_2011" title="Wikipedia:Today&#39;s featured article/October 2011">Archive</a></b> – <b><a href="https://lists.wikimedia.org/mailman/listinfo/daily-article-l" class="extiw" title="mail:daily-article-l">By email</a></b> – <b><a href="http://en.wikipedia.org/wiki/Wikipedia:Featured_articles" title="Wikipedia:Featured articles">More featured articles...</a></b></div>
+</div>
+</td>
+</tr>
+<tr>
+<th style="padding:2px;">
+<h2 id="mp-dyk-h2" style="margin:3px; background:#cef2e0; font-size:120%; font-weight:bold; border:1px solid #a3bfb1; text-align:left; color:#000; padding:0.2em 0.4em;"><span class="mw-headline" id="Did_you_know...">Did you know...</span></h2>
+</th>
+</tr>
+<tr>
+<td style="color:#000; padding:2px 5px 5px;">
+<div id="mp-dyk">
+<p><i>From Wikipedia's <a href="http://en.wikipedia.org/wiki/Wikipedia:Recent_additions" title="Wikipedia:Recent additions">newest content</a>:</i></p>
+<div style="float:right;margin-left:0.5em;">
+<p><a href="http://en.wikipedia.org/wiki/File:Octopus_vulgaris_2.jpg" class="image" title="Common octopus"><img alt="Common octopus" src="res/100px-Octopus_vulgaris_2.jpg" width="100" height="85"></a></p>
+</div>
+<ul>
+<li style="-moz-float-edge: content-box">... that <b><a href="http://en.wikipedia.org/wiki/Octopus_aquaculture" title="Octopus aquaculture">octopus aquaculture</a></b> <i>(common octopus pictured)</i> is being seriously investigated because of <a href="http://en.wikipedia.org/wiki/Overfishing" title="Overfishing">overfishing</a>, but so far it has been difficult to culture the early life stages?</li>
+<li style="-moz-float-edge: content-box">... that former couple <b><a href="http://en.wikipedia.org/wiki/Acha_Septriasa" title="Acha Septriasa">Acha Septriasa</a></b> and <b><a href="http://en.wikipedia.org/wiki/Irwansyah" title="Irwansyah">Irwansyah</a></b> united for their last <i><b><a href="http://en.wikipedia.org/wiki/Love_Story_(2011_film)" title="Love Story (2011 film)">Love Story</a></b></i> under the supervision of <b><a href="http://en.wikipedia.org/wiki/Zaskia_Sungkar" title="Zaskia Sungkar">Irwansyah's future wife</a></b> and direction of <b><a href="http://en.wikipedia.org/wiki/Hanny_Saputra" title="Hanny Saputra">Hanny Saputra</a></b>?</li>
+<li style="-moz-float-edge: content-box">... that the <b><a href="http://en.wikipedia.org/wiki/Bible_translations_into_Cornish" title="Bible translations into Cornish">first complete translation of the Bible</a></b> into the <a href="http://en.wikipedia.org/wiki/Cornish_language" title="Cornish language">Cornish language</a> was published in 2011?</li>
+<li style="-moz-float-edge: content-box">... that watching <b><a href="http://en.wikipedia.org/wiki/Tom_Parker_(basketball)" title="Tom Parker (basketball)">Tom Parker</a></b> play helped former <a href="http://en.wikipedia.org/wiki/Kentucky_Wildcats_men%27s_basketball" title="Kentucky Wildcats men&#39;s basketball">Kentucky Wildcats</a> basketball standout <a href="http://en.wikipedia.org/wiki/Jack_Givens" title="Jack Givens">Jack Givens</a> decide to attend Kentucky?</li>
+<li style="-moz-float-edge: content-box">... that the <b><a href="http://en.wikipedia.org/wiki/Rambhadracharya_bibliography" title="Rambhadracharya bibliography" class="mw-redirect">works of Jagadguru Rambhadracharya</a></b> include more than 90 titles, including published books and unpublished manuscripts?</li>
+<li style="-moz-float-edge: content-box">... that the <a href="http://en.wikipedia.org/wiki/Early_Christian_art_and_architecture" title="Early Christian art and architecture">early Christian</a> <a href="http://en.wikipedia.org/wiki/Martyrium_(architecture)" title="Martyrium (architecture)">Martyrion</a> of Saints Carpus and Papylus, which is part of the <b><a href="http://en.wikipedia.org/wiki/Church_of_Saint_Menas_of_Samatya" title="Church of Saint Menas of Samatya">Church of Saint Menas</a></b> complex in <a href="http://en.wikipedia.org/wiki/Istanbul" title="Istanbul">Istanbul</a>, currently houses two shops, an iron workshop and a car wash?</li>
+<li style="-moz-float-edge: content-box">... that <a href="http://en.wikipedia.org/wiki/Baseball" title="Baseball">baseball</a> player <b><a href="http://en.wikipedia.org/wiki/Paddy_Siglin" title="Paddy Siglin">Paddy Siglin</a></b> once got punched in the face by an <a href="http://en.wikipedia.org/wiki/Umpire_(baseball)" title="Umpire (baseball)">umpire</a>?<br style="clear:both;">
+<div style="text-align: right;" class="noprint"><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Recent_additions" title="Wikipedia:Recent additions">Archive</a></b> – <b><a href="http://en.wikipedia.org/wiki/Wikipedia:Your_first_article" title="Wikipedia:Your first article">Start a new article</a></b> – <b><a href="http://en.wikipedia.org/wiki/Template_talk:Did_you_know" title="Template talk:Did you know">Nominate an article</a></b></div>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</tbody></table>
+</td>
+
+
+
+<td style="border:1px solid transparent;"></td>
+<td class="MainPageBG" style="width:45%; border:1px solid #cedff2; background:#f5faff; vertical-align:top;">
+<table id="mp-right" style="width:100%; vertical-align:top; background:#f5faff;">
+<tbody><tr>
+<th style="padding:2px;">
+<h2 id="mp-itn-h2" style="margin:3px; background:#cedff2; font-size:120%; font-weight:bold; border:1px solid #a3b0bf; text-align:left; color:#000; padding:0.2em 0.4em;"><span class="mw-headline" id="In_the_news">In the news</span></h2>
+</th>
+</tr>
+<tr>
+<td style="color:#000; padding:2px 5px;">
+<div id="mp-itn">
+<div style="float:right;margin-left:0.5em;">
+</div>
+
+    <div id="tickerContainer" style="height:275px;	">
+      <dl id="ticker">
+                
+		
+<li style="-moz-float-edge: content-box">The <a href="http://en.wikipedia.org/wiki/Renaissance_Party" title="Renaissance Party">Renaissance Party</a>, led by <a href="http://en.wikipedia.org/wiki/Hamadi_Jebali" title="Hamadi Jebali">Hamadi Jebali</a> <i>(pictured)</i>, wins Tunisia's first <a href="http://en.wikipedia.org/wiki/Constituent_Assembly_of_Tunisia" title="Constituent Assembly of Tunisia">Constituent Assembly</a> <b><a href="http://en.wikipedia.org/wiki/Tunisian_Constituent_Assembly_election,_2011" title="Tunisian Constituent Assembly election, 2011">election</a></b> held since <a href="http://en.wikipedia.org/wiki/Tunisian_revolution" title="Tunisian revolution">the country's revolution</a>.</li>
+
+<li style="-moz-float-edge: content-box">The <a href="http://en.wikipedia.org/wiki/Boeing" title="Boeing">Boeing</a> <b><a href="http://en.wikipedia.org/wiki/Boeing_787_Dreamliner" title="Boeing 787 Dreamliner">787 Dreamliner</a></b> makes its inaugural commercial flight, from <a href="http://en.wikipedia.org/wiki/Haneda_Airport" title="Haneda Airport">Tokyo</a> to <a href="http://en.wikipedia.org/wiki/Hong_Kong_International_Airport" title="Hong Kong International Airport">Hong Kong</a>.</li>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/President_of_Argentina" title="President of Argentina">Argentine President</a> <a href="http://en.wikipedia.org/wiki/Cristina_Fern%C3%A1ndez_de_Kirchner" title="Cristina Fernández de Kirchner">Cristina Fernández de Kirchner</a> <span style="white-space:nowrap;"><b><a href="http://en.wikipedia.org/wiki/Argentine_general_election,_2011" title="Argentine general election, 2011">is re-elected</a></b></span> for a second term.</li>
+<li style="-moz-float-edge: content-box"><b><a href="http://en.wikipedia.org/wiki/2011_Thailand_floods" title="2011 Thailand floods">Floods</a></b> in central Thailand reach <a href="http://en.wikipedia.org/wiki/Bangkok" title="Bangkok">Bangkok</a>, affecting more than two&nbsp;million people.</li>
+<li style="-moz-float-edge: content-box">A <a href="http://en.wikipedia.org/wiki/Moment_magnitude_scale" title="Moment magnitude scale">7.2-magnitude</a> <b><a href="http://en.wikipedia.org/wiki/2011_Van_earthquake" title="2011 Van earthquake">earthquake</a></b> strikes the eastern Turkish city of <a href="http://en.wikipedia.org/wiki/Van,_Turkey" title="Van, Turkey">Van</a>, leaving hundreds of people dead or missing.</li>
+<li style="-moz-float-edge: content-box">Italian <a href="http://en.wikipedia.org/wiki/Motorcycle_racing" title="Motorcycle racing">motorcycle racer</a> <b><a href="http://en.wikipedia.org/wiki/Marco_Simoncelli" title="Marco Simoncelli">Marco Simoncelli</a></b> dies after an accident at the <a href="http://en.wikipedia.org/wiki/2011_Malaysian_motorcycle_Grand_Prix" title="2011 Malaysian motorcycle Grand Prix">Malaysian motorcycle Grand Prix</a>.
+<div style="text-align: right;" class="noprint"><b><a href="http://en.wikinews.org/wiki/Main_Page" class="extiw" title="n:Main Page">Wikinews</a></b> – <b><a href="http://en.wikipedia.org/wiki/Deaths_in_2011" title="Deaths in 2011">Recent deaths</a></b> – <b><a href="http://en.wikipedia.org/wiki/Portal:Current_events" title="Portal:Current events">More&nbsp;current&nbsp;events...</a></b></div>
+</li>
+
+
+      </dl>
+        
+     
+	
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+	  $(function() {
+	  
+		//cache the ticker
+		var ticker = $("#ticker");
+		  
+		//wrap dt:dd pairs in divs
+		ticker.children().filter("dt").each(function() {
+		  
+		  var dt = $(this),
+		    container = $("<div>");
+		  
+		  dt.next().appendTo(container);
+		  dt.prependTo(container);
+		  
+		  container.appendTo(ticker);
+		});
+				
+		//hide the scrollbar
+		ticker.css("overflow", "hidden");
+		
+		//animator function
+		function animator(currentItem) {
+		    
+		  //work out new anim duration
+		  var distance = currentItem.height();
+			duration = (distance + parseInt(currentItem.css("marginTop"))) / 0.025;
+
+		  //animate the first child of the ticker
+		  currentItem.animate({ marginTop: -distance }, duration, "linear", function() {
+		    
+			//move current item to the bottom
+			currentItem.appendTo(currentItem.parent()).css("marginTop", 0);
+
+			//recurse
+			animator(currentItem.parent().children(":first"));
+		  }); 
+		};
+		
+		//start the ticker
+		animator(ticker.children(":first"));
+				
+		//set mouseenter
+		ticker.mouseenter(function() {
+		  
+		  //stop current animation
+		  ticker.children().stop();
+		  
+		});
+		
+		//set mouseleave
+		ticker.mouseleave(function() {
+		          
+          //resume animation
+		  animator(ticker.children(":first"));
+		  
+		});
+	  });
+    </script>
+
+
+    </div>
+
+</div>
+
+</td>
+</tr>
+
+
+
+
+
+</table>
+
+<table id="mp-right" style="width:100%; vertical-align:top; background:#f5faff;">
+
+
+<tr>
+<th style="padding:2px;">
+
+<h2 id="mp-otd-h2" style="margin:3px; background:#cedff2; font-size:120%; font-weight:bold; border:1px solid #a3b0bf; text-align:left; color:#000; padding:0.2em 0.4em;"><span class="mw-headline" id="On_this_day...">On this day...</span></h2>
+</th>
+</tr>
+<tr>
+<td style="color:#000; padding:2px 5px 5px;">
+<div id="mp-otd">
+<p><b><a href="http://en.wikipedia.org/wiki/October_28" title="October 28">October 28</a></b>: <a href="http://en.wikipedia.org/wiki/Calendar_of_saints" title="Calendar of saints">Feast day</a> of <b><a href="http://en.wikipedia.org/wiki/Simon_the_Zealot" title="Simon the Zealot">Simon the Zealot</a></b> (<a href="http://en.wikipedia.org/wiki/Western_Christianity" title="Western Christianity">Western Christianity</a>)</p>
+<div style="float:right;margin-left:0.5em;">
+<p><a href="http://en.wikipedia.org/wiki/File:Rome-Capitole-StatueConstantin.jpg" class="image" title="Statue of Constantine the Great"><img alt="Statue of Constantine the Great" src="res/75px-Rome-Capitole-StatueConstantin.jpg" width="75" height="100"></a></p>
+</div>
+<ul>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/312" title="312">312</a> – <a href="http://en.wikipedia.org/wiki/Constantine_the_Great" title="Constantine the Great">Constantine the Great</a> <i>(statue pictured)</i> defeated <a href="http://en.wikipedia.org/wiki/Maxentius" title="Maxentius">Maxentius</a> at the <b><a href="http://en.wikipedia.org/wiki/Battle_of_the_Milvian_Bridge" title="Battle of the Milvian Bridge">Battle of the Milvian Bridge</a></b> in <a href="http://en.wikipedia.org/wiki/Rome" title="Rome">Rome</a>.</li>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/1664" title="1664">1664</a> – The <a href="http://en.wikipedia.org/wiki/Duke_of_York" title="Duke of York">Duke of York and Albany</a>'s Maritime Regiment of Foot, the forerunner to the <b><a href="http://en.wikipedia.org/wiki/Royal_Marines" title="Royal Marines">Royal Marines</a></b>, was established at the grounds of the <a href="http://en.wikipedia.org/wiki/Honourable_Artillery_Company" title="Honourable Artillery Company">Honourable Artillery Company</a> in London.</li>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/1776" title="1776">1776</a> – <a href="http://en.wikipedia.org/wiki/American_Revolutionary_War" title="American Revolutionary War">American Revolutionary War</a>: As <a href="http://en.wikipedia.org/wiki/George_Washington" title="George Washington">George Washington</a>'s <a href="http://en.wikipedia.org/wiki/Continental_Army" title="Continental Army">Continental Army</a> retreated northward from New York City, the <a href="http://en.wikipedia.org/wiki/British_Army" title="British Army">British Army</a> <b><a href="http://en.wikipedia.org/wiki/Battle_of_White_Plains" title="Battle of White Plains">captured</a></b> the village of <a href="http://en.wikipedia.org/wiki/White_Plains,_New_York" title="White Plains, New York">White Plains</a>.</li>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/1835" title="1835">1835</a> – <a href="http://en.wikipedia.org/wiki/M%C4%81ori_people" title="Māori people">Māori</a> chiefs signed the <b><a href="http://en.wikipedia.org/wiki/Declaration_of_the_Independence_of_New_Zealand" title="Declaration of the Independence of New Zealand">Declaration of the Independence of New Zealand</a></b> and established the <b><a href="http://en.wikipedia.org/wiki/United_Tribes_of_New_Zealand" title="United Tribes of New Zealand">United Tribes of New Zealand</a></b>.</li>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/1928" title="1928">1928</a> – Indonesian composer <a href="http://en.wikipedia.org/wiki/Wage_Rudolf_Supratman" title="Wage Rudolf Supratman">Wage Rudolf Supratman</a> introduced "<b><a href="http://en.wikipedia.org/wiki/Indonesia_Raya" title="Indonesia Raya">Indonesia Raya</a></b>", now the country's national anthem.</li>
+<li style="-moz-float-edge: content-box"><a href="http://en.wikipedia.org/wiki/1995" title="1995">1995</a> – The world's deadliest <a href="http://en.wikipedia.org/wiki/Rapid_transit" title="Rapid transit">subway</a> disaster took place in <a href="http://en.wikipedia.org/wiki/Baku" title="Baku">Baku</a>, Azerbaijan, when an electrical malfunction <b><a href="http://en.wikipedia.org/wiki/1995_Baku_Metro_fire" title="1995 Baku Metro fire">caused a fire</a></b> that killed 289 passengers and injured 265 more.</li>
+</ul>
+<p>More anniversaries: <span style="white-space:nowrap;"><a href="http://en.wikipedia.org/wiki/October_27" title="October 27">October 27</a> –</span> <span style="white-space:nowrap;"><b><a href="http://en.wikipedia.org/wiki/October_28" title="October 28">October 28</a></b> –</span> <span style="white-space:nowrap;"><a href="http://en.wikipedia.org/wiki/October_29" title="October 29">October 29</a></span></p>
+<div style="text-align: right;" class="noprint"><span style="white-space:nowrap;"><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Selected_anniversaries/October" title="Wikipedia:Selected anniversaries/October">Archive</a></b> –</span> <span style="white-space:nowrap;"><b><a href="https://lists.wikimedia.org/mailman/listinfo/daily-article-l" class="extiw" title="mail:daily-article-l">By email</a></b> –</span> <span style="white-space:nowrap;"><b><a href="http://en.wikipedia.org/wiki/List_of_historical_anniversaries" title="List of historical anniversaries">List of historical anniversaries</a></b></span></div>
+<div style="text-align: right;"><small>It is now <span style="white-space:nowrap;">October 28, 2011</span> (<a href="http://en.wikipedia.org/wiki/Coordinated_Universal_Time" title="Coordinated Universal Time">UTC</a>) – <span class="plainlinks" id="purgelink"><span style="white-space:nowrap;"><a rel="nofollow" class="external text" href="http://en.wikipedia.org/w/index.php?title=Main_Page&action=purge">Refresh this page</a></span></span></small></div>
+</div>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+<table id="mp-lower" style="margin:4px 0 0 0; width:100%; background:none; border-spacing: 0px;">
+<tbody><tr>
+<td class="MainPageBG" style="width:100%; border:1px solid #ddcef2; background:#faf5ff; vertical-align:top; color:#000;">
+<table id="mp-bottom" style="vertical-align:top; background:#faf5ff; color:#000; width:100%">
+<tbody><tr>
+<th style="padding:2px;">
+<h2 id="mp-tfp-h2" style="margin:3px; background:#ddcef2; font-size:120%; font-weight:bold; border:1px solid #afa3bf; text-align:left; color:#000; padding:0.2em 0.4em"><span class="mw-headline" id="Today.27s_featured_picture">Today's featured picture</span></h2>
+</th>
+</tr>
+<tr>
+<td style="color:#000; padding:2px;">
+<div id="mp-tfp">
+<table style="margin:0 3px 3px; width:100%; text-align:left; background-color:transparent; border-collapse: collapse;">
+<tbody><tr>
+<td style="padding:0 0.9em 0 0;"><a href="http://en.wikipedia.org/wiki/File:Phascolarctos_cinereus_Bonorong.jpg" class="image" title="Koala"><img alt="Koala" src="res/250px-Phascolarctos_cinereus_Bonorong.jpg" width="250" height="386"></a></td>
+<td style="padding:0 6px 0 0">
+<p>A female <b><a href="http://en.wikipedia.org/wiki/Koala" title="Koala">koala</a></b> (<i>Phascolarctos cinereus</i>), an <a href="http://en.wikipedia.org/wiki/Arboreal_locomotion" title="Arboreal locomotion">arboreal</a> <a href="http://en.wikipedia.org/wiki/Herbivore" title="Herbivore">herbivorous</a> <a href="http://en.wikipedia.org/wiki/Marsupial" title="Marsupial">marsupial</a> native to coastal regions of eastern and southern Australia. The word "koala" comes from the <a href="http://en.wikipedia.org/wiki/Sydney_language" title="Sydney language">Dharuk</a> word <i>gula</i>. English-speaking settlers from the late 18th century first called it "koala bear" due to its similarity in appearance to <a href="http://en.wikipedia.org/wiki/Bear" title="Bear">bears</a>, although they are not at all related. Instead, its closest living relative is the <a href="http://en.wikipedia.org/wiki/Wombat" title="Wombat">wombat</a>.</p>
+<small>Photo: <a href="http://en.wikipedia.org/wiki/User:JJ_Harrison" title="User:JJ Harrison">JJ Harrison</a></small>
+<div style="text-align:right;">
+<p>Recently featured: <a href="http://en.wikipedia.org/wiki/Template:POTD/2011-10-27" title="Template:POTD/2011-10-27"><i>Big &amp; Small</i></a> – <a href="http://en.wikipedia.org/wiki/Template:POTD/2011-10-26" title="Template:POTD/2011-10-26">Crimson Rosella</a> – <a href="http://en.wikipedia.org/wiki/Template:POTD/2011-10-25" title="Template:POTD/2011-10-25">Crab feeding on sea urchin</a><br></p>
+<div class="noprint"><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Picture_of_the_day/October_2011" title="Wikipedia:Picture of the day/October 2011">Archive</a></b> – <b><a href="http://en.wikipedia.org/wiki/Wikipedia:Featured_pictures" title="Wikipedia:Featured pictures">More featured pictures...</a></b></div>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+<div id="mp-other" style="padding-top:4px; padding-bottom:2px;">
+<h2> <span class="mw-headline" id="Other_areas_of_Wikipedia">Other areas of Wikipedia</span></h2>
+<ul>
+<li><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Community_portal" title="Wikipedia:Community portal">Community portal</a></b> – Bulletin board, projects, resources and activities covering a wide range of Wikipedia areas.</li>
+<li><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Help_desk" title="Wikipedia:Help desk">Help desk</a></b> – Ask questions about using Wikipedia.</li>
+<li><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Local_Embassy" title="Wikipedia:Local Embassy">Local embassy</a></b> – For Wikipedia-related communication in languages other than English.</li>
+<li><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Reference_desk" title="Wikipedia:Reference desk">Reference desk</a></b> – Serving as virtual librarians, Wikipedia volunteers tackle your questions on a wide range of subjects.</li>
+<li><b><a href="http://en.wikipedia.org/wiki/Wikipedia:News" title="Wikipedia:News">Site news</a></b> – Announcements, updates, articles and press releases on Wikipedia and the Wikimedia Foundation.</li>
+<li><b><a href="http://en.wikipedia.org/wiki/Wikipedia:Village_pump" title="Wikipedia:Village pump">Village pump</a></b> – For discussions about Wikipedia itself, including areas for technical issues and policies.</li>
+</ul>
+</div>
+<div id="mp-sister">
+<h2> <span class="mw-headline" id="Wikipedia.27s_sister_projects">Wikipedia's sister projects</span></h2>
+<p>Wikipedia is hosted by the <a href="http://en.wikipedia.org/wiki/Wikimedia_Foundation" title="Wikimedia Foundation">Wikimedia Foundation</a>, a non-profit organization that also hosts a range of other <a rel="nofollow" class="external text" href="http://wikimediafoundation.org/wiki/Our_projects">projects</a>:</p>
+<table class="layout plainlinks" style="width:100%; margin:auto; text-align:left; background:transparent;">
+<tbody><tr>
+<td style="text-align:center; padding:4px;"><a href="http://commons.wikimedia.org/wiki/" title="Commons"><img alt="Commons" src="res/Commons-logo-31px.png" width="31" height="41"></a></td>
+<td style="width:33%; padding:4px;"><b><a rel="nofollow" class="external text" href="http://commons.wikimedia.org/">Commons</a></b><br>
+Free media repository</td>
+<td style="text-align:center; padding:4px;"><a href="http://en.wikiquote.org/wiki/" title="Wikiquote"><img alt="Wikiquote" src="res/Wikiquote-logo-51px.png" width="51" height="41"></a></td>
+<td style="width:33%; padding:4px;"><b><a rel="nofollow" class="external text" href="http://en.wikiquote.org/">Wikiquote</a></b><br>
+Collection of quotations</td>
+<td style="text-align:center; padding:4px;"><a href="http://en.wikiversity.org/wiki/" title="Wikiversity"><img alt="Wikiversity" src="res/Wikiversity-logo-41px.png" width="41" height="32"></a></td>
+<td style="width:33%; padding:4px;"><b><a rel="nofollow" class="external text" href="http://en.wikiversity.org/">Wikiversity</a></b><br>
+Free learning materials and activities</td>
+</tr>
+<tr>
+<td style="text-align:center; padding:4px;"><a href="http://en.wikibooks.org/wiki/" title="Wikibooks"><img alt="Wikibooks" src="res/Wikibooks-logo-35px.png" width="35" height="35"></a></td>
+<td style="padding:4px;"><b><a rel="nofollow" class="external text" href="http://en.wikibooks.org/">Wikibooks</a></b><br>
+Free textbooks and manuals</td>
+<td style="text-align:center; padding:4px;"><a href="http://en.wikisource.org/wiki/" title="Wikisource"><img alt="Wikisource" src="res/Wikisource-logo-35px.png" width="35" height="37"></a></td>
+<td style="padding:4px;"><b><a rel="nofollow" class="external text" href="http://en.wikisource.org/">Wikisource</a></b><br>
+Free-content library</td>
+<td style="text-align:center; padding:4px;"><a href="http://en.wiktionary.org/wiki/" title="Wiktionary"><img alt="Wiktionary" src="res/Wiktionary-logo-51px.png" width="51" height="35"></a></td>
+<td style="padding:4px;"><b><a rel="nofollow" class="external text" href="http://en.wiktionary.org/">Wiktionary</a></b><br>
+Dictionary and thesaurus</td>
+</tr>
+<tr>
+<td style="text-align:center; padding:4px;"><a href="http://en.wikinews.org/wiki/" title="Wikinews"><img alt="Wikinews" src="res/Wikinews-logo-51px.png" width="51" height="30"></a></td>
+<td style="padding:4px;"><b><a rel="nofollow" class="external text" href="http://en.wikinews.org/">Wikinews</a></b><br>
+Free-content news</td>
+<td style="text-align:center; padding:4px;"><a href="http://species.wikimedia.org/wiki/" title="Wikispecies"><img alt="Wikispecies" src="res/Wikispecies-logo-35px.png" width="35" height="41"></a></td>
+<td style="padding:4px;"><b><a rel="nofollow" class="external text" href="http://species.wikimedia.org/">Wikispecies</a></b><br>
+Directory of species</td>
+<td style="text-align:center; padding:4px;"><a href="http://meta.wikimedia.org/wiki/" title="Meta-Wiki"><img alt="Meta-Wiki" src="res/Meta-logo-35px.png" width="35" height="35"></a></td>
+<td style="padding:4px;"><b><a rel="nofollow" class="external text" href="http://meta.wikimedia.org/">Meta-Wiki</a></b><br>
+Wikimedia project coordination</td>
+</tr>
+</tbody></table>
+</div>
+<div id="mp-lang">
+<h2> <span class="mw-headline" id="Wikipedia_languages">Wikipedia languages</span></h2>
+<div id="lang" class="nowraplinks nourlexpansion plainlinks">
+<p>This Wikipedia is written in <a href="http://en.wikipedia.org/wiki/English_language" title="English language">English</a>. Started in 2001<span style="display:none">&nbsp;(<span class="bday dtstart published updated">2001</span>)</span>, it currently contains <a href="http://en.wikipedia.org/wiki/Special:Statistics" title="Special:Statistics">3,779,019</a> articles. Many other Wikipedias are available; some of the largest are listed below.</p>
+<ul>
+<li id="lang-3">More than 650,000 articles: <a rel="nofollow" class="external text" href="http://de.wikipedia.org/wiki/"><span title="German (de:)" lang="de" xml:lang="de">Deutsch</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://es.wikipedia.org/wiki/"><span title="Spanish (es:)" lang="es" xml:lang="es">Español</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://fr.wikipedia.org/wiki/"><span title="French (fr:)" lang="fr" xml:lang="fr">Français</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://it.wikipedia.org/wiki/"><span title="Italian (it:)" lang="it" xml:lang="it">Italiano</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://nl.wikipedia.org/wiki/"><span title="Dutch (nl:)" lang="nl" xml:lang="nl">Nederlands</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://ja.wikipedia.org/wiki/"><span title="Japanese (ja:)" lang="ja" xml:lang="ja">日本語</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://pl.wikipedia.org/wiki/"><span title="Polish (pl:)" lang="pl" xml:lang="pl">Polski</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://pt.wikipedia.org/wiki/"><span title="Portuguese (pt:)" lang="pt" xml:lang="pt">Português</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://ru.wikipedia.org/wiki/"><span title="Russian (ru:)" lang="ru" xml:lang="ru">Русский</span></a></li>
+<li id="lang-2">More than 150,000 articles: <a rel="nofollow" class="external text" href="http://ar.wikipedia.org/wiki/"><span title="Arabic (ar:)" lang="ar" xml:lang="ar">العربية</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://id.wikipedia.org/wiki/"><span title="Indonesian (id:)" lang="id" xml:lang="id">Bahasa Indonesia</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://ca.wikipedia.org/wiki/"><span title="Catalan (ca:)" lang="ca" xml:lang="ca">Català</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://cs.wikipedia.org/wiki/"><span title="Czech (cs:)" lang="cs" xml:lang="cs">Česky</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://da.wikipedia.org/wiki/"><span title="Danish (da:)" lang="da" xml:lang="da">Dansk</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://eo.wikipedia.org/wiki/"><span title="Esperanto (eo:)" lang="eo" xml:lang="eo">Esperanto</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://fa.wikipedia.org/wiki/"><span title="Persian (fa:)" lang="fa" xml:lang="fa">فارسی</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://ko.wikipedia.org/wiki/"><span title="Korean (ko:)" lang="ko" xml:lang="ko">한국어</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://hu.wikipedia.org/wiki/"><span title="Hungarian (hu:)" lang="hu" xml:lang="hu">Magyar</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://no.wikipedia.org/wiki/"><span title="Norwegian (no:)" lang="no" xml:lang="no">‪Norsk (bokmål)‬</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://ro.wikipedia.org/wiki/"><span title="Romanian (ro:)" lang="ro" xml:lang="ro">Română</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://fi.wikipedia.org/wiki/"><span title="Finnish (fi:)" lang="fi" xml:lang="fi">Suomi</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://sv.wikipedia.org/wiki/"><span title="Swedish (sv:)" lang="sv" xml:lang="sv">Svenska</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://vi.wikipedia.org/wiki/"><span title="Vietnamese (vi:)" lang="vi" xml:lang="vi">Tiếng Việt</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://tr.wikipedia.org/wiki/"><span title="Turkish (tr:)" lang="tr" xml:lang="tr">Türkçe</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://uk.wikipedia.org/wiki/"><span title="Ukrainian (uk:)" lang="uk" xml:lang="uk">Українська</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://zh.wikipedia.org/wiki/"><span title="Chinese (zh:)" lang="zh" xml:lang="zh">中文</span></a></li>
+<li id="lang-1">More than 50,000 articles: <a rel="nofollow" class="external text" href="http://ms.wikipedia.org/wiki/"><span title="Malay (ms:)" lang="ms" xml:lang="ms">Bahasa Melayu</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://bg.wikipedia.org/wiki/"><span title="Bulgarian (bg:)" lang="bg" xml:lang="bg">Български</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://et.wikipedia.org/wiki/"><span title="Estonian (et:)" lang="et" xml:lang="et">Eesti</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://el.wikipedia.org/wiki/"><span title="Greek (el:)" lang="el" xml:lang="el">Ελληνικά</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://simple.wikipedia.org/wiki/"><span title="Simple English (simple:)" lang="simple" xml:lang="simple">Simple English</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://eu.wikipedia.org/wiki/"><span title="Basque (eu:)" lang="eu" xml:lang="eu">Euskara</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://gl.wikipedia.org/wiki/"><span title="Galician (gl:)" lang="gl" xml:lang="gl">Galego</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://he.wikipedia.org/wiki/"><span title="Hebrew (he:)" lang="he" xml:lang="he">עברית</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://hr.wikipedia.org/wiki/"><span title="Croatian (hr:)" lang="hr" xml:lang="hr">Hrvatski</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://lt.wikipedia.org/wiki/"><span title="Lithuanian (lt:)" lang="lt" xml:lang="lt">Lietuvių</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://nn.wikipedia.org/wiki/"><span title="Norwegian (Nynorsk) (nn:)" lang="nn" xml:lang="nn">‪Norsk (nynorsk)‬</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://sk.wikipedia.org/wiki/"><span title="Slovak (sk:)" lang="sk" xml:lang="sk">Slovenčina</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://sl.wikipedia.org/wiki/"><span title="Slovene (sl:)" lang="sl" xml:lang="sl">Slovenščina</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://sr.wikipedia.org/wiki/"><span title="Serbian (sr:)" lang="sr" xml:lang="sr">Српски / Srpski</span></a>&nbsp;<span style="font-weight:bold;">·</span>  <a rel="nofollow" class="external text" href="http://th.wikipedia.org/wiki/"><span title="Thai (th:)" lang="th" xml:lang="th">ไทย</span></a></li>
+</ul>
+</div>
+<div id="metalink" style="text-align:center;" class="plainlinks"><b><a rel="nofollow" class="external text" href="http://meta.wikimedia.org/wiki/List_of_Wikipedias">Complete list of Wikipedias</a></b></div>
+</div>
+
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 12364/1000000
+Post-expand include size: 46979/2048000 bytes
+Template argument size: 10773/2048000 bytes
+Expensive parser function count: 47/500
+-->
+
+<!-- Saved in parser cache with key enwiki:pcache:idhash:15580374-0!*!0!!*!4!* and timestamp 20111028131914 -->
+</div>				<!-- /bodycontent -->
+								<!-- printfooter -->
+				<div class="printfooter">
+				Retrieved from "<a href="http://en.wikipedia.org/w/index.php?title=Main_Page&oldid=447996010">http://en.wikipedia.org/w/index.php?title=Main_Page&amp;oldid=447996010</a>"				</div>
+				<!-- /printfooter -->
+												<!-- catlinks -->
+				<div id="catlinks" class="catlinks catlinks-allhidden"><div id="mw-hidden-catlinks" class="mw-hidden-cats-hidden">Hidden categories: <ul><li><a href="http://en.wikipedia.org/wiki/Category:Article_Feedback_Blacklist" title="Category:Article Feedback Blacklist">Article Feedback Blacklist</a></li></ul></div></div>				<!-- /catlinks -->
+												<div class="visualClear"></div>
+				<!-- debughtml -->
+								<!-- /debughtml -->
+			</div>
+			<!-- /bodyContent -->
+		</div>
+		<!-- /content -->
+		<!-- header -->
+		<div id="mw-head" class="noprint">
+			
+<!-- 0 -->
+<div id="p-personal" class="">
+	<h5>Personal tools</h5>
+	<ul>
+		<li id="pt-login"><a href="http://en.wikipedia.org/w/index.php?title=Special:UserLogin&returnto=Main_Page&campaign=ACP3" title="You are encouraged to log in; however, it is not mandatory. [alt-o]" accesskey="o">Log in / create account</a></li>
+	</ul>
+</div>
+
+<!-- /0 -->
+			<div id="left-navigation">
+				
+<!-- 0 -->
+<div id="p-namespaces" class="vectorTabs">
+	<h5>Namespaces</h5>
+	<ul>
+					<li id="ca-nstab-main" class="selected"><span><a href="res/Wikipedia, the free encyclopedia.htm" title="View the content page [alt-c]" accesskey="c">Main Page</a></span></li>
+					<li id="ca-talk"><span><a href="http://en.wikipedia.org/wiki/Talk:Main_Page" title="Discussion about the content page [alt-t]" accesskey="t">Discussion</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-variants" class="vectorMenu emptyPortlet">
+		<h5><span>Variants</span><a href="http://en.wikipedia.org/wiki/Main_Page#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+			</div>
+			<div id="right-navigation">
+				
+<!-- 0 -->
+<div id="p-views" class="vectorTabs">
+	<h5>Views</h5>
+	<ul>
+					<li id="ca-view" class="selected"><span><a href="res/Wikipedia, the free encyclopedia.htm">Read</a></span></li>
+					<li id="ca-viewsource"><span><a href="http://en.wikipedia.org/w/index.php?title=Main_Page&action=edit" title="This page is protected.
+You can view its source [alt-e]" accesskey="e">View source</a></span></li>
+					<li id="ca-history" class="collapsible"><span><a href="http://en.wikipedia.org/w/index.php?title=Main_Page&action=history" title="Past versions of this page [alt-h]" accesskey="h">View history</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-cactions" class="vectorMenu emptyPortlet">
+	<h5><span>Actions</span><a href="http://en.wikipedia.org/wiki/Main_Page#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+
+<!-- 2 -->
+<div id="p-search">
+	<h5><label for="searchInput">Search</label></h5>
+	<form action="http://en.wikipedia.org/w/index.php" id="searchform">
+		<input type="hidden" name="title" value="Special:Search">
+				<div id="simpleSearch">
+						<input type="text" name="search" value="" title="Search Wikipedia [alt-f]" accesskey="f" id="searchInput" tabindex="1" placeholder="Search" autocomplete="off">						<button type="submit" name="button" title="Search Wikipedia for this text" id="searchButton"><img src="res/search-ltr.png" alt="Search"></button>					</div>
+			</form>
+</div>
+
+<!-- /2 -->
+			</div>
+		</div>
+		<!-- /header -->
+		<!-- panel -->
+			<div id="mw-panel" class="noprint collapsible-nav">
+				<!-- logo -->
+					<div id="p-logo"><a style="background-image: url(//upload.wikimedia.org/wikipedia/en/b/bc/Wiki.png);" href="res/Wikipedia, the free encyclopedia.htm" title="Visit the main page"></a></div>
+				<!-- /logo -->
+				
+<!-- navigation -->
+<div class="portal first persistent" id="p-navigation">
+	<h5>Navigation</h5>
+	<div class="body">
+		<ul>
+			<li id="n-mainpage-description"><a href="res/Wikipedia, the free encyclopedia.htm" title="Visit the main page [alt-z]" accesskey="z">Main page</a></li>
+			<li id="n-contents"><a href="http://en.wikipedia.org/wiki/Portal:Contents" title="Guides to browsing Wikipedia">Contents</a></li>
+			<li id="n-featuredcontent"><a href="http://en.wikipedia.org/wiki/Portal:Featured_content" title="Featured content – the best of Wikipedia">Featured content</a></li>
+			<li id="n-currentevents"><a href="http://en.wikipedia.org/wiki/Portal:Current_events" title="Find background information on current events">Current events</a></li>
+			<li id="n-randompage"><a href="http://en.wikipedia.org/wiki/Special:Random" title="Load a random article [alt-x]" accesskey="x">Random article</a></li>
+			<li id="n-sitesupport"><a href="http://wikimediafoundation.org/wiki/Special:Landingcheck?landing_page=WMFJA085&language=en&utm_source=donate&utm_medium=sidebar&utm_campaign=20101204SB002" rel="nofollow" title="Support us">Donate to Wikipedia</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /navigation -->
+
+<!-- SEARCH -->
+
+<!-- /SEARCH -->
+
+<!-- interaction -->
+<div class="portal expanded" id="p-interaction">
+	<h5 tabindex="2">Interaction</h5>
+	<div class="body" style="display: block; ">
+		<ul>
+			<li id="n-help"><a href="http://en.wikipedia.org/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia">Help</a></li>
+			<li id="n-aboutsite"><a href="http://en.wikipedia.org/wiki/Wikipedia:About" title="Find out about Wikipedia">About Wikipedia</a></li>
+			<li id="n-portal"><a href="http://en.wikipedia.org/wiki/Wikipedia:Community_portal" title="About the project, what you can do, where to find things">Community portal</a></li>
+			<li id="n-recentchanges"><a href="http://en.wikipedia.org/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [alt-r]" accesskey="r">Recent changes</a></li>
+			<li id="n-contact"><a href="http://en.wikipedia.org/wiki/Wikipedia:Contact_us" title="How to contact Wikipedia">Contact Wikipedia</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /interaction -->
+
+<!-- TOOLBOX -->
+<div class="portal collapsed" id="p-tb">
+	<h5 tabindex="3">Toolbox</h5>
+	<div class="body">
+		<ul>
+			<li id="t-whatlinkshere"><a href="http://en.wikipedia.org/wiki/Special:WhatLinksHere/Main_Page" title="List of all English Wikipedia pages containing links to this page [alt-j]" accesskey="j">What links here</a></li>
+			<li id="t-recentchangeslinked"><a href="http://en.wikipedia.org/wiki/Special:RecentChangesLinked/Main_Page" title="Recent changes in pages linked from this page [alt-k]" accesskey="k">Related changes</a></li>
+			<li id="t-upload"><a href="http://en.wikipedia.org/wiki/Wikipedia:Upload" title="Upload files [alt-u]" accesskey="u">Upload file</a></li>
+			<li id="t-specialpages"><a href="http://en.wikipedia.org/wiki/Special:SpecialPages" title="A list of all special pages [alt-q]" accesskey="q">Special pages</a></li>
+			<li id="t-permalink"><a href="http://en.wikipedia.org/w/index.php?title=Main_Page&oldid=447996010" title="Permanent link to this revision of the page">Permanent link</a></li>
+<li id="t-cite"><a href="http://en.wikipedia.org/w/index.php?title=Special:Cite&page=Main_Page&id=447996010" title="Information on how to cite this page">Cite this page</a></li>		</ul>
+	</div>
+</div>
+
+<!-- /TOOLBOX -->
+
+<!-- coll-print_export -->
+<div class="portal collapsed" id="p-coll-print_export">
+	<h5 tabindex="4">Print/export</h5>
+	<div class="body">
+		<ul id="collectionPortletList"><li id="coll-create_a_book"><a href="http://en.wikipedia.org/w/index.php?title=Special:Book&bookcmd=book_creator&referer=Main+Page" title="Create a book or page collection" rel="nofollow">Create a book</a></li><li id="coll-download-as-rl"><a href="http://en.wikipedia.org/w/index.php?title=Special:Book&bookcmd=render_article&arttitle=Main+Page&oldid=447996010&writer=rl" title="Download a PDF version of this wiki page" rel="nofollow">Download as PDF</a></li><li id="t-print"><a href="http://en.wikipedia.org/w/index.php?title=Main_Page&printable=yes" title="Printable version of this page [alt-p]" accesskey="p">Printable version</a></li></ul>	</div>
+</div>
+
+<!-- /coll-print_export -->
+
+<!-- LANGUAGES -->
+<div class="portal expanded" id="p-lang">
+	<h5 tabindex="5">Languages</h5>
+	<div class="body" style="display: block; ">
+		<ul>
+			<li class="interwiki-simple"><a href="http://simple.wikipedia.org/wiki/">Simple English</a></li>
+			<li class="interwiki-ar"><a href="http://ar.wikipedia.org/wiki/">العربية</a></li>
+			<li class="interwiki-id"><a href="http://id.wikipedia.org/wiki/">Bahasa Indonesia</a></li>
+			<li class="interwiki-ms"><a href="http://ms.wikipedia.org/wiki/">Bahasa Melayu</a></li>
+			<li class="interwiki-bg"><a href="http://bg.wikipedia.org/wiki/">Български</a></li>
+			<li class="interwiki-ca"><a href="http://ca.wikipedia.org/wiki/">Català</a></li>
+			<li class="interwiki-cs"><a href="http://cs.wikipedia.org/wiki/">Česky</a></li>
+			<li class="interwiki-da"><a href="http://da.wikipedia.org/wiki/">Dansk</a></li>
+			<li class="interwiki-de"><a href="http://de.wikipedia.org/wiki/">Deutsch</a></li>
+			<li class="interwiki-et"><a href="http://et.wikipedia.org/wiki/">Eesti</a></li>
+			<li class="interwiki-el"><a href="http://el.wikipedia.org/wiki/">Ελληνικά</a></li>
+			<li class="interwiki-es"><a href="http://es.wikipedia.org/wiki/">Español</a></li>
+			<li class="interwiki-eo"><a href="http://eo.wikipedia.org/wiki/">Esperanto</a></li>
+			<li class="interwiki-eu"><a href="http://eu.wikipedia.org/wiki/">Euskara</a></li>
+			<li class="interwiki-fa"><a href="http://fa.wikipedia.org/wiki/">فارسی</a></li>
+			<li class="interwiki-fr"><a href="http://fr.wikipedia.org/wiki/">Français</a></li>
+			<li class="interwiki-gl"><a href="http://gl.wikipedia.org/wiki/">Galego</a></li>
+			<li class="interwiki-ko"><a href="http://ko.wikipedia.org/wiki/">한국어</a></li>
+			<li class="interwiki-he"><a href="http://he.wikipedia.org/wiki/">עברית</a></li>
+			<li class="interwiki-hr"><a href="http://hr.wikipedia.org/wiki/">Hrvatski</a></li>
+			<li class="interwiki-it"><a href="http://it.wikipedia.org/wiki/">Italiano</a></li>
+			<li class="interwiki-lt"><a href="http://lt.wikipedia.org/wiki/">Lietuvių</a></li>
+			<li class="interwiki-hu"><a href="http://hu.wikipedia.org/wiki/">Magyar</a></li>
+			<li class="interwiki-nl"><a href="http://nl.wikipedia.org/wiki/">Nederlands</a></li>
+			<li class="interwiki-ja"><a href="http://ja.wikipedia.org/wiki/">日本語</a></li>
+			<li class="interwiki-no"><a href="http://no.wikipedia.org/wiki/">‪Norsk (bokmål)‬</a></li>
+			<li class="interwiki-nn"><a href="http://nn.wikipedia.org/wiki/">‪Norsk (nynorsk)‬</a></li>
+			<li class="interwiki-pl"><a href="http://pl.wikipedia.org/wiki/">Polski</a></li>
+			<li class="interwiki-pt"><a href="http://pt.wikipedia.org/wiki/">Português</a></li>
+			<li class="interwiki-ro"><a href="http://ro.wikipedia.org/wiki/">Română</a></li>
+			<li class="interwiki-ru"><a href="http://ru.wikipedia.org/wiki/">Русский</a></li>
+			<li class="interwiki-sk"><a href="http://sk.wikipedia.org/wiki/">Slovenčina</a></li>
+			<li class="interwiki-sl"><a href="http://sl.wikipedia.org/wiki/">Slovenščina</a></li>
+			<li class="interwiki-sr"><a href="http://sr.wikipedia.org/wiki/">Српски / Srpski</a></li>
+			<li class="interwiki-fi"><a href="http://fi.wikipedia.org/wiki/">Suomi</a></li>
+			<li class="interwiki-sv"><a href="http://sv.wikipedia.org/wiki/">Svenska</a></li>
+			<li class="interwiki-th"><a href="http://th.wikipedia.org/wiki/">ไทย</a></li>
+			<li class="interwiki-vi"><a href="http://vi.wikipedia.org/wiki/">Tiếng Việt</a></li>
+			<li class="interwiki-tr"><a href="http://tr.wikipedia.org/wiki/">Türkçe</a></li>
+			<li class="interwiki-uk"><a href="http://uk.wikipedia.org/wiki/">Українська</a></li>
+			<li class="interwiki-zh"><a href="http://zh.wikipedia.org/wiki/">中文</a></li>
+		<li id="interwiki-completelist"><a href="http://meta.wikimedia.org/wiki/List_of_Wikipedias" title="Complete list of Wikipedias">Complete list</a></li></ul>
+	</div>
+</div>
+
+<!-- /LANGUAGES -->
+			</div>
+		<!-- /panel -->
+		<!-- footer -->
+		<div id="footer">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 2 September 2011 at 06:18.<br></li>
+											<li id="footer-info-copyright">Text is available under the <a rel="license" href="http://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">Creative Commons Attribution-ShareAlike License</a><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" style="display:none;"></a>;
+additional terms may apply.
+See <a href="http://wikimediafoundation.org/wiki/Terms_of_use">Terms of use</a> for details.<br>
+Wikipedia® is a registered trademark of the <a href="http://www.wikimediafoundation.org/">Wikimedia Foundation, Inc.</a>, a non-profit organization.<br></li><li class="noprint"><a class="internal" href="http://en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact us</a></li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="http://wikimediafoundation.org/wiki/Privacy_policy" title="wikimedia:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="http://en.wikipedia.org/wiki/Wikipedia:About" title="Wikipedia:About">About Wikipedia</a></li>
+											<li id="footer-places-disclaimer"><a href="http://en.wikipedia.org/wiki/Wikipedia:General_disclaimer" title="Wikipedia:General disclaimer">Disclaimers</a></li>
+											<li id="footer-places-mobileview"><a href="http://en.wikipedia.org/w/index.php?title=Main_Page&useformat=mobile">Mobile view</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+					<li id="footer-copyrightico">
+						<a href="http://wikimediafoundation.org/"><img src="res/wikimedia-button.png" width="88" height="31" alt="Wikimedia Foundation"></a>
+					</li>
+					<li id="footer-poweredbyico">
+						<a href="http://www.mediawiki.org/"><img src="res/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"></a>
+					</li>
+				</ul>
+						<div style="clear:both"></div>
+		</div>
+		<!-- /footer -->
+		<!-- fixalpha -->
+		<script type="text/javascript"> if ( window.isMSIE55 ) fixalpha(); </script>
+		<!-- /fixalpha -->
+</body></html>
