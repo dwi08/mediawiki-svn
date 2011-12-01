@@ -534,23 +534,51 @@ abstract class FileBackend extends FileBackendBase {
 	/**
 	 * Split a storage path (e.g. "mwstore://backend/container/path/to/object")
 	 * into a backend name, a container name and an internal relative object name.
+	 * This also checks that the storage path is valid and is within this backend.
 	 *
 	 * @param $storagePath string
 	 * @return Array (container, object name) or (null, null) if path is invalid
 	 */
 	final protected function resolveStoragePath( $storagePath ) {
-		$parts = self::splitStoragePath( $storagePath );
-		if ( $parts[0] !== null ) { // either all null or all not null
-			list( $backend, $container, $relPath ) = $parts;
-			if ( $backend === $this->name ) { // sanity
+		list( $backend, $container, $relPath ) = self::splitStoragePath( $storagePath );
+		if ( $backend === $this->name ) { // sanity
+			$relPath = self::normalizeStoragePath( $relPath );
+			if ( $relPath !== null ) { // valid
 				$relPath = $this->resolveContainerPath( $container, $relPath );
-				if ( $relPath !== null ) {
+				if ( $relPath !== null ) { // valid
 					$container = $this->fullContainerName( $container );
 					return array( $container, $relPath ); // (container, path)
 				}
 			}
 		}
 		return array( null, null );
+	}
+
+	/**
+	 * Validate and normalize a relative storage path.
+	 * Null is returned if the path involves directory traveral.
+	 * Traversal is insecure for FS backends and likely broken for others.
+	 *
+	 * @param $path string
+	 * @return string|null
+	 */
+	final protected static function normalizeStoragePath( $path ) {
+		// Normalize directory separator
+		$path = strtr( $path, '\\', '/' );
+		// Use the same traversal protection as Title::secureAndSplit()
+		if ( strpos( $path, '.' ) !== false ) {
+			if (
+				$path === '.' ||
+				$path === '..' ||
+				strpos( $path, './' ) === 0  ||
+				strpos( $path, '../' ) === 0 ||
+				strpos( $path, '/./' ) !== false ||
+				strpos( $path, '/../' ) !== false
+			) { 
+				return null;
+			}
+		}
+		return $path;
 	}
 
 	/**
