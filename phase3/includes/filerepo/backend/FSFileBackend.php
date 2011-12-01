@@ -37,9 +37,9 @@ class FSFileBackend extends FileBackend {
 	function store( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
 		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
 		}
 		if ( is_file( $dest ) ) {
@@ -48,25 +48,25 @@ class FSFileBackend extends FileBackend {
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $params['dest'] );
+					$status->fatal( 'backend-fail-delete', $params['dst'] );
 					return $status;
 				}
 			} else {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
 				return $status;
 			}
 		} else {
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dest'] );
+				$status->fatal( 'directorycreateerror', $param['dst'] );
 				return $status;
 			}
 		}
 
 		wfSuppressWarnings();
-		$ok = copy( $params['source'], $dest );
+		$ok = copy( $params['src'], $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( 'backend-fail-copy', $params['source'], $params['dest'] );
+			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 			return $status;
 		}
 
@@ -78,12 +78,12 @@ class FSFileBackend extends FileBackend {
 	function copy( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
-		$params['source'] = $source; // resolve source to FS path
+		$params['src'] = $source; // resolve source to FS path
 
 		return $this->store( $params ); // both source and dest are on FS
 	}
@@ -95,14 +95,14 @@ class FSFileBackend extends FileBackend {
 	function move( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
-		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
 		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
 		}
 
@@ -114,17 +114,17 @@ class FSFileBackend extends FileBackend {
 					$ok = unlink( $dest );
 					wfRestoreWarnings();
 					if ( !$ok ) {
-						$status->fatal( 'backend-fail-delete', $params['dest'] );
+						$status->fatal( 'backend-fail-delete', $params['dst'] );
 						return $status;
 					}
 				}
 			} else {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
 				return $status;
 			}
 		} else {
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dest'] );
+				$status->fatal( 'directorycreateerror', $param['dst'] );
 				return $status;
 			}
 		}
@@ -134,7 +134,7 @@ class FSFileBackend extends FileBackend {
 		clearstatcache(); // file no longer at source
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( 'backend-fail-move', $params['source'], $params['dest'] );
+			$status->fatal( 'backend-fail-move', $params['src'], $params['dst'] );
 			return $status;
 		}
 
@@ -144,15 +144,15 @@ class FSFileBackend extends FileBackend {
 	function delete( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
 
 		if ( !is_file( $source ) ) {
 			if ( empty( $params['ignoreMissingSource'] ) ) {
-				$status->fatal( 'backend-fail-delete', $params['source'] );
+				$status->fatal( 'backend-fail-delete', $params['src'] );
 			}
 			return $status; // do nothing; either OK or bad status
 		}
@@ -161,7 +161,7 @@ class FSFileBackend extends FileBackend {
 		$ok = unlink( $source );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( 'backend-fail-delete', $params['source'] );
+			$status->fatal( 'backend-fail-delete', $params['src'] );
 			return $status;
 		}
 
@@ -171,16 +171,16 @@ class FSFileBackend extends FileBackend {
 	function concatenate( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
 		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
 		}
 
 		// Check if the destination file exists and we can't handle that
 		$destExists = file_exists( $dest );
 		if ( $destExists && empty( $params['overwriteDest'] ) ) {
-			$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+			$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
 			return $status;
 		}
 
@@ -235,14 +235,14 @@ class FSFileBackend extends FileBackend {
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $params['dest'] );
+					$status->fatal( 'backend-fail-delete', $params['dst'] );
 					return $status;
 				}
 			}
 		} else {
 			// Make sure destination directory exists
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dest'] );
+				$status->fatal( 'directorycreateerror', $param['dst'] );
 				return $status;
 			}
 		}
@@ -252,7 +252,7 @@ class FSFileBackend extends FileBackend {
 		$ok = rename( $tmpPath, $dest );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( 'backend-fail-move', $tmpPath, $params['dest'] );
+			$status->fatal( 'backend-fail-move', $tmpPath, $params['dst'] );
 			return $status;
 		}
 
@@ -264,9 +264,9 @@ class FSFileBackend extends FileBackend {
 	function create( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $dest ) = $this->resolveStoragePath( $params['dest'] );
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
 		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dest'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
 		}
 
@@ -276,16 +276,16 @@ class FSFileBackend extends FileBackend {
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $param['dest'] );
+					$status->fatal( 'backend-fail-delete', $param['dst'] );
 					return $status;
 				}
 			} else {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dest'] );
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
 				return $status;
 			}
 		} else {
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dest'] );
+				$status->fatal( 'directorycreateerror', $param['dst'] );
 				return $status;
 			}
 		}
@@ -294,7 +294,7 @@ class FSFileBackend extends FileBackend {
 		$ok = file_put_contents( $dest, $params['content'] );
 		wfRestoreWarnings();
 		if ( !$ok ) {
-			$status->fatal( 'backend-fail-create', $params['dest'] );
+			$status->fatal( 'backend-fail-create', $params['dst'] );
 			return $status;
 		}
 
@@ -305,19 +305,19 @@ class FSFileBackend extends FileBackend {
 
 	function prepare( array $params ) {
 		$status = Status::newGood();
-		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dir'] );
 			return $status; // invalid storage path
 		}
 		if ( !wfMkdirParents( $dir ) ) {
-			$status->fatal( 'directorycreateerror', $param['directory'] );
+			$status->fatal( 'directorycreateerror', $param['dir'] );
 			return $status;
 		} elseif ( !is_writable( $dir ) ) {
-			$status->fatal( 'directoryreadonlyerror', $param['directory'] );
+			$status->fatal( 'directoryreadonlyerror', $param['dir'] );
 			return $status;
 		} elseif ( !is_readable( $dir ) ) {
-			$status->fatal( 'directorynotreadableerror', $param['directory'] );
+			$status->fatal( 'directorynotreadableerror', $param['dir'] );
 			return $status;
 		}
 		return $status;
@@ -325,13 +325,13 @@ class FSFileBackend extends FileBackend {
 
 	function secure( array $params ) {
 		$status = Status::newGood();
-		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dir'] );
 			return $status; // invalid storage path
 		}
 		if ( !wfMkdirParents( $dir ) ) {
-			$status->fatal( 'directorycreateerror', $param['directory'] );
+			$status->fatal( 'directorycreateerror', $param['dir'] );
 			return $status;
 		}
 		// Add a .htaccess file to the root of the deleted zone
@@ -340,7 +340,7 @@ class FSFileBackend extends FileBackend {
 			$ok = file_put_contents( "{$dir}/.htaccess", "Deny from all\n" );
 			wfRestoreWarnings();
 			if ( !$ok ) {
-				$status->fatal( 'backend-fail-create', $params['directory'] . '/.htaccess' );
+				$status->fatal( 'backend-fail-create', $params['dir'] . '/.htaccess' );
 				return $status;
 			}
 		}
@@ -350,7 +350,7 @@ class FSFileBackend extends FileBackend {
 			$ok = file_put_contents( "{$dir}/index.html", '' );
 			wfRestoreWarnings();
 			if ( !$ok ) {
-				$status->fatal( 'backend-fail-create', $params['dest'] . '/index.html' );
+				$status->fatal( 'backend-fail-create', $params['dst'] . '/index.html' );
 				return $status;
 			}
 		}
@@ -359,9 +359,9 @@ class FSFileBackend extends FileBackend {
 
 	function clean( array $params ) {
 		$status = Status::newGood();
-		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['directory'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['dir'] );
 			return $status; // invalid storage path
 		}
 		wfSuppressWarnings();
@@ -373,7 +373,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function fileExists( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
@@ -385,7 +385,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileHash( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
@@ -393,7 +393,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileTimestamp( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
@@ -402,7 +402,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileProps( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
 			return FSFile::placeholderProps(); // invalid storage path
 		}
@@ -411,7 +411,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getFileList( array $params ) {
-		list( $c, $dir ) = $this->resolveStoragePath( $params['directory'] );
+		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) { // invalid storage path
 			return array(); // empty result
 		}
@@ -421,15 +421,15 @@ class FSFileBackend extends FileBackend {
 	function streamFile( array $params ) {
 		$status = Status::newGood();
 
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['source'] );
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
 
 		$ok = StreamFile::stream( $source, array(), false );
 		if ( !$ok ) {
-			$status->fatal( 'backend-fail-stream', $params['source'] );
+			$status->fatal( 'backend-fail-stream', $params['src'] );
 			return $status;
 		}
 
@@ -437,7 +437,7 @@ class FSFileBackend extends FileBackend {
 	}
 
 	function getLocalCopy( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['source'] );
+		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
 			return null;
 		}

@@ -296,7 +296,7 @@ class ForeignAPIRepo extends FileRepo {
 		# @todo FIXME: Delete old thumbs that aren't being used. Maintenance script?
 		wfSuppressWarnings();
 		$backend = $this->getBackend();
-		$op = array( 'op' => 'create', 'dest' => $localFilename, 'content' => $thumb );
+		$op = array( 'op' => 'create', 'dst' => $localFilename, 'content' => $thumb );
 		if( !$backend->doOperation( $op )->isOK() ) {
 			wfRestoreWarnings();
 			wfDebug( __METHOD__ . " could not write to thumb path\n" );

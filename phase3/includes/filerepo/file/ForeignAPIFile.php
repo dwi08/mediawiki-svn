@@ -198,7 +198,7 @@ class ForeignAPIFile extends File {
 
 	function getThumbnails() {
 		$dir = $this->getThumbPath( $this->getName() );
-		$iter = $this->repo->getBackend()->getFileList( array( 'directory' => $dir ) );
+		$iter = $this->repo->getBackend()->getFileList( array( 'dir' => $dir ) );
 
 		$files = array();
 		foreach ( $iter as $file ) {
@@ -241,9 +241,9 @@ class ForeignAPIFile extends File {
 		
 		$dir = $this->getThumbPath( $this->getName() );
 		foreach ( $files as $file ) {
-			$op = array( 'op' => 'delete', 'source' => "{$dir}{$file}" );
+			$op = array( 'op' => 'delete', 'src' => "{$dir}{$file}" );
 			$backend->doOperation( $op );
 		}
-		$backend->clean( array( 'directory' => $dir ) );
+		$backend->clean( array( 'dir' => $dir ) );
 	}
 }

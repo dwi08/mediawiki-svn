@@ -233,7 +233,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 				return $status; // died mid-stream...so this is already fubar
 			}
 		}
-		return Status::newFatal( 'backend-fail-stream', $params['source'] );
+		return Status::newFatal( 'backend-fail-stream', $params['src'] );
 	}
 
 	function getLocalCopy( array $params ) {

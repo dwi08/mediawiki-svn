@@ -218,7 +218,7 @@ abstract class MediaHandler {
 			// Note: no file is created if it's to be rendered client-side.
 			if ( !$out->isError() && filesize( $tmpDest ) ) {
 				$op = array( 'op' => 'store',
-					'source' => $tmpDest, 'dest' => $dstPath, 'overwriteDest' => true );
+					'src' => $tmpDest, 'dst' => $dstPath, 'overwriteDest' => true );
 				if ( !$image->getRepo()->getBackend()->doOperation( $op )->isOK() ) {
 					return new MediaTransformError( 'thumbnail_error',
 						$params['width'], 0, wfMsg( 'thumbnail-dest-create' ) );

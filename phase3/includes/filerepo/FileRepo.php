@@ -116,7 +116,7 @@ class FileRepo {
 			if ( $doZones && !in_array( $zone, $doZones ) ) {
 				continue;
 			}
-			$params = array( 'directory' => $this->getZonePath( $zone ) );
+			$params = array( 'dir' => $this->getZonePath( $zone ) );
 			$status->merge( $this->backend->prepare( $params ) );
 		}
 		return $status;
@@ -131,9 +131,9 @@ class FileRepo {
 	protected function initDeletedDir( $dir ) {
 		// Add a .htaccess file to the root of the deleted zone
 		$root = $this->getZonePath( 'deleted' );
-		$this->backend->secure( array( 'directory' => $root, 'noAccess' => true ) );
+		$this->backend->secure( array( 'dir' => $root, 'noAccess' => true ) );
 		// Seed new directories with a blank index.html, to prevent crawling
-		$this->backend->secure( array( 'directory' => $dir, 'noListing' => true ) );
+		$this->backend->secure( array( 'dir' => $dir, 'noListing' => true ) );
 	}
 
 	/**
@@ -656,7 +656,7 @@ class FileRepo {
 			$dstDir = dirname( $dstPath );
 
 			// Create destination directories for this triplet
-			if ( !$backend->prepare( array( 'directory' => $dstDir ) )->isOK() ) {
+			if ( !$backend->prepare( array( 'dir' => $dstDir ) )->isOK() ) {
 				return $this->newFatal( 'directorycreateerror', $dstDir );
 			}
 
@@ -680,8 +680,8 @@ class FileRepo {
 			}
 			$operations[] = array(
 				'op'            => $opName,
-				'source'        => $srcPath,
-				'dest'          => $dstPath,
+				'src'           => $srcPath,
+				'dst'           => $dstPath,
 				'overwriteDest' => $flags & self::OVERWRITE,
 				'overwriteSame' => $flags & self::OVERWRITE_SAME,
 				'ignoreErrors'  => true
@@ -730,7 +730,7 @@ class FileRepo {
 			if ( FileBackend::isStoragePath( $path ) ) {
 				$operations[] = array(
 					'op'           => 'delete',
-					'source'       => $path,
+					'src'          => $path,
 					'ignoreErrors' => true
 				);
 			} else {
@@ -780,7 +780,7 @@ class FileRepo {
 			return false;
 		}
 		$path = $this->resolveVirtualUrl( $virtualUrl );
-		$op = array( 'op' => 'delete', 'source' => $path );
+		$op = array( 'op' => 'delete', 'src' => $path );
 		$status = $this->backend->doOperation( $op );
 		return $status->isOK();
 	}
@@ -854,28 +854,28 @@ class FileRepo {
 			$dstDir = dirname( $dstPath );
 			$archiveDir = dirname( $archivePath );
 			// Abort immediately on directory creation errors since they're likely to be repetitive
-			if ( !$backend->prepare( array( 'directory' => $dstDir ) )->isOK() ) {
+			if ( !$backend->prepare( array( 'dir' => $dstDir ) )->isOK() ) {
 				return $this->newFatal( 'directorycreateerror', $dstDir );
 			}
-			if ( !$backend->prepare( array( 'directory' => $archiveDir ) )->isOK() ) {
+			if ( !$backend->prepare( array( 'dir' => $archiveDir ) )->isOK() ) {
 				return $this->newFatal( 'directorycreateerror', $archiveDir );
 			}
 
 			// Archive destination file if it exists
-			if ( $backend->fileExists( array( 'source' => $dstPath ) ) ) {
+			if ( $backend->fileExists( array( 'src' => $dstPath ) ) ) {
 				// Check if the archive file exists
 				// This is a sanity check to avoid data loss. In UNIX, the rename primitive
 				// unlinks the destination file if it exists. DB-based synchronisation in
 				// publishBatch's caller should prevent races. In Windows there's no
 				// problem because the rename primitive fails if the destination exists.
-				if ( $backend->fileExists( array( 'source' => $archivePath ) ) ) {
+				if ( $backend->fileExists( array( 'src' => $archivePath ) ) ) {
 					$operations[] = array( 'op' => 'null' );
 					continue;
 				} else {
 					$operations[] = array(
 						'op'           => 'move',
-						'source'       => $dstPath,
-						'dest'         => $archivePath,
+						'src'          => $dstPath,
+						'dst'          => $archivePath,
 						'ignoreErrors' => true
 					);
 				}
@@ -888,23 +888,23 @@ class FileRepo {
 				if ( $flags & self::DELETE_SOURCE ) {
 					$operations[] = array(
 						'op'           => 'move',
-						'source'       => $srcPath,
-						'dest'         => $dstPath,
+						'src'          => $srcPath,
+						'dst'          => $dstPath,
 						'ignoreErrors' => true
 					);
 				} else {
 					$operations[] = array(
 						'op'           => 'copy',
-						'source'       => $srcPath,
-						'dest'         => $dstPath,
+						'src'          => $srcPath,
+						'dst'          => $dstPath,
 						'ignoreErrors' => true
 					);
 				}
 			} else { // FS source path
 				$operations[] = array(
 					'op'           => 'store',
-					'source'       => $srcPath,
-					'dest'         => $dstPath,
+					'src'          => $srcPath,
+					'dst'          => $dstPath,
 					'ignoreErrors' => true
 				);
 				if ( $flags & self::DELETE_SOURCE ) {
@@ -956,7 +956,7 @@ class FileRepo {
 				$file = $this->resolveVirtualUrl( $file );
 			}
 			if ( FileBackend::isStoragePath( $file ) ) {
-				$result[$key] = $this->backend->fileExists( array( 'source' => $file ) );
+				$result[$key] = $this->backend->fileExists( array( 'src' => $file ) );
 			} else {
 				if ( $flags & self::FILES_ONLY ) {
 					$result[$key] = is_file( $file ); // FS only
@@ -1033,21 +1033,21 @@ class FileRepo {
 			$archiveDir = dirname( $archivePath ); // does not touch FS
 
 			// Create destination directories
-			if ( !$backend->prepare( array( 'directory' => $archiveDir ) )->isOK() ) {
+			if ( !$backend->prepare( array( 'dir' => $archiveDir ) )->isOK() ) {
 				return $this->newFatal( 'directorycreateerror', $archiveDir );
 			}
 			$this->initDeletedDir( $archiveDir );
 
-			if ( $backend->fileExists( array( 'source' => $archivePath ) ) ) {
+			if ( $backend->fileExists( array( 'src' => $archivePath ) ) ) {
 				$operations[] = array(
-					'op'        => 'delete',
-					'source'    => $srcPath
+					'op'  => 'delete',
+					'src' => $srcPath
 				);
 			} else {
 				$operations[] = array(
-					'op'        => 'move',
-					'source'    => $srcPath,
-					'dest'      => $archivePath
+					'op'  => 'move',
+					'src' => $srcPath,
+					'dst' => $archivePath
 				);
 			}
 		}
@@ -1096,7 +1096,7 @@ class FileRepo {
 	 */
 	public function getLocalCopy( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );
-		return $this->backend->getLocalCopy( array( 'source' => $path ) );
+		return $this->backend->getLocalCopy( array( 'src' => $path ) );
 	}
 
 	/**
@@ -1108,7 +1108,7 @@ class FileRepo {
 	 */
 	public function getFileProps( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );
-		return $this->backend->getFileProps( array( 'source' => $path ) );
+		return $this->backend->getFileProps( array( 'src' => $path ) );
 	}
 
 	/**
@@ -1119,7 +1119,7 @@ class FileRepo {
 	 */
 	public function getFileTimestamp( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );
-		return $this->backend->getFileTimestamp( array( 'source' => $path ) );
+		return $this->backend->getFileTimestamp( array( 'src' => $path ) );
 	}
 
 	/**
@@ -1130,7 +1130,7 @@ class FileRepo {
 	 */
 	public function getFileSha1( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );
-		$tmpFile = $this->backend->getLocalCopy( array( 'source' => $path ) );
+		$tmpFile = $this->backend->getLocalCopy( array( 'src' => $path ) );
 		if ( !$tmpFile ) {
 			return false;
 		}
@@ -1166,7 +1166,7 @@ class FileRepo {
 			for ( $hexPos = 0; $hexPos < $this->hashLevels; $hexPos++ ) {
 				$path .= '/' . substr( $hexString, 0, $hexPos + 1 );
 			}
-			$iterator = $this->backend->getFileList( array( 'directory' => $path ) );
+			$iterator = $this->backend->getFileList( array( 'dir' => $path ) );
 			foreach ( $iterator as $name ) {
 				// Each item returned is a public file
 				call_user_func( $callback, "{$path}/{$name}" );

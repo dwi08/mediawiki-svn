@@ -68,9 +68,9 @@ abstract class FileBackendBase {
 	 * <code>
 	 * $ops = array(
 	 *     array(
-	 *         'op'        => 'store',
-	 *         'source'    => '/tmp/uploads/picture.png',
-	 *         'dest'      => 'mwstore://container/uploadedFilename.png'
+	 *         'op'  => 'store',
+	 *         'src' => '/tmp/uploads/picture.png',
+	 *         'dst' => 'mwstore://container/uploadedFilename.png'
 	 *     )
 	 * );
 	 * </code>
@@ -97,7 +97,7 @@ abstract class FileBackendBase {
 	 * that don't yet exists or, on FS backends, create parent directories.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     directory : storage directory
+	 *     dir : storage directory
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -109,7 +109,7 @@ abstract class FileBackendBase {
 	 * This is not guaranteed to actually do anything.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     directory : storage directory
+	 *     dir       : storage directory
 	 *     noAccess  : try to deny file access
 	 *     noListing : try to deny file listing
 	 * 
@@ -123,7 +123,7 @@ abstract class FileBackendBase {
 	 * On FS backends, the directory will be deleted. Others may do nothing.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     directory : storage directory
+	 *     dir : storage directory
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -134,7 +134,7 @@ abstract class FileBackendBase {
 	 * Check if a file exits at a storage path in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return bool
@@ -145,7 +145,7 @@ abstract class FileBackendBase {
 	 * Get a hash of the file at a storage path in the backend.
 	 * Typically this will be a SHA-1 hash, MD5 hash, or something similar.
 	 * $params include:
-	 *     source : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return string|false Hash string or false on failure
@@ -162,7 +162,7 @@ abstract class FileBackendBase {
 	/**
 	 * Get the last-modified timestamp of the file at a storage path.
 	 * $params include:
-	 *     source : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return string|false TS_MW timestamp or false on failure
@@ -173,7 +173,7 @@ abstract class FileBackendBase {
 	 * Get the properties of the file at a storage path in the backend.
 	 * Returns FSFile::placeholderProps() on failure.
 	 * $params include:
-	 *     source : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return Array
@@ -186,7 +186,7 @@ abstract class FileBackendBase {
 	 * must be sent if streaming began, while none should be sent otherwise.
 	 * Implementations should flush the output buffer before sending data.
 	 * $params include:
-	 *     source : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -200,7 +200,7 @@ abstract class FileBackendBase {
 	 * then all items under that container directory should be listed.
 	 * Results should be storage paths relative to the given directory.
 	 * $params include:
-	 *     directory : storage path directory.
+	 *     dir : storage path directory.
 	 *
 	 * @return Iterator|Array
 	 */
@@ -210,7 +210,7 @@ abstract class FileBackendBase {
 	 * Get a local copy on disk of the file at a storage path in the backend.
 	 * The temporary copy should have the same file extension as the source.
 	 * $params include:
-	 *     source : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return TempFSFile|null Temporary file or null on failure
@@ -253,8 +253,8 @@ abstract class FileBackend extends FileBackendBase {
 	 * Store a file into the backend from a file on disk.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source        : source path on disk
-	 *     dest          : destination storage path
+	 *     src           : source path on disk
+	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
 	 * @param Array $params
@@ -266,8 +266,8 @@ abstract class FileBackend extends FileBackendBase {
 	 * Copy a file from one storage path to another in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source        : source storage path
-	 *     dest          : destination storage path
+	 *     src           : source storage path
+	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
 	 * @param Array $params
@@ -280,8 +280,8 @@ abstract class FileBackend extends FileBackendBase {
 	 * This can be left as a dummy function as long as hasMove() returns false.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source        : source storage path
-	 *     dest          : destination storage path
+	 *     src           : source storage path
+	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
 	 * @param Array $params
@@ -295,7 +295,7 @@ abstract class FileBackend extends FileBackendBase {
 	 * Delete a file at the storage path.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source              : source storage path
+	 *     src : source storage path
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -306,8 +306,8 @@ abstract class FileBackend extends FileBackendBase {
 	 * Combines files from severals storage paths into a new file in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source        : source storage path
-	 *     dest          : destination storage path
+	 *     src           : source storage path
+	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
 	 * @param Array $params
@@ -320,7 +320,7 @@ abstract class FileBackend extends FileBackendBase {
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *     contents      : the raw file contents
-	 *     dest          : destination storage path
+	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
 	 * @param Array $params
@@ -346,8 +346,8 @@ abstract class FileBackend extends FileBackendBase {
 	 * For example, moving objects accross containers may not be supported.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     source : source storage path
-	 *     dest   : destination storage path
+	 *     src : source storage path
+	 *     dst : destination storage path
 	 *
 	 * @param Array $params
 	 * @return bool
