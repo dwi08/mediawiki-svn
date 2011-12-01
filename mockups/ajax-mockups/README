@@ -5,6 +5,8 @@ FloatingToc/    - transparent table of contents which can be accessed
                   by means of an activation icon on the left side.
 
 Login/          - AJAX login that slides into view
+		  Based on sliding login panel jQuery plugin:
+		  http://web-kreation.com/demos/Sliding_login_panel_jquery/
 
 DynamicMainPage - Redesign of the English Wikipedia Main Page with
                   two dynamic elements: a news ticker and a slideshow.
