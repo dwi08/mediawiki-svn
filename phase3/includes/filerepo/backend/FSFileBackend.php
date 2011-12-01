@@ -427,7 +427,10 @@ class FSFileBackend extends FileBackend {
 			return $status;
 		}
 
-		$ok = StreamFile::stream( $source, array(), false );
+		$extraHeaders = isset( $params['headers'] )
+			? $params['headers']
+			: array();
+		$ok = StreamFile::stream( $source, $extraHeaders, false );
 		if ( !$ok ) {
 			$status->fatal( 'backend-fail-stream', $params['src'] );
 			return $status;

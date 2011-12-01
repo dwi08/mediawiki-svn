@@ -111,9 +111,9 @@ function wfThumbMain() {
 		// Calculate time
 		wfSuppressWarnings();
 		$imsUnix = strtotime( $imsString );
-		$stat = stat( $sourcePath );
 		wfRestoreWarnings();
-		if ( $stat['mtime'] <= $imsUnix ) {
+		$sourceTsUnix = wfTimestamp( TS_UNIX, $img->getTimestamp() );
+		if ( $sourceTsUnix <= $imsUnix ) {
 			header( 'HTTP/1.1 304 Not Modified' );
 			wfProfileOut( __METHOD__ );
 			return;
@@ -125,8 +125,8 @@ function wfThumbMain() {
 		$thumbName = $img->thumbName( $params );
 		if ( $thumbName !== false ) { // valid params?
 			$thumbPath = $img->getThumbPath( $thumbName );
-			if ( is_file( $thumbPath ) ) {
-				StreamFile::stream( $thumbPath, $headers );
+			if ( $img->getRepo()->fileExists( $thumbPath ) ) {
+				$img->getRepo()->streamFile( $thumbPath, $headers );
 				wfProfileOut( __METHOD__ );
 				return;
 			}
@@ -153,7 +153,7 @@ function wfThumbMain() {
 		$errorMsg = $thumb->getHtmlMsg();
 	} elseif ( !$thumb->getPath() ) {
 		$errorMsg = wfMsgHtml( 'thumbnail_error', 'No path supplied in thumbnail object' );
-	} elseif ( $thumb->getPath() == $img->getPath() ) {
+	} elseif ( $thumb->getPath() == $img->getLocalCopyPath() ) {
 		$errorMsg = wfMsgHtml( 'thumbnail_error', 'Image was not scaled, ' .
 			'is the requested width bigger than the source?' );
 	}

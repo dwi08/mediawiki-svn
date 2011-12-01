@@ -186,7 +186,8 @@ abstract class FileBackendBase {
 	 * must be sent if streaming began, while none should be sent otherwise.
 	 * Implementations should flush the output buffer before sending data.
 	 * $params include:
-	 *     src : source storage path
+	 *     src     : source storage path
+	 *     headers : additional headers to send on success
 	 * 
 	 * @param Array $params
 	 * @return Status
@@ -306,7 +307,7 @@ abstract class FileBackend extends FileBackendBase {
 	 * Combines files from severals storage paths into a new file in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     src           : source storage path
+	 *     sources       : ordered source storage paths (e.g. chunk1, chunk2, ...)
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 

@@ -1081,6 +1081,7 @@ class FileRepo {
 	 * If a path is a virtual URL, resolve it to a storage path.
 	 * Otherwise, just return the path as it is.
 	 *
+	 * @param $path string
 	 * @return string
 	 * @throws MWException
 	 */
@@ -1095,6 +1096,7 @@ class FileRepo {
 	 * Get a local FS copy of a file with a given virtual URL/storage path.
 	 * Returns null on failure.
 	 * 
+	 * @param $virtualUrl string
 	 * @return TempFSFile|null
 	 */
 	public function getLocalCopy( $virtualUrl ) {
@@ -1117,7 +1119,7 @@ class FileRepo {
 	/**
 	 * Get the timestamp of a file with a given virtual URL/storage path
 	 *
-	 * @param $virtualUrl
+	 * @param $virtualUrl string
 	 * @return string|false
 	 */
 	public function getFileTimestamp( $virtualUrl ) {
@@ -1128,7 +1130,7 @@ class FileRepo {
 	/**
 	 * Get the sha1 of a file with a given virtual URL/storage path
 	 *
-	 * @param $virtualUrl
+	 * @param $virtualUrl string
 	 * @return string|false
 	 */
 	public function getFileSha1( $virtualUrl ) {
@@ -1138,6 +1140,19 @@ class FileRepo {
 			return false;
 		}
 		return $tmpFile->sha1Base36();
+	}
+
+	/**
+	 * Attempt to stream a file with the given virtual URL/storage path
+	 *
+	 * @param $virtualUrl string
+	 * @param $headers Array Extra headers to send on success
+	 * @return bool Success
+	 */
+	public function streamFile( $virtualUrl, $headers = array() ) {
+		$path = $this->resolveToStoragePath( $virtualUrl );
+		$params = array( 'src' => $path, 'headers' => $headers );
+		return $this->backend->streamFile( $params )->isOK();
 	}
 
 	/**

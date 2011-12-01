@@ -635,7 +635,7 @@ class MoveFileOp extends FileOp {
 /**
  * Combines files from severals storage paths into a new file in the backend.
  * Parameters similar to FileBackend::concatenate(), which include:
- *     sources       : ordered source storage paths (e.g. chunk1,chunk2,...)
+ *     sources       : ordered source storage paths (e.g. chunk1, chunk2, ...)
  *     dst           : destination storage path
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  */
