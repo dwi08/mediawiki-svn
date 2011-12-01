@@ -41,7 +41,6 @@ class WURFL_Storage_Mwmemcache extends WURFL_Storage_Base {
 		return $wgMemc->set( $this->encode( $this->namespace, $objectId ), $object, $this->expiration );
 	}
 
-
 	/**
 	 * Load the object.
 	 *
