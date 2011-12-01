@@ -57,7 +57,7 @@ class FSFileBackend extends FileBackend {
 			}
 		} else {
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dst'] );
+				$status->fatal( 'directorycreateerror', $params['dst'] );
 				return $status;
 			}
 		}
@@ -124,7 +124,7 @@ class FSFileBackend extends FileBackend {
 			}
 		} else {
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dst'] );
+				$status->fatal( 'directorycreateerror', $params['dst'] );
 				return $status;
 			}
 		}
@@ -242,7 +242,7 @@ class FSFileBackend extends FileBackend {
 		} else {
 			// Make sure destination directory exists
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dst'] );
+				$status->fatal( 'directorycreateerror', $params['dst'] );
 				return $status;
 			}
 		}
@@ -276,7 +276,7 @@ class FSFileBackend extends FileBackend {
 				$ok = unlink( $dest );
 				wfRestoreWarnings();
 				if ( !$ok ) {
-					$status->fatal( 'backend-fail-delete', $param['dst'] );
+					$status->fatal( 'backend-fail-delete', $params['dst'] );
 					return $status;
 				}
 			} else {
@@ -285,7 +285,7 @@ class FSFileBackend extends FileBackend {
 			}
 		} else {
 			if ( !wfMkdirParents( dirname( $dest ) ) ) {
-				$status->fatal( 'directorycreateerror', $param['dst'] );
+				$status->fatal( 'directorycreateerror', $params['dst'] );
 				return $status;
 			}
 		}
@@ -311,13 +311,13 @@ class FSFileBackend extends FileBackend {
 			return $status; // invalid storage path
 		}
 		if ( !wfMkdirParents( $dir ) ) {
-			$status->fatal( 'directorycreateerror', $param['dir'] );
+			$status->fatal( 'directorycreateerror', $params['dir'] );
 			return $status;
 		} elseif ( !is_writable( $dir ) ) {
-			$status->fatal( 'directoryreadonlyerror', $param['dir'] );
+			$status->fatal( 'directoryreadonlyerror', $params['dir'] );
 			return $status;
 		} elseif ( !is_readable( $dir ) ) {
-			$status->fatal( 'directorynotreadableerror', $param['dir'] );
+			$status->fatal( 'directorynotreadableerror', $params['dir'] );
 			return $status;
 		}
 		return $status;
@@ -331,7 +331,7 @@ class FSFileBackend extends FileBackend {
 			return $status; // invalid storage path
 		}
 		if ( !wfMkdirParents( $dir ) ) {
-			$status->fatal( 'directorycreateerror', $param['dir'] );
+			$status->fatal( 'directorycreateerror', $params['dir'] );
 			return $status;
 		}
 		// Add a .htaccess file to the root of the deleted zone
@@ -350,7 +350,7 @@ class FSFileBackend extends FileBackend {
 			$ok = file_put_contents( "{$dir}/index.html", '' );
 			wfRestoreWarnings();
 			if ( !$ok ) {
-				$status->fatal( 'backend-fail-create', $params['dst'] . '/index.html' );
+				$status->fatal( 'backend-fail-create', $params['dir'] . '/index.html' );
 				return $status;
 			}
 		}

@@ -1005,7 +1005,7 @@ class FileRepo {
 	public function deleteBatch( $sourceDestPairs ) {
 		$backend = $this->backend; // convenience
 
-		if ( !isset( $this->zones['deleted'] ) ) {
+		if ( !isset( $this->zones['deleted']['container'] ) ) {
 			throw new MWException( __METHOD__.': no valid deletion archive directory' );
 		}
 

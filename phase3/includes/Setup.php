@@ -230,6 +230,10 @@ function wfBackendForLegacyRepoConf( &$info ) {
 	$backendName = $info['name'] . '-backend';
 	// Update repo config to use this backend
 	$info['backend'] = $backendName;
+	// Disable "deleted" zone in repo config if deleted dir not set
+	if ( $deletedDir !== false ) {
+		$info['zones']['deleted'] = array( 'container' => 'deleted', 'directory' => '' );
+	}
 	// Get the FS backend configuration
 	return array(
 		'name'           => $backendName,
