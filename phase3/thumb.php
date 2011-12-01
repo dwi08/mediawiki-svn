@@ -86,6 +86,7 @@ function wfThumbMain() {
 		$headers[] = 'Vary: Cookie';
 	}
 
+	// Check the source file storage path
 	if ( !$img ) {
 		wfThumbError( 404, wfMsg( 'badtitletext' ) );
 		wfProfileOut( __METHOD__ );
@@ -204,4 +205,3 @@ $debug
 
 EOT;
 }
-

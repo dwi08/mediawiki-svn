@@ -6,7 +6,7 @@
  */
 
 /**
- * Class for a file-system based file backend.
+ * Class for a file system based file backend.
  * Status messages should avoid mentioning the internal FS paths.
  * Likewise, error suppression should be used to path disclosure.
  *
@@ -449,17 +449,11 @@ class FSFileBackend extends FileBackend {
 		$i = strrpos( $source, '.' );
 		$ext = strtolower( $i ? substr( $source, $i + 1 ) : '' );
 		// Create a new temporary file...
-		wfSuppressWarnings();
-		$initialTmpPath = tempnam( wfTempDir(), 'localcopy' );
-		wfRestoreWarnings();
-		if ( $initialTmpPath === false ) {
+		$tmpFile = TempFSFile::factory( 'localcopy', $ext );
+		if ( !$tmpFile ) {
 			return null;
 		}
-		// Apply the original extension
-		$tmpPath = "{$initialTmpPath}.{$ext}";
-		if ( !rename( $initialTmpPath, $tmpPath ) ) {
-			return null;
-		}
+		$tmpPath = $tmpFile->getPath();
 
 		// Copy the source file over the temp file
 		wfSuppressWarnings();
