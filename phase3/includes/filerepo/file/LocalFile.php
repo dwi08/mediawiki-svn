@@ -1366,7 +1366,8 @@ class LocalFile extends File {
 		$this->load();
 		// Initialise now if necessary
 		if ( $this->sha1 == '' && $this->fileExists ) {
-			$this->sha1 = File::sha1Base36( $this->getPath() );
+			$tmpPath = $this->getLocalCopyPath();
+			$this->sha1 = FSFile::sha1Base36( $tmpPath );
 			if ( !wfReadOnly() && strval( $this->sha1 ) != '' ) {
 				$dbw = $this->repo->getMasterDB();
 				$dbw->update( 'image',

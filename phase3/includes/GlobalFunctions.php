@@ -2387,11 +2387,6 @@ function wfMkdirParents( $dir, $mode = null, $caller = null ) {
 		wfDebug( "$caller: called wfMkdirParents($dir)\n" );
 	}
 
-	if ( FileBackend::isStoragePath( $dir ) ) {
-		throw new MWException( "Given virtual path `$dir`." );
-		return false;
-	}
-
 	if( strval( $dir ) === '' || file_exists( $dir ) ) {
 		return true;
 	}

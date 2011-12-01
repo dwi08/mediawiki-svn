@@ -20,6 +20,9 @@ class FSFile {
 	 * @param String $path Path to temporary file on local disk
 	 */
 	public function __construct( $path ) {
+		if ( FileBackend::isStoragePath( $path ) ) {
+			throw new MWException( "Given virtual path `$path`." );
+		}
 		$this->path = $path;
 	}
 
@@ -165,5 +168,35 @@ class FSFile {
 
 		wfProfileOut( __METHOD__ );
 		return $hash;
+	}
+
+	/**
+	 * Get an associative array containing information about a file in the local filesystem.
+	 *
+	 * @param $path String: absolute local filesystem path
+	 * @param $ext Mixed: the file extension, or true to extract it from the filename.
+	 *             Set it to false to ignore the extension.
+	 *
+	 * @return array
+	 */
+	static function getPropsFromPath( $path, $ext = true ) {
+		$fsFile = new FSFile( $path );
+		return $fsFile->getProps();
+	}
+
+	/**
+	 * Get a SHA-1 hash of a file in the local filesystem, in base-36 lower case
+	 * encoding, zero padded to 31 digits.
+	 *
+	 * 160 log 2 / log 36 = 30.95, so the 160-bit hash fills 31 digits in base 36
+	 * fairly neatly.
+	 *
+	 * @param $path string
+	 *
+	 * @return false|string False on failure
+	 */
+	static function getSha1Base36FromPath( $path ) {
+		$fsFile = new FSFile( $path );
+		return $fsFile->sha1Base36();
 	}
 }

@@ -335,6 +335,8 @@ abstract class FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class StoreFileOp extends FileOp {
+	protected $checkDest = true;
+
 	protected function doPrecheck( array &$predicates ) {
 		$status = Status::newGood();
 		// Check if destination file exists
@@ -400,6 +402,8 @@ class StoreFileOp extends FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class CreateFileOp extends FileOp {
+	protected $checkDest = true;
+
 	protected function doPrecheck( array &$predicates ) {
 		$status = Status::newGood();
 		// Check if destination file exists

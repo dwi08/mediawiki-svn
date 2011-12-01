@@ -97,7 +97,7 @@ abstract class MediaHandler {
 	 * Get handler-specific metadata which will be saved in the img_metadata field.
 	 *
 	 * @param $image File: the image object, or false if there isn't one.
-	 *   Warning, File::getPropsFromPath might pass an (object)array() instead (!)
+	 *   Warning, FSFile::getPropsFromPath might pass an (object)array() instead (!)
 	 * @param $path String: the filename
 	 * @return String
 	 */

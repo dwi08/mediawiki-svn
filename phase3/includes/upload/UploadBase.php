@@ -362,7 +362,7 @@ abstract class UploadBase {
 		# we need to populate mFinalExtension
 		$this->getTitle();
 
-		$this->mFileProps = File::getPropsFromPath( $this->mTempPath, $this->mFinalExtension );
+		$this->mFileProps = FSFile::getPropsFromPath( $this->mTempPath, $this->mFinalExtension );
 
 		# check mime type, if desired
 		$mime = $this->mFileProps[ 'file-mime' ];
@@ -548,7 +548,7 @@ abstract class UploadBase {
 		}
 
 		// Check dupes against existing files
-		$hash = File::sha1Base36( $this->mTempPath );
+		$hash = FSFile::sha1Base36( $this->mTempPath );
 		$dupes = RepoGroup::singleton()->findBySha1( $hash );
 		$title = $this->getTitle();
 		// Remove all matches against self

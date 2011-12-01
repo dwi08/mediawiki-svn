@@ -116,8 +116,11 @@ class FileRepo {
 			if ( $doZones && !in_array( $zone, $doZones ) ) {
 				continue;
 			}
-			$params = array( 'dir' => $this->getZonePath( $zone ) );
-			$status->merge( $this->backend->prepare( $params ) );
+			$root = $this->getZonePath( $zone );
+			if ( $root !== null ) {
+				$params = array( 'dir' => $this->getZonePath( $zone ) );
+				$status->merge( $this->backend->prepare( $params ) );
+			}
 		}
 		return $status;
 	}
