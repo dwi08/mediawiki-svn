@@ -335,10 +335,7 @@ class DBLockManager extends LockManager {
 		$lockedKeys = array(); // files locked in this attempt
 		// Attempt to acquire these locks...
 		foreach ( $keysToLock as $bucket => $keys ) {
-			// Acquire the locks for this server. Three main cases can happen:
-			// (a) First server is up; common case
-			// (b) First server is down but a peer is up
-			// (c) First server is down and no peer are up (or none defined)
+			// Try to acquire the locks for this bucket
 			$res = $this->doLockingQueryAll( $bucket, $keys, $type );
 			if ( $res === 'cantacquire' ) {
 				// Resources already locked by another process.

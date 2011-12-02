@@ -85,7 +85,7 @@ class FileRepo {
 					);
 				} else {
 					$this->zones[$zone] = array(
-						'container' => $zone,
+						'container' => "images-$zone",
 						'directory' => '' // container root
 					);
 				}
