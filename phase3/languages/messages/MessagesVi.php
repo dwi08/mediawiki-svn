@@ -1575,6 +1575,7 @@ Nếu bạn đồng ý cung cấp, nó sẽ dùng để ghi nhận công lao c�
 'action-userrights'           => 'sửa đổi mọi quyền người dùng',
 'action-userrights-interwiki' => 'sửa đổi quyền của người dùng tại wiki khác',
 'action-siteadmin'            => 'khóa hoặc mở khóa cơ sở dữ liệu',
+'action-sendemail'            => 'gửi thư điện tử',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|thay đổi|thay đổi}}',
@@ -1783,6 +1784,7 @@ Không thể kiểm tra nó về bảo mật.',
 'uploadstash-badtoken' => 'Tác vụ bị thất bại, có lẽ vì thông tin đăng nhập của bạn đã hết hạn. Hãy thử lại.',
 'uploadstash-errclear' => 'Việc dọn sạch các tập tin bị thất bại.',
 'uploadstash-refresh'  => 'Làm mới danh sách tập tin',
+'invalid-chunk-offset' => 'Khúc lệch (chunk offset) không hợp lệ',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Không cho phép truy cập',

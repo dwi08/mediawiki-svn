@@ -164,6 +164,7 @@ $wgAutoloadLocalClasses = array(
 	'PageQueryPage' => 'includes/PageQueryPage.php',
 	'Pager' => 'includes/Pager.php',
 	'PasswordError' => 'includes/User.php',
+	'PathRouter' => 'includes/PathRouter.php',
 	'PermissionsError' => 'includes/Exception.php',
 	'PhpHttpRequest' => 'includes/HttpFunctions.php',
 	'PoolCounter' => 'includes/PoolCounter.php',
@@ -861,6 +862,7 @@ $wgAutoloadLocalClasses = array(
 	# includes/upload
 	'UploadBase' => 'includes/upload/UploadBase.php',
 	'UploadFromFile' => 'includes/upload/UploadFromFile.php',
+	'UploadFromChunks' => 'includes/upload/UploadFromChunks.php',
 	'UploadFromStash' => 'includes/upload/UploadFromStash.php',
 	'UploadFromUrl' => 'includes/upload/UploadFromUrl.php',
 	'UploadStash' => 'includes/upload/UploadStash.php',
@@ -893,6 +895,7 @@ $wgAutoloadLocalClasses = array(
 	'PopulateParentId' => 'maintenance/populateParentId.php',
 	'PopulateRevisionLength' => 'maintenance/populateRevisionLength.php',
 	'PopulateRevisionSha1' => 'maintenance/populateRevisionSha1.php',
+	'RefreshLinks' => 'maintenance/refreshLinks.php',
 	'SevenZipStream' => 'maintenance/7zip.inc',
 	'Sqlite' => 'maintenance/sqlite.inc',
 	'UpdateCollation' => 'maintenance/updateCollation.php',
@@ -907,11 +910,13 @@ $wgAutoloadLocalClasses = array(
 	'textStatsOutput' => 'maintenance/language/StatOutputs.php',
 	'wikiStatsOutput' => 'maintenance/language/StatOutputs.php',
 
+	# maintenance/term
+	'AnsiTermColorer'  => 'maintenance/term/MWTerm.php',
+	'DummyTermColorer' => 'maintenance/term/MWTerm.php',
+
 	# tests
-	'AnsiTermColorer' => 'tests/testHelpers.inc',
 	'DbTestPreviewer' => 'tests/testHelpers.inc',
 	'DbTestRecorder' => 'tests/testHelpers.inc',
-	'DummyTermColorer' => 'tests/testHelpers.inc',
 	'TestFileIterator' => 'tests/testHelpers.inc',
 	'TestRecorder' => 'tests/testHelpers.inc',
 

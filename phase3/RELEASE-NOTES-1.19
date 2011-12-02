@@ -40,7 +40,6 @@ production.
 * Installer now issues a warning if mod_security is present.
 * (bug 29455) Add support for a filter callback function in jQuery byteLimit
   plugin.
-* Extensions can now participate in the extraction of titles from url paths.
 * Added two new GetLocalURL hooks to better serve extensions working on a
   limited type of titles.
 * Added a --no-updates flag to importDump.php that skips updating the links
@@ -131,7 +130,7 @@ production.
 * (bug 30245) Use the correct way to construct a log page title.
 * (bug 31081) $wgEnotifUseJobQ caused many unnecessary jobs to be queued.
 * (bug 30202) File names are now restricted on upload to 240 bytes, because of
-  restrictions on some of the database fields..
+  restrictions on some of the database fields.
 * Timezones are now recognised in user preferences when offset is different
   due to DST.
 * (bug 31692) "summary" parameter now also work when undoing revisions.
@@ -167,6 +166,10 @@ production.
 * (bug 27721) Make JavaScript variables wgSeparatorTransformTable and
   wgDigitTransformTable depend on page content language so the sort script
   sorts correctly more often
+* (bug 32230) Expose wgRedirectedFrom in JavaScript
+* (bug 31212) History tab not collapsed when the screen is narrow
+* (bug 15521) Use new section summary when the action of adding a new section
+  also happens to create the page
 
 === API changes in 1.19 ===
 * (bug 19838) siprop=interwikimap can now use the interwiki cache.

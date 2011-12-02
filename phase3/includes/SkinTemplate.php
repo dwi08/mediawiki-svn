@@ -441,7 +441,9 @@ class SkinTemplate extends Skin {
 						'text' => ( $wgContLang->getLanguageName( $nt->getInterwiki() ) != '' ?
 									$wgContLang->getLanguageName( $nt->getInterwiki() ) : $l ),
 						'title' => $nt->getText(),
-						'class' => $class
+						'class' => $class,
+						'lang' => $nt->getInterwiki(),
+						'hreflang' => $nt->getInterwiki(),
 					);
 				}
 			}
@@ -544,11 +546,19 @@ class SkinTemplate extends Skin {
 		/* set up the default links for the personal toolbar */
 		$personal_urls = array();
 
-		$page = $request->getVal( 'returnto', $this->thispage );
-		$query = $request->getVal( 'returntoquery', $this->thisquery );
-		$a = array( 'returnto' => $page );
-		if( $query != '' ) {
-			$a['returntoquery'] = $query;
+		# Due to bug 32276, if a user does not have read permissions, 
+		# $this->getTitle() will just give Special:Badtitle, which is 
+		# not especially useful as a returnto parameter. Use the title 
+		# from the request instead, if there was one.
+		$page = Title::newFromURL( $request->getVal( 'title', '' ) );
+		$page = $request->getVal( 'returnto', $page );
+		$a = array();
+		if ( strval( $page ) !== '' ) {
+			$a['returnto'] = $page;
+			$query = $request->getVal( 'returntoquery', $this->thisquery );
+			if( $query != '' ) {
+				$a['returntoquery'] = $query;
+			}
 		}
 		$returnto = wfArrayToCGI( $a );
 		if( $this->loggedin ) {

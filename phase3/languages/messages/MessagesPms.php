@@ -1330,6 +1330,7 @@ Costa anformassion a sarà pùblica.",
 'action-userrights'           => "modifiché tùit ij drit dj'utent",
 'action-userrights-interwiki' => "modifiché ij drit ëd j'utent ansima a d'àutre wiki",
 'action-siteadmin'            => 'bloché o dësbloché la base ëd dàit',
+'action-sendemail'            => 'mandé dij mëssage an pòsta eletrònica',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|modìfica|modìfiche}}',
@@ -1812,8 +1813,8 @@ Për piasì, ch'a nòta che d'àutri sit an sl'aragnà a peulo coleghesse a n'ar
 'booksources-invalid-isbn'  => "L'ISBN dàit a smija che a sia pa vàlid; ch'a contròla s'a-i é n'eror an copiand da la sorgiss original.",
 
 # Special:Log
-'specialloguserlabel'  => 'Utent:',
-'speciallogtitlelabel' => 'Tìtol:',
+'specialloguserlabel'  => 'Esecutor:',
+'speciallogtitlelabel' => 'Obietiv (tìtol o utent):',
 'log'                  => 'Registr',
 'all-logs-page'        => 'Tùit ij registr pùblich',
 'alllogstext'          => 'Visualisassion combinà ëd tùit ij registr ëd {{SITENAME}}.
@@ -2168,8 +2169,8 @@ Che as varda ël [[Special:Log/delete|Registr djë scancelament]] për ës-ciair
 'undelete-header'              => "Ch'a varda [[Special:Log/delete|ël registr djë scancelament]] për ës-ciairé j'ùltim dëscancelament.",
 'undelete-search-title'        => 'Sërché dle pàgine scancelà',
 'undelete-search-box'          => 'Arserché dle pàgine scancelà',
-'undelete-search-prefix'       => "Smon le pàgine ch'as anandio për:",
-'undelete-search-submit'       => 'Sërca',
+'undelete-search-prefix'       => "Smon-e le pàgine ch'as anandio për:",
+'undelete-search-submit'       => 'Sërché',
 'undelete-no-results'          => "A-i é pa gnun-a pàgina parej ant l'archivi djë scancelassion.",
 'undelete-filename-mismatch'   => "As peul nen disdëscancelesse la revision d'archivi col marcatemp $1: sòrt d'archivi nen giusta",
 'undelete-bad-store-key'       => "As peul pa disdëscancelesse la revision d'archivi col marcatemp $1: l'archivi a-i era già pì anans d'esse scancelà.",

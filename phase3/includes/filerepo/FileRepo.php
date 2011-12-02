@@ -771,6 +771,47 @@ class FileRepo {
 	}
 
 	/**
+	 * Concatenate a list of files into a target file location. 
+	 * 
+	 * @param $srcPaths Array Ordered list of source virtual URLs/storage paths
+	 * @param $dstPath String Target virtual URL/storage path
+	 * @param $flags Integer: bitwise combination of the following flags:
+	 *     self::DELETE_SOURCE     Delete the source files
+	 * @return FileRepoStatus
+	 */
+	function concatenate( $srcPaths, $dstPath, $flags = 0 ) {
+		$status = $this->newGood();
+		// Resolve target to a storage path if virtual
+		$dest = $this->resolveToStoragePath( $dstPath );
+
+		$sources = array();
+		$deleteOperations = array(); // post-concatenate ops
+		foreach ( $srcPaths as $srcPath ) {
+			// Resolve source to a storage path if virtual
+			$source = $this->resolveToStoragePath( $srcPath );
+			$sources[] = $source; // chunk to merge
+			if ( $flags & self::DELETE_SOURCE ) {
+				$deleteOperations[] = array( 'op' => 'delete', 'src' => $source );
+			}
+		}
+
+		// Concatenate the chunks into one file
+		$op = array( 'op' => 'concatenate',
+			'sources' => $sources, 'dst' => $dest, 'overwriteDest' => true );
+		$status->merge( $this->backend->doOperation( $op ) );
+		if ( !$status->isOK() ) {
+			return $status;
+		}
+
+		// Delete the sources if required
+		if ( $deleteOperations ) {
+			$status->merge( $this->backend->doOperations( $deleteOperations ) );
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Remove a temporary file or mark it for garbage collection
 	 *
 	 * @param $virtualUrl String: the virtual URL returned by storeTemp

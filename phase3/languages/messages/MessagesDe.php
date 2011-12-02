@@ -624,7 +624,7 @@ $1',
 
 'badaccess'        => 'Keine ausreichenden Rechte',
 'badaccess-group0' => 'Du hast nicht die erforderliche Berechtigung für diese Aktion.',
-'badaccess-groups' => 'Diese Aktion ist beschränkt auf Benutzer, die {{PLURAL:$2|der Gruppe|einer der Gruppen}} „$1“ angehören.',
+'badaccess-groups' => 'Diese Aktion ist auf Benutzer beschränkt, die {{PLURAL:$2|der Gruppe|einer der Gruppen}} „$1“ angehören.',
 
 'versionrequired'     => 'Version $1 von MediaWiki ist erforderlich.',
 'versionrequiredtext' => 'Version $1 von MediaWiki ist erforderlich, um diese Seite zu nutzen.
@@ -1859,6 +1859,7 @@ Sie kann daher keiner ordnungsgemäßen Sicherheitsüberprüfung unterzogen werd
 'uploadstash-badtoken' => 'Das Entfernen der vorab gespeicherten Dateien war erfolglos, vielleicht weil die Sitzungsdaten abgelaufen sind. Bitte erneut versuchen.',
 'uploadstash-errclear' => 'Das Entfernen der vorab gespeicherten Dateien war erfolglos.',
 'uploadstash-refresh'  => 'Liste der Dateien aktualisieren',
+'invalid-chunk-offset' => 'Ungültiger Startpunkt',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Zugriff verweigert',
@@ -2037,9 +2038,9 @@ Eine Seite gilt als Begriffsklärungsseite, wenn sie eine der in [[MediaWiki:Dis
 Links aus Namensräumen werden hier nicht aufgelistet.',
 
 'doubleredirects'                   => 'Doppelte Weiterleitungen',
-'doubleredirectstext'               => 'Diese Liste enthält Weiterleitungen, die auf weitere Weiterleitungen verlinken.
-Jede Zeile enthält Links zu der ersten und zweiten Weiterleitung sowie das Ziel der zweiten Weiterleitung, welches für gewöhnlich die gewünschte Zielseite ist, auf die bereits die erste Weiterleitung zeigen sollte.
-<del>Durchgestrichene</del> Einträge wurden bereits erledigt.',
+'doubleredirectstext'               => 'Diese Liste enthält Weiterleitungen, die auf Weiterleitungen verlinken.
+Jede Zeile enthält Links zur ersten und zweiten Weiterleitung sowie dem Ziel der zweiten Weiterleitung, welches für gewöhnlich die gewünschte Zielseite ist, auf die bereits die erste Weiterleitung zeigen sollte.
+<del>Durchgestrichene</del> Einträge wurden bereits erfolgreich bearbeitet.',
 'double-redirect-fixed-move'        => '[[$1]] wurde verschoben und leitet nun nach [[$2]] weiter.',
 'double-redirect-fixed-maintenance' => 'Bereinigung der doppelten Weiterleitung von [[$1]] nach [[$2]].',
 'double-redirect-fixer'             => 'RedirectBot',

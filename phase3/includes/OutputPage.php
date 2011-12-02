@@ -223,6 +223,14 @@ class OutputPage extends ContextSource {
 	);
 
 	/**
+	 * If the current page was reached through a redirect, $mRedirectedFrom contains the Title
+	 * of the redirect.
+	 *
+	 * @var Title
+	 */
+	private $mRedirectedFrom = null;
+
+	/**
 	 * Constructor for OutputPage. This should not be called directly.
 	 * Instead a new RequestContext should be created and it will implicitly create
 	 * a OutputPage tied to that context.
@@ -774,6 +782,15 @@ class OutputPage extends ContextSource {
 	 */
 	public function getHTMLTitle() {
 		return $this->mHTMLtitle;
+	}
+
+	/**
+	 * Set $mRedirectedFrom, the Title of the page which redirected us to the current page.
+	 *
+	 * param @t Title
+	 */
+	public function setRedirectedFrom( $t ) {
+		$this->mRedirectedFrom = $t;
 	}
 
 	/**
@@ -2029,7 +2046,13 @@ class OutputPage extends ContextSource {
 			|| ( isset( $wgGroupPermissions['autoconfirmed'][$action] ) && $wgGroupPermissions['autoconfirmed'][$action] ) )
 		) {
 			$displayReturnto = null;
-			$returnto = $this->getTitle();
+
+			# Due to bug 32276, if a user does not have read permissions,
+			# $this->getTitle() will just give Special:Badtitle, which is
+			# not especially useful as a returnto parameter. Use the title
+			# from the request instead, if there was one.
+			$request = $this->getRequest();
+			$returnto = Title::newFromURL( $request->getVal( 'title', '' ) );
 			if ( $action == 'edit' ) {
 				$msg = 'whitelistedittext';
 				$displayReturnto = $returnto;
@@ -2043,9 +2066,10 @@ class OutputPage extends ContextSource {
 			}
 
 			$query = array();
+
 			if ( $returnto ) {
 				$query['returnto'] = $returnto->getPrefixedText();
-				$request = $this->getRequest();
+
 				if ( !$request->wasPosted() ) {
 					$returntoquery = $request->getValues();
 					unset( $returntoquery['title'] );
@@ -2714,6 +2738,7 @@ $templates
 	 * - in other words, page-independent/site-wide variables (without state).
 	 * You will only be adding bloat to the html page and causing page caches to
 	 * have to be purged on configuration changes.
+	 * @return array
 	 */
 	protected function getJSVars() {
 		global $wgUseAjax, $wgEnableMWSuggest;
@@ -2772,6 +2797,9 @@ $templates
 		}
 		if ( $title->isMainPage() ) {
 			$vars['wgIsMainPage'] = true;
+		}
+		if ( $this->mRedirectedFrom ) {
+			$vars['wgRedirectedFrom'] = $this->mRedirectedFrom->getPrefixedDBKey();
 		}
 
 		// Allow extensions to add their custom variables to the mw.config map.
