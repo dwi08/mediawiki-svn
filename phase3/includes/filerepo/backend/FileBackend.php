@@ -187,7 +187,7 @@ abstract class FileBackendBase {
 	 * Implementations should flush the output buffer before sending data.
 	 * $params include:
 	 *     src     : source storage path
-	 *     headers : additional headers to send on success
+	 *     headers : additional HTTP headers to send on success
 	 * 
 	 * @param Array $params
 	 * @return Status

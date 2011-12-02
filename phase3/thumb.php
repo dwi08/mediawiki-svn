@@ -124,7 +124,7 @@ function wfThumbMain() {
 	// Stream the file if it exists already...
 	try {
 		$thumbName = $img->thumbName( $params );
-		if ( $thumbName !== false ) { // valid params?
+		if ( strlen( $thumbName ) ) { // valid params?
 			$thumbPath = $img->getThumbPath( $thumbName );
 			if ( $img->getRepo()->fileExists( $thumbPath ) ) {
 				$img->getRepo()->streamFile( $thumbPath, $headers );
@@ -141,7 +141,7 @@ function wfThumbMain() {
 	// Thumbnail isn't already there, so create the new thumbnail...
 	try {
 		$thumb = $img->transform( $params, File::RENDER_NOW );
-	} catch( Exception $ex ) {
+	} catch ( Exception $ex ) {
 		// Tried to select a page on a non-paged file?
 		$thumb = false;
 	}
@@ -152,18 +152,18 @@ function wfThumbMain() {
 		$errorMsg = wfMsgHtml( 'thumbnail_error', 'File::transform() returned false' );
 	} elseif ( $thumb->isError() ) {
 		$errorMsg = $thumb->getHtmlMsg();
-	} elseif ( !$thumb->getPath() ) {
+	} elseif ( !$thumb->hasFile() ) {
 		$errorMsg = wfMsgHtml( 'thumbnail_error', 'No path supplied in thumbnail object' );
-	} elseif ( $thumb->getPath() == $img->getLocalCopyPath() ) {
-		$errorMsg = wfMsgHtml( 'thumbnail_error', 'Image was not scaled, ' .
-			'is the requested width bigger than the source?' );
+	} elseif ( $thumb->fileIsSource() ) {
+		$errorMsg = wfMsgHtml( 'thumbnail_error',
+			'Image was not scaled, is the requested width bigger than the source?' );
 	}
 
 	if ( $errorMsg !== false ) {
 		wfThumbError( 500, $errorMsg );
 	} else {
 		// Stream the file if there were no errors
-		StreamFile::stream( $thumb->getPath(), $headers );
+		$thumb->streamFile( $headers );
 	}
 
 	wfProfileOut( __METHOD__ );

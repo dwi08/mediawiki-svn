@@ -22,29 +22,22 @@ abstract class MediaTransformOutput {
 	/**
 	 * Get the width of the output box
 	 */
-	function getWidth() {
+	public function getWidth() {
 		return $this->width;
 	}
 
 	/**
 	 * Get the height of the output box
 	 */
-	function getHeight() {
+	public function getHeight() {
 		return $this->height;
 	}
 
 	/**
 	 * @return string The thumbnail URL
 	 */
-	function getUrl() {
+	public function getUrl() {
 		return $this->url;
-	}
-
-	/**
-	 * @return String: destination file path (local filesystem)
-	 */
-	function getPath() {
-		return $this->path;
 	}
 
 	/**
@@ -67,13 +60,44 @@ abstract class MediaTransformOutput {
 	 *
 	 * @return string
 	 */
-	abstract function toHtml( $options = array() );
+	abstract public function toHtml( $options = array() );
 
 	/**
 	 * This will be overridden to return true in error classes
 	 */
-	function isError() {
+	public function isError() {
 		return false;
+	}
+
+	/**
+	 * Check if an output thumbnail file was actually made.
+	 * This will return false if there was an error or the
+	 * thumnail is to be handled client-side only.
+	 *
+	 * @return Bool
+	 */
+	public function hasFile() {
+		return ( !$this->isError() && $this->path );
+	}
+
+	/**
+	 * Check if the output thumbnail file is the same as the source.
+	 * This can occur if the requested width was bigger than the source.
+	 *
+	 * @return Bool
+	 */
+	public function fileIsSource() {
+		return ( !$this->isError() && $this->path === $this->file->getLocalCopyPath() );
+	}
+
+	/**
+	 * Stream the file if there were no errors
+	 *
+	 * @param $headers Array Additional HTTP headers to send on success
+	 * @return Bool success
+	 */
+	public function streamFile( $headers = array() ) {
+		return $this->path && StreamFile::stream( $this->path, $headers );
 	}
 
 	/**
@@ -97,7 +121,7 @@ abstract class MediaTransformOutput {
 	 * @param $params array
 	 * @return array
 	 */
-	function getDescLinkAttribs( $title = null, $params = '' ) {
+	public function getDescLinkAttribs( $title = null, $params = '' ) {
 		$query = $this->page ? ( 'page=' . urlencode( $this->page ) ) : '';
 		if( $params ) {
 			$query .= $query ? '&'.$params : $params;

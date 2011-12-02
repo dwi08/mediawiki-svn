@@ -216,7 +216,7 @@ abstract class MediaHandler {
 			$out = $this->doFSTransform( $image, $tmpDest, $dstUrl, $params, $flags );
 			// Copy any thumbnail from FS into storage at $dstpath
 			// Note: no file is created if it's to be rendered client-side.
-			if ( !$out->isError() && filesize( $tmpDest ) ) {
+			if ( !$out->isError() && $out->hasFile() ) {
 				$op = array( 'op' => 'store',
 					'src' => $tmpDest, 'dst' => $dstPath, 'overwriteDest' => true );
 				if ( !$image->getRepo()->getBackend()->doOperation( $op )->isOK() ) {

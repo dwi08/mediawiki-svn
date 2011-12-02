@@ -1146,7 +1146,7 @@ class FileRepo {
 	 * Attempt to stream a file with the given virtual URL/storage path
 	 *
 	 * @param $virtualUrl string
-	 * @param $headers Array Extra headers to send on success
+	 * @param $headers Array Additional HTTP headers to send on success
 	 * @return bool Success
 	 */
 	public function streamFile( $virtualUrl, $headers = array() ) {
