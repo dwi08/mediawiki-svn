@@ -808,6 +808,9 @@ class FileRepo {
 			$status->merge( $this->backend->doOperations( $deleteOperations ) );
 		}
 
+		// Make sure status is OK, despite any $deleteOperations fatals
+		$status->setResult( true );
+
 		return $status;
 	}
 

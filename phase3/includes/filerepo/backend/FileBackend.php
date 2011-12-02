@@ -441,7 +441,7 @@ abstract class FileBackend extends FileBackendBase {
 				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
 					$failedOps[$index] = 1; // remember not to call attempt()/finish()
 					++$status->failCount;
-					$status->value[$index] = false;
+					$status->success[$index] = false;
 				} else {
 					$status->merge( $this->unlockFiles( $filesToLock ) );
 					return $status;
@@ -459,7 +459,7 @@ abstract class FileBackend extends FileBackendBase {
 				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
 					$failedOps[$index] = 1; // remember not to call finish()
 					++$status->failCount;
-					$status->value[$index] = false;
+					$status->success[$index] = false;
 				} else {
 					// Revert everything done so far and abort.
 					// Do this by reverting each previous operation in reverse order.
@@ -484,10 +484,10 @@ abstract class FileBackend extends FileBackendBase {
 			$subStatus = $fileOp->finish();
 			if ( $subStatus->isOK() ) {
 				++$status->successCount;
-				$status->value[$index] = true;
+				$status->success[$index] = true;
 			} else {
 				++$status->failCount;
-				$status->value[$index] = false;
+				$status->success[$index] = false;
 			}
 			$status->merge( $subStatus );
 		}
