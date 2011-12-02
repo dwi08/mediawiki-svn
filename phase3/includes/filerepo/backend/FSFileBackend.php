@@ -1,7 +1,6 @@
 <?php
 /**
  * @file
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 
@@ -10,7 +9,6 @@
  * Status messages should avoid mentioning the internal FS paths.
  * Likewise, error suppression should be used to path disclosure.
  *
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 class FSFileBackend extends FileBackend {
@@ -201,7 +199,7 @@ class FSFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-opentemp', $tmpPath );
 			return $status;
 		}
-		foreach ( $params['sources'] as $virtualSource ) {
+		foreach ( $params['srcs'] as $virtualSource ) {
 			list( $c, $source ) = $this->resolveStoragePath( $virtualSource );
 			if ( $source === null ) {
 				$status->fatal( 'backend-fail-invalidpath', $virtualSource );
@@ -449,7 +447,7 @@ class FSFileBackend extends FileBackend {
 		$i = strrpos( $source, '.' );
 		$ext = strtolower( $i ? substr( $source, $i + 1 ) : '' );
 		// Create a new temporary file...
-		$tmpFile = TempFSFile::factory( 'localcopy', $ext );
+		$tmpFile = TempFSFile::factory( 'localcopy_', $ext );
 		if ( !$tmpFile ) {
 			return null;
 		}

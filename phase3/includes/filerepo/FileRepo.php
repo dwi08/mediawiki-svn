@@ -797,7 +797,7 @@ class FileRepo {
 
 		// Concatenate the chunks into one file
 		$op = array( 'op' => 'concatenate',
-			'sources' => $sources, 'dst' => $dest, 'overwriteDest' => true );
+			'srcs' => $sources, 'dst' => $dest, 'overwriteDest' => true );
 		$status->merge( $this->backend->doOperation( $op ) );
 		if ( !$status->isOK() ) {
 			return $status;

@@ -1,7 +1,6 @@
 <?php
 /**
  * @file
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 
@@ -27,7 +26,6 @@
  *
  * Non-persistent backends used for caching must be declared.
  *
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 class FileBackendMultiWrite extends FileBackendBase {

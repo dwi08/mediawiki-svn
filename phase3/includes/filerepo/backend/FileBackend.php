@@ -1,7 +1,6 @@
 <?php
 /**
  * @file
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 
@@ -18,7 +17,6 @@
  * Methods should avoid throwing exceptions at all costs.
  * As a corollary, external dependencies should be kept to a minimum.
  *
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 abstract class FileBackendBase {
@@ -246,7 +244,6 @@ abstract class FileBackendBase {
  * Base class for all single-write backends.
  * This class defines the methods as abstract that subclasses must implement.
  *
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 abstract class FileBackend extends FileBackendBase {
@@ -307,7 +304,7 @@ abstract class FileBackend extends FileBackendBase {
 	 * Combines files from severals storage paths into a new file in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     sources       : ordered source storage paths (e.g. chunk1, chunk2, ...)
+	 *     srcs          : ordered source storage paths (e.g. chunk1, chunk2, ...)
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
@@ -570,7 +567,7 @@ abstract class FileBackend extends FileBackendBase {
 			if (
 				$path === '.' ||
 				$path === '..' ||
-				strpos( $path, './' ) === 0  ||
+				strpos( $path, './' ) === 0 ||
 				strpos( $path, '../' ) === 0 ||
 				strpos( $path, '/./' ) !== false ||
 				strpos( $path, '/../' ) !== false

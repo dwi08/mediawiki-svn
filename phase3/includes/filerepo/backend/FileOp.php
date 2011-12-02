@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * @ingroup FileRepo
+ * @ingroup FileBackend
  */
 
 /**
@@ -10,6 +10,8 @@
  * 
  * Access use of large fields should be avoided as we want to be able to support
  * potentially many FileOp classes in large arrays in memory.
+ * 
+ * @ingroup FileBackend
  */
 abstract class FileOp {
 	/** $var Array */
@@ -188,7 +190,7 @@ abstract class FileOp {
 	}
 
 	/**
-	 * Backup any file at the destination to a temporary file.
+	 * Backup the file at the destination to a temporary file.
 	 * Don't bother backing it up unless we might overwrite the file.
 	 * This assumes that the destination is in the backend and that
 	 * the source is either in the backend or on the file system.
@@ -635,7 +637,7 @@ class MoveFileOp extends FileOp {
 /**
  * Combines files from severals storage paths into a new file in the backend.
  * Parameters similar to FileBackend::concatenate(), which include:
- *     sources       : ordered source storage paths (e.g. chunk1, chunk2, ...)
+ *     srcs          : ordered source storage paths (e.g. chunk1, chunk2, ...)
  *     dst           : destination storage path
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  */
@@ -654,7 +656,7 @@ class ConcatenateFileOp extends FileOp {
 			$this->checkDest = false;
 		}
 		// Check that source files exists
-		foreach ( $this->params['sources'] as $source ) {
+		foreach ( $this->params['srcs'] as $source ) {
 			if ( !$this->fileExists( $source, $predicates ) ) {
 				$status->fatal( 'backend-fail-notexists', $source );
 				return $status;
@@ -696,7 +698,7 @@ class ConcatenateFileOp extends FileOp {
 	}
 
 	function storagePathsUsed() {
-		return array_merge( $this->params['sources'], $this->params['dst'] );
+		return array_merge( $this->params['srcs'], $this->params['dst'] );
 	}
 }
 

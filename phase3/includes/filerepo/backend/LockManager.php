@@ -7,6 +7,8 @@
  * This can reduce hits to external resources for lock()/unlock() calls.
  * 
  * Subclasses should avoid throwing exceptions at all costs.
+ * 
+ * @ingroup FileBackend
  */
 abstract class LockManager {
 	/* Lock types; stronger locks have high values */

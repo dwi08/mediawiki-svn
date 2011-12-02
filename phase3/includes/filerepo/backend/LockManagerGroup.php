@@ -1,6 +1,8 @@
 <?php
 /**
  * Class to handle file lock manager registration
+ * 
+ * @ingroup FileBackend
  */
 class LockManagerGroup {
 	protected static $instance = null;

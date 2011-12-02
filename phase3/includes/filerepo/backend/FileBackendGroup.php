@@ -1,14 +1,12 @@
 <?php
 /**
  * @file
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 
 /**
  * Class to handle file backend registration
  *
- * @ingroup FileRepo
  * @ingroup FileBackend
  */
 class FileBackendGroup {
