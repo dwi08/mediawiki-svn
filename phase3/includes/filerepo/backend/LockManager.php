@@ -340,7 +340,7 @@ class DBLockManager extends LockManager {
 			if ( $res === 'cantacquire' ) {
 				// Resources already locked by another process.
 				// Abort and unlock everything we just locked.
-				$status->fatal( 'lockmanager-fail-acquirelocks' );
+				$status->fatal( 'lockmanager-fail-acquirelocks', implode( ', ', $keys ) );
 				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
 				return $status;
 			} elseif ( $res !== true ) {

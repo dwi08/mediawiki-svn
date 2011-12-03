@@ -2271,6 +2271,17 @@ It cannot be properly checked for security.',
 'backend-fail-read'          => 'Could not read file $1',
 'backend-fail-create'        => 'Could not create file $1',
 
+# lock manager
+'lockmanager-notlocked'         => 'Could not unlock key "$1"; it is not locked.',
+'lockmanager-fail-closelock'    => 'Could not close lock file for key "$1".',
+'lockmanager-fail-deletelock'   => 'Could not delete lock file for key "$1".',
+'lockmanager-fail-openlock'     => 'Could not open lock file for key "$1".',
+'lockmanager-fail-acquirelock'  => 'Could not acquire lock for key "$1".',
+'lockmanager-fail-releaselock'  => 'Could not release lock for key "$1".',
+'lockmanager-fail-acquirelocks' => 'Could not acquire locks for keys "$1".',
+'lockmanager-fail-db-bucket'    => 'Could not contact enough lock servers in bucket $1',
+'lockmanager-fail-db-release'   => 'Could not release locks on server $1',
+
 # img_auth script messages
 'img-auth-accessdenied'     => 'Access denied',
 'img-auth-nopathinfo'       => 'Missing PATH_INFO.
