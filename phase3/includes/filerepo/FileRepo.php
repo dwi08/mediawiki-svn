@@ -1301,11 +1301,10 @@ class FileRepo {
 	 * @return string
 	 */
 	function simpleClean( $param ) {
+		global $IP;
 		if ( !isset( $this->simpleCleanPairs ) ) {
-			global $IP;
 			$this->simpleCleanPairs = array(
-				$IP => '$IP',
-				dirname( __FILE__ ) => '$IP/extensions/WebStore', // WTF
+				$IP => '$IP', // sanity
 			);
 		}
 		return strtr( $param, $this->simpleCleanPairs );

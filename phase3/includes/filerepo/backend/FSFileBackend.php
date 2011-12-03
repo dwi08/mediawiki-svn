@@ -81,9 +81,44 @@ class FSFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
-		$params['src'] = $source; // resolve source to FS path
 
-		return $this->store( $params ); // both source and dest are on FS
+		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
+		if ( $dest === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
+			return $status;
+		}
+
+		if ( is_file( $dest ) ) {
+			if ( !empty( $params['overwriteDest'] ) ) {
+				wfSuppressWarnings();
+				$ok = unlink( $dest );
+				wfRestoreWarnings();
+				if ( !$ok ) {
+					$status->fatal( 'backend-fail-delete', $params['dst'] );
+					return $status;
+				}
+			} else {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
+		} else {
+			if ( !wfMkdirParents( dirname( $dest ) ) ) {
+				$status->fatal( 'directorycreateerror', $params['dst'] );
+				return $status;
+			}
+		}
+
+		wfSuppressWarnings();
+		$ok = copy( $source, $dest );
+		wfRestoreWarnings();
+		if ( !$ok ) {
+			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
+			return $status;
+		}
+
+		$this->chmod( $dest );
+
+		return $status;
 	}
 
 	function canMove( array $params ) {
