@@ -21,7 +21,7 @@ class FSFile {
 	 */
 	public function __construct( $path ) {
 		if ( FileBackend::isStoragePath( $path ) ) {
-			throw new MWException( "Given virtual path `$path`." );
+			throw new MWException( __METHOD__ . " given storage path `$path`." );
 		}
 		$this->path = $path;
 	}
@@ -42,6 +42,15 @@ class FSFile {
 	 */
 	public function exists() {
 		return is_file( $this->path );
+	}
+
+	/**
+	 * Get the file size in bytes
+	 *
+	 * @return int|false
+	 */
+	public function getSize() {
+		return filesize( $this->path );
 	}
 
 	/**
@@ -93,7 +102,7 @@ class FSFile {
 			$info['media_type'] = $magic->getMediaType( $this->path, $info['mime'] );
 
 			# Get size in bytes
-			$info['size'] = filesize( $this->path );
+			$info['size'] = $this->getSize();
 
 			# Height, width and metadata
 			$handler = MediaHandler::getHandler( $info['mime'] );
@@ -180,8 +189,8 @@ class FSFile {
 	 * @return array
 	 */
 	static function getPropsFromPath( $path, $ext = true ) {
-		$fsFile = new FSFile( $path );
-		return $fsFile->getProps();
+		$fsFile = new self( $path );
+		return $fsFile->getProps( $ext );
 	}
 
 	/**
@@ -196,7 +205,7 @@ class FSFile {
 	 * @return false|string False on failure
 	 */
 	static function getSha1Base36FromPath( $path ) {
-		$fsFile = new FSFile( $path );
+		$fsFile = new self( $path );
 		return $fsFile->sha1Base36();
 	}
 }

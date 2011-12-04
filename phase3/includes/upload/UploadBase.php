@@ -163,6 +163,9 @@ abstract class UploadBase {
 	 */
 	public function initializePathInfo( $name, $tempPath, $fileSize, $removeTempFile = false ) {
 		$this->mDesiredDestName = $name;
+		if ( FileBackend::isStoragePath( $tempPath ) ) {
+			throw new MWException( __METHOD__ . " given storage path `$tempPath`." );
+		}
 		$this->mTempPath = $tempPath;
 		$this->mFileSize = $fileSize;
 		$this->mRemoveTempFile = $removeTempFile;
@@ -229,7 +232,6 @@ abstract class UploadBase {
 		return $status;
 	}
 
-
 	/**
 	 * @param $srcPath String: the source path
 	 * @return the real path if it was a virtual URL
@@ -237,7 +239,8 @@ abstract class UploadBase {
 	function getRealPath( $srcPath ) {
 		$repo = RepoGroup::singleton()->getLocalRepo();
 		if ( $repo->isVirtualUrl( $srcPath ) ) {
-			return $repo->resolveVirtualUrl( $srcPath );
+			// UploadFromStash loads files via virtuals URLs
+			return $repo->getLocalCopy( $srcPath )->getPath();
 		}
 		return $srcPath;
 	}
@@ -556,7 +559,7 @@ abstract class UploadBase {
 		}
 
 		// Check dupes against existing files
-		$hash = FSFile::sha1Base36( $this->mTempPath );
+		$hash = FSFile::getSha1Base36FromPath( $this->mTempPath );
 		$dupes = RepoGroup::singleton()->findBySha1( $hash );
 		$title = $this->getTitle();
 		// Remove all matches against self

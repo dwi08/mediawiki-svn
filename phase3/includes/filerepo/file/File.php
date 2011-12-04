@@ -340,7 +340,7 @@ abstract class File {
 	public function getLocalCopyPath() {
 		$this->assertRepoDefined();
 		if ( !isset( $this->tmpFile ) ) {
-			$this->tmpFile = $this->repo->getLocalCopy( $this->getVirtualUrl() );
+			$this->tmpFile = $this->repo->getLocalCopy( $this->getPath() );
 			if ( !$this->tmpFile ) {
 				$this->tmpFile = false; // null => false; cache negative hits
 			}
@@ -1140,7 +1140,23 @@ abstract class File {
 	}
 
 	/**
-	 * Get the virtual URL for an archived file's thumbs, or a specific thumb.
+	 * Get the public zone virtual URL for a current version source file
+	 *
+	 * @param $suffix bool|string if not false, the name of a thumbnail file
+	 *
+	 * @return string
+	 */
+	function getVirtualUrl( $suffix = false ) {
+		$this->assertRepoDefined();
+		$path = $this->repo->getVirtualUrl() . '/public/' . $this->getUrlRel();
+		if ( $suffix !== false ) {
+			$path .= '/' . rawurlencode( $suffix );
+		}
+		return $path;
+	}
+
+	/**
+	 * Get the public zone virtual URL for an archived version source file
 	 *
 	 * @param $suffix bool|string if not false, the name of a thumbnail file
 	 *
@@ -1167,22 +1183,6 @@ abstract class File {
 	function getThumbVirtualUrl( $suffix = false ) {
 		$this->assertRepoDefined();
 		$path = $this->repo->getVirtualUrl() . '/thumb/' . $this->getUrlRel();
-		if ( $suffix !== false ) {
-			$path .= '/' . rawurlencode( $suffix );
-		}
-		return $path;
-	}
-
-	/**
-	 * Get the virtual URL for the file itself
-	 *
-	 * @param $suffix bool|string if not false, the name of a thumbnail file
-	 *
-	 * @return string
-	 */
-	function getVirtualUrl( $suffix = false ) {
-		$this->assertRepoDefined();
-		$path = $this->repo->getVirtualUrl() . '/public/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . rawurlencode( $suffix );
 		}
@@ -1496,7 +1496,7 @@ abstract class File {
 	 */
 	function getTimestamp() {
 		$this->assertRepoDefined();
-		return $this->repo->getFileTimestamp( $this->getVirtualUrl() );
+		return $this->repo->getFileTimestamp( $this->getPath() );
 	}
 
 	/**
@@ -1506,7 +1506,7 @@ abstract class File {
 	 */
 	function getSha1() {
 		$this->assertRepoDefined();
-		return $this->repo->getFileSha1( $this->getVirtualUrl() );
+		return $this->repo->getFileSha1( $this->getPath() );
 	}
 
 	/**

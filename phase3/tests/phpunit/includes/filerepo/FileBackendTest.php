@@ -4,14 +4,13 @@ class FileBackendTest extends MediaWikiTestCase {
 	private $backend, $filesToPrune, $pathsToPrune;
 
 	function setUp() {
-		global $IP;
 		parent::setUp();
 		$this->backend = new FSFileBackend( array(
 			'name'        => 'localtesting',
 			'lockManager' => 'fsLockManager',
 			'containerPaths' => array(
-				'cont1' => "$IP/tests/tempimages/cont1",
-				'cont2' => "$IP/tests/tempimages/cont2" )
+				'cont1' => "/testdir/localtesting/cont1",
+				'cont2' => "/testdir/localtesting/cont2" )
 		) );
 		$this->filesToPrune = array();
 		$this->pathsToPrune = array();

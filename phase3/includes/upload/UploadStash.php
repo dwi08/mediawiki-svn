@@ -106,10 +106,7 @@ class UploadStash {
 
 			// fetch fileprops
 			$path = $this->fileMetadata[$key]['us_path'];
-			if ( $this->repo->isVirtualUrl( $path ) ) {
-				$path = $this->repo->resolveVirtualUrl( $path );
-			}
-			$this->fileProps[$key] = FSFile::getPropsFromPath( $path );
+			$this->fileProps[$key] = $this->repo->getFileProps( $path );
 		}
 
 		if ( ! $this->files[$key]->exists() ) {

@@ -498,7 +498,7 @@ class FSFileBackend extends FileBackend {
 
 		$this->chmod( $tmpPath );
 
-		return new TempFSFile( $tmpPath );
+		return $tmpFile;
 	}
 
 	/**

@@ -102,7 +102,7 @@ class UnregisteredLocalFile extends File {
 	function getMimeType() {
 		if ( !isset( $this->mime ) ) {
 			$magic = MimeMagic::singleton();
-			$this->mime = $magic->guessMimeType( $this->getPath() );
+			$this->mime = $magic->guessMimeType( $this->getLocalCopyPath() );
 		}
 		return $this->mime;
 	}
@@ -111,7 +111,7 @@ class UnregisteredLocalFile extends File {
 		if ( !$this->getHandler() ) {
 			return false;
 		}
-		return $this->handler->getImageSize( $this, $this->getPath() );
+		return $this->handler->getImageSize( $this, $this->getLocalCopyPath() );
 	}
 
 	function getMetadata() {
@@ -119,7 +119,7 @@ class UnregisteredLocalFile extends File {
 			if ( !$this->getHandler() ) {
 				$this->metadata = false;
 			} else {
-				$this->metadata = $this->handler->getMetadata( $this, $this->getPath() );
+				$this->metadata = $this->handler->getMetadata( $this, $this->getLocalCopyPath() );
 			}
 		}
 		return $this->metadata;

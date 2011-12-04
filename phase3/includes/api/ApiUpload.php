@@ -490,7 +490,7 @@ class ApiUpload extends ApiBase {
 
 		if ( !$status->isGood() ) {
 			$error = $status->getErrorsArray();
-
+var_dump( $status );
 			if ( count( $error ) == 1 && $error[0][0] == 'async' ) {
 				// The upload can not be performed right now, because the user
 				// requested so
