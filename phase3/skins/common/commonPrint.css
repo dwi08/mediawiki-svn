@@ -18,12 +18,6 @@ a.new {
 	background-color: #f9f9f9;
 	padding: 5px;
 }
-.tocindent {
-	margin-left: 2em;
-}
-.tocline {
-	margin-bottom: 0;
-}
 
 /* images */
 div.floatright {
@@ -158,13 +152,9 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: bold;
 }
 
-p, .documentDescription {
-	margin: 1em 0 !important;
+p {
+	margin: 1em 0;
 	line-height: 1.2em;
-}
-
-.tocindent p {
-	margin: 0 0 0 0 !important;
 }
 
 pre {
