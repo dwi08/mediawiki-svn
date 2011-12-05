@@ -174,7 +174,11 @@ $wgResourceModules['ext.narayam.core'] = $narayamTpl + array(
 		'narayam-bn-inscript',
 		'narayam-bn-nkb',
 	),
-	'dependencies' => array( 'mediawiki.util', 'jquery.textSelection' ),
+	'dependencies' => array(
+		'mediawiki.util',
+		'jquery.textSelection',
+		'jquery.cookie',
+	),
 );
 $wgResourceModules['ext.narayam.rules.am'] = $narayamTpl + array(
 	'scripts' => 'js/ext.narayam.rules.am.js',
