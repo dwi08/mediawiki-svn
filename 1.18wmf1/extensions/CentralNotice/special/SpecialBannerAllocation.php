@@ -178,11 +178,11 @@ class SpecialBannerAllocation extends UnlistedSpecialPage {
 				}
 			}
 
-			if ( $anonBanners ) {
+			if ( $anonBanners && $anonWeight > 0 ) {
 				$htmlOut .= $this->getTable( wfMsg ( 'centralnotice-banner-anonymous' ), $anonBanners, $anonWeight );
 			}
 
-			if ( $accountBanners ) {
+			if ( $accountBanners && $accountWeight > 0  ) {
 				$htmlOut .= $this->getTable( wfMsg ( 'centralnotice-banner-logged-in' ), $accountBanners, $accountWeight );
 			}
 		} else {
@@ -203,7 +203,7 @@ class SpecialBannerAllocation extends UnlistedSpecialPage {
 		$viewCampaign = $this->getTitleFor( 'CentralNotice' );
 
 		$htmlOut = Html::openElement( 'table',
-			array ( 'cellpadding' => 9, 'class' => 'wikitable sortable', 'style' => 'margin: 1em;' )
+			array ( 'cellpadding' => 9, 'class' => 'wikitable sortable', 'style' => 'margin: 1em 0;' )
 		);
 		$htmlOut .= Html::element( 'caption', array( 'style' => 'font-size: 1.2em;' ), $type );
 		$htmlOut .= Html::openElement( 'tr' );
