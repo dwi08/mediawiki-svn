@@ -26,6 +26,14 @@ class FileBackendGroup {
 	}
 
 	/**
+	 * Destroy the singleton instance, so that a new one will be created next
+	 * time singleton() is called.
+	 */
+	public static function destroySingleton() {
+		self::$instance = null;
+	}
+
+	/**
 	 * Register an array of file backend configurations
 	 *
 	 * @param $configs Array

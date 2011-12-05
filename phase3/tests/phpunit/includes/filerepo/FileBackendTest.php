@@ -9,8 +9,8 @@ class FileBackendTest extends MediaWikiTestCase {
 			'name'        => 'localtesting',
 			'lockManager' => 'fsLockManager',
 			'containerPaths' => array(
-				'cont1' => "/testdir/localtesting/cont1",
-				'cont2' => "/testdir/localtesting/cont2" )
+				'cont1' => wfTempDir() . '/localtesting/cont1',
+				'cont2' => wfTempDir() . '/localtesting/cont2' )
 		) );
 		$this->filesToPrune = array();
 		$this->pathsToPrune = array();

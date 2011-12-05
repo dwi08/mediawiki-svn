@@ -1001,11 +1001,10 @@ class LocalFile extends File {
 		);
 
 		if ( $dbw->affectedRows() == 0 ) {
-			$reupload = true;
 			if ( $oldver == '' ) {
-				throw new MWException(
-					"Bogus oi_archive_name given. Database and storage out of sync?" );
+				throw new MWException( "Empty oi_archive_name. Database and storage out of sync?" );
 			}
+			$reupload = true;
 			# Collision, this is an update of a file
 			# Insert previous contents into oldimage
 			$dbw->insertSelect( 'oldimage', 'image',
