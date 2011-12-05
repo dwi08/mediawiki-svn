@@ -19,7 +19,7 @@ EOT;
 $wgExtensionCredits[ 'specialpage' ][ ] = array(
 	'path' => __FILE__,
 	'name' => 'FundraiserLandingPage',
-	'author' => 'Peter Gehres',
+	'author' => array( 'Peter Gehres', 'Ryan Kaldari' ),
 	'url' => 'http://www.mediawiki.org/wiki/Extension:FundraiserLandingPage',
 	'descriptionmsg' => 'fundraiserlandingpage-desc',
 	'version' => '1.0.0',
@@ -28,19 +28,23 @@ $wgExtensionCredits[ 'specialpage' ][ ] = array(
 $dir = dirname( __FILE__ ) . '/';
 
 $wgAutoloadClasses[ 'FundraiserLandingPage' ] = $dir . 'FundraiserLandingPage.body.php';
+$wgAutoloadClasses[ 'FundraiserRedirector' ] = $dir . 'FundraiserRedirector.body.php';
 
 $wgExtensionMessagesFiles[ 'FundraiserLandingPage' ] = $dir . 'FundraiserLandingPage.i18n.php';
 
 $wgSpecialPages[ 'FundraiserLandingPage' ] = 'FundraiserLandingPage';
+$wgSpecialPages[ 'FundraiserRedirector' ] = 'FundraiserRedirector';
 
 /*
  * Defaults for the required fields.  These fields will be included whether
  * or not they are passed through the querystring.
  */
 $wgFundraiserLPDefaults = array(
-	'template' => 'Lp-wrapper',
+	'template' => 'Lp-layout-default',
 	'appeal' => 'Appeal-default',
-	'form' => 'Form-default',
+	'appeal-template' => 'Appeal-template-default',
+	'form-template' => 'Form-template-default',
+	'form-countryspecific' => 'Form-countryspecific-control',
 	'country' => 'XX' // per Charles Barr
 );
 
