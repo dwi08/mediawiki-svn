@@ -71,13 +71,15 @@ abstract class MediaTransformOutput {
 
 	/**
 	 * Check if an output thumbnail file was actually made.
-	 * This will return false if there was an error or the
-	 * thumnail is to be handled client-side only.
+	 * This will return false if there was an error, the
+	 * thumnail is to be handled client-side only, or if
+	 * transformation was deferred via TRANSFORM_LATER.
 	 *
 	 * @return Bool
 	 */
 	public function hasFile() {
-		return ( !$this->isError() && $this->path );
+		// If TRANSFORM_LATER, a 0-byte temp file be at the path (not purged yet)
+		return ( !$this->isError() && $this->path && filesize( $this->path ) );
 	}
 
 	/**
