@@ -31,7 +31,7 @@ abstract class FileBackendBase {
 	 * $config includes:
 	 *     'name'        : The name of this backend
 	 *     'wikiId'      : Prefix to container names that is unique to this wiki
-	 *     'lockManager' : The file lock manager to use
+	 *     'lockManager' : Registered name of the file lock manager to use
 	 * 
 	 * @param $config Array
 	 */
@@ -86,7 +86,7 @@ abstract class FileBackendBase {
 	 * @param $op Array
 	 * @return Status
 	 */
-	final public function doOperation( $op ) {
+	final public function doOperation( array $op ) {
 		return $this->doOperations( array( $op ) );
 	}
 
@@ -382,6 +382,7 @@ abstract class FileBackend extends FileBackendBase {
 
 	/**
 	 * Return a list of FileOp objects from a list of operations.
+	 * The result must have the same number of items as the input.
 	 * An exception is thrown if an unsupported operation is requested.
 	 * 
 	 * @param Array $ops Same format as doOperations()
@@ -400,7 +401,6 @@ abstract class FileBackend extends FileBackendBase {
 				// Get params for this operation
 				$params = $operation;
 				unset( $params['op'] ); // don't need this
-				unset( $params['ignoreErrors'] ); // don't need this
 				// Append the FileOp class
 				$performOps[] = new $class( $this, $params );
 			} else {
@@ -429,13 +429,13 @@ abstract class FileBackend extends FileBackendBase {
 			return $status; // abort
 		}
 
-		$failedOps = array(); // failed ops with ignoreErrors
+		$failedOps = array(); // failed ops with 'ignoreErrors'
 		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
 		// Do pre-checks for each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
 			$status->merge( $fileOp->precheck( $predicates ) );
 			if ( !$status->isOK() ) { // operation failed?
-				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
 					$failedOps[$index] = 1; // remember not to call attempt()/finish()
 					++$status->failCount;
 					$status->success[$index] = false;
@@ -453,7 +453,7 @@ abstract class FileBackend extends FileBackendBase {
 			}
 			$status->merge( $fileOp->attempt() );
 			if ( !$status->isOK() ) { // operation failed?
-				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
 					$failedOps[$index] = 1; // remember not to call finish()
 					++$status->failCount;
 					$status->success[$index] = false;

@@ -120,7 +120,11 @@ $wgNamespaceAliases['Image_talk'] = NS_FILE_TALK;
 $wgLockManagers[] = array(
 	'name'          => 'fsLockManager',
 	'class'         => 'FSLockManager',
-	'lockDirectory' => $wgUploadDirectory,
+	'lockDirectory' => "{$wgUploadDirectory}/lockdir",
+);
+$wgLockManagers[] = array(
+	'name'          => 'nullLockManager',
+	'class'         => 'NullLockManager',
 );
 
 /**

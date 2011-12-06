@@ -14,51 +14,42 @@
  * backend is read from or written to first. Functions like fileExists()
  * and getFileProps() will return information based on the first backend
  * that has the file. Special cases are listed below:
- *     a) getFileList() will return results from the first backend that is
- *        not declared as non-persistent cache. This is for correctness.
- *     b) getFileTimestamp() will always check only the master backend to
+ *     a) getFileTimestamp() will always check only the master backend to
  *        avoid confusing and inconsistent results.
- *     c) getFileHash() will always check only the master backend to keep
+ *     b) getFileHash() will always check only the master backend to keep
  *        the result format consistent.
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
- *
- * Non-persistent backends used for caching must be declared.
  *
  * @ingroup FileBackend
  */
 class FileBackendMultiWrite extends FileBackendBase {
 	/** @var Array Prioritized list of FileBackend objects */
 	protected $fileBackends = array(); // array of (backend index => backends)
-	/** @var Array List of FileBackend object informations */
-	protected $fileBackendsInfo = array(); // array (backend index => array of settings)
-
-	protected $masterIndex; // index of master backend
+	protected $masterIndex = -1; // index of master backend
 
 	/**
 	 * Construct a proxy backend that consist of several internal backends.
 	 * $config contains:
-	 *     'name'       : The name of the proxy backend
-	 *     'lockManger' : LockManager instance
-	 *     'backends'   : Array of (backend object, settings) pairs.
-	 *                    The settings per backend include:
-	 *                        'isCache' : The backend is non-persistent
-	 *                        'isMaster': This must be set for one non-persistent backend.
+	 *     'name'        : The name of the proxy backend
+	 *     'lockManager' : Registered name of the file lock manager to use
+	 *     'backends'    : Array of backend config and multi-backend settings.
+	 *                     Each value is the config used in the constructor of a
+	 *                     FileBackend class, but with these additional settings:
+	 *						   'class'        : The name of the backend class
+	 *                         'isMultiMaster': This must be set for one non-persistent backend.
 	 * @param $config Array
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
-
-		$this->masterIndex = -1;
-		foreach ( $config['backends'] as $index => $info ) {
-			list( $backend, $settings ) = $info;
-			$this->fileBackends[$index] = $backend;
-			// Default backend settings
-			$defaults = array( 'isCache' => false, 'isMaster' => false );
-			// Apply custom backend settings to defaults
-			$this->fileBackendsInfo[$index] = $info + $defaults;
-			if ( $info['isMaster'] ) {
+		foreach ( $config['backends'] as $index => $config ) {
+			if ( !isset( $config['class'] ) ) {
+				throw new MWException( 'No class given for a backend config.' );
+			}
+			$class = $config['class'];
+			$this->fileBackends[$index] = new $class( $config );
+			if ( !empty( $config['isMultiMaster'] ) ) {
 				if ( $this->masterIndex >= 0 ) {
 					throw new MWException( 'More than one master backend defined.' );
 				}
@@ -73,16 +64,19 @@ class FileBackendMultiWrite extends FileBackendBase {
 	final public function doOperations( array $ops ) {
 		$status = Status::newGood( array() );
 
+		$performOps = array(); // list of FileOp objects
+		$batchSize = count( $ops ); // each backend has this many ops
+		$filesToLock = array(); // storage paths to lock
 		// Build up a list of FileOps. The list will have all the ops
 		// for one backend, then all the ops for the next, and so on.
+		// These batches of ops are all part of a continuous array.
 		// Also build up a list of files to lock...
-		$performOps = array();
-		$filesToLock = array();
 		foreach ( $this->fileBackends as $index => $backend ) {
 			$performOps = array_merge( $performOps, $backend->getOperations( $ops ) );
-			// Set $filesToLock from the first backend so we don't try to set all
-			// locks two or three times (depending on the number of backends).
 			if ( $index == 0 ) {
+				// Set $filesToLock from the first batch so we don't try to set all
+				// locks two or three times over (depending on the number of backends).
+				// A lock on one storage path is a lock on all the backends.
 				foreach ( $performOps as $index => $fileOp ) {
 					$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsUsed() );
 				}
@@ -95,13 +89,18 @@ class FileBackendMultiWrite extends FileBackendBase {
 			return $status; // abort
 		}
 
-		$failedOps = array(); // failed ops with ignoreErrors
-		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
+		$failedOps = array(); // failed ops with 'ignoreErrors'
+		$predicates = FileOp::newPredicates(); // effects of previous ops
 		// Do pre-checks for each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
+			if ( $index > 0 && ( $index % $batchSize ) == 0 ) {
+				// We are starting the op batch for another backend
+				// which is not effected by the other op batches.
+				$predicates = FileOp::newPredicates();
+			}
 			$status->merge( $fileOp->precheck( $predicates ) );
 			if ( !$status->isOK() ) { // operation failed?
-				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
 					$failedOps[$index] = 1; // remember not to call attempt()/finish()
 					++$status->failCount;
 					$status->success[$index] = false;
@@ -119,7 +118,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 			}
 			$status->merge( $fileOp->attempt() );
 			if ( !$status->isOK() ) { // operation failed?
-				if ( !empty( $ops[$index]['ignoreErrors'] ) ) {
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
 					$failedOps[$index] = 1; // remember not to call finish()
 					++$status->failCount;
 					$status->success[$index] = false;
@@ -189,6 +188,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function fileExists( array $params ) {
+		# Hit all backends in case an operation failed to copy/move/delete a file
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {
 				return true;
@@ -246,11 +246,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 
 	function getFileList( array $params ) {
 		foreach ( $this->backends as $index => $backend ) {
-			// Skip cache backends (like one using memcached)
-			if ( !$this->fileBackendsInfo[$index]['isCache'] ) {
-				return $backend->getFileList( $params );
-			}
+			return $backend->getFileList( $params );
 		}
-		return array();
+		return array(); // sanity
 	}
 }
