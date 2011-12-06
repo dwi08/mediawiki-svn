@@ -13,8 +13,16 @@ date_default_timezone_set( 'UTC' );
 // Choose a mode below and the switch structure will forge options for you!
 $mode = 'dev';
 $mode = 'preprod';
-#$mode = 'prod';
-
+$mode = 'prod';
+if( !(count($argv) === 2 && preg_match( '/^--(dev|preprod|prod)$/', $argv[1] ) ) ) {
+	print "$argv[0]: expects exactly one of the following options:\n\n";
+	print "  --dev     : fetch only this script repository.\n";
+	print "  --preprod : fetch part of phase3 in a temp directory with debugging\n";
+	print "  --prod    : fetch phase3 in a real directory without debugging\n";
+	print "\nBehavior is hardcoded in this script.\n";
+	exit(1);
+}
+$mode = substr( $argv[1], 2 );
 
 # Magic stuff for lazy people
 switch( $mode ) {
@@ -35,6 +43,15 @@ switch( $mode ) {
 			'root'  => '/tmp/tsmw-trunk-preprod',
 			'svnUrl'   => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
 			'minRev' => 101591,
+		);
+		break;
+
+	case 'prod':
+		$options = array(
+			'debug'  => false,
+			'root'   => '/home/testswarm/mediawiki-trunk',
+			'svnUrl' => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
+			'minRev' => 105305,
 		);
 		break;
 
