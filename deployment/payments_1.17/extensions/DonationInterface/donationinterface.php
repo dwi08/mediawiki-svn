@@ -356,6 +356,8 @@ if ($optionalParts['Stomp'] === true){
 	$wgStompServer = "";
 	//$wgStompQueueName = ""; //only set this with an actual value. Default is unset.
 	//$wgPendingStompQueueName = ""; //only set this with an actual value. Default is unset.
+	//$wgLimboStompQueueName = ""; //only set this with an actual value. Default is unset.
+	//$wgCCLimboStompQueueName = ""; //only set this with an actual value. Default is unset.
 }
 
 //Extras globals - required for ANY optional class that is considered an "extra".
@@ -508,6 +510,7 @@ if ($optionalParts['Stomp'] === true){
 	$wgHooks['ParserFirstCallInit'][] = 'efStompSetup';
 	$wgHooks['gwStomp'][] = 'sendSTOMP';
 	$wgHooks['gwPendingStomp'][] = 'sendPendingSTOMP';
+	$wgHooks['gwLimboStomp'][] = 'sendLimboSTOMP';
 }
 
 //Custom Filters hooks

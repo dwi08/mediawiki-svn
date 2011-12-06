@@ -1046,7 +1046,10 @@ class GlobalCollectAdapter extends GatewayAdapter {
 	public function do_transaction( $transaction ){
 		switch ( $transaction ){
 			case 'Confirm_CreditCard' :
-				return $this->transactionConfirm_CreditCard();
+				$this->getStopwatch( 'Confirm_CreditCard', true );
+				$result = $this->transactionConfirm_CreditCard();
+				$this->saveCommunicationStats( 'Confirm_CreditCard', $transaction );
+				return $result;
 				break;
 			default:
 				return parent::do_transaction( $transaction );
@@ -1068,7 +1071,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			}
 		}
 		
-		$post_status_check = false;
+		$is_orphan = false;
 		if ( count( $addme ) ){ //nothing unusual here. 
 			$this->addData( $addme );
 			$logmsg = $this->getData_Raw( 'contribution_tracking_id' ) . ': ';
@@ -1077,7 +1080,13 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			self::log( $logmsg );
 		} else { //this is an orphan transaction. 
 			$this->staged_data['order_id'] = $this->staged_data['i_order_id'];
-			$post_status_check = true;
+			$is_orphan = true;
+			//have to change this code range: All these are usually "pending" and 
+			//that would still be true...
+			//...aside from the fact that if the user has gotten this far, they left 
+			//the part where they could add more data. 
+			//By now, "incomplete" definitely means "failed" for 0-70. 
+			$this->addCodeRange( 'GET_ORDERSTATUS', 'STATUSID', 'failed', 0, 70 );
 		}
 		
 		$status_result = $this->do_transaction( 'GET_ORDERSTATUS' );
@@ -1085,9 +1094,9 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$cancelflag = false; //this will denote the thing we're trying to do with the donation attempt
 		$problemflag = false; //this will get set to true, if we can't continue and need to give up and just log the hell out of it. 
 		$problemmessage = ''; //to be used in conjunction with the flag.
+		$add_antimessage = false; //this tells us if we should add an antimessage when we are done or not.
 
-		
-		if ( $post_status_check ){
+		if ( $is_orphan ){
 			if ( array_key_exists('data', $status_result) ) {
 				foreach ( $pull_vars as $theirkey => $ourkey) {
 					if ( array_key_exists($theirkey, $status_result['data']) ) {
@@ -1131,11 +1140,13 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			switch ( $order_status_results ){
 				case 'failed' : 
 				case 'revised' :  
+					$add_antimessage = true;
 					$cancelflag = true; //makes sure we don't try to confirm.
 					break;
 				case 'complete' :
 					$problemflag = true; //nothing to be done.
 					$problemmessage = "GET_ORDERSTATUS reports that the payment is already complete.";
+					$add_antimessage = true;
 					break;
 			}	
 		}
@@ -1167,6 +1178,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 					$this->setTransactionResult( "Original Response Status (pre-SET_PAYMENT): " . $original_status_code, 'txn_message' );
 					$this->runPostProcessHooks();  //stomp is in here
 					$this->unsetAllSessionData();
+					$add_antimessage = true;
 				} else {
 					$problemflag = true;
 					$problemmessage = "SET_PAYMENT couldn't communicate properly!";
@@ -1178,15 +1190,23 @@ class GlobalCollectAdapter extends GatewayAdapter {
 					if ( isset( $final['status'] ) && $final['status'] === true ) {
 						$this->setTransactionWMFStatus( 'failed' );
 						$this->unsetAllSessionData();
+						$add_antimessage = true;
 					} else {
 						$problemflag = true;
 						$problemmessage = "CANCEL_PAYMENT couldn't communicate properly!";
 					}
+				} else {
+					//in case we got wiped out, set the final status to what it was before. 
+					$this->setTransactionWMFStatus( $order_status_results );
 				}
-				//No else. We can't be in here if we've had problems, so the 
-				//GET_STATUS must have told us no. No action required (in fact, 
-				//GC will complain if we try to can something at this point). 
 			}
+		}
+		
+		if ( $add_antimessage && !$is_orphan ) {
+			//As it happens, we can't remove things from the queue here: It 
+			//takes way too dang long. (~5 seconds!)
+			//So, instead, I'll add an anti-message and deal with it later. (~.01 seconds) 
+			$this->doLimboStompTransaction( true );
 		}
 		
 		if ( $problemflag ){
@@ -1194,7 +1214,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 			$problemmessage = $this->getData_Raw( 'contribution_tracking_id' ) . ':' . $this->getData_Raw( 'order_id' ) . ' ' . $problemmessage;
 			self::log( $problemmessage );
 			//hurm. It would be swell if we had a message that told the user we had some kind of internal error. 
-			return array(
+			$ret = array(
 				'status' => false,
 				//TODO: appropriate messages. 
 				'message' => $problemmessage,
@@ -1203,6 +1223,7 @@ class GlobalCollectAdapter extends GatewayAdapter {
 				),
 				'action' => $this->getValidationAction(),
 			);
+			return $ret;
 		}
 		
 //		return something better... if we need to!
@@ -1285,8 +1306,6 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$data = array( );
 
 		$transaction = $this->getCurrentTransaction();
-
-		$this->getTransactionStatus();
 
 		switch ( $transaction ) {
 			case 'INSERT_ORDERWITHPAYMENT':
@@ -1996,14 +2015,10 @@ class GlobalCollectAdapter extends GatewayAdapter {
 					$this->staged_data['returnto'] = wfAppendQuery( $returnto, $queryArray );
 				}
 				
-			} elseif ( $this->getData_Raw( 'payment_method' ) === 'rtbt' ) {
-				
-				$this->staged_data['returnto'] = $this->getThankYouPage();
-				
 			} else {
 				
 				// Do we want to set this here?
-				$this->staged_data['returnto'] = $returnto;
+				$this->staged_data['returnto'] = $this->getThankYouPage();
 			}
 		}
 	}
@@ -2012,6 +2027,21 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$this->incrementNumAttempt();
 		if ( $this->getData_Raw( 'payment_method' ) === 'cc' ){
 			$this->addDonorDataToSession();
+		}
+	}
+	
+	/**
+	 * post-process function for INSERT_ORDERWITHPAYMENT. 
+	 * This gets called by executeIfFunctionExists, in do_transaction. 
+	 */
+	protected function post_process_insert_orderwithpayment(){
+		//yeah, we absolutely want to do this for every one of these. 
+		if ( $this->getTransactionStatus() === true ) {
+			$data = $this->getTransactionData();
+			$action = $this->findCodeAction( 'GET_ORDERSTATUS', 'STATUSID', $data['STATUSID'] );
+			if ($action != 'failed'){
+				$this->doLimboStompTransaction();
+			}
 		}
 	}
 	
@@ -2053,5 +2083,5 @@ class GlobalCollectAdapter extends GatewayAdapter {
 		$result = $avs_map[$this->getData_Raw( 'avs_result' )];
 		return $result;
 	}
-
+	
 }

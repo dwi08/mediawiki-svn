@@ -115,6 +115,62 @@ function sendPendingSTOMP( $transaction ) {
 }
 
 /**
+ * Hook to send transaction information to ActiveMQ server
+ * TODO: Seriously. Parameterize sendStomp. I hated this when there were only 
+ * two of them, and now I've made another one.
+ * THE ONLY THING this does differently, is use a different queue, and set the 
+ * correlation-id if one is set in the transaction array. 
+ * @global string $wgStompServer ActiveMQ server name. 
+ * @global string $wgLimboStompQueueName Name of the destination queue for 
+ * 'limbo' transactions. 
+ * @param array $transaction Key-value array of staged and ready donation data. 
+ * @return bool Just returns true all the time. Presumably an indication that 
+ * nothing exploded big enough to kill the whole thing.
+ */
+function sendLimboSTOMP( $transaction ) {
+	global $wgStompServer, $wgLimboStompQueueName, $wgCCLimboStompQueueName;
+	
+	if ( $transaction['payment_method'] === 'cc' ) {
+		$queueName = isset( $wgCCLimboStompQueueName ) ? $wgCCLimboStompQueueName : 'cc-limbo';
+	} else {
+		$queueName = isset( $wgLimboStompQueueName ) ? $wgLimboStompQueueName : 'limbo';
+	}
+
+	// include a library
+	require_once( "Stomp.php" );
+
+	$properties = array( 
+		'persistent' => 'true', 
+		'correlation-id' => $transaction['correlation-id'],
+		'payment_method' => $transaction['payment_method'] 
+	);
+		
+	if ( array_key_exists( 'antimessage', $transaction ) ) {
+		$message = '';
+		$properties['antimessage'] = 'true';
+	} else {
+		$message = json_encode( createQueueMessage( $transaction ) );
+	}
+
+	// make a connection
+	$con = new Stomp( $wgStompServer );
+
+	// connect
+	$con->connect();
+
+	// send a message to the queue
+	$result = $con->send( "/queue/$queueName", $message, $properties );
+
+	if ( !$result ) {
+		wfDebugLog( 'activemq_stomp', 'Send to Q failed for this message: ' . $message );
+	}
+
+	$con->disconnect();
+
+	return true;
+}
+
+/**
  * Assign correct values to the array of data to be sent to the ActiveMQ server
  * TODO: Probably something else. I don't like the way this works and neither do you.
  * 
@@ -165,6 +221,8 @@ function createQueueMessage( $transaction ) {
 		'postal_code_2' => $transaction['zip2'],
 		'gateway' => $transaction['gateway'],
 		'gateway_txn_id' => $transaction['gateway_txn_id'],
+		'payment_method' => $transaction['payment_method'],
+		'payment_submethod' => $transaction['payment_submethod'],
 		'response' => $transaction['response'],
 		'currency' => $transaction['currency_code'],
 		'original_currency' => $transaction['currency_code'],
@@ -176,4 +234,92 @@ function createQueueMessage( $transaction ) {
 	);
 
 	return $message;
+}
+
+/**
+ * Fetches all the messages in a queue that match the supplies selector. 
+ * Limiting to a completely arbitrary 50, just in case something goes amiss somewhere. 
+ * @param string $queue The target queue from which we would like to fetch things. 
+ *	To simplify things, specify either 'verified', 'pending', or 'limbo'.
+ * @param string $selector Could be anything that STOMP will regard as a valid selector. For our purposes, we will probably do things like:
+ *	$selector = "JMSCorrelationID = 'globalcollect-6214814668'", or
+ *	$selector = "payment_method = 'cc'";
+ * @param int $limit The maximum number of messages we would like to pull off of the queue at one time. 
+ * @return array an array of stomp messages, with a count of up to $limit. 
+ */
+function stompFetchMessages( $queue, $selector = null, $limit = 50 ){
+	global $wgStompQueueName, $wgPendingStompQueueName, $wgLimboStompQueueName, $wgCCLimboStompQueueName;
+	
+	switch($queue){
+		case 'pending':
+			$queue = $wgPendingStompQueueName;
+			break;
+		case 'limbo':
+			$queue = $wgLimboStompQueueName;
+			break;
+		case 'cc-limbo':
+			$queue = $wgCCLimboStompQueueName;
+			break;
+		case 'verified':
+		default:
+			$queue = $wgStompQueueName;
+			break;
+	}
+	
+	//This needs to be renewed every time, or the selectors won't work. 
+	//So says the internets, at least.  
+	$stomp = getDIStompConnection( true ); 
+	
+	$properties = array( 'ack' => 'client' );
+	if ( !is_null( $selector ) ){
+		$properties['selector'] = $selector;
+	}
+	
+	$returned = $stomp->subscribe( '/queue/' . $queue, $properties );
+	$message = $stomp->readFrame();
+	
+	$return = array();
+	
+	while ( !empty( $message ) && count( $return ) < $limit ) {
+		$return[] = $message;
+		$message = $stomp->readFrame();
+	}
+	
+	return $return;
+}
+
+
+/**
+ * Ack all of the messages in the array, thereby removing them from the queue. 
+ * @param type $messages 
+ */
+function stompAckMessages( $messages = array() ){
+	$stomp = getDIStompConnection();
+	foreach ($messages as $message){
+		if (!array_key_exists('redelivered', $message->headers)) {
+			$message->headers['redelivered'] = 'true';
+		}
+		$result = $stomp->ack($message);
+	}
+}
+
+function getDIStompConnection( $renew = false ){
+	global $wgStompServer;
+	static $conn = null;
+	if ( $conn === null || !$conn->isConnected() || $renew ) {
+		if ( $conn !== null && $conn->isConnected() ){
+			$conn->disconnect(); //just to be safe. 
+		}
+		// make a connection
+		require_once( "Stomp.php" );
+		$conn = new Stomp( $wgStompServer );
+		// connect
+		$conn->connect();
+	}
+	return $conn;
+}
+
+function closeDIStompConnection(){
+	$conn = getDIStompConnection();
+	$conn->disconnect();
 }

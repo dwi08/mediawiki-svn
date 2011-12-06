@@ -667,7 +667,7 @@ class DonationData {
 		static $match = null;
 
 		if ( $match === null ) {
-			if ( $this->isCaching() ){  
+			if ( $this->isCaching() ){
 				//This makes sense.
 				//If all three conditions for caching are currently true, the 
 				//last thing we want to do is screw it up by setting a session 
@@ -1017,6 +1017,8 @@ class DonationData {
 			'zip2',
 			'gateway',
 			'gateway_txn_id',
+			'payment_method',
+			'payment_submethod',
 			'response',
 			'currency_code',
 			'amount',
