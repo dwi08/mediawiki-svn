@@ -88,7 +88,7 @@ function efExtMobileFrontendUnitTests( &$files ) {
 }
 
 class ExtMobileFrontend {
-	const VERSION = '0.5.91';
+	const VERSION = '0.5.95';
 
 	/**
 	 * @var DOMDocument
@@ -443,14 +443,13 @@ class ExtMobileFrontend {
 		// Thus, globalized objects will not be available as expected in the function.
 		// This is stated to be intended behavior, as per the following: [http://bugs.php.net/bug.php?id=40104]
 		
-		$xDevice = !empty( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
+		$xDevice = isset( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
 		self::$useFormat = $wgRequest->getText( 'useformat' );
 		$mobileAction = $wgRequest->getText( 'mobileaction' );
 		$action = $wgRequest->getText( 'action' );
 
-		if ( self::$useFormat === 'mobile' ||
-			self::$useFormat === 'mobile-wap' ||
-			!empty( $xDevice ) ) {
+		if ( self::$useFormat === 'mobile' || self::$useFormat === 'mobile-wap' ||
+			$xDevice ) {
 				if ( $action !== 'edit' &&
 					 $mobileAction !== 'view_normal_site' ) {
 
@@ -497,10 +496,10 @@ class ExtMobileFrontend {
 					self::$search = $wgRequest->getText( 'search' );
 					self::$searchField = $wgRequest->getText( 'search', '' );
 
-					$acceptHeader = !empty( $_SERVER["HTTP_ACCEPT"] ) ? $_SERVER["HTTP_ACCEPT"] : '';
+					$acceptHeader = isset( $_SERVER["HTTP_ACCEPT"] ) ? $_SERVER["HTTP_ACCEPT"] : '';
 					$device = new DeviceDetection();
 
-					if ( !empty( $xDevice ) ) {
+					if ( $xDevice ) {
 						$formatName = $xDevice;
 					} else {
 						$formatName = $device->formatName( $userAgent, $acceptHeader );
@@ -589,9 +588,14 @@ class ExtMobileFrontend {
 					
 					if ( self::$title->isSpecial( 'Userlogin' ) && self::$isBetaGroupMember ) {
 						self::$wsLoginToken = $wgRequest->getSessionData( 'wsLoginToken' );
+						$q = array( 'action' => 'submitlogin', 'type' => 'login' );
 						$returnToVal = $wgRequest->getVal( 'returnto' );
-					 	$returnto = ( !empty( $returnToVal ) ) ? '&returnto=' . wfUrlencode( $returnToVal ) : '';
-						self::$wsLoginFormAction = self::$title->getLocalURL( 'action=submitlogin&type=login' . $returnto );
+					 	
+						if ( $returnToVal ) {
+							$q['returnto'] = $returnToVal;
+						}
+
+						self::$wsLoginFormAction = self::$title->getLocalURL( $q );
 					}
 					
 					$this->setDefaultLogo();
@@ -618,7 +622,7 @@ class ExtMobileFrontend {
 			$wgRequest->response()->setcookie( 'mfsecure', '1', 0, '' );
 		} else {
 			$mfSecure = $wgRequest->getCookie( 'mfsecure', '' );
-			if ( !empty( $mfSecure ) && $mfSecure == '1' ) {
+			if ( $mfSecure && $mfSecure == '1' ) {
 				$wgRequest->response()->setcookie( 'mfsecure', '', 0, '' );
 			}
 		}
@@ -725,7 +729,7 @@ class ExtMobileFrontend {
 	private function sendXDeviceVaryHeader() {
 		global $wgOut, $wgRequest;
 		wfProfileIn( __METHOD__ );
-		if ( !empty( $_SERVER['HTTP_X_DEVICE'] ) ) {
+		if ( isset( $_SERVER['HTTP_X_DEVICE'] ) ) {
 			$wgRequest->response()->header( 'X-Device: ' . $_SERVER['HTTP_X_DEVICE'] );
 			$wgOut->addVaryHeader( 'X-Device' );
 		}
@@ -737,11 +741,11 @@ class ExtMobileFrontend {
 	private function sendApplicationVersionVaryHeader() {
 		global $wgOut, $wgRequest;
 		wfProfileIn( __METHOD__ );
-		if ( !empty( $_SERVER['HTTP_APPLICATION_VERSION'] ) ) {
+		if ( isset( $_SERVER['HTTP_APPLICATION_VERSION'] ) ) {
 			$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_APPLICATION_VERSION'] );
 			$wgOut->addVaryHeader( 'Application_Version' );
 		} else {
-			if ( !empty( $_SERVER['HTTP_X_DEVICE'] ) ) {
+			if ( isset( $_SERVER['HTTP_X_DEVICE'] ) ) {
 				if ( stripos( $_SERVER['HTTP_X_DEVICE'], 'iphone' ) !== false ||
 					stripos( $_SERVER['HTTP_X_DEVICE'], 'android' ) !== false ) {
 					$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_X_DEVICE'] );
@@ -1212,7 +1216,7 @@ class ExtMobileFrontend {
 		if ( self::$title->isSpecial( 'Userlogin' ) && self::$isBetaGroupMember ) {
 			$userlogin = $this->doc->getElementById( 'userloginForm' );
 
-			if ( !empty( $userlogin ) && get_class($userlogin) === 'DOMElement' ) {
+			if ( $userlogin && get_class( $userlogin ) === 'DOMElement' ) {
 				$firstHeading = $this->doc->getElementById( 'firstHeading' );
 				if ( !empty( $firstHeading ) ) {
 					$firstHeading->nodeValue = '';
@@ -1303,7 +1307,7 @@ class ExtMobileFrontend {
 		}
 
 		if ( self::$title->isSpecial( 'Userlogin' ) && self::$isBetaGroupMember ) {
-			if ( !empty( $userlogin ) && get_class($userlogin) === 'DOMElement' ) {
+			if ( $userlogin && get_class( $userlogin ) === 'DOMElement' ) {
 				$login = $this->renderLogin();
 				$loginNode = $this->doc->importNode( $login, true );
 				$userlogin->appendChild( $loginNode );
