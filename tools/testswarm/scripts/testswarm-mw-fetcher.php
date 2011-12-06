@@ -298,10 +298,15 @@ class TestSwarmMWMain {
 	public function mkdir( $path ) {
 		$this->debug( "Attempting to create directory '$path'...", __METHOD__ );
 		if ( !file_exists( $path ) ) {
-			if ( mkdir( $path, 0777, true ) ) {
-				$this->debug( "Created directory '$path'", __METHOD__ );
-			} else {
-				throw new Exception( __METHOD__ . ": Failed to create directory '$path'" );
+			try {
+				if ( @mkdir( $path, 0777, true ) ) {
+					$this->debug( "Created directory '$path'", __METHOD__ );
+				} else {
+					throw new Exception( __METHOD__ . ": Failed to create directory '$path'" );
+				}
+			} catch( Exception $e ) {
+				print "Could not create directory '$path'. Exiting.\n";
+				exit(1);
 			}
 		} else {
 			$this->debug( "Creating directory '$path' aborted. Directory already exist", __METHOD__ );
