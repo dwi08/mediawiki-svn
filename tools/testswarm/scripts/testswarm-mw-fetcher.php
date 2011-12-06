@@ -96,7 +96,7 @@ class TestSwarmMWMain {
 		// Default log file
 		$this->setLogPath( "{$options['root']}/logs/default.log" );
 
-		// Optional options 
+		// Optional options
 		if ( isset( $options['svnCmd'] ) ) {
 			$this->svnCmd = $options['svnCmd'];
 		}
@@ -232,7 +232,7 @@ class TestSwarmMWMain {
 	}
 
 	public function prepareRootDirs() {
-		foreach( $this->getRootDirs() as $dir ) {			
+		foreach( $this->getRootDirs() as $dir ) {
 			if ( !file_exists( $dir ) ) {
 				$this->mkdir( $dir );
 			}
@@ -293,7 +293,7 @@ class TestSwarmMWMain {
 	/**
 	 * Create a directory including parents
 	 *
-	 * @param $path String Path to create ex: /tmp/my/foo/bar 
+	 * @param $path String Path to create ex: /tmp/my/foo/bar
 	 */
 	public function mkdir( $path ) {
 		$this->debug( "Attempting to create directory '$path'...", __METHOD__ );
