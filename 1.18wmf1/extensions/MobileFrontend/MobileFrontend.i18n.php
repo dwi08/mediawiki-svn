@@ -44,16 +44,16 @@ $messages['en'] = array (
 	'mobile-frontend-wml-continue' => 'Continue ...',
 	'mobile-frontend-wml-back' => 'Back ...',
 	'mobile-frontend-view' => 'Mobile view',
-	'mobile-frontend-opt-in-message' => 'Join our opt-in testing of the new mobile frontend?',
-	'mobile-frontend-opt-in-yes-button' => 'yes',
-	'mobile-frontend-opt-in-no-button' => 'no',
-	'mobile-frontend-opt-in-title' => 'Opt-In for Testing',
-	'mobile-frontend-opt-in-explain' => 'This allows you to enter the test',
-	'mobile-frontend-opt-out-message' => 'Leave opt-in testing of the new mobile frontend?',
-	'mobile-frontend-opt-out-yes-button' => 'yes',
-	'mobile-frontend-opt-out-no-button' => 'no',
-	'mobile-frontend-opt-out-title' => 'Opt-Out of Testing',
-	'mobile-frontend-opt-out-explain' => 'This allows you to leave the test',
+	'mobile-frontend-opt-in-message' => 'Join the mobile beta?',
+	'mobile-frontend-opt-in-yes-button' => 'Yes',
+	'mobile-frontend-opt-in-no-button' => 'No',
+	'mobile-frontend-opt-in-title' => 'Mobile beta opt-in',
+	'mobile-frontend-opt-in-explain' => 'By joining the beta, you will get access to experimental features, at the risk of encountering bugs and issues.',
+	'mobile-frontend-opt-out-message' => 'Leave the mobile beta?',
+	'mobile-frontend-opt-out-yes-button' => 'Yes',
+	'mobile-frontend-opt-out-no-button' => 'No',
+	'mobile-frontend-opt-out-title' => 'Mobile beta opt-out',
+	'mobile-frontend-opt-out-explain' => 'By leaving the mobile beta, you will disable all experimental features and return to the classic mobile experience.',
 	'mobile-frontend-disable-images' => 'Disable images on mobile site',
 	'mobile-frontend-enable-images' => 'Enable images on mobile site',
 	'mobile-frontend-featured-article' => 'Today\'s Featured Article',
@@ -459,6 +459,7 @@ $messages['ast'] = array(
 	'mobile-frontend-username' => "Nome d'usuariu:",
 	'mobile-frontend-password' => 'Contraseña:',
 	'mobile-frontend-login' => 'Entrar',
+	'mobile-frontend-placeholder' => 'Escribi equí la gueta...',
 );
 
 /** Azerbaijani (Azərbaycanca)
@@ -653,6 +654,7 @@ $messages['be-tarask'] = array(
 	'mobile-frontend-username' => 'Імя ўдзельніка:',
 	'mobile-frontend-password' => 'Пароль:',
 	'mobile-frontend-login' => 'Увайсьці',
+	'mobile-frontend-placeholder' => 'Увядзіце пошукавы выраз тут…',
 );
 
 /** Bulgarian (Български)
@@ -817,6 +819,10 @@ $messages['br'] = array(
 	'mobile-frontend-leave-feedback' => 'Reiñ e soñj war an Talbenn Hezoug',
 	'mobile-frontend-leave-feedback-thanks' => 'Trugarez da vezañ roet ho soñj.',
 	'mobile-frontend-language' => 'Yezh',
+	'mobile-frontend-username' => 'Anv implijer :',
+	'mobile-frontend-password' => 'Ger-tremen :',
+	'mobile-frontend-login' => 'Kevreañ',
+	'mobile-frontend-placeholder' => 'Merkit ar pezh a glaskit amañ...',
 );
 
 /** Bosnian (Bosanski)
@@ -1060,6 +1066,7 @@ $messages['cs'] = array(
 	'mobile-frontend-username' => 'Uživatelské jméno:',
 	'mobile-frontend-password' => 'Heslo:',
 	'mobile-frontend-login' => 'Přihlásit se',
+	'mobile-frontend-placeholder' => 'Sem napište hledaný výraz…',
 );
 
 /** Church Slavic (Словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ) */
@@ -1730,9 +1737,11 @@ $messages['fi'] = array(
 	'mobile-frontend-leave-feedback' => 'Palaute mobiilisivustosta',
 	'mobile-frontend-leave-feedback-thanks' => 'Kiitos palautteestasi.',
 	'mobile-frontend-language' => 'Kieli',
+	'mobile-frontend-login' => 'Kirjaudu sisään',
 );
 
 /** French (Français)
+ * @author Crochet.david
  * @author Gomoko
  * @author Hashar
  * @author Sherbrooke
@@ -1797,6 +1806,7 @@ $messages['fr'] = array(
 	'mobile-frontend-username' => "Nom d'utilisateur:",
 	'mobile-frontend-password' => 'Mot de passe:',
 	'mobile-frontend-login' => 'Se connecter',
+	'mobile-frontend-placeholder' => 'Tapez votre recherche ici...',
 );
 
 /** Franco-Provençal (Arpetan)
@@ -4254,6 +4264,7 @@ $messages['pfl'] = array(
 /** Polish (Polski)
  * @author Leinad
  * @author Sp5uhe
+ * @author Woytecr
  */
 $messages['pl'] = array(
 	'mobile-frontend-desc' => 'Mobilny interfejs użytkownika',
@@ -4310,6 +4321,9 @@ $messages['pl'] = array(
 	'mobile-frontend-leave-feedback' => 'Prześlij opinię',
 	'mobile-frontend-leave-feedback-thanks' => 'Dziękujemy za przesłaną opinię!',
 	'mobile-frontend-language' => 'Język',
+	'mobile-frontend-username' => 'Nazwa użytkownika:',
+	'mobile-frontend-password' => 'Hasło:',
+	'mobile-frontend-login' => 'Zaloguj się',
 );
 
 /** Piedmontese (Piemontèis)
@@ -5388,6 +5402,7 @@ $messages['szl'] = array(
 );
 
 /** Tamil (தமிழ்)
+ * @author Sodabottle
  * @author Surya Prakash.S.A.
  */
 $messages['ta'] = array(
@@ -5398,7 +5413,7 @@ $messages['ta'] = array(
 	'mobile-frontend-featured-article' => 'முதற்பக்கக் கட்டுரைகள்',
 	'mobile-frontend-in-the-news' => 'செய்திகளில்',
 	'mobile-frontend-home-button' => 'முகப்பு',
-	'mobile-frontend-random-button' => 'ஏதாவது ஒரு கட்டுரை',
+	'mobile-frontend-random-button' => 'அறிவு வளர',
 	'mobile-frontend-back-to-top-of-section' => 'முதல் பத்திக்குச் செல்',
 	'mobile-frontend-show-button' => 'காட்டு',
 	'mobile-frontend-hide-button' => 'மறை',
@@ -5883,6 +5898,7 @@ $messages['vi'] = array(
 	'mobile-frontend-username' => 'Tên người dùng:',
 	'mobile-frontend-password' => 'Mật khẩu:',
 	'mobile-frontend-login' => 'Đăng nhập',
+	'mobile-frontend-placeholder' => 'Nhập tìm kiếm của bạn tại đây…',
 );
 
 /** Volapük (Volapük)
