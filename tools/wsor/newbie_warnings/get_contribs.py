@@ -73,9 +73,9 @@ def main():
 			process = subprocess.Popen(
 				" ".join(['php', scriptName, userText, timestamp, ">", outFileName]), 
 				shell=True,
-				stderr=open('/dev/null', "w")
+				stderr=subprocess.PIPE
 			)
-			#error = process.stderr.read()
+			error = process.stderr.read()
 			if process.wait() != 0:
 				logging.error("The subscript exited with an error: %s" % error)
 				errors += 1
