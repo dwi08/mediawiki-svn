@@ -1,7 +1,8 @@
 <?php
 
 class FileBackendTest extends MediaWikiTestCase {
-	private $backend, $filesToPrune, $pathsToPrune;
+	private $backend, $multiBackend;
+	private $filesToPrune, $pathsToPrune;
 
 	function setUp() {
 		parent::setUp();
@@ -12,11 +13,34 @@ class FileBackendTest extends MediaWikiTestCase {
 				'cont1' => wfTempDir() . '/localtesting/cont1',
 				'cont2' => wfTempDir() . '/localtesting/cont2' )
 		) );
-		$this->filesToPrune = array();
-		$this->pathsToPrune = array();
+		$this->multiBackend = new FileBackendMultiWrite( array(
+			'name'        => 'localtestingmulti',
+			'lockManager' => 'fsLockManager',
+			'backends'    => array(
+				array(
+					'name'          => 'localmutlitesting1',
+					'class'         => 'FSFileBackend',
+					'lockManager'   => 'nullLockManager',
+					'containerPaths' => array(
+						'cont1' => wfTempDir() . '/localtestingmulti1/cont1',
+						'cont2' => wfTempDir() . '/localtestingmulti1/cont2' ),
+					'isMultiMaster' => false
+				),
+				array(
+					'name'          => 'localmutlitesting2',
+					'class'         => 'FSFileBackend',
+					'lockManager'   => 'nullLockManager',
+					'containerPaths' => array(
+						'cont1' => wfTempDir() . '/localtestingmulti2/cont1',
+						'cont2' => wfTempDir() . '/localtestingmulti2/cont2' ),
+					'isMultiMaster' => true
+				)
+			)
+		) );
+		$this->filesToPrune = $this->pathsToPrune = array();
 	}
 
-	private function basePath() {
+	private function singleBasePath() {
 		return 'mwstore://localtesting';
 	}
 
@@ -49,7 +73,7 @@ class FileBackendTest extends MediaWikiTestCase {
 		$cases = array();
 
 		$tmpName = TempFSFile::factory( "unittests_", 'txt' )->getPath();
-		$toPath = $this->basePath() . '/cont1/fun/obj1.txt';
+		$toPath = $this->singleBasePath() . '/cont1/fun/obj1.txt';
 		$op = array( 'op' => 'store', 'src' => $tmpName, 'dst' => $toPath );
 		$cases[] = array(
 			$op, // operation
@@ -70,36 +94,241 @@ class FileBackendTest extends MediaWikiTestCase {
 	/**
 	 * @dataProvider provider_testCopy
 	 */
-	public function testCopy() {
-	
+	public function testCopy( $op, $source, $dest ) {
+		$this->pathsToPrune[] = $source;
+		$this->pathsToPrune[] = $dest;
+
+		$status = $this->backend->doOperation(
+			array( 'op' => 'create', 'content' => 'blahblah', 'dst' => $source ) );
+		$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+
+		$status = $this->backend->doOperation( $op );
+		$this->assertEquals( true, $status->isOK(),
+			"Copy from $source to $dest succeeded." );
+		$this->assertEquals( true, $status->isGood(),
+			"Copy from $source to $dest succeeded without warnings." );
+		$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $source ) ),
+			"Source file $source still exists." );
+		$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $dest ) ),
+			"Destination file $dest exists after copy." );
+
+		$props1 = $this->backend->getFileProps( array( 'src' => $source ) );
+		$props2 = $this->backend->getFileProps( array( 'src' => $dest ) );
+		$this->assertEquals( $props1, $props2,
+			"Source and destination have the same props." );
+	}
+
+	public function provider_testCopy() {
+		$cases = array();
+
+		$source = $this->singleBasePath() . '/cont1/file.txt';
+		$dest = $this->singleBasePath() . '/cont2/fileMoved.txt';
+
+		$op = array( 'op' => 'copy', 'src' => $source, 'dst' => $dest );
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			$dest, // dest
+		);
+
+		$op['overwriteDest'] = true;
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			$dest, // dest
+		);
+
+		return $cases;
 	}
 
 	/**
 	 * @dataProvider provider_testMove
 	 */
-	public function testMove() {
-	
+	public function testMove( $op, $source, $dest ) {
+		$this->pathsToPrune[] = $source;
+		$this->pathsToPrune[] = $dest;
+
+		$status = $this->backend->doOperation(
+			array( 'op' => 'create', 'content' => 'blahblah', 'dst' => $source ) );
+		$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+
+		$status = $this->backend->doOperation( $op );
+		$this->assertEquals( true, $status->isOK(),
+			"Move from $source to $dest succeeded." );
+		$this->assertEquals( true, $status->isGood(),
+			"Move from $source to $dest succeeded without warnings." );
+		$this->assertEquals( false, $this->backend->fileExists( array( 'src' => $source ) ),
+			"Source file $source does not still exists." );
+		$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $dest ) ),
+			"Destination file $dest exists after move." );
+
+		$props1 = $this->backend->getFileProps( array( 'src' => $source ) );
+		$props2 = $this->backend->getFileProps( array( 'src' => $dest ) );
+		$this->assertEquals( false, $props1['fileExists'],
+			"Source file does not exist accourding to props." );
+		$this->assertEquals( true, $props2['fileExists'],
+			"Destination file exists accourding to props." );
+	}
+
+	public function provider_testMove() {
+		$cases = array();
+
+		$source = $this->singleBasePath() . '/cont1/file.txt';
+		$dest = $this->singleBasePath() . '/cont2/fileMoved.txt';
+
+		$op = array( 'op' => 'move', 'src' => $source, 'dst' => $dest );
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			$dest, // dest
+		);
+
+		$op['overwriteDest'] = true;
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			$dest, // dest
+		);
+
+		return $cases;
 	}
 
 	/**
 	 * @dataProvider provider_testDelete
 	 */
-	public function testDelete() {
-	
+	public function testDelete( $op, $source, $withSource, $okStatus ) {
+		$this->pathsToPrune[] = $source;
+
+		if ( $withSource ) {
+			$status = $this->backend->doOperation(
+				array( 'op' => 'create', 'content' => 'blahblah', 'dst' => $source ) );
+			$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+		}
+
+		$status = $this->backend->doOperation( $op );
+		if ( $okStatus ) {
+			$this->assertEquals( true, $status->isOK(), "Deletion of file at $source succeeded." );
+		} else {
+			$this->assertEquals( false, $status->isOK(), "Deletion of file at $source failed." );
+		}
+
+		$this->assertEquals( false, $this->backend->fileExists( array( 'src' => $source ) ),
+			"Source file $source does not exist after move." );
+
+		$props1 = $this->backend->getFileProps( array( 'src' => $source ) );
+		$this->assertEquals( false, $props1['fileExists'],
+			"Source file $source does not exist according to props." );
+	}
+
+	public function provider_testDelete() {
+		$cases = array();
+
+		$source = $this->singleBasePath() . '/cont1/myfacefile.txt';
+
+		$op = array( 'op' => 'delete', 'src' => $source );
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			true, // with source
+			true // succeeds
+		);
+
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			false, // without source
+			false // fails
+		);
+
+		$op['ignoreMissingSource'] = true;
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			false, // without source
+			true // succeeds
+		);
+
+		return $cases;
 	}
 
 	/**
 	 * @dataProvider provider_testCreate
 	 */
-	public function testCreate() {
-	
+	public function testCreate( $op, $source, $alreadyExists, $okStatus, $newSize ) {
+		$this->pathsToPrune[] = $source;
+
+		$oldText = 'blah...blah...waahwaah';
+		if ( $alreadyExists ) {
+			$status = $this->backend->doOperation(
+				array( 'op' => 'create', 'content' => $oldText, 'dst' => $source ) );
+			$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+		}
+
+		$status = $this->backend->doOperation( $op );
+		if ( $okStatus ) {
+			$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+		} else {
+			$this->assertEquals( false, $status->isOK(), "Creation of file at $source failed." );
+		}
+
+		$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $source ) ),
+			"Source file $source exists after creation." );
+
+		$props1 = $this->backend->getFileProps( array( 'src' => $source ) );
+		$this->assertEquals( true, $props1['fileExists'],
+			"Source file $source exists according to props." );
+		if ( $okStatus ) { // file content is what we saved
+			$this->assertEquals( $newSize, $props1['size'],
+				"Source file $source has expected size according to props." );
+		} else { // file content is some other previous text
+			$this->assertEquals( strlen( $oldText ), $props1['size'],
+				"Source file $source has different size that given text according to props." );
+		}
+	}
+
+	/**
+	 * @dataProvider provider_testConcatenate
+	 */
+	public function provider_testCreate() {
+		$cases = array();
+
+		$source = $this->singleBasePath() . '/cont2/myspacefile.txt';
+
+		$dummyText = 'hey hey';
+		$op = array( 'op' => 'create', 'content' => $dummyText, 'dst' => $source );
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			false, // no dest already exists
+			true, // succeeds
+			strlen( $dummyText )
+		);
+
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			true, // dest already exists
+			false, // fails
+			strlen( $dummyText )
+		);
+
+		$op['overwriteDest'] = true;
+		$cases[] = array(
+			$op, // operation
+			$source, // source
+			true, // dest already exists
+			true, // succeeds
+			strlen( $dummyText )
+		);
+
+		return $cases;
 	}
 
 	/**
 	 * @dataProvider provider_testConcatenate
 	 */
 	public function testConcatenate() {
-	
+		
 	}
 
 	/**
@@ -130,16 +359,87 @@ class FileBackendTest extends MediaWikiTestCase {
 	
 	}
 
+	/**
+	 * @dataProvider provider_testDoOperations
+	 */
+	public function testDoOperations() {
+	
+	}
+
+	public function testGetFileList() {
+		$base = $this->singleBasePath();
+		$files = array(
+			"$base/cont1/test1.txt",
+			"$base/cont1/test2.txt",
+			"$base/cont1/test3.txt",
+			"$base/cont1/subdir1/test1.txt",
+			"$base/cont1/subdir1/test2.txt",
+			"$base/cont1/subdir2/test3.txt",
+			"$base/cont1/subdir2/test4.txt",
+			"$base/cont1/subdir2/subdir/test1.txt",
+			"$base/cont1/subdir2/subdir/test2.txt",
+			"$base/cont1/subdir2/subdir/test3.txt",
+			"$base/cont1/subdir2/subdir/test4.txt",
+			"$base/cont1/subdir2/subdir/test5.txt",
+			"$base/cont1/subdir2/subdir/sub/test0.txt",
+		);
+		$this->pathsToPrune = array_merge( $this->pathsToPrune, $files );
+
+		// Add the files
+		$ops = array();
+		foreach ( $files as $file ) {
+			$ops[] = array( 'op' => 'create', 'content' => 'xxy', 'dst' => $file );
+		}
+		$status = $this->backend->doOperations( $ops );
+		$this->assertEquals( true, $status->isOK(), "Creation of files succeeded." );
+
+		// Expected listing
+		$expected = array(
+			"test1.txt",
+			"test2.txt",
+			"test3.txt",
+			"subdir1/test1.txt",
+			"subdir1/test2.txt",
+			"subdir2/test3.txt",
+			"subdir2/test1.txt",
+			"subdir2/subdir/test1.txt",
+			"subdir2/subdir/test2.txt",
+			"subdir2/subdir/test3.txt",
+			"subdir2/subdir/test4.txt",
+			"subdir2/subdir/test5.txt",
+			"subdir2/subdir/sub/test0.txt",
+		);
+		$expected = sort( $expected );
+
+		// Actual listing (no trailing slash)
+		$list = array();
+		$iter = $this->backend->getFileList( array( 'dir' => "$base/cont1" ) );
+		foreach ( $iter as $file ) {
+			$list[] = $file;
+		}
+
+		$this->assertEquals( $expected, sort( $list ), "Correct file listing." );
+
+		// Actual listing (with trailing slash)
+		$list = array();
+		$iter = $this->backend->getFileList( array( 'dir' => "$base/cont1/" ) );
+		foreach ( $iter as $file ) {
+			$list[] = $file;
+		}
+
+		$this->assertEquals( $expected, sort( $list ), "Correct file listing." );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 		foreach ( $this->filesToPrune as $file ) {
 			@unlink( $file );
 		}
 		foreach ( $this->pathsToPrune as $file ) {
-			$this->backend->delete( array( 'src' => $file ) );
+			$this->backend->doOperation( array( 'op' => 'delete', 'src' => $file ) );
+			$this->multiBackend->doOperation( array( 'op' => 'delete', 'src' => $file ) );
 		}
-		$this->backend = null;
-		$this->filesToPrune = array();
-		$this->pathsToPrune = array();
+		$this->backend = $this->multiBackend = null;
+		$this->filesToPrune = $this->pathsToPrune = array();
 	}
 }

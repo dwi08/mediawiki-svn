@@ -317,7 +317,7 @@ class NewParserTest extends MediaWikiTestCase {
 		$backend = array(
 			'name'           => 'local-backend',
 			'class'          => 'FSFileBackend',
-			'lockManager'    => 'fsLockManager',
+			'lockManager'    => 'nullLockManager',
 			'containerPaths' => array(
 				'images-public' => $this->uploadDir,
 				'images-thumb'  => $this->uploadDir . '/thumb' )

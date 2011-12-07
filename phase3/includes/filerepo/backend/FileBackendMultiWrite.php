@@ -188,7 +188,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function fileExists( array $params ) {
-		# Hit all backends in case an operation failed to copy/move/delete a file
+		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
 			if ( $backend->fileExists( $params ) ) {
 				return true;
@@ -213,6 +213,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function getFileProps( array $params ) {
+		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
 			$props = $backend->getFileProps( $params );
 			if ( $props !== null ) {
@@ -223,18 +224,23 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function streamFile( array $params ) {
+		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$status = $backend->streamFile( $params );
-			if ( $status->isOK() ) {
+			$subStatus = $backend->streamFile( $params );
+			$status->merge( $subStatus );
+			if ( $subStatus->isOK() ) {
+				// Pass isOK() despite fatals from other backends
+				$status->setResult( true );
 				return $status;
 			} elseif ( headers_sent() ) {
 				return $status; // died mid-stream...so this is already fubar
 			}
 		}
-		return Status::newFatal( 'backend-fail-stream', $params['src'] );
+		return $status;
 	}
 
 	function getLocalReference( array $params ) {
+		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
 			$fsFile = $backend->getLocalReference( $params );
 			if ( $fsFile ) {
@@ -245,6 +251,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	function getLocalCopy( array $params ) {
+		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
 			$tmpFile = $backend->getLocalCopy( $params );
 			if ( $tmpFile ) {
@@ -256,6 +263,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 
 	function getFileList( array $params ) {
 		foreach ( $this->backends as $index => $backend ) {
+			# Get results from the first backend
 			return $backend->getFileList( $params );
 		}
 		return array(); // sanity
