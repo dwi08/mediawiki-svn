@@ -134,12 +134,12 @@ class FSLockManager extends LockManager {
 			$this->locksHeld[$key][$type] = 1;
 		} else {
 			wfSuppressWarnings();
-			$handle = fopen( $this->getLockPath( $key ), 'c' );
+			$handle = fopen( $this->getLockPath( $key ), 'a+' );
 			wfRestoreWarnings();
 			if ( !$handle ) { // lock dir missing?
 				wfMkdirParents( $this->lockDir );
 				wfSuppressWarnings();
-				$handle = fopen( $this->getLockPath( $key ), 'c' ); // try again
+				$handle = fopen( $this->getLockPath( $key ), 'a+' ); // try again
 				wfRestoreWarnings();
 			}
 			if ( $handle ) {
@@ -176,6 +176,7 @@ class FSLockManager extends LockManager {
 		} elseif ( $type && !isset( $this->locksHeld[$key][$type] ) ) {
 			$status->warning( 'lockmanager-notlocked', $key );
 		} else {
+			$handlesToClose = array();
 			foreach ( $this->locksHeld[$key] as $lockType => $count ) {
 				if ( $type && $lockType != $type ) {
 					continue; // only unlock locks of type $type
@@ -186,30 +187,57 @@ class FSLockManager extends LockManager {
 					// If a LOCK_SH comes in while we have a LOCK_EX, we don't
 					// actually add a handler, so check for handler existence.
 					if ( isset( $this->handles[$key][$lockType] ) ) {
-						wfSuppressWarnings();
-						if ( !flock( $this->handles[$key][$lockType], LOCK_UN ) ) {
-							$status->fatal( 'lockmanager-fail-releaselock', $key );
-						}
-						if ( !fclose( $this->handles[$key][$lockType] ) ) {
-							$status->warning( 'lockmanager-fail-closelock', $key );
-						}
-						wfRestoreWarnings();
+						// Mark this handle to be unlocked and closed
+						$handlesToClose[] = $this->handles[$key][$lockType];
 						unset( $this->handles[$key][$lockType] );
 					}
 				}
 			}
-			if ( !count( $this->locksHeld[$key] ) ) {
-				wfSuppressWarnings();
-				# No locks are held for the lock file anymore
-				if ( !unlink( $this->getLockPath( $key ) ) ) {
-					$status->warning( 'lockmanager-fail-deletelock', $key );
-				}
-				wfRestoreWarnings();
-				unset( $this->locksHeld[$key] );
-				unset( $this->handles[$key] );
+			// Unlock handles to release locks and delete
+			// any lock files that end up with no locks on them...
+			if ( wfIsWindows() ) {
+				// Windows: for any process, including this one,
+				// calling unlink() on a locked file will fail
+				$status->merge( $this->closeLockHandles( $key, $handlesToClose ) );
+				$status->merge( $this->pruneKeyLockFiles( $key ) );
+			} else {
+				// Unix: unlink() can be used on files currently open by this 
+				// process and we must do so in order to avoid race conditions
+				$status->merge( $this->pruneKeyLockFiles( $key ) );
+				$status->merge( $this->closeLockHandles( $key, $handlesToClose ) );
 			}
 		}
 
+		return $status;
+	}
+
+	private function closeLockHandles( $key, array $handlesToClose ) {
+		$status = Status::newGood();
+		foreach ( $handlesToClose as $handle ) {
+			wfSuppressWarnings();
+			if ( !flock( $handle, LOCK_UN ) ) {
+				$status->fatal( 'lockmanager-fail-releaselock', $key );
+			}
+			if ( !fclose( $handle ) ) {
+				$status->warning( 'lockmanager-fail-closelock', $key );
+			}
+			wfRestoreWarnings();
+		}
+		return $status;
+	}
+
+	private function pruneKeyLockFiles( $key ) {
+		$status = Status::newGood();
+		if ( !count( $this->locksHeld[$key] ) ) {
+			wfSuppressWarnings();
+			# No locks are held for the lock file anymore
+			if ( !unlink( $this->getLockPath( $key ) ) ) {
+				$status->warning( 'lockmanager-fail-deletelock', $key );
+			}
+			wfRestoreWarnings();
+			unset( $this->locksHeld[$key] );
+			unset( $this->handles[$key] );
+		}
 		return $status;
 	}
 

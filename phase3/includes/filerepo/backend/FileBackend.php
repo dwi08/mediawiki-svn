@@ -206,13 +206,34 @@ abstract class FileBackendBase {
 	abstract public function getFileList( array $params );
 
 	/**
-	 * Get a local copy on disk of the file at a storage path in the backend.
-	 * The temporary copy should have the same file extension as the source.
+	 * Returns a file system file, identical to the file at a storage path.
+	 * The file return is either:
+	 * a) A local copy of the file at a storage path in the backend.
+	 *    The temporary copy will have the same extension as the source.
+	 * b) An original of the file at a storage path in the backend.
+	 * 
+	 * Write operations should *never* be done on this file as some backends
+	 * may do internal tracking or may be instances of FileBackendMultiWrite.
+	 * In that later case, there are copies of the file that must stay in sync.
+	 * 
 	 * $params include:
 	 *     src : source storage path
 	 * 
 	 * @param Array $params
-	 * @return TempFSFile|null Temporary file or null on failure
+	 * @return FSFile|null Returns null on failure
+	 */
+	public function getLocalReference( array $params ) {
+		return $this->getLocalCopy( $params );
+	}
+
+	/**
+	 * Get a local copy on disk of the file at a storage path in the backend.
+	 * The temporary copy will have the same file extension as the source.
+	 * $params include:
+	 *     src : source storage path
+	 * 
+	 * @param Array $params
+	 * @return TempFSFile|null Returns null on failure
 	 */
 	abstract public function getLocalCopy( array $params );
 
@@ -355,12 +376,34 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	public function getFileProps( array $params ) {
-		$tmpFile = $this->getLocalCopy( $params );
-		if ( !$tmpFile ) {
+		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
+		if ( !$fsFile ) {
 			return FSFile::placeholderProps();
 		} else {
-			return $tmpFile->getProps();
+			return $fsFile->getProps();
 		}
+	}
+
+	function streamFile( array $params ) {
+		$status = Status::newGood();
+
+		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
+		if ( !$fsFile ) {
+			$status->fatal( 'backend-fail-stream', $params['src'] );
+			return $status;
+		}
+
+		$extraHeaders = isset( $params['headers'] )
+			? $params['headers']
+			: array();
+
+		$ok = StreamFile::stream( $fsFile->getPath(), $extraHeaders, false );
+		if ( !$ok ) {
+			$status->fatal( 'backend-fail-stream', $params['src'] );
+			return $status;
+		}
+
+		return $status;
 	}
 
 	/**

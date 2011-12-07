@@ -40,7 +40,7 @@ class FSFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
 		}
-		if ( is_file( $dest ) ) {
+		if ( file_exists( $dest ) ) {
 			if ( !empty( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
 				$ok = unlink( $dest );
@@ -88,7 +88,7 @@ class FSFileBackend extends FileBackend {
 			return $status;
 		}
 
-		if ( is_file( $dest ) ) {
+		if ( file_exists( $dest ) ) {
 			if ( !empty( $params['overwriteDest'] ) ) {
 				wfSuppressWarnings();
 				$ok = unlink( $dest );
@@ -237,20 +237,25 @@ class FSFileBackend extends FileBackend {
 		foreach ( $params['srcs'] as $virtualSource ) {
 			list( $c, $source ) = $this->resolveStoragePath( $virtualSource );
 			if ( $source === null ) {
+				fclose( $tmpHandle );
 				$status->fatal( 'backend-fail-invalidpath', $virtualSource );
 				return $status;
 			}
 			// Load chunk into memory (it should be a small file)
-			$chunk = file_get_contents( $source );
-			if ( $chunk === false ) {
+			$sourceHandle = fopen( $source, 'r' );
+			if ( $sourceHandle === false ) {
+				fclose( $tmpHandle );
 				$status->fatal( 'backend-fail-read', $virtualSource );
 				return $status;
 			}
 			// Append chunk to file (pass chunk size to avoid magic quotes)
-			if ( !fwrite( $tmpHandle, $chunk, count( $chunk ) ) ) {
+			if ( !stream_copy_to_stream( $sourceHandle, $tmpHandle ) ) {
+				fclose( $sourceHandle );
+				fclose( $tmpHandle );
 				$status->fatal( 'backend-fail-writetemp', $tmpPath );
 				return $status;
 			}
+			fclose( $sourceHandle );
 		}
 		wfSuppressWarnings();
 		if ( !fclose( $tmpHandle ) ) {
@@ -451,25 +456,12 @@ class FSFileBackend extends FileBackend {
 		return new FSFileIterator( $dir );
 	}
 
-	function streamFile( array $params ) {
-		$status = Status::newGood();
-
+	function getLocalReference( array $params ) {
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
-			return $status;
+			return null;
 		}
-
-		$extraHeaders = isset( $params['headers'] )
-			? $params['headers']
-			: array();
-		$ok = StreamFile::stream( $source, $extraHeaders, false );
-		if ( !$ok ) {
-			$status->fatal( 'backend-fail-stream', $params['src'] );
-			return $status;
-		}
-
-		return $status;
+		return new FSFile( $source );
 	}
 
 	function getLocalCopy( array $params ) {

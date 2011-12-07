@@ -234,6 +234,16 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return Status::newFatal( 'backend-fail-stream', $params['src'] );
 	}
 
+	function getLocalReference( array $params ) {
+		foreach ( $this->backends as $backend ) {
+			$fsFile = $backend->getLocalReference( $params );
+			if ( $fsFile ) {
+				return $fsFile;
+			}
+		}
+		return null;
+	}
+
 	function getLocalCopy( array $params ) {
 		foreach ( $this->backends as $backend ) {
 			$tmpFile = $backend->getLocalCopy( $params );
