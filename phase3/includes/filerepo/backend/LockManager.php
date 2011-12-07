@@ -38,15 +38,16 @@ abstract class LockManager {
 	 * Unlock the resources at the given abstract paths
 	 * 
 	 * @param $paths Array List of storage paths
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @return Status 
 	 */
-	final public function unlock( array $paths ) {
+	final public function unlock( array $paths, $type = self::LOCK_EX ) {
 		$keys = array_unique( array_map( 'sha1', $paths ) );
-		return $this->doUnlock( $keys, 0 );
+		return $this->doUnlock( $keys, $type );
 	}
 
 	/**
-	 * Lock a resource with the given key
+	 * Lock resources with the given keys and lock type
 	 * 
 	 * @param $key Array List of keys to lock (40 char hex hashes)
 	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
@@ -55,11 +56,10 @@ abstract class LockManager {
 	abstract protected function doLock( array $keys, $type );
 
 	/**
-	 * Unlock a resource with the given key.
-	 * If $type is given, then only locks of that type should be cleared.
+	 * Unlock resources with the given keys and lock type
 	 * 
 	 * @param $key Array List of keys to unlock (40 char hex hashes)
-	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH, or 0
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @return string
 	 */
 	abstract protected function doUnlock( array $keys, $type );
@@ -173,24 +173,19 @@ class FSLockManager extends LockManager {
 
 		if ( !isset( $this->locksHeld[$key] ) ) {
 			$status->warning( 'lockmanager-notlocked', $key );
-		} elseif ( $type && !isset( $this->locksHeld[$key][$type] ) ) {
+		} elseif ( !isset( $this->locksHeld[$key][$type] ) ) {
 			$status->warning( 'lockmanager-notlocked', $key );
 		} else {
 			$handlesToClose = array();
-			foreach ( $this->locksHeld[$key] as $lockType => $count ) {
-				if ( $type && $lockType != $type ) {
-					continue; // only unlock locks of type $type
-				}
-				--$this->locksHeld[$key][$lockType];
-				if ( $this->locksHeld[$key][$lockType] <= 0 ) {
-					unset( $this->locksHeld[$key][$lockType] );
-					// If a LOCK_SH comes in while we have a LOCK_EX, we don't
-					// actually add a handler, so check for handler existence.
-					if ( isset( $this->handles[$key][$lockType] ) ) {
-						// Mark this handle to be unlocked and closed
-						$handlesToClose[] = $this->handles[$key][$lockType];
-						unset( $this->handles[$key][$lockType] );
-					}
+			--$this->locksHeld[$key][$type];
+			if ( $this->locksHeld[$key][$type] <= 0 ) {
+				unset( $this->locksHeld[$key][$type] );
+				// If a LOCK_SH comes in while we have a LOCK_EX, we don't
+				// actually add a handler, so check for handler existence.
+				if ( isset( $this->handles[$key][$type] ) ) {
+					// Mark this handle to be unlocked and closed
+					$handlesToClose[] = $this->handles[$key][$type];
+					unset( $this->handles[$key][$type] );
 				}
 			}
 			// Unlock handles to release locks and delete
@@ -391,17 +386,12 @@ class DBLockManager extends LockManager {
 		foreach ( $keys as $key ) {
 			if ( !isset( $this->locksHeld[$key] ) ) {
 				$status->warning( 'lockmanager-notlocked', $key );
-			} elseif ( $type && !isset( $this->locksHeld[$key][$type] ) ) {
+			} elseif ( !isset( $this->locksHeld[$key][$type] ) ) {
 				$status->warning( 'lockmanager-notlocked', $key );
 			} else {
-				foreach ( $this->locksHeld[$key] as $lockType => $count ) {
-					if ( $type && $lockType != $type ) {
-						continue; // only unlock locks of type $type
-					}
-					--$this->locksHeld[$key][$lockType];
-					if ( $this->locksHeld[$key][$lockType] <= 0 ) {
-						unset( $this->locksHeld[$key][$lockType] );
-					}
+				--$this->locksHeld[$key][$type];
+				if ( $this->locksHeld[$key][$type] <= 0 ) {
+					unset( $this->locksHeld[$key][$type] );
 				}
 				if ( !count( $this->locksHeld[$key] ) ) {
 					unset( $this->locksHeld[$key] ); // no SH or EX locks left for key

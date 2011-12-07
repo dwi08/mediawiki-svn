@@ -253,11 +253,11 @@ abstract class FileBackendBase {
 	 * 
 	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
-	 * @param $sources Array Source storage paths
+	 * @param $paths Array Storage paths
 	 * @return Status
 	 */
 	final public function lockFiles( array $paths ) {
-		return $this->lockManager->lock( $paths );
+		return $this->lockManager->lock( $paths, LockManager::LOCK_EX );
 	}
 
 	/**
@@ -265,11 +265,11 @@ abstract class FileBackendBase {
 	 * 
 	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
-	 * @param $sources Array Source storage paths
+	 * @param $paths Array Storage paths
 	 * @return Status
 	 */
 	final public function unlockFiles( array $paths ) {
-		return $this->lockManager->unlock( $paths );
+		return $this->lockManager->unlock( $paths, LockManager::LOCK_EX );
 	}
 
 	/**
@@ -280,11 +280,11 @@ abstract class FileBackendBase {
 	 * Once the return value goes out scope, the locks will be released and
 	 * the status updated. Unlock fatals will not change the status "OK" value.
 	 * 
-	 * @param $sources Array Source storage paths
+	 * @param $paths Array Storage paths
 	 * @param $status Status Status to update on lock/unlock
 	 * @return FileBackendScopedLock|null Returns null on failure
 	 */
-	final public function getScopedLock( array $paths, Status $status ) {
+	final public function getScopedFileLocks( array $paths, Status $status ) {
 		return FileBackendScopedLock::factory( $this, $paths, $status );
 	}
 }
@@ -499,7 +499,7 @@ abstract class FileBackend extends FileBackendBase {
 		}
 
 		// Try to lock those files for the scope of this function...
-		$scopedLock = $this->getScopedLock( $filesToLock, $status );
+		$scopedLock = $this->getScopedFileLocks( $filesToLock, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}
