@@ -27,7 +27,8 @@ abstract class FileBackendBase {
 
 	/**
 	 * Build a new object from configuration.
-	 * This should only be called from within FileRepo classes.
+	 * This should only be called from within FileBackendGroup.
+	 * 
 	 * $config includes:
 	 *     'name'        : The name of this backend
 	 *     'wikiId'      : Prefix to container names that is unique to this wiki
@@ -44,9 +45,10 @@ abstract class FileBackendBase {
 	}
 
 	/**
+	 * Get the unique backend name.
+	 * 
 	 * We may have multiple different backends of the same type.
 	 * For example, we can have two Swift backends using different proxies.
-	 * All backend instances must have unique names.
 	 * 
 	 * @return string
 	 */
@@ -93,7 +95,7 @@ abstract class FileBackendBase {
 	/**
 	 * Prepare a storage path for usage. This will create containers
 	 * that don't yet exists or, on FS backends, create parent directories.
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * 
 	 * $params include:
 	 *     dir : storage directory
 	 * 
@@ -104,8 +106,10 @@ abstract class FileBackendBase {
 
 	/**
 	 * Take measures to block web access to a directory.
+	 * In backends like Swift, this might restrict container
+	 * access to backend user that represents user web request.
 	 * This is not guaranteed to actually do anything.
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * 
 	 * $params include:
 	 *     dir       : storage directory
 	 *     noAccess  : try to deny file access
@@ -119,7 +123,7 @@ abstract class FileBackendBase {
 	/**
 	 * Clean up an empty storage directory.
 	 * On FS backends, the directory will be deleted. Others may do nothing.
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * 
 	 * $params include:
 	 *     dir : storage directory
 	 * 
@@ -129,8 +133,8 @@ abstract class FileBackendBase {
 	abstract public function clean( array $params );
 
 	/**
-	 * Check if a file exits at a storage path in the backend.
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * Check if a file exists at a storage path in the backend.
+	 * 
 	 * $params include:
 	 *     src : source storage path
 	 * 
@@ -142,6 +146,7 @@ abstract class FileBackendBase {
 	/**
 	 * Get a hash of the file at a storage path in the backend.
 	 * Typically this will be a SHA-1 hash, MD5 hash, or something similar.
+	 * 
 	 * $params include:
 	 *     src : source storage path
 	 * 
@@ -153,12 +158,13 @@ abstract class FileBackendBase {
 	/**
 	 * Get the format of the hash that getFileHash() uses
 	 *
-	 * @return string (md5, sha1, unknown, ...)
+	 * @return string (md5, sha1, internal, ...)
 	 */
 	abstract public function getHashType();
 
 	/**
 	 * Get the last-modified timestamp of the file at a storage path.
+	 * 
 	 * $params include:
 	 *     src : source storage path
 	 * 
@@ -170,6 +176,7 @@ abstract class FileBackendBase {
 	/**
 	 * Get the properties of the file at a storage path in the backend.
 	 * Returns FSFile::placeholderProps() on failure.
+	 * 
 	 * $params include:
 	 *     src : source storage path
 	 * 
@@ -183,6 +190,7 @@ abstract class FileBackendBase {
 	 * Appropriate HTTP headers (Status, Content-Type, Content-Length)
 	 * must be sent if streaming began, while none should be sent otherwise.
 	 * Implementations should flush the output buffer before sending data.
+	 * 
 	 * $params include:
 	 *     src     : source storage path
 	 *     headers : additional HTTP headers to send on success
@@ -198,6 +206,7 @@ abstract class FileBackendBase {
 	 * the container should be listed. If of the form "mwstore://container/dir",
 	 * then all items under that container directory should be listed.
 	 * Results should be storage paths relative to the given directory.
+	 * 
 	 * $params include:
 	 *     dir : storage path directory.
 	 *
@@ -229,6 +238,7 @@ abstract class FileBackendBase {
 	/**
 	 * Get a local copy on disk of the file at a storage path in the backend.
 	 * The temporary copy will have the same file extension as the source.
+	 * 
 	 * $params include:
 	 *     src : source storage path
 	 * 
@@ -239,8 +249,9 @@ abstract class FileBackendBase {
 
 	/**
 	 * Lock the files at the given storage paths in the backend.
-	 * This should either lock all the files or none (on failure).
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * This will either lock all the files or none (on failure).
+	 * 
+	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
@@ -251,13 +262,30 @@ abstract class FileBackendBase {
 
 	/**
 	 * Unlock the files at the given storage paths in the backend.
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * 
+	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
 	 * @param $sources Array Source storage paths
 	 * @return Status
 	 */
 	final public function unlockFiles( array $paths ) {
 		return $this->lockManager->unlock( $paths );
+	}
+
+	/**
+	 * Lock the files at the given storage paths in the backend.
+	 * This will either lock all the files or none (on failure).
+	 * On failure, the status object will be updated with errors.
+	 * 
+	 * Once the return value goes out scope, the locks will be released and
+	 * the status updated. Unlock fatals will not change the status "OK" value.
+	 * 
+	 * @param $sources Array Source storage paths
+	 * @param $status Status Status to update on lock/unlock
+	 * @return FileBackendScopedLock|null Returns null on failure
+	 */
+	final public function getScopedLock( array $paths, Status $status ) {
+		return FileBackendScopedLock::factory( $this, $paths, $status );
 	}
 }
 
@@ -360,7 +388,7 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
-	 * Whether this backend implements move() and is applies to a potential
+	 * Whether this backend implements move() and it applies to a potential
 	 * move from one storage path to another. No backends hits are required.
 	 * For example, moving objects accross containers may not be supported.
 	 * Do not call this function from places outside FileBackend and FileOp.
@@ -382,6 +410,10 @@ abstract class FileBackend extends FileBackendBase {
 		} else {
 			return $fsFile->getProps();
 		}
+	}
+
+	public function getHashType() {
+		return 'internal';
 	}
 
 	function streamFile( array $params ) {
@@ -466,8 +498,8 @@ abstract class FileBackend extends FileBackendBase {
 			$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsUsed() );
 		}
 
-		// Try to lock those files...
-		$status->merge( $this->lockFiles( $filesToLock ) );
+		// Try to lock those files for the scope of this function...
+		$scopedLock = $this->getScopedLock( $filesToLock, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}
@@ -483,7 +515,6 @@ abstract class FileBackend extends FileBackendBase {
 					++$status->failCount;
 					$status->success[$index] = false;
 				} else {
-					$status->merge( $this->unlockFiles( $filesToLock ) );
 					return $status;
 				}
 			}
@@ -510,7 +541,6 @@ abstract class FileBackend extends FileBackendBase {
 						}
 						$pos--;
 					}
-					$status->merge( $this->unlockFiles( $filesToLock ) );
 					return $status;
 				}
 			}
@@ -532,11 +562,8 @@ abstract class FileBackend extends FileBackendBase {
 			$status->merge( $subStatus );
 		}
 
-		// Unlock all the files
-		$status->merge( $this->unlockFiles( $filesToLock ) );
-
-		// Make sure status is OK, despite any finish() or unlockFiles() fatals
-		$status->setResult( true );
+		// Make sure status is OK, despite any finish() fatals
+		$status->setResult( true, $status->value );
 
 		return $status;
 	}
@@ -646,5 +673,59 @@ abstract class FileBackend extends FileBackendBase {
 	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {
 		return $relStoragePath;
+	}
+}
+
+/**
+ * Class to handle scoped locks, which release when the object is destroyed
+ */
+class FileBackendScopedLock {
+	/** @var FileBackendBase */
+	protected $backend;
+	/** @var Status */
+	protected $status;
+	/** @var Array List of storage paths*/
+	protected $paths;
+
+	/**
+	 * @param $backend FileBackendBase
+	 * @param $paths Array List of storage paths
+	 * @param $status Status
+	 */
+	protected function __construct( FileBackendBase $backend, array $paths, Status $status ) {
+	   $this->backend = $backend;
+	   $this->paths = $paths;
+	   $this->status = $status;
+	}
+
+	protected function __clone() {}
+
+	/**
+	 * Get a status object resulting from an attempt to lock files.
+	 * If the attempt is sucessful, the value of the status will be
+	 * FileBackendScopedLock object which releases the locks when
+	 * it goes out of scope. Otherwise, the value will be null.
+	 * 
+	 * @param $backend FileBackendBase
+	 * @param $files Array List of storage paths
+	 * @param $status Status
+	 * @return FileBackendScopedLock|null 
+	 */
+	public static function factory( FileBackendBase $backend, array $files, Status $status ) {
+		$lockStatus = $backend->lockFiles( $files );
+		$status->merge( $lockStatus );
+		if ( $lockStatus->isOK() ) {
+			return new self( $backend, $files, $status );
+		}
+		return null;
+	}
+
+	function __destruct() {
+		$wasOk = $this->status->isOK();
+		$this->status->merge( $this->backend->unlockFiles( $this->paths ) );
+		if ( $wasOk ) {
+			// Make sure status is OK, despite any unlockFiles() fatals	
+			$this->status->setResult( true, $this->status->value );
+		}
 	}
 }

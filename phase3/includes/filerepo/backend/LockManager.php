@@ -251,13 +251,9 @@ class FSLockManager extends LockManager {
 	}
 
 	function __destruct() {
-		// Make sure remaining files get cleared for sanity
-		foreach ( $this->handles as $key => $locks ) {
-			foreach ( $locks as $type => $handle ) {
-				flock( $handle, LOCK_UN ); // PHP 5.3 will not do this automatically
-				fclose( $handle );
-			}
-			unlink( $this->getLockPath( $key ) );
+		// Make sure remaining locks get cleared for sanity
+		foreach ( $this->locksHeld as $key => $locks ) {
+			$this->doSingleUnlock( $key, 0 );
 		}
 	}
 }
@@ -691,6 +687,11 @@ class DBLockManager extends LockManager {
 	protected function getBucketFromKey( $key ) {
 		$prefix = substr( $key, 0, 2 ); // first 2 hex chars (8 bits)
 		return intval( base_convert( $prefix, 16, 10 ) ) % count( $this->dbsByBucket );
+	}
+
+	function __destruct() {
+		// Make sure remaining locks get cleared for sanity
+		$this->finishLockTransactions();
 	}
 }
 

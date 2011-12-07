@@ -83,8 +83,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 			}
 		}
 
-		// Try to lock those files...
-		$status->merge( $this->lockFiles( $filesToLock ) );
+		// Try to lock those files for the scope of this function...
+		$scopedLock = $this->getScopedLock( $filesToLock, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}
@@ -105,7 +105,6 @@ class FileBackendMultiWrite extends FileBackendBase {
 					++$status->failCount;
 					$status->success[$index] = false;
 				} else {
-					$status->merge( $this->unlockFiles( $filesToLock ) );
 					return $status;
 				}
 			}
@@ -132,7 +131,6 @@ class FileBackendMultiWrite extends FileBackendBase {
 						}
 						$pos--;
 					}
-					$status->merge( $this->unlockFiles( $filesToLock ) );
 					return $status;
 				}
 			}
@@ -154,11 +152,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 			$status->merge( $subStatus );
 		}
 
-		// Unlock all the files
-		$status->merge( $this->unlockFiles( $filesToLock ) );
-
-		// Make sure status is OK, despite any finish() or unlockFiles() fatals
-		$status->setResult( true );
+		// Make sure status is OK, despite any finish() fatals
+		$status->setResult( true, $status->value );
 
 		return $status;
 	}
@@ -232,8 +227,12 @@ class FileBackendMultiWrite extends FileBackendBase {
 				// Pass isOK() despite fatals from other backends
 				$status->setResult( true );
 				return $status;
-			} elseif ( headers_sent() ) {
-				return $status; // died mid-stream...so this is already fubar
+			} else { // failure
+				if ( headers_sent() ) {
+					return $status; // died mid-stream...so this is already fubar
+				} elseif ( strval( ob_get_contents() ) !== '' ) {
+					ob_clean(); // output was buffered but not sent; clear it
+				}
 			}
 		}
 		return $status;
