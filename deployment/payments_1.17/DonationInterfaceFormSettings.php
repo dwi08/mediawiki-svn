@@ -40,6 +40,11 @@ $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-ideal-noadd'] = $wgGlobalCollectGa
 //BPAY
 $wgGlobalCollectGatewayAllowedHtmlForms['obt-bpay'] = $wgGlobalCollectGatewayHtmlFormDir . '/obt/obt-bpay.html';
 
+// RCC
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-US.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-CA'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-CA.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-AU'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-AU.html';
+
 // Credit Card - Single Step
 //$wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step-CA'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step-CA.html';
