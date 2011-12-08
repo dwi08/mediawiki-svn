@@ -89,6 +89,17 @@ $wgResourceModules['ext.centralNotice.interface'] = array(
 	'messages' => 'centralnotice-documentwrite-error'
 );
 
+// Temporary setting to enable and configure info for Harvard banner on en.wikipedia.org
+$wgNoticeBanner_Harvard2011 = array(
+	'enable' => false,
+	'salt' => 'default',
+);
+
+/**
+ * UnitTestsList hook handler
+ * @param $files array
+ * @return bool
+ */
 function efCentralNoticeUnitTests( &$files ) {
 	$files[] = dirname( __FILE__ ) . '/tests/CentralNoticeTest.php';
 	return true;
@@ -146,6 +157,11 @@ function efCentralNoticeSetup() {
 	}
 }
 
+/**
+ * LoadExtensionSchemaUpdates hook handler
+ * @param $updater DatabaseUpdater|null
+ * @return bool
+ */
 function efCentralNoticeSchema( $updater = null ) {
 	$base = dirname( __FILE__ );
 	if ( $updater === null ) {
@@ -200,26 +216,43 @@ function efCentralNoticeSchema( $updater = null ) {
 	return true;
 }
 
+/**
+ * BeforePageDisplay hook handler
+ * @param $out OutputPage
+ * @param $skin Skin
+ * @return bool
+ */
 function efCentralNoticeLoader( $out, $skin ) {
-	global $wgOut;
-
 	// Include '.js' to exempt script from squid cache expiration override
 	$centralLoader = SpecialPage::getTitleFor( 'BannerController' )->getLocalUrl( 'cache=/cn.js' );
 
 	// Insert the banner controller Javascript into the page
-	$wgOut->addScriptFile( $centralLoader );
+	$out->addScriptFile( $centralLoader );
 
 	return true;
 }
 
+/**
+ * SkinAfterBottomScripts hook handler
+ * @param $skin Skin
+ * @param $text string
+ * @return bool
+ */
 function efCentralNoticeGeoLoader( $skin, &$text ) {
 	// Insert the geo IP lookup
 	$text .= Html::linkedScript( "//geoiplookup.wikimedia.org/" );
 	return true;
 }
 
+/**
+ * MakeGlobalVariablesScript hook handler
+ * @param $vars array
+ * @return bool
+ */
 function efCentralNoticeDefaults( &$vars ) {
-	global $wgNoticeProject;
+	// Using global $wgUser for compatibility with 1.18
+	global $wgNoticeProject, $wgUser, $wgMemc, $wgNoticeBanner_Harvard2011, $wgContLang;
+
 	// Initialize global Javascript variables. We initialize Geo with empty values so if the geo
 	// IP lookup fails we don't have any surprises.
 	$geo = (object)array();
@@ -227,9 +260,98 @@ function efCentralNoticeDefaults( &$vars ) {
 	$geo->{'country'} = '';
 	$vars['Geo'] = $geo; // change this to wgGeo as soon as Mark updates on his end
 	$vars['wgNoticeProject'] = $wgNoticeProject;
+
+	// XXX: Temporary WMF-specific code for the 2011 Harvard survey invitation banner.
+	// Only do this for logged-in users, keeping anonymous user output equal (for Squid-cache).
+	// Also, don't run if the UserDailyContribs-extension isn't installed.
+	if ( $wgNoticeBanner_Harvard2011['enable'] && $wgUser->isLoggedIn() && function_exists( 'getUserEditCountSince' ) ) {
+
+		$cacheKey = wfMemcKey( 'CentralNotice', 'Harvard2011', 'v1', $wgUser->getId() );
+		$value = $wgMemc->get( $cacheKey );
+
+		// Cached ?
+		if ( !$value ) {
+			/**
+			 * To be eligible, the user must match all of the following:
+			 * - have an account
+			 * - not be a bot (userright=bot)
+			 * .. and match one of the following:
+			 * - be an admin (group=sysop)
+			 * - have an editcount higher than 300, of which 20 within the last 180 days (on the launch date)
+			 * - have had their account registered for less than 30 days (on to the launch date)
+			 */
+			if ( $wgUser->isAllowed( 'bot' ) ) {
+				$value = false;
+
+			} else {
+
+				$launchTimestamp = wfTimestamp( TS_UNIX, '2011-12-08 00:00:00' );
+				$groups = $wgUser->getGroups();
+				$registrationDate = $wgUser->getRegistration() ? $wgUser->getRegistration() : 0;
+				$daysOld = floor( ( $launchTimestamp - wfTimestamp( TS_UNIX, $registrationDate ) ) / ( 60*60*24 ) );
+				$salt = $wgNoticeBanner_Harvard2011['salt'];
+
+				// Variables
+				$hashData = array(
+					// "login"
+					'login' => intval( $wgUser->getId() ),
+
+					// "group" is the group name(s) of the user (comma-separated).
+					'group' => implode( ',', $groups ),
+
+					// "duration" is the number of days since the user registered his (on the launching date).
+					// Note: Will be negative if user registered after launch date!
+					'duration' => intval( $daysOld ),
+
+					// "editcounts" is the user's total number of edits
+					'editcounts' => $wgUser->getEditCount() == null ? 0 : intval( $wgUser->getEditCount() ),
+
+					// "last6monthseditcount" is the user's total number of edits in the last 180 days (on the launching date)
+					'last6monthseditcount' => getUserEditCountSince(
+						$launchTimestamp - ( 180*24*3600 ),
+						$wgUser,
+						$launchTimestamp
+					),
+				);
+
+				$postData = $hashData;
+
+				// "username" the user's username
+				$postData['username'] = $wgUser->getName();
+
+				// Security checksum. Prevent users from entering the survey with invalid metrics 
+				$postData['secretkey'] = md5( $salt . serialize( $hashData ) );
+
+				// MD5 hash
+				$postData['lang'] = $wgContLang->getCode();
+				echo $salt . serialize( $hashData )."\n\n";
+
+				if (
+					in_array( 'sysop', $groups )
+					|| ( $postData['duration'] >= 180 && $postData['editcounts'] >= 300 && $postData['last6monthseditcount'] >= 20 )
+					|| ( $postData['duration'] < 30 )
+				) {
+					$value = $postData;
+				} else {
+					$value = false;
+				}
+			}
+
+			$wgMemc->set( $cacheKey, $value, strtotime( '+10 days' ) );
+		}
+
+		$vars['wgNoticeBanner_Harvard2011'] = $value;
+
+	}
+
 	return true;
 }
 
+/**
+ * SiteNoticeAfter hook handler
+ * @param $notice string
+ * @return bool
+ */
 function efCentralNoticeDisplay( &$notice ) {
 	// setup siteNotice div
 	$notice =
