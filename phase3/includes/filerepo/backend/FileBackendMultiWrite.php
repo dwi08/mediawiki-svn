@@ -30,7 +30,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 	protected $masterIndex = -1; // index of master backend
 
 	/**
-	 * Construct a proxy backend that consist of several internal backends.
+	 * Construct a proxy backend that consists of several internal backends.
 	 * $config contains:
 	 *     'name'        : The name of the proxy backend
 	 *     'lockManager' : Registered name of the file lock manager to use

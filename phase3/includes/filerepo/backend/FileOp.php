@@ -8,7 +8,7 @@
  * Helper class for representing operations with transaction support.
  * FileBackend::doOperations() will require these classes for supported operations.
  * 
- * Access use of large fields should be avoided as we want to be able to support
+ * Use of large fields should be avoided as we want to be able to support
  * potentially many FileOp classes in large arrays in memory.
  * 
  * @ingroup FileBackend

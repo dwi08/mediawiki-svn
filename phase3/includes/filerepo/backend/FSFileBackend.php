@@ -7,7 +7,7 @@
 /**
  * Class for a file system based file backend.
  * Status messages should avoid mentioning the internal FS paths.
- * Likewise, error suppression should be used to path disclosure.
+ * Likewise, error suppression should be used to avoid path disclosure.
  *
  * @ingroup FileBackend
  */

@@ -64,7 +64,7 @@ abstract class FileBackendBase {
 	 *
 	 * Using $ops:
 	 * $ops is an array of arrays. The first array holds a list of operations.
-	 * The inner array contains the parameters, E.G:
+	 * The inner array contains the parameters, e.g:
 	 * <code>
 	 * $ops = array(
 	 *     array(
@@ -94,7 +94,7 @@ abstract class FileBackendBase {
 
 	/**
 	 * Prepare a storage path for usage. This will create containers
-	 * that don't yet exists or, on FS backends, create parent directories.
+	 * that don't yet exist or, on FS backends, create parent directories.
 	 * 
 	 * $params include:
 	 *     dir : storage directory
@@ -350,7 +350,7 @@ abstract class FileBackend extends FileBackendBase {
 	abstract public function delete( array $params );
 
 	/**
-	 * Combines files from severals storage paths into a new file in the backend.
+	 * Combines files from several storage paths into a new file in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *     srcs          : ordered source storage paths (e.g. chunk1, chunk2, ...)
@@ -388,10 +388,10 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
-	 * Whether this backend implements move() and it applies to a potential
-	 * move from one storage path to another. No backends hits are required.
-	 * For example, moving objects accross containers may not be supported.
-	 * Do not call this function from places outside FileBackend and FileOp.
+	 * Whether this backend can perform a move from one storage path to another. 
+	 * No backend hits are required. For example, moving objects across 
+	 * containers may not be supported. Do not call this function from places 
+	 * outside FileBackend and FileOp.
 	 * $params include:
 	 *     src : source storage path
 	 *     dst : destination storage path
@@ -623,7 +623,7 @@ abstract class FileBackend extends FileBackendBase {
 
 	/**
 	 * Validate and normalize a relative storage path.
-	 * Null is returned if the path involves directory traveral.
+	 * Null is returned if the path involves directory traversal.
 	 * Traversal is insecure for FS backends and likely broken for others.
 	 *
 	 * @param $path string

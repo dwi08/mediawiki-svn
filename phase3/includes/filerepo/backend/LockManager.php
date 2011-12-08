@@ -3,7 +3,7 @@
  * FileBackend helper class for handling file locking.
  * Locks on resource keys can either be shared or exclusive.
  * 
- * Implemenations can keep track of what is locked in the process cache.
+ * Implementations can keep track of what is locked in the process cache.
  * This can reduce hits to external resources for lock()/unlock() calls.
  * 
  * Subclasses should avoid throwing exceptions at all costs.
