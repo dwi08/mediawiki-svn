@@ -84,7 +84,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 		}
 
 		// Try to lock those files for the scope of this function...
-		$scopedLock = $this->getScopedFileLocks( $filesToLock, $status );
+		$scopedLock = $this->getScopedFileLocks( $filesToLock, LockManager::LOCK_EX, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}

@@ -254,10 +254,11 @@ abstract class FileBackendBase {
 	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
 	 * @param $paths Array Storage paths
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @return Status
 	 */
-	final public function lockFiles( array $paths ) {
-		return $this->lockManager->lock( $paths, LockManager::LOCK_EX );
+	final public function lockFiles( array $paths, $type ) {
+		return $this->lockManager->lock( $paths, $type );
 	}
 
 	/**
@@ -266,10 +267,11 @@ abstract class FileBackendBase {
 	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
 	 * @param $paths Array Storage paths
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @return Status
 	 */
-	final public function unlockFiles( array $paths ) {
-		return $this->lockManager->unlock( $paths, LockManager::LOCK_EX );
+	final public function unlockFiles( array $paths, $type ) {
+		return $this->lockManager->unlock( $paths, $type );
 	}
 
 	/**
@@ -281,11 +283,12 @@ abstract class FileBackendBase {
 	 * the status updated. Unlock fatals will not change the status "OK" value.
 	 * 
 	 * @param $paths Array Storage paths
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @param $status Status Status to update on lock/unlock
 	 * @return FileBackendScopedLock|null Returns null on failure
 	 */
-	final public function getScopedFileLocks( array $paths, Status $status ) {
-		return FileBackendScopedLock::factory( $this, $paths, $status );
+	final public function getScopedFileLocks( array $paths, $type, Status $status ) {
+		return FileBackendScopedLock::factory( $this, $paths, $type, $status );
 	}
 }
 
@@ -499,7 +502,7 @@ abstract class FileBackend extends FileBackendBase {
 		}
 
 		// Try to lock those files for the scope of this function...
-		$scopedLock = $this->getScopedFileLocks( $filesToLock, $status );
+		$scopedLock = $this->getScopedFileLocks( $filesToLock, LockManager::LOCK_EX, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}
@@ -686,16 +689,21 @@ class FileBackendScopedLock {
 	protected $status;
 	/** @var Array List of storage paths*/
 	protected $paths;
+	protected $type; // integer lock type
 
 	/**
 	 * @param $backend FileBackendBase
 	 * @param $paths Array List of storage paths
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @param $status Status
 	 */
-	protected function __construct( FileBackendBase $backend, array $paths, Status $status ) {
+	protected function __construct(
+		FileBackendBase $backend, array $paths, $type, Status $status
+	) {
 	   $this->backend = $backend;
 	   $this->paths = $paths;
 	   $this->status = $status;
+	   $this->type = $type;
 	}
 
 	protected function __clone() {}
@@ -708,21 +716,24 @@ class FileBackendScopedLock {
 	 * 
 	 * @param $backend FileBackendBase
 	 * @param $files Array List of storage paths
+	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @param $status Status
 	 * @return FileBackendScopedLock|null 
 	 */
-	public static function factory( FileBackendBase $backend, array $files, Status $status ) {
-		$lockStatus = $backend->lockFiles( $files );
+	public static function factory(
+		FileBackendBase $backend, array $files, $type, Status $status
+	) {
+		$lockStatus = $backend->lockFiles( $files, $type );
 		$status->merge( $lockStatus );
 		if ( $lockStatus->isOK() ) {
-			return new self( $backend, $files, $status );
+			return new self( $backend, $files, $type, $status );
 		}
 		return null;
 	}
 
 	function __destruct() {
 		$wasOk = $this->status->isOK();
-		$this->status->merge( $this->backend->unlockFiles( $this->paths ) );
+		$this->status->merge( $this->backend->unlockFiles( $this->paths, $this->type ) );
 		if ( $wasOk ) {
 			// Make sure status is OK, despite any unlockFiles() fatals	
 			$this->status->setResult( true, $this->status->value );

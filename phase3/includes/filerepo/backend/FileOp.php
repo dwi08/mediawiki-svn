@@ -18,11 +18,12 @@ abstract class FileOp {
 	protected $params;
 	/** $var FileBackendBase */
 	protected $backend;
-	/** @var TempLocalFile|null */
+	/** @var TempFSFile|null */
 	protected $tmpSourceFile, $tmpDestFile;
 
-	protected $state;
-	protected $failed;
+	protected $state; // integer
+	protected $failed; // boolean
+	protected $destSameAsSource; // boolean
 
 	/* Object life-cycle */
 	const STATE_NEW = 1;
@@ -41,10 +42,11 @@ abstract class FileOp {
 		$this->params = $params;
 		$this->state = self::STATE_NEW;
 		$this->failed = false;
+		$this->destSameAsSource = false;
 		$this->initialize();
 	}
 
-	/*
+	/**
 	 * Get the value of the parameter with the given name.
 	 * Returns null if the parameter is not set.
 	 * 
@@ -148,11 +150,29 @@ abstract class FileOp {
 	}
 
 	/**
-	 * Get a list of storage paths to lock for this operation
+	 * Get a list of storage paths used by this operation
 	 *
 	 * @return Array
 	 */
-	public function storagePathsUsed() {
+	final public function storagePathsUsed() {
+		return array_merge( $this->storagePathsRead(), $this->storagePathsChanged() );
+	}
+
+	/**
+	 * Get a list of storage paths read from for this operation
+	 *
+	 * @return Array
+	 */
+	public function storagePathsRead() {
+		return array();
+	}
+
+	/**
+	 * Get a list of storage paths written to for this operation
+	 *
+	 * @return Array
+	 */
+	public function storagePathsChanged() {
 		return array();
 	}
 
@@ -164,7 +184,9 @@ abstract class FileOp {
 	/**
 	 * @return Status
 	 */
-	abstract protected function doPrecheck( array &$predicates );
+	protected function doPrecheck( array &$predicates ) {
+		return Status::newGood();
+	}
 
 	/**
 	 * @return Status
@@ -224,19 +246,19 @@ abstract class FileOp {
 				return $status;
 			}
 		} elseif ( $this->getParam( 'overwriteSame' ) ) {
-			// Get the source content hash (if there is a single source)
 			$shash = $this->getSourceMD5();
 			// If there is a single source, then we can do some checks already.
-			// For things like concatenate(), we need to build a temp file first.
+			// For things like concatenate(), we would need to build a temp file
+			// first and thus don't support 'overwriteSame' ($shash is null).
 			if ( $shash !== null ) {
 				$dhash = $this->getFileMD5( $this->params['dst'] );
 				if ( !strlen( $shash ) || !strlen( $dhash ) ) {
 					$status->fatal( 'backend-fail-hashes' );
-					return $status;
-				}
-				// Give an error if the files are not identical
-				if ( $shash !== $dhash ) {
+				} elseif ( $shash !== $dhash ) {
+					// Give an error if the files are not identical
 					$status->fatal( 'backend-fail-notsame', $this->params['dst'] );
+				} else {
+					$this->destSameAsSource = true;
 				}
 				return $status; // do nothing; either OK or bad status
 			}
@@ -263,13 +285,13 @@ abstract class FileOp {
 	 *
 	 * @return string|false False on failure
 	 */
-	final protected function getFileMD5( $path ) {
+	protected function getFileMD5( $path ) {
 		// Source file is in backend
 		if ( FileBackend::isStoragePath( $path ) ) {
 			// For some backends (e.g. Swift, Azure) we can get
 			// standard hashes to use for this types of comparisons.
 			if ( $this->backend->getHashType() === 'md5' ) {
-				$hash = $this->backend->getFileHash( $path );
+				$hash = $this->backend->getFileHash( array( 'src' => $path ) );
 			} else {
 				$tmp = $this->backend->getLocalCopy( array( 'src' => $path ) );
 				if ( !$tmp ) {
@@ -327,13 +349,13 @@ abstract class FileOp {
 	}
 
 	/**
-	 * Check if a file will exist when this operation is attempted
+	 * Check if a file will exist in storage when this operation is attempted
 	 * 
-	 * @param $source string
+	 * @param $source string Storage path
 	 * @param $predicates Array
 	 * @return bool 
 	 */
-	final protected function fileExists( $source, $predicates ) {
+	final protected function fileExists( $source, array $predicates ) {
 		if ( isset( $predicates['exists'][$source] ) ) {
 			return $predicates['exists'][$source]; // previous op assures this
 		} else {
@@ -351,21 +373,21 @@ abstract class FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class StoreFileOp extends FileOp {
-	protected $checkDest = true;
+	protected $destAlreadyExists = true;
 
 	protected function doPrecheck( array &$predicates ) {
 		$status = Status::newGood();
 		// Check if destination file exists
 		if ( $this->fileExists( $this->params['dst'], $predicates ) ) {
-			if ( !$this->getParam( 'overwriteDest' ) ) {
+			if ( !$this->getParam( 'overwriteDest' ) && !$this->getParam( 'overwriteSame' ) ) {
 				$status->fatal( 'backend-fail-alreadyexists', $this->params['dst'] );
 				return $status;
 			}
 		} else {
-			$this->checkDest = false;
+			$this->destAlreadyExists = false;
 		}
 		// Check if the source file exists on the file system
-		if ( !file_exists( $this->params['src'] ) ) {
+		if ( !is_file( $this->params['src'] ) ) {
 			$status->fatal( 'backend-fail-notexists', $this->params['src'] );
 			return $status;
 		}
@@ -377,26 +399,31 @@ class StoreFileOp extends FileOp {
 	protected function doAttempt() {
 		$status = Status::newGood();
 		// Create a destination backup copy as needed
-		if ( $this->checkDest ) {
+		if ( $this->destAlreadyExists ) {
 			$status->merge( $this->checkAndBackupDest() );
 			if ( !$status->isOK() ) {
 				return $status;
 			}
 		}
 		// Store the file at the destination
-		$status->merge( $this->backend->store( $this->params ) );
+		if ( !$this->destSameAsSource ) {
+			$status->merge( $this->backend->store( $this->params ) );
+		}
 		return $status;
 	}
 
 	protected function doRevert() {
-		// Remove the file saved to the destination
-		$params = array( 'src' => $this->params['dst'] );
-		$status = $this->backend->delete( $params );
-		if ( !$status->isOK() ) {
-			return $status; // also can't restore any dest file
+		$status = Status::newGood();
+		if ( !$this->destSameAsSource ) {
+			// Remove the file saved to the destination
+			$params = array( 'src' => $this->params['dst'] );
+			$status->merge( $this->backend->delete( $params ) );
+			if ( !$status->isOK() ) {
+				return $status; // also can't restore any dest file
+			}
+			// Restore any file that was at the destination
+			$status->merge( $this->restoreDest() );
 		}
-		// Restore any file that was at the destination
-		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -404,7 +431,7 @@ class StoreFileOp extends FileOp {
 		return md5_file( $this->params['src'] );
 	}
 
-	function storagePathsUsed() {
+	public function storagePathsChanged() {
 		return array( $this->params['dst'] );
 	}
 }
@@ -418,18 +445,18 @@ class StoreFileOp extends FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class CreateFileOp extends FileOp {
-	protected $checkDest = true;
+	protected $destAlreadyExists = true;
 
 	protected function doPrecheck( array &$predicates ) {
 		$status = Status::newGood();
 		// Check if destination file exists
 		if ( $this->fileExists( $this->params['dst'], $predicates ) ) {
-			if ( !$this->getParam( 'overwriteDest' ) ) {
+			if ( !$this->getParam( 'overwriteDest' ) && !$this->getParam( 'overwriteSame' ) ) {
 				$status->fatal( 'backend-fail-alreadyexists', $this->params['dst'] );
 				return $status;
 			}
 		} else {
-			$this->checkDest = false;
+			$this->destAlreadyExists = false;
 		}
 		// Update file existence predicates
 		$predicates['exists'][$this->params['dst']] = true;
@@ -439,26 +466,31 @@ class CreateFileOp extends FileOp {
 	protected function doAttempt() {
 		$status = Status::newGood();
 		// Create a destination backup copy as needed
-		if ( $this->checkDest ) {
+		if ( $this->destAlreadyExists ) {
 			$status->merge( $this->checkAndBackupDest() );
 			if ( !$status->isOK() ) {
 				return $status;
 			}
 		}
 		// Create the file at the destination
-		$status->merge( $this->backend->create( $this->params ) );
+		if ( !$this->destSameAsSource ) {
+			$status->merge( $this->backend->create( $this->params ) );
+		}
 		return $status;
 	}
 
 	protected function doRevert() {
-		// Remove the file saved to the destination
-		$params = array( 'src' => $this->params['dst'] );
-		$status = $this->backend->delete( $params );
-		if ( !$status->isOK() ) {
-			return $status; // also can't restore any dest file
+		$status = Status::newGood();
+		if ( !$this->destSameAsSource ) {
+			// Remove the file saved to the destination
+			$params = array( 'src' => $this->params['dst'] );
+			$status->merge( $this->backend->delete( $params ) );
+			if ( !$status->isOK() ) {
+				return $status; // also can't restore any dest file
+			}
+			// Restore any file that was at the destination
+			$status->merge( $this->restoreDest() );
 		}
-		// Restore any file that was at the destination
-		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -466,7 +498,7 @@ class CreateFileOp extends FileOp {
 		return md5( $this->params['content'] );
 	}
 
-	function storagePathsUsed() {
+	public function storagePathsChanged() {
 		return array( $this->params['dst'] );
 	}
 }
@@ -480,18 +512,18 @@ class CreateFileOp extends FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class CopyFileOp extends FileOp {
-	protected $checkDest = true;
+	protected $destAlreadyExists = true;
 
 	protected function doPrecheck( array &$predicates ) {
 		$status = Status::newGood();
 		// Check if destination file exists
 		if ( $this->fileExists( $this->params['dst'], $predicates ) ) {
-			if ( !$this->getParam( 'overwriteDest' ) ) {
+			if ( !$this->getParam( 'overwriteDest' ) && !$this->getParam( 'overwriteSame' ) ) {
 				$status->fatal( 'backend-fail-alreadyexists', $this->params['dst'] );
 				return $status;
 			}
 		} else {
-			$this->checkDest = false;
+			$this->destAlreadyExists = false;
 		}
 		// Check if the source file exists
 		if ( !$this->fileExists( $this->params['src'], $predicates ) ) {
@@ -506,27 +538,31 @@ class CopyFileOp extends FileOp {
 	protected function doAttempt() {
 		$status = Status::newGood();
 		// Create a destination backup copy as needed
-		if ( $this->checkDest ) {
+		if ( $this->destAlreadyExists ) {
 			$status->merge( $this->checkAndBackupDest() );
 			if ( !$status->isOK() ) {
 				return $status;
 			}
 		}
 		// Copy the file into the destination
-		$status->merge( $this->backend->copy( $this->params ) );
+		if ( !$this->destSameAsSource ) {
+			$status->merge( $this->backend->copy( $this->params ) );
+		}
 		return $status;
 	}
 
 	protected function doRevert() {
 		$status = Status::newGood();
-		// Remove the file saved to the destination
-		$params = array( 'src' => $this->params['dst'] );
-		$status->merge( $this->backend->delete( $params ) );
-		if ( !$status->isOK() ) {
-			return $status; // also can't restore any dest file
+		if ( !$this->destSameAsSource ) {
+			// Remove the file saved to the destination
+			$params = array( 'src' => $this->params['dst'] );
+			$status->merge( $this->backend->delete( $params ) );
+			if ( !$status->isOK() ) {
+				return $status; // also can't restore any dest file
+			}
+			// Restore any file that was at the destination
+			$status->merge( $this->restoreDest() );
 		}
-		// Restore any file that was at the destination
-		$status->merge( $this->restoreDest() );
 		return $status;
 	}
 
@@ -534,8 +570,12 @@ class CopyFileOp extends FileOp {
 		return $this->getFileMD5( $this->params['src'] );
 	}
 
-	function storagePathsUsed() {
-		return array( $this->params['src'], $this->params['dst'] );
+	public function storagePathsRead() {
+		return array( $this->params['src'] );
+	}
+
+	public function storagePathsChanged() {
+		return array( $this->params['dst'] );
 	}
 }
 
@@ -549,7 +589,7 @@ class CopyFileOp extends FileOp {
  */
 class MoveFileOp extends FileOp {
 	protected $usingMove = false; // using backend move() function?
-	protected $checkDest = true;
+	protected $destAlreadyExists = true;
 
 	function initialize() {
 		// Use faster, native, move() if applicable
@@ -560,12 +600,12 @@ class MoveFileOp extends FileOp {
 		$status = Status::newGood();
 		// Check if destination file exists
 		if ( $this->fileExists( $this->params['dst'], $predicates ) ) {
-			if ( !$this->getParam( 'overwriteDest' ) ) {
+			if ( !$this->getParam( 'overwriteDest' ) && !$this->getParam( 'overwriteSame' ) ) {
 				$status->fatal( 'backend-fail-alreadyexists', $this->params['dst'] );
 				return $status;
 			}
 		} else {
-			$this->checkDest = false;
+			$this->destAlreadyExists = false;
 		}
 		// Check if the source file exists
 		if ( !$this->fileExists( $this->params['src'], $predicates ) ) {
@@ -581,23 +621,37 @@ class MoveFileOp extends FileOp {
 	protected function doAttempt() {
 		$status = Status::newGood();
 		// Create a destination backup copy as needed
-		if ( $this->checkDest ) {
+		if ( $this->destAlreadyExists ) {
 			$status->merge( $this->checkAndBackupDest() );
 			if ( !$status->isOK() ) {
 				return $status;
 			}
 		}
-		// Native moves: move the file into the destination
-		if ( $this->usingMove ) {
-			$status->merge( $this->backend->move( $this->params ) );
-		// Non-native moves: copy the file into the destination & delete source
+		if ( !$this->destSameAsSource ) {
+			// Native moves: move the file into the destination
+			if ( $this->usingMove ) {
+				$status->merge( $this->backend->move( $this->params ) );
+			// Non-native moves: copy the file into the destination & delete source
+			} else {
+				// Copy source to dest
+				$status->merge( $this->backend->copy( $this->params ) );
+				if ( !$status->isOK() ) {
+					return $status;
+				}
+				// Delete source
+				$params = array( 'src' => $this->params['src'] );
+				$status->merge( $this->backend->delete( $params ) );
+				if ( !$status->isOK() ) {
+					return $status;
+				}
+			}
 		} else {
-			// Copy source to dest
-			$status->merge( $this->backend->copy( $this->params ) );
+			// Create a source backup copy as needed
+			$status->merge( $this->backupSource() );
 			if ( !$status->isOK() ) {
 				return $status;
 			}
-			// Delete source
+			// Just delete source as the destination needs no changes
 			$params = array( 'src' => $this->params['src'] );
 			$status->merge( $this->backend->delete( $params ) );
 			if ( !$status->isOK() ) {
@@ -609,33 +663,39 @@ class MoveFileOp extends FileOp {
 
 	protected function doRevert() {
 		$status = Status::newGood();
-		// Native moves: move the file back to the source
-		if ( $this->usingMove ) {
-			$params = array(
-				'src' => $this->params['dst'],
-				'dst' => $this->params['src']
-			);
-			$status->merge( $this->backend->move( $params ) );
-			if ( !$status->isOK() ) {
-				return $status; // also can't restore any dest file
+		if ( !$this->destSameAsSource ) {
+			// Native moves: move the file back to the source
+			if ( $this->usingMove ) {
+				$params = array(
+					'src' => $this->params['dst'],
+					'dst' => $this->params['src']
+				);
+				$status->merge( $this->backend->move( $params ) );
+				if ( !$status->isOK() ) {
+					return $status; // also can't restore any dest file
+				}
+			// Non-native moves: remove the file saved to the destination
+			} else {
+				// Copy destination back to source
+				$params = array( 'src' => $this->params['dst'], 'dst' => $this->params['src'] );
+				$status = $this->backend->copy( $params );
+				if ( !$status->isOK() ) {
+					return $status; // also can't restore any dest file
+				}
+				// Delete destination
+				$params = array( 'src' => $this->params['dst'] );
+				$status = $this->backend->delete( $params );
+				if ( !$status->isOK() ) {
+					return $status; // also can't restore any dest file
+				}
 			}
-		// Non-native moves: remove the file saved to the destination
+			// Restore any file that was at the destination
+			$status->merge( $this->restoreDest() );
 		} else {
-			// Copy destination back to source
-			$params = array( 'src' => $this->params['dst'], 'dst' => $this->params['src'] );
-			$status = $this->backend->copy( $params );
-			if ( !$status->isOK() ) {
-				return $status; // also can't restore any dest file
-			}
-			// Delete destination
-			$params = array( 'src' => $this->params['dst'] );
-			$status = $this->backend->delete( $params );
-			if ( !$status->isOK() ) {
-				return $status; // also can't restore any dest file
-			}
+			// Restore any source file
+			return $this->restoreSource();
 		}
-		// Restore any file that was at the destination
-		$status->merge( $this->restoreDest() );
+
 		return $status;
 	}
 
@@ -643,8 +703,12 @@ class MoveFileOp extends FileOp {
 		return $this->getFileMD5( $this->params['src'] );
 	}
 
-	function storagePathsUsed() {
-		return array( $this->params['src'], $this->params['dst'] );
+	public function storagePathsRead() {
+		return array( $this->params['src'] );
+	}
+
+	public function storagePathsChanged() {
+		return array( $this->params['dst'] );
 	}
 }
 
@@ -656,7 +720,7 @@ class MoveFileOp extends FileOp {
  *     overwriteDest : do nothing and pass if an identical file exists at destination
  */
 class ConcatenateFileOp extends FileOp {
-	protected $checkDest = true;
+	protected $destAlreadyExists = true;
 
 	protected function doPrecheck( array &$predicates ) {
 		$status = Status::newGood();
@@ -667,7 +731,7 @@ class ConcatenateFileOp extends FileOp {
 				return $status;
 			}
 		} else {
-			$this->checkDest = false;
+			$this->destAlreadyExists = false;
 		}
 		// Check that source files exists
 		foreach ( $this->params['srcs'] as $source ) {
@@ -684,7 +748,7 @@ class ConcatenateFileOp extends FileOp {
 	protected function doAttempt() {
 		$status = Status::newGood();
 		// Create a destination backup copy as needed
-		if ( $this->checkDest ) {
+		if ( $this->destAlreadyExists ) {
 			$status->merge( $this->checkAndBackupDest() );
 			if ( !$status->isOK() ) {
 				return $status;
@@ -711,8 +775,12 @@ class ConcatenateFileOp extends FileOp {
 		return null; // defer this until we finish building the new file
 	}
 
-	function storagePathsUsed() {
-		return array_merge( $this->params['srcs'], $this->params['dst'] );
+	public function storagePathsRead() {
+		return $this->params['srcs'];
+	}
+
+	public function storagePathsChanged() {
+		return array( $this->params['dst'] );
 	}
 }
 
@@ -762,7 +830,7 @@ class DeleteFileOp extends FileOp {
 		return $this->restoreSource();
 	}
 
-	function storagePathsUsed() {
+	public function storagePathsChanged() {
 		return array( $this->params['src'] );
 	}
 }
@@ -771,10 +839,6 @@ class DeleteFileOp extends FileOp {
  * Placeholder operation that has no params and does nothing
  */
 class NullFileOp extends FileOp {
-	protected function doPrecheck( array &$predicates ) {
-		return Status::newGood();
-	}
-
 	protected function doAttempt() {
 		return Status::newGood();
 	}

@@ -267,9 +267,8 @@ class FSLockManager extends LockManager {
  * cache can be setup to track servers that recently missed queries; such
  * servers will not be trusted for obtaining locks.
  * 
- * For performance, deadlock detection should be disabled and a small
- * lock-wait timeout should be set via server config. In innoDB, this can
- * done via the innodb_deadlock_detect and innodb_lock_wait_timeout settings.
+ * For performance, a small lock-wait timeout should be set via server config.
+ * In innoDB, this can done via the innodb_lock_wait_timeout setting.
  */
 class DBLockManager extends LockManager {
 	/** @var Array Map of bucket indexes to peer sets */
