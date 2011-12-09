@@ -453,7 +453,12 @@ class FSFileBackend extends FileBackend {
 		if ( $dir === null ) { // invalid storage path
 			return array(); // empty result
 		}
-		return new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
+		try {
+			$iter = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
+		} catch ( UnexpectedValueException $e ) {
+			$iter = array(); // dir does not exist?
+		}
+		return $iter;
 	}
 
 	function getLocalReference( array $params ) {
