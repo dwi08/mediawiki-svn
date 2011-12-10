@@ -260,6 +260,7 @@ class FSLockManager extends LockManager {
  * All lock requests for a resource, identified by a hash string, will
  * map to one bucket. Each bucket maps to one or several peer DB servers,
  * each having a `file_locks` table with row-level locking.
+ * This does not use GET_LOCK() per http://bugs.mysql.com/bug.php?id=1118.
  *
  * A majority of peer servers must agree for a lock to be acquired.
  * As long as one peer server is up, lock requests will not be blocked

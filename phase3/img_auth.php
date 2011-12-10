@@ -74,9 +74,6 @@ function wfImageAuthMain() {
 
 	// Get the local file repository
 	$repo = RepoGroup::singleton()->getRepo( 'local' );
-	if ( !$repo ) {
-		return; // wtf?
-	}
 
 	// Get the full file storage path and extract the source file name.
 	// (e.g. 120px-Foo.png => Foo.png or page2-120px-Foo.png => Foo.png).

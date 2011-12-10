@@ -78,8 +78,8 @@ abstract class MediaTransformOutput {
 	 * @return Bool
 	 */
 	public function hasFile() {
-		// If TRANSFORM_LATER, a 0-byte temp file be at the path (not purged yet)
-		return ( !$this->isError() && $this->path && filesize( $this->path ) );
+		// If TRANSFORM_LATER, $this->path will be false
+		return ( !$this->isError() && $this->path );
 	}
 
 	/**
@@ -90,6 +90,15 @@ abstract class MediaTransformOutput {
 	 */
 	public function fileIsSource() {
 		return ( !$this->isError() && $this->path === $this->file->getLocalCopyPath() );
+	}
+
+	/**
+	 * Get the path of a file system copy of the thumbnail
+	 *
+	 * @return string|false Returns false if there isn't one
+	 */
+	public function getLocalCopyPath() {
+		return $this->path;
 	}
 
 	/**

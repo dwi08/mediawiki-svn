@@ -44,7 +44,11 @@ class FileRepo {
 		$this->url = isset( $info['url'] )
 			? $info['url']
 			: false;  // a subclass will need to set the URL (e.g. ForeignAPIRepo)
-		$this->backend = FileBackendGroup::singleton()->get( $info['backend'] );
+		if ( $info['backend'] instanceof FileBackendBase ) {
+			$this->backend = $info['backend']; // useful for testing
+		} else {
+			$this->backend = FileBackendGroup::singleton()->get( $info['backend'] );
+		}
 
 		// Optional settings that can have no value
 		$optionalSettings = array(
@@ -94,7 +98,7 @@ class FileRepo {
 	}
 
 	/**
-	 * Get the file backend
+	 * Get the file backend instance
 	 *
 	 * @return FileBackendBase
 	 */

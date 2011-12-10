@@ -119,6 +119,7 @@ class NewParserTest extends MediaWikiTestCase {
 	}
 
 	function addDBData() {
+		$this->tablesUsed[] = 'image';
 		# Hack: insert a few Wikipedia in-project interwiki prefixes,
 		# for testing inter-language links
 		$this->db->insert( 'interwiki', array(

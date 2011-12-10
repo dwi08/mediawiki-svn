@@ -287,7 +287,7 @@ class FileBackendTest extends MediaWikiTestCase {
 	}
 
 	/**
-	 * @dataProvider provider_testConcatenate
+	 * @dataProvider provider_testCreate
 	 */
 	public function provider_testCreate() {
 		$cases = array();
@@ -324,47 +324,17 @@ class FileBackendTest extends MediaWikiTestCase {
 		return $cases;
 	}
 
-	/**
-	 * @dataProvider provider_testConcatenate
-	 */
-	public function testConcatenate() {
-		
-	}
+	// @TODO: testConcatenate
 
-	/**
-	 * @dataProvider provider_testPrepare
-	 */
-	public function testPrepare() {
-	
-	}
+	// @TODO: testPrepare
 
-	/**
-	 * @dataProvider provider_testSecure
-	 */
-	public function testSecure() {
-	
-	}
+	// @TODO: testSecure
 
-	/**
-	 * @dataProvider provider_testClean
-	 */
-	public function testClean() {
-	
-	}
+	// @TODO: testClean
 
-	/**
-	 * @dataProvider provider_testGetLocalCopy
-	 */
-	public function testGetLocalCopy() {
-	
-	}
+	// @TODO: testGetLocalCopy
 
-	/**
-	 * @dataProvider provider_testDoOperations
-	 */
-	public function testDoOperations() {
-	
-	}
+	// @TODO: testDoOperations
 
 	public function testGetFileList() {
 		$base = $this->singleBasePath();

@@ -289,9 +289,7 @@ abstract class FileBackendBase {
 	 * @param $params Array
 	 * @return FSFile|null Returns null on failure
 	 */
-	public function getLocalReference( array $params ) {
-		return $this->getLocalCopy( $params );
-	}
+	abstract public function getLocalReference( array $params );
 
 	/**
 	 * Get a local copy on disk of the file at a storage path in the backend.
@@ -475,6 +473,10 @@ abstract class FileBackend extends FileBackendBase {
 
 	public function getHashType() {
 		return 'internal';
+	}
+
+	public function getLocalReference( array $params ) {
+		return $this->getLocalCopy( $params );
 	}
 
 	function streamFile( array $params ) {
@@ -736,7 +738,7 @@ abstract class FileBackend extends FileBackendBase {
 		// This accounts for Swift and S3 restrictions. Also note
 		// that these urlencode to the same string, which is useful
 		// since the Swift size limit is *after* URL encoding.
-		return preg_match( '/^[a-zA-Z._-]{1,256}$/u', $container );
+		return preg_match( '/^[a-zA-Z0-9._-]{1,256}$/u', $container );
 	}
 
 	/**
