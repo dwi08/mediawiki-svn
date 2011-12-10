@@ -57,27 +57,84 @@ abstract class FileBackendBase {
 	}
 
 	/**
-	 * This is the main entry point into the file system back end. Callers will
-	 * supply a list of operations to be performed (almost like a script) as an
-	 * array. This class will then handle handing the operations off to the
-	 * correct file store module.
-	 *
-	 * Using $ops:
-	 * $ops is an array of arrays. The first array holds a list of operations.
-	 * The inner array contains the parameters, e.g:
-	 * <code>
-	 * $ops = array(
-	 *     array(
-	 *         'op'  => 'store',
-	 *         'src' => '/tmp/uploads/picture.png',
-	 *         'dst' => 'mwstore://container/uploadedFilename.png'
-	 *     )
-	 * );
-	 * </code>
-	 * If any serious errors occur, the operations will be rolled back.
-	 * However, the 'ignoreErrors' parameter can be used on any operation to ignore errors.
+	 * This is the main entry point into the backend for write operations.
+	 * Callers supply an ordered list of operations to perform as a transaction.
+	 * If any serious errors occur, all attempted operations will be rolled back.
 	 * 
-	 * @param Array $ops Array of arrays containing N operations to execute IN ORDER
+	 * $ops is an array of arrays. The outer array holds a list of operations.
+	 * Each inner array is a set of key value pairs that specify an operation.
+	 * 
+	 * Supported operations and their parameters:
+	 * a) Create a new file in storage with the contents of a string
+	 *     array(
+	 *         'op'                  => 'create',
+	 *         'dst'                 => <storage path>,
+	 *         'content'             => <string of new file contents>,
+	 *         'overwriteDest'       => <boolean>,
+	 *         'overwriteSame'       => <boolean>
+	 *     )
+	 * b) Copy a file system file into storage
+	 *     array(
+	 *         'op'                  => 'store',
+	 *         'src'                 => <file system path>,
+	 *         'dst'                 => <storage path>,
+	 *         'overwriteDest'       => <boolean>,
+	 *         'overwriteSame'       => <boolean>
+	 *     )
+	 * c) Copy a file within storage
+	 *     array(
+	 *         'op'                  => 'copy',
+	 *         'src'                 => <storage path>,
+	 *         'dst'                 => <storage path>,
+	 *         'overwriteDest'       => <boolean>,
+	 *         'overwriteSame'       => <boolean>
+	 *     )
+	 * d) Move a file within storage
+	 *     array(
+	 *         'op'                  => 'move',
+	 *         'src'                 => <storage path>,
+	 *         'dst'                 => <storage path>,
+	 *         'overwriteDest'       => <boolean>,
+	 *         'overwriteSame'       => <boolean>
+	 *     )
+	 * e) Delete a file within storage
+	 *     array(
+	 *         'op'                  => 'delete',
+	 *         'src'                 => <storage path>,
+	 *         'ignoreMissingSource' => <boolean>
+	 *     )
+	 * f) Concatenate a list of files into a single file within storage
+	 *     array(
+	 *         'op'                  => 'concatenate',
+	 *         'srcs'                => <ordered array of storage paths>,
+	 *         'dst'                 => <storage path>,
+	 *         'overwriteDest'       => <boolean>,
+	 *         'overwriteSame'       => <boolean>
+	 *     )
+	 * g) Do nothing (no-op)
+	 *     array(
+	 *         'op'                  => 'null',
+	 *     )
+	 * 
+	 * Boolean flags for operations (operation-specific):
+	 * 'ignoreMissingSource' : The operation will simply succeed and do
+	 *                         nothing if the source file does not exist.
+	 * 'overwriteDest'       : Any destination file will be overwritten.
+	 * 'overwriteSame'       : An error will not be given if a file already
+	 *                         exists at the destination that has the same
+	 *                         contents as the new contents to be written there.
+	 * 
+	 * Boolean flags for operations (all operations):
+	 * 'ignoreErrors'        : Serious errors that would normally cause a rollback
+	 *                         do not. The remaining operations are still attempted.
+	 * 
+	 * Return value:
+	 * This returns a Status, which contains all warnings and fatals that occured
+	 * during the operation. The 'failCount', 'successCount', and 'success' members
+	 * will reflect each operation attempted. The status will be "OK" unless any
+	 * of the operations without the 'ignoreErrors' parameter failed.
+	 * 
+	 * @param $ops Array List of operations to execute in order
 	 * @return Status
 	 */
 	abstract public function doOperations( array $ops );
@@ -105,9 +162,10 @@ abstract class FileBackendBase {
 	abstract public function prepare( array $params );
 
 	/**
-	 * Take measures to block web access to a directory.
-	 * In backends like Swift, this might restrict container
-	 * access to backend user that represents user web request.
+	 * Take measures to block web access to a directory and
+	 * the container it belongs to. FS backends might add .htaccess
+	 * files wheras backends like Swift this might restrict container
+	 * access to backend user that represents end-users in web request.
 	 * This is not guaranteed to actually do anything.
 	 * 
 	 * $params include:
@@ -668,7 +726,7 @@ abstract class FileBackend extends FileBackendBase {
 	/**
 	 * Resolve a storage path relative to a particular container.
 	 * This is for internal use for backends, such as encoding or
-	 * perhaps getting absolute paths (e.g. file system based backends).
+	 * perhaps getting absolute paths (e.g. FS based backends).
 	 *
 	 * @param $container string
 	 * @param $relStoragePath string
