@@ -156,7 +156,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     dir : storage directory
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function prepare( array $params );
@@ -173,7 +173,7 @@ abstract class FileBackendBase {
 	 *     noAccess  : try to deny file access
 	 *     noListing : try to deny file listing
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function secure( array $params );
@@ -185,7 +185,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     dir : storage directory
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function clean( array $params );
@@ -196,7 +196,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return bool
 	 */
 	abstract public function fileExists( array $params );
@@ -208,7 +208,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return string|false Hash string or false on failure
 	 */
 	abstract public function getFileHash( array $params );
@@ -226,7 +226,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return string|false TS_MW timestamp or false on failure
 	 */
 	abstract public function getFileTimestamp( array $params );
@@ -238,7 +238,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Array
 	 */
 	abstract public function getFileProps( array $params );
@@ -253,7 +253,7 @@ abstract class FileBackendBase {
 	 *     src     : source storage path
 	 *     headers : additional HTTP headers to send on success
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function streamFile( array $params );
@@ -286,7 +286,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return FSFile|null Returns null on failure
 	 */
 	public function getLocalReference( array $params ) {
@@ -300,7 +300,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return TempFSFile|null Returns null on failure
 	 */
 	abstract public function getLocalCopy( array $params );
@@ -365,7 +365,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function store( array $params );
@@ -378,7 +378,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function copy( array $params );
@@ -392,7 +392,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	public function move( array $params ) {
@@ -405,7 +405,7 @@ abstract class FileBackend extends FileBackendBase {
 	 * $params include:
 	 *     src : source storage path
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function delete( array $params );
@@ -418,7 +418,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function concatenate( array $params );
@@ -431,7 +431,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
-	 * @param Array $params
+	 * @param $params Array
 	 * @return Status
 	 */
 	abstract public function create( array $params );
@@ -457,7 +457,7 @@ abstract class FileBackend extends FileBackendBase {
 	 *     src : source storage path
 	 *     dst : destination storage path
 	 *
-	 * @param Array $params
+	 * @param $params Array
 	 * @return bool
 	 */
 	public function canMove( array $params ) {
@@ -521,8 +521,8 @@ abstract class FileBackend extends FileBackendBase {
 	 * The result must have the same number of items as the input.
 	 * An exception is thrown if an unsupported operation is requested.
 	 * 
-	 * @param Array $ops Same format as doOperations()
-	 * @return Array
+	 * @param $ops Array Same format as doOperations()
+	 * @return Array List of FileOp objects
 	 * @throws MWException
 	 */
 	final public function getOperations( array $ops ) {
@@ -675,7 +675,9 @@ abstract class FileBackend extends FileBackendBase {
 				$relPath = $this->resolveContainerPath( $container, $relPath );
 				if ( $relPath !== null ) { // valid
 					$container = $this->fullContainerName( $container );
-					return array( $container, $relPath ); // (container, path)
+					if ( $this->checkContainerName( $container ) ) {
+						return array( $container, $relPath ); // (container, path)
+					}
 				}
 			}
 		}
@@ -724,7 +726,22 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
+	 * Check if a container name is allowed by the backend.
+	 * Subclasses can override this to be more restrictive.
+	 * 
+	 * @param $container string
+	 * @return bool 
+	 */
+	protected function checkContainerName( $container ) {
+		// This accounts for Swift and S3 restrictions. Also note
+		// that these urlencode to the same string, which is useful
+		// since the Swift size limit is *after* URL encoding.
+		return preg_match( '/^[a-zA-Z._-]{1,256}$/u', $container );
+	}
+
+	/**
 	 * Resolve a storage path relative to a particular container.
+	 * This should also check if the path is allowed by the backend.
 	 * This is for internal use for backends, such as encoding or
 	 * perhaps getting absolute paths (e.g. FS based backends).
 	 *
