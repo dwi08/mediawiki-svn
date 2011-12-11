@@ -104,11 +104,20 @@ function createMagicToc() {
             a.href = '#' + header.id;
             a.onclick = function() {
                 wm_toggle_section(header.section);
+                magicToc.style.display = 'none';
             };
             li.appendChild(a);
             ul.appendChild(li);
         })();
     }
+    
+    var magicTocTrigger = document.createElement('div');
+    magicTocTrigger.id = 'magic-toc-trigger';
+    magicTocTrigger.onclick = function() {
+        magicToc.style.display = 'block';
+    }
+    magicTocTrigger.textContent = 'Contents';
+    magicToc.parentNode.insertBefore(magicTocTrigger, magicToc);
 }
 
 createSection0();
