@@ -499,6 +499,7 @@ $wgAutoloadLocalClasses = array(
 	'LockManager' => 'includes/filerepo/backend/LockManager.php',
 	'FSLockManager' => 'includes/filerepo/backend/LockManager.php',
 	'DBLockManager' => 'includes/filerepo/backend/LockManager.php',
+	'MySqlLockManager'=> 'includes/filerepo/backend/LockManager.php',
 	'NullLockManager' => 'includes/filerepo/backend/LockManager.php',
 	'FileOp' => 'includes/filerepo/backend/FileOp.php',
 	'StoreFileOp' => 'includes/filerepo/backend/FileOp.php',

@@ -3,17 +3,27 @@
  * FileBackend helper class for handling file locking.
  * Locks on resource keys can either be shared or exclusive.
  * 
- * Implementations can keep track of what is locked in the process cache.
- * This can reduce hits to external resources for lock()/unlock() calls.
+ * Implementations must keep track of what is locked by this proccess
+ * in-memory and support nested locking calls (using reference counting).
+ * At least LOCK_UW and LOCK_EX must be implemented. LOCK_SH can be a no-op.
+ * Locks should either be non-blocking or have low wait timeouts.
  * 
  * Subclasses should avoid throwing exceptions at all costs.
  * 
  * @ingroup FileBackend
  */
 abstract class LockManager {
-	/* Lock types; stronger locks have high values */
+	/* Lock types; stronger locks have higher values */
 	const LOCK_SH = 1; // shared lock (for reads)
-	const LOCK_EX = 2; // exclusive lock (for writes)
+	const LOCK_UW = 2; // shared lock (for reads used to write elsewhere)
+	const LOCK_EX = 3; // exclusive lock (for writes)
+
+	/** @var Array Mapping of lock types to the type actually used */
+	protected $lockTypeMap = array(
+		self::LOCK_SH => self::LOCK_SH,
+		self::LOCK_UW => self::LOCK_EX, // subclasses may use self::LOCK_SH
+		self::LOCK_EX => self::LOCK_EX
+	);
 
 	/**
 	 * Construct a new instance from configuration
@@ -26,31 +36,31 @@ abstract class LockManager {
 	 * Lock the resources at the given abstract paths
 	 * 
 	 * @param $paths Array List of resource names
-	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_* constant
 	 * @return Status 
 	 */
 	final public function lock( array $paths, $type = self::LOCK_EX ) {
 		$keys = array_unique( array_map( 'sha1', $paths ) );
-		return $this->doLock( $keys, $type );
+		return $this->doLock( $keys, $this->lockTypeMap[$type] );
 	}
 
 	/**
 	 * Unlock the resources at the given abstract paths
 	 * 
 	 * @param $paths Array List of storage paths
-	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_* constant
 	 * @return Status 
 	 */
 	final public function unlock( array $paths, $type = self::LOCK_EX ) {
 		$keys = array_unique( array_map( 'sha1', $paths ) );
-		return $this->doUnlock( $keys, $type );
+		return $this->doUnlock( $keys, $this->lockTypeMap[$type] );
 	}
 
 	/**
 	 * Lock resources with the given keys and lock type
 	 * 
 	 * @param $key Array List of keys to lock (40 char hex hashes)
-	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_* constant
 	 * @return string
 	 */
 	abstract protected function doLock( array $keys, $type );
@@ -59,7 +69,7 @@ abstract class LockManager {
 	 * Unlock resources with the given keys and lock type
 	 * 
 	 * @param $key Array List of keys to unlock (40 char hex hashes)
-	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
+	 * @param $type integer LockManager::LOCK_* constant
 	 * @return string
 	 */
 	abstract protected function doUnlock( array $keys, $type );
@@ -74,6 +84,13 @@ abstract class LockManager {
  * locks will be ignored; see http://nfs.sourceforge.net/#section_d.
  */
 class FSLockManager extends LockManager {
+	/** @var Array Mapping of lock types to the type actually used */
+	protected $lockTypeMap = array(
+		self::LOCK_SH => self::LOCK_SH,
+		self::LOCK_UW => self::LOCK_SH,
+		self::LOCK_EX => self::LOCK_EX
+	);
+
 	protected $lockDir; // global dir for all servers
 
 	/** @var Array Map of (locked key => lock type => count) */
@@ -259,7 +276,7 @@ class FSLockManager extends LockManager {
  *
  * All lock requests for a resource, identified by a hash string, will
  * map to one bucket. Each bucket maps to one or several peer DB servers,
- * each having a `file_locks` table with row-level locking.
+ * each having a the file_locks.sql tables with row-level locking.
  * This does not use GET_LOCK() per http://bugs.mysql.com/bug.php?id=1118.
  *
  * A majority of peer servers must agree for a lock to be acquired.
@@ -284,7 +301,7 @@ class DBLockManager extends LockManager {
 
 	/** @var Array Map of (locked key => lock type => count) */
 	protected $locksHeld = array();
-	/** $var Array Map Lock-active database connections (server name => Database) */
+	/** @var Array Map Lock-active database connections (DB name => Database) */
 	protected $activeConns = array();
 
 	/**
@@ -363,7 +380,7 @@ class DBLockManager extends LockManager {
 				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
 				return $status;
 			} elseif ( $res !== true ) {
-				// Couldn't contact any servers for this bucket.
+				// Couldn't contact any DBs for this bucket.
 				// Abort and unlock everything we just locked.
 				$status->fatal( 'lockmanager-fail-db-bucket', $bucket );
 				$status->merge( $this->doUnlock( $lockedKeys, $type ) );
@@ -408,14 +425,99 @@ class DBLockManager extends LockManager {
 	}
 
 	/**
-	 * Get a DB connection to a lock server and acquire locks on $keys.
+	 * Get a connection to a lock DB and acquire locks on $keys
 	 *
 	 * @param $server string
 	 * @param $keys Array
 	 * @param $type integer LockManager::LOCK_EX or LockManager::LOCK_SH
-	 * @return void
+	 * @return bool Resources able to be locked
+	 * @throws DBError
 	 */
 	protected function doLockingQuery( $server, array $keys, $type ) {
+		if ( $type == self::LOCK_EX ) { // writer locks
+			$db = $this->getConnection( $server );
+			# Actually do the locking queries...
+			$data = array();
+			foreach ( $keys as $key ) {
+				$data[] = array( 'fle_key' => $key );
+			}
+			# Wait on any existing writers and block new ones if we get in
+			$db->insert( 'file_locks_exclusive', $data, __METHOD__ );
+		}
+		return true;
+	}
+
+	/**
+	 * Attempt to acquire locks with the peers for a bucket.
+	 * This should avoid throwing any exceptions.
+	 *
+	 * @param $bucket integer
+	 * @param $keys Array List of resource keys to lock
+	 * @param $type integer LockManager::LOCK_EX or LockManager::LOCK_SH
+	 * @return bool|string One of (true, 'cantacquire', 'dberrors')
+	 */
+	protected function doLockingQueryAll( $bucket, array $keys, $type ) {
+		$yesVotes = 0; // locks made on trustable servers
+		$votesLeft = count( $this->dbsByBucket[$bucket] ); // remaining DBs
+		$quorum = floor( $votesLeft/2 + 1 ); // simple majority
+		// Get votes for each server, in order, until we have enough...
+		foreach ( $this->dbsByBucket[$bucket] as $index => $server ) {
+			if ( $this->trustCache && $votesLeft < $quorum ) {
+				// We are now hitting servers that are not normally
+				// hit, meaning that some of the first ones are down.
+				// Delay using these later servers until it's safe.
+				if ( !$this->cacheCheckSkipped( $bucket, $index ) ) {
+					return 'dberrors';
+				}
+			}
+			// Check that server is not *known* to be down
+			if ( $this->cacheCheckFailures( $server ) ) {
+				try {
+					// Attempt to acquire the lock on this server
+					if ( !$this->doLockingQuery( $server, $keys, $type ) ) {
+						return 'cantacquire'; // vetoed; resource locked
+					}
+					// Check that server has no signs of lock loss
+					if ( $this->checkUptime( $server ) ) {
+						++$yesVotes; // success for this peer
+						if ( $yesVotes >= $quorum ) {
+							if ( $this->trustCache ) {
+								// We didn't bother with the servers after this one
+								$this->cacheRecordSkipped( $bucket, $index + 1 );
+							}
+							return true; // lock obtained
+						}
+					}
+				} catch ( DBConnectionError $e ) {
+					$this->cacheRecordFailure( $server );
+				} catch ( DBError $e ) {
+					if ( $this->lastErrorIndicatesLocked( $server ) ) {
+						return 'cantacquire'; // vetoed; resource locked
+					}
+				}
+			}
+			$votesLeft--;
+			$votesNeeded = $quorum - $yesVotes;
+			if ( $votesNeeded > $votesLeft && !$this->trustCache ) {
+				// In "trust cache" mode we don't have to meet the quorum
+				break; // short-circuit
+			}
+		}
+		// At this point, we must not have meet the quorum
+		if ( $yesVotes > 0 && $this->trustCache ) {
+			return true; // we are trusting the cache; may comprimise correctness
+		}
+		return 'dberrors'; // not enough votes to ensure correctness
+	}
+
+	/**
+	 * Get a new connection to a lock DB
+	 *
+	 * @param $server string
+	 * @return Database
+	 * @throws DBError
+	 */
+	protected function getConnection( $server ) {
 		if ( !isset( $this->activeConns[$server] ) ) {
 			$this->activeConns[$server] = wfGetDB( DB_MASTER, array(), $server );
 			$this->activeConns[$server]->begin(); // start transaction
@@ -433,84 +535,20 @@ class DBLockManager extends LockManager {
 				}
 			}
 			$this->activeConns[$server]->setSessionOptions( $options );
+			$this->initConnection( $server, $this->activeConns[$server] );
 		}
-		$db = $this->activeConns[$server];
-		# Try to get the locks...this should be the last query of this function
-		if ( $type == self::LOCK_SH ) { // reader locks
-			$db->select( 'file_locks', '1',
-				array( 'fl_key' => $keys ),
-				__METHOD__,
-				array( 'LOCK IN SHARE MODE' ) // single-row gap locks
-			);
-		} else { // writer locks
-			$data = array();
-			foreach ( $keys as $key ) {
-				$data[] = array( 'fl_key' => $key );
-			}
-			$db->insert( 'file_locks', $data, __METHOD__ );
-		}
+		return $this->activeConns[$server];
 	}
 
 	/**
-	 * Attempt to acquire locks with the peers for a bucket.
-	 * This should avoid throwing any exceptions.
+	 * Do additional initialization for new lock DB connection
 	 *
-	 * @param $bucket integer
-	 * @param $keys Array List of resource keys to lock
-	 * @param $type integer LockManager::LOCK_EX or LockManager::LOCK_SH
-	 * @return bool|string One of (true, 'cantacquire', 'dberrors')
+	 * @param $server string
+	 * @param $db Database
+	 * @return void
+	 * @throws DBError
 	 */
-	protected function doLockingQueryAll( $bucket, array $keys, $type ) {
-		$yesVotes = 0; // locks made on trustable servers
-		$votesLeft = count( $this->dbsByBucket[$bucket] ); // remaining servers
-		$quorum = floor( $votesLeft/2 + 1 ); // simple majority
-		// Get votes for each server, in order, until we have enough...
-		foreach ( $this->dbsByBucket[$bucket] as $index => $server ) {
-			if ( $this->trustCache && $votesLeft < $quorum ) {
-				// We are now hitting servers that are not normally
-				// hit, meaning that some of the first ones are down.
-				// Delay using these later servers until it's safe.
-				if ( !$this->cacheCheckSkipped( $bucket, $index ) ) {
-					return 'dberrors';
-				}
-			}
-			// Check that server is not *known* to be down
-			if ( $this->cacheCheckFailures( $server ) ) {
-				try {
-					// Attempt to acquire the lock on this server
-					$this->doLockingQuery( $server, $keys, $type );
-					// Check that server has no signs of lock loss
-					if ( $this->checkUptime( $server ) ) {
-						++$yesVotes; // success for this peer
-						if ( $yesVotes >= $quorum ) {
-							if ( $this->trustCache ) {
-								// We didn't bother with the servers after this one
-								$this->cacheRecordSkipped( $bucket, $index + 1 );
-							}
-							return true; // lock obtained
-						}
-					}
-				} catch ( DBError $e ) {
-					if ( $this->lastErrorIndicatesLocked( $server ) ) {
-						return 'cantacquire'; // vetoed; resource locked
-					} else { // can't connect?
-						$this->cacheRecordFailure( $server );
-					}
-				}
-			}
-			$votesLeft--;
-			$votesNeeded = $quorum - $yesVotes;
-			if ( $votesNeeded > $votesLeft && !$this->trustCache ) {
-				// In "trust cache" mode we don't have to meet the quorum
-				break; // short-circuit
-			}
-		}
-		// At this point, we must not have meet the quorum
-		if ( $yesVotes > 0 && $this->trustCache ) {
-			return true; // we are trusting the cache; may comprimise correctness
-		}
-		return 'dberrors'; // not enough votes to ensure correctness
-	}
+	protected function initConnection( $server, DatabaseBase $db ) {}
 
 	/**
 	 * Commit all changes to lock-active databases.
@@ -554,6 +592,7 @@ class DBLockManager extends LockManager {
 	 * 
 	 * @param $server string
 	 * @return bool
+	 * @throws DBError
 	 */
 	protected function checkUptime( $server ) {
 		if ( isset( $this->activeConns[$server] ) ) { // sanity
@@ -679,9 +718,67 @@ class DBLockManager extends LockManager {
 		return intval( base_convert( $prefix, 16, 10 ) ) % count( $this->dbsByBucket );
 	}
 
+	/**
+	 * Make sure remaining locks get cleared for sanity
+	 */
 	function __destruct() {
-		// Make sure remaining locks get cleared for sanity
 		$this->finishLockTransactions();
+	}
+}
+
+class MySqlLockManager extends DBLockManager {
+	/** @var Array Mapping of lock types to the type actually used */
+	protected $lockTypeMap = array(
+		self::LOCK_SH => self::LOCK_SH,
+		self::LOCK_UW => self::LOCK_SH,
+		self::LOCK_EX => self::LOCK_EX
+	);
+
+	/** @var Array Map of (DB name => original transaction isolation) */
+	protected $trxIso = array();
+
+	protected function initConnection( $server, DatabaseBase $db ) {
+		# Get the original transaction level for the server.
+		$row = $db->query( "SELECT @@tx_isolation AS tx_iso;" )->fetchObject();
+		# Convert "REPEATABLE-READ" => "REPEATABLE READ" for SET query
+		$this->trxIso[$server] = str_replace( '-', ' ', $row->tx_iso );
+	}
+
+	protected function doLockingQuery( $server, array $keys, $type ) {
+		$ok = true;
+		# Actually do the locking queries...
+		if ( $type == self::LOCK_SH ) { // reader locks
+			$db = $this->getConnection( $server );
+			$data = array();
+			foreach ( $keys as $key ) {
+				$data[] = array( 'fls_key' => $key );
+			}
+			# Block new writers...
+			$db->insert( 'file_locks_shared', $data, __METHOD__ );
+			# Wait on any existing writers...
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED" );
+			$ok = !$db->selectField( 'file_locks_exclusive', '1',
+				array( 'fle_key' => $keys ),
+				__METHOD__
+			);
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$server]}" );
+		} elseif ( $type == self::LOCK_EX ) { // writer locks
+			$db = $this->getConnection( $server );
+			$data = array();
+			foreach ( $keys as $key ) {
+				$data[] = array( 'fle_key' => $key );
+			}
+			# Block new readers/writers and wait on any existing writers
+			$db->insert( 'file_locks_exclusive', $data, __METHOD__ );
+			# Wait on any existing readers...
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED" );
+			$ok = !$db->selectField( 'file_locks_shared', '1',
+				array( 'fls_key' => $keys ),
+				__METHOD__
+			);
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$server]}" );
+		}
+		return $ok;
 	}
 }
 
