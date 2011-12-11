@@ -11,7 +11,7 @@
  * Outside callers can assume that all backends will have these functions.
  * 
  * All "storage paths" are of the format "mwstore://backend/container/path".
- * The paths use typical file system notation, though any particular backend may
+ * The paths use typical file system (FS) notation, though any particular backend may
  * not actually be using a local filesystem. Therefore, the paths are only virtual.
  *
  * Methods should avoid throwing exceptions at all costs.
@@ -632,7 +632,8 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
-	 * Check if a given path is a mwstore:// path
+	 * Check if a given path is a mwstore:// path.
+	 * This does not do any actual validation or existence checks.
 	 * 
 	 * @param $path string
 	 * @return bool
@@ -662,40 +663,29 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
-	 * Split a storage path (e.g. "mwstore://backend/container/path/to/object")
-	 * into a backend name, a container name and an internal relative object name.
-	 * This also checks that the storage path is valid and is within this backend.
-	 *
-	 * @param $storagePath string
-	 * @return Array (container, object name) or (null, null) if path is invalid
+	 * Validate a container name.
+	 * Null is returned if the name has illegal characters.
+	 * 
+	 * @param $container string
+	 * @return bool 
 	 */
-	final protected function resolveStoragePath( $storagePath ) {
-		list( $backend, $container, $relPath ) = self::splitStoragePath( $storagePath );
-		if ( $backend === $this->name ) { // sanity
-			$relPath = self::normalizeStoragePath( $relPath );
-			if ( $relPath !== null ) { // valid
-				$relPath = $this->resolveContainerPath( $container, $relPath );
-				if ( $relPath !== null ) { // valid
-					$container = $this->fullContainerName( $container );
-					if ( $this->checkContainerName( $container ) ) {
-						return array( $container, $relPath ); // (container, path)
-					}
-				}
-			}
-		}
-		return array( null, null );
+	final protected static function isValidContainerName( $container ) {
+		// This accounts for Swift and S3 restrictions. Also note
+		// that these urlencode to the same string, which is useful
+		// since the Swift size limit is *after* URL encoding.
+		return preg_match( '/^[a-zA-Z0-9._-]{1,256}$/u', $container );
 	}
 
 	/**
 	 * Validate and normalize a relative storage path.
 	 * Null is returned if the path involves directory traversal.
-	 * Traversal is insecure for FS backends and likely broken for others.
+	 * Traversal is insecure for FS backends and broken for others.
 	 *
 	 * @param $path string
 	 * @return string|null
 	 */
 	final protected static function normalizeStoragePath( $path ) {
-		// Normalize directory separator
+		// Normalize directory separators
 		$path = strtr( $path, '\\', '/' );
 		// Use the same traversal protection as Title::secureAndSplit()
 		if ( strpos( $path, '.' ) !== false ) {
@@ -714,6 +704,32 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
+	 * Split a storage path (e.g. "mwstore://backend/container/path/to/object")
+	 * into an internal container name and an internal relative object name.
+	 * This also checks that the storage path is valid and is within this backend.
+	 *
+	 * @param $storagePath string
+	 * @return Array (container, object name) or (null, null) if path is invalid
+	 */
+	final protected function resolveStoragePath( $storagePath ) {
+		list( $backend, $container, $relPath ) = self::splitStoragePath( $storagePath );
+		if ( $backend === $this->name ) { // must be for this backend
+			$relPath = self::normalizeStoragePath( $relPath );
+			if ( $relPath !== null && self::isValidContainerName( $container ) ) {
+				$relPath = $this->resolveContainerPath( $container, $relPath );
+				if ( $relPath !== null ) {
+					$container = $this->fullContainerName( $container );
+					$container = $this->resolveContainerName( $container );
+					if ( $container !== null ) {
+						return array( $container, $relPath ); // (container, path)
+					}
+				}
+			}
+		}
+		return array( null, null );
+	}
+
+	/**
 	 * Get the full container name, including the wiki ID prefix
 	 * 
 	 * @param $container string
@@ -728,27 +744,24 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	/**
-	 * Check if a container name is allowed by the backend.
+	 * Resolve a container name, checking if it's allowed by the backend.
+	 * This is intended for internal use, such as encoding illegal chars.
 	 * Subclasses can override this to be more restrictive.
 	 * 
 	 * @param $container string
-	 * @return bool 
+	 * @return string|null 
 	 */
-	protected function checkContainerName( $container ) {
-		// This accounts for Swift and S3 restrictions. Also note
-		// that these urlencode to the same string, which is useful
-		// since the Swift size limit is *after* URL encoding.
-		return preg_match( '/^[a-zA-Z0-9._-]{1,256}$/u', $container );
+	protected function resolveContainerName( $container ) {
+		return $container;
 	}
 
 	/**
-	 * Resolve a storage path relative to a particular container.
-	 * This should also check if the path is allowed by the backend.
-	 * This is for internal use for backends, such as encoding or
-	 * perhaps getting absolute paths (e.g. FS based backends).
+	 * Resolve a relative storage path, checking if it's allowed by the backend.
+	 * This is intended for internal use, such as encoding illegal chars
+	 * or perhaps getting absolute paths (e.g. FS based backends).
 	 *
-	 * @param $container string
-	 * @param $relStoragePath string
+	 * @param $container string Container the path is relative to
+	 * @param $relStoragePath string Relative storage path
 	 * @return string|null Path or null if not valid
 	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {

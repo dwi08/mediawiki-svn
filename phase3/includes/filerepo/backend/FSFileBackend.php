@@ -19,6 +19,11 @@ class FSFileBackend extends FileBackend {
 	function __construct( array $config ) {
 		parent::__construct( $config );
 		$this->containerPaths = (array)$config['containerPaths'];
+		foreach ( $this->containerPaths as $container => &$path ) {
+			if ( substr( $path, -1 ) === '/' ) {
+				$path = substr( $path, 0, -1 ); // remove trailing slash
+			}
+		}
 		$this->fileMode = isset( $config['fileMode'] )
 			? $config['fileMode']
 			: 0644;
