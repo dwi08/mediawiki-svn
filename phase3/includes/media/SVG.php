@@ -85,7 +85,7 @@ class SvgHandler extends ImageHandler {
 	 * @param int $flags
 	 * @return bool|MediaTransformError|ThumbnailImage|TransformParameterError
 	 */
-	function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
+	function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
 		if ( !$this->normaliseParams( $image, $params ) ) {
 			return new TransformParameterError( $params );
 		}

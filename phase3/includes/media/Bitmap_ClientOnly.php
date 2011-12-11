@@ -33,7 +33,7 @@ class BitmapHandler_ClientOnly extends BitmapHandler {
 	 * @param int $flags
 	 * @return ThumbnailImage|TransformParameterError
 	 */
-	function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
+	function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
 		if ( !$this->normaliseParams( $image, $params ) ) {
 			return new TransformParameterError( $params );
 		}

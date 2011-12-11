@@ -56,12 +56,12 @@ class NewParserTest extends MediaWikiTestCase {
 		$tmpGlobals['wgStylePath'] = '/skins';
 		$tmpGlobals['wgThumbnailScriptPath'] = false;
 		$tmpGlobals['wgLocalFileRepo'] = array(
-			'class' => 'LocalRepo',
-			'name' => 'local',
-			'url' => 'http://example.com/images',
-			'hashLevels' => 2,
+			'class'           => 'LocalRepo',
+			'name'            => 'local',
+			'url'             => 'http://example.com/images',
+			'hashLevels'      => 2,
 			'transformVia404' => false,
-			'backend' => 'local-backend'
+			'backend'         => 'local-backend'
 		);
 		$tmpGlobals['wgForeignFileRepos'] = array();
 		$tmpGlobals['wgEnableParserCache'] = false;
@@ -116,6 +116,7 @@ class NewParserTest extends MediaWikiTestCase {
 		// Restore backends
 		FileBackendGroup::destroySingleton();
 		FileBackendGroup::singleton()->register( $GLOBALS['wgFileBackends'] );
+		RepoGroup::destroySingleton();
 	}
 
 	function addDBData() {
@@ -233,12 +234,12 @@ class NewParserTest extends MediaWikiTestCase {
 			'wgExtensionAssetsPath' => '/extensions',
 			'wgActionPaths' => array(),
 			'wgLocalFileRepo' => array(
-				'class' => 'LocalRepo',
-				'name' => 'local',
-				'url' => 'http://example.com/images',
-				'hashLevels' => 2,
+				'class'           => 'LocalRepo',
+				'name'            => 'local',
+				'url'             => 'http://example.com/images',
+				'hashLevels'      => 2,
 				'transformVia404' => false,
-				'backend' => 'local-backend'
+				'backend'         => 'local-backend'
 			),
 			'wgEnableUploads' => self::getOptionValue( 'wgEnableUploads', $opts, true ),
 			'wgStylePath' => '/skins',
@@ -381,12 +382,13 @@ class NewParserTest extends MediaWikiTestCase {
 	 * after each test runs.
 	 */
 	protected function teardownGlobals() {
-		RepoGroup::destroySingleton();
-		LinkCache::singleton()->clear();
-
 		foreach ( $this->savedGlobals as $var => $val ) {
 			$GLOBALS[$var] = $val;
 		}
+
+		RepoGroup::destroySingleton();
+		LinkCache::singleton()->clear();
+		FileBackendGroup::destroySingleton();
 
 		$this->teardownUploadDir( $this->uploadDir );
 	}

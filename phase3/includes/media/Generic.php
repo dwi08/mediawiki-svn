@@ -203,46 +203,7 @@ abstract class MediaHandler {
 	 *
 	 * @return MediaTransformOutput
 	 */
-	final function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 ) {
-		if ( FileBackend::isStoragePath( $dstPath ) ) {
-			// Create a temp FS file with the same extension
-			$tmpFile = TempFSFile::factory( 'transform', $image->getExtension() );
-			if ( !$tmpFile ) {
-				return new MediaTransformError( 'thumbnail_error',
-					$params['width'], 0, wfMsg( 'thumbnail-temp-create' ) );
-			}
-			$tmpDest = $tmpFile->getPath(); // path of 0-byte temp file
-			// Create the output thumbnail on the FS
-			$out = $this->doFSTransform( $image, $tmpDest, $dstUrl, $params, $flags );
-			// Copy any thumbnail from FS into storage at $dstpath
-			// Note: no file is created if it's to be rendered client-side.
-			if ( !$out->isError() && $out->hasFile() && !$out->fileIsSource() ) {
-				$op = array( 'op' => 'store',
-					'src' => $tmpDest, 'dst' => $dstPath, 'overwriteDest' => true );
-				if ( !$image->getRepo()->getBackend()->doOperation( $op )->isOK() ) {
-					return new MediaTransformError( 'thumbnail_error',
-						$params['width'], 0, wfMsg( 'thumbnail-dest-create' ) );
-				}
-			}
-		} else {
-			$out = $this->doFSTransform( $image, $dstPath, $dstUrl, $params, $flags );
-		}
-		return $out;
-	}
-
-	/**
-	 * Get a MediaTransformOutput object representing the transformed output. Does the
-	 * transform unless $flags contains self::TRANSFORM_LATER.
-	 *
-	 * @param $image File: the image object
-	 * @param $dstPath String: filesystem destination path
-	 * @param $dstUrl String: destination URL to use in output HTML
-	 * @param $params Array: arbitrary set of parameters validated by $this->validateParam()
-	 * @param $flags Integer: a bitfield, may contain self::TRANSFORM_LATER
-	 *
-	 * @return MediaTransformOutput
-	 */
-	abstract function doFSTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 );
+	abstract function doTransform( $image, $dstPath, $dstUrl, $params, $flags = 0 );
 
 	/**
 	 * Get the thumbnail extension and MIME type for a given source MIME type

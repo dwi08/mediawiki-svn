@@ -9,25 +9,23 @@ class LocalFileTest extends MediaWikiTestCase {
 	function setUp() {
 		global $wgCapitalLinks;
 
-		$config = array(
+		$wgCapitalLinks = true;
+
+		$backend = new FSFileBackend( array(
 			'name'        => 'local-backend',
-			'class'       => 'FSFileBackend',
 			'lockManager' => 'fsLockManager',
 			'containerPaths' => array(
 				'cont1' => "/testdir/local-backend/tempimages/cont1",
 				'cont2' => "/testdir/local-backend/tempimages/cont2"
 			)
-		);
-		FileBackendGroup::singleton()->register( array( $config ) );
-
-		$wgCapitalLinks = true;
+		) );
 		$info = array(
 			'name'            => 'test',
 			'directory'       => '/testdir',
 			'url'             => '/testurl',
 			'hashLevels'      => 2,
 			'transformVia404' => false,
-			'backend'         => 'local-backend'
+			'backend'         => $backend
 		);
 		$this->repo_hl0 = new LocalRepo( array( 'hashLevels' => 0 ) + $info );
 		$this->repo_hl2 = new LocalRepo( array( 'hashLevels' => 2 ) + $info );

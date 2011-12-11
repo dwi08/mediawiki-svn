@@ -7,7 +7,7 @@
  */
 
 /**
- * Base class for the output of MediaHandler::doFSTransform() and File::transform().
+ * Base class for the output of MediaHandler::doTransform() and File::transform().
  *
  * @ingroup Media
  */

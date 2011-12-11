@@ -48,7 +48,7 @@ class UploadStash {
 	 *
 	 * @param $repo FileRepo
 	 */
-	public function __construct( $repo, $user = null ) {
+	public function __construct( FileRepo $repo, $user = null ) {
 		// this might change based on wiki's configuration.
 		$this->repo = $repo;
 
