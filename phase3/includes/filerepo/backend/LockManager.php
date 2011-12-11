@@ -274,16 +274,16 @@ class FSLockManager extends LockManager {
  * Version of LockManager based on using DB table locks.
  * This is meant for multi-wiki systems that may share share files.
  *
- * All lock requests for a resource, identified by a hash string, will
- * map to one bucket. Each bucket maps to one or several peer DB servers,
- * each having a the file_locks.sql tables with row-level locking.
+ * All lock requests for a resource, identified by a hash string, will map
+ * to one bucket. Each bucket maps to one or several peer DBs, on different
+ * servers, each having the file_locks.sql tables (with row-level locking).
  * This does not use GET_LOCK() per http://bugs.mysql.com/bug.php?id=1118.
  *
- * A majority of peer servers must agree for a lock to be acquired.
- * As long as one peer server is up, lock requests will not be blocked
- * just because another peer server cannot be contacted. A global status
- * cache can be setup to track servers that recently missed queries; such
- * servers will not be trusted for obtaining locks.
+ * A majority of peer DBs must agree for a lock to be acquired.
+ * As long as one peer DB is up, lock requests will not be blocked
+ * just because another peer DB cannot be contacted. A global status
+ * cache can be setup to track DBs that recently missed queries; such
+ * DBs will not be trusted for obtaining locks.
  * 
  * For performance, a small lock-wait timeout should be set via server config.
  * In innoDB, this can done via the innodb_lock_wait_timeout setting.
@@ -294,7 +294,6 @@ class DBLockManager extends LockManager {
 	/** @var BagOStuff */
 	protected $statusCache;
 
-	protected $trustCache; // boolean
 	protected $webTimeout; // integer number of seconds
 	protected $cliTimeout; // integer number of seconds
 	protected $safeDelay; // integer number of seconds
@@ -318,10 +317,9 @@ class DBLockManager extends LockManager {
 	 *                     connection failure and releasing all the locks for a session.
 	 *     'safeDelay'   : Seconds to mistrust a DB after restart/query loss. [optional]
 	 *                     This should reflect the highest max_execution_time that PHP
-	 *                     scripts might use on a wiki. Locks are lost on server restart.
+	 *                     scripts might use on a wiki. Locks are lost on DB server restart.
 	 *     'cache'       : $wgMemc (if set to a global memcached instance). [optional]
-	 *                     This tracks peer servers that couldn't be queried recently.
-	 *     'trustCache'  : Assume cache knows all servers missing queries recently. [optional]
+	 *                     This tracks peer DBs that couldn't be queried recently.
 	 *
 	 * @param Array $config 
 	 */
@@ -345,10 +343,8 @@ class DBLockManager extends LockManager {
 
 		if ( isset( $config['cache'] ) && $config['cache'] instanceof BagOStuff ) {
 			$this->statusCache = $config['cache'];
-			$this->trustCache = ( !empty( $config['trustCache'] ) && $this->safeDelay > 0 );
 		} else {
 			$this->statusCache = null;
-			$this->trustCache = false;
 		}
 	}
 
@@ -427,15 +423,15 @@ class DBLockManager extends LockManager {
 	/**
 	 * Get a connection to a lock DB and acquire locks on $keys
 	 *
-	 * @param $server string
+	 * @param $lockDb string
 	 * @param $keys Array
 	 * @param $type integer LockManager::LOCK_EX or LockManager::LOCK_SH
 	 * @return bool Resources able to be locked
 	 * @throws DBError
 	 */
-	protected function doLockingQuery( $server, array $keys, $type ) {
+	protected function doLockingQuery( $lockDb, array $keys, $type ) {
 		if ( $type == self::LOCK_EX ) { // writer locks
-			$db = $this->getConnection( $server );
+			$db = $this->getConnection( $lockDb );
 			# Actually do the locking queries...
 			$data = array();
 			foreach ( $keys as $key ) {
@@ -457,73 +453,58 @@ class DBLockManager extends LockManager {
 	 * @return bool|string One of (true, 'cantacquire', 'dberrors')
 	 */
 	protected function doLockingQueryAll( $bucket, array $keys, $type ) {
-		$yesVotes = 0; // locks made on trustable servers
+		$yesVotes = 0; // locks made on trustable DBs
 		$votesLeft = count( $this->dbsByBucket[$bucket] ); // remaining DBs
 		$quorum = floor( $votesLeft/2 + 1 ); // simple majority
-		// Get votes for each server, in order, until we have enough...
-		foreach ( $this->dbsByBucket[$bucket] as $index => $server ) {
-			if ( $this->trustCache && $votesLeft < $quorum ) {
-				// We are now hitting servers that are not normally
-				// hit, meaning that some of the first ones are down.
-				// Delay using these later servers until it's safe.
-				if ( !$this->cacheCheckSkipped( $bucket, $index ) ) {
-					return 'dberrors';
-				}
-			}
-			// Check that server is not *known* to be down
-			if ( $this->cacheCheckFailures( $server ) ) {
+		// Get votes for each DB, in order, until we have enough...
+		foreach ( $this->dbsByBucket[$bucket] as $index => $lockDb ) {
+			// Check that DB is not *known* to be down
+			if ( $this->cacheCheckFailures( $lockDb ) ) {
 				try {
-					// Attempt to acquire the lock on this server
-					if ( !$this->doLockingQuery( $server, $keys, $type ) ) {
+					// Attempt to acquire the lock on this DB
+					if ( !$this->doLockingQuery( $lockDb, $keys, $type ) ) {
 						return 'cantacquire'; // vetoed; resource locked
 					}
-					// Check that server has no signs of lock loss
-					if ( $this->checkUptime( $server ) ) {
+					// Check that DB has no signs of lock loss
+					if ( $this->checkUptime( $lockDb ) ) {
 						++$yesVotes; // success for this peer
 						if ( $yesVotes >= $quorum ) {
-							if ( $this->trustCache ) {
-								// We didn't bother with the servers after this one
-								$this->cacheRecordSkipped( $bucket, $index + 1 );
-							}
 							return true; // lock obtained
 						}
 					}
 				} catch ( DBConnectionError $e ) {
-					$this->cacheRecordFailure( $server );
+					$this->cacheRecordFailure( $lockDb );
 				} catch ( DBError $e ) {
-					if ( $this->lastErrorIndicatesLocked( $server ) ) {
+					if ( $this->lastErrorIndicatesLocked( $lockDb ) ) {
 						return 'cantacquire'; // vetoed; resource locked
 					}
 				}
 			}
 			$votesLeft--;
 			$votesNeeded = $quorum - $yesVotes;
-			if ( $votesNeeded > $votesLeft && !$this->trustCache ) {
+			if ( $votesNeeded > $votesLeft ) {
 				// In "trust cache" mode we don't have to meet the quorum
 				break; // short-circuit
 			}
 		}
 		// At this point, we must not have meet the quorum
-		if ( $yesVotes > 0 && $this->trustCache ) {
-			return true; // we are trusting the cache; may comprimise correctness
-		}
 		return 'dberrors'; // not enough votes to ensure correctness
 	}
 
 	/**
 	 * Get a new connection to a lock DB
 	 *
-	 * @param $server string
+	 * @param $lockDb string
 	 * @return Database
 	 * @throws DBError
 	 */
-	protected function getConnection( $server ) {
-		if ( !isset( $this->activeConns[$server] ) ) {
-			$this->activeConns[$server] = wfGetDB( DB_MASTER, array(), $server );
-			$this->activeConns[$server]->begin(); // start transaction
+	protected function getConnection( $lockDb ) {
+		if ( !isset( $this->activeConns[$lockDb] ) ) {
+			$this->activeConns[$lockDb] = wfGetDB( DB_MASTER, array(), $lockDb );
+			$this->activeConns[$lockDb]->begin(); // start transaction
 			# If the connection drops, try to avoid letting the DB rollback
 			# and release the locks before the file operations are finished.
-			# This won't handle the case of server reboots however.
+			# This won't handle the case of DB server reboots however.
 			$options = array();
 			if ( php_sapi_name() == 'cli' ) { // maintenance scripts
 				if ( $this->cliTimeout > 0 ) {
@@ -534,21 +515,21 @@ class DBLockManager extends LockManager {
 					$options['connTimeout'] = $this->webTimeout;
 				}
 			}
-			$this->activeConns[$server]->setSessionOptions( $options );
-			$this->initConnection( $server, $this->activeConns[$server] );
+			$this->activeConns[$lockDb]->setSessionOptions( $options );
+			$this->initConnection( $lockDb, $this->activeConns[$lockDb] );
 		}
-		return $this->activeConns[$server];
+		return $this->activeConns[$lockDb];
 	}
 
 	/**
 	 * Do additional initialization for new lock DB connection
 	 *
-	 * @param $server string
+	 * @param $lockDb string
 	 * @param $db Database
 	 * @return void
 	 * @throws DBError
 	 */
-	protected function initConnection( $server, DatabaseBase $db ) {}
+	protected function initConnection( $lockDb, DatabaseBase $db ) {}
 
 	/**
 	 * Commit all changes to lock-active databases.
@@ -558,11 +539,11 @@ class DBLockManager extends LockManager {
 	 */
 	protected function finishLockTransactions() {
 		$status = Status::newGood();
-		foreach ( $this->activeConns as $server => $db ) {
+		foreach ( $this->activeConns as $lockDb => $db ) {
 			try {
 				$db->rollback(); // finish transaction and kill any rows
 			} catch ( DBError $e ) {
-				$status->fatal( 'lockmanager-fail-db-release', $server );
+				$status->fatal( 'lockmanager-fail-db-release', $lockDb );
 				// oh well; best effort
 			}
 		}
@@ -571,16 +552,16 @@ class DBLockManager extends LockManager {
 	}
 
 	/**
-	 * Check if the last DB error for $server indicates
+	 * Check if the last DB error for $lockDb indicates
 	 * that a requested resource was locked by another process.
 	 * This should avoid throwing any exceptions.
 	 * 
-	 * @param $server string
+	 * @param $lockDb string
 	 * @return bool
 	 */
-	protected function lastErrorIndicatesLocked( $server ) {
-		if ( isset( $this->activeConns[$server] ) ) { // sanity
-			$db = $this->activeConns[$server];
+	protected function lastErrorIndicatesLocked( $lockDb ) {
+		if ( isset( $this->activeConns[$lockDb] ) ) { // sanity
+			$db = $this->activeConns[$lockDb];
 			return ( $db->wasDeadlock() || $db->wasLockTimeout() );
 		}
 		return false;
@@ -588,16 +569,16 @@ class DBLockManager extends LockManager {
 
 	/**
 	 * Checks if the DB server did not recently restart.
-	 * This curtails the problem of locks falling off when servers restart.
+	 * This curtails the problem of locks falling off when DB servers restart.
 	 * 
-	 * @param $server string
+	 * @param $lockDb string
 	 * @return bool
 	 * @throws DBError
 	 */
-	protected function checkUptime( $server ) {
-		if ( isset( $this->activeConns[$server] ) ) { // sanity
+	protected function checkUptime( $lockDb ) {
+		if ( isset( $this->activeConns[$lockDb] ) ) { // sanity
 			if ( $this->safeDelay > 0 ) {
-				$db = $this->activeConns[$server];
+				$db = $this->activeConns[$lockDb];
 				if ( $db->getServerUptime() < $this->safeDelay ) {
 					return false;
 				}
@@ -608,65 +589,16 @@ class DBLockManager extends LockManager {
 	}
 
 	/**
-	 * Check that DB servers starting at $index for a
-	 * bucket were not recently skipped in obtaining a lock.
-	 *
-	 * @param $bucket
-	 * @param $index
-	 * @return bool
-	 */
-	protected function cacheCheckSkipped( $bucket, $index ) {
-		if ( $this->statusCache && $this->safeDelay > 0 ) {
-			$key = $this->getSkipsKey( $bucket, $index );
-			$skips = $this->statusCache->get( $key );
-			return !$skips;
-		}
-		return true;
-	}
-
-	/**
-	 * Record that DB servers starting at $index for a
-	 * bucket were just skipped in obtaining a lock (quorum met).
-	 *
-	 * @param $bucket
-	 * @param $index
-	 * @return bool Success
-	 */
-	protected function cacheRecordSkipped( $bucket, $index ) {
-		if ( $this->statusCache && $this->safeDelay > 0 ) {
-			$key = $this->getSkipsKey( $bucket, $index );
-			$skips = $this->statusCache->get( $key );
-			if ( $skips ) {
-				return $this->statusCache->incr( $key );
-			} else {
-				return $this->statusCache->add( $key, 1, $this->safeDelay );
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Get a cache key for recent query skips for a bucket
-	 *
-	 * @param $bucket
-	 * @param $index
-	 * @return string
-	 */
-	protected function getSkipsKey( $bucket, $index ) {
-		return "lockmanager:queryskips:$bucket:$index";
-	}
-
-	/**
-	 * Checks if the DB server has not recently had connection/query errors.
+	 * Checks if the DB has not recently had connection/query errors.
 	 * When in "trust cache" mode, this curtails the problem of peers occasionally
 	 * missing locks. Otherwise, it just avoids wasting time on connection attempts.
 	 * 
-	 * @param $server string
+	 * @param $lockDb string
 	 * @return bool
 	 */
-	protected function cacheCheckFailures( $server ) {
+	protected function cacheCheckFailures( $lockDb ) {
 		if ( $this->statusCache && $this->safeDelay > 0 ) {
-			$key = $this->getMissKey( $server );
+			$key = $this->getMissKey( $lockDb );
 			$misses = $this->statusCache->get( $key );
 			return !$misses;
 		}
@@ -678,14 +610,14 @@ class DBLockManager extends LockManager {
 	 *
 	 * Worst case scenario is that a resource lock was only
 	 * on one peer and then that peer is restarted or goes down.
-	 * Clients trying to get locks need to know if a server is down.
+	 * Clients trying to get locks need to know if a DB server is down.
 	 *
-	 * @param $server string
+	 * @param $lockDb string
 	 * @return bool Success
 	 */
-	protected function cacheRecordFailure( $server ) {
+	protected function cacheRecordFailure( $lockDb ) {
 		if ( $this->statusCache && $this->safeDelay > 0 ) {
-			$key = $this->getMissKey( $server );
+			$key = $this->getMissKey( $lockDb );
 			$misses = $this->statusCache->get( $key );
 			if ( $misses ) {
 				return $this->statusCache->incr( $key );
@@ -697,13 +629,13 @@ class DBLockManager extends LockManager {
 	}
 
 	/**
-	 * Get a cache key for recent query misses for a DB server
+	 * Get a cache key for recent query misses for a DB
 	 *
-	 * @param $server string
+	 * @param $lockDb string
 	 * @return string
 	 */
-	protected function getMissKey( $server ) {
-		return "lockmanager:querymisses:$server";
+	protected function getMissKey( $lockDb ) {
+		return "lockmanager:querymisses:$lockDb";
 	}
 
 	/**
@@ -737,18 +669,18 @@ class MySqlLockManager extends DBLockManager {
 	/** @var Array Map of (DB name => original transaction isolation) */
 	protected $trxIso = array();
 
-	protected function initConnection( $server, DatabaseBase $db ) {
-		# Get the original transaction level for the server.
+	protected function initConnection( $lockDb, DatabaseBase $db ) {
+		# Get the original transaction level for the DB server
 		$row = $db->query( "SELECT @@tx_isolation AS tx_iso;" )->fetchObject();
 		# Convert "REPEATABLE-READ" => "REPEATABLE READ" for SET query
-		$this->trxIso[$server] = str_replace( '-', ' ', $row->tx_iso );
+		$this->trxIso[$lockDb] = str_replace( '-', ' ', $row->tx_iso );
 	}
 
-	protected function doLockingQuery( $server, array $keys, $type ) {
+	protected function doLockingQuery( $lockDb, array $keys, $type ) {
 		$ok = true;
 		# Actually do the locking queries...
 		if ( $type == self::LOCK_SH ) { // reader locks
-			$db = $this->getConnection( $server );
+			$db = $this->getConnection( $lockDb );
 			$data = array();
 			foreach ( $keys as $key ) {
 				$data[] = array( 'fls_key' => $key );
@@ -761,9 +693,9 @@ class MySqlLockManager extends DBLockManager {
 				array( 'fle_key' => $keys ),
 				__METHOD__
 			);
-			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$server]}" );
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$lockDb]}" );
 		} elseif ( $type == self::LOCK_EX ) { // writer locks
-			$db = $this->getConnection( $server );
+			$db = $this->getConnection( $lockDb );
 			$data = array();
 			foreach ( $keys as $key ) {
 				$data[] = array( 'fle_key' => $key );
@@ -776,7 +708,7 @@ class MySqlLockManager extends DBLockManager {
 				array( 'fls_key' => $keys ),
 				__METHOD__
 			);
-			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$server]}" );
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$lockDb]}" );
 		}
 		return $ok;
 	}
