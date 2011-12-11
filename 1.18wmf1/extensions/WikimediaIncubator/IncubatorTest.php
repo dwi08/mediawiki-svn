@@ -13,7 +13,9 @@ class IncubatorTest {
 
 	/**
 	 * Add preferences
-	 * @return True
+	 * @param $user User
+	 * @param $preferences array
+	 * @return true
 	 */
 	static function onGetPreferences( $user, &$preferences ) {
 		global $wmincPref, $wmincProjects, $wmincProjectSite,
@@ -35,7 +37,7 @@ class IncubatorTest {
 		$prefinsert[$wmincPref . '-code'] = array(
 			'type' => 'text',
 			'section' => 'personal/i18n',
-			'label-message' => 'wminc-testwiki',
+			'label-message' => 'wminc-testwiki-code',
 			'id' => $wmincPref . '-code',
 			'maxlength' => (int)$wmincLangCodeLength,
 			'size' => (int)$wmincLangCodeLength,
@@ -52,6 +54,8 @@ class IncubatorTest {
 
 	/**
 	 * For the preferences above
+	 * @param $input
+	 * @param $alldata
 	 * @return String or true
 	 */
 	static function validateCodePreference( $input, $alldata ) {
@@ -135,14 +139,14 @@ class IncubatorTest {
 
 	/**
 	 * This returns simply true or false based on analyzePrefix().
+	 * @param $title Title
+	 * @param $onlyprefix bool
 	 * @return Boolean
 	 */
 	static function validatePrefix( $title, $onlyprefix = false ) {
 		$data = self::analyzePrefix( $title, $onlyprefix );
-		if( !$data['error'] ) { return true; }
-		return false;
+		return !$data['error'];
 	}
-
 
 	/**
 	 * Get &testwiki=wx/xx and validate that prefix.
@@ -197,6 +201,10 @@ class IncubatorTest {
 
 	/**
 	 * Returns a simple boolean based on getProject()
+	 * @param $project string
+	 * @param $returnName bool
+	 * @param $returnName bool
+	 * @param $includeSister bool
 	 * @return Bool
 	 */
 	static function isContentProject( $project = '', $returnName = false, $includeSister = false ) {
@@ -322,8 +330,10 @@ class IncubatorTest {
 			$link = self::getSubdomain( $prefixdata['lang'],
 				$prefixdata['project'], ( $title->getNsText() ? $title->getNsText() . ':' : '' ) .
 				str_replace( ' ', '_', $prefixdata['realtitle'] ) );
+			# faking external link to support prot-rel URLs
+			$link = "[$link ". self::makeExternalLinkText( $link ) . "]";
 			$result[] = array( 'wminc-error-wiki-exists', $link );
-			return false;
+			return $action != 'edit';
 		}
 
 		if( !self::shouldWeShowUnprefixedError( $title ) || $action != 'create' ) {
@@ -342,7 +352,7 @@ class IncubatorTest {
 			$error = 'wminc-error-unprefixed';
 		}
 		$result = $error;
-		return false;
+		return $action != 'edit';
 	}
 
 	/**
@@ -379,18 +389,12 @@ class IncubatorTest {
 
 	/**
 	 * This loads language names. Also from CLDR if that extension is found.
-	 * @return Array with language names or empty array
+	 * @return Array with language names
 	 */
-	static public function getLanguageNames( $code = '' ) {
-		if ( is_callable( array( 'LanguageNames', 'getNames' ) ) ) {
-			global $wgLang;
-			$langcode = ( $code ? $code : $wgLang->getCode() );
-			return LanguageNames::getNames( $langcode,
-				LanguageNames::FALLBACK_NORMAL,
-				LanguageNames::LIST_MW_AND_CLDR
-			);
-		}
-		return Language::getLanguageNames( false );
+	static public function getLanguageNames( $code = null ) {
+		global $wgLang;
+		$langcode = ( $code ? $code : $wgLang->getCode() );
+		return Language::getTranslatedLanguageNames( $langcode );
 	}
 
 	/**
@@ -404,7 +408,7 @@ class IncubatorTest {
 		}
 		return true; # Should work now
 	}
-	
+
 	/**
 	 * Given an incubator testwiki prefix, get the database name of the
 	 * corresponding wiki, whether it exists or not
@@ -417,7 +421,11 @@ class IncubatorTest {
 		} elseif( !$prefix || $prefix['error'] ) {
 			return false; # shouldn't be, but you never know
 		}
-		global $wmincProjectDatabases;
+		global $wmincProjectDatabases, $wgDummyLanguageCodes;
+		$redirectcode = array_search( $prefix['lang'], $wgDummyLanguageCodes );
+		if( $redirectcode ) {
+			$prefix['lang'] = $redirectcode;
+		}
 		return str_replace('-', '_', $prefix['lang'] ) .
 			$wmincProjectDatabases[$prefix['project']];
 	}
@@ -473,7 +481,6 @@ class IncubatorTest {
 		if( $prefix['error'] ) { # We are not on info pages
 			global $wmincSisterProjects;
 			$prefix2 = self::analyzePrefix( $title->getText(), false, true );
-			$linker = class_exists( 'DummyLinker' ) ? new DummyLinker : new Linker;
 			$p = isset( $prefix2['project' ] ) ? $prefix2['project'] : '';
 			if( self::getDBState( $prefix2 ) == 'existing' ) {
 				$link = self::getSubdomain( $prefix2['lang'], $p,
@@ -484,7 +491,7 @@ class IncubatorTest {
 					return true;
 				} else {
 					# Show a link to the existing wiki
-					$showLink = $linker->makeExternalLink( $link, $link );
+					$showLink = self::makeExternalLinkText( $link, true );
 					$wgOut->addHtml( '<div class="wminc-wiki-exists">' .
 						wfMsgHtml( 'wminc-error-wiki-exists', $showLink ) .
 					'</div>' );
@@ -493,7 +500,7 @@ class IncubatorTest {
 				# A sister project is not hosted here, so direct the user to the relevant wiki
 				$link = self::getSubdomain( $prefix2['lang'], $p,
 					( $title->getNsText() ? $title->getNsText() . ':' : '' ) . $prefix2['realtitle'] );
-					$showLink = $linker->makeExternalLink( $link, $link );
+					$showLink = self::makeExternalLinkText( $link, true );
 					$wgOut->addHtml( '<div class="wminc-wiki-sister">' .
 						wfMsgHtml( 'wminc-error-wiki-sister', $showLink ) .
 					'</div>' );
@@ -528,7 +535,7 @@ class IncubatorTest {
 			$wgOut->addHtml( $infopage->showExistingWiki() );
 		} elseif( $dbstate == 'closed' ) {
 			$infopage->mSubStatus = 'imported';
-			$wgOut->addHtml( $infopage->showIncubatingWiki() );	
+			$wgOut->addHtml( $infopage->showIncubatingWiki() );
 		} else {
 			$wgOut->addHtml( $infopage->showMissingWiki() );
 		}
@@ -579,12 +586,15 @@ class IncubatorTest {
 
 	/**
 	 * make "Wx/xxx/Main Page"
-	 * @return String
+	 * @param $langCode String: The language code
+	 * @param $prefix Null|String: the "Wx/xxx" prefix to add
+	 * @return Title
 	 */
 	public static function getMainPage( $langCode, $prefix = null ) {
 		# Take the "mainpage" msg in the given language
 		$msg = wfMsgExt( 'mainpage', array( 'language' => $langCode ) );
-		return $prefix !== null ? $prefix . '/' . $msg : $msg;
+		$mainpage = $prefix !== null ? $prefix . '/' . $msg : $msg;
+		return Title::newFromText( $mainpage );
 	}
 
 	/**
@@ -612,9 +622,7 @@ class IncubatorTest {
 			# pass through the &uselang parameter
 			$params['uselang'] = $uselang;
 		}
-		$mainpage = Title::newFromText(
-			self::getMainPage( $prefix['lang'], $prefix['prefix'] )
-		);
+		$mainpage = self::getMainPage( $prefix['lang'], $prefix['prefix'] );
 		if( $mainpage->exists() ) {
 			# Only redirect to the main page if that page exists
 			$wgOut->redirect( $mainpage->getFullURL( $params ) );
@@ -701,7 +709,74 @@ class IncubatorTest {
 		return true;
 	}
 
+	/**
+	 * Search: Adapt the default message to show a more descriptive one,
+	 * along with an adapted link.
+	 * @return true
+	 */
+	public static function onSpecialSearchCreateLink( $title, &$params ) {
+		if( $title->isKnown() ) {
+			return true;
+		}
+		global $wmincProjectSite, $wmincTestWikiNamespaces;
+		$prefix = self::displayPrefix();
+
+		$newNs = $title->getNamespace();
+		$newTitle = $title->getText();
+		if( $prefix == $wmincProjectSite['short'] ) {
+			$newNs = NS_PROJECT;
+		} else {
+			if( !in_array( $title->getNamespace(), $wmincTestWikiNamespaces ) ) {
+				$newNs = $wmincTestWikiNamespaces[0]; # no "valid" NS, should be main NS
+			}
+			$newTitle = $prefix . '/' . $newTitle;
+		}
+
+		$t = Title::newFromText( $newTitle, $newNs );
+		if( $t->isKnown() ) {
+			# use the default message if the suggested title exists
+			$params[0] = 'searchmenu-exists';
+			$params[1] = wfEscapeWikiText( $t->getPrefixedText() );
+			return true;
+		}
+		$params[] = wfEscapeWikiText( $t->getPrefixedText() );
+		$params[0] = $prefix ? 'wminc-search-nocreate-suggest' :'wminc-search-nocreate-nopref';
+		return true;
+	}
+
+	/**
+	 * Search: Add an input form to enter a test wiki prefix.
+	 * @return true
+	 */
+	public static function onSpecialSearchPowerBox( &$showSections, $term, $opts ) {
+		$showSections['testwiki'] = Xml::label( wfMsg( 'wminc-testwiki' ), 'testwiki' ) . ' ' .
+			Xml::input( 'testwiki', 20, self::displayPrefix(), array( 'id' => 'testwiki' ) );
+		return true;
+	}
+
+	/**
+	 * Search: Search by default in the test wiki of the user's preference (or url &testwiki).
+	 * @return true
+	 */
+	public static function onSpecialSearchSetupEngine( $search, $profile, $engine ) {
+		if( !isset( $search->prefix ) || !$search->prefix ) {
+			$search->prefix = self::displayPrefix();
+		}
+		return true;
+	}
+
 	private static function preg_quote_slash( $str ) {
 		return preg_quote( $str, '/' );
+	}
+
+	/**
+	 * @param $url String
+	 * @param $callLinker Boolean Whether to call makeExternalLink()
+	 */
+	public static function makeExternalLinkText( $url, $callLinker = false ) {
+		# when displaying a URL, if it contains 'http://' or 'https://' it's ok to leave it,
+		# but for protocol-relative URLs, it's nicer to remove the '//'
+		$linktext = ltrim( $url, '/' );
+		return $callLinker ? Linker::makeExternalLink( $url, $linktext ) : $linktext;
 	}
 }

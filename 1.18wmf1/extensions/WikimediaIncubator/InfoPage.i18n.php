@@ -25,7 +25,13 @@ $messages['en'] = array(
 	'wminc-logo-wikispecies' => 'WikiSpecies.svg', # only translate if necessary
 	'wminc-logo-mediawiki' => 'MediaWiki.svg', # only translate if necessary
 	'wminc-manual-url' => 'Help:Manual', # only translate if necessary
-	'wminc-infopage-title' => '$1 $2', # only translate if necessary
+	'wminc-infopage-title-p' => 'Wikipedia $1',
+	'wminc-infopage-title-b' => 'Wikibooks $1',
+	'wminc-infopage-title-t' => 'Wiktionary $1',
+	'wminc-infopage-title-q' => 'Wikiquote $1',
+	'wminc-infopage-title-n' => 'Wikinews $1',
+	'wminc-infopage-title-s' => 'Wikisource $1',
+	'wminc-infopage-title-v' => 'Wikiversity $1',
 	'wminc-infopage-welcome' => 'Welcome to the Wikimedia Incubator, a project of the Wikimedia Foundation ([[{{MediaWiki:Aboutpage}}|About]])',
 
 	'wminc-infopage-missingwiki-text' => 'A $1 in this language does not yet exist.',

@@ -19,6 +19,11 @@
  */
 
 class InfoPage {
+
+	/**
+	 * @param $title Title
+	 * @param $prefixdata
+	 */
 	public function __construct( $title, $prefixdata ) {
 		global $wmincProjects, $wmincSisterProjects;
 		$this->mTitle = $title;
@@ -39,7 +44,7 @@ class InfoPage {
 		$this->mLangNames = IncubatorTest::getLanguageNames();
 		$this->mLangName = ( isset( $this->mLangNames[$this->mLangCode] ) ?
 			$this->mLangNames[$this->mLangCode] : wfMsg( 'wminc-unknownlang', $this->mLangCode ) );
-		$this->mFormatTitle = wfMsgHtml( 'wminc-infopage-title', $this->mProjectName, $this->mLangName );
+		$this->mFormatTitle = wfMsgHtml( 'wminc-infopage-title-' . $this->mProjectCode, $this->mLangName );
 		return;
 	}
 
@@ -49,15 +54,14 @@ class InfoPage {
 	 * @return String
 	 */
 	public function makeLogo( $project, $clickable = true, $width = 25, $height = '', $url = '', $args = array() ) {
-		global $wgUser;
 		$projectForFile = preg_replace('/ /', '-', strtolower( $project ) );
 		$imageobj = wfFindFile( wfMsg( 'wminc-logo-' . $projectForFile ) );
 		$useUrl = $url ? $url : IncubatorTest::getSubdomain( 'www', IncubatorTest::getProject( $project, false, true ) );
 		if ( !$imageobj ) { # image not found
 			if( !$clickable ) {
-				return $logo;
+				return $logo; // FIXME: $logo is undefined
 			}
-			return $wgUser->getSkin()->makeExternalLink( $useUrl, $project, false ); 
+			return Linker::makeExternalLink( $useUrl, $project, false );
 		}
 		if( $clickable ) {
 			$args['link-url'] = $useUrl;
@@ -68,7 +72,7 @@ class InfoPage {
 		if( $height ) {
 			$handlerParams['height'] = $height;
 		}
-		return $wgUser->getSkin()->makeImageLink2( $this->mTitle, $imageobj,
+		return Linker::makeImageLink2( $this->mTitle, $imageobj,
 			array( 'alt' => $project, 'caption' => $project ) + $args, $handlerParams
 		);
 	}
@@ -80,6 +84,7 @@ class InfoPage {
 	public function listOtherProjects() {
 		global $wmincProjects, $wmincSisterProjects;
 		$otherProjects = $wmincProjects + $wmincSisterProjects;
+		$listOtherProjects = array();
 		foreach( $otherProjects as $code => $name ) {
 			$listOtherProjects[$code] = '<li>' . $this->makeLogo( $name, true,
 				75, null, IncubatorTest::getSubdomain( $this->mLangCode, $code ) ) . '</li>';
@@ -95,10 +100,11 @@ class InfoPage {
 	 */
 	public function listMultilingualProjects() {
 		global $wmincMultilingualProjects;
-		if( !is_array( $wmincMultilingualProjects ) ) { return; }
+		if( !is_array( $wmincMultilingualProjects ) ) { return ''; }
+		$list = array();
 		foreach( $wmincMultilingualProjects as $url => $name ) {
 			$list[$url] = '<li>' . $this->makeLogo( $name, true,
-				75, null, 'http://'.$url.'/') . '</li>';
+				75, null, '//'.$url.'/') . '</li>';
 		}
 		return '<ul class="wminc-infopage-multilingualprojects">' .
 			implode( '', $list ) . '</ul>';
@@ -137,7 +143,7 @@ class InfoPage {
 			array( 'class' => 'wminc-infopage-status' ),
 			wfMsgWikiHtml( 'wminc-infopage-missingwiki-text',
 			$this->mProjectName, $this->mLangName )
-		) . 
+		) .
 		Html::rawElement( 'ul', array( 'class' => 'wminc-infopage-options' ),
 			Html::rawElement( 'li', null,
 				wfMsgExt( $this->mIsSister ? 'wminc-infopage-option-startsister' : 'wminc-infopage-option-startwiki',
@@ -159,22 +165,22 @@ class InfoPage {
 	 * @return String
 	 */
 	public function showIncubatingWiki() {
-		global $wgUser, $wgLang;
+		global $wgLang;
 		$substatus = $this->mSubStatus;
 		if( $substatus == 'imported' && $this->mIsSister ) {
 			$substatus = 'closedsister';
 		}
-		$portalLink = $wgUser->getSkin()->makeExternalLink( $this->mPortal, $this->mProjectName );
+		$portalLink = Linker::makeExternalLink( $this->mPortal, $this->mProjectName );
 		if( $this->mThisLangData['type'] != 'invalid' ) {
-			$gotoLink = $wgUser->getSkin()->link(
-				Title::newFromText( IncubatorTest::getMainPage( $this->mLangCode, $this->mPrefix ) ),
+			$gotoLink = Linker::link(
+				IncubatorTest::getMainPage( $this->mLangCode, $this->mPrefix ),
 				wfMsgNoTrans( 'wminc-infopage-enter' ) );
 			$gotoMainPage = Html::rawElement( 'span',
 				array( 'class' => 'wminc-infopage-entertest' ),
 				$wgLang->getArrow() . ' ' . ( $this->mIsSister ? $portalLink : $gotoLink ) );
 		}
 		$subdomain = IncubatorTest::getSubdomain( $this->mLangCode, $this->mProjectCode );
-		$subdomainLink = $wgUser->getSkin()->makeExternalLink( $subdomain, $subdomain );
+		$subdomainLink = IncubatorTest::makeExternalLinkText( $subdomain, true );
 		$content = Html::rawElement( 'div', array( 'class' => 'wminc-infopage-status' ),
 			wfMsgWikiHtml( 'wminc-infopage-status-' . $substatus, $subdomainLink, $portalLink ) );
 		if( $this->mSubStatus != 'approved' && $this->mThisLangData['type'] != 'invalid' ) {
@@ -189,11 +195,11 @@ class InfoPage {
 	 * @return String
 	 */
 	public function showExistingWiki() {
-		global $wgLang, $wgUser;
+		global $wgLang;
 		$created = isset( $this->mCreated ) ? $this->mCreated : ''; # for future use
 		$bug = isset( $this->mBug ) ? $this->mBug : ''; # for future use
 		$subdomain = IncubatorTest::getSubdomain( $this->mLangCode, $this->mProjectCode );
-		$subdomainLink = $wgUser->getSkin()->makeExternalLink( $subdomain, $subdomain );
+		$subdomainLink = IncubatorTest::makeExternalLinkText( $subdomain, true );
 		if( $this->mThisLangData['type'] != 'invalid' ) {
 			$gotoSubdomain = Html::rawElement( 'span',
 				array( 'class' => 'wminc-infopage-entertest' ),

@@ -5,6 +5,8 @@ if ( !defined( 'MEDIAWIKI' ) ) { die( "This file is an extension to the MediaWik
  * for a test wiki system (i.e. incubated wikis inside one actual wiki)
  * mainly intended for the Wikimedia Incubator
  *
+ * MediaWiki 1.18 or higher required
+ *
  * @file
  * @ingroup Extensions
  * @author Robin Pepermans (SPQRobin)
@@ -14,8 +16,8 @@ $wgExtensionCredits['other'][] = array(
 	'path' => __FILE__,
 	'name' => 'Wikimedia Incubator',
 	'author' => 'SPQRobin',
-	'version' => '4.3.2',
-	'url' => 'http://www.mediawiki.org/wiki/Extension:WikimediaIncubator',
+	'version' => '4.5',
+	'url' => '//www.mediawiki.org/wiki/Extension:WikimediaIncubator',
 	'descriptionmsg' => 'wminc-desc',
 );
 
@@ -64,6 +66,7 @@ $wgGroupPermissions['test-sysop']['deletedhistory'] = true;
 $wgGroupPermissions['test-sysop']['block'] = true;
 $wgGroupPermissions['test-sysop']['blockemail'] = true;
 $wgGroupPermissions['test-sysop']['rollback'] = true;
+$wgGroupPermissions['test-sysop']['suppressredirect'] = true;
 $wgAddGroups['bureaucrat'][] = 'test-sysop';
 $wgRemoveGroups['bureaucrat'][] = 'test-sysop';
 
@@ -141,3 +144,14 @@ $wgHooks['BeforePageDisplay'][] = 'IncubatorTest::fnTestWikiLogo';
 
 /* Set page content language depending on the prefix */
 $wgHooks['PageContentLanguage'][] = 'IncubatorTest::onPageContentLanguage';
+
+/* List of users */
+$wgAutoloadClasses['ListUsersTestWiki'] = $dir . 'ListUsersTestWiki.php';
+$wgHooks['SpecialListusersHeaderForm'][] = 'ListUsersTestWiki::onSpecialListusersHeaderForm';
+$wgHooks['SpecialListusersQueryInfo'][] = 'ListUsersTestWiki::onSpecialListusersQueryInfo';
+$wgHooks['SpecialListusersHeader'][] = 'ListUsersTestWiki::onSpecialListusersHeader';
+
+/* Search in test wiki */
+$wgHooks['SpecialSearchCreateLink'][] = 'IncubatorTest::onSpecialSearchCreateLink';
+$wgHooks['SpecialSearchPowerBox'][] = 'IncubatorTest::onSpecialSearchPowerBox';
+$wgHooks['SpecialSearchSetupEngine'][] = 'IncubatorTest::onSpecialSearchSetupEngine';

@@ -16,6 +16,7 @@ $messages['en'] = array(
 	'wminc-manual' => 'Manual',
 	'wminc-listwikis' => 'List of wikis',
 	'wminc-testwiki' => 'Test wiki:',
+	'wminc-testwiki-code' => 'Test wiki language:',
 	'wminc-testwiki-none' => 'None/All',
 	'wminc-recentchanges-all' => 'All recent changes',
 
@@ -45,15 +46,22 @@ $messages['en'] = array(
 	'wminc-ip' => '"$1" is an IP address.',
 
 	# User groups
-	'right-viewuserlang' => 'View [[Special:ViewUserLang|user language and test wiki]]',
+	'right-viewuserlang' => 'View user language and test wiki',
 	'group-test-sysop' => 'Test wiki administrators',
-	'group-test-sysop-member' => 'test wiki administrator',
+	'group-test-sysop-member' => '{{GENDER:$1|test wiki administrator}}',
 	'grouppage-test-sysop' => 'Project:Test wiki administrators',
 
 	# Language codes
 	'wminc-code-macrolanguage' => 'The [[wikipedia:$2 language|"$3" language]] is a [[wikipedia:ISO 639 macrolanguage|macrolanguage]], consisting of the following member languages:',
 	'wminc-code-collective' => 'The code "$1" does not refer to a specific language, but to a collection of languages, namely the [[wikipedia:$2 language|"$3" languages]].',
 	'wminc-code-retired' => 'This language code has been changed and no longer refers to the original language.',
+
+	# Special:ListUsers
+	'wminc-listusers-testwiki' => 'You are viewing users who have set their test wiki preference to $1.',
+
+	# Search
+	'wminc-search-nocreate-nopref' => 'You searched for "$1". Please set your [[Special:Preferences|test wiki preference]] so we can tell you which page you can create!',
+	'wminc-search-nocreate-suggest' => 'You searched for "$1". You can create a page in your wiki at <b>[[$2]]</b>!',
 );
 
 /** Message documentation (Message documentation)
