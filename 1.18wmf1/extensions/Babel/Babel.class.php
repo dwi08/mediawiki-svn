@@ -38,15 +38,15 @@ class Babel {
 			$template = wfMessage( 'babel-template', $name )->inContentLanguage()->text();
 			if ( $name === '' ) {
 				continue;
-			} elseif ( self::mPageExists( $template ) ) {
-				// Existent template page has precedence
-				$templateParameters[0] = $template;
-				$template = implode('|', $templateParameters);
-				$content .= self::mGenerateNotaBox( $parser->replaceVariables( "{{{$template}}}" ) );
 			} elseif ( $components !== false ) {
 				// Non-existent page and valid parameter syntax, babel box
 				$content .= self::mGenerateBox( $components['code'], $components['level'] );
 				$content .= self::mGenerateCategories( $components['code'], $components['level'] );
+			} elseif ( self::mPageExists( $template ) ) {
+				// Check for a template
+				$templateParameters[0] = $template;
+				$template = implode('|', $templateParameters);
+				$content .= self::mGenerateNotaBox( $parser->replaceVariables( "{{{$template}}}" ) );
 			} elseif ( self::mValidTitle( $template ) ) {
 				// Non-existent page and invalid parameter syntax, red link.
 				$content .= self::mGenerateNotaBox( '[['.$template.']]' );
@@ -68,15 +68,10 @@ class Babel {
 			$top = '! class="mw-babel-header" | ' . $top;
 		}
 		$footer = wfMessage( 'babel-footer', self::$title->getDBkey() )->inContentLanguage();	// TODO: allow user language
-		if ( $footer->isDisabled() ) {
-			$footer = '';
-		} else {
-			$footer = $footer->text();
-			$url = wfMessage( 'babel-footer-url' )->inContentLanguage();
-			if ( ! $url->isDisabled() ) {
-				$footer = '[['.$url->text().'|'.$footer.']]';
-			}
-			$footer = '! class="mw-babel-footer" | ' . $footer;
+		$url = wfMessage( 'babel-footer-url' )->inContentLanguage();
+		$showfooter = '';
+		if ( !$footer->isDisabled() && !$url->isDisabled() ) {
+			$showfooter = '! class="mw-babel-footer" | [['.$url->text().'|'.$footer->text().']]';
 		}
 		$cellspacing = Babel::mHtmlAttrib( 'cellspacing', 'babel-box-cellspacing' );
 		$cellpadding = Babel::mHtmlAttrib( 'cellpadding', 'babel-box-cellpadding' );
@@ -87,7 +82,7 @@ $top
 |-
 | $content
 |-
-$footer
+$showfooter
 |}
 EOT;
 		return $tower;
@@ -254,18 +249,18 @@ EOT;
 
 		$text = wfMsgExt( "babel-$level-n",
 			array( 'language' => $language, 'parsemag' ),
-			$categoryMain, $categoryMain, '', self::$title->getDBkey()
+			$categoryLevel, $categoryMain, '', self::$title->getDBkey()
 		);
 
 		$fallback = wfMsgExt( "babel-$level-n",
 			array( 'language' => Language::getFallbackfor( $language ), 'parsemag' ),
-			$categoryMain, $categoryMain, '', self::$title->getDBkey()
+			$categoryLevel, $categoryMain, '', self::$title->getDBkey()
 		);
 
 		if ( $text == $fallback ) {
 			$text = wfMsgExt( "babel-$level",
 				array( 'language' => $language, 'parsemag' ),
-				$categoryMain, $categoryMain, $name, self::$title->getDBkey()
+				$categoryLevel, $categoryMain, $name, self::$title->getDBkey()
 			);
 		}
 
@@ -284,12 +279,14 @@ EOT;
 
 		$r = '';
 
-		if ( $wgBabelMainCategory !== false && $wgBabelCategoryNames[$level] !== false ) {
+		# Add main category
+		if ( $wgBabelMainCategory !== false ) {
 			$category = self::mReplaceCategoryVariables( $wgBabelMainCategory, $code );
 			$r .= "[[Category:$category|$level]]";
 			BabelAutoCreate::create( $category, $code );
 		}
 
+		# Add level category
 		if ( $wgBabelCategoryNames[$level] !== false ) {
 			$category = self::mReplaceCategoryVariables( $wgBabelCategoryNames[$level], $code );
 			$r .= "[[Category:$category]]";
