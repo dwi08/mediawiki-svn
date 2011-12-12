@@ -26,21 +26,23 @@ class TempFSFile extends FSFile {
 	 * @return TempFSFile|null 
 	 */
 	public static function factory( $prefix, $extension = '' ) {
-		$tmpDest = tempnam( wfTempDir(), $prefix );
-		if ( $tmpDest === false ) {
-			return null;
-		}
-		if ( $extension != '' ) {
-			$path = "{$tmpDest}.{$extension}";
-			if ( !rename( $tmpDest, $path ) ) {
-				return null;
+		$base = wfTempDir() . '/' . $prefix . dechex( mt_rand( 0, 99999999 ) );
+		$ext = ( $extension != '' ) ? ".{$extension}" : "";
+		for ( $attempt = 1; true; $attempt++ ) {
+			$path = "{$base}-{$attempt}{$ext}";
+			wfSuppressWarnings();
+			$newFileHandle = fopen( $path, 'x' );
+			wfRestoreWarnings();
+			if ( $newFileHandle ) {
+				fclose( $newFileHandle );
+				break; // got it
 			}
-		} else {
-			$path = $tmpDest;
+			if ( $attempt >= 15 ) {
+				return null; // give up
+			}
 		}
 		$tmpFile = new self( $path );
-		self::$instances[] = $tmpFile;
-
+		self::$instances[] = $tmpFile; // defer purge till shutdown
 		return $tmpFile;
 	}
 

@@ -318,8 +318,6 @@ class DBLockManager extends LockManager {
 	 *     'safeDelay'   : Seconds to mistrust a DB after restart/query loss. [optional]
 	 *                     This should reflect the highest max_execution_time that PHP
 	 *                     scripts might use on a wiki. Locks are lost on DB server restart.
-	 *     'cache'       : $wgMemc (if set to a global memcached instance). [optional]
-	 *                     This tracks peer DBs that couldn't be queried recently.
 	 *
 	 * @param Array $config 
 	 */
@@ -341,11 +339,7 @@ class DBLockManager extends LockManager {
 			? $config['safeDelay']
 			: max( $this->cliTimeout, $this->webTimeout ); // cover worst case
 
-		if ( isset( $config['cache'] ) && $config['cache'] instanceof BagOStuff ) {
-			$this->statusCache = $config['cache'];
-		} else {
-			$this->statusCache = null;
-		}
+		$this->statusCache = wfGetMainCache(); // tracks peers that couldn't be queried recently
 	}
 
 	protected function doLock( array $keys, $type ) {
@@ -687,13 +681,13 @@ class MySqlLockManager extends DBLockManager {
 			}
 			# Block new writers...
 			$db->insert( 'file_locks_shared', $data, __METHOD__ );
-			# Wait on any existing writers...
-			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED" );
+			# Bail if there are any existing writers...
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;" );
 			$ok = !$db->selectField( 'file_locks_exclusive', '1',
 				array( 'fle_key' => $keys ),
 				__METHOD__
 			);
-			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$lockDb]}" );
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$lockDb]};" );
 		} elseif ( $type == self::LOCK_EX ) { // writer locks
 			$db = $this->getConnection( $lockDb );
 			$data = array();
@@ -702,13 +696,13 @@ class MySqlLockManager extends DBLockManager {
 			}
 			# Block new readers/writers and wait on any existing writers
 			$db->insert( 'file_locks_exclusive', $data, __METHOD__ );
-			# Wait on any existing readers...
-			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED" );
+			# Bail if there are any existing readers...
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;" );
 			$ok = !$db->selectField( 'file_locks_shared', '1',
 				array( 'fls_key' => $keys ),
 				__METHOD__
 			);
-			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$lockDb]}" );
+			$db->query( "SET SESSION TRANSACTION ISOLATION LEVEL {$this->trxIso[$lockDb]};" );
 		}
 		return $ok;
 	}

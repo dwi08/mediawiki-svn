@@ -757,29 +757,30 @@ abstract class File {
 		global $wgIgnoreImageErrors, $wgThumbnailEpoch;
 
 		$thumbPath = $this->getThumbPath( $thumbName ); // final thumb path
-		// Create a temp FS file with the same extension
-		$tmpFile = TempFSFile::factory( 'transform', $this->getExtension() );
-		if ( !$tmpFile ) {
-			return new MediaTransformError( 'thumbnail_error',
-				$params['width'], 0, wfMsg( 'thumbnail-temp-create' ) );
-		}
-		$tmpThumbPath = $tmpFile->getPath(); // path of 0-byte temp file
 
 		if ( $this->repo && $this->repo->canTransformVia404() && !( $flags & self::RENDER_NOW ) ) {
 			wfDebug( __METHOD__ . " transformation deferred." );
-			return $this->handler->getTransform( $this, $tmpThumbPath, $thumbUrl, $params );
+			return $this->handler->getTransform( $this, false, $thumbUrl, $params );
 		}
 
 		wfDebug( __METHOD__.": Doing stat for $thumbPath\n" );
 		$this->migrateThumbFile( $thumbName );
 		if ( $this->repo->fileExists( $thumbPath ) && !( $flags & self::RENDER_FORCE ) ) {
-			$ts = $this->repo->getFileTimestamp( $thumbPath );
-			if ( $ts !== false && gmdate( 'YmdHis', $ts ) >= $wgThumbnailEpoch ) {
-				return $this->handler->getTransform( $this, $tmpThumbPath, $thumbUrl, $params );
+			$timestamp = $this->repo->getFileTimestamp( $thumbPath );
+			if ( $timestamp !== false && $timestamp >= $wgThumbnailEpoch ) {
+				return $this->handler->getTransform( $this, false, $thumbUrl, $params );
 			}
 		} elseif ( $flags & self::RENDER_FORCE ) {
 			wfDebug( __METHOD__ . " forcing rendering per flag File::RENDER_FORCE\n" ); 
 		}
+
+		// Create a temp FS file with the same extension
+		$tmpFile = TempFSFile::factory( 'transform_', $this->getExtension() );
+		if ( !$tmpFile ) {
+			return new MediaTransformError( 'thumbnail_error',
+				$params['width'], 0, wfMsg( 'thumbnail-temp-create' ) );
+		}
+		$tmpThumbPath = $tmpFile->getPath(); // path of 0-byte temp file
 
 		// Actually render the thumbnail
 		$thumb = $this->handler->doTransform( $this, $tmpThumbPath, $thumbUrl, $params );

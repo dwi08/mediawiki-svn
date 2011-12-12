@@ -16,9 +16,9 @@ class ExifRotationTest extends MediaWikiTestCase {
 			'containerPaths' => array( 'images-thumb' => $tmpDir, 'data' => $filePath )
 		) );
 		$this->repo = new FSRepo( array(
-			'name'    => 'temp',
-			'url'     => 'http://localhost/thumbtest',
-			'backend' => $this->backend
+			'name'            => 'temp',
+			'url'             => 'http://localhost/thumbtest',
+			'backend'         => $this->backend
 		) );
 		if ( !wfDl( 'exif' ) ) {
 			$this->markTestSkipped( "This test needs the exif extension." );
@@ -73,7 +73,7 @@ class ExifRotationTest extends MediaWikiTestCase {
 			}
 
 			$file = $this->dataFile( $name, $type );
-			$thumb = $file->transform( $params, File::RENDER_NOW );
+			$thumb = $file->transform( $params, File::RENDER_NOW | File::RENDER_FORCE );
 
 			$this->assertEquals( $out[0], $thumb->getWidth(), "$name: thumb reported width check for $size" );
 			$this->assertEquals( $out[1], $thumb->getHeight(), "$name: thumb reported height check for $size" );
@@ -166,7 +166,7 @@ class ExifRotationTest extends MediaWikiTestCase {
 			}
 
 			$file = $this->dataFile( $name, $type );
-			$thumb = $file->transform( $params, File::RENDER_NOW );
+			$thumb = $file->transform( $params, File::RENDER_NOW | File::RENDER_FORCE );
 
 			$this->assertEquals( $out[0], $thumb->getWidth(), "$name: thumb reported width check for $size" );
 			$this->assertEquals( $out[1], $thumb->getHeight(), "$name: thumb reported height check for $size" );

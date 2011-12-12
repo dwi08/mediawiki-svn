@@ -484,7 +484,7 @@ class FSFileBackend extends FileBackend {
 		$i = strrpos( $source, '.' );
 		$ext = strtolower( $i ? substr( $source, $i + 1 ) : '' );
 		// Create a new temporary file...
-		$tmpFile = TempFSFile::factory( 'localcopy_', $ext );
+		$tmpFile = TempFSFile::factory( wfBaseName( $source ) . '_', $ext );
 		if ( !$tmpFile ) {
 			return null;
 		}
