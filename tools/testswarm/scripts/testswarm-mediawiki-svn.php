@@ -49,7 +49,7 @@ $userAuthToken = "*******";
 
 # The maximum number of times you want the tests to be run.
 # If a client reports a test as broken, the test swarm will send
-# that revision/testmodule combination up to this many times to the 
+# that revision/testmodule combination up to this many times to the
 # same browser/version combination before giving up and continueing
 # with other testmodules and revisions.
 $testMaxRuns = 2;
@@ -121,53 +121,53 @@ $curlOpts = array(
 
 function doingStuff(){
 	extract($GLOBALS);
-	
+
 	# Get latest revision number of HEAD for QUnit tests dir and Resources dir
 	$svnHeadRevs = array(
 		'tests' => null,
 		'resources' => null,
 	);
 	$svnHeadRevTop = null;
-	
-	foreach ( array( 
+
+	foreach ( array(
 		'tests' => $svnCoRepoInfo['rootBase'] . '/' . $svnCoRepoInfo['qunitDir'],
 		'resources' => $svnCoRepoInfo['rootBase'] . '/' . $svnCoRepoInfo['resourcesDir'],
 	) as $dirKey => $dirUrl ) {
-	
+
 		$tmpCmd = array();
-	
+
 		exec( "svn info $dirUrl", $tmpCmd['output'], $tmpCmd['return'] );
-		
+
 		if ( is_array( $tmpCmd['output'] ) && count( $tmpCmd['output'] ) ) {
-	
+
 			foreach( $tmpCmd['output'] as $cmdLine ) {
-	
+
 				$lineParts = explode( ':', $cmdLine, 2 );
 				if ( trim( $lineParts[0] ) == 'Last Changed Rev' ) {
-	
+
 					$svnHeadRevs[$dirKey] = trim( $lineParts[1] );
 					break;
 				}
-	
+
 				unset( $cmdLine, $lineParts );
 			}
 		}
 		unset( $tmpCmd, $key, $dirUrl );
 	}
-	
+
 	if ( empty( $svnHeadRevs['tests'] ) || empty( $svnHeadRevs['resources'] ) ) {
 		return "Problem getting svn info.";
 	}
-	
+
 	# Determine the highest of each
 	$svnHeadRevTop = max( intval( $svnHeadRevs['tests'] ), intval( $svnHeadRevs['resources'] ) );
-	
+
 	# Check out a specific revision
 	# We're doing a sparse checkout of phase3
 	# and get /resources and /tests/qunit
-	
+
 	$revTargetTmpDir = "$svnCoTargetDir/r$svnHeadRevTop";
-	
+
 	if ( is_dir( $svnCoTargetDir ) ) {
 		// Already checked out ?
 		if ( is_dir( "$revTargetTmpDir" ) ) {
@@ -175,42 +175,42 @@ function doingStuff(){
 		}
 		$cmdExc = array();
 		$cmd = null;
-	
+
 		// Checkout empty root of mediawiki
 		$cmd = "svn checkout -r $svnHeadRevTop {$svnCoRepoInfo['rootBase']} $revTargetTmpDir --depth empty";
 		logger( $cmd ); exec( $cmd, $cmdExc['output'], $cmdExc['return'] );
 		logger( print_r( $cmdExc['output'], true ) );
-	
+
 		// Checkout full depth of the resources directory
 		$cmd = "svn update -r $svnHeadRevTop --set-depth infinity $revTargetTmpDir/{$svnCoRepoInfo['resourcesDir']}";
 		logger( $cmd ); exec( $cmd, $cmdExc['output'], $cmdExc['return'] );
 		logger( print_r( $cmdExc['output'], true ) );
-	
+
 		// Checkout empty qunit's parent directory
 		$cmd = "svn update -r $svnHeadRevTop --set-depth empty $revTargetTmpDir/{$svnCoRepoInfo['qunitBase']}";
 		logger( $cmd ); exec( $cmd, $cmdExc['output'], $cmdExc['return'] );
 		logger( print_r( $cmdExc['output'], true ) );
-	
+
 		// Checkout full depth of qunit directory
 		$cmd = "svn update -r $svnHeadRevTop --set-depth infinity $revTargetTmpDir/{$svnCoRepoInfo['qunitDir']}";
 		logger( $cmd ); exec( $cmd, $cmdExc['output'], $cmdExc['return'] );
 		logger( print_r( $cmdExc['output'], true ) );
-	
+
 		unset( $cmd, $cmdExc );
-	
+
 	} else {
 		return "Problem locating temporary checkout directory.";
 	}
-	
+
 	# Get array of modules
-	
+
 	$unitDir = glob( "$revTargetTmpDir/{$svnCoRepoInfo['qunitDir']}/suites/resources/*/*.js" );
 	$filenames = array_map( 'basename', $unitDir );
-	
+
 	# Add jobs
-	
+
 	if ( true ) {
-	
+
 		$params = array(
 			"state" => "addjob",
 			"output" => "dump",
@@ -220,25 +220,25 @@ function doingStuff(){
 			"browsers" => $browsers,
 			"auth" => $userAuthToken
 		);
-		
+
 		$query = http_build_query( $params );
-	
+
 		foreach ( $filenames as $filename ) {
 			# Switch-over period is done, QUnit module()-calls must now be filename without '.test.js'
 			#$suiteName = substr( $filename, -8 ) == '.test.js' ? substr( $filename, 0, -8 ) : $filename;
 			if ( substr( $filename, -8 ) == '.test.js' ) {
 				$suiteName = substr( $filename, 0, -8 );
-				$query .= 
+				$query .=
 					"&suites[]=" . rawurlencode( $suiteName ) .
 					"&urls[]=" . getTestUrl( $svnHeadRevTop, $suiteName );
-			}	
+			}
 		}
-	
+
 		logger( "cURL url: $swarmUrl" );
 		logger( "cURL postfields: $query" );
-	
+
 		$curlPostCMD = array();
-	
+
 		// cURL request
 		$ch = curl_init();
 		curl_setopt_array( $ch, $curlOpts );
@@ -255,22 +255,22 @@ function doingStuff(){
 		$curlPostCMD['return'] = curl_exec( $ch );
 		$curlPostCMD['error'] = curl_errno( $ch );
 		curl_close( $ch );
-	
+
 		logger( 'Results: ' . print_r( $curlPostCMD['return'], true ) );
 		logger( 'Error: ' . print_r( $curlPostCMD['error'], true ) );
-	
-	
+
+
 		if ( $curlPostCMD['return'] ) {
 			file_put_contents(
 				__DIR__ . '/testswarm-mediawiki-svn.log',
 				'[' . date('r') . '] ' . $curlPostCMD['return'] . "\n",
 				FILE_APPEND
 			);
-	
+
 		} else {
 			return "Job not submitted properly.";
 		}
-	
+
 	} else {
 	    return "No new revision.";
 	}
