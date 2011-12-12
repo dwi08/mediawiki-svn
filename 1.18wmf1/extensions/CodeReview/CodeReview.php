@@ -129,7 +129,6 @@ $wgGroupPermissions['svnadmins']['repoadmin'] = true;
 
 // Constants returned from CodeRepository::getDiff() when no diff can be calculated.
 
-
 // If you can't directly access the remote SVN repo, you can set this
 // to an offsite proxy running this fun little proxy tool:
 // http://svn.wikimedia.org/viewvc/mediawiki/trunk/tools/codereview-proxy/
@@ -168,11 +167,14 @@ $wgResourceModules['ext.codereview.loaddiff'] = array(
 	'scripts' => 'ext.codereview.loaddiff.js'
 ) + $commonModuleInfo;
 
+$wgResourceModules['ext.codereview.linecomment'] = array(
+	'scripts' => 'ext.codereview.linecomment.js'
+) + $commonModuleInfo;
+
 // Revision tooltips CodeRevisionView:
 $wgResourceModules['ext.codereview.tooltips'] = array(
 	'scripts' => 'ext.codereview.tooltips.js',
 	'dependencies' => 'jquery.tipsy',
-	'messages' => array_merge( CodeRevision::getPossibleStateMessageKeys(), array( 'code-tooltip-withsummary', 'code-tooltip-withoutsummary' ) ),
 ) + $commonModuleInfo;
 
 // Revision 'scapmap':
@@ -201,6 +203,13 @@ $wgCodeReviewCommentWatcherName = "CodeReview comments list";
 $wgCodeReviewImgRegex = '/\.(png|jpg|jpeg|gif)$/i';
 
 /**
+ * Whether to enable the experimental inline commenting feature. This
+ * let you add comments inside the diff output. The feature is highly
+ * experimental and has bugs so the default is false.
+ */
+$wgCodeReviewInlineComments = false;
+
+/**
  * Maximum size of diff text before it is omitted from the revision view
  */
 $wgCodeReviewMaxDiffSize = 500000;
@@ -219,8 +228,33 @@ $wgCodeReviewMaxDiffPaths = 20;
  * Any base paths matching regular expressions in these arrays will have their
  * default status set to deferred instead of new. Helpful if you've got a part
  * of the repository you don't care about.
+ *
+ * $wgCodeReviewDeferredPaths = array( 'RepoName' => array( '/path/to/use', '/another/path/to/use' ) )
  */
 $wgCodeReviewDeferredPaths = array();
+
+/**
+ * Key is repository name. Value is an array of key value pairs of the path and then tags
+ *
+ * An array (or string, for 1 tag) of tags to add to a revision upon commit
+ *
+ * $wgCodeReviewAutoTagPath = array( 'RepoName' => array( '%^/path/to/use%' => 'sometag', '%^/another/path/to/use%' => array( 'tag1', 'tag2' ) ) )
+ */
+$wgCodeReviewAutoTagPath = array();
+
+/**
+ * Key is repository name. Value is an array of key value pairs of the paths to get fixme list for
+ *
+ * $wgCodeReviewFixmePerPath = array( 'RepoName' => array( '/path/to/use', '/another/path/to/use' ) )
+ */
+$wgCodeReviewFixmePerPath = array();
+
+/**
+ * Key is repository name. Value is an array of key value pairs of the paths to get new list for
+ *
+ * $wgCodeReviewNewPerPath = array( 'RepoName' => array( '/path/to/use', '/another/path/to/use' ) )
+ */
+$wgCodeReviewNewPerPath = array();
 
 /**
  * UDP comment and status changes notification
@@ -235,6 +269,39 @@ $wgCodeReviewUDPPrefix = '';
  */
 $wgCodeReviewRepoStatsCacheTime = 6 * 60 * 60; // 6 Hours
 
+/**
+ * Possible states a revision can be in
+ *
+ * A system message will still needed to be added as code-status-<state>
+ */
+$wgCodeReviewStates = array(
+	'new',
+	'fixme',
+	'reverted',
+	'resolved',
+	'ok',
+	'deferred',
+	'old',
+);
+
+/**
+ * Revisions states that a user cannot change to on their own revision
+ */
+$wgCodeReviewProtectedStates = array(
+	'ok',
+	'resolved',
+);
+
+/**
+ * List of all flags a user can mark themself as having done to a revision
+ *
+ * A system message will still needed to be added as code-signoff-flag-<flag>
+ */
+$wgCodeReviewFlags = array(
+	'inspected',
+	'tested',
+);
+
 # Schema changes
 $wgHooks['LoadExtensionSchemaUpdates'][] = 'efCodeReviewSchemaUpdates';
 
@@ -246,32 +313,31 @@ function efCodeReviewSchemaUpdates( $updater ) {
 	$base = dirname( __FILE__ );
 	switch ( $updater->getDB()->getType() ) {
 	case 'mysql':
-		$updater->addExtensionUpdate( array( 'addTable', 'code_rev',
-			"$base/codereview.sql", true ) ); // Initial install tables
-		$updater->addExtensionUpdate( array( 'addField', 'code_rev', 'cr_diff',
-			"$base/archives/codereview-cr_diff.sql", true ) );
-		$updater->addExtensionUpdate( array( 'addIndex', 'code_relations', 'repo_to_from',
-			"$base/archives/code_relations_index.sql", true ) );
+		$updater->addExtensionTable( 'code_rev', "$base/codereview.sql" ); // Initial install tables
+		$updater->addExtensionField( 'code_rev', 'cr_diff',
+			"$base/archives/codereview-cr_diff.sql" );
+		$updater->addExtensionIndex( 'code_relations', 'repo_to_from',
+			"$base/archives/code_relations_index.sql" );
 
 		if ( !$updater->updateRowExists( 'make cr_status varchar' ) ) {
 			$updater->addExtensionUpdate( array( 'modifyField', 'code_rev', 'cr_status',
 				"$base/archives/codereview-cr_status_varchar.sql", true ) );
 		}
 
-		$updater->addExtensionUpdate( array( 'addTable', 'code_bugs', "$base/archives/code_bugs.sql", true ) );
+		$updater->addExtensionTable( 'code_bugs', "$base/archives/code_bugs.sql" );
 
-		$updater->addExtensionUpdate( array( 'addTable', 'code_signoffs', "$base/archives/code_signoffs.sql", true ) );
+		$updater->addExtensionTable( 'code_signoffs', "$base/archives/code_signoffs.sql" );
 
-		$updater->addExtensionUpdate( array( 'addField', 'code_signoffs', 'cs_user',
-			"$base/archives/code_signoffs_userid.sql", true ) );
-		$updater->addExtensionUpdate( array( 'addField', 'code_signoffs', 'cs_timestamp_struck',
-			"$base/archives/code_signoffs_timestamp_struck.sql", true ) );
+		$updater->addExtensionField( 'code_signoffs', 'cs_user',
+			"$base/archives/code_signoffs_userid.sql" );
+		$updater->addExtensionField( 'code_signoffs', 'cs_timestamp_struck',
+			"$base/archives/code_signoffs_timestamp_struck.sql" );
 
-		$updater->addExtensionUpdate( array( 'addIndex', 'code_comment', 'cc_author',
-			"$base/archives/code_comment_author-index.sql", true ) );
+		$updater->addExtensionIndex( 'code_comment', 'cc_author',
+			"$base/archives/code_comment_author-index.sql" );
 
-		$updater->addExtensionUpdate( array( 'addIndex', 'code_prop_changes', 'cpc_author',
-			"$base/archives/code_prop_changes_author-index.sql", true ) );
+		$updater->addExtensionIndex( 'code_prop_changes', 'cpc_author',
+			"$base/archives/code_prop_changes_author-index.sql" );
 
 		if ( !$updater->updateRowExists( 'make cp_action char' ) ) {
 			$updater->addExtensionUpdate( array( 'modifyField', 'code_paths', 'cp_action',
@@ -283,18 +349,30 @@ function efCodeReviewSchemaUpdates( $updater ) {
 				"$base/archives/codereview-cpc_attrib_varchar.sql", true ) );
 		}
 
-		$updater->addExtensionUpdate( array( 'addIndex', 'code_paths', 'repo_path',
-			"$base/archives/codereview-repopath.sql", true ) );
+		$updater->addExtensionIndex( 'code_paths', 'repo_path',
+			"$base/archives/codereview-repopath.sql" );
+
+		$updater->addExtensionIndex( 'code_rev', 'cr_repo_status_author',
+			"$base/archives/code_revs_status_author-index.sql" );
+		$updater->addExtensionField( 'code_comment', 'cc_patch_line',
+			"$base/archives/code_comment_patch_line.sql" );
+
+		$updater->addExtensionUpdate( array( 'dropField', 'code_comment', 'cc_review',
+			"$base/archives/code_drop_cc_review.sql", true ) );
+
+		$updater->addExtensionUpdate( array( 'dropTable', 'code_test_suite', "$base/archives/code_drop_test.sql", true ) );
 		break;
 	case 'sqlite':
-		$updater->addExtensionUpdate( array( 'addTable', 'code_rev', "$base/codereview.sql", true ) );
-		$updater->addExtensionUpdate( array( 'addTable', 'code_signoffs', "$base/archives/code_signoffs.sql", true ) );
+		$updater->addExtensionTable( 'code_rev', "$base/codereview.sql" );
+		$updater->addExtensionTable( 'code_signoffs', "$base/archives/code_signoffs.sql" );
 		$updater->addExtensionUpdate( array( 'addField', 'code_signoffs', 'cs_user',
 			"$base/archives/code_signoffs_userid-sqlite.sql", true ) );
 		$updater->addExtensionUpdate( array( 'addField', 'code_signoffs', 'cs_timestamp_struck',
 			"$base/archives/code_signoffs_timestamp_struck.sql", true ) );
 		$updater->addExtensionUpdate( array( 'addIndex', 'code_paths', 'repo_path',
 			"$base/archives/codereview-repopath.sql", true ) );
+		$updater->addExtensionUpdate( array( 'addField', 'code_comment', 'cc_patch_line',
+			"$base/archives/code_comment_patch_line.sql", true ) );
 		break;
 	case 'postgres':
 		// TODO
@@ -306,14 +384,24 @@ function efCodeReviewSchemaUpdates( $updater ) {
 # Unit tests
 $wgHooks['UnitTestsList'][] = 'efCodeReviewUnitTests';
 
+/**
+ * @param $files array
+ * @return bool
+ */
 function efCodeReviewUnitTests( &$files ) {
+	$files[] = dirname( __FILE__ ) . '/tests/CodeReviewApiTest.php';
 	$files[] = dirname( __FILE__ ) . '/tests/CodeReviewTest.php';
+	$files[] = dirname( __FILE__ ) . '/tests/DiffHighlighterTest.php';
 	return true;
 }
 
 # Add global JS vars
 $wgHooks['MakeGlobalVariablesScript'][] = 'efCodeReviewResourceLoaderGlobals';
 
+/**
+ * @param $values array
+ * @return bool
+ */
 function efCodeReviewResourceLoaderGlobals( &$values ){
 	# Bleugh, this is horrible
 	global $wgTitle;
@@ -324,4 +412,15 @@ function efCodeReviewResourceLoaderGlobals( &$values ){
 		}
 	}
 	return true;
+}
+
+# Add state messages to RL
+$wgExtensionFunctions[] = 'efCodeReviewAddTooltipMessages';
+
+function efCodeReviewAddTooltipMessages() {
+	global $wgResourceModules;
+
+	$wgResourceModules['ext.codereview.tooltips']['messages'] = array_merge(
+		CodeRevision::getPossibleStateMessageKeys(),
+		array( 'code-tooltip-withsummary', 'code-tooltip-withoutsummary' ) );
 }

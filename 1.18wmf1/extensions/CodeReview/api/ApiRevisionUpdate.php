@@ -32,6 +32,19 @@ class ApiRevisionUpdate extends ApiBase {
 
 		$params = $this->extractRequestParams();
 
+		if( $params['comment']
+			&& !$wgUser->isAllowed( 'codereview-post-comment' ) ) {
+			$this->dieUsage( 'You do not have permission to post comment', 'permissiondenied' );
+		}
+
+		global $wgCodeReviewInlineComments;
+		if(
+			!$wgCodeReviewInlineComments
+			&& isset( $params['patchline'] )
+		) {
+			$this->dieUsageMsg( "Can not attach a comment to a diff when inline commenting is disabled (\$wgCodeReviewInlineComments is false)." );
+		}
+
 		$repo = CodeRepository::newFromName( $params['repo'] );
 		if ( !$repo ) {
 			$this->dieUsage( "Invalid repo ``{$params['repo']}''", 'invalidrepo' );
@@ -53,13 +66,22 @@ class ApiRevisionUpdate extends ApiBase {
 			$params['removeflags'],
 			$params['addreferences'],
 			$params['removereferences'],
-			$params['comment']
+			$params['comment'],
+			null,  // parent
+			0,     // review
+			$params['patchline']
 		);
 
+		// Forge a response object
 		$r = array( 'result' => 'Success' );
-
 		if ( $commentID !== 0 ) {
+			// id inserted
 			$r['commentid'] = intval($commentID);
+			// HTML Formatted comment
+			$view = new CodeRevisionView( $repo, $rev);
+			$comment = CodeComment::newFromID( $commentID, $rev );
+			$r['HTML'] = $view->formatComment( $comment );
+			//$r['HTML'] = print_r( $comment, true );
 		}
 
 		$this->getResult()->addValue( null, $this->getModuleName(), $r );
@@ -115,6 +137,10 @@ class ApiRevisionUpdate extends ApiBase {
 				ApiBase::PARAM_TYPE => 'integer',
 				ApiBase::PARAM_ISMULTI => true,
 			),
+			'patchline' => array(
+				ApiBase::PARAM_TYPE => 'integer',
+				ApiBase::PARAM_MIN => 1,
+			),
 		);
 	}
 
@@ -130,6 +156,7 @@ class ApiRevisionUpdate extends ApiBase {
 			'removeflags' => 'Code Signoff flags to strike from the revision by the current user',
 			'addreferences' => 'Add references to this revision',
 			'removereferences' => 'Remove references from this revision',
+			'patchline' => 'Diff line to attach the comment to (optional)',
 		);
 	}
 

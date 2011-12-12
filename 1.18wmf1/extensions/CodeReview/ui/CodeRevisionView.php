@@ -49,7 +49,7 @@ class CodeRevisionView extends CodeView {
 			$this->mSelectedSignoffs : array();
 
 		$this->mAddReference = $wgRequest->getCheck( 'wpAddReferenceSubmit' )
-				? array_map( array( $this, 'ltrimIntval' ), $wgRequest->getArray( 'wpAddReference', array() ) )
+				? $this->stringToRevList( $wgRequest->getText( 'wpAddReference' ) )
 				: array();
 
 		$this->mRemoveReferences = $wgRequest->getCheck( 'wpRemoveReferences' ) ?
@@ -61,12 +61,21 @@ class CodeRevisionView extends CodeView {
 	 * @return int
 	 */
 	private function ltrimIntval( $item ) {
-		$item = ltrim( $item, 'r' );
+		$item = ltrim( trim( $item ), 'r' );
 		return intval( $item );
+	}
+
+	/**
+	 * @param $input string
+	 * @return array
+	 */
+	private function stringToRevList( $input ) {
+		return array_map( array( $this, 'ltrimIntval' ), explode( ',', $input ) );
 	}
 
 	function execute() {
 		global $wgOut, $wgLang;
+		global $wgCodeReviewInlineComments;
 		if ( !$this->mRepo ) {
 			$view = new CodeRepoListView();
 			$view->execute();
@@ -193,6 +202,16 @@ class CodeRevisionView extends CodeView {
 		}
 		$html .= xml::closeElement( 'form' );
 
+		// Encode revision id for our modules
+		$encRev = Xml::encodeJsVar( $this->mRev->getId() );
+
+		if( $wgCodeReviewInlineComments ) {
+			$wgOut->addModules( 'ext.codereview.linecomment' );
+			$wgOut->addInLineScript(
+				"CodeReview.lcInit( $encRev );"
+			);
+		}
+
 		$wgOut->addHTML( $html );
 	}
 
@@ -285,6 +304,10 @@ class CodeRevisionView extends CodeView {
 		$path = preg_replace( '/ \([^\)]+\)$/', '', $path );
 		$viewvc = $this->mRepo->getViewVcBase();
 		$diff = '';
+		$hist = $this->skin->link(
+			SpecialPage::getTitleFor( 'Code', $this->mRepo->getName() ),
+			wfMsg( 'code-rev-history-link' ), array(), array( 'path' => $path )
+		);
 		$safePath = wfUrlEncode( $path );
 		if ( $viewvc ) {
 			$rev = $this->mRev->getId();
@@ -312,7 +335,7 @@ class CodeRevisionView extends CodeView {
 		} else {
 			$link = $safePath;
 		}
-		return "<li><b>$link</b> ($desc)$diff</li>\n";
+		return "<li><b>$link</b> ($desc) ($hist)$diff</li>\n";
 	}
 
 	protected function tagForm() {
@@ -332,8 +355,14 @@ class CodeRevisionView extends CodeView {
 		return $list;
 	}
 
+	/**
+	 * @param $input string
+	 * @return array|null
+	 */
 	protected function splitTags( $input ) {
-		if ( !$this->mRev ) return array();
+		if ( !$this->mRev ) {
+			return array();
+		}
 		$tags = array_map( 'trim', explode( ",", $input ) );
 		foreach ( $tags as $key => $tag ) {
 			$normal = $this->mRev->normalizeTag( $tag );
@@ -441,7 +470,8 @@ class CodeRevisionView extends CodeView {
 			return htmlspecialchars( wfMsg( 'code-rev-diff-too-large' ) );
 		} else {
 			$hilite = new CodeDiffHighlighter();
-			return $hilite->render( $diff );
+			# Diff rendered with inline comments
+			return $hilite->render( $diff, $this->mRepo, $this->mRev );
 		}
 	}
 
@@ -530,19 +560,23 @@ class CodeRevisionView extends CodeView {
 	 */
 	protected function formatSignoffs( $signOffs, $showButtons ) {
 		$this->showButtonsFormatSignoffs = $showButtons;
-		$signoffs = implode( "\n",
-			array_map( array( $this, 'formatSignoffInline' ), $signOffs )
-		);
 
 		$header = '';
-		if ( $showButtons ) {
-			$header = '<th></th>';
+		if ( count( $signOffs ) ) {
+			if ( $showButtons ) {
+				$header = '<th></th>';
+			}
+			$signoffs = implode( "\n",
+				array_map( array( $this, 'formatSignoffInline' ), $signOffs )
+			);
+			$header .= '<th>' . wfMsgHtml( 'code-signoff-field-user' ) . '</th>';
+			$header .= '<th>' . wfMsgHtml( 'code-signoff-field-flag' ). '</th>';
+			$header .= '<th>' . wfMsgHtml( 'code-signoff-field-date' ). '</th>';
+		} else {
+			$signoffs = '';
 		}
-		$header .= '<th>' . wfMsgHtml( 'code-signoff-field-user' ) . '</th>';
-		$header .= '<th>' . wfMsgHtml( 'code-signoff-field-flag' ). '</th>';
-		$header .= '<th>' . wfMsgHtml( 'code-signoff-field-date' ). '</th>';
 		$buttonrow = $showButtons ? $this->signoffButtons( $signOffs ) : '';
-		return "<table border='1' class='TablePager'><tr>$header</tr>$signoffs$buttonrow</table>";
+		return "<table border='1' class='wikitable'><tr>$header</tr>$signoffs$buttonrow</table>";
 	}
 
 	/**
@@ -594,7 +628,7 @@ class CodeRevisionView extends CodeView {
 		$header .= '<th>' . wfMsgHtml( 'code-field-author' ) . '</th>';
 		$header .= '<th>' . wfMsgHtml( 'code-field-timestamp' ) . '</th>';
 		$buttonrow = $showButtons ? $this->referenceButtons() : '';
-		return "<table border='1' class='TablePager'><tr>{$header}</tr>{$refs}{$buttonrow}</table>";
+		return "<table border='1' class='wikitable'><tr>{$header}</tr>{$refs}{$buttonrow}</table>";
 	}
 
 	/**
@@ -741,7 +775,7 @@ class CodeRevisionView extends CodeView {
 	 * @param string $replyForm
 	 * @return string
 	 */
-	protected function formatComment( $comment, $replyForm = '' ) {
+	public function formatComment( $comment, $replyForm = '' ) {
 		global $wgOut, $wgLang, $wgContLang;
 
 		if ( $comment->id === 0 ) {
@@ -898,7 +932,7 @@ class CodeRevisionView extends CodeView {
 	 * @return string
 	 */
 	protected function addActionButtons() {
-		return '<div>' .
+		return '<div id="mw-codereview-comment-buttons">' .
 			Xml::submitButton( wfMsg( 'code-rev-submit' ),
 				array( 'name' => 'wpSave',
 					'accesskey' => wfMsg( 'code-rev-submit-accesskey' ) )

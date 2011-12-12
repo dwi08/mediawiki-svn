@@ -80,6 +80,16 @@ class CodeRevision {
 				}
 			}
 		}
+
+		global $wgCodeReviewAutoTagPath;
+		if ( isset( $wgCodeReviewAutoTagPath[ $repo->getName() ] ) ) {
+			foreach ( $wgCodeReviewAutoTagPath[ $repo->getName() ] as $path => $tags ) {
+				if ( preg_match( $path, $rev->commonPath ) ) {
+					$rev->changeTags( $tags, array() );
+					break;
+				}
+			}
+		}
 		return $rev;
 	}
 
@@ -183,6 +193,14 @@ class CodeRevision {
 	}
 
 	/**
+	 * @return CodeRepository
+	 */
+	public function getRepo() {
+		return $this->repo;
+	}
+
+
+	/**
 	 * @return String
 	 */
 	public function getAuthor() {
@@ -236,7 +254,17 @@ class CodeRevision {
 	 * @return Array
 	 */
 	public static function getPossibleStates() {
-		return array( 'new', 'fixme', 'reverted', 'resolved', 'ok', 'deferred', 'old' );
+		global $wgCodeReviewStates;
+		return $wgCodeReviewStates;
+	}
+
+	/**
+	 * List of all states that a user cannot set on their own revision
+	 * @return Array
+	 */
+	public static function getProtectedStates() {
+		global $wgCodeReviewProtectedStates;
+		return $wgCodeReviewProtectedStates;
 	}
 
 	/**
@@ -259,7 +287,8 @@ class CodeRevision {
 	 * @return Array
 	 */
 	public static function getPossibleFlags() {
-		return array( 'inspected', 'tested' );
+		global $wgCodeReviewFlags;
+		return $wgCodeReviewFlags;
 	}
 
 	/**
@@ -269,6 +298,15 @@ class CodeRevision {
 	 */
 	public static function isValidStatus( $status ) {
 		return in_array( $status, self::getPossibleStates(), true );
+	}
+
+	/**
+	 * Returns whether the provided status is protected
+	 * @param String $status
+	 * @return bool
+	 */
+	public static function isProtectedStatus( $status ) {
+		return in_array( $status, self::getProtectedStates(), true );
 	}
 
 	/**
@@ -285,7 +323,7 @@ class CodeRevision {
 		// Don't allow the user account tied to the committer account mark their own revisions as ok/resolved
 		// Obviously only works if user accounts are tied!
 		$wikiUser = $this->getWikiUser();
-		if ( ( $status == 'ok' || $status == 'resolved' ) && $wikiUser && $user->getName() == $wikiUser->getName() ) {
+		if ( self::isProtectedStatus( $status ) && $wikiUser && $user->getName() == $wikiUser->getName() ) {
 			// allow the user to review their own code if required
 			if ( !$wikiUser->isAllowed( 'codereview-review-own' ) ) {
 				return false;
@@ -441,17 +479,11 @@ class CodeRevision {
 			// Get repo and build comment title (for url)
 			$url = $this->getCanonicalUrl();
 
-			// Live hack: always make the URL use https:
-			$url = str_replace( 'http:', 'https:', $url );
-
 			foreach ( $res as $row ) {
 				$revision = CodeRevision::newFromRow( $this->repo, $row );
 				$users = $revision->getCommentingUsers();
 
 				$rowUrl = $revision->getCanonicalUrl();
-
-				// Live hack: always make the URL use https:
-				$rowUrl = str_replace( 'http:', 'https:', $rowUrl );
 
 				$revisionAuthor = $revision->getWikiUser();
 
@@ -464,6 +496,11 @@ class CodeRevision {
 
 				//Notify commenters and revision author of followup revision
 				foreach ( $users as $user ) {
+
+					/**
+					 * @var $user User
+					 */
+
 					// No sense in notifying the author of this rev if they are a commenter/the author on the target rev
 					if ( $commitAuthorId == $user->getId() ) {
 						continue;
@@ -487,6 +524,12 @@ class CodeRevision {
 		$dbw->commit();
 	}
 
+	/**
+	 * @param $dbw DatabaseBase
+	 * @param $paths array
+	 * @param $repoId int
+	 * @param $revId int
+	 */
 	public static function insertPaths( $dbw, $paths, $repoId, $revId ) {
 		$data = array();
 		foreach ( $paths as $path ) {
@@ -613,15 +656,16 @@ class CodeRevision {
 	 * @param  $text
 	 * @param  $review
 	 * @param null $parent
+	 * @param int $patchLine (default: null)
 	 * @return int
 	 */
-	public function saveComment( $text, $review, $parent = null ) {
+	public function saveComment( $text, $review, $parent = null, $patchLine = null ) {
 		$text = rtrim( $text );
 		if ( !strlen( $text ) ) {
 			return 0;
 		}
 		$dbw = wfGetDB( DB_MASTER );
-		$data = $this->commentData( $text, $review, $parent );
+		$data = $this->commentData( $text, $review, $parent, $patchLine );
 
 		$dbw->begin();
 		$data['cc_id'] = $dbw->nextSequenceValue( 'code_comment_cc_id' );
@@ -630,9 +674,6 @@ class CodeRevision {
 		$dbw->commit();
 
 		$url = $this->getCanonicalUrl( $commentId );
-
-		// Live hack: always make the URL use https:
-		$url = str_replace( 'http:', 'https:', $url );
 
 		$this->sendCommentToUDP( $commentId, $text, $url );
 
@@ -694,9 +735,10 @@ class CodeRevision {
 	 * @param  $text
 	 * @param  $review
 	 * @param null $parent
+	 * @param int $patchLine (default: null)
 	 * @return array
 	 */
-	protected function commentData( $text, $review, $parent = null ) {
+	protected function commentData( $text, $review, $parent = null, $patchLine = null ) {
 		global $wgUser;
 		$dbw = wfGetDB( DB_MASTER );
 		$ts = wfTimestamp( TS_MW );
@@ -706,6 +748,7 @@ class CodeRevision {
 			'cc_rev_id' => $this->id,
 			'cc_text' => $text,
 			'cc_parent' => $parent,
+			'cc_patch_line' => $patchLine,
 			'cc_user' => $wgUser->getId(),
 			'cc_user_text' => $wgUser->getName(),
 			'cc_timestamp' => $dbw->timestamp( $ts ),
@@ -739,9 +782,21 @@ class CodeRevision {
 	}
 
 	/**
+	 * @param $attached boolean Fetch comment attached to a line of code (default: false)
 	 * @return array
 	 */
-	public function getComments() {
+	public function getComments( $attached = false ) {
+		$conditions = array(
+			'cc_repo_id' => $this->repoId,
+			'cc_rev_id' => $this->id
+		);
+
+		if( $attached ) {
+			$conditions[] = 'cc_patch_line != null';
+		} else {
+			$conditions['cc_patch_line'] = null;
+		}
+
 		$dbr = wfGetDB( DB_SLAVE );
 		$result = $dbr->select( 'code_comment',
 			array(
@@ -749,11 +804,10 @@ class CodeRevision {
 				'cc_text',
 				'cc_user',
 				'cc_user_text',
+				'cc_patch_line',
 				'cc_timestamp',
 				'cc_sortkey' ),
-			array(
-				'cc_repo_id' => $this->repoId,
-				'cc_rev_id' => $this->id ),
+			$conditions,
 			__METHOD__,
 			array(
 				'ORDER BY' => 'cc_sortkey' )
@@ -998,7 +1052,7 @@ class CodeRevision {
 				'cs_user_text' => $user->getName(),
 				'cs_flag' => $flag,
 				'cs_timestamp' => $dbw->timestamp(),
-				'cs_timestamp_struck' => Block::infinity()
+				'cs_timestamp_struck' => wfGetDB( DB_SLAVE )->getInfinity()
 			);
 		}
 		$dbw->insert( 'code_signoffs', $rows, __METHOD__, array( 'IGNORE' ) );
@@ -1247,8 +1301,8 @@ class CodeRevision {
 	/**
 	 * Get the canonical URL of a revision. Constructs a Title for this revision
 	 * along the lines of [[Special:Code/RepoName/12345#c678]] and calls getCanonicalUrl().
-	 * @param string $commentId
-	 * @return \type
+	 * @param $commentId string|int
+	 * @return string
 	 */
 	public function getCanonicalUrl( $commentId = 0 ) {
 		$title = SpecialPage::getTitleFor( 'Code', $this->repo->getName() . '/' . $this->id );
@@ -1273,9 +1327,6 @@ class CodeRevision {
 		if( $wgCodeReviewUDPAddress ) {
 			if( is_null( $url ) ) {
 				$url = $this->getCanonicalUrl( $commentId );
-
-				// Live hack: always make the URL use https:
-				$url = str_replace( 'http:', 'https:', $url );
 			}
 
 			$line = wfMsg( 'code-rev-message' ) . " \00314(" . $this->repo->getName() .
@@ -1295,9 +1346,6 @@ class CodeRevision {
 
 		if( $wgCodeReviewUDPAddress ) {
 			$url = $this->getCanonicalUrl();
-
-			// Live hack: always make the URL use https:
-			$url = str_replace( 'http:', 'https:', $url );
 
 			$line = wfMsg( 'code-rev-status' ) . " \00314(" . $this->repo->getName() .
 					")\00303 " . RecentChange::cleanupForIRC( $wgUser->getName() ) . "\003 " .

@@ -101,6 +101,6 @@ class ApiQueryCodePaths extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryCodePaths.php 89645 2011-06-07 13:43:31Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }

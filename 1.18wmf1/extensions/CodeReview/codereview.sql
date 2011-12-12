@@ -71,6 +71,7 @@ CREATE TABLE /*_*/code_rev (
 
 CREATE INDEX /*i*/cr_repo_id ON /*_*/code_rev (cr_repo_id, cr_timestamp);
 CREATE INDEX /*i*/cr_repo_author ON /*_*/code_rev (cr_repo_id, cr_author, cr_timestamp);
+CREATE INDEX /*i*/cr_repo_status_author ON /*_*/code_rev (cr_repo_id, cr_status, cr_author);
 
 --
 -- Allow us to match up repository usernames
@@ -172,6 +173,9 @@ CREATE TABLE /*_*/code_comment (
   -- cc_id of parent comment if a threaded child, otherwise NULL
   cc_parent int,
 
+  -- patch line the comment eventually applies to or NULL
+  cc_patch_line int default null,
+
   -- User id/name of the commenter
   cc_user int not null,
   cc_user_text varchar(255) not null,
@@ -186,11 +190,7 @@ CREATE TABLE /*_*/code_comment (
   --
   -- Allows 17 levels of nesting before we hit the length limit.
   -- Could redo more compactly to get 31 or 63 levels.
-  cc_sortkey varbinary(255),
-
-  -- Does this comment confer a review sum?
-  -- 0, +1, -1
-  cc_review int
+  cc_sortkey varbinary(255)
 ) /*$wgDBTableOptions*/;
 
 CREATE INDEX /*i*/cc_repo_id ON /*_*/code_comment (cc_repo_id,cc_rev_id,cc_sortkey);

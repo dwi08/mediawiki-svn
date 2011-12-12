@@ -232,13 +232,13 @@ class CodeRevisionListView extends CodeView {
 
 		foreach ( $states as $key => $state ) {
 			$title = SpecialPage::getTitleFor( 'Code', $name . "/status/$state" );
-			$options[] = Xml::option( 
+			$options[] = Xml::option(
 				wfMsgHtml( "code-status-$state" ),
 				$title->getPrefixedText(),
 				$this->mStatus == $state
 			);
 		}
-		
+
 		$ret = "<fieldset><legend>" . wfMsgHtml( 'code-pathsearch-legend' ) . "</legend>" .
 				'<table width="100%"><tr><td>' .
 				Xml::openElement( 'form', array( 'action' => $wgScript, 'method' => 'get' ) ) .
@@ -430,7 +430,7 @@ class SvnRevTablePager extends SvnTablePager {
 			if ( $value ) {
 				$special = SpecialPage::getTitleFor( 'Code', $this->mRepo->getName() . '/' . $row-> { $this->getDefaultSort() } );
 				$special->setFragment( '#code-comments' );
-				return $this->mView->skin->link( $special, htmlspecialchars( $value ) );
+				return $this->mView->skin->link( $special, $wgLang->formatNum( htmlspecialchars( $value ) ) );
 			} else {
 				return '-';
 			}
@@ -455,6 +455,9 @@ class SvnRevTablePager extends SvnTablePager {
 		}
 	}
 
+	/**
+	 * @return Title
+	 */
 	function getTitle() {
 		return SpecialPage::getTitleFor( 'Code', $this->mRepo->getName() );
 	}
