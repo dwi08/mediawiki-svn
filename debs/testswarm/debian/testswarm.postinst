@@ -29,8 +29,8 @@ ucf --debconf-ok /usr/share/doc/testswarm/testswarm.apache.conf /etc/testswarm/a
 a2enmod rewrite
 
 # Symlink default conf if there is none
-if [ ! -e "/etc/apache2/sites-enabled/testswarm.conf" ]; then
-	ln -s /etc/testswarm/apache.conf /etc/apache2/sites-enabled/testswarm.conf
+if [ ! -e "/etc/apache2/conf.d/testswarm.conf" ]; then
+	ln -s /etc/testswarm/apache.conf /etc/apache2/conf.d/testswarm.conf
 fi
 invoke-rc.d apache2 reload || true
 

@@ -34,6 +34,8 @@ purge)
 
 remove)
 	# unlink testswarm apache conf and restart apache
+	# /etc/testswarm/apache.conf is still there though so local modification
+	# are kept :)
 	if [ -L "/etc/apache2/conf.d/testswarm.conf" ]; then
 		rm /etc/apache2/conf.d/testswarm.conf
 	fi

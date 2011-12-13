@@ -1,3 +1,11 @@
+testswarm (0.1.0-3) unstable; urgency=low
+  * symlink testswarm apache conf in /etc/apache2/conf.d just like other
+    Debian packages. Administration using virtual hosts will have to set
+    up their own configuration in /etc/apache2/sites-available then symlink
+    in /etc/apache2/sites-enabled.
+
+ -- Antoine Musso <amusso@wikimedia.org> Tue, 13 Dec 2011 15:12:14 +0000
+
 testswarm (0.1.0-2) unstable; urgency=low
   * symlink testswarm apache conf in /etc/apache2/sites-enabled
 
