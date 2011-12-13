@@ -12,4 +12,9 @@ Architecture: any
 Depends: apache2, libapache2-mod-php5 | php5, php5-mysql, mysql-server, ucf, dbconfig-common, ${shlibs:Depends}, ${misc:Depends}
 Recommends: mysql-client
 Description: Javascript unit test runner
- <insert long description, indented with spaces>
+ Testswarm provides distributed continuous integration testing for JavaScript.
+ .
+ The primary goal of TestSwarm is to take the complicated, and time-consuming,
+ process of running JavaScript test suites in multiple browsers and to grossly
+ simplify it. It achieves this goal by providing all the tools necessary for
+ creating a continuous integration workflow for your JavaScript project.
