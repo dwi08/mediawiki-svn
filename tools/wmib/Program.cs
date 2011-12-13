@@ -20,12 +20,13 @@ namespace wmib
 {
     class Program
     {
-        public static bool Log(string msg )
+        public static bool Log(string msg)
         {
             Console.WriteLine("LOG: " + msg);
             return false;
         }
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             Log("Connecting");
             irc.Connect();
@@ -41,32 +42,38 @@ namespace wmib
             public string log;
             public irc.dictionary Keys = new irc.dictionary();
             public irc.trust Users;
+
             public channel(string Name)
             {
                 logged = true;
-                name = Name;   
+                name = Name;
                 log = Name + ".txt";
                 Keys.Load(name);
                 Users = new irc.trust(name);
             }
         }
+
         /// <summary>
         /// Network
         /// </summary>
         public static string network = "irc.freenode.net";
+
         public static string username = "wm-bot";
+
         /// <summary>
         /// 
         /// </summary>
         public static string version = "wikimedia bot v. 1.0.1";
+
         /// <summary>
         /// User name
         /// </summary>
         public static string name = "wm-bot";
+
         /// <summary>
         /// Channels
         /// </summary>
-        public static channel[] channels = { new channel("#wikimedia-labs"), new channel( "#wikimedia-test-bots") };
+        public static channel[] channels = {new channel("#wikimedia-labs"), new channel("#wikimedia-test-bots")};
     }
 
     public static class irc
@@ -83,6 +90,7 @@ namespace wmib
                 this.level = level;
                 this.name = name;
             }
+
             public string name;
             public string level;
         }
@@ -92,8 +100,9 @@ namespace wmib
             private List<user> Users = new List<user>();
             public string _Channel;
             public string File;
+
             public trust(string channel)
-            { 
+            {
                 // Load
                 File = channel + "_user";
                 if (!System.IO.File.Exists(File))
@@ -115,6 +124,7 @@ namespace wmib
                     }
                 }
             }
+
             public bool Save()
             {
                 System.IO.File.WriteAllText(File, "");
@@ -174,7 +184,7 @@ namespace wmib
             }
 
             public bool matchLevel(int level, string rights)
-            { 
+            {
                 if (level == 2)
                 {
                     return (rights == "admin");
@@ -182,7 +192,7 @@ namespace wmib
                 if (level == 1)
                 {
                     return (rights == "trusted" || rights == "admin");
-       
+
                 }
                 return false;
             }
@@ -197,23 +207,23 @@ namespace wmib
 
                 if (command == "alias_key")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 if (command == "new_key")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 if (command == "shutdown")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 if (command == "delete_key")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 if (command == "trust")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 if (command == "admin")
                 {
@@ -221,11 +231,11 @@ namespace wmib
                 }
                 if (command == "trustadd")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 if (command == "trustdel")
                 {
-                        return matchLevel(1, current.level);
+                    return matchLevel(1, current.level);
                 }
                 return false;
             }
@@ -242,13 +252,16 @@ namespace wmib
                     locked = Lock;
                     user = User;
                 }
+
                 public string text;
                 public string key;
                 public string user;
                 public string locked;
             }
+
             public List<item> text = new List<item>();
             public string Channel;
+
             public void Load(string channel)
             {
                 Channel = channel;
@@ -299,7 +312,7 @@ namespace wmib
                         return false;
                     }
                 }
-                string User ="";
+                string User = "";
                 if (name.Contains("|"))
                 {
                     User = name.Substring(name.IndexOf("|"));
@@ -309,14 +322,15 @@ namespace wmib
                     name = name.Replace(" ", "");
                 }
                 foreach (item data in text)
-                { 
-                    
+                {
+
                     if (data.key == name)
                     {
                         if (User == "")
                         {
                             Message(name + " is: " + data.text, Channel);
-                        } else
+                        }
+                        else
                         {
                             Message(User + ":" + data.text, Channel);
                         }
@@ -346,7 +360,9 @@ namespace wmib
                     }
                     else
                     {
-                        Message("Error, it contains invalid characters, " + user + " you better not use pipes in text!", Channel);
+                        Message(
+                            "Error, it contains invalid characters, " + user + " you better not use pipes in text!",
+                            Channel);
                     }
                     Save();
                 }
@@ -355,10 +371,12 @@ namespace wmib
                     handleException(b, Channel);
                 }
             }
+
             public void aliasKey(string key, string alias, string user)
             {
                 Save();
             }
+
             public void rmKey(string key, string user)
             {
                 foreach (item keys in text)
@@ -381,7 +399,7 @@ namespace wmib
         }
 
         public static config.channel getChannel(string name)
-        { 
+        {
             foreach (config.channel current in config.channels)
             {
                 if (current.name == name)
@@ -460,7 +478,8 @@ namespace wmib
         {
             if (channel.logged)
             {
-                string log = "\n" + "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] " + "<" + user + "> " + message;
+                string log = "\n" + "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" +
+                             System.DateTime.Now.Second + "] " + "<" + user + "> " + message;
                 System.IO.File.AppendAllText(channel.log, log);
             }
         }
@@ -470,9 +489,9 @@ namespace wmib
             config.channel curr = getChannel(channel);
             if (curr != null)
             {
-                    curr.Keys.print(message);
-                    chanLog(message, curr, nick, host);
-                    modifyRights(message, curr, nick, host);
+                curr.Keys.print(message);
+                chanLog(message, curr, nick, host);
+                modifyRights(message, curr, nick, host);
             }
 
 
@@ -516,11 +535,15 @@ namespace wmib
                             if (text.Contains("!") && text.Contains("@"))
                             {
                                 nick = text.Substring(1, text.IndexOf("!") - 1);
-                                host = text.Substring(text.IndexOf("@") + 1, text.IndexOf(" ", text.IndexOf("@")) - 1 - text.IndexOf("@"));
+                                host = text.Substring(text.IndexOf("@") + 1,
+                                                      text.IndexOf(" ", text.IndexOf("@")) - 1 - text.IndexOf("@"));
                             }
-                            if (text.Substring(text.IndexOf("PRIVMSG ", text.IndexOf(" "), text.IndexOf("PRIVMSG "))).Contains("#"))
+                            if (
+                                text.Substring(text.IndexOf("PRIVMSG ", text.IndexOf(" "), text.IndexOf("PRIVMSG "))).
+                                    Contains("#"))
                             {
-                                channel = text.Substring(text.IndexOf("#"), text.IndexOf(" ", text.IndexOf("#")) - text.IndexOf("#"));
+                                channel = text.Substring(text.IndexOf("#"),
+                                                         text.IndexOf(" ", text.IndexOf("#")) - text.IndexOf("#"));
                                 message = text.Substring(text.IndexOf("PRIVMSG"));
                                 message = message.Substring(message.IndexOf(":") + 1);
                                 if (message.Contains("ACTION"))
@@ -533,20 +556,21 @@ namespace wmib
                                 }
                             }
                             else
-                            { 
+                            {
                                 // private message
                             }
                         }
                     }
                     System.Threading.Thread.Sleep(50);
-                }     
+                }
             }
             return 0;
         }
+
         public static int Disconnect()
         {
             wd.Flush();
             return 0;
-        }   
+        }
     }
 }
