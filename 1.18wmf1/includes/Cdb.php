@@ -19,12 +19,12 @@ abstract class CdbReader {
 	 * @return CdbReader
 	 */
 	public static function open( $fileName ) {
-		if ( self::haveExtension() ) {
-			return new CdbReader_DBA( $fileName );
-		} else {
-			wfDebug( "Warning: no dba extension found, using emulation.\n" );
+		//if ( self::haveExtension() ) {
+		//	return new CdbReader_DBA( $fileName );
+		//} else {
+		//	wfDebug( "Warning: no dba extension found, using emulation.\n" );
 			return new CdbReader_PHP( $fileName );
-		}
+		//}
 	}
 
 	/**
