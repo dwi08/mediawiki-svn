@@ -3538,4 +3538,15 @@ D\'Ufro muss ouni den Zousaz "{{ns:file}}": gemaach ginn.',
 'sqlite-has-fts' => "$1 ënnerstëtzt d'Volltextsich",
 'sqlite-no-fts'  => "$1 ënnerstëtzt d'Volltextsich net",
 
+
+# Feedback
+'feedback-note' => 'Äre Feedback gëtt ëffentlech op der Säit "[$2 $1]" gewisen, zesumme mat Ärem Benotzernumm, der Versioun vun Ärem Browser a Betribssystem.',
+'feedback-subject' => 'Sujet:',
+'feedback-message' => 'Message:',
+'feedback-cancel' => 'Ofbriechen',
+'feedback-submit' => 'Feedback schécken',
+'feedback-adding' => "Feedback gëtt bäi d'Säit derbäigesat...",
+'feedback-error1' => 'Feeler: Resultat vum API gouf net erkannt',
+'feedback-error2' => "Feeler: D'Ännerung gouf net gespäichert",
+'feedback-error3' => 'Feeler: Keng Äntwert vum API',
 );

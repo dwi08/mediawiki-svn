@@ -3745,4 +3745,14 @@ Du skal ha mottatt [{{SERVER}}{{SCRIPTPATH}}/COPYING en kopi av GNU General Publ
 'sqlite-has-fts' => '$1 med støtte for fulltekstsøk',
 'sqlite-no-fts'  => '$1 uten støtte for fulltekstsøk',
 
+
+# Feedback
+'feedback-subject' => 'Emne:',
+'feedback-message' => 'Melding:',
+'feedback-cancel' => 'Avbryt',
+'feedback-submit' => 'Send tilbakemelding',
+'feedback-adding' => 'Tilføyer tilbakmelding til side ...',
+'feedback-error1' => 'Feil: Ukjent resultat fra API',
+'feedback-error2' => 'Feil: Redigering feilet',
+'feedback-error3' => 'Feil: Ingen respons fra API',
 );

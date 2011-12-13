@@ -2698,4 +2698,12 @@ $5
 'htmlform-reset'               => 'மாற்றங்களை இல்லாது செய்',
 'htmlform-selectorother-other' => 'மற்றவை',
 
+
+# Feedback
+'feedback-note' => 'உங்கள் கருத்து "[$2 $1]" என்ற பக்கத்தில் உங்கள் பெயர், உலவி பதிப்பு, இயக்க அமைப்பு ஆகியவற்றோடு பதியப்படும்.',
+'feedback-subject' => 'பொருள்:',
+'feedback-message' => 'தகவல்:',
+'feedback-cancel' => 'விட்டுவிடு',
+'feedback-submit' => 'கருத்தைச் சமர்ப்பிக்கவும்',
+'feedback-adding' => 'பக்கத்தில் கருத்தைச் சேர்க்கிறது...',
 );

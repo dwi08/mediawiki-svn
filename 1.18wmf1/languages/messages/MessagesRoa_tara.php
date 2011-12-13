@@ -3499,4 +3499,14 @@ Mitte 'u nome d'u file senza 'u prefisse \"{{ns:file}}\".",
 'sqlite-has-fts' => "$1 cu 'u supporte d'a ricerche full-text",
 'sqlite-no-fts'  => "$1 senze 'u supporte d'a ricerche full-text",
 
+
+# Feedback
+'feedback-subject' => 'Oggette:',
+'feedback-message' => 'Messàgge:',
+'feedback-cancel' => 'Annulle',
+'feedback-submit' => "Conferme 'u feedback",
+'feedback-adding' => "Aggiunge feedback a 'a pàgene...",
+'feedback-error1' => "Errore: resultate inaspettate da l'API",
+'feedback-error2' => 'Errore: Cangiamende fallite',
+'feedback-error3' => "Errore: Nisciuna resposte da l'API",
 );

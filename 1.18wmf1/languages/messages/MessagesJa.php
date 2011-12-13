@@ -3941,4 +3941,15 @@ MediaWikiは、有用であることを期待して配布されていますが�
 'sqlite-has-fts' => '$1（全文検索あり）',
 'sqlite-no-fts'  => '$1（全文検索なし）',
 
+
+# Feedback
+'feedback-note' => 'あなたのフィードバックは、あなたのユーザー名、ブラウザー バージョン、オペレーティング システムと共に"[$2 $1]"で公開掲示されます。',
+'feedback-subject' => '件名：',
+'feedback-message' => 'メッセージ：',
+'feedback-cancel' => 'キャンセル',
+'feedback-submit' => 'フィードバックを送信',
+'feedback-adding' => 'ページへのフィードバックを追加する...',
+'feedback-error1' => 'エラー：APIから認識されない結果が返ってきました',
+'feedback-error2' => 'エラー：編集に失敗しました',
+'feedback-error3' => 'エラー：APIからの応答がありません',
 );

@@ -3497,4 +3497,15 @@ Ch'a buta mach ël nòm dl'archivi sensa pa ël prefiss \"{{ns:file}}:\".",
 'sqlite-has-fts' => '$1 con arserca an test pien mantnùa',
 'sqlite-no-fts'  => '$1 sensa arserca an test pien mantnùa',
 
+
+# Feedback
+'feedback-note' => 'Ij sò coment a saran smonù publicament ansima a la pàgina "[$2 $1]", ansema con sò stranòm, version dël navigador e sistema operativ.',
+'feedback-subject' => 'Soget:',
+'feedback-message' => 'Mëssagi:',
+'feedback-cancel' => 'Scancela',
+'feedback-submit' => 'Spedì ij coment',
+'feedback-adding' => 'Gionta dij coment a la pàgina...',
+'feedback-error1' => 'Eror: Arzultà pa arconossù da API',
+'feedback-error2' => 'Eror: Modìfica falìa',
+'feedback-error3' => 'Eror: Pa gnun-e arspòste da API',
 );

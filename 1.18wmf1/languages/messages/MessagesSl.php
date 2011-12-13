@@ -3655,4 +3655,15 @@ Ta stran se sooča s tehničnimi težavami.',
 'sqlite-has-fts' => '$1 s podporo iskanju polnih besedil',
 'sqlite-no-fts'  => '$1 brez podpore iskanju polnih besedil',
 
+
+# Feedback
+'feedback-note' => 'Vaša povratna informacija bo objavljena na $1.',
+'feedback-subject' => 'Zadeva:',
+'feedback-message' => 'Sporočilo:',
+'feedback-cancel' => 'Prekliči',
+'feedback-submit' => 'Pošlji povratno informacijo',
+'feedback-adding' => 'Dodajanje povratne informacije na stran ...',
+'feedback-error1' => 'Napaka: Neznan rezultat iz API',
+'feedback-error2' => 'Napaka: Urejanje je spodletelo',
+'feedback-error3' => 'Napaka: Ni odgovora od API',
 );

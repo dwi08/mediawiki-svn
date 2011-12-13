@@ -3238,4 +3238,15 @@ Veur de bestandjsnaam in zónger 't veurvoegsel \"{{ns:file}}:\".",
 'sqlite-has-fts' => 'Zeuk versie $1 mit óngersteuning veur "full-text"',
 'sqlite-no-fts'  => 'Zeuk versie $1 zónger óngersteuning veur "fulltext"',
 
+
+# Feedback
+'feedback-note' => 'Diene feedback weurd publiekelik geplaats oppe pagina "[$2 $1]", mit diene gebroekersnaam, browserversie en DOS.',
+'feedback-subject' => 'Óngerwerp:',
+'feedback-message' => 'Berich:',
+'feedback-cancel' => 'Braek aaf',
+'feedback-submit' => 'Slaon feedback óp',
+'feedback-adding' => 'Feedback weurt aan pagina toegevoeg...',
+'feedback-error1' => 'Fout: ónbekind rizzeltaot vanne API',
+'feedback-error2' => 'Fout: bewirking mislök',
+'feedback-error3' => 'Fout: gein reactie vanne API',
 );

@@ -3580,4 +3580,15 @@ $1',
 'sqlite-has-fts' => '$1 (본문 전체 검색)',
 'sqlite-no-fts'  => '$1 (본문은 검색에서 제외)',
 
+
+# Feedback
+'feedback-note' => '당신의 피드백은 당신의 계정 이름, 브라우저 버전과 운영체제 정보와 함께 "[$2 $1]"에 공개적으로 게시될 것입니다.',
+'feedback-subject' => '제목:',
+'feedback-message' => '내용:',
+'feedback-cancel' => '취소',
+'feedback-submit' => '피드백 제출',
+'feedback-adding' => '문서에 피드백을 올리는 중...',
+'feedback-error1' => '오류: API에서 알 수 없는 결과를 반환하였습니다.',
+'feedback-error2' => '오류: 편집 실패',
+'feedback-error3' => '오류: API에서 응답이 없습니다.',
 );

@@ -2383,4 +2383,8 @@ $5
 'htmlform-reset'               => 'بدلونونه ناکړل',
 'htmlform-selectorother-other' => 'بل',
 
+
+# Feedback
+'feedback-message' => 'پيغام:',
+'feedback-cancel' => 'ناګارل',
 );

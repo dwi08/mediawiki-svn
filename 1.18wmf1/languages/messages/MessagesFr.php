@@ -3822,4 +3822,15 @@ Entrez le nom du fichier sans le préfixe « {{ns:file}}: »',
 'sqlite-has-fts' => '$1 avec recherche en texte intégral supportée',
 'sqlite-no-fts'  => '$1 sans recherche en texte intégral supportée',
 
+
+# Feedback
+'feedback-note' => "Vos commentaires seront affichés publiquement sur la page « [$2 $1] » avec votre nom d'utilisateur, la version de votre navigateur et le système d'exploitation.",
+'feedback-subject' => 'Objet :',
+'feedback-message' => 'Message :',
+'feedback-cancel' => 'Annuler',
+'feedback-submit' => 'Envoyer vos commentaires',
+'feedback-adding' => 'Ajout de vos commentaires à la page...',
+'feedback-error1' => "Erreur : Résultat de l'API non reconnu",
+'feedback-error2' => 'Erreur : la modification a échoué',
+'feedback-error3' => "Erreur : aucune réponse de l'API",
 );

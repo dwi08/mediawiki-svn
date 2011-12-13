@@ -3745,4 +3745,15 @@ Introduceți numele fișierului fără prefixul „{{ns:file}}:”.',
 'sqlite-has-fts' => '$1 cu suport de căutare în tot textul',
 'sqlite-no-fts'  => '$1 fără suport de căutare în tot textul',
 
+
+# Feedback
+'feedback-note' => 'Impresiile dumneavoastră vor fi făcute publice pe pagina „[$2 $1]”, alături de numele dumneavoastră de utilizator, versiunea navigatorului și sistemul de operare.',
+'feedback-subject' => 'Subiect:',
+'feedback-message' => 'Mesaj:',
+'feedback-cancel' => 'Revocare',
+'feedback-submit' => 'Trimite părerea',
+'feedback-adding' => 'Se adaugă părerea pe pagină...',
+'feedback-error1' => 'Eroare: Rezultat necunoscut de la API',
+'feedback-error2' => 'Eroare: editarea nu a reușit',
+'feedback-error3' => 'Eroare: Niciun răspuns de la API',
 );

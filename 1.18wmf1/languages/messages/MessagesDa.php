@@ -3554,4 +3554,15 @@ Angiv filnavnet uden "{{ns:file}}:"-præfiks.',
 'sqlite-has-fts' => '$1 med fuld-tekst søgnings support',
 'sqlite-no-fts'  => '$1 uden fuld-tekst søgnings support',
 
+
+# Feedback
+'feedback-note' => 'Dine kommentarer vil blive offentligt tilgængelige på siden "[$2 $1]", sammen med dit brugernavn, browserversion og operativsystem.',
+'feedback-subject' => 'Emne:',
+'feedback-message' => 'Besked:',
+'feedback-cancel' => 'Afbryd',
+'feedback-submit' => 'Send kommentar',
+'feedback-adding' => 'Tilføjer kommentar til side...',
+'feedback-error1' => 'Fejl: Ukendt resultat fra API',
+'feedback-error2' => 'Fejl: Redigering mislykkedes',
+'feedback-error3' => 'Fejl: Intet svar fra API',
 );

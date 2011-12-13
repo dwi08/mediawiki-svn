@@ -3724,4 +3724,15 @@ Insira o nome do arquivo sem o prefixo "{{ns:file}}:".',
 'sqlite-has-fts' => '$1 com suporte de pesquisa de texto completo',
 'sqlite-no-fts'  => '$1 sem suporte de pesquisa de texto completo',
 
+
+# Feedback
+'feedback-note' => 'O seu comentário será publicado na página "[$2 $1]", tornando-se assim público, em conjunto com o seu nome de usuário, versão do navegador e sistema operacional.',
+'feedback-subject' => 'Assunto:',
+'feedback-message' => 'Mensagem:',
+'feedback-cancel' => 'Cancelar',
+'feedback-submit' => 'Enviar Comentários',
+'feedback-adding' => 'Adicionando os comentários na página...',
+'feedback-error1' => 'Erro: O resultado da API não foi reconhecido',
+'feedback-error2' => 'Erro: A edição falhou',
+'feedback-error3' => 'Erro: A API não responde',
 );

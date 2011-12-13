@@ -3643,4 +3643,13 @@ Sleutel die lêernaam in sonder die "{{ns:file}}:" voorvoegsel.',
 'sqlite-has-fts' => 'Weergawe $1 met ondersteuning vir vol-teks soektogte ("full-text search")',
 'sqlite-no-fts'  => 'Weergawe $1 sonder ondersteuning vir vol-teks soektogte ("full-text search")',
 
+
+# Feedback
+'feedback-subject' => 'Onderwerp:',
+'feedback-message' => 'Boodskap:',
+'feedback-cancel' => 'Kanselleer',
+'feedback-submit' => 'Stuur terugvoer',
+'feedback-error1' => 'Fout: onbekende resultaat van die API',
+'feedback-error2' => 'Fout: Wysiging het gefaal',
+'feedback-error3' => 'Fout: Geen reaksie van API',
 );

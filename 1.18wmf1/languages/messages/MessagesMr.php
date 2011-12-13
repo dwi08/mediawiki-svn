@@ -3358,4 +3358,11 @@ $1',
 'sqlite-has-fts' => 'पूर्ण-मजकूर शोध समर्थनासहित $1',
 'sqlite-no-fts'  => 'पूर्ण-मजकूर शोध समर्थनाविरहित $1',
 
+
+# Feedback
+'feedback-subject' => 'विषय:',
+'feedback-message' => 'संदेश:',
+'feedback-cancel' => 'रद्द करा',
+'feedback-submit' => 'प्रतिक्रिया द्या',
+'feedback-error2' => 'त्रुटी: संपादन रद्द',
 );

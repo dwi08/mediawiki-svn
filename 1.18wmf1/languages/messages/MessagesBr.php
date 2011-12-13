@@ -3628,4 +3628,15 @@ Merkit anv ar restr hep ar rakger "{{ns:file}} :"',
 'sqlite-has-fts' => '$1 gant enklask eus an destenn a-bezh embreget',
 'sqlite-no-fts'  => '$1 hep enklask eus an destenn a-bezh embreget',
 
+
+# Feedback
+'feedback-note' => 'Embannet e vo ho soñj en doare foran er bajenn "[$2 $1]", asambles gant hoc\'h anv implijer, stumm ho merdeer hag ho reizhiad korvoiñ.',
+'feedback-subject' => 'Danvez :',
+'feedback-message' => 'Kemennadenn:',
+'feedback-cancel' => 'Nullañ',
+'feedback-submit' => 'Kas ho soñj',
+'feedback-adding' => "Oc'h ouzhpennañ ho soñj war ar bajenn...",
+'feedback-error1' => "Fazi : disoc'h dianav a-berzh an API",
+'feedback-error2' => "Fazi : N'eus ket bet gallet degemer ar c'hemmoù",
+'feedback-error3' => 'Fazi : respont ebet a-berzh an API',
 );

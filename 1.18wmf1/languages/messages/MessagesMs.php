@@ -3576,4 +3576,15 @@ Sila masukkan nama fail tanpa awalan "{{ns:file}}:".',
 'sqlite-has-fts' => '$1 dengan sokongan carian teks penuh',
 'sqlite-no-fts'  => '$1 tanpa sokongan carian teks penuh',
 
+
+# Feedback
+'feedback-note' => 'Mkalum balas anda akan disiarkan kepada umum di laman "[$2 $1]", beserta nama pengguna, versi pelayar dan sistem pengendalian (OS) anda.',
+'feedback-subject' => 'Perkara:',
+'feedback-message' => 'Pesanan:',
+'feedback-cancel' => 'Batalkan',
+'feedback-submit' => 'Hantar Maklum Balas',
+'feedback-adding' => 'Maklum balas sedang diisikan ke dalam laman...',
+'feedback-error1' => 'Perhatian: Hasil dari API tidak dikenali',
+'feedback-error2' => 'Perhatian: Penyuntingan gagal',
+'feedback-error3' => 'Perhatian: Tiada gerak balas dari API',
 );

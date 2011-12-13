@@ -3927,4 +3927,15 @@ Buchiéd lo nom du fichiér sen lo prèfixo « {{ns:file}}: ».',
 'sqlite-has-fts' => '$1 avouéc rechèrche en tèxto complèt recognua',
 'sqlite-no-fts'  => '$1 sen rechèrche en tèxto complèt recognua',
 
+
+# Feedback
+'feedback-note' => 'Voutron avis serat postâ publicament sur la pâge « [$2 $1] », avouéc voutron nom d’utilisator, la vèrsion de voutron navigator et pués voutron sistèmo d’èxplouètacion.',
+'feedback-subject' => 'Sujèt :',
+'feedback-message' => 'Mèssâjo :',
+'feedback-cancel' => 'Anular',
+'feedback-submit' => 'Mandar voutron avis',
+'feedback-adding' => 'Aponsa de voutros avis a la pâge...',
+'feedback-error1' => 'Èrror : rèsultat de l’API pas recognu',
+'feedback-error2' => 'Èrror : lo changement at pas reussi',
+'feedback-error3' => 'Èrror : gins de rèponsa de l’API',
 );

@@ -2931,4 +2931,9 @@ Bu saytda texniki problemlər var.',
 'sqlite-has-fts' => '$1 tam mətn axtarma ilə',
 'sqlite-no-fts'  => '$1 tam mətn axtarma olmadan',
 
+
+# Feedback
+'feedback-subject' => 'Mövzu:',
+'feedback-message' => 'Mesaj:',
+'feedback-cancel' => 'İmtina',
 );

@@ -3670,4 +3670,15 @@ MediaWiki распаўсюджваецца з надзеяй, што будзе 
 'sqlite-has-fts' => '$1 з падтрымкай поўнатэкстнага пошуку',
 'sqlite-no-fts'  => '$1 без падтрымкі поўнатэкстнага пошуку',
 
+
+# Feedback
+'feedback-note' => 'Ваш водгук будзе разьмешчаны ў праекце $1.',
+'feedback-subject' => 'Тэма:',
+'feedback-message' => 'Паведамленьне:',
+'feedback-cancel' => 'Скасаваць',
+'feedback-submit' => 'Даслаць водгук',
+'feedback-adding' => 'Даданьне водгуку на старонку…',
+'feedback-error1' => 'Памылка: невядомы вынік з API',
+'feedback-error2' => 'Памылка рэдагаваньня',
+'feedback-error3' => 'Памылка: няма адказу ад API',
 );

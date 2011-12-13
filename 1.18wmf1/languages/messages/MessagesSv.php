@@ -3760,4 +3760,15 @@ Ange filens namn utan prefixet "{{ns:file}}:".',
 'sqlite-has-fts' => '$1 med stöd för fulltextsökning',
 'sqlite-no-fts'  => '$1 utan stöd för fulltextsökning',
 
+
+# Feedback
+'feedback-note' => 'Din feedback kommer att publiceras offentligt på sidan "[$2 $1]", tillsammans med ditt användarnamn, version av webbläsare och operativsystem.',
+'feedback-subject' => 'Ämne:',
+'feedback-message' => 'Meddelande:',
+'feedback-cancel' => 'Avbryt',
+'feedback-submit' => 'Skicka in feedback',
+'feedback-adding' => 'Ge feedback till sida...',
+'feedback-error1' => 'Fel: Okänt resultat från API',
+'feedback-error2' => 'Fel: Redigeringen misslyckades',
+'feedback-error3' => 'Fel: Inget svar från API',
 );

@@ -3419,4 +3419,12 @@ Zapodaj datajowe mjeno bjez dodawka "{{ns:file}}:".',
 'sqlite-has-fts' => '$1 połnotekstowe pytanje podpěruje.',
 'sqlite-no-fts'  => '$1 połnotekstowe pytanje njepodpěruje',
 
+
+# Feedback
+'feedback-message' => 'Powěsć:',
+'feedback-cancel' => 'Přetorhnyć',
+'feedback-submit' => 'Komentar wotpósłać',
+'feedback-error1' => 'Zmylk: Njepřipóznaty wuslědk wot API',
+'feedback-error2' => 'Zmylk: Wobdźěłanje je so njeporadźiło',
+'feedback-error3' => 'Zmylk: Žana wotmołwa wot API',
 );

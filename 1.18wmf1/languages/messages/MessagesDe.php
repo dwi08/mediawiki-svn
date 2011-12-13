@@ -3818,4 +3818,15 @@ Die Eingabe muss ohne den Zusatz „{{ns:file}}:“ erfolgen.',
 'sqlite-has-fts' => 'Version $1 mit Unterstützung für die Volltextsuche',
 'sqlite-no-fts'  => 'Version $1 ohne Unterstützung für die Volltextsuche',
 
+
+# Feedback
+'feedback-note' => 'Die Rückmeldung wird auf der öffentlich einsehbaren Seite „[$2 $1]“ gespeichert, zusammen mit dem Benutzernamen, der verwendeten Webbrowser-Version und dem Betriebssystem.',
+'feedback-subject' => 'Betreff:',
+'feedback-message' => 'Nachricht:',
+'feedback-cancel' => 'Abbrechen',
+'feedback-submit' => 'Rückmeldung senden',
+'feedback-adding' => 'Rückmeldung wird zur Seite hinzugefügt …',
+'feedback-error1' => 'Fehler: Unbekanntes Ergebnis der API',
+'feedback-error2' => 'Fehler: Bearbeitung gescheitert',
+'feedback-error3' => 'Fehler: Keine Antwort von der API',
 );

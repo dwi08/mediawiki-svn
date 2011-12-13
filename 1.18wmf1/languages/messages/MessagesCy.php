@@ -3505,4 +3505,14 @@ Rhowch enw\'r ffeil heb y rhagddodiad "{{ns:file}}:".',
 'sqlite-has-fts' => '$1 gyda chymorth chwilio yr holl destun',
 'sqlite-no-fts'  => '$1 heb gymorth chwiliad yr holl destun',
 
+
+# Feedback
+'feedback-subject' => 'Gwrthrych:',
+'feedback-message' => 'Neges:',
+'feedback-cancel' => 'Diddymer',
+'feedback-submit' => 'Cyflwyner yr Adborth',
+'feedback-adding' => "Wrthi'n ychwanegu adborth i'r dudalen...",
+'feedback-error1' => "Gwall: Canlyniad anhysbys o'r API",
+'feedback-error2' => 'Gwall: Methodd y golygu',
+'feedback-error3' => 'Gwall: Dim ymateb gan yr API',
 );

@@ -3599,4 +3599,15 @@ Ipasok ang pangalan ng talaksan na hindi kasama ang unlaping "{{ns:image}}:".',
 'sqlite-has-fts' => '$1 na may suportang paghahanap ng buong teksto',
 'sqlite-no-fts'  => '$1 na walang suporta ng paghahanap ng buong teksto',
 
+
+# Feedback
+'feedback-note' => 'Ang iyong pakaing-tugon ay ipapaskil sa $1.',
+'feedback-subject' => 'Paksa:',
+'feedback-message' => 'Mensahe:',
+'feedback-cancel' => 'Huwag ituloy',
+'feedback-submit' => 'Ipasa ang Pakaing-tugon',
+'feedback-adding' => 'Idinaragdag ang pakaing-tugon sa pahina...',
+'feedback-error1' => 'Kamalian: Hindi nakikilalang kinalabasan mula sa API',
+'feedback-error2' => 'Kamalian: Nabigo ang pagpatnugot',
+'feedback-error3' => 'Kamalian: Walang tugon mula sa API',
 );

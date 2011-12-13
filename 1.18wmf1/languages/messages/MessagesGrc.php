@@ -2747,4 +2747,7 @@ $1',
 'htmlform-reset'               => 'Ἀναστρέφειν μεταβολάς',
 'htmlform-selectorother-other' => 'Ἄλλον',
 
+
+# Feedback
+'feedback-cancel' => 'Ἀκυροῦν',
 );

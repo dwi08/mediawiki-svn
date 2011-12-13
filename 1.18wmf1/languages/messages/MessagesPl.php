@@ -3783,4 +3783,15 @@ Wpisz nazwę pliku bez prefiksu „{{ns:file}}:”.',
 'sqlite-has-fts' => '$1 ze wsparciem pełnotekstowego wyszukiwania',
 'sqlite-no-fts'  => '$1 bez wsparcia pełnotekstowego wyszukiwania',
 
+
+# Feedback
+'feedback-note' => 'Twoja opinia zostanie wysłana do $1.',
+'feedback-subject' => 'Temat',
+'feedback-message' => 'Wiadomość:',
+'feedback-cancel' => 'Anuluj',
+'feedback-submit' => 'Prześlij opinię',
+'feedback-adding' => 'Dodawanie opinii do strony...',
+'feedback-error1' => 'Błąd – nierozpoznana odpowiedź API',
+'feedback-error2' => 'Błąd – edycja nieudana',
+'feedback-error3' => 'Błąd – brak odpowiedzi API',
 );

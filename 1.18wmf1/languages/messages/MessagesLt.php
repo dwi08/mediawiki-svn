@@ -3595,4 +3595,12 @@ Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public Licens
 'sqlite-has-fts' => '$1 su visatekstės paieškos palaikymu',
 'sqlite-no-fts'  => '$1 be visatekstės paieškos palaikymo',
 
+
+# Feedback
+'feedback-subject' => 'Tema:',
+'feedback-message' => 'Pranešimas:',
+'feedback-cancel' => 'Atšaukti',
+'feedback-submit' => 'Siųsti Atsiliepimą',
+'feedback-adding' => 'Pridedamas atsiliepimas į puslapį ...',
+'feedback-error2' => 'Klaida: Redagavimas nepavyko',
 );

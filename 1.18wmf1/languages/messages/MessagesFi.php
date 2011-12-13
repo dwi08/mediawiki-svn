@@ -3624,4 +3624,15 @@ Sinun olisi pitänyt saada [{{SERVER}}{{SCRIPTPATH}}/COPYING kopio GNU General P
 'sqlite-has-fts' => '$1, jossa on tuki kokotekstihaulle',
 'sqlite-no-fts'  => '$1, jossa ei ole tukea kokotekstihaulle',
 
+
+# Feedback
+'feedback-note' => 'Palautteesi, käyttäjänimesi, selainversiosi ja käyttöjärjestelmäsi julkistetaan sivulla "[$2 $1]".',
+'feedback-subject' => 'Otsikko',
+'feedback-message' => 'Viesti',
+'feedback-cancel' => 'Peruuta',
+'feedback-submit' => 'Lähetä palaute',
+'feedback-adding' => 'Lisätään palautetta sivulle...',
+'feedback-error1' => 'Virhe: ohjelmointirajapinnan vastausta ei tunnistettu',
+'feedback-error2' => 'Virhe: muokkaus epäonnistui',
+'feedback-error3' => 'Virhe: ohjelmointirajapinta ei vastaa',
 );

@@ -3820,4 +3820,15 @@ Unesite ime datoteke bez "{{ns:file}}:" prefiksa.',
 'sqlite-has-fts' => '$1 sa podrškom pretrage cijelog teksta',
 'sqlite-no-fts'  => '$1 bez podrške pretrage cijelog teksta',
 
+
+# Feedback
+'feedback-note' => 'Vaša povratna informacija će biti objavljena na $1.',
+'feedback-subject' => 'Tema:',
+'feedback-message' => 'Poruka:',
+'feedback-cancel' => 'Odustani',
+'feedback-submit' => 'Pošalji povratnu informaciju',
+'feedback-adding' => 'Dodajem povratne informacije na stranicu...',
+'feedback-error1' => 'Greška: Neprepoznati rezultat od API',
+'feedback-error2' => 'Greška: Uređivanje nije uspjelo',
+'feedback-error3' => 'Greška: Nema odgovora od API',
 );

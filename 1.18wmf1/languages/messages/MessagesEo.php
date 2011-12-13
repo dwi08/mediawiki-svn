@@ -3708,4 +3708,15 @@ Entajpu la dosiernomon sen la prefikso "{{ns:file}}:"',
 'sqlite-has-fts' => '$1 kun tut-teksta subteno',
 'sqlite-no-fts'  => '$1 sen tut-teksta subteno',
 
+
+# Feedback
+'feedback-note' => 'Via opinio estos afiŝita publike al la paĝo "[$2 $1]", kune kun via salutnomo, versio de retumilo, kaj operaciuma sistemo.',
+'feedback-subject' => 'Temo:',
+'feedback-message' => 'Mesaĝo:',
+'feedback-cancel' => 'Nuligi',
+'feedback-submit' => 'Sendi Mesaĝon',
+'feedback-adding' => 'Aldonanta respondon al la paĝo...',
+'feedback-error1' => 'Eraro: Nerekonita rezulto de API',
+'feedback-error2' => 'Eraro: La redakto malsukcesis',
+'feedback-error3' => 'Eraro: Neniu respondo de API',
 );

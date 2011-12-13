@@ -3624,4 +3624,15 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 'sqlite-has-fts' => '帶全文搜尋的版本$1',
 'sqlite-no-fts'  => '不帶全文搜尋的版本$1',
 
+
+# Feedback
+'feedback-note' => '您的反饋將隨著您的用戶名、 瀏覽器版本和操作系統公開張貼到「[$2 $1]」頁面。',
+'feedback-subject' => '主旨：',
+'feedback-message' => '訊息：',
+'feedback-cancel' => '取消',
+'feedback-submit' => '提交反饋',
+'feedback-adding' => '正在頁面添加反饋...',
+'feedback-error1' => '錯誤：從API返回無法識別的結果',
+'feedback-error2' => '錯誤：編輯失敗',
+'feedback-error3' => '錯誤：API 沒有響應',
 );

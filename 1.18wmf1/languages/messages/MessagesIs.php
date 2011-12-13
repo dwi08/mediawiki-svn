@@ -2401,4 +2401,15 @@ Vinsamlegast staðfestu að þú viljir endurvekja hana.",
 # Database error messages
 'dberr-usegoogle' => 'Þú getur notað Google til að leita á meðan.',
 
+
+# Feedback
+'feedback-note' => 'Svörunin þín verður birt opinberlega á síðunni "[$2 $1]", ásamt notendanafni, útgáfu vafrans og stýrikerfi.',
+'feedback-subject' => 'Fyrirsögn:',
+'feedback-message' => 'Skilaboð:',
+'feedback-cancel' => 'Hætta við',
+'feedback-submit' => 'Senda svörun',
+'feedback-adding' => 'Bæti við svörun á síðuna...',
+'feedback-error1' => 'Villa: Óþekkt útkoma frá API',
+'feedback-error2' => 'Villa: Breytingin mistókst',
+'feedback-error3' => 'Villa: Ekkert svar frá API',
 );

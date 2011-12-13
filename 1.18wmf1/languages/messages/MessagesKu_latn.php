@@ -2100,4 +2100,9 @@ Xêra xwe zanibe ku tu bi rastî dixwazê vê rûpelê dîsa çêkê",
 'htmlform-reset'               => 'Guherandinan vegerîne',
 'htmlform-selectorother-other' => 'Yên din',
 
+
+# Feedback
+'feedback-subject' => 'Mijar:',
+'feedback-message' => 'Peyam:',
+'feedback-cancel' => 'Betal bike',
 );

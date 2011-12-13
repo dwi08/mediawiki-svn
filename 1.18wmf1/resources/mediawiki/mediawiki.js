@@ -2,8 +2,8 @@
  * Core MediaWiki JavaScript Library
  */
 
-// Attach to window
-window.mediaWiki = new ( function( $ ) {
+// Attach to window and globally alias
+window.mw = window.mediaWiki = new ( function( $, undefined ) {
 
 	/* Private Members */
 

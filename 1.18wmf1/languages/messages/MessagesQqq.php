@@ -4254,4 +4254,13 @@ Used on [[Special:Tags]]. Verb. Used as display text on a link to create/edit a 
 'sqlite-has-fts' => 'Shown on Special:Version, $1 is version',
 'sqlite-no-fts'  => 'Shown on Special:Version, $1 is version',
 
+# Feedback
+'feedback-subject' => 'Label for a text input
+{{Identical|Subject}}',
+'feedback-message' => 'Label for a textarea; signature referrs to a Wikitext signature.',
+'feedback-cancel' => 'Button label
+{{Identical|Cancel}}',
+'feedback-submit' => 'Button label',
+'feedback-adding' => 'Progress notice',
+
 );

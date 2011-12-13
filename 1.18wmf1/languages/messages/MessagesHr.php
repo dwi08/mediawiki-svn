@@ -3659,4 +3659,8 @@ Unesite ime datoteke bez predmetka (''prefiksa'') imenskog prostora \"{{ns:file}
 'sqlite-has-fts' => '$1 s podrškom pretraživanja cijelog teksta',
 'sqlite-no-fts'  => '$1 bez podrške pretraživanja cijelog teksta',
 
+
+# Feedback
+'feedback-subject' => 'Tema:',
+'feedback-message' => 'Poruka:',
 );

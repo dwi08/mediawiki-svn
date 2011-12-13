@@ -3269,4 +3269,10 @@ Sartu fitxategiaren izena "{{ns:file}}:" aurrizkia gabe.',
 'htmlform-reset'               => 'Aldaketak desegin',
 'htmlform-selectorother-other' => 'Beste bat',
 
+
+# Feedback
+'feedback-subject' => 'Gaia:',
+'feedback-message' => 'Mezua:',
+'feedback-cancel' => 'Utzi',
+'feedback-submit' => 'Feedbacka bidali',
 );

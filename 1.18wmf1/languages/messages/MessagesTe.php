@@ -3440,4 +3440,10 @@ $1',
 'sqlite-has-fts' => '$1 పూర్తి-పాఠ్య అన్వేషణ తోడ్పాటుతో',
 'sqlite-no-fts'  => '$1 పూర్తి-పాఠ్య అన్వేషణ తోడ్పాటు లేకుండా',
 
+
+# Feedback
+'feedback-subject' => 'విషయం:',
+'feedback-message' => 'సందేశం:',
+'feedback-cancel' => 'రద్దుచేయి',
+'feedback-error2' => 'దోషము: సవరణ విఫలమైంది',
 );

@@ -3905,4 +3905,15 @@ Voer de bestandsnaam in zonder het voorvoegsel "{{ns:file}}:".',
 'sqlite-has-fts' => 'Versie $1 met ondersteuning voor "full-text" zoeken',
 'sqlite-no-fts'  => 'Versie $1 zonder ondersteuning voor "full-text" zoeken',
 
+
+# Feedback
+'feedback-note' => 'Uw terugkoppeling wordt geplaatst op $1.',
+'feedback-subject' => 'Onderwerp:',
+'feedback-message' => 'Bericht:',
+'feedback-cancel' => 'Annuleren',
+'feedback-submit' => 'Terugkoppeling opslaan',
+'feedback-adding' => 'Uw terugkoppeling wordt aan de pagina toegevoegd...',
+'feedback-error1' => 'Fout: onbekend resultaat uit de API',
+'feedback-error2' => 'Fout: de bewerking is mislukt',
+'feedback-error3' => 'Fout: geen reactie van de API',
 );

@@ -3929,4 +3929,15 @@ die De häs han welle. Se künnt jet ällder un nit mieh aktoäll sin.',
 'sqlite-has-fts' => 'Version $1 (un kann en janze Täxte söhke)',
 'sqlite-no-fts'  => 'Version $1 (kann ävver nit en janze Täxte söhke)',
 
+
+# Feedback
+'feedback-note' => 'Ding Röckmäldong küdd op $1.',
+'feedback-subject' => 'Theema:',
+'feedback-message' => 'Nohreesch:',
+'feedback-cancel' => 'Stopp! Avbreche!',
+'feedback-submit' => 'Lohß jonn!',
+'feedback-adding' => 'Ben di Röckmäldong op di Sigg aam donn&nbsp;…',
+'feedback-error1' => 'Fähler: dat <i lang="en">API</i> säät jät, wat mer nit kenne',
+'feedback-error2' => 'Fähler: de Sigg ze ändere es donävve jejange',
+'feedback-error3' => 'Fähler: dat <i lang="en">API</i> joov kein Antwoot',
 );

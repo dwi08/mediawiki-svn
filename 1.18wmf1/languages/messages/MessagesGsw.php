@@ -3283,4 +3283,15 @@ D Yygab muess ohni dr Zuesatz „{{ns:file}}:“ erfolge.',
 'sqlite-has-fts' => '$1 mit Unterstitzig vu dr Volltextsuechi',
 'sqlite-no-fts'  => '$1 ohni Unterstitzig vu dr Volltextsuechi',
 
+
+# Feedback
+'feedback-note' => 'Die Ruggmäldig wird uff de öffentliche Syte „[$2 $1]“ gspyycheret, zämme mit em Benutzername, de Webbrowser-Version un em Betriebssystem, wo du bruuchsch.',
+'feedback-subject' => 'Beträff:',
+'feedback-message' => 'Noochricht:',
+'feedback-cancel' => 'Abbräche',
+'feedback-submit' => 'Ruggmäldig abschigge',
+'feedback-adding' => 'Ruggmäldig wird zur Syte dezuegfiegt …',
+'feedback-error1' => 'Fäälermäldig: Unbekannts Ergebniss vo de API',
+'feedback-error2' => 'Fääler: Bearbeitig fehlgschlo',
+'feedback-error3' => 'Fäälermäldig: Kei Antwort vo de API',
 );

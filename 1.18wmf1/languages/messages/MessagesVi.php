@@ -3824,4 +3824,15 @@ Hãy ghi vào tên tập tin, không bao gồm tiền tố “{{ns:file}}:”.',
 'sqlite-has-fts' => '$1 với sự hỗ trợ tìm kiếm toàn văn',
 'sqlite-no-fts'  => '$1 không có hỗ trợ tìm kiếm toàn văn',
 
+
+# Feedback
+'feedback-note' => 'Phản hồi của bạn sẽ được đăng lên $1.',
+'feedback-subject' => 'Tiêu đề:',
+'feedback-message' => 'Thông điệp:',
+'feedback-cancel' => 'Hủy bỏ',
+'feedback-submit' => 'Gửi phản hồi',
+'feedback-adding' => 'Đang thêm thông tin phản hồi vào trang…',
+'feedback-error1' => 'Hủy bỏ',
+'feedback-error2' => 'Lỗi: Sửa đổi thất bại',
+'feedback-error3' => 'Lỗi: API không có phản ứng',
 );

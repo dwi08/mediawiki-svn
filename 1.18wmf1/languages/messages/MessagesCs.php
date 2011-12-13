@@ -3802,4 +3802,15 @@ Jméno souboru vkládejte bez označení "{{ns:file}}:" .',
 'sqlite-has-fts' => '$1 s podporou plnotextového vyhledávání',
 'sqlite-no-fts'  => '$1 bez podpory plnotextového vyhledávání',
 
+
+# Feedback
+'feedback-note' => 'Váš komentář bude zveřejněn na stránce „[$2 $1]“ spolu s vaším uživatelským jménem, verzí prohlížeče a operačního systému.',
+'feedback-subject' => 'Předmět:',
+'feedback-message' => 'Zpráva:',
+'feedback-cancel' => 'Storno',
+'feedback-submit' => 'Odeslat komentář',
+'feedback-adding' => 'Komentář se přidává na stránku…',
+'feedback-error1' => 'Chyba: Nerozpoznaný výsledek z API',
+'feedback-error2' => 'Chyba: Editace se nezdařila',
+'feedback-error3' => 'Chyba: API nevrátilo žádnou odpověď',
 );

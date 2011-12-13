@@ -2269,4 +2269,8 @@ Tóbájẹ́pé fáìlì ọ̀hún ti jẹ́ títúnṣe sí bóṣewà ní bẹ
 'htmlform-reset'               => 'Ìdápadà àwọn àtúnṣe',
 'htmlform-selectorother-other' => 'Òmíràn',
 
+
+# Feedback
+'feedback-message' => 'Ìránṣẹ́:',
+'feedback-cancel' => 'Fagilé',
 );

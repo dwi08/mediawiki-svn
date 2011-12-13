@@ -3687,4 +3687,15 @@ Add meg a fájlnevet a „{{ns:file}}:” prefixum nélkül.',
 'sqlite-has-fts' => '$1 teljes szöveges keresés támogatással',
 'sqlite-no-fts'  => '$1 teljes szöveges keresés támogatása nélkül',
 
+
+# Feedback
+'feedback-note' => 'A visszajelzés a(z) „[$2 $1]” lapon kerül közzétételre a felhasználóneveddel, böngésződ verziójával és az operációs rendszerrel együtt.',
+'feedback-subject' => 'Tárgy:',
+'feedback-message' => 'Üzenet:',
+'feedback-cancel' => 'Mégse',
+'feedback-submit' => 'Visszajelzés elküldése',
+'feedback-adding' => 'Visszajelzés elmentése...',
+'feedback-error1' => 'Hiba: az API ismeretlen eredménnyel tért vissza',
+'feedback-error2' => 'Hiba: a szerkesztés nem sikerült',
+'feedback-error3' => 'Hiba: nem érkezett válasz az API-tól',
 );

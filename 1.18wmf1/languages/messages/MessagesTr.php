@@ -3639,4 +3639,13 @@ Dosya adını "{{ns:file}}:" öneki olmadan gir.',
 'sqlite-has-fts' => '$1 tam-metin arama desteği ile',
 'sqlite-no-fts'  => '$1 tam-metin arama desteği olmaksızın',
 
+
+# Feedback
+'feedback-subject' => 'Konu:',
+'feedback-message' => 'Mesaj:',
+'feedback-cancel' => 'İptal',
+'feedback-submit' => 'Geribildirimi Gönder',
+'feedback-adding' => 'Sayfaya geribildirim ekleniyor...',
+'feedback-error2' => 'Hata: Düzenleme başarısız oldu',
+'feedback-error3' => "Hata: API'den yanıt yok",
 );

@@ -3642,4 +3642,15 @@ Sisesta faili nimi eesliiteta "{{ns:file}}:".',
 'sqlite-has-fts' => '$1 koos täistekstiotsingu toega',
 'sqlite-no-fts'  => '$1 ilma täistekstiotsingu toeta',
 
+
+# Feedback
+'feedback-note' => 'Sinu tagasiside postitatakse avalikult sinu kasutajanime ning andmetega sinu võrgulehitseja versiooni ja operatsioonisüsteemi kohta leheküljele "[$2 $1]".',
+'feedback-subject' => 'Teema:',
+'feedback-message' => 'Sõnum:',
+'feedback-cancel' => 'Loobu',
+'feedback-submit' => 'Saada tagasiside',
+'feedback-adding' => 'Tagasiside lisamine leheküljele...',
+'feedback-error1' => 'Tõrge: Tundmatu API tulemus',
+'feedback-error2' => 'Tõrge: Redigeerimine ebaõnnestus',
+'feedback-error3' => 'Tõrge: API ei vasta',
 );
