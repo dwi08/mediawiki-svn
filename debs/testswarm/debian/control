@@ -2,7 +2,7 @@ Source: testswarm
 Section: web
 Priority: extra
 Maintainer: Antoine Musso <amusso@wikimedia.org>
-Uploaders: Antoine Musso <amusso@wikimedia.org>, Chad Horohoe <chad@wikimedia.org>
+Uploaders: Chad Horohoe <chad@wikimedia.org>
 Build-Depends: debhelper (>= 7), dbconfig-common, quilt
 Standards-Version: 3.8.3
 Homepage: https://github.com/jquery/testswarm
