@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net;
 
@@ -67,7 +66,7 @@ namespace wmib
         /// <summary>
         /// Channels
         /// </summary>
-        public static channel[] channels = { new channel("#bhfsjhhdhgf"), new channel( "#wikimedia-testbot") };
+        public static channel[] channels = { new channel("#wikimedia-labs"), new channel( "#wikimedia-test-bots") };
     }
 
     public static class irc
@@ -96,7 +95,7 @@ namespace wmib
             public trust(string channel)
             { 
                 // Load
-                File = _Channel + "_user";
+                File = channel + "_user";
                 if (!System.IO.File.Exists(File))
                 {
                     // Create db
@@ -155,13 +154,25 @@ namespace wmib
             {
                 foreach (user b in Users)
                 {
-                    if (b.name == user)
+                    System.Text.RegularExpressions.Regex id = new System.Text.RegularExpressions.Regex(b.name);
+                    if (id.Match(user).Success)
                     {
                         return b;
                     }
                 }
                 return new user("null", "");
             }
+
+            public void listAll()
+            {
+                string users_ok = "";
+                foreach (user b in Users)
+                {
+                    users_ok = users_ok + " " + b.name;
+                }
+                Message("I trust to: " + users_ok, _Channel);
+            }
+
             public bool matchLevel(int level, string rights)
             { 
                 if (level == 2)
@@ -178,7 +189,7 @@ namespace wmib
 
             public bool isApproved(string User, string Host, string command)
             {
-                user current = getUser(User);
+                user current = getUser(User + "!@" + Host);
                 if (current.level == "null")
                 {
                     return false;
@@ -204,9 +215,13 @@ namespace wmib
                 {
                         return matchLevel(1, current.level);
                 }
+                if (command == "admin")
+                {
+                    return matchLevel(2, current.level);
+                }
                 if (command == "trustadd")
                 {
-                    return matchLevel(1, current.level);
+                        return matchLevel(1, current.level);
                 }
                 if (command == "trustdel")
                 {
@@ -218,28 +233,151 @@ namespace wmib
 
         public class dictionary
         {
-            public Dictionary<string, string> text = new Dictionary<string, string>();
+            public class item
+            {
+                public item(string Key, string Text, string User, string Lock = "false")
+                {
+                    text = Text;
+                    key = Key;
+                    locked = Lock;
+                    user = User;
+                }
+                public string text;
+                public string key;
+                public string user;
+                public string locked;
+            }
+            public List<item> text = new List<item>();
+            public string Channel;
             public void Load(string channel)
-            { 
-                string file = channel + ".db";
+            {
+                Channel = channel;
+                string file = Channel + ".db";
                 if (!System.IO.File.Exists(file))
                 {
                     // Create db
                     System.IO.File.WriteAllText(file, "");
                 }
+
             }
-            public void setKey(string text, string key, string user, config.channel channel)
-            { 
-                
+
+            public void Save()
+            {
+                try
+                {
+                    string file = Channel + ".db";
+                    System.IO.File.WriteAllText(file, "");
+                    foreach (item key in text)
+                    {
+                        System.IO.File.AppendAllText(file, key.key + "|" + key.text + "|" + key.locked + "|" + key.user);
+                    }
+                }
+                catch (Exception b)
+                {
+                    handleException(b, Channel);
+                }
             }
-            public void aliasKey(string key, string alias, string user, config.channel channel)
-            { 
-                
+
+            public bool print(string name)
+            {
+                if (!name.StartsWith("!"))
+                {
+                    return true;
+                }
+                name = name.Substring(1);
+                if (name.Contains(" ") && name.Contains("|") == false)
+                {
+                    string[] parm = name.Split(' ');
+                    if (parm[1] == "is")
+                    {
+                        setKey(parm[2], parm[0], "");
+                        return false;
+                    }
+                    if (parm[1] == "del")
+                    {
+                        rmKey(parm[0], "");
+                        return false;
+                    }
+                }
+                string User ="";
+                if (name.Contains("|"))
+                {
+                    User = name.Substring(name.IndexOf("|"));
+                    User = User.Replace("|", "");
+                    User = User.Replace(" ", "");
+                    name = name.Substring(0, name.IndexOf("|"));
+                    name = name.Replace(" ", "");
+                }
+                foreach (item data in text)
+                { 
+                    
+                    if (data.key == name)
+                    {
+                        if (User == "")
+                        {
+                            Message(name + " is: " + data.text, Channel);
+                        } else
+                        {
+                            Message(User + ":" + data.text, Channel);
+                        }
+                        return true;
+                    }
+                }
+                return true;
             }
-            public void rmKey(string key, string user, config.channel channel)
-            { 
-            
+
+            public void setKey(string Text, string key, string user)
+            {
+                try
+                {
+                    if (!Text.Contains("|"))
+                    {
+                        foreach (item data in text)
+                        {
+
+                            if (data.key == key)
+                            {
+                                Message("Key exist!", Channel);
+                                return;
+                            }
+                        }
+                        text.Add(new item(key, Text, user, "false"));
+                        Message("Key was added!", Channel);
+                    }
+                    else
+                    {
+                        Message("Error, it contains invalid characters, " + user + " you better not use pipes in text!", Channel);
+                    }
+                    Save();
+                }
+                catch (Exception b)
+                {
+                    handleException(b, Channel);
+                }
             }
+            public void aliasKey(string key, string alias, string user)
+            {
+                Save();
+            }
+            public void rmKey(string key, string user)
+            {
+                foreach (item keys in text)
+                {
+                    if (keys.key == key)
+                    {
+                        text.Remove(keys);
+                        Message("Successfully removed " + key, Channel);
+                        Save();
+                        return;
+                    }
+                }
+                Message("Unable to find the specified key in db", Channel);
+            }
+        }
+
+        public static void handleException(Exception ex, string chan)
+        {
+            Message("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", chan);
         }
 
         public static config.channel getChannel(string name)
@@ -263,35 +401,57 @@ namespace wmib
 
         public static int modifyRights(string message, config.channel channel, string user, string host)
         {
-            if (message.StartsWith("@trustadd"))
+            try
             {
-                string[] rights_info = message.Split(' ');
-                if (channel.Users.isApproved(user, host, "trustadd"))
+                if (message.StartsWith("@trustadd"))
                 {
-                    channel.Users.addUser(rights_info[2], rights_info[1]);
+                    string[] rights_info = message.Split(' ');
+                    if (channel.Users.isApproved(user, host, "trustadd"))
+                    {
+                        if (!(rights_info[2] == "admin" || rights_info[2] == "trusted"))
+                        {
+                            Message("Unknown user level!", channel.name);
+                            return 2;
+                        }
+                        if (rights_info[2] == "admin")
+                        {
+                            if (!channel.Users.isApproved(user, host, "admin"))
+                            {
+                                Message("Permission denied!", channel.name);
+                                return 2;
+                            }
+                        }
+                        if (channel.Users.addUser(rights_info[2], rights_info[1]))
+                        {
+                            Message("Successfuly added " + rights_info[1], channel.name);
+                        }
+                    }
+                    else
+                    {
+                        Message("You are not autorized to perform this, sorry", channel.name);
+                    }
                 }
-                else
+                if (message.StartsWith("@trusted"))
                 {
-                    Message("You are not autorized to perform this, sorry", channel.name);
-                    
+                    channel.Users.listAll();
+                }
+                if (message.StartsWith("@trustdel"))
+                {
+                    string[] rights_info = message.Split(' ');
+                    string x = rights_info[1];
+                    if (channel.Users.isApproved(user, host, "trustdel"))
+                    {
+                        channel.Users.delUser(rights_info[1]);
+                    }
+                    else
+                    {
+                        Message("You are not autorized to perform this, sorry", channel.name);
+                    }
                 }
             }
-            if (message.StartsWith("@trusted"))
+            catch (Exception b)
             {
-                
-            }
-            if (message.StartsWith("@trustdel"))
-            {
-                string[] rights_info = message.Split(' ');
-                string x = rights_info[1];
-                if (channel.Users.isApproved(user, host, "trustdel"))
-                {
-                    channel.Users.delUser(rights_info[1]);
-                }
-                else
-                {
-                    Message("You are not autorized to perform this, sorry", channel.name);
-                }
+                handleException(b, channel.name);
             }
             return 0;
         }
@@ -299,8 +459,8 @@ namespace wmib
         public static void chanLog(string message, config.channel channel, string user, string host)
         {
             if (channel.logged)
-            { 
-                string log = "\n" + "[" + System.DateTime.Today.Hour + ":" + System.DateTime.Today.Minute + ":" + System.DateTime.Today.Second + "] " + "<" + user + "> " + message;
+            {
+                string log = "\n" + "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] " + "<" + user + "> " + message;
                 System.IO.File.AppendAllText(channel.log, log);
             }
         }
@@ -310,10 +470,13 @@ namespace wmib
             config.channel curr = getChannel(channel);
             if (curr != null)
             {
+                    curr.Keys.print(message);
                     chanLog(message, curr, nick, host);
                     modifyRights(message, curr, nick, host);
             }
-            
+
+
+
 
             return false;
         }
@@ -360,7 +523,14 @@ namespace wmib
                                 channel = text.Substring(text.IndexOf("#"), text.IndexOf(" ", text.IndexOf("#")) - text.IndexOf("#"));
                                 message = text.Substring(text.IndexOf("PRIVMSG"));
                                 message = message.Substring(message.IndexOf(":") + 1);
-                                getMessage(channel, nick, host, message);
+                                if (message.Contains("ACTION"))
+                                {
+
+                                }
+                                else
+                                {
+                                    getMessage(channel, nick, host, message);
+                                }
                             }
                             else
                             { 
@@ -368,7 +538,6 @@ namespace wmib
                             }
                         }
                     }
-                    Console.Write(text + "\n\n\n");
                     System.Threading.Thread.Sleep(50);
                 }     
             }
