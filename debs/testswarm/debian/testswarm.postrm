@@ -31,6 +31,8 @@ purge)
 	fi
 	invoke-rc.d apache2 reload || true
 
+	db_purge
+
 	;;
 
 
