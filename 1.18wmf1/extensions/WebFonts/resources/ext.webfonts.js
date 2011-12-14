@@ -167,6 +167,18 @@
 		 * It also apply the font from cookie, if any.
 		 */
 		setup: function() {
+			// Blacklist some browsers that are known to have issues with font rendering
+			if ( navigator.appName === 'Microsoft Internet Explorer' ) {
+				var ua = navigator.userAgent;
+				if ( /MSIE 6/i.test( ua ) ) {
+					// IE6 has not font fallbacks
+					return;
+				} else if ( /MSIE 8/i.test( ua ) && /Windows NT 5.1/i.test( ua ) ) {
+					// IE8 on XP has occasional gibberish bug
+					return;
+				}
+			}
+			
 			var config = [];
 			var languages = mw.webfonts.config.languages;
 			var requested = [mw.config.get( 'wgUserVariant' ), mw.config.get( 'wgContentLanguage' ), mw.config.get( 'wgUserLanguage' )];
@@ -262,12 +274,11 @@
 			var haveSchemes = false;
 			// Build font dropdown
 			var $fontsMenu = $( '<ul>' ).attr( 'id', 'webfonts-fontsmenu' );
-			$fontsMenu.delegate( 'input:radio', 'change', function( e ) {
+			$fontsMenu.delegate( 'input:radio', 'click', function( ) {
 				mw.webfonts.set( $(this).val() );
 			} );
 			for ( var scheme in config ) {
-				var $fontLink = $( '<input type="radio" />' )
-					.attr( 'name', 'font' ) 
+				var $fontLink = $( '<input type="radio" name="font" />' )
 					.attr( 'id', fontID( config[scheme] ) )
 					.val( config[scheme] );
 
@@ -292,8 +303,7 @@
 				return null;
 			}
 
-			var $resetLink = $( '<input type="radio" />' )
-				.attr( 'name', 'font' )
+			var $resetLink = $( '<input type="radio" name="font"/>' )
 				.attr( 'value', 'webfont-none' )
 				.attr( 'id', 'webfont-none' )
 				.click( function( e ) {
