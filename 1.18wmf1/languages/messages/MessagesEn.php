@@ -4601,7 +4601,8 @@ This site is experiencing technical difficulties.',
 
 
 # Feedback
-'feedback-note' => 'Your feedback will be posted publicly to the page "[$2 $1]", along with your user name, browser version and operating system.',
+'feedback-note' => 'This form publicly posts a simple comment or suggestion to the page "[$2 $1]", along with your user name, browser version and operating system.',
+'feedback-bugnote' => 'Or, you can [$1 post a technical bug report] instead.',
 'feedback-subject' => 'Subject:',
 'feedback-message' => 'Message:',
 'feedback-cancel' => 'Cancel',
@@ -4610,4 +4611,8 @@ This site is experiencing technical difficulties.',
 'feedback-error1' => 'Error: Unrecognized result from API',
 'feedback-error2' => 'Error: Edit failed',
 'feedback-error3' => 'Error: No response from API',
+'feedback-thanks' => 'Thanks! Your feedback has been posted to the page "[$2 $1]".',
+'feedback-close' => 'Done',
+'feedback-bugcheck' => 'Great! Just check that it is not already one of the [$1 known bugs].',
+'feedback-bugnew' => 'I checked. Report a new bug',
 );
