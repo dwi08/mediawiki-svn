@@ -26,8 +26,13 @@ es.AnnotationButtonTool.prototype.onClick = function() {
 		if ( surfaceView.getModel().getSelection().getLength() ) {
 			this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
 		} else {
-			if ( !this.active ) {
-				surfaceView.annotate( 'set', this.annotation );
+			if ( this.active ) {
+				var surfaceModel = surfaceView.getModel(),
+					documentModel = surfaceModel.getDocument(),
+					selection = surfaceModel.getSelection(),
+					range = documentModel.getAnnotationBoundaries( selection.from, this.annotation, true );
+				surfaceModel.select( range );
+				this.toolbar.getSurfaceView().getContextView().openInspector( this.inspector );
 			}
 		}
 	} else {
