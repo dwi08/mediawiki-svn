@@ -1584,7 +1584,7 @@ abstract class File {
 		wfDeprecated( __METHOD__, '1.19' );
 
 		$fsFile = new FSFile( $path );
-		return $fsFile->sha1Base36();
+		return $fsFile->getSha1Base36();
 	}
 
 	/**

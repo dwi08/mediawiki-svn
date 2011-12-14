@@ -114,7 +114,7 @@ class FSFile {
 					$info = $this->extractImageSizeInfo( $gis ) + $info;
 				}
 			}
-			$info['sha1'] = $this->sha1Base36();
+			$info['sha1'] = $this->getSha1Base36();
 
 			wfDebug(__METHOD__.": $this->path loaded, {$info['size']} bytes, {$info['mime']}.\n");
 		} else {
@@ -165,7 +165,7 @@ class FSFile {
 	 *
 	 * @return false|string False on failure
 	 */
-	public function sha1Base36() {
+	public function getSha1Base36() {
 		wfProfileIn( __METHOD__ );
 
 		wfSuppressWarnings();
@@ -206,6 +206,6 @@ class FSFile {
 	 */
 	static function getSha1Base36FromPath( $path ) {
 		$fsFile = new self( $path );
-		return $fsFile->sha1Base36();
+		return $fsFile->getSha1Base36();
 	}
 }

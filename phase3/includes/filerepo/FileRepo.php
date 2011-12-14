@@ -1200,7 +1200,7 @@ class FileRepo {
 		if ( !$tmpFile ) {
 			return false;
 		}
-		return $tmpFile->sha1Base36();
+		return $tmpFile->getSha1Base36();
 	}
 
 	/**

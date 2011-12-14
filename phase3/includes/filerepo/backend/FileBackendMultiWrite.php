@@ -16,8 +16,6 @@
  * that has the file. Special cases are listed below:
  *     a) getFileTimestamp() will always check only the master backend to
  *        avoid confusing and inconsistent results.
- *     b) getFileHash() will always check only the master backend to keep
- *        the result format consistent.
  * 
  * All write operations are performed on all backends.
  * If an operation fails on one backend it will be rolled back from the others.
@@ -62,106 +60,87 @@ class FileBackendMultiWrite extends FileBackendBase {
 	}
 
 	final public function doOperations( array $ops ) {
-		$status = Status::newGood( array() );
+		$status = Status::newGood();
 
 		$performOps = array(); // list of FileOp objects
-		$batchSize = count( $ops ); // each backend has this many ops
-		$filesToLock = array(); // storage paths to lock
+		$filesLockEx = $filesLockSh = array(); // storage paths to lock
 		// Build up a list of FileOps. The list will have all the ops
 		// for one backend, then all the ops for the next, and so on.
 		// These batches of ops are all part of a continuous array.
 		// Also build up a list of files to lock...
 		foreach ( $this->fileBackends as $index => $backend ) {
-			$performOps = array_merge( $performOps, $backend->getOperations( $ops ) );
+			$backendOps = $this->substOpPaths( $ops, $backend );
+			$performOps = array_merge( $performOps, $backend->getOperations( $backendOps ) );
 			if ( $index == 0 ) {
-				// Set $filesToLock from the first batch so we don't try to set all
+				// Set "files to lock" from the first batch so we don't try to set all
 				// locks two or three times over (depending on the number of backends).
 				// A lock on one storage path is a lock on all the backends.
 				foreach ( $performOps as $index => $fileOp ) {
-					$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsUsed() );
+					$filesLockSh = array_merge( $filesLockSh, $fileOp->storagePathsRead() );
+					$filesLockEx = array_merge( $filesLockEx, $fileOp->storagePathsChanged() );
 				}
+				// Lock the paths under the proxy backend's name
+				$this->unsubstPaths( $filesLockSh );
+				$this->unsubstPaths( $filesLockEx );
 			}
 		}
 
 		// Try to lock those files for the scope of this function...
-		$scopedLock = $this->getScopedFileLocks( $filesToLock, LockManager::LOCK_EX, $status );
+		$scopeLockS = $this->getScopedFileLocks( $filesLockSh, LockManager::LOCK_UW, $status );
+		$scopeLockE = $this->getScopedFileLocks( $filesLockEx, LockManager::LOCK_EX, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}
 
-		$failedOps = array(); // failed ops with 'ignoreErrors'
-		$predicates = FileOp::newPredicates(); // effects of previous ops
-		// Do pre-checks for each operation; abort on failure...
-		foreach ( $performOps as $index => $fileOp ) {
-			if ( $index > 0 && ( $index % $batchSize ) == 0 ) {
-				// We are starting the op batch for another backend
-				// which is not effected by the other op batches.
-				$predicates = FileOp::newPredicates();
-			}
-			$status->merge( $fileOp->precheck( $predicates ) );
-			if ( !$status->isOK() ) { // operation failed?
-				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
-					$failedOps[$index] = 1; // remember not to call attempt()/finish()
-					++$status->failCount;
-					$status->success[$index] = false;
-				} else {
-					return $status;
-				}
-			}
-		}
-
-		// Attempt each operation; abort on failure...
-		foreach ( $performOps as $index => $fileOp ) {
-			if ( isset( $failedOps[$index] ) ) {
-				continue; // nothing to do
-			}
-			$status->merge( $fileOp->attempt() );
-			if ( !$status->isOK() ) { // operation failed?
-				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
-					$failedOps[$index] = 1; // remember not to call finish()
-					++$status->failCount;
-					$status->success[$index] = false;
-				} else {
-					// Revert everything done so far and abort.
-					// Do this by reverting each previous operation in reverse order.
-					$pos = $index - 1; // last one failed; no need to revert()
-					while ( $pos >= 0 ) {
-						if ( !isset( $failedOps[$pos] ) ) {
-							$status->merge( $performOps[$pos]->revert() );
-						}
-						$pos--;
-					}
-					return $status;
-				}
-			}
-		}
-
-		// Finish each operation...
-		foreach ( $performOps as $index => $fileOp ) {
-			if ( isset( $failedOps[$index] ) ) {
-				continue; // nothing to do
-			}
-			$subStatus = $fileOp->finish();
-			if ( $subStatus->isOK() ) {
-				++$status->successCount;
-				$status->success[$index] = true;
-			} else {
-				++$status->failCount;
-				$status->success[$index] = false;
-			}
-			$status->merge( $subStatus );
-		}
-
-		// Make sure status is OK, despite any finish() fatals
-		$status->setResult( true, $status->value );
+		// Actually attempt the operation batch...
+		$status->merge( $this->attemptOperations( $performOps ) );
 
 		return $status;
+	}
+
+	/**
+	 * Substitute the backend name in storage path parameters
+	 * for a set of operations with a that of a given backend.
+	 * 
+	 * @param $ops Array List of file operation arrays
+	 * @param $backend FileBackend
+	 * @return Array
+	 */
+	protected function substOpPaths( array $ops, FileBackend $backend ) {
+		$newOps = array(); // operations
+		foreach ( $ops as $op ) {
+			$newOp = $op; // operation
+			foreach ( array( 'src', 'srcs', 'dst' ) as $par ) {
+				if ( isset( $newOp[$par] ) ) {
+					$newOp[$par] = preg_replace(
+						'!^mwstore://' . preg_quote( $this->name ) . '/!',
+						'mwstore://' . $backend->getName() . '/',
+						$newOp[$par]
+					);
+				}
+			}
+			$newOps[] = $newOp;
+		}
+		return $newOps;
+	}
+
+	/**
+	 * Replace the backend part of storage paths with this backend's name
+	 * 
+	 * @param &$paths Array
+	 * @return void 
+	 */
+	protected function unsubstPaths( array &$paths ) {
+		foreach ( $paths as &$path ) {
+			$path = preg_replace( '!^mwstore://([^/]+)!', "mwstore://{$this->name}", $path );
+		}
 	}
 
 	function prepare( array $params ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$status->merge( $backend->prepare( $params ) );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$status->merge( $backend->prepare( $realParams ) );
 		}
 		return $status;
 	}
@@ -169,7 +148,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function secure( array $params ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$status->merge( $backend->secure( $params ) );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$status->merge( $backend->secure( $realParams ) );
 		}
 		return $status;
 	}
@@ -177,7 +157,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function clean( array $params ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$status->merge( $backend->clean( $params ) );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$status->merge( $backend->clean( $realParams ) );
 		}
 		return $status;
 	}
@@ -185,7 +166,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function fileExists( array $params ) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
-			if ( $backend->fileExists( $params ) ) {
+			$realParams = $this->substOpPaths( $params, $backend );
+			if ( $backend->fileExists( $realParams ) ) {
 				return true;
 			}
 		}
@@ -194,13 +176,15 @@ class FileBackendMultiWrite extends FileBackendBase {
 
 	function getFileTimestamp( array $params ) {
 		// Skip non-master for consistent timestamps
-		return $this->backends[$this->masterIndex]->getFileTimestamp( $params );
+		$realParams = $this->substOpPaths( $params, $backend );
+		return $this->backends[$this->masterIndex]->getFileTimestamp( $realParams );
 	}
 
 	function getSha1Base36(array $params) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
-			$hash = $backend->getSha1Base36( $params );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$hash = $backend->getSha1Base36( $realParams );
 			if ( $hash !== false ) {
 				return $hash;
 			}
@@ -211,7 +195,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function getFileProps( array $params ) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
-			$props = $backend->getFileProps( $params );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$props = $backend->getFileProps( $realParams );
 			if ( $props !== null ) {
 				return $props;
 			}
@@ -222,7 +207,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function streamFile( array $params ) {
 		$status = Status::newGood();
 		foreach ( $this->backends as $backend ) {
-			$subStatus = $backend->streamFile( $params );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$subStatus = $backend->streamFile( $realParams );
 			$status->merge( $subStatus );
 			if ( $subStatus->isOK() ) {
 				// Pass isOK() despite fatals from other backends
@@ -242,7 +228,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function getLocalReference( array $params ) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
-			$fsFile = $backend->getLocalReference( $params );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$fsFile = $backend->getLocalReference( $realParams );
 			if ( $fsFile ) {
 				return $fsFile;
 			}
@@ -253,7 +240,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function getLocalCopy( array $params ) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
-			$tmpFile = $backend->getLocalCopy( $params );
+			$realParams = $this->substOpPaths( $params, $backend );
+			$tmpFile = $backend->getLocalCopy( $realParams );
 			if ( $tmpFile ) {
 				return $tmpFile;
 			}
@@ -264,7 +252,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	function getFileList( array $params ) {
 		foreach ( $this->backends as $index => $backend ) {
 			# Get results from the first backend
-			return $backend->getFileList( $params );
+			$realParams = $this->substOpPaths( $params, $backend );
+			return $backend->getFileList( $realParams );
 		}
 		return array(); // sanity
 	}

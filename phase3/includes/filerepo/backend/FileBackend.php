@@ -150,6 +150,77 @@ abstract class FileBackendBase {
 	}
 
 	/**
+	 * Attempt a series of file operations.
+	 * Callers are responsible for handling file locking.
+	 * 
+	 * @param $performOps Array List of FileOp operations
+	 * @return Status 
+	 */
+	protected function attemptOperations( array $performOps ) {
+		$status = Status::newGood();
+
+		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
+		// Do pre-checks for each operation; abort on failure...
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->precheck( $predicates ) );
+			if ( !$status->isOK() ) { // operation failed?
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
+					++$status->failCount;
+					$status->success[$index] = false;
+				} else {
+					return $status;
+				}
+			}
+		}
+
+		// Attempt each operation; abort on failure...
+		foreach ( $performOps as $index => $fileOp ) {
+			if ( $fileOp->failed() ) {
+				continue; // nothing to do
+			}
+			$status->merge( $fileOp->attempt() );
+			if ( !$status->isOK() ) { // operation failed?
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
+					++$status->failCount;
+					$status->success[$index] = false;
+				} else {
+					// Revert everything done so far and abort.
+					// Do this by reverting each previous operation in reverse order.
+					$pos = $index - 1; // last one failed; no need to revert()
+					while ( $pos >= 0 ) {
+						if ( !$performOps[$pos]->failed() ) {
+							$status->merge( $performOps[$pos]->revert() );
+						}
+						$pos--;
+					}
+					return $status;
+				}
+			}
+		}
+
+		// Finish each operation...
+		foreach ( $performOps as $index => $fileOp ) {
+			if ( $fileOp->failed() ) {
+				continue; // nothing to do
+			}
+			$subStatus = $fileOp->finish();
+			if ( $subStatus->isOK() ) {
+				++$status->successCount;
+				$status->success[$index] = true;
+			} else {
+				++$status->failCount;
+				$status->success[$index] = false;
+			}
+			$status->merge( $subStatus );
+		}
+
+		// Make sure status is OK, despite any finish() fatals
+		$status->setResult( true, $status->value );
+
+		return $status;
+	}
+
+	/**
 	 * Prepare a storage path for usage. This will create containers
 	 * that don't yet exist or, on FS backends, create parent directories.
 	 * 
@@ -461,7 +532,7 @@ abstract class FileBackend extends FileBackendBase {
 		if ( !$fsFile ) {
 			return false;
 		} else {
-			return $fsFile->sha1Base36();
+			return $fsFile->getSha1Base36();
 		}
 	}
 
@@ -549,83 +620,27 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	final public function doOperations( array $ops ) {
-		$status = Status::newGood( array() );
+		$status = Status::newGood();
 
 		// Build up a list of FileOps...
 		$performOps = $this->getOperations( $ops );
 
 		// Build up a list of files to lock...
-		$filesToLock = array();
+		$filesLockEx = $filesLockSh = array();
 		foreach ( $performOps as $index => $fileOp ) {
-			$filesToLock = array_merge( $filesToLock, $fileOp->storagePathsUsed() );
+			$filesLockSh = array_merge( $filesLockSh, $fileOp->storagePathsRead() );
+			$filesLockEx = array_merge( $filesLockEx, $fileOp->storagePathsChanged() );
 		}
 
 		// Try to lock those files for the scope of this function...
-		$scopedLock = $this->getScopedFileLocks( $filesToLock, LockManager::LOCK_EX, $status );
+		$scopeLockS = $this->getScopedFileLocks( $filesLockSh, LockManager::LOCK_UW, $status );
+		$scopeLockE = $this->getScopedFileLocks( $filesLockEx, LockManager::LOCK_EX, $status );
 		if ( !$status->isOK() ) {
 			return $status; // abort
 		}
 
-		$failedOps = array(); // failed ops with 'ignoreErrors'
-		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
-		// Do pre-checks for each operation; abort on failure...
-		foreach ( $performOps as $index => $fileOp ) {
-			$status->merge( $fileOp->precheck( $predicates ) );
-			if ( !$status->isOK() ) { // operation failed?
-				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
-					$failedOps[$index] = 1; // remember not to call attempt()/finish()
-					++$status->failCount;
-					$status->success[$index] = false;
-				} else {
-					return $status;
-				}
-			}
-		}
-
-		// Attempt each operation; abort on failure...
-		foreach ( $performOps as $index => $fileOp ) {
-			if ( isset( $failedOps[$index] ) ) {
-				continue; // nothing to do
-			}
-			$status->merge( $fileOp->attempt() );
-			if ( !$status->isOK() ) { // operation failed?
-				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
-					$failedOps[$index] = 1; // remember not to call finish()
-					++$status->failCount;
-					$status->success[$index] = false;
-				} else {
-					// Revert everything done so far and abort.
-					// Do this by reverting each previous operation in reverse order.
-					$pos = $index - 1; // last one failed; no need to revert()
-					while ( $pos >= 0 ) {
-						if ( !isset( $failedOps[$pos] ) ) {
-							$status->merge( $performOps[$pos]->revert() );
-						}
-						$pos--;
-					}
-					return $status;
-				}
-			}
-		}
-
-		// Finish each operation...
-		foreach ( $performOps as $index => $fileOp ) {
-			if ( isset( $failedOps[$index] ) ) {
-				continue; // nothing to do
-			}
-			$subStatus = $fileOp->finish();
-			if ( $subStatus->isOK() ) {
-				++$status->successCount;
-				$status->success[$index] = true;
-			} else {
-				++$status->failCount;
-				$status->success[$index] = false;
-			}
-			$status->merge( $subStatus );
-		}
-
-		// Make sure status is OK, despite any finish() fatals
-		$status->setResult( true, $status->value );
+		// Actually attempt the operation batch...
+		$status->merge( $this->attemptOperations( $performOps ) );
 
 		return $status;
 	}

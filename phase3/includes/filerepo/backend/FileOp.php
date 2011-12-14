@@ -64,6 +64,14 @@ abstract class FileOp {
 	}
 
 	/**
+	 * Check if this operation failed precheck() or attempt()
+	 * @return type 
+	 */
+	final public function failed() {
+		return $this->failed;
+	}
+
+	/**
 	 * Get a new empty predicates array for precheck()
 	 *
 	 * @return Array 
