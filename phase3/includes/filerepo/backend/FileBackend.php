@@ -274,10 +274,11 @@ abstract class FileBackendBase {
 
 	/**
 	 * Returns a file system file, identical to the file at a storage path.
-	 * The file return is either:
+	 * The file returned is either:
 	 * a) A local copy of the file at a storage path in the backend.
 	 *    The temporary copy will have the same extension as the source.
 	 * b) An original of the file at a storage path in the backend.
+	 * Temporary files may be purged when the file object falls out of scope.
 	 * 
 	 * Write operations should *never* be done on this file as some backends
 	 * may do internal tracking or may be instances of FileBackendMultiWrite.
@@ -294,6 +295,7 @@ abstract class FileBackendBase {
 	/**
 	 * Get a local copy on disk of the file at a storage path in the backend.
 	 * The temporary copy will have the same file extension as the source.
+	 * Temporary files may be purged when the file object falls out of scope.
 	 * 
 	 * $params include:
 	 *     src : source storage path

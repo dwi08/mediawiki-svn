@@ -783,6 +783,7 @@ abstract class File {
 
 		// Actually render the thumbnail
 		$thumb = $this->handler->doTransform( $this, $tmpThumbPath, $thumbUrl, $params );
+		$tmpFile->bind( $thumb ); // keep alive with $thumb
 
 		// Ignore errors if requested
 		if ( !$thumb ) {

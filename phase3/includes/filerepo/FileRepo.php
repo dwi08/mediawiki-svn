@@ -1142,10 +1142,10 @@ class FileRepo {
 
 	/**
 	 * Get a local FS copy of a file with a given virtual URL/storage path.
-	 * Returns null on failure.
+	 * Temporary files may be purged when the file object falls out of scope.
 	 * 
 	 * @param $virtualUrl string
-	 * @return TempFSFile|null
+	 * @return TempFSFile|null Returns null on failure
 	 */
 	public function getLocalCopy( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );
@@ -1155,10 +1155,10 @@ class FileRepo {
 	/**
 	 * Get a local FS file with a given virtual URL/storage path.
 	 * The file is either an original or a copy. It should not be changed.
-	 * Returns null on failure.
+	 * Temporary files may be purged when the file object falls out of scope.
 	 * 
 	 * @param $virtualUrl string
-	 * @return FSFile|null
+	 * @return FSFile|null Returns null on failure.
 	 */
 	public function getLocalReference( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );

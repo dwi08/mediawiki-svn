@@ -239,8 +239,11 @@ abstract class UploadBase {
 	function getRealPath( $srcPath ) {
 		$repo = RepoGroup::singleton()->getLocalRepo();
 		if ( $repo->isVirtualUrl( $srcPath ) ) {
+			// @TODO: just make uploads work with storage paths
 			// UploadFromStash loads files via virtuals URLs
-			return $repo->getLocalCopy( $srcPath )->getPath();
+			$tmpFile = $repo->getLocalCopy( $srcPath );
+			$tmpFile->bind( $this ); // keep alive with $thumb
+			return $tmpFile->getPath();
 		}
 		return $srcPath;
 	}

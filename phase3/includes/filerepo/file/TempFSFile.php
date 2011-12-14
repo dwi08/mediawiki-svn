@@ -19,7 +19,8 @@ class TempFSFile extends FSFile {
 	protected static $instances = array();
 
 	/**
-	 * Make a new temporary file on the file system
+	 * Make a new temporary file on the file system.
+	 * Temporary files may be purged when the file object falls out of scope.
 	 * 
 	 * @param $prefix string
 	 * @param $extension string
@@ -42,7 +43,9 @@ class TempFSFile extends FSFile {
 			}
 		}
 		$tmpFile = new self( $path );
-		self::$instances[] = $tmpFile; // defer purge till shutdown
+		if ( php_sapi_name() != 'cli' ) {
+			self::$instances[] = $tmpFile; // defer purge till shutdown
+		}
 		return $tmpFile;
 	}
 
@@ -60,7 +63,19 @@ class TempFSFile extends FSFile {
 	}
 
 	/**
-	 * Flag to not clean up after the temporary file
+	 * Clean up the temporary file only after an object goes out of scope
+	 *
+	 * @param $object Object
+	 * @return void
+	 */
+	public function bind( $object ) {
+		if ( is_object( $object ) ) {
+			$object->tempFSFileReferences[] = $this;
+		}
+	}
+
+	/**
+	 * Set flag to not clean up after the temporary file
 	 *
 	 * @return void
 	 */
@@ -69,8 +84,7 @@ class TempFSFile extends FSFile {
 	}
 
 	/**
-	 * Cleans up after the temporary file by deleting it.
-	 * This is done on shutdown after PHP kills self::$instances.
+	 * Cleans up after the temporary file by deleting it
 	 */
 	function __destruct() {
 		if ( $this->canDelete ) {
