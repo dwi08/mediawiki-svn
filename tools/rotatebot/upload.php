@@ -21,44 +21,46 @@ wikiupload("commons.wikimedia.org","test2.jpg","Test for Rotatebot.jpg","",$desc
 // ############### EDIT WIKIPEDIA - FUNCTION ###############
 function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 {
-global $cookies;
-$username = "Rotatebot";
-$password = "**removed**";
-
-logfile("Lade Bild '$filename_wiki' hoch am ".date("r",time()).".");
-
-//$cookies
-if(!$cookies["commonswikiUserName"] OR !$cookies["commonswikiUserID"])
-{
+	global $cookies;
 	$username = "Rotatebot";
 	$password = "**removed**";
-	logfile("Login to $project!\n");
-	wikilogin($username,$password,$project,$useragent);
-	logfile("logged in to $project!\n");
-	print_r($cookies);
-}
-else
-{
-	logfile("already logged in to $project for upload\n");
-}
 
+	logfile("Lade Bild '$filename_wiki' hoch am ".date("r",time()).".");
 
-if($cookies) {
-	logfile("Angemeldet in $project!\n");
-} else {
-	die("Keine Cookies! Abbruch\n$header\n");
-}
+	//$cookies
+	if(!$cookies["commonswikiUserName"] || !$cookies["commonswikiUserID"])
+	{
+		$username = "Rotatebot";
+		$password = "**removed**";
+		$useragent = "Luxo (toolserver; php) luxo@ts.wikimedia.org";
+		logfile("Login to $project!\n");
+		wikilogin($username,$password,$project,$useragent);
+		logfile("logged in to $project!\n");
+		print_r($cookies);
+	}
+	else
+	{
+		logfile("already logged in to $project for upload\n");
+	}
 
-//Angemeldet, Cookies formatieren**************
+	$header = '';
+	if($cookies) {
+		logfile("Angemeldet in $project!\n");
+	} else {
+		die("Keine Cookies! Abbruch\n$header\n");
+	}
 
-foreach ($cookies as $key=>$value)
-{
-	$cookie .= trim($value).";";
-}
-$cookie = substr($cookie,0,-1);
+	//Angemeldet, Cookies formatieren**************
 
-//************ BILD HOCHLADEN ****************
-wiki_upload_file ($filename_local,$filename_wiki,$license,$desc,$project,$cookie);
+	$cookie = '';
+	foreach ($cookies as $key=>$value)
+	{
+		$cookie .= trim($value).";";
+	}
+	$cookie = substr($cookie,0,-1);
+
+	//************ BILD HOCHLADEN ****************
+	wiki_upload_file ($filename_local,$filename_wiki,$license,$desc,$project,$cookie);
 
 }
 

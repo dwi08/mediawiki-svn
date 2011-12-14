@@ -29,7 +29,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	$useragent = "Luxo (toolserver; php) luxo@ts.wikimedia.org";
 
 	//$cookies
-	if(!$cookies["commonswikiUserName"] OR !$cookies["commonswikiUserID"])
+	if(!$cookies["commonswikiUserName"] || !$cookies["commonswikiUserID"])
 	{
 		$username = "Rotatebot";
 		$password = "**removed**";
@@ -51,8 +51,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	$bodyw.=$linew;
 	}
 	echo $bodyw;*/
-	$header = "";
-
+	$accept = "";
 
 	//Angemeldet, Cookies ausgelesen, editieren kann beginnen**************
 	$fpb = fsockopen ($project, 80, $errno, $errstr, 30);
@@ -65,12 +64,12 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	fputs($fpb, "Accept: $accept\n");
 	fputs($fpb, "Accept-Language: de\n");
 
-	foreach ($cookies as $key=>$value)
+	$cookie = '';
+	foreach ($cookies as $value)
 	{
 		$cookie .= trim($value).";";
 	}
 	$cookie = substr($cookie,0,-1);
-
 
 	logfile("Lade Seite; Cookies: $cookie\n");
 
@@ -79,6 +78,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	fputs($fpb, "Connection: close\n");
 	fputs($fpb, "\n");
 
+	$headerrx = '';
 
 	//Response Header auslesen forallem cooke********************
 	do {
@@ -88,9 +88,10 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 		//auf cookie prüfen
 		if(substr($linex,0,11) == "Set-Cookie:")
 		{
+			// FIXME: $line is undefined
 			$rawcookie = substr($line,11,strpos($line,";")-11); //Format: session=DFJ3ASD2S
 				$cookiename = trim(substr($rawcookie,0,strpos($rawcookie,"=")));
-		$cookies[$cookiename] = $rawcookie;
+			$cookies[$cookiename] = $rawcookie;
 		}
 
 	} while (trim($linex)!="");
@@ -103,7 +104,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	}
 	$cookie = substr($cookie,0,-1);
 
-
+	$bodyy = '';
 	logfile("Neue Cookies: $cookie\n");
 
 	//echo $headerrx."\n\n";
