@@ -89,7 +89,7 @@ abstract class MediaTransformOutput {
 	 * @return Bool
 	 */
 	public function fileIsSource() {
-		return ( !$this->isError() && $this->path === $this->file->getLocalCopyPath() );
+		return ( !$this->isError() && $this->path === $this->file->getLocalRefPath() );
 	}
 
 	/**

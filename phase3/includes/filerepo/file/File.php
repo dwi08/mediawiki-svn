@@ -73,9 +73,9 @@ abstract class File {
 	var $lastError, $redirected, $redirectedTitle;
 
 	/**
-	 * @var TempFSFile|false 
+	 * @var FSFile|false
 	 */
-	protected $tmpFile;
+	protected $fsFile;
 
 	/**
 	 * @var MediaHandler
@@ -332,24 +332,23 @@ abstract class File {
 	}
 
 	/**
-	 * Get a local FS copy of this file and return the path.
-	 * Returns false on failure.
+	 * Get an FS copy or original of this file and return the path.
+	 * Returns false on failure. Callers must not alter the file.
+	 * Temporary files are cleared automatically.
 	 * 
 	 * @return string|false
 	 */
-	public function getLocalCopyPath() {
+	public function getLocalRefPath() {
 		$this->assertRepoDefined();
-		if ( !isset( $this->tmpFile ) ) {
-			$this->tmpFile = $this->repo->getLocalCopy( $this->getPath() );
-			if ( !$this->tmpFile ) {
-				$this->tmpFile = false; // null => false; cache negative hits
+		if ( !isset( $this->fsFile ) ) {
+			$this->fsFile = $this->repo->getLocalReference( $this->getPath() );
+			if ( !$this->fsFile ) {
+				$this->fsFile = false; // null => false; cache negative hits
 			}
 		}
-		if ( $this->tmpFile ) {
-			return $this->tmpFile->getPath();
-		} else {
-			return false;
-		}
+		return ( $this->fsFile )
+			? $this->fsFile->getPath()
+			: false;
 	}
 
 	/**

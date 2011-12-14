@@ -1153,6 +1153,19 @@ class FileRepo {
 	}
 
 	/**
+	 * Get a local FS file with a given virtual URL/storage path.
+	 * The file is either an original or a copy. It should not be changed.
+	 * Returns null on failure.
+	 * 
+	 * @param $virtualUrl string
+	 * @return FSFile|null
+	 */
+	public function getLocalReference( $virtualUrl ) {
+		$path = $this->resolveToStoragePath( $virtualUrl );
+		return $this->backend->getLocalReference( array( 'src' => $path ) );
+	}
+
+	/**
 	 * Get properties of a file with a given virtual URL/storage path.
 	 * Properties should ultimately be obtained via FSFile::getProps().
 	 *
@@ -1183,7 +1196,7 @@ class FileRepo {
 	 */
 	public function getFileSha1( $virtualUrl ) {
 		$path = $this->resolveToStoragePath( $virtualUrl );
-		$tmpFile = $this->backend->getLocalCopy( array( 'src' => $path ) );
+		$tmpFile = $this->backend->getLocalReference( array( 'src' => $path ) );
 		if ( !$tmpFile ) {
 			return false;
 		}

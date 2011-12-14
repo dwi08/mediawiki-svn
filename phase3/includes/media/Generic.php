@@ -260,7 +260,7 @@ abstract class MediaHandler {
 	 * @param $image File
 	 */
 	function getPageDimensions( $image, $page ) {
-		$gis = $this->getImageSize( $image, $image->getLocalCopyPath() );
+		$gis = $this->getImageSize( $image, $image->getLocalRefPath() );
 		return array(
 			'width' => $gis[0],
 			'height' => $gis[1]

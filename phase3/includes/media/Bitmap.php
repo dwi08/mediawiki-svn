@@ -126,7 +126,7 @@ class BitmapHandler extends ImageHandler {
 			'srcWidth' => $image->getWidth(),
 			'srcHeight' => $image->getHeight(),
 			'mimeType' => $image->getMimeType(),
-			'srcPath' => $image->getLocalCopyPath(),
+			'srcPath' => $image->getLocalRefPath(),
 			'dstPath' => $dstPath,
 			'dstUrl' => $dstUrl,
 		);
