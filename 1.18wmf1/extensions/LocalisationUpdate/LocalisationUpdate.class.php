@@ -2,72 +2,89 @@
 
 /**
  * Class for localization updates.
- * 
+ *
  * TODO: refactor code to remove duplication
  */
 class LocalisationUpdate {
-	
+
 	private static $newHashes = null;
 	private static $filecache = array();
-	
+
 	/**
 	 * LocalisationCacheRecache hook handler.
-	 * 
+	 *
 	 * @param $lc LocalisationCache
 	 * @param $langcode String
 	 * @param $cache Array
-	 * 
+	 *
 	 * @return true
 	 */
 	public static function onRecache( LocalisationCache $lc, $langcode, array &$cache ) {
-		$cache['messages'] = array_merge(
-			$cache['messages'],
-			self::readFile( $langcode )
-		);
-		
-		$cache['deps'][] = new FileDependency(
-			self::filename( $langcode )
-		);
-		
+		// Handle fallback sequence and load all fallback messages from the cache
+		$codeSequence = array_merge( array( $langcode ), $cache['fallbackSequence'] );
+		// Iterate over the fallback sequence in reverse, otherwise the fallback
+		// language will override the requested language
+		foreach ( array_reverse( $codeSequence ) as $code ) {
+			if ( $code == 'en' ) {
+				// Skip English, otherwise we end up trying to read
+				// the nonexistent cache file for en a couple hundred times
+				continue;
+			}
+
+			$cache['messages'] = array_merge(
+				$cache['messages'],
+				self::readFile( $code )
+			);
+
+			$cache['deps'][] = new FileDependency(
+				self::filename( $code )
+			);
+		}
+
 		return true;
 	}
 
 	/**
 	 * Called from the cronjob to fetch new messages from SVN.
-	 * 
+	 *
 	 * @param $options Array
-	 * 
+	 *
 	 * @return true
 	 */
 	public static function updateMessages( array $options ) {
-		global $wgLocalisationUpdateDirectory;
-		
+		global $wgLocalisationUpdateDirectory, $wgLocalisationUpdateSVNURL;
+
 		$verbose = !isset( $options['quiet'] );
 		$all = isset( $options['all'] );
 		$skipCore = isset( $options['skip-core'] );
 		$skipExtensions = isset( $options['skip-extensions'] );
-		
+
 		if( isset( $options['outdir'] ) ) {
 			$wgLocalisationUpdateDirectory = $options['outdir'];
 		}
 		
+		if ( isset( $options['svnurl['] ) ) {
+			// FIXME: Ewwwww. Refactor so this can be done properly
+			$wgLocalisationUpdateSVNURL = $options['svnurl'];
+		}
+
 		$result = 0;
-		
+
 		// Update all MW core messages.
 		if( !$skipCore ) {
 			$result = self::updateMediawikiMessages( $verbose );
 		}
-		
+
 		// Update all Extension messages.
 		if( !$skipExtensions ) {
 			if( $all ) {
 				global $IP;
 				$extFiles = array();
-				
+
 				// Look in extensions/ for all available items...
 				// TODO: add support for $wgExtensionAssetsPath
 				$dirs = new RecursiveDirectoryIterator( "$IP/extensions/" );
-				
+
 				// I ain't kidding... RecursiveIteratorIterator.
 				foreach( new RecursiveIteratorIterator( $dirs ) as $pathname => $item ) {
 					$filename = basename( $pathname );
@@ -85,33 +102,33 @@ class LocalisationUpdate {
 				$result += self::updateExtensionMessages( $locFile, $extension, $verbose );
 			}
 		}
-		
+
 		self::writeHashes();
 
 		// And output the result!
 		self::myLog( "Updated {$result} messages in total" );
 		self::myLog( "Done" );
-		
+
 		return true;
 	}
 
 	/**
 	 * Update Extension Messages.
-	 * 
+	 *
 	 * @param $file String
 	 * @param $extension String
 	 * @param $verbose Boolean
-	 * 
+	 *
 	 * @return Integer: the amount of updated messages
 	 */
 	public static function updateExtensionMessages( $file, $extension, $verbose ) {
 		global $IP, $wgLocalisationUpdateSVNURL;
-		
+
 		$relfile = wfRelativePath( $file, "$IP/extensions" );
-		
+
 		// Create a full path.
 		// TODO: add support for $wgExtensionAssetsPath
-		$localfile = "$IP/extensions/$relfile";
+		// $localfile = "$IP/extensions/$relfile";
 
 		// Get the full SVN directory path.
 		// TODO: add support for $wgExtensionAssetsPath
@@ -119,15 +136,15 @@ class LocalisationUpdate {
 
 		// Compare the 2 files.
 		$result = self::compareExtensionFiles( $extension, $svnfile, $file, $verbose, false, true );
-		
+
 		return $result;
 	}
 
 	/**
-	 * Update the Mediawiki Core Messages.
-	 * 
+	 * Update the MediaWiki Core Messages.
+	 *
 	 * @param $verbose Boolean
-	 * 
+	 *
 	 * @return Integer: the amount of updated messages
 	 */
 	public static function updateMediawikiMessages( $verbose ) {
@@ -173,22 +190,22 @@ class LocalisationUpdate {
 
 			// Compare the files.
 			$result = self::compareFiles( $svnfile, $localfile, $verbose, $changedEnglishStrings, false, true );
-			
+
 			// And update the change counter.
 			$changedCount += count( $result );
 		}
 
 		// Log some nice info.
-		self::myLog( "{$changedCount} Mediawiki messages are updated" );
-		
+		self::myLog( "{$changedCount} MediaWiki messages are updated" );
+
 		return $changedCount;
 	}
 
 	/**
 	 * Removes all unneeded content from a file and returns it.
-	 * 
+	 *
 	 * @param $contents String
-	 * 
+	 *
 	 * @return String
 	 */
 	public static function cleanupFile( $contents ) {
@@ -199,9 +216,9 @@ class LocalisationUpdate {
 				'?' . '>' => ''
 			)
 		);
-		
+
 		$results = array();
-		
+
 		// And we only want the messages array.
 		preg_match( "/\\\$messages(.*\s)*?\);/", $contents, $results );
 
@@ -218,26 +235,26 @@ class LocalisationUpdate {
 		// Return the cleaned up file.
 		return $contents;
 	}
-	
+
 	/**
 	 * Removes all unneeded content from a file and returns it.
-	 * 
-	 * FIXME: duplicated cleanupFile code 
-	 * 
+	 *
+	 * FIXME: duplicated cleanupFile code
+	 *
 	 * @param $contents String
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function cleanupExtensionFile( $contents ) {
 		// We don't want PHP tags.
 		$contents = preg_replace( "/<\?php/", "", $contents );
 		$contents = preg_replace( "/\?" . ">/", "", $contents );
-		
+
 		$results = array();
-		
+
 		// And we only want message arrays.
 		preg_match_all( "/\\\$messages(.*\s)*?\);/", $contents, $results );
-		
+
 		// But we want them all in one string.
 		if( !empty( $results[0] ) && is_array( $results[0] ) ) {
 			$contents = implode( "\n\n", $results[0] );
@@ -247,23 +264,23 @@ class LocalisationUpdate {
 
 		// And we hate the windows vs linux linebreaks.
 		$contents = preg_replace( "/\\\r\\\n?/", "\n", $contents );
-		
+
 		return $contents;
-	}	
+	}
 
 	/**
 	 * Returns the contents of a file or false on failiure.
-	 * 
+	 *
 	 * @param $basefile String
-	 * 
+	 *
 	 * @return string or false
 	 */
 	public static function getFileContents( $basefile ) {
 		global $wgLocalisationUpdateRetryAttempts;
-		
+
 		$attempts = 0;
 		$basefilecontents = '';
-		
+
 		// Use cURL to get the SVN contents.
 		if ( preg_match( "/^http/", $basefile ) ) {
 			while( !$basefilecontents && $attempts <= $wgLocalisationUpdateRetryAttempts ) {
@@ -272,7 +289,7 @@ class LocalisationUpdate {
 					self::myLog( 'Failed to download ' . $basefile . "; retrying in ${delay}s..." );
 					sleep( $delay );
 				}
-				
+
 				$basefilecontents = Http::get( $basefile );
 				$attempts++;
 			}
@@ -286,20 +303,20 @@ class LocalisationUpdate {
 				return false;
 			}
 		}
-		
+
 		return $basefilecontents;
 	}
 
 	/**
 	 * Returns an array containing the differences between the files.
-	 * 
+	 *
 	 * @param $basefile String
 	 * @param $comparefile String
 	 * @param $verbose Boolean
 	 * @param $forbiddenKeys Array
 	 * @param $alwaysGetResult Boolean
 	 * @param $saveResults Boolean
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function compareFiles( $basefile, $comparefile, $verbose, array $forbiddenKeys = array(), $alwaysGetResult = true, $saveResults = false ) {
@@ -307,7 +324,7 @@ class LocalisationUpdate {
 		$langcode = Language::getCodeFromFileName( $basefile, 'Messages' );
 
 		$basefilecontents = self::getFileContents( $basefile );
-		
+
 		if ( $basefilecontents === false || $basefilecontents === '' ) {
 			return array(); // Failed
 		}
@@ -318,7 +335,7 @@ class LocalisationUpdate {
 		// Change the variable name.
 		$basefilecontents = preg_replace( "/\\\$messages/", "\$base_messages", $basefilecontents );
 		$basehash = md5( $basefilecontents );
-		
+
 		// Check if the file has changed since our last update.
 		if ( !$alwaysGetResult ) {
 			if ( !self::checkHash( $basefile, $basehash ) ) {
@@ -331,7 +348,7 @@ class LocalisationUpdate {
 		$base_messages = self::parsePHP( $basefilecontents, 'base_messages' );
 
 		$comparefilecontents = self::getFileContents( $comparefile );
-		
+
 		if ( $comparefilecontents === false || $comparefilecontents === '' ) {
 			return array(); // Failed
 		}
@@ -342,7 +359,7 @@ class LocalisationUpdate {
 		// Rename the array.
 		$comparefilecontents = preg_replace( "/\\\$messages/", "\$compare_messages", $comparefilecontents );
 		$comparehash = md5( $comparefilecontents );
-		
+
 		// If this is the remote file check if the file has changed since our last update.
 		if ( preg_match( "/^http/", $comparefile ) && !$alwaysGetResult ) {
 			if ( !self::checkHash( $comparefile, $comparehash ) ) {
@@ -350,7 +367,7 @@ class LocalisationUpdate {
 				return array();
 			}
 		}
-		
+
 		// Get the array.
 		$compare_messages = self::parsePHP( $comparefilecontents, 'compare_messages' );
 
@@ -378,100 +395,113 @@ class LocalisationUpdate {
 		} elseif ( $saveResults ) {
 			self::myLog( "--{$langcode} hasn't changed--", $verbose );
 		}
-		
+
 		self::saveHash( $basefile, $basehash );
-		
+
 		self::saveHash( $comparefile, $comparehash );
-		
+
 		return $changedStrings;
 	}
 
 	/**
 	 * Checks whether a messages file has a certain hash.
-	 * 
+	 *
 	 * TODO: Swap return values, this is insane
-	 * 
+	 *
 	 * @param $file string Filename
 	 * @param $hash string Hash
-	 * 
+	 *
 	 * @return bool True if $file does NOT have hash $hash, false if it does
 	 */
 	public static function checkHash( $file, $hash ) {
 		$hashes = self::readFile( 'hashes' );
 		return @$hashes[$file] !== $hash;
 	}
-	
+
+	/**
+	 * @param $file
+	 * @param $hash
+	 */
 	public static function saveHash( $file, $hash ) {
 		if ( is_null( self::$newHashes ) ) {
 			self::$newHashes = self::readFile( 'hashes' );
 		}
-			
+
 		self::$newHashes[$file] = $hash;
 	}
-	
+
 	public static function writeHashes() {
 		self::writeFile( 'hashes', self::$newHashes );
 	}
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param $changedStrings Array
 	 * @param $forbiddenKeys Array
 	 * @param $compare_messages Array
 	 * @param $base_messages Array
 	 * @param $langcode String
 	 * @param $verbose Boolean
-	 * 
+	 *
 	 * @return Integer: the amount of updated messages
 	 */
 	public static function saveChanges( $changedStrings, array $forbiddenKeys, array $compare_messages, array $base_messages, $langcode, $verbose ) {
 		// Count the updates.
 		$updates = 0;
-		
+
 		if( !is_array( $changedStrings ) ) {
 			self::myLog("CRITICAL ERROR: \$changedStrings is not an array in file " . (__FILE__) . ' at line ' .( __LINE__ ) );
 			return 0;
 		}
 
-		$new_messages = self::readFile( $langcode );
-		
-		foreach ( $changedStrings as $key => $value ) {
-			// If this message wasn't changed in English.
-			if ( !isset( $forbiddenKeys[$key] ) ) {
-				$new_messages[$key] = $base_messages[$key];
-				
-				// Output extra logmessages when needed.
-				if ( $verbose ) {
-					$oldmsg = isset( $compare_messages[$key] ) ? "'{$compare_messages[$key]}'" : 'not set';
-					self::myLog( "Updated message {$key} from $oldmsg to '{$base_messages[$key]}'", $verbose );
-				}
+		$new_messages = array();
 
-				// Update the counter.
-				$updates++;
+		//foreach ( $changedStrings as $key => $value ) {
+		// HACK for r103763 CR: store all messages, even unchanged ones
+		// TODO this file is a mess and needs to be rewritten
+		foreach ( array_merge( array_keys( $base_messages ), array_keys( $compare_messages ) ) as $key ) {
+			// Only update the translation if this message wasn't changed in English
+			if ( !isset( $forbiddenKeys[$key] ) && isset( $base_messages[$key] ) ) {
+				$new_messages[$key] = $base_messages[$key];
+
+				if ( !isset( $compare_messages[$key] ) || $compare_messages[$key] !== $base_messages[$key] ) {
+					// Output extra logmessages when needed.
+					if ( $verbose ) {
+						$oldmsg = isset( $compare_messages[$key] ) ? "'{$compare_messages[$key]}'" : 'not set';
+						self::myLog( "Updated message {$key} from $oldmsg to '{$base_messages[$key]}'", $verbose );
+					}
+
+					// Update the counter.
+					$updates++;
+				}
+			} elseif ( isset( $forbiddenKeys[$key] ) && isset( $compare_messages[$key] ) ) {
+				// The message was changed in English, but a previous translation still exists in the cache.
+				// Use that previous translation rather than falling back to the .i18n.php file
+				$new_messages[$key] = $compare_messages[$key];
 			}
 		}
 		self::writeFile( $langcode, $new_messages );
-		
+
 		return $updates;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $extension String
 	 * @param $basefile String
 	 * @param $comparefile String
 	 * @param $verbose Boolean
 	 * @param $alwaysGetResult Boolean
 	 * @param $saveResults Boolean
-	 * 
+	 *
 	 * @return Integer: the amount of updated messages
 	 */
 	public static function compareExtensionFiles( $extension, $basefile, $comparefile, $verbose, $alwaysGetResult = true, $saveResults = false ) {
 		// FIXME: Factor out duplicated code?
 
 		$basefilecontents = self::getFileContents( $basefile );
-		
+
 		if ( $basefilecontents === false || $basefilecontents === '' ) {
 			return 0; // Failed
 		}
@@ -482,7 +512,7 @@ class LocalisationUpdate {
 		// Rename the arrays.
 		$basefilecontents = preg_replace( "/\\\$messages/", "\$base_messages", $basefilecontents );
 		$basehash = md5( $basefilecontents );
-		
+
 		// If this is the remote file
 		if ( preg_match( "/^http/", $basefile ) && !$alwaysGetResult ) {
 			// Check if the hash has changed
@@ -572,22 +602,23 @@ class LocalisationUpdate {
 			} elseif($saveResults === true) {
 				self::myLog( "--{$language} hasn't changed--", $verbose );
 			}
-		} 
+		}
 
 		// And log some stuff.
 		self::myLog( "Updated " . $updates . " messages for the '{$extension}' extension", $verbose );
 
 		self::saveHash( $basefile, $basehash );
-		
+
 		self::saveHash( $comparefile, $comparehash );
-		
+
 		return $updates;
 	}
-	
+
 	/**
 	 * Logs a message.
-	 * 
+	 *
 	 * @param $log String
+	 * @param bool $verbose
 	 */
 	public static function myLog( $log, $verbose = true ) {
 		if ( !$verbose ) {
@@ -599,7 +630,12 @@ class LocalisationUpdate {
 			print( $log . "\n" );
 		}
 	}
-	
+
+	/**
+	 * @param $php
+	 * @param $varname
+	 * @return bool|array
+	 */
 	public static function parsePHP( $php, $varname ) {
 		try {
 			$reader = new QuickArrayReader("<?php $php");
@@ -609,32 +645,41 @@ class LocalisationUpdate {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * @param $lang
+	 * @return string
+	 * @throws MWException
+	 */
 	public static function filename( $lang ) {
 		global $wgLocalisationUpdateDirectory, $wgCacheDirectory;
-		
+
 		$dir = $wgLocalisationUpdateDirectory ?
 			$wgLocalisationUpdateDirectory :
 			$wgCacheDirectory;
-			
+
 		if ( !$dir ) {
 			throw new MWException( 'No cache directory configured' );
 		}
-			
+
 		return "$dir/l10nupdate-$lang.cache";
 	}
-	
+
+	/**
+	 * @param $lang
+	 * @return mixed
+	 */
 	public static function readFile( $lang ) {
 		if ( !isset( self::$filecache[$lang] ) ) {
 			$file = self::filename( $lang );
 			$contents = @file_get_contents( $file );
-			
+
 			if ( $contents === false ) {
 				wfDebug( "Failed to read file '$file'\n" );
 				$retval = array();
 			} else {
 				$retval = unserialize( $contents );
-				
+
 				if ( $retval === false ) {
 					wfDebug( "Corrupted data in file '$file'\n" );
 					$retval = array();
@@ -642,18 +687,23 @@ class LocalisationUpdate {
 			}
 			self::$filecache[$lang] = $retval;
 		}
-		
+
 		return self::$filecache[$lang];
 	}
-	
+
+	/**
+	 * @param $lang
+	 * @param $var
+	 * @throws MWException
+	 */
 	public static function writeFile( $lang, $var ) {
 		$file = self::filename( $lang );
-		
+
 		if ( !@file_put_contents( $file, serialize( $var ) ) ) {
 			throw new MWException( "Failed to write to file '$file'" );
 		}
-			
+
 		self::$filecache[$lang] = $var;
 	}
-	
+
 }
