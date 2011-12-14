@@ -1,0 +1,54 @@
+/** Styles for feedback links **/
+
+#articleFeedbackv5-titlebarlink {
+	float: right;
+	font-size: 85%;
+	font-weight: bold;
+	line-height: 1.5em;
+	margin: 5px 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	text-align: right;
+	text-indent: 0;
+	text-transform: none;
+	top: 0;
+	white-space: nowrap;
+}
+
+.articleFeedbackv5-fixedtab {
+	position: fixed;
+	margin: 0;
+	right: 0;
+	top: 200px;
+}
+.articleFeedbackv5-fixedtabbox {
+	position: relative;	
+}
+.articleFeedbackv5-fixedtablink {
+	position: absolute;
+	border: 1px solid #555599;
+	background-color: #eeeef9;
+	min-width: 105px;
+	width: auto;
+	height: auto;
+	left: 0;
+	display: block;
+	margin: 0;
+	padding: 5px 10px;
+	color: .333;
+	text-align: center;
+	writing-mode: tb-rl;
+	-moz-transform:rotate(90deg); 
+	-moz-transform-origin: top left;
+	-webkit-transform: rotate(90deg);
+	-webkit-transform-origin: top left;
+	-o-transform: rotate(90deg);
+	-o-transform-origin: top left;
+	/*transform: rotate(90deg);
+	transform-origin: top left;*/	
+}
+.articleFeedbackv5-fixedtablink:hover {
+	text-decoration: none;
+}
+
