@@ -17,6 +17,8 @@ $wgExtensionCredits['other'][] = array(
 $wgAutoloadClasses['MBFeedbackItem'] = dirname(__FILE__).'/FeedbackItem.php';
 $wgAutoloadClasses['MBFeedbackResponseItem'] = dirname(__FILE__).'/FeedbackResponseItem.php';
 $wgAutoloadClasses['MoodBarFormatter'] = dirname(__FILE__).'/Formatter.php';
+$wgAutoloadClasses['MoodBarHTMLEmailNotification'] = dirname(__FILE__).'/include/MoodBarHTMLEmailNotification.php';
+$wgAutoloadClasses['MoodBarHTMLMailerJob'] = dirname( __FILE__ ) . '/include/MoodBarHTMLMailerJob.php';
 
 // API
 $wgAutoloadClasses['ApiMoodBar'] = dirname(__FILE__).'/ApiMoodBar.php';
@@ -27,6 +29,8 @@ $wgAutoloadClasses['ApiFeedbackDashboard'] = dirname(__FILE__).'/ApiFeedbackDash
 $wgAPIModules['feedbackdashboard'] = 'ApiFeedbackDashboard';
 $wgAutoloadClasses['ApiFeedbackDashboardResponse'] = dirname(__FILE__).'/ApiFeedbackDashboardResponse.php';
 $wgAPIModules['feedbackdashboardresponse'] = 'ApiFeedbackDashboardResponse';
+$wgAutoloadClasses['ApiMoodBarSetUserEmail'] = dirname(__FILE__).'/ApiMoodBarSetUserEmail.php';
+$wgAPIModules['moodbarsetuseremail'] = 'ApiMoodBarSetUserEmail';
 
 // Hooks
 $wgAutoloadClasses['MoodBarHooks'] = dirname(__FILE__).'/MoodBar.hooks.php';
@@ -54,6 +58,9 @@ $wgLogActions += array(
 	'moodbar/hide' => 'moodbar-log-hide',
 	'moodbar/restore' => 'moodbar-log-restore',
 );
+
+// Jobs
+$wgJobClasses['MoodBarHTMLMailerJob'] = 'MoodBarHTMLMailerJob';
 
 // User rights
 $wgAvailableRights[] = 'moodbar-view';
@@ -86,6 +93,21 @@ $wgResourceModules['ext.moodBar.init'] = $mbResourceTemplate + array(
 	'dependencies' => array(
 		'jquery.cookie',
 		'jquery.client',
+	),
+);
+
+$wgResourceModules['ext.moodBar.tooltip'] = $mbResourceTemplate + array(
+	'styles' => 'ext.moodBar/ext.moodBar.tooltip.css',
+	'scripts' => 'ext.moodBar/ext.moodBar.tooltip.js',
+	'messages' => array(
+		 'moodbar-tooltip-title',
+		 'moodbar-tooltip-subtitle',		
+	),
+	'position' => 'top',
+	'dependencies' => array(
+		'jquery.cookie',
+		'jquery.client',
+		'ext.moodBar.init',
 	),
 );
 
@@ -126,6 +148,7 @@ $wgResourceModules['ext.moodBar.core'] = $mbResourceTemplate + array(
 		'moodbar-form-submit',
 		'moodbar-privacy',
 		'moodbar-privacy-link',
+		'moodbar-privacy-link-title',
 		'moodbar-disable-link',
 		'moodbar-loading-title',
 		'moodbar-error-title',
@@ -133,6 +156,18 @@ $wgResourceModules['ext.moodBar.core'] = $mbResourceTemplate + array(
 		'moodbar-loading-subtitle',
 		'moodbar-error-subtitle',
 		'moodbar-success-subtitle',
+		'moodbar-blocked-title',
+		'moodbar-blocked-subtitle',
+		'moodbar-email-title',
+		'moodbar-email-input',
+		'moodbar-email-desc',
+		'moodbar-email-submit',
+		'moodbar-updating-title',
+		'moodbar-updating-subtitle',
+		'moodbar-email-confirm-title',
+		'moodbar-email-confirm-desc',
+		'moodbar-email-resend-confirmation',
+		'moodbar-email-optout',
 	),
 	'dependencies' => array(
 		'mediawiki.util',

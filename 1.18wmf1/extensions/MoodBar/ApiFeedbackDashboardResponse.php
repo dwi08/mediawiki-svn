@@ -2,8 +2,11 @@
 
 class ApiFeedbackDashboardResponse extends ApiBase {
 	
+	private $EnotifUserTalk;
+	private $EnotifWatchlist;
+	
 	public function execute() {
-		global $wgRequest, $wgUser, $wgContLang, $wgParser;
+		global $wgRequest, $wgUser;
 		
 		if ( $wgUser->isAnon() ) {
 			$this->dieUsage( "You don't have permission to do that", 'permission-denied' );
@@ -32,8 +35,16 @@ class ApiFeedbackDashboardResponse extends ApiBase {
 		if ( $commenter !== null && $commenter->isAnon() == false ) {
 			$talkPage = $commenter->getTalkPage();
 			 
-			$feedback_link = wfMessage('moodbar-feedback-response-title')->params($wgContLang->getNsText( NS_SPECIAL ) . 
-				         ':FeedbackDashboard/' . $item->getProperty('feedback'))->escaped();
+			$response = Parser::cleanSigInSig($params['response']);
+			
+			$feedback_link = wfMessage('moodbar-feedback-response-title')->inContentLanguage()->
+			                 	params( SpecialPage::getTitleFor( 'FeedbackDashboard', $item->getProperty('feedback') )->
+			                 	getPrefixedText() )->escaped();
+			
+			$summary = wfMessage('moodbar-feedback-edit-summary')->inContentLanguage()->
+         					rawParams( $item->getProperty('feedback'),  $response)->escaped();                	
+	
+         		$this->disableUserTalkEmailNotification();						
 			
 			$api = new ApiMain( new FauxRequest( array(
 				'action' => 'edit',
@@ -41,17 +52,52 @@ class ApiFeedbackDashboardResponse extends ApiBase {
 				'appendtext' => ( $talkPage->exists() ? "\n\n" : '' ) . 
 						$feedback_link . "\n" . 
 						'<span id="feedback-dashboard-response-' . $item->getProperty('id') . '"></span>' . "\n\n" . 
-						$wgParser->cleanSigInSig($params['response']) . "\n\n~~~~",
+						$response . "\n\n~~~~",
 				'token'  => $params['token'],
-				'summary' => '',
+				'summary' => $summary,
 				'notminor' => true,
 			), true, array( 'wsEditToken' => $wgRequest->getSessionData( 'wsEditToken' ) ) ), true );
 	
 			$api->execute();
+			
+			$this->restoreUserTalkEmailNotification();
+			
+			global $wgLang;	
+			
+			$EMailNotif = new MoodBarHTMLEmailNotification();
+			$EMailNotif->notifyOnRespond( $wgUser, $talkPage, wfTimestampNow(), $item->getProperty('feedback'), $wgLang->truncate( $response, 250 ) );
+			
 		}
 		
 		$result = array( 'result' => 'success' );
 		$this->getResult()->addValue( null, $this->getModuleName(), $result );		
+	}
+	
+	/**
+	 * temporarily disable the talk page email notification 
+	 * for user and watchers
+	 */
+	private function disableUserTalkEmailNotification() {
+		global $wgEnotifUserTalk, $wgEnotifWatchlist;
+
+		$this->EnotifUserTalk  = $wgEnotifUserTalk;
+		$this->EnotifWatchlist = $wgEnotifWatchlist;	
+		
+         	$wgEnotifUserTalk = $wgEnotifWatchlist = false;
+	}
+	
+	/**
+	 * restore the default state of talk page email notification
+	 */
+	private function restoreUserTalkEmailNotification() {
+		global $wgEnotifUserTalk, $wgEnotifWatchlist;
+		
+		if ( !is_null( $this->EnotifUserTalk ) ) {
+			$wgEnotifUserTalk = $this->EnotifUserTalk;
+		}
+		if ( !is_null( $this->EnotifWatchlist ) ) {
+			$wgEnotifWatchlist = $this->EnotifWatchlist;
+		}
 	}
 	
 	public function needsToken() {
@@ -114,5 +160,3 @@ class ApiFeedbackDashboardResponse extends ApiBase {
 	}
 	
 }
-
-?>

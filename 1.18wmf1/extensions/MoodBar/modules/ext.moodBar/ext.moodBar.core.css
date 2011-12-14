@@ -95,6 +95,10 @@
 	outline: none;
 }
 
+.mw-moodBar-feedback-invalid {
+	border: 2px solid #CC0000;
+}
+
 .mw-moodBar-privacy,
 .mw-moodBar-overlayWhatContent {
 	font-size: 10px;
@@ -109,11 +113,26 @@
 }
 .mw-moodBar-formInputs {
 	padding-left: 1em;
+	padding-right: .2em;
 }
 
 .mw-moodBar-state-loading {
 	/* @embed */
 	background: url(images/ajax-spinner.gif) left center no-repeat;
+	padding: 20px 0 0 90px;
+	height: 77px;
+}
+
+.mw-moodBar-state-success {
+	/* @embed */
+	background: url(images/response-success.png) left center no-repeat;
+	padding: 20px 0 0 90px;
+	height: 77px;
+}
+
+.mw-moodBar-state-error {
+	/* @embed */
+	background: url(images/response-error.png) left center no-repeat;
 	padding: 20px 0 0 90px;
 	height: 77px;
 }
@@ -126,6 +145,38 @@
 .mw-moodBar-state-subtitle {
 	font-size: 14px;
 	color: #7e7e7e;
+}
+
+.mw-moodBar-desc {
+	font-size: .8em;
+	padding: 1em;
+}
+
+.mw-moodBar-overlayWhat a {
+	color: #0645ad;
+}
+
+.mw-moodBar-overlayWhatTrigger {
+	display: inline-block;
+}
+
+.moodbar-what-collapsed {
+	/* @embed */
+	background: transparent url('images/whatisthis-collapsed.png') center center no-repeat;
+	height: 8px;
+	width: 8px;
+}
+
+.moodbar-what-expanded {
+	/* @embed */
+	background: transparent url('images/whatisthis-expanded.png') center center no-repeat;
+	height: 8px;
+	width: 8px;	
+}
+
+.red-bold {
+	font-weight: bold;
+	color: #CC0000;
 }
 
 /**

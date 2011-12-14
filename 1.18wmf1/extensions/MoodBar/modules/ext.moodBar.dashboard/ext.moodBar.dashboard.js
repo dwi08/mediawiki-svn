@@ -30,6 +30,14 @@ jQuery(function( $ ) {
 	}
 	
 	/**
+	 * Select all comment type filters.
+	 */
+	function selectAllTypes() {
+		$( '#fbd-filters-type-praise, #fbd-filters-type-confusion, #fbd-filters-type-issues' ).each( function() {
+			$(this).prop( 'checked', true);
+		});
+	}
+	/**
 	 * Set the moodbar-feedback-types and moodbar-feedback-username cookies based on formState.
 	 * This function uses the form state saved in formState, so you may want to call saveFormState() first.
 	 */
@@ -57,6 +65,8 @@ jQuery(function( $ ) {
 					changed = true;
 				}
 			} );
+		} else {
+			selectAllTypes();
 		}
 		return changed;
 	}
@@ -262,7 +272,7 @@ jQuery(function( $ ) {
 				.append( $('<button>').attr('class', 'fbd-action-cancel').text( mw.msg('moodbar-feedback-action-cancel')) )
 				.append( $('<span>').attr('class', 'fbd-item-reason-msg') )
 			.append( $('<div>').attr('class', 'fbd-item-reason-msg') );
-				   
+
 		var storedParams = params;
 		var $storedItem = $item;
 		
@@ -358,8 +368,12 @@ jQuery(function( $ ) {
 			
 			$link = $( this ).find('.fbd-respond-link');
 			if( $link.hasClass('responder-expanded') ) {
-		
-				$link.find('span').text( mw.msg( 'moodbar-respond-collapsed' ) )
+				
+				$link.find('.fbd-item-response-expanded')
+					.addClass('fbd-item-response-collapsed')
+					.removeClass('fbd-item-response-expanded')
+					.end()
+					.find('.fbd-item-response-collapsed')
 					.parent()
 					.removeClass('responder-expanded');
 			
@@ -388,7 +402,7 @@ jQuery(function( $ ) {
 					'target': '_new'
 				}, mw.msg( 'moodbar-response-link' ) );
 	
-			//ULA	      
+			//ULA
 			var ula = mw.msg( 'moodbar-response-terms' )
 				.replace ( /\$1/g, termsLink );
 				
@@ -422,7 +436,7 @@ jQuery(function( $ ) {
 					.append(
 						$('<div>').attr('class', 'ula small').html( ula ).hide())
 				).append(
-					$('<button>').attr( 'class', 'fbd-response-submit' ).text( mw.msg( 'moodbar-response-btn' ) + ' ' + mw.msg( 'moodbar-respond-collapsed' ) )
+					$('<button>').attr( 'class', 'fbd-response-submit' ).html( mw.msg( 'moodbar-response-btn' ) + '&nbsp;<span class="fbd-item-send-response-icon"></span>' )
 						.attr( 'disabled', 'true' ).hide()
 				).append(
 					$('<button>').attr('class', 'fbd-response-preview-back').text( mw.msg( 'response-back-text' ) ).hide() 
@@ -437,14 +451,40 @@ jQuery(function( $ ) {
 			
 			closeAllResponders();
 			
-			$(this).find('span').text( mw.msg( 'moodbar-respond-expanded' ) )
+			$(this).find('.fbd-item-response-collapsed')
+				.addClass('fbd-item-response-expanded')
+				.removeClass('fbd-item-response-collapsed')
+				.end()
+				.find('.fbd-item-response-expanded')
 				.parent()
-				.addClass( 'responder-expanded' )
-				.end();
-			
+				.addClass('responder-expanded');
+
 			$item.append(inlineForm)
 				.find('.fbd-response-text')
-				.NobleCount('.fbd-response-charCount', {max_chars:5000})
+				.NobleCount('.fbd-response-charCount', {
+					max_chars:5000,
+					/*
+					 * Callbacks:
+					 * function on_negative: called when text field is negative in remaining characters.
+					 * @param t_obj is the text object.  need to pass to the callback to add modifiers. 
+					 */
+					on_negative: function( t_obj ) { 
+						$( t_obj )
+							.prev()
+							.find('span')
+							.addClass('red-bold');
+					},
+					/*
+					 * function on_positive: called when text field has available remaining characters.
+					 * @param t_obj is the text object.  need to pass to the callback to add modifiers. 
+					 */
+					on_positive: function( t_obj ) {
+						$( t_obj )
+							.prev()
+							.find('span')
+							.removeClass('red-bold');
+					}
+				})
 				.end()
 				.find('.fbd-response-text')
 				.keyup( function(event) {							
@@ -524,7 +564,29 @@ jQuery(function( $ ) {
 			.delay(2000)
 			.fadeOut('slow', callback);		
 	}
-	
+	/**
+	 * Set status message for Send Response
+	 * @param $el Feedback Item for response
+	 * @param type is type of message which determins icon (error, success)
+	 * @param head Heading text to be displayed
+	 * @param body Body text to be displayed
+	 */
+	function responseMessage ($el, type, head, body) { 
+		$el
+			.find('.mw-ajax-loader')
+			.addClass('fbd-item-response-' + type)
+			.removeClass('mw-ajax-loader')
+			.end()
+			.find('.fbd-ajax-heading')
+			.text( head ) 
+			.end()
+			.find('.fbd-ajax-text')
+			.html( body )
+			.end();
+			setTimeout(function(){
+				reloadItem($el, true);	
+			}, 2000);
+	} 
 	// On-load stuff
 	
 	$('.fbd-item-show a').live( 'click', showHiddenItem );
@@ -575,33 +637,14 @@ jQuery(function( $ ) {
 					'url': mw.util.wikiScript( 'api' ),
 					'data': resData,
 					'success': function (data) {
-							$responseForm
-								.find('.mw-ajax-loader')
-								.addClass('fbd-item-response-success')
-								.removeClass('mw-ajax-loader')
-								.end()
-								.find('.fbd-ajax-heading')
-								.text( mw.msg( 'response-ajax-success-head' ) ) 
-								.end()
-								.find('.fbd-ajax-text')
-								.html( mw.msg( 'response-ajax-success-body') )
-								.end();
-								setTimeout(function(){
-									reloadItem($item, true);	
-								}, 2000);
-											
+							if('error' in data) { //if rejected
+								responseMessage ($item, 'error',  mw.msg( 'response-ajax-error-head' ), data.error.info );
+							} else if('feedbackdashboardresponse' in data) { //if successful
+								responseMessage ($item, 'success', mw.msg( 'response-ajax-success-head' ), mw.msg( 'response-ajax-success-body' ) );
+							}
 					},
-					'error': function( jqXHR, textStatus, errorThrown ) {	
-							$responseForm
-								.find('.mw-ajax-loader')
-								.addClass('fbd-item-response-error')
-								.removeClass('mw-ajax-loader')
-								.end()
-								.find('.fbd-ajax-heading') 
-								.text( mw.msg( 'response-ajax-error-head' ) )
-								.end()
-								.find('.fbd-ajax-text')
-								.html( mw.msg( 'response-ajax-error-body' ) );
+					'error': function( jqXHR, textStatus, errorThrown ) {
+							responseMessage ($item, 'error',  mw.msg( 'response-ajax-error-head' ), mw.msg( 'response-ajax-error-body' ) );	
 					},
 					'dataType': 'json'
 				} );
@@ -624,6 +667,13 @@ jQuery(function( $ ) {
 		loadComments( 'more' );
 	} );
 	
+	$( '#fbd-filters-types input[type=checkbox]' ).click( function() {
+		var types = getSelectedTypes();
+		if(types.length === 0) { //check for 0 because onclick it will already have unchecked itself.
+			$(this).prop('checked', true);
+		}
+	});
+
 	saveFormState();
 	var filterType = $( '#fbd-filters' ).children( 'form' ).data( 'filtertype' );
 	// If filtering already happened on the PHP side, don't load the form state from cookies
