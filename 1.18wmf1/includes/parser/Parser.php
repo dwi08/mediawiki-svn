@@ -4260,7 +4260,7 @@ class Parser {
 		}
 
 		# Make sure nickname doesnt get a sig in a sig
-		$nickname = $this->cleanSigInSig( $nickname );
+		$nickname = self::cleanSigInSig( $nickname );
 
 		# If we're still here, make it a link to the user page
 		$userText = wfEscapeWikiText( $username );
@@ -4290,7 +4290,7 @@ class Parser {
 	 * @param $parsing Whether we're cleaning (preferences save) or parsing
 	 * @return String: signature text
 	 */
-	function cleanSig( $text, $parsing = false ) {
+	public function cleanSig( $text, $parsing = false ) {
 		if ( !$parsing ) {
 			global $wgTitle;
 			$this->mOptions = new ParserOptions;
@@ -4311,7 +4311,7 @@ class Parser {
 		$substText = '{{' . $substWord->getSynonym( 0 );
 
 		$text = preg_replace( $substRegex, $substText, $text );
-		$text = $this->cleanSigInSig( $text );
+		$text = self::cleanSigInSig( $text );
 		$dom = $this->preprocessToDom( $text );
 		$frame = $this->getPreprocessor()->newFrame();
 		$text = $frame->expand( $dom );
@@ -4329,7 +4329,7 @@ class Parser {
 	 * @param $text String
 	 * @return String: signature text with /~{3,5}/ removed
 	 */
-	function cleanSigInSig( $text ) {
+	public static function cleanSigInSig( $text ) {
 		$text = preg_replace( '/~{3,5}/', '', $text );
 		return $text;
 	}
