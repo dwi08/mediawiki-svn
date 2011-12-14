@@ -136,13 +136,6 @@ abstract class FileOp {
 		if ( $this->state !== self::STATE_ATTEMPTED ) {
 			return Status::newFatal( 'fileop-fail-state', self::STATE_ATTEMPTED, $this->state );
 		}
-		// Kill any backup files (useful for background scripts)
-		if ( isset( $this->tmpDestFile ) ) {
-			$this->tmpDestFile->purge();
-		}
-		if ( isset( $this->tmpSourceFile ) ) {
-			$this->tmpSourceFile->purge();
-		}
 		$this->state = self::STATE_DONE;
 		if ( $this->failed ) {
 			$status = Status::newGood(); // nothing to finish
@@ -280,12 +273,12 @@ abstract class FileOp {
 				return $status;
 			}
 		} elseif ( $this->getParam( 'overwriteSame' ) ) {
-			$shash = $this->getSourceMD5();
+			$shash = $this->getSourceSha1Base36();
 			// If there is a single source, then we can do some checks already.
 			// For things like concatenate(), we would need to build a temp file
 			// first and thus don't support 'overwriteSame' ($shash is null).
 			if ( $shash !== null ) {
-				$dhash = $this->getFileMD5( $this->params['dst'] );
+				$dhash = $this->getFileSha1Base36( $this->params['dst'] );
 				if ( !strlen( $shash ) || !strlen( $dhash ) ) {
 					$status->fatal( 'backend-fail-hashes' );
 				} elseif ( $shash !== $dhash ) {
@@ -305,37 +298,34 @@ abstract class FileOp {
 	}
 
 	/**
-	 * checkAndBackupDest() helper function to get the source file MD5.
+	 * checkAndBackupDest() helper function to get the source file Sha1.
 	 * Returns false on failure and null if there is no single source.
 	 *
 	 * @return string|false|null
 	 */
-	protected function getSourceMD5() {
+	protected function getSourceSha1Base36() {
 		return null; // N/A
 	}
 
 	/**
-	 * checkAndBackupDest() helper function to get the MD5 of a file.
+	 * checkAndBackupDest() helper function to get the Sha1 of a file.
 	 *
 	 * @return string|false False on failure
 	 */
-	protected function getFileMD5( $path ) {
+	protected function getFileSha1Base36( $path ) {
 		// Source file is in backend
 		if ( FileBackend::isStoragePath( $path ) ) {
 			// For some backends (e.g. Swift, Azure) we can get
 			// standard hashes to use for this types of comparisons.
-			if ( $this->backend->getHashType() === 'md5' ) {
-				$hash = $this->backend->getFileHash( array( 'src' => $path ) );
-			} else {
-				$tmp = $this->backend->getLocalCopy( array( 'src' => $path ) );
-				if ( !$tmp ) {
-					return false; // error
-				}
-				$hash = md5_file( $tmp->getPath() );
-			}
+			$hash = $this->backend->getSha1Base36( array( 'src' => $path ) );
 		// Source file is on file system
 		} else {
-			$hash = md5_file( $path );
+			wfSuppressWarnings();
+			$hash = sha1_file( $path );
+			wfRestoreWarnings();
+			if ( $hash !== false ) {
+				$hash = wfBaseConvert( $hash, 16, 36, 31 );
+			}
 		}
 		return $hash;
 	}
@@ -459,8 +449,8 @@ class StoreFileOp extends FileOp {
 		return $status;
 	}
 
-	protected function getSourceMD5() {
-		return md5_file( $this->params['src'] );
+	protected function getSourceSha1Base36() {
+		return $this->getFileSha1Base36( $this->params['src'] );
 	}
 
 	public function storagePathsChanged() {
@@ -524,8 +514,8 @@ class CreateFileOp extends FileOp {
 		return $status;
 	}
 
-	protected function getSourceMD5() {
-		return md5( $this->params['content'] );
+	protected function getSourceSha1Base36() {
+		return wfBaseConvert( sha1( $this->params['content'] ), 16, 36, 31 );
 	}
 
 	public function storagePathsChanged() {
@@ -594,8 +584,8 @@ class CopyFileOp extends FileOp {
 		return $status;
 	}
 
-	protected function getSourceMD5() {
-		return $this->getFileMD5( $this->params['src'] );
+	protected function getSourceSha1Base36() {
+		return $this->getFileSha1Base36( $this->params['src'] );
 	}
 
 	public function storagePathsRead() {
@@ -726,8 +716,8 @@ class MoveFileOp extends FileOp {
 		return $status;
 	}
 
-	protected function getSourceMD5() {
-		return $this->getFileMD5( $this->params['src'] );
+	protected function getSourceSha1Base36() {
+		return $this->getFileSha1Base36( $this->params['src'] );
 	}
 
 	public function storagePathsRead() {
@@ -796,7 +786,7 @@ class ConcatenateFileOp extends FileOp {
 		return $status;
 	}
 
-	protected function getSourceMD5() {
+	protected function getSourceSha1Base36() {
 		return null; // defer this until we finish building the new file
 	}
 

@@ -420,19 +420,10 @@ class FSFileBackend extends FileBackend {
 		if ( $source === null ) {
 			return false; // invalid storage path
 		}
-		return is_file( $source );
-	}
-
-	function getHashType() {
-		return 'md5';
-	}
-
-	function getFileHash( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			return false; // invalid storage path
-		}
-		return md5_file( $source );
+		wfSuppressWarnings();
+		$exists = is_file( $source );
+		wfRestoreWarnings();
+		return $exists;
 	}
 
 	function getFileTimestamp( array $params ) {
@@ -442,15 +433,6 @@ class FSFileBackend extends FileBackend {
 		}
 		$fsFile = new FSFile( $source );
 		return $fsFile->getTimestamp();
-	}
-
-	function getFileProps( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			return FSFile::placeholderProps(); // invalid storage path
-		}
-		$fsFile = new FSFile( $source );
-		return $fsFile->getProps();
 	}
 
 	function getFileList( array $params ) {

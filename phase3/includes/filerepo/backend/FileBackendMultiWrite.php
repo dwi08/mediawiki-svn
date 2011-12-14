@@ -197,14 +197,15 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $this->backends[$this->masterIndex]->getFileTimestamp( $params );
 	}
 
-	function getFileHash( array $params ) {
-		// Skip non-master for consistent hash formats
-		return $this->backends[$this->masterIndex]->getFileHash( $params );
-	}
-
-	function getHashType() {
-		// Skip non-master for consistent hash formats
-		return $this->backends[$this->masterIndex]->getHashType();
+	function getSha1Base36(array $params) {
+		# Hit all backends in case of failed operations (out of sync)
+		foreach ( $this->backends as $backend ) {
+			$hash = $backend->getSha1Base36( $params );
+			if ( $hash !== false ) {
+				return $hash;
+			}
+		}
+		return false;
 	}
 
 	function getFileProps( array $params ) {

@@ -202,8 +202,7 @@ abstract class FileBackendBase {
 	abstract public function fileExists( array $params );
 
 	/**
-	 * Get a hash of the file at a storage path in the backend.
-	 * Typically this will be a SHA-1 hash, MD5 hash, or something similar.
+	 * Get a SHA-1 hash of the file at a storage path in the backend.
 	 * 
 	 * $params include:
 	 *     src : source storage path
@@ -211,14 +210,7 @@ abstract class FileBackendBase {
 	 * @param $params Array
 	 * @return string|false Hash string or false on failure
 	 */
-	abstract public function getFileHash( array $params );
-
-	/**
-	 * Get the format of the hash that getFileHash() uses
-	 *
-	 * @return string (md5, sha1, internal, ...)
-	 */
-	abstract public function getHashType();
+	abstract public function getSha1Base36( array $params );
 
 	/**
 	 * Get the last-modified timestamp of the file at a storage path.
@@ -464,6 +456,15 @@ abstract class FileBackend extends FileBackendBase {
 		return false; // not implemented
 	}
 
+	public function getSha1Base36( array $params ) {
+		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
+		if ( !$fsFile ) {
+			return false;
+		} else {
+			return $fsFile->sha1Base36();
+		}
+	}
+
 	public function getFileProps( array $params ) {
 		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
 		if ( !$fsFile ) {
@@ -471,10 +472,6 @@ abstract class FileBackend extends FileBackendBase {
 		} else {
 			return $fsFile->getProps();
 		}
-	}
-
-	public function getHashType() {
-		return 'internal';
 	}
 
 	public function getLocalReference( array $params ) {
