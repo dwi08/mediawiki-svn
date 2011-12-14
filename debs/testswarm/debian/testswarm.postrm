@@ -17,12 +17,12 @@ purge)
 	# FIXME: add files that need to be removed!
 
 	if which ucf >/dev/null 2>&1; then
-		ucf  --purge /usr/share/testswarm/site/config.ini
-		ucfr --purge testswarm /usr/share/testswarm/site/config.ini
+		ucf  --purge /etc/testswarm/config.ini
+		ucfr --purge testswarm /etc/testswarm/config.ini
 		ucf  --purge /etc/testswarm/apache.conf
 		ucfr --purge testswarm /etc/testswarm/apache.conf
 	fi
-	rm -f /usr/share/testswarm/site/config.ini
+	rm -f /etc/testswarm/config.ini
 	rm -f /etc/testswarm/apache.conf
 
 	# unlink testswarm apache conf and restart apache

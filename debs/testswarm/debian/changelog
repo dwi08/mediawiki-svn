@@ -1,3 +1,10 @@
+testswarm (0.1.0-4) lucid; urgency=low
+
+  * Place generated config.ini in /etc/testswarm/ instead of the incorrect
+    /usr/share/testswarm/site
+
+ -- Antoine Musso <amusso@wikimedia.org> Wed, 14 Dec 2011 13:53:33 +0000
+
 testswarm (0.1.0-3) unstable; urgency=low
   * symlink testswarm apache conf in /etc/apache2/conf.d just like other
     Debian packages. Administration using virtual hosts will have to set
