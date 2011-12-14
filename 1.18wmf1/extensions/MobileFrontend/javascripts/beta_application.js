@@ -12,6 +12,10 @@ function initClearSearchLink() {
 	search.addEventListener( 'keydown', handleDefaultText, false );
 }
 
+search.onpaste = function() {
+	handleDefaultText();
+};
+
 function navigateToLanguageSelection() {
 	var url;
 	if ( languageSelection ) {
@@ -23,8 +27,9 @@ function navigateToLanguageSelection() {
 }
 
 function handleDefaultText() {
-	if (search.value == placeholder) {
-		search.value = '';
+	var pE = document.getElementById( 'placeholder' );
+	if ( pE ) {
+		pE.style.display = 'none';
 	}
 }
 
@@ -34,15 +39,6 @@ function handleClearSearchLink() {
 			clearSearch.style.display = 'block';
 		} else {
 			clearSearch.style.display = 'none';
-			// if ( results ) {
-			// 	results.style.display = 'none';
-			// }
-			// if ( typeof removeResults == 'function' ) {
-			// 	removeResults();
-			// 	if ( search ) {
-			// 		search.blur();
-			// 	}				
-			// }
 		}
 	}
 }
@@ -50,14 +46,9 @@ function handleClearSearchLink() {
 function clearSearchBox( event ) {
 	search.value = '';
 	clearSearch.style.display = 'none';
-	// if ( results ) {
-	// 	results.style.display = 'none';
-	// }
 	if ( event ) {
 		event.preventDefault();
 	}
-	// removeResults();
-	// search.blur();
 }
 
 function logoClick() {
@@ -73,7 +64,6 @@ function logoClick() {
 	}
 };
 
-// And this...
 for ( var a = document.getElementsByTagName( 'a' ), i = 0; i < a.length; i++ ) {
 	a[i].onclick = function() {
 		if ( this.hash.indexOf( '#' ) == 0 ) {

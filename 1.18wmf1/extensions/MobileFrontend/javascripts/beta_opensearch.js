@@ -1,7 +1,7 @@
 var apiUrl = '/api.php';
 
 if ( scriptPath ) {
-	apiUrl = scriptPath + apiUrl;	
+	apiUrl = scriptPath + apiUrl;
 }
 
 var timer = -1;
@@ -32,12 +32,11 @@ search.onfocus = function() {
 		ol.sqLeft = sq.offsetLeft;
 		ol.sqTop = sq.offsetTop;
 		sq.style.position = 'absolute';
-		search.value = placeholder;
-		
+
 		if ( !ol.properOffsetWidth ) {
 			ol.properOffsetWidth = search.offsetLeft + 44;
 		}
-		
+
 		sq.className = '';
 		sq.style.left = sb.offsetLeft + pixels;
 		sq.style.top = sb.offsetTop + pixels;
@@ -63,9 +62,33 @@ search.onfocus = function() {
 		sb.style.border = 0 + pixels;
 		logo.style.visibility = 'hidden';
 		goButton.style.visibility = 'hidden';
+
+		var pE = document.getElementById( 'placeholder' );
+		if ( !pE ) {
+			pT = document.createElement( 'span' );
+			var pTT = document.createTextNode(placeholder);
+			pT.setAttribute( 'id', 'placeholder' );
+			pT.appendChild(pTT);
+			sb.insertBefore( pT, sb.firstChild );
+		}
+		var pE = document.getElementById( 'placeholder' );
+		if ( pE ) {
+			pE.style.position = 'absolute';
+			pE.style.left = ( search.offsetLeft + 5 ) + pixels;
+			pE.style.top = ( sq.offsetTop + 12 ) + pixels;
+			pE.style.color = '#666666';
+			pE.style.fontSize = 16 + pixels;
+			pE.style.display = 'block';
+			search.style.backgroundColor = 'transparent';
+		}
+
+		if ( pE && search.value != '' ) {
+			pE.style.display = 'none';
+		}
+
 		var removeResults = document.getElementById( 'remove-results' );
 		if ( !removeResults ) {
-			rrd = document.createElement( 'a' ); 
+			rrd = document.createElement( 'a' );
 		 	rrd.setAttribute( 'href', '#' );
 			rrd.setAttribute( 'id', 'remove-results' );
 			rrd.setAttribute( 'onclick', 'removeResults();' );
@@ -134,7 +157,7 @@ results.ontouchstart = function( event ) {
 	whichElement(event);
 }
 
-function whichElement( e ) { 
+function whichElement( e ) {
 	var targ;
 	if ( !e ) {
 		var e = window.event;
@@ -144,22 +167,22 @@ function whichElement( e ) {
 	} else if ( e.srcElement ) {
 		targ = e.srcElement;
 	}
-	
+
 	if ( targ.nodeType == 3 ) {
 		targ = targ.parentNode;
 	}
-	
+
 	e.cancelBubble = true;
 	e.stopPropagation();
-	
-	if ( targ.className == "suggestion-result" || 
-		 targ.className == "search-result-item" || 
+	if ( targ.className == "suggestion-result" ||
+		 targ.className == "search-result-item" ||
 		 targ.className == "suggestions-result" ||
 		 targ.className == "sq-val-update" ||
 		 targ.id == 'results' ||
 		 targ.id == 'search' ||
 		 targ.id == 'searchbox' ||
 		 targ.id == 'sq' ||
+		 targ.id == 'placeholder' ||
 		 targ.id == 'clearsearch' ||
 		 targ.tagName == 'BODY' ) {
 			if ( targ.id == 'clearsearch' && results ) {
@@ -179,7 +202,7 @@ function updateSearchWidth() {
 		if ( results ) {
 			results.style.width = ( sq.offsetWidth - 2 ) + pixels;
 			results.style.left = sq.offsetLeft + pixels;
-			results.style.top = ( sq.offsetTop + sq.offsetHeight )	+ pixels;
+			results.style.top = ( sq.offsetTop + sq.offsetHeight ) + pixels;
 			if ( results.style.display == 'block' ) {
 				focused = false;
 				search.blur();
@@ -275,7 +298,7 @@ function writeResults( sections ) {
 	}
 	if ( !sections || sections.length < 1 ) {
 		results.innerHTML = "<div class=\"suggestions-results\" title=\"No Results\">No Results</div>";
-	} else {		
+	} else {
 		var html = '<div class="suggestions-results">';
 		for ( i = 0; i < sections.length; i++ ) {
 			var section = sections[i];
