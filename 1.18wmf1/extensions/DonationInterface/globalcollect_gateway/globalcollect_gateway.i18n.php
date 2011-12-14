@@ -72,6 +72,15 @@ $messages['ar'] = array(
 الرجاء المحاولة مرة أخرى لاحقاً.',
 );
 
+/** Breton (Brezhoneg)
+ * @author Fulup
+ */
+$messages['br'] = array(
+	'globalcollect_gateway-response-9130' => 'Bro direizh.',
+	'globalcollect_gateway-response-9140' => 'Moneiz direizh.',
+	'globalcollect_gateway-response-9150' => 'Yezh direizh.',
+);
+
 /** Welsh (Cymraeg)
  * @author Lloffiwr
  */
@@ -84,6 +93,7 @@ $messages['cy'] = array(
 	'globalcollect_gateway-response-400530' => 'Modd talu annilys.',
 	'globalcollect_gateway-response-430306' => 'Mae eich cerdyn credyd wedi dod i ben. Defnyddiwch gerdyn arall neu fodd gwahanol o dalu.',
 	'globalcollect_gateway-response-430330' => 'Rhif annilys i gerdyn.',
+	'globalcollect_gateway-response-430421' => 'Ni ddilyswyd eich cerdyn credyd. Sicrhewch bod yr holl fanylion yn gywir fel ag y maent ar eich cyfrif cerdyn credyd, neu rhowch gynnig ar gerdyn arall.',
 	'globalcollect_gateway-response-430360' => "Ni ellid awdurdodi'r gweithrediad hwn. Rhowch gynnig ar gerdyn arall neu defnyddiwch modd arall o dalu.",
 	'globalcollect_gateway-response-430285' => "Ni ellid awdurdodi'r gweithrediad hwn. Rhowch gynnig ar gerdyn arall neu defnyddiwch modd arall o dalu.",
 	'globalcollect_gateway-response-21000150' => 'Rhif annilys i gyfrif banc.',
@@ -255,6 +265,51 @@ $messages['gsw'] = array(
 Bitte versuech s speter nonemol.',
 );
 
+/** Hebrew (עברית)
+ * @author Amire80
+ */
+$messages['he'] = array(
+	'globalcollectgateway' => 'תִרמו עכשיו',
+);
+
+/** Upper Sorbian (Hornjoserbsce)
+ * @author Michawiki
+ */
+$messages['hsb'] = array(
+	'globalcollectgateway' => 'Nětko darić',
+	'globalcollect_gateway-response-9130' => 'Njepłaćiwy kraj.',
+	'globalcollect_gateway-response-9140' => 'Njepłaćiwa měna.',
+	'globalcollect_gateway-response-9150' => 'Njepłaćiwa rěč.',
+	'globalcollect_gateway-response-400530' => 'Njepłaćiwa płaćenska metoda.',
+	'globalcollect_gateway-response-430330' => 'Njepłaćiwe kartowe čisło.',
+	'globalcollect_gateway-response-21000150' => 'Njepłaćiwe kontowe čisło.',
+	'globalcollect_gateway-response-21000155' => 'Njepłaćiwe bankowe wodźenske čisło.',
+	'globalcollect_gateway-response-21000160' => 'Njepłaćiwe girokontowe čisło.',
+);
+
+/** Hungarian (Magyar)
+ * @author Dj
+ * @author Misibacsi
+ */
+$messages['hu'] = array(
+	'globalcollectgateway' => 'Adakozz most',
+	'globalcollect_gateway-desc' => 'GlobalCollect fizetés feldolozása',
+	'globalcollect_gateway-response-9130' => 'Érvénytelen ország.',
+	'globalcollect_gateway-response-9140' => 'Érvénytelen pénznem.',
+	'globalcollect_gateway-response-9150' => 'Érvénytelen nyelv.',
+	'globalcollect_gateway-response-400530' => 'Érvénytelen fizetési mód.',
+	'globalcollect_gateway-response-430306' => 'A hitelkártyád lejárt. Próbálkozz másik kártyával, vagy más fizetési móddal!',
+	'globalcollect_gateway-response-430330' => 'Érvénytelen kártyaszám.',
+	'globalcollect_gateway-response-430421' => 'A hitelkártyádat nem lehet ellenőrizni. Nézd meg, hogy a megadott adatok egyeznek-e a kártyán lévő adatokkal vagy próbálkozz másik kártyával!',
+	'globalcollect_gateway-response-430360' => 'A tranzakciót nem lehet érvényesíteni. Próbálkozz másik kártyával, vagy másik fizetési móddal!',
+	'globalcollect_gateway-response-430285' => 'A tranzakciót nem lehet érvényesíteni. Próbálkozz másik kártyával, vagy másik fizetési móddal!',
+	'globalcollect_gateway-response-21000150' => 'Érvénytelen bankszámlaszám.',
+	'globalcollect_gateway-response-21000155' => 'Érvénytelen bank kód.',
+	'globalcollect_gateway-response-21000160' => 'Érvénytelen giro számlaszám.',
+	'globalcollect_gateway-response-default' => 'Hiba történt a tranzakció feldolgozása során.
+Próbáld meg később újra!',
+);
+
 /** Interlingua (Interlingua)
  * @author McDutchie
  */
@@ -299,6 +354,36 @@ $messages['id'] = array(
 Silakan coba lagi nanti.',
 );
 
+/** Japanese (日本語)
+ * @author Whym
+ */
+$messages['ja'] = array(
+	'globalcollectgateway' => '今すぐ寄付を',
+	'globalcollect_gateway-desc' => 'グローバルコレクト決済処理',
+	'globalcollect_gateway-response-9130' => '国名が無効です。',
+	'globalcollect_gateway-response-9140' => '通貨が無効です。',
+	'globalcollect_gateway-response-9150' => '言語名が無効です。',
+	'globalcollect_gateway-response-400530' => '支払い方法が無効です。',
+	'globalcollect_gateway-response-430306' => 'あなたのクレジットカードは有効期限が切れています。他のカードか他の支払い方法をお試しください。',
+	'globalcollect_gateway-response-430330' => 'カード番号が無効です。',
+	'globalcollect_gateway-response-430421' => 'あなたのクレジットカードの妥当性が確かめられませんでした。すべての情報がクレジットカードの個人情報と一致しているかどうかお確かめください。もしくは他のカードをお試しください。',
+	'globalcollect_gateway-response-430360' => '取引は許可されませんでした。他のカードか他の支払い方法をお試しください。',
+	'globalcollect_gateway-response-430285' => '取引は許可されませんでした。他のカードか他の支払い方法をお試しください。',
+	'globalcollect_gateway-response-21000150' => '銀行口座番号が無効です。',
+	'globalcollect_gateway-response-21000155' => '銀行コードが無効です。',
+	'globalcollect_gateway-response-21000160' => '振替口座番号が無効です。',
+	'globalcollect_gateway-response-default' => '取引の処理中にエラーが起こりました。後でもう一度お試しください。',
+);
+
+/** Korean (한국어)
+ * @author Kwj2772
+ */
+$messages['ko'] = array(
+	'globalcollectgateway' => '지금 기부해주세요',
+	'globalcollect_gateway-response-21000150' => '잘못된 은행 계좌 번호.',
+	'globalcollect_gateway-response-21000155' => '은행 코드가 잘못되었습니다.',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
@@ -341,6 +426,29 @@ $messages['mk'] = array(
 	'globalcollect_gateway-response-21000160' => 'Неважечка жиро сметка.',
 	'globalcollect_gateway-response-default' => 'Настана грешка при обработката на плаќањето.
 Обидете се повторно.',
+);
+
+/** Malayalam (മലയാളം)
+ * @author Praveenp
+ * @author Vssun
+ */
+$messages['ml'] = array(
+	'globalcollectgateway' => 'ഉടൻ സംഭാവന ചെയ്യുക',
+	'globalcollect_gateway-desc' => 'ഗ്ലോബൽ കളക്റ്റ് പണമിടപാട്',
+	'globalcollect_gateway-response-9130' => 'രാജ്യം അസാധുവാണ്.',
+	'globalcollect_gateway-response-9140' => 'നാണയം അസാധുവാണ്.',
+	'globalcollect_gateway-response-9150' => 'ഭാഷ അസാധുവാണ്.',
+	'globalcollect_gateway-response-400530' => 'അസാധുവായ പണമടക്കൽ രീതി',
+	'globalcollect_gateway-response-430306' => 'നിങ്ങളുടെ ക്രെഡിറ്റ്കാർഡിന്റെ കാലാവധി തീർന്നിരിക്കുന്നു. ദയവായി മറ്റൊരു കാർഡോ മറ്റേതെങ്കിലും പണമടക്കൽ രീതിയോ ഉപയോഗിക്കുക.',
+	'globalcollect_gateway-response-430330' => 'അസാധുവായ കാർഡ് നമ്പർ',
+	'globalcollect_gateway-response-430421' => 'നിങ്ങളുടെ ക്രെഡിറ്റ്കാർഡ് സാധൂകരിക്കാനാകുന്നില്ല. ദയവായി വിവരങ്ങളെല്ലാം നിങ്ങളുടെ ക്രെഡിറ്റ്കാർഡ് വിവരങ്ങളുമായി ഒത്തുനോക്കുക, അല്ലെങ്കിൽ മറ്റൊരു കാർഡുപയോഗിക്കുക.',
+	'globalcollect_gateway-response-430360' => 'ഈ ഇടപാട് സാധൂകരിക്കാനാകുന്നില്ല. ദയവായി മറ്റൊരു കാർഡുപയോഗിക്കുകയോ മറ്റേതെങ്കിലും പണമടക്കൽ രീതി അവലംബിക്കുകയോ ചെയ്യുക.',
+	'globalcollect_gateway-response-430285' => 'ഈ ഇടപാട് സാധൂകരിക്കാനാകുന്നില്ല. ദയവായി മറ്റൊരു കാർഡുപയോഗിക്കുകയോ മറ്റേതെങ്കിലും പണമടക്കൽ രീതി അവലംബിക്കുകയോ ചെയ്യുക.',
+	'globalcollect_gateway-response-21000150' => 'അസാധുവായ ബാങ്ക് അക്കൗണ്ട് നമ്പർ.',
+	'globalcollect_gateway-response-21000155' => 'അസാധുവായ ബാങ്ക് കോഡ്.',
+	'globalcollect_gateway-response-21000160' => 'അസാധുവായ ഗിറോ അക്കൗണ്ട് നമ്പർ.',
+	'globalcollect_gateway-response-default' => 'താങ്കളുടെ ഇടപാട് കൈകാര്യം ചെയ്തുകൊണ്ടിരിക്കെ ഒരു പിഴവുണ്ടായിരിക്കുന്നു.
+ദയവായി അൽപ്പസമയത്തിനു ശേഷം ശ്രമിക്കുക.',
 );
 
 /** Malay (Bahasa Melayu)
@@ -434,6 +542,57 @@ $messages['pl'] = array(
 Spróbuj ponownie później.',
 );
 
+/** Portuguese (Português)
+ * @author João Sousa
+ */
+$messages['pt'] = array(
+	'globalcollectgateway' => 'Faça o seu donativo agora',
+	'globalcollect_gateway-desc' => 'Processamento de pagamentos GlobalCollect',
+	'globalcollect_gateway-response-9130' => 'País inválido',
+	'globalcollect_gateway-response-9140' => 'Moeda inválida',
+	'globalcollect_gateway-response-9150' => 'Língua inválida',
+	'globalcollect_gateway-response-400530' => 'Método de pagamento inválido',
+	'globalcollect_gateway-response-430306' => 'O seu cartão de crédito caducou. Por favor use um cartão diferente ou um outro método de pagamento.',
+	'globalcollect_gateway-response-430330' => 'Número de cartão é inválido.',
+	'globalcollect_gateway-response-430421' => 'Não foi possível validar o seu cartão de crédito. Por favor verifique se toda a informação corresponde ao seu perfil de cartão de crédito, ou tente usar outro cartão.',
+	'globalcollect_gateway-response-430360' => 'Não foi possível autorizar a transação. Por favor tente com outro cartão ou outro método de pagamento.',
+	'globalcollect_gateway-response-430285' => 'Não foi possível autorizar a transação. Por favor tente com outro cartão ou outro método de pagamento.',
+	'globalcollect_gateway-response-21000150' => 'Número de conta bancário inválido.',
+	'globalcollect_gateway-response-21000155' => 'Código bancário inválido.',
+	'globalcollect_gateway-response-21000160' => 'Número de conta de transferência inválido.',
+	'globalcollect_gateway-response-default' => 'Ocorreu um erro no processamento desta transacção.
+Por favor, tente novamente mais tarde.',
+);
+
+/** Brazilian Portuguese (Português do Brasil)
+ * @author Ppena
+ */
+$messages['pt-br'] = array(
+	'globalcollectgateway' => 'Faça a sua doação agora',
+	'globalcollect_gateway-desc' => 'Processamento de pagamentos GlobalCollect',
+	'globalcollect_gateway-response-9130' => 'País inválido',
+	'globalcollect_gateway-response-9140' => 'Moeda inválida',
+	'globalcollect_gateway-response-9150' => 'Língua inválida',
+	'globalcollect_gateway-response-400530' => 'Método de pagamento inválido',
+	'globalcollect_gateway-response-430306' => 'O seu cartão de crédito esta vencido. Por favor use um cartão diferente ou um outro método de pagamento.',
+	'globalcollect_gateway-response-430330' => 'Número de cartão é inválido.',
+	'globalcollect_gateway-response-430421' => 'Não foi possível validar o seu cartão de crédito. Por favor verifique se toda a informação corresponde ao seu perfil de cartão de crédito, ou tente usar outro cartão.',
+	'globalcollect_gateway-response-430360' => 'Não foi possível autorizar a transação. Por favor tente com outro cartão ou outro método de pagamento.',
+	'globalcollect_gateway-response-430285' => 'Não foi possível autorizar a transação. Por favor tente com outro cartão ou outro método de pagamento.',
+	'globalcollect_gateway-response-21000150' => 'Número de conta bancária inválido.',
+	'globalcollect_gateway-response-21000155' => 'Código bancário inválido.',
+	'globalcollect_gateway-response-21000160' => 'Número de conta bancária inválido.',
+	'globalcollect_gateway-response-default' => 'Ocorreu um erro no processamento desta transação.
+Por favor tente novamente mais tarde.',
+);
+
+/** Romanian (Română)
+ * @author Minisarm
+ */
+$messages['ro'] = array(
+	'globalcollectgateway' => 'Faceți o donație acum',
+);
+
 /** Russian (Русский)
  * @author Kaganer
  * @author Александр Сигачёв
@@ -457,6 +616,13 @@ $messages['ru'] = array(
 Пожалуйста, повторите попытку позже.',
 );
 
+/** Sinhala (සිංහල)
+ * @author පසිඳු කාවින්ද
+ */
+$messages['si'] = array(
+	'globalcollectgateway' => 'ඔබගේ පරිත්‍යාගය දැන් සපයන්න',
+);
+
 /** Slovenian (Slovenščina)
  * @author Artelind
  * @author Dbc334
@@ -477,6 +643,28 @@ $messages['sl'] = array(
 	'globalcollect_gateway-response-21000155' => 'Številka banke je napačna.',
 	'globalcollect_gateway-response-21000160' => 'Številka žiroračuna je napačna.',
 	'globalcollect_gateway-response-default' => 'Pri obdelavi vaše transakcije je prišlo do napake. Prosimo, poskusite pozneje.',
+);
+
+/** Swedish (Svenska)
+ * @author Warrakkk
+ */
+$messages['sv'] = array(
+	'globalcollectgateway' => 'Ge ditt bidrag nu',
+	'globalcollect_gateway-desc' => 'GlobalCollect betalningshantering',
+	'globalcollect_gateway-response-9130' => 'Ogiltig land.',
+	'globalcollect_gateway-response-9140' => 'Ogiltig valuta.',
+	'globalcollect_gateway-response-9150' => 'Ogiltigt språk.',
+	'globalcollect_gateway-response-400530' => 'Ogiltig betalningsmetod.',
+	'globalcollect_gateway-response-430306' => 'Ditt kreditkort har slutat gälla. Prova ett annat kort eller något av våra andra betalningsalternativ.',
+	'globalcollect_gateway-response-430330' => 'Ogiltig kortnummer.',
+	'globalcollect_gateway-response-430421' => 'Ditt kreditkort kunde inte verifieras. Kontrollera att alla uppgifter stämmer överens med kreditkortsprofilen eller prova ett annat kort.',
+	'globalcollect_gateway-response-430360' => 'Transaktionen kan inte godkännas. Prova ett annat kort eller något av våra andra betalningsalternativ.',
+	'globalcollect_gateway-response-430285' => 'Transaktionen kan inte godkännas. Prova ett annat kort eller något av våra andra betalningsalternativ.',
+	'globalcollect_gateway-response-21000150' => 'Ogiltig bankkontonummer.',
+	'globalcollect_gateway-response-21000155' => 'Ogiltig bankkod.',
+	'globalcollect_gateway-response-21000160' => 'Ogiltigt girokontonummer.',
+	'globalcollect_gateway-response-default' => 'Ett fel uppstod när din transaktion behandlades.
+Försök igen senare.',
 );
 
 /** Swahili (Kiswahili)
