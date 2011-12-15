@@ -51,6 +51,7 @@ switch( $mode ) {
 			'debug'  => false,
 			'root'   => '/var/lib/testswarm/mediawiki-trunk',
 			'svnUrl' => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
+			'testPattern' => '/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2',
 			'minRev' => 105305,
 		);
 		break;
@@ -63,4 +64,18 @@ switch( $mode ) {
 require_once( __DIR__ . '/testswarm-mw-fetcher.php' );
 
 $main = new TestSwarmMWMain( $options );
-$main->tryFetchNextRev();
+$rev = $main->tryFetchNextRev();
+
+if( $rev === false ) {
+	print "No new revision, nothing left to do. Exiting.\n";
+	exit;
+}
+
+$fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
+$api = new TestSwarmAPI(
+	$main
+	, $fetcher_conf['TestSwarmAPI']['username']
+	, $fetcher_conf['TestSwarmAPI']['authtoken']
+	, $fetcher_conf['TestSwarmAPI']['url']
+);
+$api->doAddJob( $rev );
