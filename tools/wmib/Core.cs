@@ -768,6 +768,15 @@ namespace wmib
             return null;
         }
 
+        public static string timedateToString(int number)
+        {
+            if (number <= 9 && number >= 0)
+            {
+                    return "0"+number.ToString();
+            }
+            return number.ToString();
+        }
+
         /// <summary>
         /// Send a message to channel
         /// </summary>
@@ -874,11 +883,11 @@ namespace wmib
                     string log;
                     if (!noac)
                     {
-                        log = "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] * " + user + " " + message + "\n";
+                        log = "[" + timedateToString(System.DateTime.Now.Hour) + ":" + timedateToString(System.DateTime.Now.Minute) + ":" + timedateToString( System.DateTime.Now.Second) + "] * " + user + " " + message + "\n";
                     }
                     else
                     {
-                        log = "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] " + "<" + user + "> " + message + "\n";
+                        log = "[" + timedateToString( System.DateTime.Now.Hour) + ":" + timedateToString( System.DateTime.Now.Minute ) + ":" + timedateToString( System.DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
                     }
                     System.IO.File.AppendAllText(channel.log + System.DateTime.Now.Year + System.DateTime.Now.Month + System.DateTime.Now.Day +".txt", log);
                 }
