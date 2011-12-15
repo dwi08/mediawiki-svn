@@ -62,7 +62,7 @@ mysql_select_db($database, $myslink)
 $wrongfiles = array();
 
 //Kategorie auf Bilder überprüfen
-$katname = "Images_requiring_rotation_by_bot";
+//$katname = "Images_requiring_rotation_by_bot";
 logfile("Prüfe 'Category:$katname' auf Bilder");
 
 $queryurl = "http://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:".$katname."&format=php&cmprop=ids|title|sortkey|timestamp&cmnamespace=6&cmsort=timestamp&cmtype=file&cmlimit=".$config['limit'];
@@ -201,20 +201,21 @@ foreach($picture['revisions'] as $key => $revisions)
 		}
 		else
 		{
-		  logfile("API: Error: not a array!");
-		  logfile($totrevs);
+			logfile("API: Error: not a array!");
+			logfile($totrevs);
 		}
+	}
 }
-}
-
+$wrongfile = false;
 //Benutzer prüfen! #########################################
 if($catcontent[$arraykey]['tmplsetter']) //autoconfirmed
 {
 	$wgAuthor = $catcontent[$arraykey]['tmplsetter'];
 	logfile("check user ".$wgAuthor.".");
 
+	$cachedbar = array();
 	//Datenbank abfragen nach status
-	if(!$cachedbar["$wgAuthor"])
+	if(!isset($cachedbar["$wgAuthor"]))
 	{
 		$mysresult = mysql_query( "SELECT * FROM user WHERE user_name='".mysql_real_escape_string($wgAuthor)."'", $myslink) or suicide("MySQL error");
 		$a_row = mysql_fetch_row($mysresult);
@@ -675,7 +676,7 @@ foreach($catcontent2 as $filename => $arraycontent)
 }
 logfile("Upload finished. Do error pictures now.");
 
-
+mkdir( $homedir . "cache" );
 
 //Cache leeren
 foreach($catcontent2 as $filename => $arraycontent)

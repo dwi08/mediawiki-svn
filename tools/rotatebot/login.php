@@ -138,7 +138,8 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	}
 	logfile("Seite geladen, Anmeldung prüfen.");
 
-	if(strstr($bodyy,'"wgUserName": "' . $username . '",'))
+	$noUnderscore = str_replace( '_', ' ', $username );
+	if(strstr($bodyy,'"wgUserName": "' . $noUnderscore . '",'))
 	{
 		logfile("Anmeldung erfolgreich!");
 
