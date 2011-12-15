@@ -48,7 +48,6 @@ $wgGlobalCollectGatewayAllowedHtmlForms['rcc-AU'] = $wgGlobalCollectGatewayHtmlF
 // Credit Card - Single Step
 //$wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step-CA'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step-CA.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step-US.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3stepB-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3stepB-US.html';
 
 // Credit Card - Two Step
