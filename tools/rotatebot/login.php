@@ -18,6 +18,7 @@
 
 	*/
 
+$cookies = "/home/lux/cks";
 
 // ############### EDIT WIKIPEDIA - FUNCTION ###############
 function wikiedit($project,$page,$newtext,$description,$minor)
@@ -252,13 +253,14 @@ function wikilogin($username,$password,$project,$useragent)
 
 	$postlogin = "lgname=".urlencode($username)."&lgpassword=".urlencode($password)."&format=php";
 
+	global $cookies;
 	if(!$useragent) { $useragent = "Luxo (Toolserver; php) luxo@ts.wikimedia.org";  }
 	$ch = curl_init($project.$getrequest);
 	curl_setopt($ch, CURLOPT_POST, TRUE);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postlogin);
 	curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_COOKIEJAR, "/home/luxo/cks");
+	curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);
 
 	$rx = curl_exec($ch);
 
@@ -274,8 +276,8 @@ function wikilogin($username,$password,$project,$useragent)
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postlogin);
 		curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, "/home/luxo/cks");
-		curl_setopt($ch, CURLOPT_COOKIEJAR, "/home/luxo/cks");
+		curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);
+		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);
 		$ry = curl_exec($ch);
 		$data = unserialize($ry);
 

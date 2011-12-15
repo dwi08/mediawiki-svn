@@ -18,6 +18,8 @@
 
 wikiupload("commons.wikimedia.org","test2.jpg","Test for Rotatebot.jpg","",$descri);*/
 
+$homedir = "/home/luxo/rotbot/";
+
 // ############### EDIT WIKIPEDIA - FUNCTION ###############
 function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 {
@@ -70,7 +72,8 @@ function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 
 function wiki_upload_file ($filename_local,$filename_wiki,$license,$desc,$wiki,$cookies)
 {
-	$file1 = file_get_contents("/home/luxo/rotbot/cache/".$filename_local) or die("Fehler - Datei nicht gefunden! ($filename_local)");
+	global $homedir;
+	$file1 = file_get_contents($homedir . "cache/".$filename_local) or die("Fehler - Datei nicht gefunden! ($filename_local)");
 
 	$data_l = array("file.file" => $file1,
 	"wpDestFile" => $filename_wiki,
@@ -142,6 +145,7 @@ function wiki_PostToHostFD ($host, $path, $data_l, $wiki, $cookies) //this funct
 		$res .= fread($fp, 1);
 	}
 	fclose($fp);
-	file_put_contents("/home/luxo/rotbot/cache/log.txt",$res);
+	global $homedir;
+	file_put_contents( $homedir . "cache/log.txt",$res);
 	return $res;
 }

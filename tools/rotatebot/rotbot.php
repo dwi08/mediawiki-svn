@@ -16,6 +16,7 @@
  */
 
 $homedir = "/home/luxo/rotbot/";
+$exiftool = "/home/luxor/rotbot/exiftool/exiftool";
 $myLockfile = $homedir."rotatebotlock";
 
 ini_set('memory_limit', '100M'); //Speicher auf 100 MBytes hochsetzen
@@ -208,7 +209,6 @@ foreach($picture['revisions'] as $key => $revisions)
 }
 }
 
-
 //Benutzer prüfen! #########################################
 if($catcontent[$arraykey]['tmplsetter']) //autoconfirmed
 {
@@ -295,29 +295,29 @@ if(preg_match("/".$regex."/",$picture['title']) == 1)
 }
 
 
-	if(!$wrongfile) //Bild scheint OK zu sein
-	{
-		logfile("picture and user check finished, sorted for download");
+if(!$wrongfile) //Bild scheint OK zu sein
+{
+	logfile("picture and user check finished, sorted for download");
 
-		$catcontent[$arraykey]['title']    = str_replace(" ", "_", $picture["title"]);
-		$catcontent[$arraykey]['degree']   = $picture["sortkey"];
-		$catcontent[$arraykey]['since']    = $revitimestp;
-		$catcontent[$arraykey]['pageid']   = $picture['pageid'];
-		$catcontent[$arraykey]['url']      = $picture['imageinfo']['0']['url'];
-		$catcontent[$arraykey]['metadata']     = $picture['imageinfo']['0']['metadata'];
-		$catcontent[$arraykey]['uploader'] = $picture['imageinfo']['0']['user'];
-		$catcontent[$arraykey]['upltime']  = $picture['imageinfo']['0']['timestamp'];
-		$catcontent[$arraykey]['size']     = $picture['imageinfo']['0']['width']."x".$picture['imageinfo']['0']['height'];
-		$catcontent[$arraykey]['exifkey']  = 0;
-		$catcontent[$arraykey]['exifkeyafter']  = 0;
-		$catcontent[$arraykey]['exifwriteerr']  = "";
-		$arraykey = $arraykey +1;
-	}
-	else
-	{
-		//array löschen!
-		$papierkorb = array_splice($catcontent,$arraykey,1);
-	}
+	$catcontent[$arraykey]['title']    = str_replace(" ", "_", $picture["title"]);
+	$catcontent[$arraykey]['degree']   = $picture["sortkey"];
+	$catcontent[$arraykey]['since']    = $revitimestp;
+	$catcontent[$arraykey]['pageid']   = $picture['pageid'];
+	$catcontent[$arraykey]['url']      = $picture['imageinfo']['0']['url'];
+	$catcontent[$arraykey]['metadata']     = $picture['imageinfo']['0']['metadata'];
+	$catcontent[$arraykey]['uploader'] = $picture['imageinfo']['0']['user'];
+	$catcontent[$arraykey]['upltime']  = $picture['imageinfo']['0']['timestamp'];
+	$catcontent[$arraykey]['size']     = $picture['imageinfo']['0']['width']."x".$picture['imageinfo']['0']['height'];
+	$catcontent[$arraykey]['exifkey']  = 0;
+	$catcontent[$arraykey]['exifkeyafter']  = 0;
+	$catcontent[$arraykey]['exifwriteerr']  = "";
+	$arraykey = $arraykey +1;
+}
+else
+{
+	//array löschen!
+	$papierkorb = array_splice($catcontent,$arraykey,1);
+}
 
 }
 
@@ -363,7 +363,7 @@ foreach($catcontent as $filename => $arraycontent)
 	{
 		 //Exif auslesen
 		 // /home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation -b 1.jpg     -a is to get dupe tags, too
-		 $exif = system("/home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation -b -a ".$savepath.$filename.".".$arraycontent['filetype']."");
+		 $exif = system($exiftool . " -IFD0:Orientation -b -a ".$savepath.$filename.".".$arraycontent['filetype']."");
 		 settype($exif, "integer");
 		 logfile("EXIF ist auf $exif");
 		 $arraycontent['exifkey'] = $exif; //for editsummary
@@ -421,117 +421,117 @@ foreach($catcontent as $filename => $arraycontent)
 			logfile("Bild muss um $realrotate Grad gedreht werden.");
 			$realrotate = (360 + ($realrotate % 360)) % 360;    // convert to 0-259
 			$arraycontent['realdegree'] = $realrotate;  //    for editsummary
-			}
-				switch($realrotate)
-				{
-					case 0:
-						//kopie erstellen
-						logfile("just exif correction, picture correct");
-						$cmd = "cp ".$savepath.$filename.".".$arraycontent['filetype']." ".$savepath.$filename."_2.".$arraycontent['filetype'];
-						logfile($cmd);
-						passthru($cmd);
-						break;
-					case 90:
-					case 180:
-					case 270:
-						//rotieren ...
-						$cmd = "jpegtran -rotate ".$realrotate." -trim -copy all ".$savepath.$filename.".".$arraycontent['filetype']." > ".$savepath.$filename."_2.".$arraycontent['filetype'];
-						logfile($cmd);
-						passthru($cmd,$return);
-						logfile($arraycontent['title']." rotated by ".$realrotate."°.");
-						break;
+		}
+		switch($realrotate)
+		{
+			case 0:
+				//kopie erstellen
+				logfile("just exif correction, picture correct");
+				$cmd = "cp ".$savepath.$filename.".".$arraycontent['filetype']." ".$savepath.$filename."_2.".$arraycontent['filetype'];
+				logfile($cmd);
+				passthru($cmd);
+				break;
+			case 90:
+			case 180:
+			case 270:
+				//rotieren ...
+				$cmd = "jpegtran -rotate ".$realrotate." -trim -copy all ".$savepath.$filename.".".$arraycontent['filetype']." > ".$savepath.$filename."_2.".$arraycontent['filetype'];
+				logfile($cmd);
+				passthru($cmd,$return);
+				logfile($arraycontent['title']." rotated by ".$realrotate."°.");
+				break;
 
-					default:
-						logfile("Bullshit happend: realrotate was $realrotate.");
-						$return=1004;
-				}
+			default:
+				logfile("Bullshit happend: realrotate was $realrotate.");
+				$return=1004;
+		}
 
-	//escape shell nicht notwendig, keine Benutzerdaten im cmd verwendet
+			//escape shell nicht notwendig, keine Benutzerdaten im cmd verwendet
 
-		$doBruteForceClean = false; // init
+			$doBruteForceClean = false; // init
 
 			if ($return == 0 && !($exif == 0 || $exif == 1)) { // only if no error occured and change necessary
-				//EXIF-orient-tag auf 1 stellen, nur bei jpeg
-				// /home/luxo/rotbot/exiftool/exiftool -Orientation=1 -n  1.jpg
-			if ($exif >= 10) {  //dupe Orientation tags?   Kill 'em all!
-						// Needs to be removed because otherwise the duplicate tag stays
-				// first attempt
-				$cmd = "/home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation= -n  ".$savepath.$filename."_2.".$arraycontent['filetype'];
-				logfile($cmd);
-				passthru($cmd,$retexifwrite);
-
-				if ($retexifwrite == 0) {  // if successful
-					logfile("No errors on EXIF-to-0");
-					$exifwriteerr = ""; // clear - no error since it worked in first attempt
-				} else {
-					// second attempt (ignoring minor errors)
-					$cmd = "/home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation= -n -m  ".$savepath.$filename."_2.".$arraycontent['filetype'];
+					//EXIF-orient-tag auf 1 stellen, nur bei jpeg
+					// /home/luxo/rotbot/exiftool/exiftool -Orientation=1 -n  1.jpg
+				if ($exif >= 10) {  //dupe Orientation tags?   Kill 'em all!
+							// Needs to be removed because otherwise the duplicate tag stays
+					// first attempt
+					$cmd = $exiftool . " -IFD0:Orientation= -n  ".$savepath.$filename."_2.".$arraycontent['filetype'];
 					logfile($cmd);
 					passthru($cmd,$retexifwrite);
 
 					if ($retexifwrite == 0) {  // if successful
-						logfile("No errors on EXIF-to-0 (second try)");
-						$exifwriteerr = " - EXIF had minor errors. Some EXIF could be lost. - ";
+						logfile("No errors on EXIF-to-0");
+						$exifwriteerr = ""; // clear - no error since it worked in first attempt
 					} else {
-						$doBruteForceClean = true;
-					}
-				}
-			} else {
-				// first attempt
-				$cmd = "/home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation=1 -n  ".$savepath.$filename."_2.".$arraycontent['filetype'];
-				logfile($cmd);
-				passthru($cmd,$retexifwrite);
+						// second attempt (ignoring minor errors)
+						$cmd = $exiftool . " -IFD0:Orientation= -n -m  ".$savepath.$filename."_2.".$arraycontent['filetype'];
+						logfile($cmd);
+						passthru($cmd,$retexifwrite);
 
-				if ($retexifwrite == 0) {  // if successful
-					logfile("no errors when setting EXIF to 1");
-					$exifwriteerr = ""; // clear - no error since it worked in first attempt
+						if ($retexifwrite == 0) {  // if successful
+							logfile("No errors on EXIF-to-0 (second try)");
+							$exifwriteerr = " - EXIF had minor errors. Some EXIF could be lost. - ";
+						} else {
+							$doBruteForceClean = true;
+						}
+					}
 				} else {
-					// second attempt (ignoring minor errors)
-					$cmd = "/home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation=1 -n -m  ".$savepath.$filename."_2.".$arraycontent['filetype'];
+					// first attempt
+					$cmd = $exiftool . " -IFD0:Orientation=1 -n  ".$savepath.$filename."_2.".$arraycontent['filetype'];
 					logfile($cmd);
 					passthru($cmd,$retexifwrite);
 
 					if ($retexifwrite == 0) {  // if successful
-						logfile("no errors when setting EXIF to 1 (second try)");
-						$exifwriteerr = " - EXIF had minor errors. Some EXIF could be lost. - ";
+						logfile("no errors when setting EXIF to 1");
+						$exifwriteerr = ""; // clear - no error since it worked in first attempt
 					} else {
-						$doBruteForceClean = true;
+						// second attempt (ignoring minor errors)
+						$cmd = $exiftool . " -IFD0:Orientation=1 -n -m  ".$savepath.$filename."_2.".$arraycontent['filetype'];
+						logfile($cmd);
+						passthru($cmd,$retexifwrite);
+
+						if ($retexifwrite == 0) {  // if successful
+							logfile("no errors when setting EXIF to 1 (second try)");
+							$exifwriteerr = " - EXIF had minor errors. Some EXIF could be lost. - ";
+						} else {
+							$doBruteForceClean = true;
+						}
 					}
 				}
-			}
 
 
-			if ($doBruteForceClean) {
-				// third attempt (ignoring nearly all errors)  - copy all readable tags but leave the Orientation tag away
-				$cmd = "/home/luxo/rotbot/exiftool/exiftool -all= -tagsfromfile @ -all:all --IFD0:Orientation ".$savepath.$filename."_2.".$arraycontent['filetype'];
-				logfile($cmd);
-				passthru($cmd,$retexifwrite);
+				if ($doBruteForceClean) {
+					// third attempt (ignoring nearly all errors)  - copy all readable tags but leave the Orientation tag away
+					$cmd = $exiftool . " -all= -tagsfromfile @ -all:all --IFD0:Orientation ".$savepath.$filename."_2.".$arraycontent['filetype'];
+					logfile($cmd);
+					passthru($cmd,$retexifwrite);
 
-				if ($retexifwrite == 0) {  // if successful
-					logfile("no errors when setting EXIF to 0 (third try)");
-					$exifwriteerr = " - EXIF had major errors. Great parts of EXIF could be lost. - ";
-				} else {
-					// complete failure
-					$return = 1005;
+					if ($retexifwrite == 0) {  // if successful
+						logfile("no errors when setting EXIF to 0 (third try)");
+						$exifwriteerr = " - EXIF had major errors. Great parts of EXIF could be lost. - ";
+					} else {
+						// complete failure
+						$return = 1005;
+					}
 				}
-			}
 
 
-			$arraycontent['exifwriteerr'] = $exifwriteerr; //for editsummary
+				$arraycontent['exifwriteerr'] = $exifwriteerr; //for editsummary
 			}
 
 			if ($return == 0) { // only if no error occured
-			//Exif auslesen als Test
-			// /home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation -b 1.jpg    -a is to get dupe tags, too
-			$exifafter = system("/home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation -b -a ".$savepath.$filename."_2.".$arraycontent['filetype']."");
-			settype($exifafter, "integer");
-			logfile("read EXIF after finish: $exifafter");
-			$arraycontent['exifkeyafter'] = $exifafter; //for editsummary
+				//Exif auslesen als Test
+				// /home/luxo/rotbot/exiftool/exiftool -IFD0:Orientation -b 1.jpg    -a is to get dupe tags, too
+				$exifafter = system($exiftool . " -IFD0:Orientation -b -a ".$savepath.$filename."_2.".$arraycontent['filetype']."");
+				settype($exifafter, "integer");
+				logfile("read EXIF after finish: $exifafter");
+				$arraycontent['exifkeyafter'] = $exifafter; //for editsummary
 
-			if (!($exifafter == 0 || $exifafter == 1)) {  // if unsuccessful
-				$return = 1006;
+				if (!($exifafter == 0 || $exifafter == 1)) {  // if unsuccessful
+					$return = 1006;
+				}
 			}
-		}
 		}
 	}
 	else //Für png's und gif's
@@ -683,9 +683,9 @@ logfile("Upload finished. Do error pictures now.");
 //Cache leeren
 foreach($catcontent2 as $filename => $arraycontent)
 {
-	unlink("/home/luxo/rotbot/cache/".$filename.".".$arraycontent['filetype']);
-	unlink("/home/luxo/rotbot/cache/".$filename."_2.".$arraycontent['filetype']);
-	unlink("/home/luxo/rotbot/cache/".$filename."_2.".$arraycontent['filetype']."_original");
+	unlink($homedir . "cache/".$filename.".".$arraycontent['filetype']);
+	unlink($homedir . "cache/".$filename."_2.".$arraycontent['filetype']);
+	unlink($homedir . "cache/".$filename."_2.".$arraycontent['filetype']."_original");
 }
 logfile("cache cleared. Write log now.");
 
@@ -869,6 +869,7 @@ function tellSeconds($NumberOfSeconds) // function Copyright (C) simplecontent.n
 
 function deleteold($content,$newab,$maxonlog,$logheader)
 {
+	global $homedir;
 	//$maxonlog = 20; //Maximale Logfileabschnitte hier einstellen
 
 	$beginnat = 0;
@@ -892,9 +893,9 @@ function deleteold($content,$newab,$maxonlog,$logheader)
 		return $content;
 
 		//COUNTER
-		$counter = file_get_contents("/home/luxo/rotbot/counter.txt");
+		$counter = file_get_contents($homedir . "counter.txt");
 		$counter = $counter + $newab;
-		file_put_contents("/home/luxo/rotbot/counter.txt",$counter);
+		file_put_contents($homedir . "counter.txt",$counter);
 	}
 	else
 	{
@@ -920,9 +921,9 @@ function deleteold($content,$newab,$maxonlog,$logheader)
 		$intro = substr($content,0,$abschnittarray['1']);
 
 		//COUNTER
-		$counter = file_get_contents("/home/luxo/rotbot/counter.txt");
+		$counter = file_get_contents($homedir . "counter.txt");
 		$counter = $counter + $newab;
-		file_put_contents("/home/luxo/rotbot/counter.txt",$counter);
+		file_put_contents($homedir . "counter.txt",$counter);
 		logfile("new counter: $counter.");
 
 		$intro = sprintf($logheader."\n",$abschnitteneu,$counter); //NEU in settings definiert: der header vom Log
