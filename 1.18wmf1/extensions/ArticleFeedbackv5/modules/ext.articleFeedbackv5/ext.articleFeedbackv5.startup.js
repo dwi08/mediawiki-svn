@@ -16,6 +16,21 @@ aft5_debug = function( any ) {
 /*** Main entry point ***/
 jQuery( function( $ ) {
 	
+	var ua = navigator.appVersion.toLowerCase();
+	// Rule out MSIE 6, iPhone, iPod, iPad, Android
+	if(
+		(ua.indexOf( 'msie 6' ) != -1) ||
+		(ua.indexOf( 'msie 7' ) != -1) ||
+		(ua.indexOf( 'firefox/2') != -1) ||
+		(ua.indexOf( 'firefox 2') != -1) ||
+		(ua.indexOf( 'android' ) != -1) ||
+		(ua.indexOf( 'iphone' ) != -1) ||
+		(ua.indexOf( 'ipod' ) != -1 ) ||
+		(ua.indexOf( 'ipad' ) != -1)
+	) {
+		return;
+	}	
+	
 	// Load check, is this page ArticleFeedbackv5-enabled ?
 	// Keep in sync with ApiArticleFeedbackv5.php
 	if (
@@ -67,7 +82,7 @@ jQuery( function( $ ) {
 		if ( enable ) {
 			mw.loader.load( 'ext.articleFeedbackv5' );
 			// Load the IE-specific module
-			if( navigator.appVersion.indexOf( 'MSIE' ) != -1 ) {
+			if( navigator.appVersion.indexOf( 'MSIE 7' ) != -1 ) {
 				mw.loader.load( 'ext.articleFeedbackv5.ie' );
 			}
 		}
