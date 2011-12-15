@@ -70,7 +70,6 @@ function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 
 function wiki_upload_file ($filename_local,$filename_wiki,$license,$desc,$wiki,$cookies)
 {
-	$file1 = "";//Löschen wegen Speicherplatz
 	$file1 = file_get_contents("/home/luxo/rotbot/cache/".$filename_local) or die("Fehler - Datei nicht gefunden! ($filename_local)");
 
 	$data_l = array("file.file" => $file1,
@@ -145,5 +144,4 @@ function wiki_PostToHostFD ($host, $path, $data_l, $wiki, $cookies) //this funct
 	fclose($fp);
 	file_put_contents("/home/luxo/rotbot/cache/log.txt",$res);
 	return $res;
-	$data_l = array();
 }

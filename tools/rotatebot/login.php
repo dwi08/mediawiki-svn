@@ -98,7 +98,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 
 	//cookie-header erneut generieren
 	$cookie = "";
-	foreach ($cookies as $key=>$value)
+	foreach ($cookies as $value)
 	{
 		$cookie .= trim($value).";";
 	}
@@ -291,7 +291,7 @@ function wikilogin($username,$password,$project,$useragent)
 					 $data['login']['cookieprefix']."UserName" => $data['login']['cookieprefix']."UserName=".$data['login']['lgusername'],
 					 $data['login']['cookieprefix']."Token" => $data['login']['cookieprefix']."Token=".$data['login']['lgtoken']);
 	} else {
-	die("Login nicht erfolgreich! (".$data['login']['result'].")");
+		die("Login nicht erfolgreich! (".$data['login']['result'].")");
 	}
 
 	curl_close($ch);

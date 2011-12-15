@@ -101,7 +101,7 @@ foreach($contentarray['query']['categorymembers'] as $temp_img)
 */
 
 //noch restliche daten nachladen von api.php
-
+$urlpageids = '';
 foreach($contentarray['pages'] as $picture)
 {
 	$urlpageids .= "|".$picture['pageid'];
@@ -173,39 +173,39 @@ $revitimestp = trim($picture["timestamp"]);
 
 foreach($picture['revisions'] as $key => $revisions)
 {
-  if(trim($revisions['timestamp']) == $revitimestp)
-  {
-	$catcontent[$arraykey]['tmplsetter'] = $picture['revisions'][$key]['user'];
-	logfile("Template by: ".$catcontent[$arraykey]['tmplsetter']);
-  }
-  else
-  {
-	logfile("set time($revitimestp) not identical with this rv, ".$revisions['timestamp'].".");
-	//Rev's nachladen
-	$ctxctx = file_get_contents("http://commons.wikimedia.org/w/api.php?action=query&prop=revisions&pageids=".$picture['pageid']."&rvlimit=20&rvprop=timestamp|user|comment&format=php") or suicide("api error");
-	$totrevs = unserialize($ctxctx);
-	logfile("ID: ".$picture['pageid']." ");
-
-	if(is_array($totrevs))
+	if(trim($revisions['timestamp']) == $revitimestp)
 	{
-		foreach($totrevs['query']['pages'] as $cxxx)
-		{
-			foreach($cxxx['revisions'] as $cxxxx)
-			{
-				if($cxxxx['timestamp'] == $revitimestp)
-				{
-					$catcontent[$arraykey]['tmplsetter'] = $cxxxx['user'];
-					logfile("Older rev, template by: ".$catcontent[$arraykey]['tmplsetter']);
-				}
-			}
-		}
+		$catcontent[$arraykey]['tmplsetter'] = $picture['revisions'][$key]['user'];
+		logfile("Template by: ".$catcontent[$arraykey]['tmplsetter']);
 	}
 	else
 	{
-	  logfile("API: Error: not a array!");
-	  logfile($totrevs);
-	}
-  }
+		logfile("set time($revitimestp) not identical with this rv, ".$revisions['timestamp'].".");
+		//Rev's nachladen
+		$ctxctx = file_get_contents("http://commons.wikimedia.org/w/api.php?action=query&prop=revisions&pageids=".$picture['pageid']."&rvlimit=20&rvprop=timestamp|user|comment&format=php") or suicide("api error");
+		$totrevs = unserialize($ctxctx);
+		logfile("ID: ".$picture['pageid']." ");
+
+		if(is_array($totrevs))
+		{
+			foreach($totrevs['query']['pages'] as $cxxx)
+			{
+				foreach($cxxx['revisions'] as $cxxxx)
+				{
+					if($cxxxx['timestamp'] == $revitimestp)
+					{
+						$catcontent[$arraykey]['tmplsetter'] = $cxxxx['user'];
+						logfile("Older rev, template by: ".$catcontent[$arraykey]['tmplsetter']);
+					}
+				}
+			}
+		}
+		else
+		{
+		  logfile("API: Error: not a array!");
+		  logfile($totrevs);
+		}
+}
 }
 
 
@@ -226,7 +226,6 @@ if($catcontent[$arraykey]['tmplsetter']) //autoconfirmed
 	{
 		$a_row = $cachedbar["$wgAuthor"];
 	}
-
 
 	$setuserid = $a_row[0];
 	$user_registration = $a_row[2];
@@ -684,9 +683,9 @@ logfile("Upload finished. Do error pictures now.");
 //Cache leeren
 foreach($catcontent2 as $filename => $arraycontent)
 {
-unlink("/home/luxo/rotbot/cache/".$filename.".".$arraycontent['filetype']);
-unlink("/home/luxo/rotbot/cache/".$filename."_2.".$arraycontent['filetype']);
-unlink("/home/luxo/rotbot/cache/".$filename."_2.".$arraycontent['filetype']."_original");
+	unlink("/home/luxo/rotbot/cache/".$filename.".".$arraycontent['filetype']);
+	unlink("/home/luxo/rotbot/cache/".$filename."_2.".$arraycontent['filetype']);
+	unlink("/home/luxo/rotbot/cache/".$filename."_2.".$arraycontent['filetype']."_original");
 }
 logfile("cache cleared. Write log now.");
 
@@ -745,7 +744,7 @@ foreach($catcontent2 as $arraycontent)
 
 	if($nodelete[$arraycontent['title']] == 1)
 	{
-	$logfilew .= "<big style='color:red;text-decoration:blink;'>'''Warning:''' Template not found, file probably still in the category!!</big>\n";
+		$logfilew .= "<big style='color:red;text-decoration:blink;'>'''Warning:''' Template not found, file probably still in the category!!</big>\n";
 	}
 
 	if($arraycontent['metadata']['Make'] and $arraycontent['metadata']['DateTimeDigitized'])
@@ -984,7 +983,7 @@ function TsToUnixTime($tstime)
 	$regMin = substr($tstime,10,2);
 	$regSec = substr($tstime,12,2);
 
-return mktime($regHour, $regMin, $regSec, $regMonth, $regDay, $regYear);
+	return mktime($regHour, $regMin, $regSec, $regMonth, $regDay, $regYear);
 }
 
 function hexToStr($hex)
