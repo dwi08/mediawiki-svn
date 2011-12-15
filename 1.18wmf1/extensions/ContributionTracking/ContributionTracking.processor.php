@@ -151,7 +151,7 @@ class ContributionTrackingProcessor {
 
 	/**
 	 * Effectively changes the name of a key in an array. If the key does not
-	 * exist, no change is made. 
+	 * exist, no change is made.
 	 * @param array $array The array to rekey (by reference)
 	 * @param string $oldkey The key to change
 	 * @param string $newkey The new value for the key
@@ -169,7 +169,7 @@ class ContributionTrackingProcessor {
 	 * table.
 	 * For these values, if the key exists (and is not explicit false), it is
 	 * received as "true". Therefore, the rekey'd value should be false.
-	 * However, the old key not existing isn't exactly conclusive. 
+	 * However, the old key not existing isn't exactly conclusive.
 	 * @param array $array The array to rekey (by reference)
 	 * @param string $oldkey The key to change
 	 * @param string $invertedkey The key meant to contain the inverted boolean
@@ -255,12 +255,12 @@ class ContributionTrackingProcessor {
 			'notify_url' => '',
 			'item_name' => '',
 			'address1' => '',
-			'city' => '',			
+			'city' => '',
 			'state' => '',
 			'zip' => '',
 			'country' => 'US',
 			'address_override' => '0'
-			
+
 		);
 	}
 
@@ -301,7 +301,7 @@ class ContributionTrackingProcessor {
 	 * gateway to complete the transaction.
 	 */
 	static function getRepostFields( $input ) {
-		global $wgContributionTrackingPayPalBusiness, $wgContributionTrackingReturnToURLDefault;
+		global $wgContributionTrackingPayPalBusiness, $wgContributionTrackingReturnToURLDefault, $wgContributionTrackingRPPLength;
 		// Set the action and tracking ID fields
 		$input = ContributionTrackingProcessor::stage_repost( $input );
 
@@ -331,7 +331,7 @@ class ContributionTrackingProcessor {
 			if ( $returnTitle ) {
 				$returnto = wfExpandUrl( $returnTitle->getFullUrl(), PROTO_CURRENT );
 			} else {
-				$returnto = $wgContributionTrackingReturnToURLDefault . "/$language";
+				$returnto = $wgContributionTrackingReturnToURLDefault . "/$language"; // FIXME: $language is undefined
 			}
 			$repost['fields']['return'] = $returnto;
 			$repost['fields']['currency_code'] = $input['currency_code'];
@@ -378,7 +378,7 @@ class ContributionTrackingProcessor {
 
 				$repost['fields']['t3'] = "M"; // The unit of measurement for for p3 (M = month)
 				$repost['fields']['p3'] = '1'; // Billing cycle duration
-				$repost['fields']['srt'] = '12'; // # of billing cycles
+				$repost['fields']['srt'] = $wgContributionTrackingRPPLength; // # of billing cycles
 				$repost['fields']['src'] = '1'; // Make this 'recurring'
 				$repost['fields']['sra'] = '1'; // Turn on re-attempt on failure
 				$repost['fields']['cmd'] = '_xclick-subscriptions';
@@ -390,7 +390,7 @@ class ContributionTrackingProcessor {
 				$repost['fields']['notify_url'] = $input['notify_url'];
 				$repost['fields']['item_name'] = $input['item_name'];
 			}
-		} else if ( $input['gateway'] == 'moneybookers' ) {
+		} elseif ( $input['gateway'] == 'moneybookers' ) {
 			$repost['action'] = 'https://www.moneybookers.com/app/payment.pl';
 
 			// Tracking
@@ -408,10 +408,12 @@ class ContributionTrackingProcessor {
 		}
 
 		// Normalized amount
-		$repost['fields'][$amount_field_name] = $input['amount'];
-		if ( $input['amount_given'] ) {
-			$repost['fields'][$amount_field_name] = $input['amount_given'];
+		$amount = $input['amount'];
+		// If amount is not a number, use amount_given
+		if ( !( preg_match( '/^\d+(\.(\d+)?)?$/', $amount ) ) && $input['amount_given'] ) {
+			$amount = $input['amount_given'];
 		}
+		$repost['fields'][$amount_field_name] = $amount;
 
 		// Tracking
 		$repost['fields']['custom'] = $input['contribution_tracking_id'];

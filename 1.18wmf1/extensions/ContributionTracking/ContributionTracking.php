@@ -12,7 +12,7 @@ EOT;
 $wgExtensionCredits['specialpage'][] = array(
 	'path'           => __FILE__,
 	'name'           => 'ContributionTracking',
-	'url'            => 'http://www.mediawiki.org/wiki/Extension:ContributionTracking',
+	'url'            => 'https://www.mediawiki.org/wiki/Extension:ContributionTracking',
 	'author'         => 'David Strauss',
 	'descriptionmsg' => 'contributiontracking-desc',
 );
@@ -33,7 +33,7 @@ $wgAvailableRights[] = 'ViewContributionTrackingTester';
 
 $wgAutoloadClasses['ApiContributionTracking'] = $dir . 'ApiContributionTracking.php';
 $wgAutoloadClasses['ContributionTrackingProcessor'] = $dir . 'ContributionTracking.processor.php';
-
+ 
 //this only works if contribution tracking is inside a mediawiki DB, which typically it isn't.
 $wgHooks['LoadExtensionSchemaUpdates'][] = 'efContributionTrackingLoadUpdates';
 
@@ -75,6 +75,12 @@ $wgContributionTrackingPayPalRecurringIPN = 'https://civicrm.wikimedia.org/fundc
  */
 $wgContributionTrackingPayPalBusiness = 'donations@wikimedia.org';
 
+/**
+ * Recurring PayPal subscription Length. Default of 0 is unlimited until canceled
+ */
+
+$wgContributionTrackingRPPLength = '0';
+
 # Unit tests
 $wgHooks['UnitTestsList'][] = 'efContributionTrackingUnitTests';
 
@@ -109,7 +115,7 @@ function efContributionTrackingLoadUpdates( $updater = null ){
 	} else {
 		global $wgContributionTrackingDBname;
 
-		if($updater->getDB()->getDBName() === $wgContributionTrackingDBname) {
+		if( $updater->getDB()->getDBname() === $wgContributionTrackingDBname ) {
 			$updater->addExtensionTable( 'contribution_tracking', $dir . 'ContributionTracking.sql' );
 			$updater->addExtensionTable( 'contribution_tracking_owa_ref', $dir . 'ContributionTracking_OWA_ref.sql' );
 			$updater->addExtensionUpdate( array( 'addField', 'contribution_tracking', 'owa_session',
