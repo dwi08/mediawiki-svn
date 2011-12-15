@@ -1,6 +1,6 @@
 <?php
 /**
- * FileBackend helper class for handling file locking.
+ * Class for handling resource locking.
  * Locks on resource keys can either be shared or exclusive.
  * 
  * Implementations must keep track of what is locked by this proccess
@@ -73,6 +73,69 @@ abstract class LockManager {
 	 * @return string
 	 */
 	abstract protected function doUnlock( array $keys, $type );
+}
+
+/**
+ * LockManager helper class to handle scoped locks, which
+ * release when an object is destroyed or goes out of scope.
+ */
+class ScopedLock {
+	/** @var LockManager */
+	protected $manager;
+	/** @var Status */
+	protected $status;
+	/** @var Array List of resource paths*/
+	protected $paths;
+
+	protected $type; // integer lock type
+
+	/**
+	 * @param $manager LockManager
+	 * @param $paths Array List of storage paths
+	 * @param $type integer LockManager::LOCK_* constant
+	 * @param $status Status
+	 */
+	protected function __construct(
+		LockManager $manager, array $paths, $type, Status $status
+	) {
+	   $this->manager = $manager;
+	   $this->paths = $paths;
+	   $this->status = $status;
+	   $this->type = $type;
+	}
+
+	protected function __clone() {}
+
+	/**
+	 * Get a ScopedLock object representing a lock on resource paths.
+	 * Any locks are released once this object goes out of scope.
+	 * The status object is updated with any errors or warnings.
+	 * 
+	 * @param $manager LockManager
+	 * @param $paths Array List of storage paths
+	 * @param $type integer LockManager::LOCK_* constant
+	 * @param $status Status
+	 * @return ScopedLock|null Returns null on failure
+	 */
+	public static function factory(
+		LockManager $manager, array $paths, $type, Status $status
+	) {
+		$lockStatus = $manager->lock( $paths, $type );
+		$status->merge( $lockStatus );
+		if ( $lockStatus->isOK() ) {
+			return new self( $manager, $paths, $type, $status );
+		}
+		return null;
+	}
+
+	function __destruct() {
+		$wasOk = $this->status->isOK();
+		$this->status->merge( $this->manager->unlock( $this->paths, $this->type ) );
+		if ( $wasOk ) {
+			// Make sure status is OK, despite any unlockFiles() fatals	
+			$this->status->setResult( true, $this->status->value );
+		}
+	}
 }
 
 /**
