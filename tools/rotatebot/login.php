@@ -18,16 +18,14 @@
 
 	*/
 
-$cookies = "/home/lux/cks";
+include("settings.php");
 
 // ############### EDIT WIKIPEDIA - FUNCTION ###############
 function wikiedit($project,$page,$newtext,$description,$minor)
 {
-	global $cookies;
+	global $cookies, $useragent;
 	logfile("Funktion gestartet...");
 	logfile("Schreibe Text am ".date("r",time())." in die Seite '$page'.");
-
-	$useragent = "Luxo (toolserver; php) luxo@ts.wikimedia.org";
 
 	//$cookies
 	if(!$cookies["commonswikiUserName"] || !$cookies["commonswikiUserID"])
@@ -251,8 +249,8 @@ function wikilogin($username,$password,$project,$useragent)
 
 	$postlogin = "lgname=".urlencode($username)."&lgpassword=".urlencode($password)."&format=php";
 
-	global $cookies;
-	if(!$useragent) { $useragent = "Luxo (Toolserver; php) luxo@ts.wikimedia.org";  }
+	global $cookies, $useragent;
+
 	$ch = curl_init($project.$getrequest);
 	curl_setopt($ch, CURLOPT_POST, TRUE);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postlogin);

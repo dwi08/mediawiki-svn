@@ -18,14 +18,12 @@
 
 wikiupload("commons.wikimedia.org","test2.jpg","Test for Rotatebot.jpg","",$descri);*/
 
-$homedir = "/home/luxo/rotbot/";
+include("settings.php");
 
 // ############### EDIT WIKIPEDIA - FUNCTION ###############
 function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 {
-	global $cookies;
-	$username = "Rotatebot";
-	$password = "**removed**";
+	global $cookies, $useragent;
 
 	logfile("Lade Bild '$filename_wiki' hoch am ".date("r",time()).".");
 
@@ -34,7 +32,7 @@ function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 	{
 		$username = "Rotatebot";
 		$password = "**removed**";
-		$useragent = "Luxo (toolserver; php) luxo@ts.wikimedia.org";
+
 		logfile("Login to $project!\n");
 		wikilogin($username,$password,$project,$useragent);
 		logfile("logged in to $project!\n");
@@ -90,8 +88,8 @@ function wiki_upload_file ($filename_local,$filename_wiki,$license,$desc,$wiki,$
 
 function wiki_PostToHostFD ($host, $path, $data_l, $wiki, $cookies) //this function was developed by [[:de:User:APPER]] (Christian Thiele)
 {
+	global $useragent;
 	logfile("verbinde zu $host ...");
-	$useragent = "Luxobot/1.1 (toolserver; php) luxo@ts.wikimedia.org";
 	$dc = 0;
 	$bo="-----------------------------305242850528394";
 	$filename=$data_l['wpDestFile'];

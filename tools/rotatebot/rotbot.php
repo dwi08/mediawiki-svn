@@ -15,8 +15,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$homedir = "/home/luxo/rotbot/";
-$exiftool = "/home/luxor/rotbot/exiftool/exiftool";
+include("settings.php");
 $myLockfile = $homedir."rotatebotlock";
 
 ini_set('memory_limit', '100M'); //Speicher auf 100 MBytes hochsetzen
@@ -54,7 +53,7 @@ getLockOrDie($dontDieOnLockProblems); //check for other concurrently running rot
 
 
 logfile("Verbinde zur Datenbank!");
-include("settings.php");
+
 $myslink = mysql_connect($databanknames, $userloginname, $databasepw) or suicide ("Can't connect to MySQL");
 $database = "commonswiki_p";
 mysql_select_db($database, $myslink)
