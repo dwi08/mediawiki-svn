@@ -22,6 +22,7 @@ public class HtmlDump
     {
         public config.channel Channel;
         public string dumpname;
+        // This function is called on start of bot
         public static void Start()
         {
             while (true)
@@ -63,19 +64,27 @@ public class HtmlDump
         }
         public void Make()
         {
-            string text;
-            text = CreateHeader();
-            text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
-            if (Channel.Keys.text.Count > 0)
+            try
             {
-                foreach (irc.dictionary.item Key in Channel.Keys.text)
+                string text;
+                text = CreateHeader();
+                text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
+                Channel.Keys.locked = true;
+                if (Channel.Keys.text.Count > 0)
                 {
-                    text = text + AddLine(Key.key, Key.text);
+                    foreach (irc.dictionary.item Key in Channel.Keys.text)
+                    {
+                        text = text + AddLine(Key.key, Key.text);
+                    }
                 }
+                Channel.Keys.locked = false;
+                text = text + "<table>\n";
+                text = text + CreateFooter();
+                System.IO.File.WriteAllText(dumpname, text);
+            } catch (Exception b)
+            {
+                Channel.Keys.locked = false;
+                Console.WriteLine(b.Message);
             }
-            text = text + "<table>\n";
-            text = text + CreateFooter();
-            System.IO.File.WriteAllText(dumpname, text);
-        }
     }
 }

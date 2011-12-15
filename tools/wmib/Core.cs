@@ -224,6 +224,7 @@ namespace wmib
             public string datafile = "";
             // if we need to update dump
             public bool update = true;
+            public bool locked = false;
             public class item
             {
                 public item(string Key, string Text, string User, string Lock = "false")
@@ -511,6 +512,10 @@ namespace wmib
 
             public void setKey(string Text, string key, string user)
             {
+                while (locked)
+                {
+                        i
+                }
                 try
                 {
                         foreach (item data in text)
@@ -546,6 +551,10 @@ namespace wmib
             }
             public void rmKey(string key, string user)
             {
+                while (locked)
+                {
+                        System.Threading.Thread.Sleep(200);
+                }
                 foreach (item keys in text)
                 {
                     if (keys.key == key)
