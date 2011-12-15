@@ -25,53 +25,47 @@ namespace wmib
         private static System.IO.StreamWriter wd;
         private static List<user> User = new List<user>();
 
-        public static void Ping()
-        {
-            while (true)
-            {
-                System.Threading.Thread.Sleep(20000);
-                wd.WriteLine("PING :" + config.network);
-                wd.Flush();
-            }
-        }
-
-        public static string encode(string text)
-        {
-            return text.Replace(config.separator, "<separator>");
-        }
-
-        public static bool Authenticate()
-        {
-            if (config.login != "")
-            {
-                wd.WriteLine("PRIVMSG nickserv :identify " + config.login + " " + config.password);
-                wd.Flush();
-                System.Threading.Thread.Sleep(4000);
-            }
-            return true;
-        }
-
-        public static string decode(string text)
-        {
-            return text.Replace("<separator>", config.separator);
-        }
-
         public class user
         {
+            /// <summary>
+            /// Regex
+            /// </summary>
+            public string name;
+            /// <summary>
+            /// Level
+            /// </summary>
+            public string level;
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="level"></param>
+            /// <param name="name"></param>
             public user(string level, string name)
             {
                 this.level = level;
                 this.name = name;
             }
-            public string name;
-            public string level;
         }
 
         public class IRCTrust
         {
+            /// <summary>
+            /// List of all users in a channel
+            /// </summary>
             private List<user> Users = new List<user>();
+            /// <summary>
+            /// Channel this class belong to
+            /// </summary>
             public string _Channel;
+            /// <summary>
+            /// File where data are stored
+            /// </summary>
             public string File;
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="channel"></param>
             public IRCTrust(string channel)
             {
                 // Load
@@ -95,6 +89,11 @@ namespace wmib
                     }
                 }
             }
+
+            /// <summary>
+            /// Save
+            /// </summary>
+            /// <returns></returns>
             public bool Save()
             {
                 System.IO.File.WriteAllText(File, "");
@@ -105,6 +104,12 @@ namespace wmib
                 return true;
             }
 
+            /// <summary>
+            /// New
+            /// </summary>
+            /// <param name="level">Level</param>
+            /// <param name="user">Regex</param>
+            /// <returns></returns>
             public bool addUser(string level, string user)
             {
                 foreach (user u in Users)
@@ -119,6 +124,11 @@ namespace wmib
                 return true;
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="user">Regex</param>
+            /// <returns></returns>
             public bool delUser(string user)
             {
                 foreach (user u in Users)
@@ -140,6 +150,11 @@ namespace wmib
                 return true;
             }
 
+            /// <summary>
+            /// Return level
+            /// </summary>
+            /// <param name="level"></param>
+            /// <returns></returns>
             private int getLevel(string level)
             {
                 if (level == "admin")
@@ -153,6 +168,11 @@ namespace wmib
                 return 0;
             }
 
+            /// <summary>
+            /// Return user object from a name
+            /// </summary>
+            /// <param name="user"></param>
+            /// <returns></returns>
             public user getUser(string user)
             {
                 user lv = new user("null", "");
@@ -172,6 +192,9 @@ namespace wmib
                 return lv;
             }
 
+            /// <summary>
+            /// List all users to a channel
+            /// </summary>
             public void listAll()
             {
                 string users_ok = "";
@@ -182,6 +205,12 @@ namespace wmib
                 Message("I trust: " + users_ok, _Channel);
             }
 
+            /// <summary>
+            /// Check if user match the necessary level
+            /// </summary>
+            /// <param name="level"></param>
+            /// <param name="rights"></param>
+            /// <returns></returns>
             public bool matchLevel(int level, string rights)
             {
                 if (level == 2)
@@ -195,6 +224,13 @@ namespace wmib
                 return false;
             }
 
+            /// <summary>
+            /// Check if user is approved to do operation requested
+            /// </summary>
+            /// <param name="User"></param>
+            /// <param name="Host"></param>
+            /// <param name="command"></param>
+            /// <returns></returns>
             public bool isApproved(string User, string Host, string command)
             {
                 user current = getUser(User + "!@" + Host);
@@ -221,12 +257,35 @@ namespace wmib
 
         public class dictionary
         {
+            /// <summary>
+            /// Data file
+            /// </summary>
             public string datafile = "";
             // if we need to update dump
             public bool update = true;
+            /// <summary>
+            /// Locked
+            /// </summary>
             public bool locked = false;
             public class item
             {
+                /// <summary>
+                /// Text
+                /// </summary>
+                public string text;
+                /// <summary>
+                /// Key
+                /// </summary>
+                public string key;
+                public string user;
+                public string locked;
+                /// <summary>
+                /// Constructor
+                /// </summary>
+                /// <param name="Key"></param>
+                /// <param name="Text"></param>
+                /// <param name="User"></param>
+                /// <param name="Lock"></param>
                 public item(string Key, string Text, string User, string Lock = "false")
                 {
                     text = Text;
@@ -234,24 +293,43 @@ namespace wmib
                     locked = Lock;
                     user = User;
                 }
-                public string text;
-                public string key;
-                public string user;
-                public string locked;
             }
             public class staticalias
             {
+                /// <summary>
+                /// Name
+                /// </summary>
                 public string Name;
+                /// <summary>
+                /// Key
+                /// </summary>
                 public string Key;
+                /// <summary>
+                /// Constructor
+                /// </summary>
+                /// <param name="name"></param>
+                /// <param name="key"></param>
                 public staticalias(string name, string key)
                 {
                     Name = name;
                     Key = key;
                 }
             }
+            /// <summary>
+            /// List of all items in class
+            /// </summary>
             public List<item> text = new List<item>();
+            /// <summary>
+            /// List of all aliases we want to use
+            /// </summary>
             public List<staticalias> Alias = new List<staticalias>();
+            /// <summary>
+            /// Channel name
+            /// </summary>
             public string Channel;
+            /// <summary>
+            /// Load it
+            /// </summary>
             public void Load()
             {
                 text.Clear();
@@ -282,6 +360,11 @@ namespace wmib
                 }
             }
 
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="database"></param>
+            /// <param name="channel"></param>
             public dictionary(string database, string channel)
             {
                 datafile = database;
@@ -289,6 +372,9 @@ namespace wmib
                 Load();
             }
 
+            /// <summary>
+            /// Save to a file
+            /// </summary>
             public void Save()
             {
                 update = true;
@@ -310,6 +396,11 @@ namespace wmib
                 }
             }
 
+            /// <summary>
+            /// Get value of key
+            /// </summary>
+            /// <param name="key"></param>
+            /// <returns></returns>
             public string getValue(string key)
             {
                 foreach (item data in text)
@@ -322,6 +413,14 @@ namespace wmib
                 return "";
             }
 
+            /// <summary>
+            /// Print a value to channel if found this message doesn't need to be a valid command
+            /// </summary>
+            /// <param name="name"></param>
+            /// <param name="user"></param>
+            /// <param name="chan"></param>
+            /// <param name="host"></param>
+            /// <returns></returns>
             public bool print(string name, string user, config.channel chan, string host)
             {
                 if (!name.StartsWith("!"))
@@ -356,7 +455,12 @@ namespace wmib
                         config.channel _Chan = getChannel(Channel);
                         if (chan.Users.isApproved(user, host, "info"))
                         {
-                             this.aliasKey(name.Substring(name.IndexOf("alias") + 6), parm[0], "");
+                            if (parm.Length < 3)
+                            {
+                                Message("It would be cool to give me also a name of key", Channel);
+                                return true;
+                            }
+                             this.aliasKey(name.Substring(name.IndexOf(" alias") + 7), parm[0], "");
                         }
                         else
                         {
@@ -379,6 +483,7 @@ namespace wmib
                                     return false;
                                 }
                             }
+                            return false;
                         }
                         else
                         {
@@ -449,6 +554,11 @@ namespace wmib
                 return true;
             }
 
+            /// <summary>
+            /// Search
+            /// </summary>
+            /// <param name="key"></param>
+            /// <param name="Chan"></param>
             public void RSearch(string key, config.channel Chan)
             {
                 if (!key.StartsWith("@regsearch"))
@@ -510,6 +620,12 @@ namespace wmib
                 }
             }
 
+            /// <summary>
+            /// Save a new key
+            /// </summary>
+            /// <param name="Text"></param>
+            /// <param name="key"></param>
+            /// <param name="user"></param>
             public void setKey(string Text, string key, string user)
             {
                 while (locked)
@@ -535,6 +651,13 @@ namespace wmib
                     handleException(b, Channel);
                 }
             }
+
+            /// <summary>
+            /// Alias
+            /// </summary>
+            /// <param name="key"></param>
+            /// <param name="al"></param>
+            /// <param name="user"></param>
             public void aliasKey(string key, string al, string user)
             {
                 foreach(staticalias stakey in this.Alias)
@@ -549,6 +672,7 @@ namespace wmib
                 Message("Successfully created", Channel);
                 Save();
             }
+
             public void rmKey(string key, string user)
             {
                 while (locked)
@@ -569,11 +693,69 @@ namespace wmib
             }
         }
 
+        /// <summary>
+        /// Ping
+        /// </summary>
+        public static void Ping()
+        {
+            while (true)
+            {
+                System.Threading.Thread.Sleep(20000);
+                wd.WriteLine("PING :" + config.network);
+                wd.Flush();
+            }
+        }
+
+        /// <summary>
+        /// Encode a data before saving it to a file
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string encode(string text)
+        {
+            return text.Replace(config.separator, "<separator>");
+        }
+
+        /// <summary>
+        /// Nickserv
+        /// </summary>
+        /// <returns></returns>
+        public static bool Authenticate()
+        {
+            if (config.login != "")
+            {
+                wd.WriteLine("PRIVMSG nickserv :identify " + config.login + " " + config.password);
+                wd.Flush();
+                System.Threading.Thread.Sleep(4000);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Decode
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string decode(string text)
+        {
+            return text.Replace("<separator>", config.separator);
+        }
+
+        /// <summary>
+        /// Exceptions :o
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="chan"></param>
         public static void handleException(Exception ex, string chan)
         {
             Message("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", chan);
         }
 
+        /// <summary>
+        /// Get a channel object
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static config.channel getChannel(string name)
         {
             foreach (config.channel current in config.channels)
@@ -586,6 +768,12 @@ namespace wmib
             return null;
         }
 
+        /// <summary>
+        /// Send a message to channel
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
         public static bool Message(string message, string channel)
         {
             wd.WriteLine("PRIVMSG " + channel + " :" + message);
@@ -593,6 +781,14 @@ namespace wmib
             return true;
         }
 
+        /// <summary>
+        /// Change rights of user
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="channel"></param>
+        /// <param name="user"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public static int modifyRights(string message, config.channel channel, string user, string host)
         {
             try
@@ -661,6 +857,14 @@ namespace wmib
             return 0;
         }
 
+        /// <summary>
+        /// Log file
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="channel"></param>
+        /// <param name="user"></param>
+        /// <param name="host"></param>
+        /// <param name="noac"></param>
         public static void chanLog(string message, config.channel channel, string user, string host, bool noac = true)
         {
             try
@@ -686,6 +890,14 @@ namespace wmib
             }
         }
 
+        /// <summary>
+        /// Called on action
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="Channel"></param>
+        /// <param name="host"></param>
+        /// <param name="nick"></param>
+        /// <returns></returns>
         public static bool getAction(string message, string Channel, string host, string nick)
         {
             config.channel curr = getChannel(Channel);
@@ -693,6 +905,13 @@ namespace wmib
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chan"></param>
+        /// <param name="user"></param>
+        /// <param name="host"></param>
+        /// <param name="message"></param>
         public static void addChannel(config.channel chan, string user, string host, string message)
         {
             if (message.StartsWith("@add"))
@@ -720,7 +939,7 @@ namespace wmib
                         wd.Flush();
                         System.Threading.Thread.Sleep(100);
                         config.channel Chan = getChannel(channel);
-                        Chan.Users.addUser("admin", user + ".*" + host );
+                        Chan.Users.addUser("admin", user + "!.*@" + host );
                     } else
                     {
                         Message("Invalid name", chan.name);
@@ -732,8 +951,32 @@ namespace wmib
             }
         }
 
+        /// <summary>
+        /// Part a channel
+        /// </summary>
+        /// <param name="chan">Channel object</param>
+        /// <param name="user">User</param>
+        /// <param name="host">Host</param>
+        /// <param name="message">Message</param>
         public static void partChannel(config.channel chan, string user, string host, string message)
         {
+            if (message.StartsWith("@drop"))
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    wd.WriteLine("PART " + chan.name);
+                    System.Threading.Thread.Sleep(100);
+                    System.IO.File.Delete(chan.Users.File);
+                    wd.Flush();
+                    System.IO.File.Delete(chan.name + ".setting");
+                    config.channels.Remove(chan);
+                    config.Save();
+                }
+                else
+                {
+                    Message("Permission denied", chan.name);
+                }
+            }
             if (message.StartsWith("@part"))
             {
                 if (chan.Users.isApproved(user, host, "admin"))
@@ -816,15 +1059,79 @@ namespace wmib
                 }
                 Message("I am now in following channels: " + channels, chan.name);
             }
+            if (message.StartsWith("@infobot-off"))
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    if (!chan.info)
+                    {
+                        Message("Channel had infobot disabled", chan.name);
+                    }
+                    else
+                    {
+                        Message("Infobot disabled", chan.name);
+                        chan.info = false;
+                        chan.SaveConfig();
+                        config.Save();
+                    }
+                }
+                else
+                {
+                    Message("Permission denied", chan.name);
+                }
+            }
+            if (message.StartsWith("@infobot-on"))
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    if (!chan.logged)
+                    {
+                        Message("Infobot was already enabled :O", chan.name);
+                    }
+                    else
+                    {
+                        chan.info = true;
+                        config.Save();
+                        chan.SaveConfig();
+                        Message("Infobot enabled", chan.name);
+                    }
+                }
+                else
+                {
+                    Message("Permission denied", chan.name);
+                }
+            }
+            if (message.StartsWith("@commands"))
+            {
+                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, add, flush, logon, logoff", chan.name);
+            }
+
+            if (message.StartsWith("@channellist"))
+            {
+                string channels = "";
+                foreach (config.channel a in config.channels)
+                {
+                    channels = channels + a.name + ", ";
+                }
+                Message("I am now in following channels: " + channels, chan.name);
+            }
         }
 
+        /// <summary>
+        /// Called when someone post a message to server
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="nick"></param>
+        /// <param name="host"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static bool getMessage(string channel, string nick, string host, string message)
         {
             config.channel curr = getChannel(channel);
             if (curr != null)
             {
                 chanLog(message, curr, nick, host);
-                if (message.StartsWith("!"))
+                if (message.StartsWith("!") && curr.info)
                 {
                     curr.Keys.print(message, nick, curr, host);
                 }
@@ -839,12 +1146,13 @@ namespace wmib
                 }
             }
 
-
-
-
             return false;
         }
 
+        /// <summary>
+        /// Connection
+        /// </summary>
+        /// <returns></returns>
         public static bool Reconnect()
         {
             data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
@@ -862,6 +1170,10 @@ namespace wmib
             return false;
         }
 
+        /// <summary>
+        /// Connection
+        /// </summary>
+        /// <returns></returns>
         public static int Connect()
         {
             data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
@@ -932,7 +1244,7 @@ namespace wmib
                                         message = message.Substring(message.IndexOf(":") + 1);
                                         if (message.Contains(delimiter.ToString() + "ACTION"))
                                         {
-                                            getAction(message.Replace("", "").Replace(delimiter.ToString() +"ACTION ", ""), channel, host, nick);
+                                            getAction(message.Replace(delimiter.ToString() +"ACTION", ""), channel, host, nick);
                                             continue;
                                         }
                                         else

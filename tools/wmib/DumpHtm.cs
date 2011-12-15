@@ -18,9 +18,15 @@ using System.Net;
 
 namespace wmib
 {
-public class HtmlDump
+    public class HtmlDump
     {
+        /// <summary>
+        /// Channel name
+        /// </summary>
         public config.channel Channel;
+        /// <summary>
+        /// Dump
+        /// </summary>
         public string dumpname;
         // This function is called on start of bot
         public static void Start()
@@ -39,29 +45,60 @@ public class HtmlDump
                 System.Threading.Thread.Sleep(320000);
             }
         }
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="channel"></param>
         public HtmlDump(config.channel channel)
         {
             dumpname = config.DumpDir + "/" + channel.name + ".htm";
             Channel = channel;
         }
+
+        /// <summary>
+        /// Html code
+        /// </summary>
+        /// <returns></returns>
         public string CreateFooter()
         {
             return "</body></html>\n";
         }
+
+        /// <summary>
+        /// Html
+        /// </summary>
+        /// <returns></returns>
         public string CreateHeader()
         {
-            return "<html><head></head><body>\n";
+            return "<html><head><title>"+ Channel.name +"</title></head><body>\n";
         }
+
+        /// <summary>
+        /// Remove html
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public string Encode(string text)
         {
             text = text.Replace("<", "&lt;");
             text = text.Replace(">", "&gt;");
             return text;
         }
+
+        /// <summary>
+        /// Insert another table row
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public string AddLine(string name, string value)
         {
             return "<tr><td>" + Encode(name) + "</td><td>" + Encode(value) + "</td></tr>\n";
         }
+
+        /// <summary>
+        /// Generate a dump file
+        /// </summary>
         public void Make()
         {
             try
@@ -81,7 +118,8 @@ public class HtmlDump
                 text = text + "<table>\n";
                 text = text + CreateFooter();
                 System.IO.File.WriteAllText(dumpname, text);
-            } catch (Exception b)
+            }
+            catch (Exception b)
             {
                 Channel.Keys.locked = false;
                 Console.WriteLine(b.Message);

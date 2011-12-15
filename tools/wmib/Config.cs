@@ -20,39 +20,48 @@ namespace wmib
 {
     public static class config
     {
-        public static string text;
-        private static void AddConfig(string a, string b)
-        {
-            text = text + "\n" + a + "=" + b + ";";
-        }
-        public static void Save()
-        {
-            text ="";
-            AddConfig("username", username);
-            AddConfig("password", password);
-            AddConfig("network", network);
-            AddConfig("nick", login);
-            text = text + "\nchannels=";
-            foreach (channel current in channels)
-            {
-                text = text + current.name + ",\n";
-            }
-            text = text + ";";
-            System.IO.File.WriteAllText("wmib", text);
-        }
         public class channel
         {
+            /// <summary>
+            /// Channel name
+            /// </summary>
             public string name;
             public bool logged;
+            /// <summary>
+            /// Log
+            /// </summary>
             public string log;
+            public bool info;
+            /// <summary>
+            /// Keys
+            /// </summary>
             public irc.dictionary Keys;
+            /// <summary>
+            /// Configuration text
+            /// </summary>
             private string conf;
+            /// <summary>
+            /// Users
+            /// </summary>
             public irc.IRCTrust Users;
+            /// <summary>
+            /// Path of db
+            /// </summary>
             public string keydb = "";
+
+            /// <summary>
+            /// Add a line to config
+            /// </summary>
+            /// <param name="a">Name of key</param>
+            /// <param name="b">Value</param>
             private void AddConfig(string a, string b)
             {
                 conf = conf + "\n" + a + "=" + b + ";";
             }
+
+            /// <summary>
+            /// Load config of channel :)
+            /// </summary>
             public void LoadConfig()
             {
                 string conf_file = name +  ".setting";
@@ -71,19 +80,33 @@ namespace wmib
                 {
                     logged = bool.Parse(config.parseConfig(conf, "logged"));
                 }
+                if (config.parseConfig(conf, "infodb") != "")
+                {
+                    info = bool.Parse(config.parseConfig(conf, "infodb"));
+                }
             }
 
+            /// <summary>
+            /// Save config
+            /// </summary>
             public void SaveConfig()
             {
                 conf = "";
-                AddConfig("keysdb", keydb);
+                AddConfig("infodb", info.ToString());
                 AddConfig("logged", logged.ToString());
+                AddConfig("keysdb", keydb);
                 System.IO.File.WriteAllText(name + ".setting", conf);
             }
+
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="Name">Channel</param>
             public channel(string Name)
             {
                 conf = "";
                 keydb = Name + ".db";
+                info = true;
                 logged = true;
                 name = Name;
                 LoadConfig();
@@ -101,6 +124,38 @@ namespace wmib
             }
         }
 
+        /// <summary>
+        /// Add line to the config file
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        private static void AddConfig(string a, string b)
+        {
+            text = text + "\n" + a + "=" + b + ";";
+        }
+
+        public static void Save()
+        {
+            text = "";
+            AddConfig("username", username);
+            AddConfig("password", password);
+            AddConfig("network", network);
+            AddConfig("nick", login);
+            text = text + "\nchannels=";
+            foreach (channel current in channels)
+            {
+                text = text + current.name + ",\n";
+            }
+            text = text + ";";
+            System.IO.File.WriteAllText("wmib", text);
+        }
+
+        /// <summary>
+        /// Parse config data text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static string parseConfig(string text, string name)
         {
             if (text.Contains(name))
@@ -113,6 +168,9 @@ namespace wmib
             return "";
         }
 
+        /// <summary>
+        /// Load config of bot
+        /// </summary>
         public static void Load()
         {
             text = System.IO.File.ReadAllText("wmib");
@@ -133,6 +191,7 @@ namespace wmib
                 System.IO.Directory.CreateDirectory(config.DumpDir);
             }
         }
+        public static string text;
         /// <summary>
         /// Network
         /// </summary>
@@ -141,13 +200,25 @@ namespace wmib
         /// Nick name
         /// </summary>
         public static string username = "wm-bot";
+        /// <summary>
+        /// Login name
+        /// </summary>
         public static string login = "";
+        /// <summary>
+        /// Login pw
+        /// </summary>
         public static string password = "";
+        /// <summary>
+        /// Dump
+        /// </summary>
         public static string DumpDir = "dump";
         /// <summary>
         /// Version
         /// </summary>
         public static string version = "wikimedia bot v. 1.1.4";
+        /// <summary>
+        /// Separator
+        /// </summary>
         public static string separator = "|";
         /// <summary>
         /// User name
