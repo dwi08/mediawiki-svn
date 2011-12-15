@@ -54,11 +54,11 @@ getLockOrDie($dontDieOnLockProblems); //check for other concurrently running rot
 
 
 logfile("Verbinde zur Datenbank!");
-include("/home/luxo/public_html/contributions/logindata.php");
-$myslink = mysql_connect($databanknames2, $userloginname, $databasepw) or suicide ("Can't connect to MySQL");
+include("settings.php");
+$myslink = mysql_connect($databanknames, $userloginname, $databasepw) or suicide ("Can't connect to MySQL");
 $database = "commonswiki_p";
 mysql_select_db($database, $myslink)
-						or suicide ("Konnte $databas nicht öffnen: ".mysql_error());
+						or suicide ("Konnte $database nicht öffnen: ".mysql_error());
 //Datenbank verbunden
 
 $wrongfiles = array();
@@ -609,7 +609,6 @@ logfile("ALl images turned and exif corrected!\nStart upload...");
 include("upload.php");
 include("login.php");
 
-
 foreach($catcontent2 as $filename => $arraycontent)
 {
 	//upload summary
@@ -762,7 +761,7 @@ foreach($catcontent2 as $arraycontent)
 	$logfilew .= "<br style=\"clear:both;\" clear=\"all\" />";
 }
 
-if($somanyrot > 0 OR count($wrongfiles) > 0)
+if($somanyrot > 0 || count($wrongfiles) > 0)
 {
 	logfile("write logfile. ($somanyrot pictures)");
 

@@ -1,0 +1,7 @@
+<?php
+
+$databanknames = "";
+
+$userloginname = "";
+$databasepw = "";
+

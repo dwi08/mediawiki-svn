@@ -244,8 +244,6 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 
 function wikilogin($username,$password,$project,$useragent)
 {
-	global $cookies;
-
 	$getrequest = (substr($project,-1) == "/") ? "w/api.php?action=login" : "/w/api.php?action=login";
 	$project = (substr($project,0,7) == "http://") ? $project : "http://".$project;
 
