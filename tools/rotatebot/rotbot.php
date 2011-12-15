@@ -19,7 +19,7 @@ include("settings.php");
 $myLockfile = $homedir."rotatebotlock";
 
 ini_set('memory_limit', '100M'); //Speicher auf 100 MBytes hochsetzen
-ini_set('user_agent', ' User:Rotatebot by Luxo on the Toolserver / PHP');
+ini_set('user_agent', $useragent);
 
 
 logfile("Starte Bot!");
@@ -55,7 +55,6 @@ getLockOrDie($dontDieOnLockProblems); //check for other concurrently running rot
 logfile("Verbinde zur Datenbank!");
 
 $myslink = mysql_connect($databanknames, $userloginname, $databasepw) or suicide ("Can't connect to MySQL");
-$database = "commonswiki_p";
 mysql_select_db($database, $myslink)
 						or suicide ("Konnte $database nicht öffnen: ".mysql_error());
 //Datenbank verbunden
@@ -217,7 +216,7 @@ if($catcontent[$arraykey]['tmplsetter']) //autoconfirmed
 	//Datenbank abfragen nach status
 	if(!$cachedbar["$wgAuthor"])
 	{
-		$mysresult = mysql_query( "SELECT * FROM user WHERE user_name='".mysql_real_escape_string($wgAuthor)."'") or suicide("MySQL error");
+		$mysresult = mysql_query( "SELECT * FROM user WHERE user_name='".mysql_real_escape_string($wgAuthor)."'", $myslink) or suicide("MySQL error");
 		$a_row = mysql_fetch_row($mysresult);
 		$cachedbar[$wgAuthor] = $a_row;
 	}
@@ -689,7 +688,7 @@ logfile("cache cleared. Write log now.");
 
 //##################### LOG LOG LOG LOG LOG LOG LOG #########################
 
-$logfilew = file_get_contents("http://commons.wikimedia.org/w/index.php?title=User:Rotatebot/Log&action=raw");
+$logfilew = file_get_contents("http://commons.wikimedia.org/w/index.php?title=User:$username/Log&action=raw");
 $somanyrot = count($catcontent2);
 
 $logfilew = deleteold($logfilew,$somanyrot,$config['logfilesize'],$config['logheader']);
@@ -769,7 +768,7 @@ if($somanyrot > 0 || count($wrongfiles) > 0)
 		$msgerr = ", ".count($wrongfiles)." errors";
 	}
 
-	wikiedit("commons.wikimedia.org","User:Rotatebot/Log",$logfilew,"Bot: $somanyrot images rotated".$msgerr.".","1");
+	wikiedit("commons.wikimedia.org","User:$username/Log",$logfilew,"Bot: $somanyrot images rotated".$msgerr.".","1");
 }
 
 mysql_close($myslink); // TODO should/can this be moved to function suicide? - Probably not due to line 33.
@@ -936,13 +935,15 @@ function deleteold($content,$newab,$maxonlog,$logheader)
 
 function botsetup()
 {
-	$setupraw = file("http://commons.wikimedia.org/w/index.php?title=User:Rotatebot/config.js&action=raw");
+	global $username;
+	$setupraw = file("http://commons.wikimedia.org/w/index.php?title=User:$username/config.js&action=raw");
 
+	$array = array();
 	foreach($setupraw as $line)
 	{
 		$line = trim($line);
 
-		if(substr($line,0,2) != "//" AND $line != "")
+		if(substr($line,0,2) != "//" && $line != "")
 		{
 
 			$gleich = strpos($line, "=");
@@ -956,12 +957,12 @@ function botsetup()
 			//falls vorhanden "" entfernen
 			if(substr($content, 0, 1) == '"')
 			{
-			$content = substr($content, 1);
+				$content = substr($content, 1);
 			}
 
 			if(substr($content, -1) == '"')
 			{
-			$content = substr($content, 0, -1);
+				$content = substr($content, 0, -1);
 			}
 
 			$content = trim($content);

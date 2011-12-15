@@ -30,8 +30,7 @@ function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 	//$cookies
 	if(!$cookies["commonswikiUserName"] || !$cookies["commonswikiUserID"])
 	{
-		$username = "Rotatebot";
-		$password = "**removed**";
+		global $username, $password;
 
 		logfile("Login to $project!\n");
 		wikilogin($username,$password,$project,$useragent);

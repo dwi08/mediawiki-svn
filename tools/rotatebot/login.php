@@ -23,15 +23,15 @@ include("settings.php");
 // ############### EDIT WIKIPEDIA - FUNCTION ###############
 function wikiedit($project,$page,$newtext,$description,$minor)
 {
-	global $cookies, $useragent;
+	global $cookies, $useragent, $username;
 	logfile("Funktion gestartet...");
 	logfile("Schreibe Text am ".date("r",time())." in die Seite '$page'.");
 
 	//$cookies
 	if(!$cookies["commonswikiUserName"] || !$cookies["commonswikiUserID"])
 	{
-		$username = "Rotatebot";
-		$password = "**removed**";
+		global $password;
+
 		logfile("Login to $project!\n");
 		wikilogin($username,$password,$project,$useragent);
 		logfile("logged in to $project!\n");
@@ -87,8 +87,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 		//auf cookie prüfen
 		if(substr($linex,0,11) == "Set-Cookie:")
 		{
-			// FIXME: $line is undefined
-			$rawcookie = substr($line,11,strpos($line,";")-11); //Format: session=DFJ3ASD2S
+			$rawcookie = substr($linex,11,strpos($linex,";")-11); //Format: session=DFJ3ASD2S
 				$cookiename = trim(substr($rawcookie,0,strpos($rawcookie,"=")));
 			$cookies[$cookiename] = $rawcookie;
 		}
@@ -139,7 +138,7 @@ function wikiedit($project,$page,$newtext,$description,$minor)
 	}
 	logfile("Seite geladen, Anmeldung prüfen.");
 
-	if(strstr($bodyy,'"wgUserName": "Rotatebot",'))
+	if(strstr($bodyy,'"wgUserName": "' . $username . '",'))
 	{
 		logfile("Anmeldung erfolgreich!");
 
