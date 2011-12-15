@@ -450,7 +450,7 @@ namespace wmib
             }
 
             public void RSearch(string key, config.channel Chan)
-            { 
+            {
                 if (!key.StartsWith("@regsearch"))
                 {
                     return;
@@ -514,7 +514,7 @@ namespace wmib
             {
                 while (locked)
                 {
-                        i
+                        System.Threading.Thread.Sleep(200);
                 }
                 try
                 {

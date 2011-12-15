@@ -86,5 +86,6 @@ public class HtmlDump
                 Channel.Keys.locked = false;
                 Console.WriteLine(b.Message);
             }
+        }
     }
 }
