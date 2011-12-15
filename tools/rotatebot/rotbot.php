@@ -773,7 +773,7 @@ if($somanyrot > 0 || count($wrongfiles) > 0)
 }
 
 mysql_close($myslink); // TODO should/can this be moved to function suicide? - Probably not due to line 33.
-suicide ("Bot finished.");
+suicide ("Bot finished.\n");
 // END script
 
 

@@ -118,7 +118,10 @@ function wiki_PostToHostFD ($host, $path, $data_l, $wiki, $cookies) //this funct
 	}
 	$dc += strlen($bo)+3;
 	fputs($fp, "Content-length: $dc \n");
+	logfile( "Content-length: $dc" );
 	fputs($fp, "\n");
+
+	$startTime = time();
 
 	foreach($data_l as $key=>$val)
 	{
@@ -142,6 +145,9 @@ function wiki_PostToHostFD ($host, $path, $data_l, $wiki, $cookies) //this funct
 		$res .= fread($fp, 1);
 	}
 	fclose($fp);
+	$endTime = time();
+	$diff = $endTime - $startTime;
+	logfile( "Time taken: " . intval($diff) . " seconds" );
 	global $homedir;
 	file_put_contents( $homedir . "cache/log.txt",$res);
 	return $res;
