@@ -7,16 +7,19 @@
 /**
  * Base class for all file backend classes (including multi-write backends).
  * This class defines the methods as abstract that subclasses must implement.
- *
  * Outside callers can assume that all backends will have these functions.
  * 
  * All "storage paths" are of the format "mwstore://backend/container/path".
  * The paths use typical file system (FS) notation, though any particular backend may
  * not actually be using a local filesystem. Therefore, the paths are only virtual.
- *
+ * 
+ * FS-based backends are somewhat more restrictive due to the existence of real
+ * directory files; a regular file cannot have the same name as a directory. Other
+ * backends with virtual directories may not have this limitation.
+ * 
  * Methods should avoid throwing exceptions at all costs.
  * As a corollary, external dependencies should be kept to a minimum.
- *
+ * 
  * @ingroup FileBackend
  */
 abstract class FileBackendBase {
@@ -258,7 +261,7 @@ abstract class FileBackendBase {
 	 * Results should be storage paths relative to the given directory.
 	 * 
 	 * $params include:
-	 *     dir : storage path directory.
+	 *     dir : storage path directory
 	 *
 	 * @return Iterator|Array
 	 */
@@ -301,7 +304,7 @@ abstract class FileBackendBase {
 	 * Lock the files at the given storage paths in the backend.
 	 * This will either lock all the files or none (on failure).
 	 * 
-	 * Avoid using this function outside of FileBackendScopedLock.
+	 * Callers should consider using getScopedFileLocks() instead.
 	 * 
 	 * @param $paths Array Storage paths
 	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
@@ -313,8 +316,6 @@ abstract class FileBackendBase {
 
 	/**
 	 * Unlock the files at the given storage paths in the backend.
-	 * 
-	 * Avoid using this function outside of FileBackendScopedLock.
 	 * 
 	 * @param $paths Array Storage paths
 	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
@@ -335,7 +336,7 @@ abstract class FileBackendBase {
 	 * @param $paths Array Storage paths
 	 * @param $type integer LockManager::LOCK_EX, LockManager::LOCK_SH
 	 * @param $status Status Status to update on lock/unlock
-	 * @return FileBackendScopedLock|null Returns null on failure
+	 * @return ScopedLock|null Returns null on failure
 	 */
 	final public function getScopedFileLocks( array $paths, $type, Status $status ) {
 		return ScopedLock::factory( $this->lockManager, $paths, $type, $status );
@@ -658,13 +659,15 @@ abstract class FileBackend extends FileBackendBase {
 		list( $backend, $container, $relPath ) = self::splitStoragePath( $storagePath );
 		if ( $backend === $this->name ) { // must be for this backend
 			$relPath = self::normalizeStoragePath( $relPath );
-			if ( $relPath !== null && self::isValidContainerName( $container ) ) {
+			if ( $relPath !== null ) {
 				$relPath = $this->resolveContainerPath( $container, $relPath );
 				if ( $relPath !== null ) {
 					$container = $this->fullContainerName( $container );
-					$container = $this->resolveContainerName( $container );
-					if ( $container !== null ) {
-						return array( $container, $relPath ); // (container, path)
+					if ( self::isValidContainerName( $container ) ) {
+						$container = $this->resolveContainerName( $container );
+						if ( $container !== null ) {
+							return array( $container, $relPath );
+						}
 					}
 				}
 			}
