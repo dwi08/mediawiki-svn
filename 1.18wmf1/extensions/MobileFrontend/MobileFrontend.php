@@ -423,9 +423,9 @@ class ExtMobileFrontend {
 
 	public function beforePageRedirect( $out, &$redirect, &$code ) {
 		if ( $out->getTitle()->isSpecial( 'Userlogin' ) ) {
-			global $wgMobileDomain, $wgRequest;
-			$requestURL = $wgRequest->getFullRequestURL();
-			if ( stristr( $requestURL, $wgMobileDomain ) !== false ) {
+			global $wgMobileDomain;
+			$xDevice = isset( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
+			if ( $xDevice ) {
 				$parsedUrl = wfParseUrl( $redirect );
 				if ( stristr( $parsedUrl['host'], $wgMobileDomain ) === false ) {
 					$hostParts = explode( '.', $parsedUrl['host'] );
@@ -1331,6 +1331,10 @@ class ExtMobileFrontend {
 			}
 
 			$ptAnonLogin = $this->doc->getElementById( 'pt-anonlogin' );
+			
+			if ( !$ptAnonLogin ) {
+				$ptAnonLogin = $this->doc->getElementById( 'pt-login' );
+			}
 
 			if ( $ptAnonLogin ) {
 				$ptAnonLoginLink = $ptAnonLogin->firstChild;
