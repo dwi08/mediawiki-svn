@@ -132,7 +132,7 @@ class ScopedLock {
 		$wasOk = $this->status->isOK();
 		$this->status->merge( $this->manager->unlock( $this->paths, $this->type ) );
 		if ( $wasOk ) {
-			// Make sure status is OK, despite any unlockFiles() fatals	
+			// Make sure status is OK, despite any unlockFiles() fatals
 			$this->status->setResult( true, $this->status->value );
 		}
 	}
@@ -767,7 +767,7 @@ class MySqlLockManager extends DBLockManager {
 				array( 'fle_key' => $keys ),
 				__METHOD__
 			);
-			# Prospective writers that haven't yet update filelocks_exclusive
+			# Prospective writers that haven't yet updated filelocks_exclusive
 			# will recheck filelocks_shared after doing so and bail due to our entry.
 		} else { // writer locks
 			$encSession = $db->addQuotes( $this->session );

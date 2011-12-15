@@ -53,6 +53,77 @@ abstract class FileOp {
 	}
 
 	/**
+	 * Attempt a series of file operations.
+	 * Callers are responsible for handling file locking.
+	 * 
+	 * @param $performOps Array List of FileOp operations
+	 * @return Status 
+	 */
+	public static function attemptBatch( array $performOps ) {
+		$status = Status::newGood();
+
+		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
+		// Do pre-checks for each operation; abort on failure...
+		foreach ( $performOps as $index => $fileOp ) {
+			$status->merge( $fileOp->precheck( $predicates ) );
+			if ( !$status->isOK() ) { // operation failed?
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
+					++$status->failCount;
+					$status->success[$index] = false;
+				} else {
+					return $status;
+				}
+			}
+		}
+
+		// Attempt each operation; abort on failure...
+		foreach ( $performOps as $index => $fileOp ) {
+			if ( $fileOp->failed() ) {
+				continue; // nothing to do
+			}
+			$status->merge( $fileOp->attempt() );
+			if ( !$status->isOK() ) { // operation failed?
+				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
+					++$status->failCount;
+					$status->success[$index] = false;
+				} else {
+					// Revert everything done so far and abort.
+					// Do this by reverting each previous operation in reverse order.
+					$pos = $index - 1; // last one failed; no need to revert()
+					while ( $pos >= 0 ) {
+						if ( !$performOps[$pos]->failed() ) {
+							$status->merge( $performOps[$pos]->revert() );
+						}
+						$pos--;
+					}
+					return $status;
+				}
+			}
+		}
+
+		// Finish each operation...
+		foreach ( $performOps as $index => $fileOp ) {
+			if ( $fileOp->failed() ) {
+				continue; // nothing to do
+			}
+			$subStatus = $fileOp->finish();
+			if ( $subStatus->isOK() ) {
+				++$status->successCount;
+				$status->success[$index] = true;
+			} else {
+				++$status->failCount;
+				$status->success[$index] = false;
+			}
+			$status->merge( $subStatus );
+		}
+
+		// Make sure status is OK, despite any finish() fatals
+		$status->setResult( true, $status->value );
+
+		return $status;
+	}
+
+	/**
 	 * Get the value of the parameter with the given name.
 	 * Returns null if the parameter is not set.
 	 * 

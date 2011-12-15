@@ -93,7 +93,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 		}
 
 		// Actually attempt the operation batch...
-		$status->merge( $this->attemptOperations( $performOps ) );
+		$status->merge( FileOp::attemptBatch( $performOps ) );
 
 		return $status;
 	}
