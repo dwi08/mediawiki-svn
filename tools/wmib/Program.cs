@@ -33,6 +33,63 @@ namespace wmib
         }
     }
 
+    public class HtmlDump
+    {
+        public config.channel Channel;
+        public string dumpname;
+        public static void Start()
+        {
+            while (true)
+            {
+                foreach (config.channel chan in config.channels)
+                {
+                    HtmlDump dump = new HtmlDump(chan);
+                    dump.Make();
+                }
+                System.Threading.Thread.Sleep(3600000);
+            }
+        }
+        public HtmlDump(config.channel channel)
+        { 
+            dumpname = config.DumpDir + "/" + channel.name + ".htm";
+            Channel = channel;
+        }
+        public string CreateFooter()
+        {
+            return "</body></html>\n";
+        }
+        public string CreateHeader()
+        {
+            return "<html><head></head><body>\n";
+        }
+        public string Encode(string text)
+        {
+            text = text.Replace("<", "&lt;");
+            text = text.Replace(">", "&gt;");
+            return text;
+        }
+        public string AddLine(string name, string value)
+        {
+            return "<tr><td>" + Encode(name) + "</td><td>" + Encode(value) + "</td></tr>\n";
+        }
+        public void Make()
+        {
+            string text;
+            text = CreateHeader();
+            text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
+            if (Channel.Keys.text.Count > 0)
+            {
+                foreach (irc.dictionary.item Key in Channel.Keys.text)
+                {
+                    text = text + AddLine(Key.key, Key.text);
+                }
+            }
+            text = text + "<table>\n";
+            text = text + CreateFooter();
+            System.IO.File.WriteAllText(dumpname, text);
+        }
+    }
+
     public static class config
     {
         public static string text;
@@ -44,7 +101,9 @@ namespace wmib
         {
             text ="";
             AddConfig("username", username);
+            AddConfig("password", password);
             AddConfig("network", network);
+            AddConfig("nick", login);
             text = text + "\nchannels=";
             foreach (channel current in channels)
             {
@@ -58,15 +117,59 @@ namespace wmib
             public string name;
             public bool logged;
             public string log;
-            public irc.dictionary Keys = new irc.dictionary();
-            public irc.trust Users;
+            public irc.dictionary Keys;
+            private string conf;
+            public irc.IRCTrust Users;
+            public string keydb = "";
+            private void AddConfig(string a, string b)
+            {
+                conf = conf + "\n" + a + "=" + b + ";";
+            }
+            public void LoadConfig()
+            {
+                string conf_file = name +  ".setting";
+                if (!System.IO.File.Exists(conf_file))
+                {
+                    System.IO.File.WriteAllText(conf_file, "");
+                    Program.Log("Creating datafile for channel " + name);
+                    return;
+                }
+                conf = System.IO.File.ReadAllText(conf_file);
+                if (config.parseConfig(conf, "keysdb") != "")
+                {
+                    keydb = (config.parseConfig(conf, "keysdb"));
+                }
+                if (config.parseConfig(conf, "logged") != "")
+                { 
+                    logged = bool.Parse(config.parseConfig(conf, "logged"));
+                }
+            }
+
+            public void SaveConfig()
+            {
+                conf = "";
+                AddConfig("keysdb", keydb);
+                AddConfig("logged", logged.ToString());
+                System.IO.File.WriteAllText(name + ".setting", conf);
+            }
             public channel(string Name)
             {
+                conf = "";
+                keydb = Name + ".db";
                 logged = true;
-                name = Name;   
-                log = Name + ".txt";
-                Keys.Load(name);
-                Users = new irc.trust(name);
+                name = Name;
+                LoadConfig();
+                if (!System.IO.Directory.Exists("log"))
+                {
+                    System.IO.Directory.CreateDirectory("log");
+                }
+                if (!System.IO.Directory.Exists("log/" + Name))
+                {
+                    System.IO.Directory.CreateDirectory("log/" + Name);
+                }
+                Keys = new irc.dictionary(keydb, name);
+                log = "log/" + Name + "/"  + System.DateTime.Now.Year + System.DateTime.Now.Month + System.DateTime.Now.Day +".txt";
+                Users = new irc.IRCTrust(name);
             }
         }
 
@@ -87,21 +190,36 @@ namespace wmib
             text = System.IO.File.ReadAllText("wmib");
             foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
             {
-                channels.Add(new channel(x));
+                string name=x.Replace(" ", "");
+                if (!(name == ""))
+                {
+                    channels.Add(new channel(name));
+                }
             }
             username = parseConfig(text, "username");
             network = parseConfig(text, "network");
-            
+            login = parseConfig(text, "nick");
+            password = parseConfig(text, "password");
+            if (!System.IO.Directory.Exists(config.DumpDir))
+            {
+                System.IO.Directory.CreateDirectory(config.DumpDir);
+            } 
         }
         /// <summary>
         /// Network
         /// </summary>
         public static string network = "irc.freenode.net";
-        public static string username = "wm-bot";
         /// <summary>
-        /// 
+        /// Nick name
         /// </summary>
-        public static string version = "wikimedia bot v. 1.0.1";
+        public static string username = "wm-bot";
+        public static string login = "";
+        public static string password = "";
+        public static string DumpDir = "dump";
+        /// <summary>
+        /// Version
+        /// </summary>
+        public static string version = "wikimedia bot v. 1.1.4";
         public static string separator = "|";
         /// <summary>
         /// User name
@@ -116,17 +234,18 @@ namespace wmib
     public static class irc
     {
         private static System.Net.Sockets.NetworkStream data;
+        public static System.Threading.Thread dumphtmt;
+        public static System.Threading.Thread check_thread;
         public static System.IO.StreamReader rd;
         private static System.IO.StreamWriter wd;
         private static List<user> User = new List<user>();
-        public static System.Threading.Thread check_thread;
 
         public static void Ping()
         {
             while (true)
             {
                 System.Threading.Thread.Sleep(20000);
-                wd.WriteLine("PING: " + config.network);
+                wd.WriteLine("PING :" + config.network);
                 wd.Flush();
             }
         }
@@ -134,6 +253,17 @@ namespace wmib
         public static string encode(string text)
         {
             return text.Replace(config.separator, "<separator>");
+        }
+
+        public static bool Authenticate()
+        {
+            if (config.login != "")
+            {
+                wd.WriteLine("PRIVMSG nickserv :identify " + config.login + " " + config.password);
+                wd.Flush();
+                System.Threading.Thread.Sleep(4000);
+            }
+            return true;
         }
 
         public static string decode(string text)
@@ -152,12 +282,12 @@ namespace wmib
             public string level;
         }
 
-        public class trust
+        public class IRCTrust
         {
             private List<user> Users = new List<user>();
             public string _Channel;
             public string File;
-            public trust(string channel)
+            public IRCTrust(string channel)
             { 
                 // Load
                 File = channel + "_user";
@@ -168,7 +298,7 @@ namespace wmib
                     System.IO.File.WriteAllText(File, "");
                 }
                 string[] db = System.IO.File.ReadAllLines(channel + "_user");
-                this._Channel = channel;
+                _Channel = channel;
                 foreach (string x in db)
                 {
                     if (x.Contains(config.separator))
@@ -288,42 +418,18 @@ namespace wmib
                 {
                     return false;
                 }
-
-                if (command == "alias_key")
+                switch (command)
                 {
+                    case "alias_key":
+                    case "delete_key":
+                    case "trust":
+                    case "info":
+                    case "trustadd":
+                    case "trustdel":
                         return matchLevel(1, current.level);
-                }
-                if (command == "new_key")
-                {
-                        return matchLevel(1, current.level);
-                }
-                if (command == "shutdown")
-                {
-                        return matchLevel(1, current.level);
-                }
-                if (command == "delete_key")
-                {
-                        return matchLevel(1, current.level);
-                }
-                if (command == "trust")
-                {
-                        return matchLevel(1, current.level);
-                }
-                if (command == "admin")
-                {
-                    return matchLevel(2, current.level);
-                }
-                if (command == "info")
-                {
-                    return matchLevel(1, current.level);
-                }
-                if (command == "trustadd")
-                {
-                        return matchLevel(1, current.level);
-                }
-                if (command == "trustdel")
-                {
-                        return matchLevel(1, current.level);
+                    case "admin":
+                    case "shutdown":
+                        return matchLevel(2, current.level);
                 }
                 return false;
             }
@@ -331,6 +437,7 @@ namespace wmib
 
         public class dictionary
         {
+            public string datafile = "";
             public class item
             {
                 public item(string Key, string Text, string User, string Lock = "false")
@@ -358,18 +465,16 @@ namespace wmib
             public List<item> text = new List<item>();
             public List<staticalias> Alias = new List<staticalias>();
             public string Channel;
-            public void Load(string channel)
+            public void Load()
             {
-                Channel = channel;
-                string file = Channel + ".db";
                 text.Clear();
-                if (!System.IO.File.Exists(file))
+                if (!System.IO.File.Exists(datafile))
                 {
                     // Create db
-                    System.IO.File.WriteAllText(file, "");
+                    System.IO.File.WriteAllText(datafile, "");
                 }
 
-                string[] db = System.IO.File.ReadAllLines(file);
+                string[] db = System.IO.File.ReadAllLines(datafile);
                 foreach (string x in db)
                 {
                     if (x.Contains(config.separator))
@@ -390,19 +495,25 @@ namespace wmib
                 }
             }
 
+            public dictionary(string database, string channel)
+            {
+                datafile = database;
+                Channel = channel;
+                Load();
+            }
+
             public void Save()
             {
                 try
                 {
-                    string file = Channel + ".db";
-                    System.IO.File.WriteAllText(file, "");
+                    System.IO.File.WriteAllText(datafile, "");
                     foreach (staticalias key in Alias)
                     {
-                        System.IO.File.AppendAllText(file, key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
+                        System.IO.File.AppendAllText(datafile, key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
                     }
                     foreach (item key in text)
                     {
-                        System.IO.File.AppendAllText(file, key.key + config.separator + key.text + config.separator + "key" + config.separator + key.locked + config.separator + key.user + "\n");
+                        System.IO.File.AppendAllText(datafile, key.key + config.separator + key.text + config.separator + "key" + config.separator + key.locked + config.separator + key.user + "\n");
                     }
                 }
                 catch (Exception b)
@@ -438,7 +549,13 @@ namespace wmib
                         config.channel _Chan = getChannel(Channel);
                         if (chan.Users.isApproved(user, host, "info"))
                         {
-                            setKey(name.Substring(name.IndexOf("is") + 3), parm[0], "");
+                            if (parm.Length < 3)
+                            {
+                                Message("It would be cool to give me also a text of key", Channel);
+                                return true;
+                            }
+                            string key = name.Substring(name.IndexOf(" is") + 4);
+                            setKey(key, parm[0], "");
                         }
                         else
                         {
@@ -452,6 +569,28 @@ namespace wmib
                         if (chan.Users.isApproved(user, host, "info"))
                         {
                              this.aliasKey(name.Substring(name.IndexOf("alias") + 6), parm[0], "");
+                        }
+                        else
+                        {
+                            Message("You are not autorized to perform this, sorry", Channel);
+                        }
+                        return false;
+                    }
+                    if (parm[1] == "unalias")
+                    {
+                        config.channel _Chan = getChannel(Channel);
+                        if (chan.Users.isApproved(user, host, "info"))
+                        {
+                            foreach (staticalias b in Alias)
+                            {
+                                if (b.Name == parm[0])
+                                {
+                                    Alias.Remove(b);
+                                    Message("Alias removed", Channel);
+                                    Save();
+                                    return false;
+                                }
+                            }
                         }
                         else
                         {
@@ -501,11 +640,12 @@ namespace wmib
                     }
                 foreach (staticalias b in Alias)
                 {
-                    if (b.Name == name)
+                    if (b.Name == p[0])
                     {
                         keyv = getValue(b.Key);
                         if (keyv != "")
                         {
+                            keyv = keyv.Replace("$1", p1);
                             if (User == "")
                             {
                                 Message(keyv, Channel);
@@ -681,7 +821,7 @@ namespace wmib
                         {
                             if (!channel.Users.isApproved(user, host, "admin"))
                             {
-                                Message("Permission denied!", channel.name);
+                                Message("Permission denied", channel.name);
                                 return 2;
                             }
                         }
@@ -702,15 +842,21 @@ namespace wmib
                 if (message.StartsWith("@trustdel"))
                 {
                     string[] rights_info = message.Split(' ');
-                    string x = rights_info[1];
-                    if (channel.Users.isApproved(user, host, "trustdel"))
+                    if (rights_info.Length > 1)
                     {
-                        channel.Users.delUser(rights_info[1]);
+                        string x = rights_info[1];
+                        if (channel.Users.isApproved(user, host, "trustdel"))
+                        {
+                            channel.Users.delUser(rights_info[1]);
+                            return 0;
+                        }
+                        else
+                        {
+                            Message("You are not autorized to perform this, sorry", channel.name);
+                            return 0;
+                        }
                     }
-                    else
-                    {
-                        Message("You are not autorized to perform this, sorry", channel.name);
-                    }
+                    Message("Invalid user", channel.name);
                 }
             }
             catch (Exception b)
@@ -722,18 +868,26 @@ namespace wmib
 
         public static void chanLog(string message, config.channel channel, string user, string host, bool noac = true)
         {
-            if (channel.logged)
+            try
             {
-                string log;
-                if (!noac)
+                if (channel.logged)
                 {
-                    log = "\n" + "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] * " + user + " " + message;
+                    string log;
+                    if (!noac)
+                    {
+                        log = "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] * " + user + " " + message + "\n";
+                    }
+                    else
+                    {
+                        log = "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] " + "<" + user + "> " + message + "\n";
+                    }
+                    System.IO.File.AppendAllText(channel.log, log);
                 }
-                else
-                {
-                    log = "\n" + "[" + System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute + ":" + System.DateTime.Now.Second + "] " + "<" + user + "> " + message;
-                }
-                System.IO.File.AppendAllText(channel.log, log);
+            }
+            catch (Exception er)
+            { 
+                // nothing
+                Console.WriteLine(er.Message);
             }
         }
 
@@ -757,6 +911,13 @@ namespace wmib
                         {
                             Message("Invalid name", chan.name);
                             return;
+                        }
+                        foreach (config.channel cu in config.channels)
+                        {
+                            if (channel == cu.name)
+                            {
+                                return;
+                            }
                         }
                         config.channels.Add(new config.channel(channel));
                         config.Save();
@@ -796,6 +957,19 @@ namespace wmib
 
         public static void admin(config.channel chan, string user, string host, string message)
         {
+            if (message.StartsWith("@reload"))
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                        chan.LoadConfig();
+                        chan.Keys = new dictionary(chan.keydb, chan.name);
+                        Message("Channel config was reloaded", chan.name);
+                }
+                else
+                {
+                    Message("Permission denied", chan.name);
+                }
+            }
             if (message.StartsWith("@logon"))
             {
                 if (chan.Users.isApproved(user, host, "admin"))
@@ -808,6 +982,7 @@ namespace wmib
                     {
                         Message("Channel is now logged", chan.name);
                         chan.logged = true;
+                        chan.SaveConfig();
                         config.Save();
                     }
                 }
@@ -822,12 +997,13 @@ namespace wmib
                 {
                     if (!chan.logged)
                     {
-                        Message("Channel is already not logged", chan.name);
+                        Message("Channel was already not logged", chan.name);
                     }
                     else
                     {
                         chan.logged = false;
                         config.Save();
+                        chan.SaveConfig();
                         Message("Channel is not logged", chan.name); 
                     }
                 }
@@ -835,6 +1011,15 @@ namespace wmib
                 {
                     Message("Permission denied", chan.name);
                 }
+            }
+            if (message.StartsWith("@channellist"))
+            {
+                string channels = "";
+                foreach (config.channel a in config.channels)
+                {
+                    channels = channels + a.name + ", ";
+                }
+                Message("I am now in following channels: " + channels, chan.name);
             }
         }
 
@@ -872,8 +1057,10 @@ namespace wmib
             wd = new System.IO.StreamWriter(data);
             wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
             wd.WriteLine("NICK " + config.username);
+            Authenticate();
             foreach (config.channel ch in config.channels)
             {
+                System.Threading.Thread.Sleep(2000);
                 wd.WriteLine("JOIN " + ch.name);
             }
             wd.Flush();
@@ -885,6 +1072,9 @@ namespace wmib
             data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
             rd = new System.IO.StreamReader(data, System.Text.Encoding.UTF8);
             wd = new System.IO.StreamWriter(data);
+
+            dumphtmt = new System.Threading.Thread(new System.Threading.ThreadStart(HtmlDump.Start));
+            dumphtmt.Start();
             check_thread = new System.Threading.Thread(new System.Threading.ThreadStart(Ping));
             check_thread.Start();
 
@@ -893,9 +1083,15 @@ namespace wmib
 
             System.Threading.Thread.Sleep(2000);
 
+            Authenticate();
+
             foreach (config.channel ch in config.channels)
             {
-                wd.WriteLine("JOIN " + ch.name);
+                if (ch.name != "")
+                {
+                    wd.WriteLine("JOIN " + ch.name);
+                    System.Threading.Thread.Sleep(2000);
+                }
             }
             wd.Flush();
             string text = "";
@@ -903,6 +1099,7 @@ namespace wmib
             string host = "";
             string message = "";
             string channel = "";
+            char delimiter = (char)001;
 
             while (true)
             {
@@ -913,50 +1110,88 @@ namespace wmib
                         text = rd.ReadLine();
                         if (text.StartsWith(":"))
                         {
-                            if (text.Contains("PRIVMSG"))
+                            string check = text.Substring(text.IndexOf(" "));
+                            if (check.StartsWith(" 005"))
                             {
-                                string info = text.Substring(1, text.IndexOf(":", 2));
-                                string info_host;
-                                // we got a message here :)
-                                if (text.Contains("!") && text.Contains("@"))
-                                {
-                                    nick = info.Substring(0, info.IndexOf("!"));
-                                    host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
-                                }
-                                info_host = info.Substring(info.IndexOf("PRIVMSG "));
 
-                                if (info_host.Contains("#"))
+                            }
+                            else
+                            {
+                                if (text.Contains("PRIVMSG"))
                                 {
-                                    channel = info_host.Substring(info_host.IndexOf("#"));
-                                    channel = channel.Substring(0, channel.IndexOf(" "));
-                                    message = text.Replace(info, "");
-                                    message = message.Substring(message.IndexOf(":") + 1);
-                                    if (message.Contains("ACTION"))
+                                    string info = text.Substring(1, text.IndexOf(":", 2));
+                                    string info_host;
+                                    // we got a message here :)
+                                    if (text.Contains("!") && text.Contains("@"))
                                     {
-                                        getAction(message.Replace("", "").Replace("ACTION ", ""), channel, host, nick);
+                                        nick = info.Substring(0, info.IndexOf("!"));
+                                        host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
+                                    }
+                                    info_host = info.Substring(info.IndexOf("PRIVMSG "));
+
+                                    if (info_host.Contains("#"))
+                                    {
+                                        channel = info_host.Substring(info_host.IndexOf("#"));
+                                        channel = channel.Substring(0, channel.IndexOf(" "));
+                                        message = text.Replace(info, "");
+                                        message = message.Substring(message.IndexOf(":") + 1);
+                                        if (message.Contains(delimiter.ToString() + "ACTION"))
+                                        {
+                                            getAction(message.Replace("", "").Replace(delimiter.ToString() +"ACTION ", ""), channel, host, nick);
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            getMessage(channel, nick, host, message);
+                                            continue;
+                                        }
                                     }
                                     else
                                     {
-                                        getMessage(channel, nick, host, message);
+                                        message = text.Substring(text.IndexOf("PRIVMSG"));
+                                        message = message.Substring(message.IndexOf(":"));
+                                        // private message
+                                        if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" + " I am a bot don't finger me");
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                        if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " + System.DateTime.Now.ToString());
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                        if (message.StartsWith(":" + delimiter.ToString() + "PING"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING " + message.Substring(message.IndexOf(delimiter.ToString() + "PING" + 6)));
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                        if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION "  + config.version);
+                                            wd.Flush();
+                                            continue;
+                                        }
                                     }
                                 }
-                                else
+                                if (text.Contains("PING "))
                                 {
-                                    // private message
+                                    wd.WriteLine("PONG " + text.Substring(text.IndexOf("PING ") + 5));
+                                    wd.Flush();
                                 }
-                            }
-                            if (text.Contains("PING "))
-                            {
-                                wd.WriteLine("PONG " + text.Substring(text.IndexOf("PING ") + 5));
-                                wd.Flush();
                             }
                         }
                         System.Threading.Thread.Sleep(50);
                     }
+                    Program.Log("Reconnecting, end of data stream");
                     Reconnect();
                 }
                 catch (System.IO.IOException xx)
                 {
+                    Program.Log("Reconnecting, connection failed");
                     Reconnect();
                 }
                 catch (Exception xx)
