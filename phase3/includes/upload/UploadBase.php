@@ -200,39 +200,6 @@ abstract class UploadBase {
 	}
 
 	/**
-	 * Append a file to the Repo file
-	 *
-	 * @deprecated since 1.19
-	 * 
-	 * @param $srcPath String: path to source file
-	 * @param $toAppendPath String: path to the Repo file that will be appended to.
-	 * @return Status Status
-	 */
-	protected function appendToUploadFile( $srcPath, $toAppendPath ) {
-		wfDeprecated( __METHOD__, '1.19' );
-		
-		$repo = RepoGroup::singleton()->getLocalRepo();
-		$status = $repo->append( $srcPath, $toAppendPath );
-		return $status;
-	}
-	
-	/**
-	 * Finish appending to the Repo file
-	 * 
-	 * @deprecated since 1.19
-	 * 
-	 * @param $toAppendPath String: path to the Repo file that will be appended to.
-	 * @return Status Status
-	 */
-	protected function appendFinish( $toAppendPath ) {
-		wfDeprecated( __METHOD__, '1.19' );
-		
-		$repo = RepoGroup::singleton()->getLocalRepo();
-		$status = $repo->appendFinish( $toAppendPath );
-		return $status;
-	}
-
-	/**
 	 * @param $srcPath String: the source path
 	 * @return the real path if it was a virtual URL
 	 */
