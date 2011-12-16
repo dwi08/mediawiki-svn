@@ -140,6 +140,7 @@ namespace wmib
             AddConfig("username", username);
             AddConfig("password", password);
             AddConfig("network", network);
+            AddConfig("debug", debugchan);
             AddConfig("nick", login);
             text = text + "\nchannels=";
             foreach (channel current in channels)
@@ -185,6 +186,7 @@ namespace wmib
             username = parseConfig(text, "username");
             network = parseConfig(text, "network");
             login = parseConfig(text, "nick");
+            debugchan = parseConfig(text, "debug");
             password = parseConfig(text, "password");
             if (!System.IO.Directory.Exists(config.DumpDir))
             {
@@ -200,6 +202,7 @@ namespace wmib
         /// Nick name
         /// </summary>
         public static string username = "wm-bot";
+        public static string debugchan = "";
         /// <summary>
         /// Login name
         /// </summary>

@@ -520,11 +520,11 @@ namespace wmib
                     {
                         if ( parameters > 1)
                         {
-                            int curr = 0;
-                            while ( parameters >= curr )
+                            int curr = 1;
+                            while ( parameters > curr )
                             {
-                                curr++;
                                 keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
+                                curr++;
                             }
                         }
                         if (User == "")
@@ -761,7 +761,11 @@ namespace wmib
         /// <param name="chan">Channel name</param>
         public static void handleException(Exception ex, string chan)
         {
-            Message("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", chan);
+            if (config.debugchan != null)
+            {
+                Message("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", config.debugchan);
+            }
+            Program.Log(ex.Message + ex.Source + ex.StackTrace);
         }
 
         /// <summary>
@@ -1063,6 +1067,7 @@ namespace wmib
                     if (!chan.logged)
                     {
                         Message("Channel was already not logged", chan.name);
+                        return;
                     }
                     else
                     {
@@ -1085,6 +1090,7 @@ namespace wmib
                     channels = channels + a.name + ", ";
                 }
                 Message("I am now in following channels: " + channels, chan.name);
+                return;
             }
             if (message.StartsWith("@infobot-off"))
             {
@@ -1105,6 +1111,7 @@ namespace wmib
                 else
                 {
                     Message("Permission denied", chan.name);
+                    return;
                 }
             }
             if (message.StartsWith("@infobot-on"))
@@ -1130,17 +1137,7 @@ namespace wmib
             }
             if (message.StartsWith("@commands"))
             {
-                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, add, flush, logon, logoff", chan.name);
-            }
-
-            if (message.StartsWith("@channellist"))
-            {
-                string channels = "";
-                foreach (config.channel a in config.channels)
-                {
-                    channels = channels + a.name + ", ";
-                }
-                Message("I am now in following channels: " + channels, chan.name);
+                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, add, reload, logon, logoff", chan.name);
             }
         }
 
