@@ -180,11 +180,11 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $this->backends[$this->masterIndex]->getFileTimestamp( $realParams );
 	}
 
-	function getSha1Base36(array $params) {
+	function getFileSha1Base36(array $params) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
 			$realParams = $this->substOpPaths( $params, $backend );
-			$hash = $backend->getSha1Base36( $realParams );
+			$hash = $backend->getFileSha1Base36( $realParams );
 			if ( $hash !== false ) {
 				return $hash;
 			}

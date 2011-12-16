@@ -1,5 +1,6 @@
 <?php
 
+// @TODO: fix empty dir leakage
 class FileBackendTest extends MediaWikiTestCase {
 	private $backend, $multiBackend;
 	private $filesToPrune, $pathsToPrune;
@@ -254,35 +255,35 @@ class FileBackendTest extends MediaWikiTestCase {
 	/**
 	 * @dataProvider provider_testCreate
 	 */
-	public function testCreate( $op, $source, $alreadyExists, $okStatus, $newSize ) {
-		$this->pathsToPrune[] = $source;
+	public function testCreate( $op, $dest, $alreadyExists, $okStatus, $newSize ) {
+		$this->pathsToPrune[] = $dest;
 
 		$oldText = 'blah...blah...waahwaah';
 		if ( $alreadyExists ) {
 			$status = $this->backend->doOperation(
-				array( 'op' => 'create', 'content' => $oldText, 'dst' => $source ) );
-			$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+				array( 'op' => 'create', 'content' => $oldText, 'dst' => $dest ) );
+			$this->assertEquals( true, $status->isOK(), "Creation of file at $dest succeeded." );
 		}
 
 		$status = $this->backend->doOperation( $op );
 		if ( $okStatus ) {
-			$this->assertEquals( true, $status->isOK(), "Creation of file at $source succeeded." );
+			$this->assertEquals( true, $status->isOK(), "Creation of file at $dest succeeded." );
 		} else {
-			$this->assertEquals( false, $status->isOK(), "Creation of file at $source failed." );
+			$this->assertEquals( false, $status->isOK(), "Creation of file at $dest failed." );
 		}
 
-		$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $source ) ),
-			"Source file $source exists after creation." );
+		$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $dest ) ),
+			"Dest file $dest exists after creation." );
 
-		$props1 = $this->backend->getFileProps( array( 'src' => $source ) );
+		$props1 = $this->backend->getFileProps( array( 'src' => $dest ) );
 		$this->assertEquals( true, $props1['fileExists'],
-			"Source file $source exists according to props." );
+			"Dest file $dest exists according to props." );
 		if ( $okStatus ) { // file content is what we saved
 			$this->assertEquals( $newSize, $props1['size'],
-				"Source file $source has expected size according to props." );
+				"Dest file $dest has expected size according to props." );
 		} else { // file content is some other previous text
 			$this->assertEquals( strlen( $oldText ), $props1['size'],
-				"Source file $source has different size that given text according to props." );
+				"Dest file $dest has different size that given text according to props." );
 		}
 	}
 
@@ -324,15 +325,182 @@ class FileBackendTest extends MediaWikiTestCase {
 		return $cases;
 	}
 
-	// @TODO: testConcatenate
+	/**
+	 * @dataProvider provider_testConcatenate
+	 */
+	public function testConcatenate( $op, $srcs, $srcsContent, $alreadyExists, $okStatus ) {
+		$this->pathsToPrune = array_merge( $this->pathsToPrune, $srcs );
+		$this->pathsToPrune[] = $op['dst'];
+
+		$expContent = '';
+		// Create sources
+		$ops = array();
+		foreach ( $srcs as $i => $source ) {
+			$ops[] = array(
+				'op'      => 'create', // operation
+				'dst'     => $source, // source
+				'content' => $srcsContent[$i]
+			);
+			$expContent .= $srcsContent[$i];
+		}
+		$dest = $op['dst'];
+		$status = $this->backend->doOperations( $ops );
+
+		$this->assertEquals( true, $status->isOK(), "Creation of concat file at $dest succeeded." );
+
+		if ( $alreadyExists ) {
+			$oldText = 'blah...blah...waahwaah';
+			$status = $this->backend->doOperation(
+				array( 'op' => 'create', 'content' => $oldText, 'dst' => $dest ) );
+			$this->assertEquals( true, $status->isOK(), "Creation of file at $dest succeeded." );
+		}
+
+		// Combine them
+		$status = $this->backend->doOperation( $op );
+		if ( $okStatus ) {
+			$this->assertEquals( true, $status->isOK(), "Creation of concat file at $dest succeeded." );
+		} else {
+			$this->assertEquals( false, $status->isOK(), "Creation of concat file at $dest failed." );
+		}
+
+		if ( $okStatus ) {
+			$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $dest ) ),
+				"Dest concat file $dest exists after creation." );
+		} else {
+			$this->assertEquals( true, $this->backend->fileExists( array( 'src' => $dest ) ),
+				"Dest concat file $dest exists after failed creation." );
+		}
+
+		$tmpFile = $this->backend->getLocalCopy( array( 'src' => $dest ) );
+		$this->assertNotNull( $tmpFile, "Creation of local copy of $dest succeeded." );
+
+		$contents = file_get_contents( $tmpFile->getPath() );
+		$this->assertNotEquals( false, $contents, "Local copy of $dest exists." );
+
+		if ( $okStatus ) {
+			$this->assertEquals( $expContent, $contents, "Concat file at $dest has correct contents." );
+		} else {
+			$this->assertNotEquals( $expContent, $contents, "Concat file at $dest has correct contents." );
+		}
+	}
+
+	function provider_testConcatenate() {
+		$cases = array();
+
+		$dest = $this->singleBasePath() . '/cont1/full_file.txt';
+		$srcs = array(
+			$this->singleBasePath() . '/cont1/file1.txt',
+			$this->singleBasePath() . '/cont1/file2.txt',
+			$this->singleBasePath() . '/cont1/file3.txt',
+			$this->singleBasePath() . '/cont1/file4.txt',
+			$this->singleBasePath() . '/cont1/file5.txt',
+			$this->singleBasePath() . '/cont1/file6.txt',
+			$this->singleBasePath() . '/cont1/file7.txt',
+			$this->singleBasePath() . '/cont1/file8.txt',
+			$this->singleBasePath() . '/cont1/file9.txt',
+			$this->singleBasePath() . '/cont1/file10.txt'
+		);
+		$content = array(
+			'egfage',
+			'ageageag',
+			'rhokohlr',
+			'shgmslkg',
+			'kenga',
+			'owagmal',
+			'kgmae',
+			'g eak;g',
+			'lkaem;a',
+			'legma'
+		);
+		$op = array( 'op' => 'concatenate', 'srcs' => $srcs, 'dst' => $dest );
+
+		$cases[] = array(
+			$op, // operation
+			$srcs, // sources
+			$content, // content for each source
+			false, // no dest already exists
+			true, // succeeds
+		);
+
+		$cases[] = array(
+			$op, // operation
+			$srcs, // sources
+			$content, // content for each source
+			true, // no dest already exists
+			false, // succeeds
+		);
+
+		$op['overwriteDest'] = true;
+		$cases[] = array(
+			$op, // operation
+			$srcs, // sources
+			$content, // content for each source
+			true, // no dest already exists
+			true, // succeeds
+		);
+
+		return $cases;
+	}
+
+	/**
+	 * @dataProvider provider_testGetLocalCopy
+	 */
+	public function testGetLocalCopy( $src, $content ) {
+		$this->pathsToPrune[] = $src;
+
+		$status = $this->backend->doOperation(
+			array( 'op' => 'create', 'content' => $content, 'dst' => $src ) );
+		$this->assertEquals( true, $status->isOK(), "Creation of file at $src succeeded." );
+
+		$tmpFile = $this->backend->getLocalCopy( array( 'src' => $src ) );
+		$this->assertNotNull( $tmpFile, "Creation of local copy of $src succeeded." );
+
+		$contents = file_get_contents( $tmpFile->getPath() );
+		$this->assertNotEquals( false, $contents, "Local copy of $src exists." );
+	}
+
+	function provider_testGetLocalCopy() {
+		$cases = array();
+
+		$base = $this->singleBasePath();
+		$cases[] = array( "$base/cont1/a/z/some_file.txt", "some file contents" );
+		$cases[] = array( "$base/cont1/a/some-other_file.txt", "more file contents" );
+
+		return $cases;
+	}
+
+	/**
+	 * @dataProvider provider_testGetReference
+	 */
+	public function testGetLocalReference( $src, $content ) {
+		$this->pathsToPrune[] = $src;
+
+		$status = $this->backend->doOperation(
+			array( 'op' => 'create', 'content' => $content, 'dst' => $src ) );
+		$this->assertEquals( true, $status->isOK(), "Creation of file at $src succeeded." );
+
+		$tmpFile = $this->backend->getLocalReference( array( 'src' => $src ) );
+		$this->assertNotNull( $tmpFile, "Creation of local copy of $src succeeded." );
+
+		$contents = file_get_contents( $tmpFile->getPath() );
+		$this->assertNotEquals( false, $contents, "Local copy of $src exists." );
+	}
+
+	function provider_testGetReference() {
+		$cases = array();
+
+		$base = $this->singleBasePath();
+		$cases[] = array( "$base/cont1/a/z/some_file.txt", "some file contents" );
+		$cases[] = array( "$base/cont1/a/some-other_file.txt", "more file contents" );
+
+		return $cases;
+	}
 
 	// @TODO: testPrepare
 
 	// @TODO: testSecure
 
 	// @TODO: testClean
-
-	// @TODO: testGetLocalCopy
 
 	// @TODO: testDoOperations
 

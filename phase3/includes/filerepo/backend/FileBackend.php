@@ -213,7 +213,7 @@ abstract class FileBackendBase {
 	 * @param $params Array
 	 * @return string|false Hash string or false on failure
 	 */
-	abstract public function getSha1Base36( array $params );
+	abstract public function getFileSha1Base36( array $params );
 
 	/**
 	 * Get the last-modified timestamp of the file at a storage path.
@@ -457,7 +457,7 @@ abstract class FileBackend extends FileBackendBase {
 		return false; // not implemented
 	}
 
-	public function getSha1Base36( array $params ) {
+	public function getFileSha1Base36( array $params ) {
 		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
 		if ( !$fsFile ) {
 			return false;

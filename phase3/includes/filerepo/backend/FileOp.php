@@ -400,7 +400,7 @@ abstract class FileOp {
 		if ( FileBackend::isStoragePath( $path ) ) {
 			// For some backends (e.g. Swift, Azure) we can get
 			// standard hashes to use for this types of comparisons.
-			$hash = $this->backend->getSha1Base36( array( 'src' => $path ) );
+			$hash = $this->backend->getFileSha1Base36( array( 'src' => $path ) );
 		// Source file is on file system
 		} else {
 			wfSuppressWarnings();
