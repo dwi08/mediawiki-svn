@@ -263,7 +263,7 @@ abstract class FileBackendBase {
 	 * $params include:
 	 *     dir : storage path directory
 	 *
-	 * @return Iterator|Array
+	 * @return Traversable|Array|null Returns null on failure
 	 */
 	abstract public function getFileList( array $params );
 

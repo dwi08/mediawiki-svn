@@ -438,14 +438,21 @@ class FSFileBackend extends FileBackend {
 	function getFileList( array $params ) {
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) { // invalid storage path
-			return array(); // empty result
+			return null;
 		}
-		try {
-			$iter = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
-		} catch ( UnexpectedValueException $e ) {
-			$iter = array(); // dir does not exist?
+		wfSuppressWarnings();
+		$exists = is_dir( $dir );
+		wfRestoreWarnings();
+		if ( !$exists ) {
+			return array(); // nothing under this dir
 		}
-		return $iter;
+		wfSuppressWarnings();
+		$readable = is_readable( $dir );
+		wfRestoreWarnings();
+		if ( !$readable ) {
+			return null; // bad permissions?
+		}
+		return new FSFileIterator( $dir );
 	}
 
 	function getLocalReference( array $params ) {
@@ -497,5 +504,55 @@ class FSFileBackend extends FileBackend {
 		wfRestoreWarnings();
 
 		return $ok;
+	}
+}
+
+/**
+ * Wrapper around RecursiveDirectoryIterator that catches
+ * exception or does any custom behavoir that we may want.
+ */
+class FSFileIterator implements Iterator {
+	/** @var RecursiveIteratorIterator */
+	protected $iter;
+
+	/**
+	 * Get an FSFileIterator from a file system directory
+	 * 
+	 * @param $dir string
+	 */
+	public function __construct( $dir ) {
+		try {
+			$this->iter = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $dir ) );
+		} catch ( UnexpectedValueException $e ) {
+			$this->iter = null; // bad permissions? deleted?
+		}
+	}
+
+	public function current() {
+		return $this->iter->current();
+	}
+
+	public function key() {
+		return $this->iter->key();
+	}
+
+	public function next() {
+		try {
+			$this->iter->next();
+		} catch ( UnexpectedValueException $e ) {
+			$this->iter = null;
+		}
+	}
+
+	public function rewind() {
+		try {
+			$this->iter->rewind();
+		} catch ( UnexpectedValueException $e ) {
+			$this->iter = null;
+		}
+	}
+
+	public function valid() {
+		return $this->iter && $this->iter->valid();
 	}
 }

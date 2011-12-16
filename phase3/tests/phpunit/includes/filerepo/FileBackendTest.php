@@ -352,6 +352,7 @@ class FileBackendTest extends MediaWikiTestCase {
 			"$base/cont1/subdir2/subdir/test4.txt",
 			"$base/cont1/subdir2/subdir/test5.txt",
 			"$base/cont1/subdir2/subdir/sub/test0.txt",
+			"$base/cont1/subdir2/subdir/sub/120-px-file.txt",
 		);
 		$this->pathsToPrune = array_merge( $this->pathsToPrune, $files );
 
@@ -378,6 +379,7 @@ class FileBackendTest extends MediaWikiTestCase {
 			"subdir2/subdir/test4.txt",
 			"subdir2/subdir/test5.txt",
 			"subdir2/subdir/sub/test0.txt",
+			"subdir2/subdir/sub/120-px-file.txt",
 		);
 		$expected = sort( $expected );
 
@@ -398,6 +400,13 @@ class FileBackendTest extends MediaWikiTestCase {
 		}
 
 		$this->assertEquals( $expected, sort( $list ), "Correct file listing." );
+
+		foreach ( $files as $file ) {
+			$this->backend->delete( array( 'src' => "$base/$files" ) );
+		}
+
+		$iter = $this->backend->getFileList( array( 'dir' => "$base/cont1/not/exists" ) );
+		foreach ( $iter as $iter ) {} // no errors
 	}
 
 	function tearDown() {

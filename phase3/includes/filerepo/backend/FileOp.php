@@ -59,7 +59,7 @@ abstract class FileOp {
 	 * @param $performOps Array List of FileOp operations
 	 * @return Status 
 	 */
-	public static function attemptBatch( array $performOps ) {
+	final public static function attemptBatch( array $performOps ) {
 		$status = Status::newGood();
 
 		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
