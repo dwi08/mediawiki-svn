@@ -785,7 +785,9 @@ namespace wmib
         /// <returns></returns>
         public static bool Message(string message, string channel)
         {
+            config.channel curr = getChannel(channel);
             wd.WriteLine("PRIVMSG " + channel + " :" + message);
+            chanLog( message, curr, config.username, "" );
             wd.Flush();
             return true;
         }
@@ -1051,7 +1053,7 @@ namespace wmib
                         chan.logged = false;
                         config.Save();
                         chan.SaveConfig();
-                        Message("Channel is not logged", chan.name); 
+                        Message("Channel is not logged", chan.name);
                     }
                 }
                 else
