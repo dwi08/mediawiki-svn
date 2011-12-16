@@ -184,6 +184,7 @@ abstract class FileOp {
 		$status = $this->doAttempt();
 		if ( !$status->isOK() ) {
 			$this->failed = true;
+			$this->logFailure( 'attempt' );
 		}
 		return $status;
 	}
@@ -202,6 +203,9 @@ abstract class FileOp {
 			$status = Status::newGood(); // nothing to revert
 		} else {
 			$status = $this->doRevert();
+			if ( !$status->isOK() ) {
+				$this->logFailure( 'revert' );
+			}
 		}
 		return $status;
 	}
@@ -465,6 +469,33 @@ abstract class FileOp {
 			return $this->backend->fileExists( array( 'src' => $source ) );
 		}
 	}
+
+	/**
+	 * Log a file operation failure and preserve any temp files
+	 * 
+	 * @param $fileOp FileOp
+	 * @return void
+	 */
+	final protected function logFailure( $action ) {
+		$params = $this->params;
+		$params['failedAction'] = $action;
+		// Preserve backup files just in case (for recovery)
+		if ( $this->tmpSourceFile ) {
+			$this->tmpSourceFile->preserve(); // don't purge
+			$params['srcBackupPath'] = $this->tmpSourceFile->getPath();
+		}
+		if ( $this->tmpDestFile ) {
+			$this->tmpDestFile->preserve(); // don't purge
+			$params['dstBackupPath'] = $this->tmpDestFile->getPath();
+		}
+		try {
+			wfDebugLog( 'FileOperation',
+				get_class( $this ) . ' failed:' . serialize( $params ) );
+		} catch ( Exception $e ) {
+			// bad config? debug log error?
+		}
+	}
+
 }
 
 /**

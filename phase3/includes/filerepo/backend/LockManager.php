@@ -700,7 +700,7 @@ class DBLockManager extends LockManager {
 	 * @return string
 	 */
 	protected function getMissKey( $lockDb ) {
-		return "lockmanager:querymisses:$lockDb";
+		return 'lockmanager:querymisses:' . str_replace( ' ', '_', $lockDb );
 	}
 
 	/**
