@@ -27,9 +27,10 @@
  * @ingroup SpecialPage
  */
 class WantedPagesPage extends WantedQueryPage {
+	
 	function __construct( $name = 'Wantedpages' ) {
 		parent::__construct( $name );
-		$this->includable( true );
+		$this->mIncludable = true;
 	}
 
 	function execute( $par ) {

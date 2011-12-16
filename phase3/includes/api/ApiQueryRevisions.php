@@ -191,7 +191,7 @@ class ApiQueryRevisions extends ApiQueryBase {
 		if ( isset( $prop['content'] ) || !is_null( $this->difftotext ) ) {
 			// For each page we will request, the user must have read rights for that page
 			foreach ( $pageSet->getGoodTitles() as $title ) {
-				if ( !$title->userCanRead() ) {
+				if ( !$title->userCan( 'read' ) ) {
 					$this->dieUsage(
 						'The current user is not allowed to read ' . $title->getPrefixedText(),
 						'accessdenied' );
@@ -404,8 +404,12 @@ class ApiQueryRevisions extends ApiQueryBase {
 			$vals['timestamp'] = wfTimestamp( TS_ISO_8601, $revision->getTimestamp() );
 		}
 
-		if ( $this->fld_size && !is_null( $revision->getSize() ) ) {
-			$vals['size'] = intval( $revision->getSize() );
+		if ( $this->fld_size ) {
+			if ( !is_null( $revision->getSize() ) ) {
+				$vals['size'] = intval( $revision->getSize() );
+			} else {
+				$vals['size'] = 0;
+			}
 		}
 
 		if ( $this->fld_comment || $this->fld_parsedcomment ) {
@@ -462,7 +466,7 @@ class ApiQueryRevisions extends ApiQueryBase {
 		}
 		if ( $this->fld_content && !$revision->isDeleted( Revision::DELETED_TEXT ) ) {
 			if ( $this->generateXML ) {
-				$wgParser->startExternalParse( $title, new ParserOptions(), OT_PREPROCESS );
+				$wgParser->startExternalParse( $title, ParserOptions::newFromContext( $this->getContext() ), OT_PREPROCESS );
 				$dom = $wgParser->preprocessToDom( $text );
 				if ( is_callable( array( $dom, 'saveXML' ) ) ) {
 					$xml = $dom->saveXML();
@@ -473,10 +477,10 @@ class ApiQueryRevisions extends ApiQueryBase {
 
 			}
 			if ( $this->expandTemplates && !$this->parseContent ) {
-				$text = $wgParser->preprocess( $text, $title, new ParserOptions() );
+				$text = $wgParser->preprocess( $text, $title, ParserOptions::newFromContext( $this->getContext() ) );
 			}
 			if ( $this->parseContent ) {
-				$text = $wgParser->parse( $text, $title, new ParserOptions() )->getText();
+				$text = $wgParser->parse( $text, $title, ParserOptions::newFromContext( $this->getContext() ) )->getText();
 			}
 			ApiResult::setContent( $vals, $text );
 		} elseif ( $this->fld_content ) {

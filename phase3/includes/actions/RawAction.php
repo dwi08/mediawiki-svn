@@ -24,10 +24,6 @@ class RawAction extends FormlessAction {
 		return 'raw';
 	}
 
-	public function getRestriction() {
-		return null;
-	}
-
 	public function requiresWrite() {
 		return false;
 	}
@@ -214,6 +210,7 @@ class RawPage extends RawAction {
 	public $mOldId;
 
 	function __construct( Page $page, $request = false ) {
+		wfDeprecated( __CLASS__, '1.19' );
 		parent::__construct( $page );
 
 		if ( $request !== false ) {

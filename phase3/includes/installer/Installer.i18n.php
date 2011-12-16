@@ -680,6 +680,13 @@ This message refers to a block of HTML being embedded into the installer page. I
 This might be a good place to put information about <nowiki>{{GRAMMAR:}}</nowiki>. See [[{{NAMESPACE}}:{{BASEPAGENAME}}/fi]] for an example. For languages having grammatical distinctions and not having an appropriate <nowiki>{{GRAMMAR:}}</nowiki> software available, a suggestion to check and possibly amend the messages having <nowiki>{{SITENAME}}</nowiki> may be valuable. See [[{{NAMESPACE}}:{{BASEPAGENAME}}/ksh]] for an example.',
 );
 
+/** Goan Konkani (Latin script) (Konknni)
+ * @author The Discoverer
+ */
+$messages['gom-latn'] = array(
+	'config-page-language' => 'Bhas',
+);
+
 /** Magyar (magázó) (Magyar (magázó))
  * @author Dani
  * @author Glanthor Reviol
@@ -3963,7 +3970,7 @@ Mit MediaWiki ist es einfach die letzten Änderungen nachzuvollziehen und unbrau
 Allerdings finden etliche Menschen Wikis auch mit anderen Bearbeitungskonzepten sinnvoll. Manchmal ist es zudem nicht einfach alle Beteiligten von den Vorteilen des „Wiki-Prinzips” zu überzeugen. Darum ist diese Auswahl möglich.
 
 Ein '''{{int:config-profile-wiki}}''' ermöglicht es jedermann, sogar ohne über ein Benutzerkonto zu verfügen, Bearbeitungen vorzunehmen.
-Ein Wiki bei dem die '''{{int:config-profile-no-anon}}''' ist, fordert von den Benutzern eine höhere Verantwortung für ihre Bearbeitungen ein, könnte allerdings Personen, die nur gelegentlich Bearbeitungen vornehmen wollen, abschrecken. Ein Wiki für '''{{int:config-profile-fishbowl}}''' gestattet es nur bestimmten Benutzern Bearbeitungen vorzunehmen. Allerdings kann dabei die Allgemeinheit die Seiten immer noch betrachten und Änderungen nachvollziehen. Ein '''{{int:config-profile-private}}''' gestattet es nur ausgewählten Benutzern, Seiten zu betrachten sowie zu bearbeiten.
+Ein Wiki bei dem die '''{{int:config-profile-no-anon}}''' ist, fordert von den Benutzern eine höhere Verantwortung für ihre Bearbeitungen ein, könnte allerdings Personen abschrecken, die nur gelegentlich Bearbeitungen vornehmen wollen. Ein Wiki für '''{{int:config-profile-fishbowl}}''' gestattet es nur bestimmten Benutzern, Bearbeitungen vorzunehmen. Allerdings kann dabei die Allgemeinheit die Seiten immer noch betrachten und Änderungen nachvollziehen. Ein '''{{int:config-profile-private}}''' gestattet es nur ausgewählten Benutzern, Seiten zu betrachten sowie zu bearbeiten.
 
 Komplexere Konzepte zur Zugriffssteuerung können erst nach abgeschlossenem Installationsvorgang eingerichtet werden. Hierzu gibt es weitere Informationen auf der Website mit der [//www.mediawiki.org/wiki/Manual:User_rights entsprechenden Anleitung].",
 	'config-license' => 'Lizenz:',
@@ -4084,7 +4091,7 @@ Die Erstellung wurde übersprungen.",
 Die Standardliste wird übersprungen.",
 	'config-install-stats' => 'Statistiken werden initialisiert',
 	'config-install-keys' => 'Geheimschlüssel werden erstellt',
-	'config-insecure-keys' => "'''Warnung:''' {{PLURAL:$2|Der Geheimschlüssel|Die Geheimschlüssel}} $1 {{PLURAL:$2|der|die}} während des Installationsvorgangs generiert wurde, ist nicht sehr sicher. {{PLURAL:$2|Er sollte|Sie sollten}} manuell geändert werden.",
+	'config-insecure-keys' => "'''Warnung:''' {{PLURAL:$2|Der Geheimschlüssel|Die Geheimschlüssel}} $1, {{PLURAL:$2|der|die}} während des Installationsvorgangs generiert {{PLURAL:$2|wurde, ist|wurden, sind}} nicht sehr sicher. {{PLURAL:$2|Er sollte|Sie sollten}} manuell geändert werden.",
 	'config-install-sysop' => 'Administratorkonto wird erstellt',
 	'config-install-subscribe-fail' => 'Abonnieren von „mediawiki-announce“ ist gescheitert: $1',
 	'config-install-subscribe-notpossible' => 'cURL ist nicht installiert und allow_url_fopen ist nicht verfügbar.',
@@ -4095,7 +4102,7 @@ Die Standardliste wird übersprungen.",
 MediaWiki wurde erfolgreich installiert.
 
 Das Installationsprogramm hat die Datei <code>LocalSettings.php</code> erzeugt.
-Sie enthält alle Konfigurationseinstellungen.
+Sie enthält alle vorgenommenen Konfigurationseinstellungen.
 
 Diese Datei muss nun heruntergeladen und anschließend in das Stammverzeichnis der MediaWiki-Installation hochgeladen werden. Dies ist dasselbe Verzeichnis, in dem sich auch die Datei <code>index.php</code> befindet. Das Herunterladen sollte inzwischen automatisch gestartet worden sein.
 
@@ -4105,7 +4112,7 @@ $3
 
 '''Hinweis:''' Die Konfigurationsdatei sollte jetzt unbedingt heruntergeladen werden. Sie wird nach Beenden des Installationsprogramms, nicht mehr zur Verfügung stehen.
 
-Sobald alles erledigt wurde, kann auf das '''[$2 Wiki zugegriffen werden]'''. Wir wünschen viel Spaß mit dem Wiki.",
+Sobald alles erledigt wurde, kann auf das '''[$2 Wiki zugegriffen werden]'''. Wir wünschen viel Spaß und Erfolg mit dem Wiki.",
 	'config-download-localsettings' => 'LocalSettings.php herunterladen',
 	'config-help' => 'Hilfe',
 	'mainpagetext' => "'''MediaWiki wurde erfolgreich installiert.'''",
@@ -9864,6 +9871,7 @@ MediaWiki bruch dä UTF-8-Krohm ävver, öm ohne Fähler loufe ze künne.",
 	'config-memory-bad' => "'''Opjepaß:''' Dem PHP singe Parameeter <code lang=\"en\">memory_limit</code> es \$1.
 Dat es wall ze winnisch.
 Et Enreeschte kunnt doh draan kappott jon!",
+	'config-ctype' => "'''Fähler:''' <i lang=\"en\">PHP</i> moß met dä Ongerschtözong för der [http://www.php.net/manual/en/ctype.installation.php <code lang=\"en\">Ctype</code> Zohsaz] övversaz woode sin.",
 	'config-xcache' => 'Dä <code lang="en">[http://xcache.lighttpd.net/ XCache]</code> es ennjeresht.',
 	'config-apc' => 'Dä <code lang="en">[http://www.php.net/apc APC]</code> es ennjeresht.',
 	'config-wincache' => 'Dä <code lang="en">[http://www.iis.net/download/WinCacheForPhp WinCache]</code> es ennjeresht.',

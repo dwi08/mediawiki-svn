@@ -35,6 +35,11 @@ abstract class ApiQueryBase extends ApiBase {
 
 	private $mQueryModule, $mDb, $tables, $where, $fields, $options, $join_conds;
 
+	/**
+	 * @param $query ApiBase
+	 * @param $moduleName string
+	 * @param $paramPrefix string
+	 */
 	public function __construct( ApiBase $query, $moduleName, $paramPrefix = '' ) {
 		parent::__construct( $query->getMain(), $moduleName, $paramPrefix );
 		$this->mQueryModule = $query;
@@ -291,7 +296,7 @@ abstract class ApiQueryBase extends ApiBase {
 	}
 
 	/**
-	 * Add information (title and namespace) about a Title object to a
+	 * Add information (title, ID and namespace) about a Title object to a
 	 * result array
 	 * @param $arr array Result array à la ApiResult
 	 * @param $title Title
@@ -299,6 +304,7 @@ abstract class ApiQueryBase extends ApiBase {
 	 */
 	public static function addTitleInfo( &$arr, $title, $prefix = '' ) {
 		$arr[$prefix . 'ns'] = intval( $title->getNamespace() );
+		$arr[$prefix . 'pageid'] = $title->getArticleID();
 		$arr[$prefix . 'title'] = $title->getPrefixedText();
 	}
 

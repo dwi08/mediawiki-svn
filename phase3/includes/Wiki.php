@@ -289,6 +289,7 @@ class MediaWiki {
 	 * @return Article object
 	 */
 	public static function articleFromTitle( $title, IContextSource $context ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return Article::newFromTitle( $title, $context );
 	}
 
@@ -592,11 +593,11 @@ class MediaWiki {
 			return;
 		}
 
-		if ( $wgUseFileCache && $wgTitle->getNamespace() >= 0 ) {
+		if ( $wgUseFileCache && $this->getTitle()->getNamespace() >= 0 ) {
 			wfProfileIn( 'main-try-filecache' );
 			if ( HTMLFileCache::useFileCache( $this->context ) ) {
 				/* Try low-level file cache hit */
-				$cache = HTMLFileCache::newFromTitle( $wgTitle, $action );
+				$cache = HTMLFileCache::newFromTitle( $this->getTitle(), $action );
 				if ( $cache->isCacheGood( /* Assume up to date */ ) ) {
 					/* Check incoming headers to see if client has this cached */
 					$timestamp = $cache->cacheTimestamp();
@@ -604,7 +605,7 @@ class MediaWiki {
 						$cache->loadFromFileCache( $this->context );
 					}
 					# Do any stats increment/watchlist stuff
-					$article = WikiPage::factory( $wgTitle );
+					$article = WikiPage::factory( $this->getTitle() );
 					$article->doViewUpdates( $user );
 					# Tell OutputPage that output is taken care of
 					$this->context->getOutput()->disable();

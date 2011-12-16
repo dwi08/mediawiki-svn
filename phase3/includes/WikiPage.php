@@ -21,7 +21,6 @@ class WikiPage extends Page {
 	/**@{{
 	 * @protected
 	 */
-	public $mCounter = -1;               // !< Integer (-1 means "not loaded")
 	public $mDataLoaded = false;         // !< Boolean
 	public $mIsRedirect = false;         // !< Boolean
 	public $mLatest = false;             // !< Integer (false means "not loaded")
@@ -240,7 +239,6 @@ class WikiPage extends Page {
 	public function clear() {
 		$this->mDataLoaded = false;
 
-		$this->mCounter = -1; # Not loaded
 		$this->mRedirectTarget = null; # Title object if set
 		$this->mLastRevision = null; # Latest revision
 		$this->mTimestamp = '';
@@ -380,7 +378,6 @@ class WikiPage extends Page {
 			# Old-fashioned restrictions
 			$this->mTitle->loadRestrictions( $data->page_restrictions );
 
-			$this->mCounter     = intval( $data->page_counter );
 			$this->mTouched     = wfTimestamp( TS_MW, $data->page_touched );
 			$this->mIsRedirect  = intval( $data->page_is_redirect );
 			$this->mLatest      = intval( $data->page_latest );
@@ -404,7 +401,7 @@ class WikiPage extends Page {
 	 * @return bool Whether or not the page exists in the database
 	 */
 	public function exists() {
-		return $this->getId() > 0;
+		return $this->mTitle->exists();
 	}
 
 	/**
@@ -416,29 +413,16 @@ class WikiPage extends Page {
 	 * @return bool
 	 */
 	public function hasViewableContent() {
-		return $this->exists() || $this->mTitle->isAlwaysKnown();
+		return $this->mTitle->exists() || $this->mTitle->isAlwaysKnown();
 	}
 
 	/**
+	 * Get the number of views of this page
+	 *
 	 * @return int The view count for the page
 	 */
 	public function getCount() {
-		if ( -1 == $this->mCounter ) {
-			$id = $this->getId();
-
-			if ( $id == 0 ) {
-				$this->mCounter = 0;
-			} else {
-				$dbr = wfGetDB( DB_SLAVE );
-				$this->mCounter = $dbr->selectField( 'page',
-					'page_counter',
-					array( 'page_id' => $id ),
-					__METHOD__
-				);
-			}
-		}
-
-		return $this->mCounter;
+		return $this->mTitle->getCount();
 	}
 
 	/**
@@ -717,7 +701,7 @@ class WikiPage extends Page {
 
 		return $wgEnableParserCache
 			&& $parserOptions->getStubThreshold() == 0
-			&& $this->exists()
+			&& $this->mTitle->exists()
 			&& ( $oldid === null || $oldid === 0 || $oldid === $this->getLatest() )
 			&& $this->mTitle->isWikitextPage();
 	}
@@ -786,10 +770,10 @@ class WikiPage extends Page {
 		}
 
 		if ( $this->mTitle->getNamespace() == NS_MEDIAWIKI ) {
-			if ( $this->getId() == 0 ) {
-				$text = false;
-			} else {
+			if ( $this->mTitle->exists() ) {
 				$text = $this->getRawText();
+			} else {
+				$text = false;
 			}
 
 			MessageCache::singleton()->replace( $this->mTitle->getDBkey(), $text );
@@ -1985,7 +1969,7 @@ class WikiPage extends Page {
 		}
 
 		# Don't update page view counters on views from bot users (bug 14044)
-		if ( !$wgDisableCounters && !$user->isAllowed( 'bot' ) && $this->getId() ) {
+		if ( !$wgDisableCounters && !$user->isAllowed( 'bot' ) && $this->mTitle->exists() ) {
 			DeferredUpdates::addUpdate( new ViewCountUpdate( $this->getId() ) );
 			DeferredUpdates::addUpdate( new SiteStatsUpdate( 1, 0, 0 ) );
 		}
@@ -2018,7 +2002,18 @@ class WikiPage extends Page {
 		$edit->newText = $text;
 		$edit->pst = $wgParser->preSaveTransform( $text, $this->mTitle, $user, $popts );
 		$edit->popts = $this->makeParserOptions( 'canonical' );
-		$edit->output = $wgParser->parse( $edit->pst, $this->mTitle, $edit->popts, true, true, $revid );
+
+		// Bug 32858: For a CSS/JS page, put a blank parser output into the 
+		// prepared edit, so that links etc. won't be registered in the 
+		// database. We could have set $edit->output to false or something if 
+		// we thought of this bug earlier, but now that would break the 
+		// interface with AbuseFilter etc.
+		if ( $this->mTitle->isCssOrJsPage() || $this->getTitle()->isCssJsSubpage() ) {
+			$input = '';
+		} else {
+			$input = $edit->pst;
+		}
+		$edit->output = $wgParser->parse( $input, $this->mTitle, $edit->popts, true, true, $revid );
 		$edit->oldText = $this->getRawText();
 
 		$this->mPreparedEdit = $edit;
@@ -2089,14 +2084,14 @@ class WikiPage extends Page {
 			}
 		}
 
-		$id = $this->getId();
-		$title = $this->mTitle->getPrefixedDBkey();
-		$shortTitle = $this->mTitle->getDBkey();
-
-		if ( 0 == $id ) {
+		if ( !$this->mTitle->exists() ) {
 			wfProfileOut( __METHOD__ );
 			return;
 		}
+
+		$id = $this->getId();
+		$title = $this->mTitle->getPrefixedDBkey();
+		$shortTitle = $this->mTitle->getDBkey();
 
 		if ( !$options['changed'] ) {
 			$good = 0;
@@ -2162,6 +2157,7 @@ class WikiPage extends Page {
 	 * @deprecated since 1.18, use doEditUpdates()
 	 */
 	public function createUpdates( $rev ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		global $wgUser;
 		$this->doEditUpdates( $rev, $wgUser, array( 'created' => true ) );
 	}
@@ -2181,7 +2177,7 @@ class WikiPage extends Page {
 	public function preSaveTransform( $text, User $user = null, ParserOptions $popts = null ) {
 		global $wgParser, $wgUser;
 
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.19' );
 
 		$user = is_null( $user ) ? $wgUser : $user;
 
@@ -2691,6 +2687,7 @@ class WikiPage extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function quickEdit( $text, $comment = '', $minor = 0 ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		global $wgUser;
 		return $this->doQuickEdit( $text, $wgUser, $comment, $minor );
 	}
@@ -2699,6 +2696,7 @@ class WikiPage extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function viewUpdates() {
+		wfDeprecated( __METHOD__, '1.18' );
 		global $wgUser;
 		return $this->doViewUpdates( $wgUser );
 	}
@@ -2707,6 +2705,7 @@ class WikiPage extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function useParserCache( $oldid ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		global $wgUser;
 		return $this->isParserCacheUsed( ParserOptions::newFromUser( $wgUser ), $oldid );
 	}

@@ -23,7 +23,7 @@ class Linker {
 	 * @deprecated since 1.18 Just pass the external class directly to something using Html::expandAttributes
 	 */
 	static function getExternalLinkAttributes( $class = 'external' ) {
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.18' );
 		return self::getLinkAttributesInternal( '', $class );
 	}
 
@@ -134,6 +134,11 @@ class Linker {
 	 *   4) It provides a default tooltip if the target is a Title (the page
 	 *      name of the target).
 	 * link() replaces the old functions in the makeLink() family.
+	 *
+	 * @since 1.18 Method exists since 1.16 as non-static, made static in 1.18.
+	 * You can call it using this if you want to keep compat with these:
+	 * $linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
+	 * $linker->link( ... );
 	 *
 	 * @param $target        Title  Can currently only be a Title, but this may
 	 *   change to support Images, literal URLs, etc.
@@ -359,7 +364,7 @@ class Linker {
 	 */
 	static function makeSizeLinkObj( $size, $nt, $text = '', $query = '', $trail = '', $prefix = '' ) {
 		global $wgUser;
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.17' );
 
 		$threshold = $wgUser->getStubThreshold();
 		$colour = ( $size < $threshold ) ? 'stub' : '';
@@ -1134,6 +1139,7 @@ class Linker {
 	 * @return string
 	 */
 	private static function formatAutocommentsCallback( $match ) {
+		global $wgLang;
 		$title = self::$autocommentTitle;
 		$local = self::$autocommentLocal;
 
@@ -1159,7 +1165,7 @@ class Linker {
 			}
 			if ( $sectionTitle ) {
 				$link = self::link( $sectionTitle,
-					htmlspecialchars( wfMsgForContent( 'sectionlink' ) ), array(), array(),
+					$wgLang->getArrow(), array(), array(),
 					'noclasses' );
 			} else {
 				$link = '';
@@ -1872,6 +1878,8 @@ class Linker {
 	 *               the end of the link.
 	 */
 	static function makeBrokenLink( $title, $text = '', $query = '', $trail = '' ) {
+		wfDeprecated( __METHOD__, '1.16' );
+		
 		$nt = Title::newFromText( $title );
 		if ( $nt instanceof Title ) {
 			return self::makeBrokenLinkObj( $nt, $text, $query, $trail );
@@ -1898,6 +1906,8 @@ class Linker {
 	 * @param $prefix String: optional prefix. As trail, only before instead of after.
 	 */
 	static function makeLinkObj( $nt, $text = '', $query = '', $trail = '', $prefix = '' ) {
+		# wfDeprecated( __METHOD__, '1.16' ); // See r105985 and it's revert. Somewhere still used.
+		
 		wfProfileIn( __METHOD__ );
 		$query = wfCgiToArray( $query );
 		list( $inside, $trail ) = self::splitTrail( $trail );
@@ -1930,6 +1940,8 @@ class Linker {
 	static function makeKnownLinkObj(
 		$title, $text = '', $query = '', $trail = '', $prefix = '' , $aprops = '', $style = ''
 	) {
+		# wfDeprecated( __METHOD__, '1.16' ); // See r105985 and it's revert. Somewhere still used.
+		
 		wfProfileIn( __METHOD__ );
 
 		if ( $text == '' ) {
@@ -1963,6 +1975,8 @@ class Linker {
 	 * @param $prefix String: Optional prefix
 	 */
 	static function makeBrokenLinkObj( $title, $text = '', $query = '', $trail = '', $prefix = '' ) {
+		wfDeprecated( __METHOD__, '1.16' );
+		
 		wfProfileIn( __METHOD__ );
 
 		list( $inside, $trail ) = self::splitTrail( $trail );
@@ -1992,6 +2006,8 @@ class Linker {
 	 * @param $prefix String: Optional prefix
 	 */
 	static function makeColouredLinkObj( $nt, $colour, $text = '', $query = '', $trail = '', $prefix = '' ) {
+		wfDeprecated( __METHOD__, '1.16' );
+		
 		if ( $colour != '' ) {
 			$style = self::getInternalLinkAttributesObj( $nt, $text, $colour );
 		} else {
@@ -2021,7 +2037,6 @@ class Linker {
 	}
 
 	/**
-	 * @deprecated since 1.14
 	 * Returns raw bits of HTML, use titleAttrib()
 	 */
 	public static function tooltip( $name, $options = null ) {

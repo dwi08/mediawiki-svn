@@ -751,7 +751,12 @@ class LocalFile extends File {
 	 * @param $files array of strings: relative filenames (to $dir)
 	 */
 	protected function purgeThumbList( $dir, $files ) {
-		wfDebug( __METHOD__ . ": " . var_export( $files, true ) . "\n" );
+		$fileListDebug = strtr(
+			var_export( $files, true ),
+			array("\n"=>'')
+		);
+		wfDebug( __METHOD__ . ": $fileListDebug\n" );
+
 		$backend = $this->repo->getBackend();
 		foreach ( $files as $file ) {
 			# Check that the base file name is part of the thumb name

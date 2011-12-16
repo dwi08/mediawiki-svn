@@ -1282,7 +1282,7 @@ Di sini ada nilai yang dihasilkan secara rawak yang boleh anda guna: $1',
 'prefs-common-css-js'           => 'CSS/JavaScript kongsi untuk semua rupa:',
 'prefs-reset-intro'             => 'Anda boleh menggunakan laman ini untuk menetapkan semula keutamaan anda kepada tetapan asali.
 Tindakan ini tidak boleh dibatalkan.',
-'prefs-emailconfirm-label'      => 'Pengesahan e-mail:',
+'prefs-emailconfirm-label'      => 'Pengesahan e-mel:',
 'prefs-textboxsize'             => 'Saiz tetingkap penyuntingan',
 'youremail'                     => 'E-mel:',
 'username'                      => 'Nama pengguna:',
@@ -1508,7 +1508,6 @@ Tindakan ini tidak boleh dibatalkan.',
 'newpageletter'                     => 'B',
 'boteditletter'                     => 'b',
 'unpatrolledletter'                 => '!',
-'sectionlink'                       => '→',
 'number_of_watching_users_pageview' => '[$1 pemantau]',
 'rc_categories'                     => 'Hadkan kepada kategori (asingkan dengan "|")',
 'rc_categories_any'                 => 'Semua',
@@ -1632,6 +1631,20 @@ Memuat naik fail Java tidak dibenarkan, kerana boleh menyebabkan sekatan keselam
 'watchthisupload'             => 'Pantau fail ini',
 'filewasdeleted'              => 'Sebuah fail dengan nama ini pernah dimuat naik, tetapi kemudiannya dihapuskan. Anda seharusnya menyemak $1 sebelum meneruskan percubaan untuk memuat naik fail ini.',
 'filename-bad-prefix'         => "Nama bagi fail yang dimuat naik bermula dengan '''\"\$1\"''', yang mana merupakan nama yang tidak deskriptif yang biasanya ditetapkan oleh kamera digital secara automatik. Sila berikan nama yang lebih deskriptif bagi fail tersebut.",
+'filename-prefix-blacklist'   => ' #<!-- biarkan baris ini seperti sediakala --> <pre>
+# Sintaks adalah seperti berikut:
+#   * Segalanya mulai aksara "#" hingga akhir baris ialah komen
+#   * Setiap baris bukan kosong ialah awalan bagi nama-nama fail biasa yang ditetapkan secara automatik oleh kamera digital
+CIMG # Casio
+DSC_ # Nikon
+DSCF # Fuji
+DSCN # Nikon
+DUW # sesetengah telefon bimbit
+IMG # generik
+JD # Jenoptik
+MGP # Pentax
+PICT # dll.
+ #</pre> <!-- biarkan baris ini seperti sediakala -->',
 'upload-success-subj'         => 'Muat naik berjaya',
 'upload-success-msg'          => 'Muat naik anda dari [$2] berjaya. Ia ada di sini: [[:{{ns:file}}:$1]]',
 'upload-failure-subj'         => 'Masalah muat naik',
@@ -1762,6 +1775,7 @@ Penerangan pada [$2 laman penerangan failnya] di sana ditunjukkan di bawah.',
 'shared-repo-from'                  => 'dari $1',
 'shared-repo'                       => 'sebuah gedung kongsi',
 'shared-repo-name-wikimediacommons' => 'Wikimedia Commons',
+'filepage.css'                      => '/* CSS yang ditempatkan di sini disertakan pada laman keterangan fail, dan juga pada klien wiki asing */',
 
 # File reversion
 'filerevert'                => 'Balikkan $1',
@@ -2901,6 +2915,7 @@ Dengan menjalankannya, komputer anda mungkin akan terjejas.",
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
 'video-dims'   => '$1, $2 × $3',
 'hours-abbrev' => '$1j',
+'days-abbrev'  => '$1h',
 'seconds'      => '$1 saat',
 'minutes'      => '$1 minit',
 'hours'        => '$1 jam',
@@ -3659,5 +3674,19 @@ Imej ditunjuk dalam leraian penuh, jenis fail yang lain dibuka dengan atur cara 
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|membuka}} {{GENDER:$4|akaun pengguna}} $3',
 'logentry-newusers-autocreate'        => 'Akaun $1 {{GENDER:$2|dibuka}} secara automatik',
 'newuserlog-byemail'                  => 'kata laluan dihantar melalui e-mel',
+
+# Feedback
+'feedback-subject'  => 'Perkara:',
+'feedback-message'  => 'Pesanan:',
+'feedback-cancel'   => 'Batalkan',
+'feedback-submit'   => 'Hantar Maklum Balas',
+'feedback-adding'   => 'Maklum balas sedang diisikan ke dalam laman...',
+'feedback-error1'   => 'Perhatian: Hasil dari API tidak dikenali',
+'feedback-error2'   => 'Perhatian: Penyuntingan gagal',
+'feedback-error3'   => 'Perhatian: Tiada gerak balas dari API',
+'feedback-thanks'   => 'Terima kasih! Maklum balas anda telah dicatatkan pada laman "[$2 $1]".',
+'feedback-close'    => 'Siap',
+'feedback-bugcheck' => 'Bagus! Cuma pastikan itu bukan salah satu [$1 pepijat] yang sedia diketahui.',
+'feedback-bugnew'   => 'Saya dah semak. Laporkan pepijat baru',
 
 );

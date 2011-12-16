@@ -1793,6 +1793,7 @@ Nem lehet megfelelően ellenőrizni a biztonságosságát.',
 'uploadstash-badtoken' => 'A művelet végrehajtása sikertelen volt. Lehetséges, hogy lejártak a szerkesztést hitelesítő adataid. Próbáld újra!',
 'uploadstash-errclear' => 'A fájlok törlése nem sikerült.',
 'uploadstash-refresh'  => 'Fájlok listájának frissítése',
+'invalid-chunk-offset' => 'Érvénytelen darab eltolás',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Hozzáférés megtagadva',
@@ -3786,5 +3787,15 @@ A képek teljes méretben jelennek meg, más fájltípusok közvetlenül a hozz�
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|létrehozott}} {{GENDER:$4|egy felhasználói fiókot}} $3',
 'logentry-newusers-autocreate'        => '$1 fiók automatikusan {{GENDER:$2|létrehozva}}',
 'newuserlog-byemail'                  => 'a jelszót kiküldtük a megadott e-mail címre',
+
+# Feedback
+'feedback-subject' => 'Tárgy:',
+'feedback-message' => 'Üzenet:',
+'feedback-cancel'  => 'Mégse',
+'feedback-submit'  => 'Visszajelzés elküldése',
+'feedback-adding'  => 'Visszajelzés elmentése...',
+'feedback-error1'  => 'Hiba: az API ismeretlen eredménnyel tért vissza',
+'feedback-error2'  => 'Hiba: a szerkesztés nem sikerült',
+'feedback-error3'  => 'Hiba: nem érkezett válasz az API-tól',
 
 );

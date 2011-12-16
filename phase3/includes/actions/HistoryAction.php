@@ -23,10 +23,6 @@ class HistoryAction extends FormlessAction {
 		return 'history';
 	}
 
-	public function getRestriction() {
-		return null;
-	}
-
 	public function requiresWrite() {
 		return false;
 	}
@@ -171,7 +167,7 @@ class HistoryAction extends FormlessAction {
 			'</fieldset></form>'
 		);
 
-		wfRunHooks( 'PageHistoryBeforeList', array( &$this->article ) );
+		wfRunHooks( 'PageHistoryBeforeList', array( &$this->page ) );
 
 		// Create and output the list.
 		$pager = new HistoryPager( $this, $year, $month, $tagFilter, $conds );

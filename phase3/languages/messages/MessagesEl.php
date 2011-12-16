@@ -3732,4 +3732,14 @@ $5
 'revdelete-unrestricted' => 'αφαίρεσε περιορισμούς στους sysops',
 'newuserlog-byemail'     => 'ο κωδικός έχει σταλεί μέσω ηλεκτρονικού μηνύματος',
 
+# Feedback
+'feedback-subject' => 'Θέμα:',
+'feedback-message' => 'Μήνυμα:',
+'feedback-cancel'  => 'Ακύρωση',
+'feedback-submit'  => 'Υποβολή σχολίων',
+'feedback-adding'  => 'Προσθήκη σχολίων στην σελίδα...',
+'feedback-error1'  => 'Σφάλμα: Μη αναγνωρίσιμο αποτέλεσμα από το API',
+'feedback-error2'  => 'Σφάλμα: Η επεξεργασία απέτυχε',
+'feedback-error3'  => 'Σφάλμα: Καμία απάντηση από το API',
+
 );

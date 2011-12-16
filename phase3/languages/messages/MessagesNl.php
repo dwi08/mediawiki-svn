@@ -2247,7 +2247,7 @@ Ondersteunde protocollen: <tt>$1</tt> (voeg deze niet toe in uw zoekopdracht).',
 'listgrouprights'                      => 'Rechten van gebruikersgroepen',
 'listgrouprights-summary'              => 'Op deze pagina staan de gebruikersgroepen in deze wiki beschreven, met hun bijbehorende rechten.
 Er kan [[{{MediaWiki:Listgrouprights-helppage}}|extra informatie]] over individuele rechten aanwezig zijn.',
-'listgrouprights-key'                  => '* <span class="listgrouprights-granted">Toewezen recht</span>
+'listgrouprights-key'                  => '* <span class="listgrouprights-granted">Toegewezen recht</span>
 * <span class="listgrouprights-revoked">Ingetrokken recht</span>',
 'listgrouprights-group'                => 'Groep',
 'listgrouprights-rights'               => 'Rechten',
@@ -2982,9 +2982,9 @@ De tijdelijke map is niet aanwezig.',
 'tooltip-search'                  => '{{SITENAME}} doorzoeken',
 'tooltip-search-go'               => 'Naar een pagina met deze naam gaan als die bestaat',
 'tooltip-search-fulltext'         => "Alle pagina's op deze tekst doorzoeken",
-'tooltip-p-logo'                  => 'Hoofdpaginalogo',
-'tooltip-n-mainpage'              => 'Ga naar de Hoofdpagina',
-'tooltip-n-mainpage-description'  => 'Ga naar de Hoofdpagina',
+'tooltip-p-logo'                  => 'Naar de hoofdpagina gaan',
+'tooltip-n-mainpage'              => 'Naar de hoofdpagina gaan',
+'tooltip-n-mainpage-description'  => 'Naar de hoofdpagina gaan',
 'tooltip-n-portal'                => 'Informatie over het project: wie, wat, hoe en waarom',
 'tooltip-n-currentevents'         => 'Achtergrondinformatie over actuele zaken',
 'tooltip-n-recentchanges'         => 'De lijst van recente wijzigingen in deze wiki.',
@@ -3946,5 +3946,19 @@ Andere bestandstypen worden direct in het met het MIME-type verbonden programma 
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|heeft}} een {{GENDER:$4|gebruiker}} $3 aangemaakt',
 'logentry-newusers-autocreate'        => 'De gebruiker $1 is automatisch {{GENDER:$2|aangemaakt}}',
 'newuserlog-byemail'                  => 'wachtwoord is verzonden per e-mail',
+
+# Feedback
+'feedback-subject'  => 'Onderwerp:',
+'feedback-message'  => 'Bericht:',
+'feedback-cancel'   => 'Annuleren',
+'feedback-submit'   => 'Terugkoppeling opslaan',
+'feedback-adding'   => 'Uw terugkoppeling wordt aan de pagina toegevoegd...',
+'feedback-error1'   => 'Fout: onbekend resultaat uit de API',
+'feedback-error2'   => 'Fout: de bewerking is mislukt',
+'feedback-error3'   => 'Fout: geen reactie van de API',
+'feedback-thanks'   => 'Bedankt! Uw terugkoppeling is op de pagina "[$2 $1]" geplaatst.',
+'feedback-close'    => 'Afgerond',
+'feedback-bugcheck' => 'Geweldig! Controleer even of het niet al één van de [$1 bekende bugs] is.',
+'feedback-bugnew'   => 'Heb ik gecontroleerd; nieuwe bug melden',
 
 );

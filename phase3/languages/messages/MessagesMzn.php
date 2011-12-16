@@ -940,4 +940,18 @@ $5
 'specialpages'                   => 'شا صفحه‌ئون',
 'specialpages-group-maintenance' => 'چله‌بندی صفحه‌ئون',
 
+# New logging system
+'logentry-newusers-newusers' => '$1 {{GENDER:$2| بساتن}} اتا حساب کاروری',
+'logentry-newusers-create'   => '$1 {{GENDER:$2| بساتن}} اتا حساب کاروری',
+
+# Feedback
+'feedback-subject' => 'موضوع:',
+'feedback-message' => 'پیغوم:',
+'feedback-cancel'  => 'ول هاکردن',
+'feedback-submit'  => 'ارسال پیشنهادات و انتقادات',
+'feedback-adding'  => 'بی‌یشتن پیشنهادات و انتقادات...',
+'feedback-error1'  => 'خطا: جواب‌ئون نشناسی‌یه API جه',
+'feedback-error2'  => 'خطا: شکست دچی‌ین سر',
+'feedback-error3'  => 'خطا: جواب ندائن API',
+
 );

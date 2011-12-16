@@ -3410,4 +3410,14 @@ $5
 'revdelete-unrestricted' => 'प्रबंधकोंके प्रबंधन हटायें',
 'newuserlog-byemail'     => 'कूटशब्द इ-मेल द्वारा भेजा गया हैं',
 
+# Feedback
+'feedback-subject' => 'विषय:',
+'feedback-message' => 'संदेश:',
+'feedback-cancel'  => 'रद्द करें',
+'feedback-submit'  => 'प्रतिक्रिया भेजें',
+'feedback-adding'  => 'पृष्ठ पर प्रतिक्रिया जोड़ना ...',
+'feedback-error1'  => 'त्रुटि: न पहचाना गया परिणाम एपीआई से',
+'feedback-error2'  => 'त्रुटि: संपादन विफल रहा है',
+'feedback-error3'  => 'त्रुटि: एपीआई से कोई प्रतिक्रिया नहीं',
+
 );

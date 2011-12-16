@@ -24,6 +24,7 @@ production.
   items to show by default on query pages (special pages such as Whatlinkshere).
 * (bug 32470) Increase the length of ug_group.
 * (bug 32239) Removed wgEnableTooltipsAndAccesskeys.
+* Removed $wgVectorShowVariantName.
 
 === New features in 1.19 ===
 * (bug 19838) Possibility to get all interwiki prefixes if the interwiki
@@ -98,6 +99,13 @@ production.
   username (eg. Special:ActiveUsers/Username)
 * New JavaScript variable wgPageContentLanguage
 * Added new debugging toolbar, enabled with $wgDebugToolbar
+* Differences in the history page now uses slightly better colors for people
+  perceiving colors differently. Colors comes from the French Wikipedia.
+* (bug 32879) Upgrade jQuery to 1.7.1
+* jQuery UI upgraded to 1.8.17
+* Extensions can use the 'Language::getMessagesFileName' hook to define new
+  languages using messages files outside of core.
+* (bug 32512) Include 'associated namespace' checkbox on Special:Contributions
 
 === Bug fixes in 1.19 ===
 * $wgUploadNavigationUrl should be used for file redlinks if.
@@ -153,7 +161,8 @@ production.
 * (bug 32168) Add wfAssembleUrl for use in wfExpandUrl.
 * (bug 32168) fixed - wfExpandUrl expands dot segments now.
 * (bug 31535) Upload comments now truncated properly, and don't have brackets.
-* (bug 32450) Scripts pages in MediaWiki: namespace parse [[Category:#]] links.
+* (bug 32858) Do not register links, categories, etc. from CSS/JS pages in the
+  database.
 * (bug 32086) Special:PermanentLink now show an error message when no subpage
   was specified.
 * (bug 30368) Special:Newpages now shows the new page name for moved pages.
@@ -161,16 +170,21 @@ production.
 * (bug 29747) eAccelerator shared memory caching has been removed since it is
   now disabled by default and is buggy. APC, XCache and WinCache are not affected.
 * Installer now refuses to install if php was not compiled with Ctype support.
-* (bug 29475) Remove "trackback" feature entirely from core
+* (bug 29475) Remove "trackback" feature entirely from core.
 * (bug 32665) Special:BlockList prefills the username in the input field if
-  using the Special:BlockList\username URL
+  using the Special:BlockList/username URL.
 * (bug 27721) Make JavaScript variables wgSeparatorTransformTable and
   wgDigitTransformTable depend on page content language so the sort script
-  sorts correctly more often
-* (bug 32230) Expose wgRedirectedFrom in JavaScript
+  sorts correctly more often.
+* (bug 32230) Expose wgRedirectedFrom in JavaScript.
 * (bug 31212) History tab not collapsed when the screen is narrow
 * (bug 15521) Use new section summary when the action of adding a new section
-  also happens to create the page
+  also happens to create the page.
+* (bug 32960) Remove EmailAuthenticationTimestamp from database when a
+  email address is removed.
+* (bug 32414) Empty page get a empty bytes attribute in Export/Dump.
+* (bug 33101) Viewing a User or User talk of username resembling IP ending
+  with .xxx causes Internal error
 
 === API changes in 1.19 ===
 * (bug 19838) siprop=interwikimap can now use the interwiki cache.
@@ -192,9 +206,12 @@ production.
   up as a redirect to the linked page on Special:Whatlinkshere.
 * (bug 32609) API: Move captchaid/captchaword of action=edit from core
   to Captcha extension(s).
-* Added 'ApiGetDescription' hook.
+* Added 'APIGetDescription' hook.
 * (bug 32688) Paraminfo for parameter "generator" of the query module shows too
-  many types
+  many types.
+* (bug 32415) Empty page get no size attribute in API output.
+* (bug 31759) Undefined property notice in querypages API.
+* (bug 32495) API should allow purge by pageids.
 
 === Languages updated in 1.19 ===
 
@@ -210,6 +227,7 @@ changes to languages because of Bugzilla reports.
 * (bug 28643) Serbian variant conversion improvements (Nikola Smolenski).
 * (bug 29405, bug 30809) Lower diacritics are invisible in titles in Indic
   languages Assamese, Bengali, Hindi, Malyalam and Odiya.
+* (bug 32826) Titles in indic languages are partially cut.
 
 === Other changes in 1.19 ===
 * jquery.mwPrototypes module was renamed to jquery.mwExtension.
@@ -222,6 +240,14 @@ changes to languages because of Bugzilla reports.
   'chick' and 'monobook').
 * The constructor for CategoryView has changed, the second parameter is now a
   Context source and is required.
+* The Title::escape{Local,Full,Canonical}URL methods are deprecated, please use
+  proper html building methods to escape the normal get{...}URL methods instead.
+* The $variant arguments in the Title::get{Local,Full,Link,Canonical}URL methods
+  have been replaced with a secondary query argument.
+* The $variant argument in the hooks for the Title::get{Local,Full,Link,Canonical}URL
+  methods have been removed, the variant is now part of the $query argument.
+* Removed Title::isValidCssJsSubpage(), deprecated since 1.17 in favor of
+  using Title::isCssJsSubpage() or checking Title::isWrongCaseCssJsPage()
 
 == Compatibility ==
 

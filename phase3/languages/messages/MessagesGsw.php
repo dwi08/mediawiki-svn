@@ -2277,7 +2277,7 @@ Do chunnt dr aktuäll Yytrag us em Benutzersperr-Logbuech:',
 'autoblockid'                     => 'Automatischi Sperrig #$1',
 'block'                           => 'Benutzer sperre',
 'unblock'                         => 'Benutzer frejgee',
-'blockip'                         => 'Benutzer bzw. IP blockyre',
+'blockip'                         => 'Däm Binutzer d Bearbeitigsrächt furtnee',
 'blockip-title'                   => 'Benutzer sperre',
 'blockip-legend'                  => 'IP-Adräss/Benutzer sperre',
 'blockiptext'                     => 'Nimm des Formular go ne Benutzer oder e IP-Adräss sperre.
@@ -2300,7 +2300,7 @@ Des sott numme erfolge go Vandalismus verhindere un in Ibereinstimmig mit in dr 
 'ipbcreateaccount'                => 'Aalege vu Benutzerchonte verhindere',
 'ipbemailban'                     => 'E-Mail-Versand sperre',
 'ipbenableautoblock'              => 'Sperr di aktuäll vu däm Benutzer brucht IP-Adräss un automatisch alli wytere, wun er nimmt go Syte bearbeite oder Benutzerchonte aalege',
-'ipbsubmit'                       => 'Adräss blockiere',
+'ipbsubmit'                       => 'IP-Adräss/Benutzer sperre',
 'ipbother'                        => 'Anderi Duur (englisch):',
 'ipboptions'                      => '2 Stunde:2 hours,1 Tag:1 day,3 Täg:3 days,1 Wuche:1 week,2 Wuche:2 weeks,1 Monet:1 month,3 Monet:3 months,6 Monet:6 months,1 Johr:1 year,Fir immer:infinite',
 'ipbotheroption'                  => 'Anderi Duur',
@@ -2352,7 +2352,7 @@ Go d Sperri ufhebe lueg d [[Special:IPBlockList|Lisch vu allene aktive Sperrine]
 'blocklist-nousertalk'            => 'derf eigeni Diskussionssyte nit bearbeite',
 'ipblocklist-empty'               => 'In dr Lischt het s kei Yytreg.',
 'ipblocklist-no-results'          => 'Di gsuecht IP-Adräss/dr Benutzername isch nit gsperrt.',
-'blocklink'                       => 'sperre',
+'blocklink'                       => 'D Bearbeitigsrächt furtnee',
 'unblocklink'                     => 'freigä',
 'change-blocklink'                => 'Sperri ändere',
 'contribslink'                    => 'Byträg',
@@ -3505,5 +3505,15 @@ Di aagfrogt Datei wird diräkt dargstellt bzw. mit dr verchnipfte Aawändig gsta
 'logentry-newusers-create2'           => '$1 het {{GENDER:$4|en Benutzerchonto}} $3 {{GENDER:$2|erstellt}}',
 'logentry-newusers-autocreate'        => 'S Benutzerchonto $1 isch automatisch {{GENDER:$2|erstellt}} worde',
 'newuserlog-byemail'                  => 's Passwort isch per E-Mail gschickt wore',
+
+# Feedback
+'feedback-subject' => 'Beträff:',
+'feedback-message' => 'Noochricht:',
+'feedback-cancel'  => 'Abbräche',
+'feedback-submit'  => 'Ruggmäldig abschigge',
+'feedback-adding'  => 'Ruggmäldig wird zur Syte dezuegfiegt …',
+'feedback-error1'  => 'Fäälermäldig: Unbekannts Ergebniss vo de API',
+'feedback-error2'  => 'Fääler: Bearbeitig fehlgschlo',
+'feedback-error3'  => 'Fäälermäldig: Kei Antwort vo de API',
 
 );

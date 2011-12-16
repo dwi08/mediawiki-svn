@@ -146,8 +146,9 @@ class RequestContext implements IContextSource {
 	/**
 	 * Accepts a language code and ensures it's sane. Outputs a cleaned up language
 	 * code and replaces with $wgLanguageCode if not sane.
+	 * @private
 	 */
-	private static function sanitizeLangCode( $code ) {
+	static function sanitizeLangCode( $code ) {
 		global $wgLanguageCode;
 
 		// BCP 47 - letter case MUST NOT carry meaning
@@ -169,6 +170,7 @@ class RequestContext implements IContextSource {
 	 * @param $l Mixed Language instance or language code
 	 */
 	public function setLang( $l ) {
+		wfDeprecated( __METHOD__, '1.19' );
 		$this->setLanguage( $l );
 	}
 
@@ -176,6 +178,7 @@ class RequestContext implements IContextSource {
 	 * Set the Language object
 	 *
 	 * @param $l Mixed Language instance or language code
+	 * @since 1.19
 	 */
 	public function setLanguage( $l ) {
 		if ( $l instanceof Language ) {
@@ -194,6 +197,7 @@ class RequestContext implements IContextSource {
 	 * @return Language
 	 */
 	public function getLang() {
+		wfDeprecated( __METHOD__, '1.19' );
 		return $this->getLanguage();
 	}
 
@@ -201,6 +205,7 @@ class RequestContext implements IContextSource {
 	 * Get the Language object
 	 *
 	 * @return Language
+	 * @since 1.19
 	 */
 	public function getLanguage() {
 		if ( $this->lang === null ) {

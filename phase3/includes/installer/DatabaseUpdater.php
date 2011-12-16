@@ -193,7 +193,10 @@ abstract class DatabaseUpdater {
 	}
 
 	/**
-	 * Add a maintenance script to be run after the database updates are complete
+	 * Add a maintenance script to be run after the database updates are complete.
+	 * 
+	 * @since 1.19
+	 * 
 	 * @param $class string Name of a Maintenance subclass
 	 */
 	public function addPostDatabaseUpdateMaintenance( $class ) {
@@ -210,6 +213,8 @@ abstract class DatabaseUpdater {
 	}
 
 	/**
+	 * @since 1.17
+	 * 
 	 * @return array
 	 */
 	public function getPostDatabaseUpdateMaintenance() {
@@ -485,7 +490,7 @@ abstract class DatabaseUpdater {
 	 */
 	protected function dropIndex( $table, $index, $patch, $fullpath = false ) {
 		if ( $this->db->indexExists( $table, $index, __METHOD__ ) ) {
-			$this->output( "Dropping $index key from table $table... " );
+			$this->output( "Dropping $index index from table $table... " );
 			$this->applyPatch( $patch, $fullpath );
 			$this->output( "done.\n" );
 		} else {
@@ -652,7 +657,6 @@ abstract class DatabaseUpdater {
 	 */
 	protected function doMigrateUserOptions() {
 		$cl = $this->maintenance->runChild( 'ConvertUserOptions', 'convertUserOptions.php' );
-		$this->output( "Migrating remaining user_options... " );
 		$cl->execute();
 		$this->output( "done.\n" );
 	}

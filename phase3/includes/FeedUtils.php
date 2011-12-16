@@ -53,8 +53,6 @@ class FeedUtils {
 	 * @return String
 	 */
 	public static function formatDiff( $row ) {
-		global $wgUser;
-
 		$titleObj = Title::makeTitle( $row->rc_namespace, $row->rc_title );
 		$timestamp = wfTimestamp( TS_MW, $row->rc_timestamp );
 		$actiontext = '';
@@ -63,7 +61,7 @@ class FeedUtils {
 				$actiontext = wfMsgHtml('rev-deleted-event');
 			} else {
 				$actiontext = LogPage::actionText( $row->rc_log_type, $row->rc_log_action,
-					$titleObj, $wgUser->getSkin(), LogPage::extractParams($row->rc_params,true,true) );
+					$titleObj, RequestContext::getMain()->getSkin(), LogPage::extractParams($row->rc_params,true,true) );
 			}
 		}
 		return self::formatDiffRow( $titleObj,
@@ -85,25 +83,24 @@ class FeedUtils {
 	 * @return String
 	 */
 	public static function formatDiffRow( $title, $oldid, $newid, $timestamp, $comment, $actiontext='' ) {
-		global $wgFeedDiffCutoff, $wgLang, $wgUser;
+		global $wgFeedDiffCutoff, $wgLang;
 		wfProfileIn( __METHOD__ );
 
-		$skin = $wgUser->getSkin();
 		# log enties
 		$completeText = '<p>' . implode( ' ',
 			array_filter(
 				array(
 					$actiontext,
-					$skin->formatComment( $comment ) ) ) ) . "</p>\n";
+					Linker::formatComment( $comment ) ) ) ) . "</p>\n";
 
-		//NOTE: Check permissions for anonymous users, not current user.
-		//      No "privileged" version should end up in the cache.
-		//      Most feed readers will not log in anway.
+		// NOTE: Check permissions for anonymous users, not current user.
+		//       No "privileged" version should end up in the cache.
+		//       Most feed readers will not log in anway.
 		$anon = new User();
 		$accErrors = $title->getUserPermissionsErrors( 'read', $anon, true );
 
-		# Early exist when the page is not an article, on errors and no newid to
-		# compare.
+		// Can't diff special pages, unreadable pages or pages with no new revision
+		// to compare against: just return the text.
 		if( $title->getNamespace() < 0 || $accErrors || !$newid ) {
 			wfProfileOut( __METHOD__ );
 			return $completeText;
@@ -131,7 +128,7 @@ class FeedUtils {
 
 			if ( $wgFeedDiffCutoff <= 0 || ( strlen( $diffText ) > $wgFeedDiffCutoff ) ) {
 				// Omit large diffs
-				$diffText = self::getDiffText( $title, $newid, $oldid);
+				$diffText = self::getDiffLink( $title, $newid, $oldid );
 			} elseif ( $diffText === false ) {
 				// Error in diff engine, probably a missing revision
 				$diffText = "<p>Can't load revision $newid</p>";
@@ -150,7 +147,7 @@ class FeedUtils {
 			}
 			if ( $wgFeedDiffCutoff <= 0 || strlen( $newtext ) > $wgFeedDiffCutoff ) {
 				// Omit large new page diffs, bug 29110
-				$diffText = self::getDiffText( $title, $newid );
+				$diffText = self::getDiffLink( $title, $newid );
 			} else {
 				$diffText = '<p><b>' . wfMsg( 'newpage' ) . '</b></p>' .
 					'<div>' . nl2br( htmlspecialchars( $newtext ) ) . '</div>';
@@ -170,17 +167,16 @@ class FeedUtils {
 	 * @param $newid Integer newid for this diff
 	 * @param $oldid Integer|null oldid for the diff. Null means it is a new article
 	 */
-	protected static function getDiffText( Title $title, $newid, $oldid = null ) {
+	protected static function getDiffLink( Title $title, $newid, $oldid = null ) {
 		$queryParameters = ($oldid == null)
 			? "diff={$newid}"
 			: "diff={$newid}&oldid={$oldid}" ;
-		$diffLink = $title->escapeFullUrl( $queryParameters );
+		$diffUrl = $title->getFullUrl( $queryParameters );
 
-		$diffText = Html::RawElement( 'a', array( 'href' => $diffLink ),
-			htmlspecialchars( wfMsgForContent( 'showdiff' ) )
-		);
+		$diffLink = Html::element( 'a', array( 'href' => $diffUrl ),
+			wfMsgForContent( 'showdiff' ) );
 
-		return $diffText;
+		return $diffLink;
 	}
 
 	/**

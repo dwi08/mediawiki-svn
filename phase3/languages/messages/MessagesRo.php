@@ -1625,7 +1625,6 @@ $3',
 'newpageletter'                     => 'N',
 'boteditletter'                     => 'b',
 'unpatrolledletter'                 => '!',
-'sectionlink'                       => '→',
 'number_of_watching_users_pageview' => '[$1 {{PLURAL:$1|utilizator|utilizatori|de utilizatori}} care urmăresc]',
 'rc_categories'                     => 'Limitează la categoriile (separate prin "|")',
 'rc_categories_any'                 => 'Oricare',
@@ -3783,5 +3782,21 @@ Imaginile sunt afișate la rezoluția lor maximă, în timp ce alte tipuri de fi
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|a creat}} {{GENDER:$4|un cont de utilizator}} $3',
 'logentry-newusers-autocreate'        => 'Contul $1 a fost {{GENDER:$2|creat}} în mod automat',
 'newuserlog-byemail'                  => 'parola trimisă prin e-mail',
+
+# Feedback
+'feedback-bugornote' => 'Dacă sunteți pregătit să descrieți o problemă tehnică în detaliu vă rugăm să [ $1 raportați un bug].
+În caz contrar, puteți utiliza formularul de mai jos. Comentariul dumneavoastră va fi adăugat pe pagina „[ $3  $2 ]”, împreună cu numele de utilizator și numele navigatorului pe care îl folosiți.',
+'feedback-subject'   => 'Subiect:',
+'feedback-message'   => 'Mesaj:',
+'feedback-cancel'    => 'Revocare',
+'feedback-submit'    => 'Trimite părerea',
+'feedback-adding'    => 'Se adaugă părerea pe pagină...',
+'feedback-error1'    => 'Eroare: Rezultat necunoscut de la API',
+'feedback-error2'    => 'Eroare: editarea nu a reușit',
+'feedback-error3'    => 'Eroare: Niciun răspuns de la API',
+'feedback-thanks'    => 'Mulțumim! Comentariile dumneavoastră au fost publicate pe pagina „[ $2  $1 ]”.',
+'feedback-close'     => 'Gata',
+'feedback-bugcheck'  => 'Minunat! Trebuie doar să verificați dacă nu cumva problema a fost [$1 deja înregistrată].',
+'feedback-bugnew'    => 'Am verificat. O raportez drept o problemă nouă',
 
 );

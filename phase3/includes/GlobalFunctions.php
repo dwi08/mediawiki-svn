@@ -322,7 +322,7 @@ function wfUrlencode( $s ) {
 /**
  * This function takes two arrays as input, and returns a CGI-style string, e.g.
  * "days=7&limit=100". Options in the first array override options in the second.
- * Options set to "" will not be output.
+ * Options set to null or false will not be output.
  *
  * @param $array1 Array ( String|Array )
  * @param $array2 Array ( String|Array )
@@ -336,7 +336,7 @@ function wfArrayToCGI( $array1, $array2 = null, $prefix = '' ) {
 
 	$cgi = '';
 	foreach ( $array1 as $key => $value ) {
-		if ( $value !== '' ) {
+		if ( !is_null($value) && $value !== false ) {
 			if ( $cgi != '' ) {
 				$cgi .= '&';
 			}
@@ -369,8 +369,7 @@ function wfArrayToCGI( $array1, $array2 = null, $prefix = '' ) {
  * This is the logical opposite of wfArrayToCGI(): it accepts a query string as
  * its argument and returns the same string in array form.  This allows compa-
  * tibility with legacy functions that accept raw query strings instead of nice
- * arrays.  Of course, keys and values are urldecode()d.  Don't try passing in-
- * valid query strings, or it will explode.
+ * arrays.  Of course, keys and values are urldecode()d.
  *
  * @param $query String: query string
  * @return array Array version of input
@@ -385,7 +384,13 @@ function wfCgiToArray( $query ) {
 		if ( $bit === '' ) {
 			continue;
 		}
-		list( $key, $value ) = explode( '=', $bit );
+		if ( strpos( $bit, '=' ) === false ) {
+			// Pieces like &qwerty become 'qwerty' => '' (at least this is what php does)
+			$key = $bit;
+			$value = '';
+		} else {
+			list( $key, $value ) = explode( '=', $bit );
+		}
 		$key = urldecode( $key );
 		$value = urldecode( $value );
 		if ( strpos( $key, '[' ) !== false ) {
@@ -830,7 +835,7 @@ function wfDebug( $text, $logonly = false ) {
 		if ( $wgDebugLogFile != '' && !$wgProfileOnly ) {
 			# Strip unprintables; they can switch terminal modes when binary data
 			# gets dumped, which is pretty annoying.
-			$text = preg_replace( '![\x00-\x08\x0b\x0c\x0e-\x1a\x1c-\x1f]!', ' ', $text );
+			$text = preg_replace( '![\x00-\x08\x0b\x0c\x0e-\x1f]!', ' ', $text );
 			$text = $wgDebugLogPrefix . $text;
 			wfErrorLog( $text, $wgDebugLogFile );
 		}
@@ -1148,6 +1153,7 @@ function wfGetLangObj( $langcode = false ) {
  * @return Language
  */
 function wfUILang() {
+	wfDeprecated( __METHOD__, '1.18' );
 	global $wgLang;
 	return $wgLang;
 }
@@ -1704,6 +1710,8 @@ function wfShowingResults( $offset, $limit ) {
  * @deprecated in 1.19; use Language::viewPrevNext() instead
  */
 function wfViewPrevNext( $offset, $limit, $link, $query = '', $atend = false ) {
+	wfDeprecated( __METHOD__, '1.19' );
+	
 	global $wgLang;
 
 	$query = wfCgiToArray( $query );
@@ -2188,7 +2196,7 @@ function wfTimestamp( $outputtype = TS_UNIX, $ts = 0 ) {
 	} elseif ( preg_match( '/^-?\d{1,13}$/D', $ts ) ) {
 		# TS_UNIX
 		$uts = $ts;
-		$strtime = "@$ts"; // Undocumented?
+		$strtime = "@$ts"; // http://php.net/manual/en/datetime.formats.compound.php
 	} elseif ( preg_match( '/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}.\d{6}$/', $ts ) ) {
 		# TS_ORACLE // session altered to DD-MM-YYYY HH24:MI:SS.FF6
 		$strtime = preg_replace( '/(\d\d)\.(\d\d)\.(\d\d)(\.(\d+))?/', "$1:$2:$3",
@@ -3023,6 +3031,7 @@ function wfRelativePath( $path, $from ) {
  * @param $commit string
  */
 function wfDoUpdates( $commit = '' ) {
+	wfDeprecated( __METHOD__, '1.19' );
 	DeferredUpdates::doUpdates( $commit );
 }
 
@@ -3122,7 +3131,7 @@ function wfBaseConvert( $input, $sourceBase, $destBase, $pad = 1, $lowercase = t
  * @deprecated since 1.18, warnings in 1.18, removal in 1.20
  */
 function wfCreateObject( $name, $p ) {
-	wfDeprecated( __FUNCTION__ );
+	wfDeprecated( __FUNCTION__, '1.18' );
 	return MWFunction::newObj( $name, $p );
 }
 
@@ -3214,8 +3223,10 @@ function wfGetPrecompiledData( $name ) {
  * @return String
  */
 function wfMemcKey( /*... */ ) {
+	global $wgCachePrefix;
+	$prefix = $wgCachePrefix === false ? wfWikiID() : $wgCachePrefix;
 	$args = func_get_args();
-	$key = wfWikiID() . ':' . implode( ':', $args );
+	$key = $prefix . ':' . implode( ':', $args );
 	$key = str_replace( ' ', '_', $key );
 	return $key;
 }
@@ -3245,10 +3256,8 @@ function wfForeignMemcKey( $db, $prefix /*, ... */ ) {
  * @return String
  */
 function wfWikiID() {
-	global $wgDBprefix, $wgDBname, $wgWikiID;
-	if ( $wgWikiID !== false ) {
-		return $wgWikiID;
-	} elseif ( $wgDBprefix ) {
+	global $wgDBprefix, $wgDBname;
+	if ( $wgDBprefix ) {
 		return "$wgDBname-$wgDBprefix";
 	} else {
 		return $wgDBname;
@@ -3355,6 +3364,7 @@ function wfLocalFile( $title ) {
  * @deprecated since 1.19
  */
 function wfStreamFile( $fname, $headers = array() ) {
+	wfDeprecated( __FUNCTION__, '1.19' );
 	StreamFile::stream( $fname, $headers );
 }
 
@@ -3425,7 +3435,7 @@ function wfBoolToStr( $value ) {
  * @codeCoverageIgnore
  */
 function wfLoadExtensionMessages() {
-	wfDeprecated( __FUNCTION__ );
+	wfDeprecated( __FUNCTION__, '1.16' );
 }
 
 /**
@@ -3443,27 +3453,35 @@ function wfGetNull() {
  * Throws a warning that $function is deprecated
  *
  * @param $function String
- * @param $version String
+ * @param $version String|false: Added in 1.19.
+ * @param $component String|false: Added in 1.19.
+ * 
  * @return null
  */
-function wfDeprecated( $function, $version = false ) {
+function wfDeprecated( $function, $version = false, $component = false ) {
 	static $functionsWarned = array();
+	
 	if ( !isset( $functionsWarned[$function] ) ) {
 		$functionsWarned[$function] = true;
+		
 		if ( $version ) {
 			global $wgDeprecationReleaseLimit;
-			if ( $wgDeprecationReleaseLimit ) {
+			
+			if ( $wgDeprecationReleaseLimit && $component === false ) {
 				# Strip -* off the end of $version so that branches can use the
 				# format #.##-branchname to avoid issues if the branch is merged into
 				# a version of MediaWiki later than what it was branched from
 				$comparableVersion = preg_replace( '/-.*$/', '', $version );
+				
 				# If the comparableVersion is larger than our release limit then
 				# skip the warning message for the deprecation
 				if ( version_compare( $wgDeprecationReleaseLimit, $comparableVersion, '<' ) ) {
 					return;
 				}
 			}
-			wfWarn( "Use of $function was deprecated in $version.", 2 );
+			
+			$component = $component === false ? 'MediaWiki' : $component;
+			wfWarn( "Use of $function was deprecated in $component $version.", 2 );
 		} else {
 			wfWarn( "Use of $function is deprecated.", 2 );
 		}
@@ -3535,7 +3553,7 @@ function wfWaitForSlaves( $maxLag = false, $wiki = false ) {
  * @deprecated since 1.18, warnings in 1.18, remove in 1.20
  */
 function wfOut( $s ) {
-	wfDeprecated( __METHOD__ );
+	wfDeprecated( __FUNCTION__, '1.18' );
 	global $wgCommandLineMode;
 	if ( $wgCommandLineMode ) {
 		echo $s;

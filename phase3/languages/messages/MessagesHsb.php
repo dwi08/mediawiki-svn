@@ -3551,4 +3551,20 @@ Wobrazy so połnym rozeznaću pokazuja, druhe datajowe typy so ze zwjazanym prog
 'logentry-newusers-autocreate'        => 'Konto $1 je so awtomatisce {{GENDER:$2|załožiło}}',
 'newuserlog-byemail'                  => 'Hesło z e-mejlku pósłane',
 
+# Feedback
+'feedback-bugornote' => 'Jeli sy zwólniwy, techniski problem nadrobnje wopisać, [$1 zdźěl prošu zmylk].
+Hewak móžeš slědowacy jednory formular wužiwać. Twój komentar přida so stronje "[$3 $2]", z twojim wužiwarskim mjenom a z wobhladowakom, kotryž wužiwaš.',
+'feedback-subject'   => 'Tema:',
+'feedback-message'   => 'Powěsć:',
+'feedback-cancel'    => 'Přetorhnyć',
+'feedback-submit'    => 'Komentar wotpósłać',
+'feedback-adding'    => 'Komentar so stronje přidawa...',
+'feedback-error1'    => 'Zmylk: Njepřipóznaty wuslědk wot API',
+'feedback-error2'    => 'Zmylk: Wobdźěłanje je so njeporadźiło',
+'feedback-error3'    => 'Zmylk: Žana wotmołwa wot API',
+'feedback-thanks'    => 'Dźakujemy so! Twój komentar je so k stronje "[$2 $1]" pósłał.',
+'feedback-close'     => 'Dokónčeny',
+'feedback-bugcheck'  => 'Wulkotnje! Skontroluj jenož, hač to jedyn z [$1 znatych zmylkow] njeje.',
+'feedback-bugnew'    => 'Sym to skontrolował. Nowy zmylk zdźělić',
+
 );

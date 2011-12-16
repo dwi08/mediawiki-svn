@@ -3516,4 +3516,14 @@ Tæknilegir örðugleikar eru á þessari síðu.',
 'logentry-newusers-autocreate'        => 'Aðgangurinn $1 var {{GENDER:$2|stofnaður}} sjálfvirkt',
 'newuserlog-byemail'                  => 'lykilorð sent með tölvupósti',
 
+# Feedback
+'feedback-subject' => 'Fyrirsögn:',
+'feedback-message' => 'Skilaboð:',
+'feedback-cancel'  => 'Hætta við',
+'feedback-submit'  => 'Senda svörun',
+'feedback-adding'  => 'Bæti við svörun á síðuna...',
+'feedback-error1'  => 'Villa: Óþekkt útkoma frá API',
+'feedback-error2'  => 'Villa: Breytingin mistókst',
+'feedback-error3'  => 'Villa: Ekkert svar frá API',
+
 );

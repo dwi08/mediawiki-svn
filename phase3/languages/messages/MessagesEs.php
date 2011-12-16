@@ -1633,6 +1633,7 @@ Tu dirección de correo-e no se revela cuando otros usuarios te contactan.',
 'action-userrights'           => 'modificar todos los derechos de usuario',
 'action-userrights-interwiki' => 'modificar los derechos de usuarios en otros wikis',
 'action-siteadmin'            => 'bloquear o desbloquear la base de datos',
+'action-sendemail'            => 'enviar correos electrónicos',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|cambio|cambios}}',
@@ -1824,6 +1825,7 @@ No puede comprobarse adecuadamente su seguridad.',
 'uploadstash-badtoken' => 'No fue posible ejecutar esa operación, tal vez porque sus credenciales de edición expiraron. Reinténtelo.',
 'uploadstash-errclear' => 'El borrado de los archivos no tuvo éxito.',
 'uploadstash-refresh'  => 'Actualizar la lista de archivos',
+'invalid-chunk-offset' => 'Desplazamiento inválido del fragmento',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Acceso denegado',
@@ -2070,7 +2072,7 @@ Las entradas <del>tachadas</del> han sido resueltas.',
 'listusers-editsonly'     => 'Muestra sólo usuarios con ediciones',
 'listusers-creationsort'  => 'Ordenado por fecha de creación',
 'usereditcount'           => '$1 {{PLURAL:$1|edición|ediciones}}',
-'usercreated'             => '{{GENDER:$3|Creado|Creada}} el $1, $2',
+'usercreated'             => '{{GENDER:$3|Registrado|Registrada}} el $1 a las $2',
 'newpages'                => 'Páginas nuevas',
 'newpages-username'       => 'Nombre de usuario',
 'ancientpages'            => 'Artículos más antiguos',
@@ -2097,7 +2099,7 @@ Por favor note que otros sitios web pueden vincular a un archivo con un URL dire
 
 # Special:Log
 'specialloguserlabel'  => 'Usuario:',
-'speciallogtitlelabel' => 'Título:',
+'speciallogtitlelabel' => 'Objetivo (título o usuario):',
 'log'                  => 'Registros',
 'all-logs-page'        => 'Todos los registros públicos',
 'alllogstext'          => 'Vista combinada de todos los registros de {{SITENAME}}.
@@ -3813,5 +3815,15 @@ Este sitio está experimentando dificultades técnicas.',
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|creó}} {{GENDER:$4|una cuenta de usuario}} $3',
 'logentry-newusers-autocreate'        => 'La cuenta $1 fue {{GENDER:$2|creada}} automáticamente',
 'newuserlog-byemail'                  => 'contraseña enviada por correo electrónico',
+
+# Feedback
+'feedback-subject' => 'Asunto:',
+'feedback-message' => 'Mensaje:',
+'feedback-cancel'  => 'Cancelar',
+'feedback-submit'  => 'Enviar comentarios',
+'feedback-adding'  => 'Añadiendo comentarios a la página...',
+'feedback-error1'  => 'Error: No se reconoce resultado de API',
+'feedback-error2'  => 'Error: Falló la edición',
+'feedback-error3'  => 'Error: No hay respuesta de la API',
 
 );

@@ -1221,7 +1221,6 @@ $wgMessageStructure = array(
 		'newpageletter',
 		'boteditletter',
 		'unpatrolledletter',
-		'sectionlink',
 		'number_of_watching_users_RCview',
 		'number_of_watching_users_pageview',
 		'rc_categories',
@@ -3530,6 +3529,21 @@ $wgMessageStructure = array(
 		'logentry-newusers-autocreate',
 		'newuserlog-byemail',
 	),
+	'feedback' => array(
+		'feedback-bugornote',
+		'feedback-subject',
+		'feedback-message',
+		'feedback-cancel',
+		'feedback-submit',
+		'feedback-adding',
+		'feedback-error1',
+		'feedback-error2',
+		'feedback-error3',
+		'feedback-thanks',
+		'feedback-close',
+		'feedback-bugcheck',
+		'feedback-bugnew',
+	),
 );
 
 /** Comments for each block */
@@ -3760,4 +3774,5 @@ Variants for Chinese language",
 	'html-forms'            => 'HTML forms',
 	'sqlite'                => 'SQLite database support',
 	'logging'               => 'New logging system',
+	'feedback'              => 'Feedback',
 );

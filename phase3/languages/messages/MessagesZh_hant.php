@@ -1037,7 +1037,7 @@ $2
 'revdelete-show-file-confirm' => '{{GENDER:|你|妳|你}}是否真的是想去檢視於$2 $3刪除 "$1" 的檔案修訂？',
 'revdelete-show-file-submit'  => '是',
 'revdelete-selected'          => "'''選取[[:$1]]的$2次修訂:'''",
-'logdelete-selected'          => "'''選取'''$1'''的日誌項目:'''",
+'logdelete-selected'          => "'''{{PLURAL:$1|選取的日誌項目}}：'''",
 'revdelete-text'              => "'''刪除的修訂仍將顯示在頁面歷史中, 但它們的文字內容已不能被公眾訪問。'''
 在{{SITENAME}}的其他管理員將仍能訪問隱藏的內容並透過與此相同的介面恢復刪除，除非網站工作者進行了一些附加的限制。",
 'revdelete-confirm'           => '請確認您肯定去做的話，您就要明白到後果，以及這個程序符合[[{{MediaWiki:Policy-url}}|政策]]。',
@@ -3632,5 +3632,15 @@ MediaWiki是基於使用目的而加以發佈，然而不負任何擔保責任�
 'logentry-move-move_redir-noredirect' => '$1通過重定向{{GENDER:$2|移動}}$3頁面至$4，不留重定向',
 'logentry-newusers-newusers'          => '$1{{GENDER:$2|建立}}新帳號',
 'newuserlog-byemail'                  => '密碼已由電子郵件寄出',
+
+# Feedback
+'feedback-subject' => '主旨：',
+'feedback-message' => '訊息：',
+'feedback-cancel'  => '取消',
+'feedback-submit'  => '提交反饋',
+'feedback-adding'  => '正在頁面添加反饋...',
+'feedback-error1'  => '錯誤：從API返回無法識別的結果',
+'feedback-error2'  => '錯誤：編輯失敗',
+'feedback-error3'  => '錯誤：API 沒有響應',
 
 );

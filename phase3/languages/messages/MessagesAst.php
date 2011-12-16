@@ -1576,6 +1576,7 @@ Nun se pue comprobar la seguridá de mou afayadizu.",
 'uploadstash-badtoken' => 'Nun se pudo facer esa operación, seique porque caducó la identificación pa editar. Vuelvi a intentalo.',
 'uploadstash-errclear' => 'Nun se pudieron desaniciar los ficheros.',
 'uploadstash-refresh'  => 'Anovar la llista de ficheros',
+'invalid-chunk-offset' => 'Allugamientu inválidu del fragmentu',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Accesu denegáu',
@@ -3591,5 +3592,15 @@ Les imáxenes amuésense a resolución completa; les demás tribes d'archivu exe
 'logentry-newusers-create2'           => "$1 {{GENDER:$2|creó}} {{GENDER:$4|una cuenta d'usuariu}} $3",
 'logentry-newusers-autocreate'        => 'La cuenta $1 {{GENDER:$2|se creó}} automáticamente',
 'newuserlog-byemail'                  => 'clave unviada per corréu electrónicu',
+
+# Feedback
+'feedback-subject' => 'Asuntu:',
+'feedback-message' => 'Mensaxe:',
+'feedback-cancel'  => 'Encaboxar',
+'feedback-submit'  => 'Unviar comentarios',
+'feedback-adding'  => 'Amestando el comentariu a la páxina...',
+'feedback-error1'  => 'Fallu: Resultáu de la API non reconocíu',
+'feedback-error2'  => 'Fallu: Falló la edición',
+'feedback-error3'  => 'Fallu: Ensin respuesta de la API',
 
 );

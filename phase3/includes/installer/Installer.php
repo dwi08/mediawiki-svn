@@ -855,16 +855,17 @@ abstract class Installer {
 	/**
 	 * Environment check for the server hostname.
 	 */
-	protected function envCheckServer( $srv = null ) {
-		if ( $srv ) {
-			// wgServer was pre-defined, perhaps by the cli installer
-			$server = $srv;
-		} else {
-			$server = WebRequest::detectServer();
-		}
+	protected function envCheckServer() {
+		$server = $this->envGetDefaultServer();
 		$this->showMessage( 'config-using-server', $server );
 		$this->setVar( 'wgServer', $server );
 	}
+
+	/**
+	 * Helper function to be called from envCheckServer()
+	 * @return String
+	 */
+	protected abstract function envGetDefaultServer();
 
 	/**
 	 * Environment check for setting $IP and $wgScriptPath.
@@ -1525,13 +1526,13 @@ abstract class Installer {
 	protected function createMainpage( DatabaseInstaller $installer ) {
 		$status = Status::newGood();
 		try {
-			$article = new Article( Title::newMainPage() );
-			$article->doEdit( wfMsgForContent( 'mainpagetext' ) . "\n\n" .
-								wfMsgForContent( 'mainpagedocfooter' ),
-								'',
-								EDIT_NEW,
-								false,
-								User::newFromName( 'MediaWiki default' ) );
+			$page = WikiPage::factory( Title::newMainPage() );
+			$page->doEdit( wfMsgForContent( 'mainpagetext' ) . "\n\n" .
+							wfMsgForContent( 'mainpagedocfooter' ),
+							'',
+							EDIT_NEW,
+							false,
+							User::newFromName( 'MediaWiki default' ) );
 		} catch (MWException $e) {
 			//using raw, because $wgShowExceptionDetails can not be set yet
 			$status->fatal( 'config-install-mainpage-failed', $e->getMessage() );

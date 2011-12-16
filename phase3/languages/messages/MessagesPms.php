@@ -1542,7 +1542,7 @@ A peul pa esse controlà da bin për la sicurëssa.",
 'uploadstash-badtoken' => "L'esecussion dë st'assion a l'é pa andàita bin, miraco përchè toe credensiaj ëd modìfica a son scadùe. Preuva torna.",
 'uploadstash-errclear' => "La scancelassion ëd j'archivi a l'é falìa.",
 'uploadstash-refresh'  => "Agiorné la lista dj'archivi",
-'invalid-chunk-offset' => 'Inissi dël blòch pa bon',
+'invalid-chunk-offset' => 'Inissi dël segment pa bon',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Acess negà',
@@ -2172,17 +2172,17 @@ Che as varda ël [[Special:Log/delete|Registr djë scancelament]] për ës-ciair
 'undelete-search-box'          => 'Arserché dle pàgine scancelà',
 'undelete-search-prefix'       => "Smon-e le pàgine ch'as anandio për:",
 'undelete-search-submit'       => 'Sërché',
-'undelete-no-results'          => "A-i é pa gnun-a pàgina parej ant l'archivi djë scancelassion.",
-'undelete-filename-mismatch'   => "As peul nen disdëscancelesse la revision d'archivi col marcatemp $1: sòrt d'archivi nen giusta",
-'undelete-bad-store-key'       => "As peul pa disdëscancelesse la revision d'archivi col marcatemp $1: l'archivi a-i era già pì anans d'esse scancelà.",
-'undelete-cleanup-error'       => 'Eror ën scanceland l\'archivi nen dovrà "$1".',
-'undelete-missing-filearchive' => "As peul nen ricuperesse l'archivi con l'identità $1 përchè a-i é pa ant la base dat. A peul esse ch'a l'abio già disdëscancelalo.",
+'undelete-no-results'          => "A-i é gnun-a pàgina parèj ant l'archivi dje scancelassion.",
+'undelete-filename-mismatch'   => "As peul nen ciapé andré la revision dl'archivi col marcatemp $1: Nòm d'archivi nen giust",
+'undelete-bad-store-key'       => "As peul pa pijesse andré la revision dl'archivi col marcatemp $1: L'archivi a-i era già pì nen anans d'esse scancelà.",
+'undelete-cleanup-error'       => "Eror ën scanceland l'archivi nen dovrà «$1».",
+'undelete-missing-filearchive' => "As peul nen ricuperesse l'archivi con l'identità $1 përchè a-i é pa ant la base ëd dat. A peul esse ch'a l'abio già pijalo andré.",
 'undelete-error'               => "Pàgina d'eror d'arcuperassion",
-'undelete-error-short'         => "Eror ën disdëscanceland l'archivi: $1",
-'undelete-error-long'          => "Eror antramentr ch'as disdëscancelava l'archivi:
+'undelete-error-short'         => "Eror ën arcuperand l'archivi: $1",
+'undelete-error-long'          => "Eror antramentr ch'as arcuperava l'archivi:
 
 $1",
-'undelete-show-file-confirm'   => 'É-lo sicur ëd vorèj vëdde la revision scancelà ëd l\'archivi "<nowiki>$1</nowiki>" da $2 a $3?',
+'undelete-show-file-confirm'   => "É-lo sicur ëd vorèj vëdde la revision scancelà ëd l'archivi «<nowiki>$1</nowiki>» da $2 a $3?",
 'undelete-show-file-submit'    => 'É!',
 
 # Namespace form on various pages
@@ -3544,5 +3544,15 @@ Le figure a së smon-o a amzura pijn-a, j'àotre sòrt d'archivi a ven-o fàite 
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|creà}} {{GENDER:$4|un cont utent}} $3',
 'logentry-newusers-autocreate'        => "Ël cont $1 a l'é stàit {{GENDER:$2|creà}} an automàtich",
 'newuserlog-byemail'                  => 'ciav spedìa për pòsta eletrònica',
+
+# Feedback
+'feedback-subject' => 'Soget:',
+'feedback-message' => 'Mëssagi:',
+'feedback-cancel'  => 'Scancela',
+'feedback-submit'  => 'Spedì ij coment',
+'feedback-adding'  => 'Gionta dij coment a la pàgina...',
+'feedback-error1'  => 'Eror: Arzultà pa arconossù da API',
+'feedback-error2'  => 'Eror: Modìfica falìa',
+'feedback-error3'  => 'Eror: Pa gnun-e arspòste da API',
 
 );

@@ -288,7 +288,7 @@ abstract class Skin extends ContextSource {
 	abstract function outputPage( OutputPage $out = null );
 
 	/**
-	 * @param $data
+	 * @param $data array
 	 * @return string
 	 */
 	static function makeVariablesScript( $data ) {
@@ -531,7 +531,7 @@ abstract class Skin extends ContextSource {
 	protected function generateDebugHTML() {
 		global $wgShowDebug;
 
-		$html = MWDebug::getDebugHTML();
+		$html = MWDebug::getDebugHTML( $this->getContext() );
 
 		if ( $wgShowDebug ) {
 			$listInternals = $this->formatDebugHTML( $this->getOutput()->mDebugtext );
@@ -543,7 +543,7 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param $debugText
+	 * @param $debugText string
 	 * @return string
 	 */
 	private function formatDebugHTML( $debugText ) {
@@ -734,7 +734,7 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param string $type
+	 * @param $type string
 	 * @return string
 	 */
 	function getCopyright( $type = 'detect' ) {
@@ -775,7 +775,7 @@ abstract class Skin extends ContextSource {
 		if ( $forContent ) {
 			$msg = $msgObj->inContentLanguage()->text();
 			if ( $this->getLanguage()->getCode() !== $wgContLang->getCode() ) {
-				$msg = Html::rawElement( 'span', array( 'lang' => $wgContLang->getCode(), 'dir' => $wgContLang->getDir() ), $msg );
+				$msg = Html::rawElement( 'span', array( 'lang' => $wgContLang->getHtmlCode(), 'dir' => $wgContLang->getDir() ), $msg );
 			}
 			return $msg;
 		} else {
@@ -828,14 +828,14 @@ abstract class Skin extends ContextSource {
 	/**
 	 * Get the timestamp of the latest revision, formatted in user language
 	 *
-	 * @param $page WikiPage object. Used if we're working with the current revision
 	 * @return String
 	 */
-	protected function lastModified( $page ) {
-		if ( !$this->isRevisionCurrent() ) {
+	protected function lastModified() {
+		$timestamp = $this->getOutput()->getRevisionTimestamp();
+
+		# No cached timestamp, load it from the database
+		if ( $timestamp === null ) {
 			$timestamp = Revision::getTimestampFromId( $this->getTitle(), $this->getRevisionId() );
-		} else {
-			$timestamp = $page->getTimestamp();
 		}
 
 		if ( $timestamp ) {
@@ -866,7 +866,7 @@ abstract class Skin extends ContextSource {
 
 		$mp = $this->msg( 'mainpage' )->escaped();
 		$mptitle = Title::newMainPage();
-		$url = ( is_object( $mptitle ) ? $mptitle->escapeLocalURL() : '' );
+		$url = ( is_object( $mptitle ) ? htmlspecialchars( $mptitle->getLocalURL() ) : '' );
 
 		$logourl = $this->getLogo();
 		$s = "<a href='{$url}'><img{$a} src='{$logourl}' alt='[{$mp}]' /></a>";
@@ -976,7 +976,7 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param $id
+	 * @param $id User|int
 	 * @return bool
 	 */
 	function showEmailUser( $id ) {
@@ -1027,7 +1027,7 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param $name
+	 * @param $name string
 	 * @param $urlaction string
 	 * @return String
 	 */
@@ -1037,8 +1037,8 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param $name
-	 * @param $subpage
+	 * @param $name string
+	 * @param $subpage string
 	 * @param $urlaction string
 	 * @return String
 	 */
@@ -1048,7 +1048,7 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param $name
+	 * @param $name string
 	 * @param $urlaction string
 	 * @return String
 	 */
@@ -1059,7 +1059,7 @@ abstract class Skin extends ContextSource {
 	}
 
 	/**
-	 * @param $name
+	 * @param $name string
 	 * @param $urlaction string
 	 * @return String
 	 */
@@ -1134,7 +1134,7 @@ abstract class Skin extends ContextSource {
 	 * make sure we have some title to operate on
 	 *
 	 * @param $title Title
-	 * @param $name
+	 * @param $name string
 	 */
 	static function checkTitle( &$title, $name ) {
 		if ( !is_object( $title ) ) {
@@ -1392,7 +1392,7 @@ abstract class Skin extends ContextSource {
 		}
 
 		$notice = Html::rawElement( 'div', array( 'id' => 'localNotice',
-			'lang' => $wgContLang->getCode(), 'dir' => $wgContLang->getDir() ), $notice );
+			'lang' => $wgContLang->getHtmlCode(), 'dir' => $wgContLang->getDir() ), $notice );
 		wfProfileOut( __METHOD__ );
 		return $notice;
 	}

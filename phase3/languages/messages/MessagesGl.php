@@ -1539,8 +1539,8 @@ Ha de ter menos {{PLURAL:$1|dun carácter|de $1 caracteres}}.',
 'nchanges'                          => '$1 {{PLURAL:$1|cambio|cambios}}',
 'recentchanges'                     => 'Cambios recentes',
 'recentchanges-legend'              => 'Opcións dos cambios',
-'recentchangestext'                 => 'Siga, nesta páxina, as modificacións máis recentes no wiki.',
-'recentchanges-feed-description'    => 'Siga os cambios máis recentes deste wiki nesta fonte de novas.',
+'recentchangestext'                 => 'Nesta páxina pode seguir os cambios máis recentes no wiki.',
+'recentchanges-feed-description'    => 'Nesta fonte de novas pode seguir os cambios máis recentes no wiki.',
 'recentchanges-label-newpage'       => 'Esta edición creou unha nova páxina',
 'recentchanges-label-minor'         => 'Esta é unha edición pequena',
 'recentchanges-label-bot'           => 'Esta edición foi realizada por un bot',
@@ -3670,7 +3670,7 @@ As imaxes móstranse na súa resolución completa; outros tipos de ficheiros in�
 'specialpages-group-pagetools'   => 'Ferramentas das páxinas',
 'specialpages-group-wiki'        => 'Datos do wiki e ferramentas',
 'specialpages-group-redirects'   => 'Páxinas de redirección especiais',
-'specialpages-group-spam'        => "Ferramentas contra o ''spam''",
+'specialpages-group-spam'        => 'Ferramentas contra o spam',
 
 # Special:BlankPage
 'blankpage'              => 'Baleirar a páxina',
@@ -3767,5 +3767,21 @@ As imaxes móstranse na súa resolución completa; outros tipos de ficheiros in�
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|creou}} unha conta de {{GENDER:$4|usuario|usuaria}} $3',
 'logentry-newusers-autocreate'        => 'A conta $1 {{GENDER:$2|creouse}} automaticamente',
 'newuserlog-byemail'                  => 'contrasinal enviado por correo electrónico',
+
+# Feedback
+'feedback-bugornote' => 'Se está listo para describir un problema técnico en detalle, [$1 informe do erro].
+En caso contrario, pode empregar o formulario sinxelo inferior. O seu comentario aparecerá na páxina "[$3 $2]" xunto ao seu nome de usuario e o navegador que está usando.',
+'feedback-subject'   => 'Asunto:',
+'feedback-message'   => 'Mensaxe:',
+'feedback-cancel'    => 'Cancelar',
+'feedback-submit'    => 'Enviar os comentarios',
+'feedback-adding'    => 'Enviando os comentarios...',
+'feedback-error1'    => 'Erro: Resultado da API non recoñecido',
+'feedback-error2'    => 'Erro: Fallo de edición',
+'feedback-error3'    => 'Erro: Non hai resposta da API',
+'feedback-thanks'    => 'Grazas! Os seus comentarios publicáronse na páxina "[$2 $1]".',
+'feedback-close'     => 'Feito',
+'feedback-bugcheck'  => 'Perfecto! Comprobe que aínda non está entre os [$1 erros coñecidos].',
+'feedback-bugnew'    => 'Comprobeino. Informar deste novo erro',
 
 );

@@ -406,6 +406,8 @@ class EditPage {
 	 * @deprecated in 1.19; use displayPermissionsError() instead
 	 */
 	function readOnlyPage( $source = null, $protected = false, $reasons = array(), $action = null ) {
+		wfDeprecated( __METHOD__, '1.19' );
+		
 		global $wgRequest, $wgOut;
 		if ( $wgRequest->getBool( 'redlink' ) ) {
 			// The edit page was reached via a red link.
@@ -1532,7 +1534,7 @@ class EditPage {
 	protected function showCustomIntro() {
 		if ( $this->editintro ) {
 			$title = Title::newFromText( $this->editintro );
-			if ( $title instanceof Title && $title->exists() && $title->userCanRead() ) {
+			if ( $title instanceof Title && $title->exists() && $title->userCan( 'read' ) ) {
 				global $wgOut;
 				// Added using template syntax, to take <noinclude>'s into account.
 				$wgOut->addWikiTextTitleTidy( '{{:' . $title->getFullText() . '}}', $this->mTitle );
@@ -1713,6 +1715,22 @@ HTML
 		wfProfileOut( __METHOD__ );
 	}
 
+	/**
+	 * Extract the section title from current section text, if any.
+	 *
+	 * @param string $text
+	 * @return Mixed|string or false
+	 */
+	public static function extractSectionTitle( $text ) {
+		preg_match( "/^(=+)(.+)\\1(\n|$)/i", $text, $matches );
+		if ( !empty( $matches[2] ) ) {
+			global $wgParser;
+			return $wgParser->stripSectionName(trim($matches[2]));
+		} else {
+			return false;
+		}
+	}
+
 	protected function showHeader() {
 		global $wgOut, $wgUser, $wgMaxArticleSize, $wgLang;
 		if ( $this->isConflict ) {
@@ -1730,12 +1748,9 @@ HTML
 			if ( $this->section != '' && $this->section != 'new' ) {
 				$matches = array();
 				if ( !$this->summary && !$this->preview && !$this->diff ) {
-					preg_match( "/^(=+)(.+)\\1/mi", $this->textbox1, $matches );
-					if ( !empty( $matches[2] ) ) {
-						global $wgParser;
-						$this->summary = "/* " .
-							$wgParser->stripSectionName(trim($matches[2])) .
-							" */ ";
+					$sectionTitle = self::extractSectionTitle( $this->textbox1 );
+					if ( $sectionTitle !== false ) {
+						$this->summary = "/* $sectionTitle */ ";
 					}
 				}
 			}
@@ -2739,6 +2754,7 @@ HTML
 	 * @deprecated in 1.19; throw an exception directly instead
 	 */
 	function blockedPage() {
+		wfDeprecated( __METHOD__, '1.19' );
 		global $wgUser;
 
 		throw new UserBlockedError( $wgUser->mBlock );
@@ -2750,6 +2766,7 @@ HTML
 	 * @deprecated in 1.19; throw an exception directly instead
 	 */
 	function userNotLoggedInPage() {
+		wfDeprecated( __METHOD__, '1.19' );
 		throw new PermissionsError( 'edit' );
 	}
 
@@ -2760,6 +2777,7 @@ HTML
 	 * @deprecated in 1.19; throw an exception directly instead
 	 */
 	function noCreatePermission() {
+		wfDeprecated( __METHOD__, '1.19' );
 		$permission = $this->mTitle->isTalkPage() ? 'createtalk' : 'createpage';
 		throw new PermissionsError( $permission );
 	}
@@ -2787,6 +2805,8 @@ HTML
 	 * @deprecated since 1.17 Use method spamPageWithContent() instead
 	 */
 	static function spamPage( $match = false ) {
+		wfDeprecated( __METHOD__, '1.17' );
+		
 		global $wgOut, $wgTitle;
 
 		$wgOut->prepareErrorPage( wfMessage( 'spamprotectiontitle' ) );

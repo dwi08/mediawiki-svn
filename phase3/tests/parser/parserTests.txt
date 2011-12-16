@@ -1070,8 +1070,10 @@ http://www.example.com/?title=AT%26T
 </p>
 !! end
 
+# According to http://dev.w3.org/html5/spec/Overview.html#parsing-urls a plain
+# % is actually legal in HTML5. Any change in output would need testing though.
 !! test
-Bug 4781, 5267: %26 in URL
+Bug 4781, 5267: %25 in URL
 !! input
 http://www.example.com/?title=100%25_Bran
 !! result
@@ -1208,7 +1210,7 @@ disabled
 !! input
 http://[2404:130:0:1000::187:2]/index.php
 !! result
-<p><a rel="nofollow" class="external free" href="http://[2404:130:0:1000::187:2]/index.php">http://2404:130:0:1000::187:2/index.php</a>
+<p><a rel="nofollow" class="external free" href="http://[2404:130:0:1000::187:2]/index.php">http://[2404:130:0:1000::187:2]/index.php</a>
 </p>
 !! end
 
@@ -8957,6 +8959,23 @@ __TOC__
 
 !! end
 
+!! test
+Bug 26375: TOC with bold 
+!! options
+title=[[Main Page]]
+!! input
+__TOC__
+== '''should be bold''' then normal text ==
+!! result
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#should_be_bold_then_normal_text"><span class="tocnumber">1</span> <span class="toctext"><b>should be bold</b> then normal text</span></a></li>
+</ul>
+</td></tr></table>
+<h2><span class="editsection">[<a href="/index.php?title=Main_Page&amp;action=edit&amp;section=1" title="Edit section: should be bold then normal text">edit</a>]</span> <span class="mw-headline" id="should_be_bold_then_normal_text"> <b>should be bold</b> then normal text </span></h2>
+
+!! end
+
 !! article
 MediaWiki:Bug32057
 !! text
@@ -8972,28 +8991,6 @@ title=[[Main Page]]
 !! result
 <h2><span class="editsection">[<a href="/index.php?title=Main_Page&amp;action=edit&amp;section=1" title="Edit section: Headline text">edit</a>]</span> <span class="mw-headline" id="Headline_text"> Headline text </span></h2>
 
-!! end
-
-!! test
-Bug 32450: MediaWiki: js pages should ignore Category syntax
-!! options
-title=[[MediaWiki:bug32450.js]]
-!! input
-var foo = "[[Category:bug32450]]"
-!! result
-<p>var foo = "[[Category:bug32450]]"
-</p>
-!! end
-
-!! test
-Bug 32450: MediaWiki: css pages should ignore Category syntax
-!! options
-title=[[MediaWiki:bug32450.css]]
-!! input
-/** Css comment: "[[Category:bug32450]]" */
-!! result
-<p>/** Css comment: "[[Category:bug32450]]" */
-</p>
 !! end
 
 TODO:

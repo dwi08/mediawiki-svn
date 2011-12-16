@@ -3737,9 +3737,8 @@ Imagens serão apresentadas pelo browser na resolução máxima; ficheiros de ou
 # Special:SpecialPages
 'specialpages'                   => 'Páginas especiais',
 'specialpages-note'              => '----
-*Páginas normais especiais
-* <span class="mw-specialpagerestricted">Restricted special pages.</span>
-* <span class="mw-specialpagecached">Cached special pages (might be obsolete).</span>',
+* Páginas especiais normais.
+* <span class="mw-specialpagerestricted">Páginas especiais restritas.</span>',
 'specialpages-group-maintenance' => 'Relatórios de manutenção',
 'specialpages-group-other'       => 'Outras páginas especiais',
 'specialpages-group-login'       => 'Entrar / registar-se',
@@ -3848,5 +3847,15 @@ Imagens serão apresentadas pelo browser na resolução máxima; ficheiros de ou
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|criou}} {{GENDER:$4|uma conta de utilizador}} $3',
 'logentry-newusers-autocreate'        => 'A conta $1 foi {{GENDER:$2|criada}} automaticalmente',
 'newuserlog-byemail'                  => 'palavra-chave enviada por correio-electrónico',
+
+# Feedback
+'feedback-subject' => 'Assunto:',
+'feedback-message' => 'Mensagem:',
+'feedback-cancel'  => 'Cancelar',
+'feedback-submit'  => 'Enviar Comentários',
+'feedback-adding'  => 'A acrescentar os comentários à página...',
+'feedback-error1'  => 'Erro: O resultado da API não foi reconhecido',
+'feedback-error2'  => 'Erro: A edição falhou',
+'feedback-error3'  => 'Erro: A API não responde',
 
 );

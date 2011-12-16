@@ -1176,7 +1176,7 @@ class Parser {
 			));
 			$titleObj = SpecialPage::getTitleFor( 'Booksources', $num );
 			return'<a href="' .
-				$titleObj->escapeLocalUrl() .
+				htmlspecialchars( $titleObj->getLocalUrl() ) .
 				"\" class=\"internal mw-magiclink-isbn\">ISBN $isbn</a>";
 		} else {
 			return $m[0];
@@ -1913,14 +1913,6 @@ class Parser {
 
 				if ( $ns == NS_CATEGORY ) {
 					wfProfileIn( __METHOD__."-category" );
-					if( $this->getTitle()->isCssOrJsPage() ) {
-						# bug 32450 : js and script pages in MediaWiki: namespace do not want
-						# to get their code or comments altered. Think about js string:
-						# var foobar = "[[Category:" + $catname + "]];
-						$s .= "[[$text]]$trail";
-						wfProfileOut( __METHOD__."-category" );
-						continue;
-					}
 					$s = rtrim( $s . "\n" ); # bug 87
 
 					if ( $wasblank ) {
@@ -4053,7 +4045,7 @@ class Parser {
 
 			# Strip out HTML (other than plain <sup> and <sub>: bug 8393, or <i>: bug 26375)
 			$tocline = preg_replace(
-				array( '#<(?!/?(sup|sub|i)).*?'.'>#', '#<(/?(sup|sub|i)).*?'.'>#' ),
+				array( '#<(?!/?(sup|sub|i|b)).*?'.'>#', '#<(/?(sup|sub|i|b)).*?'.'>#' ),
 				array( '',                          '<$1>' ),
 				$safeHeadline
 			);
@@ -4419,7 +4411,7 @@ class Parser {
 		}
 
 		# Make sure nickname doesnt get a sig in a sig
-		$nickname = $this->cleanSigInSig( $nickname );
+		$nickname = self::cleanSigInSig( $nickname );
 
 		# If we're still here, make it a link to the user page
 		$userText = wfEscapeWikiText( $username );
@@ -4449,7 +4441,7 @@ class Parser {
 	 * @param $parsing bool Whether we're cleaning (preferences save) or parsing
 	 * @return String: signature text
 	 */
-	function cleanSig( $text, $parsing = false ) {
+	public function cleanSig( $text, $parsing = false ) {
 		if ( !$parsing ) {
 			global $wgTitle;
 			$this->startParse( $wgTitle, new ParserOptions, self::OT_PREPROCESS, true );
@@ -4467,7 +4459,7 @@ class Parser {
 		$substText = '{{' . $substWord->getSynonym( 0 );
 
 		$text = preg_replace( $substRegex, $substText, $text );
-		$text = $this->cleanSigInSig( $text );
+		$text = self::cleanSigInSig( $text );
 		$dom = $this->preprocessToDom( $text );
 		$frame = $this->getPreprocessor()->newFrame();
 		$text = $frame->expand( $dom );
@@ -4485,7 +4477,7 @@ class Parser {
 	 * @param $text String
 	 * @return String: signature text with /~{3,5}/ removed
 	 */
-	function cleanSigInSig( $text ) {
+	public static function cleanSigInSig( $text ) {
 		$text = preg_replace( '/~{3,5}/', '', $text );
 		return $text;
 	}
@@ -5130,6 +5122,10 @@ class Parser {
 	 */
 	function disableCache() {
 		wfDebug( "Parser output marked as uncacheable.\n" );
+		if ( !$this->mOutput ) {
+			throw new MWException( __METHOD__ .
+				" can only be called when actually parsing something" );
+		}
 		$this->mOutput->setCacheTime( -1 ); // old style, for compatibility
 		$this->mOutput->updateCacheExpiry( 0 ); // new style, for consistency
 	}

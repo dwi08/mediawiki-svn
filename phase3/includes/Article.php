@@ -270,6 +270,7 @@ class Article extends Page {
 	 * @deprecated in 1.19; use fetchContent()
 	 */
 	function loadContent() {
+		wfDeprecated( __METHOD__, '1.19' );
 		$this->fetchContent();
 	}
 
@@ -338,7 +339,7 @@ class Article extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function forUpdate() {
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.18' );
 	}
 
 	/**
@@ -445,7 +446,7 @@ class Article extends Page {
 				wfDebug( __METHOD__ . ": done file cache\n" );
 				# tell wgOut that output is taken care of
 				$wgOut->disable();
-				$this->mPage->viewUpdates();
+				$this->mPage->doViewUpdates( $this->getContext()->getUser() );
 				wfProfileOut( __METHOD__ );
 
 				return;
@@ -497,11 +498,10 @@ class Article extends Page {
 							# Ensure that UI elements requiring revision ID have
 							# the correct version information.
 							$wgOut->setRevisionId( $this->mPage->getLatest() );
-							$outputDone = true;
 							# Preload timestamp to avoid a DB hit
-							if ( isset( $this->mParserOutput->mTimestamp ) ) {
-								$this->mPage->setTimestamp( $this->mParserOutput->mTimestamp );
-							}
+							$wgOut->setRevisionTimestamp( $this->mParserOutput->getTimestamp() );
+							$this->mPage->setTimestamp( $this->mParserOutput->getTimestamp() );
+							$outputDone = true;
 						}
 					}
 					break;
@@ -523,6 +523,8 @@ class Article extends Page {
 					# Ensure that UI elements requiring revision ID have
 					# the correct version information.
 					$wgOut->setRevisionId( $this->getRevIdFetched() );
+					# Preload timestamp to avoid a DB hit
+					$wgOut->setRevisionTimestamp( $this->getTimestamp() );
 
 					# Pages containing custom CSS or JavaScript get special treatment
 					if ( $this->getTitle()->isCssOrJsPage() || $this->getTitle()->isCssJsSubpage() ) {
@@ -613,7 +615,7 @@ class Article extends Page {
 		$wgOut->setFollowPolicy( $policy['follow'] );
 
 		$this->showViewFooter();
-		$this->mPage->viewUpdates();
+		$this->mPage->doViewUpdates( $this->getContext()->getUser() );
 
 		wfProfileOut( __METHOD__ );
 	}
@@ -652,7 +654,7 @@ class Article extends Page {
 
 		if ( $diff == 0 || $diff == $this->mPage->getLatest() ) {
 			# Run view updates for current revision only
-			$this->mPage->viewUpdates();
+			$this->mPage->doViewUpdates( $this->getContext()->getUser() );
 		}
 	}
 
@@ -917,7 +919,7 @@ class Article extends Page {
 	 * namespace, show the default message text. To be called from Article::view().
 	 */
 	public function showMissingArticle() {
-		global $wgOut, $wgRequest, $wgUser;
+		global $wgOut, $wgRequest, $wgUser, $wgSend404Code;
 
 		# Show info in user (talk) namespace. Does the user exist? Is he blocked?
 		if ( $this->getTitle()->getNamespace() == NS_USER || $this->getTitle()->getNamespace() == NS_USER_TALK ) {
@@ -979,7 +981,7 @@ class Article extends Page {
 		}
 		$text = "<div class='noarticletext'>\n$text\n</div>";
 
-		if ( !$this->mPage->hasViewableContent() ) {
+		if ( !$this->mPage->hasViewableContent() && $wgSend404Code ) {
 			// If there's no backing content, send a 404 Not Found
 			// for better machine handling of broken links.
 			$wgRequest->response()->header( "HTTP/1.1 404 Not Found" );
@@ -1619,6 +1621,7 @@ class Article extends Page {
 	 * @deprecated since 1.19
 	 */
 	public function info() {
+		wfDeprecated( __METHOD__, '1.19' );
 		Action::factory( 'info', $this )->show();
 	}
 
@@ -1627,6 +1630,7 @@ class Article extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function markpatrolled() {
+		wfDeprecated( __METHOD__, '1.18' );
 		Action::factory( 'markpatrolled', $this )->show();
 	}
 
@@ -1643,6 +1647,7 @@ class Article extends Page {
 	 * @deprecated since 1.19
 	 */
 	public function revert() {
+		wfDeprecated( __METHOD__, '1.19' );
 		Action::factory( 'revert', $this )->show();
 	}
 
@@ -1651,6 +1656,7 @@ class Article extends Page {
 	 * @deprecated since 1.19
 	 */
 	public function rollback() {
+		wfDeprecated( __METHOD__, '1.19' );
 		Action::factory( 'rollback', $this )->show();
 	}
 
@@ -1660,6 +1666,7 @@ class Article extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function watch() {
+		wfDeprecated( __METHOD__, '1.18' );
 		Action::factory( 'watch', $this )->show();
 	}
 
@@ -1673,6 +1680,7 @@ class Article extends Page {
 	 */
 	public function doWatch() {
 		global $wgUser;
+		wfDeprecated( __METHOD__, '1.18' );
 		return WatchAction::doWatch( $this->getTitle(), $wgUser );
 	}
 
@@ -1682,6 +1690,7 @@ class Article extends Page {
 	 * @deprecated since 1.18
 	 */
 	public function unwatch() {
+		wfDeprecated( __METHOD__, '1.18' );
 		Action::factory( 'unwatch', $this )->show();
 	}
 
@@ -1692,6 +1701,7 @@ class Article extends Page {
 	 */
 	public function doUnwatch() {
 		global $wgUser;
+		wfDeprecated( __METHOD__, '1.18' );
 		return WatchAction::doUnwatch( $this->getTitle(), $wgUser );
 	}
 
@@ -1705,7 +1715,7 @@ class Article extends Page {
 	 * @param $extraQuery String: extra query params
 	 */
 	public function doRedirect( $noRedir = false, $sectionAnchor = '', $extraQuery = '' ) {
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.18' );
 		global $wgOut;
 
 		if ( $noRedir ) {

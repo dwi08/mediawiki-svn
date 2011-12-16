@@ -187,6 +187,7 @@ abstract class ApiBase extends ContextSource {
 	 * @return DerivativeContext
 	 */
 	public function createContext() {
+		wfDeprecated( __METHOD__, '1.19' );
 		return new DerivativeContext( $this->getContext() );
 	}
 
@@ -673,6 +674,7 @@ abstract class ApiBase extends ContextSource {
 	 * @return array
 	 */
 	public static function getValidNamespaces() {
+		wfDeprecated( __METHOD__, '1.17' );
 		return MWNamespace::getValidNamespaces();
 	}
 
@@ -1496,6 +1498,13 @@ abstract class ApiBase extends ContextSource {
 			ApiBase::dieDebug( __METHOD__, 'called without calling profileDBOut() first' );
 		}
 		return $this->mDBTime;
+	}
+
+	/**
+	 * @return DatabaseBase
+	 */
+	protected function getDB() {
+		return wfGetDB( DB_SLAVE, 'api' );
 	}
 
 	/**

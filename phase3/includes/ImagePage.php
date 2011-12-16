@@ -103,7 +103,7 @@ class ImagePage extends Article {
 				$wgOut->setPageTitle( $this->getTitle()->getPrefixedText() );
 				$wgOut->addHTML( $this->viewRedirect( Title::makeTitle( NS_FILE, $this->mPage->getFile()->getName() ),
 					/* $appendSubtitle */ true, /* $forceKnown */ true ) );
-				$this->mPage->viewUpdates();
+				$this->mPage->doViewUpdates( $this->getContext()->getUser() );
 				return;
 			}
 		}
@@ -140,7 +140,7 @@ class ImagePage extends Article {
 			# Just need to set the right headers
 			$wgOut->setArticleFlag( true );
 			$wgOut->setPageTitle( $this->getTitle()->getPrefixedText() );
-			$this->mPage->viewUpdates();
+			$this->mPage->doViewUpdates( $this->getContext()->getUser() );
 		}
 
 		# Show shared description, if needed
@@ -262,7 +262,7 @@ class ImagePage extends Article {
 
 	protected function openShowImage() {
 		global $wgOut, $wgUser, $wgImageLimits, $wgRequest,
-			$wgLang, $wgEnableUploads;
+			$wgLang, $wgEnableUploads, $wgSend404Code;
 
 		$this->loadFile();
 
@@ -481,7 +481,7 @@ EOT
 			// by Article::View().
 			$wgOut->setRobotPolicy( 'noindex,nofollow' );
 			$wgOut->wrapWikiMsg( "<div id='mw-imagepage-nofile' class='plainlinks'>\n$1\n</div>", $nofile );
-			if ( !$this->getID() ) {
+			if ( !$this->getID() && $wgSend404Code ) {
 				// If there is no image, no shared image, and no description page,
 				// output a 404, to be consistent with articles.
 				$wgRequest->response()->header( 'HTTP/1.1 404 Not Found' );

@@ -31,6 +31,7 @@
  * @author Liangent
  * @author Mark85296341
  * @author MarkAHershberger
+ * @author Mys 721tx
  * @author O
  * @author Onecountry
  * @author PhiLiP
@@ -388,7 +389,7 @@ $messages = array(
 'cancel'        => '取消',
 'moredotdotdot' => '更多',
 'mypage'        => '我的页面',
-'mytalk'        => '讨论页',
+'mytalk'        => '我的讨论页',
 'anontalk'      => '该IP的讨论',
 'navigation'    => '导航',
 'and'           => '和',
@@ -788,7 +789,7 @@ $2
 'italic_tip'      => '斜体文字',
 'link_sample'     => '链接文字',
 'link_tip'        => '内部链接',
-'extlink_sample'  => 'http://www.范例.com 链接文字',
+'extlink_sample'  => 'http://www.example.com 链接标题',
 'extlink_tip'     => '外部链接（加前缀 http://）',
 'headline_sample' => '大标题文字',
 'headline_tip'    => '2级标题文字',
@@ -889,8 +890,8 @@ $2
 这种情况通常出现于使用含有很多臭虫、以网络为主的匿名代理服务的时候。",
 'edit_form_incomplete'             => "'''编辑表单的某些部分没有到达服务器 ；请检查您的编辑内容是否完整并再试一次。'''",
 'editing'                          => '编辑“$1”',
-'editingsection'                   => '编辑“$1（段落）”',
-'editingcomment'                   => '编辑“$1（新段落）”',
+'editingsection'                   => '编辑“$1”（段落）',
+'editingcomment'                   => '编辑“$1”（新段落）',
 'editconflict'                     => '编辑冲突：$1',
 'explainconflict'                  => "有人在你开始编辑后更改了页面。
 上面的文字框内显示的是目前本页的内容。
@@ -986,9 +987,9 @@ $3的理由是''$2''",
 'previousrevision'       => '←上一版本',
 'nextrevision'           => '下一版本→',
 'currentrevisionlink'    => '最后版本',
-'cur'                    => '现行',
-'next'                   => '下一',
-'last'                   => '上一',
+'cur'                    => '当前',
+'next'                   => '后继',
+'last'                   => '先前',
 'page_first'             => '最早',
 'page_last'              => '最后',
 'histlegend'             => "差异选择：选出需要对比的版本，按“回车键”或下方的按钮进行对比。<br />
@@ -1039,7 +1040,7 @@ $3的理由是''$2''",
 'revdelete-show-file-confirm' => '你是否真的要查看文件“<nowiki>$1</nowiki>”在$2 $3时的已删除修订？',
 'revdelete-show-file-submit'  => '是',
 'revdelete-selected'          => "'''选取'''[[:$1]]'''的$2次修订：'''",
-'logdelete-selected'          => "'''选取'''$1'''的日志项目：'''",
+'logdelete-selected'          => "'''{{PLURAL:$1|选取的日志项目}}：'''",
 'revdelete-text'              => "'''删除的修订仍将显示在页面历史中, 但它们的文本内容已不能被公众访问。'''
 在{{SITENAME}}的其他管理员将仍能访问隐藏的内容并通过与此相同的界面恢复删除，除非站点工作者进行了一些附加的限制。",
 'revdelete-confirm'           => '请确认您肯定去做的话，您就要明白到后果，以及这个程序符合[[{{MediaWiki:Policy-url}}|政策]]。',
@@ -1067,7 +1068,7 @@ $1",
 'logdelete-failure'           => "'''事件的可见性无法设置：'''
 $1",
 'revdel-restore'              => '更改可见性',
-'revdel-restore-deleted'      => '删除的版本',
+'revdel-restore-deleted'      => '已删除的版本',
 'revdel-restore-visible'      => '可见的版本',
 'pagehist'                    => '页面历史',
 'deletedhist'                 => '已删除之历史',
@@ -1208,7 +1209,7 @@ $1",
 'mypreferences'                 => '设置',
 'prefs-edits'                   => '编辑数量：',
 'prefsnologin'                  => '尚未登录',
-'prefsnologintext'              => '你必须<span class="plainlinks">[{{fullurl:{{#Special:UserLogin}}|returnto=$1}} 登录]</span>才能设置用户系统设置。',
+'prefsnologintext'              => '您必须先<span class="plainlinks">[{{fullurl:{{#Special:UserLogin}}|returnto=$1}} 登录]</span>才能设置个人参数。',
 'changepassword'                => '更改密码',
 'prefs-skin'                    => '皮肤',
 'skin-preview'                  => '预览',
@@ -1757,24 +1758,25 @@ $1',
 'filerevert-badversion'     => '文件并无所请求时间戳下的早期本地版本。',
 
 # File deletion
-'filedelete'                  => '删除$1',
-'filedelete-legend'           => '删除文件',
-'filedelete-intro'            => "您现正删除文件'''[[Media:$1|$1]]'''。",
-'filedelete-intro-old'        => "你现正删除'''[[Media:$1|$1]]'''于[$4 $2 $3]的版本。",
-'filedelete-comment'          => '理由：',
-'filedelete-submit'           => '删除',
-'filedelete-success'          => "'''$1'''已经删除。",
-'filedelete-success-old'      => "'''[[Media:$1|$1]]'''于 $2 $3 的版本已经删除。",
-'filedelete-nofile'           => "'''$1'''不存在。",
-'filedelete-nofile-old'       => "在已指定属性的情况下，这里没有'''$1'''的保存版本。",
-'filedelete-otherreason'      => '其它／附加的理由：',
-'filedelete-reason-otherlist' => '其他原因',
-'filedelete-reason-dropdown'  => '
+'filedelete'                   => '删除$1',
+'filedelete-legend'            => '删除文件',
+'filedelete-intro'             => "您现正删除文件'''[[Media:$1|$1]]'''。",
+'filedelete-intro-old'         => "你现正删除'''[[Media:$1|$1]]'''于[$4 $2 $3]的版本。",
+'filedelete-comment'           => '理由：',
+'filedelete-submit'            => '删除',
+'filedelete-success'           => "'''$1'''已经删除。",
+'filedelete-success-old'       => "'''[[Media:$1|$1]]'''于 $2 $3 的版本已经删除。",
+'filedelete-nofile'            => "'''$1'''不存在。",
+'filedelete-nofile-old'        => "在已指定属性的情况下，这里没有'''$1'''的保存版本。",
+'filedelete-otherreason'       => '其它／附加的理由：',
+'filedelete-reason-otherlist'  => '其他原因',
+'filedelete-reason-dropdown'   => '
 *常用删除理由
 ** 侵犯版权
 ** 重复文件',
-'filedelete-edit-reasonlist'  => '编辑删除埋由',
-'filedelete-maintenance'      => '当在维护时已经暂时停用文件删除和恢复。',
+'filedelete-edit-reasonlist'   => '编辑删除埋由',
+'filedelete-maintenance'       => '当在维护时已经暂时停用文件删除和恢复。',
+'filedelete-maintenance-title' => '无法删除文件',
 
 # MIME search
 'mimesearch'         => 'MIME 搜索',
@@ -2321,8 +2323,8 @@ $1',
 'isredirect'               => '重定向页',
 'istemplate'               => '包含',
 'isimage'                  => '文件链接',
-'whatlinkshere-prev'       => '前$1个',
-'whatlinkshere-next'       => '后$1个',
+'whatlinkshere-prev'       => '上$1个',
+'whatlinkshere-next'       => '下$1个',
 'whatlinkshere-links'      => '←链入页面',
 'whatlinkshere-hideredirs' => '$1重定向',
 'whatlinkshere-hidetrans'  => '$1包含',
@@ -3640,5 +3642,15 @@ MediaWiki是基于使用目的而加以发布，然而不负任何担保责任�
 'logentry-newusers-create2'           => '$1{{GENDER:$2|创建}}{{GENDER:$4|账户}}$3',
 'logentry-newusers-autocreate'        => '帐户$1被自动{{GENDER:$2|创建}}',
 'newuserlog-byemail'                  => '密码已由电子邮件发出',
+
+# Feedback
+'feedback-subject' => '主题：',
+'feedback-message' => '内容：',
+'feedback-cancel'  => '取消',
+'feedback-submit'  => '提交反馈',
+'feedback-adding'  => '正在提交反馈',
+'feedback-error1'  => '错误：从API返回无法识别的结果',
+'feedback-error2'  => '错误：编辑失败',
+'feedback-error3'  => '错误：API没有响应',
 
 );

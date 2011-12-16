@@ -2856,6 +2856,7 @@ $1',
 'exif-gpsareainformation'       => 'נאמען פון GPS געגענט',
 'exif-gpsdatestamp'             => 'דאטום GPS',
 'exif-gpsdifferential'          => 'דיפראנציאלע קאקרעקציע GPS',
+'exif-citydest'                 => 'געוויזענע שטאט',
 'exif-objectname'               => 'קורצער טיטל',
 'exif-source'                   => 'מקור',
 'exif-editstatus'               => 'רעדאקציאנעלער סטאטוס פון בילד',
@@ -2868,6 +2869,17 @@ $1',
 'exif-iimcategory'              => 'קאַטעגאָריע',
 'exif-datetimeexpires'          => 'נישט צו ניצן נאָך',
 'exif-datetimereleased'         => 'באַפֿרייט אום',
+'exif-cameraownername'          => 'אייגנטימער פון קאמערע',
+'exif-datetimemetadata'         => 'דאטע ווען מעטאדאטן זענען געווען לעצט געענדערט',
+'exif-rating'                   => 'שאצונג (פֿון 5)',
+'exif-copyrighted'              => 'קאפירעכט סטאַטוס',
+'exif-copyrightowner'           => 'קאפירעכטן האלטער',
+'exif-usageterms'               => 'ניץ באַדינגונג',
+'exif-licenseurl'               => 'URL פֿאר קאפירעכט ליצענץ',
+'exif-morepermissionsurl'       => 'אלטערנאטיווע ליצענצירן אינפארמאציע',
+'exif-pngfilecomment'           => 'PNG טעקע הערה',
+'exif-giffilecomment'           => 'GIF טעקע הערה',
+'exif-subjectnewscode'          => 'טעמע קאד',
 
 # EXIF attributes
 'exif-compression-1' => 'אומ-צאמגעקוועטשט',
@@ -3160,6 +3172,7 @@ $5
 'fileduplicatesearch-legend'    => 'זוכן א דופליקאַט',
 'fileduplicatesearch-filename'  => 'טעקע:',
 'fileduplicatesearch-submit'    => 'זוכן',
+'fileduplicatesearch-info'      => '$1 × $2 פיקסעל<br />טעקע גרייס: $3<br /> טיפ MIME: $4',
 'fileduplicatesearch-noresults' => 'קיין טעקע מיטן נאמען "$1" נישט געטראפֿן.',
 
 # Special:SpecialPages
@@ -3245,5 +3258,15 @@ $5
 'revdelete-restricted'   => 'פארמערט באגרעניצונגען פאר סיסאפן',
 'revdelete-unrestricted' => 'אוועקגענומען באגרעניצונגען פאר סיסאפן',
 'newuserlog-byemail'     => 'פאַסווארט געשיקט דורך ע-פאסט',
+
+# Feedback
+'feedback-subject' => 'טעמע:',
+'feedback-message' => 'מעלדונג:',
+'feedback-cancel'  => 'אַנולירן',
+'feedback-submit'  => 'ארײַנגעבן פֿידבעק',
+'feedback-adding'  => 'צולייגן פֿידבעק צו בלאַט...',
+'feedback-error1'  => 'טעות: אומבאַקאַנטער רעזולטאַט פון API',
+'feedback-error2'  => 'טעות: רעדאַקטירן דורכפֿאַל',
+'feedback-error3'  => 'טעות: קיין ענטפ\\ער פון API',
 
 );

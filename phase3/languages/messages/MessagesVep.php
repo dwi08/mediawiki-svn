@@ -1,5 +1,5 @@
 <?php
-/** Veps (Vepsan kel')
+/** Veps (Vepsän kel')
  *
  * See MessagesQqq.php for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -564,12 +564,14 @@ Voib olda, tö olet jo toižetanuded peitsanan vai pakinuded uden peitsanan.',
 'resetpass-temp-password'   => 'Pordaigaline peitsana:',
 
 # Special:PasswordReset
+'passwordreset'              => 'Peitsanan alustuz',
 'passwordreset-username'     => 'Kävutajan nimi:',
 'passwordreset-domain'       => 'Domen',
 'passwordreset-capture'      => 'Ozutada-k loptud kirjeine?',
 'passwordreset-email'        => 'E-počtan adres:',
 'passwordreset-emailelement' => 'Kävutajannimi: $1
 Aigaline peitsana: $2',
+'passwordreset-emailsent'    => 'Muštatai kirjeine oigetihe e-počtadme',
 
 # Special:ChangeEmail
 'changeemail-newemail' => "Uz' e-počtan adres",
@@ -601,7 +603,7 @@ Aigaline peitsana: $2',
 'subject'                          => 'Tem/pälkirjutez:',
 'minoredit'                        => "Nece om pen' redakcii",
 'watchthis'                        => "Kacelta necidä lehtpol't",
-'savearticle'                      => "Kirjutada lehtpol'",
+'savearticle'                      => "Kirjutada lehtpol' muštho",
 'preview'                          => 'Ezikacund',
 'showpreview'                      => 'Ozutada ezikacund',
 'showlivepreview'                  => 'Hered ezikacund',
@@ -977,6 +979,7 @@ Otkat sil'mnägubale üks-se, miše {{SITENAME}}-saitan sädäimišt voib olda v
 'datedefault'                   => 'Augotižjärgendused',
 'prefs-beta'                    => 'Beta-voindad',
 'prefs-datetime'                => 'Dat da aig',
+'prefs-labs'                    => 'Eksperimentaližed voindad',
 'prefs-personal'                => "Kävutajan profil'",
 'prefs-rc'                      => 'Tantoižed toižetused',
 'prefs-watchlist'               => 'Kaclendnimikirjutez',
@@ -1213,6 +1216,7 @@ Ku tö kirjutat sen, nece nimi kävutadas, miše ozutada lehtpolen toižetajad.'
 'action-userrights'           => 'redaktiruida kaik kävutajan oiktused',
 'action-userrights-interwiki' => 'redaktiruida kävutajiden oiktused toižiš wikiš',
 'action-siteadmin'            => 'andmusiden bazan blokiruind i blokiruindan heitand',
+'action-sendemail'            => 'oigeta e-kirjeižed',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|toižetuz|toižetust}}',
@@ -1357,7 +1361,9 @@ Ku problem jäb jäl'ghepäi-ki, säkat pagin [[Special:ListUsers/sysop|sistemad
 # HTTP errors
 'http-invalid-url'      => 'Vär URL: $1',
 'http-invalid-scheme'   => 'URLad "$1"-shemanke ei pid\'oitelgoi.',
+'http-request-error'    => 'HTTP-küzelend om satusetoi tundmatoman petusen tagut.',
 'http-read-error'       => "HTTP'd lugemižen petuz.",
+'http-timed-out'        => 'HTTP-he küzelendan aig om lopnus.',
 'http-curl-error'       => "Petuz URL'ad ecmäs: $1",
 'http-host-unreachable' => 'Ei voi säta sidod URL:anke',
 
@@ -1375,12 +1381,12 @@ Olgat hüväd, kodvgat, om-ik adres oiged i voib-ik säta sido saitanke.',
 'upload_source_file' => ' (fail teiden kompjuteras)',
 
 # Special:ListFiles
-'listfiles-summary'     => 'Necil specialižel lehtpolel oma kaik jügetoittud failad.
-Tantoi jügetadud failad augotižjärgendusen mödhe ozutadas nimikirjutesen üläpoles.
-Plok pachan pälkirjutesele toižetab sortiruindan järgenduz.',
+'listfiles-summary'     => 'Necil specialižel lehtpolel oma kaik jügutoittud failad.
+Ku valitas vaiše ühten kävutajan failad, ka ozutadas vaiše necen kävutajan tantoižed jügutoitandad.',
 'listfiles_search_for'  => 'Mediafailoiden nimiden ecind:',
 'imgfile'               => 'fail',
 'listfiles'             => 'Failoiden nimikirjutez',
+'listfiles_thumb'       => 'Pičukuva',
 'listfiles_date'        => 'Dat',
 'listfiles_name'        => 'Nimi',
 'listfiles_user'        => 'Kävutai',
@@ -1409,6 +1415,7 @@ Plok pachan pälkirjutesele toižetab sortiruindan järgenduz.',
 'linkstoimage'              => "{{PLURAL:$1|Nece lehtpol' kosketab|$1 Nened lehtpoled kosketadas}} necidä failad:",
 'nolinkstoimage'            => 'Ei ole necidä failad kosketajid lehtpolid.',
 'morelinkstoimage'          => 'Ozutada [[Special:WhatLinksHere/$1|toižid kosketusid]] necile failale.',
+'linkstoimage-redirect'     => '$1 (failan udesčuraduz) $2',
 'duplicatesoffile'          => '{{PLURAL:$1|Nece fail om|$1 Nened failad oma}} ([[Special:FileDuplicateSearch/$2|ližainformacii]])-failan {{PLURAL:$1|dublikat|$1 dublikatad}}:',
 'sharedupload'              => 'Nece fail om ühthižes $1-varaaitaspäi, sidä voiži kävutada mugažo toižiš projektoiš.',
 'sharedupload-desc-here'    => 'Nece fail om $1-späi i se sab kävutada toižiš projektoiš.
@@ -1429,21 +1436,22 @@ Informacijad sen [$2 andmusiden lehtpolelpäi] om anttud alemba.',
 'filerevert-success'        => "'''[[Media:$1|$1]]''' om endištadud [$4 versijannoks datal $3, $2].",
 
 # File deletion
-'filedelete'                  => 'Čuta $1',
-'filedelete-legend'           => 'Čuta poiš fail',
-'filedelete-intro'            => "Tö takait čuta fail '''[[Media:$1|$1]]''' kaiken sen istorijanke.",
-'filedelete-comment'          => 'Sü:',
-'filedelete-submit'           => 'Čuta poiš',
-'filedelete-success'          => "'''$1'''-fail om čutud poiš.",
-'filedelete-success-old'      => "'''[[Media:$1|$1]]'''-failan versii, kudamb datiruiše datal $3, $2, om čutud.",
-'filedelete-nofile'           => "'''$1'''-failad ei ole wikiš.",
-'filedelete-nofile-old'       => "Ei ole '''$1'''-failan arhivversijad ningomiden atributoidenke.",
-'filedelete-otherreason'      => 'Toine sü/ližasü:',
-'filedelete-reason-otherlist' => 'Toine sü',
-'filedelete-reason-dropdown'  => '*Čudandan päsüd
+'filedelete'                   => 'Čuta $1',
+'filedelete-legend'            => 'Čuta poiš fail',
+'filedelete-intro'             => "Tö takait čuta fail '''[[Media:$1|$1]]''' kaiken sen istorijanke.",
+'filedelete-comment'           => 'Sü:',
+'filedelete-submit'            => 'Čuta poiš',
+'filedelete-success'           => "'''$1'''-fail om čutud poiš.",
+'filedelete-success-old'       => "'''[[Media:$1|$1]]'''-failan versii, kudamb datiruiše datal $3, $2, om čutud.",
+'filedelete-nofile'            => "'''$1'''-failad ei ole wikiš.",
+'filedelete-nofile-old'        => "Ei ole '''$1'''-failan arhivversijad ningomiden atributoidenke.",
+'filedelete-otherreason'       => 'Toine sü/ližasü:',
+'filedelete-reason-otherlist'  => 'Toine sü',
+'filedelete-reason-dropdown'   => '*Čudandan päsüd
 ** avtoranoiktusen murenduz
 ** failan dublikat',
-'filedelete-edit-reasonlist'  => 'Redaktiruida čudandan süd',
+'filedelete-edit-reasonlist'   => 'Redaktiruida čudandan süd',
+'filedelete-maintenance-title' => 'Ei voi heitta failad poiš',
 
 # MIME search
 'mimesearch' => 'MIME-ecind',
@@ -1487,7 +1495,7 @@ Informacijad sen [$2 andmusiden lehtpolelpäi] om anttud alemba.',
 'statistics-users-active'  => 'Activižed kävutajad',
 'statistics-mostpopular'   => 'Kaikiš populärižembad lehtpoled',
 
-'disambiguations'     => 'Lehtpoled, kudambil om kosketusid äiznamoičendaižile terminoile',
+'disambiguations'     => 'Lehtpoled, kudambil om kosketusid lehtpolihe, kus om äiznamoičendusen laskendoid.',
 'disambiguationspage' => 'Template:Äiznamoičenduz',
 
 'doubleredirects'            => 'Kaksitadud läbikosketused',
@@ -1578,7 +1586,7 @@ Olgat hüväd, otkat sil'mnägubale, miše toižed-ki saitad voidas kosketada fa
 
 # Special:Log
 'specialloguserlabel'  => 'Kävutai:',
-'speciallogtitlelabel' => 'Pälkirjutez:',
+'speciallogtitlelabel' => 'Met (nimi vai ühtnii):',
 'log'                  => 'Aigkirjad',
 'all-logs-page'        => 'Kaik avoinuded aigkirjad',
 'logempty'             => 'Ei ole sättujid kirjutesid aigkirjas.',
@@ -1615,7 +1623,7 @@ Kc. mugažo [[Special:WantedCategories|ectud kategorijoiden nimikirjutez]].',
 'sp-deletedcontributions-contribs' => 'tond',
 
 # Special:LinkSearch
-'linksearch'       => 'Irdkosketused',
+'linksearch'       => 'Irdkosketusiden ecmine',
 'linksearch-pat'   => 'Ecindan šablon:',
 'linksearch-ns'    => 'Nimiavaruz:',
 'linksearch-ok'    => 'Löuta',
@@ -1629,9 +1637,11 @@ Kc. mugažo [[Special:WantedCategories|ectud kategorijoiden nimikirjutez]].',
 'listusers-blocked'  => '(blokiruidud)',
 
 # Special:ActiveUsers
-'activeusers'          => 'Aktivižiden kävutajiden nimikirjutez',
-'activeusers-from'     => 'Oyutada kävutajid, augotaden necišpäi:',
-'activeusers-noresult' => 'Kävutajad ei olgoi löutud.',
+'activeusers'            => 'Aktivižiden kävutajiden nimikirjutez',
+'activeusers-from'       => 'Oyutada kävutajid, augotaden necišpäi:',
+'activeusers-hidebots'   => 'Peitta botid',
+'activeusers-hidesysops' => 'Peitta administratorid',
+'activeusers-noresult'   => 'Kävutajad ei olgoi löutud.',
 
 # Special:Log/newusers
 'newuserlogpage'     => 'Kävutajiden registracijan aigkirj',
@@ -1654,11 +1664,13 @@ Kc. mugažo [[Special:WantedCategories|ectud kategorijoiden nimikirjutez]].',
 'emailuser'        => 'Oigeta e-kirjeine necile kävutajale',
 'emailpage'        => 'Kirjeine kävutajale',
 'usermailererror'  => 'Počtan adresat pörduti tedotusen petuses:',
-'defemailsubject'  => 'E-počt {{SITENAME}}-saitalpäi',
+'defemailsubject'  => '$1-kävutajan počt {{SITENAME}}-saitalpäi',
+'usermaildisabled' => 'Kävutajan e-počt ei ole kävutamižes',
 'noemailtitle'     => 'Ei ole e-počtan adresad',
 'noemailtext'      => 'Nece kävutai ei ole andnu ni-üht oiktad e-počtan adresad.',
 'nowikiemailtitle' => 'Ei ole laskendad kirjeižid oigeta',
 'nowikiemailtext'  => 'Nece kävutai ei tahtoi sada kirjeižid toižil kävutajilpäi.',
+'emailusername'    => 'Kävutajan nimi:',
 'email-legend'     => 'Oigeta kirjeine toižele {{SITENAME}}-saitan kävutajale',
 'emailfrom'        => 'Oigendai:',
 'emailto'          => 'Sai:',
@@ -1785,13 +1797,14 @@ Jäl'gmäižed toižetused om tehnu [[User:$3|$3]] ([[User talk:$3|Lodud]]{{int:
 'rollback-success' => '$1-kävutajan toižetused oma endištadud $2-kävutajan versijahasai.',
 
 # Edit tokens
-'sessionfailure' => 'Om problemoid nügüdläižes radseansas; nece tegend om kel\'tud, miše kaita "seansan anastusespäi".
+'sessionfailure-title' => 'Seansan petuz',
+'sessionfailure'       => 'Om problemoid nügüdläižes radseansas; nece tegend om kel\'tud, miše kaita "seansan anastusespäi".
 Olgat hüväd, paingat "tagaze"-kingitimele i jügutoitkat lehtpol\' udes, sid\' naprigat toštta tegend völ kerdan.',
 
 # Protect
 'protectlogpage'              => 'Kaičendan aigkirj',
-'protectlogtext'              => 'Naku om lehtpoliden luklostandoiden da avaidandoiden aigkirj.
-Kc. [[Special:ProtectedPages|kaitud lehtpoliden nimikirjutez]].',
+'protectlogtext'              => "Naku om lehtpoliden kaičendan toižetusiden aigkirj.
+Kc. [[Special:ProtectedPages|kaitud nügüd' lehtpoliden nimikirjutez]].",
 'protectedarticle'            => '"[[$1]]"-lehtpol\' om kaitud',
 'modifiedarticleprotection'   => '"[[$1]]"-lehtpolen kaičendpind om toižetadud',
 'unprotectedarticle'          => 'Kaičend om heittud "[[$1]]"-lehtpolespäi',
@@ -1819,6 +1832,7 @@ Sab toižetada necen lehtpolen kaičendpind, no se ei voi toižetada kaskadkaič
 'protect-level-sysop'         => 'Vaiše administratorad',
 'protect-summary-cascade'     => 'Kaskadine',
 'protect-expiring'            => 'strok lähteb datal $1 (UTC)',
+'protect-expiring-local'      => 'vanhtub $1',
 'protect-expiry-indefinite'   => 'strokuta',
 'protect-cascade'             => "Kaita neche lehtpol'he mülütadud lehtesed (kaskadkaičend)",
 'protect-cantedit'            => 'Teile ei sa toižetada necen lehtpolen kaičendpindad, sikš miše teil ei ole laskendad toižetada sidä.',
@@ -1933,6 +1947,7 @@ Alemba om anttud jälgmäine kirjutuz blokiruindaiglehtesespäi:",
 'whatlinkshere-filters'    => "Fil'trad",
 
 # Block/unblock
+'block'                           => 'Kävutajan blokiruind',
 'blockip'                         => 'Blokiruida kävutajad',
 'blockip-title'                   => 'Blokiruida kävutajad',
 'blockip-legend'                  => 'Blokiruida kävutajad',
@@ -1976,6 +1991,7 @@ Kc. [[Special:IPBlockList|blokiruidud IP-adresoiden nimikirjuteshe]].',
 'ipusubmit'                       => 'Heitta nece blokiruind',
 'unblocked'                       => '[[User:$1|$1]]-kävutajan blokiruind om heittud',
 'unblocked-id'                    => 'Blokiruind $1 om heittud',
+'blocklist'                       => 'Blokiruidud kävutajad',
 'ipblocklist'                     => 'Blokiruidud kävutajad',
 'ipblocklist-legend'              => 'Löuta blokiruidud kävutajad',
 'blocklist-timestamp'             => 'Dat, aig',
@@ -2000,6 +2016,7 @@ Kc. [[Special:IPBlockList|blokiruidud IP-adresoiden nimikirjuteshe]].',
 'unblocklink'                     => 'heitta blokiruind',
 'change-blocklink'                => 'toižetada blokiruind',
 'contribslink'                    => 'tond',
+'emaillink'                       => 'oigeta e-kirjeine',
 'autoblocker'                     => 'Blokiruidud avtomatižešti, sikš miše teiden IP-adres om tantoi kävutanu "[[User:$1|$1]]".
 Adresan blokiruindan sü - "$2".',
 'blocklogpage'                    => 'Blokiruindoiden aigkirj',
@@ -2098,7 +2115,7 @@ Nenil statjoil tegese sirta vai ühtenzoitta lehtpoled ičeksaz.",
 'revertmove'                => 'heitta pätand',
 'delete_and_move'           => 'Čuta poiš da udesnimitada',
 'delete_and_move_confirm'   => "Ka, čuta lehtpol' poiš",
-'delete_and_move_reason'    => 'Čutud poiš udesnimitamižen voimusen täht.',
+'delete_and_move_reason'    => 'Čutud poiš "[[$1]]"n udesnimitamižen voimusen täht.',
 'immobile-source-namespace' => 'Ei voi udesnimitada lehtpolid "$1"-nimiavaruses',
 'immobile-target-namespace' => 'Ei voi udesnimitada lehtpolid "$1"-nimiavarushe',
 'immobile-source-page'      => "Necidä lehtpol't ei sa udesnimitada.",
@@ -2203,7 +2220,7 @@ Olgat hüväd, kävutagat ezikacund.",
 Sab lugeda sen augotižkod da kopiruida se.",
 'tooltip-ca-history'              => 'Necen lehtpolen enččed versijad',
 'tooltip-ca-protect'              => "Kaita necidä lehtpol't",
-'tooltip-ca-unprotect'            => 'Heitta necen lehtpolen kaičend',
+'tooltip-ca-unprotect'            => 'Toižetada necen lehtpolen kaičend',
 'tooltip-ca-delete'               => "Čuta poiš nece lehtpol'",
 'tooltip-ca-undelete'             => 'Endištada kaik toižetused, kudambad oliba tehtud edel lehtpolen čudandad',
 'tooltip-ca-move'                 => "Udesnimitada nece lehtpol'",
@@ -2271,6 +2288,12 @@ Voib olda, necil lehtpolel om kosketuz irdsaitale, kudamb om mustas nimikirjutes
 'spamprotectionmatch' => "Meiden spamanfil'tr tedoti necil statjal mugošt: $1",
 'spambot_username'    => 'MediaWikid puhtastadas spamaspäi',
 
+# Info page
+'pageinfo-header-edits' => 'Redakcijad',
+'pageinfo-header-views' => 'Kacundad',
+'pageinfo-subjectpage'  => 'Lehtpol’',
+'pageinfo-talkpage'     => "Lodulehtpol'",
+
 # Skin names
 'skinname-standard'    => 'Klassine',
 'skinname-nostalgia'   => "Nostal'gii",
@@ -2314,6 +2337,7 @@ Voib olda, necil lehtpolel om kosketuz irdsaitale, kudamb om mustas nimikirjutes
 'show-big-image'       => 'Korgedtarkoiktuseline kuvan versii',
 'file-info-gif-looped' => 'toštase',
 'file-info-gif-frames' => '$1 {{PLURAL:$1|freim|freimad}}',
+'file-info-png-looped' => 'toštase',
 
 # Special:NewFiles
 'newimages'             => 'Uziden failoiden galerei',
@@ -2370,7 +2394,7 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 * gpsaltitude',
 
 # EXIF tags
-'exif-imagewidth'                  => 'Leveduz’',
+'exif-imagewidth'                  => 'Leveduz',
 'exif-imagelength'                 => 'Korktuz’',
 'exif-bitspersample'               => 'Mujun süvuz',
 'exif-compression'                 => 'Ahtištandan metod',
@@ -2403,8 +2427,8 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 'exif-colorspace'                  => 'Mujuavaruz',
 'exif-componentsconfiguration'     => 'Mujukomponentoiden konfiguracii',
 'exif-compressedbitsperpixel'      => "Mujun süvuz ahtištusen jäl'ghe",
-'exif-pixelydimension'             => "Kuvan täuz' korktuz",
-'exif-pixelxdimension'             => "Täuz' kuvan korktuz",
+'exif-pixelydimension'             => 'Kuvan leveduz',
+'exif-pixelxdimension'             => 'Kuvan korktuz',
 'exif-usercomment'                 => 'Kävutajan homaičendad',
 'exif-relatedsoundfile'            => 'Kulundkommentarijan fail',
 'exif-datetimeoriginal'            => 'Todesine dat da aig',
@@ -2419,9 +2443,9 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 'exif-exposureprogram'             => 'Ekspozicijan programm',
 'exif-spectralsensitivity'         => 'Spektraline mujandmär',
 'exif-isospeedratings'             => 'ISO vauktusenmujandmär',
-'exif-shutterspeedvalue'           => 'Avaidamižaig',
-'exif-aperturevalue'               => 'Diafragm',
-'exif-brightnessvalue'             => 'Loštuz',
+'exif-shutterspeedvalue'           => 'APEX-avaidamižaig',
+'exif-aperturevalue'               => 'APEX-diafragm',
+'exif-brightnessvalue'             => 'APEX-loštuz',
 'exif-exposurebiasvalue'           => 'Ekspozicijan kompensacii',
 'exif-maxaperturevalue'            => 'Diafragman minimaline lugu',
 'exif-subjectdistance'             => 'Edahaižuz objekthasai',
@@ -2476,6 +2500,15 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 'exif-gpsareainformation'          => 'GPS-agjan nimi',
 'exif-gpsdatestamp'                => 'GPS-dat',
 'exif-gpsdifferential'             => 'GPS-differencialine kohenduz',
+'exif-keywords'                    => 'Avadimsanad',
+'exif-objectname'                  => 'Lühüd nimi',
+'exif-headline'                    => 'Pälkirjutez',
+'exif-source'                      => 'Purde',
+'exif-writer'                      => 'Kirjutai',
+'exif-languagecode'                => 'Kel’',
+'exif-iimcategory'                 => 'Kategorii',
+'exif-label'                       => 'Arbaine',
+'exif-pngfilecomment'              => 'Kommentarii PNG-failha',
 
 # EXIF attributes
 'exif-compression-1' => 'Ahtištamatoi',
@@ -2496,6 +2529,7 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 'exif-exposureprogram-1' => 'Käzirežim',
 'exif-exposureprogram-2' => 'Normaline programm',
 'exif-exposureprogram-4' => 'Uudimen prioritet',
+'exif-exposureprogram-8' => 'Peizažine režim (peizažfotokuviden täht, tagama om fokusas)',
 
 'exif-subjectdistance-value' => '$1 metrad',
 
@@ -2549,6 +2583,10 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 'exif-sensingmethod-3' => "Kaks'čipaine mujun sensor",
 'exif-sensingmethod-4' => 'Koumečipaine mujun sensor',
 'exif-sensingmethod-7' => 'Trilinearine sensor',
+
+'exif-filesource-3' => 'Digitaline fotoapparat',
+
+'exif-scenetype-1' => 'Oikaha fotografiruidud kuva',
 
 'exif-customrendered-0' => 'Normaline process',
 'exif-customrendered-1' => 'Ičenaine process',
@@ -2606,6 +2644,9 @@ Ku fail redaktiruidihe sändan polhe, erased parametrad voidas erineda nügüdl�
 'exif-gpsspeed-k' => 'km/č',
 'exif-gpsspeed-m' => 'milid časus',
 'exif-gpsspeed-n' => "sol'med",
+
+'exif-gpsdop-excellent' => 'Lujas hüvä ($1)',
+'exif-gpsdop-good'      => 'Hüvä ($1)',
 
 # Pseudotags used for GPSTrackRef, GPSImgDirectionRef and GPSDestBearingRef
 'exif-gpsdirection-t' => 'Todesine oigendamine',
@@ -2676,6 +2717,7 @@ Necen vahvištoitandkodan kävutamižen lopstrok om $4.',
 'table_pager_first'        => 'Ezmäine lehtpol’',
 'table_pager_last'         => "Jäl'gmäine lehtpol'",
 'table_pager_limit'        => 'Ozutada $1 elementad ühtel lehtpolel',
+'table_pager_limit_label'  => 'Kirjutesid lehtpolel:',
 'table_pager_limit_submit' => 'Tehta',
 'table_pager_empty'        => 'Ei voi löuta nimidä',
 
@@ -2849,12 +2891,14 @@ Kävutagat normaline ezikacund.',
 'htmlform-float-invalid'       => 'Teil anttud znamoičend ei ole lugu.',
 'htmlform-int-toolow'          => 'Teil znamoitud znamoičend om madalamb minimališt - $1',
 'htmlform-int-toohigh'         => 'Teil znamoitud znamoičend om korktemb maksikališt - $1',
+'htmlform-required'            => 'Nece znamoičend om tarbhaine täs',
 'htmlform-submit'              => 'Oigeta',
 'htmlform-reset'               => 'Tühjitada toižetused',
 'htmlform-selectorother-other' => 'Toine',
 
 # SQLite database support
-'sqlite-no-fts' => " $1 täuz'tekstaižen ecindan tügedamižeta",
+'sqlite-has-fts' => " $1 täuz'tekstaižen ecindan tügedamiženke",
+'sqlite-no-fts'  => " $1 täuz'tekstaižen ecindan tügedamižeta",
 
 # New logging system
 'revdelete-restricted'   => 'kaidendused administratoriden täht',

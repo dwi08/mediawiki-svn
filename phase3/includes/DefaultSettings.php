@@ -1550,6 +1550,8 @@ $wgParserCacheType = CACHE_ANYTHING;
  * given, giving a callable function which will generate a suitable cache object.
  *
  * The other parameters are dependent on the class used.
+ * - CACHE_DBA uses $wgTmpDirectory by default. The 'dir' parameter let you
+ *   overrides that.
  */
 $wgObjectCaches = array(
 	CACHE_NONE => array( 'class' => 'EmptyBagOStuff' ),
@@ -2473,11 +2475,6 @@ $wgVectorUseSimpleSearch = false;
 $wgVectorUseIconWatch = false;
 
 /**
- * Show the name of the current variant as a label in the variants drop-down menu
- */
-$wgVectorShowVariantName = false;
-
-/**
  * Display user edit counts in various prominent places.
  */
 $wgEdititis = false;
@@ -2490,6 +2487,18 @@ $wgEdititis = false;
  */
 $wgBetterDirectionality = true;
 
+/**
+ * Some web hosts attempt to rewrite all responses with a 404 (not found) 
+ * status code, mangling or hiding MediaWiki's output. If you are using such a
+ * host, you should start looking for a better one. While you're doing that, 
+ * set this to false to convert some of MediaWiki's 404 responses to 200 so
+ * that the generated error pages can be seen.
+ *
+ * In cases where for technical reasons it is more important for MediaWiki to 
+ * send the correct status code than for the body to be transmitted intact,
+ * this configuration variable is ignored.
+ */
+$wgSend404Code = true;
 
 /** @} */ # End of output format settings }
 
@@ -3391,9 +3400,8 @@ $wgEmailConfirmToEdit = false;
 
 /**
  * Permission keys given to users in each group.
- * This is an array where the keys are all groups and each value is either:
- *    a) An array of the format (right => boolean)
- *    b) An array of the format (right => namespace => boolean)
+ * This is an array where the keys are all groups and each value is an
+ * array of the format (right => boolean).
  *
  * The second format is used to support per-namespace permissions.
  * Note that this feature does not fully work for all permission types.
@@ -4079,7 +4087,7 @@ $wgDevelopmentWarnings = false;
  * development warnings will not be generated for deprecations added in releases
  * after the limit.
  */
-$wgDeprecationReleaseLimit = false;
+$wgDeprecationReleaseLimit = '1.17';
 
 /** Only record profiling info for pages that took longer than this */
 $wgProfileLimit = 0.0;
@@ -4175,11 +4183,10 @@ $wgParserTestRemote = false;
 
 
 /**
- * Overwrite the caching key prefix with custom value.  Do not set if using
- * load balancer, since it depends on the key being in certain format.
+ * Overwrite the caching key prefix with custom value.
  * @since 1.19
  */
-$wgWikiID = false;
+$wgCachePrefix = false;
 
 /**
  * Display the new debugging toolbar. This also enables profiling on database

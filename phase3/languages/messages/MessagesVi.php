@@ -760,7 +760,7 @@ Hãy nhập một địa chỉ có định dạng đúng hoặc bỏ trống ô 
 
 Xin hãy bỏ qua thông báo này nếu tài khoản này không phải do bạn tạo ra.',
 'usernamehasherror'          => 'Tên người dùng không thể chứa dấu rào',
-'login-throttled'            => 'Bạn đã thử quá nhiều mật khẩu của tài khoản này
+'login-throttled'            => 'Bạn đã thử quá nhiều mật khẩu của tài khoản này.
 Xin hãy đợi chốc lát rồi thử lại.',
 'login-abort-generic'        => 'Thất bại khi đăng nhập',
 'loginlanguagelabel'         => 'Ngôn ngữ: $1',
@@ -3887,5 +3887,15 @@ Các hình ảnh được hiển thị ở kích thước tối đa, còn các l
 'logentry-newusers-create2'           => '$1 đã {{GENDER:$2|mở}} tài khoản {{GENDER:$4}}người dùng $3',
 'logentry-newusers-autocreate'        => 'Tài khoản $1 đã được {{GENDER:$2|mở}} tự động',
 'newuserlog-byemail'                  => 'gửi mật khẩu qua thư điện tử',
+
+# Feedback
+'feedback-subject' => 'Tiêu đề:',
+'feedback-message' => 'Thông điệp:',
+'feedback-cancel'  => 'Hủy bỏ',
+'feedback-submit'  => 'Gửi phản hồi',
+'feedback-adding'  => 'Đang thêm thông tin phản hồi vào trang…',
+'feedback-error1'  => 'Hủy bỏ',
+'feedback-error2'  => 'Lỗi: Sửa đổi thất bại',
+'feedback-error3'  => 'Lỗi: API không có phản ứng',
 
 );

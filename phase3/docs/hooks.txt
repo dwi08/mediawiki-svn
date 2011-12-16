@@ -599,6 +599,13 @@ $mediaWiki: Mediawiki object
 &$out: OutputPage object
 &$skin: Skin object
 
+'BeforePageRedirect': Prior to sending an HTTP redirect. Gives a chance to
+override how the redirect is output by modifying, or by returning false and
+taking over the output.
+$out: OutputPage object
+&$redirect: URL, modifiable
+&$code: HTTP code (eg '301' or '302'), modifiable
+
 'BeforeParserFetchFileAndTitle': before an image is rendered by Parser
 $parser: Parser object
 $nt: the image title
@@ -867,6 +874,10 @@ $ip: The ip address of the user
 'ExtensionTypes': called when generating the extensions credits, use this to change the tables headers
 &$extTypes: associative array of extensions types
 
+'ExtractThumbParameters': called when extracting thumbnail parameters from a thumbnail file name
+$thumbname: the base name of the thumbnail file
+&$params: the currently extracted params (has source name, temp or archived zone)
+
 'FetchChangesList': When fetching the ChangesList derivative for
 a particular user
 $user: User the list is being fetched for
@@ -910,7 +921,6 @@ $out: OutputPage object
 $title: Title object of page
 $url: string value as output (out parameter, can modify)
 $query: query options passed to Title::getCanonicalURL()
-$variant: variant passed to Title::getCanonicalURL()
 
 'GetDefaultSortkey': Override the default sortkey for a page.
 $title: Title object that we need to get a sortkey for
@@ -920,13 +930,11 @@ $title: Title object that we need to get a sortkey for
 $title: Title object of page
 $url: string value as output (out parameter, can modify)
 $query: query options passed to Title::getFullURL()
-$variant: variant passed to Title::getFullURL()
 
 'GetInternalURL': modify fully-qualified URLs used for squid cache purging
 $title: Title object of page
 $url: string value as output (out parameter, can modify)
 $query: query options passed to Title::getInternalURL()
-$variant: variant passed to Title::getFullURL()
 
 'GetIP': modify the ip of the current user (called only once)
 &$ip: string holding the ip as determined so far
@@ -945,13 +953,11 @@ $linkcolour_ids: array of prefixed DB keys of the pages linked to,
 $title: Title object of page
 &$url: string value as output (out parameter, can modify)
 $query: query options passed to Title::getLocalURL()
-$variant: variant passed to Title::getLocalURL()
 
 'GetLocalURL::Internal': modify local URLs to internal pages.
 $title: Title object of page
 &$url: string value as output (out parameter, can modify)
 $query: query options passed to Title::getLocalURL()
-$variant: variant passed to Title::getLocalURL()
 
 'GetLocalURL::Article': modify local URLs specifically pointing to article paths
 	without any fancy queries or variants.
@@ -1104,6 +1110,10 @@ $password: The password entered by the user
 &$result: Set this and return false to override the internal checks
 $user: User the password is being validated for
 
+'Language::getMessagesFileName':
+$code: The language code or the language we're looking for a messages file for
+&$file: The messages file path, you can override this to change the location.
+
 'LanguageGetNamespaces': Provide custom ordering for namespaces or
 remove namespaces. Do not use this hook to add namespaces. Use
 CanonicalNamespaces for that.
@@ -1215,6 +1225,17 @@ $param: Associative Array with the following additional options:
  - offset Set to overwrite offset parameter in $wgRequest set to '' to unset offset
  - wrap String Wrap the message in html (usually something like "&lt;div ...>$1&lt;/div>").
  - flags Integer display flags (NO_ACTION_LINK,NO_EXTRA_USER_LINKS)
+
+'LoggableUserIPData': called when IP data for a user action can be logged by extensions like CheckUser.
+This is intended for when users do things that do not already create edits or log entries.
+$context: The context the of the action, which includes the user and request
+$data: Associative array of data for handlers to record. It must include values for:
+ - 'namespace' Integer namespace for target title (NS_SPECIAL is allowed)
+ - 'title'     Database key string for target title (empty string if not applicable)
+ - 'pageid'    Integer page ID for target title (zero if not applicable)
+ - 'action'    Wikitext string in the same format as an edit summary
+ - 'comment'   Wikitext string in the same format as an edit summary
+ - 'timestamp' Timestamp when the action occured
 
 'LoginAuthenticateAudit': a login attempt either succeeded or
 failed. This may be called before the User object is populated, so a
@@ -2076,7 +2097,6 @@ $user: User object
 'UserGetRights': Called in User::getRights()
 $user: User to get rights for
 &$rights: Current rights
-$namespace: Namespace to get permissions for; if null all namespaces
 
 'UserIsBlockedFrom': Check if a user is blocked from a specific page (for specific block
 	exemptions).

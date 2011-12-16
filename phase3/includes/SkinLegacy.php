@@ -247,7 +247,7 @@ class LegacyTemplate extends BaseTemplate {
 				}
 				$s = $wgLang->pipeList( array(
 					$s,
-					'<a href="' . $title->escapeLocalURL( 'variant=' . $code ) . '">' . htmlspecialchars( $varname ) . '</a>'
+					'<a href="' . htmlspecialchars( $title->getLocalURL( 'variant=' . $code ) ) . '">' . htmlspecialchars( $varname ) . '</a>'
 				) );
 			}
 		}
@@ -345,7 +345,7 @@ class LegacyTemplate extends BaseTemplate {
 	}
 
 	function otherLanguages() {
-		global $wgOut, $wgContLang, $wgHideInterlanguageLinks;
+		global $wgOut, $wgLang, $wgContLang, $wgHideInterlanguageLinks;
 
 		if ( $wgHideInterlanguageLinks ) {
 			return '';
@@ -360,8 +360,8 @@ class LegacyTemplate extends BaseTemplate {
 		$s = wfMsg( 'otherlanguages' ) . wfMsg( 'colon-separator' );
 		$first = true;
 
-		if ( $wgContLang->isRTL() ) {
-			$s .= '<span dir="LTR">';
+		if ( $wgLang->isRTL() ) {
+			$s .= '<span dir="ltr">';
 		}
 
 		foreach ( $a as $l ) {
@@ -379,7 +379,7 @@ class LegacyTemplate extends BaseTemplate {
 				$text == '' ? $l : $text );
 		}
 
-		if ( $wgContLang->isRTL() ) {
+		if ( $wgLang->isRTL() ) {
 			$s .= '</span>';
 		}
 
@@ -486,7 +486,7 @@ class LegacyTemplate extends BaseTemplate {
 	 */
 	function pageTitle() {
 		global $wgOut;
-		$s = '<h1 class="pagetitle">' . $wgOut->getPageTitle() . '</h1>';
+		$s = '<h1 class="pagetitle"><span dir="auto">' . $wgOut->getPageTitle() . '</span></h1>';
 		return $s;
 	}
 
@@ -532,6 +532,7 @@ class LegacyTemplate extends BaseTemplate {
 	 * @deprecated in 1.19
 	 */
 	function getQuickbarCompensator( $rows = 1 ) {
+		wfDeprecated( __METHOD__, '1.19' );
 		return "<td width='152' rowspan='{$rows}'>&#160;</td>";
 	}
 

@@ -1229,7 +1229,6 @@ Həmçinin kimliyinizi gostərmədən belə, başqalarının sizinlə istifadə�
 'minoreditletter'                   => 'k',
 'newpageletter'                     => 'Y',
 'boteditletter'                     => 'b',
-'sectionlink'                       => '→',
 'number_of_watching_users_pageview' => '[$1 izləyən istifadəçi]',
 'rc_categories'                     => 'Kateqoriyalara limit qoy ("|" ilə ayır)',
 'rc_categories_any'                 => 'Hər',
@@ -2930,5 +2929,10 @@ Bu saytda texniki problemlər var.',
 'revdelete-unrestricted'       => 'idarəçilər üçün götürülmüş məhdudiyyətlər',
 'logentry-newusers-autocreate' => 'Hesab $1 {{GENDER:$2yaradıldı}} avtomatik',
 'newuserlog-byemail'           => 'parol e-maillə göndərildi',
+
+# Feedback
+'feedback-subject' => 'Mövzu:',
+'feedback-message' => 'Mesaj:',
+'feedback-cancel'  => 'İmtina',
 
 );

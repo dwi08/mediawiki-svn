@@ -2056,7 +2056,6 @@ Your e-mail address is not revealed when other users contact you.',
 'newpageletter'                     => 'N',
 'boteditletter'                     => 'b',
 'unpatrolledletter'                 => '!', # only translate this message to other languages if you have to change it
-'sectionlink'                       => '→', # only translate this message to other languages if you have to change it
 'number_of_watching_users_RCview'   => '[$1]', # do not translate or duplicate this message to other languages
 'number_of_watching_users_pageview' => '[$1 watching {{PLURAL:$1|user|users}}]',
 'rc_categories'                     => 'Limit to categories (separate with "|")',
@@ -4660,5 +4659,21 @@ This site is experiencing technical difficulties.',
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|created}} {{GENDER:$4|a user account}} $3',
 'logentry-newusers-autocreate'        => 'Account $1 was {{GENDER:$2|created}} automatically',
 'newuserlog-byemail'                  => 'password sent by e-mail',
+
+# Feedback
+'feedback-bugornote' => 'If you are ready to describe a technical problem in detail please [$1 report a bug]. 
+Otherwise, you can use the easy form below. Your comment will be added to the page "[$3 $2]", along with your username and what browser you are using.',
+'feedback-subject'   => 'Subject:',
+'feedback-message'   => 'Message:',
+'feedback-cancel'    => 'Cancel',
+'feedback-submit'    => 'Submit Feedback',
+'feedback-adding'    => 'Adding feedback to page...',
+'feedback-error1'    => 'Error: Unrecognized result from API',
+'feedback-error2'    => 'Error: Edit failed',
+'feedback-error3'    => 'Error: No response from API',
+'feedback-thanks'    => 'Thanks! Your feedback has been posted to the page "[$2 $1]".',
+'feedback-close'     => 'Done',
+'feedback-bugcheck'  => 'Great! Just check that it is not already one of the [$1 known bugs].',
+'feedback-bugnew'    => 'I checked. Report a new bug',
 
 );

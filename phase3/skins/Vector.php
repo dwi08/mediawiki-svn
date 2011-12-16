@@ -98,7 +98,7 @@ class VectorTemplate extends BaseTemplate {
 				}
 				if ( isset( $link['tooltiponly'] ) && $link['tooltiponly'] ) {
 					$nav[$section][$key]['key'] =
-						Linker::tooltip( $xmlID );
+						Linker::titleAttrib( $xmlID );
 				} else {
 					$nav[$section][$key]['key'] =
 						Xml::expandAttributes( Linker::tooltipAndAccesskeyAttribs( $xmlID ) );
@@ -134,7 +134,9 @@ class VectorTemplate extends BaseTemplate {
 			<!-- /sitenotice -->
 			<?php endif; ?>
 			<!-- firstHeading -->
-			<h1 id="firstHeading" class="firstHeading"><?php $this->html( 'title' ) ?></h1>
+			<h1 id="firstHeading" class="firstHeading">
+				<span dir="auto"><?php $this->html( 'title' ) ?></span>
+			</h1>
 			<!-- /firstHeading -->
 			<!-- bodyContent -->
 			<div id="bodyContent">
@@ -326,7 +328,7 @@ class VectorTemplate extends BaseTemplate {
 	 * @param $elements array
 	 */
 	private function renderNavigation( $elements ) {
-		global $wgVectorUseSimpleSearch, $wgVectorShowVariantName;
+		global $wgVectorUseSimpleSearch;
 
 		// If only one element was given, wrap it in an array, allowing more
 		// flexible arguments
@@ -355,15 +357,13 @@ class VectorTemplate extends BaseTemplate {
 				case 'VARIANTS':
 ?>
 <div id="p-variants" class="vectorMenu<?php if ( count( $this->data['variant_urls'] ) == 0 ) echo ' emptyPortlet'; ?>">
-	<?php if ( $wgVectorShowVariantName ): ?>
-		<h4>
-		<?php foreach ( $this->data['variant_urls'] as $link ): ?>
-			<?php if ( stripos( $link['attributes'], 'selected' ) !== false ): ?>
-				<?php echo htmlspecialchars( $link['text'] ) ?>
-			<?php endif; ?>
-		<?php endforeach; ?>
-		</h4>
-	<?php endif; ?>
+	<h4>
+	<?php foreach ( $this->data['variant_urls'] as $link ): ?>
+		<?php if ( stripos( $link['attributes'], 'selected' ) !== false ): ?>
+			<?php echo htmlspecialchars( $link['text'] ) ?>
+		<?php endif; ?>
+	<?php endforeach; ?>
+	</h4>
 	<h5><span><?php $this->msg( 'variants' ) ?></span><a href="#"></a></h5>
 	<div class="menu">
 		<ul<?php $this->html( 'userlangattributes' ) ?>>

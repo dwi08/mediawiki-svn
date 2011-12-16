@@ -1848,6 +1848,7 @@ Il ne peut pas être correctement vérifé pour la sécurité.',
 'uploadstash-badtoken' => "L'exécution de cette action a échoué, peut-être parce que vos informations d'identification ont expiré. Réessayez.",
 'uploadstash-errclear' => "L'effacement des fichiers a échoué.",
 'uploadstash-refresh'  => 'Actualiser la liste des fichiers',
+'invalid-chunk-offset' => 'Offset de segment non valide',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Accès refusé',
@@ -3873,5 +3874,21 @@ Les images sont montrées dans leur pleine résolution, les autres fichiers sont
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|a créé}} {{GENDER:$4|un compte utilisateur}} $3',
 'logentry-newusers-autocreate'        => 'Le compte $1 a été {{GENDER:$2|créé}} automatiquement',
 'newuserlog-byemail'                  => 'mot de passe envoyé par courriel',
+
+# Feedback
+'feedback-bugornote' => 'Si vous êtes prêt à décrire un problème technique en détail, veuillez [$1 signaler un bogue].
+Sinon, vous pouvez utiliser le formulaire simplifié ci-dessous. Votre commentaire sera ajouté à la page "[$3 $2]", avec votre nom d\'utilisateur et le navigateur que vous utilisez.',
+'feedback-subject'   => 'Objet :',
+'feedback-message'   => 'Message :',
+'feedback-cancel'    => 'Annuler',
+'feedback-submit'    => 'Envoyer vos commentaires',
+'feedback-adding'    => 'Ajout de vos commentaires à la page...',
+'feedback-error1'    => "Erreur : Résultat de l'API non reconnu",
+'feedback-error2'    => 'Erreur : la modification a échoué',
+'feedback-error3'    => "Erreur : aucune réponse de l'API",
+'feedback-thanks'    => 'Merci! Votre commentaire a été publié sur la page "[$2 $1]".',
+'feedback-close'     => 'Fait',
+'feedback-bugcheck'  => "Formidable! Vérifiez simplement que ce n'est pas un des [$1 bogues déjà connus].",
+'feedback-bugnew'    => "J'ai vérifié. Signaler un nouveau bogue",
 
 );

@@ -197,6 +197,7 @@ class OutputPage extends ContextSource {
 
 	/// should be private. To include the variable {{REVISIONID}}
 	var $mRevisionId = null;
+	private $mRevisionTimestamp = null;
 
 	var $mFileVersion = null;
 
@@ -1340,6 +1341,27 @@ class OutputPage extends ContextSource {
 	}
 
 	/**
+	 * Set the timestamp of the revision which will be displayed. This is used
+	 * to avoid a extra DB call in Skin::lastModified().
+	 *
+	 * @param $revid Mixed: string, or null
+	 * @return Mixed: previous value
+	 */
+	public function setRevisionTimestamp( $timestmap ) {
+		return wfSetVar( $this->mRevisionTimestamp, $timestmap );
+	}
+
+	/**
+	 * Get the timestamp of displayed revision.
+	 * This will be null if not filled by setRevisionTimestamp().
+	 *
+	 * @return String or null
+	 */
+	public function getRevisionTimestamp() {
+		return $this->mRevisionTimestamp;
+	}
+
+	/**
 	 * Set the displayed file version
 	 *
 	 * @param $file File|false
@@ -1896,27 +1918,34 @@ class OutputPage extends ContextSource {
 		if ( $this->mRedirect != '' ) {
 			# Standards require redirect URLs to be absolute
 			$this->mRedirect = wfExpandUrl( $this->mRedirect, PROTO_CURRENT );
-			if( $this->mRedirectCode == '301' || $this->mRedirectCode == '303' ) {
-				if( !$wgDebugRedirects ) {
-					$message = HttpStatus::getMessage( $this->mRedirectCode );
-					$response->header( "HTTP/1.1 {$this->mRedirectCode} $message" );
-				}
-				$this->mLastModified = wfTimestamp( TS_RFC2822 );
-			}
-			if ( $wgVaryOnXFP ) {
-				$this->addVaryHeader( 'X-Forwarded-Proto' );
-			}
-			$this->sendCacheControl();
 
-			$response->header( "Content-Type: text/html; charset=utf-8" );
-			if( $wgDebugRedirects ) {
-				$url = htmlspecialchars( $this->mRedirect );
-				print "<html>\n<head>\n<title>Redirect</title>\n</head>\n<body>\n";
-				print "<p>Location: <a href=\"$url\">$url</a></p>\n";
-				print "</body>\n</html>\n";
-			} else {
-				$response->header( 'Location: ' . $this->mRedirect );
+			$redirect = $this->mRedirect;
+			$code = $this->mRedirectCode;
+
+			if( wfRunHooks( "BeforePageRedirect", array( $this, &$redirect, &$code ) ) ) {
+				if( $code == '301' || $code == '303' ) {
+					if( !$wgDebugRedirects ) {
+						$message = HttpStatus::getMessage( $code );
+						$response->header( "HTTP/1.1 $code $message" );
+					}
+					$this->mLastModified = wfTimestamp( TS_RFC2822 );
+				}
+				if ( $wgVaryOnXFP ) {
+					$this->addVaryHeader( 'X-Forwarded-Proto' );
+				}
+				$this->sendCacheControl();
+
+				$response->header( "Content-Type: text/html; charset=utf-8" );
+				if( $wgDebugRedirects ) {
+					$url = htmlspecialchars( $redirect );
+					print "<html>\n<head>\n<title>Redirect</title>\n</head>\n<body>\n";
+					print "<p>Location: <a href=\"$url\">$url</a></p>\n";
+					print "</body>\n</html>\n";
+				} else {
+					$response->header( 'Location: ' . $redirect );
+				}
 			}
+
 			wfProfileOut( __METHOD__ );
 			return;
 		} elseif ( $this->mStatusCode ) {
@@ -2090,7 +2119,7 @@ class OutputPage extends ContextSource {
 
 			# Don't return to a page the user can't read otherwise
 			# we'll end up in a pointless loop
-			if ( $displayReturnto && $displayReturnto->userCanRead() ) {
+			if ( $displayReturnto && $displayReturnto->userCan( 'read' ) ) {
 				$this->returnToMain( null, $displayReturnto );
 			}
 		} else {
@@ -2222,7 +2251,7 @@ class OutputPage extends ContextSource {
 				'cols' => $this->getUser()->getOption( 'cols' ),
 				'rows' => $this->getUser()->getOption( 'rows' ),
 				'readonly' => 'readonly',
-				'lang' => $pageLang->getCode(),
+				'lang' => $pageLang->getHtmlCode(),
 				'dir' => $pageLang->getDir(),
 			);
 			$this->addHTML( Html::element( 'textarea', $params, $source ) );
@@ -2359,7 +2388,7 @@ $templates
 			$this->addModuleStyles( 'mediawiki.legacy.wikiprintable' );
 		}
 
-		$ret = Html::htmlHeader( array( 'lang' => $this->getLanguage()->getCode(), 'dir' => $userdir, 'class' => 'client-nojs' ) );
+		$ret = Html::htmlHeader( array( 'lang' => $this->getLanguage()->getHtmlCode(), 'dir' => $userdir, 'class' => 'client-nojs' ) );
 
 		if ( $this->getHTMLTitle() == '' ) {
 			$this->setHTMLTitle( $this->msg( 'pagetitle', $this->getPageTitle() ) );
@@ -2987,7 +3016,7 @@ $templates
 						$tags[] = Html::element( 'link', array(
 							'rel' => 'alternate',
 							'hreflang' => $_v,
-							'href' => $this->getTitle()->getLocalURL( '', $_v ) )
+							'href' => $this->getTitle()->getLocalURL( array( 'variant' => $_v ) ) )
 						);
 					}
 				} else {

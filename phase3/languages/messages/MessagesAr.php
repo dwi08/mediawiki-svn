@@ -560,12 +560,12 @@ $messages = array(
 'dec'           => 'ديسمبر',
 
 # Categories related messages
-'pagecategories'                 => '{{PLURAL:$1|لا تصانيف|التصنيف|التصنيفان|التصنيفات}}',
+'pagecategories'                 => '{{PLURAL:$1|لا تصنيف|تصنيف|تصنيفان|تصنيفات}}',
 'category_header'                => 'صفحات تصنيف "$1"',
 'subcategories'                  => 'التصنيفات الفرعية',
 'category-media-header'          => 'الوسائط في التصنيف "$1"',
 'category-empty'                 => "''هذا التصنيف لا يحتوي حاليا على صفحات أو وسائط.''",
-'hidden-categories'              => '{{PLURAL:$1|لا تصانيف مخفية|التصنيف المخفي|التصنيفان المخفيان|التصانيف المخفية|التصانيف المخفية|التصانيف المخفية}}',
+'hidden-categories'              => '{{PLURAL:$1|لا تصنيف مخفيا|تصنيف مخفي|تصنيفان مخفيان|تصنيفات مخفية}}',
 'hidden-category-category'       => 'تصنيفات مخفية',
 'category-subcat-count'          => '{{PLURAL:$2|لا تصانيف فرعية في هذا التصنيف|هذا التصنيف فيه التصنيف الفرعي التالي فقط.|هذا التصنيف فيه {{PLURAL:$1||هذا التصنيف الفرعي|هذين التصنيفين الفرعيين|هذه ال$1 تصانيف الفرعية|هذه ال$1 تصنيفا فرعيا|هذه ال$1 تصنيف فرعي}}، من إجمالي $2.}}',
 'category-subcat-count-limited'  => 'هذا التصنيف فيه {{PLURAL:$1||التصنيف الفرعي التالي|التصنيفين الفرعيين التاليين|$1 تصانيف فرعية تالية|$1 تصنيفا فرعيا تاليا|$1 تصنيف فرعي تالي}}.',
@@ -1794,7 +1794,6 @@ $1",
 'minoreditletter'                   => 'ط',
 'newpageletter'                     => 'ج‌',
 'boteditletter'                     => 'ب',
-'sectionlink'                       => '←',
 'number_of_watching_users_pageview' => '[{{PLURAL:$1|لا مستخدمون يراقبون|مستخدم واحد يراقب|مستخدمان يراقبان|$1 مستخدمين يراقبون|$1 مستخدما يراقب|$1 مستخدم يراقب}}]',
 'rc_categories'                     => 'حصر لتصنيفات (مفرقة برمز "|")',
 'rc_categories_any'                 => 'أي',
@@ -4108,5 +4107,15 @@ $5
 'logentry-newusers-create2'           => '{{GENDER:$2|أنشأ|أنشأت}} $1 حساب {{GENDER:$4|المستخدم|المستخدمة}} $3',
 'logentry-newusers-autocreate'        => '{{GENDER:$2|أنشئ}} حساب $1 تلقائياً',
 'newuserlog-byemail'                  => 'كلمة السر تم إرسالها بواسطة البريد الإلكتروني',
+
+# Feedback
+'feedback-subject' => 'الموضوع:',
+'feedback-message' => 'الرسالة:',
+'feedback-cancel'  => 'ألغِ',
+'feedback-submit'  => 'أرسل الملاحظات',
+'feedback-adding'  => 'إضافة تعليقات إلى الصفحة...',
+'feedback-error1'  => 'خطأ: لا يمكن التعرف عليها من API',
+'feedback-error2'  => 'خطأ: فشل في تحرير',
+'feedback-error3'  => 'خطأ : لا توجد استجابة من API',
 
 );

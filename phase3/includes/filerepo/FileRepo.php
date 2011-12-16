@@ -503,6 +503,15 @@ class FileRepo {
 	}
 
 	/**
+	 * Get the number of hash directory levels
+	 *
+	 * @return integer
+	 */
+	function getHashLevels() {
+		return $this->hashLevels;
+	}
+
+	/**
 	 * Get the name of this repository, as specified by $info['name]' to the constructor
 	 *
 	 * @return string

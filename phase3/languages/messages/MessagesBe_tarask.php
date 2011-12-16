@@ -3350,10 +3350,10 @@ $1',
 'exif-ycbcrpositioning-1' => 'Цэнтраваны',
 'exif-ycbcrpositioning-2' => 'Сумяшчоныя',
 
-'exif-dc-contributor' => 'Сааўтары',
+'exif-dc-contributor' => 'Аўтары',
 'exif-dc-coverage'    => 'Прасторавыя ці часавыя абмежаваньні мэдыя',
 'exif-dc-date'        => 'Дата(ы)',
-'exif-dc-publisher'   => 'Выдавец',
+'exif-dc-publisher'   => 'Выдавецтва',
 'exif-dc-relation'    => 'Зьвязаныя мэдыя',
 'exif-dc-rights'      => 'Правы',
 'exif-dc-source'      => 'Крынічнае мэдыя',
@@ -3714,5 +3714,19 @@ MediaWiki распаўсюджваецца з надзеяй, што будзе 
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|стварыў|стварыла}} {{GENDER:$4|}}рахунак $3',
 'logentry-newusers-autocreate'        => 'Рахунак $1 быў {{GENDER:$2|}}створаны аўтаматычна',
 'newuserlog-byemail'                  => 'Пароль адасланы па электроннай пошце',
+
+# Feedback
+'feedback-subject'  => 'Тэма:',
+'feedback-message'  => 'Паведамленьне:',
+'feedback-cancel'   => 'Скасаваць',
+'feedback-submit'   => 'Даслаць водгук',
+'feedback-adding'   => 'Даданьне водгуку на старонку…',
+'feedback-error1'   => 'Памылка: невядомы вынік з API',
+'feedback-error2'   => 'Памылка рэдагаваньня',
+'feedback-error3'   => 'Памылка: няма адказу ад API',
+'feedback-thanks'   => 'Дзякуй! Ваш водгук быў разьмешчаны на старонцы «[$2 $1]».',
+'feedback-close'    => 'Выканана',
+'feedback-bugcheck' => 'Выдатна! Толькі праверце, магчыма гэтыя памылкі ўжо [$1 вядомыя].',
+'feedback-bugnew'   => 'Я праверыў. Гэта новая памылка',
 
 );

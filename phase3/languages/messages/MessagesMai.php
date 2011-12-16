@@ -1327,6 +1327,7 @@ $3 द्वारा देल कारण अछि ''$2''",
 'action-userrights'           => 'सभटा प्रयोक्ता अधिकारकेँ सम्पादित करू',
 'action-userrights-interwiki' => 'दोसर विकीपर प्रयोक्ताक प्रयोक्ता अधिकारक सम्पादन करू',
 'action-siteadmin'            => 'दत्तनिधिकेँ प्रतिबन्धित करू आ फेर प्रतिबन्ध हटाउ',
+'action-sendemail'            => 'ई-पत्र पठाउ',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|परिवर्त्तन|परिवर्त्तन}}',
@@ -1356,7 +1357,6 @@ $3 द्वारा देल कारण अछि ''$2''",
 'newpageletter'                     => 'न',
 'boteditletter'                     => 'ब',
 'unpatrolledletter'                 => '!',
-'sectionlink'                       => '→',
 'number_of_watching_users_pageview' => '[$1 देखै अछि {{PLURAL:$1|प्रयोक्ता|प्रयोक्ता सभ}}]',
 'rc_categories'                     => 'संवर्ग सीमित ("|" सँ हटाउ)',
 'rc_categories_any'                 => 'कोनो',
@@ -1530,6 +1530,7 @@ $1',
 'uploadstash-badtoken' => 'ओइ कार्यक सम्पादन असफल रहल, प्रायः अहाँक सम्पादन योग्यता खतम भऽ गेल अछि। फेरसँ प्रयास करू।',
 'uploadstash-errclear' => 'संचिका सभकेँ खतम करब असफल रहल।',
 'uploadstash-refresh'  => 'संचिका सभक सूचीकेँ ताजा करू।',
+'invalid-chunk-offset' => 'एकट्ठे अमान्य बौस्तु',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'प्रवेश प्रतिबन्धित',
