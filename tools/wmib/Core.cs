@@ -125,10 +125,10 @@ namespace wmib
             }
 
             /// <summary>
-            /// 
+            /// Delete user
             /// </summary>
             /// <param name="user">Regex</param>
-            /// <returns></returns>
+            /// <returns>bool</returns>
             public bool delUser(string user)
             {
                 foreach (user u in Users)
@@ -153,8 +153,8 @@ namespace wmib
             /// <summary>
             /// Return level
             /// </summary>
-            /// <param name="level"></param>
-            /// <returns></returns>
+            /// <param name="level">User level</param>
+            /// <returns>0</returns>
             private int getLevel(string level)
             {
                 if (level == "admin")
@@ -208,8 +208,8 @@ namespace wmib
             /// <summary>
             /// Check if user match the necessary level
             /// </summary>
-            /// <param name="level"></param>
-            /// <param name="rights"></param>
+            /// <param name="level">Permission level</param>
+            /// <param name="rights">Userrights</param>
             /// <returns></returns>
             public bool matchLevel(int level, string rights)
             {
@@ -227,8 +227,8 @@ namespace wmib
             /// <summary>
             /// Check if user is approved to do operation requested
             /// </summary>
-            /// <param name="User"></param>
-            /// <param name="Host"></param>
+            /// <param name="User">Username</param>
+            /// <param name="Host">Hostname</param>
             /// <param name="command"></param>
             /// <returns></returns>
             public bool isApproved(string User, string Host, string command)
@@ -282,10 +282,10 @@ namespace wmib
                 /// <summary>
                 /// Constructor
                 /// </summary>
-                /// <param name="Key"></param>
-                /// <param name="Text"></param>
-                /// <param name="User"></param>
-                /// <param name="Lock"></param>
+                /// <param name="Key">Key</param>
+                /// <param name="Text">Text of the key</param>
+                /// <param name="User">User who created the key</param>
+                /// <param name="Lock">If key is locked or not</param>
                 public item(string Key, string Text, string User, string Lock = "false")
                 {
                     text = Text;
@@ -307,8 +307,8 @@ namespace wmib
                 /// <summary>
                 /// Constructor
                 /// </summary>
-                /// <param name="name"></param>
-                /// <param name="key"></param>
+                /// <param name="name">Alias</param>
+                /// <param name="key">Key</param>
                 public staticalias(string name, string key)
                 {
                     Name = name;
@@ -350,7 +350,8 @@ namespace wmib
                         string name = info[0];
                         if (type == "key")
                         {
-                            text.Add(new item(name, value, ""));
+                            string locked = info[3];
+                            text.Add(new item(name, value, "", locked));
                         }
                         else
                         {
@@ -399,7 +400,7 @@ namespace wmib
             /// <summary>
             /// Get value of key
             /// </summary>
-            /// <param name="key"></param>
+            /// <param name="key">Key</param>
             /// <returns></returns>
             public string getValue(string key)
             {
@@ -416,10 +417,10 @@ namespace wmib
             /// <summary>
             /// Print a value to channel if found this message doesn't need to be a valid command
             /// </summary>
-            /// <param name="name"></param>
-            /// <param name="user"></param>
-            /// <param name="chan"></param>
-            /// <param name="host"></param>
+            /// <param name="name">Name</param>
+            /// <param name="user">User</param>
+            /// <param name="chan">Channel</param>
+            /// <param name="host">Host name</param>
             /// <returns></returns>
             public bool print(string name, string user, config.channel chan, string host)
             {
@@ -513,15 +514,19 @@ namespace wmib
                     name = name.Substring(0, name.IndexOf("|"));
                 }
                 string[] p = name.Split(' ');
-                string p1 = "";
-                if (p.Length > 1)
-                {
-                    p1 = p[1];
-                }
+                int parameters = p.Length;
                 string keyv = getValue(p[0]);
                     if (!(keyv == ""))
                     {
-                        keyv = keyv.Replace("$1", p1);
+                        if ( parameters > 1)
+                        {
+                            int curr = 0;
+                            while ( parameters >= curr )
+                            {
+                                curr++;
+                                keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
+                            }
+                        }
                         if (User == "")
                         {
                             Message(keyv, Channel);
@@ -538,7 +543,15 @@ namespace wmib
                         keyv = getValue(b.Key);
                         if (keyv != "")
                         {
-                            keyv = keyv.Replace("$1", p1);
+                            if ( parameters > 1)
+                            {
+                                int curr = 0;
+                                while ( parameters >= curr )
+                                {
+                                    curr++;
+                                    keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
+                                }
+                            }
                             if (User == "")
                             {
                                 Message(keyv, Channel);
@@ -557,7 +570,7 @@ namespace wmib
             /// <summary>
             /// Search
             /// </summary>
-            /// <param name="key"></param>
+            /// <param name="key">Key</param>
             /// <param name="Chan"></param>
             public void RSearch(string key, config.channel Chan)
             {
@@ -623,9 +636,9 @@ namespace wmib
             /// <summary>
             /// Save a new key
             /// </summary>
-            /// <param name="Text"></param>
-            /// <param name="key"></param>
-            /// <param name="user"></param>
+            /// <param name="Text">Text</param>
+            /// <param name="key">Key</param>
+            /// <param name="user">User who created it</param>
             public void setKey(string Text, string key, string user)
             {
                 while (locked)
@@ -655,9 +668,9 @@ namespace wmib
             /// <summary>
             /// Alias
             /// </summary>
-            /// <param name="key"></param>
-            /// <param name="al"></param>
-            /// <param name="user"></param>
+            /// <param name="key">Key</param>
+            /// <param name="al">Alias</param>
+            /// <param name="user">User</param>
             public void aliasKey(string key, string al, string user)
             {
                 foreach(staticalias stakey in this.Alias)
@@ -709,7 +722,7 @@ namespace wmib
         /// <summary>
         /// Encode a data before saving it to a file
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">Text</param>
         /// <returns></returns>
         public static string encode(string text)
         {
@@ -734,7 +747,7 @@ namespace wmib
         /// <summary>
         /// Decode
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">String</param>
         /// <returns></returns>
         public static string decode(string text)
         {
@@ -744,8 +757,8 @@ namespace wmib
         /// <summary>
         /// Exceptions :o
         /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="chan"></param>
+        /// <param name="ex">Exception pointer</param>
+        /// <param name="chan">Channel name</param>
         public static void handleException(Exception ex, string chan)
         {
             Message("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", chan);
@@ -754,7 +767,7 @@ namespace wmib
         /// <summary>
         /// Get a channel object
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Name</param>
         /// <returns></returns>
         public static config.channel getChannel(string name)
         {
@@ -768,6 +781,9 @@ namespace wmib
             return null;
         }
 
+        /// <summary>
+        /// Convert the number to format we want to have in log
+        /// </summary>
         public static string timedateToString(int number)
         {
             if (number <= 9 && number >= 0)
@@ -780,8 +796,8 @@ namespace wmib
         /// <summary>
         /// Send a message to channel
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="message">Message</param>
+        /// <param name="channel">Channel</param>
         /// <returns></returns>
         public static bool Message(string message, string channel)
         {
@@ -795,10 +811,10 @@ namespace wmib
         /// <summary>
         /// Change rights of user
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="channel"></param>
-        /// <param name="user"></param>
-        /// <param name="host"></param>
+        /// <param name="message">Message</param>
+        /// <param name="channel">Channel</param>
+        /// <param name="user">User</param>
+        /// <param name="host">Host</param>
         /// <returns></returns>
         public static int modifyRights(string message, config.channel channel, string user, string host)
         {
@@ -871,11 +887,11 @@ namespace wmib
         /// <summary>
         /// Log file
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="channel"></param>
-        /// <param name="user"></param>
-        /// <param name="host"></param>
-        /// <param name="noac"></param>
+        /// <param name="message">Message</param>
+        /// <param name="channel">Channel</param>
+        /// <param name="user">User</param>
+        /// <param name="host">Host</param>
+        /// <param name="noac">Action (if true it's logged as message, if false it's action)</param>
         public static void chanLog(string message, config.channel channel, string user, string host, bool noac = true)
         {
             try
@@ -904,10 +920,10 @@ namespace wmib
         /// <summary>
         /// Called on action
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="Channel"></param>
-        /// <param name="host"></param>
-        /// <param name="nick"></param>
+        /// <param name="message">Message</param>
+        /// <param name="Channel">Channel</param>
+        /// <param name="host">Host</param>
+        /// <param name="nick">Nick</param>
         /// <returns></returns>
         public static bool getAction(string message, string Channel, string host, string nick)
         {
@@ -919,10 +935,10 @@ namespace wmib
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="chan"></param>
-        /// <param name="user"></param>
-        /// <param name="host"></param>
-        /// <param name="message"></param>
+        /// <param name="chan">Channel</param>
+        /// <param name="user">User</param>
+        /// <param name="host">Host</param>
+        /// <param name="message">Message</param>
         public static void addChannel(config.channel chan, string user, string host, string message)
         {
             if (message.StartsWith("@add"))
@@ -1131,10 +1147,10 @@ namespace wmib
         /// <summary>
         /// Called when someone post a message to server
         /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="nick"></param>
-        /// <param name="host"></param>
-        /// <param name="message"></param>
+        /// <param name="channel">Channel</param>
+        /// <param name="nick">Nick</param>
+        /// <param name="host">Host</param>
+        /// <param name="message">Message</param>
         /// <returns></returns>
         public static bool getMessage(string channel, string nick, string host, string message)
         {
