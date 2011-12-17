@@ -110,6 +110,14 @@ namespace wmib
                 return true;
             }
 
+            public static string normalize(string name)
+            {
+                name = name.Replace("|", "\\|");
+                name = name.Replace("]", "\\]");
+                name = name.Replace("[", "\\[");
+                return name;
+            }
+
             /// <summary>
             /// New
             /// </summary>
@@ -765,7 +773,7 @@ namespace wmib
         /// </summary>
         /// <param name="ex">Exception pointer</param>
         /// <param name="chan">Channel name</param>
-        public static void handleException(Exception ex, string chan)
+        public static void handleException(Exception ex, string chan = "")
         {
             if (config.debugchan != null)
             {
@@ -951,40 +959,49 @@ namespace wmib
         /// <param name="message">Message</param>
         public static void addChannel(config.channel chan, string user, string host, string message)
         {
-            if (message.StartsWith("@add"))
+            try
             {
-                if (chan.Users.isApproved(user, host, "admin"))
+                if (message.StartsWith("@add"))
                 {
-                    if (message.Contains(" "))
+                    if (chan.Users.isApproved(user, host, "admin"))
                     {
-                        string channel=message.Substring(message.IndexOf(" ") + 1);
-                        if (channel.Contains(" ") || (channel.Contains("#") == false))
+                        if (message.Contains(" "))
                         {
-                            Message("Invalid name", chan.name);
-                            return;
-                        }
-                        foreach (config.channel cu in config.channels)
-                        {
-                            if (channel == cu.name)
+                            string channel = message.Substring(message.IndexOf(" ") + 1);
+                            if (channel.Contains(" ") || channel.Contains("|") || channel.Contains("/") || (channel.Contains("#") == false))
                             {
+                                Message("Invalid name", chan.name);
                                 return;
                             }
+                            foreach (config.channel cu in config.channels)
+                            {
+                                if (channel == cu.name)
+                                {
+                                    return;
+                                }
+                            }
+                            config.channels.Add(new config.channel(channel));
+                            config.Save();
+                            wd.WriteLine("JOIN " + channel);
+                            wd.Flush();
+                            System.Threading.Thread.Sleep(100);
+                            config.channel Chan = getChannel(channel);
+                            Chan.Users.addUser("admin", IRCTrust.normalize(user) + "!.*@" + host);
                         }
-                        config.channels.Add(new config.channel(channel));
-                        config.Save();
-                        wd.WriteLine("JOIN " + channel);
-                        wd.Flush();
-                        System.Threading.Thread.Sleep(100);
-                        config.channel Chan = getChannel(channel);
-                        Chan.Users.addUser("admin", user + "!.*@" + host );
-                    } else
-                    {
-                        Message("Invalid name", chan.name);
+                        else
+                        {
+                            Message("Invalid name", chan.name);
+                        }
                     }
-                } else
-                {
-                    Message(messages.PermissionDenied, chan.name);
+                    else
+                    {
+                        Message(messages.PermissionDenied, chan.name);
+                    }
                 }
+            }
+            catch (Exception b)
+            { 
+                
             }
         }
 
@@ -997,39 +1014,51 @@ namespace wmib
         /// <param name="message">Message</param>
         public static void partChannel(config.channel chan, string user, string host, string message)
         {
-            if (message == "@drop")
+            try
             {
-                if (chan.Users.isApproved(user, host, "admin"))
+                if (message == "@drop")
                 {
-                    wd.WriteLine("PART " + chan.name);
-                    System.Threading.Thread.Sleep(100);
-                    System.IO.File.Delete(chan.Users.File);
-                    wd.Flush();
-                    System.IO.File.Delete(chan.name + ".setting");
-                    config.channels.Remove(chan);
-                    config.Save();
-                    return;
+                    if (chan.Users.isApproved(user, host, "admin"))
+                    {
+                        wd.WriteLine("PART " + chan.name);
+                        System.Threading.Thread.Sleep(100);
+                        wd.Flush();
+                        if (!System.IO.Directory.Exists(chan.log))
+                        {
+                            System.IO.Directory.Delete(chan.log, true);
+                        }
+                        System.IO.File.Delete(chan.name + ".setting");
+                        System.IO.File.Delete(chan.Users.File);
+                        config.channels.Remove(chan);
+                        config.Save();
+                        return;
+                    }
+                    else
+                    {
+                        Message(messages.PermissionDenied, chan.name);
+                        return;
+                    }
                 }
-                else
+                if (message == "@part")
                 {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
+                    if (chan.Users.isApproved(user, host, "admin"))
+                    {
+                        wd.WriteLine("PART " + chan.name);
+                        System.Threading.Thread.Sleep(100);
+                        wd.Flush();
+                        config.channels.Remove(chan);
+                        config.Save();
+                    }
+                    else
+                    {
+                        Message(messages.PermissionDenied, chan.name);
+                        return;
+                    }
                 }
             }
-            if (message == "@part")
+            catch (Exception x)
             {
-                if (chan.Users.isApproved(user, host, "admin"))
-                {
-                    wd.WriteLine("PART " + chan.name);
-                    System.Threading.Thread.Sleep(100);
-                    wd.Flush();
-                    config.channels.Remove(chan);
-                    config.Save();
-                } else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                handleException(x);
             }
         }
 
@@ -1118,7 +1147,7 @@ namespace wmib
                     Message(messages.PermissionDenied, chan.name);
                 }
             }
-            if (message.StartsWith("@channellist"))
+            if (message == "@channellist")
             {
                 string channels = "";
                 foreach (config.channel a in config.channels)
@@ -1340,7 +1369,7 @@ namespace wmib
                                         }
                                         if (message.StartsWith(":" + delimiter.ToString() + "PING"))
                                         {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING " + message.Substring(message.IndexOf(delimiter.ToString() + "PING" + 6)));
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" + message.Substring(message.IndexOf(delimiter.ToString() + "PING")+5));
                                             wd.Flush();
                                             continue;
                                         }
@@ -1366,7 +1395,7 @@ namespace wmib
                 }
                 catch (System.IO.IOException xx)
                 {
-                    Program.Log("Reconnecting, connection failed");
+                    Program.Log("Reconnecting, connection failed " + xx.Message + xx.StackTrace);
                     Reconnect();
                 }
                 catch (Exception xx)
