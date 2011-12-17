@@ -115,6 +115,10 @@ namespace wmib
                 name = name.Replace("|", "\\|");
                 name = name.Replace("]", "\\]");
                 name = name.Replace("[", "\\[");
+                name = name.Replace("\\", "\\\\");
+                name = name.Replace("^", "\\^");
+                name = name.Replace("{", "\\{");
+                name = name.Replace("}", "\\}");
                 return name;
             }
 
@@ -950,6 +954,11 @@ namespace wmib
             return false;
         }
 
+        public static bool validFile(string name)
+        {
+            return !(name.Contains(" ") || name.Contains("?") || name.Contains("|") || name.Contains("/") || name.Contains("\\") || name.Contains(">") || name.Contains("<") || name.Contains("*"));
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -968,7 +977,7 @@ namespace wmib
                         if (message.Contains(" "))
                         {
                             string channel = message.Substring(message.IndexOf(" ") + 1);
-                            if (channel.Contains(" ") || channel.Contains("|") || channel.Contains("/") || (channel.Contains("#") == false))
+                            if ( !validFile(channel) || (channel.Contains("#") == false))
                             {
                                 Message("Invalid name", chan.name);
                                 return;
