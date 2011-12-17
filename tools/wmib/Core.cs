@@ -16,7 +16,25 @@ using System.Net;
 
 namespace wmib
 {
-    public static class irc
+    public class misc
+    { 
+        public static bool IsValidRegex(string pattern)
+        {
+            if (pattern == null) return false;
+
+            try
+            {
+                System.Text.RegularExpressions.Regex.Match("", pattern);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+    public class irc
     {
         private static System.Net.Sockets.NetworkStream data;
         public static System.Threading.Thread dumphtmt;
@@ -50,6 +68,48 @@ namespace wmib
             {
                 this.level = level;
                 this.name = name;
+            }
+        }
+
+        public class RegexCheck
+        {
+            public string value;
+            public string regex;
+            public bool searching;
+            public bool result = false;
+            public RegexCheck(string Regex, string Data)
+            {
+                result = false;
+                value = Data;
+                regex = Regex;
+            }
+            private void Run()
+            {
+                System.Text.RegularExpressions.Regex c = new System.Text.RegularExpressions.Regex(regex);
+                result = c.Match(value).Success;
+                searching = false;
+            }
+            public int IsMatch()
+            {
+                System.Threading.Thread quick = new System.Threading.Thread(new System.Threading.ThreadStart(Run));
+                searching = true;
+                quick.Start();
+                int check = 0;
+                while (searching)
+                {
+                    check++;
+                    System.Threading.Thread.Sleep(10);
+                    if (check > 50)
+                    {
+                        quick.Abort();
+                        return 2;
+                    }
+                }
+                if (result)
+                {
+                    return 1;
+                }
+                return 0;
             }
         }
 
@@ -112,13 +172,8 @@ namespace wmib
 
             public static string normalize(string name)
             {
-                name = name.Replace("|", "\\|");
-                name = name.Replace("]", "\\]");
-                name = name.Replace("[", "\\[");
-                name = name.Replace("\\", "\\\\");
-                name = name.Replace("^", "\\^");
-                name = name.Replace("{", "\\{");
-                name = name.Replace("}", "\\}");
+                name = System.Text.RegularExpressions.Regex.Escape(name);
+                name = name.Replace("?", "\\?");
                 return name;
             }
 
@@ -130,6 +185,10 @@ namespace wmib
             /// <returns></returns>
             public bool addUser(string level, string user)
             {
+                if (!misc.IsValidRegex(user))
+                {
+                    return false;
+                }
                 foreach (user u in Users)
                 {
                     if (u.name == user)
@@ -197,8 +256,8 @@ namespace wmib
                 int current = 0;
                 foreach (user b in Users)
                 {
-                    System.Text.RegularExpressions.Regex id = new System.Text.RegularExpressions.Regex(b.name);
-                    if (id.Match(user).Success)
+                    RegexCheck id = new RegexCheck(b.name, user);
+                    if (id.IsMatch() == 1)
                     {
                         if (getLevel(b.level) > current)
                         {
@@ -345,6 +404,8 @@ namespace wmib
             /// Channel name
             /// </summary>
             public string Channel;
+            private bool running;
+            private string search_key;
             /// <summary>
             /// Load it
             /// </summary>
@@ -585,6 +646,28 @@ namespace wmib
                 return true;
             }
 
+            private void StartSearch()
+            {
+                System.Text.RegularExpressions.Regex value = new System.Text.RegularExpressions.Regex(search_key, System.Text.RegularExpressions.RegexOptions.Compiled);
+                string results = "";
+                foreach (item data in text)
+                {
+                    if (data.key == search_key || value.Match(data.text).Success)
+                    {
+                        results = results + data.key + ", ";
+                    }
+                }
+                if (results == "")
+                {
+                    Message("No results found! :|", Channel);
+                }
+                else
+                {
+                    Message("Results: " + results, Channel);
+                }
+                running = false;
+            }
+
             /// <summary>
             /// Search
             /// </summary>
@@ -596,28 +679,32 @@ namespace wmib
                 {
                     return;
                 }
+                if (!misc.IsValidRegex(key))
+                {
+                    Message("This is pretty bad regex", Chan.name);
+                    return;
+                }
                 if (key.Length < 11)
                 {
                     Message("Could you please tell me what I should search for :P", Chan.name);
                     return;
                 }
-                key = key.Substring(11);
-                System.Text.RegularExpressions.Regex value = new System.Text.RegularExpressions.Regex(key);
-                string results = "";
-                foreach (item data in text)
+                search_key = key.Substring(11);
+                running = true;
+                System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ThreadStart(StartSearch));
+                th.Start();
+                int check = 1;
+                while (running)
                 {
-                    if (data.key == key || value.Match(data.text).Success)
+                    check++;
+                    System.Threading.Thread.Sleep(10);
+                    if (check > 80)
                     {
-                        results = results + data.key + ", ";
+                        th.Abort();
+                        Message("Search took more than 800 micro seconds try a better regex", Channel);
+                        running = false;
+                        return;
                     }
-                }
-                if (results == "")
-                {
-                    Message("No results found! :|", Chan.name);
-                }
-                else
-                {
-                    Message("Results: " + results, Chan.name);
                 }
             }
 
