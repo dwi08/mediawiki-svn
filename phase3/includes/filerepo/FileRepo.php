@@ -507,7 +507,7 @@ class FileRepo {
 	 *
 	 * @return integer
 	 */
-	function getHashLevels() {
+	public function getHashLevels() {
 		return $this->hashLevels;
 	}
 
