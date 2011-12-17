@@ -35,8 +35,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	 *     'backends'    : Array of backend config and multi-backend settings.
 	 *                     Each value is the config used in the constructor of a
 	 *                     FileBackend class, but with these additional settings:
-	 *                         'class'        : The name of the backend class
-	 *                         'isMultiMaster': This must be set for one non-persistent backend.
+	 *                         'class'         : The name of the backend class
+	 *                         'isMultiMaster' : This must be set for one backend.
 	 * @param $config Array
 	 */
 	public function __construct( array $config ) {
@@ -180,7 +180,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 		return $this->backends[$this->masterIndex]->getFileTimestamp( $realParams );
 	}
 
-	function getFileSha1Base36(array $params) {
+	function getFileSha1Base36( array $params ) {
 		# Hit all backends in case of failed operations (out of sync)
 		foreach ( $this->backends as $backend ) {
 			$realParams = $this->substOpPaths( $params, $backend );
