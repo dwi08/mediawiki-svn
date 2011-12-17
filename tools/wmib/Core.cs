@@ -545,11 +545,11 @@ namespace wmib
                         {
                             if ( parameters > 1)
                             {
-                                int curr = 0;
-                                while ( parameters >= curr )
+                                int curr = 1;
+                                while ( parameters > curr )
                                 {
-                                    curr++;
                                     keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
+                                    curr++;
                                 }
                             }
                             if (User == "")
@@ -1250,7 +1250,7 @@ namespace wmib
                             {
                                 if (text.Contains("PRIVMSG"))
                                 {
-                                    string info = text.Substring(1, text.IndexOf(":", 2));
+                                    string info = text.Substring(1, text.IndexOf(" :", 1) - 1);
                                     string info_host;
                                     // we got a message here :)
                                     if (text.Contains("!") && text.Contains("@"))
@@ -1263,9 +1263,8 @@ namespace wmib
                                     if (info_host.Contains("#"))
                                     {
                                         channel = info_host.Substring(info_host.IndexOf("#"));
-                                        channel = channel.Substring(0, channel.IndexOf(" "));
                                         message = text.Replace(info, "");
-                                        message = message.Substring(message.IndexOf(":") + 1);
+                                        message = message.Substring(message.IndexOf(" :") + 2);
                                         if (message.Contains(delimiter.ToString() + "ACTION"))
                                         {
                                             getAction(message.Replace(delimiter.ToString() +"ACTION", ""), channel, host, nick);
