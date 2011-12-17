@@ -25,6 +25,12 @@ namespace wmib
         private static System.IO.StreamWriter wd;
         private static List<user> User = new List<user>();
 
+        public class messages
+        {
+            public static readonly string PermissionDenied = "Permission denied";
+            public static readonly string Authorization = "You are not authorized to perform this, sorry";
+        }
+
         public class user
         {
             /// <summary>
@@ -977,7 +983,7 @@ namespace wmib
                     }
                 } else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
                 }
             }
         }
@@ -991,7 +997,7 @@ namespace wmib
         /// <param name="message">Message</param>
         public static void partChannel(config.channel chan, string user, string host, string message)
         {
-            if (message.StartsWith("@drop"))
+            if (message == "@drop")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
@@ -1002,13 +1008,15 @@ namespace wmib
                     System.IO.File.Delete(chan.name + ".setting");
                     config.channels.Remove(chan);
                     config.Save();
+                    return;
                 }
                 else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
             }
-            if (message.StartsWith("@part"))
+            if (message == "@part")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
@@ -1019,33 +1027,44 @@ namespace wmib
                     config.Save();
                 } else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
             }
         }
 
+        /// <summary>
+        /// Display admin command
+        /// </summary>
+        /// <param name="chan"></param>
+        /// <param name="user"></param>
+        /// <param name="host"></param>
+        /// <param name="message"></param>
         public static void admin(config.channel chan, string user, string host, string message)
         {
-            if (message.StartsWith("@reload"))
+            if (message == "@reload")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
                         chan.LoadConfig();
                         chan.Keys = new dictionary(chan.keydb, chan.name);
                         Message("Channel config was reloaded", chan.name);
+                        return;
                 }
                 else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
             }
-            if (message.StartsWith("@logon"))
+            if (message == "@logon")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
                     if (chan.logged)
                     {
                         Message("Channel is already logged", chan.name);
+                        return;
                     }
                     else
                     {
@@ -1053,14 +1072,30 @@ namespace wmib
                         chan.logged = true;
                         chan.SaveConfig();
                         config.Save();
+                        return;
                     }
                 }
                 else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
             }
-            if (message.StartsWith("@logoff"))
+            if (message == "@whoami")
+            {
+                user current = chan.Users.getUser(user + "!@" + host);
+                if(current.level == "null")
+                {
+                    Message("You are unknown to me :)", chan.name);
+                    return;
+                } else
+                {
+                    Message("You are " + current.level + " identified by name " + current.name, chan.name);
+                    return;
+                }
+            }
+
+            if (message == "@logoff")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
@@ -1075,11 +1110,12 @@ namespace wmib
                         config.Save();
                         chan.SaveConfig();
                         Message("Channel is not logged", chan.name);
+                        return;
                     }
                 }
                 else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
                 }
             }
             if (message.StartsWith("@channellist"))
@@ -1092,13 +1128,14 @@ namespace wmib
                 Message("I am now in following channels: " + channels, chan.name);
                 return;
             }
-            if (message.StartsWith("@infobot-off"))
+            if (message == "@infobot-off")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
                     if (!chan.info)
                     {
                         Message("Channel had infobot disabled", chan.name);
+                        return;
                     }
                     else
                     {
@@ -1106,21 +1143,23 @@ namespace wmib
                         chan.info = false;
                         chan.SaveConfig();
                         config.Save();
+                        return;
                     }
                 }
                 else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
                     return;
                 }
             }
-            if (message.StartsWith("@infobot-on"))
+            if (message == "@infobot-on")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
                     if (!chan.logged)
                     {
                         Message("Infobot was already enabled :O", chan.name);
+                        return;
                     }
                     else
                     {
@@ -1128,16 +1167,19 @@ namespace wmib
                         config.Save();
                         chan.SaveConfig();
                         Message("Infobot enabled", chan.name);
+                        return;
                     }
                 }
                 else
                 {
-                    Message("Permission denied", chan.name);
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
             }
-            if (message.StartsWith("@commands"))
+            if (message == "@commands")
             {
-                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, add, reload, logon, logoff", chan.name);
+                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, whoami, add, reload, logon, logoff", chan.name);
+                return;
             }
         }
 
@@ -1161,8 +1203,11 @@ namespace wmib
                 }
                 if (message.StartsWith("@"))
                 {
-                    curr.Keys.Find(message, curr);
-                    curr.Keys.RSearch(message, curr);
+                    if (curr.info)
+                    {
+                        curr.Keys.Find(message, curr);
+                        curr.Keys.RSearch(message, curr);
+                    }
                     modifyRights(message, curr, nick, host);
                     addChannel(curr, nick, host, message);
                     admin(curr, nick, host, message);
