@@ -23,6 +23,7 @@ abstract class FileOp {
 
 	protected $state = self::STATE_NEW; // integer
 	protected $failed = false; // boolean
+	protected $useBackups = true; // boolean
 	protected $destSameAsSource = false; // boolean
 	protected $destAlreadyExists = false; // boolean
 
@@ -45,11 +46,17 @@ abstract class FileOp {
 				$this->params[$name] = $params[$name];
 			}
 		}
-		if ( isset( $params['ignoreErrors'] ) ) {
-			$this->params['ignoreErrors'] = $params['ignoreErrors'];
-		}
 		$this->params = $params;
 		$this->initialize();
+	}
+
+	/**
+	 * Disable file backups for this operation
+	 *
+	 * @return void
+	 */
+	final protected function disableBackups() {
+		$this->useBackups = false;
 	}
 
 	/**
@@ -57,17 +64,19 @@ abstract class FileOp {
 	 * Callers are responsible for handling file locking.
 	 * 
 	 * @param $performOps Array List of FileOp operations
+	 * @param $opts Array Batch operation options
 	 * @return Status 
 	 */
-	final public static function attemptBatch( array $performOps ) {
+	final public static function attemptBatch( array $performOps, array $opts ) {
 		$status = Status::newGood();
 
+		$ignoreErrors = isset( $opts['ignoreErrors'] ) && $opts['ignoreErrors'];
 		$predicates = FileOp::newPredicates(); // account for previous op in prechecks
 		// Do pre-checks for each operation; abort on failure...
 		foreach ( $performOps as $index => $fileOp ) {
 			$status->merge( $fileOp->precheck( $predicates ) );
 			if ( !$status->isOK() ) { // operation failed?
-				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
+				if ( $ignoreErrors ) {
 					++$status->failCount;
 					$status->success[$index] = false;
 				} else {
@@ -80,10 +89,12 @@ abstract class FileOp {
 		foreach ( $performOps as $index => $fileOp ) {
 			if ( $fileOp->failed() ) {
 				continue; // nothing to do
+			} elseif ( $ignoreErrors ) {
+				$fileOp->disableBackups(); // no chance of revert() calls
 			}
 			$status->merge( $fileOp->attempt() );
 			if ( !$status->isOK() ) { // operation failed?
-				if ( $fileOp->getParam( 'ignoreErrors' ) ) {
+				if ( $ignoreErrors ) {
 					++$status->failCount;
 					$status->success[$index] = false;
 				} else {
@@ -152,7 +163,7 @@ abstract class FileOp {
 	}
 
 	/**
-	 * Check preconditions of the operation and possibly stash temp files
+	 * Check preconditions of the operation without writing anything
 	 *
 	 * @param $predicates Array
 	 * @return Status
@@ -170,7 +181,7 @@ abstract class FileOp {
 	}
 
 	/**
-	 * Attempt the operation; this must be reversible
+	 * Attempt the operation, backing up files as needed; this must be reversible
 	 *
 	 * @return Status
 	 */
@@ -226,15 +237,6 @@ abstract class FileOp {
 			$status = $this->doFinish();
 		}
 		return $status;
-	}
-
-	/**
-	 * Get a list of storage paths used by this operation
-	 *
-	 * @return Array
-	 */
-	final public function storagePathsUsed() {
-		return array_merge( $this->storagePathsRead(), $this->storagePathsChanged() );
 	}
 
 	/**
@@ -320,14 +322,16 @@ abstract class FileOp {
 	 */
 	protected function backupSource() {
 		$status = Status::newGood();
-		// Check if a file already exists at the source...
-		$params = array( 'src' => $this->params['src'] );
-		if ( $this->backend->fileExists( $params ) ) {
-			// Create a temporary backup copy...
-			$this->tmpSourcePath = $this->backend->getLocalCopy( $params );
-			if ( $this->tmpSourcePath === null ) {
-				$status->fatal( 'backend-fail-backup', $this->params['src'] );
-				return $status;
+		if ( $this->useBackups ) {
+			// Check if a file already exists at the source...
+			$params = array( 'src' => $this->params['src'] );
+			if ( $this->backend->fileExists( $params ) ) {
+				// Create a temporary backup copy...
+				$this->tmpSourcePath = $this->backend->getLocalCopy( $params );
+				if ( $this->tmpSourcePath === null ) {
+					$status->fatal( 'backend-fail-backup', $this->params['src'] );
+					return $status;
+				}
 			}
 		}
 		return $status;
@@ -348,12 +352,14 @@ abstract class FileOp {
 		$this->destSameAsSource = false;
 
 		if ( $this->getParam( 'overwriteDest' ) ) {
-			// Create a temporary backup copy...
-			$params = array( 'src' => $this->params['dst'] );
-			$this->tmpDestFile = $this->backend->getLocalCopy( $params );
-			if ( !$this->tmpDestFile ) {
-				$status->fatal( 'backend-fail-backup', $this->params['dst'] );
-				return $status;
+			if ( $this->useBackups ) {
+				// Create a temporary backup copy...
+				$params = array( 'src' => $this->params['dst'] );
+				$this->tmpDestFile = $this->backend->getLocalCopy( $params );
+				if ( !$this->tmpDestFile ) {
+					$status->fatal( 'backend-fail-backup', $this->params['dst'] );
+					return $status;
+				}
 			}
 		} elseif ( $this->getParam( 'overwriteSame' ) ) {
 			$shash = $this->getSourceSha1Base36();
@@ -495,7 +501,6 @@ abstract class FileOp {
 			// bad config? debug log error?
 		}
 	}
-
 }
 
 /**

@@ -794,10 +794,12 @@ abstract class File {
 				$thumb = $this->handler->getTransform( $this, $tmpThumbPath, $thumbUrl, $params );
 			}
 		} elseif ( $thumb->hasFile() && !$thumb->fileIsSource() ) {
+			// @TODO: use a FileRepo store function
 			$op = array( 'op' => 'store',
 				'src' => $tmpThumbPath, 'dst' => $thumbPath, 'overwriteDest' => true );
 			// Copy any thumbnail from the FS into storage at $dstpath
-			if ( !$this->getRepo()->getBackend()->doOperation( $op )->isOK() ) {
+			$opts = array( 'ignoreErrors' => true, 'nonLocking' => true ); // performance
+			if ( !$this->getRepo()->getBackend()->doOperation( $op, $opts )->isOK() ) {
 				return new MediaTransformError( 'thumbnail_error',
 					$params['width'], 0, wfMsg( 'thumbnail-dest-create' ) );
 			}

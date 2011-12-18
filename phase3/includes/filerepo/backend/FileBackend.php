@@ -127,7 +127,9 @@ abstract class FileBackendBase {
 	 *                         exists at the destination that has the same
 	 *                         contents as the new contents to be written there.
 	 * 
-	 * Boolean flags for operations (all operations):
+	 * $opts is an associative of options, including:
+	 * 'nonLocking'          : No locks are acquired for the operations.
+	 *                         This can increase performance for non-critical writes.
 	 * 'ignoreErrors'        : Serious errors that would normally cause a rollback
 	 *                         do not. The remaining operations are still attempted.
 	 * 
@@ -135,21 +137,23 @@ abstract class FileBackendBase {
 	 * This returns a Status, which contains all warnings and fatals that occured
 	 * during the operation. The 'failCount', 'successCount', and 'success' members
 	 * will reflect each operation attempted. The status will be "OK" unless any
-	 * of the operations without the 'ignoreErrors' parameter failed.
+	 * of the operations failed and the 'ignoreErrors' parameter was not set.
 	 * 
 	 * @param $ops Array List of operations to execute in order
+	 * @param $opts Array Batch operation options
 	 * @return Status
 	 */
-	abstract public function doOperations( array $ops );
+	abstract public function doOperations( array $ops, array $opts = array() );
 
 	/**
 	 * Same as doOperations() except it takes a single operation array
 	 *
 	 * @param $op Array
+	 * @param $opts Array
 	 * @return Status
 	 */
-	final public function doOperation( array $op ) {
-		return $this->doOperations( array( $op ) );
+	final public function doOperation( array $op, array $opts = array() ) {
+		return $this->doOperations( array( $op ), $opts );
 	}
 
 	/**
@@ -538,7 +542,6 @@ abstract class FileBackend extends FileBackendBase {
 				$class = $supportedOps[$opName];
 				// Get params for this operation
 				$params = $operation;
-				unset( $params['op'] ); // don't need this
 				// Append the FileOp class
 				$performOps[] = new $class( $this, $params );
 			} else {
@@ -549,28 +552,29 @@ abstract class FileBackend extends FileBackendBase {
 		return $performOps;
 	}
 
-	final public function doOperations( array $ops ) {
+	final public function doOperations( array $ops, array $opts = array() ) {
 		$status = Status::newGood();
 
 		// Build up a list of FileOps...
 		$performOps = $this->getOperations( $ops );
 
-		// Build up a list of files to lock...
-		$filesLockEx = $filesLockSh = array();
-		foreach ( $performOps as $index => $fileOp ) {
-			$filesLockSh = array_merge( $filesLockSh, $fileOp->storagePathsRead() );
-			$filesLockEx = array_merge( $filesLockEx, $fileOp->storagePathsChanged() );
-		}
-
-		// Try to lock those files for the scope of this function...
-		$scopeLockS = $this->getScopedFileLocks( $filesLockSh, LockManager::LOCK_UW, $status );
-		$scopeLockE = $this->getScopedFileLocks( $filesLockEx, LockManager::LOCK_EX, $status );
-		if ( !$status->isOK() ) {
-			return $status; // abort
+		if ( !isset( $opts['nonLocking'] ) || !$opts['nonLocking'] ) {
+			// Build up a list of files to lock...
+			$filesLockEx = $filesLockSh = array();
+			foreach ( $performOps as $index => $fileOp ) {
+				$filesLockSh = array_merge( $filesLockSh, $fileOp->storagePathsRead() );
+				$filesLockEx = array_merge( $filesLockEx, $fileOp->storagePathsChanged() );
+			}
+			// Try to lock those files for the scope of this function...
+			$scopeLockS = $this->getScopedFileLocks( $filesLockSh, LockManager::LOCK_UW, $status );
+			$scopeLockE = $this->getScopedFileLocks( $filesLockEx, LockManager::LOCK_EX, $status );
+			if ( !$status->isOK() ) {
+				return $status; // abort
+			}
 		}
 
 		// Actually attempt the operation batch...
-		$status->merge( FileOp::attemptBatch( $performOps ) );
+		$status->merge( FileOp::attemptBatch( $performOps, $opts ) );
 
 		return $status;
 	}

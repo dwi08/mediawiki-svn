@@ -59,7 +59,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 		}
 	}
 
-	final public function doOperations( array $ops ) {
+	final public function doOperations( array $ops, array $opts = array() ) {
 		$status = Status::newGood();
 
 		$performOps = array(); // list of FileOp objects
@@ -93,7 +93,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 		}
 
 		// Actually attempt the operation batch...
-		$status->merge( FileOp::attemptBatch( $performOps ) );
+		$status->merge( FileOp::attemptBatch( $performOps, $opts ) );
 
 		return $status;
 	}

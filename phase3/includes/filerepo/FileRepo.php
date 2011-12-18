@@ -700,12 +700,12 @@ class FileRepo {
 				'dst'           => $dstPath,
 				'overwriteDest' => $flags & self::OVERWRITE,
 				'overwriteSame' => $flags & self::OVERWRITE_SAME,
-				'ignoreErrors'  => true
 			);
 		}
 
 		// Execute the store operation for each triplet
-		$status->merge( $backend->doOperations( $operations ) );
+		$opts = array( 'ignoreErrors' => true );
+		$status->merge( $backend->doOperations( $operations, $opts ) );
 		// Cleanup for disk source files...
 		foreach ( $sourceFSFilesToDelete as $file ) {
 			wfSuppressWarnings();
@@ -747,14 +747,14 @@ class FileRepo {
 				$operations[] = array(
 					'op'           => 'delete',
 					'src'          => $path,
-					'ignoreErrors' => true
 				);
 			} else {
 				$sourceFSFilesToDelete[] = $path;
 			}
 		}
-
-		$this->backend->doOperations( $operations );
+		// Actually delete files from storage...
+		$opts = array( 'ignoreErrors' => true );
+		$this->backend->doOperations( $operations, $opts );
 		// Cleanup for disk source files...
 		foreach ( $sourceFSFilesToDelete as $file ) {
 			wfSuppressWarnings();
@@ -818,7 +818,8 @@ class FileRepo {
 
 		// Delete the sources if required
 		if ( $deleteOperations ) {
-			$status->merge( $this->backend->doOperations( $deleteOperations ) );
+			$opts = array( 'ignoreErrors' => true );
+			$status->merge( $this->backend->doOperations( $deleteOperations, $opts ) );
 		}
 
 		// Make sure status is OK, despite any $deleteOperations fatals
@@ -935,8 +936,7 @@ class FileRepo {
 					$operations[] = array(
 						'op'           => 'move',
 						'src'          => $dstPath,
-						'dst'          => $archivePath,
-						'ignoreErrors' => true
+						'dst'          => $archivePath
 					);
 				}
 				$status->value[$i] = 'archived';
@@ -949,23 +949,20 @@ class FileRepo {
 					$operations[] = array(
 						'op'           => 'move',
 						'src'          => $srcPath,
-						'dst'          => $dstPath,
-						'ignoreErrors' => true
+						'dst'          => $dstPath
 					);
 				} else {
 					$operations[] = array(
 						'op'           => 'copy',
 						'src'          => $srcPath,
-						'dst'          => $dstPath,
-						'ignoreErrors' => true
+						'dst'          => $dstPath
 					);
 				}
 			} else { // FS source path
 				$operations[] = array(
 					'op'           => 'store',
 					'src'          => $srcPath,
-					'dst'          => $dstPath,
-					'ignoreErrors' => true
+					'dst'          => $dstPath
 				);
 				if ( $flags & self::DELETE_SOURCE ) {
 					$sourceFSFilesToDelete[] = $srcPath;
@@ -974,7 +971,8 @@ class FileRepo {
 		}
 
 		// Execute the operations for each triplet
-		$status->merge( $backend->doOperations( $operations ) );
+		$opts = array( 'ignoreErrors' => true );
+		$status->merge( $backend->doOperations( $operations, $opts ) );
 		// Cleanup for disk source files...
 		foreach ( $sourceFSFilesToDelete as $file ) {
 			wfSuppressWarnings();
@@ -1115,7 +1113,8 @@ class FileRepo {
 		// Move the files by execute the operations for each pair.
 		// We're now committed to returning an OK result, which will
 		// lead to the files being moved in the DB also.
-		$status->merge( $backend->doOperations( $operations ) );
+		$opts = array( 'ignoreErrors' => true );
+		$status->merge( $backend->doOperations( $operations, $opts ) );
 
 		return $status;
 	}
