@@ -25,22 +25,19 @@
  * @return string Actual URL except for fragment part
  */
 function getSelfUrl() {
-	
+
 	/* faking https on secure.wikimedia.org - thanks Ryan for hint */
 	if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
-		
 		$_SERVER['HTTPS'] = 'on';
-		
 	}
-	
+
 	$s = empty( $_SERVER['HTTPS'] ) ? '' : ( $_SERVER['HTTPS'] == 'on' ) ? 's' : '';
-	
+
 	$protocol = substr( strtolower( $_SERVER['SERVER_PROTOCOL'] ), 0, strpos( strtolower( $_SERVER['SERVER_PROTOCOL'] ), '/' ) ) . $s;
-	
+
 	$port = ( $_SERVER['SERVER_PORT'] == '80') ? '' : ( ':' . $_SERVER['SERVER_PORT'] );
-	
+
 	return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
-	
 }
 
 
@@ -59,81 +56,78 @@ $projects = array(
 $url = parse_url( getSelfUrl() );
 
 if( $url['host'] == 'secure.wikimedia.org' ) {
-	
+
 	# https://secure.wikimedia.org/$project/$language/wiki/$page
 	$tmp = explode( '/', ltrim( $url['path'], '/' ) );
 	$project = $tmp[0];
 	$language = $tmp[1];
 	$base = 'secure.wikimedia.org/wikipedia/incubator/wiki/';
 	$page = implode( array_slice( $tmp, 3 ) );
-	
+
 } else {
-	
+
 	# http(s)://$language.$project.org/wiki/$page
 	$tmp = explode( '.', $url['host'] );
 	$project = $tmp[1];
 	$language = $tmp[0];
 	$base = 'incubator.wikimedia.org/wiki/';
 	$page = preg_replace( '/^\/wiki\//', '', $url['path'] );
-	
+
 }
 
 $project = strtolower( $project );
 $projectcode = $projects[$project];
 $project = ucfirst( $project ); // for 404 pages message
 
-$location = $url['scheme'] . '://' . $base . 'W' . $projectcode . '/' . $language . ( $page ? '/' . $page : '?goto=mainpage' );
+$location = $url['scheme'] . '://' . $base . 'W' . $projectcode . '/' . $language;
+# Go to the page if specified (look out for slashes), otherwise go to
+# the main page Wx/xyz?goto=mainpage (WikimediaIncubator extension takes care of that)
+$location .= $page && $page !== '/' ? '/' . $page : '?goto=mainpage';
 
 $redir = false;
 
 switch( $projectcode ) {
-	
+
 	# Wikisource
 	case 's':
 		$logo = 'http://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/280px-Wikisource-logo.svg.png';
 		$home = 'http://wikisource.org';
 		$name = 'Multilingual Wikisource';
 		break;
-	
+
 	# Wikiversity
 	case 'v':
 		$logo = 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Wikiversity-logo.svg/300px-Wikiversity-logo.svg.png';
 		$home = 'http://beta.wikiversity.org';
 		$name = 'Beta Wikiversity';
 		break;
-	
+
 	# Wikipedia, Wiktionary, Wikiquote, Wikibooks and Wikinews
 	default:
 		$redir = true;
-	
+
 }
 
 # OUTPUT
 # @fixme replace heredoc by better approach
 if( $redir ) {
-	
+
 	header( 'Location: ' . $location );
 	exit();
-	
+
 } else {
-	
+
 	header( 'HTTP/1.x 404 Not Found' );
 	header( 'Content-Type: text/html; charset=utf-8');
-	
+
 	echo <<< EOT
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
-
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-
-<title>$language&nbsp;$project does not exist</title>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-<link rel="shortcut icon" href="$home/favicon.ico" />
-
-<style type="text/css">
+	<title>$language&nbsp;$project does not exist</title>
+	<meta charset="UTF-8" />
+	<link rel="shortcut icon" href="$home/favicon.ico" />
+	<style type="text/css">
 /* <![CDATA[ */
 * {
 	font-family: 'Gill Sans', 'Gill Sans MT', sans-serif;
@@ -142,7 +136,7 @@ if( $redir ) {
 }
 
 body {
-  background: #fff url('http://upload.wikimedia.org/wikipedia/commons/9/96/Errorbg.png') repeat-x;
+  background: #fff url('//upload.wikimedia.org/wikipedia/commons/9/96/Errorbg.png') repeat-x;
   color: #333;
   margin: 0;
   padding: 0;
@@ -160,7 +154,7 @@ body {
 }
 
 #message {
-	background: url('http://upload.wikimedia.org/wikipedia/commons/9/97/Errorline.png') center left no-repeat;
+	background: url('//upload.wikimedia.org/wikipedia/commons/9/97/Errorline.png') center left no-repeat;
 	margin-left: 300px;
 	padding-left: 15px;
 }
@@ -178,34 +172,27 @@ a:hover, a:active {
 }
 
 /* ]]> */
-</style>
-
+	</style>
 </head>
-
 <body>
+	<div id="page">
+		<div id="message">
 
-<div id="page">
-	
-	<div id="message">
-		
-		<h1>This wiki does not exist</h1>
-		
-		<h2>Welcome to $project</h2>
-		
-		<p>Unfortunately, $project in "$language" does not exist on its own domain yet, or it has been closed.</p>
-		
-		<p>You may like to visit <a href="$home">$name</a> to start or improve <em>$language&nbsp;$project</em> there.</p>
-		
-		<p>If you would like to request that this wiki be created, see the <a href="http://meta.wikimedia.org/wiki/Requests_for_new_languages">requests for new languages</a> page on Meta-Wiki.</p>
-		
-		<p style="font-size: smaller;">A&nbsp;project of the <a href="http://wikimediafoundation.org" title="Wikimedia Foundation">Wikimedia Foundation</a></p>
-		
+			<h1>This wiki does not exist</h1>
+
+			<h2>Welcome to $project</h2>
+
+			<p>Unfortunately, $project in "$language" does not exist on its own domain yet, or it has been closed.</p>
+
+			<p>You may like to visit <a href="$home">$name</a> to start or improve <em>$language&nbsp;$project</em> there.</p>
+
+			<p>If you would like to request that this wiki be created, see the <a href="//meta.wikimedia.org/wiki/Requests_for_new_languages">requests for new languages</a> page on Meta-Wiki.</p>
+
+			<p style="font-size: smaller;">A&nbsp;project of the <a href="//wikimediafoundation.org" title="Wikimedia Foundation">Wikimedia Foundation</a></p>
+
+		</div>
 	</div>
-	
-</div>
-
 </body>
-
 </html>
 EOT;
 
