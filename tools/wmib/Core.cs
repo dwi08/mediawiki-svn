@@ -346,7 +346,7 @@ namespace wmib
             /// <summary>
             /// Locked
             /// </summary>
-            public bool locked = false;
+            public bool locked;
 
             public class item
             {
@@ -558,7 +558,7 @@ namespace wmib
                                 Message("It would be cool to give me also a name of key", Channel);
                                 return true;
                             }
-                            this.aliasKey(name.Substring(name.IndexOf(" alias") + 7), parm[0], "");
+                            aliasKey(name.Substring(name.IndexOf(" alias") + 7), parm[0], "");
                         }
                         else
                         {
@@ -583,10 +583,7 @@ namespace wmib
                             }
                             return false;
                         }
-                        else
-                        {
-                            Message("You are not autorized to perform this, sorry", Channel);
-                        }
+                        Message("You are not autorized to perform this, sorry", Channel);
                         return false;
                     }
                     if (parm[1] == "del")
@@ -613,7 +610,7 @@ namespace wmib
                 string[] p = name.Split(' ');
                 int parameters = p.Length;
                 string keyv = getValue(p[0]);
-                if (!(keyv == ""))
+                if (keyv != "")
                 {
                     if (parameters > 1)
                     {
@@ -1116,7 +1113,7 @@ namespace wmib
                 config.channel Chan = getChannel(channel);
                 Chan.Users.addUser("admin", IRCTrust.normalize(user) + "!.*@" + host);
             }
-            catch (Exception b)
+            catch (Exception)
             {
 
             }
@@ -1212,11 +1209,8 @@ namespace wmib
                     config.Save();
                     return;
                 }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                Message(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@whoami")
             {
@@ -1389,10 +1383,8 @@ namespace wmib
                 }
             }
             wd.Flush();
-            string text = "";
             string nick = "";
             string host = "";
-            string message = "";
             string channel = "";
             char delimiter = (char) 001;
 
@@ -1402,15 +1394,11 @@ namespace wmib
                 {
                     while (!rd.EndOfStream)
                     {
-                        text = rd.ReadLine();
+                        string text = rd.ReadLine();
                         if (text.StartsWith(":"))
                         {
                             string check = text.Substring(text.IndexOf(" "));
-                            if (check.StartsWith(" 005"))
-                            {
-
-                            }
-                            else
+                            if (!check.StartsWith(" 005"))
                             {
                                 if (text.Contains("PRIVMSG"))
                                 {
@@ -1426,6 +1414,7 @@ namespace wmib
                                     }
                                     info_host = info.Substring(info.IndexOf("PRIVMSG "));
 
+                                    string message;
                                     if (info_host.Contains("#"))
                                     {
                                         channel = info_host.Substring(info_host.IndexOf("#"));
@@ -1440,40 +1429,37 @@ namespace wmib
                                         getMessage(channel, nick, host, message);
                                         continue;
                                     }
-                                    else
+                                    message = text.Substring(text.IndexOf("PRIVMSG"));
+                                    message = message.Substring(message.IndexOf(":"));
+                                    // private message
+                                    if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
                                     {
-                                        message = text.Substring(text.IndexOf("PRIVMSG"));
-                                        message = message.Substring(message.IndexOf(":"));
-                                        // private message
-                                        if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" +
-                                                         " I am a bot don't finger me");
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " +
-                                                         DateTime.Now.ToString());
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "PING"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" +
-                                                         message.Substring(
-                                                             message.IndexOf(delimiter.ToString() + "PING") + 5));
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " +
-                                                         config.version);
-                                            wd.Flush();
-                                            continue;
-                                        }
+                                        wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" +
+                                                     " I am a bot don't finger me");
+                                        wd.Flush();
+                                        continue;
+                                    }
+                                    if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
+                                    {
+                                        wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " +
+                                                     DateTime.Now.ToString());
+                                        wd.Flush();
+                                        continue;
+                                    }
+                                    if (message.StartsWith(":" + delimiter.ToString() + "PING"))
+                                    {
+                                        wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" +
+                                                     message.Substring(
+                                                         message.IndexOf(delimiter.ToString() + "PING") + 5));
+                                        wd.Flush();
+                                        continue;
+                                    }
+                                    if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
+                                    {
+                                        wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " +
+                                                     config.version);
+                                        wd.Flush();
+                                        continue;
                                     }
                                 }
                                 if (text.Contains("PING "))
