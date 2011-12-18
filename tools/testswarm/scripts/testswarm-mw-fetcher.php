@@ -138,8 +138,8 @@ class TestSwarmMWMain {
 			$this->debug( 'No next revision', __METHOD__ );
 		} else {
 			// And install it
-			$fetcher = new TestSwarmMWFetcher( &$this, $nextRev );
-			$result = $fetcher->run();
+			$this->fetcher = new TestSwarmMWFetcher( &$this, $nextRev );
+			$result = $this->fetcher->run();
 			if( $result === true ) {
 				return $nextRev;
 			}
@@ -446,7 +446,7 @@ class TestSwarmMWFetcher {
 
 		// Now simply run the CLI installer:
 		$cmd = "php {$this->paths['mw']}/maintenance/install.php \
-			--dbname=testwarm_mw_r{$this->svnRevId} \
+			--dbname=r{$this->svnRevId} \
 			--dbtype=sqlite \
 			--dbpath={$this->paths['db']} \
 			--showexceptions=true \
