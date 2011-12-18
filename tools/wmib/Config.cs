@@ -60,7 +60,7 @@ namespace wmib
             /// <param name="b">Value</param>
             private void AddConfig(string a, string b)
             {
-                conf = conf + "\n" + a + "=" + b + ";";
+                conf += "\n" + a + "=" + b + ";";
             }
 
             /// <summary>

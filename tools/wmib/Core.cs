@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace wmib
 {
@@ -37,8 +38,8 @@ namespace wmib
     public class irc
     {
         private static System.Net.Sockets.NetworkStream data;
-        public static System.Threading.Thread dumphtmt;
-        public static System.Threading.Thread check_thread;
+        public static Thread dumphtmt;
+        public static Thread check_thread;
         public static StreamReader rd;
         private static StreamWriter wd;
         private static List<user> User = new List<user>();
@@ -96,14 +97,14 @@ namespace wmib
 
             public int IsMatch()
             {
-                System.Threading.Thread quick = new System.Threading.Thread(Run);
+                Thread quick = new Thread(Run);
                 searching = true;
                 quick.Start();
                 int check = 0;
                 while (searching)
                 {
                     check++;
-                    System.Threading.Thread.Sleep(10);
+                    Thread.Sleep(10);
                     if (check <= 50) continue;
                     quick.Abort();
                     return 2;
@@ -707,13 +708,13 @@ namespace wmib
                 }
                 search_key = key.Substring(11);
                 running = true;
-                System.Threading.Thread th = new System.Threading.Thread(StartSearch);
+                Thread th = new Thread(StartSearch);
                 th.Start();
                 int check = 1;
                 while (running)
                 {
                     check++;
-                    System.Threading.Thread.Sleep(10);
+                    Thread.Sleep(10);
                     if (check > 80)
                     {
                         th.Abort();
@@ -764,7 +765,7 @@ namespace wmib
             {
                 while (locked)
                 {
-                    System.Threading.Thread.Sleep(200);
+                    Thread.Sleep(200);
                 }
                 try
                 {
@@ -811,7 +812,7 @@ namespace wmib
             {
                 while (locked)
                 {
-                    System.Threading.Thread.Sleep(200);
+                    Thread.Sleep(200);
                 }
                 foreach (item keys in text)
                 {
@@ -834,7 +835,7 @@ namespace wmib
         {
             while (true)
             {
-                System.Threading.Thread.Sleep(20000);
+                Thread.Sleep(20000);
                 wd.WriteLine("PING :" + config.network);
                 wd.Flush();
             }
@@ -860,7 +861,7 @@ namespace wmib
             {
                 wd.WriteLine("PRIVMSG nickserv :identify " + config.login + " " + config.password);
                 wd.Flush();
-                System.Threading.Thread.Sleep(4000);
+                Thread.Sleep(4000);
             }
             return true;
         }
@@ -1024,15 +1025,15 @@ namespace wmib
                     string log;
                     if (!noac)
                     {
-                        log = "[" + timedateToString(System.DateTime.Now.Hour) + ":" +
-                              timedateToString(System.DateTime.Now.Minute) + ":" +
-                              timedateToString(System.DateTime.Now.Second) + "] * " + user + " " + message + "\n";
+                        log = "[" + timedateToString(DateTime.Now.Hour) + ":" +
+                              timedateToString(DateTime.Now.Minute) + ":" +
+                              timedateToString(DateTime.Now.Second) + "] * " + user + " " + message + "\n";
                     }
                     else
                     {
-                        log = "[" + timedateToString(System.DateTime.Now.Hour) + ":" +
-                              timedateToString(System.DateTime.Now.Minute) + ":" +
-                              timedateToString(System.DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
+                        log = "[" + timedateToString(DateTime.Now.Hour) + ":" +
+                              timedateToString(DateTime.Now.Minute) + ":" +
+                              timedateToString(DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
                     }
                     File.AppendAllText(
                         channel.log + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".txt", log);
@@ -1060,6 +1061,11 @@ namespace wmib
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static bool validFile(string name)
         {
             return
@@ -1109,7 +1115,7 @@ namespace wmib
                 config.Save();
                 wd.WriteLine("JOIN " + channel);
                 wd.Flush();
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
                 config.channel Chan = getChannel(channel);
                 Chan.Users.addUser("admin", IRCTrust.normalize(user) + "!.*@" + host);
             }
@@ -1135,7 +1141,7 @@ namespace wmib
                     if (chan.Users.isApproved(user, host, "admin"))
                     {
                         wd.WriteLine("PART " + chan.name);
-                        System.Threading.Thread.Sleep(100);
+                        Thread.Sleep(100);
                         wd.Flush();
                         if (!Directory.Exists(chan.log))
                         {
@@ -1155,7 +1161,7 @@ namespace wmib
                     if (chan.Users.isApproved(user, host, "admin"))
                     {
                         wd.WriteLine("PART " + chan.name);
-                        System.Threading.Thread.Sleep(100);
+                        Thread.Sleep(100);
                         wd.Flush();
                         config.channels.Remove(chan);
                         config.Save();
@@ -1345,7 +1351,7 @@ namespace wmib
             Authenticate();
             foreach (config.channel ch in config.channels)
             {
-                System.Threading.Thread.Sleep(2000);
+                Thread.Sleep(2000);
                 wd.WriteLine("JOIN " + ch.name);
             }
             wd.Flush();
@@ -1362,15 +1368,15 @@ namespace wmib
             rd = new StreamReader(data, System.Text.Encoding.UTF8);
             wd = new StreamWriter(data);
 
-            dumphtmt = new System.Threading.Thread(HtmlDump.Start);
+            dumphtmt = new Thread(HtmlDump.Start);
             dumphtmt.Start();
-            check_thread = new System.Threading.Thread(Ping);
+            check_thread = new Thread(Ping);
             check_thread.Start();
 
             wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
             wd.WriteLine("NICK " + config.username);
 
-            System.Threading.Thread.Sleep(2000);
+            Thread.Sleep(2000);
 
             Authenticate();
 
@@ -1379,14 +1385,14 @@ namespace wmib
                 if (ch.name != "")
                 {
                     wd.WriteLine("JOIN " + ch.name);
-                    System.Threading.Thread.Sleep(2000);
+                    Thread.Sleep(2000);
                 }
             }
             wd.Flush();
             string nick = "";
             string host = "";
             string channel = "";
-            char delimiter = (char) 001;
+            const char delimiter = (char) 001;
 
             while (true)
             {
@@ -1403,7 +1409,6 @@ namespace wmib
                                 if (text.Contains("PRIVMSG"))
                                 {
                                     string info = text.Substring(1, text.IndexOf(" :", 1) - 1);
-                                    string info_host;
                                     // we got a message here :)
                                     if (text.Contains("!") && text.Contains("@"))
                                     {
@@ -1412,7 +1417,7 @@ namespace wmib
                                                               info.IndexOf(" ", info.IndexOf("@")) - 1 -
                                                               info.IndexOf("@"));
                                     }
-                                    info_host = info.Substring(info.IndexOf("PRIVMSG "));
+                                    string info_host = info.Substring(info.IndexOf("PRIVMSG "));
 
                                     string message;
                                     if (info_host.Contains("#"))
@@ -1469,7 +1474,7 @@ namespace wmib
                                 }
                             }
                         }
-                        System.Threading.Thread.Sleep(50);
+                        Thread.Sleep(50);
                     }
                     Program.Log("Reconnecting, end of data stream");
                     Reconnect();
