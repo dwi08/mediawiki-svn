@@ -381,8 +381,7 @@ abstract class FileBackend extends FileBackendBase {
 	abstract public function copy( array $params );
 
 	/**
-	 * Copy a file from one storage path to another in the backend.
-	 * This can be left as a dummy function as long as hasMove() returns false.
+	 * Move a file from one storage path to another in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
 	 *     src           : source storage path
@@ -393,7 +392,14 @@ abstract class FileBackend extends FileBackendBase {
 	 * @return Status
 	 */
 	public function move( array $params ) {
-		throw new MWException( "This function is not implemented." );
+		// Copy source to dest
+		$status = $this->backend->copy( $params );
+		if ( !$status->isOK() ) {
+			return $status;
+		}
+		// Delete source (only fails due to races or medium going down)
+		$this->backend->delete( array( 'src' => $this->params['src'] ) );
+		return $status;
 	}
 
 	/**
@@ -443,22 +449,6 @@ abstract class FileBackend extends FileBackendBase {
 
 	public function clean( array $params ) {
 		return Status::newGood();
-	}
-
-	/**
-	 * Whether this backend can perform a move from one storage path to another. 
-	 * No backend hits are required. For example, moving objects across 
-	 * containers may not be supported. Do not call this function from places 
-	 * outside FileBackend and FileOp.
-	 * $params include:
-	 *     src : source storage path
-	 *     dst : destination storage path
-	 *
-	 * @param $params Array
-	 * @return bool
-	 */
-	public function canMove( array $params ) {
-		return false; // not implemented
 	}
 
 	public function getFileSha1Base36( array $params ) {

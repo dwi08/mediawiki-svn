@@ -47,7 +47,6 @@ abstract class FileOp {
 			}
 		}
 		$this->params = $params;
-		$this->initialize();
 	}
 
 	/**
@@ -263,11 +262,6 @@ abstract class FileOp {
 	protected function allowedParams() {
 		return array();
 	}
-
-	/**
-	 * @return void
-	 */
-	protected function initialize() {}
 
 	/**
 	 * @return Status
@@ -721,15 +715,8 @@ class CopyFileOp extends FileOp {
  *     overwriteSame : override any existing file at destination
  */
 class MoveFileOp extends FileOp {
-	protected $usingMove = false; // using backend move() function?
-
 	protected function allowedParams() {
 		return array( 'src', 'dst', 'overwriteDest', 'overwriteSame' );
-	}
-
-	protected function initialize() {
-		// Use faster, native, move() if applicable
-		$this->usingMove = $this->backend->canMove( $this->params );
 	}
 
 	protected function doPrecheck( array &$predicates ) {
@@ -760,23 +747,8 @@ class MoveFileOp extends FileOp {
 			}
 		}
 		if ( !$this->destSameAsSource ) {
-			// Native moves: move the file into the destination
-			if ( $this->usingMove ) {
-				$status->merge( $this->backend->move( $this->params ) );
-			// Non-native moves: copy the file into the destination & delete source
-			} else {
-				// Copy source to dest
-				$status->merge( $this->backend->copy( $this->params ) );
-				if ( !$status->isOK() ) {
-					return $status;
-				}
-				// Delete source
-				$params = array( 'src' => $this->params['src'] );
-				$status->merge( $this->backend->delete( $params ) );
-				if ( !$status->isOK() ) {
-					return $status;
-				}
-			}
+			// Move the file into the destination
+			$status->merge( $this->backend->move( $this->params ) );
 		} else {
 			// Create a source backup copy as needed
 			$status->merge( $this->backupSource() );
@@ -796,30 +768,14 @@ class MoveFileOp extends FileOp {
 	protected function doRevert() {
 		$status = Status::newGood();
 		if ( !$this->destSameAsSource ) {
-			// Native moves: move the file back to the source
-			if ( $this->usingMove ) {
-				$params = array(
-					'src' => $this->params['dst'],
-					'dst' => $this->params['src']
-				);
-				$status->merge( $this->backend->move( $params ) );
-				if ( !$status->isOK() ) {
-					return $status; // also can't restore any dest file
-				}
-			// Non-native moves: remove the file saved to the destination
-			} else {
-				// Copy destination back to source
-				$params = array( 'src' => $this->params['dst'], 'dst' => $this->params['src'] );
-				$status = $this->backend->copy( $params );
-				if ( !$status->isOK() ) {
-					return $status; // also can't restore any dest file
-				}
-				// Delete destination
-				$params = array( 'src' => $this->params['dst'] );
-				$status = $this->backend->delete( $params );
-				if ( !$status->isOK() ) {
-					return $status; // also can't restore any dest file
-				}
+			// Move the file back to the source
+			$params = array(
+				'src' => $this->params['dst'],
+				'dst' => $this->params['src']
+			);
+			$status->merge( $this->backend->move( $params ) );
+			if ( !$status->isOK() ) {
+				return $status; // also can't restore any dest file
 			}
 			// Restore any file that was at the destination
 			$status->merge( $this->restoreDest() );
