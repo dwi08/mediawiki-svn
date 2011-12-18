@@ -93,6 +93,10 @@ class FileBackendMultiWrite extends FileBackendBase {
 			return $status; // abort
 		}
 
+		// Clear any cache entries (after locks acquired)
+		foreach ( $this->fileBackends as $backend ) {
+			$backend->clearCache();
+		}
 		// Actually attempt the operation batch...
 		$status->merge( FileOp::attemptBatch( $performOps, $opts ) );
 
@@ -116,7 +120,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 					$newOp[$par] = preg_replace(
 						'!^mwstore://' . preg_quote( $this->name ) . '/!',
 						'mwstore://' . $backend->getName() . '/',
-						$newOp[$par]
+						$newOp[$par] // string or array
 					);
 				}
 			}

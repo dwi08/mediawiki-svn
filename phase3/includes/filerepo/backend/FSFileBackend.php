@@ -38,7 +38,7 @@ class FSFileBackend extends FileBackend {
 		return null;
 	}
 
-	function store( array $params ) {
+	protected function doStore( array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
@@ -79,7 +79,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function copy( array $params ) {
+	protected function doCopy( array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
@@ -127,7 +127,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function move( array $params ) {
+	protected function doMove( array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
@@ -176,7 +176,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function delete( array $params ) {
+	protected function doDelete( array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
@@ -203,7 +203,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function concatenate( array $params ) {
+	protected function doConcatenate( array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );
@@ -301,7 +301,7 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function create( array $params ) {
+	protected function doCreate( array $params ) {
 		$status = Status::newGood();
 
 		list( $c, $dest ) = $this->resolveStoragePath( $params['dst'] );

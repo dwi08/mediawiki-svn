@@ -356,6 +356,10 @@ abstract class FileBackendBase {
  * @since 1.19
  */
 abstract class FileBackend extends FileBackendBase {
+	/** @var Array */
+	protected $cache = array(); // (storage path => key => value)
+	protected $maxCacheSize = 50; // integer; max paths with entries
+
 	/**
 	 * Store a file into the backend from a file on disk.
 	 * Do not call this function from places outside FileBackend and FileOp.
@@ -367,7 +371,16 @@ abstract class FileBackend extends FileBackendBase {
 	 * @param $params Array
 	 * @return Status
 	 */
-	abstract public function store( array $params );
+	final public function store( array $params ) {
+		$status = $this->doStore( $params );
+		$this->clearCache( array( $params['dst'] ) );
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::store()
+	 */
+	abstract protected function doStore( array $params );
 
 	/**
 	 * Copy a file from one storage path to another in the backend.
@@ -380,7 +393,16 @@ abstract class FileBackend extends FileBackendBase {
 	 * @param $params Array
 	 * @return Status
 	 */
-	abstract public function copy( array $params );
+	final public function copy( array $params ) {
+		$status = $this->doCopy( $params );
+		$this->clearCache( array( $params['dst'] ) );
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::copy()
+	 */
+	abstract protected function doCopy( array $params );
 
 	/**
 	 * Delete a file at the storage path.
@@ -391,7 +413,16 @@ abstract class FileBackend extends FileBackendBase {
 	 * @param $params Array
 	 * @return Status
 	 */
-	abstract public function delete( array $params );
+	final public function delete( array $params ) {
+		$status = $this->doDelete( $params );
+		$this->clearCache( array( $params['src'] ) );
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::delete()
+	 */
+	abstract protected function doDelete( array $params );
 
 	/**
 	 * Move a file from one storage path to another in the backend.
@@ -404,7 +435,16 @@ abstract class FileBackend extends FileBackendBase {
 	 * @param $params Array
 	 * @return Status
 	 */
-	public function move( array $params ) {
+	final public function move( array $params ) {
+		$status = $this->doMove( $params );
+		$this->clearCache( array( $params['src'], $params['dst'] ) );
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::move()
+	 */
+	protected function doMove( array $params ) {
 		// Copy source to dest
 		$status = $this->backend->copy( $params );
 		if ( !$status->isOK() ) {
@@ -426,7 +466,16 @@ abstract class FileBackend extends FileBackendBase {
 	 * @param $params Array
 	 * @return Status
 	 */
-	abstract public function concatenate( array $params );
+	final public function concatenate( array $params ) {
+		$status = $this->doConcatenate( $params );
+		$this->clearCache( array( $params['dst'] ) );
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::concatenate()
+	 */
+	abstract protected function doConcatenate( array $params );
 
 	/**
 	 * Create a file in the backend with the given contents.
@@ -439,7 +488,16 @@ abstract class FileBackend extends FileBackendBase {
 	 * @param $params Array
 	 * @return Status
 	 */
-	abstract public function create( array $params );
+	final public function create( array $params ) {
+		$status = $this->doCreate( $params );
+		$this->clearCache( array( $params['dst'] ) );
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::create()
+	 */
+	abstract protected function doCreate( array $params );
 
 	public function prepare( array $params ) {
 		return Status::newGood();
@@ -454,11 +512,20 @@ abstract class FileBackend extends FileBackendBase {
 	}
 
 	public function getFileSha1Base36( array $params ) {
-		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
+		$path = $params['src'];
+		if ( isset( $this->cache[$path]['sha1'] ) ) {
+			return $this->cache[$path]['sha1'];
+		}
+		$fsFile = $this->getLocalReference( array( 'src' => $path ) );
 		if ( !$fsFile ) {
 			return false;
 		} else {
-			return $fsFile->getSha1Base36();
+			$sha1 = $fsFile->getSha1Base36();
+			if ( $sha1 !== false ) { // don't cache negatives
+				$this->trimCache(); // limit memory
+				$this->cache[$path]['sha1'] = $sha1;
+			}
+			return $sha1;
 		}
 	}
 
@@ -565,10 +632,41 @@ abstract class FileBackend extends FileBackendBase {
 			}
 		}
 
+		// Clear any cache entries (after locks acquired)
+		$this->clearCache();
 		// Actually attempt the operation batch...
 		$status->merge( FileOp::attemptBatch( $performOps, $opts ) );
 
 		return $status;
+	}
+
+	/**
+	 * Invalidate the file existence and property cache
+	 *
+	 * @param $paths Array Clear cache for specific files
+	 * @return void
+	 */
+	final public function clearCache( array $paths = null ) {
+		if ( $paths === null ) {
+			$this->cache = array();
+		} else {
+			foreach ( $paths as $path ) {
+				unset( $this->cache[$path] );
+			}
+		}
+	}
+
+	/**
+	 * Prune the cache if it is too big to add an item
+	 * 
+	 * @return void
+	 */
+	protected function trimCache() {
+		if ( count( $this->cache ) >= $this->maxCacheSize ) {
+			reset( $this->cache );
+			$key = key( $this->cache );
+			unset( $this->cache[$key] );
+		}
 	}
 
 	/**

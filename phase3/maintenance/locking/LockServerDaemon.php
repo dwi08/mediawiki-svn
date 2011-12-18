@@ -35,11 +35,14 @@ class LockServerDaemon {
 	/** @var Array */
 	protected $sessionIndexEx = array(); // (session => key => 1)
 
+	protected $address; // string (IP/hostname)
+	protected $port; // integer
 	protected $authKey; // string key
 	protected $connTimeout; // array ( 'sec' => integer, 'usec' => integer )
 	protected $lockTimeout; // integer number of seconds
 	protected $maxLocks; // integer
 	protected $maxClients; // integer
+	protected $maxBacklog; // integer
 
 	protected $startTime; // integer UNIX timestamp
 	protected $lockCount = 0; // integer
@@ -70,7 +73,10 @@ class LockServerDaemon {
 			} 
 		}
 
+		$this->address = $config['address'];
+		$this->port = $config['port'];
 		$this->authKey = $config['authKey'];
+
 		$connTimeout = isset( $config['connTimeout'] )
 			? $config['connTimeout']
 			: 1.5;
@@ -87,10 +93,15 @@ class LockServerDaemon {
 		$this->maxClients = isset( $config['maxClients'] )
 			? $config['maxClients']
 			: 100;
-		$backlog = isset( $config['maxBacklog'] )
+		$this->maxBacklog = isset( $config['maxBacklog'] )
 			? $config['maxBacklog']
 			: 10;
+	}
 
+	/**
+	 * @return void
+	 */
+	protected function setupSocket() {
 		if ( !function_exists( 'socket_create' ) ) {
 			throw new Exception( "PHP sockets extension missing from PHP CLI mode." );
 		}
@@ -99,10 +110,10 @@ class LockServerDaemon {
 			throw new Exception( "socket_create(): " . socket_strerror( socket_last_error() ) );
 		}
 		socket_set_option( $sock, SOL_SOCKET, SO_REUSEADDR, 1 ); // bypass 2MLS
-		if ( socket_bind( $sock, $config['address'], $config['port'] ) === false ) {
+		if ( socket_bind( $sock, $this->address, $this->port ) === false ) {
 			throw new Exception( "socket_bind(): " .
 				socket_strerror( socket_last_error( $sock ) ) );
-		} elseif ( socket_listen( $sock, $backlog ) === false ) {
+		} elseif ( socket_listen( $sock, $this->maxBacklog ) === false ) {
 			throw new Exception( "socket_listen(): " .
 				socket_strerror( socket_last_error( $sock ) ) );
 		}
@@ -115,6 +126,8 @@ class LockServerDaemon {
 	 * @return void
 	 */
 	public function main() {
+		// Setup socket and start listing
+		$this->setupSocket();
 		// Create a list of all the clients that will be connected to us.
 		$clients = array( $this->sock ); // start off with listening socket
 		do {
