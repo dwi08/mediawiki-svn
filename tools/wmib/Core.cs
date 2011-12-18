@@ -15,7 +15,7 @@ using System.IO;
 namespace wmib
 {
     public class misc
-    { 
+    {
         public static bool IsValidRegex(string pattern)
         {
             if (pattern == null) return false;
@@ -32,6 +32,7 @@ namespace wmib
             return true;
         }
     }
+
     public class irc
     {
         private static System.Net.Sockets.NetworkStream data;
@@ -53,10 +54,12 @@ namespace wmib
             /// Regex
             /// </summary>
             public string name;
+
             /// <summary>
             /// Level
             /// </summary>
             public string level;
+
             /// <summary>
             /// Constructor
             /// </summary>
@@ -114,10 +117,12 @@ namespace wmib
             /// List of all users in a channel
             /// </summary>
             private List<user> Users = new List<user>();
+
             /// <summary>
             /// Channel this class belong to
             /// </summary>
             public string _Channel;
+
             /// <summary>
             /// File where data are stored
             /// </summary>
@@ -333,24 +338,30 @@ namespace wmib
             /// Data file
             /// </summary>
             public string datafile = "";
+
             // if we need to update dump
             public bool update = true;
+
             /// <summary>
             /// Locked
             /// </summary>
             public bool locked = false;
+
             public class item
             {
                 /// <summary>
                 /// Text
                 /// </summary>
                 public string text;
+
                 /// <summary>
                 /// Key
                 /// </summary>
                 public string key;
+
                 public string user;
                 public string locked;
+
                 /// <summary>
                 /// Constructor
                 /// </summary>
@@ -366,16 +377,19 @@ namespace wmib
                     user = User;
                 }
             }
+
             public class staticalias
             {
                 /// <summary>
                 /// Name
                 /// </summary>
                 public string Name;
+
                 /// <summary>
                 /// Key
                 /// </summary>
                 public string Key;
+
                 /// <summary>
                 /// Constructor
                 /// </summary>
@@ -387,20 +401,25 @@ namespace wmib
                     Key = key;
                 }
             }
+
             /// <summary>
             /// List of all items in class
             /// </summary>
             public List<item> text = new List<item>();
+
             /// <summary>
             /// List of all aliases we want to use
             /// </summary>
             public List<staticalias> Alias = new List<staticalias>();
+
             /// <summary>
             /// Channel name
             /// </summary>
             public string Channel;
+
             private bool running;
             private string search_key;
+
             /// <summary>
             /// Load it
             /// </summary>
@@ -458,11 +477,14 @@ namespace wmib
                     File.WriteAllText(datafile, "");
                     foreach (staticalias key in Alias)
                     {
-                        File.AppendAllText(datafile, key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
+                        File.AppendAllText(datafile,
+                                           key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
                     }
                     foreach (item key in text)
                     {
-                        File.AppendAllText(datafile, key.key + config.separator + key.text + config.separator + "key" + config.separator + key.locked + config.separator + key.user + "\n");
+                        File.AppendAllText(datafile,
+                                           key.key + config.separator + key.text + config.separator + "key" +
+                                           config.separator + key.locked + config.separator + key.user + "\n");
                     }
                 }
                 catch (Exception b)
@@ -535,7 +557,7 @@ namespace wmib
                                 Message("It would be cool to give me also a name of key", Channel);
                                 return true;
                             }
-                             this.aliasKey(name.Substring(name.IndexOf(" alias") + 7), parm[0], "");
+                            this.aliasKey(name.Substring(name.IndexOf(" alias") + 7), parm[0], "");
                         }
                         else
                         {
@@ -579,7 +601,7 @@ namespace wmib
                         return false;
                     }
                 }
-                string User ="";
+                string User = "";
                 if (name.Contains("|"))
                 {
                     User = name.Substring(name.IndexOf("|"));
@@ -590,26 +612,27 @@ namespace wmib
                 string[] p = name.Split(' ');
                 int parameters = p.Length;
                 string keyv = getValue(p[0]);
-                    if (!(keyv == ""))
+                if (!(keyv == ""))
+                {
+                    if (parameters > 1)
                     {
-                        if ( parameters > 1)
+                        int curr = 1;
+                        while (parameters > curr)
                         {
-                            int curr = 1;
-                            while ( parameters > curr )
-                            {
-                                keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
-                                curr++;
-                            }
+                            keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
+                            curr++;
                         }
-                        if (User == "")
-                        {
-                            Message(keyv, Channel);
-                        } else
-                        {
-                            Message(User + ": " + keyv, Channel);
-                        }
-                        return true;
                     }
+                    if (User == "")
+                    {
+                        Message(keyv, Channel);
+                    }
+                    else
+                    {
+                        Message(User + ": " + keyv, Channel);
+                    }
+                    return true;
+                }
                 foreach (staticalias b in Alias)
                 {
                     if (b.Name == p[0])
@@ -617,10 +640,10 @@ namespace wmib
                         keyv = getValue(b.Key);
                         if (keyv != "")
                         {
-                            if ( parameters > 1)
+                            if (parameters > 1)
                             {
                                 int curr = 1;
-                                while ( parameters > curr )
+                                while (parameters > curr)
                                 {
                                     keyv = keyv.Replace("$" + curr.ToString(), p[curr]);
                                     curr++;
@@ -643,7 +666,11 @@ namespace wmib
 
             private void StartSearch()
             {
-                System.Text.RegularExpressions.Regex value = new System.Text.RegularExpressions.Regex(search_key, System.Text.RegularExpressions.RegexOptions.Compiled);
+                System.Text.RegularExpressions.Regex value = new System.Text.RegularExpressions.Regex(search_key,
+                                                                                                      System.Text.
+                                                                                                          RegularExpressions
+                                                                                                          .RegexOptions.
+                                                                                                          Compiled);
                 string results = "";
                 foreach (item data in text)
                 {
@@ -712,7 +739,7 @@ namespace wmib
                 if (key.Length < 9)
                 {
                     Message("Could you please tell me what I should search for :P", Chan.name);
-                     return;
+                    return;
                 }
                 key = key.Substring(8);
                 string results = "";
@@ -743,20 +770,20 @@ namespace wmib
             {
                 while (locked)
                 {
-                        System.Threading.Thread.Sleep(200);
+                    System.Threading.Thread.Sleep(200);
                 }
                 try
                 {
-                        foreach (item data in text)
+                    foreach (item data in text)
+                    {
+                        if (data.key == key)
                         {
-                            if (data.key == key)
-                            {
-                                Message("Key exist!", Channel);
-                                return;
-                            }
+                            Message("Key exist!", Channel);
+                            return;
                         }
-                        text.Add(new item(key, encode(Text), user, "false"));
-                        Message("Key was added!", Channel);
+                    }
+                    text.Add(new item(key, encode(Text), user, "false"));
+                    Message("Key was added!", Channel);
                     Save();
                 }
                 catch (Exception b)
@@ -773,7 +800,7 @@ namespace wmib
             /// <param name="user">User</param>
             public void aliasKey(string key, string al, string user)
             {
-                foreach(staticalias stakey in this.Alias)
+                foreach (staticalias stakey in this.Alias)
                 {
                     if (stakey.Name == al)
                     {
@@ -790,7 +817,7 @@ namespace wmib
             {
                 while (locked)
                 {
-                        System.Threading.Thread.Sleep(200);
+                    System.Threading.Thread.Sleep(200);
                 }
                 foreach (item keys in text)
                 {
@@ -892,7 +919,7 @@ namespace wmib
         {
             if (number <= 9 && number >= 0)
             {
-                    return "0"+number.ToString();
+                return "0" + number.ToString();
             }
             return number.ToString();
         }
@@ -907,7 +934,7 @@ namespace wmib
         {
             config.channel curr = getChannel(channel);
             wd.WriteLine("PRIVMSG " + channel + " :" + message);
-            chanLog( message, curr, config.username, "" );
+            chanLog(message, curr, config.username, "");
             wd.Flush();
             return true;
         }
@@ -931,7 +958,8 @@ namespace wmib
                     {
                         if (rights_info.Length < 3)
                         {
-                            Message("Wrong number of parameters, go fix it - example @trustadd regex (admin|trusted)", channel.name);
+                            Message("Wrong number of parameters, go fix it - example @trustadd regex (admin|trusted)",
+                                    channel.name);
                             return 0;
                         }
                         if (!(rights_info[2] == "admin" || rights_info[2] == "trusted"))
@@ -1005,17 +1033,22 @@ namespace wmib
                     string log;
                     if (!noac)
                     {
-                        log = "[" + timedateToString(System.DateTime.Now.Hour) + ":" + timedateToString(System.DateTime.Now.Minute) + ":" + timedateToString( System.DateTime.Now.Second) + "] * " + user + " " + message + "\n";
+                        log = "[" + timedateToString(System.DateTime.Now.Hour) + ":" +
+                              timedateToString(System.DateTime.Now.Minute) + ":" +
+                              timedateToString(System.DateTime.Now.Second) + "] * " + user + " " + message + "\n";
                     }
                     else
                     {
-                        log = "[" + timedateToString( System.DateTime.Now.Hour) + ":" + timedateToString( System.DateTime.Now.Minute ) + ":" + timedateToString( System.DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
+                        log = "[" + timedateToString(System.DateTime.Now.Hour) + ":" +
+                              timedateToString(System.DateTime.Now.Minute) + ":" +
+                              timedateToString(System.DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
                     }
-                    File.AppendAllText(channel.log + System.DateTime.Now.Year + System.DateTime.Now.Month + System.DateTime.Now.Day +".txt", log);
+                    File.AppendAllText(
+                        channel.log + DateTime.Now.Year + DateTime.Now.Month + System.DateTime.Now.Day + ".txt", log);
                 }
             }
             catch (Exception er)
-            { 
+            {
                 // nothing
                 Console.WriteLine(er.Message);
             }
@@ -1038,7 +1071,9 @@ namespace wmib
 
         public static bool validFile(string name)
         {
-            return !(name.Contains(" ") || name.Contains("?") || name.Contains("|") || name.Contains("/") || name.Contains("\\") || name.Contains(">") || name.Contains("<") || name.Contains("*"));
+            return
+                !(name.Contains(" ") || name.Contains("?") || name.Contains("|") || name.Contains("/") ||
+                  name.Contains("\\") || name.Contains(">") || name.Contains("<") || name.Contains("*"));
         }
 
         /// <summary>
@@ -1054,45 +1089,42 @@ namespace wmib
             {
                 if (message.StartsWith("@add"))
                 {
-                    if (chan.Users.isApproved(user, host, "admin"))
+                    return;
+                }
+                if (!chan.Users.isApproved(user, host, "admin"))
+                {
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
+                }
+                if (!message.Contains(" "))
+                {
+                    Message("Invalid name", chan.name);
+                    return;
+                }
+                string channel = message.Substring(message.IndexOf(" ") + 1);
+                if (!validFile(channel) || (channel.Contains("#") == false))
+                {
+                    Message("Invalid name", chan.name);
+                    return;
+                }
+                foreach (config.channel cu in config.channels)
+                {
+                    if (channel == cu.name)
                     {
-                        if (message.Contains(" "))
-                        {
-                            string channel = message.Substring(message.IndexOf(" ") + 1);
-                            if ( !validFile(channel) || (channel.Contains("#") == false))
-                            {
-                                Message("Invalid name", chan.name);
-                                return;
-                            }
-                            foreach (config.channel cu in config.channels)
-                            {
-                                if (channel == cu.name)
-                                {
-                                    return;
-                                }
-                            }
-                            config.channels.Add(new config.channel(channel));
-                            config.Save();
-                            wd.WriteLine("JOIN " + channel);
-                            wd.Flush();
-                            System.Threading.Thread.Sleep(100);
-                            config.channel Chan = getChannel(channel);
-                            Chan.Users.addUser("admin", IRCTrust.normalize(user) + "!.*@" + host);
-                        }
-                        else
-                        {
-                            Message("Invalid name", chan.name);
-                        }
-                    }
-                    else
-                    {
-                        Message(messages.PermissionDenied, chan.name);
+                        return;
                     }
                 }
+                config.channels.Add(new config.channel(channel));
+                config.Save();
+                wd.WriteLine("JOIN " + channel);
+                wd.Flush();
+                System.Threading.Thread.Sleep(100);
+                config.channel Chan = getChannel(channel);
+                Chan.Users.addUser("admin", IRCTrust.normalize(user) + "!.*@" + host);
             }
             catch (Exception b)
-            { 
-                
+            {
+
             }
         }
 
@@ -1166,10 +1198,10 @@ namespace wmib
             {
                 if (chan.Users.isApproved(user, host, "admin"))
                 {
-                        chan.LoadConfig();
-                        chan.Keys = new dictionary(chan.keydb, chan.name);
-                        Message("Channel config was reloaded", chan.name);
-                        return;
+                    chan.LoadConfig();
+                    chan.Keys = new dictionary(chan.keydb, chan.name);
+                    Message("Channel config was reloaded", chan.name);
+                    return;
                 }
                 else
                 {
@@ -1204,11 +1236,12 @@ namespace wmib
             if (message == "@whoami")
             {
                 user current = chan.Users.getUser(user + "!@" + host);
-                if(current.level == "null")
+                if (current.level == "null")
                 {
                     Message("You are unknown to me :)", chan.name);
                     return;
-                } else
+                }
+                else
                 {
                     Message("You are " + current.level + " identified by name " + current.name, chan.name);
                     return;
@@ -1295,7 +1328,9 @@ namespace wmib
             }
             if (message == "@commands")
             {
-                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, whoami, add, reload, logon, logoff", chan.name);
+                Message(
+                    "Commands: channellist, trusted, trustadd, trustdel, infobot-off, infobot-on, drop, whoami, add, reload, logon, logoff",
+                    chan.name);
                 return;
             }
         }
@@ -1392,7 +1427,7 @@ namespace wmib
             string host = "";
             string message = "";
             string channel = "";
-            char delimiter = (char)001;
+            char delimiter = (char) 001;
 
             while (true)
             {
@@ -1418,7 +1453,9 @@ namespace wmib
                                     if (text.Contains("!") && text.Contains("@"))
                                     {
                                         nick = info.Substring(0, info.IndexOf("!"));
-                                        host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
+                                        host = info.Substring(info.IndexOf("@") + 1,
+                                                              info.IndexOf(" ", info.IndexOf("@")) - 1 -
+                                                              info.IndexOf("@"));
                                     }
                                     info_host = info.Substring(info.IndexOf("PRIVMSG "));
 
@@ -1429,7 +1466,8 @@ namespace wmib
                                         message = message.Substring(message.IndexOf(" :") + 2);
                                         if (message.Contains(delimiter.ToString() + "ACTION"))
                                         {
-                                            getAction(message.Replace(delimiter.ToString() +"ACTION", ""), channel, host, nick);
+                                            getAction(message.Replace(delimiter.ToString() + "ACTION", ""), channel,
+                                                      host, nick);
                                             continue;
                                         }
                                         getMessage(channel, nick, host, message);
@@ -1442,25 +1480,30 @@ namespace wmib
                                         // private message
                                         if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
                                         {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" + " I am a bot don't finger me");
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" +
+                                                         " I am a bot don't finger me");
                                             wd.Flush();
                                             continue;
                                         }
                                         if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
                                         {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " + System.DateTime.Now.ToString());
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " +
+                                                         System.DateTime.Now.ToString());
                                             wd.Flush();
                                             continue;
                                         }
                                         if (message.StartsWith(":" + delimiter.ToString() + "PING"))
                                         {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" + message.Substring(message.IndexOf(delimiter.ToString() + "PING")+5));
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" +
+                                                         message.Substring(
+                                                             message.IndexOf(delimiter.ToString() + "PING") + 5));
                                             wd.Flush();
                                             continue;
                                         }
                                         if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
                                         {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION "  + config.version);
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " +
+                                                         config.version);
                                             wd.Flush();
                                             continue;
                                         }
@@ -1495,6 +1538,6 @@ namespace wmib
         {
             wd.Flush();
             return 0;
-        }   
+        }
     }
 }

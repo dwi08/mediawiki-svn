@@ -18,10 +18,12 @@ namespace wmib
         /// Channel name
         /// </summary>
         public config.channel Channel;
+
         /// <summary>
         /// Dump
         /// </summary>
         public string dumpname;
+
         // This function is called on start of bot
         public static void Start()
         {
@@ -37,6 +39,7 @@ namespace wmib
                 System.Threading.Thread.Sleep(320000);
             }
         }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -62,7 +65,7 @@ namespace wmib
         /// <returns></returns>
         public string CreateHeader()
         {
-            return "<html><head><title>"+ Channel.name +"</title></head><body>\n";
+            return "<html><head><title>" + Channel.name + "</title></head><body>\n";
         }
 
         /// <summary>

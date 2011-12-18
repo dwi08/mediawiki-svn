@@ -23,24 +23,31 @@ namespace wmib
             /// Channel name
             /// </summary>
             public string name;
+
             public bool logged;
+
             /// <summary>
             /// Log
             /// </summary>
             public string log;
+
             public bool info;
+
             /// <summary>
             /// Keys
             /// </summary>
             public irc.dictionary Keys;
+
             /// <summary>
             /// Configuration text
             /// </summary>
             private string conf;
+
             /// <summary>
             /// Users
             /// </summary>
             public irc.IRCTrust Users;
+
             /// <summary>
             /// Path of db
             /// </summary>
@@ -61,7 +68,7 @@ namespace wmib
             /// </summary>
             public void LoadConfig()
             {
-                string conf_file = name +  ".setting";
+                string conf_file = name + ".setting";
                 if (!File.Exists(conf_file))
                 {
                     File.WriteAllText(conf_file, "");
@@ -174,7 +181,7 @@ namespace wmib
             text = File.ReadAllText("wmib");
             foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
             {
-                string config =x.Replace(" ", "");
+                string config = x.Replace(" ", "");
                 if (config != "")
                 {
                     channels.Add(new channel(config));
@@ -197,6 +204,7 @@ namespace wmib
         /// Network
         /// </summary>
         public static string network = "irc.freenode.net";
+
         /// <summary>
         /// Nick name
         /// </summary>
