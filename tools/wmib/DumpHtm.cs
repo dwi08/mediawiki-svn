@@ -8,13 +8,7 @@
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
 
-
-
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-
 
 namespace wmib
 {
@@ -35,12 +29,10 @@ namespace wmib
             {
                 foreach (config.channel chan in config.channels)
                 {
-                    if (chan.Keys.update)
-                    {
-                        HtmlDump dump = new HtmlDump(chan);
-                        dump.Make();
-                        chan.Keys.update = false;
-                    }
+                    if (!chan.Keys.update) continue;
+                    HtmlDump dump = new HtmlDump(chan);
+                    dump.Make();
+                    chan.Keys.update = false;
                 }
                 System.Threading.Thread.Sleep(320000);
             }
@@ -103,9 +95,8 @@ namespace wmib
         {
             try
             {
-                string text;
-                text = CreateHeader();
-                text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
+                string text = CreateHeader();
+                text += "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
                 Channel.Keys.locked = true;
                 if (Channel.Keys.text.Count > 0)
                 {

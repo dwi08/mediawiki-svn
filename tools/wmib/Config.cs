@@ -10,11 +10,8 @@
 
 // Created by Petr Bena benapetr@gmail.com
 
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
-
+using System.IO;
 
 namespace wmib
 {
@@ -65,24 +62,24 @@ namespace wmib
             public void LoadConfig()
             {
                 string conf_file = name +  ".setting";
-                if (!System.IO.File.Exists(conf_file))
+                if (!File.Exists(conf_file))
                 {
-                    System.IO.File.WriteAllText(conf_file, "");
+                    File.WriteAllText(conf_file, "");
                     Program.Log("Creating datafile for channel " + name);
                     return;
                 }
-                conf = System.IO.File.ReadAllText(conf_file);
-                if (config.parseConfig(conf, "keysdb") != "")
+                conf = File.ReadAllText(conf_file);
+                if (parseConfig(conf, "keysdb") != "")
                 {
-                    keydb = (config.parseConfig(conf, "keysdb"));
+                    keydb = (parseConfig(conf, "keysdb"));
                 }
-                if (config.parseConfig(conf, "logged") != "")
+                if (parseConfig(conf, "logged") != "")
                 {
-                    logged = bool.Parse(config.parseConfig(conf, "logged"));
+                    logged = bool.Parse(parseConfig(conf, "logged"));
                 }
-                if (config.parseConfig(conf, "infodb") != "")
+                if (parseConfig(conf, "infodb") != "")
                 {
-                    info = bool.Parse(config.parseConfig(conf, "infodb"));
+                    info = bool.Parse(parseConfig(conf, "infodb"));
                 }
             }
 
@@ -95,7 +92,7 @@ namespace wmib
                 AddConfig("infodb", info.ToString());
                 AddConfig("logged", logged.ToString());
                 AddConfig("keysdb", keydb);
-                System.IO.File.WriteAllText(name + ".setting", conf);
+                File.WriteAllText(name + ".setting", conf);
             }
 
             /// <summary>
@@ -110,13 +107,13 @@ namespace wmib
                 logged = true;
                 name = Name;
                 LoadConfig();
-                if (!System.IO.Directory.Exists("log"))
+                if (!Directory.Exists("log"))
                 {
-                    System.IO.Directory.CreateDirectory("log");
+                    Directory.CreateDirectory("log");
                 }
-                if (!System.IO.Directory.Exists("log/" + Name))
+                if (!Directory.Exists("log/" + Name))
                 {
-                    System.IO.Directory.CreateDirectory("log/" + Name);
+                    Directory.CreateDirectory("log/" + Name);
                 }
                 Keys = new irc.dictionary(keydb, name);
                 log = "log/" + Name + "/";
@@ -148,7 +145,7 @@ namespace wmib
                 text = text + current.name + ",\n";
             }
             text = text + ";";
-            System.IO.File.WriteAllText("wmib", text);
+            File.WriteAllText("wmib", text);
         }
 
         /// <summary>
@@ -174,13 +171,13 @@ namespace wmib
         /// </summary>
         public static void Load()
         {
-            text = System.IO.File.ReadAllText("wmib");
+            text = File.ReadAllText("wmib");
             foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
             {
-                string name=x.Replace(" ", "");
-                if (!(name == ""))
+                string config =x.Replace(" ", "");
+                if (config != "")
                 {
-                    channels.Add(new channel(name));
+                    channels.Add(new channel(config));
                 }
             }
             username = parseConfig(text, "username");
@@ -188,12 +185,14 @@ namespace wmib
             login = parseConfig(text, "nick");
             debugchan = parseConfig(text, "debug");
             password = parseConfig(text, "password");
-            if (!System.IO.Directory.Exists(config.DumpDir))
+            if (!Directory.Exists(DumpDir))
             {
-                System.IO.Directory.CreateDirectory(config.DumpDir);
+                Directory.CreateDirectory(DumpDir);
             }
         }
+
         public static string text;
+
         /// <summary>
         /// Network
         /// </summary>
@@ -202,31 +201,39 @@ namespace wmib
         /// Nick name
         /// </summary>
         public static string username = "wm-bot";
+
         public static string debugchan = "";
+
         /// <summary>
         /// Login name
         /// </summary>
         public static string login = "";
+
         /// <summary>
         /// Login pw
         /// </summary>
         public static string password = "";
+
         /// <summary>
         /// Dump
         /// </summary>
         public static string DumpDir = "dump";
+
         /// <summary>
         /// Version
         /// </summary>
         public static string version = "wikimedia bot v. 1.1.4";
+
         /// <summary>
         /// Separator
         /// </summary>
         public static string separator = "|";
+
         /// <summary>
         /// User name
         /// </summary>
         public static string name = "wm-bot";
+
         /// <summary>
         /// Channels
         /// </summary>

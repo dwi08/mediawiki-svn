@@ -11,10 +11,6 @@
 // Created by Petr Bena benapetr@gmail.com
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-
 
 namespace wmib
 {
@@ -25,6 +21,7 @@ namespace wmib
             Console.WriteLine("LOG: " + msg);
             return false;
         }
+
         static void Main(string[] args)
         {
             Log("Connecting");

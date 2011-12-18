@@ -10,9 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
-
+using System.IO;
 
 namespace wmib
 {
@@ -39,8 +37,8 @@ namespace wmib
         private static System.Net.Sockets.NetworkStream data;
         public static System.Threading.Thread dumphtmt;
         public static System.Threading.Thread check_thread;
-        public static System.IO.StreamReader rd;
-        private static System.IO.StreamWriter wd;
+        public static StreamReader rd;
+        private static StreamWriter wd;
         private static List<user> User = new List<user>();
 
         public class messages
@@ -76,22 +74,25 @@ namespace wmib
             public string value;
             public string regex;
             public bool searching;
-            public bool result = false;
+            public bool result;
+
             public RegexCheck(string Regex, string Data)
             {
                 result = false;
                 value = Data;
                 regex = Regex;
             }
+
             private void Run()
             {
                 System.Text.RegularExpressions.Regex c = new System.Text.RegularExpressions.Regex(regex);
                 result = c.Match(value).Success;
                 searching = false;
             }
+
             public int IsMatch()
             {
-                System.Threading.Thread quick = new System.Threading.Thread(new System.Threading.ThreadStart(Run));
+                System.Threading.Thread quick = new System.Threading.Thread(Run);
                 searching = true;
                 quick.Start();
                 int check = 0;
@@ -99,17 +100,11 @@ namespace wmib
                 {
                     check++;
                     System.Threading.Thread.Sleep(10);
-                    if (check > 50)
-                    {
-                        quick.Abort();
-                        return 2;
-                    }
+                    if (check <= 50) continue;
+                    quick.Abort();
+                    return 2;
                 }
-                if (result)
-                {
-                    return 1;
-                }
-                return 0;
+                return result ? 1 : 0;
             }
         }
 
@@ -126,7 +121,7 @@ namespace wmib
             /// <summary>
             /// File where data are stored
             /// </summary>
-            public string File;
+            public string DataFile;
 
             /// <summary>
             /// Constructor
@@ -135,14 +130,14 @@ namespace wmib
             public IRCTrust(string channel)
             {
                 // Load
-                File = channel + "_user";
-                if (!System.IO.File.Exists(File))
+                DataFile = channel + "_user";
+                if (!File.Exists(DataFile))
                 {
                     // Create db
                     Program.Log("Creating user file for " + channel);
-                    System.IO.File.WriteAllText(File, "");
+                    File.WriteAllText(DataFile, "");
                 }
-                string[] db = System.IO.File.ReadAllLines(channel + "_user");
+                string[] db = File.ReadAllLines(channel + "_user");
                 _Channel = channel;
                 foreach (string x in db)
                 {
@@ -162,10 +157,10 @@ namespace wmib
             /// <returns></returns>
             public bool Save()
             {
-                System.IO.File.WriteAllText(File, "");
+                File.WriteAllText(DataFile, "");
                 foreach (user u in Users)
                 {
-                    System.IO.File.AppendAllText(File, encode(u.name) + config.separator + u.level + "\n");
+                    File.AppendAllText(DataFile, encode(u.name) + config.separator + u.level + "\n");
                 }
                 return true;
             }
@@ -412,13 +407,13 @@ namespace wmib
             public void Load()
             {
                 text.Clear();
-                if (!System.IO.File.Exists(datafile))
+                if (!File.Exists(datafile))
                 {
                     // Create db
-                    System.IO.File.WriteAllText(datafile, "");
+                    File.WriteAllText(datafile, "");
                 }
 
-                string[] db = System.IO.File.ReadAllLines(datafile);
+                string[] db = File.ReadAllLines(datafile);
                 foreach (string x in db)
                 {
                     if (x.Contains(config.separator))
@@ -460,14 +455,14 @@ namespace wmib
                 update = true;
                 try
                 {
-                    System.IO.File.WriteAllText(datafile, "");
+                    File.WriteAllText(datafile, "");
                     foreach (staticalias key in Alias)
                     {
-                        System.IO.File.AppendAllText(datafile, key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
+                        File.AppendAllText(datafile, key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
                     }
                     foreach (item key in text)
                     {
-                        System.IO.File.AppendAllText(datafile, key.key + config.separator + key.text + config.separator + "key" + config.separator + key.locked + config.separator + key.user + "\n");
+                        File.AppendAllText(datafile, key.key + config.separator + key.text + config.separator + "key" + config.separator + key.locked + config.separator + key.user + "\n");
                     }
                 }
                 catch (Exception b)
@@ -1016,7 +1011,7 @@ namespace wmib
                     {
                         log = "[" + timedateToString( System.DateTime.Now.Hour) + ":" + timedateToString( System.DateTime.Now.Minute ) + ":" + timedateToString( System.DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
                     }
-                    System.IO.File.AppendAllText(channel.log + System.DateTime.Now.Year + System.DateTime.Now.Month + System.DateTime.Now.Day +".txt", log);
+                    File.AppendAllText(channel.log + System.DateTime.Now.Year + System.DateTime.Now.Month + System.DateTime.Now.Day +".txt", log);
                 }
             }
             catch (Exception er)
@@ -1119,12 +1114,12 @@ namespace wmib
                         wd.WriteLine("PART " + chan.name);
                         System.Threading.Thread.Sleep(100);
                         wd.Flush();
-                        if (!System.IO.Directory.Exists(chan.log))
+                        if (!Directory.Exists(chan.log))
                         {
-                            System.IO.Directory.Delete(chan.log, true);
+                            Directory.Delete(chan.log, true);
                         }
-                        System.IO.File.Delete(chan.name + ".setting");
-                        System.IO.File.Delete(chan.Users.File);
+                        File.Delete(chan.name + ".setting");
+                        File.Delete(chan.Users.DataFile);
                         config.channels.Remove(chan);
                         config.Save();
                         return;
@@ -1295,11 +1290,8 @@ namespace wmib
                         return;
                     }
                 }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                Message(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@commands")
             {
@@ -1350,8 +1342,8 @@ namespace wmib
         public static bool Reconnect()
         {
             data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
-            rd = new System.IO.StreamReader(data, System.Text.Encoding.UTF8);
-            wd = new System.IO.StreamWriter(data);
+            rd = new StreamReader(data, System.Text.Encoding.UTF8);
+            wd = new StreamWriter(data);
             wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
             wd.WriteLine("NICK " + config.username);
             Authenticate();
@@ -1371,12 +1363,12 @@ namespace wmib
         public static int Connect()
         {
             data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
-            rd = new System.IO.StreamReader(data, System.Text.Encoding.UTF8);
-            wd = new System.IO.StreamWriter(data);
+            rd = new StreamReader(data, System.Text.Encoding.UTF8);
+            wd = new StreamWriter(data);
 
-            dumphtmt = new System.Threading.Thread(new System.Threading.ThreadStart(HtmlDump.Start));
+            dumphtmt = new System.Threading.Thread(HtmlDump.Start);
             dumphtmt.Start();
-            check_thread = new System.Threading.Thread(new System.Threading.ThreadStart(Ping));
+            check_thread = new System.Threading.Thread(Ping);
             check_thread.Start();
 
             wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
@@ -1440,11 +1432,8 @@ namespace wmib
                                             getAction(message.Replace(delimiter.ToString() +"ACTION", ""), channel, host, nick);
                                             continue;
                                         }
-                                        else
-                                        {
-                                            getMessage(channel, nick, host, message);
-                                            continue;
-                                        }
+                                        getMessage(channel, nick, host, message);
+                                        continue;
                                     }
                                     else
                                     {
@@ -1489,7 +1478,7 @@ namespace wmib
                     Program.Log("Reconnecting, end of data stream");
                     Reconnect();
                 }
-                catch (System.IO.IOException xx)
+                catch (IOException xx)
                 {
                     Program.Log("Reconnecting, connection failed " + xx.Message + xx.StackTrace);
                     Reconnect();
@@ -1501,6 +1490,7 @@ namespace wmib
             }
             return 0;
         }
+
         public static int Disconnect()
         {
             wd.Flush();
