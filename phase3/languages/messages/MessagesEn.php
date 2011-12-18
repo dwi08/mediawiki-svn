@@ -2279,8 +2279,9 @@ It cannot be properly checked for security.',
 'lockmanager-fail-acquirelock'  => 'Could not acquire lock for key "$1".',
 'lockmanager-fail-releaselock'  => 'Could not release lock for key "$1".',
 'lockmanager-fail-acquirelocks' => 'Could not acquire locks for keys "$1".',
-'lockmanager-fail-db-bucket'    => 'Could not contact enough lock servers in bucket $1',
-'lockmanager-fail-db-release'   => 'Could not release locks on server $1',
+'lockmanager-fail-db-bucket'    => 'Could not contact enough lock databases in bucket $1',
+'lockmanager-fail-db-release'   => 'Could not release locks on database $1',
+'lockmanager-fail-svr-release'  => 'Could not release locks on server $1',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Access denied',
