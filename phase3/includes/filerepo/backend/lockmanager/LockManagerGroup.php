@@ -2,7 +2,7 @@
 /**
  * Class to handle file lock manager registration
  * 
- * @ingroup FileBackend
+ * @ingroup LockManager
  */
 class LockManagerGroup {
 	protected static $instance = null;
@@ -57,7 +57,7 @@ class LockManagerGroup {
 		if ( !isset( $this->managers[$name] ) ) {
 			throw new MWException( "No lock manager defined with the name `$name`." );
 		}
-		// Lazy-load the actual backend instance
+		// Lazy-load the actual lock manager instance
 		if ( !isset( $this->managers[$name]['instance'] ) ) {
 			$class = $this->managers[$name]['class'];
 			$config = $this->managers[$name]['config'];

@@ -2,6 +2,7 @@
 /**
  * @file
  * @ingroup FileBackend
+ * @author Aaron Schulz
  */
 
 /**
@@ -71,7 +72,7 @@ class FileBackendMultiWrite extends FileBackendBase {
 		foreach ( $this->fileBackends as $index => $backend ) {
 			$backendOps = $this->substOpPaths( $ops, $backend );
 			$performOps = array_merge( $performOps, $backend->getOperations( $backendOps ) );
-			if ( $index == 0 ) {
+			if ( $index == 0 && empty( $opts['nonLocking'] ) ) {
 				// Set "files to lock" from the first batch so we don't try to set all
 				// locks two or three times over (depending on the number of backends).
 				// A lock on one storage path is a lock on all the backends.

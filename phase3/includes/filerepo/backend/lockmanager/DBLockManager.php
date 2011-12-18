@@ -12,6 +12,8 @@
  * A majority of peer DBs must agree for a lock to be acquired.
  *
  * Caching is used to avoid hitting servers that are down.
+ *
+ * @ingroup LockManager
  */
 class DBLockManager extends LockManager {
 	/** @var Array Map of DB names to server config */
@@ -374,6 +376,8 @@ class DBLockManager extends LockManager {
 /**
  * MySQL version of DBLockManager that supports shared locks.
  * All locks are non-blocking, which avoids deadlocks.
+ *
+ * @ingroup LockManager
  */
 class MySqlLockManager extends DBLockManager {
 	/** @var Array Mapping of lock types to the type actually used */

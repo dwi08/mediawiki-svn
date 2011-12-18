@@ -1,5 +1,11 @@
 <?php
 /**
+ * @file
+ * @ingroup LockManager
+ * @author Aaron Schulz
+ */
+
+/**
  * Class for handling resource locking.
  * Locks on resource keys can either be shared or exclusive.
  * 
@@ -9,8 +15,9 @@
  * Locks should either be non-blocking or have low wait timeouts.
  * 
  * Subclasses should avoid throwing exceptions at all costs.
- * 
- * @ingroup FileBackend
+ *
+ * @ingroup LockManager
+ * @since 1.19
  */
 abstract class LockManager {
 	/* Lock types; stronger locks have higher values */
@@ -78,6 +85,9 @@ abstract class LockManager {
 /**
  * LockManager helper class to handle scoped locks, which
  * release when an object is destroyed or goes out of scope.
+ *
+ * @ingroup LockManager
+ * @since 1.19
  */
 class ScopedLock {
 	/** @var LockManager */

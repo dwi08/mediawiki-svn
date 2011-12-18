@@ -2,6 +2,7 @@
 /**
  * @file
  * @ingroup FileBackend
+ * @author Aaron Schulz
  */
 
 /**
@@ -124,10 +125,6 @@ class FSFileBackend extends FileBackend {
 		$this->chmod( $dest );
 
 		return $status;
-	}
-
-	function canMove( array $params ) {
-		return true;
 	}
 
 	function move( array $params ) {

@@ -9,6 +9,8 @@
  * to one bucket. Each bucket maps to one or several peer servers, each
  * running LockServerDaemon.php, listening on a designated TCP port.
  * A majority of peers must agree for a lock to be acquired.
+ *
+ * @ingroup LockManager
  */
 class LSLockManager extends LockManager {
 	/** @var Array Mapping of lock types to the type actually used */

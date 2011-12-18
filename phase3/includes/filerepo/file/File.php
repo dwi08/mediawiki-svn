@@ -1150,7 +1150,7 @@ abstract class File {
 	 */
 	function getThumbUrl( $suffix = false ) {
 		$this->assertRepoDefined();
-		$path = $this->repo->getZoneUrl('thumb') . '/' . $this->getUrlRel();
+		$path = $this->repo->getZoneUrl( 'thumb' ) . '/' . $this->getUrlRel();
 		if ( $suffix !== false ) {
 			$path .= '/' . rawurlencode( $suffix );
 		}

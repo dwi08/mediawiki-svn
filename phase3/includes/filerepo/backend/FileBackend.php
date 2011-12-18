@@ -2,6 +2,7 @@
 /**
  * @file
  * @ingroup FileBackend
+ * @author Aaron Schulz
  */
 
 /**
@@ -21,6 +22,7 @@
  * As a corollary, external dependencies should be kept to a minimum.
  * 
  * @ingroup FileBackend
+ * @since 1.19
  */
 abstract class FileBackendBase {
 	protected $name; // unique backend name
@@ -111,8 +113,7 @@ abstract class FileBackendBase {
 	 *         'op'                  => 'concatenate',
 	 *         'srcs'                => <ordered array of storage paths>,
 	 *         'dst'                 => <storage path>,
-	 *         'overwriteDest'       => <boolean>,
-	 *         'overwriteSame'       => <boolean>
+	 *         'overwriteDest'       => <boolean>
 	 *     )
 	 * g) Do nothing (no-op)
 	 *     array(
@@ -352,6 +353,7 @@ abstract class FileBackendBase {
  * This class defines the methods as abstract that subclasses must implement.
  *
  * @ingroup FileBackend
+ * @since 1.19
  */
 abstract class FileBackend extends FileBackendBase {
 	/**
@@ -381,6 +383,17 @@ abstract class FileBackend extends FileBackendBase {
 	abstract public function copy( array $params );
 
 	/**
+	 * Delete a file at the storage path.
+	 * Do not call this function from places outside FileBackend and FileOp.
+	 * $params include:
+	 *     src : source storage path
+	 * 
+	 * @param $params Array
+	 * @return Status
+	 */
+	abstract public function delete( array $params );
+
+	/**
 	 * Move a file from one storage path to another in the backend.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
@@ -401,17 +414,6 @@ abstract class FileBackend extends FileBackendBase {
 		$this->backend->delete( array( 'src' => $this->params['src'] ) );
 		return $status;
 	}
-
-	/**
-	 * Delete a file at the storage path.
-	 * Do not call this function from places outside FileBackend and FileOp.
-	 * $params include:
-	 *     src : source storage path
-	 * 
-	 * @param $params Array
-	 * @return Status
-	 */
-	abstract public function delete( array $params );
 
 	/**
 	 * Combines files from several storage paths into a new file in the backend.
@@ -548,7 +550,7 @@ abstract class FileBackend extends FileBackendBase {
 		// Build up a list of FileOps...
 		$performOps = $this->getOperations( $ops );
 
-		if ( !isset( $opts['nonLocking'] ) || !$opts['nonLocking'] ) {
+		if ( empty( $opts['nonLocking'] ) ) {
 			// Build up a list of files to lock...
 			$filesLockEx = $filesLockSh = array();
 			foreach ( $performOps as $index => $fileOp ) {

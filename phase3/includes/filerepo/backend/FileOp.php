@@ -2,6 +2,7 @@
 /**
  * @file
  * @ingroup FileBackend
+ * @author Aaron Schulz
  */
 
 /**
@@ -12,6 +13,7 @@
  * potentially many FileOp classes in large arrays in memory.
  * 
  * @ingroup FileBackend
+ * @since 1.19
  */
 abstract class FileOp {
 	/** $var Array */

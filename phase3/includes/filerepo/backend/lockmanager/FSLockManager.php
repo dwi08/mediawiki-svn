@@ -8,6 +8,8 @@
  * Do not use this with 'lockDir' set to an NFS mount unless the
  * NFS client is at least version 2.6.12. Otherwise, the BSD flock()
  * locks will be ignored; see http://nfs.sourceforge.net/#section_d.
+ *
+ * @ingroup LockManager
  */
 class FSLockManager extends LockManager {
 	/** @var Array Mapping of lock types to the type actually used */
