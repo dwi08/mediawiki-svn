@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace wmib
 {
@@ -22,7 +23,7 @@ namespace wmib
 
             try
             {
-                System.Text.RegularExpressions.Regex.Match("", pattern);
+                Regex.Match("", pattern);
             }
             catch (ArgumentException)
             {
@@ -88,7 +89,7 @@ namespace wmib
 
             private void Run()
             {
-                System.Text.RegularExpressions.Regex c = new System.Text.RegularExpressions.Regex(regex);
+                Regex c = new Regex(regex);
                 result = c.Match(value).Success;
                 searching = false;
             }
@@ -172,7 +173,7 @@ namespace wmib
 
             public static string normalize(string name)
             {
-                name = System.Text.RegularExpressions.Regex.Escape(name);
+                name = Regex.Escape(name);
                 name = name.Replace("?", "\\?");
                 return name;
             }
@@ -277,7 +278,7 @@ namespace wmib
                 string users_ok = "";
                 foreach (user b in Users)
                 {
-                    users_ok = users_ok + " " + b.name + ",";
+                    users_ok += users_ok + " " + b.name + ",";
                 }
                 Message("I trust: " + users_ok, _Channel);
             }
@@ -666,11 +667,7 @@ namespace wmib
 
             private void StartSearch()
             {
-                System.Text.RegularExpressions.Regex value = new System.Text.RegularExpressions.Regex(search_key,
-                                                                                                      System.Text.
-                                                                                                          RegularExpressions
-                                                                                                          .RegexOptions.
-                                                                                                          Compiled);
+                Regex value = new Regex(search_key, RegexOptions.Compiled);
                 string results = "";
                 foreach (item data in text)
                 {
@@ -713,7 +710,7 @@ namespace wmib
                 }
                 search_key = key.Substring(11);
                 running = true;
-                System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ThreadStart(StartSearch));
+                System.Threading.Thread th = new System.Threading.Thread(StartSearch);
                 th.Start();
                 int check = 1;
                 while (running)
@@ -1000,11 +997,8 @@ namespace wmib
                             channel.Users.delUser(rights_info[1]);
                             return 0;
                         }
-                        else
-                        {
-                            Message("You are not autorized to perform this, sorry", channel.name);
-                            return 0;
-                        }
+                        Message("You are not autorized to perform this, sorry", channel.name);
+                        return 0;
                     }
                     Message("Invalid user", channel.name);
                 }
@@ -1044,7 +1038,7 @@ namespace wmib
                               timedateToString(System.DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
                     }
                     File.AppendAllText(
-                        channel.log + DateTime.Now.Year + DateTime.Now.Month + System.DateTime.Now.Day + ".txt", log);
+                        channel.log + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".txt", log);
                 }
             }
             catch (Exception er)
@@ -1156,11 +1150,8 @@ namespace wmib
                         config.Save();
                         return;
                     }
-                    else
-                    {
-                        Message(messages.PermissionDenied, chan.name);
-                        return;
-                    }
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
                 if (message == "@part")
                 {
@@ -1203,11 +1194,8 @@ namespace wmib
                     Message("Channel config was reloaded", chan.name);
                     return;
                 }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                Message(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@logon")
             {
@@ -1218,14 +1206,11 @@ namespace wmib
                         Message("Channel is already logged", chan.name);
                         return;
                     }
-                    else
-                    {
-                        Message("Channel is now logged", chan.name);
-                        chan.logged = true;
-                        chan.SaveConfig();
-                        config.Save();
-                        return;
-                    }
+                    Message("Channel is now logged", chan.name);
+                    chan.logged = true;
+                    chan.SaveConfig();
+                    config.Save();
+                    return;
                 }
                 else
                 {
@@ -1241,11 +1226,8 @@ namespace wmib
                     Message("You are unknown to me :)", chan.name);
                     return;
                 }
-                else
-                {
-                    Message("You are " + current.level + " identified by name " + current.name, chan.name);
-                    return;
-                }
+                Message("You are " + current.level + " identified by name " + current.name, chan.name);
+                return;
             }
 
             if (message == "@logoff")
@@ -1257,19 +1239,13 @@ namespace wmib
                         Message("Channel was already not logged", chan.name);
                         return;
                     }
-                    else
-                    {
-                        chan.logged = false;
-                        config.Save();
-                        chan.SaveConfig();
-                        Message("Channel is not logged", chan.name);
-                        return;
-                    }
+                    chan.logged = false;
+                    config.Save();
+                    chan.SaveConfig();
+                    Message("Channel is not logged", chan.name);
+                    return;
                 }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                }
+                Message(messages.PermissionDenied, chan.name);
             }
             if (message == "@channellist")
             {
@@ -1290,20 +1266,14 @@ namespace wmib
                         Message("Channel had infobot disabled", chan.name);
                         return;
                     }
-                    else
-                    {
-                        Message("Infobot disabled", chan.name);
-                        chan.info = false;
-                        chan.SaveConfig();
-                        config.Save();
-                        return;
-                    }
-                }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
+                    Message("Infobot disabled", chan.name);
+                    chan.info = false;
+                    chan.SaveConfig();
+                    config.Save();
                     return;
                 }
+                Message(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@infobot-on")
             {
@@ -1314,14 +1284,11 @@ namespace wmib
                         Message("Infobot was already enabled :O", chan.name);
                         return;
                     }
-                    else
-                    {
-                        chan.info = true;
-                        config.Save();
-                        chan.SaveConfig();
-                        Message("Infobot enabled", chan.name);
-                        return;
-                    }
+                    chan.info = true;
+                    config.Save();
+                    chan.SaveConfig();
+                    Message("Infobot enabled", chan.name);
+                    return;
                 }
                 Message(messages.PermissionDenied, chan.name);
                 return;
@@ -1488,7 +1455,7 @@ namespace wmib
                                         if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
                                         {
                                             wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " +
-                                                         System.DateTime.Now.ToString());
+                                                         DateTime.Now.ToString());
                                             wd.Flush();
                                             continue;
                                         }
