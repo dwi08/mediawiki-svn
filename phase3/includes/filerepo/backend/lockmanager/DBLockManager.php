@@ -198,12 +198,9 @@ class DBLockManager extends LockManager {
 					if ( !$this->doLockingQuery( $lockDb, $keys, $type ) ) {
 						return 'cantacquire'; // vetoed; resource locked
 					}
-					// Check that DB has no signs of lock loss
-					if ( $this->checkUptime( $lockDb ) ) {
-						++$yesVotes; // success for this peer
-						if ( $yesVotes >= $quorum ) {
-							return true; // lock obtained
-						}
+					++$yesVotes; // success for this peer
+					if ( $yesVotes >= $quorum ) {
+						return true; // lock obtained
 					}
 				} catch ( DBConnectionError $e ) {
 					$this->cacheRecordFailure( $lockDb );
@@ -301,28 +298,8 @@ class DBLockManager extends LockManager {
 	}
 
 	/**
-	 * Checks if the DB server did not recently restart.
-	 * This curtails the problem of locks falling off when DB servers restart.
-	 * 
-	 * @param $lockDb string
-	 * @return bool
-	 * @throws DBError
-	 */
-	protected function checkUptime( $lockDb ) {
-		if ( isset( $this->conns[$lockDb] ) ) { // sanity
-			if ( $this->safeDelay > 0 ) {
-				$db = $this->conns[$lockDb];
-				return ( $db->getServerUptime() > $this->safeDelay );
-			}
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Checks if the DB has not recently had connection/query errors.
-	 * When in "trust cache" mode, this curtails the problem of peers occasionally
-	 * missing locks. Otherwise, it just avoids wasting time on connection attempts.
+	 * This just avoids wasting time on doomed connection attempts.
 	 * 
 	 * @param $lockDb string
 	 * @return bool
@@ -337,11 +314,7 @@ class DBLockManager extends LockManager {
 	}
 
 	/**
-	 * Log a lock request failure to the cache.
-	 *
-	 * Worst case scenario is that a resource lock was only
-	 * on one peer and then that peer is restarted or goes down.
-	 * Clients trying to get locks need to know if a DB server is down.
+	 * Log a lock request failure to the cache
 	 *
 	 * @param $lockDb string
 	 * @return bool Success
