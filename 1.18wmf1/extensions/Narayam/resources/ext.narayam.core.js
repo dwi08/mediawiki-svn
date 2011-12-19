@@ -56,7 +56,7 @@ $.narayam = new ( function() {
 			if ( regex.test( str ) // Input string match
 				&&
 				(
-					rules[i][1].length == 0 // Keybuffer match not required
+					rules[i][1].length === 0 // Keybuffer match not required
 					||
 					( // Keybuffer match specified, so it should be met
 						rules[i][1].length > 0
@@ -130,7 +130,7 @@ $.narayam = new ( function() {
 			shiftKey: false,
 			cmdKey: false,
 			key: 'm'
-		}
+		};
 		// Browser sniffing to determine the available shortcutKey
 		// Refer: mediawiki.util.js and en.wikipedia.org/wiki/Access_key
 		var profile = $.client.profile();
@@ -168,7 +168,7 @@ $.narayam = new ( function() {
 			text += 'Command-';
 		}
 		text += shortcutKey.key.toUpperCase();
- 		return text;
+		return text;
 	}
 
 	/**
@@ -428,7 +428,7 @@ $.narayam = new ( function() {
 	 */
 	this.getScheme = function( name ) {
 		return schemes[name];
-	}
+	};
 	
 	/**
 	 * Change the current transliteration scheme
@@ -438,9 +438,9 @@ $.narayam = new ( function() {
 		var recent = $.cookie( 'narayam-scheme' ) || [];
 		if ( typeof recent === "string" ) {
 			recent = recent.split( "," );
-		};
+		}
 		recent = $.grep( recent, function( value ) {
- 			 return value != name;
+			 return value != name;
 		} );
 		recent.unshift( name );
 		recent = recent.slice( 0, recentItemsLength );
@@ -465,7 +465,7 @@ $.narayam = new ( function() {
 	this.setup = function() {
 		that.buildMenu();
 		// Restore state from cookies
-		var recentSchemes = $.cookie( 'narayam-scheme' );
+		var recent = $.cookie( 'narayam-scheme' );
 		var lastScheme = null;
 		if ( typeof recent === "string" ) {
 			lastScheme = recent.split( "," )[0];
@@ -531,7 +531,7 @@ $.narayam = new ( function() {
 			if ( $.inArray( scheme, seen ) > -1 ) { continue; }
 			seen.push( scheme );
 			if ( count++ > recentItemsLength ) { break; }
-			$narayamMenuItem = that.buildMenuItem( scheme );
+			var $narayamMenuItem = that.buildMenuItem( scheme );
 			$narayamMenuItem.addClass( 'narayam-recent-menu-item' );
 			$narayamMenuItems.append( $narayamMenuItem );
 		}
@@ -548,7 +548,7 @@ $.narayam = new ( function() {
 				haveSchemes = true;
 				if ( $.inArray( scheme, seen ) !== -1 ) { continue; }
 				seen.push( scheme );
-				$narayamMenuItem = that.buildMenuItem( scheme );
+				var $narayamMenuItem = that.buildMenuItem( scheme );
 				$narayamMenuItems.append( $narayamMenuItem );
 			}
 		}
@@ -557,11 +557,6 @@ $.narayam = new ( function() {
 			// No schemes available, don't show the tool
 			return null;
 		}
-
-		// Event listener for scheme selection.
-		$( '.narayam-scheme', $( '#narayam-menu-items > ul')[0] ).live( 'click', function() {
-			that.setScheme( $( this ).val() );
-		} );
 
 		// Build enable/disable checkbox and label
 		var $checkbox = $( '<input type="checkbox" id="narayam-toggle" />' );
@@ -578,13 +573,14 @@ $.narayam = new ( function() {
 		var $moreLink = $( '<a>' )
 			.text( mw.msg( 'narayam-more-imes' ) )
 			.prop( 'href', '#' )
-			.click( function() {
+			.click( function( event ) {
 				$('.narayam-scheme-dynamic-item').toggle( 'fast' );
 				if ( $('li.narayam-more-imes-link').hasClass( 'open' ) ) {
 					$('li.narayam-more-imes-link').removeClass( 'open' );
 				} else {
 					$('li.narayam-more-imes-link').addClass( 'open' );
 				}
+				event.stopPropagation();
 			} );
 
 		$narayamMenuItems.append( $( '<li>' )
@@ -598,7 +594,7 @@ $.narayam = new ( function() {
 				// Donot repeat the input methods in more input methods section.
 				// If already shown on recent items.
 				if ( $.inArray( langscheme, seen ) > -1 ) { continue; }
-				$narayamMenuItem = that.buildMenuItem( langscheme );
+				var $narayamMenuItem = that.buildMenuItem( langscheme );
 				$narayamMenuItem.addClass( 'narayam-scheme-dynamic-item' );
 				$narayamMenuItems.append( $narayamMenuItem );
 
@@ -606,14 +602,16 @@ $.narayam = new ( function() {
 		}
 
 		// Event listener for scheme selection - dynamic loading of rules.
-		$( '.narayam-scheme', $('.narayam-scheme-dynamic-item') ).live( 'click', function() {
+		$narayamMenuItems.delegate( 'input:radio', 'click', function( ) {
 			that.setScheme( $( this ).val() );
-			// rebuild the menu items with recent items.
-			$( '#narayam-menu' ).html( $.narayam.buildMenuItems() );
-			$( '#narayam-menu-items' ).css( 'left', $('li#pt-narayam').offset().left );
-			$( '#narayam-' + $( this ).val() ).prop( 'checked', true );
-			if ( enabled ) {
-				$( '#narayam-toggle' ).prop( 'checked', true );
+			if ( $( this ).parent().hasClass( 'narayam-scheme-dynamic-item' ) ){
+				// rebuild the menu items with recent items.
+				$( '#narayam-menu' ).html( $.narayam.buildMenuItems() );
+				$( '#narayam-menu-items' ).css( 'left', $( 'li#pt-narayam' ).offset().left );
+				$( '#narayam-' + $( this ).val() ).prop( 'checked', true );
+				if ( enabled ) {
+					$( '#narayam-toggle' ).prop( 'checked', true );
+				}
 			}
 		} );
 
@@ -654,19 +652,53 @@ $.narayam = new ( function() {
 		var $li = $( '<li>' ).attr( 'id', 'pt-narayam' ).append( $link );
 
 		// If rtl, add to the right of top personal links. Else, to the left
-		var fn = $( 'body' ).hasClass( 'rtl' ) ? "append" : "prepend";
-		$( '#p-personal ul:first' )[fn]( $li );
+		var rtlEnv = $( 'body' ).hasClass( 'rtl' );
+		var positionFunction = rtlEnv ? "append" : "prepend";
+		$( '#p-personal ul:first' )[positionFunction]( $li );
 		$( 'body' ).prepend( $menu );
 		$menu.hide();
-		$li.hover( function() {
-			$menuItemsDiv.css( 'left', $li.offset().left );
-			$menu.show();
-		});
-		$menu.hover( function() {
-			}, function() {
-			$menu.hide();
-		});
+		$li.click( function( event ) {
+			var menuSide, menuOffset, distanceToEdge;
 
+			if ( rtlEnv ) {
+				distanceToEdge = $li.outerWidth() + $li.offset().left;
+				if ( $menuItemsDiv.outerWidth() > distanceToEdge ) {
+					menuSide = 'left';
+					menuOffset = $li.offset().left;
+				} else {
+					menuSide = 'right';
+					menuOffset = $(window).width() - distanceToEdge;
+				}
+			} else {
+				distanceToEdge = $(window).width() - $li.offset().left;
+				if ( $menuItemsDiv.outerWidth() > distanceToEdge ) {
+					menuSide = 'right';
+					menuOffset = distanceToEdge - $li.outerWidth();
+				} else {
+					menuSide = 'left';
+					menuOffset = $li.offset().left;
+				}
+			}
+
+			$menuItemsDiv.css( menuSide, menuOffset );
+
+			if( $menu.hasClass( 'open' ) ){
+				$menu.removeClass( 'open' );
+				$menu.hide();
+			} else {
+				$( 'div.open' ).removeClass( 'open' );
+				$menu.addClass( 'open' );
+				$menu.show();
+				event.stopPropagation();
+			}
+		} );
+		$( 'html' ).click( function() {
+			$menu.removeClass( 'open' );
+			$menu.hide();
+		} );
+ 		$menu.click( function( event ) {
+			event.stopPropagation();
+		} );
 		// Workaround for IE bug - activex components like input fields
 		// coming on top of everything.
 		// TODO: is there a better solution other than hiding it on hover?

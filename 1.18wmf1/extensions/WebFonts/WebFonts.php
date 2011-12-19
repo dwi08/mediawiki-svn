@@ -22,7 +22,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'path'           => __FILE__,
 	'name'           => 'WebFonts',
 	'author'         => array( 'Santhosh Thottingal', 'Niklas Laxström' ),
-	'url'            => 'http://www.mediawiki.org/wiki/Extension:WebFonts',
+	'url'            => 'https://www.mediawiki.org/wiki/Extension:WebFonts',
 	'descriptionmsg' => 'webfonts-desc',
 );
 
@@ -57,7 +57,7 @@ $wgResourceModules['ext.webfonts.core'] = array(
 	),
 	'localBasePath' => $dir,
 	'remoteExtPath' => 'WebFonts',
-	'messages' => array( 'webfonts-load', 'webfonts-reset' ),
+	'messages' => array( 'webfonts-load', 'webfonts-reset', 'webfonts-menu-tooltip' ),
 	'dependencies' =>  'jquery.cookie' ,
 	'position' => 'top',
 );

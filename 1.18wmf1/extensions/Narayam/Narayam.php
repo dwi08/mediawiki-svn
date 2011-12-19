@@ -32,7 +32,7 @@ $wgExtensionCredits['other'][] = array(
 	'name' => 'Narayam',
 	'version' => 0.1,
 	'author' => array( '[http://junaidpv.in Junaid P V]', 'Roan Kattouw' ),
-	'url' => 'http://www.mediawiki.org/wiki/Extension:Narayam',
+	'url' => 'https://www.mediawiki.org/wiki/Extension:Narayam',
 	'descriptionmsg' => 'narayam-desc'
 );
 
@@ -134,6 +134,9 @@ $wgNarayamSchemes = array(
 		'ta-99' => 'ext.narayam.rules.ta-99',
 		'ta-bamini' => array( 'ext.narayam.rules.ta-bamini', 'beta' ),
 		'ta-inscript' =>  array( 'ext.narayam.rules.ta-inscript', 'beta' ),
+	),
+	'tcy' => array(
+		'tcy' => array( 'ext.narayam.rules.tcy', 'beta' ),
 	),
 	'te' => array(
 		'te-inscript' => 'ext.narayam.rules.te-inscript',
@@ -237,6 +240,7 @@ $wgResourceModules['ext.narayam.core'] = $narayamTpl + array(
 		'narayam-ta-inscript',
 		'narayam-ta',
 		'narayam-ta-bamini',
+		'narayam-tcy',
 		'narayam-te-inscript',
 		'narayam-ur',
 	),
@@ -430,3 +434,8 @@ $wgResourceModules['ext.narayam.rules.mai-inscript'] = $narayamTpl + array(
 	'scripts' => 'resources/ext.narayam.rules.mai-inscript.js',
 	'dependencies' => 'ext.narayam.rules.hi-inscript',
 );
+$wgResourceModules['ext.narayam.rules.tcy'] = $narayamTpl + array(
+	'scripts' => 'resources/ext.narayam.rules.tcy.js',
+	'dependencies' => 'ext.narayam.rules.kn',
+);
+

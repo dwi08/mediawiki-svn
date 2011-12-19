@@ -369,7 +369,7 @@
 			kok: [ "Lohit Devanagari" ],
 			gom: [ "Lohit Devanagari" ],
 			mai: [ "Lohit Devanagari" ],
-			ml:  [ "AnjaliOldLipi", "Meera", "RaghuMalayalam" ],
+			ml:  [ "AnjaliOldLipi" ],
 			mr:  [ "Lohit Devanagari" ],
 			my:  [ "Masterpiece Uni Sans", "Padauk-Regular", "Myanmar3", "Yunghkio" ],
 			ne:  [ "Lohit Devanagari", "Madan" ], 
@@ -378,6 +378,7 @@
 			sa:  [ "Lohit Devanagari" ],
 			saz: [ "Pagul" ],
 			ta:  [ "Lohit Tamil", "Thendral", "Thenee" ],
+			tcy: [ "Lohit Kannada", "Kedage" ],
 			te:  [ "Lohit Telugu", "Pothana2000", "Vemana2000" ],
 			ti:  [ "AbyssinicaSIL" ]
 		}

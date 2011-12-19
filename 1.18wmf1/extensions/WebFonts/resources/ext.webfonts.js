@@ -138,10 +138,10 @@
 				fontFormats.push( "\t\turl('" + base + fontconfig.ttf + versionSuffix + "') format('truetype')" );
 			}
 			
-			styleString += fontFormats.join() + ";\n"
+			styleString += fontFormats.join() + ";\n";
 			styleString += "\tfont-weight: normal;\n}\n</style>\n";
 
- 			//inject the css to the head of the page.
+			//inject the css to the head of the page.
 			$( styleString ).appendTo( 'head' );
 		},
 		
@@ -231,6 +231,7 @@
 		loadFontsForLangAttr: function() {
 			var languages = mw.webfonts.config.languages;
 			var requested = [mw.config.get( 'wgUserVariant' ), mw.config.get( 'wgContentLanguage' ), mw.config.get( 'wgUserLanguage' )];
+			var fontFamily = false;
 			// If there are tags with lang attribute, 
 			$( 'body' ).find( '*[lang]' ).each( function( index ) {
 				// If the lang attribute value is same as one of
@@ -307,7 +308,7 @@
 				return null;
 			}
 
-			var $resetLink = $( '<input type="radio" name="font"/>' )
+			var $resetLink = $( '<input type="radio" name="font" />' )
 				.attr( 'value', 'webfont-none' )
 				.attr( 'id', 'webfont-none' )
 				.click( function( e ) {
@@ -338,29 +339,67 @@
 		 */
 		buildMenu: function(config) {
 			var $menuItemsDiv = mw.webfonts.buildMenuItems( config );
-			if( $menuItemsDiv == null ) {
+			if( $menuItemsDiv === null ) {
 				return;
 			}
 			var $menu = $( '<div>' )
 				.attr( 'id', 'webfonts-menu' )
 				.addClass( 'webfontMenu' )
 				.append( $menuItemsDiv );
-			var $link = $( '<a>' ).prop( 'href', '#' ).text( mw.message( 'webfonts-load' ).escaped() );
+			var $link = $( '<a>' )
+				.prop( 'href', '#' )
+				.text( mw.msg( 'webfonts-load' ) )
+				.attr( 'title', mw.msg( 'webfonts-menu-tooltip' ) );
+
 			// This is the fonts link
 			var $li = $( '<li>' ).attr( 'id', 'pt-webfont' ).append( $link );
+
+			var rtlEnv = $( 'body' ).hasClass( 'rtl' );
+
 			// If RTL, add to the right of top personal links. Else, to the left
-			var fn = $( 'body' ).hasClass( 'rtl' ) ? 'append' : 'prepend';
-			$( '#p-personal ul:first' )[fn]( $li );
+			var positionFunction = rtlEnv ? 'append' : 'prepend';
+			$( '#p-personal ul:first' )[positionFunction]( $li );
+
 			$( 'body' ).prepend( $menu );
-			$menu.hide();
-			$li.hover( function() {
-				$menuItemsDiv.css( 'left', $li.offset().left );
-				$menu.show();
-			});
-			$menu.hover( function() {
-				}, function() {
-				$menu.hide();
-			});
+			$li.click( function( event ) {
+				var menuSide, menuOffset, distanceToEdge;
+				
+				if ( rtlEnv ) {
+					distanceToEdge = $li.outerWidth() + $li.offset().left;
+					if ( $menuItemsDiv.outerWidth() > distanceToEdge ) {
+						menuSide = 'left';
+						menuOffset = $li.offset().left;
+					} else {
+						menuSide = 'right';
+						menuOffset = $(window).width() - distanceToEdge;
+					}
+				} else {
+					distanceToEdge = $(window).width() - $li.offset().left;
+					if ( $menuItemsDiv.outerWidth() > distanceToEdge ) {
+						menuSide = 'right';
+						menuOffset = distanceToEdge - $li.outerWidth();
+					} else {
+						menuSide = 'left';
+						menuOffset = $li.offset().left;
+					}
+				}
+
+				$menuItemsDiv.css( menuSide, menuOffset );
+
+				if ( $menu.hasClass( 'open' ) ) {
+					$menu.removeClass( 'open' );
+				} else {
+					$( 'div.open' ).removeClass( 'open' );
+					$menu.addClass( 'open' );
+					event.stopPropagation();
+				}
+			} );
+			$( 'html' ).click( function() {
+				$menu.removeClass( 'open' );
+			} );
+			$menu.click( function( event ) {
+				event.stopPropagation();
+			} );
 			// Workaround for IE bug - ActiveX components like input fields coming on top of everything.
 			// @todo Is there a better solution other than hiding it on hover?
 			if ( $.browser.msie ) { 

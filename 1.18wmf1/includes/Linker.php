@@ -1116,6 +1116,7 @@ class Linker {
 	 * @return string
 	 */
 	private static function formatAutocommentsCallback( $match ) {
+		global $wgLang;
 		$title = self::$autocommentTitle;
 		$local = self::$autocommentLocal;
 
@@ -1141,7 +1142,7 @@ class Linker {
 			}
 			if ( $sectionTitle ) {
 				$link = self::link( $sectionTitle,
-					htmlspecialchars( wfMsgForContent( 'sectionlink' ) ), array(), array(),
+					$wgLang->getArrow(), array(), array(),
 					'noclasses' );
 			} else {
 				$link = '';

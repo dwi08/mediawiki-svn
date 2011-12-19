@@ -54,6 +54,7 @@ $messages['en'] = array(
 	'narayam-ta-inscript' => 'Tamil InScript',
 	'narayam-ta' => 'Tamil Transliteration',
 	'narayam-ta-bamini' => 'Tamil Bamini',
+	'narayam-tcy' => 'Tulu Transliteration',
 	'narayam-te-inscript' => 'Telugu InScript',
 	'narayam-bn-avro' => 'Bengali Avro',
 	'narayam-bn-inscript' => 'Bengali InScript',
@@ -365,6 +366,7 @@ $messages['br'] = array(
 	'narayam-bn-nkb' => 'NKB bengaleg',
 	'narayam-ur' => 'Standard ourdou',
 	'narayam-de' => 'Alamaneg',
+	'narayam-he-standard-2011' => 'Hebraeg standard 2011',
 );
 
 /** Bosnian (Bosanski)
@@ -1339,7 +1341,7 @@ $messages['ml'] = array(
 	'narayam-ne' => 'നേപ്പാളി ലിപ്യന്തരണം',
 	'narayam-ne-inscript' => 'നേപ്പാളി ഇൻസ്ക്രിപ്റ്റ്',
 	'narayam-or' => 'ഒറിയ ലിപ്യന്തരണം',
-	'narayam-or-lekhani' => 'ഒഡിയ ലേഖനി',
+	'narayam-or-lekhani' => 'ഒഡിയ ലെഖാനി',
 	'narayam-or-inscript' => 'ഒറിയ ഇൻസ്ക്രിപ്റ്റ്',
 	'narayam-pa-phonetic' => 'ഗുരുമുഖി പഞ്ചാബി ഫൊണറ്റിക്',
 	'narayam-pa-inscript' => 'ഗുരുമുഖി പഞ്ചാബി ഇൻസ്ക്രിപ്റ്റ്',
@@ -1351,6 +1353,7 @@ $messages['ml'] = array(
 	'narayam-ta-inscript' => 'തമിഴ് ഇൻസ്ക്രിപ്റ്റ്',
 	'narayam-ta' => 'തമിഴ് ലിപ്യന്തരണം',
 	'narayam-ta-bamini' => 'തമിൾ ഭാമിനി',
+	'narayam-tcy' => 'തുളു ലിപ്യന്തരണം',
 	'narayam-te-inscript' => 'തെലുഗു ഇൻസ്ക്രിപ്റ്റ്',
 	'narayam-bn-avro' => 'ബംഗാളി അവ്രൊ',
 	'narayam-bn-inscript' => 'ബംഗാളി ഇൻസ്ക്രിപ്റ്റ്',

@@ -5,8 +5,13 @@
 	overflow: visible!important;
 }
 
+li#pt-webfont {
+	margin-left: 5px;
+}
+
 div.webfontMenu div.menu {
 	top: 0px;
+	position: relative;
 }
 
 div#webfonts-menu li {

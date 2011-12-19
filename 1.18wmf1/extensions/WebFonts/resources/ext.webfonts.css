@@ -7,18 +7,20 @@ li#pt-webfont {
 div#webfonts-menu {
 	font-size: 100%;
 	z-index: 99999;
+	display: none;
 }
 
+div#webfonts-menu.open{
+	display: block;
+}
 div#webfonts-fonts {
 	font-size: 100%;
 	z-index: 99999;
 }
 
-
 div#webfonts-menu .menu ul {
 	padding-left: 5px!important;
 }
-
 
 div#webfonts-fonts li {
 	margin: 0;
@@ -35,12 +37,12 @@ div.webfontMenu {
 }
 
 /* @noflip */
-body.rtl div.webfontMenu ul li {
+body.rtl div.webfontMenu {
 	direction: rtl;
 }
 
 div.webfontMenu div.menu {
-	position: relative;
+	position: absolute;
 	display: block;
 	clear: both;
 	text-align: left;
@@ -82,6 +84,7 @@ div.webfontMenu ul {
 	margin-left: -1px;
 	text-align: left;
 	font-size: 0.8em;
+	width: 100%;
 }
 
 div.webfontMenu li {
@@ -115,3 +118,4 @@ div.webfontMenu a {
 div.webfontMenu label:hover, input:hover {
 	cursor: pointer;
 }
+
