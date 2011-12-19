@@ -54,6 +54,8 @@ class TestSwarmMWMain {
 	/** Path to log file */
 	protected $logPath;
 
+	/** URL pattern for $wgScriptPath */
+	protected $scriptPathPattern = "/checkouts/mw/trunk/r$1";
 	/** URL pattern to add one test. $1 is rev, $2 testname */
 	protected $testPattern = "/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2";
 
@@ -63,7 +65,7 @@ class TestSwarmMWMain {
 	public function getSvnUrl() { return $this->svnUrl; }
 	public function getLogPath() { return $this->logPath; }
 	public function getTestPattern() { return $this->testPattern; }
-
+	public function getScriptPathPattern() { return $this->scriptPathPattern; }
 
 	/** SETTERS **/
 
@@ -105,7 +107,7 @@ class TestSwarmMWMain {
 		}
 
 		if ( isset( $options['debug'] ) ) {
-			$this->debugMode = true;
+			$this->debugMode = $options['debug'];
 		}
 
 		if ( isset( $options['minRev'] ) ) {
@@ -444,6 +446,10 @@ class TestSwarmMWFetcher {
 		// For convenience, put it in debug (not in saved log)
 		$this->main->debug( "Generated wikiadmin pass: {$randomAdminPass}", __METHOD__ );
 
+		$scriptPath = str_replace( '$1', $this->svnRevId,
+			$this->main->getScriptPathPattern()
+		);
+
 		// Now simply run the CLI installer:
 		$cmd = "php {$this->paths['mw']}/maintenance/install.php \
 			--dbname=r{$this->svnRevId} \
@@ -452,9 +458,14 @@ class TestSwarmMWFetcher {
 			--showexceptions=true \
 			--confpath={$this->paths['mw']} \
 			--pass={$randomAdminPass} \
+			--scriptpath={$scriptPath} \
 			TrunkWikiR{$this->svnRevId} \
 			WikiSysop
 			";
+		$this->main->debug(
+			"Installation command for revision '$this->svnRevId':\n"
+			. $cmd . "\n"
+		);
 
 		$retval = null;
 		$output = $this->main->exec( $cmd, $retval );
@@ -485,15 +496,24 @@ class TestSwarmMWFetcher {
 
 		// Required, must exist to avoid having to do backwards editing
 		// Make empt file if needed
-		if ( !file_exists( $this->paths['globalsettings'] ) ) {
-			$this->main->debug( "No GlobalSettings.php found at {$this->paths['globalsettings']}. Creating...", __METHOD__ );
-			if ( touch( $this->paths['globalsettings'] ) ) {
-				$this->main->debug( "Created {$this->paths['globalsettings']}", __METHOD__ );
+		$globalSettings = $this->paths['globalsettings'];
+		if ( !file_exists( $globalSettings ) ) {
+			$this->main->debug( "No GlobalSettings.php found at $globalSettings. Creating...", __METHOD__ );
+			if ( touch( $globalSettings ) ) {
+				$this->main->debug( "Created $globalSettings", __METHOD__ );
 			} else {
 				throw new Exception(__METHOD__ . ": Aborting. Unable to create GlobalSettings.php" );
 			}
 		}
-		// @todo
+
+		// Override $wgServer set by the CLI installer and rely on the default autodetection
+		$fh = fopen( $localSettings, 'a' );
+		fwrite( $fh,
+			"\n# /Added by testswarm fetcher/\n"
+			.'$wgServer = WebRequest::detectServer();'."\n"
+			."\n#End /Added by testswarm fetcher/\n"
+		);
+		fclose( $fh );
 
 		/**
 		 * Possible additional common settings to append to LocalSettings after install:
