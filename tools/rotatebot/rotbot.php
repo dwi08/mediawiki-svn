@@ -65,7 +65,8 @@ $wrongfiles = array();
 //$katname = "Images_requiring_rotation_by_bot";
 logfile("Prüfe 'Category:$katname' auf Bilder");
 
-$queryurl = "http://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:".$katname."&format=php&cmprop=ids|title|sortkey|timestamp&cmnamespace=6&cmsort=timestamp&cmtype=file&cmlimit=".$config['limit'];
+$queryurl = "http://commons.wikimedia.org/w/api.php?action=query&list=categorymembers&cmtitle=Category:"
+	. $katname . "&format=php&cmprop=ids|title|sortkey|timestamp&cmnamespace=6&cmsort=timestamp&cmtype=file&cmdir=desc&cmlimit=".$config['limit'];
 $rawrequ = file_get_contents($queryurl) or suicide("Error api.php not accessible.");
 $contentarray = unserialize($rawrequ);
 
