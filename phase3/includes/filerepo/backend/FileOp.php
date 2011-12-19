@@ -425,8 +425,9 @@ abstract class FileOp {
 		// Restore any file that was at the destination
 		if ( $this->tmpSourcePath !== null ) {
 			$params = array(
-				'src' => $this->tmpSourcePath,
-				'dst' => $this->params['src']
+				'src'           => $this->tmpSourcePath,
+				'dst'           => $this->params['src'],
+				'overwriteDest' => true
 			);
 			$status = $this->backend->store( $params );
 			if ( !$status->isOK() ) {
@@ -446,8 +447,9 @@ abstract class FileOp {
 		// Restore any file that was at the destination
 		if ( $this->tmpDestFile ) {
 			$params = array(
-				'src' => $this->tmpDestFile->getPath(),
-				'dst' => $this->params['dst']
+				'src'           => $this->tmpDestFile->getPath(),
+				'dst'           => $this->params['dst'],
+				'overwriteDest' => true
 			);
 			$status = $this->backend->store( $params );
 			if ( !$status->isOK() ) {
@@ -548,13 +550,8 @@ class StoreFileOp extends FileOp {
 	protected function doRevert() {
 		$status = Status::newGood();
 		if ( !$this->destSameAsSource ) {
-			// Remove the file saved to the destination
-			$params = array( 'src' => $this->params['dst'] );
-			$status->merge( $this->backend->delete( $params ) );
-			if ( !$status->isOK() ) {
-				return $status; // also can't restore any dest file
-			}
-			// Restore any file that was at the destination
+			// Restore any file that was at the destination,
+			// overwritting what was put there in attempt()
 			$status->merge( $this->restoreDest() );
 		}
 		return $status;
@@ -613,13 +610,8 @@ class CreateFileOp extends FileOp {
 	protected function doRevert() {
 		$status = Status::newGood();
 		if ( !$this->destSameAsSource ) {
-			// Remove the file saved to the destination
-			$params = array( 'src' => $this->params['dst'] );
-			$status->merge( $this->backend->delete( $params ) );
-			if ( !$status->isOK() ) {
-				return $status; // also can't restore any dest file
-			}
-			// Restore any file that was at the destination
+			// Restore any file that was at the destination,
+			// overwritting what was put there in attempt()
 			$status->merge( $this->restoreDest() );
 		}
 		return $status;
@@ -683,13 +675,8 @@ class CopyFileOp extends FileOp {
 	protected function doRevert() {
 		$status = Status::newGood();
 		if ( !$this->destSameAsSource ) {
-			// Remove the file saved to the destination
-			$params = array( 'src' => $this->params['dst'] );
-			$status->merge( $this->backend->delete( $params ) );
-			if ( !$status->isOK() ) {
-				return $status; // also can't restore any dest file
-			}
-			// Restore any file that was at the destination
+			// Restore any file that was at the destination,
+			// overwritting what was put there in attempt()
 			$status->merge( $this->restoreDest() );
 		}
 		return $status;
@@ -848,15 +835,9 @@ class ConcatenateFileOp extends FileOp {
 	}
 
 	protected function doRevert() {
-		// Remove the file saved to the destination
-		$params = array( 'src' => $this->params['dst'] );
-		$status = $this->backend->delete( $params );
-		if ( !$status->isOK() ) {
-			return $status; // also can't restore any dest file
-		}
-		// Restore any file that was at the destination
-		$status->merge( $this->restoreDest() );
-		return $status;
+		// Restore any file that was at the destination,
+		// overwritting what was put there in attempt()
+		return $this->restoreDest();
 	}
 
 	protected function getSourceSha1Base36() {
@@ -918,7 +899,7 @@ class DeleteFileOp extends FileOp {
 	}
 
 	protected function doRevert() {
-		// Restore any source file
+		// Restore any source file that we deleted
 		return $this->restoreSource();
 	}
 
