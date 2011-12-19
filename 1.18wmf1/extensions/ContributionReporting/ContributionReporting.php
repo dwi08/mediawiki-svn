@@ -11,11 +11,17 @@ EOT;
 
 $wgContributionReportingBaseURL = "http://meta.wikimedia.org/w/index.php?title=Special:NoticeTemplate/view&template=";
 
-// Override these with appropriate DB settings for the CiviCRM database...
+// Override these with appropriate DB settings for the CiviCRM master database...
 $wgContributionReportingDBserver = $wgDBserver;
 $wgContributionReportingDBuser = $wgDBuser;
 $wgContributionReportingDBpassword = $wgDBpassword;
 $wgContributionReportingDBname = $wgDBname;
+
+// Override these with appropriate DB settings for the CiviCRM slave database...
+$wgContributionReportingReadDBserver = $wgDBserver;
+$wgContributionReportingReadDBuser = $wgDBuser;
+$wgContributionReportingReadDBpassword = $wgDBpassword;
+$wgContributionReportingReadDBname = $wgDBname;
 
 // And now the tracking database
 $wgContributionTrackingDBserver = $wgDBserver;
@@ -26,7 +32,7 @@ $wgContributionTrackingDBname = $wgDBname;
 $wgExtensionCredits['specialpage'][] = array(
 	'path' => __FILE__,
 	'name' => 'Contribution Reporting',
-	'url' => 'http://www.mediawiki.org/wiki/Extension:ContributionReporting',
+	'url' => 'https://www.mediawiki.org/wiki/Extension:ContributionReporting',
 	'author' => array( 'David Strauss', 'Brion Vibber', 'Siebrand Mazeland', 'Trevor Parscal', 'Tomasz Finc' ),
 	'descriptionmsg' => 'contributionreporting-desc',
 );
@@ -41,9 +47,8 @@ $wgAutoloadClasses['ContributionTotal'] = $dir . 'ContributionTotal_body.php';
 $wgAutoloadClasses['SpecialContributionStatistics'] = $dir . 'ContributionStatistics_body.php';
 $wgAutoloadClasses['SpecialFundraiserStatistics'] = $dir . 'FundraiserStatistics_body.php';
 $wgAutoloadClasses['SpecialContributionTrackingStatistics'] = $dir . 'ContributionTrackingStatistics_body.php';
-/*
 $wgAutoloadClasses['SpecialDailyTotal'] = $dir . 'DailyTotal_body.php';
-$wgAutoloadClasses['SpecialYearlyTotal'] = $dir . 'YearlyTotal_body.php';
+/*
 $wgAutoloadClasses['DisabledNotice'] = $dir . 'DisabledNotice_body.php';
 */
 
@@ -52,10 +57,7 @@ $wgSpecialPages['ContributionTotal'] = 'ContributionTotal';
 $wgSpecialPages['ContributionStatistics'] = 'SpecialContributionStatistics';
 $wgSpecialPages['FundraiserStatistics'] = 'SpecialFundraiserStatistics';
 $wgSpecialPages['ContributionTrackingStatistics'] = 'SpecialContributionTrackingStatistics';
-/*
 $wgSpecialPages['DailyTotal'] = 'SpecialDailyTotal';
-$wgSpecialPages['YearlyTotal'] = 'SpecialYearlyTotal';
-*/
 
 $wgSpecialPageGroups['ContributionHistory'] = 'contribution';
 $wgSpecialPageGroups['ContributionTotal'] = 'contribution';
@@ -154,6 +156,8 @@ function efContributionReportingSetup( $parser ) {
 }
 
 /**
+ * Define the contributiontotal magic word
+ * Example: {{#contributiontotal:fundraiser=2011|fudgefactor=0}}
  * @param $magicWords array
  * @param $langCode string
  * @return bool
@@ -165,6 +169,7 @@ function efContributionReportingTotal_Magic( &$magicWords, $langCode ) {
 
 /**
  * Automatically use a local or special database connection for reporting
+ * This connection will typically be to the CiviCRM master database
  * @return DatabaseMysql
  */
 function efContributionReportingConnection() {
@@ -179,6 +184,29 @@ function efContributionReportingConnection() {
 			$wgContributionReportingDBuser,
 			$wgContributionReportingDBpassword,
 			$wgContributionReportingDBname );
+		$db->query( "SET names utf8" );
+	}
+
+	return $db;
+}
+
+/**
+ * Automatically use a local or special database connection for reporting
+ * This connection will typically be to a CiviCRM slave database
+ * @return DatabaseMysql
+ */
+function efContributionReportingReadConnection() {
+	global $wgContributionReportingReadDBserver, $wgContributionReportingReadDBname;
+	global $wgContributionReportingReadDBuser, $wgContributionReportingReadDBpassword;
+
+	static $db;
+
+	if ( !$db ) {
+		$db = new DatabaseMysql(
+			$wgContributionReportingReadDBserver,
+			$wgContributionReportingReadDBuser,
+			$wgContributionReportingReadDBpassword,
+			$wgContributionReportingReadDBname );
 		$db->query( "SET names utf8" );
 	}
 
@@ -208,39 +236,67 @@ function efContributionTrackingConnection() {
 }
 
 /**
- * Get the total amount of money raised since the start of the fundraiser
- * @param $start
- * @param $fudgeFactor
- * @return string
+ * Get the total amount of money raised for a specific fundraiser
+ * @param string $fundraiser The ID of the fundraiser to return the current total for
+ * @param int $fudgeFactor How much to adjust the total by
+ * @return integer
  */
-function efContributionReportingTotal( $start, $fudgeFactor ) {
-	$db = efContributionReportingConnection();
+function efContributionReportingTotal( $fundraiser, $fudgeFactor = 0 ) {
+	global $wgMemc, $egFundraiserStatisticsFundraisers, $egFundraiserStatisticsCacheTimeout;
 
-	$sql = 'SELECT ROUND( SUM(converted_amount) ) AS ttl FROM public_reporting';
-
-	if ( $start ) {
-		$sql .= ' WHERE received >= ' . $db->addQuotes( wfTimestamp( TS_UNIX, $start ) );
+	// If a total is cached, use that
+	$key = wfMemcKey( 'contributionreportingtotal', $fundraiser, $fudgeFactor );
+	$cache = $wgMemc->get( $key );
+	if ( $cache != false && $cache != -1 ) {
+		return $cache;
 	}
-
-	$res = $db->query( $sql );
-
-	$row = $res->fetchRow();
-
-	# Output
-	$output = $row['ttl'] ? $row['ttl'] : '0';
 	
-	// Make sure fudge factor is a number
+	$dbr = wfGetDB( DB_SLAVE );
+	
+	// Find the index number for the requested fundraiser
+	$myFundraiserIndex = false;
+	foreach ( $egFundraiserStatisticsFundraisers as $fundraiserIndex => $fundraiserArray ) {
+		if ( $fundraiserArray['id'] == $fundraiser ) {
+			$myFundraiserIndex = $fundraiserIndex;
+			break;
+		}
+	}
+	if ( !$myFundraiserIndex ) {
+		// If none was found, use the most recent fundraiser
+		$myFundraiserIndex = count( $egFundraiserStatisticsFundraisers ) - 1;
+	}
+	
+	$myFundraiser = $egFundraiserStatisticsFundraisers[$myFundraiserIndex];
+
+	// First, try to get the total from the summary table
+	$result = $dbr->select(
+		'public_reporting_fundraisers',
+		'round( prf_total ) AS total',
+		array( 'prf_id' => $myFundraiser['id'] ),
+		__METHOD__
+	);
+	$row = $dbr->fetchRow( $result );
+	
+	if ( $row['total'] > 0 ) {
+		$total = $row['total'];
+	} else {
+		$total = 0;
+	}
+	
+	// Make sure the fudge factor is a number
 	if ( is_nan( $fudgeFactor ) ) {
 		$fudgeFactor = 0;
 	}
 
-	$output += $fudgeFactor;
+	// Add the fudge factor to the total
+	$total += $fudgeFactor;
 
-	return $output;
+	$wgMemc->set( $key, $total, $egFundraiserStatisticsCacheTimeout );
+	return $total;
 }
 
 /**
- * @return string
+ * @return integer
  */
 function efContributionReportingTotal_Render() {
 	$args = func_get_args();
@@ -250,18 +306,18 @@ function efContributionReportingTotal_Render() {
 	$start = false;
 
 	foreach( $args as $arg ) {
-		if ( strpos($arg,'=') === false ) {
+		if ( strpos( $arg,'=' ) === false ) {
 			continue;
 		}
 
-		list($key,$value) = explode( '=', trim($arg), 2 );
+		list( $key, $value ) = explode( '=', trim( $arg ), 2 );
 
-		if ($key == 'fudgefactor') {
+		if ( $key == 'fudgefactor' ) {
 			$fudgeFactor = $value;
-		} elseif ($key == 'start') {
-			$start = $value;
+		} elseif ( $key == 'fundraiser' ) {
+			$fundraiser = $value;
 		}
 	}
 
-	return efContributionReportingTotal( $start, $fudgeFactor );
+	return efContributionReportingTotal( $fundraiser, $fudgeFactor );
 }

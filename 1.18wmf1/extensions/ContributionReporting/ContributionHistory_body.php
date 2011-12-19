@@ -7,7 +7,7 @@ class ContributionHistory extends SpecialPage {
 	function execute( $language ) {
 		global $wgRequest, $wgOut, $wgLang;
 
-		# Emergecny short cut until post donation comments are enabled
+		# Emergency short cut until post donation comments are enabled
 		$wgOut->redirect( SpecialPage::getTitleFor( 'FundraiserStatistics' )->getFullURL() );
 		return;
 
@@ -30,7 +30,7 @@ class ContributionHistory extends SpecialPage {
 		// Paging controls
 		$newer = $db->selectField( 'public_reporting', 'received',
 			array_merge(
-				array( 'received > ' . strtotime( 'July 1st 2008' ) ),
+				array( 'received > ' . strtotime( 'July 1st 2011' ) ),
 				( $offset !== null ? array( 'received > ' . $offset ) : array() )
 			),
 			__METHOD__,
@@ -42,7 +42,7 @@ class ContributionHistory extends SpecialPage {
 		);
 		$older = $db->selectField( 'public_reporting', 'received',
 			array_merge(
-				array( 'received > ' . strtotime( 'July 1st 2008' ) ),
+				array( 'received > ' . strtotime( 'July 1st 2011' ) ),
 				( $offset !== null ? array( 'received <= ' . $offset ) : array() )
 			),
 			__METHOD__,
@@ -85,7 +85,7 @@ class ContributionHistory extends SpecialPage {
 
 		if ( $offset == null ) {
 			$offset = $db->selectField( 'public_reporting', 'received',
-				array( 'received > ' . strtotime( 'July 1st 2008' ) ),
+				array( 'received > ' . strtotime( 'July 1st 2011' ) ),
 				__METHOD__,
 				array(
 					'ORDER BY' => 'received DESC',
@@ -98,7 +98,7 @@ class ContributionHistory extends SpecialPage {
 
 		$res = $db->select( 'public_reporting', '*',
 			array_merge(
-				array( 'received > ' . strtotime( 'July 1st 2008' ) ),
+				array( 'received > ' . strtotime( 'July 1st 2011' ) ),
 				( $offset !== null ? array( 'received <= ' . $offset ) : array() )
 			),
 			__METHOD__,
