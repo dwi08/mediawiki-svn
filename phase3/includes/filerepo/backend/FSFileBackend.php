@@ -19,6 +19,9 @@ class FSFileBackend extends FileBackend {
 
 	/**
 	 * @see FileBackend::__construct()
+	 * Additional $config params include:
+	 *    containerPaths : Map of container names to absolute file system paths
+	 *    fileMode       : Octal UNIX file permissions to use on files stored
 	 */
 	function __construct( array $config ) {
 		parent::__construct( $config );

@@ -9,22 +9,35 @@
  * Status messages should avoid mentioning the Swift account name
  * Likewise, error suppression should be used to avoid path disclosure.
  *
+ * @FIXME: resuse connections with auto-connect and don't let connection
+ * exceptions bubble up from read/write operations.
+ *
  * @ingroup FileBackend
  */
 class SwiftFileBackend extends FileBackend {
-	protected $swiftuser,
-		$swiftkey,
-		$authurl,
-		$container;
+	protected $swiftUser; // string
+	protected $swiftKey; // string
+	protected $swiftAuthUrl; // string
+	protected $swiftProxyUser; // string
 
+	/**
+	 * @see FileBackend::__construct()
+	 * Additional $config params include:
+	 *    swiftAuthUrl   : Swift authentication server URL
+	 *    swiftUser      : Swift user used by MediaWiki
+	 *    swiftKey       : Authentication key for the above user (used to get sessions)
+	 *    swiftProxyUser : Swift user used for end-user hits to proxy server
+	 */
 	function __construct( array $config ) {
 		parent::__construct( $config );
-
 		// Required settings
-		$this->swiftuser = $config['user'];
-		$this->swiftkey = $config['key'];
-		$this->authurl = $config['authurl'];
-		$this->container = $config['container'];
+		$this->swiftUser = $config['swiftUser'];
+		$this->swiftKey = $config['swiftKey'];
+		$this->swiftAuthUrl = $config['swiftAuthUrl'];
+		// Optional settings
+		$this->swiftProxyUser = isset( $config['swiftProxyUser'] )
+			? $config['swiftProxyUser']
+			: '';
 	}
 
 	/**
@@ -33,13 +46,14 @@ class SwiftFileBackend extends FileBackend {
 	 * @return CF_Connection
 	 */
 	protected function connect() {
-		$auth = new CF_Authentication( $this->swiftuser, $this->swiftkey, NULL, $this->authurl );
+		$auth = new CF_Authentication(
+			$this->swiftUser, $this->swiftKey, NULL, $this->swiftAuthUrl );
 		try {
 			$auth->authenticate();
 		} catch ( AuthenticationException $e ) {
 			throw new MWException( "We can't authenticate ourselves." );
 		# } catch (InvalidResponseException $e) {
-		#	throw new MWException( __METHOD__ . "unexpected response '$e'" );
+		#   throw new MWException( __METHOD__ . "unexpected response '$e'" );
 		}
 		return new CF_Connection( $auth );
 	}
@@ -58,12 +72,13 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( NoSuchContainerException $e ) {
 			throw new MWException( "A container we thought existed, doesn't." );
 		# } catch (InvalidResponseException $e) {
-		#	throw new MWException( __METHOD__ . "unexpected response '$e'" );
+		#   throw new MWException( __METHOD__ . "unexpected response '$e'" );
 		}
 	}
 
 	/**
 	 * Copy a file from one place to another place
+	 *
 	 * @param $srcContainer CF_Container
 	 * @param $srcRel String: relative path to the source file.
 	 * @param $dstContainer CF_Container
@@ -87,25 +102,31 @@ class SwiftFileBackend extends FileBackend {
 		try {
 			$obj = $dstContainer->get_object( $dstRel );
 		} catch ( NoSuchObjectException $e ) {
-			throw new MWException( 'The object we just created does not exist: ' . $dstContainer->name . "/$dstRel: $e" );
+			throw new MWException( 'The object we just created does not exist: ' .
+				$dstContainer->name . "/$dstRel: $e" );
 		}
 
 		try {
 			$srcObj = $srcContainer->get_object( $srcRel );
 		} catch ( NoSuchObjectException $e ) {
-			throw new MWException( 'Source file does not exist: ' . $srcContainer->name . "/$srcRel: $e" );
+			throw new MWException( 'Source file does not exist: ' .
+				$srcContainer->name . "/$srcRel: $e" );
 		} 
 
 		try {
 			$dstContainer->copy_object_from($srcObj,$srcContainer,$dstRel);
 		} catch ( SyntaxException $e ) {
-			throw new MWException( 'Source file does not exist: ' . $srcContainer->name . "/$srcRel: $e" );
+			throw new MWException( 'Source file does not exist: ' .
+				$srcContainer->name . "/$srcRel: $e" );
 		} catch ( MisMatchedChecksumException $e ) {
 			throw new MWException( "Checksums do not match: $e" );
 		}
 	}
 
-	function store( array $params ) {
+	/**
+	 * @see FileBackend::doStore()
+	 */
+	function doStore( array $params ) {
 		$status = Status::newGood();
 
 		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
@@ -123,7 +144,7 @@ class SwiftFileBackend extends FileBackend {
 				return $status;
 			}
 			$exists = true;
-		} catch (NoSuchObjectException $e) {
+		} catch ( NoSuchObjectException $e ) {
 			$exists = false;
 		}
 
@@ -142,7 +163,10 @@ class SwiftFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function copy( array $params ) {
+	/**
+	 * @see FileBackend::doCopy()
+	 */
+	function doCopy( array $params ) {
 		$status = Status::newGood();
 
 		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
@@ -168,22 +192,21 @@ class SwiftFileBackend extends FileBackend {
 				return $status;
 			}
 			$exists = true;
-		} catch (NoSuchObjectException $e) {
+		} catch ( NoSuchObjectException $e ) {
 			$exists = false;
 		}
 		try {
 			$this->swiftcopy( $srcc, $source, $dstc, $dest );
-		} catch (InvalidResponseException $e ) {
+		} catch ( InvalidResponseException $e ) {
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
-		}	
+		}   
 		return $status;
 	}
 
-	function canMove( array $params ) {
-		return false;
-	}
-
-	function delete( array $params ) {
+	/**
+	 * @see FileBackend::doDelete()
+	 */
+	function doDelete( array $params ) {
 		$status = Status::newGood();
 
 		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
@@ -196,30 +219,33 @@ class SwiftFileBackend extends FileBackend {
 		$container = $this->get_container( $conn, $sourcec );
 
 		try {
-			$obj = $container->get_object( $source);
+			$obj = $container->get_object( $source );
 			$exists = true;
-		} catch (NoSuchObjectException $e) {
+		} catch ( NoSuchObjectException $e ) {
 			if ( empty( $params['ignoreMissingSource'] ) ) {
 				$status->fatal( 'backend-fail-delete', $params['src'] );
 			}
 			$exists = false;
 		}
 
-		if ($exists) {
+		if ( $exists ) {
 			try {
 				$container->delete_object( $source );
 			} catch ( SyntaxException $e ) {
 				throw new MWException( "Swift object name not well-formed: '$e'" );
 			} catch ( NoSuchObjectException $e ) {
 				throw new MWException( "Swift object we are trying to delete does not exist: '$e'" );
-			} catch (InvalidResponseException $e) {
+			} catch ( InvalidResponseException $e ) {
 				$status->fatal( 'backend-fail-delete', $params['src'] );
 			}
 		}
 		return $status; // do nothing; either OK or bad status
 	}
 
-	function concatenate( array $params ) {
+	/**
+	 * @see FileBackend::doConcatenate()
+	 */
+	function doConcatenate( array $params ) {
 		$status = Status::newGood();
 
 		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
@@ -238,17 +264,17 @@ class SwiftFileBackend extends FileBackend {
 				return $status;
 			}
 			$exists = true;
-		} catch (NoSuchObjectException $e) {
+		} catch ( NoSuchObjectException $e ) {
 			$exists = false;
 		}
-	
+
 		try {
 			$biggie = $dstc->create_object( $dest );
-		} catch (InvalidResponseException $e) {
+		} catch ( InvalidResponseException $e ) {
 			$status->fatal( 'backend-fail-opentemp', $tmpPath );
 			return $status;
 		}
-	
+
 		foreach ( $params['srcs'] as $virtualSource ) {
 			list( $sourcec, $source ) = $this->resolveStoragePath( $virtualSource );
 			if ( $source === null ) {
@@ -256,13 +282,16 @@ class SwiftFileBackend extends FileBackend {
 				return $status;
 			}
 			$srcc = $this->get_container( $conn, $sourcec );
-			$obj = $srcc->get_object( $source);
+			$obj = $srcc->get_object( $source );
 			$biggie->write( $obj->read() );
 		}
 		return $status;
 	}
 
-	function create( array $params ) {
+	/**
+	 * @see FileBackend::doCopy()
+	 */
+	function doCreate( array $params ) {
 		$status = Status::newGood();
 
 		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
@@ -281,17 +310,18 @@ class SwiftFileBackend extends FileBackend {
 				return $status;
 			}
 			$exists = true;
-		} catch (NoSuchObjectException $e) {
+		} catch ( NoSuchObjectException $e ) {
 			$exists = false;
 		}
 
 		$obj = $dstc->create_object( $dest );
 		//FIXME how do we know what the content type is?
+		// This *should* work...cloudfiles can figure content type from strings too.
 		$obj->content_type = 'text/plain';
 
 		try {
 			$obj->write( $params['content'] );
-		} catch (InvalidResponseException $e ) {
+		} catch ( InvalidResponseException $e ) {
 			$status->fatal( 'backend-fail-create', $params['dst'] );
 			return $status;
 		}
@@ -299,21 +329,18 @@ class SwiftFileBackend extends FileBackend {
 		return $status;
 	}
 
-	function prepare( array $params ) {
-		$status = Status::newGood();
-		return $status; // we good. we so good, we BAD.
-	}
-
+	/**
+	 * @see FileBackend::secure()
+	 */
 	function secure( array $params ) {
 		$status = Status::newGood();
+		// @TODO: restrict container from $this->swiftProxyUser
 		return $status; // badgers? We don't need no steenking badgers!
 	}
 
-	function clean( array $params ) {
-		$status = Status::newGood();
-		return $status; // can't delete what doesn't exist.
-	}
-
+	/**
+	 * @see FileBackend::fileExists()
+	 */
 	function fileExists( array $params ) {
 		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
@@ -329,7 +356,10 @@ class SwiftFileBackend extends FileBackend {
 		}
 		return $exists;
 	}
-	
+
+	/**
+	 * @see FileBackend::getFileTimestamp()
+	 */
 	function getFileTimestamp( array $params ) {
 		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
@@ -345,14 +375,19 @@ class SwiftFileBackend extends FileBackend {
 		}
 		if ( $obj ) {
 			$thumbTime = $obj->last_modified;
+			// @FIXME: strptime() UNIX-only (http://php.net/manual/en/function.strptime.php)
 			$tm = strptime( $thumbTime, '%a, %d %b %Y %H:%M:%S GMT' );
-			$thumbGMT = gmmktime( $tm['tm_hour'], $tm['tm_min'], $tm['tm_sec'], $tm['tm_mon'] + 1, $tm['tm_mday'], $tm['tm_year'] + 1900 );
+			$thumbGMT = gmmktime( $tm['tm_hour'], $tm['tm_min'], $tm['tm_sec'],
+				$tm['tm_mon'] + 1, $tm['tm_mday'], $tm['tm_year'] + 1900 );
 			return ( gmdate( 'YmdHis', $thumbGMT ) );
 		} else {
 			return false; // file not found.
 		}
 	}
 
+	/**
+	 * @see FileBackend::getFileList()
+	 */
 	function getFileList( array $params ) {
 		list( $dirc, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) { // invalid storage path
@@ -360,21 +395,16 @@ class SwiftFileBackend extends FileBackend {
 		}
 
 		$conn = $this->connect();
+		// @TODO: return an Iterator class that pages via list_objects()
 		$container = $this->get_container( $conn, $dirc );
-		$files = $container->list_objects( 0, NULL, $dir);
+		$files = $container->list_objects( 0, NULL, $dir );
 		// if there are no files matching the prefix, return empty array
 		return $files;
 	}
 
-	function getLocalReference( array $params ) {
-		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			return null;
-		}
-		// FIXME!
-		return new FSFile( $source );
-	}
-
+	/**
+	 * @see FileBackend::getLocalCopy()
+	 */
 	function getLocalCopy( array $params ) {
 		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
@@ -392,7 +422,7 @@ class SwiftFileBackend extends FileBackend {
 		$tmpPath = $tmpFile->getPath();
 
 		$conn = $this->connect();
-		$cont = $this->get_container( $conn, $sourcec);
+		$cont = $this->get_container( $conn, $sourcec );
 
 		try {
 			$obj = $cont->get_object( $source );
@@ -411,5 +441,4 @@ class SwiftFileBackend extends FileBackend {
 		}
 		return $tmpFile;
 	}
-
 }
