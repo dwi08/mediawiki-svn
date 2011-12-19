@@ -139,7 +139,7 @@ class LSLockManager extends LockManager {
 	}
 
 	/**
-	 * Get a connection to a lock server and acquire locks on $keys.
+	 * Get a connection to a lock server and acquire locks on $keys
 	 *
 	 * @param $lockSrv string
 	 * @param $keys Array
@@ -192,7 +192,7 @@ class LSLockManager extends LockManager {
 	}
 
 	/**
-	 * Attempt to acquire locks with the peers for a bucket.
+	 * Attempt to acquire locks with the peers for a bucket
 	 *
 	 * @param $bucket integer
 	 * @param $keys Array List of resource keys to lock
@@ -249,7 +249,7 @@ class LSLockManager extends LockManager {
 	}
 
 	/**
-	 * Release all locks that this session is holding.
+	 * Release all locks that this session is holding
 	 *
 	 * @return Status
 	 */
@@ -265,7 +265,7 @@ class LSLockManager extends LockManager {
 	}
 
 	/**
-	 * Get the bucket for lock key.
+	 * Get the bucket for lock key
 	 *
 	 * @param $key string (40 char hex key)
 	 * @return integer

@@ -46,6 +46,8 @@ class DBLockManager extends LockManager {
 	 *                     'flags'       - DB flags (see DatabaseBase)
 	 *     'dbsByBucket' : Array of 1-16 consecutive integer keys, starting from 0,
 	 *                     each having an odd-numbered list of DB names (peers) as values.
+	 *                     Any DB named 'localDBMaster' will automatically use the DB master
+	 *                     settings for this wiki (without the need for a dbServers entry).
 	 *     'lockExpiry'  : Lock timeout (seconds) for dropped connections. [optional]
 	 *                     This tells the DB server how long to wait before assuming
 	 *                     connection failure and releasing all the locks for a session.
@@ -232,11 +234,19 @@ class DBLockManager extends LockManager {
 	 */
 	protected function getConnection( $lockDb ) {
 		if ( !isset( $this->conns[$lockDb] ) ) {
-			$config = $this->dbServers[$lockDb];
-			$this->conns[$lockDb] = DatabaseBase::factory( $config['type'], $config );
-			if ( !$this->conns[$lockDb] ) {
+			$db = null;
+			if ( $lockDb === 'localDBMaster' ) {
+				$lb = wfGetLBFactory()->newMainLB();
+				$db = $lb->getConnection( DB_MASTER );
+			} elseif ( isset( $this->dbServers[$lockDb] ) ) {
+				$config = $this->dbServers[$lockDb];
+				$db = DatabaseBase::factory( $config['type'], $config );
+			}
+			if ( !$db ) {
 				return null; // config error?
 			}
+			$this->conns[$lockDb] = $db;
+			$this->conns[$lockDb]->clearFlag( DBO_TRX );
 			# If the connection drops, try to avoid letting the DB rollback
 			# and release the locks before the file operations are finished.
 			# This won't handle the case of DB server restarts however.
