@@ -481,7 +481,7 @@ abstract class FileBackend extends FileBackendBase {
 	 * Create a file in the backend with the given contents.
 	 * Do not call this function from places outside FileBackend and FileOp.
 	 * $params include:
-	 *     contents      : the raw file contents
+	 *     content       : the raw file contents
 	 *     dst           : destination storage path
 	 *     overwriteDest : do nothing and pass if an identical file exists at destination
 	 * 
@@ -499,18 +499,30 @@ abstract class FileBackend extends FileBackendBase {
 	 */
 	abstract protected function doCreate( array $params );
 
+	/**
+	 * @see FileBackendBase::prepare()
+	 */
 	public function prepare( array $params ) {
 		return Status::newGood();
 	}
 
+	/**
+	 * @see FileBackendBase::secure()
+	 */
 	public function secure( array $params ) {
 		return Status::newGood();
 	}
 
+	/**
+	 * @see FileBackendBase::clean()
+	 */
 	public function clean( array $params ) {
 		return Status::newGood();
 	}
 
+	/**
+	 * @see FileBackendBase::getFileSha1Base36()
+	 */
 	public function getFileSha1Base36( array $params ) {
 		$path = $params['src'];
 		if ( isset( $this->cache[$path]['sha1'] ) ) {
@@ -529,6 +541,9 @@ abstract class FileBackend extends FileBackendBase {
 		}
 	}
 
+	/**
+	 * @see FileBackendBase::getFileProps()
+	 */
 	public function getFileProps( array $params ) {
 		$fsFile = $this->getLocalReference( array( 'src' => $params['src'] ) );
 		if ( !$fsFile ) {
@@ -538,10 +553,16 @@ abstract class FileBackend extends FileBackendBase {
 		}
 	}
 
+	/**
+	 * @see FileBackendBase::getLocalReference()
+	 */
 	public function getLocalReference( array $params ) {
 		return $this->getLocalCopy( $params );
 	}
 
+	/**
+	 * @see FileBackendBase::streamFile()
+	 */
 	function streamFile( array $params ) {
 		$status = Status::newGood();
 
@@ -611,6 +632,9 @@ abstract class FileBackend extends FileBackendBase {
 		return $performOps;
 	}
 
+	/**
+	 * @see FileBackendBase::doOperations()
+	 */
 	final public function doOperations( array $ops, array $opts = array() ) {
 		$status = Status::newGood();
 

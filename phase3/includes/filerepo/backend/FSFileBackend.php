@@ -17,6 +17,9 @@ class FSFileBackend extends FileBackend {
 	protected $containerPaths = array();
 	protected $fileMode; // file permission mode
 
+	/**
+	 * @see FileBackend::__construct()
+	 */
 	function __construct( array $config ) {
 		parent::__construct( $config );
 		$this->containerPaths = (array)$config['containerPaths'];
@@ -30,6 +33,9 @@ class FSFileBackend extends FileBackend {
 			: 0644;
 	}
 
+	/**
+	 * @see FileBackend::resolveContainerPath()
+	 */
 	protected function resolveContainerPath( $container, $relStoragePath ) {
 		// Get absolute path given the container base dir
 		if ( isset( $this->containerPaths[$container] ) ) {
@@ -38,6 +44,9 @@ class FSFileBackend extends FileBackend {
 		return null;
 	}
 
+	/**
+	 * @see FileBackend::doStore()
+	 */
 	protected function doStore( array $params ) {
 		$status = Status::newGood();
 
@@ -79,6 +88,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::doCopy()
+	 */
 	protected function doCopy( array $params ) {
 		$status = Status::newGood();
 
@@ -127,6 +139,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::doMove()
+	 */
 	protected function doMove( array $params ) {
 		$status = Status::newGood();
 
@@ -176,6 +191,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::doDelete()
+	 */
 	protected function doDelete( array $params ) {
 		$status = Status::newGood();
 
@@ -203,6 +221,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::doConcatenate()
+	 */
 	protected function doConcatenate( array $params ) {
 		$status = Status::newGood();
 
@@ -301,6 +322,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::doCreate()
+	 */
 	protected function doCreate( array $params ) {
 		$status = Status::newGood();
 
@@ -343,6 +367,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::prepare()
+	 */
 	function prepare( array $params ) {
 		$status = Status::newGood();
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
@@ -363,6 +390,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::secure()
+	 */
 	function secure( array $params ) {
 		$status = Status::newGood();
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
@@ -397,6 +427,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::clean()
+	 */
 	function clean( array $params ) {
 		$status = Status::newGood();
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
@@ -412,6 +445,9 @@ class FSFileBackend extends FileBackend {
 		return $status;
 	}
 
+	/**
+	 * @see FileBackend::fileExists()
+	 */
 	function fileExists( array $params ) {
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
@@ -423,6 +459,9 @@ class FSFileBackend extends FileBackend {
 		return $exists;
 	}
 
+	/**
+	 * @see FileBackend::getFileTimestamp()
+	 */
 	function getFileTimestamp( array $params ) {
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
@@ -432,6 +471,9 @@ class FSFileBackend extends FileBackend {
 		return $fsFile->getTimestamp();
 	}
 
+	/**
+	 * @see FileBackend::getFileList()
+	 */
 	function getFileList( array $params ) {
 		list( $c, $dir ) = $this->resolveStoragePath( $params['dir'] );
 		if ( $dir === null ) { // invalid storage path
@@ -452,6 +494,9 @@ class FSFileBackend extends FileBackend {
 		return new FSFileIterator( $dir );
 	}
 
+	/**
+	 * @see FileBackend::getLocalReference()
+	 */
 	function getLocalReference( array $params ) {
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
@@ -460,6 +505,9 @@ class FSFileBackend extends FileBackend {
 		return new FSFile( $source );
 	}
 
+	/**
+	 * @see FileBackend::getLocalCopy()
+	 */
 	function getLocalCopy( array $params ) {
 		list( $c, $source ) = $this->resolveStoragePath( $params['src'] );
 		if ( $source === null ) {
