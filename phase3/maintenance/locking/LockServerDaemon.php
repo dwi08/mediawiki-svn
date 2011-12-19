@@ -159,7 +159,7 @@ class LockServerDaemon {
 				$data = @socket_read( $read_sock, 65535, PHP_NORMAL_READ );
 				// Check if the client is disconnected
 				if ( $data === false ) {
-					// Remove client for $clients array
+					// Remove client from $clients list
 					$key = array_search( $read_sock, $clients );
 					unset( $clients[$key] );
 					// Remove socket's session from tracking (if it exists)

@@ -579,7 +579,7 @@ class StoreFileOp extends FileOp {
  */
 class CreateFileOp extends FileOp {
 	protected function allowedParams() {
-		return array( 'src', 'dst', 'overwriteDest', 'overwriteSame' );
+		return array( 'content', 'dst', 'overwriteDest', 'overwriteSame' );
 	}
 
 	protected function doPrecheck( array &$predicates ) {
