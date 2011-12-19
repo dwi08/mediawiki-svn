@@ -17,3 +17,4 @@ $password = ""; // Bot password
 $katname = "";
 $cookies = array();
 
+$myLockfile = '/tmp/rotatebotlock';

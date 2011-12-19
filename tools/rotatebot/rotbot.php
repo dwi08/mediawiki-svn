@@ -16,7 +16,6 @@
  */
 
 include("settings.php");
-$myLockfile = $homedir."rotatebotlock";
 
 ini_set('memory_limit', '100M'); //Speicher auf 100 MBytes hochsetzen
 ini_set('user_agent', $useragent);
@@ -1019,7 +1018,7 @@ function getLockOrDie($dontDieOnLockProblems) {
 		if ($dontDieOnLockProblems) {
 			logfile("Could not get lock. Lock file already present. DontDieMode prevents death.");
 		} else {
-			die("Could not get lock. Lock file already present. Exit.");
+			die("Could not get lock. Lock file already present. Exit.\n");
 		}
 	}
 }

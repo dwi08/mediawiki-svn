@@ -70,7 +70,7 @@ function wikiupload($project,$filename_local,$filename_wiki,$license,$desc)
 function wiki_upload_file ($filename_local,$filename_wiki,$license,$desc,$wiki,$cookies)
 {
 	global $homedir;
-	$file1 = file_get_contents($homedir . "cache/".$filename_local) or die("Fehler - Datei nicht gefunden! ($filename_local)");
+	$file1 = file_get_contents($homedir . "cache/".$filename_local) or die("Fehler - Datei nicht gefunden! ($filename_local)\n");
 
 	$data_l = array("file.file" => $file1,
 	"wpDestFile" => $filename_wiki,
