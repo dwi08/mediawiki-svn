@@ -63,7 +63,7 @@ class LSLockManager extends LockManager {
 		for ( $i = 0; $i < 5; $i++ ) {
 			$this->session .= mt_rand( 0, 2147483647 );
 		}
-		$this->session = sha1( $this->session );
+		$this->session = wfBaseConvert( sha1( $this->session ), 16, 36, 31 );
 	}
 
 	protected function doLock( array $keys, $type ) {
@@ -267,7 +267,7 @@ class LSLockManager extends LockManager {
 	/**
 	 * Get the bucket for lock key
 	 *
-	 * @param $key string (40 char hex key)
+	 * @param $key string (31 char hex key)
 	 * @return integer
 	 */
 	protected function getBucketFromKey( $key ) {

@@ -358,7 +358,7 @@ class DBLockManager extends LockManager {
 	 * Get the bucket for lock key.
 	 * This should avoid throwing any exceptions.
 	 *
-	 * @param $key string (40 char hex key)
+	 * @param $key string (31 char hex key)
 	 * @return integer
 	 */
 	protected function getBucketFromKey( $key ) {

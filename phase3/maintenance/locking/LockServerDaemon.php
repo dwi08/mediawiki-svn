@@ -228,7 +228,7 @@ class LockServerDaemon {
 			list( $session, $key, $command, $type, $values ) = $m;
 			if ( sha1( $session . $command . $type . $values . $this->authKey ) !== $key ) {
 				return 'BAD_KEY';
-			} elseif ( strlen( $session ) !== 40 ) {
+			} elseif ( strlen( $session ) !== 31 ) {
 				return 'BAD_SESSION';
 			}
 			$values = explode( '|', $values );
@@ -248,7 +248,7 @@ class LockServerDaemon {
 					return 'BAD_TYPE';
 				}
 				foreach ( $values as $value ) {
-					if ( strlen( $value ) !== 40 ) {
+					if ( strlen( $value ) !== 31 ) {
 						return 'BAD_FORMAT';
 					}
 				}

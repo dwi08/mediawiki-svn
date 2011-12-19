@@ -47,7 +47,7 @@ abstract class LockManager {
 	 * @return Status 
 	 */
 	final public function lock( array $paths, $type = self::LOCK_EX ) {
-		$keys = array_unique( array_map( 'sha1', $paths ) );
+		$keys = array_unique( array_map( 'LockManager::sha1Base36', $paths ) );
 		return $this->doLock( $keys, $this->lockTypeMap[$type] );
 	}
 
@@ -59,8 +59,18 @@ abstract class LockManager {
 	 * @return Status 
 	 */
 	final public function unlock( array $paths, $type = self::LOCK_EX ) {
-		$keys = array_unique( array_map( 'sha1', $paths ) );
+		$keys = array_unique( array_map( 'LockManager::sha1Base36', $paths ) );
 		return $this->doUnlock( $keys, $this->lockTypeMap[$type] );
+	}
+
+	/**
+	 * Get the base 36 SHA-1 of a string, padded to 31 digits
+	 * 
+	 * @param $path string
+	 * @return string
+	 */
+	final protected static function sha1Base36( $path ) {
+		return wfBaseConvert( sha1( $path ), 16, 36, 31 );
 	}
 
 	/**
