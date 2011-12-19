@@ -811,7 +811,7 @@ class MoveFileOp extends FileOp {
  */
 class ConcatenateFileOp extends FileOp {
 	protected function allowedParams() {
-		return array( 'src', 'dst', 'overwriteDest' );
+		return array( 'srcs', 'dst', 'overwriteDest' );
 	}
 
 	protected function doPrecheck( array &$predicates ) {

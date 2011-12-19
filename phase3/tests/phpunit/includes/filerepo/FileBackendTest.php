@@ -343,11 +343,11 @@ class FileBackendTest extends MediaWikiTestCase {
 			);
 			$expContent .= $srcsContent[$i];
 		}
-		$dest = $op['dst'];
 		$status = $this->backend->doOperations( $ops );
 
-		$this->assertEquals( true, $status->isOK(), "Creation of concat file at $dest succeeded." );
+		$this->assertEquals( true, $status->isOK(), "Creation of source files succeeded." );
 
+		$dest = $op['dst'];
 		if ( $alreadyExists ) {
 			$oldText = 'blah...blah...waahwaah';
 			$status = $this->backend->doOperation(
