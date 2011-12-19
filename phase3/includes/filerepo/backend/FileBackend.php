@@ -451,7 +451,8 @@ abstract class FileBackend extends FileBackendBase {
 			return $status;
 		}
 		// Delete source (only fails due to races or medium going down)
-		$this->backend->delete( array( 'src' => $this->params['src'] ) );
+		$status->merge( $this->backend->delete( array( 'src' => $params['src'] ) ) );
+		$status->setResult( true, $status->value ); // ignore delete() errors
 		return $status;
 	}
 

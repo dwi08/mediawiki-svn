@@ -42,6 +42,8 @@ class FileBackendMultiWrite extends FileBackendBase {
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
+		// Construct backends here rather than via registration
+		// to keep these backends hidden from outside the proxy.
 		foreach ( $config['backends'] as $index => $config ) {
 			if ( !isset( $config['class'] ) ) {
 				throw new MWException( 'No class given for a backend config.' );

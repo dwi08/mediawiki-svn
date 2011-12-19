@@ -558,6 +558,8 @@ class FSFileBackend extends FileBackend {
 /**
  * Wrapper around RecursiveDirectoryIterator that catches
  * exception or does any custom behavoir that we may want.
+ *
+ * @ingroup FileBackend
  */
 class FSFileIterator implements Iterator {
 	/** @var RecursiveIteratorIterator */
