@@ -59,7 +59,13 @@ if( $url['host'] == 'secure.wikimedia.org' ) {
 	$project = $tmp[0];
 	$language = $tmp[1];
 	$base = 'secure.wikimedia.org/wikipedia/incubator/wiki/';
-	$page = implode( array_slice( $tmp, 3 ) );
+	if( isset( $_SERVER['PATH_INFO'] ) ) {
+		$page = implode( array_slice( $tmp, 3 ) ); # /wiki/Page (possibly /wiki/Page?foo=bar)
+	elseif( $_GET['title'] ) {
+		$page = $_GET['title']; # index.php?title=Page
+	} else {
+		$page = ''; # no known title, fallback to main page
+	}
 
 } else {
 
@@ -68,7 +74,13 @@ if( $url['host'] == 'secure.wikimedia.org' ) {
 	$project = $tmp[1];
 	$language = $tmp[0];
 	$base = 'incubator.wikimedia.org/wiki/';
-	$page = preg_replace( '/^\/wiki\//', '', $url['path'] );
+	if( isset( $_SERVER['PATH_INFO'] ) ) {
+		$page = preg_replace( '/^\/wiki\//', '', $url['path'] ); # /wiki/Page (possibly /wiki/Page?foo=bar)
+	elseif( $_GET['title'] ) {
+		$page = $_GET['title']; # index.php?title=Page
+	} else {
+		$page = ''; # no known title, fallback to main page
+	}
 
 }
 
@@ -79,7 +91,8 @@ $project = ucfirst( $project ); // for 404 pages message
 $location = $url['scheme'] . '://' . $base . 'W' . $projectcode . '/' . urlencode( $language );
 # Go to the page if specified (look out for slashes), otherwise go to
 # the main page Wx/xyz?goto=mainpage (WikimediaIncubator extension takes care of that)
-$location .= $page && $page !== '/' ? '/' . $page : '?goto=mainpage';
+$location .= $page && $page !== '/' ? '/' . $page :
+	'?goto=mainpage' . ( $_GET['uselang'] ? '&uselang=' . urlencode( $_GET['uselang'] ) : '' );
 
 $redir = false;
 
@@ -87,15 +100,15 @@ switch( $projectcode ) {
 
 	# Wikisource
 	case 's':
-		$logo = 'http://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/280px-Wikisource-logo.svg.png';
-		$home = 'http://wikisource.org';
+		$logo = '//upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/280px-Wikisource-logo.svg.png';
+		$home = '//wikisource.org';
 		$name = 'Multilingual Wikisource';
 		break;
 
 	# Wikiversity
 	case 'v':
-		$logo = 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Wikiversity-logo.svg/300px-Wikiversity-logo.svg.png';
-		$home = 'http://beta.wikiversity.org';
+		$logo = '//upload.wikimedia.org/wikipedia/commons/thumb/9/91/Wikiversity-logo.svg/300px-Wikiversity-logo.svg.png';
+		$home = '//beta.wikiversity.org';
 		$name = 'Beta Wikiversity';
 		break;
 
@@ -105,22 +118,21 @@ switch( $projectcode ) {
 
 }
 
-# OUTPUT
-# @fixme replace heredoc by better approach
-if( $redir ) {
+# If not Wikisource/Wikiversity and the URL seems valid, redirect to Incubator
+if( $redir && parse_url( $location ) !== false ) {
 
 	header( 'Location: ' . $location );
 	exit();
 
-} else {
+}
 
-	header( 'HTTP/1.x 404 Not Found' );
-	header( 'Content-Type: text/html; charset=utf-8');
+header( 'HTTP/1.x 404 Not Found' );
+header( 'Content-Type: text/html; charset=utf-8' );
 
-	$escLanguage = htmlspecialchars( $language );
-	$escProject = htmlspecialchars( $project );
-	echo <<< EOT
-<!DOCTYPE html>
+$escLanguage = htmlspecialchars( $language );
+$escProject = htmlspecialchars( $project );
+
+?><!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 	<title>$escLanguage&nbsp;$escProject does not exist</title>
@@ -193,6 +205,3 @@ a:hover, a:active {
 	</div>
 </body>
 </html>
-EOT;
-
-}
