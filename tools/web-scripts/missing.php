@@ -117,11 +117,13 @@ if( $redir ) {
 	header( 'HTTP/1.x 404 Not Found' );
 	header( 'Content-Type: text/html; charset=utf-8');
 
+	$escLanguage = htmlspecialchars( $language );
+	$escProject = htmlspecialchars( $project );
 	echo <<< EOT
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-	<title>$language&nbsp;$project does not exist</title>
+	<title>$escLanguage&nbsp;$escProject does not exist</title>
 	<meta charset="UTF-8" />
 	<link rel="shortcut icon" href="$home/favicon.ico" />
 	<style type="text/css">
@@ -177,11 +179,11 @@ a:hover, a:active {
 
 			<h1>This wiki does not exist</h1>
 
-			<h2>Welcome to $project</h2>
+			<h2>Welcome to $escProject</h2>
 
-			<p>Unfortunately, $project in "$language" does not exist on its own domain yet, or it has been closed.</p>
+			<p>Unfortunately, $escProject in "$escLanguage" does not exist on its own domain yet, or it has been closed.</p>
 
-			<p>You may like to visit <a href="$home">$name</a> to start or improve <em>$language&nbsp;$project</em> there.</p>
+			<p>You may like to visit <a href="$home">$name</a> to start or improve <em>$escLanguage&nbsp;$escProject</em> there.</p>
 
 			<p>If you would like to request that this wiki be created, see the <a href="//meta.wikimedia.org/wiki/Requests_for_new_languages">requests for new languages</a> page on Meta-Wiki.</p>
 
