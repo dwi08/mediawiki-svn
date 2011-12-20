@@ -76,7 +76,7 @@ $project = strtolower( $project );
 $projectcode = $projects[$project];
 $project = ucfirst( $project ); // for 404 pages message
 
-$location = $url['scheme'] . '://' . $base . 'W' . $projectcode . '/' . $language;
+$location = $url['scheme'] . '://' . $base . 'W' . $projectcode . '/' . urlencode( $language );
 # Go to the page if specified (look out for slashes), otherwise go to
 # the main page Wx/xyz?goto=mainpage (WikimediaIncubator extension takes care of that)
 $location .= $page && $page !== '/' ? '/' . $page : '?goto=mainpage';
