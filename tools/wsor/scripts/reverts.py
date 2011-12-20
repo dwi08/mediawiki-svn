@@ -53,7 +53,6 @@ def main():
 	revertedFile = open(args.output_prefix + "reverted.tsv", "w")
 	logging.info("Creating output file: %s" % (args.output_prefix + "reverted.tsv"))
 	
-	print(args.dump)
 	logging.info("Prcoessing...")
 	for out in dump.map(args.dump, reverts.process, threads=args.threads):
 		if out[0] == 'revert':
@@ -63,6 +62,7 @@ def main():
 			revertedFile.write("\t".join(encode(v) for v in out[1:]) + "\n")
 			LOGGING_STREAM.write(".")
 		
+	LOGGING_STREAM.write("\n")
 	
 	revertFile.close()
 	revertedFile.close()

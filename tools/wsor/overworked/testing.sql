@@ -173,8 +173,8 @@ GROUP BY SUBSTRING(rev_timestamp, 1,4), rev_user, u.user_name
 
 
 SELECT
-	SUBSTR(rev_timestamp, 1,4),
-	SUBSTR(rev_timestamp, 1,2),
+	YEAR(rev_timestamp),
+	MONTH(rev_timestamp),
 	count(*), 
 	sum(revision_id IS NOT NULL), 
 	sum(revision_id IS NOT NULL AND is_vandalism) 
@@ -207,3 +207,68 @@ UNION (
 	SELECT user_id FROM zexley.bots
 );
 
+
+CREATE TABLE halfak.reverter_months_20110115
+SELECT 
+	rev_user,
+	rev_user_text,
+	YEAR(rev_timestamp) AS year,
+	MONTH(rev_timestamp) AS month,
+	COUNT(*) as revisions,
+	SUM(revert.rev_id IS NOT NULL) as reverts,
+	SUM(revert.rev_id IS NOT NULL AND revert.is_vandalism) as vandal_reverts
+FROM revision
+LEFT JOIN halfak.revert_20110115 revert USING (rev_id)
+WHERE rev_timestamp < "20110115000000"
+GROUP BY rev_user, YEAR(rev_timestamp), MONTH(rev_timestamp);
+	
+
+CREATE TABLE halfak.admins_20110911
+SELECT 
+	user_id,
+	user_name,
+	user_email_authenticated,
+	user_registration,
+	user_editcount,
+	count(*) as actions,
+	min(log_timestamp) as became_admin
+FROM logging 
+INNER JOIN user ON REPLACE(log_title, "_", " ") = user_name 
+WHERE log_action = "rights" 
+AND log_type = "rights" 
+AND (
+	log_comment LIKE "%+sysop%" OR 
+	log_params LIKE "%sysop%"
+)
+GROUP BY user.user_id;
+CREATE UNIQUE INDEX user_idx ON halfak.admins_20110911 (user_id);
+
+
+--
+--Limit bot reverts to namespace zero
+--revision_copy
+--
+CREATE TABLE halfak.actor_revert_months
+SELECT
+	IF(
+	bot.user_id IS NOT NULL,
+	"bot",
+	IF(
+	tool IS NOT NULL,
+	"tool",
+	"human"
+	)
+	) AS actor,
+	YEAR(rc.rev_timestamp) AS year,
+	MONTH(rc.rev_timestamp) as month,
+	COUNT(*) AS revisions,
+	SUM(revert.rev_id IS NOT NULL) as reverts,
+	SUM(revert.rev_id IS NOT NULL AND is_vandalism) as vandal_reverts
+FROM staeiou.revision_copy rc
+INNER JOIN enwiki.revision r USING (rev_id)
+INNER JOIN enwiki.page p ON page_id = r.rev_page
+LEFT JOIN halfak.revert_20110115 revert USING (rev_id)
+LEFT JOIN halfak.bot_20110711 bot ON rc.rev_user = user_id
+WHERE rc.rev_timestamp < "20110115000000"
+AND page_namespace = 0
+GROUP BY 1, 2, 3;

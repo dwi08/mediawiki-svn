@@ -3,7 +3,7 @@ source("util/env.R")
 
 
 load_reverting_months = function(verbose=T, reload=F){
-	filename = paste(DATA_DIR, "en.reverting_years.20110115.tsv", sep="/")
+	filename = paste(DATA_DIR, "reverting_months.20110115.tsv", sep="/")
 	if(!exists("REVERTING_MONTHS")){
 		REVERTING_MONTHS <<- NULL
 	}
