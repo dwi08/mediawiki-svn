@@ -26,17 +26,13 @@
  */
 function getSelfUrl() {
 
-	/* faking https on secure.wikimedia.org - thanks Ryan for hint */
+	// faking https on secure.wikimedia.org - thanks Ryan for hint
 	if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
 		$_SERVER['HTTPS'] = 'on';
 	}
 
-	$s = empty( $_SERVER['HTTPS'] ) ? '' : ( $_SERVER['HTTPS'] == 'on' ) ? 's' : '';
-
-	$protocol = substr( strtolower( $_SERVER['SERVER_PROTOCOL'] ), 0, strpos( strtolower( $_SERVER['SERVER_PROTOCOL'] ), '/' ) ) . $s;
-
-	$port = ( $_SERVER['SERVER_PORT'] == '80') ? '' : ( ':' . $_SERVER['SERVER_PORT'] );
-
+	$protocol = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) ? 'https' : 'http';
+	$port = ( $_SERVER['SERVER_PORT'] == '80' ) ? '' : ( ':' . $_SERVER['SERVER_PORT'] );
 	return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
 }
 
@@ -55,6 +51,7 @@ $projects = array(
 
 $url = parse_url( getSelfUrl() );
 
+// FIXME: the code below assumes getSelfUrl() contains /wiki/ , it should verify that
 if( $url['host'] == 'secure.wikimedia.org' ) {
 
 	# https://secure.wikimedia.org/$project/$language/wiki/$page
