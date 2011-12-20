@@ -79,7 +79,11 @@ class DBLockManager extends LockManager {
 			}
 		}
 
-		$this->session = mt_rand( 0, 2147483647 );
+		$this->session = '';
+		for ( $i = 0; $i < 5; $i++ ) {
+			$this->session .= mt_rand( 0, 2147483647 );
+		}
+		$this->session = wfBaseConvert( sha1( $this->session ), 16, 36, 31 );
 	}
 
 	protected function doLock( array $keys, $type ) {
