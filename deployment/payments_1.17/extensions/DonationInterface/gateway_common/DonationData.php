@@ -101,6 +101,7 @@ class DonationData {
 				'direct_debit_text' => $wgRequest->getText( 'direct_debit_text', null ),
 				'iban' => $wgRequest->getText( 'iban', null ),
 				'transaction_type' => $wgRequest->getText( 'transaction_type', null ),
+				'recurring' => $wgRequest->getVal( 'recurring', null ), //boolean type
 			);
 			if ( !$this->wasPosted() ) {
 				$this->setVal( 'posted', false );
@@ -1031,6 +1032,7 @@ class DonationData {
 			'zip2',
 			'gateway',
 			'gateway_txn_id',
+			'recurring',
 			'payment_method',
 			'payment_submethod',
 			'response',
