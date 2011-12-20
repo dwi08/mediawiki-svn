@@ -180,5 +180,17 @@ abstract class SpecialContestPage extends SpecialPage {
 
 		$this->getOutput()->addHTML( self::getNavigation( $subPage, $this->getUser(), $this->getLang(), $this->getName() ) );
 	}
+	
+	/**
+	 * Get the Language being used for this instance.
+	 * getLang was deprecated in 1.19, getLanguage was introduces in the same version.
+	 *
+	 * @since 0.2
+	 *
+	 * @return Language
+	 */
+	public function getLanguage() {
+		return method_exists( get_parent_class(), 'getLanguage' ) ? parent::getLanguage() : $this->getLang();
+	}
 
 }
