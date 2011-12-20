@@ -499,8 +499,11 @@ class Article extends Page {
 							# the correct version information.
 							$wgOut->setRevisionId( $this->mPage->getLatest() );
 							# Preload timestamp to avoid a DB hit
-							$wgOut->setRevisionTimestamp( $this->mParserOutput->getTimestamp() );
-							$this->mPage->setTimestamp( $this->mParserOutput->getTimestamp() );
+							$cachedTimestamp = $this->mParserOutput->getTimestamp();
+							if ( $cachedTimestamp !== null ) {
+								$wgOut->setRevisionTimestamp( $cachedTimestamp );
+								$this->mPage->setTimestamp( $cachedTimestamp );
+							}
 							$outputDone = true;
 						}
 					}
@@ -1778,6 +1781,18 @@ class Article extends Page {
 	}
 
 	// ****** B/C functions to work-around PHP silliness with __call and references ****** //
+
+	/**
+	 * @param $limit array
+	 * @param $expiry array
+	 * @param $cascade bool
+	 * @param $reason string
+	 * @param $user User
+	 * @return Status
+	 */
+	public function doUpdateRestrictions( array $limit, array $expiry, &$cascade, $reason, User $user ) {
+		return $this->mPage->doUpdateRestrictions( $limit, $expiry, $cascade, $reason, $user );
+	}
 
 	/**
 	 * @param $limit array

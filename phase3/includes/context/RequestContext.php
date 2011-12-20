@@ -146,9 +146,10 @@ class RequestContext implements IContextSource {
 	/**
 	 * Accepts a language code and ensures it's sane. Outputs a cleaned up language
 	 * code and replaces with $wgLanguageCode if not sane.
-	 * @private
+	 * @param $code string
+	 * @return string
 	 */
-	static function sanitizeLangCode( $code ) {
+	public static function sanitizeLangCode( $code ) {
 		global $wgLanguageCode;
 
 		// BCP 47 - letter case MUST NOT carry meaning

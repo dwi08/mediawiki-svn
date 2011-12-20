@@ -2004,7 +2004,7 @@ class Title {
 		# Time to check the whitelist
 		global $wgWhitelistRead;
 
-		# Only to these checks is there's something to check against
+		# Only do these checks is there's something to check against
 		if ( is_array( $wgWhitelistRead ) && count( $wgWhitelistRead ) ) {
 			# Check for explicit whitelisting
 			$name = $this->getPrefixedText();
@@ -2219,66 +2219,24 @@ class Title {
 	/**
 	 * Update the title protection status
 	 *
+	 * @deprecated in 1.19; will be removed in 1.20. Use WikiPage::doUpdateRestrictions() instead.
 	 * @param $create_perm String Permission required for creation
 	 * @param $reason String Reason for protection
 	 * @param $expiry String Expiry timestamp
 	 * @return boolean true
 	 */
 	public function updateTitleProtection( $create_perm, $reason, $expiry ) {
-		global $wgUser, $wgContLang;
+		wfDeprecated( __METHOD__, '1.19' );
 
-		if ( $create_perm == implode( ',', $this->getRestrictions( 'create' ) )
-			&& $expiry == $this->mRestrictionsExpiry['create'] ) {
-			// No change
-			return true;
-		}
+		global $wgUser;
 
-		list ( $namespace, $title ) = array( $this->getNamespace(), $this->getDBkey() );
+		$limit = array( 'create' => $create_perm );
+		$expiry = array( 'create' => $expiry );
 
-		$dbw = wfGetDB( DB_MASTER );
+		$page = WikiPage::factory( $this );
+		$status = $page->doUpdateRestrictions( $limit, $expiry, false, $reason, $wgUser );
 
-		$encodedExpiry = $dbw->encodeExpiry( $expiry );
-
-		$expiry_description = '';
-		if ( $encodedExpiry != $dbw->getInfinity() ) {
-			$expiry_description = ' (' . wfMsgForContent( 'protect-expiring', $wgContLang->timeanddate( $expiry ),
-				$wgContLang->date( $expiry ) , $wgContLang->time( $expiry ) ) . ')';
-		} else {
-			$expiry_description .= ' (' . wfMsgForContent( 'protect-expiry-indefinite' ) . ')';
-		}
-
-		# Update protection table
-		if ( $create_perm != '' ) {
-			$this->mTitleProtection = array(
-					'pt_namespace' => $namespace,
-					'pt_title' => $title,
-					'pt_create_perm' => $create_perm,
-					'pt_timestamp' => $dbw->encodeExpiry( wfTimestampNow() ),
-					'pt_expiry' => $encodedExpiry,
-					'pt_user' => $wgUser->getId(),
-					'pt_reason' => $reason,
-				);
-			$dbw->replace( 'protected_titles', array( array( 'pt_namespace', 'pt_title' ) ),
-				$this->mTitleProtection, __METHOD__	);
-		} else {
-			$dbw->delete( 'protected_titles', array( 'pt_namespace' => $namespace,
-				'pt_title' => $title ), __METHOD__ );
-			$this->mTitleProtection = false;
-		}
-
-		# Update the protection log
-		if ( $dbw->affectedRows() ) {
-			$log = new LogPage( 'protect' );
-
-			if ( $create_perm ) {
-				$params = array( "[create=$create_perm] $expiry_description", '' );
-				$log->addEntry( ( isset( $this->mRestrictions['create'] ) && $this->mRestrictions['create'] ) ? 'modify' : 'protect', $this, trim( $reason ), $params );
-			} else {
-				$log->addEntry( 'unprotect', $this, $reason );
-			}
-		}
-
-		return true;
+		return $status->isOK();
 	}
 
 	/**
@@ -2665,6 +2623,15 @@ class Title {
 	}
 
 	/**
+	 * Flush the protection cache in this object and force reload from the database.
+	 * This is used when updating protection from WikiPage::doUpdateRestrictions().
+	 */
+	public function flushRestrictions() {
+		$this->mRestrictionsLoaded = false;
+		$this->mTitleProtection = null;
+	}
+
+	/**
 	 * Purge expired restrictions from the page_restrictions table
 	 */
 	static function purgeExpiredRestrictions() {
@@ -2808,6 +2775,15 @@ class Title {
 	}
 
 	/**
+	 * Returns a bool to say whether the Article ID for this title has already been loaded
+	 *
+	 * @return bool
+	 */
+	public function isArticleIDLoaded() {
+		return $this->mArticleID != -1;
+	}
+
+	/**
 	 * Get the article ID for this Title from the link cache,
 	 * adding it if necessary
 	 *
@@ -2825,10 +2801,8 @@ class Title {
 			$linkCache->clearLink( $this );
 			$this->mArticleID = $linkCache->addLinkObj( $this );
 			$linkCache->forUpdate( $oldUpdate );
-		} else {
-			if ( -1 == $this->mArticleID ) {
-				$this->mArticleID = $linkCache->addLinkObj( $this );
-			}
+		} else if ( -1 == $this->mArticleID ) {
+			$this->mArticleID = $linkCache->addLinkObj( $this );
 		}
 		return $this->mArticleID;
 	}

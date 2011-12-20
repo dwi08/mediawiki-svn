@@ -53,6 +53,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 		$fld_parsedcomment = isset ( $prop['parsedcomment'] );
 		$fld_minor = isset( $prop['minor'] );
 		$fld_len = isset( $prop['len'] );
+		$fld_sha1 = isset( $prop['sha1'] );
 		$fld_content = isset( $prop['content'] );
 		$fld_token = isset( $prop['token'] );
 
@@ -101,6 +102,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 		$this->addFieldsIf( 'ar_comment', $fld_comment || $fld_parsedcomment );
 		$this->addFieldsIf( 'ar_minor_edit', $fld_minor );
 		$this->addFieldsIf( 'ar_len', $fld_len );
+		$this->addFieldsIf( 'ar_sha1', $fld_sha1 );
 
 		if ( $fld_content ) {
 			$this->addTables( 'text' );
@@ -233,6 +235,9 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 			if ( $fld_len ) {
 				$rev['len'] = $row->ar_len;
 			}
+			if ( $fld_sha1 ) {
+				$rev['sha1'] = wfBaseConvert( $row->ar_sha1, 36, 16, 40 );
+			}
 			if ( $fld_content ) {
 				ApiResult::setContent( $rev, Revision::getRevisionText( $row ) );
 			}
@@ -314,6 +319,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 					'parsedcomment',
 					'minor',
 					'len',
+					'sha1',
 					'content',
 					'token'
 				),
@@ -340,7 +346,8 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 				' comment        - Adds the comment of the revision',
 				' parsedcomment  - Adds the parsed comment of the revision',
 				' minor          - Tags if the revision is minor',
-				' len            - Adds the length of the revision',
+				' len            - Adds the length (bytes) of the revision',
+				' sha1           - Adds the SHA-1 (base 16) of the revision',
 				' content        - Adds the content of the revision',
 				' token          - Gives the edit token',
 			),
@@ -382,14 +389,14 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 
 	public function getExamples() {
 		return array(
-			'List the last deleted revisions of Main Page and Talk:Main Page, with content (mode 1):',
-			'  api.php?action=query&list=deletedrevs&titles=Main%20Page|Talk:Main%20Page&drprop=user|comment|content',
-			'List the last 50 deleted contributions by Bob (mode 2):',
-			'  api.php?action=query&list=deletedrevs&druser=Bob&drlimit=50',
-			'List the first 50 deleted revisions in the main namespace (mode 3):',
-			'  api.php?action=query&list=deletedrevs&drdir=newer&drlimit=50',
-			'List the first 50 deleted pages in the Talk namespace (mode 3):',
-			'  api.php?action=query&list=deletedrevs&drdir=newer&drlimit=50&drnamespace=1&drunique=',
+			'api.php?action=query&list=deletedrevs&titles=Main%20Page|Talk:Main%20Page&drprop=user|comment|content'
+				=> 'List the last deleted revisions of Main Page and Talk:Main Page, with content (mode 1):',
+			'api.php?action=query&list=deletedrevs&druser=Bob&drlimit=50'
+				=> 'List the last 50 deleted contributions by Bob (mode 2):',
+			'api.php?action=query&list=deletedrevs&drdir=newer&drlimit=50'
+				=> 'List the first 50 deleted revisions in the main namespace (mode 3):',
+			'api.php?action=query&list=deletedrevs&drdir=newer&drlimit=50&drnamespace=1&drunique='
+				=> 'List the first 50 deleted pages in the Talk namespace (mode 3):',
 		);
 	}
 
