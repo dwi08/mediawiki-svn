@@ -14,7 +14,7 @@ date_default_timezone_set( 'UTC' );
 $mode = 'dev';
 $mode = 'preprod';
 $mode = 'prod';
-if( !(count($argv) === 2 && preg_match( '/^--(dev|preprod|prod)$/', $argv[1] ) ) ) {
+if( !( count( $argv ) === 2 && preg_match( '/^--(dev|preprod|prod)$/', $argv[1] ) ) ) {
 	print "$argv[0]: expects exactly one of the following options:\n\n";
 	print "  --dev     : fetch only this script repository.\n";
 	print "  --preprod : fetch part of phase3 in a temp directory with debugging\n";
