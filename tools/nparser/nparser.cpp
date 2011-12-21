@@ -32,8 +32,8 @@ int main (int argc, char* argv[])
         }
         string filepath( argv[1] );
         filepath = filepath + "/novalist";
-        cout << filepath << endl;
-        cout << "Parsing" << endl;
+        //cout << filepath << endl;
+        //cout << "Parsing" << endl;
         ifstream data( (char*) filepath.c_str() );
         string file;
         if (data.is_open())
