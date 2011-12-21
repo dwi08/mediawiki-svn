@@ -57,8 +57,13 @@ $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd_green-US'] = $wgGlobalColl
 $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-amex'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects2nd-amex.html';
 
 //Credit Card - misc.
-$wgGlobalCollectGatewayAllowedHtmlForms['cc-US'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-US.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['cc-CA'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-CA.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-US'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmaj.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-CA'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vm.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-vm'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vm.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-vma'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vma.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-vmaj'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmaj.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-vmj'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmj.html';
+
 
 /**
  * PayflowPro RapidHTML whitelist additions
