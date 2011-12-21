@@ -312,13 +312,13 @@ class LocalisationCache {
 	 */
 	public function isExpired( $code ) {
 		if ( $this->forceRecache && !isset( $this->recachedLangs[$code] ) ) {
-			wfDebug( __METHOD__."($code): forced reload\n" );
+			wfDebugLog( 'lc-recache', __METHOD__."($code): forced reload\n" );
 			return true;
 		}
 
 		$deps = $this->store->get( $code, 'deps' );
 		if ( $deps === null ) {
-			wfDebug( __METHOD__."($code): cache missing, need to make one\n" );
+			wfDebugLog( 'lc-recache', __METHOD__."($code): cache missing, need to make one\n" );
 			return true;
 		}
 		foreach ( $deps as $dep ) {
@@ -327,7 +327,7 @@ class LocalisationCache {
 			// anymore (e.g. uninstalled extensions)
 			// When this happens, always expire the cache
 			if ( !$dep instanceof CacheDependency || $dep->isExpired() ) {
-				wfDebug( __METHOD__."($code): cache for $code expired due to " .
+				wfDebugLog( 'lc-recache', __METHOD__."($code): cache for $code expired due to " .
 					get_class( $dep ) . "\n" );
 				return true;
 			}
