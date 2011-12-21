@@ -1,0 +1,1271 @@
+* United States
+** en # 90.6%
+** portal # 6.4%
+** other # 3.0%
+* Germany
+** de # 84.0%
+** en # 11.9%
+** other # 4.1%
+* Japan
+** ja # 95.9%
+** en # 3.1%
+** other # 1.0%
+* United Kingdom
+** en # 92.8%
+** portal # 3.7%
+** other # 3.5%
+* France
+** fr # 84.6%
+** en # 11.8%
+** other # 3.6%
+* Italy
+** it # 84.4%
+** en # 12.1%
+** other # 3.5%
+* Russian Federation
+** ru # 88.0%
+** en # 8.6%
+** portal # 2.1%
+** other # 1.3%
+* Canada
+** en # 83.7%
+** fr # 9.3%
+** portal # 4.2%
+** zh # 1.0%
+** other # 1.8%
+* Brazil
+** pt # 79.8%
+** en # 16.6%
+** portal # 1.8%
+** other # 1.8%
+* Poland
+** pl # 78.8%
+** en # 16.2%
+** portal # 1.9%
+** ru # 1.1%
+** other # 2.0%
+* Mexico
+** es # 84.6%
+** en # 13.3%
+** portal # 1.3%
+** other # 0.8%
+* Spain
+** es # 75.6%
+** en # 16.2%
+** ca # 2.8%
+** portal # 1.0%
+** other # 4.4%
+* India
+** en # 93.5%
+** portal # 3.6%
+** other # 2.9%
+* Australia
+** en # 93.0%
+** portal # 3.8%
+** zh # 1.3%
+** other # 1.9%
+* Netherlands
+** nl # 59.2%
+** en # 33.9%
+** portal # 1.8%
+** de # 1.7%
+** other # 3.4%
+* Sweden
+** sv # 53.9%
+** en # 38.8%
+** portal # 2.0%
+** de # 1.0%
+** other # 4.3%
+* Ukraine
+** ru # 68.1%
+** uk # 12.7%
+** en # 11.0%
+** portal # 6.4%
+** other # 1.8%
+* Taiwan
+** zh # 78.8%
+** en # 15.4%
+** ja # 3.3%
+** portal # 1.0%
+** other # 1.5%
+* Colombia
+** es # 86.9%
+** en # 10.3%
+** portal # 2.0%
+** other # 0.8%
+* Argentina
+** es # 81.6%
+** en # 15.5%
+** portal # 1.5%
+** other # 1.4%
+* Switzerland
+** de # 55.9%
+** en # 17.8%
+** fr # 17.2%
+** it # 3.9%
+** portal # 2.4%
+** other # 2.8%
+* Philippines
+** en # 91.1%
+** portal # 4.9%
+** tl # 2.9%
+** other # 1.1%
+* China
+** zh # 59.4%
+** en # 25.0%
+** portal # 6.2%
+** ja # 4.1%
+** de # 1.0%
+** other # 4.3%
+* Austria
+** de # 78.8%
+** en # 16.1%
+** portal # 1.4%
+** other # 3.7%
+* Belgium
+** nl # 36.0%
+** fr # 32.6%
+** en # 25.1%
+** de # 1.7%
+** portal # 1.4%
+** other # 3.2%
+* Turkey
+** tr # 67.2%
+** en # 27.9%
+** portal # 1.6%
+** de # 1.0%
+** other # 2.3%
+* Finland
+** fi # 58.9%
+** en # 35.1%
+** sv # 1.8%
+** portal # 1.2%
+** other # 3.0%
+* Hong Kong
+** zh # 59.9%
+** en # 31.3%
+** portal # 3.6%
+** ja # 2.4%
+** yue # 1.5%
+** other # 1.3%
+* Indonesia
+** id # 45.3%
+** en # 44.2%
+** portal # 7.7%
+** other # 2.8%
+* Norway
+** en # 44.4%
+** no # 43.4%
+** portal # 3.2%
+** sv # 1.2%
+** de # 1.1%
+** id # 1.0%
+** other # 5.7%
+* Czech Republic
+** cs # 65.1%
+** en # 25.6%
+** portal # 3.0%
+** ru # 1.6%
+** de # 1.5%
+** other # 3.2%
+* Malaysia
+** en # 72.3%
+** portal # 12.0%
+** zh # 6.4%
+** ms # 6.2%
+** id # 1.1%
+** other # 2.0%
+* Chile
+** es # 82.4%
+** en # 14.9%
+** portal # 1.5%
+** other # 1.2%
+* Israel
+** he # 49.2%
+** en # 37.9%
+** ru # 5.6%
+** portal # 2.8%
+** ar # 1.9%
+** other # 2.6%
+* Venezuela
+** es # 87.4%
+** en # 10.6%
+** portal # 1.1%
+** other # 0.9%
+* Peru
+** es # 85.0%
+** en # 12.9%
+** portal # 1.0%
+** other # 1.1%
+* Portugal
+** pt # 56.0%
+** en # 38.1%
+** portal # 1.6%
+** es # 1.2%
+** other # 3.1%
+* Korea, Republic of
+** ko # 49.7%
+** en # 40.1%
+** ja # 3.6%
+** portal # 3.2%
+** other # 3.4%
+* Romania
+** en # 60.9%
+** ro # 27.0%
+** portal # 4.7%
+** hu # 2.9%
+** fr # 1.2%
+** de # 1.1%
+** other # 2.2%
+* Thailand
+** th # 51.9%
+** en # 34.4%
+** portal # 9.2%
+** ja # 1.5%
+** other # 3.0%
+* Hungary
+** hu # 55.8%
+** en # 36.3%
+** portal # 2.5%
+** de # 2.5%
+** other # 2.9%
+* Denmark
+** en # 54.9%
+** da # 35.8%
+** portal # 2.5%
+** de # 2.0%
+** other # 4.8%
+* Ireland
+** en # 90.3%
+** portal # 4.0%
+** pl # 1.8%
+** other # 3.9%
+* Greece
+** en # 69.5%
+** el # 22.5%
+** portal # 3.0%
+** de # 1.2%
+** other # 3.8%
+* New Zealand
+** en # 91.9%
+** portal # 4.2%
+** zh # 1.3%
+** other # 2.6%
+* Vietnam
+** vi # 56.2%
+** en # 38.6%
+** portal # 1.7%
+** other # 3.5%
+* Serbia
+** en # 60.5%
+** sr # 22.4%
+** portal # 5.7%
+** hr # 2.7%
+** sc # 2.1%
+** bs # 1.2%
+** other # 5.4%
+* Bulgaria
+** en # 47.6%
+** bg # 40.9%
+** portal # 4.9%
+** ru # 2.6%
+** de # 1.1%
+** other # 2.9%
+* Saudi Arabia
+** en # 56.5%
+** ar # 36.5%
+** portal # 3.8%
+** other # 3.2%
+* Pakistan
+** en # 94.1%
+** portal # 4.2%
+** other # 1.7%
+* Croatia
+** en # 61.0%
+** hr # 28.5%
+** bs # 2.5%
+** portal # 2.3%
+** de # 1.5%
+** sr # 1.0%
+** other # 3.2%
+* Egypt
+** en # 54.0%
+** ar # 36.7%
+** portal # 4.5%
+** fr # 1.0%
+** arz # 1.0%
+** other # 2.8%
+* Iran, Islamic Republic of
+** fa # 55.8%
+** en # 37.4%
+** portal # 4.0%
+** other # 2.8%
+* Singapore
+** en # 84.0%
+** portal # 7.1%
+** zh # 4.4%
+** ja # 2.1%
+** other # 2.4%
+* Slovakia
+** en # 40.5%
+** sk # 38.0%
+** cs # 9.6%
+** portal # 4.1%
+** hu # 2.9%
+** de # 1.8%
+** other # 3.1%
+* Ecuador
+** es # 85.0%
+** en # 11.7%
+** portal # 2.2%
+** other # 1.1%
+* South Africa
+** en # 90.7%
+** portal # 4.9%
+** af # 1.9%
+** other # 2.5%
+* Belarus
+** ru # 79.4%
+** en # 11.2%
+** portal # 6.5%
+** other # 2.9%
+* Morocco
+** fr # 58.6%
+** en # 20.9%
+** ar # 16.3%
+** es # 1.2%
+** portal # 1.1%
+** other # 1.9%
+* Lithuania
+** en # 42.5%
+** lt # 40.3%
+** ru # 8.2%
+** portal # 5.1%
+** pl # 1.1%
+** other # 2.8%
+* Dominican Republic
+** es # 77.1%
+** en # 19.1%
+** portal # 2.1%
+** other # 1.7%
+* Kazakhstan
+** ru # 81.6%
+** en # 11.6%
+** kz # 3.1%
+** portal # 2.3%
+** other # 1.4%
+* Guatemala
+** es # 83.3%
+** en # 14.1%
+** portal # 1.7%
+** other # 0.9%
+* Algeria
+** fr # 55.8%
+** ar # 25.1%
+** en # 16.1%
+** portal # 1.0%
+** other # 2.0%
+* Kuwait
+** en # 56.0%
+** ru # 14.2%
+** ar # 10.5%
+** portal # 4.1%
+** pl # 2.2%
+** uk # 2.0%
+** de # 1.6%
+** fr # 1.5%
+** pt # 1.1%
+** other # 6.8%
+* Slovenia
+** en # 61.4%
+** sl # 28.8%
+** portal # 2.0%
+** de # 2.0%
+** hr # 1.4%
+** it # 1.0%
+** other # 3.4%
+* Puerto Rico
+** en # 52.3%
+** es # 41.8%
+** portal # 5.1%
+** other # 0.8%
+* Estonia
+** en # 53.6%
+** es # 22.7%
+** ru # 17.4%
+** portal # 3.2%
+** de # 1.0%
+** other # 2.1%
+* United Arab Emirates
+** en # 82.4%
+** ar # 8.3%
+** portal # 3.8%
+** other # 5.5%
+* Uruguay
+** es # 79.5%
+** en # 17.2%
+** portal # 1.3%
+** other # 2.0%
+* Latvia
+** en # 43.0%
+** ru # 33.9%
+** lv # 16.4%
+** portal # 3.3%
+** de # 1.1%
+** other # 2.3%
+* Costa Rica
+** es # 68.7%
+** en # 26.7%
+** portal # 2.6%
+** other # 2.0%
+* Tunisia
+** fr # 61.7%
+** en # 20.7%
+** ar # 13.7%
+** portal # 1.5%
+** other # 2.4%
+* Bosnia and Herzegovina
+** en # 49.7%
+** hr # 20.0%
+** sr # 11.3%
+** bs # 7.8%
+** portal # 4.8%
+** de # 2.3%
+** sc # 1.6%
+** other # 2.5%
+* Georgia
+** en # 38.2%
+** ka # 26.8%
+** ru # 19.2%
+** portal # 12.1%
+** de # 1.1%
+** other # 2.6%
+* Panama
+** es # 70.2%
+** en # 25.8%
+** portal # 2.4%
+** other # 1.6%
+* Macedonia
+** en # 66.3%
+** mk # 14.7%
+** portal # 5.8%
+** sr # 4.3%
+** sq # 1.4%
+** hr # 1.4%
+** other # 6.1%
+* Bolivia
+** es # 84.0%
+** en # 12.2%
+** portal # 1.2%
+** pt # 1.0%
+** other # 1.6%
+* Moldova, Republic of
+** ru # 52.0%
+** en # 25.0%
+** ro # 14.9%
+** portal # 4.3%
+** fr # 1.0%
+** other # 2.8%
+* El Salvador
+** es # 82.2%
+** en # 15.4%
+** portal # 1.4%
+** other # 1.0%
+* Bangladesh
+** en # 91.1%
+** portal # 4.8%
+** bn # 2.1%
+** other # 2.0%
+* Luxembourg
+** de # 39.7%
+** fr # 25.5%
+** en # 24.9%
+** portal # 2.0%
+** lb # 1.3%
+** it # 1.2%
+** pt # 1.0%
+** other # 4.4%
+* Qatar
+** en # 80.0%
+** ar # 10.2%
+** portal # 5.0%
+** fr # 1.0%
+** other # 3.8%
+* Sri Lanka
+** en # 91.3%
+** portal # 3.6%
+** ta # 2.4%
+** si # 1.1%
+** other # 1.6%
+* Jordan
+** en # 55.1%
+** ar # 37.1%
+** portal # 4.5%
+** other # 3.3%
+* Paraguay
+** es # 81.8%
+** en # 12.0%
+** portal # 1.7%
+** pt # 1.6%
+** de # 1.2%
+** other # 1.7%
+* Nigeria
+** en # 90.9%
+** portal # 5.3%
+** other # 3.8%
+* Trinidad and Tobago
+** en # 87.5%
+** portal # 11.6%
+** other # 0.9%
+* Iceland
+** en # 76.8%
+** is # 9.6%
+** portal # 6.9%
+** de # 1.3%
+** pl # 1.1%
+** ru # 1.1%
+** other # 3.2%
+* Cyprus
+** en # 74.5%
+** el # 12.8%
+** portal # 4.2%
+** ru # 3.2%
+** other # 5.3%
+* Honduras
+** es # 76.0%
+** en # 20.5%
+** portal # 2.6%
+** other # 0.9%
+* Azerbaijan
+** ru # 42.8%
+** en # 27.0%
+** az # 17.6%
+** tr # 6.8%
+** portal # 3.6%
+** other # 2.2%
+* Kenya
+** en # 89.6%
+** portal # 5.3%
+** fr # 1.8%
+** other # 3.3%
+* Albania
+** en # 66.8%
+** sq # 16.9%
+** it # 6.1%
+** portal # 3.8%
+** de # 2.0%
+** other # 4.4%
+* Jamaica
+** en # 85.6%
+** portal # 13.4%
+** other # 1.0%
+* Malta
+** en # 87.6%
+** portal # 5.1%
+** it # 2.0%
+** de # 1.1%
+** other # 4.2%
+* Mauritius
+** en # 72.8%
+** fr # 13.7%
+** portal # 11.4%
+** other # 2.1%
+* Lebanon
+** en # 70.9%
+** fr # 12.7%
+** ar # 9.1%
+** portal # 4.9%
+** other # 2.4%
+* Nicaragua
+** es # 77.3%
+** en # 18.5%
+** portal # 1.9%
+** other # 2.3%
+* Macao
+** zh # 70.2%
+** en # 22.7%
+** portal # 1.9%
+** ja # 1.8%
+** yue # 1.3%
+** pt # 1.0%
+** other # 1.1%
+* Oman
+** en # 73.5%
+** ar # 20.1%
+** portal # 3.5%
+** other # 2.9%
+* Ghana
+** en # 86.1%
+** portal # 10.0%
+** fr # 1.2%
+** other # 2.7%
+* Iraq
+** en # 59.4%
+** ar # 29.9%
+** portal # 5.1%
+** ckb # 1.0%
+** other # 4.6%
+* Nepal
+** en # 88.7%
+** portal # 6.2%
+** ne # 2.0%
+** other # 3.1%
+* Montenegro
+** en # 57.5%
+** sr # 19.9%
+** portal # 6.0%
+** hr # 5.3%
+** sc # 2.6%
+** ru # 2.3%
+** bs # 2.1%
+** other # 4.3%
+* Armenia
+** ru # 43.7%
+** en # 33.4%
+** hy # 12.3%
+** portal # 6.8%
+** other # 3.8%
+* Uzbekistan
+** ru # 74.0%
+** en # 18.7%
+** portal # 2.5%
+** uz # 1.7%
+** other # 3.1%
+* Palestinian Territory
+** ar # 50.9%
+** en # 42.2%
+** portal # 3.4%
+** other # 3.5%
+* Bahrain
+** en # 66.1%
+** ar # 16.2%
+** ru # 11.6%
+** portal # 3.3%
+** other # 2.8%
+* Senegal
+** fr # 66.7%
+** en # 21.4%
+** portal # 3.5%
+** pt # 1.3%
+** de # 1.0%
+** other # 6.1%
+* Mongolia
+** en # 66.6%
+** mn # 13.4%
+** portal # 7.9%
+** ru # 7.1%
+** ja # 1.4%
+** de # 1.4%
+** other # 2.2%
+* Brunei Darussalam
+** en # 84.4%
+** portal # 9.7%
+** ms # 2.5%
+** id # 1.2%
+** zh # 1.2%
+** other # 1.0%
+* Cambodia
+** en # 76.8%
+** portal # 7.2%
+** fr # 4.1%
+** km # 3.5%
+** zh # 1.9%
+** ja # 1.8%
+** de # 1.2%
+** other # 3.5%
+* Sudan
+** en # 59.4%
+** ar # 31.2%
+** portal # 5.6%
+** other # 3.8%
+* Bahamas
+** en # 85.8%
+** portal # 12.5%
+** other # 1.7%
+* Côte d
+** fr # 76.3%
+** en # 15.9%
+** portal # 3.3%
+** other # 4.5%
+* Barbados
+** en # 89.5%
+** portal # 9.3%
+** other # 1.2%
+* Angola
+** pt # 72.3%
+** en # 18.8%
+** fr # 2.3%
+** portal # 2.0%
+** es # 1.8%
+** other # 2.8%
+* Cameroon
+** fr # 62.0%
+** en # 31.3%
+** portal # 4.4%
+** other # 2.3%
+* Netherlands Antilles
+** en # 70.7%
+** nl # 15.3%
+** portal # 5.4%
+** es # 4.0%
+** fr # 2.4%
+** other # 2.2%
+* Tanzania, United Republic of
+** en # 89.2%
+** portal # 3.2%
+** sw # 1.8%
+** fr # 1.4%
+** de # 1.2%
+** other # 3.2%
+* Uganda
+** en # 93.7%
+** portal # 3.2%
+** other # 3.1%
+* Guam
+** en # 87.5%
+** portal # 7.8%
+** ja # 3.1%
+** other # 1.6%
+* Kyrgyzstan
+** ru # 71.9%
+** en # 20.0%
+** portal # 3.4%
+** ky # 1.2%
+** other # 3.5%
+* Maldives
+** en # 84.1%
+** portal # 11.4%
+** other # 4.5%
+* Libyan Arab Jamahiriya
+** en # 58.5%
+** ar # 35.3%
+** portal # 1.6%
+** fr # 1.0%
+** other # 3.6%
+* Mozambique
+** pt # 62.5%
+** en # 28.9%
+** portal # 2.5%
+** es # 1.6%
+** fr # 1.0%
+** other # 3.5%
+* Yemen
+** en # 51.4%
+** ar # 41.4%
+** portal # 3.4%
+** other # 3.8%
+* Cuba
+** es # 79.0%
+** en # 16.8%
+** portal # 1.5%
+** other # 2.7%
+* Madagascar
+** fr # 77.5%
+** en # 17.8%
+** portal # 2.1%
+** other # 2.6%
+* Ethiopia
+** en # 92.1%
+** portal # 3.1%
+** am # 1.5%
+** other # 3.3%
+* Fiji
+** en # 93.2%
+** portal # 3.2%
+** other # 3.6%
+* Afghanistan
+** en # 68.3%
+** fa # 18.1%
+** portal # 5.3%
+** de # 2.0%
+** ps # 1.0%
+** other # 5.3%
+* Suriname
+** en # 61.3%
+** nl # 29.2%
+** portal # 6.6%
+** other # 2.9%
+* Haiti
+** fr # 58.2%
+** en # 30.6%
+** portal # 5.0%
+** es # 2.7%
+** pt # 1.3%
+** other # 2.2%
+* Isle of Man
+** en # 94.2%
+** portal # 4.0%
+** other # 1.8%
+* Botswana
+** en # 85.9%
+** portal # 11.8%
+** other # 2.3%
+* Jersey
+** en # 91.6%
+** portal # 5.4%
+** pl # 1.1%
+** other # 1.9%
+* Namibia
+** en # 80.8%
+** de # 6.3%
+** portal # 5.4%
+** pt # 3.5%
+** other # 4.0%
+* Guyana
+** en # 86.5%
+** portal # 12.0%
+** other # 1.5%
+* Aruba
+** en # 75.7%
+** nl # 12.2%
+** es # 6.0%
+** portal # 4.3%
+** other # 1.8%
+* Belize
+** en # 81.2%
+** portal # 7.6%
+** es # 7.1%
+** pt # 1.7%
+** zh # 1.2%
+** other # 1.2%
+* Zimbabwe
+** en # 94.0%
+** portal # 4.4%
+** other # 1.6%
+* Syrian Arab Republic
+** en # 60.4%
+** portal # 24.7%
+** ar # 6.8%
+** fr # 2.3%
+** arz # 1.2%
+** de # 1.0%
+** other # 3.6%
+* Bermuda
+** en # 91.8%
+** portal # 6.7%
+** other # 1.5%
+* Faroe Islands
+** en # 74.4%
+** da # 14.4%
+** portal # 5.2%
+** fa # 2.5%
+** other # 3.5%
+* Liechtenstein
+** de # 82.6%
+** en # 11.7%
+** portal # 2.0%
+** other # 3.7%
+* Guernsey
+** en # 93.3%
+** portal # 4.7%
+** other # 2.0%
+* Lao People
+** en # 60.0%
+** th # 12.4%
+** portal # 9.3%
+** fr # 4.6%
+** ja # 3.5%
+** lo # 2.3%
+** vi # 2.1%
+** de # 1.8%
+** zh # 1.3%
+** other # 2.7%
+* Cayman Islands
+** en # 88.9%
+** portal # 8.7%
+** other # 2.4%
+* Andorra
+** es # 58.0%
+** en # 18.8%
+** ca # 8.8%
+** fr # 8.6%
+** pt # 1.9%
+** portal # 1.6%
+** other # 2.3%
+* Saint Vincent and the Grenadines
+** en # 87.4%
+** portal # 10.1%
+** other # 2.5%
+* Grenada
+** en # 89.0%
+** portal # 9.5%
+** other # 1.5%
+* Mali
+** fr # 77.9%
+** en # 16.9%
+** portal # 1.5%
+** other # 3.7%
+* Gibraltar
+** en # 89.4%
+** portal # 4.1%
+** es # 2.2%
+** de # 1.6%
+** other # 2.7%
+* Virgin Islands, U.S.
+** en # 91.6%
+** portal # 7.2%
+** other # 1.2%
+* Monaco
+** fr # 57.2%
+** en # 30.1%
+** it # 5.0%
+** portal # 1.9%
+** de # 1.8%
+** ru # 1.0%
+** other # 3.0%
+* Burkina Faso
+** fr # 77.7%
+** en # 16.9%
+** portal # 2.0%
+** other # 3.4%
+* Djibouti
+** en # 54.1%
+** fr # 37.5%
+** portal # 2.7%
+** ar # 2.2%
+** other # 3.5%
+* Zambia
+** en # 89.9%
+** portal # 5.2%
+** ja # 1.1%
+** other # 3.8%
+* Rwanda
+** en # 73.2%
+** fr # 20.1%
+** portal # 3.5%
+** other # 3.2%
+* Saint Kitts and Nevis
+** en # 87.0%
+** portal # 11.5%
+** other # 1.5%
+* Antigua and Barbuda
+** en # 81.4%
+** portal # 16.9%
+** other # 1.7%
+* Congo - The Democratic Republic of the
+** fr # 77.7%
+** en # 16.4%
+** portal # 3.4%
+** other # 2.5%
+* Myanmar
+** en # 85.6%
+** portal # 9.0%
+** my # 2.3%
+** other # 3.1%
+* Gabon
+** fr # 80.8%
+** en # 13.3%
+** portal # 2.1%
+** es # 1.0%
+** other # 2.8%
+* Aland Islands
+** sv # 53.2%
+** en # 39.3%
+** fi # 2.9%
+** portal # 2.0%
+** de # 1.1%
+** other # 1.5%
+* Benin
+** fr # 74.7%
+** en # 18.7%
+** portal # 3.2%
+** other # 3.4%
+* Cape Verde
+** pt # 63.9%
+** en # 24.2%
+** portal # 3.8%
+** it # 2.4%
+** es # 2.0%
+** fr # 1.8%
+** other # 1.9%
+* Dominica
+** en # 92.7%
+** portal # 5.1%
+** other # 2.2%
+* San Marino
+** it # 81.7%
+** en # 15.6%
+** other # 2.7%
+* Tajikistan
+** ru # 66.9%
+** en # 24.1%
+** portal # 2.9%
+** tg # 1.3%
+** de # 1.0%
+** fa # 1.0%
+** other # 2.8%
+* Mauritania
+** fr # 54.6%
+** en # 22.8%
+** ar # 17.1%
+** portal # 2.3%
+** other # 3.2%
+* Togo
+** fr # 70.0%
+** en # 21.6%
+** portal # 4.6%
+** de # 1.4%
+** other # 2.4%
+* Papua New Guinea
+** en # 95.7%
+** portal # 1.9%
+** other # 2.4%
+* Malawi
+** en # 89.7%
+** portal # 5.8%
+** de # 1.4%
+** other # 3.1%
+* Northern Mariana Islands
+** en # 83.7%
+** portal # 6.9%
+** ja # 6.3%
+** zh # 1.6%
+** other # 1.5%
+* Bhutan
+** en # 91.2%
+** portal # 6.3%
+** ja # 1.1%
+** other # 1.4%
+* Saint Lucia
+** en # 83.8%
+** portal # 14.0%
+** other # 2.2%
+* Virgin Islands, British
+** en # 88.1%
+** portal # 9.9%
+** other # 2.0%
+* Greenland
+** en # 54.5%
+** da # 37.2%
+** portal # 3.8%
+** kl # 1.7%
+** de # 1.1%
+** other # 1.7%
+* Seychelles
+** en # 77.8%
+** portal # 8.5%
+** fr # 6.9%
+** de # 1.7%
+** ru # 1.3%
+** other # 3.8%
+* Niger
+** fr # 70.9%
+** en # 21.4%
+** portal # 4.2%
+** other # 3.5%
+* Gambia
+** en # 84.5%
+** portal # 7.2%
+** fr # 2.4%
+** de # 1.6%
+** other # 4.3%
+* Anguilla
+** en # 79.6%
+** portal # 17.9%
+** es # 1.0%
+** other # 1.5%
+* Turks and Caicos Islands
+** en # 90.6%
+** portal # 5.3%
+** fr # 1.4%
+** es # 1.3%
+** other # 1.4%
+* Lesotho
+** en # 93.5%
+** portal # 3.3%
+** other # 3.2%
+* Swaziland
+** en # 92.1%
+** portal # 3.7%
+** zh # 1.2%
+** other # 3.0%
+* Reunion
+** fr # 92.1%
+** en # 6.2%
+** other # 1.7%
+* Guadeloupe
+** fr # 78.5%
+** en # 17.0%
+** portal # 3.0%
+** other # 1.5%
+* Liberia
+** en # 75.2%
+** fr # 17.3%
+** portal # 2.3%
+** ru # 1.2%
+** other # 4.0%
+* Turkmenistan
+** ru # 62.0%
+** en # 25.8%
+** tr # 3.6%
+** portal # 2.4%
+** fr # 1.8%
+** tk # 1.0%
+** other # 3.4%
+* Timor-Leste
+** en # 47.2%
+** id # 23.5%
+** pt # 17.3%
+** portal # 4.2%
+** es # 2.8%
+** ms # 1.3%
+** other # 3.7%
+* Equatorial Guinea
+** es # 47.5%
+** en # 25.8%
+** fr # 13.2%
+** portal # 6.1%
+** de # 1.8%
+** ar # 1.5%
+** other # 4.1%
+* Vanuatu
+** en # 78.7%
+** fr # 12.8%
+** portal # 3.3%
+** ja # 1.4%
+** zh # 1.2%
+** other # 2.6%
+* Tonga
+** en # 84.6%
+** portal # 9.0%
+** ja # 2.9%
+** to # 1.5%
+** de # 1.2%
+** other # 0.8%
+* American Samoa
+** en # 87.7%
+** portal # 10.0%
+** zh # 1.1%
+** other # 1.2%
+* Holy See (Vatican City State)
+** en # 55.9%
+** it # 28.4%
+** de # 4.2%
+** portal # 3.6%
+** fr # 2.2%
+** es # 1.2%
+** pl # 1.2%
+** other # 3.3%
+* Solomon Islands
+** en # 90.5%
+** portal # 4.0%
+** ja # 3.5%
+** other # 2.0%
+* Sierra Leone
+** en # 92.4%
+** portal # 3.0%
+** fr # 2.4%
+** other # 2.2%
+* Eritrea
+** en # 92.3%
+** portal # 2.4%
+** it # 2.3%
+** other # 3.0%
+* Guinea
+** fr # 77.2%
+** en # 17.5%
+** portal # 1.2%
+** es # 1.1%
+** other # 3.0%
+* Burundi
+** fr # 65.0%
+** en # 27.9%
+** portal # 2.0%
+** de # 1.5%
+** it # 1.1%
+** other # 2.5%
+* Samoa
+** en # 95.0%
+** portal # 1.5%
+** ja # 1.1%
+** other # 2.4%
+* Micronesia, Federated States of
+** en # 89.8%
+** portal # 5.0%
+** ja # 3.0%
+** other # 2.2%
+* Congo
+** fr # 80.8%
+** en # 12.6%
+** it # 2.4%
+** portal # 1.7%
+** other # 2.5%
+* Marshall Islands
+** en # 88.6%
+** ja # 8.4%
+** portal # 2.0%
+** zh # 1.0%
+* Cook Islands
+** en # 92.5%
+** portal # 4.3%
+** de # 1.8%
+** other # 1.4%
+* Somalia
+** en # 86.7%
+** ar # 5.2%
+** fr # 3.3%
+** portal # 2.2%
+** so # 1.5%
+** other # 1.1%
+* Central African Republic
+** fr # 72.4%
+** en # 21.6%
+** it # 2.2%
+** zh # 1.5%
+** portal # 1.1%
+** other # 1.2%
+* Palau
+** en # 82.7%
+** ja # 8.8%
+** zh # 3.8%
+** portal # 3.5%
+** other # 1.2%
+* Chad
+** fr # 61.3%
+** en # 29.8%
+** portal # 3.2%
+** ar # 2.8%
+** zh # 1.2%
+** other # 1.7%
+* Falkland Islands (Malvinas)
+** en # 93.1%
+** portal # 4.9%
+** es # 1.6%
+* Sao Tome and Principe
+** pt # 63.2%
+** en # 14.5%
+** portal # 13.2%
+** es # 4.1%
+** zh # 2.1%
+** fr # 1.2%
+** other # 1.7%
+* Comoros
+** fr # 84.4%
+** en # 11.4%
+** ar # 1.3%
+** other # 2.9%
+* Kiribati
+** en # 96.0%
+** portal # 2.2%
+** zh # 1.3%
+* United States Minor Outlying Islands
+** en # 94.7%
+** portal # 3.9%
+** other # 1.4%
+* Montserrat
+** en # 84.6%
+** portal # 14.6%
+* British Indian Ocean Territory
+** en # 92.7%
+** portal # 7.3%
+* Korea, Democratic People
+** en # 64.1%
+** ko # 9.7%
+** ru # 8.7%
+** ja # 6.8%
+** zh # 4.9%
+** no # 1.9%
+** tr # 1.0%
+** de # 1.0%
+** ar # 1.0%
+** simple # 1.0%
