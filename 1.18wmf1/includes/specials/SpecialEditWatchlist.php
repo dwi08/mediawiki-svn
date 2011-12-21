@@ -138,7 +138,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 			}
 
 			if( count( $toWatch ) > 0 ) {
-				$this->successMessage .= wfMessage(
+				$this->successMessage .= ' ' . wfMessage(
 					'watchlistedit-raw-added',
 					$this->getLang()->formatNum( count( $toWatch ) )
 				);
@@ -146,7 +146,7 @@ class SpecialEditWatchlist extends UnlistedSpecialPage {
 			}
 
 			if( count( $toUnwatch ) > 0 ) {
-				$this->successMessage .= wfMessage(
+				$this->successMessage .= ' ' . wfMessage(
 					'watchlistedit-raw-removed',
 					$this->getLang()->formatNum( count( $toUnwatch ) )
 				);
