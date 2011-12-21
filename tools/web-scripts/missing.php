@@ -61,7 +61,7 @@ if( $url['host'] == 'secure.wikimedia.org' ) {
 	$base = 'secure.wikimedia.org/wikipedia/incubator/wiki/';
 	if( isset( $_SERVER['PATH_INFO'] ) ) {
 		$page = implode( array_slice( $tmp, 3 ) ); # /wiki/Page (possibly /wiki/Page?foo=bar)
-	elseif( $_GET['title'] ) {
+	} elseif( isset( $_GET['title'] ) && $_GET['title'] ) {
 		$page = $_GET['title']; # index.php?title=Page
 	} else {
 		$page = ''; # no known title, fallback to main page
@@ -76,7 +76,7 @@ if( $url['host'] == 'secure.wikimedia.org' ) {
 	$base = 'incubator.wikimedia.org/wiki/';
 	if( isset( $_SERVER['PATH_INFO'] ) ) {
 		$page = preg_replace( '/^\/wiki\//', '', $url['path'] ); # /wiki/Page (possibly /wiki/Page?foo=bar)
-	elseif( $_GET['title'] ) {
+	} elseif( isset( $_GET['title'] ) && $_GET['title'] ) {
 		$page = $_GET['title']; # index.php?title=Page
 	} else {
 		$page = ''; # no known title, fallback to main page
@@ -92,7 +92,7 @@ $location = $url['scheme'] . '://' . $base . 'W' . $projectcode . '/' . urlencod
 # Go to the page if specified (look out for slashes), otherwise go to
 # the main page Wx/xyz?goto=mainpage (WikimediaIncubator extension takes care of that)
 $location .= $page && $page !== '/' ? '/' . $page :
-	'?goto=mainpage' . ( $_GET['uselang'] ? '&uselang=' . urlencode( $_GET['uselang'] ) : '' );
+	'?goto=mainpage' . ( isset( $_GET['uselang'] ) ? '&uselang=' . urlencode( $_GET['uselang'] ) : '' );
 
 $redir = false;
 
@@ -135,9 +135,9 @@ $escProject = htmlspecialchars( $project );
 ?><!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-	<title>$escLanguage&nbsp;$escProject does not exist</title>
+	<title><?php echo "$escLanguage&nbsp;$escProject"; ?> does not exist</title>
 	<meta charset="UTF-8" />
-	<link rel="shortcut icon" href="$home/favicon.ico" />
+	<link rel="shortcut icon" href="<?php echo $home; ?>/favicon.ico" />
 	<style type="text/css">
 /* <![CDATA[ */
 * {
@@ -154,7 +154,7 @@ body {
 }
 
 #page {
-  background: url('$logo') center left no-repeat;
+  background: url('<?php echo $logo; ?>') center left no-repeat;
   height: 300px;
   left: 50%;
   margin: -150px 0 0 -360px;
@@ -191,11 +191,11 @@ a:hover, a:active {
 
 			<h1>This wiki does not exist</h1>
 
-			<h2>Welcome to $escProject</h2>
+			<h2>Welcome to <?php echo $escProject; ?></h2>
 
-			<p>Unfortunately, $escProject in "$escLanguage" does not exist on its own domain yet, or it has been closed.</p>
+			<p>Unfortunately, <?php echo $escProject; ?> in "<?php echo $escLanguage; ?>" does not exist on its own domain yet, or it has been closed.</p>
 
-			<p>You may like to visit <a href="$home">$name</a> to start or improve <em>$escLanguage&nbsp;$escProject</em> there.</p>
+			<p>You may like to visit <a href="<?php echo $home; ?>"><?php echo $name; ?></a> to start or improve <em><?php echo "$escLanguage&nbsp;$escProject"; ?></em> there.</p>
 
 			<p>If you would like to request that this wiki be created, see the <a href="//meta.wikimedia.org/wiki/Requests_for_new_languages">requests for new languages</a> page on Meta-Wiki.</p>
 
