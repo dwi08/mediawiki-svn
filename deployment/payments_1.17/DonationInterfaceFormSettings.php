@@ -41,9 +41,13 @@ $wgGlobalCollectGatewayAllowedHtmlForms['rtbt-ideal-noadd'] = $wgGlobalCollectGa
 $wgGlobalCollectGatewayAllowedHtmlForms['obt-bpay'] = $wgGlobalCollectGatewayHtmlFormDir . '/obt/obt-bpay.html';
 
 // RCC
-$wgGlobalCollectGatewayAllowedHtmlForms['rcc-US'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-US.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['rcc-CA'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-CA.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['rcc-AU'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-AU.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vm'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vm.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vma'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vma.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmad'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmad.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmaj'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmaj.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmd'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-wmd.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmj'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmj.html';
 
 // Credit Card - Single Step
 //$wgGlobalCollectGatewayAllowedHtmlForms['webitects_2_3step'] = $wgGlobalCollectGatewayHtmlFormDir . '/webitects_2_3step.html';
@@ -58,12 +62,15 @@ $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-amex'] = $wgGlobalCollectG
 
 //Credit Card - misc.
 $wgGlobalCollectGatewayAllowedHtmlForms['cc'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['cc-US'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmaj.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['cc-CA'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vm.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vm'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vm.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vma'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vma.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-vmd'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmd.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-vmad'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmad.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vmaj'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmaj.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vmj'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmj.html';
+
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-US'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmad.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-CA'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vm.html';
 
 
 /**
