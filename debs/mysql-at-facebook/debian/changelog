@@ -1,4 +1,4 @@
-mysql (5.1.53-fb3753-wm1) unstable; urgency=low
+mysqlatfacebook (5.1.53-fb3753-wm1)  wikimedia-lucid-mysql; urgency=low
 
   * mysql-at-facebook 5.1 r3753 
 
