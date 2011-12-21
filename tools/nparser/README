@@ -1,0 +1,3 @@
+This is a nagios parser for wmf labs, it parses the json output from mediawiki and generate config for nagios
+
+created by benapetr@gmail.com
