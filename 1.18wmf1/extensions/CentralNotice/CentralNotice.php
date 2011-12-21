@@ -47,6 +47,7 @@ $wgNoticeFundraisingUrl = 'http://wikimediafoundation.org/wiki/Special:LandingCh
 
 // Source for live counter information
 $wgNoticeCounterSource = 'http://wikimediafoundation.org/wiki/Special:ContributionTotal?action=raw';
+$wgNoticeDailyCounterSource = 'http://wikimediafoundation.org/wiki/Special:DailyTotal?action=raw';
 
 // Domain to set global cookies for.
 // Example: '.wikipedia.org'
@@ -86,7 +87,15 @@ $wgResourceModules['ext.centralNotice.interface'] = array(
 	'remoteExtPath' => 'CentralNotice',
 	'scripts' => 'centralnotice.js',
 	'styles' => 'centralnotice.css',
-	'messages' => 'centralnotice-documentwrite-error'
+	'messages' => array(
+		'centralnotice-documentwrite-error',
+		'centralnotice-close-title',
+	)
+);
+$wgResourceModules['ext.centralNotice.bannerStats'] = array(
+	'localBasePath' => dirname( __FILE__ ),
+	'remoteExtPath' => 'CentralNotice',
+	'scripts' => 'bannerstats.js',
 );
 
 // Temporary setting to enable and configure info for Harvard banner on en.wikipedia.org
@@ -105,6 +114,9 @@ function efCentralNoticeUnitTests( &$files ) {
 	return true;
 }
 
+/**
+ * Called through wgExtensionFunctions
+ */
 function efCentralNoticeSetup() {
 	global $wgHooks, $wgNoticeInfrastructure, $wgAutoloadClasses, $wgSpecialPages;
 	global $wgCentralNoticeLoader, $wgSpecialPageGroups;
@@ -148,7 +160,7 @@ function efCentralNoticeSetup() {
 
 		$wgSpecialPages['CentralNoticeLogs'] = 'SpecialCentralNoticeLogs';
 		$wgAutoloadClasses['SpecialCentralNoticeLogs'] = $specialDir . 'SpecialCentralNoticeLogs.php';
-		
+
 		$wgAutoloadClasses['TemplatePager'] = $dir . 'TemplatePager.php';
 		$wgAutoloadClasses['CentralNoticePager'] = $dir . 'CentralNoticePager.php';
 		$wgAutoloadClasses['CentralNoticeCampaignLogPager'] = $dir . 'CentralNoticeCampaignLogPager.php';
@@ -255,9 +267,7 @@ function efCentralNoticeDefaults( &$vars ) {
 
 	// Initialize global Javascript variables. We initialize Geo with empty values so if the geo
 	// IP lookup fails we don't have any surprises.
-	$geo = (object)array();
-	$geo->{'city'} = '';
-	$geo->{'country'} = '';
+	$geo = array( 'city' => '', 'country' => '' );
 	$vars['Geo'] = $geo; // change this to wgGeo as soon as Mark updates on his end
 	$vars['wgNoticeProject'] = $wgNoticeProject;
 
@@ -319,7 +329,7 @@ function efCentralNoticeDefaults( &$vars ) {
 				// "username" the user's username
 				$postData['username'] = $wgUser->getName();
 
-				// Security checksum. Prevent users from entering the survey with invalid metrics 
+				// Security checksum. Prevent users from entering the survey with invalid metrics
 				$postData['secretkey'] = md5( $salt . serialize( $hashData ) );
 
 				// MD5 hash

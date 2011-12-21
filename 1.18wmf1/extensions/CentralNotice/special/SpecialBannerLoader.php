@@ -111,6 +111,8 @@ class SpecialBannerLoader extends UnlistedSpecialPage {
 
 	/**
 	 * Extract a message name and send to getMessage() for translation
+	 * If the field is 'amount', get the current fundraiser donation amount and pass it as a
+	 * parameter to the message.
 	 * @param $match A message array with 2 members: raw match, short name of message
 	 * @return translated messsage string
 	 * @throws SpecialBannerLoaderException
@@ -118,9 +120,17 @@ class SpecialBannerLoader extends UnlistedSpecialPage {
 	function getNoticeField( $match ) {
 		$field = $match[1];
 		$params = array();
-		if ( $field == 'amount' ) {
-			$params = array( $this->toMillions( $this->getDonationAmount() ) );
+		
+		// Handle "magic messages"
+		switch ( $field ) {
+			case 'amount': // total fundraising amount
+				$params = array( $this->toMillions( $this->getDonationAmount() ) );
+				break;
+			case 'daily-amount': // daily fundraising amount
+				$params = array( $this->toThousands( $this->getDailyDonationAmount() ) );
+				break;
 		}
+		
 		$message = "centralnotice-{$this->bannerName}-$field";
 		$source = $this->getMessage( $message, $params );
 		return $source;
@@ -134,6 +144,15 @@ class SpecialBannerLoader extends UnlistedSpecialPage {
 		if ( substr( $num, - 2 ) == '.0' ) {
 			$num = substr( $num, 0, - 2 );
 		}
+		$lang = Language::factory( $this->language );
+		return $lang->formatNum( $num );
+	}
+	
+	/**
+	 * Convert number of dollars to thousands of dollars
+	 */
+	private function toThousands( $num ) {
+		$num = sprintf( "%d", $num / 1000 );
 		$lang = Language::factory( $this->language );
 		return $lang->formatNum( $num );
 	}
@@ -196,6 +215,37 @@ class SpecialBannerLoader extends UnlistedSpecialPage {
 		return $count;
 	}
 	
+	/**
+	 * Pull the amount raised so far today during a fundraiser
+	 * @throws SpecialBannerLoaderException
+	 */
+	private function getDailyDonationAmount() {
+		global $wgNoticeDailyCounterSource, $wgMemc;
+		// Pull short-cached amount
+		$count = intval( $wgMemc->get( wfMemcKey( 'centralnotice', 'dailycounter' ) ) );
+		if ( !$count ) {
+			// Pull from dynamic counter
+			$counter_value = Http::get( $wgNoticeDailyCounterSource );
+			if( !$counter_value ) {
+				throw new RemoteServerProblemException();
+			}
+			$count = intval( $counter_value );
+			if ( !$count ) {
+				// Pull long-cached amount
+				$count = intval( $wgMemc->get(
+					wfMemcKey( 'centralnotice', 'dailycounter', 'fallback' ) ) );
+				if ( !$count ) {
+					throw new DonationAmountUnknownException();
+				}
+			}
+			// Expire in 60 seconds
+			$wgMemc->set( wfMemcKey( 'centralnotice', 'dailycounter' ), $count, 60 );
+			// No expiration
+			$wgMemc->set( wfMemcKey( 'centralnotice', 'dailycounter', 'fallback' ), $count );
+		}
+		return $count;
+	}
+
 	function getFundraising( $bannerName ) {
 		global $wgCentralDBname;
 		$dbr = wfGetDB( DB_SLAVE, array(), $wgCentralDBname );

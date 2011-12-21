@@ -1102,6 +1102,7 @@ class CentralNotice extends SpecialPage {
 	function addCampaign( $noticeName, $enabled, $start, $projects,
 		$project_languages, $geotargeted, $geo_countries )
 	{
+		$noticeName = trim( $noticeName );
 		if ( CentralNoticeDB::campaignExists( $noticeName ) ) {
 			$this->showError( 'centralnotice-notice-exists' );
 			return null;
@@ -1669,7 +1670,9 @@ class CentralNotice extends SpecialPage {
 	 * @return multiple select list
 	 */
 	function geoMultiSelector( $selected = array() ) {
-		$countries = CentralNoticeDB::getCountriesList();
+		global $wgLang;
+		$userLanguageCode = $wgLang->getCode();
+		$countries = CentralNoticeDB::getCountriesList( $userLanguageCode );
 		$options = "\n";
 		foreach( $countries as $code => $name ) {
 			$options .= Xml::option(
