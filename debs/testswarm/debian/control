@@ -9,7 +9,7 @@ Homepage: https://github.com/jquery/testswarm
 
 Package: testswarm
 Architecture: any
-Depends: apache2, libapache2-mod-php5 | php5, php5-mysql, mysql-server, ucf, dbconfig-common, ${shlibs:Depends}, ${misc:Depends}
+Depends: adduser, apache2, libapache2-mod-php5 | php5, php5-mysql, mysql-server, ucf, dbconfig-common, ${shlibs:Depends}, ${misc:Depends}
 Recommends: mysql-client
 Description: Javascript unit test runner
  Testswarm provides distributed continuous integration testing for JavaScript.

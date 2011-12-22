@@ -8,6 +8,24 @@ set -e
 #export DEBCONF_DEBUG=developer
 
 . /usr/share/debconf/confmodule
+
+# Create a testswarm group if needed
+if ! getent group testswarm >/dev/null; then
+	addgroup --system testswarm
+fi
+
+# Create a testswarm user if needed
+if ! getent passwd testswarm >/dev/null; then
+	adduser --system --ingroup testswarm --home /var/lib/testswarm testswarm
+	usermod -d "/var/lib/testswarm"  testswarm
+	usermod -g "testswarm"           testswarm
+	usermod -G "www-data"            testswarm
+fi
+
+if [ -d /etc/testswarm ]; then
+	chown testswarm:testswarm /etc/testswarm
+fi
+
 . /usr/share/dbconfig-common/dpkg/postinst.mysql
 dbc_first_version="0.1.0-1"
 dbc_generate_include="template:/etc/testswarm/config.ini"

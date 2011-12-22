@@ -1,9 +1,16 @@
+testswarm (0.1.0-5) lucid; urgency=low
+
+  * Now manage system user and group (close bug 33276)
+  * New package dependency: adduser
+
+ -- Antoine Musso <amusso@wikimedia.org>  Thu, 22 Dec 2011 21:10:32 +0000
+
 testswarm (0.1.0-4) lucid; urgency=low
 
   * Place generated config.ini in /etc/testswarm/ instead of the incorrect
     /usr/share/testswarm/site
 
- -- Antoine Musso <amusso@wikimedia.org> Wed, 14 Dec 2011 13:53:33 +0000
+ -- Antoine Musso <amusso@wikimedia.org>  Wed, 14 Dec 2011 13:53:33 +0000
 
 testswarm (0.1.0-3) unstable; urgency=low
   * symlink testswarm apache conf in /etc/apache2/conf.d just like other

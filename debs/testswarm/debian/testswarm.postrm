@@ -33,6 +33,20 @@ purge)
 
 	db_purge
 
+	# TODO: might need to clean up some remaining files still laying around
+
+	# Cleanup user and group
+	if getent passwd testswarm >/dev/null; then
+		if [ -x /usr/sbin/deluser ]; then
+			deluser --system testswarm
+		fi
+	fi
+	if getent group testswarm >/dev/null; then
+		if [ -x /usr/sbin/delgroup ]; then
+			delgroup --system testswarm
+		fi
+	fi
+
 	;;
 
 
