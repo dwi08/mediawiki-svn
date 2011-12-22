@@ -46,7 +46,7 @@ $wgGlobalCollectGatewayAllowedHtmlForms['rcc-vm'] = $wgGlobalCollectGatewayHtmlF
 $wgGlobalCollectGatewayAllowedHtmlForms['rcc-vma'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vma.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmad'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmad.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmaj'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmaj.html';
-$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmd'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-wmd.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmd'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmd.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['rcc-vmj'] = $wgGlobalCollectGatewayHtmlFormDir . '/rcc/rcc-vmj.html';
 
 // Credit Card - Single Step
