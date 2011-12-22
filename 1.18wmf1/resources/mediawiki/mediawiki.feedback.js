@@ -80,7 +80,7 @@
 				.attr( { 'href': _this.title.getUrl(), 'target': '_blank' } )
 				.css( { 'white-space': 'nowrap' } );
 
-			var $bugNoteLink = $( '<a></a>' ).attr( { 'href': '#', } ).click( function() { _this.displayBugs(); } );
+			var $bugNoteLink = $( '<a></a>' ).attr( { 'href': '#' } ).click( function() { _this.displayBugs(); } );
 
 			var $bugsListLink = $( '<a></a>' ).attr( { 'href': _this.bugsListLink, 'target': '_blank' } );
 
