@@ -2,6 +2,8 @@
 /**
  * @file
  * @ingroup FileBackend
+ * @author Russ Nelson
+ * @author Aaron Schulz
  */
 
 /**
@@ -9,16 +11,23 @@
  * Status messages should avoid mentioning the Swift account name
  * Likewise, error suppression should be used to avoid path disclosure.
  *
- * @FIXME: resuse connections with auto-connect and don't let connection
- * exceptions bubble up from read/write operations.
+ * This requires the php-cloudfiles library is present,
+ * which is available at https://github.com/rackspace/php-cloudfiles.
+ * All of the library classes must be registed in $wgAutoloadClasses.
+ *
+ * @TODO: update MessagesEn for status errors.
  *
  * @ingroup FileBackend
  */
 class SwiftFileBackend extends FileBackend {
-	protected $swiftUser; // string
-	protected $swiftKey; // string
-	protected $swiftAuthUrl; // string
+	/** @var CF_Authentication */
+	protected $auth; // swift authentication handler
+	/** @var CF_Connection */
+	protected $conn; // swift connection handle
+	protected $connStarted = 0; // integer UNIX timestamp
+
 	protected $swiftProxyUser; // string
+	protected $connTTL = 60; // integer seconds
 
 	/**
 	 * @see FileBackend::__construct()
@@ -28,52 +37,462 @@ class SwiftFileBackend extends FileBackend {
 	 *    swiftKey       : Authentication key for the above user (used to get sessions)
 	 *    swiftProxyUser : Swift user used for end-user hits to proxy server
 	 */
-	function __construct( array $config ) {
+	public function __construct( array $config ) {
 		parent::__construct( $config );
 		// Required settings
-		$this->swiftUser = $config['swiftUser'];
-		$this->swiftKey = $config['swiftKey'];
-		$this->swiftAuthUrl = $config['swiftAuthUrl'];
+		$this->auth = new CF_Authentication(
+			$config['swiftUser'], $config['swiftKey'], $config['swiftAuthUrl'] );
 		// Optional settings
+		$this->connTTL = isset( $config['connTTL'] )
+			? $config['connTTL']
+			: 60; // some sane number
 		$this->swiftProxyUser = isset( $config['swiftProxyUser'] )
 			? $config['swiftProxyUser']
 			: '';
 	}
 
 	/**
-	 * Get a connection to the swift proxy.
-	 *
-	 * @return CF_Connection
+	 * @see FileBackend::resolveContainerPath()
 	 */
-	protected function connect() {
-		$auth = new CF_Authentication(
-			$this->swiftUser, $this->swiftKey, NULL, $this->swiftAuthUrl );
-		try {
-			$auth->authenticate();
-		} catch ( AuthenticationException $e ) {
-			throw new MWException( "We can't authenticate ourselves." );
-		# } catch (InvalidResponseException $e) {
-		#   throw new MWException( __METHOD__ . "unexpected response '$e'" );
+	protected function resolveContainerPath( $container, $relStoragePath ) {
+		if ( strlen( urlencode( $relStoragePath ) ) > 1024 ) {
+			return null; // too long for swift
 		}
-		return new CF_Connection( $auth );
+		return $relStoragePath;
 	}
 
 	/**
-	 * Given a connection and container name, return the container.
-	 * We KNOW the container should exist, so puke if it doesn't.
-	 *
-	 * @param $conn CF_Connection
-	 *
-	 * @return CF_Container
+	 * @see FileBackend::doStoreInternal()
 	 */
-	protected function get_container( $conn, $cont ) {
-		try {
-			return $conn->get_container( $cont );
-		} catch ( NoSuchContainerException $e ) {
-			throw new MWException( "A container we thought existed, doesn't." );
-		# } catch (InvalidResponseException $e) {
-		#   throw new MWException( __METHOD__ . "unexpected response '$e'" );
+	function doStoreInternal( array $params ) {
+		$status = Status::newGood();
+
+		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dst'] );
+		if ( $destRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
+			return $status;
 		}
+
+		// (a) Get a swift proxy connection
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		// (b) Check the destination container
+		try {
+			$dContObj = $conn->get_container( $conn, $dstCont );
+		} catch ( NoSuchContainerException $e ) {
+			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
+			return $status;
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (c) Check if the destination object already exists
+		try {
+			$dContObj->get_object( $destRel ); // throws NoSuchObjectException
+			// NoSuchObjectException not thrown: file must exist
+			if ( empty( $params['overwriteDest'] ) ) {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
+		} catch ( NoSuchObjectException $e ) {
+			// NoSuchObjectException thrown: file does not exist
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (d) Actually store the object
+		try {
+			$obj = $dContObj->create_object( $destRel );
+			$obj->load_from_filename( $params['src'], True );
+		} catch ( BadContentTypeException $e ) {
+			$status->fatal( 'backend-fail-contenttype', $params['dst'] );
+		} catch ( IOException $e ) {
+			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::doCopyInternal()
+	 */
+	function doCopyInternal( array $params ) {
+		$status = Status::newGood();
+
+		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		if ( $srcRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
+			return $status;
+		}
+
+		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dst'] );
+		if ( $destRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
+			return $status;
+		}
+
+		// (a) Get a swift proxy connection
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		// (b) Check the source and destination containers
+		try {
+			$sContObj = $this->get_container( $conn, $srcCont );
+			$dContObj = $conn->get_container( $conn, $dstCont );
+		} catch ( NoSuchContainerException $e ) {
+			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
+			return $status;
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (c) Check if the destination object already exists
+		try {
+			$dContObj->get_object( $destRel ); // throws NoSuchObjectException
+			// NoSuchObjectException not thrown: file must exist
+			if ( empty( $params['overwriteDest'] ) ) {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
+		} catch ( NoSuchObjectException $e ) {
+			// NoSuchObjectException thrown: file does not exist
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (d) Actually copy the file to the destination
+		try {
+			$this->swiftcopy( $sContObj, $srcRel, $dContObj, $destRel );
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::doDeleteInternal()
+	 */
+	function doDeleteInternal( array $params ) {
+		$status = Status::newGood();
+
+		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		if ( $srcRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
+			return $status;
+		}
+
+		// (a) Get a swift proxy connection
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		// (b) Check the source container
+		try {
+			$sContObj = $this->get_container( $conn, $srcCont );
+		} catch ( NoSuchContainerException $e ) {
+			$status->fatal( 'backend-fail-delete', $params['src'] );
+			return $status;
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (c) Actually delete the object
+		try {
+			$sContObj->delete_object( $srcRel );
+		} catch ( NoSuchObjectException $e ) {
+			if ( empty( $params['ignoreMissingSource'] ) ) {
+				$status->fatal( 'backend-fail-delete', $params['src'] );
+			}
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::doCopyInternal()
+	 */
+	function doCreateInternal( array $params ) {
+		$status = Status::newGood();
+
+		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dst'] );
+		if ( $destRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
+			return $status;
+		}
+
+		// (a) Get a swift proxy connection
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		// (b) Check the destination container
+		try {
+			$dContObj = $conn->get_container( $conn, $dstCont );
+		} catch ( NoSuchContainerException $e ) {
+			$status->fatal( 'backend-fail-create', $params['dst'] );
+			return $status;
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (c) Check if the destination object already exists
+		try {
+			$dContObj->get_object( $destRel ); // throws NoSuchObjectException
+			// NoSuchObjectException not thrown: file must exist
+			if ( empty( $params['overwriteDest'] ) ) {
+				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
+				return $status;
+			}
+		} catch ( NoSuchObjectException $e ) {
+			// NoSuchObjectException thrown: file does not exist
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+			return $status;
+		}
+
+		// (d) Actually create the object
+		try {
+			$obj = $dContObj->create_object( $destRel );
+			$obj->write( $params['content'] );
+		} catch ( BadContentTypeException $e ) {
+			$status->fatal( 'backend-fail-contenttype', $params['dst'] );
+		} catch ( InvalidResponseException $e ) {
+			$status->fatal( 'backend-fail-connect' );
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * @see FileBackend::prepate()
+	 */
+	function prepare( array $params ) {
+		$status = Status::newGood();
+		// @TODO: create containers as needed
+		return $status; // badgers? We don't need no steenking badgers!
+	}
+
+	/**
+	 * @see FileBackend::secure()
+	 */
+	function secure( array $params ) {
+		$status = Status::newGood();
+		// @TODO: restrict container from $this->swiftProxyUser
+		return $status; // badgers? We don't need no steenking badgers!
+	}
+
+	/**
+	 * @see FileBackend::fileExists()
+	 */
+	function fileExists( array $params ) {
+		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		if ( $srcRel === null ) {
+			return false; // invalid storage path
+		}
+
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		try {
+			$container = $this->get_container( $conn, $srcCont );
+			$container->get_object( $srcRel );
+			$exists = true;
+		} catch ( NoSuchContainerException $e ) {
+			$exists = false;
+		} catch ( NoSuchObjectException $e ) {
+			$exists = false;
+		} catch ( Exception $e ) { // some other exception?
+			$exists = false; // fail vs not exists?
+		}
+
+		return $exists;
+	}
+
+	/**
+	 * @see FileBackend::getFileTimestamp()
+	 */
+	function getFileTimestamp( array $params ) {
+		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		if ( $srcRel === null ) {
+			return false; // invalid storage path
+		}
+
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		try {
+			$container = $this->get_container( $conn, $srcCont);
+			$obj = $container->get_object( $srcRel );
+		} catch ( NoSuchContainerException $e ) {
+			$obj = NULL;
+		} catch ( NoSuchObjectException $e ) {
+			$obj = NULL;
+		} catch ( Exception $e ) { // some other exception?
+			$obj = NULL; // fail vs not exists?
+		}
+
+		if ( $obj ) {
+			$thumbTime = $obj->last_modified;
+			// @FIXME: strptime() UNIX-only (http://php.net/manual/en/function.strptime.php)
+			$tm = strptime( $thumbTime, '%a, %d %b %Y %H:%M:%S GMT' );
+			$thumbGMT = gmmktime( $tm['tm_hour'], $tm['tm_min'], $tm['tm_sec'],
+				$tm['tm_mon'] + 1, $tm['tm_mday'], $tm['tm_year'] + 1900 );
+			return ( gmdate( 'YmdHis', $thumbGMT ) );
+		} else {
+			return false; // file not found.
+		}
+	}
+
+	/**
+	 * @see FileBackend::getFileList()
+	 */
+	function getFileList( array $params ) {
+		list( $dirc, $dir ) = $this->resolveStoragePath( $params['dir'] );
+		if ( $dir === null ) { // invalid storage path
+			return array(); // empty result
+		}
+
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			return null;
+		}
+
+		// @TODO: return an Iterator class that pages via list_objects()
+		try {
+			$container = $this->get_container( $conn, $dirc );
+			$files = $container->list_objects( 0, NULL, $dir );
+		} catch ( NoSuchContainerException $e ) {
+			$files = array();
+		} catch ( NoSuchObjectException $e ) {
+			$files = array();
+		} catch ( Exception $e ) { // some other exception?
+			$files = null;
+		}
+
+		// if there are no files matching the prefix, return empty array
+		return $files;
+	}
+
+	/**
+	 * @see FileBackend::getLocalCopy()
+	 */
+	function getLocalCopy( array $params ) {
+		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		if ( $srcRel === null ) {
+			return null;
+		}
+
+		// Get source file extension
+		$ext = FileBackend::extensionFromPath( $srcRel );
+		// Create a new temporary file...
+		$tmpFile = TempFSFile::factory( wfBaseName( $srcRel ) . '_', $ext );
+		if ( !$tmpFile ) {
+			return null;
+		}
+		$tmpPath = $tmpFile->getPath();
+
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			return null;
+		}
+
+		try {
+			$cont = $this->get_container( $conn, $srcCont );
+			$obj = $cont->get_object( $srcRel );
+			$obj->save_to_filename( $tmpPath );
+		} catch ( NoSuchContainerException $e ) {
+			$tmpFile = null;
+		} catch ( NoSuchObjectException $e ) {
+			$tmpFile = null;
+		} catch ( IOException $e ) {
+			$tmpFile = null;
+		} catch ( Exception $e ) { // some other exception?
+			$tmpFile = null;
+		}
+
+		return $tmpFile;
+	}
+
+	/**
+	 * Get a connection to the swift proxy
+	 *
+	 * @return CF_Connection|null
+	 */
+	protected function getConnection() {
+		if ( $this->conn === false ) {
+			return null; // failed last attempt
+		}
+		// Authenticate with proxy and get a session key.
+		// Session keys expire after a while, so we renew them periodically.
+		if ( $this->conn === null || ( time() - $this->connStarted ) > $this->connTTL ) {
+			try {
+				$this->auth->authenticate();
+				$this->conn = new CF_Connection( $this->auth );
+				$this->connStarted = time();
+			} catch ( AuthenticationException $e ) {
+				$this->conn = false; // don't keep re-trying
+			} catch ( InvalidResponseException $e ) {
+				$this->conn = false; // don't keep re-trying
+			}
+		}
+		return $this->conn;
 	}
 
 	/**
@@ -111,7 +530,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( NoSuchObjectException $e ) {
 			throw new MWException( 'Source file does not exist: ' .
 				$srcContainer->name . "/$srcRel: $e" );
-		} 
+		}
 
 		try {
 			$dstContainer->copy_object_from($srcObj,$srcContainer,$dstRel);
@@ -121,324 +540,5 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( MisMatchedChecksumException $e ) {
 			throw new MWException( "Checksums do not match: $e" );
 		}
-	}
-
-	/**
-	 * @see FileBackend::doStore()
-	 */
-	function doStore( array $params ) {
-		$status = Status::newGood();
-
-		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
-		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
-			return $status;
-		}
-		$conn = $this->connect();
-		$dstc = $this->get_container( $conn, $destc );
-		try {
-			$objd = $dstc->get_object( $dest );
-			// if we are still here, it exists.
-			if ( empty( $params['overwriteDest'] ) ) {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-				return $status;
-			}
-			$exists = true;
-		} catch ( NoSuchObjectException $e ) {
-			$exists = false;
-		}
-
-		try {
-			$obj = $dstc->create_object( $dest);
-			$obj->load_from_filename( $params['src'], True );
-		} catch ( SyntaxException $e ) {
-			throw new MWException( 'missing required parameters' );
-		} catch ( BadContentTypeException $e ) {
-			throw new MWException( 'No Content-Type was/could be set' );
-		} catch (InvalidResponseException $e) {
-			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
-		} catch ( IOException $e ) {
-			throw new MWException( "error opening file '$e'" );
-		}
-		return $status;
-	}
-
-	/**
-	 * @see FileBackend::doCopy()
-	 */
-	function doCopy( array $params ) {
-		$status = Status::newGood();
-
-		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
-			return $status;
-		}
-
-		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
-		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
-			return $status;
-		}
-
-		$conn = $this->connect();
-		$srcc = $this->get_container( $conn, $sourcec );
-		$dstc = $this->get_container( $conn, $destc );
-		try {
-			$objd = $dstc->get_object( $dest );
-			// if we are still here, it exists.
-			if ( empty( $params['overwriteDest'] ) ) {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-				return $status;
-			}
-			$exists = true;
-		} catch ( NoSuchObjectException $e ) {
-			$exists = false;
-		}
-		try {
-			$this->swiftcopy( $srcc, $source, $dstc, $dest );
-		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
-		}   
-		return $status;
-	}
-
-	/**
-	 * @see FileBackend::doDelete()
-	 */
-	function doDelete( array $params ) {
-		$status = Status::newGood();
-
-		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
-			return $status;
-		}
-
-		$conn = $this->connect();
-		$container = $this->get_container( $conn, $sourcec );
-
-		try {
-			$obj = $container->get_object( $source );
-			$exists = true;
-		} catch ( NoSuchObjectException $e ) {
-			if ( empty( $params['ignoreMissingSource'] ) ) {
-				$status->fatal( 'backend-fail-delete', $params['src'] );
-			}
-			$exists = false;
-		}
-
-		if ( $exists ) {
-			try {
-				$container->delete_object( $source );
-			} catch ( SyntaxException $e ) {
-				throw new MWException( "Swift object name not well-formed: '$e'" );
-			} catch ( NoSuchObjectException $e ) {
-				throw new MWException( "Swift object we are trying to delete does not exist: '$e'" );
-			} catch ( InvalidResponseException $e ) {
-				$status->fatal( 'backend-fail-delete', $params['src'] );
-			}
-		}
-		return $status; // do nothing; either OK or bad status
-	}
-
-	/**
-	 * @see FileBackend::doConcatenate()
-	 */
-	function doConcatenate( array $params ) {
-		$status = Status::newGood();
-
-		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
-		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
-			return $status;
-		}
-
-		$conn = $this->connect();
-		$dstc = $this->get_container( $conn, $destc );
-		try {
-			$objd = $dstc->get_object( $dest );
-			// if we are still here, it exists.
-			if ( empty( $params['overwriteDest'] ) ) {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-				return $status;
-			}
-			$exists = true;
-		} catch ( NoSuchObjectException $e ) {
-			$exists = false;
-		}
-
-		try {
-			$biggie = $dstc->create_object( $dest );
-		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-opentemp', $tmpPath );
-			return $status;
-		}
-
-		foreach ( $params['srcs'] as $virtualSource ) {
-			list( $sourcec, $source ) = $this->resolveStoragePath( $virtualSource );
-			if ( $source === null ) {
-				$status->fatal( 'backend-fail-invalidpath', $virtualSource );
-				return $status;
-			}
-			$srcc = $this->get_container( $conn, $sourcec );
-			$obj = $srcc->get_object( $source );
-			$biggie->write( $obj->read() );
-		}
-		return $status;
-	}
-
-	/**
-	 * @see FileBackend::doCopy()
-	 */
-	function doCreate( array $params ) {
-		$status = Status::newGood();
-
-		list( $destc, $dest ) = $this->resolveStoragePath( $params['dst'] );
-		if ( $dest === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
-			return $status;
-		}
-
-		$conn = $this->connect();
-		$dstc = $this->get_container( $conn, $destc );
-		try {
-			$objd = $dstc->get_object( $dest );
-			// if we are still here, it exists.
-			if ( empty( $params['overwriteDest'] ) ) {
-				$status->fatal( 'backend-fail-alreadyexists', $params['dst'] );
-				return $status;
-			}
-			$exists = true;
-		} catch ( NoSuchObjectException $e ) {
-			$exists = false;
-		}
-
-		$obj = $dstc->create_object( $dest );
-		//FIXME how do we know what the content type is?
-		// This *should* work...cloudfiles can figure content type from strings too.
-		$obj->content_type = 'text/plain';
-
-		try {
-			$obj->write( $params['content'] );
-		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-create', $params['dst'] );
-			return $status;
-		}
-
-		return $status;
-	}
-
-	/**
-	 * @see FileBackend::secure()
-	 */
-	function secure( array $params ) {
-		$status = Status::newGood();
-		// @TODO: restrict container from $this->swiftProxyUser
-		return $status; // badgers? We don't need no steenking badgers!
-	}
-
-	/**
-	 * @see FileBackend::fileExists()
-	 */
-	function fileExists( array $params ) {
-		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			return false; // invalid storage path
-		}
-		$conn = $this->connect();
-		$container = $this->get_container( $conn, $sourcec );
-		try {
-			$obj = $container->get_object( $source );
-			$exists = true;
-		} catch ( NoSuchObjectException $e ) {
-			$exists = false;
-		}
-		return $exists;
-	}
-
-	/**
-	 * @see FileBackend::getFileTimestamp()
-	 */
-	function getFileTimestamp( array $params ) {
-		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			return false; // invalid storage path
-		}
-
-		$conn = $this->connect();
-		$container = $this->get_container( $conn, $sourcec);
-		try {
-			$obj = $container->get_object( $source );
-		} catch ( NoSuchObjectException $e ) {
-			$obj = NULL;
-		}
-		if ( $obj ) {
-			$thumbTime = $obj->last_modified;
-			// @FIXME: strptime() UNIX-only (http://php.net/manual/en/function.strptime.php)
-			$tm = strptime( $thumbTime, '%a, %d %b %Y %H:%M:%S GMT' );
-			$thumbGMT = gmmktime( $tm['tm_hour'], $tm['tm_min'], $tm['tm_sec'],
-				$tm['tm_mon'] + 1, $tm['tm_mday'], $tm['tm_year'] + 1900 );
-			return ( gmdate( 'YmdHis', $thumbGMT ) );
-		} else {
-			return false; // file not found.
-		}
-	}
-
-	/**
-	 * @see FileBackend::getFileList()
-	 */
-	function getFileList( array $params ) {
-		list( $dirc, $dir ) = $this->resolveStoragePath( $params['dir'] );
-		if ( $dir === null ) { // invalid storage path
-			return array(); // empty result
-		}
-
-		$conn = $this->connect();
-		// @TODO: return an Iterator class that pages via list_objects()
-		$container = $this->get_container( $conn, $dirc );
-		$files = $container->list_objects( 0, NULL, $dir );
-		// if there are no files matching the prefix, return empty array
-		return $files;
-	}
-
-	/**
-	 * @see FileBackend::getLocalCopy()
-	 */
-	function getLocalCopy( array $params ) {
-		list( $sourcec, $source ) = $this->resolveStoragePath( $params['src'] );
-		if ( $source === null ) {
-			return null;
-		}
-
-		// Get source file extension
-		$i = strrpos( $source, '.' );
-		$ext = strtolower( $i ? substr( $source, $i + 1 ) : '' );
-		// Create a new temporary file...
-		$tmpFile = TempFSFile::factory( wfBaseName( $source ) . '_', $ext );
-		if ( !$tmpFile ) {
-			return null;
-		}
-		$tmpPath = $tmpFile->getPath();
-
-		$conn = $this->connect();
-		$cont = $this->get_container( $conn, $sourcec );
-
-		try {
-			$obj = $cont->get_object( $source );
-		} catch ( NoSuchObjectException $e ) {
-			throw new MWException( "Unable to open original file at", $params['src'] );
-		}
-
-		try {
-			$obj->save_to_filename( $tmpPath );
-		} catch ( IOException $e ) {
-			// throw new MWException( __METHOD__ . ": error opening '$e'" );
-			return null;
-		} catch ( InvalidResponseException $e ) {
-			// throw new MWException( __METHOD__ . "unexpected response '$e'" );
-			return null;
-		}
-		return $tmpFile;
 	}
 }
