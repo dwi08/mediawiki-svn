@@ -42,8 +42,8 @@ namespace wmib
         private static System.Net.Sockets.NetworkStream data;
         public static Thread dumphtmt;
         public static Thread check_thread;
-        public static System.IO.StreamReader rd;
-        private static System.IO.StreamWriter wd;
+        public static StreamReader rd;
+        private static StreamWriter wd;
         private static List<user> User = new List<user>();
 
         public class messages
@@ -140,7 +140,7 @@ namespace wmib
             }
             public int IsMatch()
             {
-                Thread quick = new Thread(new ThreadStart(Run));
+                Thread quick = new Thread(Run);
                 searching = true;
                 quick.Start();
                 int check = 0;
@@ -358,7 +358,7 @@ namespace wmib
                 string users_ok = "";
                 foreach (user b in Users)
                 {
-                    users_ok = users_ok + " " + b.name + ",";
+                    users_ok += " " + b.name + ",";
                 }
                 Message("I trust: " + users_ok, _Channel);
             }
@@ -615,11 +615,17 @@ namespace wmib
                     string log;
                     if (!noac)
                     {
-                        log = "[" + timedateToString(DateTime.Now.Hour) + ":" + timedateToString(DateTime.Now.Minute) + ":" + timedateToString(DateTime.Now.Second) + "] * " + user + " " + message + "\n";
+                        log = "[" + timedateToString(DateTime.Now.Hour) + ":" +
+                            timedateToString(DateTime.Now.Minute) + ":" +
+                            timedateToString(DateTime.Now.Second) + "] * " +
+                            user + " " + message + "\n";
                     }
                     else
                     {
-                        log = "[" + timedateToString(DateTime.Now.Hour) + ":" + timedateToString(DateTime.Now.Minute) + ":" + timedateToString(DateTime.Now.Second) + "] " + "<" + user + ">\t " + message + "\n";
+                        log = "[" + timedateToString(DateTime.Now.Hour) + ":"
+                            + timedateToString(DateTime.Now.Minute) + ":" +
+                            timedateToString(DateTime.Now.Second) + "] " + "<" +
+                            user + ">\t " + message + "\n";
                     }
                     File.AppendAllText(channel.log + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".txt", log);
                 }
@@ -648,7 +654,8 @@ namespace wmib
 
         public static bool validFile(string name)
         {
-            return !(name.Contains(" ") || name.Contains("?") || name.Contains("|") || name.Contains("/") || name.Contains("\\") || name.Contains(">") || name.Contains("<") || name.Contains("*"));
+            return !(name.Contains(" ") || name.Contains("?") || name.Contains("|") || name.Contains("/")
+                || name.Contains("\\") || name.Contains(">") || name.Contains("<") || name.Contains("*"));
         }
 
         /// <summary>
@@ -690,13 +697,11 @@ namespace wmib
                             Chan.Users.addUser("admin", IRCTrust.normalize(user) + "!.*@" + host);
                             return;
                         }
-                        else
-                        {
-                            Message("Invalid name", chan.name);
-                            return;
-                        }
+                        Message("Invalid name", chan.name);
+                        return;
                     }
                     Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
             }
             catch (Exception b)
@@ -738,11 +743,8 @@ namespace wmib
                         config.Save();
                         return;
                     }
-                    else
-                    {
-                        Message(messages.PermissionDenied, chan.name);
-                        return;
-                    }
+                    Message(messages.PermissionDenied, chan.name);
+                    return;
                 }
                 if (message == "@part")
                 {
@@ -783,11 +785,8 @@ namespace wmib
                     Message("Channel config was reloaded", chan.name);
                     return;
                 }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                Message(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@refresh")
             {
@@ -801,11 +800,8 @@ namespace wmib
                     Message("Message queue was reloaded", chan.name);
                     return;
                 }
-                else
-                {
-                    Message(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                Message(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@logon")
             {
@@ -825,11 +821,8 @@ namespace wmib
                         return;
                     }
                 }
-                else
-                {
-                    SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@whoami")
             {
@@ -839,11 +832,8 @@ namespace wmib
                     Message("You are unknown to me :)", chan.name);
                     return;
                 }
-                else
-                {
-                    Message("You are " + current.level + " identified by name " + current.name, chan.name);
-                    return;
-                }
+                Message("You are " + current.level + " identified by name " + current.name, chan.name);
+                return;
             }
 
             if (message == "@logoff")
@@ -864,11 +854,8 @@ namespace wmib
                         return;
                     }
                 }
-                else
-                {
-                    SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@channellist")
             {
@@ -898,11 +885,8 @@ namespace wmib
                         return;
                     }
                 }
-                else
-                {
-                    SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
-                    return;
-                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@infobot-on")
             {
@@ -913,20 +897,14 @@ namespace wmib
                         Message("Infobot was already enabled :O", chan.name);
                         return;
                     }
-                    else
-                    {
-                        chan.info = true;
-                        config.Save();
-                        chan.SaveConfig();
-                        Message("Infobot enabled", chan.name);
-                        return;
-                    }
-                }
-                else
-                {
-                    SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                    chan.info = true;
+                    config.Save();
+                    chan.SaveConfig();
+                    Message("Infobot enabled", chan.name);
                     return;
                 }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
             }
             if (message == "@commands")
             {
@@ -983,7 +961,7 @@ namespace wmib
             wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
             wd.WriteLine("NICK " + config.username);
             Authenticate();
-            _Queue = new Thread(new ThreadStart(SlowQueue.Run));
+            _Queue = new Thread(SlowQueue.Run);
             foreach (config.channel ch in config.channels)
             {
                 Thread.Sleep(2000);
@@ -1006,10 +984,10 @@ namespace wmib
             rd = new System.IO.StreamReader(data, System.Text.Encoding.UTF8);
             wd = new System.IO.StreamWriter(data);
 
-            _Queue = new Thread(new ThreadStart(SlowQueue.Run));
-            dumphtmt = new Thread(new ThreadStart(HtmlDump.Start));
+            _Queue = new Thread(SlowQueue.Run);
+            dumphtmt = new Thread(HtmlDump.Start);
             dumphtmt.Start();
-            check_thread = new Thread(new ThreadStart(Ping));
+            check_thread = new Thread(Ping);
             check_thread.Start();
 
             wd.WriteLine("USER " + config.name + " 8 * :" + config.name);

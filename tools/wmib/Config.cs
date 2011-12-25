@@ -77,17 +77,17 @@ namespace wmib
                     return;
                 }
                 conf = File.ReadAllText(conf_file);
-                if (config.parseConfig(conf, "keysdb") != "")
+                if (parseConfig(conf, "keysdb") != "")
                 {
-                    keydb = (config.parseConfig(conf, "keysdb"));
+                    keydb = (parseConfig(conf, "keysdb"));
                 }
-                if (config.parseConfig(conf, "logged") != "")
+                if (parseConfig(conf, "logged") != "")
                 {
-                    logged = bool.Parse(config.parseConfig(conf, "logged"));
+                    logged = bool.Parse(parseConfig(conf, "logged"));
                 }
-                if (config.parseConfig(conf, "infodb") != "")
+                if (parseConfig(conf, "infodb") != "")
                 {
-                    info = bool.Parse(config.parseConfig(conf, "infodb"));
+                    info = bool.Parse(parseConfig(conf, "infodb"));
                 }
             }
 
@@ -147,7 +147,7 @@ namespace wmib
             AddConfig("network", network);
             AddConfig("debug", debugchan);
             AddConfig("nick", login);
-            text = text + "\nchannels=";
+            text += text + "\nchannels=";
             foreach (channel current in channels)
             {
                 text = text + current.name + ",\n";
@@ -210,12 +210,12 @@ namespace wmib
         /// <summary>
         /// Network
         /// </summary>
-        /// 
+
         public static string network = "irc.freenode.net";
         /// <summary>
         /// Nick name
         /// </summary>
-        /// 
+
         public static string username = "wm-bot";
 
         public static string debugchan = null;

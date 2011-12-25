@@ -18,14 +18,14 @@ using System.Net;
 
 namespace wmib
 {
-    class Program
+    internal class Program
     {
-        public static bool Log(string msg )
+        public static bool Log(string msg)
         {
             Console.WriteLine("LOG: " + msg);
             return false;
         }
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Log("Connecting");
             config.Load();

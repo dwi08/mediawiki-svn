@@ -105,15 +105,14 @@ namespace wmib
         {
             try
             {
-                string text;
-                text = CreateHeader();
+                string text = CreateHeader();
                 text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
                 Channel.Keys.locked = true;
                 if (Channel.Keys.text.Count > 0)
                 {
                     foreach (dictionary.item Key in Channel.Keys.text)
                     {
-                        text = text + AddLine(Key.key, Key.text);
+                        text += AddLine(Key.key, Key.text);
                     }
                 }
                 Channel.Keys.locked = false;
