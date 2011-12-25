@@ -10,6 +10,7 @@
 
 // Created by Petr Bena benapetr@gmail.com
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -36,7 +37,7 @@ namespace wmib
             /// <summary>
             /// Keys
             /// </summary>
-            public irc.dictionary Keys;
+            public dictionary Keys;
 
             /// <summary>
             /// Configuration text
@@ -76,17 +77,17 @@ namespace wmib
                     return;
                 }
                 conf = File.ReadAllText(conf_file);
-                if (parseConfig(conf, "keysdb") != "")
+                if (config.parseConfig(conf, "keysdb") != "")
                 {
-                    keydb = (parseConfig(conf, "keysdb"));
+                    keydb = (config.parseConfig(conf, "keysdb"));
                 }
-                if (parseConfig(conf, "logged") != "")
+                if (config.parseConfig(conf, "logged") != "")
                 {
-                    logged = bool.Parse(parseConfig(conf, "logged"));
+                    logged = bool.Parse(config.parseConfig(conf, "logged"));
                 }
-                if (parseConfig(conf, "infodb") != "")
+                if (config.parseConfig(conf, "infodb") != "")
                 {
-                    info = bool.Parse(parseConfig(conf, "infodb"));
+                    info = bool.Parse(config.parseConfig(conf, "infodb"));
                 }
             }
 
@@ -111,7 +112,7 @@ namespace wmib
                 conf = "";
                 keydb = Name + ".db";
                 info = true;
-                logged = true;
+                logged = false;
                 name = Name;
                 LoadConfig();
                 if (!Directory.Exists("log"))
@@ -122,7 +123,7 @@ namespace wmib
                 {
                     Directory.CreateDirectory("log/" + Name);
                 }
-                Keys = new irc.dictionary(keydb, name);
+                Keys = new dictionary(keydb, name);
                 log = "log/" + Name + "/";
                 Users = new irc.IRCTrust(name);
             }
@@ -178,39 +179,46 @@ namespace wmib
         /// </summary>
         public static void Load()
         {
-            text = File.ReadAllText("wmib");
-            foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
+            try
             {
-                string config = x.Replace(" ", "");
-                if (config != "")
+                text = File.ReadAllText("wmib");
+                foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
                 {
-                    channels.Add(new channel(config));
+                    string name = x.Replace(" ", "");
+                    if (!(name == ""))
+                    {
+                        channels.Add(new channel(name));
+                    }
                 }
+                username = parseConfig(text, "username");
+                network = parseConfig(text, "network");
+                login = parseConfig(text, "nick");
+                debugchan = parseConfig(text, "debug");
+                password = parseConfig(text, "password");
             }
-            username = parseConfig(text, "username");
-            network = parseConfig(text, "network");
-            login = parseConfig(text, "nick");
-            debugchan = parseConfig(text, "debug");
-            password = parseConfig(text, "password");
-            if (!Directory.Exists(DumpDir))
+            catch (Exception ex)
             {
-                Directory.CreateDirectory(DumpDir);
+                irc.handleException(ex);
             }
+                if (!Directory.Exists(config.DumpDir))
+                {
+                    Directory.CreateDirectory(config.DumpDir);
+                }
+            
         }
-
         public static string text;
-
         /// <summary>
         /// Network
         /// </summary>
+        /// 
         public static string network = "irc.freenode.net";
-
         /// <summary>
         /// Nick name
         /// </summary>
+        /// 
         public static string username = "wm-bot";
 
-        public static string debugchan = "";
+        public static string debugchan = null;
 
         /// <summary>
         /// Login name

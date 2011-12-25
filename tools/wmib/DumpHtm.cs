@@ -8,7 +8,15 @@
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
 
+
+
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Net;
+
 
 namespace wmib
 {
@@ -18,12 +26,10 @@ namespace wmib
         /// Channel name
         /// </summary>
         public config.channel Channel;
-
         /// <summary>
         /// Dump
         /// </summary>
         public string dumpname;
-
         // This function is called on start of bot
         public static void Start()
         {
@@ -31,15 +37,16 @@ namespace wmib
             {
                 foreach (config.channel chan in config.channels)
                 {
-                    if (!chan.Keys.update) continue;
-                    HtmlDump dump = new HtmlDump(chan);
-                    dump.Make();
-                    chan.Keys.update = false;
+                    if (chan.Keys.update)
+                    {
+                        HtmlDump dump = new HtmlDump(chan);
+                        dump.Make();
+                        chan.Keys.update = false;
+                    }
                 }
-                System.Threading.Thread.Sleep(320000);
+                Thread.Sleep(320000);
             }
         }
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -98,12 +105,13 @@ namespace wmib
         {
             try
             {
-                string text = CreateHeader();
-                text += "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
+                string text;
+                text = CreateHeader();
+                text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
                 Channel.Keys.locked = true;
                 if (Channel.Keys.text.Count > 0)
                 {
-                    foreach (irc.dictionary.item Key in Channel.Keys.text)
+                    foreach (dictionary.item Key in Channel.Keys.text)
                     {
                         text = text + AddLine(Key.key, Key.text);
                     }
@@ -111,7 +119,7 @@ namespace wmib
                 Channel.Keys.locked = false;
                 text = text + "<table>\n";
                 text = text + CreateFooter();
-                System.IO.File.WriteAllText(dumpname, text);
+                File.WriteAllText(dumpname, text);
             }
             catch (Exception b)
             {

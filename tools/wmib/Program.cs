@@ -11,18 +11,21 @@
 // Created by Petr Bena benapetr@gmail.com
 
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+
 
 namespace wmib
 {
-    internal class Program
+    class Program
     {
-        public static bool Log(string msg)
+        public static bool Log(string msg )
         {
             Console.WriteLine("LOG: " + msg);
             return false;
         }
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             Log("Connecting");
             config.Load();
