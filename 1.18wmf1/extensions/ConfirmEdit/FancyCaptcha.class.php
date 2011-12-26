@@ -72,6 +72,8 @@ class FancyCaptcha extends SimpleCaptcha {
 			Xml::element( 'input', array(
 				'name' => 'wpCaptchaWord',
 				'id'   => 'wpCaptchaWord',
+				'autocorrect' => 'off',
+				'autocapitalize' => 'off',
 				'tabindex' => 1 ) ) . // tab in before the edit textarea
 			"</p>\n";
 	}
