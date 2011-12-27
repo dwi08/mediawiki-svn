@@ -18,6 +18,13 @@ using System.IO;
 
 namespace wmib
 {
+    public class variables
+    {
+        /// <summary>
+        /// Configuration directory
+        /// </summary>
+        public static readonly string config = "configuration";
+    }
     public class misc
     {
         public static bool IsValidRegex(string pattern)
@@ -36,13 +43,15 @@ namespace wmib
             return true;
         }
     }
+
     public class irc
     {
         public static Thread _Queue;
         private static System.Net.Sockets.NetworkStream data;
         public static Thread dumphtmt;
+        public static Thread rc;
         public static Thread check_thread;
-        public static StreamReader rd;
+        private static StreamReader rd;
         private static StreamWriter wd;
         private static List<user> User = new List<user>();
 
@@ -106,7 +115,7 @@ namespace wmib
                     foreach (Message message in messages)
                     {
                         irc.Message(message.message, message.channel);
-                        Thread.Sleep(2000);
+                        Thread.Sleep(1000);
                     }
                     messages.Clear();
                     locked = false;
@@ -186,20 +195,20 @@ namespace wmib
             public IRCTrust(string channel)
             {
                 // Load
-                File = channel + "_user";
+                File = variables.config + "/" + channel + "_user";
                 if (!System.IO.File.Exists(File))
                 {
                     // Create db
                     Program.Log("Creating user file for " + channel);
                     System.IO.File.WriteAllText(File, "");
                 }
-                if (!System.IO.File.Exists("admins"))
+                if (!System.IO.File.Exists(variables.config + "/" + "admins"))
                 {
                     // Create db
                     Program.Log("Creating user file for admins");
-                    System.IO.File.WriteAllText("admins", "");
+                    System.IO.File.WriteAllText(variables.config + "/" + "admins", "");
                 }
-                string[] db = System.IO.File.ReadAllLines(channel + "_user");
+                string[] db = System.IO.File.ReadAllLines(File);
                 _Channel = channel;
                 foreach (string x in db)
                 {
@@ -211,7 +220,7 @@ namespace wmib
                         Users.Add(new user(level, name));
                     }
                 }
-                string[] dba = System.IO.File.ReadAllLines("admins");
+                string[] dba = System.IO.File.ReadAllLines(variables.config + "/" + "admins");
                 _Channel = channel;
                 foreach (string x in dba)
                 {
@@ -737,8 +746,12 @@ namespace wmib
                         }
                         catch (Exception)
                         { }
-                        File.Delete(chan.name + ".setting");
-                        File.Delete(chan.Users.File);
+                        File.Delete(variables.config + "/" + chan.name + ".setting");
+                        File.Delete(variables.config + "/" + chan.Users.File);
+                        if (File.Exists(variables.config + "/" + chan.name + ".list"))
+                        {
+                            File.Delete(variables.config + "/" + chan.name + ".list");
+                        }
                         config.channels.Remove(chan);
                         config.Save();
                         return;
@@ -803,6 +816,161 @@ namespace wmib
                 Message(messages.PermissionDenied, chan.name);
                 return;
             }
+
+            if (message == "@recentchanges-on")
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    if (chan.feed)
+                    {
+                        Message("Channel had already feed enabled", chan.name);
+                        return;
+                    }
+                    else
+                    {
+                        Message("Feed is enabled", chan.name);
+                        chan.feed = true;
+                        chan.SaveConfig();
+                        config.Save();
+                        return;
+                    }
+                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
+            }
+
+            if (message.StartsWith("@recentchanges+"))
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    if (chan.feed)
+                    {
+                        if (!message.Contains(" "))
+                        {
+                            SlowQueue.DeliverMessage("Invalid wiki", chan.name);
+                            return;
+                        }
+                        string channel = message.Substring(message.IndexOf(" ") + 1);
+                        if (RecentChanges.InsertChannel(chan, channel))
+                        {
+                            Message("Wiki inserted", chan.name);
+                        }
+                        return;
+                    }
+                    else
+                    {
+                        Message("Channel doesn't have enabled recent changes", chan.name);
+                        return;
+                    }
+                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
+            }
+
+            if (message.StartsWith("@recentchanges- "))
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    if (chan.feed)
+                    {
+                        if (!message.Contains(" "))
+                        {
+                            SlowQueue.DeliverMessage("Invalid wiki", chan.name);
+                            return;
+                        }
+                        string channel = message.Substring(message.IndexOf(" ") + 1);
+                        if (RecentChanges.DeleteChannel(chan, channel))
+                        {
+                            Message("Wiki deleted", chan.name);
+                        }
+                        return;
+                    }
+                    else
+                    {
+                        Message("Channel doesn't have enabled recent changes", chan.name);
+                        return;
+                    }
+                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
+            }
+
+            if (message.StartsWith("@RC+ "))
+            {
+                if (chan.Users.isApproved(user, host, "trust"))
+                {
+                    if (chan.feed)
+                    {
+                        string[] a = message.Split(' ');
+                        if (a.Length < 3)
+                        {
+                            SlowQueue.DeliverMessage("Error, " + user + ": Wrong number of parameters!", chan.name);
+                            return;
+                        }
+                        string wiki = a[1];
+                        string Page = a[2];
+                        chan.RC.insertString(wiki, Page);
+                        return;
+                    }
+                    else
+                    {
+                        SlowQueue.DeliverMessage("Channel doesn't have enabled recent changes", chan.name);
+                        return;
+                    }
+                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
+            }
+
+            if (message.StartsWith("@RC-"))
+            {
+                if (chan.Users.isApproved(user, host, "trust"))
+                {
+                    if (chan.feed)
+                    {
+                        string[] a = message.Split(' ');
+                        if (a.Length < 3)
+                        {
+                            SlowQueue.DeliverMessage("Error, " + user + ": Wrong number of parameters!", chan.name);
+                            return;
+                        }
+                        string wiki = a[1];
+                        string Page = a[2];
+                        chan.RC.removeString(wiki, Page);
+                        return;
+                    }
+                    else
+                    {
+                        SlowQueue.DeliverMessage("Channel doesn't have enabled recent changes", chan.name);
+                        return;
+                    }
+                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
+            }
+
+            if (message == "@recentchanges-off")
+            {
+                if (chan.Users.isApproved(user, host, "admin"))
+                {
+                    if (!chan.feed)
+                    {
+                        Message("Channel had already feed disabled", chan.name);
+                        return;
+                    }
+                    else
+                    {
+                        Message("Feed disabled", chan.name);
+                        chan.feed = false;
+                        chan.SaveConfig();
+                        config.Save();
+                        return;
+                    }
+                }
+                SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
+                return;
+            }
+
             if (message == "@logon")
             {
                 if (chan.Users.isApproved(user, host, "admin"))
@@ -824,12 +992,13 @@ namespace wmib
                 SlowQueue.DeliverMessage(messages.PermissionDenied, chan.name);
                 return;
             }
+
             if (message == "@whoami")
             {
                 user current = chan.Users.getUser(user + "!@" + host);
                 if (current.level == "null")
                 {
-                    Message("You are unknown to me :)", chan.name);
+                    SlowQueue.DeliverMessage("You are unknown to me :)", chan.name);
                     return;
                 }
                 Message("You are " + current.level + " identified by name " + current.name, chan.name);
@@ -908,7 +1077,7 @@ namespace wmib
             }
             if (message == "@commands")
             {
-                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, refresh, infobot-on, drop, whoami, add, reload, logon, logoff", chan.name);
+                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, refresh, infobot-on, drop, whoami, add, reload, RC-, recentchanges-on, recentchanges-off, logon, logoff, recentchanges-, recentchanges+, RC+", chan.name);
                 return;
             }
         }
@@ -966,6 +1135,7 @@ namespace wmib
             {
                 Thread.Sleep(2000);
                 wd.WriteLine("JOIN " + ch.name);
+                wd.Flush();
             }
             SlowQueue.newmessages.Clear();
             SlowQueue.messages.Clear();
@@ -987,6 +1157,8 @@ namespace wmib
             _Queue = new Thread(SlowQueue.Run);
             dumphtmt = new Thread(HtmlDump.Start);
             dumphtmt.Start();
+            rc = new Thread(RecentChanges.Start);
+            rc.Start();
             check_thread = new Thread(Ping);
             check_thread.Start();
 
@@ -1002,6 +1174,7 @@ namespace wmib
             {
                 if (ch.name != "")
                 {
+                    wd.Flush();
                     wd.WriteLine("JOIN " + ch.name);
                     Thread.Sleep(2000);
                 }

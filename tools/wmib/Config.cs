@@ -32,12 +32,18 @@ namespace wmib
             /// </summary>
             public string log;
 
+            public bool feed;
             public bool info;
 
             /// <summary>
             /// Keys
             /// </summary>
             public dictionary Keys;
+
+            /// <summary>
+            /// Recent changes
+            /// </summary>
+            public RecentChanges RC;
 
             /// <summary>
             /// Configuration text
@@ -69,7 +75,8 @@ namespace wmib
             /// </summary>
             public void LoadConfig()
             {
-                string conf_file = name + ".setting";
+                string conf_file = variables.config + "/" + name + ".setting";
+                RecentChanges.InsertSite();
                 if (!File.Exists(conf_file))
                 {
                     File.WriteAllText(conf_file, "");
@@ -85,6 +92,10 @@ namespace wmib
                 {
                     logged = bool.Parse(parseConfig(conf, "logged"));
                 }
+                if (parseConfig(conf, "feed") != "")
+                {
+                    feed = bool.Parse(parseConfig(conf, "feed"));
+                }
                 if (parseConfig(conf, "infodb") != "")
                 {
                     info = bool.Parse(parseConfig(conf, "infodb"));
@@ -99,8 +110,9 @@ namespace wmib
                 conf = "";
                 AddConfig("infodb", info.ToString());
                 AddConfig("logged", logged.ToString());
+                AddConfig("feed", feed.ToString());
                 AddConfig("keysdb", keydb);
-                File.WriteAllText(name + ".setting", conf);
+                File.WriteAllText(variables.config + "/" + name + ".setting", conf);
             }
 
             /// <summary>
@@ -110,11 +122,13 @@ namespace wmib
             public channel(string Name)
             {
                 conf = "";
-                keydb = Name + ".db";
+                keydb = variables.config + "/" + Name + ".db";
                 info = true;
+                feed = false;
                 logged = false;
                 name = Name;
                 LoadConfig();
+                RC = new RecentChanges(this);
                 if (!Directory.Exists("log"))
                 {
                     Directory.CreateDirectory("log");
@@ -153,7 +167,7 @@ namespace wmib
                 text = text + current.name + ",\n";
             }
             text = text + ";";
-            File.WriteAllText("wmib", text);
+            File.WriteAllText(variables.config + "/wmib", text);
         }
 
         /// <summary>
@@ -181,7 +195,11 @@ namespace wmib
         {
             try
             {
-                text = File.ReadAllText("wmib");
+                if (System.IO.Directory.Exists(variables.config) == false)
+                {
+                    System.IO.Directory.CreateDirectory(variables.config);
+                }
+                text = File.ReadAllText(variables.config + "/wmib");
                 foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
                 {
                     string name = x.Replace(" ", "");
