@@ -164,7 +164,7 @@ namespace wmib
             text += text + "\nchannels=";
             foreach (channel current in channels)
             {
-                text = text + current.name + ",\n";
+                text += current.name + ",\n";
             }
             text = text + ";";
             File.WriteAllText(variables.config + "/wmib", text);
@@ -195,15 +195,15 @@ namespace wmib
         {
             try
             {
-                if (System.IO.Directory.Exists(variables.config) == false)
+                if (Directory.Exists(variables.config) == false)
                 {
-                    System.IO.Directory.CreateDirectory(variables.config);
+                    Directory.CreateDirectory(variables.config);
                 }
                 text = File.ReadAllText(variables.config + "/wmib");
                 foreach (string x in parseConfig(text, "channels").Replace("\n", "").Split(','))
                 {
                     string name = x.Replace(" ", "");
-                    if (!(name == ""))
+                    if (name != "")
                     {
                         channels.Add(new channel(name));
                     }
@@ -218,12 +218,13 @@ namespace wmib
             {
                 irc.handleException(ex);
             }
-                if (!Directory.Exists(config.DumpDir))
-                {
-                    Directory.CreateDirectory(config.DumpDir);
-                }
-            
+            if (!Directory.Exists(DumpDir))
+            {
+                Directory.CreateDirectory(DumpDir);
+            }
+
         }
+
         public static string text;
         /// <summary>
         /// Network
