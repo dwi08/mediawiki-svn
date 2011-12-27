@@ -117,11 +117,13 @@ class CategoryLoader(WSORSlaveDataLoader):
         self._query_names_['get_page_categories'] = "select cl_from, cl_to from enwiki.categorylinks where %s order by 1"
         self._query_names_['get_all_page_ids'] = "select page_id from enwiki.page where page_namespace = 0 and page_len > 1000"
         
-        self._query_names_['create_page_category'] = "create table rfaulk.page_category (page_id int(8) unsigned, page_title varbinary(255), category varbinary(255));"
+        self._query_names_['create_page_category'] = "create table rfaulk.page_category (page_id int(8) unsigned, page_title varbinary(255)," + \
+        "category varbinary(255), category_value varbinary(255));"
         self._query_names_['drop_page_category'] = "drop table if exists rfaulk.page_category;"
         self._query_names_['index1_page_category'] = "create index idx_page_id on rfaulk.page_category (page_id);"
         self._query_names_['index2_page_category'] = "create index idx_page_title on rfaulk.page_category (page_title);"
         self._query_names_['index3_page_category'] = "create index idx_category on rfaulk.page_category (category);"
+        self._query_names_['index3_page_category'] = "create index idx_category_value on rfaulk.page_category (category_value);"
         self._query_names_['insert_page_category'] = "insert into rfaulk.page_category values %s;"
         
         self._regexp_list_ = ['^[Aa]', '^[Bb]', '^[Cc]', '^[Dd]', '^[Ee]', '^[Ff]', '^[Gg]', '^[Hh]', '^[Ii]', '^[Jj]', '^[Kk]', '^[Ll]', '^[Mm]', '^[Nn]', '^[Oo]', '^[Pp]', '^[Qq]', '^[Rr]', \
@@ -129,8 +131,15 @@ class CategoryLoader(WSORSlaveDataLoader):
         
         self._max_depth_ = 50
         self._main_topic_ = 'Main_topic_classifications'
-        self._top_level_cats_ = subcategories[self._main_topic_][:]
+        self._top_level_cats_ = subcategories[self._main_topic_]
+        
         self._top_level_cats_.remove('Chronology')
+        self._top_level_cats_.remove('Geography')
+        self._top_level_cats_.remove('Nature')
+        self._top_level_cats_.remove('Agriculture')
+        self._top_level_cats_.remove('Applied_sciences')
+        
+        self._top_level_cats_.append('Places')
         
         
         #self._top_level_cats_ = ['Natural_sciences', 'Applied_sciences', 'Mathematics', 'Literature', 'Visual_arts', 'Social_sciences', 'Film', 'Music', 'Television', 'People', 'Religion', 'Culture', 'Philosophy', 'Sports', 'Places']
@@ -587,10 +596,10 @@ class CategoryLoader(WSORSlaveDataLoader):
                 rank_categories_M2()
             """
             title = titles[page_id]
-            page_tl_cat[title] = self.rank_categories_M2(page_categories[page_id], shortest_paths, topic_counts)
+            page_tl_cat[title], tl_cat_vectors[title] = self.rank_categories_M2(page_categories[page_id], shortest_paths, topic_counts)
 
             
-        return titles, page_tl_cat #, tl_cat_vectors # , depths, cat_winner
+        return titles, page_tl_cat, tl_cat_vectors # , depths, cat_winner
     
     """
         Method for determining top level category for a set of categories 
@@ -693,7 +702,7 @@ class CategoryLoader(WSORSlaveDataLoader):
         
             """ The total weight of this category depends on the product of how far it lies from the root and the inverse of its fanout
                 this makes more specialized categories worth more """
-            category_weight = float(path_length_from_main) * fanout_weight
+            category_weight = float(path_length_from_main) # * fanout_weight
             
             # category_weight = 1 / float(path_length_from_main) * self._max_depth_
 
@@ -727,7 +736,7 @@ class CategoryLoader(WSORSlaveDataLoader):
         top_five_cats = top_five_cats[:-2]
         page_tl_cat = top_five_cats
             
-        return page_tl_cat
+        return page_tl_cat, tl_cat_vectors
     
     """
         Builds a table containing all main namespace pages and their chosen categories
@@ -766,7 +775,7 @@ class CategoryLoader(WSORSlaveDataLoader):
                 page_ids.append(int(row[0]))
             
             logging.info('CATEGORIZING PAGES: Computing categories ... ')
-            titles, page_tl_cat = self.find_top_level_category(page_ids, shortest_paths, topic_counts)
+            titles, page_tl_cat, cat_vector = self.find_top_level_category(page_ids, shortest_paths, topic_counts)
             ids = dict((i,v) for v,i in titles.iteritems())
             
             logging.info('CATEGORIZING PAGES: Performing inserts ... ')
@@ -774,14 +783,20 @@ class CategoryLoader(WSORSlaveDataLoader):
             for title in page_tl_cat:
                 id = ids[title]
                 category = page_tl_cat[title]
+                vector = cat_vector[title]
                 
                 parts = title.split("'")
                 new_title = parts[0]
                 parts = parts[1:]
                 for part in parts:
                      new_title = new_title + " " + part
-                     
-                page_id_str = "(%s,'%s','%s')" % (id, new_title, category)
+                
+                vector_str = ''
+                for elem in vector:
+                    vector_str = vector_str + '%1.7s ' % elem
+                vector_str = vector_str[:-1]
+                
+                page_id_str = "(%s,'%s','%s', '%s')" % (id, new_title, category, vector_str)
                 try:
                     self.execute_SQL(sql_insert %  page_id_str)
                 except:
