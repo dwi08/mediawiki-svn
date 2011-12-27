@@ -37,6 +37,7 @@ $wgAutoloadClasses['WebFontsHooks'] = "$dir/WebFonts.hooks.php";
 $wgHooks['BeforePageDisplay'][] = 'WebFontsHooks::addModules';
 $wgHooks['GetPreferences'][] = 'WebFontsHooks::addPreference';
 $wgHooks['UserGetDefaultOptions'][] = 'WebFontsHooks::addDefaultOptions';
+$wgHooks['ResourceLoaderGetConfigVars'][] = 'WebFontsHooks::addConfig';
 
 $wgWebFontsEnabledByDefault = true; 
 
@@ -57,7 +58,12 @@ $wgResourceModules['ext.webfonts.core'] = array(
 	),
 	'localBasePath' => $dir,
 	'remoteExtPath' => 'WebFonts',
-	'messages' => array( 'webfonts-load', 'webfonts-reset', 'webfonts-menu-tooltip' ),
-	'dependencies' =>  'jquery.cookie' ,
+	'messages' => array(
+		'webfonts-load',
+		'webfonts-reset', 
+		'webfonts-menu-tooltip',
+		'webfonts-help',
+	),
+	'dependencies' => 'jquery.cookie',
 	'position' => 'top',
 );
