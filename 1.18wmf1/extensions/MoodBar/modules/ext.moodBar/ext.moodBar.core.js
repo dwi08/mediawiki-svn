@@ -47,8 +47,10 @@
 								<html:msg key="moodbar-email-desc" />\
 							</div>\
 							<div class="mw-moodBar-formInputs">\
-								<html:msg key="moodbar-email-input" />\
-								<input type="text" id="mw-moodBar-emailInput" class="mw-moodBar-emailInput" />\
+								<div>\
+									<html:msg key="moodbar-email-input" />\
+									<input type="text" id="mw-moodBar-emailInput" class="mw-moodBar-emailInput" />\
+								</div>\
 								<input type="button" class="mw-moodBar-emailSubmit" disabled="disabled" />\
 								<input type="button" class="mw-moodBar-emailOptOut" />\
 							</div>\
@@ -134,20 +136,25 @@
 			callback: function( data ) {
 				if ( data && data.moodbar && data.moodbar.result === 'success' ) {
 					
-					var userData =  mb.userData,
-						emailOptOut = ($.cookie( mb.cookiePrefix() + 'emailOptOut' ) == '1');
+					var emailFlag,emailOptOut = ($.cookie( mb.cookiePrefix() + 'emailOptOut' ) == '1');
 
-					if( emailOptOut === false) {
-						if(userData.email !== "") { //check for email address
-							if('emailauthenticated' in userData) { //they have confirmed
+					// if opt out cookie not set and if email is on globally, proceed with email prompt
+					if( emailOptOut === false && mw.config.get( 'mbEmailEnabled' ) ) { 
+
+						if( mw.config.get( 'mbUserEmail' ) ) { // if user has email
+
+							if ( !mw.config.get( 'mbIsEmailConfirmationPending' ) ) { // if no confirmation pending, show form.
 								mb.showSuccess();
+		
 							} else { //show email confirmation form
 								mb.swapContent ( mb.tpl.emailconfirmation );
 							}
+
 						} else { //no email, show email input form
 							mb.swapContent( mb.tpl.emailinput );
 						} 
-					} else { //user has email opt-out cookie set
+
+					} else { //user has email opt-out cookie set, or email is disabled
 						mb.showSuccess();
 					} 
 					
@@ -173,12 +180,16 @@
 			email: '',
 			callback: function( data ) {
 				mb.showSuccess();
+				//set email flag to true so we do not ask again on this page load.
+				mw.config.set({'mbUserEmail': true, 'mbIsEmailConfirmationPending': true});
 			}
 		},
 
 		emailVerify: {
 			callback: function ( data ) {
 				mb.showSuccess();
+				//set conf pending flag to false so we do not ask again on this page load.
+				mw.config.set({'mbIsEmailConfirmationPending': false});
 			}	
 
 		},
@@ -483,18 +494,18 @@
 		validateFeedback: function() {
 			var comment = $( '#mw-moodBar-feedbackInput' ).val();
 			if( $.trim( comment ).length > 0 && comment.length <= 140 && $( '.mw-moodBar-selected').length ) {
-				mb.ui.overlay.find( '.mw-moodBar-formSubmit').removeAttr('disabled');
+				mb.ui.overlay.find( '.mw-moodBar-formSubmit').prop('disabled', false);
 			} else {
-				mb.ui.overlay.find( '.mw-moodBar-formSubmit').attr({'disabled':'true'});		
+				mb.ui.overlay.find( '.mw-moodBar-formSubmit').prop('disabled', true);		
 			}
 		},
 
 		validateEmail: function() {
 			var email = $( '#mw-moodBar-emailInput' ).val();
-			if( $.trim( email ).length > 0) {  //find validate email method
-				mb.ui.overlay.find( '.mw-moodBar-emailSubmit').removeAttr('disabled');
+			if( mw.util.validateEmail( email ) ) {
+				mb.ui.overlay.find( '.mw-moodBar-emailSubmit').prop('disabled', false);
 			} else {
-				mb.ui.overlay.find( '.mw-moodBar-emailSubmit').attr({'disabled':'true'});		
+				mb.ui.overlay.find( '.mw-moodBar-emailSubmit').prop('disabled', true);		
 			}
 		}
 

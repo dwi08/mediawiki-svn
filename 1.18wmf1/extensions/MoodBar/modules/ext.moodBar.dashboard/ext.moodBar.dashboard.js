@@ -5,7 +5,7 @@ jQuery(function( $ ) {
 	/**
 	 * Saved form state
 	 */
-	var formState = { types: [], username: '' };
+	var formState = { types: [], username: '', myresponse: '0' };
 	
 	/**
 	 * Save the current form state to formState
@@ -13,6 +13,7 @@ jQuery(function( $ ) {
 	function saveFormState() {
 		formState.types = getSelectedTypes();
 		formState.username = $( '#fbd-filters-username' ).val();
+		formState.myresponse = $( '#fbd-filters-my-response' ).prop( 'checked' ) ? $( '#fbd-filters-my-response' ).val() : '0';
 	}
 	
 	/**
@@ -33,9 +34,7 @@ jQuery(function( $ ) {
 	 * Select all comment type filters.
 	 */
 	function selectAllTypes() {
-		$( '#fbd-filters-type-praise, #fbd-filters-type-confusion, #fbd-filters-type-issues' ).each( function() {
-			$(this).prop( 'checked', true);
-		});
+		$( '#fbd-filters-type-praise, #fbd-filters-type-confusion, #fbd-filters-type-issues' ).prop( 'checked', true);
 	}
 	/**
 	 * Set the moodbar-feedback-types and moodbar-feedback-username cookies based on formState.
@@ -132,6 +131,9 @@ jQuery(function( $ ) {
 		}
 		if ( formState.username.length ) {
 			reqData.mbcuser = formState.username;
+		}
+		if ( formState.myresponse != '0' ) {
+			reqData.mbcmyresponse = formState.myresponse;
 		}
 		
 		$.ajax( {
@@ -546,9 +548,9 @@ jQuery(function( $ ) {
 	function validateResponse($item) {
 		var response = $.trim( $item.find('.fbd-response-text').val() ); 
 		if( response.length > 0 && response.length <= 5000 ) { 
-			$item.find( '.fbd-response-submit, .fbd-response-preview').removeAttr('disabled');
+			$item.find( '.fbd-response-submit, .fbd-response-preview').prop('disabled', false);
 		} else {
-			$item.find( '.fbd-response-submit, .fbd-response-preview').attr({'disabled':'true'});		
+			$item.find( '.fbd-response-submit, .fbd-response-preview').prop('disabled', true);
 		}
 	}
 	

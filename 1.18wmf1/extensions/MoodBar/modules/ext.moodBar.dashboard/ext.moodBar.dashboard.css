@@ -2,7 +2,7 @@
 
 #fbd-filters {
 	position: absolute;
-	width: 14em;
+	width: 15em;
 	left:0px;  /* needed for ie6 & ie7 */
 }
 
@@ -40,6 +40,7 @@
 	margin: 0.5em 0 0 0;
 	padding: 0;
 	font-weight: bold;
+	color: #000000;
 }
 
 .fbd-filters-input {
@@ -89,7 +90,7 @@
 /* List */
 
 #fbd-list {
-	margin: 0px 20px 0px 15em;
+	margin: 0px 20px 0px 16em;
 	padding: 0px;
 	min-height: 20em;
 	list-style: none;
@@ -202,7 +203,7 @@
 
 .fbd-item-emoticon-label {
 	display: block;
-	margin-top: 60px;
+	margin-top: 64px;
 	text-align: center;
 }
 
@@ -289,6 +290,7 @@
 	font-size: 1.2em;
 	margin: 0;
 	padding: 0;
+	display:inline; /* ie7 fix */
 }
 
 .fbd-item-userLinks{
@@ -298,6 +300,7 @@
 .fbd-item-time {
 	font-size: 1.2em;
 	float: right;
+	display:inline; /* ie7 fix */
 }
 
 .fbd-item-message {

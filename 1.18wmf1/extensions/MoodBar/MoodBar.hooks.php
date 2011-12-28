@@ -15,6 +15,53 @@ class MoodBarHooks {
 
 		return true;
 	}
+	
+	/**
+	 * Determines if this user has right to mark an feedback response as helpful, only the user who wrote the
+	 * feedback can mark the response as helpful
+	 * @param $mahaction string - mark/unmark
+	 * @param $type string - the object type to be marked
+	 * @param $item int - an item of $type to be marked 
+	 * @param $User User Object - the User in current session
+	 * @param $isAbleToMark bool - determine whether the user is able to mark the item
+	 * @return bool
+	 */
+	public static function onMarkItemAsHelpful( $mahaction, $type, $item, $User, &$isAbleToMark ) {
+		
+		if ( $User->isAnon() ) {
+			$isAbleToMark = false;
+			return true;
+		}
+		
+		if ( $type == 'mbresponse' ) {
+			
+			switch ( $mahaction ) {
+				
+				case 'mark':
+					$dbr = wfGetDB( DB_SLAVE );
+						
+					$res = $dbr->selectRow( array( 'moodbar_feedback', 'moodbar_feedback_response' ), 
+								array( 'mbf_id' ),
+								array( 'mbf_id = mbfr_mbf_id', 
+								       'mbfr_id' => intval( $item ), 
+								       'mbf_user_id' => $User->getId() ),
+								__METHOD__ );	
+					
+					if ( $res === false ) {
+						$isAbleToMark = false;
+					}
+				break;
+				
+				case 'unmark':
+				default:
+					//We will leve the MarkAsHelpFul extension to check if the user has unmark right
+				break;
+			}
+		}
+		
+		return true;
+		
+	}
 
 	/**
 	 * Determines whether or not we should show the MoodBar.
@@ -60,14 +107,17 @@ class MoodBarHooks {
 		global $wgMoodBarConfig, $wgUser;
 		$vars['mbConfig'] = array(
 			'validTypes' => MBFeedbackItem::getValidTypes(),
-			'userBuckets' => MoodBarHooks::getUserBuckets( $wgUser ),
+			'userBuckets' => MoodBarHooks::getUserBuckets( $wgUser )
 		) + $wgMoodBarConfig;
 		return true;
 	}
 
 	public static function makeGlobalVariablesScript( &$vars ) {
-		global $wgUser;
+		global $wgUser, $wgEnableEmail;
 		$vars['mbEditToken'] = $wgUser->editToken();
+		$vars['mbEmailEnabled'] = $wgEnableEmail;
+		$vars['mbUserEmail'] = strlen( $wgUser->getEmail() ) > 0 ? true : false;
+		$vars['mbIsEmailConfirmationPending'] = $wgUser->isEmailConfirmationPending(); //returns false if email authentication off, and if email is confimed already
 		return true;
 	}
 

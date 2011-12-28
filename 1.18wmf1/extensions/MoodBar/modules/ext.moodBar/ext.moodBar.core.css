@@ -90,6 +90,10 @@
 	font-size: 16px;
 }
 
+#mw-moodBar-emailInput {
+	width: 270px;
+}
+
 .mw-moodBar-formInput {
 	width: 100%;
 	outline: none;
@@ -157,21 +161,19 @@
 }
 
 .mw-moodBar-overlayWhatTrigger {
-	display: inline-block;
+	display:inline-block;
+    width: 8px;
+    height: 8px;
 }
 
 .moodbar-what-collapsed {
 	/* @embed */
 	background: transparent url('images/whatisthis-collapsed.png') center center no-repeat;
-	height: 8px;
-	width: 8px;
 }
 
 .moodbar-what-expanded {
 	/* @embed */
 	background: transparent url('images/whatisthis-expanded.png') center center no-repeat;
-	height: 8px;
-	width: 8px;	
 }
 
 .red-bold {
@@ -198,7 +200,7 @@
 }
 .mw-moodBar-types-select .mw-moodBar-type-happy  {
 	/* @embed */
-	background-image: url(images/type-happy-dull.png);
+	background-image: url(images/type-happy-normal.png);
 }
 .mw-moodBar-types-select .mw-moodBar-type-happy.mw-moodBar-happy-selected {
 	/* @embed */
@@ -220,7 +222,7 @@
 }
 .mw-moodBar-types-select .mw-moodBar-type-sad {
 	/* @embed */
-	background-image: url(images/type-sad-dull.png);
+	background-image: url(images/type-sad-normal.png);
 }
 .mw-moodBar-types-select .mw-moodBar-type-sad.mw-moodBar-sad-selected {
 	/* @embed */
@@ -242,7 +244,7 @@
 }
 .mw-moodBar-types-select .mw-moodBar-type-confused {
 	/* @embed */
-	background-image: url(images/type-confused-dull.png);
+	background-image: url(images/type-confused-normal.png);
 }
 .mw-moodBar-types-select .mw-moodBar-type-confused.mw-moodBar-confused-selected {
 	/* @embed */
