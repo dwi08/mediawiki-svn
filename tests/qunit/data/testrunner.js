@@ -123,33 +123,20 @@ QUnit.newMwEnvironment = ( function () {
 	return function ( override ) {
 		override = override || {};
 
-		// We need to pass currentModule through closure.
-		// Because module() only registers the module and stores the object with "setup"
-		// and "teardown" properties. Then following test()'s are registered as part of
-		// the last module() call. When the test is actually executed, all module's have
-		// already been processed and QUnit.config.currentModule will be the last one.
 		return {
-			setup: ( function ( moduleName ) {
-				var i = 0;
-				return function () {
-					i += 1;
-					log( 'MwEnvironment ' + i +'> SETUP    for "' + moduleName
-						+ ': ' + QUnit.config.current.testName + '"' );
-					// Greetings, mock configuration!
-					mw.config.values = freshConfigCopy( override );
-				};
-			}( QUnit.config.currentModule ) ),
+			setup: function () {
+				log( 'MwEnvironment> SETUP    for "' + QUnit.config.current.module
+					+ ': ' + QUnit.config.current.testName + '"' );
+				// Greetings, mock configuration!
+				mw.config.values = freshConfigCopy( override );
+			},
 
-			teardown: ( function ( moduleName ) {
-				var i = 0;
-				return function () {
-					i += 1;
-					log( 'MwEnvironment ' + i +'> TEARDOWN for "' + moduleName
-						+ ': ' + QUnit.config.current.testName + '"' );
-					// Farewell, mock configuration!
-					mw.config.values = liveConfig;
-				};
-			}( QUnit.config.currentModule ) )
+			teardown: function () {
+				log( 'MwEnvironment> TEARDOWN for "' + QUnit.config.current.module
+					+ ': ' + QUnit.config.current.testName + '"' );
+				// Farewell, mock configuration!
+				mw.config.values = liveConfig;
+			}
 		};
 	};
 }() );

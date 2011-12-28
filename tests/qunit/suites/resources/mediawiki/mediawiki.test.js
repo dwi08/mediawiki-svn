@@ -1,4 +1,4 @@
-module( 'mediawiki' );
+module( 'mediawiki', QUnit.newMwEnvironment() );
 
 test( '-- Initial check', function() {
 	expect(8);

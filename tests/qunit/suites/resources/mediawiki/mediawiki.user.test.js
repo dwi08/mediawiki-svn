@@ -1,4 +1,4 @@
-module( 'mediawiki.user' );
+module( 'mediawiki.user', QUnit.newMwEnvironment() );
 
 test( '-- Initial check', function() {
 	expect(1);
@@ -23,9 +23,6 @@ test( 'User login status', function() {
 	 *   3) Anonymously at the same special page.
 	 */
 
-	// remember current user to restore it later on.
-	var savedUsername = mw.config.get( 'wgUserName' );
-
 	// Forge an anonymous user:
 	mw.config.set( 'wgUserName', null);
 
@@ -39,7 +36,4 @@ test( 'User login status', function() {
 	ok( !mw.user.anonymous(), 'user.anonymous returns false when logged-in' );
 
 	equal( mw.user.id(), 'John', 'user.id Returns username when logged-in' );
-
-	// restore previous user
-	mw.config.set( 'wgUserName', savedUsername );
 });

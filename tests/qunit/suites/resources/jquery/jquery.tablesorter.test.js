@@ -1,12 +1,13 @@
-(function() {
+( function () {
 
-module( 'jquery.tablesorter' );
+var config = {
+	wgMonthNames: ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	wgMonthNamesShort: ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+	wgDefaultDateFormat: 'dmy',
+	wgContentLanguage: 'en'
+};
 
-// setup hack
-mw.config.set( 'wgMonthNames', ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
-mw.config.set( 'wgMonthNamesShort', ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
-mw.config.set( 'wgDefaultDateFormat', 'dmy' );
-mw.config.set( 'wgContentLanguage', 'en' );
+module( 'jquery.tablesorter', QUnit.newMwEnvironment( config ) );
 
 test( '-- Initial check', function() {
 	expect(1);
@@ -181,9 +182,9 @@ tableTest(
 		['11.11.2011']
 	],
 	function( $table ) {
-		// @fixme reset it at end or change module to allow us to override it
 		mw.config.set( 'wgDefaultDateFormat', 'dmy' );
 		mw.config.set( 'wgContentLanguage', 'de' );
+
 		$table.tablesorter();
 		$table.find( '.headerSort:eq(0)' ).click();
 	}
@@ -208,8 +209,8 @@ tableTest(
 		['11.11.2011']
 	],
 	function( $table ) {
-		// @fixme reset it at end or change module to allow us to override it
 		mw.config.set( 'wgDefaultDateFormat', 'mdy' );
+
 		$table.tablesorter();
 		$table.find( '.headerSort:eq(0)' ).click();
 	}
@@ -294,9 +295,9 @@ tableTest(
 			'ß': 'ss',
 			'ü':'ue'
 		} );
+
 		$table.tablesorter();
 		$table.find( '.headerSort:eq(0)' ).click();
-		mw.config.set( 'tableSorterCollation', {} );
 	}
 );
 
@@ -362,6 +363,7 @@ tableTest(
 	complexMDYSorted,
 	function( $table ) {
 		mw.config.set( 'wgDefaultDateFormat', 'mdy' );
+
 		$table.tablesorter();
 		$table.find( '.headerSort:eq(0)' ).click();
 	}
