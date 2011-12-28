@@ -6,6 +6,7 @@ module( 'jquery.tablesorter' );
 mw.config.set( 'wgMonthNames', ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
 mw.config.set( 'wgMonthNamesShort', ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
 mw.config.set( 'wgDefaultDateFormat', 'dmy' );
+mw.config.set( 'wgContentLanguage', 'en' );
 
 test( '-- Initial check', function() {
 	expect(1);
@@ -182,6 +183,7 @@ tableTest(
 	function( $table ) {
 		// @fixme reset it at end or change module to allow us to override it
 		mw.config.set( 'wgDefaultDateFormat', 'dmy' );
+		mw.config.set( 'wgContentLanguage', 'de' );
 		$table.tablesorter();
 		$table.find( '.headerSort:eq(0)' ).click();
 	}

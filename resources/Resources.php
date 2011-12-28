@@ -706,6 +706,8 @@ return array(
 		'dependencies' => array(
 			'jquery.qunit',
 			'jquery.qunit.completenessTest',
+			'mediawiki.page.startup',
+			'mediawiki.page.ready',
 		),
 		'position' => 'top',
 	),

@@ -175,20 +175,20 @@ test( 'mw.loader.bug30825', function() {
 
 	expect(2);
 
-	var wgServer = mw.config.get( 'wgServer' ),
+	var server = mw.config.get( 'wgServer' ),
 	    basePath = mw.config.get( 'wgScriptPath' );
 
 	// From [[Special:JavaScriptTest]] we need to preprend the script path
 	// with the actual server (http://localhost/).
 	// Running from file tests/qunit/index.html, wgScriptPath is already
 	// including the wgServer part
-	if( wgServer !== null ) {
-		basePath = wgServer + wgScriptPath;
+	if( server !== null ) {
+		basePath = server + basePath;
 	}
 	// Forge an URL to the test callback script
 	var target = QUnit.fixurl(
 		basePath + '/tests/qunit/data/qunitOkCall.js'
-		);
+	);
 
 	// Confirm that mw.loader.load() works with protocol-relative URLs
 	target = target.replace( /https?:/, '' );
