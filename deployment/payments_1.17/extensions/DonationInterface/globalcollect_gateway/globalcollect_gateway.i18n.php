@@ -140,16 +140,16 @@ $messages['de'] = array(
 	'globalcollect_gateway-response-9140' => 'Ungültige Währung.',
 	'globalcollect_gateway-response-9150' => 'Ungültige Sprache.',
 	'globalcollect_gateway-response-400530' => 'Ungültige Zahlungsmethode.',
-	'globalcollect_gateway-response-430306' => 'Deine Kreditkarte ist nicht mehr gültig. Bitte verwende eine andere Karte oder nutze eine andere Zahlungsmethode.',
+	'globalcollect_gateway-response-430306' => 'Ihre Kreditkarte ist nicht mehr gültig. Bitte verwenden Sie eine andere Karte oder nutzen Sie eine andere Zahlungsmethode.',
 	'globalcollect_gateway-response-430330' => 'Die Kreditkartennummer ist ungültig.',
-	'globalcollect_gateway-response-430421' => 'Deine Kreditkarte konnte nicht geprüft werden. Bitte stelle sicher, dass alle Informationen denen deiner Kreditkarte entsprechend oder verwende eine andere Karte.',
-	'globalcollect_gateway-response-430360' => 'Die Transaktion wurde nicht bestätigt. Bitte verwende eine andere Karte oder nutze eine andere Zahlungsmethode.',
-	'globalcollect_gateway-response-430285' => 'Die Transaktion wurde nicht bestätigt. Bitte verwende eine andere Karte oder nutze eine andere Zahlungsmethode.',
+	'globalcollect_gateway-response-430421' => 'Ihre Kreditkarte konnte nicht geprüft werden. Bitte stellen Sie sicher, dass alle Informationen denen Ihrer Kreditkarte entsprechend oder verwenden Sie eine andere Karte.',
+	'globalcollect_gateway-response-430360' => 'Die Transaktion wurde nicht bestätigt. Bitte verwenden Sie eine andere Karte oder nutzen Sie eine andere Zahlungsmethode.',
+	'globalcollect_gateway-response-430285' => 'Die Transaktion wurde nicht bestätigt. Bitte verwenden Sie eine andere Karte oder nutzen Sie eine andere Zahlungsmethode.',
 	'globalcollect_gateway-response-21000150' => 'Die Kontonummer ist ungültig.',
 	'globalcollect_gateway-response-21000155' => 'Die Bankleitzahl ist ungültig.',
 	'globalcollect_gateway-response-21000160' => 'Die Girokontonummer ist ungültig.',
 	'globalcollect_gateway-response-default' => 'Während des Ausführens der Transaktion ist ein Verarbeitungsfehler aufgetreten.
-Bitte versuche es später noch einmal.',
+Bitte versuchen Sie es später noch einmal.',
 );
 
 /** German (formal address) (‪Deutsch (Sie-Form)‬)
@@ -486,6 +486,28 @@ $messages['ms'] = array(
 Sila cuba sebentar lagi.',
 );
 
+/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+ * @author Jsoby
+ */
+$messages['nb'] = array(
+	'globalcollectgateway' => 'Doner nå',
+	'globalcollect_gateway-desc' => 'Betalingsprosessering med GlobalCollect',
+	'globalcollect_gateway-response-9130' => 'Ugyldig land.',
+	'globalcollect_gateway-response-9140' => 'Ugyldig valuta.',
+	'globalcollect_gateway-response-9150' => 'Ugyldig språk.',
+	'globalcollect_gateway-response-400530' => 'Ugylding betalingsmetode.',
+	'globalcollect_gateway-response-430306' => 'Kredittkortet ditt er utgått. Prøv et annet kort eller en av de andre betalingsmetodene våre.',
+	'globalcollect_gateway-response-430330' => 'Ugyldig kortnummer.',
+	'globalcollect_gateway-response-430421' => 'Kredittkortet ditt kunne ikke valideres. Sjekk at informasjonen du har oppgitt stemmer overens med det som står på kortet, eller prøv et annet kort.',
+	'globalcollect_gateway-response-430360' => 'Overføringen kunne ikke autoriseres. Prøv et annet kort eller en av de andre betalingsmåtene våre.',
+	'globalcollect_gateway-response-430285' => 'Overføringen kunne ikke autoriseres. Prøv et annet kort eller en av de andre betalingsmetodene våre.',
+	'globalcollect_gateway-response-21000150' => 'Ugyldig kontonummer.',
+	'globalcollect_gateway-response-21000155' => 'Ugyldig bankkode.',
+	'globalcollect_gateway-response-21000160' => 'Ugyldig girokontonummer.',
+	'globalcollect_gateway-response-default' => 'Det oppsto en feil under behandlingen av overføringen din.
+Prøv igjen senere.',
+);
+
 /** Dutch (Nederlands)
  * @author SPQRobin
  * @author Siebrand
@@ -507,28 +529,6 @@ $messages['nl'] = array(
 	'globalcollect_gateway-response-21000160' => 'Ongeldig girorekeningnummer.',
 	'globalcollect_gateway-response-default' => 'Er is een fout opgetreden bij het verwerken van uw transactie.
 Probeer het later alstublieft nog een keer.',
-);
-
-/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
- * @author Jsoby
- */
-$messages['no'] = array(
-	'globalcollectgateway' => 'Doner nå',
-	'globalcollect_gateway-desc' => 'Betalingsprosessering med GlobalCollect',
-	'globalcollect_gateway-response-9130' => 'Ugyldig land.',
-	'globalcollect_gateway-response-9140' => 'Ugyldig valuta.',
-	'globalcollect_gateway-response-9150' => 'Ugyldig språk.',
-	'globalcollect_gateway-response-400530' => 'Ugylding betalingsmetode.',
-	'globalcollect_gateway-response-430306' => 'Kredittkortet ditt er utgått. Prøv et annet kort eller en av de andre betalingsmetodene våre.',
-	'globalcollect_gateway-response-430330' => 'Ugyldig kortnummer.',
-	'globalcollect_gateway-response-430421' => 'Kredittkortet ditt kunne ikke valideres. Sjekk at informasjonen du har oppgitt stemmer overens med det som står på kortet, eller prøv et annet kort.',
-	'globalcollect_gateway-response-430360' => 'Overføringen kunne ikke autoriseres. Prøv et annet kort eller en av de andre betalingsmåtene våre.',
-	'globalcollect_gateway-response-430285' => 'Overføringen kunne ikke autoriseres. Prøv et annet kort eller en av de andre betalingsmetodene våre.',
-	'globalcollect_gateway-response-21000150' => 'Ugyldig kontonummer.',
-	'globalcollect_gateway-response-21000155' => 'Ugyldig bankkode.',
-	'globalcollect_gateway-response-21000160' => 'Ugyldig girokontonummer.',
-	'globalcollect_gateway-response-default' => 'Det oppsto en feil under behandlingen av overføringen din.
-Prøv igjen senere.',
 );
 
 /** Polish (Polski)

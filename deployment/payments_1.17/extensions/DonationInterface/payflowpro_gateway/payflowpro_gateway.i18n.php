@@ -417,22 +417,22 @@ Prøv venligst igen senere.',
 $messages['de'] = array(
 	'payflowprogateway' => 'Jetzt spenden',
 	'payflowpro_gateway-desc' => 'Ermöglicht die Spendenabwicklung per „Payflow Pro“ von PayPal oder per Kreditkarte',
-	'payflowpro_gateway-response-0' => 'Deine Transaktion wurde durchgeführt.
-Vielen Dank für deine Spende.',
-	'payflowpro_gateway-response-126' => 'Für deine Transaktion wird auf eine Freigabe gewartet.',
-	'payflowpro_gateway-response-126-2' => 'Einige Informationen stimmen nicht mit deinem Kreditkartenprofil überein oder die Spende ist zu hoch. Zu deiner eigenen Sicherheit befindet sich deine Spende unter Prüfung und wir informieren dich durch die angegebene E-Mail-Adresse, falls wir deine Spende nicht abschließen können. Bitte schicke uns bei Fragen eine E-Mail an <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Vielen Dank!',
-	'payflowpro_gateway-response-12' => 'Bitte nehme für weitere Informationen mit deinem Kreditinstitut Kontakt auf.',
-	'payflowpro_gateway-response-13' => 'Deine Transaktion benötigt eine manuelle Bearbeitung.
-Bitte nimm mit uns Kontakt auf, um deine Transaktion abzuschließen.',
-	'payflowpro_gateway-response-114' => 'Bitte nimm mit deinem kartenausgebenden Kreditinstitut Kontakt auf.',
-	'payflowpro_gateway-response-23' => 'Deine Kreditkartennummer oder das Ablaufdatum ist falsch.',
+	'payflowpro_gateway-response-0' => 'Ihre Transaktion wurde genehmigt.
+Vielen Dank für Ihre Spende.',
+	'payflowpro_gateway-response-126' => 'Es wird auf eine Freigabe Ihrer Transaktion gewartet.',
+	'payflowpro_gateway-response-126-2' => 'Einige Informationen stimmen nicht mit Ihrem Kreditkartenprofil überein oder die Spende ist zu hoch. Zu Ihrer eigenen Sicherheit wird Ihre Spende überprüft. Wir informieren Sie über die angegebene E-Mail-Adresse, sofern wir Ihre Spende nicht abschließen können. Bitte schicken Sie uns im Fall von Fragen eine E-Mail an <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Vielen Dank.',
+	'payflowpro_gateway-response-12' => 'Bitte nehmen Sie für weitere Informationen mit Ihrem Kreditinstitut Kontakt auf.',
+	'payflowpro_gateway-response-13' => 'Ihre Transaktion erfordert eine manuelle Bearbeitung.
+Bitte nehmen Sie mit uns Kontakt auf, um Ihre Transaktion abzuschließen.',
+	'payflowpro_gateway-response-114' => 'Bitte nehmen Sie mit dem Kreditinstitut Kontakt auf, das Ihre Karte ausgegeben hat.',
+	'payflowpro_gateway-response-23' => 'Ihre Kreditkartennummer oder das Ablaufdatum der Kreditkarte ist falsch.',
 	'payflowpro_gateway-response-4' => 'Ungültiger Betrag.',
-	'payflowpro_gateway-response-24' => 'Deine Kreditkartennummer oder das Ablaufdatum ist falsch.',
-	'payflowpro_gateway-response-112' => 'Deine Anschrift oder der Sicherheitscode (CVV) ist falsch.',
-	'payflowpro_gateway-response-125' => 'Deine Transaktion wurde durch den Betrugs-Vorbeuge-Service abgelehnt.',
-	'payflowpro_gateway-response-125-2' => 'Deine Kreditkarte kann nicht geprüft werden. Bitte bestätige, dass alle Informationen mit deinem Kreditkartenprofil übereinstimmen oder versuche es mit einer anderen Karte. Du kannst auch unsere <a href="http://wikimediafoundation.org/wiki/Donate/WaysToGive/de">anderen Spendemöglichkeiten</a> ausprobieren oder kontaktiere uns unter <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Vielen Dank.',
+	'payflowpro_gateway-response-24' => 'Ihre Kreditkartennummer oder das Ablaufdatum der Kreditkarte ist falsch.',
+	'payflowpro_gateway-response-112' => 'Ihre Anschrift oder der Sicherheitscode (CVV) ist falsch.',
+	'payflowpro_gateway-response-125' => 'Ihre Transaktion wurde durch den Betrugs-Vorbeuge-Service abgelehnt.',
+	'payflowpro_gateway-response-125-2' => 'Ihre Kreditkarte kann nicht geprüft werden. Bitte bestätigen Sie, dass alle Informationen mit Ihrem Kreditkartenprofil übereinstimmen oder versuchen Sie es mit einer anderen Karte. Sie können auch unsere <a href="http://wikimediafoundation.org/wiki/Ways_to_Give/en">anderen Spendemöglichkeiten</a> ausprobieren oder kontaktieren Sie uns unter der E_Mail-Adresse <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Vielen Dank.',
 	'payflowpro_gateway-response-default' => 'Während des Ausführens der Transaktion ist ein Verarbeitungsfehler aufgetreten.
-Bitte versuche es später noch einmal.',
+Bitte versuchen Sie es später noch einmal.',
 );
 
 /** German (formal address) (‪Deutsch (Sie-Form)‬)
@@ -984,6 +984,7 @@ $messages['io'] = array(
  */
 $messages['it'] = array(
 	'payflowprogateway' => 'Fai ora la tua donazione',
+	'payflowpro_gateway-desc' => 'Gestione carta di credito PayPal Payflow Pro',
 	'payflowpro_gateway-response-0' => 'La transazione è stata approvata.
 Grazie per la tua donazione!',
 	'payflowpro_gateway-response-126' => 'La transazione è in attesa di approvazione.',
@@ -1270,6 +1271,34 @@ Jekk jogħġbok ikkuntatjana sabiex tkompli t-transazzjoni tiegħek.',
 	'payflowpro_gateway-response-125' => 'It-transazzjoni tiegħek ġiet rifjutata mill-Fraud Prevention Services.',
 );
 
+/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+ * @author Finnrind
+ * @author Jon Harald Søby
+ * @author Laaknor
+ * @author Nghtwlkr
+ * @author Sjurhamre
+ */
+$messages['nb'] = array(
+	'payflowprogateway' => 'Gi nå',
+	'payflowpro_gateway-desc' => 'PayPal Payflow Pro kredittkortbehandling',
+	'payflowpro_gateway-response-0' => 'Transaksjonen din har blitt godkjent.
+Takk for din gave!',
+	'payflowpro_gateway-response-126' => 'Transaksjonen din venter på godkjenning.',
+	'payflowpro_gateway-response-126-2' => 'Noen av opplysningene du oppga passet ikke med kredittkortopplysningene, eller du ga en veldig stor gave. For din egen sikkerhet gjennomgås donasjonen din og vi vil varlse deg gjennom den oppgitte e-postadressen om vi ikke kan fullføre donasjonen din. Vennligst send en e-post til <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a> om du har noen spørsmål. Takk!',
+	'payflowpro_gateway-response-12' => 'Kontakt kredittkortselskapet ditt for mer informasjon.',
+	'payflowpro_gateway-response-13' => 'Transaksjonen din krever stemmeautorisasjon.
+Kontakt oss for å fortsette din transaksjon.',
+	'payflowpro_gateway-response-114' => 'Vennligst kontakt kredittkortselskapet ditt for mer informasjon.',
+	'payflowpro_gateway-response-23' => 'Ditt kredittkortnummer eller utløpsdato er ikke korrekt.',
+	'payflowpro_gateway-response-4' => 'Ugyldig beløp.',
+	'payflowpro_gateway-response-24' => 'Ditt kredittkortnummer eller utløpsdato er ikke korrekt.',
+	'payflowpro_gateway-response-112' => 'Din adresse eller CVV nummer (sikkerhetskode) er ikke korrekt.',
+	'payflowpro_gateway-response-125' => 'Din transaksjon har blitt avvist av Fraud Prevention Services.',
+	'payflowpro_gateway-response-125-2' => 'Kredittkortet ditt kunne i godkjennes. Vennligst sjekk at alle opplysningene stemmer overens med dine kredittkortopplysninger, eller prøv et annet kort. Du kan også bruke en av våre <a href="http://wikimediafoundation.org/wiki/Ways_to_Give/en">alternative måter</a> eller kontakt oss på <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Takk for din støtte.',
+	'payflowpro_gateway-response-default' => 'Det oppsto en feil under behandlingen av din transaksjon.
+Vennligst prøv igjen senere.',
+);
+
 /** Nedersaksisch (Nedersaksisch)
  * @author Krinkle
  * @author Servien
@@ -1344,34 +1373,6 @@ Takk for gåva di!',
 	'payflowpro_gateway-response-125' => 'Overføringa di har vorte avvist av tenesta som skal hindra svindel.',
 );
 
-/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
- * @author Finnrind
- * @author Jon Harald Søby
- * @author Laaknor
- * @author Nghtwlkr
- * @author Sjurhamre
- */
-$messages['no'] = array(
-	'payflowprogateway' => 'Gi nå',
-	'payflowpro_gateway-desc' => 'PayPal Payflow Pro kredittkortbehandling',
-	'payflowpro_gateway-response-0' => 'Transaksjonen din har blitt godkjent.
-Takk for din gave!',
-	'payflowpro_gateway-response-126' => 'Transaksjonen din venter på godkjenning.',
-	'payflowpro_gateway-response-126-2' => 'Noen av opplysningene du oppga passet ikke med kredittkortopplysningene, eller du ga en veldig stor gave. For din egen sikkerhet gjennomgås donasjonen din og vi vil varlse deg gjennom den oppgitte e-postadressen om vi ikke kan fullføre donasjonen din. Vennligst send en e-post til <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a> om du har noen spørsmål. Takk!',
-	'payflowpro_gateway-response-12' => 'Kontakt kredittkortselskapet ditt for mer informasjon.',
-	'payflowpro_gateway-response-13' => 'Transaksjonen din krever stemmeautorisasjon.
-Kontakt oss for å fortsette din transaksjon.',
-	'payflowpro_gateway-response-114' => 'Vennligst kontakt kredittkortselskapet ditt for mer informasjon.',
-	'payflowpro_gateway-response-23' => 'Ditt kredittkortnummer eller utløpsdato er ikke korrekt.',
-	'payflowpro_gateway-response-4' => 'Ugyldig beløp.',
-	'payflowpro_gateway-response-24' => 'Ditt kredittkortnummer eller utløpsdato er ikke korrekt.',
-	'payflowpro_gateway-response-112' => 'Din adresse eller CVV nummer (sikkerhetskode) er ikke korrekt.',
-	'payflowpro_gateway-response-125' => 'Din transaksjon har blitt avvist av Fraud Prevention Services.',
-	'payflowpro_gateway-response-125-2' => 'Kredittkortet ditt kunne i godkjennes. Vennligst sjekk at alle opplysningene stemmer overens med dine kredittkortopplysninger, eller prøv et annet kort. Du kan også bruke en av våre <a href="http://wikimediafoundation.org/wiki/Ways_to_Give/en">alternative måter</a> eller kontakt oss på <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Takk for din støtte.',
-	'payflowpro_gateway-response-default' => 'Det oppsto en feil under behandlingen av din transaksjon.
-Vennligst prøv igjen senere.',
-);
-
 /** Occitan (Occitan)
  * @author Boulaur
  * @author Cedric31
@@ -1395,6 +1396,13 @@ Contactatz-nos per perseguir vòstra transaccion.',
 	'payflowpro_gateway-response-125-2' => 'Vòstra carta bancària a pas pogut èsser validada. Verificatz que las informacions provesidas correspondon al perfil de vòstra carta bancària, o ensajatz amb una autra carta. Podètz tanben utilizar d\'<a href="http://wikimediafoundation.org/wiki/Ways_to_Give/en">autras solucions per far un don</a> o nos contactar a l\'adreça <a href="mailto:donate@wikimedia.org">donate@wikimedia.org</a>. Vos mercejam per vòstre sosten.',
 	'payflowpro_gateway-response-default' => "Una error s'es producha al moment del tractament de vòstra transaccion.
 Tornatz ensajar mai tard.",
+);
+
+/** Oriya (ଓଡ଼ିଆ)
+ * @author Ansumang
+ */
+$messages['or'] = array(
+	'payflowpro_gateway-response-4' => 'ଭୁଲ ପରିମାଣ ।',
 );
 
 /** Polish (Polski)
@@ -1731,6 +1739,21 @@ $messages['sr-ec'] = array(
 	'payflowpro_gateway-response-4' => 'Неисправан износ.',
 	'payflowpro_gateway-response-24' => 'Број ваше кредитне картице или датум истека је неисправан.',
 	'payflowpro_gateway-response-125' => 'Ваш пренос новца је одбијен од стране Службе за превенцију злоупотреба.',
+);
+
+/** Serbian (Latin script) (‪Srpski (latinica)‬) */
+$messages['sr-el'] = array(
+	'payflowprogateway' => 'Priložite novac',
+	'payflowpro_gateway-desc' => 'Obrađivanje kreditnih kartica preko Pejpala',
+	'payflowpro_gateway-response-0' => 'Vaš prenos novca je odobren.
+Hvala vam na podršci!',
+	'payflowpro_gateway-response-126' => 'Vaš prenos novca čeka na odobrenje.',
+	'payflowpro_gateway-response-12' => 'Obratite se kompaniji koja vam je izdala kreditnu karticu za više detalja.',
+	'payflowpro_gateway-response-114' => 'Obratite se kompaniji koja vam je izdala kreditnu karticu za više detalja.',
+	'payflowpro_gateway-response-23' => 'Broj vaše kreditne kartice ili datum isteka je neispravan.',
+	'payflowpro_gateway-response-4' => 'Neispravan iznos.',
+	'payflowpro_gateway-response-24' => 'Broj vaše kreditne kartice ili datum isteka je neispravan.',
+	'payflowpro_gateway-response-125' => 'Vaš prenos novca je odbijen od strane Službe za prevenciju zloupotreba.',
 );
 
 /** Swedish (Svenska)
