@@ -43,10 +43,22 @@ namespace wmib
             }
         }
 
+        /// <summary>
+        /// List of pages
+        /// </summary>
         private List<IWatch> pages = new List<IWatch>();
+        /// <summary>
+        /// Wiki
+        /// </summary>
         public static List<wiki> wikiinfo = new List<wiki>();
+        /// <summary>
+        /// Channels
+        /// </summary>
         private static List<string> channels;
         private static List<RecentChanges> rc = new List<RecentChanges>();
+        /// <summary>
+        /// Stream reader
+        /// </summary>
         private static StreamReader RD;
         private static string channeldata = variables.config + "/feed";
         public static StreamWriter WD;
@@ -69,6 +81,12 @@ namespace wmib
             rc.Add(this);
         }
 
+        /// <summary>
+        /// New channel to watch by a bot
+        /// </summary>
+        /// <param name="target">Object to send output to</param>
+        /// <param name="name">Name of wiki</param>
+        /// <returns></returns>
         public static bool InsertChannel(config.channel target, string name)
         {
             wiki web = null;
@@ -101,6 +119,12 @@ namespace wmib
             return true;
         }
 
+        /// <summary>
+        /// Remove
+        /// </summary>
+        /// <param name="target">Object to get output back to</param>
+        /// <param name="WikiName">Name of site</param>
+        /// <returns></returns>
         public static bool DeleteChannel(config.channel target, string WikiName)
         {
             wiki W = null;
@@ -133,6 +157,9 @@ namespace wmib
             return true;
         }
 
+        /// <summary>
+        /// Connect to wm irc
+        /// </summary>
         public static void Connect()
         {
             try
@@ -303,6 +330,7 @@ namespace wmib
             wikiinfo.Add(new wiki("#nl.wikipedia", "https://fr.wikipedia.org/w/index.php", "nl_wikipedia"));
             wikiinfo.Add(new wiki("#ja.wikipedia", "https://fr.wikipedia.org/w/index.php", "ja_wikipedia"));
             wikiinfo.Add(new wiki("#mediawiki.wikipedia", "https://www.mediawiki.org/w/index.php", "mediawiki"));
+            wikiinfo.Add(new wiki("#test.wikipedia", "https://test.wikipedia.org/w/index.php", "test_wikipedia"));
             return 0;
         }
 

@@ -1397,3 +1397,16 @@ namespace wmib
         }
     }
 }
+on xx)
+                {
+                    handleException(xx, channel);
+                }
+            }
+        }
+        public static int Disconnect()
+        {
+            wd.Flush();
+            return 0;
+        }
+    }
+}
