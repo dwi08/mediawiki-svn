@@ -284,15 +284,20 @@ namespace wmib
             /// </summary>
             /// <param name="user">Regex</param>
             /// <returns>bool</returns>
-            public bool delUser(string user)
+            public bool delUser(user trusted, string user)
             {
                 foreach (user u in Users)
                 {
                     if (u.name == user)
                     {
-                        if (u.level == "admin")
+                        if (getLevel("admin") > getLevel(trusted.level))
                         {
-                            Message("This user is admin which can't be deleted from db, sorry", _Channel);
+                            Message("This user has higher level than you, sorry", _Channel);
+                            return true;
+                        }
+                        if (u == trusted)
+                        {
+                            Message("You can't delete yourself from db", _Channel);
                             return true;
                         }
                         Users.Remove(u);
@@ -367,7 +372,7 @@ namespace wmib
                 string users_ok = "";
                 foreach (user b in Users)
                 {
-                    users_ok += " " + b.name + ",";
+                    users_ok += " " + b.name + " (16" + b.level + "1) " + ",";
                 }
                 Message("I trust: " + users_ok, _Channel);
             }
@@ -429,9 +434,14 @@ namespace wmib
         {
             while (true)
             {
-                Thread.Sleep(20000);
-                wd.WriteLine("PING :" + config.network);
-                wd.Flush();
+                try
+                {
+                    Thread.Sleep(20000);
+                    wd.WriteLine("PING :" + config.network);
+                    wd.Flush();
+                }
+                catch (Exception)
+                { }
             }
         }
 
@@ -588,7 +598,7 @@ namespace wmib
                         string x = rights_info[1];
                         if (channel.Users.isApproved(user, host, "trustdel"))
                         {
-                            channel.Users.delUser(rights_info[1]);
+                            channel.Users.delUser(channel.Users.getUser(user + "!@" + host), rights_info[1]);
                             return 0;
                         }
                         else
@@ -924,6 +934,25 @@ namespace wmib
                 return;
             }
 
+            if (message.StartsWith("@help"))
+            {
+                string parameter = "";
+                if (message.Contains(" "))
+                {
+                    parameter = message.Substring(message.IndexOf(" ") + 1);
+                }
+                if (parameter != "")
+                {
+                    ShowHelp(parameter, chan.name);
+                    return;
+                }
+                else
+                {
+                    SlowQueue.DeliverMessage ("Type @commands for list of commands. This bot is running http://meta.wikimedia.org/wiki/WM-Bot version " + config.version + " source code licensed under GPL and located in wikimedia svn", chan.name);
+                    return;
+                }
+            }
+
             if (message.StartsWith("@RC-"))
             {
                 if (chan.Users.isApproved(user, host, "trust"))
@@ -1079,7 +1108,7 @@ namespace wmib
             }
             if (message == "@commands")
             {
-                Message("Commands: channellist, trusted, trustadd, trustdel, infobot-off, refresh, infobot-on, drop, whoami, add, reload, RC-, recentchanges-on, recentchanges-off, logon, logoff, recentchanges-, recentchanges+, RC+", chan.name);
+                SlowQueue.DeliverMessage("Commands: channellist, trusted, trustadd, trustdel, infobot-off, refresh, infobot-on, drop, whoami, add, reload, help, RC-, recentchanges-on, recentchanges-off, logon, logoff, recentchanges-, recentchanges+, RC+", chan.name);
                 return;
             }
         }
@@ -1116,6 +1145,80 @@ namespace wmib
                 }
             }
 
+            return false;
+        }
+
+        private static void showInfo(string name, string info, string channel)
+        {
+            SlowQueue.DeliverMessage("Info for " + name + ": " + info, channel);
+        }
+
+        private static bool ShowHelp(string parameter, string channel)
+        {
+            switch (parameter.ToLower())
+            { 
+                case "trustdel":
+                    showInfo("trustdel", "Remove an entry from access list, example @trustdel regex", channel);
+                    return false;
+                case "refresh":
+                    showInfo("refresh", "Remove data from queue", channel);
+                    return false;
+                case "infobot-on":
+                    showInfo("infobot-on", "Turn on the infobot", channel);
+                    return false;
+                case "infobot-off":
+                    showInfo("infobot-off", "Turn off the infobot, preserve db", channel);
+                    return false;
+                case "channellist":
+                    showInfo("channellist", "Display the list of channels where bot should be used (only if it can join them)", channel);
+                    return false;
+                case "trusted":
+                    showInfo("trusted", "Display access list for this channel", channel);
+                    return false;
+                case "trustadd":
+                    showInfo("trustadd", "Make an entry to the access list, example @trustadd regex admin", channel);
+                    return false;
+                case "drop":
+                    showInfo("drop", "Remove bot from a channel together with all collected data", channel);
+                    return false;
+                case "part":
+                    showInfo("part", "Remove bot from a channel and preserve all config", channel);
+                    return false;
+                case "whoami":
+                    showInfo("whoami", "Display your current status in access list", channel);
+                    return false;
+                case "add":
+                    showInfo("add", "Insert bot to a specified channel and give you admin rights for that", channel);
+                    return false;
+                case "reload":
+                    showInfo("reload", "Read a config from disk", channel);
+                    return false;
+                case "logon":
+                    showInfo("logon", "Start logging to a file", channel);
+                    return false;
+                case "logoff":
+                    showInfo("logoff", "Disable logging", channel);
+                    return false;
+                case "recentchanges-on":
+                    showInfo("recentchanges-on", "Turn on a feed of changes on wmf wikis", channel);
+                    return false;
+                case "recentchanges-off":
+                    showInfo("recentchanges-off", "Turn off the wiki feed", channel);
+                    return false;
+                case "recentchanges-":
+                    showInfo("recentchanges-", "Remove a wiki from a feed, example @recentchanges- en_wikipedia", channel);
+                    return false;
+                case "recentchanges+":
+                    showInfo("recentchanges+", "Insert a wiki to feed, example @recentchanges+ en_wikipedia", channel);
+                    return false;
+                case "RC-":
+                    showInfo("RC-", "Remove a page from rc list", channel);
+                    return false;
+                case "RC+":
+                    showInfo("RC+", "Create entry for feed of specified page, example @RC+ wiki page", channel);
+                    return false;
+            }
+            SlowQueue.DeliverMessage("Unknown command type @commands for a list of all commands I know", channel);
             return false;
         }
 
@@ -1204,97 +1307,6 @@ namespace wmib
 
                             }
                             else
-                            {
-                                if (text.Contains("PRIVMSG"))
-                                {
-                                    string info = text.Substring(1, text.IndexOf(" :", 1) - 1);
-                                    string info_host;
-                                    // we got a message here :)
-                                    if (text.Contains("!") && text.Contains("@"))
-                                    {
-                                        nick = info.Substring(0, info.IndexOf("!"));
-                                        host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
-                                    }
-                                    info_host = info.Substring(info.IndexOf("PRIVMSG "));
-
-                                    if (info_host.Contains("#"))
-                                    {
-                                        channel = info_host.Substring(info_host.IndexOf("#"));
-                                        message = text.Replace(info, "");
-                                        message = message.Substring(message.IndexOf(" :") + 2);
-                                        if (message.Contains(delimiter.ToString() + "ACTION"))
-                                        {
-                                            getAction(message.Replace(delimiter.ToString() + "ACTION", ""), channel, host, nick);
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            getMessage(channel, nick, host, message);
-                                            continue;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        message = text.Substring(text.IndexOf("PRIVMSG"));
-                                        message = message.Substring(message.IndexOf(":"));
-                                        // private message
-                                        if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" + " I am a bot don't finger me");
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " + System.DateTime.Now.ToString());
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "PING"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" + message.Substring(message.IndexOf(delimiter.ToString() + "PING") + 5));
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " + config.version);
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                    }
-                                }
-                                if (text.Contains("PING "))
-                                {
-                                    wd.WriteLine("PONG " + text.Substring(text.IndexOf("PING ") + 5));
-                                    wd.Flush();
-                                }
-                            }
-                        }
-                        Thread.Sleep(50);
-                    }
-                    Program.Log("Reconnecting, end of data stream");
-                    Reconnect();
-                }
-                catch (System.IO.IOException xx)
-                {
-                    Program.Log("Reconnecting, connection failed " + xx.Message + xx.StackTrace);
-                    Reconnect();
-                }
-                catch (Exception xx)
-                {
-                    handleException(xx, channel);
-                }
-            }
-        }
-        public static int Disconnect()
-        {
-            wd.Flush();
-            return 0;
-        }
-    }
-}
-                     else
                             {
                                 if (text.Contains("PRIVMSG"))
                                 {
