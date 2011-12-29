@@ -290,12 +290,12 @@ namespace wmib
                 {
                     if (u.name == user)
                     {
-                        if (getLevel("admin") > getLevel(trusted.level))
+                        if (getLevel(u.level) > getLevel(trusted.level))
                         {
                             Message("This user has higher level than you, sorry", _Channel);
                             return true;
                         }
-                        if (u == trusted)
+                        if (u.name == trusted.name)
                         {
                             Message("You can't delete yourself from db", _Channel);
                             return true;
@@ -317,13 +317,15 @@ namespace wmib
             /// <returns>0</returns>
             private int getLevel(string level)
             {
-                if (level == "admin")
+                switch (level)
                 {
-                    return 10;
-                }
-                if (level == "trusted")
-                {
-                    return 2;
+                    // root is special only for global admins etc
+                    case "root":
+                        return 65534;
+                    case "admin":
+                        return 10;
+                    case "trusted":
+                        return 2;
                 }
                 return 0;
             }
@@ -385,6 +387,10 @@ namespace wmib
             /// <returns></returns>
             public bool matchLevel(int level, string rights)
             {
+                if (rights == "root")
+                {
+                    return true;
+                }
                 if (level == 2)
                 {
                     return (rights == "admin");
@@ -401,7 +407,7 @@ namespace wmib
             /// </summary>
             /// <param name="User">Username</param>
             /// <param name="Host">Hostname</param>
-            /// <param name="command"></param>
+            /// <param name="command">Approved for specified object / request</param>
             /// <returns></returns>
             public bool isApproved(string User, string Host, string command)
             {
@@ -418,8 +424,11 @@ namespace wmib
                     case "info":
                     case "trustadd":
                     case "trustdel":
+                    case "recentchanges":
                         return matchLevel(1, current.level);
                     case "admin":
+                    case "infobot-manage":
+                    case "recentchanges-manage":
                     case "shutdown":
                         return matchLevel(2, current.level);
                 }
@@ -757,12 +766,16 @@ namespace wmib
                         }
                         catch (Exception)
                         { }
-                        File.Delete(variables.config + "/" + chan.name + ".setting");
-                        File.Delete(variables.config + "/" + chan.Users.File);
-                        if (File.Exists(variables.config + "/" + chan.name + ".list"))
+                        try
                         {
-                            File.Delete(variables.config + "/" + chan.name + ".list");
+                            File.Delete(variables.config + "/" + chan.name + ".setting");
+                            File.Delete(chan.Users.File);
+                            if (File.Exists(variables.config + "/" + chan.name + ".list"))
+                            {
+                                File.Delete(variables.config + "/" + chan.name + ".list");
+                            }
                         }
+                        catch (Exception)    { }
                         config.channels.Remove(chan);
                         config.Save();
                         return;
@@ -795,10 +808,10 @@ namespace wmib
         /// <summary>
         /// Display admin command
         /// </summary>
-        /// <param name="chan"></param>
-        /// <param name="user"></param>
-        /// <param name="host"></param>
-        /// <param name="message"></param>
+        /// <param name="chan">Channel</param>
+        /// <param name="user">User name</param>
+        /// <param name="host">Host</param>
+        /// <param name="message">Message</param>
         public static void admin(config.channel chan, string user, string host, string message)
         {
             if (message == "@reload")
@@ -831,7 +844,7 @@ namespace wmib
 
             if (message == "@recentchanges-on")
             {
-                if (chan.Users.isApproved(user, host, "admin"))
+                if (chan.Users.isApproved(user, host, "recentchanges-manage"))
                 {
                     if (chan.feed)
                     {
@@ -853,7 +866,7 @@ namespace wmib
 
             if (message.StartsWith("@recentchanges+"))
             {
-                if (chan.Users.isApproved(user, host, "admin"))
+                if (chan.Users.isApproved(user, host, "recentchanges-manage"))
                 {
                     if (chan.feed)
                     {
@@ -1211,10 +1224,10 @@ namespace wmib
                 case "recentchanges+":
                     showInfo("recentchanges+", "Insert a wiki to feed, example @recentchanges+ en_wikipedia", channel);
                     return false;
-                case "RC-":
+                case "rc-":
                     showInfo("RC-", "Remove a page from rc list", channel);
                     return false;
-                case "RC+":
+                case "rc+":
                     showInfo("RC+", "Create entry for feed of specified page, example @RC+ wiki page", channel);
                     return false;
             }
@@ -1385,19 +1398,6 @@ namespace wmib
                     Reconnect();
                 }
                 catch (Exception xx)
-                {
-                    handleException(xx, channel);
-                }
-            }
-        }
-        public static int Disconnect()
-        {
-            wd.Flush();
-            return 0;
-        }
-    }
-}
-on xx)
                 {
                     handleException(xx, channel);
                 }
