@@ -736,6 +736,7 @@ namespace wmib
                     {
                         wd.WriteLine("PART " + chan.name);
                         Thread.Sleep(100);
+                        chan.feed = false;
                         wd.Flush();
                         try
                         {
@@ -764,6 +765,7 @@ namespace wmib
                     if (chan.Users.isApproved(user, host, "admin"))
                     {
                         wd.WriteLine("PART " + chan.name);
+                        chan.feed = false;
                         Thread.Sleep(100);
                         wd.Flush();
                         config.channels.Remove(chan);

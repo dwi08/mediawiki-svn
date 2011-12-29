@@ -1,5 +1,16 @@
-﻿using System;
+﻿//This program is free software: you can redistribute it and/or modify
+//it under the terms of the GNU General Public License as published by
+//the Free Software Foundation, either version 3 of the License, or
+//(at your option) any later version.
+
+//This program is distributed in the hope that it will be useful,
+//but WITHOUT ANY WARRANTY; without even the implied warranty of
+//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//GNU General Public License for more details.
+
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Text;
 using System.IO;
 
@@ -43,6 +54,14 @@ namespace wmib
         public static System.Text.RegularExpressions.Regex line = new System.Text.RegularExpressions.Regex(":rc-pmtpa!~rc-pmtpa@[^ ]* PRIVMSG #[^:]*:14\\[\\[07([^]*)14\\]\\]4 (M?)(B?)10 02.*di" +
                                                                                                             "ff=([^&]*)&oldid=([^]*) 5\\* 03([^]*) 5\\* \\(?([^]*)?\\) 10([^]*)?");
         public config.channel channel;
+
+        ~RecentChanges()
+        {
+            try {
+        	rc.Remove(this);
+            } catch (Exception) {}
+        }
+
         public RecentChanges(config.channel _channel)
         {
             channel = _channel;
@@ -179,19 +198,25 @@ namespace wmib
             string content = "";
             foreach (IWatch values in pages)
             {
-                content = content + values.URL.name + "|" + values.Page.Replace("|", "<separator>") + "|" + values.Channel;
+                content = content + values.URL.name + "|" + values.Page.Replace("|", "<separator>") + "|" + values.Channel + "\n";
             }
             File.WriteAllText(dbn, content);
         }
 
         private static void Pong()
         {
-            while (true)
+            try {
+                while (true)
+                {
+                    WD.WriteLine("PING irc.wikimedia.org");
+                    WD.Flush();
+                    System.Threading.Thread.Sleep(12000);
+                }
+            } catch ( System.IO.IOException )
             {
-                WD.WriteLine("PING irc.wikimedia.org");
-                WD.Flush();
-                System.Threading.Thread.Sleep(10000);
+                Thread.Abort();
             }
+            catch (Exception) { }
         }
 
         public bool removeString(string WS, string Page)
@@ -205,7 +230,6 @@ namespace wmib
                     site = Site;
                 }
             }
-            
             if (site != null)
             {
                 if (channels.Contains(site.channel))
