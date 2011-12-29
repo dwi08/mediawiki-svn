@@ -1294,3 +1294,94 @@ namespace wmib
         }
     }
 }
+                     else
+                            {
+                                if (text.Contains("PRIVMSG"))
+                                {
+                                    string info = text.Substring(1, text.IndexOf(" :", 1) - 1);
+                                    string info_host;
+                                    // we got a message here :)
+                                    if (text.Contains("!") && text.Contains("@"))
+                                    {
+                                        nick = info.Substring(0, info.IndexOf("!"));
+                                        host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
+                                    }
+                                    info_host = info.Substring(info.IndexOf("PRIVMSG "));
+
+                                    if (info_host.Contains("#"))
+                                    {
+                                        channel = info_host.Substring(info_host.IndexOf("#"));
+                                        message = text.Replace(info, "");
+                                        message = message.Substring(message.IndexOf(" :") + 2);
+                                        if (message.Contains(delimiter.ToString() + "ACTION"))
+                                        {
+                                            getAction(message.Replace(delimiter.ToString() + "ACTION", ""), channel, host, nick);
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            getMessage(channel, nick, host, message);
+                                            continue;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        message = text.Substring(text.IndexOf("PRIVMSG"));
+                                        message = message.Substring(message.IndexOf(":"));
+                                        // private message
+                                        if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" + " I am a bot don't finger me");
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                        if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " + System.DateTime.Now.ToString());
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                        if (message.StartsWith(":" + delimiter.ToString() + "PING"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" + message.Substring(message.IndexOf(delimiter.ToString() + "PING") + 5));
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                        if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
+                                        {
+                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " + config.version);
+                                            wd.Flush();
+                                            continue;
+                                        }
+                                    }
+                                }
+                                if (text.Contains("PING "))
+                                {
+                                    wd.WriteLine("PONG " + text.Substring(text.IndexOf("PING ") + 5));
+                                    wd.Flush();
+                                }
+                            }
+                        }
+                        Thread.Sleep(50);
+                    }
+                    Program.Log("Reconnecting, end of data stream");
+                    Reconnect();
+                }
+                catch (System.IO.IOException xx)
+                {
+                    Program.Log("Reconnecting, connection failed " + xx.Message + xx.StackTrace);
+                    Reconnect();
+                }
+                catch (Exception xx)
+                {
+                    handleException(xx, channel);
+                }
+            }
+        }
+        public static int Disconnect()
+        {
+            wd.Flush();
+            return 0;
+        }
+    }
+}

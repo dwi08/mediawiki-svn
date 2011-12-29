@@ -8,7 +8,7 @@
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
 
-// Created by Petr Bena benapetr@gmail.com
+// Created by Petr Bena <benapetr@gmail.com>
 
 using System;
 using System.Collections.Generic;
@@ -22,13 +22,14 @@ namespace wmib
     {
         public static bool Log(string msg)
         {
-            Console.WriteLine("LOG: " + msg);
+            Console.WriteLine("LOG [" + DateTime.Now.ToShortTimeString() + "]: " + msg);
             return false;
         }
         private static void Main(string[] args)
         {
-            Log("Connecting");
+            Log("Loading...");
             config.Load();
+            Log("Connecting");
             irc.Connect();
         }
     }

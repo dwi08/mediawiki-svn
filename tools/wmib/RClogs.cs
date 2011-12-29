@@ -58,7 +58,7 @@ namespace wmib
         ~RecentChanges()
         {
             try {
-        	rc.Remove(this);
+        	    rc.Remove(this);
             } catch (Exception) {}
         }
 
@@ -135,19 +135,26 @@ namespace wmib
 
         public static void Connect()
         {
-            stream = new System.Net.Sockets.TcpClient("irc.wikimedia.org", 6667).GetStream();
-            WD = new StreamWriter(stream);
-            RD = new StreamReader(stream, System.Text.Encoding.UTF8);
-            System.Threading.Thread pinger = new System.Threading.Thread(Pong);
-            WD.WriteLine("USER " + "wm-bot" + " 8 * :" + "wm-bot");
-            WD.WriteLine("NICK " + "wm-bot" + System.DateTime.Now.ToShortDateString().Replace("/", "").Replace(":", "").Replace("\\", "").Replace(".", ""));
-            WD.Flush();
-            pinger.Start();
-            foreach (string b in channels)
+            try
             {
-                System.Threading.Thread.Sleep(800);
-                WD.WriteLine("JOIN " + b);
+                stream = new System.Net.Sockets.TcpClient("irc.wikimedia.org", 6667).GetStream();
+                WD = new StreamWriter(stream);
+                RD = new StreamReader(stream, System.Text.Encoding.UTF8);
+                System.Threading.Thread pinger = new System.Threading.Thread(Pong);
+                WD.WriteLine("USER " + "wm-bot" + " 8 * :" + "wm-bot");
+                WD.WriteLine("NICK " + "wm-bot" + System.DateTime.Now.ToShortDateString().Replace("/", "").Replace(":", "").Replace("\\", "").Replace(".", ""));
                 WD.Flush();
+                pinger.Start();
+                foreach (string b in channels)
+                {
+                    System.Threading.Thread.Sleep(800);
+                    WD.WriteLine("JOIN " + b);
+                    WD.Flush();
+                }
+            }
+            catch (Exception)
+            { 
+            
             }
         }
 
@@ -214,7 +221,7 @@ namespace wmib
                 }
             } catch ( System.IO.IOException )
             {
-                Thread.Abort();
+                Thread.CurrentThread.Abort();
             }
             catch (Exception) { }
         }
