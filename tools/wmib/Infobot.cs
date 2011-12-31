@@ -351,10 +351,12 @@ namespace wmib
         {
             Regex value = new Regex(search_key, RegexOptions.Compiled);
             string results = "";
+            int count = 0;
             foreach (item data in text)
             {
                 if (data.key == search_key || value.Match(data.text).Success)
                 {
+                    count++;
                     results = results + data.key + ", ";
                 }
             }
@@ -364,7 +366,7 @@ namespace wmib
             }
             else
             {
-                irc.SlowQueue.DeliverMessage("Results: " + results, Channel);
+                irc.SlowQueue.DeliverMessage("Results (found " + count.ToString() + "): " + results, Channel);
             }
             running = false;
         }
@@ -421,12 +423,14 @@ namespace wmib
                 return;
             }
             key = key.Substring(8);
+            int count = 0;
             string results = "";
             foreach (item data in text)
             {
                 if (data.key == key || data.text.Contains(key))
                 {
                     results = results + data.key + ", ";
+                    count++;
                 }
             }
             if (results == "")
@@ -435,7 +439,7 @@ namespace wmib
             }
             else
             {
-                irc.SlowQueue.DeliverMessage("Results: " + results, Chan.name);
+                irc.SlowQueue.DeliverMessage("Results (found " + count.ToString() + "): " + results, Chan.name);
             }
         }
 
