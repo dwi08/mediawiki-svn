@@ -460,7 +460,7 @@ namespace wmib
                                     }
                                 }
                             }
-                            Thread.Sleep(100);
+                            Thread.Sleep(10);
                         }
                         Thread.Sleep(100);
                     }
@@ -473,7 +473,6 @@ namespace wmib
                         Console.WriteLine(x.Message);
                     }
                 }
-
             }
             catch (Exception x)
             {

@@ -400,8 +400,8 @@ namespace wmib
             while (running)
             {
                 check++;
-                Thread.Sleep(10);
-                if (check > 80)
+                Thread.Sleep(100);
+                if (check > 8)
                 {
                     th.Abort();
                     irc.Message("Search took more than 800ms try a better regex", Channel);

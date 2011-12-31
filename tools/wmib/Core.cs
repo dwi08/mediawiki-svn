@@ -496,11 +496,15 @@ namespace wmib
         /// <param name="chan">Channel name</param>
         public static void handleException(Exception ex, string chan = "")
         {
-            if (config.debugchan != null)
+            try
             {
-                SlowQueue.DeliverMessage("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", config.debugchan);
-            }
-            Program.Log(ex.Message + ex.Source + ex.StackTrace);
+                if (config.debugchan != null)
+                {
+                  SlowQueue.DeliverMessage("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", config.debugchan);
+                }
+                Program.Log(ex.Message + ex.Source + ex.StackTrace);
+            } catch (Exception) // exception happened while we tried to handle another one, ignore that (probably issue with logging)
+            {  }
         }
 
         /// <summary>
