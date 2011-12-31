@@ -226,11 +226,13 @@ namespace wmib
         }
 
         public static string text;
+
         /// <summary>
         /// Network
         /// </summary>
 
         public static string network = "irc.freenode.net";
+
         /// <summary>
         /// Nick name
         /// </summary>

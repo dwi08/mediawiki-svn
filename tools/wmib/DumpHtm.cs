@@ -8,8 +8,6 @@
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
 
-
-
 using System;
 using System.IO;
 using System.Threading;
@@ -22,10 +20,12 @@ namespace wmib
         /// Channel name
         /// </summary>
         public config.channel Channel;
+
         /// <summary>
         /// Dump
         /// </summary>
         public string dumpname;
+
         // This function is called on start of bot
         public static void Start()
         {
@@ -43,6 +43,7 @@ namespace wmib
                 Thread.Sleep(320000);
             }
         }
+
         /// <summary>
         /// Constructor
         /// </summary>

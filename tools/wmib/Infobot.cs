@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Text;
 
 namespace wmib
 {
@@ -38,6 +37,7 @@ namespace wmib
             /// Text
             /// </summary>
             public string text;
+
             /// <summary>
             /// Key
             /// </summary>
@@ -62,16 +62,19 @@ namespace wmib
                 user = User;
             }
         }
+
         public class staticalias
         {
             /// <summary>
             /// Name
             /// </summary>
             public string Name;
+
             /// <summary>
             /// Key
             /// </summary>
             public string Key;
+
             /// <summary>
             /// Constructor
             /// </summary>
@@ -160,11 +163,14 @@ namespace wmib
                 File.WriteAllText(datafile, "");
                 foreach (staticalias key in Alias)
                 {
-                    File.AppendAllText(datafile, key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
+                    File.AppendAllText(datafile,
+                                       key.Name + config.separator + key.Key + config.separator + "alias" + "\n");
                 }
                 foreach (item key in text)
                 {
-                    File.AppendAllText(datafile, key.key + config.separator + key.text + config.separator + "key" + config.separator + key.locked + config.separator + key.user + "\n");
+                    File.AppendAllText(datafile,
+                                       key.key + config.separator + key.text + config.separator + "key" +
+                                       config.separator + key.locked + config.separator + key.user + "\n");
                 }
             }
             catch (Exception b)
@@ -262,10 +268,7 @@ namespace wmib
                         }
                         return false;
                     }
-                    else
-                    {
-                        irc.Message("You are not autorized to perform this, sorry", Channel);
-                    }
+                    irc.Message("You are not autorized to perform this, sorry", Channel);
                     return false;
                 }
                 if (parm[1] == "del")

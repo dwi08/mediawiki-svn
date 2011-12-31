@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Text;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace wmib
 {
@@ -23,6 +23,7 @@ namespace wmib
             public string Channel;
             public string Page;
             public wiki URL;
+
             public IWatch(wiki site, string page, string channel)
             {
                 Channel = channel;
@@ -30,11 +31,13 @@ namespace wmib
                 URL = site;
             }
         }
+
         public class wiki
         {
             public string name;
             public string channel;
             public string url;
+
             public wiki(string _channel, string _url, string _name)
             {
                 url = _url;
@@ -47,31 +50,43 @@ namespace wmib
         /// List of pages
         /// </summary>
         private List<IWatch> pages = new List<IWatch>();
+
         /// <summary>
         /// Wiki
         /// </summary>
         public static List<wiki> wikiinfo = new List<wiki>();
+
         /// <summary>
         /// Channels
         /// </summary>
         private static List<string> channels;
+
         private static List<RecentChanges> rc = new List<RecentChanges>();
+
         /// <summary>
         /// Stream reader
         /// </summary>
         private static StreamReader RD;
+
         private static string channeldata = variables.config + "/feed";
         public static StreamWriter WD;
         public static System.Net.Sockets.NetworkStream stream;
-        public static System.Text.RegularExpressions.Regex line = new System.Text.RegularExpressions.Regex(":rc-pmtpa!~rc-pmtpa@[^ ]* PRIVMSG #[^:]*:14\\[\\[07([^]*)14\\]\\]4 (M?)(B?)10 02.*di" +
-                                                                                                            "ff=([^&]*)&oldid=([^]*) 5\\* 03([^]*) 5\\* \\(?([^]*)?\\) 10([^]*)?");
+
+        public static Regex line =
+            new Regex(":rc-pmtpa!~rc-pmtpa@[^ ]* PRIVMSG #[^:]*:14\\[\\[07([^]*)14\\]\\]4 (M?)(B?)10 02.*di" +
+                      "ff=([^&]*)&oldid=([^]*) 5\\* 03([^]*) 5\\* \\(?([^]*)?\\) 10([^]*)?");
+
         public config.channel channel;
 
         ~RecentChanges()
         {
-            try {
-        	    rc.Remove(this);
-            } catch (Exception) {}
+            try
+            {
+                rc.Remove(this);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public RecentChanges(config.channel _channel)
@@ -111,10 +126,10 @@ namespace wmib
             channels.Add(web.channel);
             WD.WriteLine("JOIN " + web.channel);
             WD.Flush();
-            System.IO.File.WriteAllText(channeldata, "");
+            File.WriteAllText(channeldata, "");
             foreach (string x in channels)
             {
-                System.IO.File.AppendAllText(channeldata, x + "\n");
+                File.AppendAllText(channeldata, x + "\n");
             }
             return true;
         }
@@ -149,10 +164,10 @@ namespace wmib
             channels.Remove(W.channel);
             WD.WriteLine("PART " + W.channel);
             WD.Flush();
-            System.IO.File.WriteAllText(channeldata, "");
+            File.WriteAllText(channeldata, "");
             foreach (string x in channels)
             {
-                System.IO.File.AppendAllText(channeldata, x + "\n");
+                File.AppendAllText(channeldata, x + "\n");
             }
             return true;
         }
@@ -167,9 +182,11 @@ namespace wmib
                 stream = new System.Net.Sockets.TcpClient("irc.wikimedia.org", 6667).GetStream();
                 WD = new StreamWriter(stream);
                 RD = new StreamReader(stream, System.Text.Encoding.UTF8);
-                System.Threading.Thread pinger = new System.Threading.Thread(Pong);
+                Thread pinger = new Thread(Pong);
                 WD.WriteLine("USER " + "wm-bot" + " 8 * :" + "wm-bot");
-                WD.WriteLine("NICK " + "wm-bot" + System.DateTime.Now.ToShortDateString().Replace("/", "").Replace(":", "").Replace("\\", "").Replace(".", ""));
+                WD.WriteLine("NICK " + "wm-bot" +
+                             System.DateTime.Now.ToShortDateString().Replace("/", "").Replace(":", "").Replace("\\", "")
+                                 .Replace(".", ""));
                 WD.Flush();
                 pinger.Start();
                 foreach (string b in channels)
@@ -180,8 +197,8 @@ namespace wmib
                 }
             }
             catch (Exception)
-            { 
-            
+            {
+
             }
         }
 
@@ -232,25 +249,30 @@ namespace wmib
             string content = "";
             foreach (IWatch values in pages)
             {
-                content = content + values.URL.name + "|" + values.Page.Replace("|", "<separator>") + "|" + values.Channel + "\n";
+                content = content + values.URL.name + "|" + values.Page.Replace("|", "<separator>") + "|" +
+                          values.Channel + "\n";
             }
             File.WriteAllText(dbn, content);
         }
 
         private static void Pong()
         {
-            try {
+            try
+            {
                 while (true)
                 {
                     WD.WriteLine("PING irc.wikimedia.org");
                     WD.Flush();
-                    System.Threading.Thread.Sleep(12000);
+                    Thread.Sleep(12000);
                 }
-            } catch ( System.IO.IOException )
+            }
+            catch (IOException)
             {
                 Thread.CurrentThread.Abort();
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
         }
 
         public bool removeString(string WS, string Page)
@@ -287,10 +309,13 @@ namespace wmib
                     irc.SlowQueue.DeliverMessage("Can't find item in a list", channel.name);
                     return true;
                 }
-                irc.SlowQueue.DeliverMessage("Unable to delete the string because the channel is not being watched now", channel.name);
+                irc.SlowQueue.DeliverMessage(
+                    "Unable to delete the string because the channel is not being watched now", channel.name);
                 return false;
             }
-            irc.SlowQueue.DeliverMessage("Unable to delete the string from the list because there is no such wiki site known by a bot", channel.name);
+            irc.SlowQueue.DeliverMessage(
+                "Unable to delete the string from the list because there is no such wiki site known by a bot",
+                channel.name);
             return false;
         }
 
@@ -360,7 +385,8 @@ namespace wmib
                     }
                     if (pages.Contains(currpage))
                     {
-                        irc.SlowQueue.DeliverMessage("There is already this string in a list of watched items", channel.name);
+                        irc.SlowQueue.DeliverMessage("There is already this string in a list of watched items",
+                                                     channel.name);
                         return true;
                     }
                     pages.Add(new IWatch(site, Page, site.channel));
@@ -368,10 +394,13 @@ namespace wmib
                     Save();
                     return true;
                 }
-                irc.SlowQueue.DeliverMessage("Unable to insert the string because the channel is not being watched now", channel.name);
+                irc.SlowQueue.DeliverMessage(
+                    "Unable to insert the string because the channel is not being watched now", channel.name);
                 return false;
             }
-            irc.SlowQueue.DeliverMessage("Unable to insert the string to the list because there is no such wiki site known by a bot, contact some developer with svn access in order to insert it", channel.name);
+            irc.SlowQueue.DeliverMessage(
+                "Unable to insert the string to the list because there is no such wiki site known by a bot, contact some developer with svn access in order to insert it",
+                channel.name);
             return false;
         }
 
@@ -398,7 +427,7 @@ namespace wmib
                         while (!RD.EndOfStream)
                         {
                             message = RD.ReadLine();
-                            System.Text.RegularExpressions.Match Edit = line.Match(message);
+                            Match Edit = line.Match(message);
                             if (line.IsMatch(message))
                             {
                                 string _channel = message.Substring(message.IndexOf("PRIVMSG"));
@@ -422,17 +451,20 @@ namespace wmib
                                         {
                                             if (w.Channel == _channel && page == w.Page)
                                             {
-                                                irc.SlowQueue.DeliverMessage("Change on 12" + w.URL.name + "1 a page " + page + " was modified, summary: " + summary + " changed by " + username + " link " + w.URL.url + "?diff=" + link, curr.channel.name);
+                                                irc.SlowQueue.DeliverMessage(
+                                                    "Change on 12" + w.URL.name + "1 a page " + page +
+                                                    " was modified, summary: " + summary + " changed by " + username +
+                                                    " link " + w.URL.url + "?diff=" + link, curr.channel.name);
                                             }
                                         }
                                     }
                                 }
                             }
-                            System.Threading.Thread.Sleep(100);
+                            Thread.Sleep(100);
                         }
-                        System.Threading.Thread.Sleep(100);
+                        Thread.Sleep(100);
                     }
-                    catch (System.IO.IOException)
+                    catch (IOException)
                     {
                         Connect();
                     }
