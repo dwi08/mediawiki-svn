@@ -23,22 +23,13 @@
  */
 package org.wikimedia.lsearch.config;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Inet4Address;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Properties;
-import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
@@ -54,16 +45,22 @@ import org.apache.log4j.helpers.LogLog;
  */
 public class Configuration {
 	private static Configuration instance;
-	private static String configfile = null; 
+	private static String configFile = null; 
 	private static String globalConfigUrl = null;
 	private static boolean verbose = true; // print info and error messages
 	
 	protected final String CONF_FILE_NAME = "lsearch.conf";
+	protected final String TEST_CONF_FILE_NAME = "lsearch.conf.test";
+	
+	/* os independent path component */
+	private final static String ETC_FOLDER = System.getProperty("file.separator") + "etc";
+	private final static String TEST_DATA_FOLDER = System.getProperty("file.separator") + "test-data";
+	
 	
 	public static final String PATH_SEP = System.getProperty("file.separator");
 	
 	public static void setConfigFile(String file) {
-		configfile = file;
+		configFile = file;
 	}
 	
 	/** Returns an instance of Configuration singleton class */
@@ -72,24 +69,29 @@ public class Configuration {
 			instance = new Configuration();
 		return instance;
 	}
+	
 	private Configuration() {
-		if (configfile == null) {
+				
+		if (configFile == null) {
 			String home = System.getProperty("user.home"); 			
 			String [] paths;
-			String filename = System.getProperty("file.separator")+CONF_FILE_NAME;
+			String filename = System.getProperty("file.separator") + CONF_FILE_NAME;
+			String testFilename = System.getProperty("file.separator") + TEST_CONF_FILE_NAME;
 			if (home == null) {
 				paths = new String[] {
-					System.getProperty("user.dir")+filename,
-					"/etc"+filename };
+					System.getProperty("user.dir") + filename,
+					ETC_FOLDER+filename };
 			} else {	
 				paths = new String[] {
-					home+System.getProperty("file.separator")+"."+CONF_FILE_NAME,
-					System.getProperty("user.dir")+filename,					
-					"/etc"+filename };
+					home+System.getProperty("file.separator")+ "."  + CONF_FILE_NAME,	//home
+					System.getProperty("user.dir") + filename,							//where invoked
+					ETC_FOLDER+filename, 												//in etc
+					System.getProperty("user.dir") +TEST_DATA_FOLDER + testFilename 										//in test-data
+				};
 			}
-			openProps(paths);
+			openPropertieFile(paths);
 		} else {
-			openProps(new String[] { configfile });
+			openPropertieFile(new String[] { configFile });
 		}
 		
 		if (getBoolean("Logging", "debug")) {
@@ -130,17 +132,24 @@ public class Configuration {
 	}
 	private Properties props;
 	
-	private void openProps(String[] paths) {
+	/*
+	 * trys to locate a properties file and open it.
+	 */
+	private void openPropertieFile(String[] paths) 
+	{	
 		props = new Properties();
+		String path="";
+		
 		for(int i=0;i<paths.length;i++){
 			try {
-				String path = paths[i];
+				path = paths[i];
 				if(verbose)
 					System.out.println("Trying config file at path "+path);
 				props.load(new FileInputStream(new File(path)));
-				configfile = path;
+				configFile = path;
 				return;
 			} catch (FileNotFoundException e3) {
+				System.err.println("file not found at "+path);
 				// try the next one
 			} catch (IOException e3) {
 				System.err.println("Error: IO error reading config: " + e3.getMessage());
@@ -224,7 +233,4 @@ public class Configuration {
 	public static void setGlobalConfigUrl(String globalConfigUrl) {
 		Configuration.globalConfigUrl = globalConfigUrl;
 	}
-	
-	
-	
 }
