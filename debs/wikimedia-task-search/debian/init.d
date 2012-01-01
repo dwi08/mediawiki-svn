@@ -24,7 +24,7 @@ case "$1" in
 		log_daemon_msg "Starting $SERVICE_NAME"
 
 		# Increase FD limit
-		ulimit -n 8192
+		ulimit -n 65536
 		# Run the daemon
 		if start-stop-daemon --start --quiet --background --user lsearch --chuid lsearch --pidfile $pid --make-pidfile --exec /usr/bin/java -- -Xmx3000m -Djava.rmi.server.codebase=file://$BINDIR/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME -jar $BINDIR/LuceneSearch.jar
 		then
