@@ -3724,7 +3724,11 @@ class Parser {
 			wfDebug( __METHOD__.": Not adding tracking category $msg to special page!\n" );
 			return false;
 		}
-		$cat = wfMsgForContent( $msg );
+		// Important to parse with correct title (bug 31469)
+		$cat = wfMessage( $msg )
+			->title( $this->getTitle() )
+			->inContentLanguage()
+			->text();
 
 		# Allow tracking categories to be disabled by setting them to "-"
 		if ( $cat === '-' ) {
