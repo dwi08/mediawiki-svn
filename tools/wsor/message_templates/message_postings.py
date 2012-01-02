@@ -1,3 +1,24 @@
+'''
+This script connects to a mediawiki database and API to collect User_talk revisions
+that match a set of patterns (and optionally, username).
+
+:Parameters:
+	Access the script's documentation for a parameter listing.
+	
+	% python message_postings.py --help
+
+:Output:
+	This script writes a set of escaped, tab separated columns to standard out.
+	- Recipient name - The name of the user who received the posting
+	- Timestamp - The time at which the posting was made
+	- Revision ID - The identifier of the revision matching the posting
+	- Poster ID - The identifier of the user who made the posting
+	- Poster name - The name of the user who make the posting
+	- Message match - The portion of the message posting that was matched by the regular expression.
+
+:Example:
+	python message_postings.py -h db42 --start=20111222000000 --end=20111223000000 --comment="\(\[\[WP:HG\|HG\]\]\)" --message="Template:uw-vandalism1"
+'''
 import sys, argparse, os
 import logging, types, re
 import time, datetime
@@ -20,11 +41,11 @@ def emit(rev):
 	print(
 		"\t".join(
 			encode(rev[c]) for c in [
-				'rev_id',
+				'recipient_name',
 				'rev_timestamp',
+				'rev_id',
 				'poster_id',
 				'poster_name',
-				'recipient_name',
 				'message_match'
 			]
 		)
