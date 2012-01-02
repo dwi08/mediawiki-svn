@@ -497,8 +497,8 @@ namespace wmib
                                             {
                                                 irc.SlowQueue.DeliverMessage(
                                                     "Change on 12" + w.URL.name + " a page " + page +
-                                                    " was modified," + " changed by " + username +
-                                                    " link " + w.URL.url + "?diff=" + link, curr.channel.name + " edit summary: " + summary);
+                                                    " was modified," + " changed by " + username +
+                                                    " link " + w.URL.url + "?diff=" + link + " edit summary: " + summary, curr.channel.name);
                                             }
                                         }
                                     }
