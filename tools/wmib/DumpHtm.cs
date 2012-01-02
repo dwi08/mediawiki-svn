@@ -77,7 +77,7 @@ namespace wmib
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public string Encode(string text)
+        public static string Encode(string text)
         {
             text = text.Replace("<", "&lt;");
             text = text.Replace(">", "&gt;");

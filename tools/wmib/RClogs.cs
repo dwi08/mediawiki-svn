@@ -93,13 +93,13 @@ namespace wmib
 
         public string ToTable()
         {
-            string output = "<table>";
+            string output = "<table align=\"left\" border=1>\n";
             try
             {
                 writable = false;
                 foreach (IWatch b in pages)
                 {
-                    output = output + "<tr><td>" + b.Channel + "</td><td>" + b.Page + "</td></tr>\n";
+                    output = output + "<tr><td>" + b.Channel + "</td><td>" + HtmlDump.Encode(b.Page) + "</td></tr>\n";
                 }
                 output = output + "</table>";
                 writable = true;
