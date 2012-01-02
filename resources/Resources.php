@@ -699,7 +699,7 @@ return array(
 		'position' => 'top',
 	),
 
-	/* Tests */
+	/* MediaWiki Tests */
 
 	'mediawiki.tests.qunit.testrunner' => array(
 		'scripts' => 'tests/qunit/data/testrunner.js',
