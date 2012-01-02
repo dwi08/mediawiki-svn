@@ -375,7 +375,7 @@ namespace wmib
                 string users_ok = "";
                 foreach (user b in Users)
                 {
-                    users_ok += " " + b.name + " (2" + b.level + "1)" + ",";
+                    users_ok += " " + b.name + " (2" + b.level + ")" + ",";
                 }
                 Message("I trust: " + users_ok, _Channel);
             }
