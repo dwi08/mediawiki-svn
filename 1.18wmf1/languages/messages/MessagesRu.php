@@ -91,10 +91,13 @@ $namespaceNames = array(
 );
 
 $namespaceAliases = array(
-	'Участница'            => NS_USER,
-	'Обсуждение участницы' => NS_USER_TALK,
 	'Изображение' => NS_FILE,
 	'Обсуждение_изображения' => NS_FILE_TALK,
+);
+
+$namespaceGenderAliases = array(
+	NS_USER      => array( 'female' => 'Участник', 'female' => 'Участница' ),
+	NS_USER_TALK => array( 'female' => 'Обсуждение_участника', 'female' => 'Обсуждение_участницы' ),
 );
 
 $dateFormats = array(
