@@ -103,6 +103,7 @@ namespace wmib
             try
             {
                 string text = CreateHeader();
+                text = text + "<h4>Infobot</h4>\n";
                 text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
                 Channel.Keys.locked = true;
                 if (Channel.Keys.text.Count > 0)
@@ -112,8 +113,19 @@ namespace wmib
                         text += AddLine(Key.key, Key.text);
                     }
                 }
+                text = text + "</table>\n";
+                text = text + "<h4>Aliases</h4>\n<table border=1 width=100%>\n";
+                foreach (dictionary.staticalias data in Channel.Keys.Alias)
+                {
+                    text += AddLine(data.Name, data.Key);
+                }
+                text = text + "</table>\n";
                 Channel.Keys.locked = false;
-                text = text + "<table>\n";
+                if (Channel.feed)
+                {
+                    text += "<h4>Recent changes</h4>";
+                    text = text + Channel.RC.ToTable();
+                }
                 text = text + CreateFooter();
                 File.WriteAllText(dumpname, text);
             }

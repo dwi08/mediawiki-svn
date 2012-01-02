@@ -60,6 +60,8 @@ namespace wmib
         /// Channels
         /// </summary>
         private static List<string> channels;
+        public bool changed;
+        private bool writable = true;
 
         private static List<RecentChanges> rc = new List<RecentChanges>();
 
@@ -89,9 +91,31 @@ namespace wmib
             }
         }
 
+        public string ToTable()
+        {
+            string output = "<table>";
+            try
+            {
+                writable = false;
+                foreach (IWatch b in pages)
+                {
+                    output = output + "<tr><td>" + b.Channel + "</td><td>" + b.Page + "</td></tr>\n";
+                }
+                output = output + "</table>";
+                writable = true;
+                return output;
+            }
+            catch (Exception)
+            {
+                writable = true;
+                return "";
+            }
+        }
+
         public RecentChanges(config.channel _channel)
         {
             channel = _channel;
+            changed = false;
             Load();
             rc.Add(this);
         }
@@ -225,6 +249,7 @@ namespace wmib
         public void Load()
         {
             string name = variables.config + "/" + channel.name + ".list";
+            writable = false;
             if (File.Exists(name))
             {
                 string[] content = File.ReadAllLines(name);
@@ -238,6 +263,7 @@ namespace wmib
                     }
                 }
             }
+            writable = true;
         }
 
         /// <summary>
@@ -301,7 +327,12 @@ namespace wmib
                     }
                     if (pages.Contains(currpage))
                     {
+                        while (!writable)
+                        {
+                            System.Threading.Thread.Sleep(100);
+                        }
                         pages.Remove(currpage);
+                        channel.Keys.update = true;
                         Save();
                         irc.SlowQueue.DeliverMessage("Deleted item from feed", channel.name);
                         return true;
@@ -314,13 +345,25 @@ namespace wmib
                 return false;
             }
             irc.SlowQueue.DeliverMessage(
-                "Unable to delete the string from the list because there is no such wiki site known by a bot",
+                "Unable to delete the string from the list because there is no such a wiki site known by a bot",
                 channel.name);
             return false;
         }
 
         public static int InsertSite()
         {
+            if (File.Exists("sites"))
+            {
+                string[] content = File.ReadAllLines("sites");
+                foreach (string a in content)
+                {
+                    string[] values = a.Split('|');
+                    if (values.Length == 3)
+                    {
+                        wikiinfo.Add(new wiki(values[0], values[1], values[2]));
+                    }
+                }
+            }
             wikiinfo.Add(new wiki("#cs.wikinews", "https://cs.wikipedia.org/w/index.php", "cs_wikinews"));
             wikiinfo.Add(new wiki("#en.wikinews", "https://en.wikipedia.org/w/index.php", "en_wikinews"));
             wikiinfo.Add(new wiki("#de.wikinews", "https://de.wikipedia.org/w/index.php", "de_wikinews"));
@@ -389,8 +432,13 @@ namespace wmib
                                                      channel.name);
                         return true;
                     }
+                    while (!writable)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
                     pages.Add(new IWatch(site, Page, site.channel));
                     irc.SlowQueue.DeliverMessage("Inserted new item to feed of changes", channel.name);
+                    channel.Keys.update = true;
                     Save();
                     return true;
                 }
@@ -439,10 +487,6 @@ namespace wmib
                                 string link = Edit.Groups[4].Value;
                                 string summary = Edit.Groups[8].Value;
 
-                                if (summary.Length > 20)
-                                {
-                                    summary = summary.Substring(0, 16) + " ...";
-                                }
                                 foreach (RecentChanges curr in rc)
                                 {
                                     if (curr.channel.feed)
@@ -452,9 +496,9 @@ namespace wmib
                                             if (w.Channel == _channel && page == w.Page)
                                             {
                                                 irc.SlowQueue.DeliverMessage(
-                                                    "Change on 12" + w.URL.name + "1 a page " + page +
-                                                    " was modified, summary: " + summary + " changed by " + username +
-                                                    " link " + w.URL.url + "?diff=" + link, curr.channel.name);
+                                                    "Change on 12" + w.URL.name + " a page " + page +
+                                                    " was modified," + " changed by " + username +
+                                                    " link " + w.URL.url + "?diff=" + link, curr.channel.name + " edit summary: " + summary);
                                             }
                                         }
                                     }

@@ -51,6 +51,7 @@ namespace wmib
         public static Thread dumphtmt;
         public static Thread rc;
         public static Thread check_thread;
+        public static bool disabled;
         private static StreamReader rd;
         private static StreamWriter wd;
         private static List<user> User = new List<user>();
@@ -178,7 +179,7 @@ namespace wmib
             /// List of all users in a channel
             /// </summary>
             private List<user> Users = new List<user>();
-            
+
             /// <summary>
             /// Channel this class belong to
             /// </summary>
@@ -500,11 +501,12 @@ namespace wmib
             {
                 if (config.debugchan != null)
                 {
-                  SlowQueue.DeliverMessage("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", config.debugchan);
+                    SlowQueue.DeliverMessage("DEBUG Exception: " + ex.Message + " I feel crushed, uh :|", config.debugchan);
                 }
                 Program.Log(ex.Message + ex.Source + ex.StackTrace);
-            } catch (Exception) // exception happened while we tried to handle another one, ignore that (probably issue with logging)
-            {  }
+            }
+            catch (Exception) // exception happened while we tried to handle another one, ignore that (probably issue with logging)
+            { }
         }
 
         /// <summary>
@@ -659,7 +661,7 @@ namespace wmib
                             timedateToString(DateTime.Now.Second) + "] " + "<" +
                             user + ">\t " + message + "\n";
                     }
-                    File.AppendAllText(channel.log + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + ".txt", log);
+                    File.AppendAllText(channel.log + DateTime.Now.Year + timedateToString(DateTime.Now.Month) + timedateToString(DateTime.Now.Day) + ".txt", log);
                 }
             }
             catch (Exception er)
@@ -779,7 +781,7 @@ namespace wmib
                                 File.Delete(variables.config + "/" + chan.name + ".list");
                             }
                         }
-                        catch (Exception)    { }
+                        catch (Exception) { }
                         config.channels.Remove(chan);
                         config.Save();
                         return;
@@ -965,7 +967,7 @@ namespace wmib
                 }
                 else
                 {
-                    SlowQueue.DeliverMessage ("Type @commands for list of commands. This bot is running http://meta.wikimedia.org/wiki/WM-Bot version " + config.version + " source code licensed under GPL and located in wikimedia svn", chan.name);
+                    SlowQueue.DeliverMessage("Type @commands for list of commands. This bot is running http://meta.wikimedia.org/wiki/WM-Bot version " + config.version + " source code licensed under GPL and located in wikimedia svn", chan.name);
                     return;
                 }
             }
@@ -1173,7 +1175,7 @@ namespace wmib
         private static bool ShowHelp(string parameter, string channel)
         {
             switch (parameter.ToLower())
-            { 
+            {
                 case "trustdel":
                     showInfo("trustdel", "Remove an entry from access list, example @trustdel regex", channel);
                     return false;
@@ -1272,139 +1274,147 @@ namespace wmib
         /// <returns></returns>
         public static void Connect()
         {
-            data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
-            rd = new System.IO.StreamReader(data, System.Text.Encoding.UTF8);
-            wd = new System.IO.StreamWriter(data);
-
-            _Queue = new Thread(SlowQueue.Run);
-            dumphtmt = new Thread(HtmlDump.Start);
-            dumphtmt.Start();
-            rc = new Thread(RecentChanges.Start);
-            rc.Start();
-            check_thread = new Thread(Ping);
-            check_thread.Start();
-
-            wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
-            wd.WriteLine("NICK " + config.username);
-
-            _Queue.Start();
-            Thread.Sleep(2000);
-
-            Authenticate();
-
-            foreach (config.channel ch in config.channels)
+            try
             {
-                if (ch.name != "")
-                {
-                    wd.Flush();
-                    wd.WriteLine("JOIN " + ch.name);
-                    Thread.Sleep(2000);
-                }
-            }
-            wd.Flush();
-            string text = "";
-            string nick = "";
-            string host = "";
-            string message = "";
-            string channel = "";
-            char delimiter = (char)001;
+                data = new System.Net.Sockets.TcpClient(config.network, 6667).GetStream();
+                rd = new System.IO.StreamReader(data, System.Text.Encoding.UTF8);
+                wd = new System.IO.StreamWriter(data);
 
-            while (true)
-            {
-                try
+                _Queue = new Thread(SlowQueue.Run);
+                dumphtmt = new Thread(HtmlDump.Start);
+                dumphtmt.Start();
+                rc = new Thread(RecentChanges.Start);
+                rc.Start();
+                check_thread = new Thread(Ping);
+                check_thread.Start();
+
+                wd.WriteLine("USER " + config.name + " 8 * :" + config.name);
+                wd.WriteLine("NICK " + config.username);
+
+                _Queue.Start();
+                Thread.Sleep(2000);
+
+                Authenticate();
+
+                foreach (config.channel ch in config.channels)
                 {
-                    while (!rd.EndOfStream)
+                    if (ch.name != "")
                     {
-                        text = rd.ReadLine();
-                        if (text.StartsWith(":"))
+                        wd.Flush();
+                        wd.WriteLine("JOIN " + ch.name);
+                        Thread.Sleep(2000);
+                    }
+                }
+                wd.Flush();
+                string text = "";
+                string nick = "";
+                string host = "";
+                string message = "";
+                string channel = "";
+                char delimiter = (char)001;
+
+                while (!disabled)
+                {
+                    try
+                    {
+                        while (!rd.EndOfStream)
                         {
-                            string check = text.Substring(text.IndexOf(" "));
-                            if (check.StartsWith(" 005"))
+                            text = rd.ReadLine();
+                            if (text.StartsWith(":"))
                             {
-
-                            }
-                            else
-                            {
-                                if (text.Contains("PRIVMSG"))
+                                string check = text.Substring(text.IndexOf(" "));
+                                if (check.StartsWith(" 005"))
                                 {
-                                    string info = text.Substring(1, text.IndexOf(" :", 1) - 1);
-                                    string info_host;
-                                    // we got a message here :)
-                                    if (text.Contains("!") && text.Contains("@"))
-                                    {
-                                        nick = info.Substring(0, info.IndexOf("!"));
-                                        host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
-                                    }
-                                    info_host = info.Substring(info.IndexOf("PRIVMSG "));
 
-                                    if (info_host.Contains("#"))
+                                }
+                                else
+                                {
+                                    if (text.Contains("PRIVMSG"))
                                     {
-                                        channel = info_host.Substring(info_host.IndexOf("#"));
-                                        message = text.Replace(info, "");
-                                        message = message.Substring(message.IndexOf(" :") + 2);
-                                        if (message.Contains(delimiter.ToString() + "ACTION"))
+                                        string info = text.Substring(1, text.IndexOf(" :", 1) - 1);
+                                        string info_host;
+                                        // we got a message here :)
+                                        if (text.Contains("!") && text.Contains("@"))
                                         {
-                                            getAction(message.Replace(delimiter.ToString() + "ACTION", ""), channel, host, nick);
-                                            continue;
+                                            nick = info.Substring(0, info.IndexOf("!"));
+                                            host = info.Substring(info.IndexOf("@") + 1, info.IndexOf(" ", info.IndexOf("@")) - 1 - info.IndexOf("@"));
+                                        }
+                                        info_host = info.Substring(info.IndexOf("PRIVMSG "));
+
+                                        if (info_host.Contains("#"))
+                                        {
+                                            channel = info_host.Substring(info_host.IndexOf("#"));
+                                            message = text.Replace(info, "");
+                                            message = message.Substring(message.IndexOf(" :") + 2);
+                                            if (message.Contains(delimiter.ToString() + "ACTION"))
+                                            {
+                                                getAction(message.Replace(delimiter.ToString() + "ACTION", ""), channel, host, nick);
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                getMessage(channel, nick, host, message);
+                                                continue;
+                                            }
                                         }
                                         else
                                         {
-                                            getMessage(channel, nick, host, message);
-                                            continue;
+                                            message = text.Substring(text.IndexOf("PRIVMSG"));
+                                            message = message.Substring(message.IndexOf(":"));
+                                            // private message
+                                            if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
+                                            {
+                                                wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" + " I am a bot don't finger me");
+                                                wd.Flush();
+                                                continue;
+                                            }
+                                            if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
+                                            {
+                                                wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " + System.DateTime.Now.ToString());
+                                                wd.Flush();
+                                                continue;
+                                            }
+                                            if (message.StartsWith(":" + delimiter.ToString() + "PING"))
+                                            {
+                                                wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" + message.Substring(message.IndexOf(delimiter.ToString() + "PING") + 5));
+                                                wd.Flush();
+                                                continue;
+                                            }
+                                            if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
+                                            {
+                                                wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " + config.version);
+                                                wd.Flush();
+                                                continue;
+                                            }
                                         }
                                     }
-                                    else
+                                    if (text.Contains("PING "))
                                     {
-                                        message = text.Substring(text.IndexOf("PRIVMSG"));
-                                        message = message.Substring(message.IndexOf(":"));
-                                        // private message
-                                        if (message.StartsWith(":" + delimiter.ToString() + "FINGER"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "FINGER" + " I am a bot don't finger me");
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "TIME"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "TIME " + System.DateTime.Now.ToString());
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "PING"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "PING" + message.Substring(message.IndexOf(delimiter.ToString() + "PING") + 5));
-                                            wd.Flush();
-                                            continue;
-                                        }
-                                        if (message.StartsWith(":" + delimiter.ToString() + "VERSION"))
-                                        {
-                                            wd.WriteLine("NOTICE " + nick + " :" + delimiter.ToString() + "VERSION " + config.version);
-                                            wd.Flush();
-                                            continue;
-                                        }
+                                        wd.WriteLine("PONG " + text.Substring(text.IndexOf("PING ") + 5));
+                                        wd.Flush();
                                     }
-                                }
-                                if (text.Contains("PING "))
-                                {
-                                    wd.WriteLine("PONG " + text.Substring(text.IndexOf("PING ") + 5));
-                                    wd.Flush();
                                 }
                             }
+                            Thread.Sleep(50);
                         }
-                        Thread.Sleep(50);
+                        Program.Log("Reconnecting, end of data stream");
+                        Reconnect();
                     }
-                    Program.Log("Reconnecting, end of data stream");
-                    Reconnect();
+                    catch (System.IO.IOException xx)
+                    {
+                        Program.Log("Reconnecting, connection failed " + xx.Message + xx.StackTrace);
+                        Reconnect();
+                    }
+                    catch (Exception xx)
+                    {
+                        handleException(xx, channel);
+                    }
                 }
-                catch (System.IO.IOException xx)
-                {
-                    Program.Log("Reconnecting, connection failed " + xx.Message + xx.StackTrace);
-                    Reconnect();
-                }
-                catch (Exception xx)
-                {
-                    handleException(xx, channel);
-                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("RecentChanges disabled, no connection");
+                disabled = true;
             }
         }
         public static int Disconnect()
