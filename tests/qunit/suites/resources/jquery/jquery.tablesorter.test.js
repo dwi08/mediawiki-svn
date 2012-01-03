@@ -7,11 +7,7 @@ var config = {
 	wgContentLanguage: 'en'
 };
 
-// setup hack
-mw.config.set( 'wgMonthNames', [ '', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ] );
-mw.config.set( 'wgMonthNamesShort', ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] );
-mw.config.set( 'wgDefaultDateFormat', 'dmy' );
-
+module( 'jquery.tablesorter', QUnit.newMwEnvironment( config ) );
 
 test( '-- Initial check', function() {
 	expect(1);
