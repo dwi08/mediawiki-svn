@@ -1,8 +1,14 @@
 from .edit_counts import EditCounts
+from .talk import Talk
+from .blocks import Blocks
+from .warnings import Warnings
 from .metric_generator import MetricGenerator
 
 GENERATORS = {
-	'editcounts': EditCounts
+	'editcounts': EditCounts,
+	'talk': Talk,
+	'blocks': Blocks,
+	'warnings': Warnings
 }
 
 class Metrics(MetricGenerator):

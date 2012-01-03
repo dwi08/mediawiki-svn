@@ -2,10 +2,8 @@ import sys, argparse, os
 import logging, types
 import MySQLdb, MySQLdb.cursors
 
-from generators import GENERATORS, Metrics, EditCounts
-
-
-class MissingRevError(Exception):pass
+from .generators import GENERATORS, Metrics
+from .util import MWAPI, MWAPIError
 
 def encode(v):
 	if v == None: return "\N"
@@ -44,8 +42,8 @@ def main():
 		default="enwiki"
 	)
 	parser.add_argument(
-		'-a', '--api_uri',
-		type=str, 
+		'-a', '--api',
+		type=MWAPI, 
 		help='the mediawiki API to connect to in order to retrieve message content (defaults to http://en.wikipedia.org/w/api.php)',
 		default="http://en.wikipedia.org/w/api.php"
 	)
@@ -79,7 +77,7 @@ def main():
 	)
 	
 	logging.info("Loading generators...")
-	metrics = Metrics(g(conn, args.api_uri) for g in args.generator)
+	metrics = Metrics(g(conn, args.api) for g in args.generator)
 	print("\t".join(encode(h) for h in metrics.headers()))
 	
 	

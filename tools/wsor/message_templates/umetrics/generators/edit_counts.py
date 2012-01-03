@@ -3,16 +3,16 @@ from .metric_generator import MetricGenerator
 
 class EditCounts(MetricGenerator):
 	
-	def __init__(self, conn, api_uri):
+	def __init__(self, conn, api):
 		self.conn = conn
 	
 	def headers(self):
 		return itertools.chain(*[
 			[
-				'ns_%s_before_revisions_deleted' % ns,
-				'ns_%s_after_revisions_deleted' % ns,
-				'ns_%s_before_revisions_not_deleted' % ns,
-				'ns_%s_after_revisions_not_deleted' % ns
+				'ns_%s_revisions_deleted_before' % ns,
+				'ns_%s_revisions_deleted_after' % ns,
+				'ns_%s_revisions_not_deleted_before' % ns,
+				'ns_%s_revisions_not_deleted_after' % ns
 			]
 			for ns in itertools.chain(range(0,16), [100, 101, 108, 109])
 		])
