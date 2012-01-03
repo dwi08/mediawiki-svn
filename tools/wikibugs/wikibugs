@@ -7,8 +7,9 @@
 # Original version by Brion Vibber, 2004-08-02, 2004-08-10 and 2004-08-15
 # Entirely rewritten by Timwi, 2004-09-06
 # Some cleanups and fixes by AzaToth, 2006-12-20
-# Is source code was http://wikitech.wikimedia.org/view/Wikibugs and
-# migrated to svn in 2007.
+# The source code was originally edited on the Wikitech wiki at: 
+# http://wikitech.wikimedia.org/view/Wikibugs and finally migrated to
+# the subversion repository in 2007.
 
 use strict;
 use utf8;
