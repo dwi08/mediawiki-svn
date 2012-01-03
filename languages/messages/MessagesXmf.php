@@ -246,7 +246,6 @@ $messages = array(
 'badtitletext'       => 'მოთხილ ხასილაშ ჯოხო ჩილათირ რდუ, ვარა ჩოლიერ, ვარა ხოლო გოხოლუდეს ჩილათირო გინორცხუაფილ ინტერ–ნინა ვარა ინტერ–წიკი ჯოხო. 
 თენა შილებე იკათუანდას ართ ვარა უმოს თიშნერ ნიშანს ნამუშ გუმორინაფა ჯოხოს ვა შილებე.',
 'viewsource'         => 'ქოძირი წყუ',
-'viewsourcefor'      => '$1-იშ',
 'viewsourcetext'     => 'თქვა შეილებუნა ქოძირათ თე ხასჷლაშ დაჭყაფური ფაილი დო ქუდარსხუათ თიშ მანგი:',
 
 # Login and logout pages
@@ -536,7 +535,7 @@ $messages = array(
 'filehist-dimensions'       => 'განზომილებეფ',
 'filehist-filesize'         => 'ფაილიშ ზომა',
 'filehist-comment'          => 'კომენტარ',
-'imagelinks'                => 'ფაილეფიშ რცხუეფ',
+'imagelinks'                => 'ფაილი გჷმორინაფილი რე',
 'linkstoimage'              => 'გეყ’ვენჯი {{PLURAL:$1|ხასილა|ხასილეფ}} მერცხილ რე თე ფაილშა',
 'nolinkstoimage'            => 'ვა რე თე ფაილწკუმა მერსხილ ხასილეფ.',
 'sharedupload'              => 'თე ფაილ რე $1-შე დო შილებე თენა შხვა პროექტეფც ხოლო გიმირინაუფუდასინ',
@@ -569,7 +568,7 @@ $messages = array(
 'prefixindex'             => 'არძო ხასილა პრეფიქსით',
 'shortpages'              => 'ჭიჭე ხასილეფ',
 'longpages'               => 'გინძე ხასილეფ',
-'usercreated'             => 'დირსხუ $1 $2-ს',
+'usercreated'             => '{{GENDER:$3|დირსხუ}} $2-ის $1-ს',
 'newpages'                => 'ახალ ხასილეფ',
 'ancientpages'            => 'ჯვეშ ხასილეფ',
 'move'                    => 'გინოღალა',
@@ -893,15 +892,12 @@ $messages = array(
 
 # External editor support
 'edit-externally'      => 'თე ფაილიშ ორედაქტირაფალო გიმირინეთ გალენ პროგრამა',
-'edit-externally-help' => '(უმოს ინფორმაციაშო ქოძირით [http://www.mediawiki.org/wiki/Manual:External_editors])',
+'edit-externally-help' => '(უმოს ინფორმაციაშო ქოძირით [//www.mediawiki.org/wiki/Manual:External_editors])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'არძა',
 'namespacesall' => 'არძა',
 'monthsall'     => 'არძა',
-
-# Trackbacks
-'trackbacklink' => 'Trackback',
 
 # Watchlist editing tools
 'watchlisttools-view' => 'მერცხილ თირაფეფიშ ძირაფა',

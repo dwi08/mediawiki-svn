@@ -548,8 +548,9 @@ class DatabaseOracle extends DatabaseBase {
 					$val = $val->fetch();
 				}
 
+				// backward compatibility
 				if ( preg_match( '/^timestamp.*/i', $col_type ) == 1 && strtolower( $val ) == 'infinity' ) {
-					$val = '31-12-2030 12:00:00.000000';
+					$val = $this->getInfinity();
 				}
 
 				$val = ( $wgContLang != null ) ? $wgContLang->checkTitleEncoding( $val ) : $val;
@@ -768,9 +769,9 @@ class DatabaseOracle extends DatabaseBase {
 
 		// dirty code ... i know
 		$endArray = array();
-		$endArray[] = $prefix.'MWUSER';
-		$endArray[] = $prefix.'PAGE';
-		$endArray[] = $prefix.'IMAGE';
+		$endArray[] = strtoupper($prefix.'MWUSER');
+		$endArray[] = strtoupper($prefix.'PAGE');
+		$endArray[] = strtoupper($prefix.'IMAGE');
 		$fixedOrderTabs = $endArray;
 		while (($row = $result->fetchRow()) !== false) {
 			if (!in_array($row['table_name'], $fixedOrderTabs))
@@ -855,7 +856,7 @@ class DatabaseOracle extends DatabaseBase {
 	/**
 	 * Query whether a given table exists (in the given schema, or the default mw one if not given)
 	 */
-	function tableExists( $table ) {
+	function tableExists( $table, $fname = __METHOD__ ) {
 		$table = $this->tableName( $table );
 		$table = $this->addQuotes( strtoupper( $this->removeIdentifierQuotes( $table ) ) );
 		$owner = $this->addQuotes( strtoupper( $this->mDBname ) );
@@ -1175,9 +1176,7 @@ class DatabaseOracle extends DatabaseBase {
 		// a hack for deleting pages, users and images (which have non-nullable FKs)
 		// all deletions on these tables have transactions so final failure rollbacks these updates
 		$table = $this->tableName( $table );
-		if ( $table == $this->tableName( 'page' ) ) {
-				$this->update( 'recentchanges', array( 'rc_cur_id' => 0 ), array( 'rc_cur_id' => $conds['page_id'] ), $fname );
-		} elseif ( $table == $this->tableName( 'user' )  ) {
+		if ( $table == $this->tableName( 'user' )  ) {
 				$this->update( 'archive', array( 'ar_user' => 0 ), array( 'ar_user' => $conds['user_id'] ), $fname );
 				$this->update( 'ipblocks', array( 'ipb_user' => 0 ), array( 'ipb_user' => $conds['user_id'] ), $fname );
 				$this->update( 'image', array( 'img_user' => 0 ), array( 'img_user' => $conds['user_id'] ), $fname );
@@ -1315,4 +1314,9 @@ class DatabaseOracle extends DatabaseBase {
 	public function getSearchEngine() {
 		return 'SearchOracle';
 	}
+
+	public function getInfinity() {
+		return '31-12-2030 12:00:00.000000';
+	}
+
 } // end DatabaseOracle class

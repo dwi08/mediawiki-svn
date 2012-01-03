@@ -11,6 +11,7 @@
  * @author Ahonc
  * @author Aleator
  * @author AlexSm
+ * @author Amire80
  * @author AnakngAraw
  * @author Ans
  * @author Antime
@@ -37,6 +38,7 @@
  * @author Fryed-peach
  * @author Garas
  * @author GerardM
+ * @author Gustronico
  * @author Hamilton Abreu
  * @author Helix84
  * @author Holek
@@ -51,6 +53,7 @@
  * @author Klenje
  * @author Klutzy
  * @author Krinkle
+ * @author Ktkaushik
  * @author Kwj2772
  * @author Leinad
  * @author Lejonel
@@ -77,6 +80,7 @@
  * @author Onecountry
  * @author OsamaK
  * @author PhiLiP
+ * @author Piangpha
  * @author Platonides
  * @author Prima klasy4na
  * @author Prometheus.pyrphoros
@@ -111,6 +115,7 @@
  * @author Waldir
  * @author Whym
  * @author Yekrats
+ * @author Ynwala
  * @author Yuriy Apostol
  * @author Yyy
  * @author Žekřil71pl
@@ -165,7 +170,8 @@ Is only shown if {{msg-mw|tog-enotifusertalkpages}} or/and {{msg-mw|tog-enotifwa
 'tog-watchlisthideliu'        => "Option in tab 'Watchlist' of [[Special:Preferences]]. {{Gender}}",
 'tog-watchlisthideanons'      => "Option in tab 'Watchlist' of [[Special:Preferences]]. {{Gender}}",
 'tog-watchlisthidepatrolled'  => 'Option in Watchlist tab of [[Special:Preferences]]. {{Gender}}',
-'tog-nolangconversion'        => 'In user preferences.',
+'tog-nolangconversion'        => '{{optional}}
+In user preferences.',
 'tog-ccmeonemails'            => 'Option in [[Special:Preferences]] > {{int:prefs-personal}} > {{int:email}}. {{Gender}}',
 'tog-diffonly'                => 'Toggle option used in [[Special:Preferences]]. {{Gender}}',
 'tog-showhiddencats'          => 'Toggle option used in [[Special:Preferences]]. {{Gender}}',
@@ -276,7 +282,7 @@ Is only shown if {{msg-mw|tog-enotifusertalkpages}} or/and {{msg-mw|tog-enotifwa
 'category-media-header'          => 'In category description page',
 'category-empty'                 => 'The text displayed in category page when that category is empty',
 'hidden-categories'              => 'Used in the categories section of pages. Is followed by a colon and a list of categories.',
-'hidden-category-category'       => 'Name of the category where hidden categories will be listed.',
+'hidden-category-category'       => 'Name of the [[mw:Help:Tracking categories|tracking category]] where hidden categories will be listed.',
 'category-subcat-count'          => 'This message is displayed at the top of a category page showing the number of pages in the category. Parameters:
 * $1: number of subcategories shown
 * $2: total number of subcategories in category',
@@ -294,14 +300,14 @@ Is only shown if {{msg-mw|tog-enotifusertalkpages}} or/and {{msg-mw|tog-enotifwa
 * $1: number of files shown',
 'listingcontinuesabbrev'         => 'Shown in contiuation of each first letter group.
 See http://test.wikipedia.org/wiki/Category:Test_ko?uselang={{SUBPAGENAME}}, for example.',
-'index-category'                 => 'Name of the category where pages with the <nowiki>__INDEX__</nowiki> behaviour switch are listed. For description of this behaviour switch see [http://www.mediawiki.org/wiki/Help:Magic_words#Behavior_switches mediawiki].',
-'noindex-category'               => 'Name of the category where pages with the <nowiki>__NOINDEX__</nowiki> behaviour switch are listed. For description of this behaviour switch see [http://www.mediawiki.org/wiki/Help:Magic_words#Behavior_switches mediawiki].',
-'broken-file-category'           => 'Name of category where pages that embed files that do not exist ("broken images") are listed.',
+'index-category'                 => 'Name of the [[mw:Help:Tracking categories|tracking category]] where pages with the <nowiki>__INDEX__</nowiki> behaviour switch are listed. For description of this behaviour switch see [//www.mediawiki.org/wiki/Help:Magic_words#Behavior_switches mediawiki].',
+'noindex-category'               => 'Name of the [[mw:Help:Tracking categories|tracking category]] where pages with the <nowiki>__NOINDEX__</nowiki> behaviour switch are listed. For description of this behaviour switch see [//www.mediawiki.org/wiki/Help:Magic_words#Behavior_switches mediawiki].',
+'broken-file-category'           => 'Name of [[mw:Help:Tracking categories|tracking category]] where pages that embed files that do not exist ("broken images") are listed.',
 
 'linkprefix' => '{{optional}}',
 
 'about'         => '{{Identical|About}}',
-'article'       => "A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
+'article'       => "A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [//www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
 
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
@@ -325,6 +331,7 @@ This can also appear in the credits page if the credits feature is enabled,for e
 # Cologne Blue skin
 'qbfind'         => 'Alternative for "search" as used in Cologne Blue skin.
 {{Identical|Find}}',
+'qbbrowse'       => '{{Identical|Browse}}',
 'qbedit'         => '{{Identical|Edit}}',
 'qbmyoptions'    => '{{Identical|My pages}}',
 'qbspecialpages' => '{{Identical|Special pages}}',
@@ -333,33 +340,34 @@ This can also appear in the credits page if the credits feature is enabled,for e
 {{doc-important|Do not translate <tt>Project:</tt> part.}}",
 
 # Vector skin
-'vector-action-addsection' => 'Used in the Vector skin. See for example http://translatewiki.net/wiki/Talk:Main_Page?useskin=vector',
-'vector-action-delete'     => 'Used in the Vector skin, as the name of a tab at the top of the page. See for example http://translatewiki.net/wiki/Main_Page?useskin=vector
+'vector-action-addsection'       => 'Used in the Vector skin. See for example http://translatewiki.net/wiki/Talk:Main_Page?useskin=vector',
+'vector-action-delete'           => 'Used in the Vector skin, as the name of a tab at the top of the page. See for example http://translatewiki.net/wiki/Main_Page?useskin=vector
 
 {{Identical|Delete}}',
-'vector-action-move'       => 'Used in the Vector skin, on the tabs at the top of the page. See for example http://translatewiki.net/wiki/Talk:Main_Page?useskin=vector
+'vector-action-move'             => 'Used in the Vector skin, on the tabs at the top of the page. See for example http://translatewiki.net/wiki/Talk:Main_Page?useskin=vector
 
 {{Identical|Move}}',
-'vector-action-protect'    => 'Tab at top of page, in vector skin
+'vector-action-protect'          => 'Tab at top of page, in vector skin
 
 {{Identical|Protect}}',
-'vector-action-undelete'   => 'Tab at top of page, in vector skin.
+'vector-action-undelete'         => 'Tab at top of page, in vector skin.
 {{Identical|Undelete}}',
-'vector-action-unprotect'  => 'Tab at top of page, in vector skin.
+'vector-action-unprotect'        => 'Tab at top of page, in vector skin.
 
 {{Identical|Unprotect}}',
-'vector-view-create'       => 'Tab label in the Vector skin. See for example http://translatewiki.net/wiki/Foo?useskin=vector
+'vector-simplesearch-preference' => 'Preference for enhanced search suggestion in the Vector skin.',
+'vector-view-create'             => 'Tab label in the Vector skin. See for example http://translatewiki.net/wiki/Foo?useskin=vector
 {{Identical|Create}}',
-'vector-view-edit'         => 'Tab label in the Vector skin. See for example http://translatewiki.net/wiki/Main_Page?useskin=vector
+'vector-view-edit'               => 'Tab label in the Vector skin. See for example http://translatewiki.net/wiki/Main_Page?useskin=vector
 {{Identical|Edit}}',
-'vector-view-history'      => 'Tab label in the Vector skin. See for example http://translatewiki.net/wiki/Main_Page?useskin=vector
+'vector-view-history'            => 'Tab label in the Vector skin. See for example http://translatewiki.net/wiki/Main_Page?useskin=vector
 {{Identical|View history}}',
-'vector-view-view'         => 'Tab label in the Vector skin (verb). See for example http://translatewiki.net/w/i.php?title=Main_Page&useskin=vector',
-'vector-view-viewsource'   => 'Tab label in the Vector skin.
+'vector-view-view'               => 'Tab label in the Vector skin (verb). See for example http://translatewiki.net/w/i.php?title=Main_Page&useskin=vector',
+'vector-view-viewsource'         => 'Tab label in the Vector skin.
 {{Identical|View source}}',
-'actions'                  => '{{Identical|Action}}',
-'namespaces'               => '{{Identical|Namespace}}',
-'variants'                 => 'Used by the Vector skin.',
+'actions'                        => '{{Identical|Action}}',
+'namespaces'                     => '{{Identical|Namespace}}',
+'variants'                       => 'Used by the Vector skin.',
 
 'errorpagetitle'    => 'Message shown in browser title bar when encountering error operation.
 
@@ -516,6 +524,9 @@ See also [[MediaWiki:Lastmodifiedatby/{{SUBPAGENAME}}]].',
 
 Do '''not''' replace SITENAME with a translation of Wikipedia or some encycopedic additions. The message has to be neutral for all projects.",
 'pagetitle-view-mainpage' => '{{optional}}',
+'backlinksubtitle'        => '{{optional}}
+Appears in subtitle
+* $1 is a link to the page (HTML)',
 'retrievedfrom'           => 'Message which appears in the source of every page, but it is hidden. It is shown when printing. $1 is a link back to the current page: {{FULLURL:{{FULLPAGENAME}}}}.',
 'youhavenewmessages'      => 'The blue message appearing when someone edited your user talk page.
 The format is: "{{int:youhavenewmessages| [[MediaWiki:Newmessageslink/{{SUBPAGENAME}}|{{int:newmessageslink}}]] |[[MediaWiki:Newmessagesdifflink/{{SUBPAGENAME}}|{{int:newmessagesdifflink}}]]}}"',
@@ -639,6 +650,8 @@ HTML markup cannot be used.
 'fileappenderrorread'  => '"Append" is a computer procedure, explained on [http://en.wikipedia.org/wiki/Append Wikipedia].
 
 $1 is a filename, I think.',
+'cannotdelete-title'   => 'Title of error page when the user cannot delete a page
+* $1 is the page name',
 'badtitle'             => 'The page title when a user requested a page with invalid page name. The content will be {{msg-mw|badtitletext}}.',
 'badtitletext'         => 'The message shown when a user requested a page with invalid page name. The page title will be {{msg-mw|badtitle}}.',
 'perfcachedts'         => 'Used on pages that list page lists for which the displayed data is cached. Parameters:
@@ -649,14 +662,14 @@ $1 is a filename, I think.',
 'viewsource'           => 'The text displayed in place of the "edit" tab when the user has no permission to edit the page.
 
 {{Identical|View source}}',
-'viewsourcefor'        => 'Subtitle shown when trying to edit a protected page.
-
-{{Identical|For $1}}',
+'viewsource-title'     => 'Page title shown when trying to edit a protected page.
+* $1 is the name of the page',
 'actionthrottled'      => 'This is the title of an error page. Read it in combination with {{msg-mw|actionthrottledtext}}.',
 'protectedpagetext'    => 'This message is displayed when trying to edit a page you can\'t edit because it has been protected.
 
 * $1: the protection type, e.g. "protect" for fully protected pages',
 'viewsourcetext'       => 'The text shown when displaying the source of a page that the user has no permission to edit',
+'viewyourtext'         => 'Same as {{msg-mw|viewsourcetext}} but when showing the text submitted by the user, this happens e.g. when the user was blocked while he is editing the page',
 'protectedinterface'   => 'Message shown if a user without the "editinterface" right tries to edit a page in the MediaWiki namespace.',
 'editinginterface'     => "A message shown when editing pages in the namespace MediaWiki:. In the [http://translatewiki.net/wiki/Main_Page?setlang=en URL], '''change \"setlang=en\" to your own language code.'''",
 'ns-specialprotected'  => 'Error message displayed when trying to edit a page in the Special namespace',
@@ -770,6 +783,7 @@ Parameters:
 'resetpass'                 => 'The caption of [[Special:ChangePassword]]
 
 {{Identical|Change password}}',
+'resetpass_text'            => '{{optional}}',
 'resetpass_header'          => 'Header on box on special page [[Special:ChangePassword]].
 
 {{Identical|Reset password}}',
@@ -814,7 +828,8 @@ Parameters:
 'passwordreset-emailelement'       => "This is a body of a reminder email to allow them into the system with a new password.
 $1 will be the user's login name.
 $2 will be the temporary password given by the system.",
-'passwordreset-emailerror-capture' => 'What is $1?',
+'passwordreset-emailerror-capture' => 'Error message displayed when sending an e-mail fails. Parameters:
+* $1 is the name of a user who was supposed to get the e-mail.',
 
 # Special:ChangeEmail
 'changeemail'          => 'Title of [[Special:ChangeEmail|special page]].',
@@ -856,9 +871,8 @@ Tip for internal links',
 'headline_tip'    => 'This is the text that appears when you hover the mouse over the fifth button from the left on the edit toolbar.',
 'nowiki_sample'   => 'Text inserted between nowiki tags',
 'nowiki_tip'      => 'This is the text that appears when you hover the mouse over the third button from the right on the edit toolbar.',
-'image_sample'    => 'Used in text generated by Picture button in toolbar.
-
-{{optional}}',
+'image_sample'    => '{{optional}}
+Used in text generated by Picture button in toolbar.',
 'image_tip'       => 'This is the text that appears when you hover the mouse over the sixth (middle) button on the edit toolbar.
 
 {{Identical|Embedded file}}',
@@ -881,6 +895,7 @@ Tip for internal links',
 
 {{Identical|Preview}}',
 'showpreview'                      => 'The text of the button to preview the page you are editing. See also {{msg|showdiff}} and {{msg|savearticle}} for the other buttons.',
+'showlivepreview'                  => 'An edit preview without needing to reload the edit form.',
 'showdiff'                         => 'Button below the edit page. See also {{msg|showpreview}} and {{msg|savearticle}} for the other buttons.',
 'anoneditwarning'                  => 'Shown when editing a page anonymously.',
 'anonpreviewwarning'               => 'See also {{msg-mw|Anoneditwarning}}',
@@ -927,6 +942,7 @@ Parameters:
 {{doc-important|Do not translate \"<nowiki>[[User talk:\$1|\$1]]</nowiki>\" and ''Special:ChangePassword''.}}",
 'newarticle'                       => '{{Identical|New}}',
 'newarticletext'                   => "Text displayed above the edit box in editor when trying to create a new page.<br />'''Very important:''' leave <tt><nowiki>{{MediaWiki:Helppage}}</nowiki></tt> exactly as it is!",
+'anontalkpagetext'                 => 'Displayed at the bottom of talk pages of anonymous users.',
 'noarticletext'                    => 'This is the message that you get if you search for a term that has not yet got any entries on the wiki.
 
 See also {{msg-mw|Noarticletext-nopermission}}.',
@@ -962,7 +978,8 @@ See also {{msg-mw|Noarticletext-nopermission}}.',
 'template-protected'               => '{{Identical|Protected}}',
 'template-semiprotected'           => 'Used on [[Special:ProtectedPages]]. Appears in brackets after listed page titles which are semi-protected.',
 'hiddencategories'                 => "This message is shown below the edit form, like you have a section ''\"Templates used on this page\"''.",
-'edittools'                        => 'This text will be shown below edit and upload forms. It can be used to offer special characters not present on most keyboards for copying/pasting, and also often makes them clickable for insertion via a javascript. Since these are seen as specific to a wiki, however, this message should not contain anything but an html comment explaining how it should be used once the wiki has been installed.',
+'edittools'                        => '{{optional}}
+This text will be shown below edit and upload forms. It can be used to offer special characters not present on most keyboards for copying/pasting, and also often makes them clickable for insertion via a javascript. Since these are seen as specific to a wiki, however, this message should not contain anything but an html comment explaining how it should be used once the wiki has been installed.',
 'edittools-upload'                 => '{{optional}}
 This text will be shown below upload forms. It will default to the contents of edittools.',
 'sectioneditnotsupported-title'    => 'Page title of special page, which presumably appears when someone tries to edit a section, and section editing is disabled. Explanation of section editing on [http://meta.wikimedia.org/wiki/Help:Section_editing#Section_editing meta].',
@@ -980,9 +997,10 @@ Please report at [[Support]] if you are unable to properly translate this messag
 
 * $1 is the current number of parser function calls.
 * $2 is the allowed number of parser function calls.',
-'expensive-parserfunction-category'       => 'This message is used as a category name for a category where pages are placed automatically if they contain too many calls to expensive parser functions.',
+'expensive-parserfunction-category'       => 'This message is used as a category name for a [[mw:Help:Tracking categories|tracking category]] where pages are placed automatically if they contain too many calls to expensive parser functions.',
 'post-expand-template-inclusion-warning'  => 'When templates are expanded, there is a size limit for the number of bytes yielded. Usually that occurs from excessively nested templates, recursive templates, or ones having x-zillion of #if #case or similar contructs in them. When the wikicode parser detects this, it outputs a red warning message to the page.',
-'post-expand-template-inclusion-category' => 'When templates are expanded, there is a size limit for the number of bytes yielded. Usually that occurs from excessively nested templates, recursive templates, or ones having x-zillion of #if #case or similar contructs in them. When the wikicode parser detects this, it outputs a red warning message to the page.',
+'post-expand-template-inclusion-category' => 'This message is used as a category name for a [[mw:Help:Tracking categories|tracking category]] where pages are placed automatically if the expanded size of the templates they contain exceeds the limit.
+When templates are expanded, there is a size limit for the number of bytes yielded. Usually that occurs from excessively nested templates, recursive templates, or ones having x-zillion of #if #case or similar contructs in them. When the wikicode parser detects this, it outputs a red warning message to the page.',
 'language-converter-depth-warning'        => 'Error message shown when a page uses too deeply nested language conversion syntax
 
 * <tt>$1</tt> is the value of the depth limit',
@@ -1210,6 +1228,7 @@ See also {{msg-mw|difference}}.',
 * $2 is the number of users that were found, which was limited at 100.",
 
 # Search results
+'searchresults'                  => '{{Identical|Search results}}',
 'searchresults-title'            => 'Appears as page title in the html header of the search result special page.',
 'notitlematches'                 => 'Header of results page after a search for a title for which no page exists',
 'textmatches'                    => 'When displaying search results',
@@ -1241,7 +1260,7 @@ Description: The URL of the search help page.
 {{doc-important|Do not change the "<tt>Help:</tt>" part.}}',
 'searchprofile-articles'         => "A quick link in the advanced search box on [[Special:Search]]. Clicking on this link starts a search in the content pages of the wiki.
 
-A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
+A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [//www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
 
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
@@ -1301,6 +1320,10 @@ This is a search result (and I guess search engine) dependent messages. I do not
 # Quickbar
 'qbsettings'                => 'The title of the section in [[Special:Preferences]], only shown when using the skins "Standard/Classic" or "Cologne Blue". The quicbar is the same as the sidebar.',
 'qbsettings-none'           => '{{Identical|None}}',
+'qbsettings-fixedleft'      => 'Position of the quickbar (sidebar). Used in the preferences.',
+'qbsettings-fixedright'     => 'Position of the quickbar (sidebar). Used in the preferences.',
+'qbsettings-floatingleft'   => 'Position of the quickbar (sidebar). Used in the preferences.',
+'qbsettings-floatingright'  => 'Position of the quickbar (sidebar). Used in the preferences.',
 'qbsettings-directionality' => '"Fixed", as in the position "fixed left or right". For left-to-right languages, the quickbar will be positioned at the left, for right-to-left languages at the right.',
 
 # Preferences page
@@ -1346,7 +1369,6 @@ This is a search result (and I guess search engine) dependent messages. I do not
 'prefs-editing'                 => 'Title of a tab in [[Special:Preferences]].
 When changing this message, please also update {{msg-mw|vector-editwarning-warning}} which references to this message.',
 'rows'                          => 'Used on [[Special:Preferences]], "Editing" section in the "Size of editing window" fieldset',
-'columns'                       => 'Used on [[Special:Preferences]], "Editing" section in the "Size of editing window" fieldset',
 'searchresultshead'             => 'This is the label of the tab in [[Special:Preferences|my preferences]] which contains options for searching the wiki.
 
 {{Identical|Search}}',
@@ -1364,6 +1386,7 @@ When changing this message, please also update {{msg-mw|vector-editwarning-warni
 
 This option lets your time zone setting use the one that is used on the wiki (often UTC).',
 'timezoneoffset'                => "Text next to input box in [[Special:Preferences]], tab 'date and time', section 'timezone'.",
+'guesstimezone'                 => 'Option to fill in the timezone from the browser setting',
 'allowemail'                    => 'Used in [[Special:Preferences]] > {{int:prefs-personal}} > {{int:email}}.',
 'prefs-searchoptions'           => '{{Identical|Search options}}',
 'prefs-namespaces'              => "{{Identical|Namespaces}}
@@ -1415,7 +1438,7 @@ Used in [[Special:Preferences]]. Parameters are:
 'prefs-help-realname'           => 'In user preferences.
 {{Identical|Real name attribution}}',
 'prefs-help-email'              => 'Shown as explanation text on [[Special:Preferences]] > {{int:prefs-personal}} > {{int:email}}.',
-'prefs-help-email-others'       => 'Виводиться як підказка до поля «Адреса електронної пошти» (друге речення) в налаштуваннях, на вкладці «Особисті дані». Someone translate this to English!!!',
+'prefs-help-email-others'       => 'This text is shown on account creation, below the description of the e-mail address field (which is optional).',
 'prefs-info'                    => "Header for the box giving basic information on the user account, displayed on the 'user profile' tab of the [[Special:Preferences|user preferences]] special page.",
 'prefs-i18n'                    => 'Field set legend for user preferences regarding the interface language',
 'prefs-signature'               => '{{Identical|Signature}}',
@@ -1457,7 +1480,9 @@ Used in [[Special:Preferences]], tab "Watchlist". The display options refer to:
 'editinguser'                    => 'Appears on [[Special:UserRights]]. Parameters:
 * $1 is a username
 * $2 are user tool links. Example: "(Talk | contribs | block | send e-mail)".',
-'userrights-editusergroup'       => '{{Identical|Edit user groups}}',
+'userrights-editusergroup'       => '{{Identical|Edit user groups}}. Parameter:
+* $1 is a username - optional, can be used for GENDER
+',
 'saveusergroups'                 => 'Button text when editing user groups',
 'userrights-groupsmember'        => 'Used when editing user groups in [[Special:Userrights]]. The messsage is followed by a list of group names.
 
@@ -1468,7 +1493,9 @@ Parameters:
 
 Parameters:
 * $1 - optional, for PLURAL use, the number of items in the list following the message. Please avoid PLURAL, if your language can do without.',
-'userrights-groups-help'         => 'Instructions displayed on [[Special:UserRights]].',
+'userrights-groups-help'         => 'Instructions displayed on [[Special:UserRights]]. Parameters:
+* $1 is a username - optional, can be used for GENDER
+',
 'userrights-reason'              => 'Text beside log field when editing user groups
 
 {{Identical|Reason}}',
@@ -1504,12 +1531,12 @@ This is an optional (disabled by default) user group, meant for the [[mw:Revisio
 
 {{Identical|All}}',
 
-'group-user-member'          => '{{doc-group|user|member}}',
-'group-autoconfirmed-member' => '{{doc-group|autoconfirmed|member}}',
-'group-bot-member'           => '{{doc-group|bot|member}}',
-'group-sysop-member'         => '{{doc-group|sysop|member}}',
-'group-bureaucrat-member'    => '{{doc-group|bureaucrat|member}}',
-'group-suppress-member'      => '{{doc-group|suppress|member}}
+'group-user-member'          => '{{doc-group|user|member}}, can use <nowiki>{{GENDER}}</nowiki>',
+'group-autoconfirmed-member' => '{{doc-group|autoconfirmed|member}}, can use <nowiki>{{GENDER}}</nowiki>',
+'group-bot-member'           => '{{doc-group|bot|member}}, can use <nowiki>{{GENDER}}</nowiki>',
+'group-sysop-member'         => '{{doc-group|sysop|member}}, can use <nowiki>{{GENDER}}</nowiki>',
+'group-bureaucrat-member'    => '{{doc-group|bureaucrat|member}}, can use <nowiki>{{GENDER}}</nowiki>',
+'group-suppress-member'      => '{{doc-group|suppress|member}}, can use <nowiki>{{GENDER}}</nowiki>
 This is a member of the optional (disabled by default) user group, meant for the [[mw:RevisionDelete|RevisionDelete]] feature, to change the visibility of revisions through [[Special:RevisionDelete]].
 
 {{Identical|Oversight}}',
@@ -1622,11 +1649,6 @@ The rate limits have no effect on the groups that have this right. Rate limits i
 'right-autopatrol'            => '{{doc-right|autopatrol}}',
 'right-patrolmarks'           => '{{doc-right|patrolmarks}}',
 'right-unwatchedpages'        => '{{doc-right|unwatchedpages}}',
-'right-trackback'             => '{{doc-right|trackback}}
-
-"Submit" in this instance means that something called [[:wikipedia:trackback|trackback]] is being sent to the wiki, and the wiki accepts it. When the right is not given to the user, the wiki rejects, or ignores it. There is a nice description at [http://cruftbox.com/cruft/docs/trackback.html How TrackBack Works]. In MediaWiki it is one of those obscure features that probably nobody uses (it is a huge spam trap).
-
-An alternative wording for translators could be \'Get the wiki to accept a trackback\'.',
 'right-mergehistory'          => '{{doc-right|mergehistory}}',
 'right-userrights'            => '{{doc-right|userrights}}',
 'right-userrights-interwiki'  => '{{doc-right|userrights-interwiki}}',
@@ -1682,18 +1704,19 @@ API is an abbreviation for [http://en.wikipedia.org/wiki/API application program
 'action-suppressionlog'       => '{{Doc-action|suppressionlog}}',
 'action-block'                => '{{Doc-action|block}}',
 'action-protect'              => '{{Doc-action|protect}}',
+'action-rollback'             => '{{Doc-action|rollback}}',
 'action-import'               => '{{Doc-action|import}}',
 'action-importupload'         => '{{Doc-action|importupload}}',
 'action-patrol'               => '{{Doc-action|patrol}}',
 'action-autopatrol'           => '{{Doc-action|autopatrol}}',
 'action-unwatchedpages'       => '{{Doc-action|unwatchedpages}}',
-'action-trackback'            => '{{Doc-action|trackback}}',
 'action-mergehistory'         => '{{Doc-action|mergehistory}}',
 'action-userrights'           => '{{Doc-action|userrights}}
 
 This action allows editing of all of the "user rights", not just the rights of the group "all users".',
 'action-userrights-interwiki' => '{{Doc-action|userrights-interwiki}}',
 'action-siteadmin'            => '{{Doc-action|siteadmin}}',
+'action-sendemail'            => '{{doc-action|sendemail}}',
 
 # Recent changes
 'nchanges'                        => 'Appears on the [[Special:RecentChanges]] special page in brackets after pages having more than one change on that date. $1 is the number of changes on that day.',
@@ -1707,6 +1730,7 @@ This action allows editing of all of the "user rights", not just the rights of t
 'recentchanges-label-bot'         => 'Tooltip for {{msg-mw|boteditletter}}',
 'recentchanges-label-unpatrolled' => 'Tooltip for {{msg-mw|unpatrolledletter}}',
 'rcnote'                          => 'Used on [[Special:RecentChanges]].
+Similar to {{msg-mw|wlnote}} which is used on [[Special:Watchlist]].
 * $1 is the number of changes shown,
 * $2 is the number of days for which the changes are shown,
 * $3 is a date and time (deprecated),
@@ -1751,7 +1775,6 @@ List elements are separated by {{msg-mw|pipe-separator}} each. Each list element
 'unpatrolledletter'               => '{{optional}}
 
 Used in {{msg-mw|Recentchanges-label-legend}}, meaning "unpatrolled".',
-'sectionlink'                     => '{{optional}}',
 'rc_categories'                   => "Probably to do with 'recent changes' special page, either in a particular skin, or for a particular user group.
 
 I guess that this should appear before an input box where you can specify that recent changes should be shown for pages belonging to certain categories only. You name the categories in the input box, and separate them by a pipe character. If this is right, then you should be able to use 'restrict' instead of 'limit', or even 'show pages in the following categories only'.",
@@ -1761,14 +1784,13 @@ Does not work under $wgMiserMode ([[mwr:48986|r48986]]).',
 'newsectionsummary'               => 'Default summary when adding a new section to a page.',
 
 # Recent changes linked
-'recentchangeslinked'          => 'Title of [[Special:RecentChangesLinked]] and display name of page on [[Special:SpecialPages]].',
-'recentchangeslinked-feed'     => 'Title of [[Special:RecentChangesLinked]] and display name of page on [[Special:SpecialPages]].',
-'recentchangeslinked-toolbox'  => 'Title of [[Special:RecentChangesLinked]] and display name of page on [[Special:SpecialPages]].',
-'recentchangeslinked-title'    => 'Message used as title and page header on [[Special:RecentChangesLinked]] (needs an argument like "/Main Page"). Related changes are all recent change to pages that are linked from \'\'this page\'\'. "$1" is the name of the page for which related changes as show.',
-'recentchangeslinked-backlink' => '{{optional}}',
-'recentchangeslinked-summary'  => 'Summary of [[Special:RecentChangesLinked]].',
-'recentchangeslinked-page'     => '{{Identical|Page name}}',
-'recentchangeslinked-to'       => 'Checkbox in [[Special:RecentChangesLinked]].',
+'recentchangeslinked'         => 'Title of [[Special:RecentChangesLinked]] and display name of page on [[Special:SpecialPages]].',
+'recentchangeslinked-feed'    => 'Title of [[Special:RecentChangesLinked]] and display name of page on [[Special:SpecialPages]].',
+'recentchangeslinked-toolbox' => 'Title of [[Special:RecentChangesLinked]] and display name of page on [[Special:SpecialPages]].',
+'recentchangeslinked-title'   => 'Message used as title and page header on [[Special:RecentChangesLinked]] (needs an argument like "/Main Page"). Related changes are all recent change to pages that are linked from \'\'this page\'\'. "$1" is the name of the page for which related changes are shown.',
+'recentchangeslinked-summary' => 'Summary of [[Special:RecentChangesLinked]].',
+'recentchangeslinked-page'    => '{{Identical|Page name}}',
+'recentchangeslinked-to'      => 'Checkbox in [[Special:RecentChangesLinked]].',
 
 # Upload
 'upload'                      => 'Display name for link to [[Special:Upload]] for uploading files to the wiki.
@@ -1792,6 +1814,7 @@ Text displayed when uploading a file using [[Special:Upload]].",
 
 {{Identical|Source}}',
 'ignorewarnings'              => 'In [[Special:Upload]]',
+'filename-toolong'            => 'Error message when uploading a file with a filename longer than the hardcoded limit of 240 bytes. This limit will never change and is hardcoded in the message',
 'filetype-mime-mismatch'      => 'Upload error. Parameters:
 * $1 is the extension of the uploaded file
 * $2 is the MIME type of the uploaded file',
@@ -1837,7 +1860,8 @@ $1 is the value in KB/MB/GB',
 'filewasdeleted'              => 'This warning is shown when trying to upload a file that does not exist, but has previously been deleted.
 Parameters:
 * $1 is a link to the deletion log, with the text from {{msg|deletionlog}}.',
-'filename-prefix-blacklist'   => "Do not translate the file name prefixes before the hash mark (#). Leave all the wiki markup, including the spaces, as is. You can translate the text, including 'Leave this line exactly as it is'. The first line of this messages has one (1) leading space.",
+'filename-prefix-blacklist'   => "{{optional}}
+Do not translate the file name prefixes before the hash mark (#). Leave all the wiki markup, including the spaces, as is. You can translate the text, including 'Leave this line exactly as it is'. The first line of this messages has one (1) leading space.",
 'upload-success-msg'          => '$1 is the local file name after uploading
 $2 is the url the file was uploaded from, when using upload-by-url.',
 'upload-failure-msg'          => '$1 is the specific error message
@@ -1855,8 +1879,62 @@ Extensions making use of it:
 
 {{Identical|Internal error}}',
 
+# File backend
+'backend-fail-stream'        => 'Parameters:
+* $1 is a filename.',
+'backend-fail-backup'        => 'Parameters:
+* $1 is a filename.',
+'backend-fail-notexists'     => 'Parameters:
+* $1 is a filename.',
+'backend-fail-notsame'       => 'Parameters:
+* $1 is a filename.',
+'backend-fail-invalidpath'   => 'Parameters:
+* $1 is a storage path.',
+'backend-fail-delete'        => 'Parameters:
+* $1 is a file path.',
+'backend-fail-alreadyexists' => 'Parameters:
+* $1 is a filename.',
+'backend-fail-store'         => 'Parameters:
+* $1 is a filename
+* $2 is a storage path.',
+'backend-fail-copy'          => 'Parameters:
+* $1 is a file path
+* $2 is a file path.',
+'backend-fail-move'          => 'Parameters:
+* $1 is a file path
+* $2 is a file path.',
+'backend-fail-read'          => 'Parameters:
+* $1 is a filename.',
+'backend-fail-create'        => 'Parameters:
+* $1 is a filename.',
+
+# Lock manager
+'lockmanager-notlocked'        => 'Parameters:
+* $1 is a resource path (e.g. "mwstore://media-public/a/ab/file.jpg").',
+'lockmanager-fail-closelock'   => 'Parameters:
+* $1 is a resource path (e.g. "mwstore://media-public/a/ab/file.jpg").',
+'lockmanager-fail-deletelock'  => 'Parameters:
+* $1 is a resource path (e.g. "mwstore://media-public/a/ab/file.jpg").',
+'lockmanager-fail-acquirelock' => 'Parameters:
+* $1 is a resource path (e.g. "mwstore://media-public/a/ab/file.jpg").',
+'lockmanager-fail-openlock'    => 'Parameters:
+* $1 is a resource path (e.g. "mwstore://media-public/a/ab/file.jpg").',
+'lockmanager-fail-releaselock' => 'Parameters:
+* $1 is a resource path (e.g. "mwstore://media-public/a/ab/file.jpg").',
+'lockmanager-fail-db-bucket'   => 'Parameters:
+* $1 is a bucket name.',
+'lockmanager-fail-db-release'  => 'Parameters:
+* $1 is a database name.',
+'lockmanager-fail-svr-release' => 'Parameters:
+* $1 is a server name.',
+
 # ZipDirectoryReader
 'zip-unsupported' => "Perhaps translations of 'software' can be used instead of 'features' and 'understood' or 'handled' instead of 'supported'.",
+
+# Special:UploadStash
+'invalid-chunk-offset' => 'Error that can happen if chunks get uploaded out of order.
+As a result of this error, clients can continue from an offset provided or restart the upload.
+Used on [[Special:UploadWizard]].',
 
 # img_auth script messages
 'img-auth-accessdenied' => '[[mw:Manual:Image Authorization|Manual:Image Authorization]]: Access Denied
@@ -1987,7 +2065,6 @@ $1 is the name of the shared repository. On wikimedia sites, $1 is {{msg-mw|shar
 
 # File reversion
 'filerevert'                => '{{Identical|Revert}}',
-'filerevert-backlink'       => '{{optional}}',
 'filerevert-legend'         => '{{Identical|Revert}}',
 'filerevert-intro'          => 'Message displayed when you try to revert a version of a file.
 * $1 is the name of the media
@@ -2008,31 +2085,32 @@ $1 is the name of the shared repository. On wikimedia sites, $1 is {{msg-mw|shar
 {{Identical|Revert}}',
 
 # File deletion
-'filedelete-backlink'         => '{{optional}}',
-'filedelete-legend'           => '{{Identical|Delete}}',
-'filedelete-intro-old'        => 'Message displayed when you try to delete a version of a file.
+'filedelete-legend'            => '{{Identical|Delete}}',
+'filedelete-intro-old'         => 'Message displayed when you try to delete a version of a file.
 * $1 is the name of the media
 * $2 is a date
 * $3 is a hour
 * $4 is a URL and must follow square bracket: [$4',
-'filedelete-comment'          => '{{Identical|Reason}}',
-'filedelete-submit'           => 'Delete button when deleting a file for admins
+'filedelete-comment'           => '{{Identical|Reason}}',
+'filedelete-submit'            => 'Delete button when deleting a file for admins
 
 {{Identical|Delete}}',
-'filedelete-success-old'      => 'Message displayed when you succeed in deleting a version of a file.
+'filedelete-success-old'       => 'Message displayed when you succeed in deleting a version of a file.
 * $1 is the name of the media
 * $2 is a date
 * $3 is a hour',
-'filedelete-otherreason'      => 'Message used when deleting a file. This is the description field for "Other/additional reason" for deletion.
+'filedelete-otherreason'       => 'Message used when deleting a file. This is the description field for "Other/additional reason" for deletion.
 
 {{Identical|Other/additional reason}}',
-'filedelete-reason-otherlist' => 'Message used as default in the dropdown menu in the form for deleting a file. Keeping this message selected assumes that a reason for deletion is specified in the field below.
+'filedelete-reason-otherlist'  => 'Message used as default in the dropdown menu in the form for deleting a file. Keeping this message selected assumes that a reason for deletion is specified in the field below.
 
 {{Identical|Other reason}}',
-'filedelete-reason-dropdown'  => 'Predefined reasons for deleting a file that can be selected in a drop down list. Entries prefixed with one asterisk ("*") are group headers and cannot be selected. Entries prefixed with two asterisks can be selected as reason for deletion.',
-'filedelete-edit-reasonlist'  => 'Shown beneath the file deletion form on the right side. It is a link to [[MediaWiki:Filedelete-reason-dropdown]].
+'filedelete-reason-dropdown'   => 'Predefined reasons for deleting a file that can be selected in a drop down list. Entries prefixed with one asterisk ("*") are group headers and cannot be selected. Entries prefixed with two asterisks can be selected as reason for deletion.',
+'filedelete-edit-reasonlist'   => 'Shown beneath the file deletion form on the right side. It is a link to [[MediaWiki:Filedelete-reason-dropdown]].
 
 {{Identical|Edit delete reasons}}',
+'filedelete-maintenance'       => 'Content of the error page when $wgUploadMaintenance is set to true.',
+'filedelete-maintenance-title' => 'Title of the error page when $wgUploadMaintenance is set to true.',
 
 # MIME search
 'mimesearch'         => 'Title of [[Special:MIMESearch]].',
@@ -2069,7 +2147,7 @@ $1 is the name of the shared repository. On wikimedia sites, $1 is {{msg-mw|shar
 'statistics-header-hooks'      => 'Header of a section on [[Special:Statistics]] containing data provided by MediaWiki extensions',
 'statistics-articles'          => "Used in [[Special:Statistics]].
 
-A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
+A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [//www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
 
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
@@ -2146,6 +2224,8 @@ Possible alternatives to the word 'content' are 'subject matter' or 'wiki subjec
 
 $1 is a page title",
 'wantedfiles'             => 'Name of special page displayed in [[Special:SpecialPages]] and title of [[Special:WantedFiles]].',
+'wantedfiletext-cat'      => 'Message displayed at top of [[special:WantedFiles]]. $1 contains the name of the tracking category for broken files (Including Category prefix). {{msg-mw|wantedfiletext-nocat}} is used if the tracking category is disabled.',
+'wantedfiletext-nocat'    => 'Message displayed at top of [[special:WantedFiles]] when broken file tracking category is disabled. See {{msg-mw|wantedfiletext-cat}}.',
 'wantedtemplates'         => 'The page name of [[Special:WantedTemplates]].',
 'mostlinked'              => 'Name of special page displayed in [[Special:SpecialPages]]',
 'mostlinkedcategories'    => 'Name of special page displayed in [[Special:SpecialPages]]',
@@ -2154,6 +2234,7 @@ $1 is a page title",
 'mostimages'              => 'Name of special page displayed in [[Special:SpecialPages]]',
 'mostrevisions'           => 'Name of special page displayed in [[Special:SpecialPages]]',
 'prefixindex'             => 'The page title of [[Special:PrefixIndex]]. When the user limits the list to a certain namespace, {{msg-mw|allinnamespace}} is used instead.',
+'prefixindex-namespace'   => 'The page title of [[Special:PrefixIndex]] limited to a specific namespace. Similar to {{msg-mw|allinnamespace}}. $1 is the name of the namespace',
 'shortpages'              => 'Name of special page displayed in [[Special:SpecialPages]]',
 'longpages'               => 'Name of special page displayed in [[Special:SpecialPages]]',
 'deadendpages'            => 'Name of special page displayed in [[Special:SpecialPages]]',
@@ -2163,15 +2244,16 @@ $1 is a page title",
 'protectedpages-cascade'  => 'Option in [[Special:ProtectedPages]]',
 'protectedpagestext'      => 'Shown on top of [[Special:ProtectedPages]]',
 'protectedtitles'         => 'Name of special page displayed in [[Special:SpecialPages]]',
-'protectedtitlestext'     => 'Shown on top of list of titles on [[Special:ProtectedTitles]]. If the list is empty the message [[MediaWiki:Protectedtitlesempty]] appears instead of this. See the [http://www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] for more information.',
-'protectedtitlesempty'    => 'Used on [[Special:ProtectedTitles]]. This text appears if the list of protected titles is empty. See the [http://www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] for more information.',
+'protectedtitlestext'     => 'Shown on top of list of titles on [[Special:ProtectedTitles]]. If the list is empty the message [[MediaWiki:Protectedtitlesempty]] appears instead of this. See the [//www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] for more information.',
+'protectedtitlesempty'    => 'Used on [[Special:ProtectedTitles]]. This text appears if the list of protected titles is empty. See the [//www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] for more information.',
 'listusers'               => 'Name of special page displayed in [[Special:SpecialPages]]',
 'listusers-editsonly'     => 'Option in [[Special:ListUsers]].',
 'listusers-creationsort'  => 'Option in [[Special:ListUsers]].',
 'usereditcount'           => 'Shown behind every username on [[Special:ListUsers]].',
 'usercreated'             => 'Used in [[Special:ListUsers]].
 * <code>$1</code> is a date
-* <code>$2</code> is a time',
+* <code>$2</code> is a time
+* <code>$3</code> is the name of the user, for use in GENDER',
 'newpages'                => 'Name of special page displayed in [[Special:SpecialPages]]
 {{Identical|New page}}',
 'newpages-username'       => '{{Identical|Username}}',
@@ -2202,12 +2284,8 @@ The title is {{msg-mw|nopagetitle}}.',
 'booksources-invalid-isbn'  => 'This message is displayed after an invalid ISBN is entered on Special:Booksources.',
 
 # Special:Log
-'specialloguserlabel'  => 'Used in [[Special:Log]].
-
-{{Identical|User}}',
-'speciallogtitlelabel' => 'Used in [[Special:Log]].
-
-{{Identical|Title}}',
+'specialloguserlabel'  => 'Used in [[Special:Log]] as a label for an input field with which the log can be filtered for entries describing actions \'\'performed\'\' by the specified user.  "Carried out" and "done" are possible alternatives for "performed".',
+'speciallogtitlelabel' => 'Used in [[Special:Log]] as a label for an input field with which the log can be filtered.  This filter selects for pages or users on which a log action was performed.',
 'log'                  => 'Name of special page displayed in [[Special:SpecialPages]]',
 'all-logs-page'        => 'Title of [[Special:Log]].',
 'alllogstext'          => 'Header of [[Special:Log]]',
@@ -2230,7 +2308,7 @@ The title is {{msg-mw|nopagetitle}}.',
 'allarticles'       => 'The page title of [[Special:Allpages]]. When the user limit the list to a certain namespace, {{msg-mw|allinnamespace}} is used instead.
 
 {{Identical|All pages}}',
-'allinnamespace'    => 'The page title of [[Special:Allpages]] and [[Special:PrefixIndex]], when the user limits the display to a certain namespace. When not limited, {{msg-mw|allarticles}} and {{msg-mw|prefixindex}} is used respectively.
+'allinnamespace'    => 'The page title of [[Special:Allpages]], when the user limits the display to a certain namespace. When not limited, {{msg-mw|allarticles}} is used respectively.
 
 {{Identical|All pages}}',
 'allnotinnamespace' => 'Presumably intended to be used as a page title of [[Special:Allpages]] and probably also in [[Special:PrefixIndex]] when the user limit the display to other than a certain namespace.
@@ -2388,8 +2466,9 @@ This is a button text used in [[Special:Emailuser]] when called without a (valid
 * $2: username of the recipient',
 
 # User Messenger
-'usermessage-summary' => 'This message is used as an edit summary for any message that is posted because of a system event. Translate "leaving a message" in the sense of: to give a message to someone; to deliver a message somewhere; to deposit.',
-'usermessage-editor'  => 'The user name for the user that is the editor of system messages. See [http://translatewiki.net/wiki/Thread:Support/Message_info_please discussion on Support].',
+'usermessage-summary'  => 'This message is used as an edit summary for any message that is posted because of a system event. Translate "leaving a message" in the sense of: to give a message to someone; to deliver a message somewhere; to deposit.',
+'usermessage-editor'   => 'The user name for the user that is the editor of system messages. See [http://translatewiki.net/wiki/Thread:Support/Message_info_please discussion on Support].',
+'usermessage-template' => '{{optional}}',
 
 # Watchlist
 'watchlist'            => '{{Identical|My watchlist}}',
@@ -2410,13 +2489,19 @@ This is a button text used in [[Special:Emailuser]] when called without a (valid
 'watch'                => 'Name of the Watch tab. Should be in the imperative mood.',
 'watchthispage'        => '{{Identical|Watch this page}}',
 'unwatch'              => 'Label of "Unwatch" tab.',
-'notanarticle'         => "A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
+'notanarticle'         => "A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [//www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
 
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
 {{Identical|Content page}}",
 'watchlist-details'    => 'Message on Special page: My watchlist. This is paired with the message [[Mediawiki:Nowatchlist]] which appears instead of Watchlist-details when $1 is 0.',
 'wlheader-showupdated' => 'This message shows up near top of users watchlist page.',
+'wlnote'               => 'Used on [[Special:Watchlist]] when the maximum number of days is specified.
+Similar to {{msg-mw|rcnote}} which is used on [[Special:RecentChanges]].
+* $1 is the number of changes shown,
+* $2 is the number of days for which the changes are shown,
+* $3 is a date alone,
+* $4 is a time alone.',
 'wlshowlast'           => "Appears on [[Special:Watchlist]]. Variable $1 gives a choice of different numbers of hours, $2 gives a choice of different numbers of days and $3 is '{{int:watchlistall2}}' ([[Mediawiki:watchlistall2/{{SUBPAGENAME}}]]). Clicking on your choice changes the list of changes you see (without changing the default in my preferences).",
 'watchlist-options'    => 'Legend of the fieldset of [[Special:Watchlist]]',
 
@@ -2445,7 +2530,6 @@ Possible alternatives to the word 'content' are 'subject matter' or 'wiki subjec
 'delete-confirm'         => 'The title of the form to delete a page.
 
 $1 = the name of the page',
-'delete-backlink'        => '{{optional}}',
 'delete-legend'          => '{{Identical|Delete}}',
 'historywarning'         => 'Warning when about to delete a page that has history.
 $1 is the <b>approximate</b> number of revisions that the page has, the message should not claim to give an exact count.',
@@ -2509,10 +2593,10 @@ In other cases the message {{msg-mw|revertpage}} is used.',
 Example:
 <code>00:51, 16 September 2010 Siebrand +(Talk • contribs • block) moved protection settings from "User:Siebrand/prot-move" to "User:Siebrand/prot-moved" ‎ (User:Siebrand/prot-move moved to User:Siebrand/prot-moved: prot_move test.)</code>',
 'protect-title'               => 'Title for the protection form. $1 is the title of the page to be (un)protected.',
+'protect-title-notallowed'    => 'Same as {{msg-mw|protect-title}}, but when the user does not have the right to change protection levels.',
 'prot_1movedto2'              => 'Message description: [[mw:Manual:Interface/1movedto2]]',
-'protect-backlink'            => '{{optional|Translate it only if you have to change it, i.e. for RTL wikis}}
-
-Shown as subtitle of the protection form. $1 is the title of the page to be (un)protected.',
+'protect-badnamespace-title'  => 'Title of error page when trying to access action=protect on a non-protectable namespace (currently this only for the MediaWiki: namespace).',
+'protect-badnamespace-text'   => 'Content of the error page that goes with {{msg-mw|protect-badnamespace-title}}.',
 'protect-legend'              => 'Legend of the fieldset around the input form of the protection form.',
 'protectcomment'              => '{{Identical|Reason}}',
 'protectexpiry'               => '{{Identical|Expires}}',
@@ -2554,7 +2638,7 @@ This message was something like "unlock move protection" in the past.',
 
 {{Identical|Infinite}}",
 'restriction-type'            => 'Used on [[Special:ProtectedPages]]. The text next to a drop-down box. See [[mw:Manual:Administrators|MediaWiki Manual]] for more information on protection.',
-'restriction-level'           => 'Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. The text next to a drop-down box. See the [http://www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.',
+'restriction-level'           => 'Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. The text next to a drop-down box. See the [//www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.',
 'minimum-size'                => 'Used in [[Special:Protectedpages]] as a pair of radio buttons, with [[MediaWiki:Maximum-size]]. There is an input box to specify the minimum bites of the projected pages listed.',
 'maximum-size'                => 'Used in [[Special:Protectedpages]] as a pair of radio buttons, with [[MediaWiki:Minimum-size]]. There is an input box to specify the maximum bites of the projected pages listed.',
 'pagesize'                    => 'Used on [[Special:ProtectedPages]]. See the help page on [http://meta.wikimedia.org/wiki/Protect Meta] for more information on protection.',
@@ -2566,14 +2650,14 @@ This message was something like "unlock move protection" in the past.',
 'restriction-move'   => "Used on [[Special:ProtectedPages]]. Option in the 'permission' drop-down box.
 
 {{Identical|Move}}",
-'restriction-create' => 'Used on [[Special:ProtectedPages]]. An option in a drop-down box. See the help pages on [http://www.mediawiki.org/wiki/Project:Protected_titles MediaWiki] and [http://meta.wikimedia.org/wiki/Protect Meta] for more information on protection.
+'restriction-create' => 'Used on [[Special:ProtectedPages]]. An option in a drop-down box. See the help pages on [//www.mediawiki.org/wiki/Project:Protected_titles MediaWiki] and [http://meta.wikimedia.org/wiki/Protect Meta] for more information on protection.
 
 {{Identical|Create}}',
 
 # Restriction levels
-'restriction-level-sysop'         => "Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. An option in the drop-down box 'Restriction level' and in brackets after each page name entry. See the [http://www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.",
-'restriction-level-autoconfirmed' => "Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. An option in the drop-down box 'Restriction level', and in brackets after each page name entry. See the [http://www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.",
-'restriction-level-all'           => "Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. An option in the drop-down box 'Restriction level'. See the [http://www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.",
+'restriction-level-sysop'         => "Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. An option in the drop-down box 'Restriction level' and in brackets after each page name entry. See the [//www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.",
+'restriction-level-autoconfirmed' => "Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. An option in the drop-down box 'Restriction level', and in brackets after each page name entry. See the [//www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.",
+'restriction-level-all'           => "Used on [[Special:ProtectedPages]] and [[Special:ProtectedTitles]]. An option in the drop-down box 'Restriction level'. See the [//www.mediawiki.org/wiki/Project:Protected_titles help page on Mediawiki] and on [http://meta.wikimedia.org/wiki/Protect Meta] for more information.",
 
 # Undelete
 'undelete'                   => 'Name of special page for admins as displayed in [[Special:SpecialPages]].
@@ -2604,7 +2688,9 @@ This message was something like "unlock move protection" in the past.',
 {{Identical|Reset}}',
 'undeleteinvert'             => '{{Identical|Invert selection}}',
 'undeletecomment'            => '{{Identical|Reason}}',
+'undelete-search-title'      => 'Page title when showing the search form in Special:Undelete',
 'undelete-search-submit'     => '{{Identical|Search}}',
+'undelete-error'             => 'Page title when a page could not be undeleted',
 'undelete-show-file-confirm' => 'A confirmation message shown on Special:Undelete when the request does not contain a valid token (e.g. when a user clicks a link received in mail).
 * <code>$1</code> is the name of the file being undeleted.
 * <code>$2</code> is the date of the displayed revision.
@@ -2665,7 +2751,6 @@ Anon version: {{msg-mw|Sp-contributions-blocked-notice-anon}}',
 'whatlinkshere'            => 'The text of the link in the toolbox (on the left, below the search menu) going to [[Special:WhatLinksHere]].',
 'whatlinkshere-title'      => "Title of the special page [[Special:WhatLinksHere]]. This page appears when you click on the 'What links here' button in the toolbox. $1 is the name of the page concerned.",
 'whatlinkshere-page'       => '{{Identical|Page}}',
-'whatlinkshere-backlink'   => '{{optional}}',
 'linkshere'                => "This message is the header line of the [[Special:WhatLinksHere/$1]] page generated by clicking 'What links here' in the sidebar toolbox. It is followed by a navigation bar built using {{msg-mw|Viewprevnext}}.",
 'nolinkshere'              => 'This appears on Whatlinkshere pages which are empty.
 
@@ -2709,7 +2794,6 @@ Parameter $1 is the message "[[MediaWiki:Hide/{{SUBPAGENAME}}|hide]]" or "[[Medi
 'blockip-legend'              => 'Legend/Header for the fieldset around the input form of [[Special:BlockIP]].
 
 {{Identical|Block user}}',
-'ipaddress'                   => '{{Identical|IP Address}}',
 'ipadressorusername'          => '{{Identical/IP address or username}}',
 'ipbexpiry'                   => '{{Identical|Expiry}}',
 'ipbreason'                   => 'Label of the block reason dropdown in [[Special:BlockIP]] and the unblock reason textfield in [{{fullurl:Special:IPBlockList|action=unblock}} Special:IPBlockList?action=unblock].
@@ -2923,7 +3007,8 @@ Parameters:
 'allmessages-filter-unmodified' => 'Used in [[Special:AllMessages]].',
 'allmessages-filter-all'        => 'Used in [[Special:AllMessages]].
 {{Identical|All}}',
-'allmessages-filter-modified'   => 'Used in [[Special:AllMessages]].',
+'allmessages-filter-modified'   => 'Used in [[Special:AllMessages]].
+{{Identical|Modified}}',
 'allmessages-prefix'            => 'Used in [[Special:AllMessages]].',
 'allmessages-language'          => 'Used on [[Special:Allmessages]].
 
@@ -2960,9 +3045,13 @@ Import failed: XML import parse failure at line 1, col 1 (byte 3; "- <mediawiki 
 
 Related messages: {{msg|right-importupload|pl=yes}} (the user right for this).',
 'import-error-edit'        => 'Import error message displayed when importing user has no edit rights for a page. Parameters:
-* $1 is a page name.',
+* $1 is a page name.
+See also:
+* {{msg-mw|import-error-create}}',
 'import-error-create'      => 'Import error message displayed when importing user has no create rights for a page. Parameters:
-* $1 is a page name.',
+* $1 is a page name.
+See also:
+* {{msg-mw|import-error-edit}}',
 
 # Import log
 'importlogpage'          => '',
@@ -2982,7 +3071,7 @@ Related messages: {{msg|right-importupload|pl=yes}} (the user right for this).',
 'javascripttest-qunit-heading'             => '{{Optional}}',
 
 # Tooltip help for the actions
-'tooltip-pt-userpage'             => 'This text appears in the tool-tip when you hover the mouse over your the tab with you User name on it',
+'tooltip-pt-userpage'             => 'Tooltip shown when hovering the mouse over the link to your own User page in the upper-side personal toolbox.',
 'tooltip-pt-mytalk'               => 'Tooltip shown when hovering over the "my talk" link in your personal toolbox (upper right side).',
 'tooltip-pt-preferences'          => 'Tooltip shown when hovering over the "my preferences" ([[MediaWiki:Mypreferences]]) link in your personal toolbox (upper right side).
 
@@ -2995,7 +3084,7 @@ Related messages: {{msg|right-importupload|pl=yes}} (the user right for this).',
 {{Identical|Log out}}',
 'tooltip-ca-talk'                 => "Tooltip shown when hovering over the \"[[MediaWiki:Talk/{{SUBPAGENAME}}|{{int:talk}}]]\" tab.
 
-A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For a technical definition of 'content namespaces' see [http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
+A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For a technical definition of 'content namespaces' see [//www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
 
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
@@ -3029,7 +3118,7 @@ Possible alternatives to the word 'content' are 'subject matter' or 'wiki subjec
 'tooltip-t-emailuser'             => 'Tooltip shown when hovering over the {{msg|emailuser}} link in the toolbox (sidebar, below).',
 'tooltip-t-upload'                => 'Tooltip shown when hovering over the link to upload files shown in the side bar menu on all pages.',
 'tooltip-t-specialpages'          => 'The tooltip when hovering over the link "[[MediaWiki:Specialpages/{{SUBPAGENAME}}|{{int:specialpages}}]]" going to a list of all special pages available in the wiki.',
-'tooltip-ca-nstab-main'           => "A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
+'tooltip-ca-nstab-main'           => "A 'content page' is a page that forms part of the purpose of the wiki. It includes the main page and pages in the main namespace and any other namespaces that are included when the wiki is customised. For example on Wikimedia Commons 'content pages' include pages in the file and category namespaces. On Wikinews 'content pages' include pages in the Portal namespace. For technical definition of 'content namespaces' see [//www.mediawiki.org/wiki/Manual:Using_custom_namespaces#Content_namespaces Mediawiki].
 
 Possible alternatives to the word 'content' are 'subject matter' or 'wiki subject' or 'wiki purpose'.
 
@@ -3054,13 +3143,44 @@ If the length of the translated message is over 60 characters (including spaces)
 {{Identical|Undo}}{{Identical|Revert}}',
 
 # Stylesheets
-'common.css'   => 'CSS applied to all users.',
-'monobook.css' => 'CSS applied to users using Monobook skin.',
-'handheld.css' => 'Style that can be applied on [[w:handheld devices|handheld devices]] (e.g. mobile phones), <code>$wgHandheldStyle</code> is an optional configuration variable which specifies a style sheet file for handheld devices.',
+'common.css'              => '{{optional}}
+CSS applied to all users.',
+'standard.css'            => '{{optional}}',
+'nostalgia.css'           => '{{optional}}',
+'cologneblue.css'         => '{{optional}}',
+'monobook.css'            => '{{optional}}
+CSS applied to users using Monobook skin.',
+'myskin.css'              => '{{optional}}',
+'chick.css'               => '{{optional}}',
+'simple.css'              => '{{optional}}',
+'modern.css'              => '{{optional}}',
+'vector.css'              => '{{optional}}',
+'print.css'               => '{{optional}}',
+'handheld.css'            => '{{optional}}
+Style that can be applied on [[w:handheld devices|handheld devices]] (e.g. mobile phones), <code>$wgHandheldStyle</code> is an optional configuration variable which specifies a style sheet file for handheld devices.',
+'noscript.css'            => '{{optional}}',
+'group-autoconfirmed.css' => '{{optional}}',
+'group-bot.css'           => '{{optional}}',
+'group-sysop.css'         => '{{optional}}',
+'group-bureaucrat.css'    => '{{optional}}',
 
 # Scripts
-'common.js'   => 'JS for all users.',
-'monobook.js' => 'JS for users using Monobook skin.',
+'common.js'              => '{{optional}}
+JS for all users.',
+'standard.js'            => '{{optional}}',
+'nostalgia.js'           => '{{optional}}',
+'cologneblue.js'         => '{{optional}}',
+'monobook.js'            => '{{optional}}
+JS for users using Monobook skin.',
+'myskin.js'              => '{{optional}}',
+'chick.js'               => '{{optional}}',
+'simple.js'              => '{{optional}}',
+'modern.js'              => '{{optional}}',
+'vector.js'              => '{{optional}}',
+'group-autoconfirmed.js' => '{{optional}}',
+'group-bot.js'           => '{{optional}}',
+'group-sysop.js'         => '{{optional}}',
+'group-bureaucrat.js'    => '{{optional}}',
 
 # Attribution
 'anonymous'        => 'This message is shown when viewing the credits of a page (example: {{fullurl:Main Page|action=credits}}). Note that this action is disabled by default (currently enabled on translatewiki.net).
@@ -3135,6 +3255,7 @@ See also {{msg-mw|Anonuser}} and {{msg-mw|Siteusers}}.',
 'skinname-chick'       => '{{optional}}',
 'skinname-simple'      => '{{optional}}',
 'skinname-modern'      => '{{optional}}',
+'skinname-vector'      => '{{optional}}',
 
 # Patrolling
 'markedaspatrolledtext' => '{{Identical|Markedaspatrolled}}',
@@ -3846,7 +3967,8 @@ See: http://www.awaresystems.be/imaging/tiff/tifftags/ycbcrpositioning.html',
 'exif-dc-contributor' => 'People who helped make the resource, but are secondary in contribution to the author.',
 'exif-dc-coverage'    => '"The extent or scope of the resource" see dc:coverage in http://www.adobe.com/content/dam/Adobe/en/devnet/xmp/pdfs/XMPSpecificationPart2.pdf',
 'exif-dc-date'        => 'One or more dates associated with the image. How they are associated is not really defined. From the dc:date XMP property.',
-'exif-dc-publisher'   => 'One or more publisher of resource',
+'exif-dc-publisher'   => 'One or more publisher of resource.
+{{Identical|Publisher}}',
 'exif-dc-relation'    => "Something related to this image. Often a list of url's to related images.",
 'exif-dc-rights'      => 'Copyright information about the image/media given in informal language.',
 'exif-dc-source'      => 'Source of the image. This is another image that this image is based on. This does not refer to the person who provided the image.',
@@ -3863,7 +3985,8 @@ $1 is maxaperture in APEX units (APEX aperture units = 2log<sub>2</sub>(f-number
 'exif-iimcategory-clj' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
 'exif-iimcategory-dis' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
 'exif-iimcategory-fin' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
-'exif-iimcategory-edu' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
+'exif-iimcategory-edu' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}.
+{{Identical|Education}}',
 'exif-iimcategory-evn' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
 'exif-iimcategory-hth' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
 'exif-iimcategory-hum' => 'Displayed as part of the iimcategory field if the 3 letter code is recognized, or as part {{msg-mw|exif-subjectnewscode-value}}',
@@ -3952,31 +4075,6 @@ See also [[MediaWiki:Confirmemail_body_changed]].
 'confirmemail_invalidated'  => 'This is the text of the special page [[Special:InvalidateEmail|InvalidateEmail]] (with the title in {{msg-mw|Invalidateemail}}) where user goes if he chooses the cancel e-mail confirmation link from the confirmation e-mail.',
 'invalidateemail'           => "This is the '''name of the special page''' where user goes if he chooses the cancel e-mail confirmation link from the confirmation e-mail.",
 
-# Trackbacks
-'trackbackbox'     => '* $1 is the content of [[MediaWiki:Trackbackexcerpt]] or [[MediaWiki:Trackback]], depending if the trackback has an excerpt
-
-{{doc-important|Do not remove the linebreak. $1 has to be the first character on a new line because it contains wiki markup}}
-
-For information on trackback see [http://www.mediawiki.org/wiki/Manual:$wgUseTrackbacks mediawiki manual].',
-'trackback'        => '{{optional}}
-
-Do \'\'not\'\' change the leading ;  and the first : as it is wiki markup.
-
-* $1: title of the trackback
-* $2: URL of the trackback
-* <span style="color:grey;">$3: unused in this message, see [[MediaWiki:trackbackexcerpt]] instead</span>
-* $4: name of the trackback
-* $5: a link to delete the trackback. The content of [[MediaWiki:Trackbackremove]] is injected here.',
-'trackbackexcerpt' => "{{optional}}
-
-Do ''not'' change the leading ;  and the first : as it is wiki markup.
-
-* $1: title of the trackback
-* $2: URL of the trackback
-* $3: an excerpt of the trackback
-* $4: name of the trackback
-* $5: a link to delete the trackback. The content of [[MediaWiki:Trackbackremove]] is injected here.",
-
 'unit-pixel' => '{{optional}}',
 
 # action=purge
@@ -3997,6 +4095,7 @@ Change it only if your language uses another character for ':' or it needs an ex
 This is a string which is (usually) put between words of the language. It is used, e.g. when messages are concatenated (appended to each other). Note that you must express a space as html entity &amp;#32; because the editing and updating process strips leading and trailing spaces from messages.
 
 Most languages use a space, but some Asian languages, such as Thai and Chinese, do not.',
+'ellipsis'            => '{{optional}}',
 'percent'             => '{{optional}}',
 'parentheses'         => '{{optional}}',
 
@@ -4020,14 +4119,44 @@ Most languages use a space, but some Asian languages, such as Thai and Chinese, 
 'autosumm-new'     => 'The auto summary when creating a new page. $1 are the first X number of characters of the new page.',
 
 # Size units
-'size-bytes'     => '{{optional}}
+'size-bytes'      => '{{optional}}
 Size (of a page, typically) in bytes.',
-'size-kilobytes' => '{{optional}}
+'size-kilobytes'  => '{{optional}}
 Size (of a page, typically) in kibibytes (1 kibibyte = 1024 bytes).',
-'size-megabytes' => '{{optional}}
+'size-megabytes'  => '{{optional}}
 Size (of a file, typically) in mebibytes (1 mebibyte = 1024×1024 bytes).',
-'size-gigabytes' => '{{optional}}
+'size-gigabytes'  => '{{optional}}
 Size (of a file, typically) in gibibytes (1 gibibyte = 1024×1024×1024 bytes).',
+'size-terabytes'  => '{{optional}}
+Size (of a file, typically) in tebibytes (1 tebibytes = 1024×1024×1024×1024 bytes).',
+'size-petabytes'  => '{{optional}}
+Size (of a file, typically) in pebibytes (1 pebibytes = 1024×1024×1024×1024×1024 bytes).',
+'size-exabytes'   => '{{optional}}
+Size (of a file, typically) in exbibytes (1 exbibytes = 1024×1024×1024×1024×1024×1024 bytes).',
+'size-zetabytes'  => '{{optional}}
+Size (of a file, typically) in zebibytes (1 zebibytes = 1024×1024×1024×1024×1024×1024×1024 bytes).',
+'size-yottabytes' => '{{optional}}
+Size (of a file, typically) in yobibytes (1 yobibytes = 1024×1024×1024×1024×1024×1024×1024×1024 bytes).',
+
+# Bitrate units
+'bitrate-bits'      => '{{optional}}
+Bitrate (of a file, typically) in bits.',
+'bitrate-kilobits'  => '{{optional}}
+Bitrate (of a file, typically) in kilobits (1 kilobit = 1000 bits).',
+'bitrate-megabits'  => '{{optional}}
+Bitrate (of a file, typically) in megabits (1 megabits = 1000×1000 bits).',
+'bitrate-gigabits'  => '{{optional}}
+Bitrate (of a file, typically) in gibibits (1 gigabits = 1000×1000×1000 bits).',
+'bitrate-terabits'  => '{{optional}}
+Bitrate (of a file, typically) in terabits (1 terabits = 1000×1000×1000×1000 bits).',
+'bitrate-petabits'  => '{{optional}}
+Bitrate (of a file, typically) in petabits (1 petabits = 1000×1000×1000×1000×1000 bits).',
+'bitrate-exabits'   => '{{optional}}
+Bitrate (of a file, typically) in exabits (1 exabits = 1000×1000×1000×1000×1000×1000 bits).',
+'bitrate-zetabits'  => '{{optional}}
+Bitrate (of a file, typically) in zetabits (1 zetabits = 1000×1000×1000×1000×1000×1000×1000 bits).',
+'bitrate-yottabits' => '{{optional}}
+Bitrate (of a file, typically) in yottabits (1 yottabits = 1000×1000×1000×1000×1000×1000×1000×1000 bits).',
 
 # Live preview
 'livepreview-loading' => '{{Identical|Loading}}',
@@ -4173,7 +4302,7 @@ Name of month in Hebrew calender.',
 
 # Signatures
 'signature'    => "This will be substituted in the signature (~<nowiki></nowiki>~~ or ~~<nowiki></nowiki>~~ excluding timestamp)
-* $1: the username that are currently login
+* $1: the username that is currently login
 * $2: the customized signature which is specified in [[Special:Preferences|user's preferences]] as non-raw",
 'timezone-utc' => '{{optional}}',
 
@@ -4203,7 +4332,8 @@ There are no such extensions here, so look at [[wikipedia:Special:Version]] for 
 'version-hook-name'             => 'Shown in [[Special:Version]]',
 'version-hook-subscribedby'     => 'Shown in [[Special:Version]]',
 'version-version'               => '{{Identical|Version}}',
-'version-svn-revision'          => 'This is being used in [[Special:Version]], preceeding the subversion revision numbers of the extensions loaded inside brackets, like this: "({{int:version-revision}} r012345")
+'version-svn-revision'          => '{{optional}}
+This is being used in [[Special:Version]], preceeding the subversion revision numbers of the extensions loaded inside brackets, like this: "({{int:version-revision}} r012345")
 
 {{Identical|Revision}}',
 'version-license'               => '{{Identical|License}}',
@@ -4211,7 +4341,7 @@ There are no such extensions here, so look at [[wikipedia:Special:Version]] for 
 *$1: the current year
 *$2: a list of selected MediaWiki authors',
 'version-poweredby-others'      => 'Used at the very end of {{msg-mw|version-poweredby-credits}} on [[Special:Version]]. First, there\'s a long list of selected MediaWiki authors, then the word "and" (from {{msg-mw|and}}) follows and then this translation, which is supposed to credit the many other people than developer helping with MediaWiki.',
-'version-license-info'          => '[[wikipedia:GNU GPL|GNU GPL]] notice shown at [[Special:Version]]. See http://www.gnu.org/licenses/old-licenses/gpl-2.0-translations.html for available translations.',
+'version-license-info'          => '[[wikipedia:GNU GPL|GNU GPL]] notice shown at [[Special:Version]]. See //www.gnu.org/licenses/old-licenses/gpl-2.0-translations.html for available translations.',
 'version-software-product'      => 'Shown in [[Special:Version]]',
 'version-software-version'      => '{{Identical|Version}}',
 
@@ -4274,7 +4404,7 @@ $1 is the name of the requested file.',
 Definition of [http://en.wikipedia.org/wiki/Regular_expression regular expression] on Wikipedia.",
 
 # Special:Tags
-'tags'                    => "Shown on [[Special:Specialpages]] for page listing the tags that the software may mark an edit with, and their meaning. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].
+'tags'                    => "Shown on [[Special:Specialpages]] for page listing the tags that the software may mark an edit with, and their meaning. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].
 
 It appears that the word 'valid' describes 'tags', not 'change'. It also appears that you could use the term 'defined' instead of 'valid', or perhaps use a phrase meaning 'Change tags in use'.",
 'tag-filter'              => 'Caption of a filter shown on lists of changes (e.g. [[Special:Log]], [[Special:Contributions]], [[Special:Newpages]], [[Special:Recentchanges]], [[Special:Recentchangeslinked]], page histories)',
@@ -4282,14 +4412,14 @@ It appears that the word 'valid' describes 'tags', not 'change'. It also appears
 
 {{Identical|Filter}}',
 'tags-title'              => 'The title of [[Special:Tags]]',
-'tags-intro'              => 'Explanation on top of [[Special:Tags]]. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
-'tags-tag'                => 'Caption of a column in [[Special:Tags]]. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
-'tags-display-header'     => 'Caption of a column in [[Special:Tags]]. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
-'tags-description-header' => 'Caption of a column in [[Special:Tags]]. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
-'tags-hitcount-header'    => 'Caption of a column in [[Special:Tags]]. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
+'tags-intro'              => 'Explanation on top of [[Special:Tags]]. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
+'tags-tag'                => 'Caption of a column in [[Special:Tags]]. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
+'tags-display-header'     => 'Caption of a column in [[Special:Tags]]. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
+'tags-description-header' => 'Caption of a column in [[Special:Tags]]. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
+'tags-hitcount-header'    => 'Caption of a column in [[Special:Tags]]. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].',
 'tags-edit'               => '{{Identical|Edit}}
 Used on [[Special:Tags]]. Verb. Used as display text on a link to create/edit a description.',
-'tags-hitcount'           => 'Shown in the “Tagged changes” column in [[Special:Tags]]. For more information on tags see [http://www.mediawiki.org/wiki/Manual:Tags Mediawiki].
+'tags-hitcount'           => 'Shown in the “Tagged changes” column in [[Special:Tags]]. For more information on tags see [//www.mediawiki.org/wiki/Manual:Tags Mediawiki].
 
 * <code>$1</code> is the number of changes marked with the tag',
 
@@ -4404,5 +4534,27 @@ Parameter $4, the target page, is also not visible to parser functions.',
 'logentry-patrol-patrol-auto'         => '{{Logentry}}
 * $4 is a formatted revision number, maybe linked to the diff.
 "Automatically" refers to users with autopatrol right who mark revisions automatically patrolled when editing.',
+'logentry-newusers-create2'           => '{{Logentry}}
+
+$4 is the gender of the target user.',
+
+# Feedback
+'feedback-bugornote' => 'When feedback dialog box is opened, this introductory message in small print explains the options to report a bug or add simple feedback. We expect that people in a hurry will not read this.',
+'feedback-subject'   => 'Label for a text input
+{{Identical|Subject}}',
+'feedback-message'   => 'Label for a textarea; signature referrs to a Wikitext signature.',
+'feedback-cancel'    => 'Button label
+{{Identical|Cancel}}',
+'feedback-submit'    => 'Button label
+{{Identical|Submit}}',
+'feedback-adding'    => 'Progress notice',
+'feedback-error1'    => 'Error message, appears when an unknown error occurs submitting feedback',
+'feedback-error2'    => 'Error message, appears when we could not add feedback',
+'feedback-error3'    => 'Error message, appears when we lose our connection to the wiki',
+'feedback-thanks'    => 'Thanks message, appears if feedback was successful',
+'feedback-close'     => 'Button label
+{{Identical|Done}}',
+'feedback-bugcheck'  => 'Message that appears before the user submits a bug, reminding them to check for known bugs.',
+'feedback-bugnew'    => 'Button label - asserts that the user has checked for existing bugs. When clicked will launch a bugzilla form to add a new bug in a new tab or window',
 
 );

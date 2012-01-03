@@ -362,7 +362,6 @@ Hueli tlein āquin ōquipolo achtopa.',
 'badtitletext'        => 'Zāzanilli ticnequi in ītōca cah ahcualli, ahtlein quipiya nozo ahcualtzonhuiliztli interwiki tōcāhuicpa.
 Hueliz quimpiya tlahtōl tlein ahmo mohuelītih motequitiltia tōcāpan.',
 'viewsource'          => 'Tiquittāz tlahtōlcaquiliztilōni',
-'viewsourcefor'       => '$1 ītechcopa',
 'actionthrottled'     => 'Tlachīhualiztli ōmotzacuili',
 'viewsourcetext'      => 'Tihuelīti tiquitta auh ticcopīna inīn zāzanilli ītlahtōlcaquiliztilōni:',
 'sqlhidden'           => '(Tlatēmoliztli SQL omotlāti)',
@@ -474,9 +473,6 @@ Occeppa xicalaqui niman ticmatīz.',
 'summary-preview'                  => 'Tlahcuilōltōn achtochīhualiztli:',
 'blockedtitle'                     => 'Ōmotzacuili tlatequitiltilīlli',
 'blockednoreason'                  => 'ahmo cah īxtlamatiliztli',
-'blockedoriginalsource'            => "Nicān motta '''$1''' ītlahtōlcaquiliztilōni:",
-'blockededitsource'                => "'''Mopatlaliz''' ītlahtōl īpan '''$1''' motta nicān:",
-'whitelistedittitle'               => 'Tihuīquilia timocalaqui ic patla',
 'whitelistedittext'                => 'Tihuīquilia $1 ic ticpatla zāzaniltin.',
 'nosuchsectiontitle'               => 'In xeliuhcāyōtl ahmo ōquināmic',
 'loginreqtitle'                    => 'Ximocalaqui',
@@ -908,7 +904,7 @@ Timitztlātlauhtiah, xitlahcuiloa occē tōcāitl.",
 'statistics-files'         => 'Tlahcuilōlli ōmoquetz',
 'statistics-views-peredit' => 'Tlahpololiztli ic tlapatlaliztli',
 
-'disambiguations' => 'Ōmetōcāitl zāzaniltin',
+'disambiguations' => 'Āmatl tlein motzonhuiliah īca tlahtōlmelāhuacātlāliztli āmatl',
 
 'doubleredirects' => 'Ōntetl tlacuepaliztli',
 
@@ -992,7 +988,7 @@ Nò mà mỏta in tlèn [[Special:WantedCategories|ìpan kineki tlaìxmatkàtlà
 'special-categories-sort-abc'   => 'tlahtōlcopa',
 
 # Special:LinkSearch
-'linksearch'    => 'Calān tzonhuiliztli',
+'linksearch'    => 'Calān tzonhuiliztli tlatemoliztli',
 'linksearch-ns' => 'Tōcātzin:',
 'linksearch-ok' => 'Tictēmōz',
 
@@ -1156,7 +1152,6 @@ Xiquitta $2 ic yancuīc tlapololiztli.',
 # Block/unblock
 'blockip'            => 'Tiquitzacuilīz tlatequitiltilīlli',
 'blockip-legend'     => 'Tiquitzacuilīz tlatequitiltilīlli',
-'ipaddress'          => 'IP:',
 'ipadressorusername' => 'IP nozo tlatequitiltilīlli ītōcā:',
 'ipbexpiry'          => 'Motlamia:',
 'ipbreason'          => 'Īxtlamatiliztli:',
@@ -1417,9 +1412,6 @@ Niman tihuelīti [[Special:UserLogin|timocalaqui]] auh ticpactiāz huiquitica.',
 
 # Scary transclusion
 'scarytranscludetoolong' => '[In URL achi huel huēiyac ca]',
-
-# Trackbacks
-'trackbackremove' => '([$1 Ticpolōz])',
 
 # Delete conflict
 'recreate' => 'Ticchīhuāz occeppa',

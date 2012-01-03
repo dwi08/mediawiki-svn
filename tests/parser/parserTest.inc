@@ -105,6 +105,9 @@ class ParserTest {
 
 		$this->showOutput = isset( $options['show-output'] );
 
+		if ( isset( $options['filter'] ) ) {
+			$options['regex'] = $options['filter'];
+		}
 
 		if ( isset( $options['regex'] ) ) {
 			if ( isset( $options['record'] ) ) {
@@ -136,7 +139,8 @@ class ParserTest {
 			$wgUser, $wgLang, $wgOut, $wgRequest, $wgStyleDirectory, $wgEnableParserCache,
 			$wgNamespaceAliases, $wgNamespaceProtection, $wgLocalFileRepo,
 			$parserMemc, $wgThumbnailScriptPath, $wgScriptPath,
-			$wgArticlePath, $wgStyleSheetPath, $wgScript, $wgStylePath, $wgExtensionAssetsPath;
+			$wgArticlePath, $wgStyleSheetPath, $wgScript, $wgStylePath, $wgExtensionAssetsPath,
+			$wgMainCacheType, $wgMessageCacheType, $wgParserCacheType;
 
 		$wgScript = '/index.php';
 		$wgScriptPath = '/';
@@ -146,29 +150,47 @@ class ParserTest {
 		$wgExtensionAssetsPath = '/extensions';
 		$wgThumbnailScriptPath = false;
 		$wgLocalFileRepo = array(
-			'class' => 'LocalRepo',
-			'name' => 'local',
-			'directory' => wfTempDir() . '/test-repo',
-			'url' => 'http://example.com/images',
-			'deletedDir' => wfTempDir() . '/test-repo/delete',
-			'hashLevels' => 2,
+			'class'           => 'LocalRepo',
+			'name'            => 'local',
+			'url'             => 'http://example.com/images',
+			'hashLevels'      => 2,
 			'transformVia404' => false,
+			'backend'         => new FSFileBackend( array(
+				'name'        => 'local-backend',
+				'lockManager' => 'fsLockManager',
+				'containerPaths' => array(
+					'media-public'  => wfTempDir() . '/test-repo/public',
+					'media-thumb'   => wfTempDir() . '/test-repo/thumb',
+					'media-temp'    => wfTempDir() . '/test-repo/temp',
+					'media-deleted' => wfTempDir() . '/test-repo/delete',
+				)
+			) )
 		);
 		$wgNamespaceProtection[NS_MEDIAWIKI] = 'editinterface';
 		$wgNamespaceAliases['Image'] = NS_FILE;
 		$wgNamespaceAliases['Image_talk'] = NS_FILE_TALK;
 
+		// XXX: tests won't run without this (for CACHE_DB)
+		if ( $wgMainCacheType === CACHE_DB ) {
+			$wgMainCacheType = CACHE_NONE;
+		}
+		if ( $wgMessageCacheType === CACHE_DB ) {
+			$wgMessageCacheType = CACHE_NONE;
+		}
+		if ( $wgParserCacheType === CACHE_DB ) {
+			$wgParserCacheType = CACHE_NONE;
+		}
 
 		$wgEnableParserCache = false;
 		DeferredUpdates::clearPendingUpdates();
-		$wgMemc = wfGetMainCache();
+		$wgMemc = wfGetMainCache(); // checks $wgMainCacheType
 		$messageMemc = wfGetMessageCacheStorage();
 		$parserMemc = wfGetParserCacheStorage();
 
 		// $wgContLang = new StubContLang;
 		$wgUser = new User;
 		$context = new RequestContext;
-		$wgLang = $context->getLang();
+		$wgLang = $context->getLanguage();
 		$wgOut = $context->getOutput();
 		$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
 		$wgRequest = $context->getRequest();
@@ -424,10 +446,10 @@ class ParserTest {
 		}
 
 		$opts = $this->parseOptions( $opts );
-		$this->setupGlobals( $opts, $config );
+		$context = $this->setupGlobals( $opts, $config );
 
-		$user = new User();
-		$options = ParserOptions::newFromUser( $user );
+		$user = $context->getUser();
+		$options = ParserOptions::newFromContext( $context );
 
 		if ( isset( $opts['title'] ) ) {
 			$titleText = $opts['title'];
@@ -471,10 +493,9 @@ class ParserTest {
 			if ( isset( $opts['ill'] ) ) {
 				$out = $this->tidy( implode( ' ', $output->getLanguageLinks() ) );
 			} elseif ( isset( $opts['cat'] ) ) {
-				global $wgOut;
-
-				$wgOut->addCategoryLinks( $output->getCategories() );
-				$cats = $wgOut->getCategoryLinks();
+				$outputPage = $context->getOutput();
+				$outputPage->addCategoryLinks( $output->getCategories() );
+				$cats = $outputPage->getCategoryLinks();
 
 				if ( isset( $cats['normal'] ) ) {
 					$out = $this->tidy( implode( ' ', $cats['normal'] ) );
@@ -609,10 +630,19 @@ class ParserTest {
 			'wgLocalFileRepo' => array(
 				'class' => 'LocalRepo',
 				'name' => 'local',
-				'directory' => $this->uploadDir,
 				'url' => 'http://example.com/images',
 				'hashLevels' => 2,
 				'transformVia404' => false,
+				'backend'         => new FSFileBackend( array(
+					'name'        => 'local-backend',
+					'lockManager' => 'fsLockManager',
+					'containerPaths' => array(
+						'media-public'  => $this->uploadDir,
+						'media-thumb'   => $this->uploadDir . '/thumb',
+						'media-temp'    => $this->uploadDir . '/temp',
+						'media-deleted' => $this->uploadDir . '/delete',
+					)
+				) )
 			),
 			'wgEnableUploads' => self::getOptionValue( 'wgEnableUploads', $opts, true ),
 			'wgStylePath' => '/skins',
@@ -682,7 +712,7 @@ class ParserTest {
 		$GLOBALS['wgMemc'] = new EmptyBagOStuff;
 
 		$context = new RequestContext();
-		$GLOBALS['wgLang'] = $context->getLang();
+		$GLOBALS['wgLang'] = $context->getLanguage();
 		$GLOBALS['wgOut'] = $context->getOutput();
 
 		$GLOBALS['wgUser'] = new User();
@@ -693,6 +723,8 @@ class ParserTest {
 		$wgHooks['ParserGetVariableValueTs'][] = 'ParserTest::getFakeTimestamp';
 
 		MagicWord::clearCache();
+
+		return $context;
 	}
 
 	/**
@@ -709,8 +741,9 @@ class ParserTest {
 			'archive', 'user_groups', 'page_props', 'category', 'msg_resource', 'msg_resource_links'
 		);
 
-		if ( in_array( $this->db->getType(), array( 'mysql', 'sqlite', 'oracle' ) ) )
+		if ( in_array( $this->db->getType(), array( 'mysql', 'sqlite', 'oracle' ) ) ) {
 			array_push( $tables, 'searchindex' );
+		}
 
 		// Allow extensions to add to the list of tables to duplicate;
 		// may be necessary if they hook into page save or other code
@@ -753,17 +786,14 @@ class ParserTest {
 		}
 
 		$temporary = $this->useTemporaryTables || $dbType == 'postgres';
-		$tables = $this->listTables();
 		$prefix = $dbType != 'oracle' ? 'parsertest_' : 'pt_';
 
 		$this->dbClone = new CloneDatabase( $this->db, $this->listTables(), $prefix );
 		$this->dbClone->useTemporaryTables( $temporary );
 		$this->dbClone->cloneTableStructure();
 
-		if ( $dbType == 'oracle' )
-			$this->db->query( 'BEGIN FILL_WIKI_INFO; END;' );
-
 		if ( $dbType == 'oracle' ) {
+			$this->db->query( 'BEGIN FILL_WIKI_INFO; END;' );
 			# Insert 0 user to prevent FK violations
 
 			# Anonymous user
@@ -858,6 +888,13 @@ class ParserTest {
 		$this->databaseSetupDone = false;
 
 		if ( $this->useTemporaryTables ) {
+			if( $this->db->getType() == 'sqlite' ) {
+				# Under SQLite the searchindex table is virtual and need
+				# to be explicitly destroyed. See bug 29912
+				# See also MediaWikiTestCase::destroyDB()
+				wfDebug( __METHOD__ . " explicitly destroying sqlite virtual table parsertest_searchindex\n" );
+				$this->db->query( "DROP TABLE `parsertest_searchindex`" );
+			}
 			# Don't need to do anything
 			$this->teardownGlobals();
 			return;
@@ -1147,8 +1184,8 @@ class ParserTest {
 			throw new MWException( "duplicate article '$name' at line $line\n" );
 		}
 
-		$art = new Article( $title );
-		$art->doEdit( $text, '', EDIT_NEW );
+		$page = WikiPage::factory( $title );
+		$page->doEdit( $text, '', EDIT_NEW );
 
 		$wgCapitalLinks = $oldCapitalLinks;
 	}
@@ -1199,7 +1236,7 @@ class ParserTest {
 		return true;
 	}
 
-	/*
+	/**
 	 * Run the "tidy" command on text if the $wgUseTidy
 	 * global is true
 	 *

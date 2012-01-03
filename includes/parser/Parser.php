@@ -1176,7 +1176,7 @@ class Parser {
 			));
 			$titleObj = SpecialPage::getTitleFor( 'Booksources', $num );
 			return'<a href="' .
-				$titleObj->escapeLocalUrl() .
+				htmlspecialchars( $titleObj->getLocalUrl() ) .
 				"\" class=\"internal mw-magiclink-isbn\">ISBN $isbn</a>";
 		} else {
 			return $m[0];
@@ -2817,6 +2817,8 @@ class Parser {
 				break;
 			case 'articlepath':
 				return $wgArticlePath;
+			case 'pageid':
+				return $this->getTitle()->getArticleId();
 			case 'sitename':
 				return $wgSitename;
 			case 'server':
@@ -3021,7 +3023,7 @@ class Parser {
 	 * @private
 	 */
 	function braceSubstitution( $piece, $frame ) {
-		global $wgContLang, $wgNonincludableNamespaces;
+		global $wgNonincludableNamespaces;
 		wfProfileIn( __METHOD__ );
 		wfProfileIn( __METHOD__.'-setup' );
 
@@ -3034,7 +3036,7 @@ class Parser {
 		$isLocalObj = false;        # $text is a DOM node needing expansion in the current frame
 
 		# Title object, where $text came from
-		$title = null;
+		$title = false;
 
 		# $part1 is the bit before the first |, and must contain only title characters.
 		# Various prefixes will be stripped from it later.
@@ -3049,7 +3051,8 @@ class Parser {
 		# @todo FIXME: If piece['parts'] is null then the call to getLength() below won't work b/c this $args isn't an object
 		$args = ( null == $piece['parts'] ) ? array() : $piece['parts'];
 		wfProfileOut( __METHOD__.'-setup' );
-		wfProfileIn( __METHOD__."-title-$originalTitle" );
+
+		$titleProfileIn = null; // profile templates
 
 		# SUBST
 		wfProfileIn( __METHOD__.'-modifiers' );
@@ -3131,6 +3134,7 @@ class Parser {
 					}
 				}
 				if ( $function ) {
+					wfProfileIn( __METHOD__ . '-pfunc-' . $function );
 					list( $callback, $flags ) = $this->mFunctionHooks[$function];
 					$initialArgs = array( &$this );
 					$funcArgs = array( trim( substr( $part1, $colonPos + 1 ) ) );
@@ -3152,6 +3156,7 @@ class Parser {
 
 					# Workaround for PHP bug 35229 and similar
 					if ( !is_callable( $callback ) ) {
+						wfProfileOut( __METHOD__ . '-pfunc-' . $function );
 						wfProfileOut( __METHOD__ . '-pfunc' );
 						wfProfileOut( __METHOD__ );
 						throw new MWException( "Tag hook for $function is not callable\n" );
@@ -3177,6 +3182,7 @@ class Parser {
 						$text = $this->preprocessToDom( $text, $preprocessFlags );
 						$isChildObj = true;
 					}
+					wfProfileOut( __METHOD__ . '-pfunc-' . $function );
 				}
 			}
 			wfProfileOut( __METHOD__ . '-pfunc' );
@@ -3212,9 +3218,11 @@ class Parser {
 
 		# Load from database
 		if ( !$found && $title ) {
+			$titleProfileIn = __METHOD__ . "-title-" . $title->getDBKey();
+			wfProfileIn( $titleProfileIn ); // template in
 			wfProfileIn( __METHOD__ . '-loadtpl' );
 			if ( !$title->isExternal() ) {
-				if ( $title->getNamespace() == NS_SPECIAL
+				if ( $title->isSpecialPage()
 					&& $this->mOptions->getAllowSpecialInclusion()
 					&& $this->ot['html'] )
 				{
@@ -3236,7 +3244,7 @@ class Parser {
 					$context->setTitle( $title );
 					$context->setRequest( new FauxRequest( $pageArgs ) );
 					$context->setUser( $this->getUser() );
-					$context->setLang( $this->mOptions->getUserLangObj() );
+					$context->setLanguage( $this->mOptions->getUserLangObj() );
 					$ret = SpecialPageFactory::capturePath( $title, $context );
 					if ( $ret ) {
 						$text = $context->getOutput()->getHTML();
@@ -3289,7 +3297,9 @@ class Parser {
 		# Recover the source wikitext and return it
 		if ( !$found ) {
 			$text = $frame->virtualBracketedImplode( '{{', '|', '}}', $titleWithSpaces, $args );
-			wfProfileOut( __METHOD__."-title-$originalTitle" );
+			if ( $titleProfileIn ) {
+				wfProfileOut( $titleProfileIn ); // template out
+			}
 			wfProfileOut( __METHOD__ );
 			return array( 'object' => $text );
 		}
@@ -3317,6 +3327,10 @@ class Parser {
 		if ( $isLocalObj && $nowiki ) {
 			$text = $frame->expand( $text, PPFrame::RECOVER_ORIG );
 			$isLocalObj = false;
+		}
+
+		if ( $titleProfileIn ) {
+			wfProfileOut( $titleProfileIn ); // template out
 		}
 
 		# Replace raw HTML by a placeholder
@@ -3358,7 +3372,6 @@ class Parser {
 			$ret = array( 'text' => $text );
 		}
 
-		wfProfileOut( __METHOD__."-title-$originalTitle" );
 		wfProfileOut( __METHOD__ );
 		return $ret;
 	}
@@ -3846,7 +3859,11 @@ class Parser {
 			wfDebug( __METHOD__.": Not adding tracking category $msg to special page!\n" );
 			return false;
 		}
-		$cat = wfMsgForContent( $msg );
+		// Important to parse with correct title (bug 31469)
+		$cat = wfMessage( $msg )
+			->title( $this->getTitle() )
+			->inContentLanguage()
+			->text();
 
 		# Allow tracking categories to be disabled by setting them to "-"
 		if ( $cat === '-' ) {
@@ -3883,8 +3900,9 @@ class Parser {
 
 		# Inhibit editsection links if requested in the page
 		if ( isset( $this->mDoubleUnderscores['noeditsection'] ) ) {
-			$showEditLink = 0;
+			$maybeShowEditLink = $showEditLink = false;
 		} else {
+			$maybeShowEditLink = true; /* Actual presence will depend on ParserOptions option */
 			$showEditLink = $this->mOptions->getEditSection();
 		}
 		if ( $showEditLink ) {
@@ -4031,9 +4049,9 @@ class Parser {
 			#     link text with suffix
 			$safeHeadline = $this->replaceLinkHoldersText( $safeHeadline );
 
-			# Strip out HTML (other than plain <sup> and <sub>: bug 8393)
+			# Strip out HTML (other than plain <sup> and <sub>: bug 8393, or <i>: bug 26375)
 			$tocline = preg_replace(
-				array( '#<(?!/?(sup|sub)).*?'.'>#', '#<(/?(sup|sub)).*?'.'>#' ),
+				array( '#<(?!/?(sup|sub|i|b)).*?'.'>#', '#<(/?(sup|sub|i|b)).*?'.'>#' ),
 				array( '',                          '<$1>' ),
 				$safeHeadline
 			);
@@ -4139,7 +4157,7 @@ class Parser {
 			);
 
 			# give headline the correct <h#> tag
-			if ( $sectionIndex !== false ) {
+			if ( $maybeShowEditLink && $sectionIndex !== false ) {
 				// Output edit section links as markers with styles that can be customized by skins
 				if ( $isTemplate ) {
 					# Put a T flag in the section identifier, to indicate to extractSections()
@@ -4399,7 +4417,7 @@ class Parser {
 		}
 
 		# Make sure nickname doesnt get a sig in a sig
-		$nickname = $this->cleanSigInSig( $nickname );
+		$nickname = self::cleanSigInSig( $nickname );
 
 		# If we're still here, make it a link to the user page
 		$userText = wfEscapeWikiText( $username );
@@ -4429,7 +4447,7 @@ class Parser {
 	 * @param $parsing bool Whether we're cleaning (preferences save) or parsing
 	 * @return String: signature text
 	 */
-	function cleanSig( $text, $parsing = false ) {
+	public function cleanSig( $text, $parsing = false ) {
 		if ( !$parsing ) {
 			global $wgTitle;
 			$this->startParse( $wgTitle, new ParserOptions, self::OT_PREPROCESS, true );
@@ -4447,7 +4465,7 @@ class Parser {
 		$substText = '{{' . $substWord->getSynonym( 0 );
 
 		$text = preg_replace( $substRegex, $substText, $text );
-		$text = $this->cleanSigInSig( $text );
+		$text = self::cleanSigInSig( $text );
 		$dom = $this->preprocessToDom( $text );
 		$frame = $this->getPreprocessor()->newFrame();
 		$text = $frame->expand( $dom );
@@ -4465,7 +4483,7 @@ class Parser {
 	 * @param $text String
 	 * @return String: signature text with /~{3,5}/ removed
 	 */
-	function cleanSigInSig( $text ) {
+	public static function cleanSigInSig( $text ) {
 		$text = preg_replace( '/~{3,5}/', '', $text );
 		return $text;
 	}
@@ -5110,6 +5128,10 @@ class Parser {
 	 */
 	function disableCache() {
 		wfDebug( "Parser output marked as uncacheable.\n" );
+		if ( !$this->mOutput ) {
+			throw new MWException( __METHOD__ .
+				" can only be called when actually parsing something" );
+		}
 		$this->mOutput->setCacheTime( -1 ); // old style, for compatibility
 		$this->mOutput->updateCacheExpiry( 0 ); // new style, for consistency
 	}
@@ -5368,20 +5390,18 @@ class Parser {
 		if ( is_null( $this->mRevisionTimestamp ) ) {
 			wfProfileIn( __METHOD__ );
 
+			global $wgContLang;
+
 			$revObject = $this->getRevisionObject();
-			$timestamp = $revObject ? $revObject->getTimestamp() : false;
+			$timestamp = $revObject ? $revObject->getTimestamp() : wfTimestampNow();
 
-			if( $timestamp !== false ) {
-				global $wgContLang;
-
-				# The cryptic '' timezone parameter tells to use the site-default
-				# timezone offset instead of the user settings.
-				#
-				# Since this value will be saved into the parser cache, served
-				# to other users, and potentially even used inside links and such,
-				# it needs to be consistent for all visitors.
-				$this->mRevisionTimestamp = $wgContLang->userAdjust( $timestamp, '' );
-			}
+			# The cryptic '' timezone parameter tells to use the site-default
+			# timezone offset instead of the user settings.
+			#
+			# Since this value will be saved into the parser cache, served
+			# to other users, and potentially even used inside links and such,
+			# it needs to be consistent for all visitors.
+			$this->mRevisionTimestamp = $wgContLang->userAdjust( $timestamp, '' );
 
 			wfProfileOut( __METHOD__ );
 		}

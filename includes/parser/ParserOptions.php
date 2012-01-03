@@ -96,7 +96,7 @@ class ParserOptions {
 	 * @deprecated since 1.18 Use Linker::* instead
 	 */
 	function getSkin( $title = null ) {
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.18' );
 		return new DummyLinker;
 	}
 
@@ -195,6 +195,9 @@ class ParserOptions {
 		}
 		if ( $lang === null ) {
 			global $wgLang;
+			if ( !StubObject::isRealObject( $wgLang ) ) {
+				$wgLang->_unstub();
+			}
 			$lang = $wgLang;
 		}
 		$this->initialiseFromUser( $user, $lang );
@@ -229,7 +232,7 @@ class ParserOptions {
 	 * @return ParserOptions object
 	 */
 	public static function newFromContext( IContextSource $context ) {
-		return new ParserOptions( $context->getUser(), $context->getLang() );
+		return new ParserOptions( $context->getUser(), $context->getLanguage() );
 	}
 
 	/** Get user options */

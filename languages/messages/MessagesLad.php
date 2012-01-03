@@ -133,8 +133,8 @@ $specialPageAliases = array(
 	'Protectedtitles'           => array( 'TítůlosGuardados' ),
 	'Randompage'                => array( 'KualunkeHoja' ),
 	'Randomredirect'            => array( 'KualunkeDireksyón' ),
-	'Recentchanges'             => array( 'TrokamientosFreskos' ),
-	'Recentchangeslinked'       => array( 'TrokamientosÈnterassados' ),
+	'Recentchanges'             => array( 'TrocamientosFreskos' ),
+	'Recentchangeslinked'       => array( 'TrocamientosÈnterassados' ),
 	'Revisiondelete'            => array( 'EfassarRēvizyón' ),
 	'RevisionMove'              => array( 'TaxireaRēvizyón' ),
 	'Search'                    => array( 'Buscar' ),
@@ -169,49 +169,49 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#DIRIJAR', '#DIRECCIÓN', '#REDIRECCIÓN', '#REDIRECCION', '#REDIRECT' ),
-	'fullpagename'          => array( '1', 'NOMBREDEHOJACOMPLETA', 'NOMBREDEPÁGINACOMPLETA', 'NOMBREDEPAGINACOMPLETA', 'NOMBREDEPÁGINAENTERA', 'NOMBREDEPAGINAENTERA', 'FULLPAGENAME' ),
-	'subpagename'           => array( '1', 'NOMBREDEHOJICA', 'NOMBREDESUBPAGINA', 'NOMBREDESUBPÁGINA', 'SUBPAGENAME' ),
-	'msg'                   => array( '0', 'MSJ:', 'MSG:' ),
-	'img_left'              => array( '1', 'cierda', 'izquierda', 'izda', 'izq', 'left' ),
-	'img_none'              => array( '1', 'dinguna', 'dinguno', 'ninguna', 'nada', 'no', 'ninguno', 'none' ),
+	'redirect'                => array( '0', '#DIRIJAR', '#DIRECCIÓN', '#REDIRECCIÓN', '#REDIRECCION', '#REDIRECT' ),
+	'fullpagename'            => array( '1', 'NOMBREDEHOJACOMPLETA', 'NOMBREDEPÁGINACOMPLETA', 'NOMBREDEPAGINACOMPLETA', 'NOMBREDEPÁGINAENTERA', 'NOMBREDEPAGINAENTERA', 'FULLPAGENAME' ),
+	'subpagename'             => array( '1', 'NOMBREDEHOJICA', 'NOMBREDESUBPAGINA', 'NOMBREDESUBPÁGINA', 'SUBPAGENAME' ),
+	'msg'                     => array( '0', 'MSJ:', 'MSG:' ),
+	'img_left'                => array( '1', 'cierda', 'izquierda', 'izda', 'izq', 'left' ),
+	'img_none'                => array( '1', 'dinguna', 'dinguno', 'ninguna', 'nada', 'no', 'ninguno', 'none' ),
 );
 
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'Suliñar los atamientos:',
-'tog-highlightbroken'         => 'Amostrar los artícůlos vazíos <a href="" class="new">en colorado</a> , (si no: este modo<a href="" class="internal">?</a>).',
+'tog-highlightbroken'         => 'Àmostrar los artícůlos vazíos <a href="" class="new">en colorado</a> , (si no: Este modo<a href="" class="internal">?</a>).',
 'tog-justify'                 => 'Arrimar los paraggrafos de dos vandas',
-'tog-hideminor'               => 'Esconder los trocamientos chiquiticos entre los trocamientos freskos',
-'tog-hidepatrolled'           => 'Esconder los trocamientos surveyados entre los trocamientos freskos',
-'tog-newpageshidepatrolled'   => 'Esconder las hojas surveyadas entre la lista de las hojas muevas',
-'tog-extendwatchlist'         => 'Anchar mi lista de akavidamiento afín de amostrar todos los trocamientos, no sólo los muevos',
+'tog-hideminor'               => 'Esconder los trocamientos chiquiticos en la hoja de los "trocamientos freskos"',
+'tog-hidepatrolled'           => 'Esconder los trocamientos surveyados en la hoja de los "trocamientos freskos"',
+'tog-newpageshidepatrolled'   => 'Esconder las hojas surveyadas de la lista de las hojas muevas',
+'tog-extendwatchlist'         => 'Anchar mi lista de akavidamiento afín de àmostrar todos los trocamientos, no sólo los muevos',
 'tog-usenewrc'                => 'Usar el modo adelantado (JavaScript es menester)',
-'tog-numberheadings'          => 'Numerotar otomatika mente los títůlos de los capítůlos',
-'tog-showtoolbar'             => 'Amostrar el chibuk de aparatos (JavaScript es menester)',
+'tog-numberheadings'          => 'Numerotar otomatika mente los títůlos de los kapítůlos',
+'tog-showtoolbar'             => 'Àmostrar el chibuk de aparatos (JavaScript es menester)',
 'tog-editondblclick'          => 'Trocar las hojas con doble klik (JavaScript es menester)',
-'tog-editsection'             => 'Ofrir la possibilidad de trocar los capítůlos gracias al atamiento [trocar]',
-'tog-editsectiononrightclick' => 'Pueder trocar los capítůlos, en pizando el botón derecho del ratón encima del títůlo (JavaScript es menester)',
-'tog-showtoc'                 => 'Amostrar el cuadro de contenidos (para las hojas que tienen más de 3 títůlos de capítůlos)',
-'tog-rememberpassword'        => 'Acordarse de mi nombre de usador y de mi kóddiche en este navigador (a lo más muńcho $1 {{PLURAL:$1|día|días}})',
+'tog-editsection'             => 'Ofrir la possibilidad de trocar los kapítůlos con el atamiento [trocar]',
+'tog-editsectiononrightclick' => 'Pueder trocar los kapítůlos, en pizando el botón derecho del ratón encima el títůlo (JavaScript es menester)',
+'tog-showtoc'                 => 'Àmostrar el cuadro de contènidos (para las hojas que tienen más de 3 títůlos de capítůlo)',
+'tog-rememberpassword'        => 'Acordarse de mi entrada en este navigador (a lo más muńcho $1 {{PLURAL:$1|día|días}})',
 'tog-watchcreations'          => 'Akavidar las hojas que crîo',
 'tog-watchdefault'            => 'Akavidar las hojas que troco',
 'tog-watchmoves'              => 'Akavidar las hojas que taxireo',
 'tog-watchdeletion'           => 'Akavidar las hojas que efasso',
-'tog-minordefault'            => 'Ir marcando todos los trocamientos como chiquiticos',
-'tog-previewontop'            => 'Amostar el previsteo enriva el cuadro de trocamiento',
-'tog-previewonfirst'          => 'Amostar el previsteo al primer trocamiento',
+'tog-minordefault'            => 'Yir marcando todos los trocamientos como chiquiticos',
+'tog-previewontop'            => 'Àmostar el previsteo enriva del cuadro de trocamiento',
+'tog-previewonfirst'          => 'Àmostar el previsteo al primer trocamiento',
 'tog-nocache'                 => 'Desaktivar la kaxé de las hojas del navigador',
-'tog-enotifwatchlistpages'    => 'Mandarme una letral (e-mail) cada vez que trocan la una hoja de mi lista de akavidamiento',
-'tog-enotifusertalkpages'     => 'Mandarme una letral (e-mail) cuando mi hoja de diskusyón se troca',
-'tog-enotifminoredits'        => 'También mandarme una letral (e-mail) cuando i trocamientos chiquiticos acontecen en las hojas',
-'tog-enotifrevealaddr'        => 'Amostrar mi adresso de letral (e-mail) en las letrales de avizo',
-'tog-shownumberswatching'     => 'Amostrar el karar de usadores que están akavidando cada hoja',
-'tog-oldsig'                  => 'Previsteo de la firma presente',
+'tog-enotifwatchlistpages'    => 'Cada vez que y ay un trocamiento en una hoja que está en mi lista de akavidamiento, mándame una letral (e-mail)',
+'tog-enotifusertalkpages'     => 'Cuando y ay un trocamineto en mi hoja de diskusyón, mándame una letral (e-mail)',
+'tog-enotifminoredits'        => 'I para los trocamientos chiquiticos de las hojas, mándame una letral (e-mail)',
+'tog-enotifrevealaddr'        => 'En las letrales de avizo, amóstrame á mi el adresso de letral mío',
+'tog-shownumberswatching'     => 'Àmostrar el kadhar de usadores que están akavidando las hojas',
+'tog-oldsig'                  => 'La firma presente',
 'tog-fancysig'                => 'Tratar la firma como un vikiteksto (sin un atamiento otomatiko)',
-'tog-externaleditor'          => 'Ir usando un ēdditor esterno (sólo es para usadores adelantados; tiene menester de arreglamientos especiales en vuestro contador [http://www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
-'tog-externaldiff'            => 'Ir usando un comparador (diff) esterno (sólo es para usadores adelantados; tiene menester de arreglamientos especiales en vuestro contador [http://www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
-'tog-showjumplinks'           => 'Aktivar los atamientos de ayudo "Saltar a"',
+'tog-externaleditor'          => 'Yir usando un ēdditor esterno (es sólo para usadores adelantados; tiene menester de ayares especiales en vuestro contador [//www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
+'tog-externaldiff'            => 'Yir usando un comparador (diff) esterno (sólo es para usadores adelantados; tiene menester de ayares especiales en vuestro contador [//www.mediawiki.org/wiki/Manual:External_editors Para saver más.])',
+'tog-showjumplinks'           => 'Aktivar los atamientos de ayudo "{{int:jumpto}}"',
 'tog-uselivepreview'          => 'Usar el "previsteo bivo" (JavaScript es menester) (eksperimental)',
 'tog-forceeditsummary'        => 'Avizarme cuando dexo el somaryo vazío',
 'tog-watchlisthideown'        => 'Esconder mis trocamientos en mi lista de akavidamiento',
@@ -237,20 +237,20 @@ $messages = array(
 'editfont-serif'     => 'Tipografía serif',
 
 # Dates
-'sunday'        => 'Aljhad',
+'sunday'        => 'Aljhadh',
 'monday'        => 'Lunes',
 'tuesday'       => 'Martes',
 'wednesday'     => 'Miércoles',
 'thursday'      => 'Juğeves',
 'friday'        => 'Viernes',
-'saturday'      => 'Xabat',
+'saturday'      => 'Shabbath',
 'sun'           => 'Alj',
 'mon'           => 'Lun',
 'tue'           => 'Mar',
 'wed'           => 'Mie',
 'thu'           => 'Jug',
 'fri'           => 'Vie',
-'sat'           => 'Xab',
+'sat'           => 'Sha',
 'january'       => 'Enero',
 'february'      => 'Fevrero',
 'march'         => 'Março',
@@ -291,7 +291,7 @@ $messages = array(
 # Categories related messages
 'pagecategories'                 => '{{PLURAL:$1|Katēggoría|Katēggorías}}',
 'category_header'                => 'Artícůlos en la katēggoría "$1"',
-'subcategories'                  => 'Baxo-katēggorías',
+'subcategories'                  => 'Sůkatēggorías',
 'category-media-header'          => 'Arxivos de multimedya en la katēggoría "$1"',
 'category-empty'                 => "''Esta katēggoría oy día, no contiene ni artícůlos ni arxivos de multimedya''",
 'hidden-categories'              => '{{PLURAL:$1|Katēggoría escondida|Katēggorías escondidas}}',
@@ -334,7 +334,7 @@ $messages = array(
 'vector-action-delete'           => 'Efassar',
 'vector-action-move'             => 'Taxirear',
 'vector-action-protect'          => 'Guardar',
-'vector-action-undelete'         => 'Traër atrás',
+'vector-action-undelete'         => 'Traer atrás',
 'vector-action-unprotect'        => 'No guardar',
 'vector-simplesearch-preference' => 'Aktivar consejos de búsqueda adelantada (sólo pelejo Vector)',
 'vector-view-create'             => 'Crîar',
@@ -359,7 +359,7 @@ $messages = array(
 'updatedmarker'     => 'trocado desde mi visita de alcavo',
 'printableversion'  => 'Vista apropiada para emprimir',
 'permalink'         => 'Atamiento mantenido',
-'print'             => 'Emprimir',
+'print'             => 'Imprimir',
 'view'              => 'Ver',
 'edit'              => 'Trocar',
 'create'            => 'Crîar',
@@ -367,13 +367,13 @@ $messages = array(
 'create-this-page'  => 'Crîar esta hoja',
 'delete'            => 'Efassar',
 'deletethispage'    => 'Efassar esta hoja',
-'undelete_short'    => 'Traër atrás $1 {{PLURAL:$1|trocamientos|trocamientos}}',
+'undelete_short'    => 'Traer atrás $1 {{PLURAL:$1|trocamientos|trocamientos}}',
 'viewdeleted_short' => 'Ver {{PLURAL:$1|un trocamiento efassado|$1 trocamientos efassados}}',
 'protect'           => 'Guardar',
 'protect_change'    => 'Trocar el guardadijo',
 'protectthispage'   => 'Guardar esta hoja',
-'unprotect'         => 'No guardar',
-'unprotectthispage' => 'No guardar esta hoja',
+'unprotect'         => 'Trocar guardadijo',
+'unprotectthispage' => 'Trocar el guardadijo desta hoja',
 'newpage'           => 'Hoja mueva',
 'talkpage'          => 'Diskutir la hoja',
 'talkpagelinktext'  => 'Messaje',
@@ -476,7 +476,6 @@ Si puede ser, enfórmaselo a un [[Special:ListUsers/sysop|administrator]], anota
 'badtitletext'        => 'El título de la hoja demandada está vazío, no es valible, o es un link interlingua o interwiki incorrecto.
 Puede ser que contiene uno o más caracteres que no se pueden usar en los títulos.',
 'viewsource'          => 'Ver el codd fuente',
-'viewsourcefor'       => 'para $1',
 
 # Login and logout pages
 'yourname'                => 'Su nombre de usuario',
@@ -501,6 +500,20 @@ Si puede ser, escoge un otro nombre.',
 'accountcreated'          => 'Cuento creado',
 'accountcreatedtext'      => 'El cuento del usuario para $1 fue creado.',
 'loginlanguagelabel'      => 'Lingua: $1',
+
+# Change password dialog
+'oldpassword'             => 'Kóddiche viejo:',
+'newpassword'             => 'Kóddiche muevo:',
+'resetpass-submit-cancel' => 'Anular',
+
+# Special:PasswordReset
+'passwordreset-username' => 'Nombre de usador:',
+'passwordreset-domain'   => 'Dominio:',
+'passwordreset-email'    => 'Adresso de letral:',
+
+# Special:ChangeEmail
+'changeemail-submit' => 'Trocar letral',
+'changeemail-cancel' => 'Anular',
 
 # Edit page toolbar
 'bold_sample'     => 'Teksto gordo',
@@ -528,12 +541,16 @@ Si puede ser, escoge un otro nombre.',
 'savearticle'                      => 'Enrejistra la hoja',
 'preview'                          => 'Previsualizar',
 'showpreview'                      => 'Mostrar la previsualización',
+'showlivepreview'                  => 'Previsteo bivo',
 'showdiff'                         => 'Amostrar los trocamientos',
 'anoneditwarning'                  => "'''Noticia:''' La sesyón no empeçó con un cuento de usuario.
 Tu adresso de IP va ser enrejjistrado en la istoria de la hoja.",
 'summary-preview'                  => 'Previsualización del resumen:',
+'blockedtitle'                     => 'El usador está blokeado',
 'blockednoreason'                  => 'La razόn no se diό',
 'whitelistedittext'                => 'Tienes que $1 para pueder trocar artículos.',
+'loginreqtitle'                    => 'Entrar es menester',
+'loginreqlink'                     => 'entrar',
 'loginreqpagetext'                 => 'Tienes que $1 para pueder ver otras hojas.',
 'accmailtitle'                     => 'La kontrasenya ha sido embiada.',
 'accmailtext'                      => 'La kontrasenya para "$1" se ha embiado a $2.',
@@ -548,10 +565,12 @@ o [{{fullurl:{{FULLPAGENAME}}|action=edit}} trocar esta hoja]</span>.',
 'noarticletext-nopermission'       => 'No ay teksto oy día en esta hoja.
 Puedes [[Special:Search/{{PAGENAME}}|buscar este títůlo de hoja]] en otras hojas,
 o <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} buscar en los rejistros relasyonados]</span>.',
+'userpage-userdoesnotexist-view'   => 'El cuento del usador $1 no está enrejistrado.',
 'note'                             => "'''Nota:'''",
 'previewnote'                      => "'¡Acórdate que esto es sólo una previsualización y daínda no se registró!'''",
 'editing'                          => 'Trocando $1',
 'editingsection'                   => 'Trocando $1 (sección)',
+'editingcomment'                   => 'Trocando $1 (kapítůlo)',
 'yourtext'                         => 'Tu teksto',
 'yourdiff'                         => 'Diferencias',
 'copyrightwarning'                 => "Si puede ser, observa que todas las contribuciones a {{SITENAME}} se consideran hechas públicas abaxo la $2 (ver detalyos en $1). Si no queres que la gente endereche tus tekstos escritos sin piadad i los esparta libberamente, alora no los metas aquí. También nos estás asegurando ansí que escribites este teksto tu mismo i sos el dueño de los derechos de autor, o lo copiates desde el dominio público u otra fuente libbero.'''¡QUE N0 USES TEKSTOS ESCRITOS CON COPYRIGHT SIN PERMISSIÓN!'''<br />",
@@ -570,12 +589,14 @@ Algunos xablones no serán incluidos.',
 
 # History pages
 'viewpagelogs'           => 'Ver los registros de esta hoja',
+'currentrev'             => "Enderechamiento d'al cavo",
 'currentrev-asof'        => 'Versión de alcabo de $1',
 'revisionasof'           => 'Rēvisión de $1',
 'previousrevision'       => '← Rēvisión de antes',
 'nextrevision'           => 'Rêvisión venidera →',
 'currentrevisionlink'    => 'Revisión actual',
 'cur'                    => 'act',
+'next'                   => 'venidero',
 'last'                   => 'de alcabo',
 'page_first'             => 'primeras',
 'page_last'              => 'de alcabo',
@@ -589,6 +610,9 @@ Leyenda: (act) = diferencias con la versión actual,
 'historysize'            => '({{PLURAL:$1|1 byte|$1 bytes}})',
 'historyempty'           => '(vazío)',
 
+# Revision feed
+'history-feed-title' => 'Îstoria de nderechamientos',
+
 # Revision deletion
 'rev-delundel'               => 'mostra/esconde',
 'rev-showdeleted'            => 'mostra',
@@ -600,6 +624,7 @@ Leyenda: (act) = diferencias con la versión actual,
 'revdel-restore'             => 'Troca la viźibbilidad',
 'revdel-restore-deleted'     => 'revisiones efassadas',
 'revdel-restore-visible'     => 'revisiones visibles',
+'pagehist'                   => 'La storia de la hoja',
 'revdelete-reasonotherlist'  => 'Otra razón',
 
 # History merging
@@ -668,32 +693,42 @@ Las búsquedas producen más o munco a buscar biervos comunes como «la» o «de
 # Preferences page
 'preferences'               => 'Preferencias',
 'mypreferences'             => 'Mis preferencias',
+'changepassword'            => 'Trocar el kóddiche',
 'prefs-skin'                => 'Vista',
+'skin-preview'              => 'Previstear',
 'prefs-rc'                  => 'Los Trocamientos de Alcabo',
 'prefs-watchlist'           => 'Lista de los Trocamientos Preferidos',
 'prefs-watchlist-days'      => 'El número de los días a mostrar en la lista de los trocamientos preferidos:',
 'prefs-watchlist-days-max'  => '7 días a lo más muncho',
 'prefs-resetpass'           => 'Trocar la parola',
 'prefs-rendering'           => 'Vista',
+'saveprefs'                 => 'Enrejistrar',
 'timezoneregion-africa'     => 'África',
 'timezoneregion-america'    => 'América',
 'timezoneregion-antarctica' => 'Antárctica',
 'timezoneregion-asia'       => 'Asia',
 'timezoneregion-australia'  => 'Ostralia',
 'timezoneregion-europe'     => 'Europa',
+'prefs-files'               => 'Dosyas',
 'youremail'                 => 'El adderesso de tu letra electrόnica:',
 'username'                  => 'Nombre de usuario:',
 'yourrealname'              => 'Nombre verdadero:',
 'yourlanguage'              => 'Lingua:',
-'email'                     => 'Letra electrónica',
+'yournick'                  => 'Firma mueva:',
+'email'                     => 'Letral',
+'prefs-signature'           => 'Firma',
 
 # Groups
+'group-user'  => 'Usadorers',
 'group-sysop' => 'Administradores',
+'group-all'   => '(todos)',
 
 'grouppage-sysop' => '{{ns:project}}:Administradores',
 
 # Rights
-'right-edit' => 'Trocar las hojas',
+'right-edit'      => 'Trocar las hojas',
+'right-minoredit' => 'Marcar trocamientos como "chiquiticos"',
+'right-delete'    => 'Efassar hojas',
 
 # User rights log
 'rightslog' => 'Trocamientos de profil de usuario',
@@ -748,6 +783,7 @@ Las hojas en tu [[Special:Watchlist|lista de escogidas]] son escritas '''gordas'
 # Special:ListFiles
 'listfiles_name' => 'Nombre',
 'listfiles_user' => 'Usuario',
+'listfiles_size' => 'Boy',
 
 # File description page
 'file-anchor-link'          => 'Archivo',
@@ -759,6 +795,7 @@ Las hojas en tu [[Special:Watchlist|lista de escogidas]] son escritas '''gordas'
 'filehist-thumbtext'        => 'Miniatura de la versión de $1',
 'filehist-user'             => 'Empleador',
 'filehist-dimensions'       => 'Dimensiones',
+'filehist-filesize'         => 'El boy de la dosya',
 'filehist-comment'          => 'Comentario',
 'imagelinks'                => 'Linkes al arxivo multimedia',
 'linkstoimage'              => '{{PLURAL:$1|La hoja venidera da link|Las hojas venideras dan link}} a este arxivo:',
@@ -1092,12 +1129,22 @@ Los otros campos se van a guardar por defecto.
 'exif-lightsource-9'  => 'Bueno tiémpo',
 'exif-lightsource-10' => 'Tiémpo nuvlozo',
 
+'exif-saturation-0' => 'Normal',
+
 # Pseudotags used for GPSSpeedRef
 'exif-gpsspeed-k' => 'Kilometros por óra',
 
+# Pseudotags used for GPSDestDistanceRef
+'exif-gpsdestdistance-k' => 'Kilometros',
+
+'exif-dc-rights' => 'Derechos',
+
+'exif-iimcategory-hth' => 'Salud',
+'exif-iimcategory-lab' => 'Lavoro',
+
 # External editor support
 'edit-externally'      => 'Trocar esto arxivo usando una aplicación eksterna',
-'edit-externally-help' => '(Melda las [http://www.mediawiki.org/wiki/Manual:External_editors enstruksiones de configuración] -en inglés- para saber más)',
+'edit-externally-help' => '(Melda las [//www.mediawiki.org/wiki/Manual:External_editors enstruksiones de configuración] -en inglés- para saber más)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'todos',
@@ -1109,9 +1156,6 @@ Los otros campos se van a guardar por defecto.
 'confirmemail_send'    => 'Embiar el kodigo de konfirmasion.',
 'confirmemail_sent'    => 'Konfirmasion de pósta embiada.',
 'confirmemail_success' => 'Su direksion de pósta a sido konfirmada. Agóra puedes registrarse e kolaborar en el wiki.',
-
-# Trackbacks
-'trackbackremove' => '([$1 Efasár])',
 
 # Delete conflict
 'recreate' => 'Krear de muevo',
@@ -1136,6 +1180,10 @@ Los otros campos se van a guardar por defecto.
 'autoredircomment' => 'Redireksionado a [[$1]]',
 'autosumm-new'     => 'Pajina mueva: $1',
 
+# Live preview
+'livepreview-loading' => 'Cargando...',
+'livepreview-ready'   => 'Cargando… ¡Pronto!',
+
 # Watchlist editing tools
 'watchlisttools-view' => 'Ver los trocamientos',
 'watchlisttools-edit' => 'Ver i trocar tu lista de escogidas',
@@ -1146,15 +1194,42 @@ Los otros campos se van a guardar por defecto.
 'version-specialpages'     => 'Pajinas espesiales',
 'version-other'            => 'Otros',
 'version-version'          => '(Versión $1)',
+'version-poweredby-others' => 'otros',
 'version-software-version' => 'Versión',
+
+# Special:FilePath
+'filepath-page'   => 'Dosya:',
+'filepath-submit' => 'Yir',
 
 # Special:FileDuplicateSearch
 'fileduplicatesearch-submit' => 'Buscar',
 
 # Special:SpecialPages
-'specialpages' => 'Hojas especiales',
+'specialpages'             => 'Hojas especiales',
+'specialpages-group-users' => 'Usadores y derechos',
 
 # Special:Tags
-'tag-filter' => 'Filtro de [[Special:Tags|etiquetas]]:',
+'tag-filter'        => 'Filtro de [[Special:Tags|etiquetas]]:',
+'tag-filter-submit' => 'Filtro',
+'tags-edit'         => 'trocar',
+
+# Special:ComparePages
+'compare-page1'  => 'Hoja 1',
+'compare-page2'  => 'Hoja 2',
+'compare-rev1'   => 'Enderechamiento 1',
+'compare-rev2'   => 'Enderechamiento 2',
+'compare-submit' => 'Comparar',
+
+# HTML forms
+'htmlform-selectorother-other' => 'Otro',
+
+# New logging system
+'logentry-newusers-autocreate' => 'El cuento $1 fue {{GENDER:$2|crîado}} otomatika mente',
+'newuserlog-byemail'           => 'kóddiche mandado con letral',
+
+# Feedback
+'feedback-subject' => 'Sujeto',
+'feedback-message' => 'Messaje',
+'feedback-cancel'  => 'Anular',
 
 );

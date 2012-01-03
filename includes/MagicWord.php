@@ -67,6 +67,7 @@ class MagicWord {
 		'numberoffiles',
 		'numberofedits',
 		'articlepath',
+		'pageid',
 		'sitename',
 		'server',
 		'servername',
@@ -228,6 +229,7 @@ class MagicWord {
 
 	/**
 	 * Get an array of parser substitution modifier IDs
+	 * @return array
 	 */
 	static function getSubstIDs() {
 		return self::$mSubstIDs;
@@ -236,9 +238,10 @@ class MagicWord {
 	/**
 	 * Allow external reads of TTL array
 	 *
+	 * @param $id int
 	 * @return array
 	 */
-	static function getCacheTTL($id) {
+	static function getCacheTTL( $id ) {
 		if ( array_key_exists( $id, self::$mCacheTTLs ) ) {
 			return self::$mCacheTTLs[$id];
 		} else {
@@ -383,7 +386,7 @@ class MagicWord {
 	/**
 	 * Returns true if the text contains the word
 	 *
-	 * @paran $text string
+	 * @param $text string
 	 *
 	 * @return bool
 	 */
@@ -712,7 +715,7 @@ class MagicWordArray {
 	/**
 	 * Get a regex anchored to the start of the string that does not match parameters
 	 *
-	 * @return string
+	 * @return array
 	 */
 	function getRegexStart() {
 		$base = $this->getBaseRegex();
@@ -729,7 +732,7 @@ class MagicWordArray {
 	/**
 	 * Get an anchored regex for matching variables with parameters
 	 *
-	 * @return string
+	 * @return array
 	 */
 	function getVariableStartToEndRegex() {
 		$base = $this->getBaseRegex();
@@ -748,7 +751,7 @@ class MagicWordArray {
 	 * Returns array(magic word ID, parameter value)
 	 * If there is no parameter value, that element will be false.
 	 *
-	 * @param $m arrray
+	 * @param $m array
 	 *
 	 * @return array
 	 */

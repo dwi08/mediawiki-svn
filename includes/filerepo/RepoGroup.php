@@ -108,22 +108,15 @@ class RepoGroup {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
-		if ( !($title instanceof Title) ) {
-			$title = Title::makeTitleSafe( NS_FILE, $title );
-			if ( !is_object( $title ) ) {
-				return false;
-			}
-		}
-
-		if ( $title->getNamespace() != NS_MEDIA && $title->getNamespace() != NS_FILE ) {
-			throw new MWException( __METHOD__ . ' received an Title object with incorrect namespace' );
+		$title = File::normalizeTitle( $title );
+		if ( !$title ) {
+			return false;
 		}
 
 		# Check the cache
 		if ( empty( $options['ignoreRedirect'] )
 			&& empty( $options['private'] )
-			&& empty( $options['bypassCache'] )
-			&& $title->getNamespace() == NS_FILE )
+			&& empty( $options['bypassCache'] ) )
 		{
 			$useCache = true;
 			$time = isset( $options['time'] ) ? $options['time'] : '';
@@ -179,10 +172,10 @@ class RepoGroup {
 			if ( !is_array( $item ) ) {
 				$item = array( 'title' => $item );
 			}
-			if ( !( $item['title'] instanceof Title ) )
-				$item['title'] = Title::makeTitleSafe( NS_FILE, $item['title'] );
-			if ( $item['title'] )
+			$item['title'] = File::normalizeTitle( $item['title'] );
+			if ( $item['title'] ) {
 				$items[$item['title']->getDBkey()] = $item;
+			}
 		}
 
 		$images = $this->localRepo->findFiles( $items );
@@ -201,7 +194,7 @@ class RepoGroup {
 	/**
 	 * Interface for FileRepo::checkRedirect()
 	 */
-	function checkRedirect( $title ) {
+	function checkRedirect( Title $title ) {
 		if ( !$this->reposInitialised ) {
 			$this->initialiseRepos();
 		}
@@ -373,7 +366,7 @@ class RepoGroup {
 			$repo = $this->getRepo( $repoName );
 			return $repo->getFileProps( $fileName );
 		} else {
-			return File::getPropsFromPath( $fileName );
+			return FSFile::getPropsFromPath( $fileName );
 		}
 	}
 

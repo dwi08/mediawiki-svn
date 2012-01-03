@@ -115,7 +115,7 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'displaytitle'          => array( '1', 'SYTETITEL', 'SEITENTITEL', 'DISPLAYTITLE' ),
+	'displaytitle'            => array( '1', 'SYTETITEL', 'SEITENTITEL', 'DISPLAYTITLE' ),
 );
 
 $linkTrail = '/^([äöüßa-z]+)(.*)$/sDu';
@@ -152,8 +152,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Aazahl Benutzer aazeige, wo ne Syten am Aaluege sy (i den Artikelsyte, i de «letschten Änderigen» und i der Beobachtigslischte)',
 'tog-oldsig'                  => 'Vorschau vu dr Unterschrift:',
 'tog-fancysig'                => 'Signatur as Wikitext behandle (ohni automatischi Vergleichig)',
-'tog-externaleditor'          => 'Externe Editor als Standard bruche (nume fir Experte, doderzue brucht s speziälli Yystellige uf em Computer. [http://www.mediawiki.org/wiki/Manual:External_editors Wyteri Informatione doderzue.])',
-'tog-externaldiff'            => 'Extern Programm fir Versionsunterschid als Standard bruche (nume fir Experte, doderzue brucht s speziälli Yystellige uf em Computer. [http://www.mediawiki.org/wiki/Manual:External_editors Wyteri Informatione doderzue.])',
+'tog-externaleditor'          => 'Externe Editor als Standard bruche (nume fir Experte, doderzue brucht s speziälli Yystellige uf em Computer. [//www.mediawiki.org/wiki/Manual:External_editors Wyteri Informatione doderzue.])',
+'tog-externaldiff'            => 'Extern Programm fir Versionsunterschid als Standard bruche (nume fir Experte, doderzue brucht s speziälli Yystellige uf em Computer. [//www.mediawiki.org/wiki/Manual:External_editors Wyteri Informatione doderzue.])',
 'tog-showjumplinks'           => '«Wächsle-zu»-Links ermügleche',
 'tog-uselivepreview'          => 'Live-Vorschau bruche (JavaScript) (experimentell)',
 'tog-forceeditsummary'        => 'Sag mer s, wänn i s Zämmefassigsfeld läär loss',
@@ -488,13 +488,12 @@ Wänn s des nit isch, hesch villicht e Fähler in dr Software gfunde. Bitte mäl
 Funktion: $1<br />
 Abfrog: $2',
 'viewsource'           => 'Quelltext aaluege',
-'viewsourcefor'        => 'fir $1',
 'actionthrottled'      => 'Aktionsaazahl limitiert',
 'actionthrottledtext'  => 'As Schutz vor Spam cha die Aktion im e churze Zytabstand nume begränzt durgfiert wäre. Du bisch ebe an die Gränz cho. Bitte versuech s in e paar Minute non emol.',
 'protectedpagetext'    => 'Die Syte isch fir s Bearbeite gsperrt.',
 'viewsourcetext'       => 'Quelltext vo dere Syte:',
 'protectedinterface'   => 'In däre Syte het s Text fir s Sproch-Interface vu dr Software un si isch gsperrt, zum Missbruch z verhindre.',
-'editinginterface'     => "'''Obacht:''' Du bisch e Syten am Verändere, wu zum User.Interface ghert. Wänn Du die Syte veränderesch, no änderet sich s User-Interface au fir di andere Benutzer. Fir Ibersetzige lueg bitte, eb Du doodefir s [http://translatewiki.net/wiki/Main_Page?setlang=gsw Translatewiki] witt bruuche, s MediaWiki-Lokalisierigsprojäkt.",
+'editinginterface'     => "'''Obacht:''' Du bisch e Syten am Verändere, wu zum User.Interface ghert. Wänn Du die Syte veränderesch, no änderet sich s User-Interface au fir di andere Benutzer. Fir Ibersetzige lueg bitte, eb Du doodefir s [//translatewiki.net/wiki/Main_Page?setlang=gsw Translatewiki] witt bruuche, s MediaWiki-Lokalisierigsprojäkt.",
 'sqlhidden'            => '(SQL-Abfrog verschteckt)',
 'cascadeprotected'     => 'Die Syte isch fir s Bearbeite gsperrt. Si isch yybunde in {{PLURAL:$1|die Syte, wu do chunnt|die Syte, wu do chemme}} , wu mit ere Kaskadesperroption gschitzt {{PLURAL:$1|isch|sin}}:
 $2',
@@ -746,9 +745,6 @@ Du chasch $1 oder ein vu dr andre [[{{MediaWiki:Grouppage-sysop}}|Ammanne]] kont
 *Sperr-ID: #$5
 </div>',
 'blockednoreason'                  => 'kei Begrindig aagee',
-'blockedoriginalsource'            => "Dr Quälltäxt vu '''$1''' wird do aazeigt:",
-'blockededitsource'                => "Dr Quälltäxt vu '''Dyyne Änderige''' an '''$1''':",
-'whitelistedittitle'               => 'Zum Bearbeite muess mer aagmäldet syy.',
 'whitelistedittext'                => 'Du muesch Di $1 zum Artikel bearbeite.',
 'confirmedittext'                  => 'Si mien Ihri E-Mail-Adräss zerscht bstätige, voreb Si Syte chenne ändere. Bitte setze Si in [[Special:Preferences|Ihre Iistellige]] Ihri E-Mail-Adräss yy un len Si si priefe.',
 'nosuchsectiontitle'               => 'Abschnitt nit gfunde',
@@ -1175,7 +1171,6 @@ Stell sicher, ass d Versionsgschicht vun eme Artikel historisch korrekt isch.',
 'prefs-editing'                 => 'Tekscht-Ygab',
 'prefs-edit-boxsize'            => 'Gressi vum Bearbeitigsfänschter.',
 'rows'                          => 'Zylene',
-'columns'                       => 'Spaltene',
 'searchresultshead'             => 'Suech-Ergäbnis',
 'resultsperpage'                => 'Träffer pro Syte',
 'stub-threshold'                => 'Gleichformatierig <a href="#" class="stub">vu chleine Syte</a> (in Byte):',
@@ -1358,7 +1353,6 @@ Des cha nimmi ruckgängig gmacht wäre.',
 'right-autopatrol'            => 'Markier eigeni Bearbeitige automatisch as kontrolliert',
 'right-patrolmarks'           => 'D Kontrollmarkierige in dr letschten Änderige aaluege',
 'right-unwatchedpages'        => 'D Lischt vu nit beobachtete Syte aaluege',
-'right-trackback'             => 'Trackback ibermittle',
 'right-mergehistory'          => 'Versionsgschichte vu Syte zämefiere',
 'right-userrights'            => 'Benutzerrächt bearbeite',
 'right-userrights-interwiki'  => 'Benutzerrächt in andere Wiki bearbeite',
@@ -1404,7 +1398,6 @@ Des cha nimmi ruckgängig gmacht wäre.',
 'action-patrol'               => 'd Bearbeitige vu andere Benutzer as kontrolliert z markiere',
 'action-autopatrol'           => 'di eigene Bearbeitige as kontrolliert z markiere',
 'action-unwatchedpages'       => 'd Lischt vu dr nit beobachtete Syten aazluege',
-'action-trackback'            => 'e Trackback z ibertrage',
 'action-mergehistory'         => 'd Versionegschichte vu Syte zämezfiere',
 'action-userrights'           => 'Benutzerrächt z ändere',
 'action-userrights-interwiki' => 'd Rächt vu Benutzer in andere Wiki z ändere',
@@ -1842,7 +1835,7 @@ In jedere Zyylete het s Gleicher zue dr erschte un dr zwote Wyterleitig un s Zii
 'listusers-editsonly'     => 'Zeig nume Benutzer mit Byytreg',
 'listusers-creationsort'  => 'Sortiert noch em Datum',
 'usereditcount'           => '$1 {{PLURAL:$1|Bearbeitig|Bearbeitige}}',
-'usercreated'             => 'Aagleit uf $1 am $2',
+'usercreated'             => '{{GENDER:$3|Aagleit}} uf $1 am $2',
 'newpages'                => 'Nöji Artikel',
 'newpages-username'       => 'Benutzername:',
 'ancientpages'            => 'alti Sytene',
@@ -2142,7 +2135,7 @@ Der Schutzstatus vo dere Syte lat sech la ändere, aber das het kei Yfluss uf d 
 'protect-default'             => 'Alle Benutzer',
 'protect-fallback'            => '«$1»-Berächtigung nötig',
 'protect-level-autoconfirmed' => 'Neji un nit regischtrierti Benutzer sperre',
-'protect-level-sysop'         => 'Nur Adminischtratore',
+'protect-level-sysop'         => 'Numme Ammanne',
 'protect-summary-cascade'     => 'Kaskade',
 'protect-expiring'            => 'bis $1 (UTC)',
 'protect-expiring-local'      => 'bis $1',
@@ -2283,12 +2276,11 @@ Do chunnt dr aktuäll Yytrag us em Benutzersperr-Logbuech:',
 'autoblockid'                     => 'Automatischi Sperrig #$1',
 'block'                           => 'Benutzer sperre',
 'unblock'                         => 'Benutzer frejgee',
-'blockip'                         => 'Benutzer bzw. IP blockyre',
+'blockip'                         => 'Däm Binutzer d Bearbeitigsrächt furtnee',
 'blockip-title'                   => 'Benutzer sperre',
 'blockip-legend'                  => 'IP-Adräss/Benutzer sperre',
 'blockiptext'                     => 'Nimm des Formular go ne Benutzer oder e IP-Adräss sperre.
 Des sott numme erfolge go Vandalismus verhindere un in Ibereinstimmig mit in dr [[{{MediaWiki:Policy-url}}|Leitlinie]]. Bitte gib au ne Grund fi d Sperri aa (z. B. indäm du einzel ni Syte zitiersch, wu vandaliert wore sin).',
-'ipaddress'                       => 'IP-Adräss oder Benutzername:',
 'ipadressorusername'              => 'IP-Adräss oder Benutzername:',
 'ipbexpiry'                       => 'Sperrduur:',
 'ipbreason'                       => 'Grund:',
@@ -2307,7 +2299,7 @@ Des sott numme erfolge go Vandalismus verhindere un in Ibereinstimmig mit in dr 
 'ipbcreateaccount'                => 'Aalege vu Benutzerchonte verhindere',
 'ipbemailban'                     => 'E-Mail-Versand sperre',
 'ipbenableautoblock'              => 'Sperr di aktuäll vu däm Benutzer brucht IP-Adräss un automatisch alli wytere, wun er nimmt go Syte bearbeite oder Benutzerchonte aalege',
-'ipbsubmit'                       => 'Adräss blockiere',
+'ipbsubmit'                       => 'IP-Adräss/Benutzer sperre',
 'ipbother'                        => 'Anderi Duur (englisch):',
 'ipboptions'                      => '2 Stunde:2 hours,1 Tag:1 day,3 Täg:3 days,1 Wuche:1 week,2 Wuche:2 weeks,1 Monet:1 month,3 Monet:3 months,6 Monet:6 months,1 Johr:1 year,Fir immer:infinite',
 'ipbotheroption'                  => 'Anderi Duur',
@@ -2359,7 +2351,7 @@ Go d Sperri ufhebe lueg d [[Special:IPBlockList|Lisch vu allene aktive Sperrine]
 'blocklist-nousertalk'            => 'derf eigeni Diskussionssyte nit bearbeite',
 'ipblocklist-empty'               => 'In dr Lischt het s kei Yytreg.',
 'ipblocklist-no-results'          => 'Di gsuecht IP-Adräss/dr Benutzername isch nit gsperrt.',
-'blocklink'                       => 'sperre',
+'blocklink'                       => 'D Bearbeitigsrächt furtnee',
 'unblocklink'                     => 'freigä',
 'change-blocklink'                => 'Sperri ändere',
 'contribslink'                    => 'Byträg',
@@ -2480,7 +2472,7 @@ I söttigne Fäll müessti d Diskussionssyten allefalls vo Hand kopiert wärde."
 
 D Syte „[[:$1]]“ gits scho. Wottsch du si lösche, zume Platz zum verschiebe mache?',
 'delete_and_move_confirm'      => 'D Ziilsyte für d Verschiebig lösche',
-'delete_and_move_reason'       => 'glöscht, zume Platz für zum verschiebe mache',
+'delete_and_move_reason'       => 'glöscht, zume Platz für s Verschiebe vo „[[$1]]“ z mache',
 'selfmove'                     => 'Der nöi Artikelname mues en andere sy als der alt!',
 'immobile-source-namespace'    => 'Syte ussem „$1“-Namensruum chönne nüt verschobe werde',
 'immobile-target-namespace'    => 'Syte chönne nüt in de „$1“-Namensruum verschobe werde',
@@ -2524,7 +2516,7 @@ Zum Exportiere trag dr Sytetitel in dr Täxtchaschte unter yy, ei Titel pro Zyyl
 'allmessagesdefault'            => 'Standard-Tekscht',
 'allmessagescurrent'            => 'jetzige Tekscht',
 'allmessagestext'               => 'Des isch e Lischt vu allene meglige Syschtemnochrichte us em MediaWiki Namensruum.
-Lueg au uf [http://www.mediawiki.org/wiki/Localisation MediaWiki Lokalisierig] un [http://translatewiki.net translatewiki.net], wänn Du zue dr MediaWiki-Lokalisierig wit byytrage.',
+Lueg au uf [//www.mediawiki.org/wiki/Localisation MediaWiki Lokalisierig] un [//translatewiki.net translatewiki.net], wänn Du zue dr MediaWiki-Lokalisierig wit byytrage.',
 'allmessagesnotsupportedDB'     => "'''{{ns:special}}:Allmessages''' cha nit bruucht wärde will '''\$wgUseDatabaseMessages''' abgschalte isch.",
 'allmessages-filter-legend'     => 'Filter',
 'allmessages-filter'            => 'Filter fir dr aapasst Zuestand:',
@@ -3190,7 +3182,7 @@ Andri wäre standardmäßig nit aazeigt.
 
 # External editor support
 'edit-externally'      => 'Die Datei mit emnen externe Programm bearbeite',
-'edit-externally-help' => '(Lueg d [http://www.mediawiki.org/wiki/Manual:External_editors Installationsaawisige] fir witeri Informatione)',
+'edit-externally-help' => '(Lueg d [//www.mediawiki.org/wiki/Manual:External_editors Installationsaawisige] fir witeri Informatione)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'alli',
@@ -3266,13 +3258,6 @@ Dää Bstetigungscode isch giltig bis am $4.',
 'scarytranscludedisabled' => '[Interwiki-Yybindig isch deaktiviert]',
 'scarytranscludefailed'   => '[Vorlage-Yybindig fir $1 isch gescheitert]',
 'scarytranscludetoolong'  => '[URL isch z lang]',
-
-# Trackbacks
-'trackbackbox'      => 'Trackback fir die Syte:<br />
-$1',
-'trackbackremove'   => '([$1 lesche])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Trackback isch mit Erfolg glescht wore.',
 
 # Delete conflict
 'deletedwhileediting'      => "'''Obacht''': Die Syte isch glescht wore, nochdäm Du aagfange hesch si z bearbeite!",
@@ -3377,13 +3362,13 @@ Du chasch au d [[Special:EditWatchlist|Standard-Bearbeitigssyte]] bruuche.',
 'version-hook-subscribedby'     => 'Ufruef vu',
 'version-version'               => '(Version $1)',
 'version-license'               => 'Lizänz',
-'version-poweredby-credits'     => "Die Websyte nutzt '''[http://www.mediawiki.org/wiki/MediaWiki/de MediaWiki]''', Copyright © 2001–$1 $2.",
+'version-poweredby-credits'     => "Die Websyte nutzt '''[//www.mediawiki.org/wiki/MediaWiki/de MediaWiki]''', Copyright © 2001–$1 $2.",
 'version-poweredby-others'      => 'anderi',
 'version-license-info'          => 'MediaWiki isch e freji Software, d. h. s cha, no dr Bedingige vu dr GNU General Public-Lizänz, wu vu dr Free Software Foundation vereffentligt woren isch, wyterverteilt un/oder modifiziert wäre. Doderbyy cha d Version 2, oder no eigenem Ermässe, jedi nejeri Version vu dr Lizänz brucht wäre.
 
 Des Programm wird in dr Hoffnig verteilt, ass es nitzli isch, aber OHNI JEDI GARANTI un sogar ohni di impliziert Garanti vun ere MÄRTGÄNGIGKEIT oder EIGNIG FIR E BSTIMMTE ZWÄCK. Doderzue git meh Hiiwys in dr GNU General Public-Lizänz.
 
-E [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopi vu dr GNU General Public-Lizänz] sott zämme mit däm Programm verteilt wore syy. Wänn des nit eso isch, cha ne Kopi bi dr Free Software Foundation Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA, schriftli aagforderet oder [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html online gläse] wäre.',
+E [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopi vu dr GNU General Public-Lizänz] sott zämme mit däm Programm verteilt wore syy. Wänn des nit eso isch, cha ne Kopi bi dr Free Software Foundation Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA, schriftli aagforderet oder [//www.gnu.org/licenses/old-licenses/gpl-2.0.html online gläse] wäre.',
 'version-software'              => 'Installierti Software',
 'version-software-product'      => 'Produkt',
 'version-software-version'      => 'Version',
@@ -3519,5 +3504,15 @@ Di aagfrogt Datei wird diräkt dargstellt bzw. mit dr verchnipfte Aawändig gsta
 'logentry-newusers-create2'           => '$1 het {{GENDER:$4|en Benutzerchonto}} $3 {{GENDER:$2|erstellt}}',
 'logentry-newusers-autocreate'        => 'S Benutzerchonto $1 isch automatisch {{GENDER:$2|erstellt}} worde',
 'newuserlog-byemail'                  => 's Passwort isch per E-Mail gschickt wore',
+
+# Feedback
+'feedback-subject' => 'Beträff:',
+'feedback-message' => 'Noochricht:',
+'feedback-cancel'  => 'Abbräche',
+'feedback-submit'  => 'Ruggmäldig abschigge',
+'feedback-adding'  => 'Ruggmäldig wird zur Syte dezuegfiegt …',
+'feedback-error1'  => 'Fäälermäldig: Unbekannts Ergebniss vo de API',
+'feedback-error2'  => 'Fääler: Bearbeitig fehlgschlo',
+'feedback-error3'  => 'Fäälermäldig: Kei Antwort vo de API',
 
 );

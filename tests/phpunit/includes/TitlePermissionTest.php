@@ -62,15 +62,11 @@ class TitlePermissionTest extends MediaWikiLangTestCase {
 	function setUserPerm( $perm ) {
 		// Setting member variables is evil!!!
 
-		if ( !is_array( $perm ) ) {
-			$perm = array( $perm );
+		if ( is_array( $perm ) ) {
+			$this->user->mRights = $perm;
+		} else {
+			$this->user->mRights = array( $perm );
 		}
-		for ($i = 0; $i < 100; $i++) {
-			$this->user->mRights[$i] = $perm;
-		}
-
-		// Hack, hack hack ...
-		$this->user->mRights['*'] = $perm;
 	}
 
 	function setTitle( $ns, $title = "Main_Page" ) {
@@ -309,7 +305,7 @@ class TitlePermissionTest extends MediaWikiLangTestCase {
 			$this->assertEquals( $check[$action][3],
 				$this->title->userCan( $action, true ) );
 			$this->assertEquals( $check[$action][3],
-				$this->title->quickUserCan( $action, false ) );
+				$this->title->quickUserCan( $action ) );
 
 			# count( User::getGroupsWithPermissions( $action ) ) < 1
 		}
@@ -461,7 +457,7 @@ class TitlePermissionTest extends MediaWikiLangTestCase {
 																	 $this->user ) );
 
 		$this->assertEquals( true,
-							 $this->title->quickUserCan( 'edit', false ) );
+							 $this->title->quickUserCan( 'edit' ) );
 		$this->title->mRestrictions = array( "edit" => array( 'bogus', "sysop", "protect", "" ),
 										   "bogus" => array( 'bogus', "sysop", "protect", "" ) );
 
@@ -501,9 +497,9 @@ class TitlePermissionTest extends MediaWikiLangTestCase {
 																	 $this->user ) );
 		$this->title->mCascadeRestriction = true;
 		$this->assertEquals( false,
-							 $this->title->quickUserCan( 'bogus', false ) );
+							 $this->title->quickUserCan( 'bogus' ) );
 		$this->assertEquals( false,
-							 $this->title->quickUserCan( 'edit', false ) );
+							 $this->title->quickUserCan( 'edit' ) );
 		$this->assertEquals( array( array( 'badaccess-group0' ),
 									array( 'protectedpagetext', 'bogus' ),
 									array( 'protectedpagetext', 'protect' ),

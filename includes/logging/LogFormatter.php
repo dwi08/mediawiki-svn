@@ -36,7 +36,7 @@ class LogFormatter {
 			$handler = $wgLogActionsHandlers[$wildcard];
 		}
 
-		if ( $handler !== '' && class_exists( $handler ) ) {
+		if ( $handler !== '' && is_string( $handler ) && class_exists( $handler ) ) {
 			return new $handler( $entry );
 		}
 
@@ -154,7 +154,7 @@ class LogFormatter {
 
 	/**
 	 * Extract parameters intented for action message from
-	 * array of all parameters. The are three hardcoded
+	 * array of all parameters. There are three hardcoded
 	 * parameters (array zero-indexed, this list not):
 	 *  - 1: user name with premade link
 	 *  - 2: usable for gender magic function
@@ -274,7 +274,7 @@ class LogFormatter {
 	 */
 	protected function msg( $key ) {
 		return wfMessage( $key )
-			->inLanguage( $this->context->getLang() )
+			->inLanguage( $this->context->getLanguage() )
 			->title( $this->context->getTitle() );
 	}
 
@@ -395,13 +395,13 @@ class DeleteLogFormatter extends LogFormatter {
 				foreach ( $extra as $v ) {
 					$changes[] = $this->msg( $v )->plain();
 				}
-				$changeText =  $this->context->getLang()->listToText( $changes );
+				$changeText =  $this->context->getLanguage()->listToText( $changes );
 
 
 				$newParams = array_slice( $params, 0, 3 );
 				$newParams[3] = $changeText;
 				$count = count( explode( ',', $params[$paramStart] ) );
-				$newParams[4] = $this->context->getLang()->formatNum( $count );
+				$newParams[4] = $this->context->getLanguage()->formatNum( $count );
 				return $this->parsedParametersDeleteLog = $newParams;
 			} else {
 				return $this->parsedParametersDeleteLog = array_slice( $params, 0, 3 );
@@ -442,7 +442,7 @@ class PatrolLogFormatter extends LogFormatter {
 
 		$target = $this->entry->getTarget();
 		$oldid = $params[3];
-		$revision = $this->context->getLang()->formatNum( $oldid, true );
+		$revision = $this->context->getLanguage()->formatNum( $oldid, true );
 
 		if ( $this->plaintext ) {
 			$revlink = $revision;
@@ -481,7 +481,6 @@ class NewUsersLogFormatter extends LogFormatter {
 	}
 
 	public function getComment() {
-		$subtype = $this->entry->getSubtype();
 		$timestamp = wfTimestamp( TS_MW, $this->entry->getTimestamp() );
 		if ( $timestamp < '20080129000000' ) {
 			# Suppress $comment from old entries (before 2008-01-29),

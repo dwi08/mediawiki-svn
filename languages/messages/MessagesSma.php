@@ -198,7 +198,6 @@ $messages = array(
 'badtitle'           => 'Gååre nomme',
 'badtitletext'       => 'Dïhte bielietiitele lea nov sån ijje luhpede, bielie lea gåaroes, jallh lea bielie gåarhmede lïenghke gåajkoe.',
 'viewsource'         => 'Vuesehte tjaalege',
-'viewsourcefor'      => 'ihke $1',
 'viewsourcetext'     => 'Dov dorje vuesehte jih kåpieerae gaaltjie dejstie dïhte bielie:',
 
 # Login and logout pages
@@ -647,7 +646,6 @@ Daaletje tjaeleste-vaarjelidh sïjsestäälninge ihke bielie '''$1''' lea:",
 
 # Block/unblock
 'blockip'            => 'Tjöödtjehtidh nuhtjien',
-'ipaddress'          => 'IP Tjaalesijjie:',
 'ipadressorusername' => 'IP Tjaalesijjie jallh nuhtjiennomme:',
 'ipbother'           => 'Jeatjebh tïjje:',
 'ipboptions'         => '2 täjmoe:2 hours,1 biejjie:1 day,3 biejjie:3 days,1 våhkoe:1 week,2 våhkoe:2 weeks,1 aske:1 month,3 aske:3 months,6 aske:6 months,1 jaepie:1 year,gietjieloeves:infinite',
@@ -829,7 +827,7 @@ Jeatjebh dajveh lea gaptjedh goh sïejhme, bine vuesehte gåessie taabelle stoer
 
 # External editor support
 'edit-externally'      => 'Värrhtoedimmie dïhte baalka meatan ehksteerne applikasjovne',
-'edit-externally-help' => 'Vuajna [http://www.mediawiki.org/wiki/Manual:External_editors instalasjovne instruksjovne] ihke vielie bïevnesh.',
+'edit-externally-help' => 'Vuajna [//www.mediawiki.org/wiki/Manual:External_editors instalasjovne instruksjovne] ihke vielie bïevnesh.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'gaajhke',

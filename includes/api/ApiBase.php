@@ -39,7 +39,7 @@
  *
  * @ingroup API
  */
-abstract class ApiBase {
+abstract class ApiBase extends ContextSource {
 
 	// These constants allow modules to specify exactly how to treat incoming parameters.
 
@@ -72,6 +72,10 @@ abstract class ApiBase {
 		$this->mMainModule = $mainModule;
 		$this->mModuleName = $moduleName;
 		$this->mModulePrefix = $modulePrefix;
+
+		if ( !$this->isMain() ) {
+			$this->setContext( $mainModule->getContext() );
+		}
 	}
 
 	/*****************************************************************************
@@ -179,16 +183,12 @@ abstract class ApiBase {
 	 * The object will have the WebRequest and the User object set to the ones
 	 * used in this instance.
 	 *
-	 * @return RequestContext
+	 * @deprecated since 1.19 use getContext to get the current context
+	 * @return DerivativeContext
 	 */
 	public function createContext() {
-		global $wgUser;
-
-		$context = new RequestContext;
-		$context->setRequest( $this->getMain()->getRequest() );
-		$context->setUser( $wgUser ); /// @todo FIXME: we should store the User object
-
-		return $context;
+		wfDeprecated( __METHOD__, '1.19' );
+		return new DerivativeContext( $this->getContext() );
 	}
 
 	/**
@@ -236,7 +236,7 @@ abstract class ApiBase {
 	public function makeHelpMsg() {
 		static $lnPrfx = "\n  ";
 
-		$msg = $this->getDescription();
+		$msg = $this->getFinalDescription();
 
 		if ( $msg !== false ) {
 
@@ -267,7 +267,30 @@ abstract class ApiBase {
 				$msg .= "Parameters:\n$paramsMsg";
 			}
 
-			$msg .= $this->makeHelpArrayToString( $lnPrfx, "Example", $this->getExamples() );
+			$examples = $this->getExamples();
+			if ( $examples !== false && $examples !== '' ) {
+				if ( !is_array( $examples ) ) {
+					$examples = array(
+						$examples
+					);
+				}
+				$msg .= "Example" . ( count( $examples ) > 1 ? 's' : '' ) . ":\n";
+				foreach( $examples as $k => $v ) {
+
+					if ( is_numeric( $k ) ) {
+						$msg .= "  $v\n";
+					} else {
+						$v .= ":";
+						if ( is_array( $v ) ) {
+							$msgExample = implode( "\n", array_map( array( $this, 'indentExampleText' ), $v ) );
+						} else {
+							$msgExample = "  $v";
+						}
+						$msg .= wordwrap( $msgExample, 100, "\n" ) . "\n    $k\n";
+					}
+				}
+			}
+
 			$msg .= $this->makeHelpArrayToString( $lnPrfx, "Help page", $this->getHelpUrls() );
 
 			if ( $this->getMain()->getShowVersions() ) {
@@ -289,6 +312,14 @@ abstract class ApiBase {
 		}
 
 		return $msg;
+	}
+
+	/**
+	 * @param $item string
+	 * @return string
+	 */
+	private function indentExampleText( $item ) {
+		return "  " . $item;
 	}
 
 	/**
@@ -341,20 +372,20 @@ abstract class ApiBase {
 				}
 
 				$deprecated = isset( $paramSettings[self::PARAM_DEPRECATED] ) ?
-					$paramSettings[self::PARAM_DEPRECATED] : false;
+						$paramSettings[self::PARAM_DEPRECATED] : false;
 				if ( $deprecated ) {
 					$desc = "DEPRECATED! $desc";
 				}
 
 				$required = isset( $paramSettings[self::PARAM_REQUIRED] ) ?
-					$paramSettings[self::PARAM_REQUIRED] : false;
+						$paramSettings[self::PARAM_REQUIRED] : false;
 				if ( $required ) {
 					$desc .= $paramPrefix . "This parameter is required";
 				}
 
 				$type = isset( $paramSettings[self::PARAM_TYPE] ) ? $paramSettings[self::PARAM_TYPE] : null;
 				if ( isset( $type ) ) {
-					if ( isset( $paramSettings[self::PARAM_ISMULTI] ) ) {
+					if ( isset( $paramSettings[self::PARAM_ISMULTI] ) && $paramSettings[self::PARAM_ISMULTI] ) {
 						$prompt = 'Values (separate with \'|\'): ';
 					} else {
 						$prompt = 'One value: ';
@@ -411,7 +442,7 @@ abstract class ApiBase {
 							if ( !$isArray
 									|| $isArray && count( $paramSettings[self::PARAM_TYPE] ) > self::LIMIT_SML1 ) {
 								$desc .= $paramPrefix . "Maximum number of values " .
-									self::LIMIT_SML1 . " (" . self::LIMIT_SML2 . " for bots)";
+										self::LIMIT_SML1 . " (" . self::LIMIT_SML2 . " for bots)";
 							}
 						}
 					}
@@ -437,6 +468,7 @@ abstract class ApiBase {
 	 * Callback for preg_replace_callback() call in makeHelpMsg().
 	 * Replaces a source file name with a link to ViewVC
 	 *
+	 * @param $matches array
 	 * @return string
 	 */
 	public function makeHelpMsg_callback( $matches ) {
@@ -463,9 +495,9 @@ abstract class ApiBase {
 		// This is necessary to make stuff like ApiMain::getVersion()
 		// returning the version string for ApiBase work
 		if ( $path ) {
-			return "{$matches[0]}\n   http://svn.wikimedia.org/" .
-				"viewvc/mediawiki/trunk/" . dirname( $path ) .
-				"/{$matches[2]}";
+			return "{$matches[0]}\n   https://svn.wikimedia.org/" .
+					"viewvc/mediawiki/trunk/" . dirname( $path ) .
+					"/{$matches[2]}";
 		}
 		return $matches[0];
 	}
@@ -510,6 +542,7 @@ abstract class ApiBase {
 	/**
 	 * Get final list of parameters, after hooks have had a chance to
 	 * tweak it as needed.
+	 *
 	 * @return array or false
 	 */
 	public function getFinalParams() {
@@ -519,13 +552,26 @@ abstract class ApiBase {
 	}
 
 	/**
-	 * Get final description, after hooks have had a chance to tweak it as
+	 * Get final parameter descriptions, after hooks have had a chance to tweak it as
 	 * needed.
+	 *
 	 * @return array
 	 */
 	public function getFinalParamDescription() {
 		$desc = $this->getParamDescription();
 		wfRunHooks( 'APIGetParamDescription', array( &$this, &$desc ) );
+		return $desc;
+	}
+
+	/**
+	 * Get final module description, after hooks have had a chance to tweak it as
+	 * needed.
+	 *
+	 * @return array
+	 */
+	public function getFinalDescription() {
+		$desc = $this->getDescription();
+		wfRunHooks( 'APIGetDescription', array( &$this, &$desc ) );
 		return $desc;
 	}
 
@@ -586,7 +632,7 @@ abstract class ApiBase {
 		array_shift( $required );
 
 		$intersection = array_intersect( array_keys( array_filter( $params,
-				array( $this, "parameterNotEmpty" ) ) ), $required );
+			array( $this, "parameterNotEmpty" ) ) ), $required );
 
 		if ( count( $intersection ) > 1 ) {
 			$this->dieUsage( 'The parameters ' . implode( ', ', $intersection ) . ' can not be used together', 'invalidparammix' );
@@ -621,7 +667,7 @@ abstract class ApiBase {
 		array_shift( $required );
 
 		$intersection = array_intersect( array_keys( array_filter( $params,
-				array( $this, "parameterNotEmpty" ) ) ), $required );
+			array( $this, "parameterNotEmpty" ) ) ), $required );
 
 		if ( count( $intersection ) > 1 ) {
 			$this->dieUsage( 'The parameters ' . implode( ', ', $intersection ) . ' can not be used together', 'invalidparammix' );
@@ -659,6 +705,7 @@ abstract class ApiBase {
 	 * @return array
 	 */
 	public static function getValidNamespaces() {
+		wfDeprecated( __METHOD__, '1.17' );
 		return MWNamespace::getValidNamespaces();
 	}
 
@@ -674,7 +721,6 @@ abstract class ApiBase {
 
 		$userWatching = $titleObj->userIsWatching();
 
-		global $wgUser;
 		switch ( $watchlist ) {
 			case 'watch':
 				return true;
@@ -690,10 +736,10 @@ abstract class ApiBase {
 				# If no user option was passed, use watchdefault or watchcreation
 				if ( is_null( $userOption ) ) {
 					$userOption = $titleObj->exists()
-						? 'watchdefault' : 'watchcreations';
+							? 'watchdefault' : 'watchcreations';
 				}
 				# Watch the article based on the user preference
-				return (bool)$wgUser->getOption( $userOption );
+				return (bool)$this->getUser()->getOption( $userOption );
 
 			case 'nochange':
 				return $userWatching;
@@ -715,11 +761,11 @@ abstract class ApiBase {
 			return;
 		}
 
-		global $wgUser;
+		$user = $this->getUser();
 		if ( $value ) {
-			WatchAction::doWatch( $titleObj, $wgUser );
+			WatchAction::doWatch( $titleObj, $user );
 		} else {
-			WatchAction::doUnwatch( $titleObj, $wgUser );
+			WatchAction::doUnwatch( $titleObj, $user );
 		}
 	}
 
@@ -767,9 +813,9 @@ abstract class ApiBase {
 				ApiBase::dieDebug( __METHOD__, "Boolean param $encParamName's default is set to '$default'" );
 			}
 
-			$value = $this->getMain()->getRequest()->getCheck( $encParamName );
+			$value = $this->getRequest()->getCheck( $encParamName );
 		} else {
-			$value = $this->getMain()->getRequest()->getVal( $encParamName, $default );
+			$value = $this->getRequest()->getVal( $encParamName, $default );
 
 			if ( isset( $value ) && $type == 'namespace' ) {
 				$type = MWNamespace::getValidNamespaces();
@@ -906,13 +952,18 @@ abstract class ApiBase {
 		// This is a bit awkward, but we want to avoid calling canApiHighLimits() because it unstubs $wgUser
 		$valuesList = explode( '|', $value, self::LIMIT_SML2 + 1 );
 		$sizeLimit = count( $valuesList ) > self::LIMIT_SML1 && $this->mMainModule->canApiHighLimits() ?
-			self::LIMIT_SML2 : self::LIMIT_SML1;
+				self::LIMIT_SML2 : self::LIMIT_SML1;
 
 		if ( self::truncateArray( $valuesList, $sizeLimit ) ) {
 			$this->setWarning( "Too many values supplied for parameter '$valueName': the limit is $sizeLimit" );
 		}
 
 		if ( !$allowMultiple && count( $valuesList ) != 1 ) {
+			// Bug 33482 - Allow entries with | in them for non-multiple values
+			if ( in_array( $value, $allowedValues ) ) {
+				return $value;
+			}
+
 			$possibleValues = is_array( $allowedValues ) ? "of '" . implode( "', '", $allowedValues ) . "'" : '';
 			$this->dieUsage( "Only one $possibleValues is allowed for parameter '$valueName'", "multival_$valueName" );
 		}
@@ -1149,6 +1200,8 @@ abstract class ApiBase {
 		'mustbeposted' => array( 'code' => 'mustbeposted', 'info' => "The \$1 module requires a POST request" ),
 		'show' => array( 'code' => 'show', 'info' => 'Incorrect parameter - mutually exclusive values may not be supplied' ),
 		'specialpage-cantexecute' => array( 'code' => 'specialpage-cantexecute', 'info' => "You don't have permission to view the results of this special page" ),
+		'invalidoldimage' => array( 'code' => 'invalidoldimage', 'info' => 'The oldimage parameter has invalid format' ),
+		'nodeleteablefile' => array( 'code' => 'nodeleteablefile', 'info' => 'No such old version of the file' ),
 
 		// ApiEditPage messages
 		'noimageredirect-anon' => array( 'code' => 'noimageredirect-anon', 'info' => "Anonymous users can't create image redirects" ),
@@ -1180,6 +1233,7 @@ abstract class ApiBase {
 		'copyuploaddisabled' => array( 'code' => 'copyuploaddisabled', 'info' => 'Uploads by URL is not enabled.  Make sure $wgAllowCopyUploads is set to true in LocalSettings.php.' ),
 
 		'filename-tooshort' => array( 'code' => 'filename-tooshort', 'info' => 'The filename is too short' ),
+		'filename-toolong' => array( 'code' => 'filename-toolong', 'info' => 'The filename is too long' ),
 		'illegal-filename' => array( 'code' => 'illegal-filename', 'info' => 'The filename is not allowed' ),
 		'filetype-missing' => array( 'code' => 'filetype-missing', 'info' => 'The file is missing an extension' ),
 	);
@@ -1224,8 +1278,8 @@ abstract class ApiBase {
 
 		if ( isset( self::$messageMap[$key] ) ) {
 			return array( 'code' =>
-				wfMsgReplaceArgs( self::$messageMap[$key]['code'], $error ),
-					'info' =>
+			wfMsgReplaceArgs( self::$messageMap[$key]['code'], $error ),
+				'info' =>
 				wfMsgReplaceArgs( self::$messageMap[$key]['info'], $error )
 			);
 		}
@@ -1297,10 +1351,9 @@ abstract class ApiBase {
 	 * @return User
 	 */
 	public function getWatchlistUser( $params ) {
-		global $wgUser;
 		if ( !is_null( $params['owner'] ) && !is_null( $params['token'] ) ) {
 			$user = User::newFromName( $params['owner'], false );
-			if ( !$user->getId() ) {
+			if ( !($user && $user->getId()) ) {
 				$this->dieUsage( 'Specified user does not exist', 'bad_wlowner' );
 			}
 			$token = $user->getOption( 'watchlisttoken' );
@@ -1308,10 +1361,10 @@ abstract class ApiBase {
 				$this->dieUsage( 'Incorrect watchlist token provided -- please set a correct token in Special:Preferences', 'bad_wltoken' );
 			}
 		} else {
-			if ( !$wgUser->isLoggedIn() ) {
+			if ( !$this->getUser()->isLoggedIn() ) {
 				$this->dieUsage( 'You must be logged-in to have a watchlist', 'notloggedin' );
 			}
-			$user = $wgUser;
+			$user = $this->getUser();
 		}
 		return $user;
 	}
@@ -1481,6 +1534,13 @@ abstract class ApiBase {
 			ApiBase::dieDebug( __METHOD__, 'called without calling profileDBOut() first' );
 		}
 		return $this->mDBTime;
+	}
+
+	/**
+	 * @return DatabaseBase
+	 */
+	protected function getDB() {
+		return wfGetDB( DB_SLAVE, 'api' );
 	}
 
 	/**

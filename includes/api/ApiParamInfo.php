@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiBase.php" );
-}
-
 /**
  * @ingroup API
  */
@@ -118,9 +113,10 @@ class ApiParamInfo extends ApiBase {
 	function getClassInfo( $obj ) {
 		$result = $this->getResult();
 		$retval['classname'] = get_class( $obj );
-		$retval['description'] = implode( "\n", (array)$obj->getDescription() );
-		$examples = (array)$obj->getExamples();
-		$retval['examples'] = implode( "\n", $examples );
+		$retval['description'] = implode( "\n", (array)$obj->getFinalDescription() );
+
+		$retval['examples'] = '';
+
 		$retval['version'] = implode( "\n", (array)$obj->getVersion() );
 		$retval['prefix'] = $obj->getModulePrefix();
 
@@ -148,9 +144,28 @@ class ApiParamInfo extends ApiBase {
 		}
 		$result->setIndexedTagName( $retval['helpurls'], 'helpurl' );
 
-		$retval['allexamples'] = $examples;
-		if ( isset( $retval['allexamples'][0] ) && $retval['allexamples'][0] === false ) {
-			$retval['allexamples'] = array();
+		$examples = $obj->getExamples();
+		$retval['allexamples'] = array();
+		if ( $examples !== false ) {
+			foreach( $examples as $k => $v ) {
+				if ( strlen( $retval['examples'] ) ) {
+					$retval['examples'] .= ' ';
+				}
+				$item = array();
+				if ( is_numeric( $k ) ) {
+					$retval['examples'] .= $v;
+					$result->setContent( $item, $v );
+				} else {
+					if ( !is_array( $v ) ) {
+						$item['description'] = $v;
+					} else {
+						$item['description'] = implode( $v, "\n" );
+					}
+					$retval['examples'] .= $item['description'] . ' ' . $k;
+					$result->setContent( $item, $k );
+				}
+				$retval['allexamples'][] = $item;
+			}
 		}
 		$result->setIndexedTagName( $retval['allexamples'], 'example' );
 
@@ -245,21 +260,26 @@ class ApiParamInfo extends ApiBase {
 	}
 
 	public function getAllowedParams() {
-
+		$modules = array_keys( $this->getMain()->getModules() );
+		sort( $modules );
+		$querymodules = array_keys( $this->queryObj->getModules() );
+		sort( $querymodules );
+		$formatmodules = array_keys( $this->getMain()->getFormats() );
+		sort( $formatmodules );
 		return array(
 			'modules' => array(
 				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array_keys( $this->getMain()->getModules() ),
+				ApiBase::PARAM_TYPE => $modules,
 			),
 			'querymodules' => array(
 				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array_keys( $this->queryObj->getModules() ),
+				ApiBase::PARAM_TYPE => $querymodules,
 			),
 			'mainmodule' => false,
 			'pagesetmodule' => false,
 			'formatmodules' => array(
 				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => array_keys( $this->getMain()->getFormats() ),
+				ApiBase::PARAM_TYPE => $formatmodules,
 			)
 		);
 	}
@@ -285,7 +305,7 @@ class ApiParamInfo extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Parameter_information';
+		return 'https://www.mediawiki.org/wiki/API:Parameter_information';
 	}
 
 	public function getVersion() {

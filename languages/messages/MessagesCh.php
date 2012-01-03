@@ -294,7 +294,6 @@ Pot fabot ripotta este para un [[Special:ListUsers/sysop|administrator]], ya un 
 'unexpected'           => 'Ti ma\'antisipa i guinaha: "$1"="$2".',
 'badtitle'             => 'Båba na titulo',
 'viewsource'           => 'Atan i code',
-'viewsourcefor'        => 'para $1',
 'viewsourcetext'       => "Siña un li'e' yan kopia i code ni påhina:",
 'namespaceprotected'   => "Ti nahong nibet-mu petmisu tumulaika i påhina siha ni mafa'na'an '''$1'''.",
 'ns-specialprotected'  => 'Ti siña un tulaika i manespesiat na påhina.',
@@ -446,9 +445,6 @@ Ti siña un usa i ramientan 'e-mail i muna'sesetbi,' solo guåha e-mail address 
 Machomma' i ID #$5.
 Pot fabot, na'hålom i ID gi todus i finaisen-mu siha.",
 'blockednoreason'                  => "ti mana'i rason",
-'blockedoriginalsource'            => "Ma'a'annok i code '''$1''' gi papa':",
-'blockededitsource'                => "Ma'a'annok gi papa' i tinige' '''tinilaika-mu''' gi '''$1''':",
-'whitelistedittitle'               => 'Nesesario malogin para tumulaika',
 'whitelistedittext'                => 'Un nesisita ma$1 para tumulaika påhina.',
 'confirmedittext'                  => "Un nesisita un konfotme iyo-mu email åntes di tumulaika påhina.
 Pot fabot po'lo yan konfotme iyo-mu e-mail gi [[Special:Preferences|prifirensia muna'sesetbi]].",
@@ -697,7 +693,6 @@ Fanapunta na fana'an ti gus nuebu i listan-ñiha i guinahan {{SITENAME}}.",
 'resetprefs'                => "Na'funas i tinilaika ti manma'såtba siha",
 'prefs-editing'             => 'Tumulaika',
 'rows'                      => 'Fila siha:',
-'columns'                   => 'Kolumna siha:',
 'searchresultshead'         => 'Aligao',
 'resultsperpage'            => 'Dinanche siha kada påhina:',
 'recentchangesdays'         => "Diha siha na para u na'annok gi i tinilaika gi halacha:",
@@ -1112,7 +1107,7 @@ Ti mantattiyi i areklo ni sigienten ina'chetton siha gi mismo liña, i.e. i påh
 
 # External editor support
 'edit-externally'      => 'Tulaika i atkibu yan un aplikasion sanhiyong',
-'edit-externally-help' => 'Hånao para [http://www.mediawiki.org/wiki/Manual:External_editors i plantan chinachalani] para mas infotmasion.',
+'edit-externally-help' => 'Hånao para [//www.mediawiki.org/wiki/Manual:External_editors i plantan chinachalani] para mas infotmasion.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'todu',

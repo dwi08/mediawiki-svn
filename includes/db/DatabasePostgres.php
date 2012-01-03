@@ -565,7 +565,7 @@ class DatabasePostgres extends DatabaseBase {
 		$ignore = in_array( 'IGNORE', $insertOptions ) ? 'mw' : '';
 
 		if( is_array( $insertOptions ) ) {
-			$insertOptions = implode( ' ', $insertOptions );
+			$insertOptions = implode( ' ', $insertOptions ); // FIXME: This is unused
 		}
 		if( !is_array( $selectOptions ) ) {
 			$selectOptions = array( $selectOptions );
@@ -624,15 +624,64 @@ class DatabasePostgres extends DatabaseBase {
 	}
 
 	function tableName( $name, $format = 'quoted' ) {
-		# Replace reserved words with better ones
-		switch( $name ) {
-			case 'user':
-				return 'mwuser';
-			case 'text':
-				return 'pagecontent';
-			default:
-				return parent::tableName( $name, $format );
+		global $wgSharedDB, $wgSharedTables, $wgDBmwschema;
+		# Skip quoted tablenames.
+		if ( $this->isQuotedIdentifier( $name ) ) {
+			return $name;
 		}
+		# Lets test for any bits of text that should never show up in a table
+		# name. Basically anything like JOIN or ON which are actually part of
+		# SQL queries, but may end up inside of the table value to combine
+		# sql. Such as how the API is doing.
+		# Note that we use a whitespace test rather than a \b test to avoid
+		# any remote case where a word like on may be inside of a table name
+		# surrounded by symbols which may be considered word breaks.
+		if ( preg_match( '/(^|\s)(DISTINCT|JOIN|ON|AS)(\s|$)/i', $name ) !== 0 ) {
+			return $name;
+		}
+		# Extract the database prefix, if any and quote it
+		$dbDetails = explode( '.', $name, 2 );
+		if ( isset( $dbDetails[1] ) ) {
+			$schema = '"' . $dbDetails[0] . '".';
+			$table  = $dbDetails [1];
+		} else {
+			$schema = "\"{$wgDBmwschema}\"."; # keep old schema, but quote it.
+			$table = $dbDetails[0];
+		}
+		if ( $format != 'quoted' ) {
+			switch( $name ) {
+				case 'user':
+					return 'mwuser';
+				case 'text':
+					return 'pagecontent';
+				default:
+					return $table;
+			}
+		}
+
+		# during installation wgDBmwschema is not set, so we would end up quering
+		# ""."table" => error. Erase the first part if wgDBmwschema is empty
+		if ( $schema == "\"\"." ) {
+			$schema = "";
+		}
+		if ( isset( $wgSharedDB ) # We have a shared database (=> schema)
+		  && isset( $wgSharedTables )
+		  && is_array( $wgSharedTables )
+		  && in_array( $table, $wgSharedTables ) ) { # A shared table is selected
+			$schema = "\"{$wgSharedDB}\".";
+		}
+		switch ( $table ) {
+			case 'user':
+				$table = "{$schema}\"mwuser\"";
+				break;
+			case 'text':
+				$table = "{$schema}\"pagecontent\"";
+				break;
+			default:
+				$table = "{$schema}\"$table\"";
+				break;
+		}
+		return $table;
 	}
 
 	/**
@@ -686,6 +735,24 @@ class DatabasePostgres extends DatabaseBase {
 		$newName = $this->addIdentifierQuotes( $newName );
 		$oldName = $this->addIdentifierQuotes( $oldName );
 		return $this->query( 'CREATE ' . ( $temporary ? 'TEMPORARY ' : '' ) . " TABLE $newName (LIKE $oldName INCLUDING DEFAULTS)", $fname );
+	}
+
+	function listTables( $prefix = null, $fname = 'DatabasePostgres::listTables' ) {
+		global $wgDBmwschema;
+		$eschema = $this->addQuotes( $wgDBmwschema );
+		$result = $this->query( "SELECT tablename FROM pg_tables WHERE schemaname = $eschema", $fname );
+
+		$endArray = array();
+
+		foreach( $result as $table ) {
+			$vars = get_object_vars($table);
+			$table = array_pop( $vars );
+			if( !$prefix || strpos( $table, $prefix ) === 0 ) {
+				$endArray[] = $table;
+			}
+		}
+
+		return $endArray;
 	}
 
 	function timestamp( $ts = 0 ) {
@@ -753,7 +820,7 @@ class DatabasePostgres extends DatabaseBase {
 	 * For backward compatibility, this function checks both tables and
 	 * views.
 	 */
-	function tableExists( $table, $schema = false ) {
+	function tableExists( $table, $fname = __METHOD__, $schema = false ) {
 		return $this->relationExists( $table, array( 'r', 'v' ), $schema );
 	}
 
@@ -982,5 +1049,18 @@ SQL;
 
 	public function getSearchEngine() {
 		return 'SearchPostgres';
+	}
+
+	protected function streamStatementEnd( &$sql, &$newLine ) {
+		# Allow dollar quoting for function declarations
+		if ( substr( $newLine, 0, 4 ) == '$mw$' ) {
+			if ( $this->delimiter ) {
+				$this->delimiter = false;
+			}
+			else {
+				$this->delimiter = ';';
+			}
+		}
+		return parent::streamStatementEnd( $sql, $newLine );
 	}
 } // end DatabasePostgres class

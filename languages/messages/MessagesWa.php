@@ -172,6 +172,8 @@ $messages = array(
 'subcategories'                  => 'Dizo-categoreyes',
 'category-media-header'          => 'Media el categoreye «$1»',
 'category-empty'                 => "''Cisse categoreye ci n' a pol moumint nol årtike ni media.''",
+'category-subcat-count'          => 'Dins cisse categoreye, gn a {{PLURAL:$2|li dzo-categoreye|$2 dizo-categoreyes, inte di zeles {{PLURAL:$1|li cene|les $1}}}} cial pa-dzo.',
+'category-subcat-count-limited'  => "Dins cisse categoreye, gn a {{PLURAL:$1|l' dizo-categoreye|les dzo-categoreyes}} shuvantes.",
 'category-article-count'         => 'Dins cisse categoreye cial, gn a {{PLURAL:$2|li pådje ki shût|$2 pådje, inte di zeles {{PLURAL:$1|li cene|les $1}} cial padzo}}.',
 'category-article-count-limited' => "{{PLURAL:$1|Gn a l' pådje ki shût|Les $1 pådjes ki shuvnut si trovèt ddja}} dins cisse categoreye ci.",
 'category-file-count'            => "{{PLURAL:$2|Dins cisse categoreye ci, gn a k' ene pådje.|{{PLURAL:$1|Gn a cisse pådje ci|Gn a les $1 pådjes ki shuvèt}} dins cisse categoreye ci, po $2 pådjes å totå.}}",
@@ -343,7 +345,6 @@ MySQL a rtourné l' aroke «$3: $4».",
 Fonccion: $1<br />
 Cweraedje: $2',
 'viewsource'           => 'Vey côde sourdant',
-'viewsourcefor'        => 'po $1',
 'viewsourcetext'       => 'Loukîz li contnou di l’ årtike, et s’ li rcopyî si vos vloz, por vos bouter dsu foû des fyis :',
 'protectedinterface'   => "Cisse pådje ci dene on tecse d' eterface pol programe, eyet elle a stî protedjeye po s' waeranti siconte des abus.",
 'editinginterface'     => "'''Asteme:''' Vos candjîz ene pådje k' est eployeye po dner on tecse d' eterface pol programe. Les candjmints a cisse pådje ci vont-st aveur èn efet so l' eterface d' uzeu des ôtes uzeus.",
@@ -462,9 +463,6 @@ Li råjhon dnêye est:<br />''$2''<p>Vos ploz contacter $1 oudonbén onk des
 Notez ki vos n' poloz nén eployî l' fonccion «emiler a l' uzeu» a moens ki vos åyîz ene adresse emile valide dins vos [[Special:Preferences|preferinces]].
 
 Voste adresse IP est $3. S' i vs plait racsegnoz ciste adresse IP la dins les dmandes ki vos frîz.",
-'blockedoriginalsource'      => "Li sourdant di '''$1''' est håyné chal pa dzo:",
-'blockededitsource'          => "Li tecse des '''candjmints da vosse''' di '''$1''' est håyné chal pa dzo:",
-'whitelistedittitle'         => "S' elodjî po candjî",
 'whitelistedittext'          => 'I vs fåt $1 po pleur candjî les årtikes.',
 'confirmedittext'            => "I vs fåt acertiner vost emile po pleur candjî les årtikes. Dinez èn emile eyet l' acertiner dins vos [[Special:Preferences|preferinces d' uzeu]].",
 'loginreqtitle'              => 'I vs fåt esse elodjî',
@@ -656,7 +654,6 @@ Les ôtes manaedjeus so ç' wiki ci pôront todi vey li contnou catchî eyet l' 
 'resetprefs'            => 'Rimete les prémetowès valixhances',
 'prefs-editing'         => 'Grandeu del boesse di tecse',
 'rows'                  => 'Royes',
-'columns'               => 'Colones',
 'searchresultshead'     => 'Håynaedje des rzultats di cweraedje',
 'resultsperpage'        => 'Nombe di responses a håyner so ene pådje',
 'recentchangesdays'     => 'Nombe di djoûs po les dierins candjmints:',
@@ -1166,7 +1163,6 @@ vandales, et çoula doet esse fwait tot shuvant les
 [[{{MediaWiki:Policy-url}}|rîles]].
 Dinez ene råjhon do blocaedje (eg: dijhoz les pådjes k' ont
 stî vandalijheyes).",
-'ipaddress'                   => "Adresse IP/no d' uzeu",
 'ipadressorusername'          => "Adresse IP ou no d' uzeu",
 'ipbexpiry'                   => 'Tins do blocaedje',
 'ipbreason'                   => 'Råjhon:',
@@ -1524,7 +1520,7 @@ est raptiti. Les ôtes seront catchîs.
 
 # External editor support
 'edit-externally'      => "Candjî ç' fitchî ci avou on dfoûtrin programe",
-'edit-externally-help' => "Loukîz les [http://www.mediawiki.org/wiki/Manual:External_editors instruccions d' apontiaedje] po pus di racsegnes.",
+'edit-externally-help' => "Loukîz les [//www.mediawiki.org/wiki/Manual:External_editors instruccions d' apontiaedje] po pus di racsegnes.",
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'totafwait',
@@ -1611,5 +1607,13 @@ Acertinez s' i vs plait ki vos vloz vormint rifé cisse pådje ci.",
 'specialpages-group-users'       => 'Uzeus et abondroets',
 'specialpages-group-highuse'     => 'Eployaedje timpesse des pådjes',
 'specialpages-group-redirects'   => 'Ridjiblaedjes di pådjes sipeciåles',
+
+# Feedback
+'feedback-subject' => 'Sudjet',
+'feedback-message' => 'Messaedje',
+'feedback-cancel'  => 'Rinoncî',
+'feedback-submit'  => "Evoyî l' vosse",
+'feedback-adding'  => 'Vosse messaedje a stî håyné sol pådje...',
+'feedback-error2'  => "Aroke : Li candjaedje n' a nén stî",
 
 );

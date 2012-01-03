@@ -12,22 +12,36 @@
  */
 
 $namespaceNames = array(
-	NS_MEDIA            => 'Nká',
+	NS_MEDIA            => 'Midia',
 	NS_SPECIAL          => 'Ihü_kárírí',
 	NS_TALK             => 'Okwu',
-	NS_USER             => 'Ọ\'bànifé',
-	NS_USER_TALK        => 'Okwu_ọ\'bànifé',
+	NS_USER             => 'Ọbanife',
+	NS_USER_TALK        => 'Okwu_ọbanife',
 	NS_PROJECT_TALK     => 'Okwu_$1',
-	NS_FILE             => 'Ákwúkwó_orünotu',
-	NS_FILE_TALK        => 'Okwu_ákwúkwó_orünotu',
-	NS_MEDIAWIKI        => 'NkáWiki',
-	NS_MEDIAWIKI_TALK   => 'Okwu_NkáWiki',
+	NS_FILE             => 'Usòrò',
+	NS_FILE_TALK        => 'Okwu_usòrò',
+	NS_MEDIAWIKI        => 'MidiaWiki',
+	NS_MEDIAWIKI_TALK   => 'Okwu_MidiaWiki',
 	NS_TEMPLATE         => 'Àtụ',
 	NS_TEMPLATE_TALK    => 'Okwu_àtụ',
-	NS_HELP             => 'Nkwádọ',
-	NS_HELP_TALK        => 'Okwu_nkwádọ',
-	NS_CATEGORY         => 'Ébéonọr',
-	NS_CATEGORY_TALK    => 'Okwu_ébéonọr',
+	NS_HELP             => 'Nkwadọ',
+	NS_HELP_TALK        => 'Okwu_nkwadọ',
+	NS_CATEGORY         => 'Òtù',
+	NS_CATEGORY_TALK    => 'Okwu_òtù',
+);
+
+$namespaceAliases = array(
+	'Nká'                  => NS_MEDIA,
+	'Ọ\'bànifé'            => NS_USER,
+	'Okwu_ọ\'bànifé'       => NS_USER_TALK,
+	'Ákwúkwó_orünotu'      => NS_FILE,
+	'Okwu_ákwúkwó_orünotu' => NS_FILE_TALK,
+	'NkáWiki'              => NS_MEDIAWIKI,
+	'Okwu_NkáWiki'         => NS_MEDIAWIKI_TALK,
+	'Nkwádọ'               => NS_HELP,
+	'Okwu_nkwádọ'          => NS_HELP_TALK,
+	'Ébéonọr'              => NS_CATEGORY,
+	'Okwu_ébéonọr'         => NS_CATEGORY_TALK,
 );
 
 $specialPageAliases = array(
@@ -47,16 +61,16 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#KÚFÙ', '#REDIRECT' ),
-	'fullpagename'          => array( '1', 'ÁHÀNÍLÉNKÈIHÜ', 'FULLPAGENAME' ),
-	'msg'                   => array( '0', 'OZI:', 'MSG:' ),
-	'img_right'             => array( '1', 'áká_ịkẹngạ', 'right' ),
-	'img_left'              => array( '1', 'áká_èkpè', 'left' ),
-	'img_top'               => array( '1', 'élú', 'top' ),
-	'img_middle'            => array( '1', 'ẹtítì', 'middle' ),
-	'img_text_bottom'       => array( '1', 'okpúrù-ede', 'text-bottom' ),
-	'displaytitle'          => array( '1', 'ZIÍSHÍ', 'DISPLAYTITLE' ),
-	'pagesize'              => array( '1', 'ÀSÁIHÜ', 'PAGESIZE' ),
+	'redirect'                => array( '0', '#KÚFÙ', '#REDIRECT' ),
+	'fullpagename'            => array( '1', 'ÁHÀNÍLÉNKÈIHÜ', 'FULLPAGENAME' ),
+	'msg'                     => array( '0', 'OZI:', 'MSG:' ),
+	'img_right'               => array( '1', 'áká_ịkẹngạ', 'right' ),
+	'img_left'                => array( '1', 'áká_èkpè', 'left' ),
+	'img_top'                 => array( '1', 'élú', 'top' ),
+	'img_middle'              => array( '1', 'ẹtítì', 'middle' ),
+	'img_text_bottom'         => array( '1', 'okpúrù-ede', 'text-bottom' ),
+	'displaytitle'            => array( '1', 'ZIÍSHÍ', 'DISPLAYTITLE' ),
+	'pagesize'                => array( '1', 'ÀSÁIHÜ', 'PAGESIZE' ),
 );
 
 $messages = array(
@@ -407,14 +421,13 @@ O nwèríkí nwé édé ótù ma nke ozor nke ékwéghị na íshí ihü.',
 Orürü: $1<br />
 Ájújú: $2',
 'viewsource'           => 'Zi mkpurụ',
-'viewsourcefor'        => 'màkà $1',
 'actionthrottled'      => 'Mmèmé a puziélé',
 'protectedpagetext'    => 'Ihüá cedolụ maka orürü ạ gáa bá.',
 'viewsourcetext'       => 'Í nwèríkí lé na Í jé mkpurụ ihüá:',
 'protectedinterface'   => 'Ihü nè nyé édé nke mkpátá màkà ngwa nsónùsòrò, na ó cẹdolu gbò mmelụ.',
 'editinginterface'     => "'''Okwu egú:''' I na rü ihü né nyé ihu maka mkpurụ edemede nke eji-a-rü nka.
 Gbanwere më ihüa ga mètú ihu élélé nke onye-na-banife maka ndi ozor.
-Maka ikuwaria na asụsụ nke ozor, biko chetu I ji [http://translatewiki.net/wiki/Main_Page?setlang=ig translatewiki.net], ihe orü MediaWiki di na ama ama.",
+Maka ikuwaria na asụsụ nke ozor, biko chetu I ji [//translatewiki.net/wiki/Main_Page?setlang=ig translatewiki.net], ihe orü MediaWiki di na ama ama.",
 'sqlhidden'            => '(nchowa SQL zonari a zonari)',
 'namespaceprotected'   => "I weghị ike I rüwa élu ihü nor na '''$1''' áháama.",
 'ns-specialprotected'  => 'Ihü mkpà, a nweriki ru na ya.',
@@ -547,9 +560,6 @@ Lè mákwá na Ì gágị jí "me ọ\'bànifé nkeá e-mail", mà Í  nwéré e
 IP gi bu $3, na ID nkwàchi bu #$5.
 Biko tinyé cha ihe ńdía na ájújú nkeówulà I gi me.',
 'blockednoreason'                  => 'amaghi ihe omẹrẹ ya maka',
-'blockedoriginalsource'            => "Nkpurụ '''$1''' zịrị na alạ:",
-'blockededitsource'                => "Mkpụrụ edemede nke '''orü gi''' nke '''$1''' zìrì na àlà:",
-'whitelistedittitle'               => 'I kweshiri banyé I chori rüwa nga',
 'whitelistedittext'                => 'Í gi $1 Í rü na ihü.',
 'nosuchsectiontitle'               => 'Aná a hu nkeji',
 'loginreqtitle'                    => 'I kweshiri banyé eba',
@@ -769,7 +779,6 @@ Nwàné ótù okwu íshí na ihe Í nè tú jí ''háníle:'' Í tuó ihe nílé
 'saveprefs'                 => 'Domá',
 'prefs-editing'             => 'Írüwa',
 'rows'                      => 'Ǹdịlị:',
-'columns'                   => 'Ogìdì:',
 'searchresultshead'         => 'Chọwa',
 'resultsperpage'            => 'Nlé na ihü:',
 'stub-threshold-disabled'   => 'Ápụgị òkò',
@@ -1258,7 +1267,6 @@ Ngá bu ihe hé mèkwàrà nà ihü '''$1''':",
 'blockip'                  => "Kwàchí ọ'bànifé",
 'blockip-title'            => "Kwàchí ọ'bànifé",
 'blockip-legend'           => "Kwàchí ọ'bànifé",
-'ipaddress'                => 'Áhàebeíbị IP:',
 'ipadressorusername'       => "IP mà ọ bu áhà ọ'bànifé:",
 'ipbexpiry'                => 'Gbá okà:',
 'ipbreason'                => 'Mgbághapụtà:',
@@ -1559,17 +1567,13 @@ Nke ozor gí zonari na áká onwe ha.
 
 # External editor support
 'edit-externally'      => 'Rüo na élú usòrò nke na ngwa ọrụ nsónùsòrò nke ọzȯ',
-'edit-externally-help' => '(Lé nà [http://www.mediawiki.org/wiki/Manual:External_editors nkụzí mbídó] màkà nkúzí ozor)',
+'edit-externally-help' => '(Lé nà [//www.mediawiki.org/wiki/Manual:External_editors nkụzí mbídó] màkà nkúzí ozor)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'nke níle',
 'namespacesall' => 'nke níle',
 'monthsall'     => 'nke níle',
 'limitall'      => 'nke níle',
-
-# Trackbacks
-'trackbackremove' => '([$1 Kàcha])',
-'trackbacklink'   => 'Nlá-nà-àzú',
 
 # Delete conflict
 'recreate' => 'Ké ya ohúrù',

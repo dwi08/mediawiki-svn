@@ -65,8 +65,8 @@ $messages = array(
 'tog-oldsig'                  => 'نۆۋەتتىكى ئىمزانى ئالدىن كۆزەت:',
 'tog-fancysig'                => 'ئىمزاغا wiki تېكستى سۈپىتىدە مۇئامىلە قىل (ئۆزلۈكىدىن ئۇلانما ھاسىل بولمايدۇ)',
 'tog-externaleditor'          => 'كۆڭۈلدىكى ئەھۋالدا سىرتقى تەھرىرلىگۈچ ئىشلىتىدۇ (ئالىي ئىشلەتكۈچىگە تەمىنلىنىدۇ، كومپيۇتېرىڭىزدا بىر قىسىم ئالاھىدە تەڭشەش ئېلىپ بېرىشىڭىز لازىم
-[http://www.mediawiki.org/wiki/Manual:External_editors تېخىمۇ كۆپ ئۇچۇر.])',
-'tog-externaldiff'            => 'كۆڭۈلدىكى ئەھۋالدا سىرتقى پەرق تەھلىلى ئىشلىتىدۇ (ئالىي ئىشلەتكۈچىگە تەمىنلىنىدۇ، كومپيۇتېرىڭىزدا بىر قىسىم ئالاھىدە تەڭشەش ئېلىپ بېرىشىڭىز لازىم. [http://www.mediawiki.org/wiki/Manual:External_editors تېخىمۇ كۆپ ئۇچۇر.])',
+[//www.mediawiki.org/wiki/Manual:External_editors تېخىمۇ كۆپ ئۇچۇر.])',
+'tog-externaldiff'            => 'كۆڭۈلدىكى ئەھۋالدا سىرتقى پەرق تەھلىلى ئىشلىتىدۇ (ئالىي ئىشلەتكۈچىگە تەمىنلىنىدۇ، كومپيۇتېرىڭىزدا بىر قىسىم ئالاھىدە تەڭشەش ئېلىپ بېرىشىڭىز لازىم. [//www.mediawiki.org/wiki/Manual:External_editors تېخىمۇ كۆپ ئۇچۇر.])',
 'tog-showjumplinks'           => '"ئاتلا" زىيارەت ئۇلانمىسىنى قوزغات',
 'tog-uselivepreview'          => 'رىئال ۋاقىتلىق ئالدىن كۆزىتىشنى ئىشلەت (JavaScript زۆرۈر) (سىناق)',
 'tog-forceeditsummary'        => 'ئۈزۈندە كىرگۈزمىگەندە مېنى ئەسكەرت',
@@ -411,7 +411,6 @@ MySQL قايتۇرغان خاتالىقى"$3: $4"',
 
 سۈرۈشتۈرۈش: $2',
 'viewsource'           => 'مەنبەنى كۆرسەت',
-'viewsourcefor'        => '$1 نىڭ مەنبە كودى',
 'actionthrottled'      => 'مەشغۇلات چەكلەندى',
 'actionthrottledtext'  => 'ئەخلەتكە قارشى تۇرۇش ئۆلچىمىگە ئاساسەن، سىز بۇ بىر بۆلۈك قىسقا ۋاقىتتا بۇ مەشغۇلاتنى ئېلىپ بېرىشىڭىزنى چەكلىدى، ئەمما سىز بۇ چەكتىن ئېشىپ كەتتىڭىز.
 
@@ -423,7 +422,7 @@ MySQL قايتۇرغان خاتالىقى"$3: $4"',
 
 بۇ بەت ئۆزگەرتىلسە باشقا ئىشلەتكۈچىلەرنىڭ كۆرۈنۈش ئۇسلۇبىغا تەسىر كۆرسىتىدۇ.
 
-مەسىلەن ئەگەر تەرجىمە قىلسىڭىز [http://translatewiki.net/wiki/Main_Page?setlang=ug translatewiki.net] ئۇنداقتا MediaWiki يەرلىكلەشتۈرۈش پىلانىنى ئىشلىتىشنى ئويلىشىڭ.",
+مەسىلەن ئەگەر تەرجىمە قىلسىڭىز [//translatewiki.net/wiki/Main_Page?setlang=ug translatewiki.net] ئۇنداقتا MediaWiki يەرلىكلەشتۈرۈش پىلانىنى ئىشلىتىشنى ئويلىشىڭ.",
 'sqlhidden'            => '(SQL سۈرۈشتۈرۈش يوشۇرۇلدى)',
 'cascadeprotected'     => 'بۇ بەت قوغدالغان چۈنكى تۆۋەندىكى {{PLURAL:$1|بىر|بىر قانچە}} بەت مەزكۇر بەتنى ئۆز ئىچىگە ئېلىش بىلەن بىللە "زەنجىرسىمان قوغداش" قوزغىتىلغان.
 
@@ -681,9 +680,6 @@ $2
 سىزنىڭ نۆۋەتتىكى IP ئادرېسىڭىز $3، چەكلەنگەن كىملىك   #$5.
 سوئالىڭىزدا يۇقىرىقى بارلىق ماتېرىياللارنى ئىزاھلاڭ.",
 'blockednoreason'                  => 'سەۋەبى يوق',
-'blockedoriginalsource'            => "تۆۋەندىكىسى '''$1''' نىڭ ئەسلى كودى:",
-'blockededitsource'                => "سىزنىڭ '''$1''' غا ئېلىپ بارغان '''تەھرىرىڭىز'''نىڭ تېكستى تۆۋەندىكىچە:",
-'whitelistedittitle'               => 'تىزىمغا كىرگەندىن كېيىن تەھرىرلىگىلى بولىدۇ',
 'whitelistedittext'                => 'سىزدە $1 بولغاندا ئاندىن بەتنى تەھرىرلىيەلەيسىز.',
 'confirmedittext'                  => 'سىز بۇ بەتنى تەھرىرلەشتىن ئىلگىرى ئېلخەت ئادرېسىڭىزنى جەزملەڭ.
 [[Special:Preferences|ئىشلەتكۈچى مايىللىق]] ئارقىلىق تەڭشەپ ئېلخەت ئادرېسىڭىزنى دەلىللەڭ.',
@@ -1126,7 +1122,6 @@ $1",
 'prefs-editing'                 => 'تەھرىرلەۋاتىدۇ',
 'prefs-edit-boxsize'            => 'تەھرىرلەش كۆزنىكىنىڭ چوڭلۇقى',
 'rows'                          => 'قۇر:',
-'columns'                       => 'ستون:',
 'searchresultshead'             => 'ئىزدە',
 'resultsperpage'                => 'ھەر بەتتىكى ئۇلانما سانى:',
 'stub-threshold'                => '<a href="#" class="stub">قىسقا بەت ئۇلانمىسى</a> فورمات چەك قىممىتى (بايت) :',
@@ -1316,7 +1311,6 @@ HTML بەلگىسىنى تەكشۈرۈڭ.',
 'right-autopatrol'            => 'ئۆزەم تەھرىرلىگەنگە ئاپتوماتىك چارلاش بەلگىسى قوي',
 'right-patrolmarks'           => 'يېقىنقى نازارەت بەلگىسىنىڭ ئۆزگۈرۈشىنى كۆرسەت',
 'right-unwatchedpages'        => 'كۆزىتىلمىگەن بەت تىزىملىكىنى كۆرسەت',
-'right-trackback'             => 'trackback تاپشۇر',
 'right-mergehistory'          => 'بەت تارىخىنى بىرلەشتۈر',
 'right-userrights'            => 'ھەممە ئىشلەتكۈچىنىڭ ھوقۇقىنى تەھرىرلە',
 'right-userrights-interwiki'  => 'باشقا wiki دىكى ئىشلەتكۈچى ھوقۇقىنى تەھرىرلە',
@@ -1361,7 +1355,6 @@ HTML بەلگىسىنى تەكشۈرۈڭ.',
 'action-patrol'               => 'باشقا تەھرىرگە چارلاش بەلگىسى قوي',
 'action-autopatrol'           => 'ئۆزەمنىڭ تەھرىرىگە چارلاش بەلگىسى قوي',
 'action-unwatchedpages'       => 'كۆزىتىلمىگەن بەت تىزىملىكىنى كۆرسەت',
-'action-trackback'            => 'trackback تاپشۇر',
 'action-mergehistory'         => 'بۇ بەتنىڭ تارىخىنى بىرلەشتۈر',
 'action-userrights'           => 'ھەممە ئىشلەتكۈچىنىڭ ھوقۇقىنى تەھرىرلە',
 'action-userrights-interwiki' => 'باشقا wiki دىكى ئىشلەتكۈچى ھوقۇقىنى تەھرىرلە',
@@ -2276,7 +2269,6 @@ $1',
 'blockiptext'                     => 'تۆۋەندىكى جەدۋەلنى ئىشلىتىپ بەلگىلىك IP ئادرېس ياكى ئىشلەتكۈچى ئاتىدىن كەلگەن يېزىش زىيارىتىنى چەكلەشكە بولىدۇ.
 پەقەت بۇزغۇنچىلىكنىڭ ئالدىنى ئېلىش ھەمدە [[{{MediaWiki:Policy-url}}|تاكتىكا]].
 سىغا ئۇيغۇن بولغان ئەھۋالدا ئاندىن بۇ مەشغۇلاتنى ئېلىپ بېرىشقا بولىدۇ. تۆۋەندە ئەمەلىي سەۋەب (مەسىلەن، بۇزۇۋېتىلگەن بەتتىن بىرنى نەقىل ئېلىش)تىن بىرنى كىرگۈزۈڭ.',
-'ipaddress'                       => 'IP ئادرېس:',
 'ipadressorusername'              => 'IP ئادرېس ياكى ئىشلەتكۈچى ئاتى:',
 'ipbexpiry'                       => 'مۇددىتى:',
 'ipbreason'                       => 'سەۋەب:',
@@ -2544,7 +2536,7 @@ $1',
 'allmessagesdefault'            => 'كۆڭۈلدىكى ئۇچۇر تېكستى',
 'allmessagescurrent'            => 'نۆۋەتتىكى ئۇچۇر تېكستى',
 'allmessagestext'               => 'بۇ جايدا تەڭشىگىلى بولىدىغان ھەممە سىستېما كۆرۈنۈش ئۇچۇرلىرى كۆرسىتىلدى.
-ئەگەر ھەقىقىي يەرلەشتۈرۈلگەن MediaWiki غا تۆھپە قوشماقچى بولسىڭىز[http://www.mediawiki.org/wiki/Localisation MediaWiki يەرلىكلەشتۈرۈش] ۋە [http://translatewiki.net translatewiki.net] نى زىيارەت قىلىڭ.',
+ئەگەر ھەقىقىي يەرلەشتۈرۈلگەن MediaWiki غا تۆھپە قوشماقچى بولسىڭىز[//www.mediawiki.org/wiki/Localisation MediaWiki يەرلىكلەشتۈرۈش] ۋە [//translatewiki.net translatewiki.net] نى زىيارەت قىلىڭ.',
 'allmessagesnotsupportedDB'     => "بۇ بەتنى ئىشلەتكىلى بولمايدۇ، سەۋەبى '''\$wgUseDatabaseMessages''' چەكلەنگەن.",
 'allmessages-filter-legend'     => 'سۈزگۈچ',
 'allmessages-filter'            => 'ئىختىيارىچە سۈزگۈچ ھالىتى:',
@@ -3211,7 +3203,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'بۇ ھۆججەتنى سىرتقى قوللىنىشچان پروگراممىدا تەھرىرلە',
-'edit-externally-help' => '( [http://www.mediawiki.org/wiki/Manual:External_editors تەڭشەك قەدىمى] نى كۆرۈپ تەپسىلاتىنى چۈشىنىڭ)',
+'edit-externally-help' => '( [//www.mediawiki.org/wiki/Manual:External_editors تەڭشەك قەدىمى] نى كۆرۈپ تەپسىلاتىنى چۈشىنىڭ)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ھەممىسى',
@@ -3287,13 +3279,6 @@ $5
 'scarytranscludedisabled' => '[بېكەت ئاتلىغان كود ئايلاندۇرۇش چەكلەنگەن]',
 'scarytranscludefailed'   => '[$1 نىڭ قېلىپىنى ئېلىش مەغلۇپ بولدى]',
 'scarytranscludetoolong'  => '[URL بەك ئۇزۇن]',
-
-# Trackbacks
-'trackbackbox'      => 'بۇ بەتنىڭ نەقىلى: <br />
-$1',
-'trackbackremove'   => '([$1 ئۆچۈر])',
-'trackbacklink'     => 'نەقىل',
-'trackbackdeleteok' => 'بۇ نەقىل مۇۋەپپەقىيەتلىك ئۆچۈرۈلدى.',
 
 # Delete conflict
 'deletedwhileediting'      => "'''ئاگاھلاندۇرۇش''': بۇ بەت تەھرىرلەشكە باشلىغاندىن كېيىن ئۆچۈرۈلگەن!",
@@ -3399,13 +3384,13 @@ $1',
 'version-hook-subscribedby'     => 'ئىمزا قويغۇچى',
 'version-version'               => '(نەشرى $1)',
 'version-license'               => 'ئىجازەتنامە',
-'version-poweredby-credits'     => "بۇ ۋىكىنى '''[http://www.mediawiki.org/ MediaWiki]''' تېخنىكىلىق قوللايدۇ، نەشر ھوقۇقى © 2001-$1 $2",
+'version-poweredby-credits'     => "بۇ ۋىكىنى '''[//www.mediawiki.org/ MediaWiki]''' تېخنىكىلىق قوللايدۇ، نەشر ھوقۇقى © 2001-$1 $2",
 'version-poweredby-others'      => 'باشقا',
 'version-license-info'          => 'MediaWiki ئەركىن يۇمشاق دېتال؛ سىز ئەركىن يۇمشاق دېتال ۋەخپىسىنىڭ ئېلان قىلغان GNU ئاممىباپ ئاممىۋى ئىجازەت ماددىلىرىدىكى بەلگىمىلەرگە ئاساسەن، بۇ پىروگراممىنى قايتا تارقىتىپ ياكى ئۆزگەرتەلەيسىز؛ مەيلى سىز مەزكۇر ئىجازەتنامىنىڭ ئىككىنچى نەشرى ياكى (ئۆزىڭىز تاللىغان) خالىغان كۈندە تارقىتىلغان نەشرىنى ئاساس قىلسىڭىز بولۇۋېرىدۇ.
 
 MediaWiki ئىشلىتىش مەقسىتىنى ئاساس قىلىپ ئېلان قىلىنغان، ئەمما ھېچقانداق كاپالەت مەسئۇلىيىتىنى ئۈستىگە ئالمايدۇ؛  سېتىشچانلىق ياكى مۇئەييەن مەقسەت بويىچە ئىشلىتىشچانلىققا كاپالەتلىك قىلمايدۇ. تەپسىلاتىنىGNU ئاممىباپ ئاممىۋى ئىجازەتنامىدىن پايدىلىنىڭ.
 
-سىز مەزكۇر پىروگرامما بىلەن قوشۇپ [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU ئاممىباپ ئاممىۋى ئىجازەتنامە كۆپەيتىلمىسى] نى تاپشۇرۇۋالىسىز؛ ئەگەر بولمىسا، ئەركىن يۇمشاق دېتال ۋەخپىسىگە خەت يېزىڭ: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA，ياكى[http://www.gnu.org/licenses/old-licenses/gpl-2.0.html توردا ئوقۇڭ]',
+سىز مەزكۇر پىروگرامما بىلەن قوشۇپ [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU ئاممىباپ ئاممىۋى ئىجازەتنامە كۆپەيتىلمىسى] نى تاپشۇرۇۋالىسىز؛ ئەگەر بولمىسا، ئەركىن يۇمشاق دېتال ۋەخپىسىگە خەت يېزىڭ: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA，ياكى[//www.gnu.org/licenses/old-licenses/gpl-2.0.html توردا ئوقۇڭ]',
 'version-software'              => 'قاچىلانغان يۇمشاق دېتال',
 'version-software-product'      => 'مەھسۇلات',
 'version-software-version'      => 'نەشرى',

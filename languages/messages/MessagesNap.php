@@ -246,21 +246,20 @@ Putite cuntinuà a ausà {{SITENAME}} comme n'utente senza nomme, o si nò putit
 'image_tip'    => 'Fiura ncuorporata',
 
 # Edit pages
-'minoredit'         => 'Chisto è nu cagnamiénto piccerillo',
-'watchthis'         => "Tiene d'uocchio chesta paggena",
-'savearticle'       => "Sarva 'a paggena",
-'preview'           => 'Anteprimma',
-'showpreview'       => 'Vere anteprimma',
-'showdiff'          => "Fa veré 'e cagnamiente",
-'blockededitsource' => "Ccà sotto venono mmustate 'e '''cagnamiente fatte''' â paggena '''$1''':",
-'loginreqtitle'     => "Pe' cagnà chesta paggena abbesognate aseguì ll'acciesso ô sito.",
-'loginreqlink'      => "aseguì ll'acciesso",
-'loginreqpagetext'  => "Pe' veré ate ppaggene abbesognate $1.",
-'accmailtitle'      => "'O password è stato mannato.",
-'accmailtext'       => '\'A password pe ll\'utente "$1" fuje mannata ô nnerizzo $2.',
-'previewnote'       => "'''Chesta è sola n'anteprimma; 'e cagnamiénte â paggena NUN songo ancora sarvate!'''",
-'editing'           => "Cagnamiento 'e $1",
-'templatesused'     => "Template ausate 'a chesta paggena:",
+'minoredit'        => 'Chisto è nu cagnamiénto piccerillo',
+'watchthis'        => "Tiene d'uocchio chesta paggena",
+'savearticle'      => "Sarva 'a paggena",
+'preview'          => 'Anteprimma',
+'showpreview'      => 'Vere anteprimma',
+'showdiff'         => "Fa veré 'e cagnamiente",
+'loginreqtitle'    => "Pe' cagnà chesta paggena abbesognate aseguì ll'acciesso ô sito.",
+'loginreqlink'     => "aseguì ll'acciesso",
+'loginreqpagetext' => "Pe' veré ate ppaggene abbesognate $1.",
+'accmailtitle'     => "'O password è stato mannato.",
+'accmailtext'      => '\'A password pe ll\'utente "$1" fuje mannata ô nnerizzo $2.',
+'previewnote'      => "'''Chesta è sola n'anteprimma; 'e cagnamiénte â paggena NUN songo ancora sarvate!'''",
+'editing'          => "Cagnamiento 'e $1",
+'templatesused'    => "Template ausate 'a chesta paggena:",
 
 # "Undo" feature
 'undo-summary' => "Canciella 'o cagnamiento $1 'e [[Special:Contributions/$2|$2]] ([[User talk:$2|Chiàcchiera]])",
@@ -284,7 +283,6 @@ Putite cuntinuà a ausà {{SITENAME}} comme n'utente senza nomme, o si nò putit
 'changepassword'        => 'Cagna password',
 'prefs-rc'              => 'Urdeme nove',
 'prefs-watchlist'       => 'Asservate speciale',
-'columns'               => 'Culonne:',
 'timezoneregion-africa' => 'Afreca',
 'username'              => 'Nomme utente',
 'yourlanguage'          => 'Lengua:',
@@ -464,7 +462,7 @@ Also see [[Special:WantedCategories|wanted categories]].",
 'exif-subjectdistancerange-0' => 'Scanusciuta',
 
 # External editor support
-'edit-externally-help' => "Pe piglià cchiù nfromma veré 'e [http://www.mediawiki.org/wiki/Manual:External_editors struzione] ('n ngrese)",
+'edit-externally-help' => "Pe piglià cchiù nfromma veré 'e [//www.mediawiki.org/wiki/Manual:External_editors struzione] ('n ngrese)",
 
 # 'all' in various places, this might be different for inflected languages
 'namespacesall' => 'Tutte',
@@ -472,9 +470,6 @@ Also see [[Special:WantedCategories|wanted categories]].",
 # E-mail address confirmation
 'confirmemail_needlogin' => "Abbesognate $1 pe cunfirmà 'o nnerizzo 'e e-mail d''o vuosto.",
 'confirmemail_loggedin'  => "'O nnerizzo 'e e-mail è vàleto",
-
-# Trackbacks
-'trackbackremove' => '([$1 Scarta])',
 
 # Delete conflict
 'deletedwhileediting' => 'Attenziòne: quaccherùno have scancellàto chesta pàggena prìmma ca tu accuminciàste â scrìvere!',

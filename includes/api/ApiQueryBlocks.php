@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * Query module to enumerate all user blocks
  *
@@ -46,7 +41,7 @@ class ApiQueryBlocks extends ApiQueryBase {
 	}
 
 	public function execute() {
-		global $wgUser, $wgContLang;
+		global $wgContLang;
 
 		$params = $this->extractRequestParams();
 		$this->requireMaxOneParameter( $params, 'users', 'ip' );
@@ -130,13 +125,13 @@ class ApiQueryBlocks extends ApiQueryBase {
 			$this->addWhereIf( 'ipb_user != 0', isset( $show['account'] ) );
 			$this->addWhereIf( 'ipb_user != 0 OR ipb_range_end > ipb_range_start', isset( $show['!ip'] ) );
 			$this->addWhereIf( 'ipb_user = 0 AND ipb_range_end = ipb_range_start', isset( $show['ip'] ) );
-			$this->addWhereIf( "ipb_expiry = 'infinity'", isset( $show['!temp'] ) );
-			$this->addWhereIf( "ipb_expiry != 'infinity'", isset( $show['temp'] ) );
+			$this->addWhereIf( 'ipb_expiry =  '.$db->addQuotes($db->getInfinity()), isset( $show['!temp'] ) );
+			$this->addWhereIf( 'ipb_expiry != '.$db->addQuotes($db->getInfinity()), isset( $show['temp'] ) );
 			$this->addWhereIf( "ipb_range_end = ipb_range_start", isset( $show['!range'] ) );
 			$this->addWhereIf( "ipb_range_end > ipb_range_start", isset( $show['range'] ) );
 		}
 
-		if ( !$wgUser->isAllowed( 'hideuser' ) ) {
+		if ( !$this->getUser()->isAllowed( 'hideuser' ) ) {
 			$this->addWhereFld( 'ipb_deleted', 0 );
 		}
 
@@ -344,7 +339,7 @@ class ApiQueryBlocks extends ApiQueryBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Blocks';
+		return 'https://www.mediawiki.org/wiki/API:Blocks';
 	}
 
 	public function getVersion() {

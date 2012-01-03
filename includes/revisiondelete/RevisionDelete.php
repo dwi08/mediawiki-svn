@@ -34,8 +34,9 @@ class RevDel_RevisionList extends RevDel_List {
 			),
 			__METHOD__,
 			array( 'ORDER BY' => 'rev_id DESC' ),
-			array( 'page' => array( 'INNER JOIN', 'rev_page = page_id' ),
-				'user' => array( 'LEFT JOIN', 'user_id = rev_user' ) )
+			array(
+				'page' => Revision::pageJoinCond(),
+				'user' => Revision::userJoinCond() )
 		);
 
 		if ( $live->numRows() >= count( $ids ) ) {
@@ -143,7 +144,7 @@ class RevDel_RevisionItem extends RevDel_Item {
 	}
 
 	public function getBits() {
-		return $this->revision->mDeleted;
+		return $this->revision->getVisibility();
 	}
 
 	public function setBits( $bits ) {
@@ -192,7 +193,7 @@ class RevDel_RevisionItem extends RevDel_Item {
 	 * Overridden by RevDel_ArchiveItem.
 	 */
 	protected function getRevisionLink() {
-		$date = $this->list->getLang()->timeanddate( $this->revision->getTimestamp(), true );
+		$date = $this->list->getLanguage()->timeanddate( $this->revision->getTimestamp(), true );
 		if ( $this->isDeleted() && !$this->canViewContent() ) {
 			return $date;
 		}
@@ -339,7 +340,7 @@ class RevDel_ArchiveItem extends RevDel_RevisionItem {
 
 	protected function getRevisionLink() {
 		$undelete = SpecialPage::getTitleFor( 'Undelete' );
-		$date = $this->list->getLang()->timeanddate( $this->revision->getTimestamp(), true );
+		$date = $this->list->getLanguage()->timeanddate( $this->revision->getTimestamp(), true );
 		if ( $this->isDeleted() && !$this->canViewContent() ) {
 			return $date;
 		}
@@ -570,7 +571,7 @@ class RevDel_FileItem extends RevDel_Item {
 	 * Overridden by RevDel_ArchivedFileItem.
 	 */
 	protected function getLink() {
-		$date = $this->list->getLang()->timeanddate( $this->file->getTimestamp(), true  );
+		$date = $this->list->getLanguage()->timeanddate( $this->file->getTimestamp(), true  );
 		if ( $this->isDeleted() ) {
 			# Hidden files...
 			if ( !$this->canViewContent() ) {
@@ -583,7 +584,7 @@ class RevDel_FileItem extends RevDel_Item {
 					array(
 						'target' => $this->list->title->getPrefixedText(),
 						'file'   => $this->file->getArchiveName(),
-						'token'  => $this->list->getUser()->editToken(
+						'token'  => $this->list->getUser()->getEditToken(
 							$this->file->getArchiveName() )
 					)
 				);
@@ -633,11 +634,11 @@ class RevDel_FileItem extends RevDel_Item {
 		$data =
 			wfMsg(
 				'widthheight',
-				$this->list->getLang()->formatNum( $this->file->getWidth() ),
-				$this->list->getLang()->formatNum( $this->file->getHeight() )
+				$this->list->getLanguage()->formatNum( $this->file->getWidth() ),
+				$this->list->getLanguage()->formatNum( $this->file->getHeight() )
 			) .
 			' (' .
-			wfMsgExt( 'nbytes', 'parsemag', $this->list->getLang()->formatNum( $this->file->getSize() ) ) .
+			wfMsgExt( 'nbytes', 'parsemag', $this->list->getLanguage()->formatNum( $this->file->getSize() ) ) .
 			')';
 
 		return '<li>' . $this->getLink() . ' ' . $this->getUserTools() . ' ' .
@@ -721,7 +722,7 @@ class RevDel_ArchivedFileItem extends RevDel_FileItem {
 	}
 
 	protected function getLink() {
-		$date = $this->list->getLang()->timeanddate( $this->file->getTimestamp(), true  );
+		$date = $this->list->getLanguage()->timeanddate( $this->file->getTimestamp(), true  );
 		$undelete = SpecialPage::getTitleFor( 'Undelete' );
 		$key = $this->file->getKey();
 		# Hidden files...
@@ -732,7 +733,7 @@ class RevDel_ArchivedFileItem extends RevDel_FileItem {
 				array(
 					'target' => $this->list->title->getPrefixedText(),
 					'file' => $key,
-					'token' => $this->list->getUser()->editToken( $key )
+					'token' => $this->list->getUser()->getEditToken( $key )
 				)
 			);
 		}
@@ -846,7 +847,7 @@ class RevDel_LogItem extends RevDel_Item {
 	}
 
 	public function getHTML() {
-		$date = htmlspecialchars( $this->list->getLang()->timeanddate( $this->row->log_timestamp ) );
+		$date = htmlspecialchars( $this->list->getLanguage()->timeanddate( $this->row->log_timestamp ) );
 		$paramArray = LogPage::extractParams( $this->row->log_params );
 		$title = Title::makeTitle( $this->row->log_namespace, $this->row->log_title );
 
@@ -861,7 +862,7 @@ class RevDel_LogItem extends RevDel_Item {
 		if( !$this->canView() ) {
 			$action = '<span class="history-deleted">' . wfMsgHtml('rev-deleted-event') . '</span>';
 		} else {
-			$skin = $this->list->getUser()->getSkin();
+			$skin = $this->list->getSkin();
 			$action = LogPage::actionText( $this->row->log_type, $this->row->log_action,
 				$title, $skin, $paramArray, true, true );
 			if( $this->row->log_deleted & LogPage::DELETED_ACTION )
@@ -874,7 +875,7 @@ class RevDel_LogItem extends RevDel_Item {
 			$userLink = '<span class="history-deleted">' . $userLink . '</span>';
 		}
 		// Comment
-		$comment = $this->list->getLang()->getDirMark() . Linker::commentBlock( $this->row->log_comment );
+		$comment = $this->list->getLanguage()->getDirMark() . Linker::commentBlock( $this->row->log_comment );
 		if( LogEventsList::isDeleted($this->row,LogPage::DELETED_COMMENT) ) {
 			$comment = '<span class="history-deleted">' . $comment . '</span>';
 		}

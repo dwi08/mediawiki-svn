@@ -33,6 +33,13 @@ $namespaceNames = array(
 	NS_CATEGORY_TALK    => 'Categoria_discussiun',
 );
 
+$magicWords = array(
+	'redirect'                => array( '0', '#RENVIAMENT', '#REDIRECT' ),
+	'img_thumbnail'           => array( '1', 'miniatura', 'thumbnail', 'thumb' ),
+	'img_manualthumb'         => array( '1', 'miniatura=$1', 'thumbnail=$1', 'thumb=$1' ),
+	'img_upright'             => array( '1', 'sidretg', 'sidretg=$1', 'sidretg_$1', 'upright', 'upright=$1', 'upright $1' ),
+);
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'suttastritgar colliaziuns:',
@@ -65,8 +72,8 @@ $messages = array(
 'tog-shownumberswatching'     => "Mussar il dumber d'utilisaders che obervan questa pagina",
 'tog-oldsig'                  => 'Prevista da la signatura actuala:',
 'tog-fancysig'                => "Suttascripziun senza link automatic tar la pagina da l'utilisader.",
-'tog-externaleditor'          => 'Utilisar sco standard in editur extern (be per experts, basegna ina configuraziun speziala da des computer. [http://www.mediawiki.org/wiki/Manual:External_editors Dapli infurmaziuns.])',
-'tog-externaldiff'            => 'Utilisar sco standard in program extern per visualisar differenzas tranter versiuns (be per experts, basegna ina configuraziun speziala da des computer. [http://www.mediawiki.org/wiki/Manual:External_editors Dapli infurmaziuns.])',
+'tog-externaleditor'          => 'Utilisar sco standard in editur extern (be per experts, basegna ina configuraziun speziala da des computer. [//www.mediawiki.org/wiki/Manual:External_editors Dapli infurmaziuns.])',
+'tog-externaldiff'            => 'Utilisar sco standard in program extern per visualisar differenzas tranter versiuns (be per experts, basegna ina configuraziun speziala da des computer. [//www.mediawiki.org/wiki/Manual:External_editors Dapli infurmaziuns.])',
 'tog-showjumplinks'           => 'Activar las colliaziuns "seglir a"',
 'tog-uselivepreview'          => 'Utilisar la prevista dinamica (basegna JavaScript) (experiment!)',
 'tog-forceeditsummary'        => 'Avertir durant memoriar sche la resumaziun manca',
@@ -403,14 +410,13 @@ Las datas qua vegnan da preschent betg actualisadas.',
 Funcziun: $1<br />
 Query: $2',
 'viewsource'           => 'Mussar il code da fontauna',
-'viewsourcefor'        => 'per $1',
 'actionthrottled'      => 'Acziun limitada',
 'actionthrottledtext'  => 'Sco mesira cunter spam na pos ti betg exequir questa acziun memia bleras giadas en curt temp. Ti has surpassà questa limita. 
 Emprova danovamain en in per minutas.',
 'protectedpagetext'    => "Questa pagina è vegnida bloccada per evitar ch'ella vegn modifitgada.",
 'viewsourcetext'       => 'Ti pos guardar e copiar il code-fundamental da questa pagina:',
 'protectedinterface'   => "Questa pagina cuntegna text per l'interfatscha da la software ed è protegida per evitar abus.",
-'editinginterface'     => "'''Attenziun:''' Questa pagina cuntegna text che vegn duvra da la software MediaWiki. Midadas influenzeschan directamain l'interfatscha da l'utilisader. Sche ti vuls far translaziuns u correcturas: Studegia da far quai sin [http://translatewiki.net/wiki/Main_Page?setlang=rm translatewiki.net], per che las midadas pon vegnidas surprendidas da tut ils projects.",
+'editinginterface'     => "'''Attenziun:''' Questa pagina cuntegna text che vegn duvra da la software MediaWiki. Midadas influenzeschan directamain l'interfatscha da l'utilisader. Sche ti vuls far translaziuns u correcturas: Studegia da far quai sin [//translatewiki.net/wiki/Main_Page?setlang=rm translatewiki.net], per che las midadas pon vegnidas surprendidas da tut ils projects.",
 'sqlhidden'            => '(Zuppentà la dumonda da SQL)',
 'cascadeprotected'     => "Questa pagina è protegida da modificaziuns perquai ch'ella è integrada en suandanta{{PLURAL:$1| pagina, ch'è protegida|s paginas, ch'èn protegidas}} entras l'opziun «protecziun ertada»: 
 $2",
@@ -639,9 +645,6 @@ Ti na pos betg utilisar la funcziun "Trametter in e-mail a quest utilisader" sen
 Ti\'adressa dad IP actuala è $3, ed la block ID è #$5.
 Integrescha per plaschair tut las indicaziuns survart sche ti contacteschas insatgi.',
 'blockednoreason'                  => 'inditgà nagina raschun',
-'blockedoriginalsource'            => "Il code da funtauna da '''$1''' vegn mussà sutvart:",
-'blockededitsource'                => "Il code da funtauna da '''tias modificaziuns''' vid la pagina '''$1''' vegn mussa sutvart:",
-'whitelistedittitle'               => "T'annunzia per modifitgar",
 'whitelistedittext'                => 'Ti stos $1 per pudair modifitgar paginas.',
 'confirmedittext'                  => 'Ti stos confermar tia adressa dad e-mail avant che modifitgar paginas. Inditgescha e conferma per plaschair tia adressa dad e-mail en tias [[Special:Preferences|preferenzas]].',
 'nosuchsectiontitle'               => 'Betg pussaivel da chattar la secziun',
@@ -1037,7 +1040,6 @@ Considerescha che lur index da {{SITENAME}} po cuntegnair datas ch'èn betg pli 
 'prefs-editing'               => 'Modifitgar',
 'prefs-edit-boxsize'          => 'Grondezza da la fanestra da modifitgar',
 'rows'                        => 'Lingias:',
-'columns'                     => 'Colonnas:',
 'searchresultshead'           => 'Tschertga',
 'resultsperpage'              => 'resultats per pagina:',
 'stub-threshold-disabled'     => 'Deactivà',
@@ -1214,7 +1216,6 @@ Questa infurmaziun è publica.',
 'right-patrol'                => "Marcar modificaziuns d'auters sco controlladas",
 'right-autopatrol'            => 'Marcar sias atgnas modificaziuns automaticamain sco controlladas',
 'right-unwatchedpages'        => 'Vesair ina glista da las paginas betg contempladas',
-'right-trackback'             => 'Trametter in trackback',
 'right-mergehistory'          => 'Unir la cronologia da questa pagina',
 'right-userrights'            => 'Modifitgar ils dretgs dals utilisaders',
 'right-userrights-interwiki'  => "Modifitgar ils dretgs d'utilisaders sin autras wikis",
@@ -1259,7 +1260,6 @@ Questa infurmaziun è publica.',
 'action-patrol'               => "marcar modificaziuns d'auters sco controlladas",
 'action-autopatrol'           => 'marcar tias modificaziuns sco controlladas',
 'action-unwatchedpages'       => 'vesair la glista da las paginas betg contempladas',
-'action-trackback'            => 'trametter in trackback',
 'action-mergehistory'         => 'unir la cronologia da questa pagina',
 'action-userrights'           => 'modifitgar ils dretgs dals utilisaders',
 'action-userrights-interwiki' => "modifitgar ils dretgs d'utilisaders sin autras wikis",
@@ -2029,7 +2029,6 @@ L'ultima endataziun dal log da bloccar vegn mussà sutvart sco referenza:",
 'blockiptext'                     => "Utilisescha il formular sutvart per bloccar ina adressa IP u in utilisader uschia ch'el na po betg pli far midadas.
 Ti duessas be far quai per impedir vandalissem e en ina moda confurma a las [[{{MediaWiki:Policy-url}}|directivas]].
 Inditgescha sutvart in motiv (per exempel pos ti inditgar paginas ch'èn vegnidas destruidas).",
-'ipaddress'                       => 'Adressa IP:',
 'ipadressorusername'              => "Adressa IP u num d'utilisader:",
 'ipbexpiry'                       => 'Bloccà enfin:',
 'ipbreason'                       => 'Motiv:',
@@ -2265,7 +2264,7 @@ En cas che ti vul be exportar l'ultima versiun pos ti era utilisar in link, p.ex
 'allmessagesdefault'            => 'text original',
 'allmessagescurrent'            => 'text actual',
 'allmessagestext'               => 'Quai è ina glista da tut ils messadis dals differents tips da paginas da MediaWiki che vegnan utilisadas da la software MediaWiki.
-Fai ina visita sin [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] e [http://translatewiki.net translatewiki.net] sche ti vuls gidar da translatar la software MediaWiki.',
+Fai ina visita sin [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] e [//translatewiki.net translatewiki.net] sche ti vuls gidar da translatar la software MediaWiki.',
 'allmessagesnotsupportedDB'     => "Questa pagina na po betg vegnir mussada, perquai che '''\$wgUseDatabaseMessages''' è vegnì deactivà.",
 'allmessages-filter-legend'     => 'Filtrar',
 'allmessages-filter'            => 'Filtrar tenor standi da modificaziun:',
@@ -2902,7 +2901,7 @@ Sche la datoteca è vegnida midada dal status original èn tscherts detagls even
 
 # External editor support
 'edit-externally'      => 'Modifitgar questa datoteca cun in program extern',
-'edit-externally-help' => "(Legia [http://www.mediawiki.org/wiki/Manual:External_editors instrucziuns d'installaziun] per ulteriuras infurmaziuns)",
+'edit-externally-help' => "(Legia [//www.mediawiki.org/wiki/Manual:External_editors instrucziuns d'installaziun] per ulteriuras infurmaziuns)",
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tut',
@@ -2983,13 +2982,6 @@ Quai code da confermaziun vegn a scrudar ils $6 las $7.',
 'scarytranscludedisabled' => "[L'integraziun interwiki è deactivada]",
 'scarytranscludefailed'   => "[Betg reussì d'integrar in model per $1]",
 'scarytranscludetoolong'  => '[URL è memia lunga]',
-
-# Trackbacks
-'trackbackbox'      => 'Trackbacks per questa pagina:<br />
-$1',
-'trackbackremove'   => '([Stizzar $1])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Il trackback è vegnì stizzà cun success.',
 
 # Delete conflict
 'deletedwhileediting'      => "'''Attenziun:''' Questa pagina è vegnida stizzada suenter che ti has cumanzà a la modifitgar.",
@@ -3093,13 +3085,13 @@ Ti pos era utilisar [[Special:EditWatchlist|la pagina da standard]].',
 'version-hook-subscribedby'     => 'Abonnà da',
 'version-version'               => '(Versiun $1)',
 'version-license'               => 'Licenza',
-'version-poweredby-credits'     => "Questa wiki utilisescha '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Questa wiki utilisescha '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'auters',
 'version-license-info'          => "MediaWiki è software liba; ti la pos redistribuir e/u la modifitgar tenor ils terms da la GNU General Public License sco ch'ella vegn publitgada da la Free Software Foundation; ti pos utilisar la versiun 2 da la licenza u (sche ti vul) mintga versiun che succeda. 
 
 MediaWiki vegn distribuì en la speranza che questa software saja utila, dentant SENZA MINTGA GARANZIA; era senza garanzia implizita da NEGOZIABILITAD u ADDATAZIUN PER IN INTENT SPECIAL. Guarda la GNU General Public License per ulteriurs detagls. 
 
-Ti duessas avair retschavì [{{SERVER}}{{SCRIPTPATH}}/COPYING ina copia da la GNU General Public License] cun quest program; sche na betg, scriva a la Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA u [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html la legia online].",
+Ti duessas avair retschavì [{{SERVER}}{{SCRIPTPATH}}/COPYING ina copia da la GNU General Public License] cun quest program; sche na betg, scriva a la Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA u [//www.gnu.org/licenses/old-licenses/gpl-2.0.html la legia online].",
 'version-software'              => 'Software installada',
 'version-software-product'      => 'Product',
 'version-software-version'      => 'Versiun',

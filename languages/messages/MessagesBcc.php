@@ -484,7 +484,6 @@ $1',
 Function: $1<br />
 Query: $2',
 'viewsource'           => 'به گند منبع آ',
-'viewsourcefor'        => 'په $1',
 'actionthrottled'      => 'کار گیر نت',
 'actionthrottledtext'  => 'په خاطر یک معیار ضد اسپم شما چه انجام ای کار ته یک کمی زمان محدود بیتگیت، و شما چه ای محدودیت رد بیتگیت.
 لطفا چند دقیقه بعد کوشست کن',
@@ -493,7 +492,7 @@ Query: $2',
 'protectedinterface'   => 'ای صفحه فراهم آریت مداخله ی متنی په برنامه و کبل بیتت په جلوگیری چه سو استفاده.',
 'editinginterface'     => "'''هوژاری:''' شما یک صفحه ای اصلاح کنیت که به عنوان مداخله گر متنی برنامه استفاده بیت.
 تغییرات ای صفحه کاربرد مداخله گر په دگه کابران تاثیر هلیت.
-  [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net],  په ترجمه یان لطفا توجه کنیت په استفاده پروژه ملکی کتن مدیا وی کی",
+  [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net],  په ترجمه یان لطفا توجه کنیت په استفاده پروژه ملکی کتن مدیا وی کی",
 'sqlhidden'            => '(SQL درخواست پناهین)',
 'cascadeprotected'     => 'ای صفحه محافظت بیت چه اصلاح چرا که آیی شامل جهلیگین {{PLURAL:$1|صفحه, که|صفحات, که}} محافظتی گون the "cascading" option turned on:
 $2',
@@ -678,9 +677,6 @@ $2',
  مشی هنوکی ان آی پی $3 شمی شماره محدودیت $5
 لطفا ای شماره ته هر جوست و پرسی هور کنیت.',
 'blockednoreason'                  => 'هچ دلیلی دهگ نه بیته',
-'blockedoriginalsource'            => "منبع '''$1''' جهلآ پیش دراگ بیت:",
-'blockededitsource'                => "متن '''your edits'' به '''$1''' جهلآ پیش دارگ بیت:",
-'whitelistedittitle'               => 'په اصلاح کتن بایدن وارد سیستم بیت',
 'whitelistedittext'                => 'شما باید $1به اصلاح کتن صفحات.',
 'confirmedittext'                  => 'شما بایدن وتی آدرس ایمیل آ پیش چه اصلاح کتن صفحات تایید کنیت.
 لطفا وتی آدرس ایمیل آی چه طریق [[Special:Preferences|ترجحات کاربر]] تنظیم و معتبر کنیت.',
@@ -1048,7 +1044,6 @@ $1",
 'prefs-editing'                 => 'اصلاح',
 'prefs-edit-boxsize'            => 'حد پنجره اصلاح.',
 'rows'                          => 'ردیفآن«',
-'columns'                       => 'ستون‌ان:',
 'searchresultshead'             => 'گردگ',
 'resultsperpage'                => 'کلیک ته هر صفحه:',
 'stub-threshold'                => 'سرحد په  <a href="#" class="stub">چنڈ لینک</a> فرمت (بایت):',
@@ -1216,7 +1211,6 @@ $1",
 'right-autopatrol'            => 'اتوماتیکی اصلاحات یکیء چه وتی نشان کن په داب نظارت بوتگین',
 'right-patrolmarks'           => 'به گند نوکین تغییرات نشان نظارتی',
 'right-unwatchedpages'        => 'به گند په داب یکیک لیست نچارتگین صفحات',
-'right-trackback'             => 'یک رندگری دیم دی',
 'right-mergehistory'          => 'چن وبند کن تاریح صفحاتء',
 'right-userrights'            => 'اصلاح کل حقوق کاربری',
 'right-userrights-interwiki'  => 'اصلاح حقوق کابرانی کابران دگه ویکی انء',
@@ -1259,7 +1253,6 @@ $1",
 'action-patrol'               => 'نشان کتن اصلاح دگران په داب چارگ بیتگین',
 'action-autopatrol'           => 'نشان کتن وتی اصلاح په داب چارگ بوتگین',
 'action-unwatchedpages'       => 'چارگ لیست نچارتگین صفحات',
-'action-trackback'            => 'ثبت یک بازتر',
 'action-mergehistory'         => 'هورکتن تاریح ای صفحه',
 'action-userrights'           => 'اصلاح کل حقوق کاربر',
 'action-userrights-interwiki' => 'اصلاح حقوق کاربری کاربران ته دگه ویکیء',
@@ -2052,7 +2045,6 @@ $1',
 'blockiptext'                     => 'چه ای فرم جهلی په نوشتن دسترسی په یک خاصین آدرس آی پی یا نام کاربری استفاده کن.
 شی فقط انجام بیت په خاطر جلوگیری چه هرابکاری  په اساس [[{{MediaWiki:Policy-url}}|سیاست]].
 یک حاصین دلیلی بنویس جهلء (مثلا، گوشگ صفخات خاصی که هراب بپتگنت).',
-'ipaddress'                       => 'آدرس آی پی:',
 'ipadressorusername'              => 'آدرس آي پی یا نام کاربری:',
 'ipbexpiry'                       => 'وهد هلگ:',
 'ipbreason'                       => 'دلیل:',
@@ -2264,7 +2256,7 @@ $1',
 'allmessagesdefault'            => 'پیش فرضین متن',
 'allmessagescurrent'            => 'هنوکین متن',
 'allmessagestext'               => 'شی یک لیستی چه کوله یان موجود ته نام فضای مدیا وی کی انت.
-لطفا بچاریت  [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] و [http://translatewiki.net translatewiki.net] اگر شما لوٹیت ته ملکی کتن مدیا وی کی کمک کنیت.',
+لطفا بچاریت  [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] و [//translatewiki.net translatewiki.net] اگر شما لوٹیت ته ملکی کتن مدیا وی کی کمک کنیت.',
 'allmessagesnotsupportedDB'     => "ای صفحه نه تونیت استفاده بیت په چی که'''\$wgUseDatabaseMessages''' غیر فعالنت.",
 'allmessages-filter-legend'     => 'فیلتر',
 'allmessages-filter'            => 'فیلتر گون حالت دلواهی',
@@ -2849,7 +2841,7 @@ Variants for Chinese language
 
 # External editor support
 'edit-externally'      => 'ای صفحه یا اصلاح کن گون یک درآین برنامه ای',
-'edit-externally-help' => '(په گیشترین اطلاعات بچار[http://www.mediawiki.org/wiki/Manual:External_editors setup instructions])',
+'edit-externally-help' => '(په گیشترین اطلاعات بچار[//www.mediawiki.org/wiki/Manual:External_editors setup instructions])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'کل',
@@ -2902,13 +2894,6 @@ $5
 'scarytranscludedisabled' => '[جاه په جاهی بین ویکی غیر فعالنت]',
 'scarytranscludefailed'   => '[تمپلت آرگ پروش وارت په $1]',
 'scarytranscludetoolong'  => '[URL باز مزننت]',
-
-# Trackbacks
-'trackbackbox'      => 'گرند گروگان ای صفحه:<br />
-$1',
-'trackbackremove'   => '([$1 حذف])',
-'trackbacklink'     => 'رند گر',
-'trackbackdeleteok' => 'رند گر گون موفقیت حذف بوت.',
 
 # Delete conflict
 'deletedwhileediting' => "'''هوژاری''': ای صفحه حذف بوتت رند چه شمی اصلاح کتن شروه بیگ!",

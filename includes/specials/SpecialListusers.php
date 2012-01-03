@@ -3,7 +3,7 @@
  * Implements Special:Listusers
  *
  * Copyright © 2004 Brion Vibber, lcrocker, Tim Starling,
- * Domas Mituzas, Ashar Voultoiz, Jens Frank, Zhengzhu,
+ * Domas Mituzas, Antoine Musso, Jens Frank, Zhengzhu,
  * 2006 Rob Church <robchur@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -131,7 +131,7 @@ class UsersPager extends AlphabeticPager {
 		$userPage = Title::makeTitle( NS_USER, $row->user_name );
 		$name = Linker::link( $userPage, htmlspecialchars( $userPage->getText() ) );
 
-		$lang = $this->getLang();
+		$lang = $this->getLanguage();
 
 		$groups_list = self::getGroups( $row->user_id );
 		if( count( $groups_list ) > 0 ) {
@@ -161,8 +161,7 @@ class UsersPager extends AlphabeticPager {
 		if( $row->creation ) {
 			$d = $lang->date( wfTimestamp( TS_MW, $row->creation ), true );
 			$t = $lang->time( wfTimestamp( TS_MW, $row->creation ), true );
-			$created = ' (' . wfMsg( 'usercreated', $d, $t ) . ')';
-			$created = htmlspecialchars( $created );
+			$created = ' (' . wfMsgExt( 'usercreated', array( 'parsemag', 'escape' ), $d, $t, $row->user_name ) . ')';
 		}
 
 		wfRunHooks( 'SpecialListusersFormatRow', array( &$item, $row ) );

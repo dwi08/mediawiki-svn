@@ -17,16 +17,16 @@
 $fallback = 'ru';
 
 $namespaceNames = array(
-	NS_MEDIA            => 'Media',
+	NS_MEDIA            => 'Медиа',
 	NS_SPECIAL          => 'Сæрмагонд',
 	NS_TALK             => 'Тæрхон',
 	NS_USER             => 'Архайæг',
 	NS_USER_TALK        => 'Архайæджы_ныхас',
-	NS_PROJECT_TALK     => 'Дискусси_$1',
-	NS_FILE             => 'Ныв',
-	NS_FILE_TALK        => 'Нывы_тæрхон',
+	NS_PROJECT_TALK     => '{{GRAMMAR:genitive|$1}}_тæрхон',
+	NS_FILE             => 'Файл',
+	NS_FILE_TALK        => 'Файлы_тæрхон',
 	NS_MEDIAWIKI        => 'MediaWiki',
-	NS_MEDIAWIKI_TALK   => 'Тæрхон_MediaWiki',
+	NS_MEDIAWIKI_TALK   => 'MediaWiki-йы_тæрхон',
 	NS_TEMPLATE         => 'Шаблон',
 	NS_TEMPLATE_TALK    => 'Шаблоны_тæрхон',
 	NS_HELP             => 'Æххуыс',
@@ -38,18 +38,24 @@ $namespaceNames = array(
 $namespaceAliases = array(
 	'Дискусси'                    => NS_TALK,
 	'Архайæджы_дискусси'          => NS_USER_TALK,
+	'Дискусси_$1'                 => NS_PROJECT_TALK,
+	'Ныв'                         => NS_FILE,
+	'Нывы_тæрхон'                 => NS_FILE_TALK,
 	'Нывы_тыххæй_дискусси'        => NS_FILE_TALK,
 	'Дискусси_MediaWiki'          => NS_MEDIAWIKI_TALK,
+	'Тæрхон_MediaWiki'            => NS_MEDIAWIKI_TALK,
 	'Шаблоны_тыххæй_дискусси'     => NS_TEMPLATE_TALK,
 	'Æххуысы_тыххæй_дискусси'     => NS_HELP_TALK,
 	'Категорийы_тыххæй_дискусси'  => NS_CATEGORY_TALK,
 );
 
+// Remove Russian aliases
+$namespaceGenderAliases = array();
 
 $magicWords = array(
-	'redirect'              => array( '0', '#РАРВЫСТ', '#перенаправление', '#перенапр', '#REDIRECT' ),
-	'img_right'             => array( '1', 'рахиз', 'справа', 'right' ),
-	'img_left'              => array( '1', 'галиу', 'слева', 'left' ),
+	'redirect'                => array( '0', '#РАРВЫСТ', '#перенаправление', '#перенапр', '#REDIRECT' ),
+	'img_right'               => array( '1', 'рахиз', 'справа', 'right' ),
+	'img_left'                => array( '1', 'галиу', 'слева', 'left' ),
 );
 
 $linkTrail = '/^((?:[a-z]|а|æ|б|в|г|д|е|ё|ж|з|и|й|к|л|м|н|о|п|р|с|т|у|ф|х|ц|ч|ш|щ|ъ|ы|ь|э|ю|я|“|»)+)(.*)$/sDu';
@@ -162,6 +168,7 @@ $messages = array(
 'listingcontinuesabbrev'         => '(дарддæргонд)',
 'index-category'                 => 'Индексгонд фæрстæ',
 'noindex-category'               => 'Нæиндексгонд фæрстæ',
+'broken-file-category'           => 'Файлтæм саст æрвитæнтæ кæм ис, ахæм фæрстæ',
 
 'about'         => 'Афыст',
 'article'       => 'Статья',
@@ -334,7 +341,6 @@ $messages = array(
 Æндæр исчи йæ аппæрста мыййаг.',
 'badtitle'             => 'Æнæмбæлон сæргонд',
 'viewsource'           => 'Код кæсын',
-'viewsourcefor'        => 'Фарс «$1»',
 'protectedpagetext'    => 'Ацы фарс у ивынæй æхгæд.',
 'viewsourcetext'       => 'Ацы фарсы код фенæн æмæ халдих кæнæн ис:',
 'ns-specialprotected'  => 'Сæрмагонд фæрстæ ({{ns:special}}) баивæн нæй.',
@@ -427,7 +433,6 @@ $messages = array(
 'summary-preview'                  => 'Ивд афыст уыдзæн:',
 'blockedtitle'                     => 'Архайæг хъодыгонд æрцыд',
 'blockednoreason'                  => 'аххос амынд не ’рцыд',
-'whitelistedittitle'               => 'Ацы текст ивынмæ хъуамæ дæхи бацамонай системæйæн',
 'loginreqtitle'                    => 'Хъуамæ дæхи бацамонай',
 'accmailtitle'                     => 'Пароль рарвыст у.',
 'newarticle'                       => '(Ног)',
@@ -659,7 +664,7 @@ $messages = array(
 'rclistfrom'                      => 'Равдисын ивдтытæ амæй фæстæ: $1',
 'rcshowhideminor'                 => '$1 чысыл ивдтытæ',
 'rcshowhidebots'                  => '$1 роботты куыст',
-'rcshowhideliu'                   => '$1 ырбахизгæ архайджыты',
+'rcshowhideliu'                   => '$1, йæхи чи бацамыдта, уыцы архайджыты',
 'rcshowhideanons'                 => '$1 æнæном архайджыты',
 'rcshowhidemine'                  => '$1 мæ ивдтытæ',
 'rclinks'                         => 'Фæстаг $1 ивдтытæ (афæстаг $2 боны дæргъы чи ’рцыдысты) равдис;
@@ -1100,7 +1105,7 @@ $3',
 
 # External editor support
 'edit-externally'      => 'Ивын ацы файл æддаг программæйæ',
-'edit-externally-help' => '(Кæс [http://www.mediawiki.org/wiki/Manual:External_editors сывæрыны уагæвæрдтæ] фылдæр базонынæн)',
+'edit-externally-help' => '(Кæс [//www.mediawiki.org/wiki/Manual:External_editors сывæрыны уагæвæрдтæ] фылдæр базонынæн)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'иууылдæр',

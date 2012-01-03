@@ -355,14 +355,13 @@ Pol favol, contauta con un [[Special:ListUsers/sysop|çajoril]], mentandu la URL
 'querypage-no-updates' => "Las atualiçacionis desta páhina s'alcuentran atualmenti desativás. Los datus nu sedrán atualizaus a cortu praçu.",
 'wrong_wfQuery_params' => 'Parametrus a wfQuery()<br /> Hunción: $1<br /> Pregunta: $2 encorretus',
 'viewsource'           => 'Vel coigu huenti',
-'viewsourcefor'        => 'pa $1',
 'actionthrottled'      => 'Ación ilimitá',
 'actionthrottledtext'  => 'Cumu miia pa prevenil el spam, solu pueis hazel esta ación un limitau númeru e vezis nun cortu praçu e tiempu, i as pasau esti límiti. Pol favol, enténtalu otra vezi endrentu angunus minutus.',
 'protectedpagetext'    => "Esta página s'alcuentra atarugá a nuevas eicionis.",
 'viewsourcetext'       => 'Pueis vel i copial el cóigu huenti desta páhina:',
 'protectedinterface'   => "Esta páhina proporciona el testu la entrihazi el software, razón pola que s'alcuentra atarugá.",
 'editinginterface'     => "'''Cudiau:''' Estás eitandu una página que propolciona el testu la entrijazi el software. Los chambus hechus aquina afeutarán a la entrijazi d'otrus ussuárius.
-Pa traucil, consiera gastal [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], el proyeutu de traución de MediaWiki.",
+Pa traucil, consiera gastal [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], el proyeutu de traución de MediaWiki.",
 'sqlhidden'            => '(Consurta SQL açonchá)',
 'cascadeprotected'     => 'Esta páhina s\'alcuentra protehia ebiu a que horma parti e {{PLURAL:$1|la siguienti páhina|las siguientis páhinas}}, qu\'están protehias cola oción "proteción en cascá" ativá:
 $2',
@@ -530,9 +529,6 @@ Pueis contautal con $1 u con otru [[{{MediaWiki:Grouppage-sysop}}|çahoril]] pa 
 Si nu as escrebiu enas tus [[Special:Preferences|preferéncias]] una direción d\'email, u si t\'á siu atarugau el correu, nu te sedrá possibri gastal el botón "Envial un email a esti ussuáriu".
 $3 es la tu direción IP atual, i el ID del tarugu es #$5. Pol favol, escrebi dambus los dos datus en cualisquiel consurta que hagas.',
 'blockednoreason'                  => "nu s'an dau razonis",
-'blockedoriginalsource'            => "El cóigu huenti e '''$1''' se muestra embahu:",
-'blockededitsource'                => "Embahu se muestra el testu '''las tus eicionis''' en '''$1''':",
-'whitelistedittitle'               => 'Es mestel rustrilsi pa eital',
 'whitelistedittext'                => 'Tiinis que $1 pa eital páhinas.',
 'confirmedittext'                  => 'Ebis confirmal la tu direción d´email enantis d´eital páhinas. Pol favol, escrebi i compreba el tu email pol meyu las tus [[Special:Preferences|preferéncias d´usuáriu]].',
 'nosuchsectiontitle'               => 'Nu es posibri alcuentral el apaltiju',
@@ -842,7 +838,6 @@ Asigurati e qu'esti chambu mantenga la continuiá el estorial la páhina.",
 'prefs-editing'             => 'Eitandu',
 'prefs-edit-boxsize'        => "Grandol de la ventana d'eición.",
 'rows'                      => 'Filas:',
-'columns'                   => 'Colunas:',
 'searchresultshead'         => 'Landeal',
 'resultsperpage'            => 'Resurtaus pol páhina:',
 'stub-threshold'            => 'Arrayu superiol pa consieral cumu <a href="#" class="stub">atihu a prencipiu</a> (bytes):',
@@ -1646,7 +1641,6 @@ $1',
 'blockiptext'                 => "Gasta el hormuláriu d'embahu p'atarugal el acesu duna IP u dun usuáriu.
 Estu solu ebi hazelsi pa evital el vandalismu, i dalcuerdu cola [[{{MediaWiki:Policy-url}}|póliça]].
 Escrebi una razón concreta embahu (pol sabulugal, almientandu páhinas qu'aigan siu vandalizás pol esti usuáriu).",
-'ipaddress'                   => 'Direción IP:',
 'ipadressorusername'          => 'IP u nombri d´usuáriu:',
 'ipbexpiry'                   => 'Acabiha:',
 'ipbreason'                   => 'Razón:',
@@ -1811,7 +1805,7 @@ Ya desisti la páhina "[[:$1]]". Te petaria esborrala pa premitil el treslau?',
 'allmessagesdefault'        => 'Testu pol defeutu',
 'allmessagescurrent'        => 'Testu atual',
 'allmessagestext'           => 'Esta es una lista e mensahis del sistema disponibris nel espaciu e nombris MediaWiki:
-Pol favol, vesita [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] i [http://translatewiki.net translatewiki.net] si quieis colabutal.',
+Pol favol, vesita [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] i [//translatewiki.net translatewiki.net] si quieis colabutal.',
 'allmessagesnotsupportedDB' => "Nu se puei gastal esta páhina polque '''\$wgUseDatabaseMessages''' está desativau.",
 
 # Thumbnails
@@ -2233,7 +2227,7 @@ Cualisquiel otru atihu ena mesma línia se consierará ececión, p.s. páhinas o
 
 # External editor support
 'edit-externally'      => 'Eital esti archivu gastandu una apricación esterna',
-'edit-externally-help' => 'Pa mas enholmación, lei las [http://www.mediawiki.org/wiki/Manual:External_editors istrucionis de configuración] (en ingrés).',
+'edit-externally-help' => 'Pa mas enholmación, lei las [//www.mediawiki.org/wiki/Manual:External_editors istrucionis de configuración] (en ingrés).',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tó',
@@ -2283,12 +2277,6 @@ El coigu de confirmación caucará a las $4.',
 'scarytranscludedisabled' => '[El EntriGüiqui está desativau]',
 'scarytranscludefailed'   => '[Marru al cargal la prantilla pa $1]',
 'scarytranscludetoolong'  => '[La URL es mu larga]',
-
-# Trackbacks
-'trackbackbox'      => 'Trackbacks pa esti artículu:<br />
-$1',
-'trackbackremove'   => '([$1 Esborral])',
-'trackbackdeleteok' => "El trackback s'á esborrau corretamenti.",
 
 # Delete conflict
 'deletedwhileediting' => 'Avisu: esta página á siu esborrá endispués de tu encetal a eitala!',

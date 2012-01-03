@@ -62,15 +62,19 @@ class WebRequest {
 	}
 
 	/**
-	 * Extract the PATH_INFO variable even when it isn't a reasonable
-	 * value. On some large webhosts, PATH_INFO includes the script
-	 * path as well as everything after it.
+	 * Extract relevant query arguments from the http request uri's path
+	 * to be merged with the normal php provided query arguments.
+	 * Tries to use the REQUEST_URI data if available and parses it
+	 * according to the wiki's configuration looking for any known pattern.
+	 *
+	 * If the REQUEST_URI is not provided we'll fall back on the PATH_INFO
+	 * provided by the server if any and use that to set a 'title' parameter.
 	 *
 	 * @param $want string: If this is not 'all', then the function
 	 * will return an empty array if it determines that the URL is
 	 * inside a rewrite path.
 	 *
-	 * @return Array: 'title' key is the title of the article.
+	 * @return Array: Any query arguments found in path matches.
 	 */
 	static public function getPathInfo( $want = 'all' ) {
 		// PATH_INFO is mangled due to http://bugs.php.net/bug.php?id=31892
@@ -93,30 +97,42 @@ class WebRequest {
 					// Abort to keep from breaking...
 					return $matches;
 				}
+				
+				$router = new PathRouter;
+
 				// Raw PATH_INFO style
-				$matches = self::extractTitle( $path, "$wgScript/$1" );
+				$router->add( "$wgScript/$1" );
+
+				if( isset( $_SERVER['SCRIPT_NAME'] )
+					&& preg_match( '/\.php5?/', $_SERVER['SCRIPT_NAME'] ) )
+				{
+					# Check for SCRIPT_NAME, we handle index.php explicitly
+					# But we do have some other .php files such as img_auth.php
+					# Don't let root article paths clober the parsing for them
+					$router->add( $_SERVER['SCRIPT_NAME'] . "/$1" );
+				}
 
 				global $wgArticlePath;
-				if( !$matches && $wgArticlePath ) {
-					$matches = self::extractTitle( $path, $wgArticlePath );
+				if( $wgArticlePath ) {
+					$router->add( $wgArticlePath );
 				}
 
 				global $wgActionPaths;
-				if( !$matches && $wgActionPaths ) {
-					$matches = self::extractTitle( $path, $wgActionPaths, 'action' );
+				if( $wgActionPaths ) {
+					$router->add( $wgActionPaths, array( 'action' => '$key' ) );
 				}
 
 				global $wgVariantArticlePath, $wgContLang;
-				if( !$matches && $wgVariantArticlePath ) {
-					$variantPaths = array();
-					foreach( $wgContLang->getVariants() as $variant ) {
-						$variantPaths[$variant] =
-							str_replace( '$2', $variant, $wgVariantArticlePath );
-					}
-					$matches = self::extractTitle( $path, $variantPaths, 'variant' );
+				if( $wgVariantArticlePath ) {
+					$router->add( $wgVariantArticlePath,
+						array( 'variant' => '$2'),
+						array( '$2' => $wgContLang->getVariants() )
+					);
 				}
 
-				wfRunHooks( 'WebRequestGetPathInfoRequestURI', array( $path, &$matches ) );
+				wfRunHooks( 'WebRequestPathInfoRouter', array( $router ) );
+
+				$matches = $router->parse( $path );
 			}
 		} elseif ( isset( $_SERVER['ORIG_PATH_INFO'] ) && $_SERVER['ORIG_PATH_INFO'] != '' ) {
 			// Mangled PATH_INFO
@@ -727,6 +743,7 @@ class WebRequest {
 	 * @return integer
 	 */
 	public function getFileSize( $key ) {
+		wfDeprecated( __METHOD__, '1.17' );
 		$file = new WebRequestUpload( $this, $key );
 		return $file->getSize();
 	}
@@ -939,6 +956,7 @@ HTML;
 	 * @return bool
 	 */
 	public function isPathInfoBad( $extWhitelist = array() ) {
+		wfDeprecated( __METHOD__, '1.17' );
 		global $wgScriptExtension;
 		$extWhitelist[] = ltrim( $wgScriptExtension, '.' );
 		return IEUrlExtension::areServerVarsBad( $_SERVER, $extWhitelist );
@@ -1192,6 +1210,10 @@ class FauxRequest extends WebRequest {
 			$this->session = $session;
 	}
 
+	/**
+	 * @param $method string
+	 * @throws MWException
+	 */
 	private function notImplemented( $method ) {
 		throw new MWException( "{$method}() not implemented" );
 	}
@@ -1255,15 +1277,26 @@ class FauxRequest extends WebRequest {
 		$this->headers[$name] = $val;
 	}
 
+	/**
+	 * @param $key
+	 * @return mixed
+	 */
 	public function getSessionData( $key ) {
 		if( isset( $this->session[$key] ) )
 			return $this->session[$key];
 	}
 
+	/**
+	 * @param $key
+	 * @param $data
+	 */
 	public function setSessionData( $key, $data ) {
 		$this->session[$key] = $data;
 	}
 
+	/**
+	 * @return array|Mixed|null
+	 */
 	public function getSessionArray() {
 		return $this->session;
 	}
@@ -1289,5 +1322,53 @@ class FauxRequest extends WebRequest {
 	 */
 	protected function getRawIP() {
 		return '127.0.0.1';
+	}
+}
+
+/**
+ * Similar to FauxRequest, but only fakes URL parameters and method
+ * (POST or GET) and use the base request for the remaining stuff
+ * (cookies, session and headers).
+ *
+ * @ingroup HTTP
+ */
+class DerivativeRequest extends FauxRequest {
+	private $base;
+
+	public function __construct( WebRequest $base, $data, $wasPosted = false ) {
+		$this->base = $base;
+		parent::__construct( $data, $wasPosted );
+	}
+
+	public function getCookie( $key, $prefix = null, $default = null ) {
+		return $this->base->getCookie( $key, $prefix, $default );
+	}
+
+	public function checkSessionCookie() {
+		return $this->base->checkSessionCookie();
+	}
+
+	public function getHeader( $name ) {
+		return $this->base->getHeader( $name );
+	}
+
+	public function getAllHeaders() {
+		return $this->base->getAllHeaders();
+	}
+
+	public function getSessionData( $key ) {
+		return $this->base->getSessionData( $key );
+	}
+
+	public function setSessionData( $key, $data ) {
+		return $this->base->setSessionData( $key, $data );
+	}
+
+	public function getAcceptLang() {
+		return $this->base->getAcceptLang();
+	}
+
+	public function getIP() {
+		return $this->base->getIP();
 	}
 }

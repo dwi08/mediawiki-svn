@@ -615,6 +615,26 @@ disabled
 </dl>
 !! end
 
+!! test
+Definition and unordered list using wiki syntax nested in unordered list using html tags.
+!! input
+<ul><li>
+; term : description 
+* unordered
+</li>
+</ul>
+!! result
+<ul><li>
+<dl><dt> term&#160;</dt><dd> description 
+</dd></dl>
+<ul><li> unordered
+</li></ul>
+</li>
+</ul>
+
+!! end
+
+
 ###
 ### External links
 ###
@@ -1050,8 +1070,10 @@ http://www.example.com/?title=AT%26T
 </p>
 !! end
 
+# According to http://dev.w3.org/html5/spec/Overview.html#parsing-urls a plain
+# % is actually legal in HTML5. Any change in output would need testing though.
 !! test
-Bug 4781, 5267: %26 in URL
+Bug 4781, 5267: %25 in URL
 !! input
 http://www.example.com/?title=100%25_Bran
 !! result
@@ -1166,6 +1188,29 @@ URL-encoding in URL functions (multiple parameters)
 {{localurl:Some page|q=?&amp=&}}
 !! result
 <p>/index.php?title=Some_page&amp;q=?&amp;amp=&amp;
+</p>
+!! end
+
+!! test
+Brackets in urls
+!! input
+http://example.com/index.php?foozoid%5B%5D=bar
+
+http://example.com/index.php?foozoid&#x5B;&#x5D;=bar
+!! result
+<p><a rel="nofollow" class="external free" href="http://example.com/index.php?foozoid%5B%5D=bar">http://example.com/index.php?foozoid%5B%5D=bar</a>
+</p><p><a rel="nofollow" class="external free" href="http://example.com/index.php?foozoid%5B%5D=bar">http://example.com/index.php?foozoid%5B%5D=bar</a>
+</p>
+!! end
+
+!! test
+IPv6 urls (bug 21261)
+!! options
+disabled
+!! input
+http://[2404:130:0:1000::187:2]/index.php
+!! result
+<p><a rel="nofollow" class="external free" href="http://[2404:130:0:1000::187:2]/index.php">http://[2404:130:0:1000::187:2]/index.php</a>
 </p>
 !! end
 
@@ -1431,6 +1476,29 @@ Table security: embedded pipes (http://lists.wikimedia.org/mailman/htdig/wikitec
 </td>
 </tr>
 </table>
+
+!! end
+
+
+!! test
+Indented table markup mixed with indented pre content (proposed in bug 6200)
+!! input
+ <table>
+ <tr>
+ <td>
+ Text that should be rendered preformatted
+ </td>
+ </tr>
+ </table>
+!! result
+ <table>
+ <tr>
+ <td>
+<pre>Text that should be rendered preformatted
+</pre>
+ </td>
+ </tr>
+ </table>
 
 !! end
 
@@ -1871,7 +1939,7 @@ Inline interwiki link with empty title (bug 2372)
 !! input
 [[MeatBall:]]
 !! result
-<p><a href="http://www.usemod.com/cgi-bin/mb.pl?" class="extiw" title="meatball:">MeatBall:</a>
+<p><a href="http://www.usemod.com/cgi-bin/mb.pl" class="extiw" title="meatball:">MeatBall:</a>
 </p>
 !! end
 
@@ -2478,7 +2546,7 @@ Magic links: RFC (bug 479)
 !! input
 RFC 822
 !! result
-<p><a class="external mw-magiclink-rfc" href="http://tools.ietf.org/html/rfc822">RFC 822</a>
+<p><a class="external mw-magiclink-rfc" href="//tools.ietf.org/html/rfc822">RFC 822</a>
 </p>
 !! end
 
@@ -2496,7 +2564,7 @@ Magic links: PMID incorrectly converts space to underscore
 !! input
 PMID 1234
 !! result
-<p><a class="external mw-magiclink-pmid" href="http://www.ncbi.nlm.nih.gov/pubmed/1234?dopt=Abstract">PMID 1234</a>
+<p><a class="external mw-magiclink-pmid" href="//www.ncbi.nlm.nih.gov/pubmed/1234?dopt=Abstract">PMID 1234</a>
 </p>
 !! end
 
@@ -3810,7 +3878,7 @@ BUG 1887: A RFC with a thumbnail
 !! input
 [[Image:foobar.jpg|thumb|This is RFC 12354]]
 !! result
-<div class="thumb tright"><div class="thumbinner" style="width:182px;"><a href="/wiki/File:Foobar.jpg" class="image"><img alt="" src="http://example.com/images/3/3a/Foobar.jpg" width="180" height="20" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/File:Foobar.jpg" class="internal" title="Enlarge"><img src="/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>This is <a class="external mw-magiclink-rfc" href="http://tools.ietf.org/html/rfc12354">RFC 12354</a></div></div></div>
+<div class="thumb tright"><div class="thumbinner" style="width:182px;"><a href="/wiki/File:Foobar.jpg" class="image"><img alt="" src="http://example.com/images/3/3a/Foobar.jpg" width="180" height="20" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify"><a href="/wiki/File:Foobar.jpg" class="internal" title="Enlarge"><img src="/skins/common/images/magnify-clip.png" width="15" height="11" alt="" /></a></div>This is <a class="external mw-magiclink-rfc" href="//tools.ietf.org/html/rfc12354">RFC 12354</a></div></div></div>
 
 !! end
 
@@ -7167,7 +7235,7 @@ Double RFC
 !! input
 RFC RFC 1234
 !! result
-<p>RFC <a class="external mw-magiclink-rfc" href="http://tools.ietf.org/html/rfc1234">RFC 1234</a>
+<p>RFC <a class="external mw-magiclink-rfc" href="//tools.ietf.org/html/rfc1234">RFC 1234</a>
 </p>
 !! end
 
@@ -7185,7 +7253,7 @@ RFC code coverage
 !! input
 RFC   983&#x20;987
 !! result
-<p><a class="external mw-magiclink-rfc" href="http://tools.ietf.org/html/rfc983">RFC 983</a>&#x20;987
+<p><a class="external mw-magiclink-rfc" href="//tools.ietf.org/html/rfc983">RFC 983</a>&#x20;987
 </p>
 !! end
 
@@ -8523,6 +8591,8 @@ comment
 
 !! test
 Bad images - basic functionality
+!! options
+disabled
 !! input
 [[File:Bad.jpg]]
 !! result
@@ -8530,6 +8600,8 @@ Bad images - basic functionality
 
 !! test
 Bad images - bug 16039: text after bad image disappears
+!! options
+disabled
 !! input
 Foo bar
 [[File:Bad.jpg]]
@@ -8791,12 +8863,12 @@ Template:Identical
 
 !! test
 Bug 31098 Template which includes system messages which includes the template
-!! options
-disabled
 !! input
 {{Identical}}
 !! result
-...
+<p><span class="error">Template loop detected: <a href="/wiki/Template:Identical" title="Template:Identical">Template:Identical</a></span>
+<span class="error">Template loop detected: <a href="/wiki/Template:Identical" title="Template:Identical">Template:Identical</a></span>
+</p>
 !! end
 
 !! test
@@ -8868,6 +8940,57 @@ language=en
 !! result
 <p><a href="/index.php?title=Template:Ucf%C4%B1rst:blah&amp;action=edit&amp;redlink=1" class="new" title="Template:Ucfırst:blah (page does not exist)">Template:Ucfırst:blah</a>
 </p>
+!! end
+
+!! test
+Bug 26375: TOC with italics
+!! options
+title=[[Main Page]]
+!! input
+__TOC__
+== ''Lost'' episodes ==
+!! result
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Lost_episodes"><span class="tocnumber">1</span> <span class="toctext"><i>Lost</i> episodes</span></a></li>
+</ul>
+</td></tr></table>
+<h2><span class="editsection">[<a href="/index.php?title=Main_Page&amp;action=edit&amp;section=1" title="Edit section: Lost episodes">edit</a>]</span> <span class="mw-headline" id="Lost_episodes"> <i>Lost</i> episodes </span></h2>
+
+!! end
+
+!! test
+Bug 26375: TOC with bold 
+!! options
+title=[[Main Page]]
+!! input
+__TOC__
+== '''should be bold''' then normal text ==
+!! result
+<table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#should_be_bold_then_normal_text"><span class="tocnumber">1</span> <span class="toctext"><b>should be bold</b> then normal text</span></a></li>
+</ul>
+</td></tr></table>
+<h2><span class="editsection">[<a href="/index.php?title=Main_Page&amp;action=edit&amp;section=1" title="Edit section: should be bold then normal text">edit</a>]</span> <span class="mw-headline" id="should_be_bold_then_normal_text"> <b>should be bold</b> then normal text </span></h2>
+
+!! end
+
+!! article
+MediaWiki:Bug32057
+!! text
+== {{int:headline_sample}} ==
+!! endarticle
+
+!! test
+Bug 32057: Title needed when expanding <h> nodes.
+!! options
+title=[[Main Page]]
+!! input
+{{int:Bug32057}}
+!! result
+<h2><span class="editsection">[<a href="/index.php?title=Main_Page&amp;action=edit&amp;section=1" title="Edit section: Headline text">edit</a>]</span> <span class="mw-headline" id="Headline_text"> Headline text </span></h2>
+
 !! end
 
 TODO:

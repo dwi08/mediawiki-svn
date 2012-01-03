@@ -54,10 +54,10 @@ class SpecialPrefixindex extends SpecialAllpages {
 		$namespace = (int)$ns; // if no namespace given, use 0 (NS_MAIN).
 
 		$namespaces = $wgContLang->getNamespaces();
-		$out->setPagetitle(
+		$out->setPageTitle(
 			( $namespace > 0 && in_array( $namespace, array_keys( $namespaces ) ) )
-				? wfMsg( 'allinnamespace', str_replace( '_', ' ', $namespaces[$namespace] ) )
-				: wfMsg( 'prefixindex' )
+				? $this->msg( 'prefixindex-namespace', str_replace( '_', ' ', $namespaces[$namespace] ) )
+				: $this->msg( 'prefixindex' )
 		);
 
 		$showme = '';
@@ -65,8 +65,9 @@ class SpecialPrefixindex extends SpecialAllpages {
 			$showme = $par;
 		} elseif( $prefix != '' ) {
 			$showme = $prefix;
-		} elseif( $from != '' ) {
+		} elseif( $from != '' && $ns === null ) {
 			// For back-compat with Special:Allpages
+			// Don't do this if namespace is passed, so paging works when doing NS views.
 			$showme = $from;
 		}
 
@@ -216,10 +217,11 @@ class SpecialPrefixindex extends SpecialAllpages {
 					'prefix' => $prefix
 				);
 
-				if( $namespace ) {
+				if( $namespace || ($prefix == '')) {
+					// Keep the namespace even if it's 0 for empty prefixes.
+					// This tells us we're not just a holdover from old links.
 					$query['namespace'] = $namespace;
 				}
-
 				$nextLink = Linker::linkKnown(
 						$self,
 						wfMsgHtml( 'nextpage', str_replace( '_',' ', htmlspecialchars( $s->page_title ) ) ),

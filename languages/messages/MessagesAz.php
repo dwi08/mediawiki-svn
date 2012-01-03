@@ -67,9 +67,9 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#İSTİQAMƏTLƏNDİRMƏ', '#İSTİQAMƏTLƏNDİR', '#REDIRECT' ),
-	'notoc'                 => array( '0', '__MÜNDƏRİCATYOX__', '__NOTOC__' ),
-	'nogallery'             => array( '0', '__QALEREYAYOX__', '__NOGALLERY__' ),
+	'redirect'                => array( '0', '#İSTİQAMƏTLƏNDİRMƏ', '#İSTİQAMƏTLƏNDİR', '#REDIRECT' ),
+	'notoc'                   => array( '0', '__MÜNDƏRİCATYOX__', '__NOTOC__' ),
+	'nogallery'               => array( '0', '__QALEREYAYOX__', '__NOGALLERY__' ),
 );
 
 $separatorTransformTable = array( ',' => '.', '.' => ',' );
@@ -447,7 +447,6 @@ Başlıqlarda istifadə edilməsi qadağan olunan bir və ya daha çox simvol is
 Funksiya: $1<br />
 Sorğu: $2',
 'viewsource'           => 'Mənbə göstər',
-'viewsourcefor'        => '$1 üçün',
 'actionthrottled'      => 'Sürət məhdudiyyəti',
 'actionthrottledtext'  => 'Anti-spam hərəkətləri səbəbilə, bir hərəkəti qısa bir zaman aralığında çoxetməniz əngəlləndi, və siz həddi aşmısınız. Lütfən bir neçə dəqiqə sonra yenidən yoxlayın.',
 'protectedpagetext'    => 'Bu səhifə redaktə üçün bağlıdır.',
@@ -455,7 +454,7 @@ Sorğu: $2',
 'protectedinterface'   => 'Bu səhifədə proqram təminatı üçün sistem məlumatları var və sui-istifadənin qarşısını almaq üçün mühafizə olunmalıdır.',
 'editinginterface'     => "'''Diqqət!''' Siz proqram təminatı interfeysinin mətn olan səhifəsini redaktə edirsiniz.
 Onun dəyişdirilməsi digər istifadəçilərin interfeysinin xarici görünüşünə təsir göstərir.
-Tərcümə üçün daha yaxşı olar ki, MediaWiki-nin lokallaşması üçün olan [http://translatewiki.net/wiki/Main_Page?setlang=az translatewiki.net]  layihəsindən istifadə edəsiniz.",
+Tərcümə üçün daha yaxşı olar ki, MediaWiki-nin lokallaşması üçün olan [//translatewiki.net/wiki/Main_Page?setlang=az translatewiki.net]  layihəsindən istifadə edəsiniz.",
 'sqlhidden'            => '(SQL gizli sorğu)',
 'cascadeprotected'     => 'Səhifə mühafizə olunub, çünki o kaskad mühafizə olunan {{PLURAL:$1|növbəti səhifəyə|növbəti səhifələrə}} qoşulub:
 $2',
@@ -634,9 +633,6 @@ Müvəqqəti parol: $2',
 'subject-preview'                  => 'Sərlövhə belə olacaq:',
 'blockedtitle'                     => 'İstifadəçi bloklanıb',
 'blockednoreason'                  => 'səbəb göstərilməyib',
-'blockedoriginalsource'            => "'''$1''' mənbəyi aşağıda göstərilib:",
-'blockededitsource'                => "Aşağıda '''$1''' səhifəsində etdiyiniz '''dəyişikliklərin''' mətni göstərilib:",
-'whitelistedittitle'               => 'Redaktə üçün daxil olmalısınız',
 'whitelistedittext'                => 'Dəyişiklik edə bilmək üçün $1.',
 'confirmedittext'                  => 'Siz elektron ünvanınızı səhifədə dəyişiklik etməzdən əvvəl göstərməlisiniz.
 Zəhmət olmasa elektron ünvanınızı [[Special:Preferences|istifadəçi nizamlaması]] səhifənizdə göstərib təsdiq ediniz.',
@@ -898,7 +894,7 @@ $1",
 'shown-title'                      => 'Səhifə üçün $1 {{PLURAL:$1|nəticə|nəticəyə}} bax',
 'viewprevnext'                     => 'Göstər ($1 {{int:pipe-separator}} $2) ($3).',
 'searchmenu-legend'                => 'Axtarış kriteriyaları',
-'searchmenu-exists'                => "'''Bu vikidə \"[[:\$1]]\" adında səhifə mövcutdur'''",
+'searchmenu-exists'                => "'''Bu vikidə \"[[:\$1]]\" adında səhifə mövcuddur'''",
 'searchmenu-new'                   => "'''Bu vikidə \"[[:\$1]]\" səhifəsini yarat!'''",
 'searchhelp-url'                   => 'Help:Mündəricət',
 'searchmenu-prefix'                => '[[Special:PrefixIndex/$1|Bu cür prefiksli səhifələri göstər]]',
@@ -983,7 +979,6 @@ $1",
 'prefs-editing'                 => 'Redaktə',
 'prefs-edit-boxsize'            => 'Redaktə pəncərəsinin həcmi',
 'rows'                          => 'Sıralar:',
-'columns'                       => 'Sütunlar:',
 'searchresultshead'             => 'Axtar',
 'resultsperpage'                => 'Səhifəyə aid tapılmış nəticələr:',
 'stub-threshold'                => '<a href="#" class="stub">Keçidsiz linki</a> format etmək üçün hüdud (baytlarla):',
@@ -1160,7 +1155,6 @@ Həmçinin kimliyinizi gostərmədən belə, başqalarının sizinlə istifadə�
 'right-autopatrol'           => 'Dəyişikliklər avtomatik patrullanmış kimi işarələnir',
 'right-patrolmarks'          => 'Bütün patrullanmış son dəyişikliklərə bax',
 'right-unwatchedpages'       => 'Müşahidə olunmayan səhifələrin siyahısına baxış',
-'right-trackback'            => 'Trackback göndər',
 'right-mergehistory'         => 'Səhifələrin tarixini birləşdirmək',
 'right-userrights'           => 'Bütün istifadəçi hüquqlarının redaktə edilməsi',
 'right-userrights-interwiki' => 'Digər vikilərdəki istifadəçilərin istifadəçi hüquqlarını dəyişdir',
@@ -1202,7 +1196,6 @@ Həmçinin kimliyinizi gostərmədən belə, başqalarının sizinlə istifadə�
 'action-patrol'               => 'Digərlərinin dəyişikliklərini patrullanmış olaraq işarələ',
 'action-autopatrol'           => 'öz redaktələrinizi patrullanmış olarq işarələmək',
 'action-unwatchedpages'       => 'müşahidə olunmayan səhifələrin siyahısına baxış',
-'action-trackback'            => 'Trackback göndər',
 'action-mergehistory'         => 'Bu səhifənin tarixini birləşdirmək',
 'action-userrights'           => 'Bütün istifadəçi hüquqlarını redaktə et',
 'action-userrights-interwiki' => 'Digər vikilərdəki istifadəçilərin istifadəçi hüquqlarını dəyişdir',
@@ -1235,7 +1228,6 @@ Həmçinin kimliyinizi gostərmədən belə, başqalarının sizinlə istifadə�
 'minoreditletter'                   => 'k',
 'newpageletter'                     => 'Y',
 'boteditletter'                     => 'b',
-'sectionlink'                       => '→',
 'number_of_watching_users_pageview' => '[$1 izləyən istifadəçi]',
 'rc_categories'                     => 'Kateqoriyalara limit qoy ("|" ilə ayır)',
 'rc_categories_any'                 => 'Hər',
@@ -1249,7 +1241,6 @@ Həmçinin kimliyinizi gostərmədən belə, başqalarının sizinlə istifadə�
 'recentchangeslinked-feed'     => 'Əlaqəli redaktələr',
 'recentchangeslinked-toolbox'  => 'Əlaqəli redaktələr',
 'recentchangeslinked-title'    => "''$1'' ilə əlaqəli dəyişikliklər",
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'Qeyd olunan dövrdə əlaqədar səhifələrdə heç bir dəyişiklik yoxdur.',
 'recentchangeslinked-summary'  => "Aşağıdakı siyahı, qeyd olunan səhifəyə (və ya qeyd olunan kateqoriyadakı səhifələrə) daxili keçid verən səhifələrdə edilmiş son dəyişikliklərin siyahısıdır.
 [[Special:Watchlist|İzləmə siyahınızdakı]] səhifələr '''qalın''' şriftlə göstərilmişdir.",
@@ -1423,15 +1414,13 @@ $1',
 'shared-repo-name-wikimediacommons' => 'Wikimedia Commons',
 
 # File reversion
-'filerevert'          => '$1 faylını əvvəlki vəziyyətinə qaytar',
-'filerevert-backlink' => '← $1',
-'filerevert-legend'   => 'Faylı əvvəlki vəziyyətinə qaytar',
-'filerevert-comment'  => 'Səbəb:',
-'filerevert-submit'   => 'Əvvəlki vəziyyətinə',
+'filerevert'         => '$1 faylını əvvəlki vəziyyətinə qaytar',
+'filerevert-legend'  => 'Faylı əvvəlki vəziyyətinə qaytar',
+'filerevert-comment' => 'Səbəb:',
+'filerevert-submit'  => 'Əvvəlki vəziyyətinə',
 
 # File deletion
 'filedelete'                  => '$1 adlı faylı sil',
-'filedelete-backlink'         => '← $1',
 'filedelete-legend'           => 'Faylı sil',
 'filedelete-intro'            => "'''[[Media:$1|$1]]''' faylını və onunla bağlı bütün tarixçəni silmək ərəfəsindəsiniz.",
 'filedelete-comment'          => 'Səbəb:',
@@ -1692,9 +1681,7 @@ Fərdi hüquqlar haqqında əlavə məlumatı [[{{MediaWiki:Listgrouprights-help
 'watchnologin'         => 'Daxil olmamısınız',
 'watchnologintext'     => 'İzləmə siyahınızda dəyişiklik aparmaq üçün [[Special:UserLogin|daxil olmalısınız]].',
 'addwatch'             => 'İzləmə siyahısına əlavə et',
-'addedwatchtext'       => '"$1" səhifəsi [[Special:Watchlist|izlədiyiniz səhifələrə]] əlavə edildi. Bu səhifədə və əlaqəli müzakirə səhifəsində olacaq dəyişikliklər orada göstəriləcək və səhifə asanlıqla seçiləbilmək üçün [[Special:RecentChanges|son dəyişikliklər]]-də qalın şriftlərlə görsənəcəkdir.
-
-Səhifəni izləmə sıyahınızdan çıxarmaq üçün yan lovhədəki "izləmə" düyməsinə vurun.',
+'addedwatchtext'       => '"[[:$1]]" səhifəsi [[Special:Watchlist|izlədiyiniz səhifələr]] siyahısına əlavə edildi. Bu səhifədə və əlaqəli müzakirə səhifəsindəki bütün dəyişikliklər orada göstəriləcək və səhifə asanlıqla seçiləbilmək üçün [[Special:RecentChanges|son dəyişikliklərdə]] qalın şriftlərlə görünəcəkdir. <p> Səhifəni izləmə siyahınızdan çıxarmaq üçün yan lövhədəki "izləmə" düyməsinə vurun.',
 'removedwatchtext'     => '"[[:$1]]" səhifəsi [[Special:Watchlist|izləmə siyahınızdan]] çıxarıldı.',
 'watch'                => 'İzlə',
 'watchthispage'        => 'Bu səhifəni izlə',
@@ -1759,7 +1746,6 @@ Yardım və təklifləriniz üçün:
 'exbeforeblank'          => "Silinmədən əvvəlki məzmun: '$1'",
 'exblank'                => 'səhifə boş',
 'delete-confirm'         => 'Silinən səhifə: "$1"',
-'delete-backlink'        => '← $1',
 'delete-legend'          => 'Sil',
 'historywarning'         => "'''Xəbərdarlıq:''' Silinəcək səhifənin tarixçəsində qeyd olunmuş $1 {{PLURAL:$1|redaktə|redaktə}} var:",
 'confirmdeletetext'      => 'Bu səhifə və ya fayl bütün tarixçəsi ilə birlikdə birdəfəlik silinəcək. Bunu [[{{MediaWiki:Policy-url}}|qaydalara]] uyğun etdiyinizi və əməliyyatın nəticələrini başa düşdüyünüzü təsdiq edin.',
@@ -1800,7 +1786,6 @@ Sonuncu silinmələrə bax: $2.',
 'unprotectedarticle'          => 'mühafizə kənarlaşdırıldı "[[$1]]"',
 'protect-title'               => '"$1" üçün mühafizə səviyyəsinin dəyişdirilməsi',
 'prot_1movedto2'              => '[[$1]] adı dəyişildi. Yeni adı: [[$2]]',
-'protect-backlink'            => '← $1',
 'protect-legend'              => 'Qorumayı təsdiq et',
 'protectcomment'              => 'Səbəb:',
 'protectexpiry'               => 'Vaxtı bitib',
@@ -1924,7 +1909,6 @@ Bloklama qeydlərinin sonuncusu aşağıda göstərilmişdir:',
 'whatlinkshere'            => 'Bu səhifəyə bağlantılar',
 'whatlinkshere-title'      => '"$1" məqaləsinə keçid verən səhifələr',
 'whatlinkshere-page'       => 'Səhifə:',
-'whatlinkshere-backlink'   => '← $1',
 'linkshere'                => "'''[[:$1]]''' səhifəsinə istinad edən səhifələr:",
 'nolinkshere'              => "'''[[:$1]]''' səhifəsinə keçid verən səhifə yoxdur.",
 'nolinkshere-ns'           => "Seçilmiş ad aralığında heç bir səhifə '''[[:$1]]''' səhifəsinə keçid vermir.",
@@ -1947,7 +1931,6 @@ Bloklama qeydlərinin sonuncusu aşağıda göstərilmişdir:',
 'blockip'                         => 'İstifadəçini blokla',
 'blockip-title'                   => 'İstifadəçini blokla',
 'blockip-legend'                  => 'İstifadəçinin bloklanması',
-'ipaddress'                       => 'IP ünvanı',
 'ipadressorusername'              => 'IP-ünvanı və ya istifadəçi adı',
 'ipbexpiry'                       => 'Bitmə müddəti:',
 'ipbreason'                       => 'Səbəb:',
@@ -2141,7 +2124,7 @@ Zəhmət olmasa başqa ad seçin.',
 'allmessagesname'               => 'Ad',
 'allmessagesdefault'            => 'İlkin mətn',
 'allmessagescurrent'            => 'İndiki mətn',
-'allmessagestext'               => 'Bu MediaWiki-də olan sistem mesajlarının siyahısıdır. Əgər MediaWiki-ni lokallaşdırmaq işində kömək etmək isəyirsinizsə, lütfən [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] və [http://translatewiki.net translatewiki.net]-ə baş çəkin.',
+'allmessagestext'               => 'Bu MediaWiki-də olan sistem mesajlarının siyahısıdır. Əgər MediaWiki-ni lokallaşdırmaq işində kömək etmək isəyirsinizsə, lütfən [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] və [//translatewiki.net translatewiki.net]-ə baş çəkin.',
 'allmessages-filter-legend'     => 'Filtr',
 'allmessages-filter-unmodified' => 'Dəyişdirilməmiş',
 'allmessages-filter-all'        => 'Hamısı',
@@ -2754,7 +2737,7 @@ Variants for Chinese language
 
 # External editor support
 'edit-externally'      => 'Bu faylı kənar proqram vasitəsilə redaktə et.',
-'edit-externally-help' => '(Daha ətraflı məlumat üçün [http://www.mediawiki.org/wiki/Manual:External_editors tətbiqetmə qaydalarına] baxa bilərsiniz)',
+'edit-externally-help' => '(Daha ətraflı məlumat üçün [//www.mediawiki.org/wiki/Manual:External_editors tətbiqetmə qaydalarına] baxa bilərsiniz)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'hamısını',
@@ -2777,13 +2760,6 @@ Variants for Chinese language
 # Scary transclusion
 'scarytranscludedisabled' => '[«Interwiki transcluding»dən çıxılmışdır]',
 'scarytranscludetoolong'  => '[URL uzundur]',
-
-# Trackbacks
-'trackbackbox'      => 'Bu səhifə üçün geri izləmələr:<br />
-$1',
-'trackbackremove'   => '([$1 Sil])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Geri izləmə uğurla silindi.',
 
 # Delete conflict
 'deletedwhileediting' => "'''Diqqət!''' Bu səhifə siz redaktə etməyə başladıqdan sonra silinmişdir!",
@@ -2862,7 +2838,7 @@ $1',
 'version-hook-subscribedby'   => 'Abunə olan',
 'version-version'             => '(Versiya $1)',
 'version-license'             => 'Lisenziya',
-'version-poweredby-credits'   => "Bu wiki '''[http://www.mediawiki.org/ MediaWiki]''' proqramı istifadə edilərək yaradılmışdır, müəlliflik © 2001-$1 $2.",
+'version-poweredby-credits'   => "Bu wiki '''[//www.mediawiki.org/ MediaWiki]''' proqramı istifadə edilərək yaradılmışdır, müəlliflik © 2001-$1 $2.",
 'version-poweredby-others'    => 'digərləri',
 'version-software-product'    => 'Məhsul',
 'version-software-version'    => 'Versiya',
@@ -2952,5 +2928,11 @@ Bu saytda texniki problemlər var.',
 'revdelete-unrestricted'       => 'idarəçilər üçün götürülmüş məhdudiyyətlər',
 'logentry-newusers-autocreate' => 'Hesab $1 {{GENDER:$2yaradıldı}} avtomatik',
 'newuserlog-byemail'           => 'parol e-maillə göndərildi',
+
+# Feedback
+'feedback-subject' => 'Mövzu:',
+'feedback-message' => 'Mesaj:',
+'feedback-cancel'  => 'İmtina',
+'feedback-close'   => 'Oldu',
 
 );

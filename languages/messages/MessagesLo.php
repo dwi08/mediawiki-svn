@@ -338,7 +338,6 @@ $messages = array(
 'cannotdelete'        => 'ບໍ່ສາມາດລຶບໜ້າ ຫຼື ໄຟລ໌ ໄດ້. (ມັນອາດຈະຖືກລຶບໂດຍໃຜຜູ້ໜຶ່ງແລ້ວ.)',
 'badtitle'            => 'ຫົວຂໍ້ບໍ່ຖືກຕ້ອງ',
 'viewsource'          => 'ເບິ່ງຊອສ໌',
-'viewsourcefor'       => 'ສຳຫຼັບ $1',
 'namespaceprotected'  => "ທ່ານບໍ່ໄດ້ຮັບອະນຸຍາດ ໃຫ້ ດັດແກ້ ໜ້າ ໃນ  '''$1'''.",
 
 # Login and logout pages
@@ -410,8 +409,6 @@ $messages = array(
 'showdiff'                 => 'ສະແດງສ່ວນຕ່າງ',
 'anoneditwarning'          => "'''ເຕືອນ:''' ທ່ານ ບໍ່ໄດ້ເຊັນເຂົ້າ. ທີ່ຢູ່ IP ຂອງ ທ່ານ ຈະຖືກບັນທຶກໄວ້ ໃນ ປະຫວັດການດັດແກ້ ຂອງ ໜ້ານີ້.",
 'blockedtitle'             => 'ຜູ້ໃຊ້ຖືກຫ້າມ',
-'blockededitsource'        => "ເນື້ອໃນ ຂອງ '''ການດັດແປງໂດຍທ່ານ '''ຕໍ່ກັບ '''$1''' ມີດັ່ງລຸ່ມນີ້:",
-'whitelistedittitle'       => 'ຕ້ອງເຊັນເຂົ້າ ຈຶ່ງຈະສາມາດດັດແກ້ໄດ້',
 'whitelistedittext'        => 'ທ່ານ ຈະຕ້ອງ  $1 ເພື່ອ ຈະດັດແກ້.',
 'loginreqtitle'            => 'ຈຳເປັນຕ້ອງ ເຊັນເຂົ້າ',
 'loginreqlink'             => 'ເຊັນເຂົ້າ',
@@ -518,7 +515,6 @@ $messages = array(
 'resetprefs'            => 'ເລີ່ມຄືນໃໝ່',
 'prefs-editing'         => 'ການດັດແກ້',
 'rows'                  => 'ແຖວ:',
-'columns'               => 'ຖັນ:',
 'searchresultshead'     => 'ຊອກຫາ',
 'resultsperpage'        => 'ຈຳນວນຜົນການຊອກເຫັນ ຕໍ່ ໜ້າ:',
 'recentchangesdays'     => 'ຈຳນວນມື້ສະແດງໃນການປ່ຽນແປງຫຼ້າສຸດ:',
@@ -920,7 +916,7 @@ Also see [[Special:WantedCategories|wanted categories]].',
 
 # External editor support
 'edit-externally'      => 'ດັດແກ້ໄຟລ໌ນີ້ໂດຍໂປແກຣມພາຍນອກ',
-'edit-externally-help' => 'ເບິ່ງ ຂໍ້ມູນເພີ່ມຕື່ມ ຢູ່ [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions]',
+'edit-externally-help' => 'ເບິ່ງ ຂໍ້ມູນເພີ່ມຕື່ມ ຢູ່ [//www.mediawiki.org/wiki/Manual:External_editors setup instructions]',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ທັງໝົດ',

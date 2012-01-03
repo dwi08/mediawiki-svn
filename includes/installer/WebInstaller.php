@@ -472,7 +472,6 @@ class WebInstaller extends Installer {
 			$this->setVar( '_UserLang', $wgLanguageCode );
 		} else {
 			$wgLanguageCode = $this->getVar( 'wgLanguageCode' );
-			$wgLang = Language::factory( $this->getVar( '_UserLang' ) );
 			$wgContLang = Language::factory( $wgLanguageCode );
 		}
 	}
@@ -641,13 +640,12 @@ class WebInstaller extends Installer {
 		array_shift( $args );
 		$args = array_map( 'htmlspecialchars', $args );
 		$text = wfMsgReal( $msg, $args, false, false, false );
-		$html = htmlspecialchars( $text );
-		$html = $this->parse( $html, true );
+		$html = $this->parse( $text, true );
 
 		return "<div class=\"mw-help-field-container\">\n" .
-			   "<span class=\"mw-help-field-hint\">" . wfMsgHtml( 'config-help' ) . "</span>\n" .
-			   "<span class=\"mw-help-field-data\">" . $html . "</span>\n" .
-			   "</div>\n";
+			"<span class=\"mw-help-field-hint\">" . wfMsgHtml( 'config-help' ) . "</span>\n" .
+			"<span class=\"mw-help-field-data\">" . $html . "</span>\n" .
+			"</div>\n";
 	}
 
 	/**
@@ -1069,6 +1067,9 @@ class WebInstaller extends Installer {
 		return Html::rawElement( 'div', array( 'class' => 'config-download-link' ), $anchor );
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function envCheckPath( ) {
 		// PHP_SELF isn't available sometimes, such as when PHP is CGI but
 		// cgi.fix_pathinfo is disabled. In that case, fall back to SCRIPT_NAME
@@ -1086,9 +1087,10 @@ class WebInstaller extends Installer {
 			$this->showError( 'config-no-uri' );
 			return false;
 		}
-
-
 		return parent::envCheckPath();
 	}
 
+	protected function envGetDefaultServer() {
+		return WebRequest::detectServer();
+	}
 }

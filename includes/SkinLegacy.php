@@ -238,7 +238,7 @@ class LegacyTemplate extends BaseTemplate {
 		$variants = $lang->getVariants();
 
 		if ( !$wgDisableLangConversion && sizeof( $variants ) > 1
-			&& $title->getNamespace() != NS_SPECIAL ) {
+			&& !$title->isSpecialPage() ) {
 			foreach ( $variants as $code ) {
 				$varname = $lang->getVariantname( $code );
 
@@ -247,7 +247,7 @@ class LegacyTemplate extends BaseTemplate {
 				}
 				$s = $wgLang->pipeList( array(
 					$s,
-					'<a href="' . $title->escapeLocalURL( 'variant=' . $code ) . '">' . htmlspecialchars( $varname ) . '</a>'
+					'<a href="' . htmlspecialchars( $title->getLocalURL( 'variant=' . $code ) ) . '">' . htmlspecialchars( $varname ) . '</a>'
 				) );
 			}
 		}
@@ -284,7 +284,7 @@ class LegacyTemplate extends BaseTemplate {
 	}
 
 	function bottomLinks() {
-		global $wgOut, $wgUser, $wgUseTrackbacks;
+		global $wgOut, $wgUser;
 		$sep = wfMsgExt( 'pipe-separator', 'escapenoentities' ) . "\n";
 
 		$s = '';
@@ -299,10 +299,6 @@ class LegacyTemplate extends BaseTemplate {
 			$element[] = $this->historyLink();
 			$element[] = $this->whatLinksHere();
 			$element[] = $this->watchPageLinksLink();
-
-			if ( $wgUseTrackbacks ) {
-				$element[] = $this->trackbackLink();
-			}
 
 			$title = $this->getSkin()->getTitle();
 
@@ -349,7 +345,7 @@ class LegacyTemplate extends BaseTemplate {
 	}
 
 	function otherLanguages() {
-		global $wgOut, $wgContLang, $wgHideInterlanguageLinks;
+		global $wgOut, $wgLang, $wgContLang, $wgHideInterlanguageLinks;
 
 		if ( $wgHideInterlanguageLinks ) {
 			return '';
@@ -364,8 +360,8 @@ class LegacyTemplate extends BaseTemplate {
 		$s = wfMsg( 'otherlanguages' ) . wfMsg( 'colon-separator' );
 		$first = true;
 
-		if ( $wgContLang->isRTL() ) {
-			$s .= '<span dir="LTR">';
+		if ( $wgLang->isRTL() ) {
+			$s .= '<span dir="ltr">';
 		}
 
 		foreach ( $a as $l ) {
@@ -383,7 +379,7 @@ class LegacyTemplate extends BaseTemplate {
 				$text == '' ? $l : $text );
 		}
 
-		if ( $wgContLang->isRTL() ) {
+		if ( $wgLang->isRTL() ) {
 			$s .= '</span>';
 		}
 
@@ -490,7 +486,7 @@ class LegacyTemplate extends BaseTemplate {
 	 */
 	function pageTitle() {
 		global $wgOut;
-		$s = '<h1 class="pagetitle">' . $wgOut->getPageTitle() . '</h1>';
+		$s = '<h1 class="pagetitle"><span dir="auto">' . $wgOut->getPageTitle() . '</span></h1>';
 		return $s;
 	}
 
@@ -536,6 +532,7 @@ class LegacyTemplate extends BaseTemplate {
 	 * @deprecated in 1.19
 	 */
 	function getQuickbarCompensator( $rows = 1 ) {
+		wfDeprecated( __METHOD__, '1.19' );
 		return "<td width='152' rowspan='{$rows}'>&#160;</td>";
 	}
 
@@ -709,11 +706,6 @@ class LegacyTemplate extends BaseTemplate {
 		}
 	}
 
-	function trackbackLink() {
-		return '<a href="' . $this->getSkin()->getTitle()->trackbackURL() . '">'
-			. wfMsg( 'trackbacklink' ) . '</a>';
-	}
-
 	function talkLink() {
 		$title = $this->getSkin()->getTitle();
 		if ( NS_SPECIAL == $title->getNamespace() ) {
@@ -770,7 +762,7 @@ class LegacyTemplate extends BaseTemplate {
 		global $wgOut;
 
 		$title = $this->getSkin()->getTitle();
-		if ( $title->getNamespace() == NS_SPECIAL ) {
+		if ( $title->isSpecialPage() ) {
 			return '';
 		}
 

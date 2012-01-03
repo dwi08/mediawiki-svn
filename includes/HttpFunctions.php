@@ -29,6 +29,8 @@ class Http {
 	 *    - followRedirects     Whether to follow redirects (defaults to false).
 	 *		                    Note: this should only be used when the target URL is trusted,
 	 *		                    to avoid attacks on intranet services accessible by HTTP.
+	 *    - userAgent           A user agent, if you want to override the default
+	 *                          MediaWiki/$wgVersion
 	 * @return Mixed: (bool)false on failure or a string on success
 	 */
 	public static function request( $method, $url, $options = array() ) {
@@ -40,6 +42,9 @@ class Http {
 		}
 
 		$req = MWHttpRequest::factory( $url, $options );
+		if( isset( $options['userAgent'] ) ) {
+			$req->setUserAgent( $options['userAgent'] );
+		}
 		$status = $req->execute();
 
 		if ( $status->isOK() ) {
@@ -53,6 +58,9 @@ class Http {
 	 * Simple wrapper for Http::request( 'GET' )
 	 * @see Http::request()
 	 *
+	 * @param $url
+	 * @param $timeout string
+	 * @param $options array
 	 * @return string
 	 */
 	public static function get( $url, $timeout = 'default', $options = array() ) {
@@ -64,6 +72,8 @@ class Http {
 	 * Simple wrapper for Http::request( 'POST' )
 	 * @see Http::request()
 	 *
+	 * @param $url
+	 * @param $options array
 	 * @return string
 	 */
 	public static function post( $url, $options = array() ) {
@@ -123,6 +133,8 @@ class Http {
 	 * Checks that the given URI is a valid one. Hardcoding the
 	 * protocols, because we only want protocols that both cURL
 	 * and php support.
+	 *
+	 * file:// should not be allowed here for security purpose (r67684)
 	 *
 	 * @fixme this is wildly inaccurate and fails to actually check most stuff
 	 *
@@ -221,6 +233,7 @@ class MWHttpRequest {
 	 * Generate a new request object
 	 * @param $url String: url to use
 	 * @param $options Array: (optional) extra params to pass (see Http::request())
+	 * @return \CurlHttpRequest|\PhpHttpRequest
 	 * @see MWHttpRequest::__construct
 	 */
 	public static function factory( $url, $options = null ) {
@@ -278,7 +291,7 @@ class MWHttpRequest {
 		}
 
 		if ( Http::isLocalURL( $this->url ) ) {
-			$this->proxy = 'http://localhost:80/';
+			$this->proxy = '';
 		} elseif ( $wgHTTPProxy ) {
 			$this->proxy = $wgHTTPProxy ;
 		} elseif ( getenv( "http_proxy" ) ) {
@@ -295,6 +308,7 @@ class MWHttpRequest {
 
 	/**
 	 * Set the user agent
+	 * @param $UA string
 	 */
 	public function setUserAgent( $UA ) {
 		$this->setHeader( 'User-Agent', $UA );
@@ -302,6 +316,8 @@ class MWHttpRequest {
 
 	/**
 	 * Set an arbitrary header
+	 * @param $name
+	 * @param $value
 	 */
 	public function setHeader( $name, $value ) {
 		// I feel like I should normalize the case here...
@@ -310,6 +326,7 @@ class MWHttpRequest {
 
 	/**
 	 * Get an array of the headers
+	 * @return array
 	 */
 	public function getHeaderList() {
 		$list = array();
@@ -540,6 +557,9 @@ class MWHttpRequest {
 	 * cookies.	 Used internally after a request to parse the
 	 * Set-Cookie headers.
 	 * @see Cookie::set
+	 * @param $name
+	 * @param $value null
+	 * @param $attr null
 	 */
 	public function setCookie( $name, $value = null, $attr = null ) {
 		if ( !$this->cookieJar ) {
@@ -570,6 +590,10 @@ class MWHttpRequest {
 	 *
 	 * Relative values of the "Location" header are incorrect as stated in RFC, however they do happen and modern browsers support them.
 	 * This function loops backwards through all locations in order to build the proper absolute URI - Marooned at wikia-inc.com
+	 *
+	 * Note that the multiple Location: headers are an artifact of CURL -- they
+	 * shouldn't actually get returned this way. Rewrite this when bug 29232 is
+	 * taken care of (high-level redirect handling rewrite).
 	 *
 	 * @return string
 	 */
@@ -614,6 +638,7 @@ class MWHttpRequest {
 	/**
 	 * Returns true if the backend can follow redirects. Overridden by the
 	 * child classes.
+	 * @return bool
 	 */
 	public function canFollowRedirects() {
 		return true;
@@ -634,6 +659,11 @@ class CurlHttpRequest extends MWHttpRequest {
 	protected $curlOptions = array();
 	protected $headerText = "";
 
+	/**
+	 * @param $fh
+	 * @param $content
+	 * @return int
+	 */
 	protected function readHeader( $fh, $content ) {
 		$this->headerText .= $content;
 		return strlen( $content );
@@ -725,6 +755,9 @@ class CurlHttpRequest extends MWHttpRequest {
 		return $this->status;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function canFollowRedirects() {
 		if ( strval( ini_get( 'open_basedir' ) ) !== '' || wfIniGetBool( 'safe_mode' ) ) {
 			wfDebug( "Cannot follow redirects in safe mode\n" );
@@ -741,6 +774,11 @@ class CurlHttpRequest extends MWHttpRequest {
 }
 
 class PhpHttpRequest extends MWHttpRequest {
+
+	/**
+	 * @param $url string
+	 * @return string
+	 */
 	protected function urlToTcp( $url ) {
 		$parsedUrl = parse_url( $url );
 
@@ -828,7 +866,7 @@ class PhpHttpRequest extends MWHttpRequest {
 			# Check security of URL
 			$url = $this->getResponseHeader( "Location" );
 
-			if ( substr( $url, 0, 7 ) !== 'http://' ) {
+			if ( !Http::isValidURI( $url ) ) {
 				wfDebug( __METHOD__ . ": insecure redirection\n" );
 				break;
 			}

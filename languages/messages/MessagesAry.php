@@ -394,14 +394,13 @@ l-bayanaṫ lli kayna hna daba maĥadiċ ṫṫḫḍḍṫ.',
 Function: $1<br />
 Query: $2',
 'viewsource'           => 'Ċof l-ĝin',
-'viewsourcefor'        => 'l  $1',
 'actionthrottled'      => 'had l-feĝl ṫṫḫbs',
 'actionthrottledtext'  => 'baċ nṫfadaw ṣ-ṣpam, ĝadad l-mṛṛaṫ lli ymkn ddir fiha had l-feĝl f-modda qṣiṛa rah mḫdod, o-nta rak fṫṫi had l-ĝadar.
 ĝawd jṛṛḅ mn beĝd ċwiya dial dqayq.',
 'protectedpagetext'    => 'had sfha mhmiya bach mataadlch baqi',
 'viewsourcetext'       => 'imkn lik  tchof otcopie lmasdar dyak had sfha',
 'protectedinterface'   => 'had ṣfḫa ka-ṫĝti n-naṣṣ dl-interface dial l-logiciel, o-raḫa mḫmiyya baċ maymknċ ṫṫĥrab.',
-'editinginterface'     => "'''ṫḫdir:''' rak ka-ĝddal waḫd ṣ-ṣfḫa lli msṫĝmla baċ ṫĝti n-naṣṣ dl-interface dial l-logiciel. ṫĥyiraṫ fiha ġadi ṫ'aṫṫar ĝla l-mḍhr dial l-interface dl-mosṫaĥdim ĝnd l-mosṫaĥdimin l-aĥrin. l-ttarjamaṫ, ċoflik mĝa [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], the MediaWiki localisation project.",
+'editinginterface'     => "'''ṫḫdir:''' rak ka-ĝddal waḫd ṣ-ṣfḫa lli msṫĝmla baċ ṫĝti n-naṣṣ dl-interface dial l-logiciel. ṫĥyiraṫ fiha ġadi ṫ'aṫṫar ĝla l-mḍhr dial l-interface dl-mosṫaĥdim ĝnd l-mosṫaĥdimin l-aĥrin. l-ttarjamaṫ, ċoflik mĝa [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], the MediaWiki localisation project.",
 'sqlhidden'            => '(talab SQL mĥfi)',
 'cascadeprotected'     => 'had ṣfḫa mḫmiyya mn ṫĝdil, ḫqaċ fiha {{PLURAL:$1|ṣfḫa|ṣfaḫi}} mḫmiyya mĝa l-option "cascading" ĥḍḍama:
 $2',
@@ -656,9 +655,6 @@ ymkn lik ṫṫaṣl b-$1 wlla ċi [[{{MediaWiki:Grouppage-sysop}}|idari]] aĥor
 ĝonwan l-IP ṫaĝk daba howa $3, o-lmoĝrrif d-lblok howa #$5.
 mli ṫkṫb ċi talab ĥaṣṣk ṫĝti fih gaĝ had ṫ-ṫafaṣil lli l-foq.",
 'blockednoreason'                  => 'ta sabab mamaatich',
-'blockedoriginalsource'            => "l-mṣḍṛ dial '''$1''' mbyyn l-ṫḫṫ:",
-'blockededitsource'                => "n-naṣṣ dial '''ṫĝdilaṫk''' f-'''$1''' mbyyn l-ṫḫṫ:",
-'whitelistedittitle'               => 'khassk tdkhl bach thrr',
 'whitelistedittext'                => 'khassk  $1 bach taadl sfahi',
 'confirmedittext'                  => "ĥaṣṣk ṫ'kkd l-ĝonwan dl-email dialk qbl ma ṫĝddl ṣ-ṣfaḫi.
 dĥĥel o-'kked l-ĝonwan dl-email dialk fṫ-[[Special:Preferences|ṫfḍilaṫ]] dialk.",
@@ -1029,7 +1025,6 @@ Laḫed ana imken ikono l-indexaṫ dial {{SITENAME}} qdam o ma bqaoċ ṣalḫi
 'prefs-editing'                 => 'thrir',
 'prefs-edit-boxsize'            => 'hajm nafidat thrir',
 'rows'                          => 'sofof:',
-'columns'                       => 'aaamida:',
 'searchresultshead'             => 'Qelleb',
 'resultsperpage'                => 'adad nataij  f sfha',
 'stub-threshold'                => 'l-ḫadd l-aqṣa ṫaĝ <a href="#" class="stub">wṣlaṫ l-bidraṫ</a> (ḅayṫaṫ):',
@@ -1192,7 +1187,6 @@ Laḫed ana imken ikono l-indexaṫ dial {{SITENAME}} qdam o ma bqaoċ ṣalḫi
 'right-autopatrol'            => 'alm taadilat lmostakhdim morajaa tilqaiya',
 'right-patrolmarks'           => 'chof alamat lmorajaa f ahdat tghyirat',
 'right-unwatchedpages'        => 'chof sfahi li mamraqbinch',
-'right-trackback'             => 'dir trackback',
 'right-mergehistory'          => 'dmj tarikh sfahi',
 'right-userrights'            => 'taadil kol  salahiyat lmostkhdimin',
 'right-userrights-interwiki'  => 'taadil salahiyat lmostkhdim lmostkhdimin f lwikiyat lkhrin',
@@ -1236,7 +1230,6 @@ Laḫed ana imken ikono l-indexaṫ dial {{SITENAME}} qdam o ma bqaoċ ṣalḫi
 'action-patrol'               => 'alm ala taadilat lkhrin kamorajaa',
 'action-autopatrol'           => 'alm taadil dualk kamorajaa',
 'action-unwatchedpages'       => 'chof lista dyal sfahi li mamraqbach',
-'action-trackback'            => 'dir trackback',
 'action-mergehistory'         => 'dmj tarikh had sfha',
 'action-userrights'           => 'taadil kol  salahiyat lmostkhdimin',
 'action-userrights-interwiki' => 'taadil salahiyat lmostkhdimin f lwikiyat lkhrin',
@@ -1269,7 +1262,6 @@ Laḫed ana imken ikono l-indexaṫ dial {{SITENAME}} qdam o ma bqaoċ ṣalḫi
 'minoreditletter'                   => 'ṣ',
 'newpageletter'                     => 'J',
 'boteditletter'                     => 'b',
-'sectionlink'                       => '→',
 'number_of_watching_users_pageview' => '[$1 katchof  {{PLURAL:$1|mostkhdim|mostkhdimin}}]',
 'rc_categories'                     => 'limiti tsnifat (frqha b  "|")',
 'rc_categories_any'                 => 'ay wahd',
@@ -1283,7 +1275,6 @@ Laḫed ana imken ikono l-indexaṫ dial {{SITENAME}} qdam o ma bqaoċ ṣalḫi
 'recentchangeslinked-feed'     => 'L-mṫidad dyal ṣ-ṣefḫaṫ l-li mlaqyin',
 'recentchangeslinked-toolbox'  => 'L-mṫidad dyal ṣ-ṣefḫaṫ l-li mlaqyin',
 'recentchangeslinked-title'    => 'Ṫ-Ṫeġyiraṫ li mlaqyin mĝa "$1"',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'ta tghyir f sfahi mrtabta f lmodda li drtiha',
 'recentchangeslinked-summary'  => "Hadi lista dial 'ṫ-ṫeġyiraṫ li ṫdaro mo'aĥarane le 'ṣ-ṣefḫaṫ li mlaqyin mĝa 'ṣ-ṣefḫa l-meĝniya (ola le 'aĝda' dial ċi ṣefa mĝayana). 'Ṣ-Ṣefḫaṫ li [[Special:Watchlist|mṫebeĝ]] mekṫobine be ḫrof ġlaḍ.",
 'recentchangeslinked-page'     => 'Smiyṫ ṣ-ṣefḫa',
@@ -1441,15 +1432,13 @@ $1',
 'shared-repo'               => 'depot mochtarak',
 
 # File reversion
-'filerevert'          => 'rjjea $1',
-'filerevert-backlink' => '← $1',
-'filerevert-legend'   => 'rjjea lfichier',
-'filerevert-comment'  => 'S-Sbab:',
-'filerevert-submit'   => 'Rejjeĝ',
+'filerevert'         => 'rjjea $1',
+'filerevert-legend'  => 'rjjea lfichier',
+'filerevert-comment' => 'S-Sbab:',
+'filerevert-submit'  => 'Rejjeĝ',
 
 # File deletion
 'filedelete'                  => 'suprimi $1',
-'filedelete-backlink'         => '← $1',
 'filedelete-legend'           => 'quprimi kolchi',
 'filedelete-comment'          => 'S-Sbab:',
 'filedelete-submit'           => 'Suprimi',
@@ -1724,7 +1713,6 @@ L-Kṫaba dyal had ṣ-ṣefḫa ġaṫban '''ġliḍa''' fe [[Special:RecentCha
 'excontent'              => 'lmohtawa kan : "$1"',
 'exblank'                => 'sfha kant khawya',
 'delete-confirm'         => 'suprimi "$1"',
-'delete-backlink'        => '← $1',
 'delete-legend'          => 'Suprimi',
 'confirmdeletetext'      => 'Ĝendak rah ġadi ṫemḫi ċi ṣefḫa ola fiċyé, o ḫṫa lé-vérsyon li fe ṫ-ṫariĥ.
 Ĝafak ekked belli hadċi howa li baġi ṫdir, belli nṫa fahem l-ahammiya dyalo, o belli kaṫdir hadċi be ṫ-ṫowfiq dyal [[{{MediaWiki:Policy-url}}|l-qawaĝid d-daĥiliya]].',
@@ -1754,7 +1742,6 @@ L-Kṫaba dyal had ṣ-ṣefḫa ġaṫban '''ġliḍa''' fe [[Special:RecentCha
 'modifiedarticleprotection'   => 'beddel l-mosṫawa de l-ḫimaya dyal « [[$1]] »',
 'unprotectedarticle'          => 'ḫma "[[$1]]"',
 'prot_1movedto2'              => '[[$1]] ṫnqlaṫ l-[[$2]]',
-'protect-backlink'            => '← $1',
 'protect-legend'              => "'kked l-ḫimaya",
 'protectcomment'              => 'S-Sbab:',
 'protectexpiry'               => 'ytsala:',
@@ -1853,7 +1840,6 @@ Imken lek ṫbeddel l-mosṫawa de l-ḫimaya dyal had ṣ-ṣefḫa bla ma i\'e
 'whatlinkshere'            => 'Ṣefḫaṫ mlaqyin',
 'whatlinkshere-title'      => 'Ṣ-Ṣefḫaṫ li mlaqyin mĝa "$1"',
 'whatlinkshere-page'       => 'ṣfḫa:',
-'whatlinkshere-backlink'   => '← $1',
 'linkshere'                => "Had ṣ-ṣefḫaṫ kayddiw le '''[[:$1]]''':",
 'nolinkshere'              => "ḫṫa ċi ṣfḫa ma ka-twṣṣel l-'''[[:$1]]'''.",
 'nolinkshere-ns'           => "ḫṫṫĝ ṣfḫa ma ka-twṣṣal l-'''[[:$1]]''' f-nnitaq lli ĥṫariṫi",
@@ -1872,7 +1858,6 @@ Imken lek ṫbeddel l-mosṫawa de l-ḫimaya dyal had ṣ-ṣefḫa bla ma i\'e
 'blockip'                         => 'Bloké l-mosṫeĥdim',
 'blockip-title'                   => 'Bloki l-mosṫeḫdim',
 'blockip-legend'                  => 'Bloki l-mosṫeḫdim',
-'ipaddress'                       => 'Ĝonwan IP:',
 'ipadressorusername'              => 'Ĝonwan IP ola smiyṫ l-mosṫeĥdim',
 'ipbexpiry'                       => 'Ġayṫqada fe :',
 'ipbreason'                       => 'sabab:',
@@ -2537,7 +2522,7 @@ Ila ṫbeddel l-fiċyé men ḫalṫo l-'aṣliya, kaynin ċi ṫafaṣil ma mna
 
 # External editor support
 'edit-externally'      => 'Ṣayeb had l-fiċyé be ċi aplikasyon ĥarijiya',
-'edit-externally-help' => '(Ċof [http://www.mediawiki.org/wiki/Manual:External_editors/fr les instructions d’installation] ila ḫṫajiṫi meĝlomaṫ ĥrin)',
+'edit-externally-help' => '(Ċof [//www.mediawiki.org/wiki/Manual:External_editors/fr les instructions d’installation] ila ḫṫajiṫi meĝlomaṫ ĥrin)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'kolċi',
@@ -2564,13 +2549,6 @@ daba ymkn lik [[Special:UserLogin|ṫdĥol]] o-ṫsṫmṫĝ bl-wiki.",
 'scarytranscludedisabled' => '[tadmin dyal interwiki moattal]',
 'scarytranscludefailed'   => '[lbaht 3la lqalb fchl l $1]',
 'scarytranscludetoolong'  => '[URL twil bzzaf]',
-
-# Trackbacks
-'trackbackbox'      => 'ṃoṫaḅaĝaṫ dial had ṣfḫa:<br />
-$1',
-'trackbackremove'   => '([$1 Suprimi])',
-'trackbacklink'     => 'lmotabaaa',
-'trackbackdeleteok' => 'lmotabaa tmshat',
 
 # Delete conflict
 'deletedwhileediting' => "'''attansyo''': had sfha tmshat bad ma bditi taadil dyalha",

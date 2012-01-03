@@ -50,6 +50,11 @@ class SpecialNewFiles extends IncludableSpecialPage {
  */
 class NewFilesPager extends ReverseChronologicalPager {
 
+	/**
+	 * @var ImageGallery
+	 */
+	var $gallery;
+
 	function __construct( IContextSource $context, $par = null ) {
 		$this->like = $context->getRequest()->getText( 'like' );
 		$this->showbots = $context->getRequest()->getBool( 'showbots' , 0 );
@@ -115,7 +120,7 @@ class NewFilesPager extends ReverseChronologicalPager {
 		$this->gallery->add(
 			$title,
 			"$ul<br />\n<i>"
-				. htmlspecialchars( $this->getLang()->timeanddate( $row->img_timestamp, true ) )
+				. htmlspecialchars( $this->getLanguage()->timeanddate( $row->img_timestamp, true ) )
 				. "</i><br />\n"
 		);
 	}

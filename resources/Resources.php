@@ -15,14 +15,21 @@ return array(
 
 	/* Skins */
 
-	'skins.vector' => array(
+	'skins.chick' => array(
+		'styles' => array( 'chick/main.css' => array( 'media' => 'screen,handheld' ) ),
+		'remoteBasePath' => $GLOBALS['wgStylePath'],
+		'localBasePath' => $GLOBALS['wgStyleDirectory'],
+	),
+	'skins.cologneblue' => array(
+		'styles' => array( 'cologneblue/screen.css' => array( 'media' => 'screen' ) ),
+		'remoteBasePath' => $GLOBALS['wgStylePath'],
+		'localBasePath' => $GLOBALS['wgStyleDirectory'],
+	),
+	'skins.modern' => array(
 		'styles' => array(
-			'common/commonElements.css' => array( 'media' => 'screen' ),
-			'common/commonContent.css' => array( 'media' => 'screen' ),
-			'common/commonInterface.css' => array( 'media' => 'screen' ),
-			'vector/screen.css' => array( 'media' => 'screen' ),
+			'modern/main.css' => array( 'media' => 'screen' ),
+			'modern/print.css' => array( 'media' => 'print' ),
 		),
-		'scripts' => 'vector/vector.js',
 		'remoteBasePath' => $GLOBALS['wgStylePath'],
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 	),
@@ -36,36 +43,29 @@ return array(
 		'remoteBasePath' => $GLOBALS['wgStylePath'],
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 	),
-	'skins.simple' => array(
-		'styles' => array( 'simple/main.css' => array( 'media' => 'screen' ) ),
-		'remoteBasePath' => $GLOBALS['wgStylePath'],
-		'localBasePath' => $GLOBALS['wgStyleDirectory'],
-	),
-	'skins.chick' => array(
-		'styles' => array( 'chick/main.css' => array( 'media' => 'screen,handheld' ) ),
-		'remoteBasePath' => $GLOBALS['wgStylePath'],
-		'localBasePath' => $GLOBALS['wgStyleDirectory'],
-	),
-	'skins.modern' => array(
-		'styles' => array(
-			'modern/main.css' => array( 'media' => 'screen' ),
-			'modern/print.css' => array( 'media' => 'print' ),
-		),
-		'remoteBasePath' => $GLOBALS['wgStylePath'],
-		'localBasePath' => $GLOBALS['wgStyleDirectory'],
-	),
-	'skins.cologneblue' => array(
-		'styles' => array( 'cologneblue/screen.css' => array( 'media' => 'screen' ) ),
-		'remoteBasePath' => $GLOBALS['wgStylePath'],
-		'localBasePath' => $GLOBALS['wgStyleDirectory'],
-	),
 	'skins.nostalgia' => array(
 		'styles' => array( 'nostalgia/screen.css' => array( 'media' => 'screen' ) ),
 		'remoteBasePath' => $GLOBALS['wgStylePath'],
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 	),
+	'skins.simple' => array(
+		'styles' => array( 'simple/main.css' => array( 'media' => 'screen' ) ),
+		'remoteBasePath' => $GLOBALS['wgStylePath'],
+		'localBasePath' => $GLOBALS['wgStyleDirectory'],
+	),
 	'skins.standard' => array(
 		'styles' => array( 'common/wikistandard.css' => array( 'media' => 'screen' ) ),
+		'remoteBasePath' => $GLOBALS['wgStylePath'],
+		'localBasePath' => $GLOBALS['wgStyleDirectory'],
+	),
+	'skins.vector' => array(
+		'styles' => array(
+			'common/commonElements.css' => array( 'media' => 'screen' ),
+			'common/commonContent.css' => array( 'media' => 'screen' ),
+			'common/commonInterface.css' => array( 'media' => 'screen' ),
+			'vector/screen.css' => array( 'media' => 'screen' ),
+		),
+		'scripts' => 'vector/vector.js',
 		'remoteBasePath' => $GLOBALS['wgStylePath'],
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 	),
@@ -79,11 +79,11 @@ return array(
 
 	/* jQuery Plugins */
 
-	'jquery.async' => array(
-		'scripts' => 'resources/jquery/jquery.async.js',
-	),
 	'jquery.appear' => array(
 		'scripts' => 'resources/jquery/jquery.appear.js',
+	),
+	'jquery.async' => array(
+		'scripts' => 'resources/jquery/jquery.async.js',
 	),
 	'jquery.autoEllipsis' => array(
 		'scripts' => 'resources/jquery/jquery.autoEllipsis.js',
@@ -105,12 +105,12 @@ return array(
 	'jquery.collapsibleTabs' => array(
 		'scripts' => 'resources/jquery/jquery.collapsibleTabs.js',
 	),
-	'jquery.colorUtil' => array(
-		'scripts' => 'resources/jquery/jquery.colorUtil.js',
-	),
 	'jquery.color' => array(
 		'scripts' => 'resources/jquery/jquery.color.js',
 		'dependencies' => 'jquery.colorUtil',
+	),
+	'jquery.colorUtil' => array(
+		'scripts' => 'resources/jquery/jquery.colorUtil.js',
 	),
 	'jquery.cookie' => array(
 		'scripts' => 'resources/jquery/jquery.cookie.js',
@@ -139,13 +139,6 @@ return array(
 	'jquery.hoverIntent' => array(
 		'scripts' => 'resources/jquery/jquery.hoverIntent.js',
 	),
-	'jquery.messageBox' => array(
-		'scripts' => 'resources/jquery/jquery.messageBox.js',
-		'styles' => 'resources/jquery/jquery.messageBox.css',
-	),
-	'jquery.placeholder' => array(
-		'scripts' => 'resources/jquery/jquery.placeholder.js',
-	),
 	'jquery.json' => array(
 		'scripts' => 'resources/jquery/jquery.json.js',
 	),
@@ -157,14 +150,21 @@ return array(
 		'styles' => 'resources/jquery/jquery.makeCollapsible.css',
 		'messages' => array( 'collapsible-expand', 'collapsible-collapse' ),
 	),
+	'jquery.messageBox' => array(
+		'scripts' => 'resources/jquery/jquery.messageBox.js',
+		'styles' => 'resources/jquery/jquery.messageBox.css',
+	),
 	'jquery.mockjax' => array(
 		'scripts' => 'resources/jquery/jquery.mockjax.js',
+	),
+	'jquery.mw-jump' => array(
+		'scripts' => 'resources/jquery/jquery.mw-jump.js',
 	),
 	'jquery.mwExtension' => array(
 		'scripts' => 'resources/jquery/jquery.mwExtension.js',
 	),
-	'jquery.mw-jump' => array(
-		'scripts' => 'resources/jquery/jquery.mw-jump.js',
+	'jquery.placeholder' => array(
+		'scripts' => 'resources/jquery/jquery.placeholder.js',
 	),
 	'jquery.qunit' => array(
 		'scripts' => 'resources/jquery/jquery.qunit.js',
@@ -341,9 +341,12 @@ return array(
 			'is' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-is.js',
 			'it' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-it.js',
 			'ja' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-ja.js',
+			'kk' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-kk.js',
 			'ko' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-ko.js',
+			'lb' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-lb.js',
 			'lt' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-lt.js',
 			'lv' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-lv.js',
+			'mk' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-mk.js',
 			'ml' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-ml.js',
 			'ms' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-ms.js',
 			'nl' => 'resources/jquery.ui/i18n/jquery.ui.datepicker-nl.js',
@@ -446,6 +449,11 @@ return array(
 		'dependencies' => 'jquery.effects.core',
 		'group' => 'jquery.ui',
 	),
+	'jquery.effects.fade' => array(
+		'scripts' => 'resources/jquery.effects/jquery.effects.fade.js',
+		'dependencies' => 'jquery.effects.core',
+		'group' => 'jquery.ui',
+	),
 	'jquery.effects.fold' => array(
 		'scripts' => 'resources/jquery.effects/jquery.effects.fold.js',
 		'dependencies' => 'jquery.effects.core',
@@ -489,6 +497,67 @@ return array(
 		'debugScripts' => 'resources/mediawiki/mediawiki.log.js',
 		'debugRaw' => false,
 	),
+	'mediawiki.api' => array(
+		'scripts' => 'resources/mediawiki/mediawiki.api.js',
+		'dependencies' => 'mediawiki.util',
+	),
+	'mediawiki.api.category' => array( 
+		'scripts' => 'resources/mediawiki/mediawiki.api.category.js',
+		'dependencies' => array( 
+			'mediawiki.api',
+			'mediawiki.Title' 
+		),
+	),
+	'mediawiki.api.edit' => array( 
+		'scripts' => 'resources/mediawiki/mediawiki.api.edit.js',
+		'dependencies' => array( 
+			'mediawiki.api',
+			'mediawiki.Title' 
+		),
+	),
+	'mediawiki.api.parse' => array( 
+		'scripts' => 'resources/mediawiki/mediawiki.api.parse.js',
+		'dependencies' => 'mediawiki.api',
+	),
+	'mediawiki.api.titleblacklist' => array( 
+		'scripts' => 'resources/mediawiki/mediawiki.api.titleblacklist.js',
+		'dependencies' => array( 
+			'mediawiki.api',
+			'mediawiki.Title' 
+		),
+	),
+	'mediawiki.api.watch' => array( 
+		'scripts' => 'resources/mediawiki/mediawiki.api.watch.js',
+		'dependencies' => 'mediawiki.api',
+	),
+	'mediawiki.debug' => array(
+		'scripts' => 'resources/mediawiki/mediawiki.debug.js',
+		'styles' => 'resources/mediawiki/mediawiki.debug.css',
+	),
+	'mediawiki.feedback' => array(
+		'scripts' => 'resources/mediawiki/mediawiki.feedback.js',
+		'dependencies' => array( 
+			'mediawiki.api.edit', 
+			'mediawiki.Title',
+			'mediawiki.jqueryMsg',
+			'jquery.ui.dialog',
+		),
+		'messages' => array( 
+			'feedback-bugornote',
+			'feedback-subject',
+			'feedback-message',
+			'feedback-cancel',
+			'feedback-submit',
+			'feedback-adding',
+			'feedback-error1',
+			'feedback-error2',
+			'feedback-error3',
+			'feedback-thanks',
+			'feedback-close',
+			'feedback-bugcheck',
+			'feedback-bugnew',
+		),
+	),
 	'mediawiki.htmlform' => array(
 		'scripts' => 'resources/mediawiki/mediawiki.htmlform.js',
 	),
@@ -503,6 +572,15 @@ return array(
 		'scripts' => 'resources/mediawiki/mediawiki.user.js',
 		'dependencies' => array(
 			'jquery.cookie',
+		),
+	),
+	'mediawiki.util' => array(
+		'scripts' => 'resources/mediawiki/mediawiki.util.js',
+		'dependencies' => array(
+			'jquery.client',
+			'jquery.cookie',
+			'jquery.messageBox',
+			'jquery.mwExtension',
 		),
 	),
 
@@ -540,6 +618,7 @@ return array(
 	),
 	'mediawiki.action.watch.ajax' => array(
 		'scripts' => 'resources/mediawiki.action/mediawiki.action.watch.ajax.js',
+		'dependencies' => 'mediawiki.api.watch',
 		'messages' => array(
 			'watch',
 			'unwatch',
@@ -606,6 +685,11 @@ return array(
 		),
 	),
 
+	'mediawiki.jqueryMsg' => array(
+		'dependencies' => array( 'mediawiki.language', 'mediawiki.util' ),
+		'scripts' => 'resources/mediawiki/mediawiki.jqueryMsg.js'
+	),
+
 	/* MediaWiki Libs */
 
 	'mediawiki.libs.jpegmeta' => array(
@@ -614,15 +698,6 @@ return array(
 
 	/* MediaWiki Page */
 
-	'mediawiki.util' => array(
-		'scripts' => 'resources/mediawiki/mediawiki.util.js',
-		'dependencies' => array(
-			'jquery.client',
-			'jquery.cookie',
-			'jquery.messageBox',
-			'jquery.mwExtension',
-		),
-	),
 	'mediawiki.page.ready' => array(
 		'scripts' => 'resources/mediawiki.page/mediawiki.page.ready.js',
 		'dependencies' => array(
@@ -648,33 +723,36 @@ return array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.js',
 		'styles' => 'resources/mediawiki.special/mediawiki.special.css',
 	),
-	'mediawiki.special.preferences' => array(
-		'scripts' => 'resources/mediawiki.special/mediawiki.special.preferences.js',
-		'styles' => 'resources/mediawiki.special/mediawiki.special.preferences.css',
+	'mediawiki.special.block' => array(
+		'scripts' => 'resources/mediawiki.special/mediawiki.special.block.js',
+	),
+	'mediawiki.special.changeemail' => array(
+		'scripts' => 'resources/mediawiki.special/mediawiki.special.changeemail.js',
+		'styles' => 'resources/mediawiki.special/mediawiki.special.changeemail.css',
 		'messages' => array( 'email-address-validity-valid', 'email-address-validity-invalid' ),
 	),
 	'mediawiki.special.changeslist' => array(
 		'styles' => 'resources/mediawiki.special/mediawiki.special.changeslist.css',
 		'dependencies' => array( 'jquery.makeCollapsible' ),
 	),
-	'mediawiki.special.search' => array(
-		'scripts' => 'resources/mediawiki.special/mediawiki.special.search.js',
-		'styles'  => 'resources/mediawiki.special/mediawiki.special.search.css',
-	),
-	'mediawiki.special.block' => array(
-		'scripts' => 'resources/mediawiki.special/mediawiki.special.block.js',
-	),
-	'mediawiki.special.undelete' => array(
-		'scripts' => 'resources/mediawiki.special/mediawiki.special.undelete.js',
-	),
 	'mediawiki.special.movePage' => array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.movePage.js',
 		'dependencies' => 'jquery.byteLimit',
+	),
+	'mediawiki.special.preferences' => array(
+		'scripts' => 'resources/mediawiki.special/mediawiki.special.preferences.js',
 	),
 	'mediawiki.special.recentchanges' => array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.recentchanges.js',
 		'dependencies' => array( 'mediawiki.special' ),
 		'position' => 'top',
+	),
+	'mediawiki.special.search' => array(
+		'scripts' => 'resources/mediawiki.special/mediawiki.special.search.js',
+		'styles' => 'resources/mediawiki.special/mediawiki.special.search.css',
+	),
+	'mediawiki.special.undelete' => array(
+		'scripts' => 'resources/mediawiki.special/mediawiki.special.undelete.js',
 	),
 	'mediawiki.special.upload' => array(
 		// @TODO: merge in remainder of mediawiki.legacy.upload
@@ -687,7 +765,7 @@ return array(
 			'size-gigabytes',
 			'largefileserver',
 		),
-		'dependencies' => array( 'mediawiki.libs.jpegmeta' ),
+		'dependencies' => array( 'mediawiki.libs.jpegmeta', 'mediawiki.util' ),
 	),
 	'mediawiki.special.javaScriptTest' => array(
 		'scripts' => 'resources/mediawiki.special/mediawiki.special.javaScriptTest.js',
@@ -718,7 +796,7 @@ return array(
 		'scripts' => 'common/ajax.js',
 		'remoteBasePath' => $GLOBALS['wgStylePath'],
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
-		'dependencies' => 'mediawiki.legacy.wikibits',
+		'dependencies' => array( 'mediawiki.util', 'mediawiki.legacy.wikibits' ),
 	),
 	'mediawiki.legacy.commonPrint' => array(
 		'styles' => array( 'common/commonPrint.css' => array( 'media' => 'print' ) ),
@@ -782,6 +860,7 @@ return array(
 		'localBasePath' => $GLOBALS['wgStyleDirectory'],
 		'dependencies' => 'mediawiki.language',
 		'messages' => array( 'showtoc', 'hidetoc' ),
+		'position' => 'bottom',
 	),
 	'mediawiki.legacy.wikiprintable' => array(
 		'styles' => array( 'common/wikiprintable.css' => array( 'media' => 'print' ) ),

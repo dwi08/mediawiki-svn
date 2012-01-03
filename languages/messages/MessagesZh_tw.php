@@ -10,6 +10,7 @@
  * @author Alexsh
  * @author Andrew971218
  * @author BobChao
+ * @author Ianbu
  * @author Jidanni
  * @author Mark85296341
  * @author Pbdragonwang
@@ -204,15 +205,16 @@ $messages = array(
 
 'badaccess-groups' => '您剛才的請求只有{{PLURAL:$2|這個|這些}}使用者組的使用者才能使用: $1',
 
-'editold'        => '編輯',
-'showtoc'        => '顯示',
-'hidetoc'        => '隱藏',
-'thisisdeleted'  => '檢視或復原$1?',
-'site-rss-feed'  => '訂閱 $1 的 RSS 資料來源',
-'site-atom-feed' => '訂閱 $1 的 Atom 資料來源',
-'page-rss-feed'  => '訂閱「$1」的 RSS 資料來源',
-'page-atom-feed' => '訂閱「$1」的 Atom 資料來源',
-'red-link-title' => '$1 (頁面不存在)',
+'editold'         => '編輯',
+'editsectionhint' => '编辑段落：$1',
+'showtoc'         => '顯示',
+'hidetoc'         => '隱藏',
+'thisisdeleted'   => '檢視或復原$1?',
+'site-rss-feed'   => '訂閱 $1 的 RSS 資料來源',
+'site-atom-feed'  => '訂閱 $1 的 Atom 資料來源',
+'page-rss-feed'   => '訂閱「$1」的 RSS 資料來源',
+'page-atom-feed'  => '訂閱「$1」的 Atom 資料來源',
+'red-link-title'  => '$1 (頁面不存在)',
 
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => '頁面',
@@ -235,7 +237,7 @@ $messages = array(
 'cannotdelete'        => '無法刪除選定的頁面或圖片（它可能已經被其他人刪除了）。',
 'actionthrottledtext' => '系統因為反垃圾編輯的考量，禁止如此頻繁地修改資料，請數分鐘後再嘗試。',
 'viewsourcetext'      => '你可以檢視並複製本頁面的原始碼。',
-'editinginterface'    => "'''警告：''' 您正在編輯的頁面是正用在軟體上的介面文字。改變此頁將影響其他用戶的介面外觀。如要翻譯，請考慮使用 [http://translatewiki.net/wiki/Main_Page?setlang=zh-hant translatewiki.net]，一個用來為MediaWiki軟體本地化的計畫。",
+'editinginterface'    => "'''警告：''' 您正在編輯的頁面是正用在軟體上的介面文字。改變此頁將影響其他用戶的介面外觀。如要翻譯，請考慮使用 [//translatewiki.net/wiki/Main_Page?setlang=zh-hant translatewiki.net]，一個用來為MediaWiki軟體本地化的計畫。",
 'ns-specialprotected' => '在{{ns:special}}名字空間中的頁面是不可以編輯的。',
 
 # Login and logout pages
@@ -633,10 +635,10 @@ $NEWPAGE
 
 --
 要改變您的監視列表設定，請參閱
-{{fullurl:{{#special:EditWatchlist}}}}
+{{canonicalurl:{{#special:EditWatchlist}}}}
 
 回饋和進一步的說明:
-{{fullurl:{{MediaWiki:Helppage}}}}',
+{{canonicalurl:{{MediaWiki:Helppage}}}}',
 
 # Delete
 'confirmdeletetext' => '您即將從資料庫中永遠刪除一個頁面或圖片以及其歷史。
@@ -860,7 +862,7 @@ $NEWPAGE
 
 # Media information
 'imagemaxsize'   => '在圖片描述頁對圖片大小限制為:',
-'file-nohires'   => '<small>無更高解析度可提供。</small>',
+'file-nohires'   => '無更高解析度可提供。',
 'show-big-image' => '完整解析度',
 
 # Special:NewFiles
@@ -915,7 +917,7 @@ Variants for Chinese language
 'exif-lightsource-15' => '白色螢光 （WW 3200    3700K）',
 
 # External editor support
-'edit-externally-help' => '請參見[http://www.mediawiki.org/wiki/Manual:External_editors 設定步驟]了解詳細資訊。',
+'edit-externally-help' => '請參見[//www.mediawiki.org/wiki/Manual:External_editors 設定步驟]了解詳細資訊。',
 
 # E-mail address confirmation
 'confirmemail'            => '確認電子郵件地址',

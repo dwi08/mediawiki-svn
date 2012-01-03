@@ -55,7 +55,7 @@ class SpecialWatchlist extends SpecialPage {
 
 		# Anons don't get a watchlist
 		if( $user->isAnon() ) {
-			$output->setPageTitle( wfMsg( 'watchnologin' ) );
+			$output->setPageTitle( $this->msg( 'watchnologin' ) );
 			$llink = Linker::linkKnown(
 				SpecialPage::getTitleFor( 'Userlogin' ),
 				wfMsgHtml( 'loginreqlink' ),
@@ -69,13 +69,8 @@ class SpecialWatchlist extends SpecialPage {
 		$this->setHeaders();
 		$this->outputHeader();
 
-		$sub = wfMsgExt(
-			'watchlistfor2',
-			array( 'parseinline', 'replaceafter' ),
-			$user->getName(),
-			SpecialEditWatchlist::buildTools( $this->getSkin() )
-		);
-		$output->setSubtitle( $sub );
+		$output->addSubtitle( $this->msg( 'watchlistfor2', $this->getUser()->getName()
+			)->rawParams( SpecialEditWatchlist::buildTools( null ) ) );
 
 		$request = $this->getRequest();
 
@@ -245,7 +240,7 @@ class SpecialWatchlist extends SpecialPage {
 			$output->showLagWarning( $lag );
 		}
 
-		$lang = $this->getLang();
+		$lang = $this->getLanguage();
 
 		# Create output form
 		$form  = Xml::fieldset( wfMsg( 'watchlist-options' ), false, array( 'id' => 'mw-watchlist-options' ) );
@@ -298,19 +293,13 @@ class SpecialWatchlist extends SpecialPage {
 		/* Start bottom header */
 
 		$wlInfo = '';
-		if( $values['days'] >= 1 ) {
+		if( $values['days'] > 0 ) {
 			$timestamp = wfTimestampNow();
-			$wlInfo = wfMsgExt( 'rcnote', 'parseinline',
-					$lang->formatNum( $numRows ),
-					$lang->formatNum( $values['days'] ),
-					$lang->timeAndDate( $timestamp, true ),
-					$lang->date( $timestamp, true ),
-					$lang->time( $timestamp, true )
-				) . '<br />';
-		} elseif( $values['days'] > 0 ) {
 			$wlInfo = wfMsgExt( 'wlnote', 'parseinline',
 					$lang->formatNum( $numRows ),
-					$lang->formatNum( round( $values['days'] * 24 ) )
+					$lang->formatNum( round( $values['days'] * 24 ) ),
+					$lang->date( $timestamp, true ),
+					$lang->time( $timestamp, true )
 				) . '<br />';
 		}
 
@@ -430,7 +419,7 @@ class SpecialWatchlist extends SpecialPage {
 
 		return Linker::linkKnown(
 			$this->getTitle(),
-			$this->getLang()->formatNum( $h ),
+			$this->getLanguage()->formatNum( $h ),
 			array(),
 			$options
 		);
@@ -438,7 +427,7 @@ class SpecialWatchlist extends SpecialPage {
 
 	protected function daysLink( $d, $options = array() ) {
 		$options['days'] = $d;
-		$message = ( $d ? $this->getLang()->formatNum( $d ) : wfMsgHtml( 'watchlistall2' ) );
+		$message = ( $d ? $this->getLanguage()->formatNum( $d ) : wfMsgHtml( 'watchlistall2' ) );
 
 		return Linker::linkKnown(
 			$this->getTitle(),
@@ -466,8 +455,8 @@ class SpecialWatchlist extends SpecialPage {
 		}
 		return wfMsgExt('wlshowlast',
 			array('parseinline', 'replaceafter'),
-			$this->getLang()->pipeList( $hours ),
-			$this->getLang()->pipeList( $days ),
+			$this->getLanguage()->pipeList( $hours ),
+			$this->getLanguage()->pipeList( $days ),
 			$this->daysLink( 0, $options ) );
 	}
 

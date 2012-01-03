@@ -312,7 +312,6 @@ L'administrateur qui l'a barrée a donné cette explication: $1",
 Fonction: $1<br />
 Demande: $2',
 'viewsource'           => 'Voir la source',
-'viewsourcefor'        => 'pour $1',
 'protectedpagetext'    => 'Cette page est barrée pour empêcher des changements.',
 'viewsourcetext'       => 'Vous pouvez voir et copier la source de cette page:',
 'protectedinterface'   => "Cette page crée le texte de l'interface pour le software, et est barrée pour empêcher l'abus.",
@@ -455,9 +454,6 @@ Vous pouvez contacter $1 ou un autre [[{{MediaWiki:Grouppage-sysop}}|administrat
 Notez donc que vous pouvez pas user la fonction 'envoyer un e-mail à cet useur' hormis que vous avez une adresse e-mail confirmée dans votre [[Special:Preferences|réglage de compte]] et vous avez la permission de l'user.
 
 Votre numéro de blocage est #$5.  Mettez donc cette information dans toutes vos demandes.",
-'blockedoriginalsource'            => "La source de '''$1''' est montrée en bas.",
-'blockededitsource'                => "Le texte de '''votres changements''' à '''$1''' est montré en bas.",
-'whitelistedittitle'               => 'Il faut connecter pour faire des changements.',
 'whitelistedittext'                => 'Il faut $1 pour faire des changements.',
 'confirmedittext'                  => "Il faut confirmer votre adresse e-mail pour faire des changements.  Mettez et confirmez un adresse e-mail dans votre [[Special:Preferences|réglage de compte]], s'il vous plaît.",
 'nosuchsectiontitle'               => 'Aucune section pareille',

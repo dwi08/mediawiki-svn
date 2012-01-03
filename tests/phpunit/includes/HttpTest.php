@@ -48,7 +48,7 @@ class HttpTest extends MediaWikiTestCase {
 
 	/**
 	 * Test Http::isValidURI()
-	 * @bug 27854 : Http::isValidURI is to lax
+	 * @bug 27854 : Http::isValidURI is too lax
 	 * @dataProvider provideURI
 	 */
 	function testIsValidUri( $expect, $URI, $message = '' ) {
@@ -76,7 +76,7 @@ class HttpTest extends MediaWikiTestCase {
 			array( false, '\\host\directory', 'CIFS share' ),
 			array( false, 'gopher://host/dir', 'Reject gopher scheme' ),
 			array( false, 'telnet://host', 'Reject telnet scheme' ),
-			
+
 			# :\/\/ - double slashes
 			array( false,  'http//example.org', 'Reject missing colon in protocol' ),
 			array( false,  'http:/example.org', 'Reject missing slash in protocol' ),
@@ -124,4 +124,57 @@ class HttpTest extends MediaWikiTestCase {
 		);
 	}
 
+	/**
+	 * Warning:
+	 * 
+	 * These tests are for code that makes use of an artifact of how CURL
+	 * handles header reporting on redirect pages, and will need to be
+	 * rewritten when bug 29232 is taken care of (high-level handling of
+	 * HTTP redirects).
+	 */
+	function testRelativeRedirections() {
+		$h = new MWHttpRequestTester( 'http://oldsite/file.ext' );
+		# Forge a Location header
+		$h->setRespHeaders( 'location', array(
+			'http://newsite/file.ext',
+			'/newfile.ext',
+			)
+		);
+		# Verify we correctly fix the Location
+		$this->assertEquals(
+			'http://newsite/newfile.ext',
+			$h->getFinalUrl(),
+			"Relative file path Location: interpreted as full URL"
+		);
+
+		$h->setRespHeaders( 'location', array(
+			'https://oldsite/file.ext'
+			)
+		);
+		$this->assertEquals(
+			'https://oldsite/file.ext',
+			$h->getFinalUrl(),
+			"Location to the HTTPS version of the site"
+		);
+
+		$h->setRespHeaders( 'location', array(
+			'/anotherfile.ext',
+			'http://anotherfile/hoster.ext',
+			'https://anotherfile/hoster.ext'
+			)
+		);
+		$this->assertEquals(
+			'https://anotherfile/hoster.ext',
+			$h->getFinalUrl( "Relative file path Location: should keep the latest host and scheme!")
+		);
+	}
+}
+
+/**
+ * Class to let us overwrite MWHttpREquest respHeaders variable
+ */
+class MWHttpRequestTester extends MWHttpRequest {
+	function setRespHeaders( $name, $value ) {
+		$this->respHeaders[$name] = $value ;
+	}
 }

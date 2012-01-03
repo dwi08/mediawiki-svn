@@ -31,8 +31,6 @@
  * @ingroup Maintenance
  */
 
-$wgUseNormalUser = (bool)getenv( 'MW_WIKIUSER' );
-
 $optionsWithArgs = array( 'd' );
 
 /** */
@@ -75,6 +73,11 @@ while ( ( $line = Maintenance::readconsole() ) !== false ) {
 	if ( $useReadline ) {
 		readline_add_history( $line );
 		readline_write_history( $historyFile );
+	}
+	if( false !== strpos($line, "<?php") ) {
+		# Someone sent a .php file to STDIN so we do not want
+		# to interprate the special '<?php'.
+		continue;
 	}
 	$val = eval( $line . ";" );
 	if ( wfIsHipHop() || is_null( $val ) ) {

@@ -82,6 +82,9 @@ class DBConnectionError extends DBError {
 		parent::__construct( $db, $msg );
 	}
 
+	/**
+	 * @return bool
+	 */
 	function useOutputPage() {
 		// Not likely to work
 		return false;
@@ -105,6 +108,9 @@ class DBConnectionError extends DBError {
 		return wfMsgReplaceArgs( $message, $args );
 	}
 
+	/**
+	 * @return bool
+	 */
 	function getLogMessage() {
 		# Don't send to the exception log
 		return false;
@@ -176,7 +182,7 @@ class DBConnectionError extends DBError {
 		}
 
 		# We can't, cough and die in the usual fashion
-		return parent::reportHTML();
+		parent::reportHTML();
 	}
 
 	/**
@@ -198,7 +204,7 @@ class DBConnectionError extends DBError {
 <div style="margin: 1.5em">$usegoogle<br />
 <small>$outofdate</small></div>
 <!-- SiteSearch Google -->
-<form method="get" action="http://www.google.com/search" id="googlesearch">
+<form method="get" action="//www.google.com/search" id="googlesearch">
 	<input type="hidden" name="domains" value="$server" />
 	<input type="hidden" name="num" value="50" />
 	<input type="hidden" name="ie" value="UTF-8" />
@@ -220,16 +226,23 @@ EOT;
 	 * @return string
 	 */
 	private function fileCachedPage() {
-		global $wgTitle, $wgOut;
+		global $wgTitle, $wgOut, $wgRequest;
 
 		if ( $wgOut->isDisabled() ) {
-			return; // Done already?
+			return ''; // Done already?
 		}
 
-		if ( $wgTitle ) {
-			$t =& $wgTitle;
+		if ( $wgTitle ) { // use $wgTitle if we managed to set it
+			$t = $wgTitle->getPrefixedDBkey();
 		} else {
-			$t = Title::newFromText( $this->msg( 'mainpage', 'Main Page' ) );
+			# Fallback to the raw title URL param. We can't use the Title
+			# class is it may hit the interwiki table and give a DB error.
+			# We may get a cache miss due to not sanitizing the title though.
+			$t = str_replace( ' ', '_', $wgRequest->getVal( 'title' ) );
+			if ( $t == '' ) { // fallback to main page
+				$t = Title::newFromText(
+					$this->msg( 'mainpage', 'Main Page' ) )->getPrefixedDBkey();
+			}
 		}
 
 		$cache = HTMLFileCache::newFromTitle( $t, 'view' );
@@ -247,8 +260,15 @@ EOT;
 class DBQueryError extends DBError {
 	public $error, $errno, $sql, $fname;
 
+	/**
+	 * @param $db DatabaseBase
+	 * @param $error string
+	 * @param $errno int|string
+	 * @param $sql string
+	 * @param $fname string
+	 */
 	function __construct( DatabaseBase &$db, $error, $errno, $sql, $fname ) {
-		$message = "A database error has occurred.  Did you forget to run maintenance/update.php after upgrading?  See: http://www.mediawiki.org/wiki/Manual:Upgrading#Run_the_update_script\n" .
+		$message = "A database error has occurred.  Did you forget to run maintenance/update.php after upgrading?  See: https://www.mediawiki.org/wiki/Manual:Upgrading#Run_the_update_script\n" .
 		  "Query: $sql\n" .
 		  "Function: $fname\n" .
 		  "Error: $errno $error\n";
@@ -300,6 +320,9 @@ class DBQueryError extends DBError {
 		}
 	}
 
+	/**
+	 * @return bool
+	 */
 	function getLogMessage() {
 		# Don't send to the exception log
 		return false;

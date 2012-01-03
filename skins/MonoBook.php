@@ -69,7 +69,7 @@ class MonoBookTemplate extends BaseTemplate {
 	<a id="top"></a>
 	<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
 
-	<h1 id="firstHeading" class="firstHeading"><?php $this->html('title') ?></h1>
+	<h1 id="firstHeading" class="firstHeading"><span dir="auto"><?php $this->html('title') ?></span></h1>
 	<div id="bodyContent" class="mw-body">
 		<div id="siteSub"><?php $this->msg('tagline') ?></div>
 		<div id="contentSub"<?php $this->html('userlangattributes') ?>><?php $this->html('subtitle') ?></div>
@@ -109,7 +109,6 @@ class MonoBookTemplate extends BaseTemplate {
 				+ Linker::tooltipAndAccesskeyAttribs('p-logo') ); ?>
 
 	</div>
-	<script type="<?php $this->text('jsmimetype') ?>"> if (window.isMSIE55) fixalpha(); </script>
 <?php
 	$this->renderPortals( $this->data['sidebar'] );
 ?>

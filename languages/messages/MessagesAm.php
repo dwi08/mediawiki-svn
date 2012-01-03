@@ -199,7 +199,7 @@ $messages = array(
 'vector-view-create'       => 'አዲስ ፍጠር',
 'vector-view-edit'         => 'አርም',
 'vector-view-history'      => ' ታሪኩን አሳይ',
-'vector-view-view'         => ' የተነበበ',
+'vector-view-view'         => 'ለማንበብ',
 'vector-view-viewsource'   => 'ጥሬ ኮድ ለመመልከት',
 
 'errorpagetitle'    => 'ስህተት',
@@ -282,7 +282,7 @@ $1',
 
 'badaccess'        => 'ያልተፈቀደ - አይቻልም',
 'badaccess-group0' => 'የጠየቁት አድራጎት እንዲፈጸም ፈቃድ የለዎም።',
-'badaccess-groups' => ' ጥያቂዎት ለሚተሉት ተጥቃሚዎች የተገደበ ነው  {{PLURAL:$2|ማህበር|ከማህበራት ላንዱ}}: $1.',
+'badaccess-groups' => 'የጠየቁት አድራጎት ለ$1 {{PLURAL:$2|ማዕረግ ላላቸው|ማዕረጎች ላሏቸው}} አባላት ብቻ ይፈቀዳል።',
 
 'versionrequired'     => 'የMediaWiki ዝርያ $1 ያስፈልጋል።',
 'versionrequiredtext' => 'ይህንን ገጽ ለመጠቀም የMediaWiki ዝርያ $1 ያስፈልጋል። [[Special:Version|የዝርያውን ገጽ]] ይዩ።',
@@ -369,13 +369,12 @@ $1',
 ተግባር፦ $1<br />
 ጥያቄ፦ $2',
 'viewsource'           => 'ምንጩን ተመልከት',
-'viewsourcefor'        => 'ለ«$1»',
 'actionthrottled'      => 'ተግባሩ ተቋረጠ',
 'actionthrottledtext'  => 'የስፓም መብዛት ለመቃወም፣ በአጭር ጊዜ ውስጥ ይህን ተግባር ብዙ ጊዜ ከመፈጽም ተክለክለዋል። አሁንም ከመጠኑ በላይ በልጠዋል። እባክዎ ከጥቂት ደቂቃ በኋላ እንደገና ይሞክሩ።',
 'protectedpagetext'    => 'ይኸው ገጽ እንዳይታረም ተጠብቋል።',
 'viewsourcetext'       => 'የዚህን ገጽ ምንጭ ማየትና መቅዳት ይችላሉ።',
 'protectedinterface'   => 'ይህ ገጽ ለስልቱ ገጽታ ጽሑፍን ያቀርባል፣፡ ስለዚህ እንዳይበላሽ ተጠብቋል።',
-'editinginterface'     => "'''ማስጠንቀቂያ፦''' ይህ ገጽ ለድረገጹ መልክ ጽሕፈት ይሰጣል። በዊኪ ሁሉ ላይ መላውን የድረገጽ መልክ በቀላል ለማስተርጎም [http://translatewiki.net/wiki/Main_Page?setlang=am translatewiki.net] ይጎብኙ።",
+'editinginterface'     => "'''ማስጠንቀቂያ፦''' ይህ ገጽ ለድረገጹ መልክ ጽሕፈት ይሰጣል። በዊኪ ሁሉ ላይ መላውን የድረገጽ መልክ በቀላል ለማስተርጎም [//translatewiki.net/wiki/Main_Page?setlang=am translatewiki.net] ይጎብኙ።",
 'sqlhidden'            => '(የመደበኛ-የመጠይቅ-ቋንቋ (SQL) ጥያቄ ተደበቀ)',
 'cascadeprotected'     => "'''ማስጠንቀቂያ፦''' ይህ አርእስት ሊፈጠር ወይም ሊቀየር አይቻልም። ምክንያቱም ወደ {{PLURAL:$1|ተከታተለው አርዕስት|ተከታተሉት አርእስቶች}} ተጨምሯል።
 $2",
@@ -530,9 +529,6 @@ $1ን ወይም ማንም ሌላ [[{{MediaWiki:Grouppage-sysop}}|መጋቢ]] ስ
 
 የማገጃዎ ቁጥር # $5 ነው። እባክዎ በማንኛውም ጥያቄ ይህን ቁጥር ይሰጡ።",
 'blockednoreason'                  => 'ምንም ምክንያት አልተሰጠም',
-'blockedoriginalsource'            => "የ'''$1''' ጥሬ ኮድ ምንጭ ከዚህ ታች ይታያል፦",
-'blockededitsource'                => "በ'''$1''' ላይ '''የእርስዎ ለውጦች''' ጽሕፈት ከዚህ ታች ይታያሉ፦",
-'whitelistedittitle'               => 'ለማዘጋጀት መግባት አስቀድሞ ያስፈልጋል',
 'whitelistedittext'                => 'ገጾችን ለማዘጋጀት $1 አስቀድሞ ያስፈልግዎታል።',
 'confirmedittext'                  => 'ገጽ ማዘጋጀት ሳይችሉ፣ አስቀድመው የኢ-ሜል አድራሻዎን ማረጋገጥ አለብዎት። እባክዎ፣ በ[[Special:Preferences|ምርጫዎችዎ]] በኩል ኢ-ሜል አድራሻዎን ያረጋግጡ።',
 'nosuchsectiontitle'               => 'የማይኖር ክፍል',
@@ -795,7 +791,6 @@ $1ን ወይም ማንም ሌላ [[{{MediaWiki:Grouppage-sysop}}|መጋቢ]] ስ
 'prefs-editing'             => 'የማዘጋጀት ምርጫዎች',
 'prefs-edit-boxsize'        => 'ይህ የማዘጋጀት ሳጥን ስፋት ለመወሰን ነው።',
 'rows'                      => 'በማዘጋጀቱ ሰንጠረዥ ስንት ተርታዎች?',
-'columns'                   => 'ስንት ዓምዶችስ?',
 'searchresultshead'         => 'ፍለጋ',
 'resultsperpage'            => 'ስንት ውጤቶች በየገጹ?',
 'recentchangesdays'         => 'በቅርቡ ለውጦች ዝርዝር ስንት ቀን ይታይ?',
@@ -912,7 +907,6 @@ $1ን ወይም ማንም ሌላ [[{{MediaWiki:Grouppage-sysop}}|መጋቢ]] ስ
 'right-import'           => 'ከሌላ ዊኪ ገጾችን ለማስገባት',
 'right-patrol'           => 'የሰው ለውጦች የተሣለፉ ሆነው ለማመልከት',
 'right-autopatrol'       => 'የራሱ ለውጦች በቀጥታ የተሣለፉ ሆነው መመልከት',
-'right-trackback'        => 'trackback ለማቅረብ',
 'right-mergehistory'     => 'የገጾች እትሞችን ታሪክ ለመዋሐድ',
 'right-userrights'       => 'ያባላት ሁሉ መብቶች ለማስተካከል',
 
@@ -944,7 +938,6 @@ $1ን ወይም ማንም ሌላ [[{{MediaWiki:Grouppage-sysop}}|መጋቢ]] ስ
 'action-import'           => 'ይህን ገጽ ከሌላ ዊኪ ለማስገባት',
 'action-patrol'           => 'የሰው ለውጦች የተሣለፉ ሆነው ለማመልከት',
 'action-autopatrol'       => 'የራስዎ ለውጥ የተሣለፈ ሆኖ መመልከት',
-'action-trackback'        => 'trackback ለማቅረብ',
 'action-mergehistory'     => 'የዚሁን ገጽ ዕትሞች ታሪክ ለማዋሐድ',
 'action-userrights'       => 'ያባላት ሁሉ መብቶች ለማስተካከል',
 
@@ -1576,7 +1569,6 @@ $1',
 'blockip'                     => 'ተጠቃሚውን ለማገድ',
 'blockip-legend'              => 'ተጠቃሚ ለማገድ',
 'blockiptext'                 => 'ከዚህ ታች ያለው ማመልከቻ በአንድ ቁጥር አድርሻ ወይም ብዕር ስም ላይ ማገጃ (ማዕቀብ) ለመጣል ይጠቀማል።  ይህ በ[[{{MediaWiki:Policy-url}}|መርመርያዎቻችን]] መሠረት ተንኮል ወይም ጉዳት ለመከልከል ብቻ እንዲደረግ ይገባል። ከዚህ ታች የተለየ ምክንያት (ለምሣሌ የተጎዳው ገጽ በማጠቆም) ይጻፉ።',
-'ipaddress'                   => 'የቁ. አድራሻ፦',
 'ipadressorusername'          => 'የቁ. አድራሻ ወይም የብዕር ስም፦',
 'ipbexpiry'                   => 'የሚያልቅበት፦',
 'ipbreason'                   => 'ምክንያቱ፦',
@@ -1736,7 +1728,7 @@ $1',
 'allmessagesdefault'        => 'የቆየው ጽሕፈት',
 'allmessagescurrent'        => 'ያሁኑ ጽሕፈት',
 'allmessagestext'           => 'በ«MediaWiki» ክፍለ-ዊኪ ያሉት የድረገጽ መልክ መልእክቶች ሙሉ ዝርዝር ይህ ነው።
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
 'allmessagesnotsupportedDB' => "'''\$wgUseDatabaseMessages''' ስለ ተዘጋ '''{{ns:special}}:Allmessages''' ሊጠቀም አይችልም።",
 
 # Thumbnails
@@ -2118,7 +2110,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'ይህንን ፋይል በአፍአዊ ሶፍትዌር ለማዘጋጀት',
-'edit-externally-help' => '(ለተጨማሪ መረጃ ይህን ገፅ ተመልከቱ [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions])',
+'edit-externally-help' => '(ለተጨማሪ መረጃ ይህን ገፅ ተመልከቱ [//www.mediawiki.org/wiki/Manual:External_editors setup instructions])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ሁሉ',
@@ -2156,9 +2148,6 @@ $3
 
 # Scary transclusion
 'scarytranscludetoolong' => '[URL ከመጠን በላይ የረዘመ ነው]',
-
-# Trackbacks
-'trackbackremove' => '([$1 ማጥፋት])',
 
 # Delete conflict
 'deletedwhileediting' => "'''ማስጠንቀቂያ'''፦ መዘጋጀት ከጀመሩ በኋላ ገጹ ጠፍቷል!",

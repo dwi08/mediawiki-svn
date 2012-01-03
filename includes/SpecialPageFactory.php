@@ -430,7 +430,12 @@ class SpecialPageFactory {
 		if ( !$page ) {
 			$context->getOutput()->setArticleRelated( false );
 			$context->getOutput()->setRobotPolicy( 'noindex,nofollow' );
-			$context->getOutput()->setStatusCode( 404 );
+
+			global $wgSend404Code;
+			if ( $wgSend404Code ) {
+				$context->getOutput()->setStatusCode( 404 );
+			}
+
 			$context->getOutput()->showErrorPage( 'nosuchspecialpage', 'nospecialpagetext' );
 			wfProfileOut( __METHOD__ );
 			return false;
@@ -504,7 +509,7 @@ class SpecialPageFactory {
 		$wgOut = $context->getOutput();
 		$wgRequest = $context->getRequest();
 		$wgUser = $context->getUser();
-		$wgLang = $context->getLang();
+		$wgLang = $context->getLanguage();
 
 		// The useful part
 		$ret = self::executePath( $title, $context, true );

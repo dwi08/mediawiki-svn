@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * Query module to get the results of a QueryPage-based special page
  *
@@ -75,12 +70,11 @@ class ApiQueryQueryPage extends ApiQueryGeneratorBase {
 	 * @param $resultPageSet ApiPageSet
 	 */
 	public function run( $resultPageSet = null ) {
-		global $wgUser;
 		$params = $this->extractRequestParams();
 		$result = $this->getResult();
 
 		$qp = new $this->qpMap[$params['page']]();
-		if ( !$qp->userCanExecute( $wgUser ) ) {
+		if ( !$qp->userCanExecute( $this->getUser() ) ) {
 			$this->dieUsageMsg( 'specialpage-cantexecute' );
 		}
 

@@ -52,6 +52,9 @@ $namespaceAliases = array(
 	'Янзин_тускар_ухалвр'     => NS_CATEGORY_TALK,
 );
 
+// Remove Russian aliases
+$namespaceGenderAliases = array();
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'Заалһиг татас татх:',
@@ -84,8 +87,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Тер халх шинҗлдг демнчнрин то үзүлх',
 'tog-oldsig'                  => 'Бәәдг тәвсн һарна хәләвр:',
 'tog-fancysig'                => 'Эврән тәвсн һарна бики темдлһн (авто заалһта уга)',
-'tog-externaleditor'          => 'Һаза чикллгч олзлх (һанцхн эрдмчнрт, тана тоолцврт шишлң көг кергтә. [http://www.mediawiki.org/wiki/Manual:External_editors Дәкәд өггцн.])',
-'tog-externaldiff'            => 'Һаза йилһән үзүлдг програм олзлх (һанцхн эрдмчнрт, тана тоолцврт шишлң көг кергтә [http://www.mediawiki.org/wiki/Manual:External_editors Дәкәд өггцн.])',
+'tog-externaleditor'          => 'Һаза чикллгч олзлх (һанцхн эрдмчнрт, тана тоолцврт шишлң көг кергтә. [//www.mediawiki.org/wiki/Manual:External_editors Дәкәд өггцн.])',
+'tog-externaldiff'            => 'Һаза йилһән үзүлдг програм олзлх (һанцхн эрдмчнрт, тана тоолцврт шишлң көг кергтә [//www.mediawiki.org/wiki/Manual:External_editors Дәкәд өггцн.])',
 'tog-showjumplinks'           => 'Туслмҗ заалһуд «-д/-т һарх» йовулх',
 'tog-uselivepreview'          => 'Шамдһа хәләвр олзлх (JavaScript кергтә, амслһн)',
 'tog-forceeditsummary'        => 'Учр-утх хоосн бәәхлә медүлх',
@@ -385,7 +388,6 @@ $1',
 'badtitle'            => 'Буру нернь',
 'badtitletext'        => 'Сурсн нерн буру, хоосн, аль му бичсн келн хоорнд нертә. Тиим чигн биз, нерн зөв уга үзгтә.',
 'viewsource'          => 'Ишиг хәләх',
-'viewsourcefor'       => '$1 халх',
 'actionthrottled'     => 'Хурдна заг',
 'sqlhidden'           => '(SQL сурвр бултулсн)',
 'ns-specialprotected' => 'Шишлң халх чиклсн бәәх болшго.',
@@ -637,7 +639,6 @@ $1',
 'restoreprefs'                => 'Цуг эклцин көгүдиг босхҗ тохрар',
 'prefs-editing'               => 'Чикллһн',
 'rows'                        => 'Мөрд:',
-'columns'                     => 'Бахд:',
 'resultsperpage'              => 'Халхд бәәдг олсн бичврин то:',
 'savedprefs'                  => 'Тана көгүдиг хадһлв.',
 'timezonelegend'              => 'Часин бүс:',
@@ -1004,7 +1005,6 @@ $2 шидрә һарһлһна төлә хәләтн.',
 
 # Block/unblock
 'blockip'                  => 'Демнчиг бүслх',
-'ipaddress'                => 'IP хайг:',
 'ipadressorusername'       => 'IP хайг аль демнчна нернь:',
 'ipbreason'                => 'Учр:',
 'ipbreasonotherlist'       => 'Талдан учр',
@@ -1195,7 +1195,7 @@ $2 шидрә һарһлһна төлә хәләтн.',
 
 # External editor support
 'edit-externally'      => 'Эн боомгиг һаза заклһар чиклх',
-'edit-externally-help' => '([http://www.mediawiki.org/wiki/Manual:External_editors Тәвллһнә заалт]  икәр өггцнә төлә хәләтн)',
+'edit-externally-help' => '([//www.mediawiki.org/wiki/Manual:External_editors Тәвллһнә заалт]  икәр өггцнә төлә хәләтн)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'цуг',

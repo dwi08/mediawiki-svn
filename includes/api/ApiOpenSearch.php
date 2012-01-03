@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiBase.php" );
-}
-
 /**
  * @ingroup API
  */
@@ -126,7 +121,7 @@ class ApiOpenSearch extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Opensearch';
+		return 'https://www.mediawiki.org/wiki/API:Opensearch';
 	}
 
 	public function getVersion() {

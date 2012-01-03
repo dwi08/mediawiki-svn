@@ -20,7 +20,7 @@ class UploadFromUrlTest extends ApiTestCase {
 		}
 	}
 
-	protected function doApiRequest( $params, $unused = null, $appendModule = false ) {
+	protected function doApiRequest( $params, $unused = null, $appendModule = false, $user = null ) {
 		$sessionId = session_id();
 		session_write_close();
 
@@ -277,7 +277,7 @@ class UploadFromUrlTest extends ApiTestCase {
 
 		return;
 
-		/**
+		/*
 		// Broken until using leavemessage with ignorewarnings is supported
 		$job->run();
 

@@ -18,12 +18,6 @@ a.new {
 	background-color: #f9f9f9;
 	padding: 5px;
 }
-.tocindent {
-	margin-left: 2em;
-}
-.tocline {
-	margin-bottom: 0;
-}
 
 /* images */
 div.floatright {
@@ -125,6 +119,7 @@ div#f-copyrightico,
 li#viewcount,
 li#about,
 li#disclaimer,
+li#mobileview,
 li#privacy,
 #footer-places,
 .mw-hidden-catlinks,
@@ -158,13 +153,9 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: bold;
 }
 
-p, .documentDescription {
-	margin: 1em 0 !important;
+p {
+	margin: 1em 0;
 	line-height: 1.2em;
-}
-
-.tocindent p {
-	margin: 0 0 0 0 !important;
 }
 
 pre {
@@ -334,18 +325,20 @@ table.mw_metadata {
 	background: white;
 	border-collapse: collapse;
 }
-.wikitable th, .wikitable td,
+table.wikitable > tr > th, table.wikitable > tr > td,
+table.wikitable > * > tr > th, table.wikitable > * > tr > td,
 .mw_metadata th, .mw_metadata td {
 	border: 1px #aaa solid;
 	padding: 0.2em;
 }
-.wikitable th,
+table.wikitable > tr > th,
+table.wikitable > * > tr > th,
 .mw_metadata th {
 	text-align: center;
 	background: white;
 	font-weight: bold;
 }
-.wikitable caption,
+table.wikitable > caption,
 .mw_metadata caption {
 	font-weight: bold;
 }

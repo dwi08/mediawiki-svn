@@ -191,6 +191,7 @@ class DatabaseSqliteTest extends MediaWikiTestCase {
 			'1.15',
 			'1.16',
 			'1.17',
+			'1.18',
 		);
 
 		// Mismatches for these columns we can safely ignore
@@ -255,8 +256,9 @@ class DatabaseSqliteTest extends MediaWikiTestCase {
 			$maint->loadParamsAndArgs( null, array( 'quiet' => 1 ) );
 		}
 
+		global $IP;
 		$db = new DatabaseSqliteStandalone( ':memory:' );
-		$db->sourceFile( dirname( __FILE__ ) . "/sqlite/tables-$version.sql" );
+		$db->sourceFile( "$IP/tests/phpunit/data/db/sqlite/tables-$version.sql" );
 		$updater = DatabaseUpdater::newForDB( $db, false, $maint );
 		$updater->doUpdates( array( 'core' ) );
 		return $db;
@@ -266,6 +268,7 @@ class DatabaseSqliteTest extends MediaWikiTestCase {
 		$list = array_flip( $db->listTables() );
 		$excluded = array(
 			'math', // moved out of core in 1.18
+			'trackbacks', // removed from core in 1.19
 			'searchindex',
 			'searchindex_content',
 			'searchindex_segments',

@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * A query action to get image information and upload history.
  *
@@ -575,7 +570,7 @@ class ApiQueryImageInfo extends ApiQueryBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Properties#imageinfo_.2F_ii';
+		return 'https://www.mediawiki.org/wiki/API:Properties#imageinfo_.2F_ii';
 	}
 
 	public function getVersion() {

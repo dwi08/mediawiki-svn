@@ -45,6 +45,7 @@ $specialPageAliases = array(
 	'Allmessages'               => array( 'ToutMesaj' ),
 	'Allpages'                  => array( 'ToutPaj' ),
 	'Ancientpages'              => array( 'PajAnsyen' ),
+	'Badtitle'                  => array( 'MovèTit' ),
 	'Blankpage'                 => array( 'PajVid' ),
 	'Block'                     => array( 'Bloke', 'BlokeIP', 'BlokeItilizatè' ),
 	'Blockme'                   => array( 'BlokeM' ),
@@ -503,13 +504,12 @@ Yon lòt moun te gendwa efase l anvan ou.',
 Fonksyon : $1<br />
 Demann : $2',
 'viewsource'           => 'Wè kòd paj la',
-'viewsourcefor'        => 'pou $1',
 'actionthrottled'      => 'Aksyon sa limite',
 'actionthrottledtext'  => 'Nan batay kont pouryèl, aksyon sa ou tapral fè limite nan kantite itilizasyon l pandan yon tan ki kout. Li sanble ou depase kantite sa. Eseye ankò nan kèk minit.',
 'protectedpagetext'    => 'Paj sa pwoteje pou anpeche tout modifikasyon nou ta kapab fè sou li. Gade paj diskisyon sou li pito.',
 'viewsourcetext'       => 'Ou kapab gade epitou modifye kontni atik sa a pou ou travay anlè li :',
 'protectedinterface'   => 'Paj sa ap bay tèks pou entèfas lojisyèl an e li pwoteje pou anpeche move itilizasyon nou ta kapab fè ak li.',
-'editinginterface'     => "'''Pòte atansyon :''' ou ap modifye yon paj ki itilize nan kreyasyon tèks entèfas lojisyèl an. Chanjman yo ap ritounen, li ap depann de kèk sityasyon, nan tout paj ke lòt itilizatè yo kapab wè tou. Pou tradiksyon yo, nap envite w itilize pwojè MediaWiki pou mesaj entènasyonal yo (tradiksyon) nan paj sa [http://translatewiki.net/wiki/Main_Page?setlang=fr translatewiki.net].",
+'editinginterface'     => "'''Pòte atansyon :''' ou ap modifye yon paj ki itilize nan kreyasyon tèks entèfas lojisyèl an. Chanjman yo ap ritounen, li ap depann de kèk sityasyon, nan tout paj ke lòt itilizatè yo kapab wè tou. Pou tradiksyon yo, nap envite w itilize pwojè MediaWiki pou mesaj entènasyonal yo (tradiksyon) nan paj sa [//translatewiki.net/wiki/Main_Page?setlang=fr translatewiki.net].",
 'sqlhidden'            => '(Demann SQL an kache)',
 'cascadeprotected'     => 'Paj sa pwoteje kounye a paske l nan {{PLURAL:$1|paj ki douvan l|paj yo ki douvan l}}, paske {{PLURAL:$1|l te pwoteje|yo te pwoteje}} ak opsyon « pwoteksyon pou tout paj ki nan premye paj an - kaskad » aktive :
 $2',
@@ -691,9 +691,6 @@ Si toutfwa ou te bay yon bon adrès imèl nan preferans ou yo ( [[Special:Prefer
 
 Adrès IP ou an kounye a se $3. Idantifyan pou blokaj la se $5. Ou dwe mete enfòmasyon sa yo nan demann ou an.',
 'blockednoreason'                  => 'Li pa bay pyès rezon pou aksyon sa',
-'blockedoriginalsource'            => "Wè kòd sous '''$1''' pli ba :",
-'blockededitsource'                => "Teks '''modifikasyon ou yo''' sou '''$1''' parèt pi ba :",
-'whitelistedittitle'               => 'Ou dwe konekte w pou ou kapab modifye tèks sa',
 'whitelistedittext'                => 'Ou dwe $1 pou ou kapab genyen dwa pou modifye paj sa.',
 'confirmedittext'                  => 'Ou dwe konfime adrès imèl ou an anvan ou kapab fè modifikasyon. Antre epi valide adrès imèl ou an nan paj [[Special:Preferences|preferans]] ou.',
 'nosuchsectiontitle'               => 'Nou pa ka jwenn seksyon sa a',
@@ -1374,7 +1371,7 @@ Nenpòt lòt lyen nan menm liy nan konsidere kòm yon eksèpsyon, i.e. paj kote 
 
 # External editor support
 'edit-externally'      => 'Modifye fichye sa a nan aplikasyon pa ou (ki pa nan sistèm an, sou machin ou pa egzanp).',
-'edit-externally-help' => '(Gade [http://www.mediawiki.org/wiki/Manual:External_editors komand ak enstriksyon yo] pou plis enfòmasyon oubyen pou konnen plis)',
+'edit-externally-help' => '(Gade [//www.mediawiki.org/wiki/Manual:External_editors komand ak enstriksyon yo] pou plis enfòmasyon oubyen pou konnen plis)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tout',

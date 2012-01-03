@@ -258,10 +258,9 @@ $messages = array(
 'nstab-category'  => 'Grup',
 
 # General errors
-'error'         => 'Birua',
-'badtitle'      => 'Nem bilong pes i no stret',
-'viewsource'    => 'Lukim as tok',
-'viewsourcefor' => 'bilong $1',
+'error'      => 'Birua',
+'badtitle'   => 'Nem bilong pes i no stret',
+'viewsource' => 'Lukim as tok',
 
 # Login and logout pages
 'yourname'            => 'Yusanem:',
@@ -684,7 +683,6 @@ Sapos yu laik rausim dispela pes long lukautbuk bilong yu bihain, paitim \"Pinis
 
 # Block/unblock
 'blockip'            => 'Pasim yusa (Block user)',
-'ipaddress'          => 'IP adres:',
 'ipboptions'         => '2 awa:2 hours,1 de:1 day,3 de:3 days,1 wik:1 week,2 wik:2 weeks,1 mun:1 month,3 mun:3 months,6 mun:6 months,1 yia:1 year,oltaim:infinite',
 'ipbotheroption'     => 'narapela',
 'ipblocklist'        => 'Ol IP adres na yusanem i pas',
@@ -787,9 +785,6 @@ Yu inap lukim as tok bilong em',
 
 # Scary transclusion
 'scarytranscludetoolong' => '[URL i longpela tumas]',
-
-# Trackbacks
-'trackbackremove' => '([$1 Rausim])',
 
 # action=purge
 'confirm_purge_button' => 'OK',

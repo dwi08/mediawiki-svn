@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * Query module to perform full text search within wiki titles and content
  *
@@ -129,6 +124,7 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 
 			// Silently skip broken and missing titles
 			if ( $result->isBrokenTitle() || $result->isMissingRevision() ) {
+				$result = $matches->next();
 				continue;
 			}
 
@@ -304,7 +300,7 @@ class ApiQuerySearch extends ApiQueryGeneratorBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Search';
+		return 'https://www.mediawiki.org/wiki/API:Search';
 	}
 
 	public function getVersion() {

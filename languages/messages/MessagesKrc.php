@@ -35,6 +35,9 @@ $namespaceNames = array(
 	NS_CATEGORY_TALK    => 'Категорияны_сюзюу',
 );
 
+// Remove Russian aliases
+$namespaceGenderAliases = array();
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'Джибериулени черт:',
@@ -67,8 +70,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Бетни, кёзде тургъан тизмелерине къошханланы санын кёргюз',
 'tog-oldsig'                  => 'Болгъан къол салыугъа ал къарау:',
 'tog-fancysig'                => 'Энчи вики-тексти къол салыуну (автомат джибериусюз)',
-'tog-externaleditor'          => 'Тынгылау бла тыш редакторну хайырландырыу (къуру усталагъа, компьютерни энчи джарашдырылыуу керекди; [http://www.mediawiki.org/wiki/Manual:External_editors толуракъ])',
-'tog-externaldiff'            => 'Версияланы тенглешдириучу тыш программа хайырландырыу  (къуру усталагъа, компьютерни энчи джарашдырылыуу керекди; [http://www.mediawiki.org/wiki/Manual:External_editors толуракъ])',
+'tog-externaleditor'          => 'Тынгылау бла тыш редакторну хайырландырыу (къуру усталагъа, компьютерни энчи джарашдырылыуу керекди; [//www.mediawiki.org/wiki/Manual:External_editors толуракъ])',
+'tog-externaldiff'            => 'Версияланы тенглешдириучу тыш программа хайырландырыу  (къуру усталагъа, компьютерни энчи джарашдырылыуу керекди; [//www.mediawiki.org/wiki/Manual:External_editors толуракъ])',
 'tog-showjumplinks'           => '«Бар» болушлукъ джибериуню джандыр',
 'tog-uselivepreview'          => 'Терк ал къарауну хайырландыр (JavaScript, экспериментал халда)',
 'tog-forceeditsummary'        => 'Тюрлендириуню ачыкълау тизгини бош къалса, билдир',
@@ -398,13 +401,12 @@ $1',
 Функция: $1<br />
 Соруу: $2',
 'viewsource'           => 'Къарау',
-'viewsourcefor'        => '«$1»  бет',
 'actionthrottled'      => 'Терклик чекленнгенди',
 'actionthrottledtext'  => 'Спамгъа къаршчы кюрешиуню себебинден, аз заманны ичинде бу амал бла кёб кере хайырланыу тыйылыбды. Кечирек джангыдан кёрюгюз.',
 'protectedpagetext'    => 'Бу бет тюрлендириуге джабылыбды.',
 'viewsourcetext'       => 'Сиз бу бетни башланнган текстине къараргъа эм аны копия этерге боллукъсуз:',
 'protectedinterface'   => 'Бу бетде программаны интерфейс билдириую барды. Вандализмге къаршчы кюрешиу себебли, бу бетни тюрлендириу джабылыбды.',
-'editinginterface'     => "'''Эс бёлюгюз:'''  Сиз MediaWiki системаны интерфейс бетин тюрлендире турасыз. Бу башха къошулуучулагъ да тиерик затды. Кёчюрюр ючюн [http://translatewiki.net/wiki/Main_Page?setlang=ru translatewiki.net] локализация этиу проектни хайырландырыгъыз.",
+'editinginterface'     => "'''Эс бёлюгюз:'''  Сиз MediaWiki системаны интерфейс бетин тюрлендире турасыз. Бу башха къошулуучулагъ да тиерик затды. Кёчюрюр ючюн [//translatewiki.net/wiki/Main_Page?setlang=ru translatewiki.net] локализация этиу проектни хайырландырыгъыз.",
 'sqlhidden'            => '(SQL соруу джашырылыбды)',
 'cascadeprotected'     => 'Бу бет тюрлениуледен джакъланыбды, ол каскадлы джакълау къабыл этилиннген  {{PLURAL:$1|бетге|бетлеге}} киргени ючюндю:
 $2',
@@ -586,9 +588,6 @@ $2',
 Сизни IP-адресигиз — $3, блокну идентификатору — #$5.
 Бу информацияны ажымсыз чертигиз билдириулеригизде.",
 'blockednoreason'                  => 'Чурум белгиленмегенди',
-'blockedoriginalsource'            => 'Тюбю бла «$1» бетни тексти кёргюзюледи.',
-'blockededitsource'                => "Тюбю бла «$1» бетде '''сизни тюрлендириулеригизни''' тексти кёргюзюледи.",
-'whitelistedittitle'               => 'Тюрлендирир ючюн тергеу джазыуугъуз (аккаунтугъуз) бла кирирге керекди',
 'whitelistedittext'                => 'Бетни тюрлендирир ючюн $1 тыйыншлысыз.',
 'confirmedittext'                  => 'Бетни тюрледирирни аллы бла сиз электрон почтагъызны адресин бегитирге керексиз.
 [[Special:Preferences|Джарашдырыуланы бетинде]] джазыгъыз эм бегитигиз электрон почтагъызны адресин.',
@@ -1014,7 +1013,6 @@ $1",
 'prefs-editing'                 => 'Тюрлендириу',
 'prefs-edit-boxsize'            => 'Тюрлениу терезени ёлчеми',
 'rows'                          => 'Тизгинле:',
-'columns'                       => 'Колонкала:',
 'searchresultshead'             => 'Излеу',
 'resultsperpage'                => 'Бетде кёргюзюллюк табылгъан джазыуланы саны:',
 'stub-threshold'                => '<a href="#" class="stub">Стаблагъа джибериуню</a> формат этер ючюн марда (байтлада):',
@@ -1199,7 +1197,6 @@ $1 {{PLURAL:$1|символдан|символладан}} кеб болургъ
 'right-autopatrol'            => 'Тюрлениуле автоматик осмакъланнган кибик белгиленедиле',
 'right-patrolmarks'           => 'Ахыр тюрлениулени осмакъланыуларыны белгилерине къара',
 'right-unwatchedpages'        => 'Къаралмагъан бетлени списогуна къара',
-'right-trackback'             => 'Trackback-ны ашырыу',
 'right-mergehistory'          => 'Бетлени тарихлерини бирлешдир',
 'right-userrights'            => 'Бютеу къошулуучуланы хакъларыны тюрлендириу',
 'right-userrights-interwiki'  => 'Башха викиледеги къошулуучуларыны хакъларын тюрлендир',
@@ -1243,7 +1240,6 @@ $1 {{PLURAL:$1|символдан|символладан}} кеб болургъ
 'action-patrol'               => 'башхаланы тюрлендириулерин патруль этилиннгенлеча белгилеу',
 'action-autopatrol'           => 'кесими тюрлендириулерими патруль этилиннгенлеча белгилеу',
 'action-unwatchedpages'       => 'киши кёзюнде тутмагъан бетлени тизмесине къарау',
-'action-trackback'            => 'trackback ашырыу',
 'action-mergehistory'         => 'бу бетлени тарихлерин бирлешдириу',
 'action-userrights'           => 'къошулуучуну бютеу хакъларын тюрлендириу',
 'action-userrights-interwiki' => 'къошулуучуланы башха викиледе хакъларын тюрлендириу',
@@ -1289,7 +1285,6 @@ $1 {{PLURAL:$1|символдан|символладан}} кеб болургъ
 'recentchangeslinked-feed'     => 'Байламлы тюрлендириуле',
 'recentchangeslinked-toolbox'  => 'Байламлы тюрлендириуле',
 'recentchangeslinked-title'    => '$1 бет бла байламлы тюрлендириуле',
-'recentchangeslinked-backlink' => '← $1',
 'recentchangeslinked-noresult' => 'Берилген кёзюуню ичинде белгиленнген бетге байламлы башха бетледе тюрлениуле болмагъандыла',
 'recentchangeslinked-summary'  => "Белгиленнген бет (неда белгиленнген категориягъа киргенле) джиберген бетледе джангы тюрлениулени тизмеси.
 [[Special:Watchlist|Кёзде тургъан тизмеге]] кирген бетле '''чертилибдиле'''.",
@@ -1543,7 +1538,6 @@ URL-ни тюз , сайтны ачыкъ болгъанына ишексиз б
 
 # File reversion
 'filerevert'                => '$1 файлны эски халына къайтыу',
-'filerevert-backlink'       => '← $1',
 'filerevert-legend'         => 'Файлны эски халына къайтар',
 'filerevert-intro'          => "'''[[Media:$1|$1]]''' медиясыны [$4 $3, $2 замандагъы версиясы]ны ызына къайтарыгъыз.",
 'filerevert-comment'        => 'Чурум:',
@@ -1554,7 +1548,6 @@ URL-ни тюз , сайтны ачыкъ болгъанына ишексиз б
 
 # File deletion
 'filedelete'                  => '$1 — кетериу',
-'filedelete-backlink'         => '← $1',
 'filedelete-legend'           => 'Файлны кетер',
 'filedelete-intro'            => "'''[[Media:$1|$1]]''' файлны бютеу тарихи бла бирге кетере турасыз",
 'filedelete-intro-old'        => "'''[[Media:$1|$1]]''' файлны [$4 $3, $2] замандагъы версиясын кетере турасыз.",
@@ -1914,7 +1907,6 @@ $UNWATCHURL
 'exbeforeblank'          => "Кетериуню алындагъы ичи: '$1'",
 'exblank'                => 'бет бош эди',
 'delete-confirm'         => '«$1» — кетериу',
-'delete-backlink'        => '← $1',
 'delete-legend'          => 'Кетер',
 'historywarning'         => "'''Эсгериу:''' кетериле тургъан бетни $1 {{PLURAL:$1|версиялы|версиялы}} тарихи барды:",
 'confirmdeletetext'      => 'Сиз бетни (неда суратны) бютеу тюрлениу тарихи бла толу кетерирге соргъансыз.
@@ -1973,7 +1965,6 @@ $2 тюрлендирген алгъаракъ версиясына къайты
 'movedarticleprotection'      => 'Къоруулауну джарашдырыулары "[[$2]]" бетден "[[$1]]" бетге кёчюрюлгенди',
 'protect-title'               => '"$1" ючюн къоруулау дараджаны сайлагъыз',
 'prot_1movedto2'              => '[[$1]] бетни джангы аты: [[$2]]',
-'protect-backlink'            => '← $1',
 'protect-legend'              => 'Къоруулауну къабыл эт',
 'protectcomment'              => 'Чурум:',
 'protectexpiry'               => 'Бошалады:',
@@ -2128,7 +2119,6 @@ $1',
 'blockip-title'                   => 'Къошулуучуну блокга салыу',
 'blockip-legend'                  => 'Къошулуучуну блокга салыу',
 'blockiptext'                     => 'Тюбюндеги форманы хайырланыб белгили бир IP-ден неда регистрация этилген къошулуучуну тюрлениу этиуюню тыяллыкъсыз. Бу, джангыз вандализмни тыяр ючюн эм [[{{MediaWiki:Policy-url}}|джорукълагъа]] келишиулю этилирге керекди. Тюбюрек тыйыу бла байламлы ангылатыу джазыгъыз. (юлгю: -Бу- бетледе вандализм этилгенди).',
-'ipaddress'                       => 'IP-адрес:',
 'ipadressorusername'              => 'IP-адрес неда къошулуучу ат:',
 'ipbexpiry'                       => 'Бошаллыкъды (ётсе):',
 'ipbreason'                       => 'Чурум:',
@@ -2364,7 +2354,7 @@ $1',
 'allmessagesdefault'            => 'Оригинал текст',
 'allmessagescurrent'            => 'Хайырлана тургъан текст',
 'allmessagestext'               => 'Бу список MediaWiki ат аламында бар болгъан система билдириулени списогуду.
-MediaWiki локализациясына юлюш къошаргъа излей эсегиз, [http://www.mediawiki.org/wiki/Localisation MediaWiki локализация] бла [http://translatewiki.net translatewiki.net] сайтлагъа киригиз.',
+MediaWiki локализациясына юлюш къошаргъа излей эсегиз, [//www.mediawiki.org/wiki/Localisation MediaWiki локализация] бла [//translatewiki.net translatewiki.net] сайтлагъа киригиз.',
 'allmessagesnotsupportedDB'     => "'''\$wgUseDatabaseMessages''' джабыкъ болгъаны ючюн '''{{ns:special}}:Allmessages''' хайырланыугъа ачыкъ тюлдю.",
 'allmessages-filter-legend'     => 'Фильтр',
 'allmessages-filter'            => 'Тюрлендириуюне кёре фильтрлендир:',
@@ -2896,7 +2886,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'Бу файлны тыш программа бла тюрлендиригиз',
-'edit-externally-help' => '(толу информациягъа мында къарагъыз: [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions])',
+'edit-externally-help' => '(толу информациягъа мында къарагъыз: [//www.mediawiki.org/wiki/Manual:External_editors setup instructions])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'бютеу',
@@ -2958,13 +2948,6 @@ $5
 'scarytranscludedisabled' => '[«Interwiki transcluding» джукъланыбды]',
 'scarytranscludefailed'   => '[$1 ючюн шаблон алымы тындырылмады]',
 'scarytranscludetoolong'  => '[URL асыры узунду]',
-
-# Trackbacks
-'trackbackbox'      => 'Бу бет ючюн trackback :<br />
-$1',
-'trackbackremove'   => '([$1 кетер])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Trackback кетерилди',
 
 # Delete conflict
 'deletedwhileediting' => "'''Эсериу''': Бу бет сиз тюрлендириб башлагъандан сора кетерилгенди!",
@@ -3123,13 +3106,13 @@ $1',
 'version-hook-subscribedby'     => 'Абонент болгъан',
 'version-version'               => '(Версия $1)',
 'version-license'               => 'Лицензия',
-'version-poweredby-credits'     => "Бу вики '''[http://www.mediawiki.org/ MediaWiki]''' программа бла ишлейди, copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "Бу вики '''[//www.mediawiki.org/ MediaWiki]''' программа бла ишлейди, copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'башхала',
 'version-license-info'          => 'MediaWiki эркин программа джазыуду, сиз аны GNU General Public License лицензияны (эркин программа джазыуланы фонду чыгъаргъан; экинчи версиясы неда андан кеч къайсысы да) шартларына кёре джаяргъа эмда/неда тюрлендирирге боллукъсуз.
 
 MediaWiki хайырлы боллукъду деген умут бла джайылады, алай а БИР ТЮРЛЮ БИР ГАРАНТИЯСЫЗДЫ, КОММЕРЦИЯЛЫКЪ неда ЭНЧИ БИР НЮЗЮРГЕ ДЖАРАРЫКЪ гаратияласыз огъунады. Толуракъ билгиле кёрюр ючюн GNU General Public License лицензиягъа къарагъыз.
 
-Бу программа бла бирге  [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public License лицензияны копиясы] болургъа керекди, джокъ эсе Free Software Foundation, Inc. комапиягъа джазыгъыз (адреси: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA) неда [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html лицензияны онлайн окъугъуз].',
+Бу программа бла бирге  [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public License лицензияны копиясы] болургъа керекди, джокъ эсе Free Software Foundation, Inc. комапиягъа джазыгъыз (адреси: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA) неда [//www.gnu.org/licenses/old-licenses/gpl-2.0.html лицензияны онлайн окъугъуз].',
 'version-software'              => 'Салыннган программа баджарыу',
 'version-software-product'      => 'Продукт',
 'version-software-version'      => 'Версия',

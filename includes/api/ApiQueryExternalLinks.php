@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiQueryBase.php" );
-}
-
 /**
  * A query module to list all external URLs found on a given set of pages.
  *
@@ -67,6 +62,11 @@ class ApiQueryExternalLinks extends ApiQueryBase {
 		// Don't order by el_from if it's constant in the WHERE clause
 		if ( count( $this->getPageSet()->getGoodTitles() ) != 1 ) {
 			$this->addOption( 'ORDER BY', 'el_from' );
+		}
+
+		// If we're querying all protocols, use DISTINCT to avoid repeating protocol-relative links twice
+		if ( $protocol === null ) {
+			$this->addOption( 'DISTINCT' );
 		}
 
 		$this->addOption( 'LIMIT', $params['limit'] + 1 );
@@ -145,13 +145,12 @@ class ApiQueryExternalLinks extends ApiQueryBase {
 
 	public function getExamples() {
 		return array(
-			'Get a list of external links on the [[Main Page]]:',
-			'  api.php?action=query&prop=extlinks&titles=Main%20Page',
+			'api.php?action=query&prop=extlinks&titles=Main%20Page' => 'Get a list of external links on the [[Main Page]]',
 		);
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Properties#extlinks_.2F_el';
+		return 'https://www.mediawiki.org/wiki/API:Properties#extlinks_.2F_el';
 	}
 
 	public function getVersion() {

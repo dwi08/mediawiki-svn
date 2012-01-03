@@ -165,7 +165,6 @@ $messages = array(
 'badtitle'       => 'མགོ་མིང་བྱང་ཉེས།',
 'badtitletext'   => 'ཞུ་བ་འབད་ཡོད་པའི་ཤོག་ལེབ་མགོ་མིང་འདི་ ནུས་མེད་ སྟོངམ་ ཡང་ན་ བདེན་མེད་འབྲེལ་མཐུད་ཅན་གྱི་ནང་ཁུལ་-སྐད་ཡིག་ ཡངན་ ནང་ཁུལ་-ཝི་ཀི་མགོ་མིང་ཨིན་པས། དེ་ནང་ མགོ་མིང་ནང་ལུ་ལག་ལེན་འཐབ་མ་བཏུབ་པའི་ཡིག་འབྲུ་གཅིག་ ཡང་ན་ ལེ་ཤ་ཡོདཔ་འོང་།',
 'viewsource'     => 'འབྱུང་ས་སྟོན།',
-'viewsourcefor'  => '$1 གི་',
 'viewsourcetext' => 'ཁྱོད་ཀྱིས་ ཤོག་ལེབ་འདི་གི་འབྱུང་ས་བལྟ་བཏུབ་པའི་ཁར་ འདྲ་བཤུས་ཡང་རྐྱབ་བཏུབ་ཨིན་:',
 
 # Login and logout pages
@@ -688,7 +687,7 @@ $messages = array(
 
 # External editor support
 'edit-externally'      => 'ཕྱིའི་གློག་རིམ་ལག་ལེན་འཐབ་ཐོག་ལས་ ཡིག་སྣོད་འདི་ཞུན་དག་འབད།',
-'edit-externally-help' => 'བརྡ་དོན་ཁ་གསལ་གྱི་དོན་ལུ་ [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] ལུ་ལྟ།',
+'edit-externally-help' => 'བརྡ་དོན་ཁ་གསལ་གྱི་དོན་ལུ་ [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] ལུ་ལྟ།',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ཆ་མཉམ།',

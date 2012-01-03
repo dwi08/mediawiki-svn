@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * A query action to return meta information about the wiki site.
  *
@@ -275,7 +270,7 @@ class ApiQuerySiteinfo extends ApiQueryBase {
 		}
 
 		$params = $this->extractRequestParams();
-		$langCode = isset( $params['inlanguagecode '] ) ? $params['inlanguagecode '] : '';
+		$langCode = isset( $params['inlanguagecode'] ) ? $params['inlanguagecode'] : '';
 
 		if( $langCode ) {
 			$langNames = Language::getTranslatedLanguageNames( $langCode );
@@ -297,12 +292,12 @@ class ApiQuerySiteinfo extends ApiQueryBase {
 			if ( isset( $langNames[$prefix] ) ) {
 				$val['language'] = $langNames[$prefix];
 			}
-			$val['url'] = wfExpandUrl( $row->iw_url, PROTO_CURRENT );
-			if( isset( $row->iw_wikiid ) ) {
-				$val['wikiid'] = $row->iw_wikiid;
+			$val['url'] = wfExpandUrl( $row['iw_url'], PROTO_CURRENT );
+			if( isset( $row['iw_wikiid'] ) ) {
+				$val['wikiid'] = $row['iw_wikiid'];
 			}
-			if( isset( $row->iw_api ) ) {
-				$val['api'] = $row->iw_api;
+			if( isset( $row['iw_api'] ) ) {
+				$val['api'] = $row['iw_api'];
 			}
 
 			$data[] = $val;
@@ -481,7 +476,7 @@ class ApiQuerySiteinfo extends ApiQueryBase {
 
 	public function appendLanguages( $property ) {
 		$params = $this->extractRequestParams();
-		$langCode = isset( $params['inlanguagecode '] ) ? $params['inlanguagecode '] : '';
+		$langCode = isset( $params['inlanguagecode'] ) ? $params['inlanguagecode'] : '';
 
 		if( $langCode ) {
 			$langNames = Language::getTranslatedLanguageNames( $langCode );
@@ -588,7 +583,7 @@ class ApiQuerySiteinfo extends ApiQueryBase {
 			),
 			'showalldb' => false,
 			'numberingroup' => false,
-			'inlanguagecode ' => null,
+			'inlanguagecode' => null,
 		);
 	}
 
@@ -618,7 +613,7 @@ class ApiQuerySiteinfo extends ApiQueryBase {
 			'filteriw' =>  'Return only local or only nonlocal entries of the interwiki map',
 			'showalldb' => 'List all database servers, not just the one lagging the most',
 			'numberingroup' => 'Lists the number of users in user groups',
-			'inlanguagecode ' => 'Language code for localised language names (best effort, use CLDR extension)',
+			'inlanguagecode' => 'Language code for localised language names (best effort, use CLDR extension)',
 		);
 	}
 
@@ -641,7 +636,7 @@ class ApiQuerySiteinfo extends ApiQueryBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Meta#siteinfo_.2F_si';
+		return 'https://www.mediawiki.org/wiki/API:Meta#siteinfo_.2F_si';
 	}
 
 	public function getVersion() {

@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * This query action allows clients to retrieve a list of recently modified pages
  * that are part of the logged-in user's watchlist.
@@ -134,7 +129,7 @@ class ApiQueryWatchlist extends ApiQueryGeneratorBase {
 
 		$db = $this->getDB();
 
-		$this->addTimestampWhereRange( 'rc_timestamp', $params['dir'], 
+		$this->addTimestampWhereRange( 'rc_timestamp', $params['dir'],
 			$params['start'], $params['end'] );
 		$this->addWhereFld( 'wl_namespace', $params['namespace'] );
 
@@ -159,8 +154,8 @@ class ApiQueryWatchlist extends ApiQueryGeneratorBase {
 
 			// Check permissions.
 			if ( isset( $show['patrolled'] ) || isset( $show['!patrolled'] ) ) {
-				global $wgUser;
-				if ( !$wgUser->useRCPatrol() && !$wgUser->useNPPatrol() ) {
+				$user = $this->getUser();
+				if ( !$user->useRCPatrol() && !$user->useNPPatrol() ) {
 					$this->dieUsage( 'You need the patrol right to request the patrolled flag', 'permissiondenied' );
 				}
 			}
@@ -409,7 +404,7 @@ class ApiQueryWatchlist extends ApiQueryGeneratorBase {
 				' parsedcomment          - Adds parsed comment of the edit',
 				' timestamp              - Adds timestamp of the edit',
 				' patrol                 - Tags edits that are patrolled',
-				' size                   - Adds the old and new lengths of the page',
+				' sizes                  - Adds the old and new lengths of the page',
 				' notificationtimestamp  - Adds timestamp of when the user was last notified about the edit',
 				' loginfo                - Adds log information where appropriate',
 			),
@@ -450,7 +445,7 @@ class ApiQueryWatchlist extends ApiQueryGeneratorBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Watchlist';
+		return 'https://www.mediawiki.org/wiki/API:Watchlist';
 	}
 
 	public function getVersion() {

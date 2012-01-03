@@ -399,13 +399,12 @@ MySQL va « $3 : $4 » rokla al dimstakser.',
 Fliok : $1<br />
 Erura : $2',
 'viewsource'           => 'Wira va klitakrent',
-'viewsourcefor'        => 'tori $1',
 'actionthrottled'      => 'Tulokaliana tegira',
 'actionthrottledtext'  => 'Wetce sabega kev staksavamolavara, rin ta bata skura gemeltamon slikviele zo kimar voxe va bata kimara al kaikayal. Vay artimon lwil !',
 'protectedpagetext'    => 'Batu bu betaradjison zo nendar.',
 'viewsourcetext'       => 'Va buklita rowil nume roksudal :',
 'protectedinterface'   => 'Batu bu va walasikikrent ke talpeyot dafur nume ta djira va favejera zo ixatcar.',
-'editinginterface'     => "'''Obral !''' Rin va bu favenu koe talpeyotwalasiki betal. Betara va batu bu va laviuca ke favesikafi walasiki dolge ar favesik vanolatar. Kalavason, va [http://translatewiki.net/wiki/Main_Page?setlang=avk translatewiki.net], va MediaWiki abdumimaks va tulizukara, vay favel.",
+'editinginterface'     => "'''Obral !''' Rin va bu favenu koe talpeyotwalasiki betal. Betara va batu bu va laviuca ke favesikafi walasiki dolge ar favesik vanolatar. Kalavason, va [//translatewiki.net/wiki/Main_Page?setlang=avk translatewiki.net], va MediaWiki abdumimaks va tulizukara, vay favel.",
 'sqlhidden'            => '(SQL kucilara palsena)',
 'cascadeprotected'     => 'Batu bu icde betara zo nendar, kire va vlevefu {{PLURAL:$1|bu|bu}} pasur, danu kan tegisa "stoyakorafa" rotisaca zo nendad : $2',
 'namespaceprotected'   => "Va bu koe '''$1''' yoltxo me robetal !",
@@ -546,9 +545,6 @@ Ta keyaksera va $1 ok konar [[{{MediaWiki:Grouppage-sysop}}|ristusik]] rotuzeral
 Va \'"e-mail" staksara pu bat favesik\' me rofavel vaxede "e-mail" mane tir koe rinaf [[Special:Preferences|lodamaceem]] ise vaon faveson me zo elekayal.
 Rinaf tise IP mane tir $3 ise ID elekara tir #$5. Va bate ik bane mane ko kota erura vay bazel !',
 'blockednoreason'                  => 'Meka bazena lazava',
-'blockedoriginalsource'            => "Klita ke '''$1''' vleveon zo nedir :",
-'blockededitsource'                => "Krent ke '''rinaf betakseem''' va '''$1''' vleveon zo betar :",
-'whitelistedittitle'               => 'Kucilan login ta sutelara',
 'whitelistedittext'                => 'Ta bubetara rin gonaskil ta $1',
 'confirmedittext'                  => 'Abdi bubetara va rinafe e-mail mane gogruyel. Kan rinaf [[Special:Preferences|favesiklodamaceem]] va rinafe e-mail mane vay plekul ise tuenal !',
 'nosuchsectiontitle'               => 'Me man gabot',
@@ -813,7 +809,6 @@ Kan ''all:'' laganeyal ta varafa exulera (gon keyaksexo is teza ikz-), oke wetce
 'prefs-editing'             => 'Sutelaxo',
 'prefs-edit-boxsize'        => 'Lum ke betaradilk.',
 'rows'                      => 'Emacekeem',
-'columns'                   => 'Brizeem',
 'searchresultshead'         => 'Nedira va aneyaratrasikseem',
 'resultsperpage'            => 'Fuxebuon trasiksota',
 'recentchangesdays'         => 'Gonedin viel se koe noeltaf betakseem :',
@@ -930,7 +925,6 @@ Gotir le $1 {{PLURAL:$1|staa|staa}}.',
 'right-patrol'               => 'Tcalara va fieyen betaks',
 'right-patrolmarks'          => 'Rupera va noeltafa fieratcala',
 'right-unwatchedpages'       => 'Wira va medisukeyenu bu',
-'right-trackback'            => 'Erura va suzdara',
 'right-mergehistory'         => 'Jera va buizvot',
 'right-userrights'           => 'Betara va favesikrokeem',
 'right-userrights-interwiki' => "Betara va favesikrokeem koe aro 'wiki' xo",
@@ -1583,7 +1577,6 @@ $1',
 'blockiptext'              => 'Ta suterafa elekara va vansara male pilkovafe IP mane ok favesikyolt va vlevefa erurateza favel !
 Mana sabegara zo goskur ta weyonara va cidara is dotrakason va [[{{MediaWiki:Policy-url}}|gotarkan vexeem]].
 Va lazavanha (tulon ozwason va cidayanu bu se) vlevon bazel !',
-'ipaddress'                => 'IP mane ok ikayolt',
 'ipadressorusername'       => 'IP mane ok favesikyolt',
 'ipbexpiry'                => 'Elekaracek',
 'ipbreason'                => 'Elekaradanda :',
@@ -1730,7 +1723,7 @@ bu ika int me zo rotarrundar.',
 'allmessagescurrent'        => 'Noelaf krent',
 'allmessagestext'           => 'Batcoba tir vexala dem bolkstakseem koe MediaWiki yoltxo.
 
-Va [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] is [http://translatewiki.net translatewiki.net] vay woral ede va tulizukara va Mediawiki co-rowebel.',
+Va [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] is [//translatewiki.net translatewiki.net] vay woral ede va tulizukara va Mediawiki co-rowebel.',
 'allmessagesnotsupportedDB' => "Batu bu me zo rofaver kire '''\$wgUseDatabaseMessages''' mea tir tegis.",
 
 # Thumbnails
@@ -2111,7 +2104,7 @@ Kotari milconhafi gluyasiki roklon zo krafiar.',
 
 # External editor support
 'edit-externally'      => 'Betara va bat iyeltak faveson va divef talpey',
-'edit-externally-help' => '(Ta lo giva va [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] disukel !)',
+'edit-externally-help' => '(Ta lo giva va [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] disukel !)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'kot',
@@ -2155,11 +2148,6 @@ This confirmation code will expire at $4.',
 
 # Scary transclusion
 'scarytranscludetoolong' => '[URL tir abrotcarsaf]',
-
-# Trackbacks
-'trackbackremove'   => '([$1 Sulara])',
-'trackbacklink'     => 'Sledasiki',
-'trackbackdeleteok' => 'Sledasiki tir sulanhayani.',
 
 # Delete conflict
 'deletedwhileediting' => "'''Obral''' : Batu bu zo sulayar vielu toz betayal !",

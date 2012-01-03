@@ -13,6 +13,7 @@
  * @author Malafaya
  * @author Mongvras
  * @author Nicky.ker
+ * @author Scryfer
  */
 
 $namespaceNames = array(
@@ -326,7 +327,6 @@ $messages = array(
 'filenotfound'        => 'Nag aljem cavos an restren "$1".',
 'badtitle'            => 'Titel drog',
 'viewsource'          => 'Gweles an bednfenten',
-'viewsourcefor'       => 'rag $1',
 
 # Login and logout pages
 'welcomecreation'         => '== Dynnargh, $1! ==
@@ -887,7 +887,6 @@ Gwelowgh $2 rag covadh a dhileanjow a-dhiwedhes.',
 
 # Block/unblock
 'blockip'                    => 'Lettya devnydhyer',
-'ipaddress'                  => 'Trigva IP:',
 'ipadressorusername'         => 'Trigva IP po hanow-usyer:',
 'ipbreason'                  => 'Acheson:',
 'ipbreasonotherlist'         => 'Acheson aral',
@@ -1033,9 +1032,6 @@ Whi a ell gweles hy fednfenten.',
 'watchlistall2' => 'oll',
 'namespacesall' => 'oll',
 'monthsall'     => 'oll',
-
-# Trackbacks
-'trackbackremove' => '([$1 Dilea])',
 
 # Multipage image navigation
 'imgmultipageprev' => '← folen kens',

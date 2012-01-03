@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * Query action to List the log events, with optional filtering by various parameters.
  *
@@ -451,7 +446,7 @@ class ApiQueryLogEvents extends ApiQueryBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Logevents';
+		return 'https://www.mediawiki.org/wiki/API:Logevents';
 	}
 
 	public function getVersion() {

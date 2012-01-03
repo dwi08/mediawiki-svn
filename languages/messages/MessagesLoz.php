@@ -268,7 +268,6 @@ $messages = array(
 Fung'ksyun: $1<br />
 Query: $2",
 'viewsource'           => "Kamukile ng'i",
-'viewsourcefor'        => 'di $1',
 'viewsourcetext'       => 'A sa kamukile wiki-selt di bye petulo:',
 'sqlhidden'            => '(SQL query sa cwankekile)',
 
@@ -372,8 +371,6 @@ $1 bolok a. Lyangutukezireason sa ''$2''.
 A bulelezi $1/[[{{MediaWiki:Grouppage-sysop}}|xetewi sesop]] bolok.
 A ni sebilize 'meli sebelu' ka a ni afi adresi di meli kwa zwa [[Special:Preferences|petohoni]] e no sa bolok di sebelize.
 A IP sa $3, e ID di bolok sa #$5. Bulelezi IP e ID kwa bukizisize.",
-'blockedoriginalsource'      => "Olige di '''$1''' sa kamukile:",
-'blockededitsource'          => "Selt di '''zwa hloli ye ng'i''' di '''$1''' sa kamukile:",
 'whitelistedittext'          => "A sa $1 di hloli ye ng'i petulo.",
 'nosuchsectiontitle'         => 'Ni di lyangutukezi',
 'loginreqlink'               => 'menuhile',
@@ -485,7 +482,6 @@ Informasi: (bye) = petuho a nca selt,
 'resetprefs'                => 'Lisetize',
 'prefs-editing'             => "Hloli ye ng'i",
 'rows'                      => 'Roo:',
-'columns'                   => 'Kalom:',
 'searchresultshead'         => 'Fatukile',
 'resultsperpage'            => 'Hit di petulo:',
 'timezoneoffset'            => 'Ufiseti¹',
@@ -902,7 +898,7 @@ Teri yaki, a nyanganyisize.",
 'allmessagesdefault' => 'Selt orge',
 'allmessagescurrent' => 'Selt nca',
 'allmessagestext'    => 'Bye mukoloko sa mukoloko di mulumiwani di MediaWiki poo.
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
 
 # Thumbnails
 'thumbnail-more'  => 'Pusize',
@@ -1032,15 +1028,12 @@ Xete ling'ki kwa lina sa konsidisize desepo. Petulo dimedi inlinenikusize.",
 
 # External editor support
 'edit-externally'      => 'Kenki imegi sebilize pagini lakusi',
-'edit-externally-help' => 'Boniselelize [http://www.mediawiki.org/wiki/Manual:External_editors instruksi setup] kwa informasi.',
+'edit-externally-help' => 'Boniselelize [//www.mediawiki.org/wiki/Manual:External_editors instruksi setup] kwa informasi.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'xeti',
 'namespacesall' => 'xeti',
 'monthsall'     => 'xeti',
-
-# Trackbacks
-'trackbackremove' => '([$1 afi kulobala])',
 
 # action=purge
 'confirm_purge_button' => 'Afi',

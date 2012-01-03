@@ -57,7 +57,9 @@ class PreprocessorTest extends MediaWikiTestCase {
 			array( "{{Foo|1=bar}}", "<root><template><title>Foo</title><part><name>1</name>=<value>bar</value></part></template></root>" ),
 			array( "{{Foo|=bar}}", "<root><template><title>Foo</title><part><name></name>=<value>bar</value></part></template></root>" ),
 			array( "{{Foo|bar=baz}}", "<root><template><title>Foo</title><part><name>bar</name>=<value>baz</value></part></template></root>" ), 
+			array( "{{Foo|{{bar}}=baz}}", "<root><template><title>Foo</title><part><name><template><title>bar</title></template></name>=<value>baz</value></part></template></root>" ),
 			array( "{{Foo|1=bar|baz}}", "<root><template><title>Foo</title><part><name>1</name>=<value>bar</value></part><part><name index=\"1\" /><value>baz</value></part></template></root>" ), 
+			array( "{{Foo|1=bar|2=baz}}", "<root><template><title>Foo</title><part><name>1</name>=<value>bar</value></part><part><name>2</name>=<value>baz</value></part></template></root>" ),
 			array( "{{Foo|bar|foo=baz}}", "<root><template><title>Foo</title><part><name index=\"1\" /><value>bar</value></part><part><name>foo</name>=<value>baz</value></part></template></root>" ), 
 			array( "{{{1}}}", "<root><tplarg><title>1</title></tplarg></root>" ),
 			array( "{{{1|}}}", "<root><tplarg><title>1</title><part><name index=\"1\" /><value></value></part></tplarg></root>" ),
@@ -79,6 +81,7 @@ class PreprocessorTest extends MediaWikiTestCase {
 			array( "Foo <display map>Bar</display map             >Baz", "<root>Foo <ext><name>display map</name><attr></attr><inner>Bar</inner><close>&lt;/display map             &gt;</close></ext>Baz</root>" ),
 			array( "Foo <display map foo>Bar</display map             >Baz", "<root>Foo <ext><name>display map</name><attr> foo</attr><inner>Bar</inner><close>&lt;/display map             &gt;</close></ext>Baz</root>" ),
 			array( "Foo <gallery bar=\"baz\" />", "<root>Foo <ext><name>gallery</name><attr> bar=&quot;baz&quot; </attr></ext></root>" ),
+			array( "Foo <gallery bar=\"1\" baz=2 />", "<root>Foo <ext><name>gallery</name><attr> bar=&quot;1&quot; baz=2 </attr></ext></root>" ),
 			array( "</foo>Foo<//foo>", "<root><ext><name>/foo</name><attr></attr><inner>Foo</inner><close>&lt;//foo&gt;</close></ext></root>" ), # Worth blacklisting IMHO
 			array( "{{#ifexpr: ({{{1|1}}} = 2) | Foo | Bar }}", "<root><template><title>#ifexpr: (<tplarg><title>1</title><part><name index=\"1\" /><value>1</value></part></tplarg> = 2) </title><part><name index=\"1\" /><value> Foo </value></part><part><name index=\"2\" /><value> Bar </value></part></template></root>"),
 			array( "{{#if: {{{1|}}} | Foo | {{Bar}} }}", "<root><template><title>#if: <tplarg><title>1</title><part><name index=\"1\" /><value></value></part></tplarg> </title><part><name index=\"1\" /><value> Foo </value></part><part><name index=\"2\" /><value> <template><title>Bar</title></template> </value></part></template></root>"),
@@ -112,6 +115,10 @@ class PreprocessorTest extends MediaWikiTestCase {
 	 * @return string
 	 */
 	function preprocessToXml( $wikiText ) {
+		if ( method_exists( $this->mPreprocessor, 'preprocessToXml' ) ) {
+			return $this->normalizeXml( $this->mPreprocessor->preprocessToXml( $wikiText ) );
+		}
+		
 		$dom = $this->mPreprocessor->preprocessToObj( $wikiText );
 		if ( is_callable( array( $dom, 'saveXML' ) ) ) {
 			return $dom->saveXML();
@@ -127,6 +134,8 @@ class PreprocessorTest extends MediaWikiTestCase {
 	 * @return string
 	 */
 	function normalizeXml( $xml ) {
+		return preg_replace( '!<([a-z]+)/>!', '<$1></$1>', str_replace( ' />', '/>', $xml ) );
+		
 		$dom = new DOMDocument();
 		// 1 << 19 == XML_PARSE_HUGE, needed so newer versions of libxml2 don't barf when the XML is >256 levels deep
 		$dom->loadXML( $xml, 1 << 19 );

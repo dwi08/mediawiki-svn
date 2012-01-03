@@ -362,13 +362,12 @@ $1',
 函数：$1<br />
 查询：$2',
 'viewsource'           => '源码',
-'viewsourcefor'        => '$1个源码',
 'actionthrottled'      => '动作已压制',
 'actionthrottledtext'  => '基于反垃圾链接个考量，限制垃拉短时间内多趟重复箇只操作。请过脱几分钟再试试看。',
 'protectedpagetext'    => '箇只页面已经锁定，以防编辑。',
 'viewsourcetext'       => '侬可以查看搭仔复制箇只页面个源码：',
 'protectedinterface'   => '箇只页面提供软件个界面文本。为著防止滥用咾已经锁定。',
-'editinginterface'     => "'''警告：''' 侬垃许编辑个页面是用于提供软件个界面文本。改变此页会得影响其他用户个界面外观。假使要翻译，请考虑使用 [http://translatewiki.net/wiki/Main_Page?setlang=zh-hans translatewiki.net]，一个用得来为MediaWiki软件本地化个计划。",
+'editinginterface'     => "'''警告：''' 侬垃许编辑个页面是用于提供软件个界面文本。改变此页会得影响其他用户个界面外观。假使要翻译，请考虑使用 [//translatewiki.net/wiki/Main_Page?setlang=zh-hans translatewiki.net]，一个用得来为MediaWiki软件本地化个计划。",
 'sqlhidden'            => '（SQL查询已隐藏）',
 'cascadeprotected'     => '箇只页面拨保护拉许，因为箇只页面拨下底已经标注“联锁保护”个{{PLURAL:$1|一只|多只}}被保护页面包含：
 $2',
@@ -542,9 +541,6 @@ $2',
 
 侬个IP地址是$3，而该查封ID是 #$5。 请垃拉侬个查询里向注明以上所有资料。",
 'blockednoreason'                  => '弗曾拨原因',
-'blockedoriginalsource'            => "下头是'''$1'''个源码：",
-'blockededitsource'                => "侬对'''$1'''进行'''编辑'''个文字如下:",
-'whitelistedittitle'               => '登录仔再好编辑',
 'whitelistedittext'                => '侬必须$1才能编辑。',
 'confirmedittext'                  => '垃拉编辑此页之前侬必须确认侬个邮箱地址。请通过[[Special:Preferences|个人设置]]设置并验证侬个邮箱地址。',
 'nosuchsectiontitle'               => '寻弗着箇只段落',
@@ -950,7 +946,6 @@ $1",
 'prefs-editing'                 => '编辑',
 'prefs-edit-boxsize'            => '编辑框尺寸',
 'rows'                          => '行：',
-'columns'                       => '列：',
 'searchresultshead'             => '搜索',
 'resultsperpage'                => '每页显示链接数：',
 'stub-threshold'                => '<a href="#" class="stub">短页面链接</a>格式门槛值（字节）：',
@@ -1336,7 +1331,6 @@ $1",
 
 # Block/unblock
 'blockip'                  => '查封用户',
-'ipaddress'                => 'IP 地址:',
 'ipadressorusername'       => 'IP地址或用户名：',
 'ipbreason'                => '理由:',
 'ipbreasonotherlist'       => '其它原因',
@@ -1543,7 +1537,7 @@ Variants for Chinese language
 
 # External editor support
 'edit-externally'      => '用外部应用程序来编辑该只文件',
-'edit-externally-help' => '（请参见[http://www.mediawiki.org/wiki/Manual:External_editors 设置步骤]了解详细信息）',
+'edit-externally-help' => '（请参见[//www.mediawiki.org/wiki/Manual:External_editors 设置步骤]了解详细信息）',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => '全部',

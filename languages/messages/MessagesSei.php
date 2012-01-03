@@ -304,7 +304,6 @@ Jan pos-coccebj plusöxde 1 jöx 1 characterám jan nepos-coccebj usadas titlen�
 Funccion: $1<br />
 Query: $2',
 'viewsource'           => 'Cohuatlöx sourcenam',
-'viewsourcefor'        => '$1 mii',
 'protectedpagetext'    => 'Jan páhina coccebj lockom neticpatlöx pos-poop.',
 'viewsourcetext'       => 'Mecohuatlöx ö copynom sourcenam zode jan páhina:',
 'protectedinterface'   => "Jan páhina coccebj textuade interface software zo 'de ö coccebj lockom neticpatlöx abusenam.",
@@ -454,9 +453,6 @@ Me contactam $1 jöx pac [[{{MediaWiki:Grouppage-sysop}}|sysop]] discussom iti b
 Me nenusor e-iitom päzxo hab' adressade e-iitom validom coccebj [[Special:Preferences|mequáatlaác]] ö'me neblockomde e-iitom.
 
 Me IDde block coccebj $5. Includam 1 jöx 2 pac querinám iti.",
-'blockedoriginalsource'     => "Sourcenam zode '''$1''' coccebj cohuatlöx:",
-'blockededitsource'         => "Textua zode '''meticpatlöxde''' '''$1''' coccebj cohuatlöx:",
-'whitelistedittitle'        => 'Caápo Neces ticpatlöx',
 'whitelistedittext'         => 'Mecoccebj $1 ticpatlöx páhinám.',
 'confirmedittext'           => "Me confirmöx menadressade de e-iitom ticpatlöx 'depre. Set' ö validatenan menadressade IP [[Special:Preferences|hequáatlaác]] mii.",
 'nosuchsectiontitle'        => "Ne'dáár partam",
@@ -613,7 +609,6 @@ Informacion: (curt) = quiíxde vercion currentua,
 'resetprefs'          => "Reset'",
 'prefs-editing'       => 'Ticpatlöx',
 'rows'                => 'Rowám:',
-'columns'             => 'Columnám:',
 'searchresultshead'   => 'Yahöx',
 'savedprefs'          => 'Hequáatlaác coccebj xuniimöx.',
 'timezonelegend'      => 'Zonede xepe',
@@ -935,7 +930,6 @@ iitom e-iitomde diijömde caitóm.',
 
 # Block/unblock
 'blockip'                 => 'Block caitom',
-'ipaddress'               => 'Addressade IP:',
 'ipadressorusername'      => 'Addressade IP jöx caitom ID:',
 'ipbreason'               => 'Ra:',
 'ipbreasonotherlist'      => "Ra pac'de",

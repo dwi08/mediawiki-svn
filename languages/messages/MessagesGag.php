@@ -93,7 +93,7 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#YÖNNENDİRMÄKLER', '#YÖNNENDİR', '#YÖNNENDİRMÄ', '#YÖNLENDİRME', '#YÖNLENDİR', '#REDIRECT' ),
+	'redirect'                => array( '0', '#YÖNNENDİRMÄKLER', '#YÖNNENDİR', '#YÖNNENDİRMÄ', '#YÖNLENDİRME', '#YÖNLENDİR', '#REDIRECT' ),
 );
 
 $messages = array(
@@ -372,7 +372,6 @@ Yalvarêrız benneyiniz URL - i hem raport ediniz bunu bir [[Special:ListUsers/s
 'badtitle'           => 'Yannış yazı adı',
 'badtitletext'       => 'Girilen sayfa adı beki yannış beki de boş, yaki geçersiz neçin ki diller arası baalantı yaki vikiler arası baalantı içerer. Var nicä içindä olsun bir yaki taa çok nışan angıları yasak başlıklarda kullanılsın.',
 'viewsource'         => 'Geliniri gör',
-'viewsourcefor'      => '$1 için',
 'protectedpagetext'  => 'Bu sayfa diiştirmämää deyni kilitlendi.',
 'viewsourcetext'     => 'Var nicä görmää hem kopiya etmää bu yapraa gelinirini:',
 
@@ -480,8 +479,6 @@ Herliim girmediniz [[Special:Preferences|seçimner]] bölümünde geçerli bir e
 
 Şindi IP adresiniz $3. Yalvarêrêz bu adresi belirtmää her angı bir sorgu yapar kana.',
 'blockednoreason'                  => 'hiç bir sebep belirtilmedi',
-'blockedoriginalsource'            => "'''$1''' sayfasın kaynak teksti aşaada:",
-'whitelistedittitle'               => 'Lääzım açmaa sessiya diişmäk yapmaa deyni',
 'whitelistedittext'                => 'Diişmäk yapmaa için $1.',
 'nosuchsectiontitle'               => 'Bölä bölüm yok',
 'loginreqtitle'                    => 'Lääazım sessiya açmaa',
@@ -1081,7 +1078,7 @@ Herliim fayl diiştirildi yaratılıştan sora, bir takım parametrlär var nic�
 
 # External editor support
 'edit-externally'      => 'Kompyuterinizdäki uygulamaklarlan faylı düz',
-'edit-externally-help' => 'Taa çok bilgi için var nicä bakmaa metadaki [http://www.mediawiki.org/wiki/Manual:External_editors dış uygulama instrumentläri] (angliyça) sayfasına.',
+'edit-externally-help' => 'Taa çok bilgi için var nicä bakmaa metadaki [//www.mediawiki.org/wiki/Manual:External_editors dış uygulama instrumentläri] (angliyça) sayfasına.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'Hepsini göster',

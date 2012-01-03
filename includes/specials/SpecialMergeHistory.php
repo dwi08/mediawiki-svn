@@ -81,15 +81,8 @@ class SpecialMergeHistory extends SpecialPage {
 	}
 
 	public function execute( $par ) {
-		$user = $this->getUser();
-		if( !$this->userCanExecute( $user ) ) {
-			$this->displayRestrictionError();
-			return;
-		}
-
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkPermissions();
+		$this->checkReadOnly();
 
 		$this->loadRequestParams();
 
@@ -167,9 +160,6 @@ class SpecialMergeHistory extends SpecialPage {
 	}
 
 	private function showHistory() {
-		$out = $this->getOutput();
-		$out->setPageTitle( wfMsg( 'mergehistory' ) );
-
 		$this->showMergeForm();
 
 		# List all stored revisions
@@ -178,6 +168,7 @@ class SpecialMergeHistory extends SpecialPage {
 		);
 		$haveRevisions = $revisions && $revisions->getNumRows() > 0;
 
+		$out = $this->getOutput();
 		$titleObj = $this->getTitle();
 		$action = $titleObj->getLocalURL( array( 'action' => 'submit' ) );
 		# Start the form here
@@ -244,7 +235,7 @@ class SpecialMergeHistory extends SpecialPage {
 		$misc .= Html::hidden( 'destID', $this->mDestObj->getArticleID() );
 		$misc .= Html::hidden( 'target', $this->mTarget );
 		$misc .= Html::hidden( 'dest', $this->mDest );
-		$misc .= Html::hidden( 'wpEditToken', $this->getUser()->editToken() );
+		$misc .= Html::hidden( 'wpEditToken', $this->getUser()->getEditToken() );
 		$misc .= Xml::closeElement( 'form' );
 		$out->addHTML( $misc );
 
@@ -262,7 +253,7 @@ class SpecialMergeHistory extends SpecialPage {
 
 		$pageLink = Linker::linkKnown(
 			$rev->getTitle(),
-			htmlspecialchars( $this->getLang()->timeanddate( $ts ) ),
+			htmlspecialchars( $this->getLanguage()->timeanddate( $ts ) ),
 			array(),
 			array( 'oldid' => $rev->getId() )
 		);
@@ -379,13 +370,13 @@ class SpecialMergeHistory extends SpecialPage {
 			}
 			$mwRedir = MagicWord::get( 'redirect' );
 			$redirectText = $mwRedir->getSynonym( 0 ) . ' [[' . $destTitle->getPrefixedText() . "]]\n";
-			$redirectArticle = new Article( $targetTitle );
+			$redirectPage = WikiPage::factory( $targetTitle );
 			$redirectRevision = new Revision( array(
 				'page'    => $this->mTargetID,
 				'comment' => $comment,
 				'text'    => $redirectText ) );
 			$redirectRevision->insertOn( $dbw );
-			$redirectArticle->updateRevisionOn( $dbw, $redirectRevision );
+			$redirectPage->updateRevisionOn( $dbw, $redirectRevision );
 
 			# Now, we record the link from the redirect to the new title.
 			# It should have no other outgoing links...
@@ -485,8 +476,8 @@ class MergeHistoryPager extends ReverseChronologicalPager {
 			'fields' => array_merge( Revision::selectFields(), Revision::selectUserFields() ),
 			'conds'  => $conds,
 			'join_conds' => array(
-				'page' => array( 'INNER JOIN', 'rev_page = page_id' ),
-				'user' => array( 'LEFT JOIN', 'user_id = rev_user' ) )
+				'page' => Revision::pageJoinCond(),
+				'user' => Revision::userJoinCond() )
 		);
 	}
 

@@ -7,6 +7,7 @@
  * @ingroup Language
  * @file
  *
+ * @author Ohpuu
  * @author Warbola
  */
 
@@ -439,7 +440,7 @@ Legend: '''({{int:cur}})''' = vaiţīd līdzinţõmizõks lǟndz redaktsijõks,,
 'filehist-user'             => 'kȭlbatiji',
 'filehist-dimensions'       => 'Sūrit',
 'filehist-comment'          => 'Komentār',
-'imagelinks'                => 'Siḑīmõd fail jūrõ',
+'imagelinks'                => 'Fail kȭlbatõmi',
 'linkstoimage'              => 'Sīen bīldan {{PLURAL:$1|sidūb se lēḑ|$1 sidābõd ne lēḑõd}}:',
 'nolinkstoimage'            => 'Äbmingi lēḑ äb sidā sīe bīlda pǟlõ',
 'sharedupload'              => 'Se fail um võttõd ovātõst $1 ja siedā võib vȱlda kȭlbatõd ka mūši projektis.',
@@ -458,7 +459,7 @@ Legend: '''({{int:cur}})''' = vaiţīd līdzinţõmizõks lǟndz redaktsijõks,,
 'nbytes'        => '$1 {{PLURAL:$1|bait|baitõ}}',
 'nmembers'      => '$1 {{PLURAL:$1|nõtkõm| nõtkõmḑi}}',
 'prefixindex'   => 'Amād pēļikērad prefiksõks',
-'usercreated'   => 'Konto lūomiz āiga: $1 kīela $2',
+'usercreated'   => 'Konto {{GENDER:$3|lūomiz}} āiga: $1 kīela $2',
 'newpages'      => 'Ūd lēḑõd',
 'move'          => 'Vīž',
 'movethispage'  => 'Viedāgid se līedpūol tuoiz nim alā',
@@ -736,7 +737,7 @@ Až sugīz nei, sōd līed tōdõs kädūdõks jeddõpēḑõn sōtõ agā jūr�
 
 # External editor support
 'edit-externally'      => 'Protseššõgid failõ ulīz programmatūraks',
-'edit-externally-help' => '(Vaņ uļļizt redaktōrd adresõs [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] kȭlbatõmiz opātõkst)',
+'edit-externally-help' => '(Vaņ uļļizt redaktōrd adresõs [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] kȭlbatõmiz opātõkst)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tikkiž',

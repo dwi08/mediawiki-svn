@@ -26,14 +26,25 @@ class UploadFromUrlTestSuite extends PHPUnit_Framework_TestSuite {
 		$wgStyleSheetPath = '/skins';
 		$wgStylePath = '/skins';
 		$wgThumbnailScriptPath = false;
+		$backend = new FSFileBackend( array(
+			'name'        => 'local-backend',
+			'lockManager' => 'fsLockManager',
+			'containerPaths' => array(
+				'media-public'  => wfTempDir() . '/test-repo/public',
+				'media-thumb'   => wfTempDir() . '/test-repo/thumb',
+				'media-temp'    => wfTempDir() . '/test-repo/temp',
+				'media-deleted' => wfTempDir() . '/test-repo/delete',
+			)
+		) );
 		$wgLocalFileRepo = array(
-			'class' => 'LocalRepo',
-			'name' => 'local',
-			'directory' => wfTempDir() . '/test-repo',
-			'url' => 'http://example.com/images',
-			'deletedDir' => wfTempDir() . '/test-repo/delete',
-			'hashLevels' => 2,
+			'class'           => 'LocalRepo',
+			'name'            => 'local',
+			'url'             => 'http://example.com/images',
+			'hashLevels'      => 2,
 			'transformVia404' => false,
+			'backend'         => $backend,
+			'zones'           => array( 'deleted' => array(
+				'container' => 'media-deleted', 'directory' => '' ) )
 		);
 		$wgNamespaceProtection[NS_MEDIAWIKI] = 'editinterface';
 		$wgNamespaceAliases['Image'] = NS_FILE;
@@ -49,7 +60,7 @@ class UploadFromUrlTestSuite extends PHPUnit_Framework_TestSuite {
 		// $wgContLang = new StubContLang;
 		$wgUser = new User;
 		$context = new RequestContext;
-		$wgLang = $context->getLang();
+		$wgLang = $context->getLanguage();
 		$wgOut = $context->getOutput();
 		$wgParser = new StubObject( 'wgParser', $wgParserConf['class'], array( $wgParserConf ) );
 		$wgRequest = $context->getRequest();
@@ -60,6 +71,7 @@ class UploadFromUrlTestSuite extends PHPUnit_Framework_TestSuite {
 
 	}
 
+	// @FIXME: restore globals?
 	public function tearDown() {
 		$this->teardownUploadDir( $this->uploadDir );
 	}

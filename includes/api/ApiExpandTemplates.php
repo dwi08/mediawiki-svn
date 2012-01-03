@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiBase.php" );
-}
-
 /**
  * API module that functions as a shortcut to the wikitext preprocessor. Expands
  * any templates in a provided string, and returns the result of this expansion
@@ -59,7 +54,7 @@ class ApiExpandTemplates extends ApiBase {
 
 		// Parse text
 		global $wgParser;
-		$options = new ParserOptions();
+		$options = ParserOptions::newFromContext( $this->getContext() );
 
 		if ( $params['includecomments'] ) {
 			$options->setRemoveComments( false );
@@ -125,7 +120,7 @@ class ApiExpandTemplates extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Parsing_wikitext#expandtemplates';
+		return 'https://www.mediawiki.org/wiki/API:Parsing_wikitext#expandtemplates';
 	}
 
 	public function getVersion() {

@@ -177,6 +177,9 @@ abstract class Skin extends ContextSource {
 		return $this->skinname;
 	}
 
+	/**
+	 * @param $out OutputPage
+	 */
 	function initPage( OutputPage $out ) {
 		wfProfileIn( __METHOD__ );
 
@@ -195,7 +198,7 @@ abstract class Skin extends ContextSource {
 		$titles = array( $user->getUserPage(), $user->getTalkPage() );
 
 		// Other tab link
-		if ( $this->getTitle()->getNamespace() == NS_SPECIAL ) {
+		if ( $this->getTitle()->isSpecialPage() ) {
 			// nothing
 		} elseif ( $this->getTitle()->isTalkPage() ) {
 			$titles[] = $this->getTitle()->getSubjectPage();
@@ -281,7 +284,7 @@ abstract class Skin extends ContextSource {
 				$this->mRelevantUser = User::newFromName( $rootUser, false );
 			} else {
 				$user = User::newFromName( $rootUser, false );
-				if ( $user->isLoggedIn() ) {
+				if ( $user && $user->isLoggedIn() ) {
 					$this->mRelevantUser = $user;
 				}
 			}
@@ -296,6 +299,10 @@ abstract class Skin extends ContextSource {
 	 */
 	abstract function outputPage( OutputPage $out = null );
 
+	/**
+	 * @param $data array
+	 * @return string
+	 */
 	static function makeVariablesScript( $data ) {
 		if ( $data ) {
 			return Html::inlineScript(
@@ -304,6 +311,21 @@ abstract class Skin extends ContextSource {
 		} else {
 			return '';
 		}
+	}
+
+	/**
+	 * Make a <script> tag containing global variables
+	 *
+	 * @deprecated in 1.19
+	 * @param $unused Unused
+	 * @return string HTML fragment
+	 */
+	public static function makeGlobalVariablesScript( $unused ) {
+		global $wgOut;
+
+		wfDeprecated( __METHOD__, '1.19' );
+
+		return self::makeVariablesScript( $wgOut->getJSVars() );
 	}
 
 	/**
@@ -341,7 +363,7 @@ abstract class Skin extends ContextSource {
 	function getPageClasses( $title ) {
 		$numeric = 'ns-' . $title->getNamespace();
 
-		if ( $title->getNamespace() == NS_SPECIAL ) {
+		if ( $title->isSpecialPage() ) {
 			$type = 'ns-special';
 			// bug 23315: provide a class based on the canonical special page name without subpages
 			list( $canonicalName ) = SpecialPageFactory::resolveAlias( $title->getDBkey() );
@@ -381,6 +403,9 @@ abstract class Skin extends ContextSource {
 		return $wgLogo;
 	}
 
+	/**
+	 * @return string
+	 */
 	function getCategoryLinks() {
 		global $wgUseCategoryBrowser;
 
@@ -395,14 +420,15 @@ abstract class Skin extends ContextSource {
 		$pop = "</li>";
 
 		$s = '';
-		$colon = wfMsgExt( 'colon-separator', 'escapenoentities' );
+		$colon = $this->msg( 'colon-separator' )->escaped();
 
 		if ( !empty( $allCats['normal'] ) ) {
 			$t = $embed . implode( "{$pop}{$embed}" , $allCats['normal'] ) . $pop;
 
-			$msg = wfMsgExt( 'pagecategories', array( 'parsemag', 'escapenoentities' ), count( $allCats['normal'] ) );
+			$msg = $this->msg( 'pagecategories', count( $allCats['normal'] ) )->escaped();
+			$linkPage = wfMessage( 'pagecategorieslink' )->inContentLanguage()->text();
 			$s .= '<div id="mw-normal-catlinks" class="mw-normal-catlinks">' .
-				Linker::link( Title::newFromText( wfMsgForContent( 'pagecategorieslink' ) ), $msg )
+				Linker::link( Title::newFromText( $linkPage ), $msg )
 				. $colon . '<ul>' . $t . '</ul>' . '</div>';
 		}
 
@@ -417,7 +443,7 @@ abstract class Skin extends ContextSource {
 			}
 
 			$s .= "<div id=\"mw-hidden-catlinks\" class=\"mw-hidden-catlinks$class\">" .
-				wfMsgExt( 'hidden-categories', array( 'parsemag', 'escapenoentities' ), count( $allCats['hidden'] ) ) .
+				$this->msg( 'hidden-categories', count( $allCats['hidden'] ) )->escaped() .
 				$colon . '<ul>' . $embed . implode( "{$pop}{$embed}" , $allCats['hidden'] ) . $pop . '</ul>' .
 				'</div>';
 		}
@@ -467,6 +493,9 @@ abstract class Skin extends ContextSource {
 		return $return;
 	}
 
+	/**
+	 * @return string
+	 */
 	function getCategories() {
 		$out = $this->getOutput();
 
@@ -529,15 +558,21 @@ abstract class Skin extends ContextSource {
 	protected function generateDebugHTML() {
 		global $wgShowDebug;
 
+		$html = MWDebug::getDebugHTML( $this->getContext() );
+
 		if ( $wgShowDebug ) {
 			$listInternals = $this->formatDebugHTML( $this->getOutput()->mDebugtext );
-			return "\n<hr />\n<strong>Debug data:</strong><ul id=\"mw-debug-html\">" .
+			$html .= "\n<hr />\n<strong>Debug data:</strong><ul id=\"mw-debug-html\">" .
 				$listInternals . "</ul>\n";
 		}
 
-		return '';
+		return $html;
 	}
 
+	/**
+	 * @param $debugText string
+	 * @return string
+	 */
 	private function formatDebugHTML( $debugText ) {
 		global $wgDebugTimestamps;
 
@@ -549,7 +584,7 @@ abstract class Skin extends ContextSource {
 			$pre = '';
 			if ( $wgDebugTimestamps ) {
 				$matches = array();
-				if ( preg_match( '/^(\d+\.\d+   \d+.\dM\s{2})/', $line, $matches ) ) {
+				if ( preg_match( '/^(\d+\.\d+ {1,3}\d+.\dM\s{2})/', $line, $matches ) ) {
 					$pre = $matches[1];
 					$line = substr( $line, strlen( $pre ) );
 				}
@@ -617,9 +652,12 @@ abstract class Skin extends ContextSource {
 			// oldid not available for non existing pages
 			$url = htmlspecialchars( $this->getTitle()->getCanonicalURL() );
 		}
-		return wfMsg( 'retrievedfrom', '<a href="' . $url . '">' . $url . '</a>' );
+		return $this->msg( 'retrievedfrom', '<a href="' . $url . '">' . $url . '</a>' )->text();
 	}
 
+	/**
+	 * @return String
+	 */
 	function getUndeleteLink() {
 		$action = $this->getRequest()->getVal( 'action', 'view' );
 
@@ -635,19 +673,20 @@ abstract class Skin extends ContextSource {
 					$msg = 'viewdeleted';
 				}
 
-				return wfMsg(
-					$msg,
+				return $this->msg( $msg )->rawParams(
 					Linker::linkKnown(
 						SpecialPage::getTitleFor( 'Undelete', $this->getTitle()->getPrefixedDBkey() ),
-						wfMsgExt( 'restorelink', array( 'parsemag', 'escape' ), $this->getLang()->formatNum( $n ) )
-					)
-				);
+						$this->msg( 'restorelink' )->numParams( $n )->escaped() )
+					)->text();
 			}
 		}
 
 		return '';
 	}
 
+	/**
+	 * @return string
+	 */
 	function subPageSubtitle() {
 		$out = $this->getOutput();
 		$subpages = '';
@@ -679,7 +718,7 @@ abstract class Skin extends ContextSource {
 						$c++;
 
 						if ( $c > 1 ) {
-							$subpages .= wfMsgExt( 'pipe-separator', 'escapenoentities' );
+							$subpages .= $this->msg( 'pipe-separator' )->escaped();
 						} else  {
 							$subpages .= '&lt; ';
 						}
@@ -706,20 +745,30 @@ abstract class Skin extends ContextSource {
 		return $wgShowIPinHeader && session_id() != '';
 	}
 
+	/**
+	 * @return String
+	 */
 	function getSearchLink() {
 		$searchPage = SpecialPage::getTitleFor( 'Search' );
 		return $searchPage->getLocalURL();
 	}
 
+	/**
+	 * @return string
+	 */
 	function escapeSearchLink() {
 		return htmlspecialchars( $this->getSearchLink() );
 	}
 
+	/**
+	 * @param $type string
+	 * @return string
+	 */
 	function getCopyright( $type = 'detect' ) {
 		global $wgRightsPage, $wgRightsUrl, $wgRightsText, $wgContLang;
 
 		if ( $type == 'detect' ) {
-			if ( !$this->isRevisionCurrent() && wfMsgForContent( 'history_copyright' ) !== '-' ) {
+			if ( !$this->isRevisionCurrent() && !$this->msg( 'history_copyright' )->inContentLanguage()->isDisabled() ) {
 				$type = 'history';
 			} else {
 				$type = 'normal';
@@ -749,17 +798,21 @@ abstract class Skin extends ContextSource {
 
 		wfRunHooks( 'SkinCopyrightFooter', array( $this->getTitle(), $type, &$msg, &$link, &$forContent ) );
 
+		$msgObj = $this->msg( $msg )->rawParams( $link );
 		if ( $forContent ) {
-			$msg = wfMsgForContent( $msg, $link );
-			if ( $this->getLang()->getCode() !== $wgContLang->getCode() ) {
-				$msg = Html::rawElement( 'span', array( 'lang' => $wgContLang->getCode(), 'dir' => $wgContLang->getDir() ), $msg );
+			$msg = $msgObj->inContentLanguage()->text();
+			if ( $this->getLanguage()->getCode() !== $wgContLang->getCode() ) {
+				$msg = Html::rawElement( 'span', array( 'lang' => $wgContLang->getHtmlCode(), 'dir' => $wgContLang->getDir() ), $msg );
 			}
 			return $msg;
 		} else {
-			return wfMsg( $msg, $link );
+			return $msgObj->text();
 		}
 	}
 
+	/**
+	 * @return null|string
+	 */
 	function getCopyrightIcon() {
 		global $wgRightsUrl, $wgRightsText, $wgRightsIcon, $wgCopyrightIcon;
 
@@ -794,7 +847,7 @@ abstract class Skin extends ContextSource {
 		global $wgStylePath;
 
 		$url = htmlspecialchars( "$wgStylePath/common/images/poweredby_mediawiki_88x31.png" );
-		$text = '<a href="http://www.mediawiki.org/"><img src="' . $url . '" height="31" width="88" alt="Powered by MediaWiki" /></a>';
+		$text = '<a href="//www.mediawiki.org/"><img src="' . $url . '" height="31" width="88" alt="Powered by MediaWiki" /></a>';
 		wfRunHooks( 'SkinGetPoweredBy', array( &$text, $this ) );
 		return $text;
 	}
@@ -802,31 +855,35 @@ abstract class Skin extends ContextSource {
 	/**
 	 * Get the timestamp of the latest revision, formatted in user language
 	 *
-	 * @param $article Article object. Used if we're working with the current revision
 	 * @return String
 	 */
-	protected function lastModified( $article ) {
-		if ( !$this->isRevisionCurrent() ) {
+	protected function lastModified() {
+		$timestamp = $this->getOutput()->getRevisionTimestamp();
+
+		# No cached timestamp, load it from the database
+		if ( $timestamp === null ) {
 			$timestamp = Revision::getTimestampFromId( $this->getTitle(), $this->getRevisionId() );
-		} else {
-			$timestamp = $article->getTimestamp();
 		}
 
 		if ( $timestamp ) {
-			$d = $this->getLang()->date( $timestamp, true );
-			$t = $this->getLang()->time( $timestamp, true );
-			$s = ' ' . wfMsg( 'lastmodifiedat', $d, $t );
+			$d = $this->getLanguage()->userDate( $timestamp, $this->getUser() );
+			$t = $this->getLanguage()->userTime( $timestamp, $this->getUser() );
+			$s = ' ' . $this->msg( 'lastmodifiedat', $d, $t )->text();
 		} else {
 			$s = '';
 		}
 
 		if ( wfGetLB()->getLaggedSlaveMode() ) {
-			$s .= ' <strong>' . wfMsg( 'laggedslavemode' ) . '</strong>';
+			$s .= ' <strong>' . $this->msg( 'laggedslavemode' )->text() . '</strong>';
 		}
 
 		return $s;
 	}
 
+	/**
+	 * @param $align string
+	 * @return string
+	 */
 	function logoText( $align = '' ) {
 		if ( $align != '' ) {
 			$a = " align='{$align}'";
@@ -834,9 +891,9 @@ abstract class Skin extends ContextSource {
 			$a = '';
 		}
 
-		$mp = wfMsgHtml( 'mainpage' );
+		$mp = $this->msg( 'mainpage' )->escaped();
 		$mptitle = Title::newMainPage();
-		$url = ( is_object( $mptitle ) ? $mptitle->escapeLocalURL() : '' );
+		$url = ( is_object( $mptitle ) ? htmlspecialchars( $mptitle->getLocalURL() ) : '' );
 
 		$logourl = $this->getLogo();
 		$s = "<a href='{$url}'><img{$a} src='{$logourl}' alt='[{$mp}]' /></a>";
@@ -875,26 +932,31 @@ abstract class Skin extends ContextSource {
 	function mainPageLink() {
 		$s = Linker::linkKnown(
 			Title::newMainPage(),
-			wfMsgHtml( 'mainpage' )
+			$this->msg( 'mainpage' )->escaped()
 		);
 
 		return $s;
 	}
 
+	/**
+	 * @param $desc
+	 * @param $page
+	 * @return string
+	 */
 	public function footerLink( $desc, $page ) {
 		// if the link description has been set to "-" in the default language,
-		if ( wfMsgForContent( $desc )  == '-' ) {
+		if ( $this->msg( $desc )->inContentLanguage()->isDisabled() ) {
 			// then it is disabled, for all languages.
 			return '';
 		} else {
 			// Otherwise, we display the link for the user, described in their
 			// language (which may or may not be the same as the default language),
 			// but we make the link target be the one site-wide page.
-			$title = Title::newFromText( wfMsgForContent( $page ) );
+			$title = Title::newFromText( $this->msg( $page )->inContentLanguage()->text() );
 
 			return Linker::linkKnown(
 				$title,
-				wfMsgExt( $desc, array( 'parsemag', 'escapenoentities' ) )
+				$this->msg( $desc )->escaped()
 			);
 		}
 	}
@@ -940,8 +1002,16 @@ abstract class Skin extends ContextSource {
 		return $options;
 	}
 
+	/**
+	 * @param $id User|int
+	 * @return bool
+	 */
 	function showEmailUser( $id ) {
-		$targetUser = User::newFromId( $id );
+		if ( $id instanceof User ) {
+			$targetUser = $id;
+		} else {
+			$targetUser = User::newFromId( $id );
+		}
 		return $this->getUser()->canSendEmail() && # the sending user must have a confirmed email address
 			$targetUser->canReceiveEmail(); # the target user must have a confirmed email address and allow emails from users
 	}
@@ -971,6 +1041,11 @@ abstract class Skin extends ContextSource {
 	}
 
 	/* these are used extensively in SkinTemplate, but also some other places */
+
+	/**
+	 * @param $urlaction string
+	 * @return String
+	 */
 	static function makeMainPageUrl( $urlaction = '' ) {
 		$title = Title::newMainPage();
 		self::checkTitle( $title, '' );
@@ -978,22 +1053,43 @@ abstract class Skin extends ContextSource {
 		return $title->getLocalURL( $urlaction );
 	}
 
+	/**
+	 * @param $name string
+	 * @param $urlaction string
+	 * @return String
+	 */
 	static function makeSpecialUrl( $name, $urlaction = '' ) {
 		$title = SpecialPage::getSafeTitleFor( $name );
 		return $title->getLocalURL( $urlaction );
 	}
 
+	/**
+	 * @param $name string
+	 * @param $subpage string
+	 * @param $urlaction string
+	 * @return String
+	 */
 	static function makeSpecialUrlSubpage( $name, $subpage, $urlaction = '' ) {
 		$title = SpecialPage::getSafeTitleFor( $name, $subpage );
 		return $title->getLocalURL( $urlaction );
 	}
 
+	/**
+	 * @param $name string
+	 * @param $urlaction string
+	 * @return String
+	 */
 	static function makeI18nUrl( $name, $urlaction = '' ) {
 		$title = Title::newFromText( wfMsgForContent( $name ) );
 		self::checkTitle( $title, $name );
 		return $title->getLocalURL( $urlaction );
 	}
 
+	/**
+	 * @param $name string
+	 * @param $urlaction string
+	 * @return String
+	 */
 	static function makeUrl( $name, $urlaction = '' ) {
 		$title = Title::newFromText( $name );
 		self::checkTitle( $title, $name );
@@ -1015,7 +1111,13 @@ abstract class Skin extends ContextSource {
 		}
 	}
 
-	# this can be passed the NS number as defined in Language.php
+	/**
+	 * this can be passed the NS number as defined in Language.php
+	 * @param $name
+	 * @param $urlaction string
+	 * @param $namespace int
+	 * @return String
+	 */
 	static function makeNSUrl( $name, $urlaction = '', $namespace = NS_MAIN ) {
 		$title = Title::makeTitleSafe( $namespace, $name );
 		self::checkTitle( $title, $name );
@@ -1023,7 +1125,12 @@ abstract class Skin extends ContextSource {
 		return $title->getLocalURL( $urlaction );
 	}
 
-	/* these return an array with the 'href' and boolean 'exists' */
+	/**
+	 * these return an array with the 'href' and boolean 'exists'
+	 * @param $name
+	 * @param $urlaction string
+	 * @return array
+	 */
 	static function makeUrlDetails( $name, $urlaction = '' ) {
 		$title = Title::newFromText( $name );
 		self::checkTitle( $title, $name );
@@ -1050,7 +1157,12 @@ abstract class Skin extends ContextSource {
 		);
 	}
 
-	# make sure we have some title to operate on
+	/**
+	 * make sure we have some title to operate on
+	 *
+	 * @param $title Title
+	 * @param $name string
+	 */
 	static function checkTitle( &$title, $name ) {
 		if ( !is_object( $title ) ) {
 			$title = Title::newFromText( $name );
@@ -1069,7 +1181,7 @@ abstract class Skin extends ContextSource {
 		global $parserMemc, $wgEnableSidebarCache, $wgSidebarCacheExpiry;
 		wfProfileIn( __METHOD__ );
 
-		$key = wfMemcKey( 'sidebar', $this->getLang()->getCode() );
+		$key = wfMemcKey( 'sidebar', $this->getLanguage()->getCode() );
 
 		if ( $wgEnableSidebarCache ) {
 			$cachedsidebar = $parserMemc->get( $key );
@@ -1096,7 +1208,7 @@ abstract class Skin extends ContextSource {
 	 *
 	 * This is just a wrapper around addToSidebarPlain() for backwards compatibility
 	 *
-	 * @param &$bar array
+	 * @param $bar array
 	 * @param $message String
 	 */
 	function addToSidebar( &$bar, $message ) {
@@ -1106,7 +1218,7 @@ abstract class Skin extends ContextSource {
 	/**
 	 * Add content from plain text
 	 * @since 1.17
-	 * @param &$bar array
+	 * @param $bar array
 	 * @param $text string
 	 * @return Array
 	 */
@@ -1134,7 +1246,7 @@ abstract class Skin extends ContextSource {
 					$line = array_map( 'trim', explode( '|', $line, 2 ) );
 					$extraAttribs = array();
 
-					$msgLink = wfMessage( $line[0] )->inContentLanguage();
+					$msgLink = $this->msg( $line[0] )->inContentLanguage();
 					if ( $msgLink->exists() ) {
 						$link = $msgLink->text();
 						if ( $link == '-' ) {
@@ -1144,7 +1256,7 @@ abstract class Skin extends ContextSource {
 						$link = $line[0];
 					}
 
-					$msgText = wfMessage( $line[1] );
+					$msgText = $this->msg( $line[1] );
 					if ( $msgText->exists() ) {
 						$text = $msgText->text();
 					} else {
@@ -1153,13 +1265,13 @@ abstract class Skin extends ContextSource {
 
 					if ( preg_match( '/^(?:' . wfUrlProtocols() . ')/', $link ) ) {
 						$href = $link;
-						
+
 						// Parser::getExternalLinkAttribs won't work here because of the Namespace things
 						global $wgNoFollowLinks, $wgNoFollowDomainExceptions;
 						if ( $wgNoFollowLinks && !wfMatchesDomainList( $href, $wgNoFollowDomainExceptions ) ) {
 							$extraAttribs['rel'] = 'nofollow';
 						}
-						
+
 						global $wgExternalLinkTarget;
 						if ( $wgExternalLinkTarget) {
 							$extraAttribs['target'] = $wgExternalLinkTarget;
@@ -1218,29 +1330,29 @@ abstract class Skin extends ContextSource {
 			if ( !$userTalkTitle->equals( $out->getTitle() ) ) {
 				$newMessagesLink = Linker::linkKnown(
 					$userTalkTitle,
-					wfMsgHtml( 'newmessageslink' ),
+					$this->msg( 'newmessageslink' )->escaped(),
 					array(),
 					array( 'redirect' => 'no' )
 				);
 
 				$newMessagesDiffLink = Linker::linkKnown(
 					$userTalkTitle,
-					wfMsgHtml( 'newmessagesdifflink' ),
+					$this->msg( 'newmessagesdifflink' )->escaped(),
 					array(),
 					array( 'diff' => 'cur' )
 				);
 
-				$ntl = wfMsg(
+				$ntl = $this->msg(
 					'youhavenewmessages',
 					$newMessagesLink,
 					$newMessagesDiffLink
-				);
+				)->text();
 				# Disable Squid cache
 				$out->setSquidMaxage( 0 );
 			}
 		} elseif ( count( $newtalks ) ) {
 			// _>" " for BC <= 1.16
-			$sep = str_replace( '_', ' ', wfMsgHtml( 'newtalkseparator' ) );
+			$sep = str_replace( '_', ' ', $this->msg( 'newtalkseparator' )->escaped() );
 			$msgs = array();
 
 			foreach ( $newtalks as $newtalk ) {
@@ -1250,7 +1362,7 @@ abstract class Skin extends ContextSource {
 				);
 			}
 			$parts = implode( $sep, $msgs );
-			$ntl = wfMsgHtml( 'youhavenewmessagesmulti', $parts );
+			$ntl = $this->msg( 'youhavenewmessagesmulti' )->rawParams( $parts )->escaped();
 			$out->setSquidMaxage( 0 );
 		}
 
@@ -1279,7 +1391,7 @@ abstract class Skin extends ContextSource {
 				return false;
 			}
 		} else {
-			$msg = wfMessage( $name )->inContentLanguage();
+			$msg = $this->msg( $name )->inContentLanguage();
 			if( $msg->isDisabled() ) {
 				wfProfileOut( __METHOD__ );
 				return false;
@@ -1307,7 +1419,7 @@ abstract class Skin extends ContextSource {
 		}
 
 		$notice = Html::rawElement( 'div', array( 'id' => 'localNotice',
-			'lang' => $wgContLang->getCode(), 'dir' => $wgContLang->getDir() ), $notice );
+			'lang' => $wgContLang->getHtmlCode(), 'dir' => $wgContLang->getDir() ), $notice );
 		wfProfileOut( __METHOD__ );
 		return $notice;
 	}

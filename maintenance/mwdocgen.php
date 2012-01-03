@@ -33,7 +33,7 @@
  * @todo document
  * @ingroup Maintenance
  *
- * @author Ashar Voultoiz <hashar at free dot fr>
+ * @author Antoine Musso <hashar at free dot fr>
  * @author Brion Vibber
  * @author Alexandre Emsenhuber
  * @version first release
@@ -156,6 +156,8 @@ function getSvnRevision( $dir ) {
  */
 function generateConfigFile( $doxygenTemplate, $outputDirectory, $stripFromPath, $currentVersion, $svnstat, $input, $exclude, $exclude_patterns ) {
 
+	global $wgDoxyGenerateMan;
+
 	$template = file_get_contents( $doxygenTemplate );
 
 	// Replace template placeholders by correct values.
@@ -168,6 +170,7 @@ function generateConfigFile( $doxygenTemplate, $outputDirectory, $stripFromPath,
 		'{{EXCLUDE}}'          => $exclude,
 		'{{EXCLUDE_PATTERNS}}' => $exclude_patterns,
 		'{{HAVE_DOT}}'         => `which dot` ? 'YES' : 'NO',
+		'{{GENERATE_MAN}}'     => $wgDoxyGenerateMan ? 'YES' : 'NO',
 	);
 	$tmpCfg = str_replace( array_keys( $replacements ), array_values( $replacements ), $template );
 	$tmpFileName = tempnam( wfTempDir(), 'mwdocgen-' );
@@ -204,6 +207,9 @@ if ( is_array( $argv ) ) {
 				$doxyOutput = realpath( $argv[$i] );
 			}
 			break;
+		case '--generate-man':
+			$wgDoxyGenerateMan = true;
+			break;
 		case '--help':
 			print <<<END
 Usage: php mwdocgen.php [<command>] [<options>]
@@ -215,11 +221,13 @@ Commands:
     --maintenance   Process only files in maintenance/ dir
     --skins         Process only files in skins/ dir
     --file <file>   Process only the given file
+    --no-extensions Process everything but extensions directorys
 
 If no command is given, you will be prompted.
 
 Other options:
     --output <dir>  Set output directory (default $doxyOutput)
+    --generate-man  Generates man page documentation
     --help          Show this help and exit.
 
 

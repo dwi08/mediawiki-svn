@@ -23,7 +23,7 @@ class Linker {
 	 * @deprecated since 1.18 Just pass the external class directly to something using Html::expandAttributes
 	 */
 	static function getExternalLinkAttributes( $class = 'external' ) {
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.18' );
 		return self::getLinkAttributesInternal( '', $class );
 	}
 
@@ -135,6 +135,11 @@ class Linker {
 	 *      name of the target).
 	 * link() replaces the old functions in the makeLink() family.
 	 *
+	 * @since 1.18 Method exists since 1.16 as non-static, made static in 1.18.
+	 * You can call it using this if you want to keep compat with these:
+	 * $linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
+	 * $linker->link( ... );
+	 *
 	 * @param $target        Title  Can currently only be a Title, but this may
 	 *   change to support Images, literal URLs, etc.
 	 * @param $html          string The HTML contents of the <a> element, i.e.,
@@ -149,15 +154,20 @@ class Linker {
 	 * @param $query         array  The query string to append to the URL
 	 *   you're linking to, in key => value array form.  Query keys and values
 	 *   will be URL-encoded.
-	 * @param $options string|array  String or array of strings:
-	 *     'known': Page is known to exist, so don't check if it does.
-	 *     'broken': Page is known not to exist, so don't check if it does.
-	 *     'noclasses': Don't add any classes automatically (includes "new",
+	 * @param $options string|array  String or array:
+	 *   - Either with numerical index and following values:
+	 *     - 'known': Page is known to exist, so don't check if it does.
+	 *     - 'broken': Page is known not to exist, so don't check if it does.
+	 *     - 'noclasses': Don't add any classes automatically (includes "new",
 	 *       "stub", "mw-redirect", "extiw").  Only use the class attribute
 	 *       provided, if any, so you get a simple blue link with no funny i-
 	 *       cons.
-	 *     'forcearticlepath': Use the article path always, even with a querystring.
+	 *     - 'forcearticlepath': Use the article path always, even with a querystring.
 	 *       Has compatibility issues on some setups, so avoid wherever possible.
+	 *   - Or with following indexes:
+	 *     - 'language': the value of that index is the language to use; currently
+	 *       only used for the tooltip when linking to a page that doesn't exist
+	 *       (since 1.19)
 	 * @return string HTML <a> attribute
 	 */
 	public static function link(
@@ -184,7 +194,7 @@ class Linker {
 
 		# If we don't know whether the page exists, let's find out.
 		wfProfileIn( __METHOD__ . '-checkPageExistence' );
-		if ( !in_array( 'known', $options ) and !in_array( 'broken', $options ) ) {
+		if ( !in_array( 'known', $options, true ) && !in_array( 'broken', $options, true ) ) {
 			if ( $target->isKnown() ) {
 				$options[] = 'known';
 			} else {
@@ -194,14 +204,14 @@ class Linker {
 		wfProfileOut( __METHOD__ . '-checkPageExistence' );
 
 		$oldquery = array();
-		if ( in_array( "forcearticlepath", $options ) && $query ) {
+		if ( in_array( 'forcearticlepath', $options, true ) && $query ) {
 			$oldquery = $query;
 			$query = array();
 		}
 
 		# Note: we want the href attribute first, for prettiness.
 		$attribs = array( 'href' => self::linkUrl( $target, $query, $options ) );
-		if ( in_array( 'forcearticlepath', $options ) && $oldquery ) {
+		if ( in_array( 'forcearticlepath', $options, true ) && $oldquery ) {
 			$attribs['href'] = wfAppendQuery( $attribs['href'], wfArrayToCgi( $oldquery ) );
 		}
 
@@ -241,7 +251,7 @@ class Linker {
 		wfProfileIn( __METHOD__ );
 		# We don't want to include fragments for broken links, because they
 		# generally make no sense.
-		if ( in_array( 'broken', $options ) && $target->mFragment !== '' ) {
+		if ( in_array( 'broken', $options, true ) && $target->mFragment !== '' ) {
 			$target = clone $target;
 			$target->mFragment = '';
 		}
@@ -249,12 +259,12 @@ class Linker {
 		# If it's a broken link, add the appropriate query pieces, unless
 		# there's already an action specified, or unless 'edit' makes no sense
 		# (i.e., for a nonexistent special page).
-		if ( in_array( 'broken', $options ) && empty( $query['action'] )
-			&& $target->getNamespace() != NS_SPECIAL ) {
+		if ( in_array( 'broken', $options, true ) && empty( $query['action'] )
+			&& !$target->isSpecialPage() ) {
 			$query['action'] = 'edit';
 			$query['redlink'] = '1';
 		}
-		$ret = $target->getLinkUrl( $query );
+		$ret = $target->getLinkURL( $query );
 		wfProfileOut( __METHOD__ );
 		return $ret;
 	}
@@ -269,24 +279,22 @@ class Linker {
 	 * @return array
 	 */
 	private static function linkAttribs( $target, $attribs, $options ) {
-		wfProfileIn( __METHOD__ );
 		global $wgUser;
+
+		wfProfileIn( __METHOD__ );
+
 		$defaults = array();
 
-		if ( !in_array( 'noclasses', $options ) ) {
+		if ( !in_array( 'noclasses', $options, true ) ) {
 			wfProfileIn( __METHOD__ . '-getClasses' );
 			# Now build the classes.
 			$classes = array();
 
-			if ( in_array( 'broken', $options ) ) {
-				$classes[] = 'new';
-			}
-
 			if ( $target->isExternal() ) {
 				$classes[] = 'extiw';
-			}
-
-			if ( !in_array( 'broken', $options ) ) { # Avoid useless calls to LinkCache (see r50387)
+			} elseif ( in_array( 'broken', $options, true ) ) {
+				$classes[] = 'new';
+			} else { # Avoid useless calls to LinkCache (see r50387)
 				$colour = self::getLinkColour( $target, $wgUser->getStubThreshold() );
 				if ( $colour !== '' ) {
 					$classes[] = $colour; # mw-redirect or stub
@@ -302,10 +310,14 @@ class Linker {
 		if ( $target->getPrefixedText() == '' ) {
 			# A link like [[#Foo]].  This used to mean an empty title
 			# attribute, but that's silly.  Just don't output a title.
-		} elseif ( in_array( 'known', $options ) ) {
+		} elseif ( in_array( 'known', $options, true ) ) {
 			$defaults['title'] = $target->getPrefixedText();
 		} else {
-			$defaults['title'] = wfMsg( 'red-link-title', $target->getPrefixedText() );
+			$msg = wfMessage( 'red-link-title', $target->getPrefixedText() );
+			if ( isset( $options['language'] ) ) {
+				$msg->inLanguage( $options['language'] );
+			}
+			$defaults['title'] = $msg->text();
 		}
 
 		# Finally, merge the custom attribs with the default ones, and iterate
@@ -359,7 +371,7 @@ class Linker {
 	 */
 	static function makeSizeLinkObj( $size, $nt, $text = '', $query = '', $trail = '', $prefix = '' ) {
 		global $wgUser;
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.17' );
 
 		$threshold = $wgUser->getStubThreshold();
 		$colour = ( $size < $threshold ) ? 'stub' : '';
@@ -389,7 +401,7 @@ class Linker {
 	 * @return Title
 	 */
 	static function normaliseSpecialPage( Title $title ) {
-		if ( $title->getNamespace() == NS_SPECIAL ) {
+		if ( $title->isSpecialPage() ) {
 			list( $name, $subpage ) = SpecialPageFactory::resolveAlias( $title->getDBkey() );
 			if ( !$name ) {
 				return $title;
@@ -969,6 +981,8 @@ class Linker {
 			$items[] = self::emailLink( $userId, $userText );
 		}
 
+		wfRunHooks( 'UserToolLinksEdit', array( $userId, $userText, &$items ) );
+
 		if ( $items ) {
 			return ' <span class="mw-usertoollinks">(' . $wgLang->pipeList( $items ) . ')</span>';
 		} else {
@@ -1132,6 +1146,7 @@ class Linker {
 	 * @return string
 	 */
 	private static function formatAutocommentsCallback( $match ) {
+		global $wgLang;
 		$title = self::$autocommentTitle;
 		$local = self::$autocommentLocal;
 
@@ -1157,7 +1172,7 @@ class Linker {
 			}
 			if ( $sectionTitle ) {
 				$link = self::link( $sectionTitle,
-					htmlspecialchars( wfMsgForContent( 'sectionlink' ) ), array(), array(),
+					$wgLang->getArrow(), array(), array(),
 					'noclasses' );
 			} else {
 				$link = '';
@@ -1581,7 +1596,7 @@ class Linker {
 		$query = array(
 			'action' => 'rollback',
 			'from' => $rev->getUserText(),
-			'token' => $wgUser->editToken( array( $title->getPrefixedText(), $rev->getUserText() ) ),
+			'token' => $wgUser->getEditToken( array( $title->getPrefixedText(), $rev->getUserText() ) ),
 		);
 		if ( $wgRequest->getBool( 'bot' ) ) {
 			$query['bot'] = '1';
@@ -1713,10 +1728,6 @@ class Linker {
 	 *   escape), or false for no title attribute
 	 */
 	public static function titleAttrib( $name, $options = null ) {
-		global $wgEnableTooltipsAndAccesskeys;
-		if ( !$wgEnableTooltipsAndAccesskeys )
-			return false;
-
 		wfProfileIn( __METHOD__ );
 
 		$message = wfMessage( "tooltip-$name" );
@@ -1799,32 +1810,33 @@ class Linker {
 	 */
 	public static function getRevDeleteLink( User $user, Revision $rev, Title $title ) {
 		$canHide = $user->isAllowed( 'deleterevision' );
-		if ( $canHide || ( $rev->getVisibility() && $user->isAllowed( 'deletedhistory' ) ) ) {
-			if( !$rev->userCan( Revision::DELETED_RESTRICTED ) ) {
-				$revdlink = Linker::revDeleteLinkDisabled( $canHide ); // revision was hidden from sysops
-			} else {
-				if ( $rev->getId() ) {
-					// RevDelete links using revision ID are stable across
-					// page deletion and undeletion; use when possible.
-					$query = array(
-						'type'   => 'revision',
-						'target' => $title->getPrefixedDBkey(),
-						'ids'    => $rev->getId()
-					);
-				} else {
-					// Older deleted entries didn't save a revision ID.
-					// We have to refer to these by timestamp, ick!
-					$query = array(
-						'type'   => 'archive',
-						'target' => $title->getPrefixedDBkey(),
-						'ids'    => $rev->getTimestamp()
-					);
-				}
-				return Linker::revDeleteLink( $query,
-					$rev->isDeleted( File::DELETED_RESTRICTED ), $canHide );
-			}
+		if ( !$canHide && !( $rev->getVisibility() && $user->isAllowed( 'deletedhistory' ) ) ) {
+			return '';
 		}
-		return '';
+
+		if ( !$rev->userCan( Revision::DELETED_RESTRICTED, $user ) ) {
+			return Linker::revDeleteLinkDisabled( $canHide ); // revision was hidden from sysops
+		} else {
+			if ( $rev->getId() ) {
+				// RevDelete links using revision ID are stable across
+				// page deletion and undeletion; use when possible.
+				$query = array(
+					'type'   => 'revision',
+					'target' => $title->getPrefixedDBkey(),
+					'ids'    => $rev->getId()
+				);
+			} else {
+				// Older deleted entries didn't save a revision ID.
+				// We have to refer to these by timestamp, ick!
+				$query = array(
+					'type'   => 'archive',
+					'target' => $title->getPrefixedDBkey(),
+					'ids'    => $rev->getTimestamp()
+				);
+			}
+			return Linker::revDeleteLink( $query,
+				$rev->isDeleted( Revision::DELETED_RESTRICTED ), $canHide );
+		}
 	}
 
 	/**
@@ -1874,6 +1886,8 @@ class Linker {
 	 *               the end of the link.
 	 */
 	static function makeBrokenLink( $title, $text = '', $query = '', $trail = '' ) {
+		wfDeprecated( __METHOD__, '1.16' );
+		
 		$nt = Title::newFromText( $title );
 		if ( $nt instanceof Title ) {
 			return self::makeBrokenLinkObj( $nt, $text, $query, $trail );
@@ -1900,6 +1914,8 @@ class Linker {
 	 * @param $prefix String: optional prefix. As trail, only before instead of after.
 	 */
 	static function makeLinkObj( $nt, $text = '', $query = '', $trail = '', $prefix = '' ) {
+		# wfDeprecated( __METHOD__, '1.16' ); // See r105985 and it's revert. Somewhere still used.
+		
 		wfProfileIn( __METHOD__ );
 		$query = wfCgiToArray( $query );
 		list( $inside, $trail ) = self::splitTrail( $trail );
@@ -1932,6 +1948,8 @@ class Linker {
 	static function makeKnownLinkObj(
 		$title, $text = '', $query = '', $trail = '', $prefix = '' , $aprops = '', $style = ''
 	) {
+		# wfDeprecated( __METHOD__, '1.16' ); // See r105985 and it's revert. Somewhere still used.
+		
 		wfProfileIn( __METHOD__ );
 
 		if ( $text == '' ) {
@@ -1965,6 +1983,8 @@ class Linker {
 	 * @param $prefix String: Optional prefix
 	 */
 	static function makeBrokenLinkObj( $title, $text = '', $query = '', $trail = '', $prefix = '' ) {
+		wfDeprecated( __METHOD__, '1.16' );
+		
 		wfProfileIn( __METHOD__ );
 
 		list( $inside, $trail ) = self::splitTrail( $trail );
@@ -1994,6 +2014,8 @@ class Linker {
 	 * @param $prefix String: Optional prefix
 	 */
 	static function makeColouredLinkObj( $nt, $colour, $text = '', $query = '', $trail = '', $prefix = '' ) {
+		wfDeprecated( __METHOD__, '1.16' );
+		
 		if ( $colour != '' ) {
 			$style = self::getInternalLinkAttributesObj( $nt, $text, $colour );
 		} else {
@@ -2006,9 +2028,6 @@ class Linker {
 	 * Returns the attributes for the tooltip and access key.
 	 */
 	public static function tooltipAndAccesskeyAttribs( $name ) {
-		global $wgEnableTooltipsAndAccesskeys;
-		if ( !$wgEnableTooltipsAndAccesskeys )
-			return array();
 		# @todo FIXME: If Sanitizer::expandAttributes() treated "false" as "output
 		# no attribute" instead of "output '' as value for attribute", this
 		# would be three lines.
@@ -2026,13 +2045,9 @@ class Linker {
 	}
 
 	/**
-	 * @deprecated since 1.14
 	 * Returns raw bits of HTML, use titleAttrib()
 	 */
 	public static function tooltip( $name, $options = null ) {
-		global $wgEnableTooltipsAndAccesskeys;
-		if ( !$wgEnableTooltipsAndAccesskeys )
-			return '';
 		# @todo FIXME: If Sanitizer::expandAttributes() treated "false" as "output
 		# no attribute" instead of "output '' as value for attribute", this
 		# would be two lines.

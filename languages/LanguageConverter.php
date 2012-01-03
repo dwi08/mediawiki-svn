@@ -189,7 +189,7 @@ class LanguageConverter {
 	 * @param $variant String: the variant to validate
 	 * @return Mixed: returns the variant if it is valid, null otherwise
 	 */
-	protected function validateVariant( $variant = null ) {
+	public function validateVariant( $variant = null ) {
 		if ( $variant !== null && in_array( $variant, $this->mVariants ) ) {
 			return $variant;
 		}
@@ -320,6 +320,11 @@ class LanguageConverter {
 				wfProfileOut( __METHOD__ );
 				return $text;
 			}
+		}
+
+		if( $this->guessVariant( $text, $toVariant ) ) {
+			wfProfileOut( __METHOD__ );
+			return $text;
 		}
 
 		/* we convert everything except:
@@ -571,7 +576,7 @@ class LanguageConverter {
 	 */
 	public function convertTo( $text, $variant ) {
 		global $wgDisableLangConversion;
-		if ( $wgDisableLangConversion ) {
+		if ( $wgDisableLangConversion || $this->guessVariant( $text, $variant ) ) {
 			return $text;
 		}
 		return $this->recursiveConvertTopLevel( $text, $variant );
@@ -773,6 +778,20 @@ class LanguageConverter {
 	}
 
 	/**
+	 * Guess if a text is written in a variant. This should be implemented in subclasses.
+	 *
+	 * @param string	$text the text to be checked
+	 * @param string	$variant language code of the variant to be checked for
+	 * @return bool	true if $text appears to be written in $variant, false if not
+	 *
+	 * @author Nikola Smolenski <smolensk@eunet.rs>
+	 * @since 1.19
+	 */
+	public function guessVariant($text, $variant) {
+		return false;
+	}
+
+	/**
 	 * Load default conversion tables.
 	 * This method must be implemented in derived class.
 	 *
@@ -870,24 +889,24 @@ class LanguageConverter {
 			return array();
 		}
 
-		if ( strpos( $code, '/' ) === false ) {
-			$txt = MessageCache::singleton()->get( 'Conversiontable', true, $code );
-			if ( $txt === false ) {
-				# @todo FIXME: This method doesn't seem to be expecting
-				# this possible outcome...
-				$txt = '&lt;Conversiontable&gt;';
-			}
+		$parsed[$key] = true;
+
+		if ( $subpage === '' ) {
+			$txt = MessageCache::singleton()->get( 'conversiontable', true, $code );
 		} else {
-			$title = Title::makeTitleSafe(
-				NS_MEDIAWIKI,
-				"Conversiontable/$code"
-			);
+			$txt = false;
+			$title = Title::makeTitleSafe( NS_MEDIAWIKI, $key );
 			if ( $title && $title->exists() ) {
-				$article = new Article( $title );
-				$txt = $article->getContents();
-			} else {
-				$txt = '';
+				$revision = Revision::newFromTitle( $title );
+				if ( $revision ) {
+					$txt = $revision->getRawText();
+				}
 			}
+		}
+
+		# Nothing to parse if there's no text
+		if ( $txt === false || $txt === null || $txt === '' ) {
+			return array();
 		}
 
 		// get all subpage links of the form
@@ -938,7 +957,6 @@ class LanguageConverter {
 				$ret[trim( $m[0] )] = trim( $tt[0] );
 			}
 		}
-		$parsed[$key] = true;
 
 		// recursively parse the subpages
 		if ( $recursive ) {

@@ -251,7 +251,6 @@ Ko e pule, naʻe lokaʻi ia, ʻoku pehē: $1',
 Lakanga: $1<br />
 Eke: $2",
 'viewsource'           => 'Vakai ki he tupunga',
-'viewsourcefor'        => 'ki he $1',
 'protectedinterface'   => 'Ko e peesi ʻeni ʻoku fakaai ia ʻa e potutohi maʻa e founga fakakomipiuta, ʻoku maluʻi ia ʻo taʻofi leakovi.',
 'editinginterface'     => "'''Fakatokanga''' ʻOku ke fatu ʻi he peesi ʻoku ne ngāueʻaki ki he potutohi ʻo e founga fakakomipiuta. Ko ia ʻene ʻasi mai maʻa e kau ʻetita kotoa ʻe hūkitonu ai ʻa e ngaahi liliu ʻo e pēsí.",
 'sqlhidden'            => '(ʻOku toi ʻa e fehuʻi SQL)',
@@ -349,9 +348,6 @@ Kapau naʻe kole ia ʻe he tokotaha kehe, pea ʻosi hoʻo manatuʻi ʻo e leatap
 'missingsummary'          => "'''Fakamanatu''': Naʻe ʻikai te ke fakaai ha fakanounou. Kapau te ke toe lomi Haofaki, ʻe haofakiʻi hoʻo fatu taʻefakanounou.",
 'missingcommenttext'      => 'Kātaki tuku pē ʻi lalo ʻa e fakamatala',
 'blockedtitle'            => 'ʻOku taʻofia ʻa e ʻetitá',
-'blockedoriginalsource'   => "ʻOku ʻasi ʻi lalo ʻa e tupunga ʻo e '''$1''':",
-'blockededitsource'       => "ʻOku ʻasi ʻi lalo ʻa e tohi ʻo '''hoʻo ngaahi fatu''' ki he '''$1''':",
-'whitelistedittitle'      => 'ʻOku pau ke kau ki ai ke fatuʻi',
 'whitelistedittext'       => 'ʻOku pau te ke $1 kapau te ke fiefatu ʻa e ngaahi kupu.',
 'confirmedittext'         => 'ʻOku pau te ke fakamoʻoniʻi ho tuʻasila tohila ʻi muʻa hoʻo fatu kupu. Kātaki ʻe fakamoʻoniʻi ia ngāueʻaki hoʻo [[Special:Preferences|faʻiteliha]] fakaʻetita.',
 'loginreqtitle'           => 'ʻOku pau te ke kau ki ai',
@@ -470,7 +466,6 @@ Ko e ʻuhinga loka ko e $1 ia.",
 'resetprefs'            => 'Fakafoki',
 'prefs-editing'         => 'ʻOku fatu',
 'rows'                  => 'Ngaahi ʻotu:',
-'columns'               => 'Vahaʻa laini:',
 'searchresultshead'     => 'Kumi',
 'recentchangescount'    => 'Ngaahi ʻuluʻitohi ʻoku ʻasi ʻi he toki liliu, hisitōlia peesi, mo e hokohoko:',
 'savedprefs'            => 'Kuo haofaki hoʻo faʻiteliha.',
@@ -875,7 +870,6 @@ Vakai ki he [[Special:Log/delete|hokohoko tāmateʻi]] ki he lekooti ʻo e ngaah
 # Block/unblock
 'blockip'              => 'Taʻofia ʻa e ʻetita',
 'blockiptext'          => 'Ngāueʻaki ʻa e foomu ʻi lalo ʻe taʻofia ʻa e ngofua tohi ʻo e tuʻasila IP pe hingoa ʻetita ʻe taha. ʻOku pau ʻe fai pehē ʻi he taʻofi laukovi pē, lototaha ia mo e [[{{MediaWiki:Policy-url}}|founga]]. Fakafonu ʻi lalo ʻa e ʻuhinga totonu (fakafuaʻaki, lau ki he ngaahi peesi naʻe laukovi).',
-'ipaddress'            => 'Tuʻasila IP',
 'ipadressorusername'   => 'Tuʻasila IP pe hingoa ʻo e ʻetita',
 'ipbexpiry'            => 'Mate',
 'ipbreason'            => 'ʻUhinga',
@@ -1164,7 +1158,7 @@ Pea hoko ai pē hoʻo lava tānaki ha ʻuhinga ʻi he fakanounou',
 
 # External editor support
 'edit-externally'      => 'Fatuʻi ʻa e failé ni ngāueʻaki mo e polokalama ʻi tuʻa',
-'edit-externally-help' => 'Vakai ki he [http://www.mediawiki.org/wiki/Manual:External_editors fakahinohino ki he fokotuʻu] maʻa toe fakamatala.',
+'edit-externally-help' => 'Vakai ki he [//www.mediawiki.org/wiki/Manual:External_editors fakahinohino ki he fokotuʻu] maʻa toe fakamatala.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'kātoa',

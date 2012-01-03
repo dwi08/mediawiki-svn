@@ -75,7 +75,7 @@ class SpecialRecentchangeslinked extends SpecialRecentChanges {
 			return false;
 		}
 
-		$this->getOutput()->setPageTitle( wfMsg( 'recentchangeslinked-title', $title->getPrefixedText() ) );
+		$this->getOutput()->setPageTitle( $this->msg( 'recentchangeslinked-title', $title->getPrefixedText() ) );
 
 		/*
 		 * Ordinary links are in the pagelinks table, while transclusions are
@@ -235,8 +235,7 @@ class SpecialRecentchangeslinked extends SpecialRecentChanges {
 	function setTopText( FormOptions $opts ) {
 		$target = $this->getTargetTitle();
 		if( $target ) {
-			$this->getOutput()->setSubtitle( wfMsg( 'recentchangeslinked-backlink', Linker::link( $target,
-				$target->getPrefixedText(), array(), array( 'redirect' => 'no'  ) ) ) );
+			$this->getOutput()->addBacklinkSubtitle( $target );
 		}
 	}
 

@@ -381,7 +381,6 @@ Podet èsser stadu burradu dae calicunu àteru.',
 'badtitle'            => 'Tìtulu malu',
 'badtitletext'        => "Su tìtulu de sa pàgina ch'as pediu est bùidu, isballiau, o iscritu in is cullegamentus inter-wiki in manera non currègia o cun caràteres no amìtius.",
 'viewsource'          => 'Càstia mitza',
-'viewsourcefor'       => 'pro $1',
 'actionthrottled'     => 'Atzione rimandada',
 'sqlhidden'           => '(Consulta SQL cuada)',
 'namespaceprotected'  => "Non tenes su permissu de acontzare is pàginas in su nùmene-lugu '''$1'''.",
@@ -519,7 +518,6 @@ Nota ca sa funtzione 'Ispedi un'e-mail a custu usuàriu' no est ativa ki no est 
 S'indiritzu IP atuale est $3, su nùmeru ID de su bloccu est #$5.
 Pro praxere spetzìfica totu is particulares in antis in carche siat pregunta de acrarimentu.",
 'blockednoreason'                  => 'perunu motivu indicadu',
-'whitelistedittitle'               => "Esigit s'identificatzione pro acontzare is pàginas",
 'loginreqtitle'                    => 'Identificatzione rekesta',
 'loginreqlink'                     => 'identifica·ti',
 'loginreqpagetext'                 => 'Depes èsser $1 pro bìer àteras pàginas.',
@@ -698,7 +696,6 @@ Prova a seberare ''totu:'' pro chircare in totu su cuntènnidu (inclùdidas pàg
 'resetprefs'                  => 'Re-imposta is preferèntzias',
 'prefs-editing'               => 'Box de acontzadura',
 'rows'                        => 'Lìnias:',
-'columns'                     => 'Colunnas:',
 'searchresultshead'           => 'Settaggio delle preferenze per la ricerca',
 'resultsperpage'              => 'Risultati da visualizzare per pagina',
 'stub-threshold-disabled'     => 'Disativadu',
@@ -827,15 +824,14 @@ Prova a seberare ''totu:'' pro chircare in totu su cuntènnidu (inclùdidas pàg
 'rc-enhanced-hide'               => 'Cua particulares',
 
 # Recent changes linked
-'recentchangeslinked'          => 'Mudàntzias ligadas',
-'recentchangeslinked-feed'     => 'Mudàntzias ligadas',
-'recentchangeslinked-toolbox'  => 'Mudàntzias ligadas',
-'recentchangeslinked-title'    => 'Mudàntzias ligadas a "$1"',
-'recentchangeslinked-backlink' => '← $1',
-'recentchangeslinked-summary'  => "Custa est una lista de is mudàntzias fatas dae pagu a is pàginas ligadas a cussa spetzificada.
+'recentchangeslinked'         => 'Mudàntzias ligadas',
+'recentchangeslinked-feed'    => 'Mudàntzias ligadas',
+'recentchangeslinked-toolbox' => 'Mudàntzias ligadas',
+'recentchangeslinked-title'   => 'Mudàntzias ligadas a "$1"',
+'recentchangeslinked-summary' => "Custa est una lista de is mudàntzias fatas dae pagu a is pàginas ligadas a cussa spetzificada.
 Is pàginas de sa [[Special:Watchlist|watchlist tua]] sunt in '''grassu'''.",
-'recentchangeslinked-page'     => 'Nùmene pàgina:',
-'recentchangeslinked-to'       => 'Ammustra feti mudàntzias a pàginas ligadas a cussa spetzificada',
+'recentchangeslinked-page'    => 'Nùmene pàgina:',
+'recentchangeslinked-to'      => 'Ammustra feti mudàntzias a pàginas ligadas a cussa spetzificada',
 
 # Upload
 'upload'              => 'Càrriga file',
@@ -912,12 +908,10 @@ Càstia sa [[Special:NewFiles|galleria de files nous]] pro una presentada prus b
 'shared-repo-from'          => 'dae $1',
 
 # File reversion
-'filerevert-backlink' => '← $1',
-'filerevert-comment'  => 'Motivu:',
+'filerevert-comment' => 'Motivu:',
 
 # File deletion
 'filedelete'                  => 'Cantzella $1',
-'filedelete-backlink'         => '← $1',
 'filedelete-legend'           => 'Cantzella su file',
 'filedelete-submit'           => 'Cantzella',
 'filedelete-success'          => "Su file '''$1''' est istadu fuliau.",
@@ -1087,7 +1081,6 @@ Is mudàntzias de custa pàgina e de sa pàgina de cuntierras sua ant a bennere 
 'excontentauthor'       => "su cuntènnidu fiat: '$1' (e s'ùnicu contribudori fiat '[[Special:Contributions/$2|$2]]')",
 'exblank'               => 'sa pàgina fiat bùida',
 'delete-confirm'        => 'Fùlia "$1"',
-'delete-backlink'       => '← $1',
 'delete-legend'         => 'Fuliare',
 'confirmdeletetext'     => "Ses acanta de burrare una pàgina cun totu su stòria sua.
 Pro praxere, cunfirma ca est intentzione tua fàgher custu, ca connosches is cosseguèntzias de s'atzione tua, a ca custa est cunforma a is [[{{MediaWiki:Policy-url}}|lìnias polìticas]].",
@@ -1114,7 +1107,6 @@ s'ùrtimu contribuidore est s'ùnicu autore de custa pàgina.",
 'protectlogpage'              => 'Amparaduras',
 'protectedarticle'            => 'at amparau "[[$1]]"',
 'modifiedarticleprotection'   => 'at cambiau su livellu de amparadura pro "[[$1]]"',
-'protect-backlink'            => '← $1',
 'protectcomment'              => 'Motivu:',
 'protectexpiry'               => 'Iscadèntzia:',
 'protect_expiry_invalid'      => "S'iscadèntzia est imbàlida.",
@@ -1196,7 +1188,6 @@ Chi est istada creada una pàgina cun su matessi tìtulu, is revisiones recupera
 'whatlinkshere'            => 'Pàginas chi ligant a custa',
 'whatlinkshere-title'      => 'Pàginas chi ligant a "$1"',
 'whatlinkshere-page'       => 'Pàgina:',
-'whatlinkshere-backlink'   => '← $1',
 'linkshere'                => "Sas pàginas chi sighint ligant a '''[[:$1]]''':",
 'nolinkshere'              => "Peruna pàgina ligat a '''[[:$1]]'''.",
 'nolinkshere-ns'           => "Peruna pàgina ligat a '''[[:$1]]''' in su nùmene-logu seberadu.",
@@ -1217,7 +1208,6 @@ Chi est istada creada una pàgina cun su matessi tìtulu, is revisiones recupera
 'blockip-legend'           => 'Blocca usuàriu',
 'blockiptext'              => "Usa il modulo sottostante per bloccare l'accesso con diritto di scrittura da uno specifico indirizzo IP. Questo blocco deve essere operato SOLO per prevenire atti di vandalismo, ed in stretta osservanza dei principi tutti della [[{{MediaWiki:Policy-url}}|policy di {{SITENAME}}]]. Il blocco non può in nessun caso essere applicato per motivi ideologici.
 Scrivi un motivo specifico per il quale questo indirizzo IP dovrebbe a tuo avviso essere bloccato (per esempio, cita i titoli di pagine eventualmente già oggetto di vandalismo editoriale).",
-'ipaddress'                => 'Indiritzu IP:',
 'ipadressorusername'       => 'Indiritzu IP o nùmene usuàriu:',
 'ipbexpiry'                => 'Scadèntzia:',
 'ipbreason'                => 'Motivu:',
@@ -1485,7 +1475,7 @@ Is acàpius chi sighint in sa matessi lìnia sunt cunsideraus comente eccetzione
 
 # External editor support
 'edit-externally'      => 'Acontza custu file usendi unu programma de foras',
-'edit-externally-help' => '(Pro àteras informatziones càstia is [http://www.mediawiki.org/wiki/Manual:External_editors istrutziones])',
+'edit-externally-help' => '(Pro àteras informatziones càstia is [//www.mediawiki.org/wiki/Manual:External_editors istrutziones])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'totu',

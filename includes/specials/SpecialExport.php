@@ -216,12 +216,24 @@ class SpecialExport extends SpecialPage {
 			$request->wasPosted() ? $request->getCheck( 'wpDownload' ) : true
 		) . '<br />';
 
+		if ( $wgExportAllowListContributors ) {
+			$form .= Xml::checkLabel(
+				wfMsg( 'exportlistauthors' ),
+				'listauthors',
+				'listauthors',
+				$request->wasPosted() ? $request->getCheck( 'listauthors' ) : false
+			) . '<br />';
+		}
+
 		$form .= Xml::submitButton( wfMsg( 'export-submit' ), Linker::tooltipAndAccesskeyAttribs( 'export' ) );
 		$form .= Xml::closeElement( 'form' );
 
 		$out->addHTML( $form );
 	}
 
+	/**
+	 * @return bool
+	 */
 	private function userCanOverrideExportDepth() {
 		return $this->getUser()->isAllowed( 'override-export-depth' );
 	}
@@ -314,7 +326,7 @@ class SpecialExport extends SpecialPage {
 			if( is_null( $title ) ) {
 				continue; #TODO: perhaps output an <error> tag or something.
 			}
-			if( !$title->userCanRead() ) {
+			if( !$title->userCan( 'read', $this->getUser() ) ) {
 				continue; #TODO: perhaps output an <error> tag or something.
 			}
 
@@ -328,6 +340,10 @@ class SpecialExport extends SpecialPage {
 		}
 	}
 
+	/**
+	 * @param $title Title
+	 * @return array
+	 */
 	private function getPagesFromCategory( $title ) {
 		global $wgContLang;
 
@@ -356,6 +372,10 @@ class SpecialExport extends SpecialPage {
 		return $pages;
 	}
 
+	/**
+	 * @param $nsindex int
+	 * @return array
+	 */
 	private function getPagesFromNamespace( $nsindex ) {
 		global $wgContLang;
 
@@ -399,6 +419,8 @@ class SpecialExport extends SpecialPage {
 
 	/**
 	 * Validate link depth setting, if available.
+	 * @param $depth int
+	 * @return int
 	 */
 	private function validateLinkDepth( $depth ) {
 		global $wgExportMaxLinkDepth;
@@ -421,7 +443,13 @@ class SpecialExport extends SpecialPage {
 		return intval( min( $depth, 5 ) );
 	}
 
-	/** Expand a list of pages to include pages linked to from that page. */
+	/**
+	 * Expand a list of pages to include pages linked to from that page.
+	 * @param $inputPages array
+	 * @param $pageSet array
+	 * @param $depth int
+	 * @return array
+	 */
 	private function getPageLinks( $inputPages, $pageSet, $depth ) {
 		for( ; $depth > 0; --$depth ) {
 			$pageSet = $this->getLinks(

@@ -96,7 +96,7 @@ class SpecialComparePages extends SpecialPage {
 				'name' => 'unhide',
 			),
 		), $this->getContext(), 'compare' );
-		$form->setSubmitText( wfMsg( 'compare-submit' ) );
+		$form->setSubmitTextMsg( 'compare-submit' );
 		$form->suppressReset();
 		$form->setMethod( 'get' );
 		$form->setSubmitCallback( array( __CLASS__, 'showDiff' ) );
@@ -106,12 +106,12 @@ class SpecialComparePages extends SpecialPage {
 		$form->trySubmit();
 	}
 
-	public static function showDiff( $data ){
+	public static function showDiff( $data, HTMLForm $form ){
 		$rev1 = self::revOrTitle( $data['Revision1'], $data['Page1'] );
 		$rev2 = self::revOrTitle( $data['Revision2'], $data['Page2'] );
 
 		if( $rev1 && $rev2 ) {
-			$de = new DifferenceEngine( null,
+			$de = new DifferenceEngine( $form->getContext(),
 				$rev1,
 				$rev2,
 				null, // rcid
@@ -140,10 +140,10 @@ class SpecialComparePages extends SpecialPage {
 		}
 		$title = Title::newFromText( $value );
 		if ( !$title instanceof Title ) {
-			return wfMsgExt( 'compare-invalid-title', 'parse' );
+			return $this->msg( 'compare-invalid-title' )->parseAsBlock();
 		}
 		if ( !$title->exists() ) {
-			return wfMsgExt( 'compare-title-not-exists', 'parse' );
+			return $this->msg( 'compare-title-not-exists' )->parseAsBlock();
 		}
 		return true;
 	}
@@ -154,7 +154,7 @@ class SpecialComparePages extends SpecialPage {
 		}
 		$revision = Revision::newFromId( $value );
 		if ( $revision === null ) {
-			return wfMsgExt( 'compare-revision-not-exists', 'parse' );
+			return $this->msg( 'compare-revision-not-exists' )->parseAsBlock();
 		}
 		return true;
 	}

@@ -7,18 +7,20 @@
 class HTMLFileCache extends FileCacheBase {
 	/**
 	 * Construct an ObjectFileCache from a Title and an action
-	 * @param $title Title
+	 * @param $title Title|string Title object or prefixed DB key string
 	 * @param $action string
 	 * @return HTMLFileCache
 	 */
-	public static function newFromTitle( Title $title, $action ) {
+	public static function newFromTitle( $title, $action ) {
 		$cache = new self();
 
 		$allowedTypes = self::cacheablePageActions();
 		if ( !in_array( $action, $allowedTypes ) ) {
 			throw new MWException( "Invalid filecache type given." );
 		}
-		$cache->mKey = $title->getPrefixedDBkey();
+		$cache->mKey = ( $title instanceof Title )
+			? $title->getPrefixedDBkey()
+			: (string)$title;
 		$cache->mType = (string)$action;
 		$cache->mExt = 'html';
 
@@ -81,7 +83,7 @@ class HTMLFileCache extends FileCacheBase {
 		$user = $context->getUser();
 		// Check for non-standard user language; this covers uselang,
 		// and extensions for auto-detecting user language.
-		$ulang = $context->getLang()->getCode();
+		$ulang = $context->getLanguage()->getCode();
 		$clang = $wgContLang->getCode();
 		// Check that there are no other sources of variation
 		return !$wgShowIPinHeader && !$user->getId() && !$user->getNewtalk() && $ulang == $clang;

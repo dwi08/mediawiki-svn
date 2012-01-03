@@ -117,15 +117,19 @@ class SpecialSearch extends SpecialPage {
 		$user = $this->getUser();
 		# Extract manually requested namespaces
 		$nslist = $this->powerSearch( $request );
-		$this->profile = $profile = $request->getVal( 'profile', null );
+		$profile = null;
+		if ( !count( $nslist ) ) {
+			$profile = 'default';
+		}
+		$profile = $request->getVal( 'profile', $profile );
 		$profiles = $this->getSearchProfiles();
-		if ( $profile === null) {
+		if ( $profile === null ) {
 			// BC with old request format
-			$this->profile = 'advanced';
+			$profile = 'advanced';
 			if ( count( $nslist ) ) {
 				foreach( $profiles as $key => $data ) {
 					if ( $nslist === $data['namespaces'] && $key !== 'advanced') {
-						$this->profile = $key;
+						$profile = $key;
 					}
 				}
 				$this->namespaces = $nslist;
@@ -139,7 +143,7 @@ class SpecialSearch extends SpecialPage {
 				$this->namespaces = $profiles[$profile]['namespaces'];
 			} else {
 				// Unknown profile requested
-				$this->profile = 'default';
+				$profile = 'default';
 				$this->namespaces = $profiles['default']['namespaces'];
 			}
 		}
@@ -149,6 +153,7 @@ class SpecialSearch extends SpecialPage {
 		$this->searchRedirects = $request->getBool( 'redirs', $default ) ? 1 : 0;
 		$this->didYouMeanHtml = ''; # html of did you mean... link
 		$this->fulltext = $request->getVal('fulltext');
+		$this->profile = $profile;
 	}
 
 	/**
@@ -344,7 +349,7 @@ class SpecialSearch extends SpecialPage {
 		if( $num || $this->offset ) {
 			// Show the create link ahead
 			$this->showCreateLink( $t );
-			$prevnext = $this->getLang()->viewPrevNext( $this->getTitle(), $this->offset, $this->limit,
+			$prevnext = $this->getLanguage()->viewPrevNext( $this->getTitle(), $this->offset, $this->limit,
 				$this->powerSearchOptions() + array( 'search' => $term ),
 				max( $titleMatchesNum, $textMatchesNum ) < $this->limit
 			);
@@ -407,7 +412,7 @@ class SpecialSearch extends SpecialPage {
 			$this->getOutput()->addHtml( '<p></p>' );
 			return;
 		}
-		$messageName = '';
+
 		if( $t->isKnown() ) {
 			$messageName = 'searchmenu-exists';
 		} elseif( $t->userCan( 'create' ) ) {
@@ -435,8 +440,8 @@ class SpecialSearch extends SpecialPage {
 		$this->searchAdvanced = ($this->profile === 'advanced');
 		$out = $this->getOutput();
 		if( strval( $term ) !== ''  ) {
-			$out->setPageTitle( wfMsg( 'searchresults') );
-			$out->setHTMLTitle( wfMsg( 'pagetitle', wfMsg( 'searchresults-title', $term ) ) );
+			$out->setPageTitle( $this->msg( 'searchresults' ) );
+			$out->setHTMLTitle( $this->msg( 'pagetitle', $this->msg( 'searchresults-title', $term )->plain() ) );
 		}
 		// add javascript specific to special:search
 		$out->addModules( 'mediawiki.special.search' );
@@ -546,7 +551,7 @@ class SpecialSearch extends SpecialPage {
 		//If page content is not readable, just return the title.
 		//This is not quite safe, but better than showing excerpts from non-readable pages
 		//Note that hiding the entry entirely would screw up paging.
-		if( !$t->userCanRead() ) {
+		if( !$t->userCan( 'read' ) ) {
 			wfProfileOut( __METHOD__ );
 			return "<li>{$link}</li>\n";
 		}
@@ -600,7 +605,7 @@ class SpecialSearch extends SpecialPage {
 		// format text extract
 		$extract = "<div class='searchresult'>".$result->getTextSnippet($terms)."</div>";
 
-		$lang = $this->getLang();
+		$lang = $this->getLanguage();
 
 		// format score
 		if( is_null( $result->getScore() ) ) {
@@ -1001,7 +1006,7 @@ class SpecialSearch extends SpecialPage {
 		}
 
 		$profiles = $this->getSearchProfiles();
-		$lang = $this->getLang();
+		$lang = $this->getLanguage();
 
 		// Outputs XML for Search Types
 		$out .= Xml::openElement( 'div', array( 'class' => 'search-types' ) );
@@ -1069,7 +1074,8 @@ class SpecialSearch extends SpecialPage {
 	 * @return string
 	 */
 	protected function shortDialog( $term ) {
-		$out = Html::hidden( 'title', $this->getTitle()->getPrefixedText() ) . "\n";
+		$out = Html::hidden( 'title', $this->getTitle()->getPrefixedText() );
+		$out .= Html::hidden( 'profile', $this->profile ) . "\n";
 		// Term box
 		$out .= Html::input( 'search', $term, 'search', array(
 			'id' => $this->profile === 'advanced' ? 'powerSearchText' : 'searchText',

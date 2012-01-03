@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * Query module to enumerate all categories, even the ones that don't have
  * category pages.
@@ -55,7 +50,6 @@ class ApiQueryAllCategories extends ApiQueryGeneratorBase {
 
 	/**
 	 * @param $resultPageSet ApiPageSet
-	 * @return void
 	 */
 	private function run( $resultPageSet = null ) {
 		$db = $this->getDB();
@@ -204,7 +198,7 @@ class ApiQueryAllCategories extends ApiQueryGeneratorBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Allcategories';
+		return 'https://www.mediawiki.org/wiki/API:Allcategories';
 	}
 
 	public function getVersion() {

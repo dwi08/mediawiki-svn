@@ -95,10 +95,10 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'img_right'             => array( '1', 'drita', 'destra', 'right' ),
-	'img_left'              => array( '1', 'manzína', 'sinistra', 'left' ),
-	'img_none'              => array( '1', 'nissön', 'nessuno', 'none' ),
-	'sitename'              => array( '1', 'NUMSIT', 'NOMESITO', 'SITENAME' ),
+	'img_right'               => array( '1', 'drita', 'destra', 'right' ),
+	'img_left'                => array( '1', 'manzína', 'sinistra', 'left' ),
+	'img_none'                => array( '1', 'nissön', 'nessuno', 'none' ),
+	'sitename'                => array( '1', 'NUMSIT', 'NOMESITO', 'SITENAME' ),
 );
 
 $messages = array(
@@ -412,10 +412,9 @@ Per piasè, fa raport a 'n'[[Special:ListUsers/sysop|aministradur]], cun la nota
 'badtitle'            => 'Títul mía bun',
 'badtitletext'        => "El titul de la pagina ciamada a l'è vöj, sbajaa o cun carater minga acetaa, opüra al vegn d'un erur in di ligam intra sit wiki diferent o versión in lenguv diferent de l'istess sit.",
 'viewsource'          => 'Còdas surgent',
-'viewsourcefor'       => 'de $1',
 'protectedpagetext'   => "Cula pagina chi l'è stata blucà per impedinn la mudifica.",
 'viewsourcetext'      => "L'è pussibil vèd e cupià el codes surgent de cula pagina chí:",
-'editinginterface'    => "'''Ocio''': Te see adree a mudifegà una pàgina che la se dröva per generà 'l test de l'interfacia del prugrama. Qualsìa mudìfega fada la cambierà l'interfacia de tüt i druvadur. Se te gh'hee intenzión de fà una tradüzión, per piasì cunsiderà la pussibilità de druvà [http://translatewiki.net/wiki/Main_Page?setlang=lmo translatewiki.net], 'l pruget de lucalizazión de MediaWiki.",
+'editinginterface'    => "'''Ocio''': Te see adree a mudifegà una pàgina che la se dröva per generà 'l test de l'interfacia del prugrama. Qualsìa mudìfega fada la cambierà l'interfacia de tüt i druvadur. Se te gh'hee intenzión de fà una tradüzión, per piasì cunsiderà la pussibilità de druvà [//translatewiki.net/wiki/Main_Page?setlang=lmo translatewiki.net], 'l pruget de lucalizazión de MediaWiki.",
 'ns-specialprotected' => 'I paginn special i pören mía vess mudifegaa',
 
 # Login and logout pages
@@ -660,7 +659,6 @@ Pröa a giuntagh denanz a la tò ricerca ''all:'' per cercà in tücc i namespac
 'restoreprefs'             => 'Ristabiliss i impustazión de default',
 'prefs-editing'            => 'Mudifich',
 'rows'                     => 'Riich:',
-'columns'                  => 'Culònn:',
 'searchresultshead'        => 'Cerca',
 'resultsperpage'           => 'Resültaa pər pagina:',
 'recentchangescount'       => "Nümer de mudifegh da mustrà per ''default'':",
@@ -1131,7 +1129,6 @@ Quest chì a hinn i regulazión curent per la pagina '''$1''':",
 'blockiptext'              => "Druvee 'l mòdul chì de suta per blucà l'acess cun dirit de scritüra a un indirizz IP specifegh o a un druvadur registraa.
 El bloch gh'è de druvàl dumà per evità el vandalism e in acord cun i [[{{MediaWiki:Policy-url}}|regulament de {{SITENAME}}]].
 Scrivee chì de suta 'l mutiv specifegh per el bloch (presempi, a pudii scriv i titul di paginn che i henn stat suget a vandalism).",
-'ipaddress'                => 'Indirizz IP:',
 'ipadressorusername'       => 'Indirizz IP o nom del druvdur:',
 'ipbexpiry'                => 'Fina al:',
 'ipbreason'                => 'Reson:',
@@ -1342,7 +1339,7 @@ I ligam che i vegnen dopu, in sü l'istessa riga, i vegnen cónsideraa di ecezi�
 
 # External editor support
 'edit-externally'      => 'Redatá chest archivi cunt un prugramari da fö',
-'edit-externally-help' => 'Varda [http://www.mediawiki.org/wiki/Manual:External_editors i istrüzión] per avègh püssee infurmazión (in ingles).',
+'edit-externally-help' => 'Varda [//www.mediawiki.org/wiki/Manual:External_editors i istrüzión] per avègh püssee infurmazión (in ingles).',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tücc',

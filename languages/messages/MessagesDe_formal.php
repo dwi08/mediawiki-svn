@@ -56,10 +56,11 @@ Falls dies nicht der Fall ist, haben Sie eventuell einen Fehler in der Software 
 'actionthrottledtext' => 'Im Rahmen einer Anti-Spam-Maßnahme kann diese Aktion in einem kurzen Zeitabstand nur begrenzt oft ausgeführt werden. Diese Grenze haben Sie überschritten.
 Bitte versuchen Sie es in ein paar Minuten erneut.',
 'viewsourcetext'      => 'Sie können den Quelltext dieser Seite betrachten und kopieren:',
+'viewyourtext'        => "Sie können den Quelltext '''Ihrer Bearbeitung''' dieser Seite betrachten und kopieren:",
 'editinginterface'    => "'''Warnung:''' Diese Seite enthält von der MediaWiki-Software genutzten Text.
 Änderungen auf dieser Seite wirken sich auf die Benutzeroberfläche aus.
-Ziehen Sie bitte im Fall von Übersetzungen in Betracht, diese bei [http://translatewiki.net/wiki/Main_Page?setlang=de-formal translatewiki.net], der Lokalisierungsplattform für MediaWiki, durchzuführen.",
-'namespaceprotected'  => "Sie haben keine Berechtigung, Seiten im '''$1'''-Namensraum zu bearbeiten.",
+Ziehen Sie bitte im Fall von Übersetzungen in Betracht, diese bei [//translatewiki.net/wiki/Main_Page?setlang=de-formal translatewiki.net], der Lokalisierungsplattform für MediaWiki, durchzuführen.",
+'namespaceprotected'  => "Sie haben nicht die erforderliche Berechtigung, um Seiten im Namensraum '''$1''' bearbeiten zu können.",
 'customcssprotected'  => 'Sie haben nicht die Berechtigung diese CSS enthaltende Seite zu bearbeiten, da sie die persönlichen Einstellungen eines anderen Benutzers enthält.',
 'customjsprotected'   => 'Sie haben nicht die Berechtigung diese JavaScript enthaltende Seite zu bearbeiten, da sie die persönlichen Einstellungen eines anderen Benutzers enthält.',
 
@@ -182,15 +183,14 @@ Sie können die „E-Mail an diesen Benutzer“-Funktion nicht nutzen, solange k
 
 Ihre aktuelle IP-Adresse ist $3, und die Sperr-ID ist $5.
 Bitte fügen Sie alle Informationen jeder Anfrage hinzu, die Sie stellen.",
-'blockededitsource'                => "Der Quelltext '''Ihrer Änderungen''' an '''$1''':",
 'whitelistedittext'                => 'Sie müssen sich $1, um Seiten bearbeiten zu können.',
 'confirmedittext'                  => 'Sie müssen Ihre E-Mail-Adresse erst bestätigen, bevor Sie Bearbeitungen vornehmen können. Bitte ergänzen und bestätigen Sie Ihre E-Mail in den [[Special:Preferences|Einstellungen]].',
 'nosuchsectiontext'                => 'Sie haben versucht, einen Abschnitt zu bearbeiten, der nicht existiert.
 Vermutlich wurde er verschoben oder gelöscht, nachdem Sie die Seite aufgerufen haben.',
 'loginreqpagetext'                 => 'Sie müssen sich $1, um Seiten lesen zu können.',
 'newarticletext'                   => "Sie sind einem Link zu einer Seite gefolgt, die nicht vorhanden ist.
-Um die Seite anzulegen, tragen Sie Ihren Text in die untenstehende Box ein (siehe die [[{{MediaWiki:Helppage}}|Hilfeseite]] für mehr Informationen).
-Sind Sie fälschlicherweise hier, klicken Sie die '''Zurück'''-Schaltfläche Ihres Browsers.",
+Um diese Seite anzulegen, tragen Sie Ihren Text in das untenstehende Bearbeitungsfeld ein (siehe die [[{{MediaWiki:Helppage}}|Hilfeseite]] für weitere Informationen).
+Sofern Sie fälschlicherweise hier sind, klicken Sie auf die Schaltfläche '''Zurück''' Ihres Browsers.",
 'anontalkpagetext'                 => "----''Diese Seite dient dazu, einem nicht angemeldeten Benutzer Nachrichten zu hinterlassen. Es wird seine IP-Adresse zur Identifizierung verwendet. IP-Adressen können von mehreren Benutzern gemeinsam verwendet werden. Wenn Sie mit den Kommentaren auf dieser Seite nichts anfangen können, richten sie sich vermutlich an einen früheren Inhaber Ihrer IP-Adresse und Sie können sie ignorieren. Sie können sich auch ein [[Special:UserLogin/signup|Benutzerkonto erstellen]] oder sich [[Special:UserLogin|anmelden]], um künftig Verwechslungen mit anderen anonymen Benutzern zu vermeiden.''",
 'noarticletext'                    => 'Diese Seite enthält momentan noch keinen Text.
 Sie können diesen Titel auf den anderen Seiten [[Special:Search/{{PAGENAME}}|suchen]],
@@ -200,8 +200,8 @@ Sie können diesen Titel auf den anderen Seiten [[Special:Search/{{PAGENAME}}|su
 oder in den zugehörigen <span class="plainlinks">[{{fullurl:{{#special:Log}}|page={{FULLPAGENAMEE}}}} Logbüchern suchen]</span>.',
 'userpage-userdoesnotexist'        => 'Das Benutzerkonto „<nowiki>$1</nowiki>“ ist nicht vorhanden. Bitte prüfen Sie, ob Sie diese Seite wirklich erstellen/bearbeiten möchten.',
 'clearyourcache'                   => "'''Hinweis:''' Leeren Sie nach dem Speichern den Browser-Cache, um die Änderungen sehen zu können.
-* '''Firefox/Safari:''' ''Umschaltung'' drücken und gleichzeitig ''Aktualisieren'' anklicken oder entweder ''Strg+F5'' oder ''Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
-* '''Google Chrome:''' ''Umschaltung+Strg+R'' (''Befehlstaste-R'' auf dem Mac) drücken
+* '''Firefox/Safari:''' ''Umschalttaste'' drücken und gleichzeitig ''Aktualisieren'' anklicken oder entweder ''Strg+F5'' oder ''Strg+R'' (''⌘+R'' auf dem Mac) drücken
+* '''Google Chrome:''' ''Umschalttaste+Strg+R'' (''⌘+Umschalttaste+R'' auf dem Mac) drücken
 * '''Internet Explorer:''' ''Strg+F5'' drücken oder ''Strg'' drücken und gleichzeitig ''Aktualisieren'' anklicken
 * '''Opera:''' ''Extras → Internetspuren löschen … → Individuelle Auswahl → Den kompletten Cache löschen''
 * '''Konqueror:''' ''Aktualisieren'' anklicken oder ''F5'' drücken",
@@ -237,8 +237,8 @@ Bitte fügen Sie Ihre Änderungen in das obere Textfeld ein.
 'yourtext'                         => 'Ihr Text',
 'nonunicodebrowser'                => "'''Achtung:''' Ihr Browser kann Unicode-Zeichen nicht richtig verarbeiten. Bitte verwenden Sie einen anderen Browser um Seiten zu bearbeiten.",
 'editingold'                       => "'''Achtung: Sie bearbeiten eine alte Version dieser Seite. Sofern Sie sie speichern, werden alle neueren Versionen überschrieben.'''",
-'copyrightwarning'                 => "'''Bitte <big>kopieren Sie keine Webseiten</big>, die nicht Ihre eigenen sind, benutzen Sie <big>keine urheberrechtlich geschützten Werke</big> ohne Erlaubnis des Copyright-Inhabers!'''<br />
-Sie geben uns hiermit Ihre Zusage, dass Sie den Text '''selbst verfasst''' haben, dass der Text Allgemeingut ('''public domain''') ist, oder dass der '''Copyright-Inhaber''' seine '''Zustimmung''' gegeben hat. Falls dieser Text bereits woanders veröffentlicht wurde, weisen Sie bitte auf der Diskussionsseite darauf hin.
+'copyrightwarning'                 => "'''Bitte kopieren Sie keine Webseiten, die nicht Ihre eigenen sind, benutzen Sie keine urheberrechtlich geschützten Werke ohne Erlaubnis des Urhebers!'''<br />
+Sie geben uns hiermit Ihre Zusage, dass Sie den Text '''selbst verfasst''' haben, dass der Text Allgemeingut '''(public domain)''' ist, oder dass der '''Urheber''' seine '''Zustimmung''' gegeben hat. Falls dieser Text bereits woanders veröffentlicht wurde, weisen Sie bitte auf der Diskussionsseite darauf hin.
 <i>Bitte beachten Sie, dass alle {{SITENAME}}-Beiträge automatisch unter der „$2“ stehen (siehe $1 für Details). Falls Sie nicht möchten, dass Ihre Arbeit hier von anderen verändert und verbreitet wird, dann drücken Sie nicht auf „Seite speichern“.</i>",
 'copyrightwarning2'                => "Bitte beachten Sie, dass alle Beiträge zu {{SITENAME}} von anderen Mitwirkenden bearbeitet, geändert oder gelöscht werden können.
 Reichen Sie keine Texte ein, falls Sie nicht wollen, dass diese ohne Einschränkung geändert werden können.
@@ -252,7 +252,7 @@ Sichern Sie den Text bitte lokal auf Ihrem Computer und versuchen Sie zu einem s
 
 Grund für die Sperre: $1",
 'nocreatetext'                     => 'Auf {{SITENAME}} wurde das Erstellen neuer Seiten eingeschränkt. Sie können bestehende Seiten ändern oder sich [[Special:UserLogin|anmelden]].',
-'nocreate-loggedin'                => 'Sie haben keine Berechtigung, neue Seiten zu erstellen.',
+'nocreate-loggedin'                => 'Sie haben nicht die erforderliche Berechtigung, um neue Seiten erstellen zu können.',
 'permissionserrorstext'            => 'Sie sind nicht berechtigt, die Aktion auszuführen. {{PLURAL:$1|Grund|Gründe}}:',
 'permissionserrorstext-withaction' => 'Sie sind nicht berechtigt, $2.
 {{PLURAL:$1|Grund|Gründe}}:',
@@ -330,12 +330,13 @@ Hier ein zufällig generierter Wert, den Sie verwenden können: $1',
 Dies kann nicht mehr rückgängig gemacht werden.',
 'prefs-help-realname'        => 'Optional. Damit kann Ihr bürgerlicher Name Ihren Beiträgen zugeordnet werden.',
 'prefs-help-email'           => 'Die Angabe einer E-Mail-Adresse ist optional, ermöglicht aber die Zusendung eines Ersatzpasswortes, sofern Sie Ihr Passwort vergessen haben.',
+'prefs-help-email-others'    => 'Mit anderen Benutzern können Sie auch über die Benutzerdiskussionsseiten Kontakt aufnehmen, ohne dass Sie Ihre Identität offenlegen müssen.',
 
 # User rights
 'userrights-groups-help'      => 'Sie können die Gruppenzugehörigkeit dieses Benutzer ändern.
 * Ein markiertes Kästchen bedeutet, dass der Benutzer Mitglied dieser Gruppe ist.
 * Ein * bedeutet, dass Sie das Benutzerrecht nach Erteilung nicht wieder zurücknehmen können (oder umgekehrt).',
-'userrights-no-interwiki'     => 'Sie haben keine Berechtigung, Benutzerrechte in anderen Wikis zu ändern.',
+'userrights-no-interwiki'     => 'Sie haben nicht die erforderliche Berechtigung, um Benutzerrechte in anderen Wikis ändern zu können.',
 'userrights-nologin'          => 'Sie müssen sich mit einem Administrator-Benutzerkonto [[Special:UserLogin|anmelden]], um Benutzerrechte zu ändern.',
 'userrights-notallowed'       => 'Sie verfügen nicht über die erforderlichen Berechtigungen, um Benutzerrechte vergeben oder entziehen zu können.',
 'userrights-changeable-col'   => 'Gruppenzugehörigkeit, die Sie ändern dürfen',
@@ -568,9 +569,9 @@ Bitte den '''neuen''' Titel unter '''Ziel''' eintragen, darunter die Umbenennung
 'moveuserpage-warning'         => "'''Warnung:''' Sie sind dabei, eine Benutzerseite zu verschieben. Bitte bedenken Sie, dass dadurch nur die Benutzerseite verschoben, '''nicht''' aber der Benutzer umbenannt wird.",
 'movenologin'                  => 'Sie sind nicht angemeldet',
 'movenologintext'              => 'Sie müssen ein registrierter Benutzer und [[Special:UserLogin|angemeldet]] sein, um eine Seite zu verschieben.',
-'movenotallowed'               => 'Sie haben keine Berechtigung, Seiten zu verschieben.',
-'movenotallowedfile'           => 'Sie haben keine Berechtigung, Dateien zu verschieben.',
-'cant-move-user-page'          => 'Sie haben keine Berechtigung, Benutzerhauptseiten zu verschieben.',
+'movenotallowed'               => 'Sie haben nicht die erforderliche Berechtigung, um Seiten verschieben zu können.',
+'movenotallowedfile'           => 'Sie haben nicht die erforderliche Berechtigung, um Dateien verschieben zu können.',
+'cant-move-user-page'          => 'Sie haben nicht die erforderliche Berechtigung, Benutzerhauptseiten verschieben zu können.',
 'cant-move-to-user-page'       => 'Sie haben nicht die Berechtigung, Seiten auf eine Benutzerseite zu verschieben (mit Ausnahme von Benutzerunterseiten).',
 'articleexists'                => 'Unter diesem Namen existiert bereits eine Seite. Bitte wählen Sie einen anderen Namen.',
 'talkexists'                   => 'Die Seite selbst wurde erfolgreich verschoben, aber die zugehörige Diskussionsseite nicht, da bereits eine mit dem neuen Titel existiert. Bitte gleichen Sie die Inhalte von Hand ab.',
@@ -590,7 +591,7 @@ Alternativ ist der Export auch mit der Syntax [[{{#Special:Export}}/{{MediaWiki:
 
 # Namespace 8 related
 'allmessagestext' => 'Dies ist eine Liste der MediaWiki-Systemtexte.
-Bitte besuchen Sie die Seiten [http://www.mediawiki.org/wiki/Localisation MediaWiki-Lokalisierung] und [http://translatewiki.net translatewiki.net], sofern Sie sich an der Lokalisierung von MediaWiki beteiligen möchten.',
+Bitte besuchen Sie die Seiten [//www.mediawiki.org/wiki/Localisation MediaWiki-Lokalisierung] und [//translatewiki.net translatewiki.net], sofern Sie sich an der Lokalisierung von MediaWiki beteiligen möchten.',
 
 # Special:Import
 'import-interwiki-text' => 'Wählen Sie ein Wiki und eine Seite zum Importieren aus.
@@ -693,5 +694,11 @@ Sie können auch die [[Special:EditWatchlist|Standardseite]] zum Bearbeiten benu
 'dberr-again'     => 'Warten Sie einige Minuten und versuchen Sie dann neu zuladen.',
 'dberr-usegoogle' => 'Sie könnten in der Zwischenzeit mit Google suchen.',
 'dberr-outofdate' => 'Beachten Sie, dass der Suchindex unserer Inhalte bei Google veraltet sein kann.',
+
+# Feedback
+'feedback-bugornote' => 'Sofern Sie detailliert ein technisches Problem beschreiben möchten, melden Sie bitte [$1 einen Fehler].
+Anderenfalls können Sie auch das untenstehende einfache Formular nutzen. Ihr Kommentar wird, zusammen mit Ihrem Benutzernamen und der Version des von Ihnen verwendeten Webbrowsers sowie Betriebssystems, auf der Seite „[$3 $2]“ hinzugefügt.',
+'feedback-thanks'    => 'Vielen Dank. Ihre Rückmeldung wurde auf der Seite „[$2 $1]“ gespeichert.',
+'feedback-bugcheck'  => 'Super! Bitte überprüfen Sie noch, ob es sich hierbei nicht um einen bereits [$1 bekannten Fehler] handelt.',
 
 );

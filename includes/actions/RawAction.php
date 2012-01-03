@@ -24,10 +24,6 @@ class RawAction extends FormlessAction {
 		return 'raw';
 	}
 
-	public function getRestriction() {
-		return 'read';
-	}
-
 	public function requiresWrite() {
 		return false;
 	}
@@ -131,6 +127,7 @@ class RawAction extends FormlessAction {
 				$lastmod = wfTimestamp( TS_RFC2822, $rev->getTimestamp() );
 				$request->response()->header( "Last-modified: $lastmod" );
 
+				// Public-only due to cache headers
 				$text = $rev->getText();
 				$section = $request->getIntOrNull( 'section' );
 				if ( $section !== null ) {
@@ -214,6 +211,7 @@ class RawPage extends RawAction {
 	public $mOldId;
 
 	function __construct( Page $page, $request = false ) {
+		wfDeprecated( __CLASS__, '1.19' );
 		parent::__construct( $page );
 
 		if ( $request !== false ) {

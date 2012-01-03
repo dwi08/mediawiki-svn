@@ -140,8 +140,6 @@ class SpecialUpload extends SpecialPage {
 	 * Special page entry point
 	 */
 	public function execute( $par ) {
-		global $wgGroupPermissions;
-
 		$this->setHeaders();
 		$this->outputHeader();
 
@@ -154,25 +152,16 @@ class SpecialUpload extends SpecialPage {
 		$user = $this->getUser();
 		$permissionRequired = UploadBase::isAllowed( $user );
 		if( $permissionRequired !== true ) {
-			if( !$user->isLoggedIn() && ( $wgGroupPermissions['user']['upload']
-				|| $wgGroupPermissions['autoconfirmed']['upload'] ) ) {
-				// Custom message if logged-in users without any special rights can upload
-				throw new ErrorPageError( 'uploadnologin', 'uploadnologintext' );
-			} else {
-				throw new PermissionsError( $permissionRequired );
-			}
+			throw new PermissionsError( $permissionRequired );
 		}
 
 		# Check blocks
 		if( $user->isBlocked() ) {
-			$this->getOutput()->blockedPage();
-			return;
+			throw new UserBlockedError( $user->mBlock );
 		}
 
 		# Check whether we actually want to allow changing stuff
-		if( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkReadOnly();
 
 		$this->loadRequest();
 
@@ -580,11 +569,11 @@ class SpecialUpload extends SpecialPage {
 			case UploadBase::FILETYPE_BADTYPE:
 				$msg = wfMessage( 'filetype-banned-type' );
 				if ( isset( $details['blacklistedExt'] ) ) {
-					$msg->params( $this->getLang()->commaList( $details['blacklistedExt'] ) );
+					$msg->params( $this->getLanguage()->commaList( $details['blacklistedExt'] ) );
 				} else {
 					$msg->params( $details['finalExt'] );
 				}
-				$msg->params( $this->getLang()->commaList( $wgFileExtensions ),
+				$msg->params( $this->getLanguage()->commaList( $wgFileExtensions ),
 					count( $wgFileExtensions ) );
 
 				// Add PLURAL support for the first parameter. This results
@@ -855,7 +844,7 @@ class UploadForm extends HTMLForm {
 			'radio' => &$radio,
 			'help' => wfMsgExt( 'upload-maxfilesize',
 					array( 'parseinline', 'escapenoentities' ),
-					$this->getContext()->getLang()->formatSize( $this->mMaxUploadSize['file'] )
+					$this->getContext()->getLanguage()->formatSize( $this->mMaxUploadSize['file'] )
 				) . ' ' . wfMsgHtml( 'upload_source_file' ),
 			'checked' => $selectedSourceType == 'file',
 		);
@@ -870,7 +859,7 @@ class UploadForm extends HTMLForm {
 				'radio' => &$radio,
 				'help' => wfMsgExt( 'upload-maxfilesize',
 						array( 'parseinline', 'escapenoentities' ),
-						$this->getContext()->getLang()->formatSize( $this->mMaxUploadSize['url'] )
+						$this->getContext()->getLanguage()->formatSize( $this->mMaxUploadSize['url'] )
 					) . ' ' . wfMsgHtml( 'upload_source_url' ),
 				'checked' => $selectedSourceType == 'url',
 			);
@@ -902,16 +891,16 @@ class UploadForm extends HTMLForm {
 				# Everything not permitted is banned
 				$extensionsList =
 					'<div id="mw-upload-permitted">' .
-					wfMsgExt( 'upload-permitted', 'parse', $this->getContext()->getLang()->commaList( $wgFileExtensions ) ) .
+					wfMsgExt( 'upload-permitted', 'parse', $this->getContext()->getLanguage()->commaList( $wgFileExtensions ) ) .
 					"</div>\n";
 			} else {
 				# We have to list both preferred and prohibited
 				$extensionsList =
 					'<div id="mw-upload-preferred">' .
-					wfMsgExt( 'upload-preferred', 'parse', $this->getContext()->getLang()->commaList( $wgFileExtensions ) ) .
+					wfMsgExt( 'upload-preferred', 'parse', $this->getContext()->getLanguage()->commaList( $wgFileExtensions ) ) .
 					"</div>\n" .
 					'<div id="mw-upload-prohibited">' .
-					wfMsgExt( 'upload-prohibited', 'parse', $this->getContext()->getLang()->commaList( $wgFileBlacklist ) ) .
+					wfMsgExt( 'upload-prohibited', 'parse', $this->getContext()->getLanguage()->commaList( $wgFileBlacklist ) ) .
 					"</div>\n";
 			}
 		} else {
@@ -967,7 +956,6 @@ class UploadForm extends HTMLForm {
 					? 'filereuploadsummary'
 					: 'fileuploadsummary',
 				'default' => $this->mComment,
-				'cols' => intval( $this->getUser()->getOption( 'cols' ) ),
 				'rows' => 8,
 			)
 		);
@@ -1096,7 +1084,7 @@ class UploadForm extends HTMLForm {
 		);
 
 		$out = $this->getOutput();
-		$out->addScript( Skin::makeVariablesScript( $scriptVars ) );
+		$out->addJsConfigVars( $scriptVars );
 
 
 		$out->addModules( array(

@@ -1,54 +1,56 @@
 /**
- * Utilities
+ * Implements mediaWiki.util library
  */
-( function( $ ) {
+( function ( $, mw ) {
+"use strict";
 
 	// Local cache and alias
-	var util = mw.util = {
+	var util = {
 
 		/**
 		 * Initialisation
 		 * (don't call before document ready)
 		 */
-		'init' : function() {
+		init: function() {
+			var	profile = $.client.profile(),
+				$tocTitle = $( '#toctitle' ),
+				$tocToggleLink = $( '#togglelink' ),
+				hideTocCookie;
 
 			/* Set up $.messageBox */
 			$.messageBoxNew( {
-				'id': 'mw-js-message',
-				'parent': '#content'
+				id: 'mw-js-message',
+				parent: '#content'
 			} );
-
-			// Shortcut to client profile return
-			var profile = $.client.profile();
 
 			/* Set tooltipAccessKeyPrefix */
 
 			// Opera on any platform
-			if ( profile.name == 'opera' ) {
+			if ( profile.name === 'opera' ) {
 				util.tooltipAccessKeyPrefix = 'shift-esc-';
 
 			// Chrome on any platform
-			} else if ( profile.name == 'chrome' ) {
+			} else if ( profile.name === 'chrome' ) {
 				// Chrome on Mac or Chrome on other platform ?
-				util.tooltipAccessKeyPrefix = ( profile.platform == 'mac'
+				util.tooltipAccessKeyPrefix = ( profile.platform === 'mac'
 					? 'ctrl-option-' : 'alt-' );
 
 			// Non-Windows Safari with webkit_version > 526
 			} else if ( profile.platform !== 'win'
-				&& profile.name == 'safari'
+				&& profile.name === 'safari'
 				&& profile.layoutVersion > 526 ) {
 				util.tooltipAccessKeyPrefix = 'ctrl-alt-';
 
 			// Safari/Konqueror on any platform, or any browser on Mac
 			// (but not Safari on Windows)
-			} else if ( !( profile.platform == 'win' && profile.name == 'safari' )
-							&& ( profile.name == 'safari'
-							|| profile.platform == 'mac'
-							|| profile.name == 'konqueror' ) ) {
+			} else if ( !( profile.platform === 'win' && profile.name === 'safari' )
+							&& ( profile.name === 'safari'
+							|| profile.platform === 'mac'
+							|| profile.name === 'konqueror' ) ) {
 				util.tooltipAccessKeyPrefix = 'ctrl-';
 
 			// Firefox 2.x and later
-			} else if ( profile.name == 'firefox' && profile.versionBase > '1' ) {
+			} else if ( profile.name === 'firefox' && profile.versionBase > '1' ) {
 				util.tooltipAccessKeyPrefix = 'alt-shift-';
 			}
 
@@ -73,24 +75,26 @@
 				util.$content = $( '#content' );
 			}
 
-			/* Table of Contents toggle */
-			var	$tocContainer = $( '#toc' ),
-				$tocTitle = $( '#toctitle' ),
-				$tocToggleLink = $( '#togglelink' );
+			// Table of contents toggle
 			// Only add it if there is a TOC and there is no toggle added already
-			if ( $tocContainer.length && $tocTitle.length && !$tocToggleLink.length ) {
-				var	hideTocCookie = $.cookie( 'mw_hidetoc' );
+			if ( $( '#toc' ).length && $tocTitle.length && !$tocToggleLink.length ) {
+				hideTocCookie = $.cookie( 'mw_hidetoc' );
 					$tocToggleLink = $( '<a href="#" class="internal" id="togglelink"></a>' )
 						.text( mw.msg( 'hidetoc' ) )
-						.click( function(e){
+						.click( function( e ) {
 							e.preventDefault();
 							util.toggleToc( $(this) );
-					} );
-				$tocTitle.append( $tocToggleLink.wrap( '<span class="toctoggle"></span>' ).parent().prepend( '&nbsp;[' ).append( ']&nbsp;' ) );
+						} );
+				$tocTitle.append(
+					$tocToggleLink
+						.wrap( '<span class="toctoggle"></span>' )
+						.parent()
+							.prepend( '&nbsp;[' )
+							.append( ']&nbsp;' )
+				);
 
-				if ( hideTocCookie == '1' ) {
-					// Cookie says user want toc hidden
-					$tocToggleLink.click();
+				if ( hideTocCookie === '1' ) {
+					util.toggleToc( $tocToggleLink );
 				}
 			}
 		},
@@ -102,8 +106,8 @@
 		 *
 		 * @param str string String to be encoded
 		 */
-		'rawurlencode' : function( str ) {
-			str = ( str + '' ).toString();
+		rawurlencode: function( str ) {
+			str = String( str );
 			return encodeURIComponent( str )
 				.replace( /!/g, '%21' ).replace( /'/g, '%27' ).replace( /\(/g, '%28' )
 				.replace( /\)/g, '%29' ).replace( /\*/g, '%2A' ).replace( /~/g, '%7E' );
@@ -116,7 +120,7 @@
 		 *
 		 * @param str string String to be encoded
 		 */
-		'wikiUrlencode' : function( str ) {
+		wikiUrlencode: function( str ) {
 			return this.rawurlencode( str )
 				.replace( /%20/g, '_' ).replace( /%3A/g, ':' ).replace( /%2F/g, '/' );
 		},
@@ -127,7 +131,7 @@
 		 * @param str string Page name to get the link for.
 		 * @return string Location for a page with name of 'str' or boolean false on error.
 		 */
-		'wikiGetlink' : function( str ) {
+		wikiGetlink: function( str ) {
 			return mw.config.get( 'wgArticlePath' ).replace( '$1',
 				this.wikiUrlencode( str || mw.config.get( 'wgPageName' ) ) );
 		},
@@ -139,8 +143,9 @@
 		 * @param str string Name of script (eg. 'api'), defaults to 'index'
 		 * @return string Address to script (eg. '/w/api.php' )
 		 */
-		'wikiScript' : function( str ) {
-			return mw.config.get( 'wgScriptPath' ) + '/' + ( str || 'index' ) + mw.config.get( 'wgScriptExtension' );
+		wikiScript: function( str ) {
+			return mw.config.get( 'wgScriptPath' ) + '/' + ( str || 'index' ) +
+				mw.config.get( 'wgScriptExtension' );
 		},
 
 		/**
@@ -149,16 +154,18 @@
 		 * @param text string CSS to be appended
 		 * @return CSSStyleSheet
 		 */
-		'addCSS' : function( text ) {
+		addCSS: function( text ) {
 			var s = document.createElement( 'style' );
 			s.type = 'text/css';
 			s.rel = 'stylesheet';
+			// Insert into document before setting cssText (bug 33305)
+			document.getElementsByTagName('head')[0].appendChild( s );
 			if ( s.styleSheet ) {
 				s.styleSheet.cssText = text; // IE
 			} else {
-				s.appendChild( document.createTextNode( text + '' ) ); // Safari sometimes borks on null
+				// Safari sometimes borks on null
+				s.appendChild( document.createTextNode( text + '' ) );
 			}
-			document.getElementsByTagName('head')[0].appendChild( s );
 			return s.sheet || s;
 		},
 
@@ -171,7 +178,7 @@
 		 * @return mixed Boolean visibility of the toc (true if it's visible)
 		 * or Null if there was no table of contents.
 		 */
-		'toggleToc' : function( $toggleLink, callback ) {
+		toggleToc: function( $toggleLink, callback ) {
 			var $tocList = $( '#toc ul:first' );
 
 			// This function shouldn't be called if there's no TOC,
@@ -209,11 +216,11 @@
 		 * @param url string URL to search through (optional)
 		 * @return mixed Parameter value or null.
 		 */
-		'getParamValue' : function( param, url ) {
-			url = url ? url : document.location.href;
+		getParamValue: function( param, url ) {
+			url = url || document.location.href;
 			// Get last match, stop at hash
-			var re = new RegExp( '^[^#]*[&?]' + $.escapeRE( param ) + '=([^&#]*)' );
-			var m = re.exec( url );
+			var	re = new RegExp( '^[^#]*[&?]' + $.escapeRE( param ) + '=([^&#]*)' ),
+				m = re.exec( url );
 			if ( m && m.length > 1 ) {
 				// Beware that decodeURIComponent is not required to understand '+'
 				// by spec, as encodeURIComponent does not produce it.
@@ -227,13 +234,13 @@
 		 * Access key prefix. Will be re-defined based on browser/operating system
 		 * detection in mw.util.init().
 		 */
-		'tooltipAccessKeyPrefix' : 'alt-',
+		tooltipAccessKeyPrefix: 'alt-',
 
 		/**
 		 * @var RegExp
 		 * Regex to match accesskey tooltips.
 		 */
-		'tooltipAccessKeyRegexp': /\[(ctrl-)?(alt-)?(shift-)?(esc-)?(.)\]$/,
+		tooltipAccessKeyRegexp: /\[(ctrl-)?(alt-)?(shift-)?(esc-)?(.)\]$/,
 
 		/**
 		 * Add the appropriate prefix to the accesskey shown in the tooltip.
@@ -241,36 +248,25 @@
 		 * otherwise, all the nodes that will probably have accesskeys by
 		 * default are updated.
 		 *
-		 * @param nodeList {Array|jQuery} (optional) A jQuery object, or array of elements to update.
+		 * @param $nodes {Array|jQuery} [optional] A jQuery object, or array
+		 * of elements to update.
 		 */
-		'updateTooltipAccessKeys' : function( nodeList ) {
-			var $nodes;
-			if ( !nodeList ) {
-
-				// Rather than scanning all links, just the elements that
-				// contain the relevant links
-				this.updateTooltipAccessKeys(
-					$( '#column-one a, #mw-head a, #mw-panel a, #p-logo a' ) );
-
-				// these are rare enough that no such optimization is needed
-				this.updateTooltipAccessKeys( $( 'input' ) );
-				this.updateTooltipAccessKeys( $( 'label' ) );
-
-				return;
-
-			} else if ( nodeList instanceof $ ) {
-				$nodes = nodeList;
-			} else {
-				$nodes = $( nodeList );
+		updateTooltipAccessKeys: function( $nodes ) {
+			if ( !$nodes ) {
+				// Rather than going into a loop of all anchor tags, limit to few elements that
+				// contain the relevant anchor tags.
+				// Input and label are rare enough that no such optimization is needed
+				$nodes = $( '#column-one a, #mw-head a, #mw-panel a, #p-logo a, input, label' );
+			} else if ( !( $nodes instanceof $ ) ) {
+				$nodes = $( $nodes );
 			}
 
-			$nodes.each( function ( i ) {
-				var tip = $(this).attr( 'title' );
-				if ( !!tip && util.tooltipAccessKeyRegexp.exec( tip ) ) {
-					tip = tip.replace( util.tooltipAccessKeyRegexp,
-						'[' + util.tooltipAccessKeyPrefix + "$5]" );
-					$(this).attr( 'title', tip );
+			$nodes.attr( 'title', function( i, val ) {
+				if ( val && util.tooltipAccessKeyRegexp.exec( val ) ) {
+					return val.replace( util.tooltipAccessKeyRegexp,
+						'[' + util.tooltipAccessKeyPrefix + '$5]' );
 				}
+				return val;
 			} );
 		},
 
@@ -279,7 +275,7 @@
 		 * A jQuery object that refers to the page-content element
 		 * Populated by init().
 		 */
-		'$content' : null,
+		$content: null,
 
 		/**
 		 * Add a link to a portlet menu on the page, such as:
@@ -316,14 +312,15 @@
 		 * @return mixed The DOM Node of the added item (a ListItem or Anchor element,
 		 * depending on the skin) or null if no element was added to the document.
 		 */
-		'addPortletLink' : function( portlet, href, text, id, tooltip, accesskey, nextnode ) {
+		addPortletLink: function( portlet, href, text, id, tooltip, accesskey, nextnode ) {
+			var $item, $link, $portlet, $ul;
 
 			// Check if there's atleast 3 arguments to prevent a TypeError
 			if ( arguments.length < 3 ) {
 				return null;
 			}
 			// Setup the anchor tag
-			var $link = $( '<a></a>' ).attr( 'href', href ).text( text );
+			$link = $( '<a>' ).attr( 'href', href ).text( text );
 			if ( tooltip ) {
 				$link.attr( 'title', tooltip );
 			}
@@ -336,17 +333,17 @@
 				$( '#quickbar' ).append( $link.after( '<br/>' ) );
 				return $link[0];
 			case 'nostalgia' :
-				$( '#searchform' ).before( $link).before( ' &#124; ' );
+				$( '#searchform' ).before( $link ).before( ' &#124; ' );
 				return $link[0];
 			default : // Skins like chick, modern, monobook, myskin, simple, vector...
 
 				// Select the specified portlet
-				var $portlet = $( '#' + portlet );
+				$portlet = $( '#' + portlet );
 				if ( $portlet.length === 0 ) {
 					return null;
 				}
 				// Select the first (most likely only) unordered list inside the portlet
-				var $ul = $portlet.find( 'ul' );
+				$ul = $portlet.find( 'ul' );
 
 				// If it didn't have an unordered list yet, create it
 				if ( $ul.length === 0 ) {
@@ -371,7 +368,6 @@
 
 				// Wrap the anchor tag in a list item (and a span if $portlet is a Vector tab)
 				// and back up the selector to the list item
-				var $item;
 				if ( $portlet.hasClass( 'vectorTabs' ) ) {
 					$item = $link.wrap( '<li><span></span></li>' ).parent().parent();
 				} else {
@@ -392,14 +388,13 @@
 				}
 
 				// Where to put our node ?
-				// - nextnode is a DOM element (before MW 1.17, in wikibits.js, this was the only option)
-				if ( nextnode && nextnode.parentNode == $ul[0] ) {
+				// - nextnode is a DOM element (was the only option before MW 1.17, in wikibits.js)
+				if ( nextnode && nextnode.parentNode === $ul[0] ) {
 					$(nextnode).before( $item );
 
 				// - nextnode is a CSS selector for jQuery
-				} else if ( typeof nextnode == 'string' && $ul.find( nextnode ).length !== 0 ) {
+				} else if ( typeof nextnode === 'string' && $ul.find( nextnode ).length !== 0 ) {
 					$ul.find( nextnode ).eq( 0 ).before( $item );
-
 
 				// If the jQuery selector isn't found within the <ul>,
 				// or if nextnode was invalid or not passed at all,
@@ -418,15 +413,13 @@
 		 * something, replacing any previous message.
 		 * Calling with no arguments, with an empty string or null will hide the message
 		 *
-		 * @param message mixed The DOM-element or HTML-string to be put inside the message box.
-		 * @param className	string Used in adding a class; should be different for each call
+		 * @param message {mixed} The DOM-element, jQuery object or HTML-string to be put inside the message box.
+		 * @param className {String} Used in adding a class; should be different for each call
 		 * to allow CSS/JS to hide different boxes. null = no class used.
-		 * @return boolean True on success, false on failure.
+		 * @return {Boolean} True on success, false on failure.
 		 */
-		'jsMessage' : function( message, className ) {
-
+		jsMessage: function( message, className ) {
 			if ( !arguments.length || message === '' || message === null ) {
-
 				$( '#mw-js-message' ).empty().hide();
 				return true; // Emptying and hiding message is intended behaviour, return true
 
@@ -436,7 +429,7 @@
 				// an mw-js-message div to start with.
 				var $messageDiv = $( '#mw-js-message' );
 				if ( !$messageDiv.length ) {
-					$messageDiv = $( '<div id="mw-js-message">' );
+					$messageDiv = $( '<div id="mw-js-message"></div>' );
 					if ( util.$content.parent().length ) {
 						util.$content.parent().prepend( $messageDiv );
 					} else {
@@ -450,7 +443,7 @@
 
 				if ( typeof message === 'object' ) {
 					$messageDiv.empty();
-					$messageDiv.append( message ); // Append new content
+					$messageDiv.append( message );
 				} else {
 					$messageDiv.html( message );
 				}
@@ -471,7 +464,7 @@
 		 * @return mixed Null if mailtxt was an empty string, otherwise true/false
 		 * is determined by validation.
 		 */
-		'validateEmail' : function( mailtxt ) {
+		validateEmail: function( mailtxt ) {
 			if( mailtxt === '' ) {
 				return null;
 			}
@@ -545,15 +538,18 @@
 		 * @param allowBlock boolean
 		 * @return boolean
 		 */
-		'isIPv4Address' : function( address, allowBlock ) {
+		isIPv4Address: function( address, allowBlock ) {
 			if ( typeof address !== 'string' ) {
 				return false;
 			}
-			var block = allowBlock ? '(?:\\/(?:3[0-2]|[12]?\\d))?' : '';
-			var RE_IP_BYTE = '(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|0?[0-9]?[0-9])';
-			var RE_IP_ADD = '(?:' + RE_IP_BYTE + '\\.){3}' + RE_IP_BYTE;
-			return address.search( new RegExp( '^' + RE_IP_ADD + block + '$' ) ) != -1;
+
+			var	block = allowBlock ? '(?:\\/(?:3[0-2]|[12]?\\d))?' : '',
+				RE_IP_BYTE = '(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|0?[0-9]?[0-9])',
+				RE_IP_ADD = '(?:' + RE_IP_BYTE + '\\.){3}' + RE_IP_BYTE;
+
+			return address.search( new RegExp( '^' + RE_IP_ADD + block + '$' ) ) !== -1;
 		},
+
 		/**
 		 * Note: borrows from IP::isIPv6
 		 *
@@ -561,12 +557,13 @@
 		 * @param allowBlock boolean
 		 * @return boolean
 		 */
-		'isIPv6Address' : function( address, allowBlock ) {
+		isIPv6Address: function( address, allowBlock ) {
 			if ( typeof address !== 'string' ) {
 				return false;
 			}
-			var block = allowBlock ? '(?:\\/(?:12[0-8]|1[01][0-9]|[1-9]?\\d))?' : '';
-			var RE_IPV6_ADD =
+
+			var	block = allowBlock ? '(?:\\/(?:12[0-8]|1[01][0-9]|[1-9]?\\d))?' : '',
+				RE_IPV6_ADD =
 			'(?:' + // starts with "::" (including "::")
 			':(?::|(?::' + '[0-9A-Fa-f]{1,4}' + '){1,7})' +
 			'|' + // ends with "::" (except "::")
@@ -574,15 +571,19 @@
 			'|' + // contains no "::"
 			'[0-9A-Fa-f]{1,4}' + '(?::' + '[0-9A-Fa-f]{1,4}' + '){7}' +
 			')';
-			if ( address.search( new RegExp( '^' + RE_IPV6_ADD + block + '$' ) ) != -1 ) {
+
+			if ( address.search( new RegExp( '^' + RE_IPV6_ADD + block + '$' ) ) !== -1 ) {
 				return true;
 			}
+
 			RE_IPV6_ADD = // contains one "::" in the middle (single '::' check below)
 				'[0-9A-Fa-f]{1,4}' + '(?:::?' + '[0-9A-Fa-f]{1,4}' + '){1,6}';
-			return address.search( new RegExp( '^' + RE_IPV6_ADD + block + '$' ) ) != -1
-				&& address.search( /::/ ) != -1 && address.search( /::.*::/ ) == -1;
-		}
 
+			return address.search( new RegExp( '^' + RE_IPV6_ADD + block + '$' ) ) !== -1
+				&& address.search( /::/ ) !== -1 && address.search( /::.*::/ ) === -1;
+		}
 	};
 
-} )( jQuery );
+	mw.util = util;
+
+} )( jQuery, mediaWiki );

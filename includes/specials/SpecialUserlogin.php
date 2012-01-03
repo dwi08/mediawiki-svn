@@ -127,7 +127,11 @@ class LoginForm extends SpecialPage {
 		}
 
 		if( !$wgAuth->validDomain( $this->mDomain ) ) {
-			$this->mDomain = 'invaliddomain';
+			if ( isset( $_SESSION['wsDomain'] ) ) {
+				$this->mDomain = $_SESSION['wsDomain'];
+			} else {
+				$this->mDomain = 'invaliddomain';
+			}
 		}
 		$wgAuth->setDomain( $this->mDomain );
 
@@ -139,12 +143,18 @@ class LoginForm extends SpecialPage {
 		}
 	}
 
+	function getDescription() {
+		return $this->msg( $this->getUser()->isAllowed( 'createaccount' ) ?
+			'userlogin' : 'userloginnocreate' )->text();
+	}
+
 	public function execute( $par ) {
 		if ( session_id() == '' ) {
 			wfSetupSession();
 		}
 
 		$this->load();
+		$this->setHeaders();
 
 		if ( $par == 'signup' ) { # Check for [[Special:Userlogin/signup]]
 			$this->mType = 'signup';
@@ -189,7 +199,7 @@ class LoginForm extends SpecialPage {
 		$u->addNewUserLogEntry( true, $this->mReason );
 
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'accmailtitle' )->text() );
+		$out->setPageTitle( $this->msg( 'accmailtitle' ) );
 
 		if( !$result->isGood() ) {
 			$this->mainLoginForm( $this->msg( 'mailerror', $result->getWikiText() )->text() );
@@ -251,7 +261,7 @@ class LoginForm extends SpecialPage {
 			}
 		} else {
 			# Confirm that the account was created
-			$out->setPageTitle( $this->msg( 'accountcreated' )->text() );
+			$out->setPageTitle( $this->msg( 'accountcreated' ) );
 			$out->addWikiMsg( 'accountcreatedtext', $u->getName() );
 			$out->returnToMain( false, $this->getTitle() );
 			wfRunHooks( 'AddNewAccount', array( $u, false ) );
@@ -469,6 +479,7 @@ class LoginForm extends SpecialPage {
 		$this->load();
 
 		if ( $this->mUsername == '' ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( new User, $this->mPassword, self::NO_NAME ) );
 			return self::NO_NAME;
 		}
 
@@ -480,20 +491,24 @@ class LoginForm extends SpecialPage {
 		// If the user doesn't have a login token yet, set one.
 		if ( !self::getLoginToken() ) {
 			self::setLoginToken();
+			wfRunHooks( 'LoginAuthenticateAudit', array( new User, $this->mPassword, self::NEED_TOKEN ) );
 			return self::NEED_TOKEN;
 		}
 		// If the user didn't pass a login token, tell them we need one
 		if ( !$this->mToken ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( new User, $this->mPassword, self::NEED_TOKEN ) );
 			return self::NEED_TOKEN;
 		}
 
 		$throttleCount = self::incLoginThrottle( $this->mUsername );
 		if ( $throttleCount === true ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( new User, $this->mPassword, self::THROTTLED ) );
 			return self::THROTTLED;
 		}
 
 		// Validate the login token
 		if ( $this->mToken !== self::getLoginToken() ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( new User, $this->mPassword, self::WRONG_TOKEN ) );
 			return self::WRONG_TOKEN;
 		}
 
@@ -513,7 +528,12 @@ class LoginForm extends SpecialPage {
 		# TODO: Allow some magic here for invalid external names, e.g., let the
 		# user choose a different wiki name.
 		$u = User::newFromName( $this->mUsername );
-		if( !( $u instanceof User ) || !User::isUsableName( $u->getName() ) ) {
+		if( !( $u instanceof User ) ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( new User, $this->mPassword, self::ILLEGAL ) );
+			return self::ILLEGAL;
+		}
+		if( !User::isUsableName( $u->getName() ) ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( $u, $this->mPassword, self::ILLEGAL ) );
 			return self::ILLEGAL;
 		}
 
@@ -521,6 +541,7 @@ class LoginForm extends SpecialPage {
 		if ( 0 == $u->getID() ) {
 			$status = $this->attemptAutoCreate( $u );
 			if ( $status !== self::SUCCESS ) {
+				wfRunHooks( 'LoginAuthenticateAudit', array( $u, $this->mPassword, $status ) );
 				return $status;
 			} else {
 				$isAutoCreated = true;
@@ -541,6 +562,7 @@ class LoginForm extends SpecialPage {
 		// Give general extensions, such as a captcha, a chance to abort logins
 		$abort = self::ABORTED;
 		if( !wfRunHooks( 'AbortLogin', array( $u, $this->mPassword, &$abort, &$this->mAbortLoginErrorMsg ) ) ) {
+			wfRunHooks( 'LoginAuthenticateAudit', array( $u, $this->mPassword, $abort ) );
 			return $abort;
 		}
 
@@ -602,7 +624,7 @@ class LoginForm extends SpecialPage {
 		return $retval;
 	}
 
-	/*
+	/**
 	 * Increment the login attempt throttle hit count for the (username,current IP)
 	 * tuple unless the throttle was already reached.
 	 * @param $username string The user name
@@ -631,7 +653,7 @@ class LoginForm extends SpecialPage {
 		return $throttleCount;
 	}
 
-	/*
+	/**
 	 * Clear the login attempt throttle hit count for the (username,current IP) tuple.
 	 * @param $username string The user name
 	 * @return void
@@ -730,7 +752,7 @@ class LoginForm extends SpecialPage {
 					$code = $request->getVal( 'uselang', $user->getOption( 'language' ) );
 					$userLang = Language::factory( $code );
 					$wgLang = $userLang;
-					$this->getContext()->setLang( $userLang );
+					$this->getContext()->setLanguage( $userLang );
 					return $this->successfulLogin();
 				} else {
 					return $this->cookieRedirectCheck( 'login' );
@@ -872,7 +894,11 @@ class LoginForm extends SpecialPage {
 
 		wfRunHooks( 'UserLoginComplete', array( &$currentUser, &$injected_html ) );
 
-		//let any extensions change what message is shown
+		/**
+		 * Let any extensions change what message is shown.
+		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforeWelcomeCreation
+		 * @since 1.18
+		 */
 		wfRunHooks( 'BeforeWelcomeCreation', array( &$welcome_creation_msg, &$injected_html ) );
 
 		$this->displaySuccessfulLogin( $welcome_creation_msg, $injected_html );
@@ -883,7 +909,7 @@ class LoginForm extends SpecialPage {
 	 */
 	private function displaySuccessfulLogin( $msgname, $injected_html ) {
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'loginsuccesstitle' )->text() );
+		$out->setPageTitle( $this->msg( 'loginsuccesstitle' ) );
 		if( $msgname ){
 			$out->addWikiMsg( $msgname, wfEscapeWikiText( $this->getUser()->getName() ) );
 		}
@@ -914,7 +940,7 @@ class LoginForm extends SpecialPage {
 		# out.
 
 		$out = $this->getOutput();
-		$out->setPageTitle( $this->msg( 'cantcreateaccounttitle' )->text() );
+		$out->setPageTitle( $this->msg( 'cantcreateaccounttitle' ) );
 
 		$block_reason = $block->mReason;
 		if ( strval( $block_reason ) === '' ) {
@@ -925,7 +951,7 @@ class LoginForm extends SpecialPage {
 			'cantcreateaccount-text',
 			$block->getTarget(),
 			$block_reason,
-			$block->getBlocker()->getName()
+			$block->getByName()
 		);
 
 		$out->returnToMain( false );
@@ -947,14 +973,14 @@ class LoginForm extends SpecialPage {
 			// Block signup here if in readonly. Keeps user from
 			// going through the process (filling out data, etc)
 			// and being informed later.
-			if ( wfReadOnly() ) {
-				throw new ReadOnlyError;
+			$permErrors = $titleObj->getUserPermissionsErrors( 'createaccount', $user, true );
+			if ( count( $permErrors ) ) {
+				throw new PermissionsError( 'createaccount', $permErrors );
 			} elseif ( $user->isBlockedFromCreateAccount() ) {
 				$this->userBlockedMessage( $user->isBlockedFromCreateAccount() );
 				return;
-			} elseif ( count( $permErrors = $titleObj->getUserPermissionsErrors( 'createaccount', $user, true ) )>0 ) {
-				$this->getOutput()->showPermissionsErrorPage( $permErrors, 'createaccount' );
-				return;
+			} elseif ( wfReadOnly() ) {
+				throw new ReadOnlyError;
 			}
 		}
 
@@ -1046,10 +1072,11 @@ class LoginForm extends SpecialPage {
 		# Prepare language selection links as needed
 		if( $wgLoginLanguageSelector ) {
 			$template->set( 'languages', $this->makeLanguageSelector() );
-			if( $this->mLanguage )
+			if( $this->mLanguage ) {
 				$template->set( 'uselang', $this->mLanguage );
+			}
 		}
-		
+
 		// Use loginend-https for HTTPS requests if it's not blank, loginend otherwise
 		// Ditto for signupend
 		$usingHTTPS = WebRequest::detectProtocol() == 'https';
@@ -1074,14 +1101,7 @@ class LoginForm extends SpecialPage {
 			wfRunHooks( 'UserLoginForm', array( &$template ) );
 		}
 
-		// Changes the title depending on permissions for creating account
 		$out = $this->getOutput();
-		if ( $user->isAllowed( 'createaccount' ) ) {
-			$out->setPageTitle( $this->msg( 'userlogin' )->text() );
-		} else {
-			$out->setPageTitle( $this->msg( 'userloginnocreate' )->text() );
-		}
-
 		$out->disallowUserJs(); // just in case...
 		$out->addTemplate( $template );
 	}
@@ -1225,7 +1245,7 @@ class LoginForm extends SpecialPage {
 				}
 			}
 			return count( $links ) > 0 ? $this->msg( 'loginlanguagelabel' )->rawParams(
-				$this->getLang()->pipeList( $links ) )->escaped() : '';
+				$this->getLanguage()->pipeList( $links ) )->escaped() : '';
 		} else {
 			return '';
 		}

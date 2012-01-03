@@ -48,7 +48,7 @@ class UploadStash {
 	 *
 	 * @param $repo FileRepo
 	 */
-	public function __construct( $repo, $user = null ) {
+	public function __construct( FileRepo $repo, $user = null ) {
 		// this might change based on wiki's configuration.
 		$this->repo = $repo;
 
@@ -91,8 +91,6 @@ class UploadStash {
 			}
 		}
 
-		$dbr = $this->repo->getSlaveDb();
-
 		if ( !isset( $this->fileMetadata[$key] ) ) {
 			if ( !$this->fetchFileMetadata( $key ) ) {
 				// If nothing was received, it's likely due to replication lag.  Check the master to see if the record is there.
@@ -108,10 +106,7 @@ class UploadStash {
 
 			// fetch fileprops
 			$path = $this->fileMetadata[$key]['us_path'];
-			if ( $this->repo->isVirtualUrl( $path ) ) {
-				$path = $this->repo->resolveVirtualUrl( $path );
-			}
-			$this->fileProps[$key] = File::getPropsFromPath( $path );
+			$this->fileProps[$key] = $this->repo->getFileProps( $path );
 		}
 
 		if ( ! $this->files[$key]->exists() ) {
@@ -165,7 +160,7 @@ class UploadStash {
 			wfDebug( __METHOD__ . " tried to stash file at '$path', but it doesn't exist\n" );
 			throw new UploadStashBadPathException( "path doesn't exist" );
 		}
-		$fileProps = File::getPropsFromPath( $path );
+		$fileProps = FSFile::getPropsFromPath( $path );
 		wfDebug( __METHOD__ . " stashing file at '$path'\n" );
 
 		// we will be initializing from some tmpnam files that don't have extensions.
@@ -188,7 +183,7 @@ class UploadStash {
 		$usec = substr($usec, 2);
 		$key = wfBaseConvert( $sec . $usec, 10, 36 ) . '.' .
 			wfBaseConvert( mt_rand(), 10, 36 ) . '.'.
-			$this->userId . '.' . 
+			$this->userId . '.' .
 			$extension;
 
 		$this->fileProps[$key] = $fileProps;
@@ -217,7 +212,7 @@ class UploadStash {
 					$error = array( 'unknown', 'no error recorded' );
 				}
 			}
-			throw new UploadStashFileException( "error storing file in '$path': " . implode( '; ', $error ) );
+			throw new UploadStashFileException( "Error storing file in '$path': " . implode( '; ', $error ) );
 		}
 		$stashPath = $storeStatus->value;
 
@@ -231,10 +226,11 @@ class UploadStash {
 		$dbw = $this->repo->getMasterDb();
 
 		$this->fileMetadata[$key] = array(
+			'us_id' => $dbw->nextSequenceValue( 'uploadstash_us_id_seq' ),
 			'us_user' => $this->userId,
 			'us_key' => $key,
 			'us_orig_path' => $path,
-			'us_path' => $stashPath,
+			'us_path' => $stashPath, // virtual URL
 			'us_size' => $fileProps['size'],
 			'us_sha1' => $fileProps['sha1'],
 			'us_mime' => $fileProps['mime'],
@@ -476,7 +472,7 @@ class UploadStashFile extends UnregisteredLocalFile {
 	 * A LocalFile wrapper around a file that has been temporarily stashed, so we can do things like create thumbnails for it
 	 * Arguably UnregisteredLocalFile should be handling its own file repo but that class is a bit retarded currently
 	 *
-	 * @param $repo FSRepo: repository where we should find the path
+	 * @param $repo FileRepo: repository where we should find the path
 	 * @param $path String: path to file
 	 * @param $key String: key to store the path and any stashed data under
 	 * @throws UploadStashBadPathException

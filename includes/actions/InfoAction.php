@@ -29,10 +29,6 @@ class InfoAction extends FormlessAction {
 		return 'info';
 	}
 
-	public function getRestriction() {
-		return 'read';
-	}
-
 	protected function getDescription() {
 		return '';
 	}
@@ -68,13 +64,13 @@ class InfoAction extends FormlessAction {
 			) .
 			Html::rawElement( 'tr', array(),
 				Html::element( 'td', array(), wfMsg( 'pageinfo-edits' ) ) .
-				Html::element( 'td', array(), $this->getLang()->formatNum( $pageInfo['edits'] ) ) .
-				Html::element( 'td', array(), $this->getLang()->formatNum( $talkInfo['edits'] ) )
+				Html::element( 'td', array(), $this->getLanguage()->formatNum( $pageInfo['edits'] ) ) .
+				Html::element( 'td', array(), $this->getLanguage()->formatNum( $talkInfo['edits'] ) )
 			) .
 			Html::rawElement( 'tr', array(),
 				Html::element( 'td', array(), wfMsg( 'pageinfo-authors' ) ) .
-				Html::element( 'td', array(), $this->getLang()->formatNum( $pageInfo['authors'] ) ) .
-				Html::element( 'td', array(), $this->getLang()->formatNum( $talkInfo['authors'] ) )
+				Html::element( 'td', array(), $this->getLanguage()->formatNum( $pageInfo['authors'] ) ) .
+				Html::element( 'td', array(), $this->getLanguage()->formatNum( $talkInfo['authors'] ) )
 			) .
 			( !$this->getUser()->isAllowed( 'unwatchedpages' ) ? '' :
 				Html::rawElement( 'tr', array(),
@@ -82,7 +78,7 @@ class InfoAction extends FormlessAction {
 				) .
 				Html::rawElement( 'tr', array(),
 					Html::element( 'td', array(), wfMsg( 'pageinfo-watchers' ) ) .
-					Html::element( 'td', array( 'colspan' => 2 ), $this->getLang()->formatNum( $pageInfo['watchers'] ) )
+					Html::element( 'td', array( 'colspan' => 2 ), $this->getLanguage()->formatNum( $pageInfo['watchers'] ) )
 				)
 			).
 			( $wgDisableCounters ? '' :
@@ -91,13 +87,13 @@ class InfoAction extends FormlessAction {
 				) .
 				Html::rawElement( 'tr', array(),
 					Html::element( 'td', array(), wfMsg( 'pageinfo-views' ) ) .
-					Html::element( 'td', array(), $this->getLang()->formatNum( $pageInfo['views'] ) ) .
-					Html::element( 'td', array(), $this->getLang()->formatNum( $talkInfo['views'] ) )
+					Html::element( 'td', array(), $this->getLanguage()->formatNum( $pageInfo['views'] ) ) .
+					Html::element( 'td', array(), $this->getLanguage()->formatNum( $talkInfo['views'] ) )
 				) .
 				Html::rawElement( 'tr', array(),
 					Html::element( 'td', array(), wfMsg( 'pageinfo-viewsperedit' ) ) .
-					Html::element( 'td', array(), $this->getLang()->formatNum( sprintf( '%.2f', $pageInfo['edits'] ? $pageInfo['views'] / $pageInfo['edits'] : 0 ) ) ) .
-					Html::element( 'td', array(), $this->getLang()->formatNum( sprintf( '%.2f', $talkInfo['edits'] ? $talkInfo['views'] / $talkInfo['edits'] : 0 ) ) )
+					Html::element( 'td', array(), $this->getLanguage()->formatNum( sprintf( '%.2f', $pageInfo['edits'] ? $pageInfo['views'] / $pageInfo['edits'] : 0 ) ) ) .
+					Html::element( 'td', array(), $this->getLanguage()->formatNum( sprintf( '%.2f', $talkInfo['edits'] ? $talkInfo['views'] / $talkInfo['edits'] : 0 ) ) )
 				)
 			)
 		);

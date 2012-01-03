@@ -29,7 +29,7 @@
 class ResourceLoader {
 
 	/* Protected Static Members */
-	protected static $filterCacheVersion = 5;
+	protected static $filterCacheVersion = 7;
 	protected static $requiredSourceProperties = array( 'loadScript' );
 
 	/** Array: List of module name/ResourceLoaderModule object pairs */
@@ -228,43 +228,38 @@ class ResourceLoader {
 		wfProfileIn( __METHOD__ );
 
 		// Allow multiple modules to be registered in one call
-		if ( is_array( $name ) ) {
-			foreach ( $name as $key => $value ) {
-				$this->register( $key, $value );
-			}
-			wfProfileOut( __METHOD__ );
-			return;
-		}
-
-		// Disallow duplicate registrations
-		if ( isset( $this->moduleInfos[$name] ) ) {
-			// A module has already been registered by this name
-			throw new MWException(
-				'ResourceLoader duplicate registration error. ' .
-				'Another module has already been registered as ' . $name
-			);
-		}
-
-		// Check $name for illegal characters
-		if ( preg_match( '/[|,!]/', $name ) ) {
-			throw new MWException( "ResourceLoader module name '$name' is invalid. Names may not contain pipes (|), commas (,) or exclamation marks (!)" );
-		}
-
-		// Attach module
-		if ( is_object( $info ) ) {
-			// Old calling convention
-			// Validate the input
-			if ( !( $info instanceof ResourceLoaderModule ) ) {
-				throw new MWException( 'ResourceLoader invalid module error. ' .
-					'Instances of ResourceLoaderModule expected.' );
+		$registrations = is_array( $name ) ? $name : array( $name => $info );
+		foreach ( $registrations as $name => $info ) {
+			// Disallow duplicate registrations
+			if ( isset( $this->moduleInfos[$name] ) ) {
+				// A module has already been registered by this name
+				throw new MWException(
+					'ResourceLoader duplicate registration error. ' .
+					'Another module has already been registered as ' . $name
+				);
 			}
 
-			$this->moduleInfos[$name] = array( 'object' => $info );
-			$info->setName( $name );
-			$this->modules[$name] = $info;
-		} else {
-			// New calling convention
-			$this->moduleInfos[$name] = $info;
+			// Check $name for illegal characters
+			if ( preg_match( '/[|,!]/', $name ) ) {
+				throw new MWException( "ResourceLoader module name '$name' is invalid. Names may not contain pipes (|), commas (,) or exclamation marks (!)" );
+			}
+
+			// Attach module
+			if ( is_object( $info ) ) {
+				// Old calling convention
+				// Validate the input
+				if ( !( $info instanceof ResourceLoaderModule ) ) {
+					throw new MWException( 'ResourceLoader invalid module error. ' .
+						'Instances of ResourceLoaderModule expected.' );
+				}
+
+				$this->moduleInfos[$name] = array( 'object' => $info );
+				$info->setName( $name );
+				$this->modules[$name] = $info;
+			} else {
+				// New calling convention
+				$this->moduleInfos[$name] = $info;
+			}
 		}
 
 		wfProfileOut( __METHOD__ );
@@ -486,6 +481,7 @@ class ResourceLoader {
 
 		// If there's an If-Modified-Since header, respond with a 304 appropriately
 		if ( $this->tryRespondLastModified( $context, $mtime ) ) {
+			wfProfileOut( __METHOD__ );
 			return; // output handled (buffers cleared)
 		}
 
@@ -639,6 +635,11 @@ class ResourceLoader {
 				return false; // output handled (buffers cleared)
 			}
 			$response = $fileCache->fetchText();
+			// Capture any PHP warnings from the output buffer and append them to the
+			// response in a comment if we're in debug mode.
+			if ( $context->getDebug() && strlen( $warnings = ob_get_contents() ) ) {
+				$response = "/*\n$warnings\n*/\n" . $response;
+			}
 			// Remove the output buffer and output the response
 			ob_end_clean();
 			echo $response . "\n/* Cached {$ts} */";
@@ -974,8 +975,7 @@ class ResourceLoader {
 	 * @return string
 	 */
 	public static function makeLoaderConditionalScript( $script ) {
-		$script = str_replace( "\n", "\n\t", trim( $script ) );
-		return "if(window.mw){\n\t$script\n}\n";
+		return "if(window.mw){\n".trim( $script )."\n}";
 	}
 
 	/**

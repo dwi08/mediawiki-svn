@@ -205,7 +205,6 @@ Sō̤ kī só-gé̤ṳ-kó gì guāng-lī-uòng cūng-kuāng gāi-sék: $1',
 'perfcachedts'         => "Â-dā̤ gì só-gé̤ṳ ké̤ṳk ká̤-chṳ̄ (''cashed'') guó, sèng siŏh huòi huăng-sĭng gì sì-găng sê $1.",
 'querypage-no-updates' => 'Cī-buàng buōng hiĕk-miêng mâ̤ huăng-sĭng. Só-gé̤ṳ iâ mâ̤ huăng-sĭng.',
 'viewsource'           => 'Káng nguòng-dâi-mā',
-'viewsourcefor'        => '$1 gì',
 'protectedpagetext'    => 'Cī hiĕk ī-gĭng ké̤ṳk sō̤ kī lāu, mâ̤-sāi siŭ-gāi.',
 'viewsourcetext'       => 'Nṳ̄ â̤-sāi káng gâe̤ng hók-cié ciā hiĕk gì nguòng-dâi-mā:',
 'editinginterface'     => "'''Gīng-gó̤:''' Nṳ̄ hiêng-câi lā̤ siŭ-gāi hiê-tūng gái-miêng gì hiĕk. Dó̤i ciā hiĕk gì gāi-biéng â̤ īng-hiōng gì-tă ê̤ṳng-hô gì gái-miêng.",
@@ -698,7 +697,6 @@ Có̤i âu gì siŭ-gāi sê [[User:$3|$3]] ([[User talk:$3|Tō̤-lâung]]) sū 
 # Block/unblock
 'blockip'                  => 'Hŭng-sō̤ ê̤ṳng-hô',
 'blockiptext'              => 'Sāi-ê̤ṳng â-dā̤ gì dăng-dăng lì hŭng-sō̤ IP dê-cī hĕ̤k-ciā ê̤ṳng-hô-miàng gì siā guòng-âing. Cuòi nâ sê ôi lāu huòng-cī nè̤ng cáuk-ták wiki, bêng-chiā găi-dŏng hù-hăk [[{{MediaWiki:Policy-url}}|céng-cháik]]. Chiāng diŏh â-dā̤ siā giâ hŭng-sō̤ gì nguòng-ĭng (pī-ṳ̀-gōng, īng-ê̤ṳng ké̤ṳk cáuk-ták gì hiĕk-miêng).',
-'ipaddress'                => 'IP dê-cī:',
 'ipadressorusername'       => 'IP dê-cī hĕ̤k ê̤ṳng-hô-miàng:',
 'ipbexpiry'                => 'Guó-gĭ:',
 'ipbreason'                => 'Nguòng-ĭng',
@@ -826,7 +824,7 @@ Nâ cūng-kuāng, nṳ̄ â̤-sāi cê-gă iè-dông hĕ̤k-ciā sê hăk-biáng
 
 # External editor support
 'edit-externally'      => 'Sāi nguôi-buô tiàng-sê̤ṳ piĕng-cék ciā ùng-giông',
-'edit-externally-help' => 'Chăng-kō̤ [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] liēu-gāi gáing sâ̤ séng-sék.',
+'edit-externally-help' => 'Chăng-kō̤ [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] liēu-gāi gáing sâ̤ séng-sék.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'sū-iū',

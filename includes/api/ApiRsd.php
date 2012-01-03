@@ -25,10 +25,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	require_once( 'ApiBase.php' );
-}
-
 /**
  * API module for sending out RSD information
  * @ingroup API
@@ -47,7 +43,7 @@ class ApiRsd extends ApiBase {
 
 		$service = array( 'apis' => $this->formatRsdApiList() );
 		ApiResult::setContent( $service, 'MediaWiki', 'engineName' );
-		ApiResult::setContent( $service, 'http://www.mediawiki.org/', 'engineLink' );
+		ApiResult::setContent( $service, 'https://www.mediawiki.org/', 'engineLink' );
 		ApiResult::setContent( $service, Title::newMainPage()->getCanonicalUrl(), 'homePageLink' );
 
 		$result->setIndexedTagName( $service['apis'], 'api' );
@@ -101,7 +97,7 @@ class ApiRsd extends ApiBase {
 				'apiLink' => wfExpandUrl( wfScript( 'api' ), PROTO_CURRENT ),
 
 				// Docs link is optional, but recommended.
-				'docs' => 'http://www.mediawiki.org/wiki/API',
+				'docs' => 'https://www.mediawiki.org/wiki/API',
 
 				// Some APIs may need a blog ID, but it may be left blank.
 				'blogID' => '',

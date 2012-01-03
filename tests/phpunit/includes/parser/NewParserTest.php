@@ -32,10 +32,6 @@ class NewParserTest extends MediaWikiTestCase {
 
 	protected $file = false;
 
-	/*function __construct($a = null,$b = array(),$c = null ) {
-		parent::__construct($a,$b,$c);
-	}*/
-
 	function setUp() {
 		global $wgContLang, $wgNamespaceProtection, $wgNamespaceAliases;
 		global $wgHooks, $IP;
@@ -60,15 +56,14 @@ class NewParserTest extends MediaWikiTestCase {
 		$tmpGlobals['wgStylePath'] = '/skins';
 		$tmpGlobals['wgThumbnailScriptPath'] = false;
 		$tmpGlobals['wgLocalFileRepo'] = array(
-			'class' => 'LocalRepo',
-			'name' => 'local',
-			'directory' => wfTempDir() . '/test-repo',
-			'url' => 'http://example.com/images',
-			'deletedDir' => wfTempDir() . '/test-repo/delete',
-			'hashLevels' => 2,
+			'class'           => 'LocalRepo',
+			'name'            => 'local',
+			'url'             => 'http://example.com/images',
+			'hashLevels'      => 2,
 			'transformVia404' => false,
+			'backend'         => 'local-backend'
 		);
-
+		$tmpGlobals['wgForeignFileRepos'] = array();
 		$tmpGlobals['wgEnableParserCache'] = false;
 		$tmpGlobals['wgHooks'] = $wgHooks;
 		$tmpGlobals['wgDeferredUpdateList'] = array();
@@ -79,7 +74,7 @@ class NewParserTest extends MediaWikiTestCase {
 		// $tmpGlobals['wgContLang'] = new StubContLang;
 		$tmpGlobals['wgUser'] = new User;
 		$context = new RequestContext();
-		$tmpGlobals['wgLang'] = $context->getLang();
+		$tmpGlobals['wgLang'] = $context->getLanguage();
 		$tmpGlobals['wgOut'] = $context->getOutput();
 		$tmpGlobals['wgParser'] = new StubObject( 'wgParser', $GLOBALS['wgParserConf']['class'], array( $GLOBALS['wgParserConf'] ) );
 		$tmpGlobals['wgRequest'] = $context->getRequest();
@@ -104,7 +99,6 @@ class NewParserTest extends MediaWikiTestCase {
 		$wgNamespaceProtection[NS_MEDIAWIKI] = 'editinterface';
 		$wgNamespaceAliases['Image'] = NS_FILE;
 		$wgNamespaceAliases['Image_talk'] = NS_FILE_TALK;
-
 	}
 
 	public function tearDown() {
@@ -118,9 +112,13 @@ class NewParserTest extends MediaWikiTestCase {
 		$wgNamespaceProtection[NS_MEDIAWIKI] = $this->savedWeirdGlobals['mw_namespace_protection'];
 		$wgNamespaceAliases['Image'] = $this->savedWeirdGlobals['image_alias'];
 		$wgNamespaceAliases['Image_talk'] = $this->savedWeirdGlobals['image_talk_alias'];
+
+		// Restore backends
+		RepoGroup::destroySingleton();
 	}
 
 	function addDBData() {
+		$this->tablesUsed[] = 'image';
 		# Hack: insert a few Wikipedia in-project interwiki prefixes,
 		# for testing inter-language links
 		$this->db->insert( 'interwiki', array(
@@ -234,12 +232,19 @@ class NewParserTest extends MediaWikiTestCase {
 			'wgExtensionAssetsPath' => '/extensions',
 			'wgActionPaths' => array(),
 			'wgLocalFileRepo' => array(
-				'class' => 'LocalRepo',
-				'name' => 'local',
-				'directory' => $this->uploadDir,
-				'url' => 'http://example.com/images',
-				'hashLevels' => 2,
+				'class'           => 'LocalRepo',
+				'name'            => 'local',
+				'url'             => 'http://example.com/images',
+				'hashLevels'      => 2,
 				'transformVia404' => false,
+				'backend'         => new FSFileBackend( array(
+					'name'        => 'local-backend',
+					'lockManager' => 'nullLockManager',
+					'containerPaths' => array(
+						'media-public'  => "$this->uploadDir",
+						'media-thumb'   => "$this->uploadDir/thumb",
+					)
+				) )
 			),
 			'wgEnableUploads' => self::getOptionValue( 'wgEnableUploads', $opts, true ),
 			'wgStylePath' => '/skins',
@@ -309,10 +314,11 @@ class NewParserTest extends MediaWikiTestCase {
 		$langObj = Language::factory( $lang );
 		$GLOBALS['wgContLang'] = $langObj;
 		$context = new RequestContext();
-		$GLOBALS['wgLang'] = $context->getLang();
+		$GLOBALS['wgLang'] = $context->getLanguage();
 
 		$GLOBALS['wgMemc'] = new EmptyBagOStuff;
 		$GLOBALS['wgOut'] = $context->getOutput();
+		$GLOBALS['wgUser'] = $context->getUser();
 
 		global $wgHooks;
 
@@ -320,6 +326,7 @@ class NewParserTest extends MediaWikiTestCase {
 		$wgHooks['ParserGetVariableValueTs'][] = 'ParserTest::getFakeTimestamp';
 
 		MagicWord::clearCache();
+		RepoGroup::destroySingleton();
 
 		# Publish the articles after we have the final language set
 		$this->publishTestArticles();
@@ -328,8 +335,7 @@ class NewParserTest extends MediaWikiTestCase {
 		RepoGroup::destroySingleton();
 		MessageCache::singleton()->destroyInstance();
 
-		global $wgUser;
-		$wgUser = new User();
+		return $context;
 	}
 
 	/**
@@ -370,12 +376,12 @@ class NewParserTest extends MediaWikiTestCase {
 	 * after each test runs.
 	 */
 	protected function teardownGlobals() {
-		RepoGroup::destroySingleton();
-		LinkCache::singleton()->clear();
-
 		foreach ( $this->savedGlobals as $var => $val ) {
 			$GLOBALS[$var] = $val;
 		}
+
+		RepoGroup::destroySingleton();
+		LinkCache::singleton()->clear();
 
 		$this->teardownUploadDir( $this->uploadDir );
 	}
@@ -471,10 +477,10 @@ class NewParserTest extends MediaWikiTestCase {
 		wfDebug( "Running parser test: $desc\n" );
 
 		$opts = $this->parseOptions( $opts );
-		$this->setupGlobals( $opts, $config );
+		$context = $this->setupGlobals( $opts, $config );
 
-		$user = new User();
-		$options = ParserOptions::newFromUser( $user );
+		$user = $context->getUser();
+		$options = ParserOptions::newFromContext( $context );
 
 		if ( isset( $opts['title'] ) ) {
 			$titleText = $opts['title'];
@@ -519,10 +525,9 @@ class NewParserTest extends MediaWikiTestCase {
 			if ( isset( $opts['ill'] ) ) {
 				$out = $this->tidy( implode( ' ', $output->getLanguageLinks() ) );
 			} elseif ( isset( $opts['cat'] ) ) {
-				global $wgOut;
-
-				$wgOut->addCategoryLinks( $output->getCategories() );
-				$cats = $wgOut->getCategoryLinks();
+				$outputPage = $context->getOutput();
+				$outputPage->addCategoryLinks( $output->getCategories() );
+				$cats = $outputPage->getCategoryLinks();
 
 				if ( isset( $cats['normal'] ) ) {
 					$out = $this->tidy( implode( ' ', $cats['normal'] ) );
@@ -729,7 +734,7 @@ class NewParserTest extends MediaWikiTestCase {
 	}
 	//Various "cleanup" functions
 
-	/*
+	/**
 	 * Run the "tidy" command on text if the $wgUseTidy
 	 * global is true
 	 *

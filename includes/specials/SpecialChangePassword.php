@@ -37,9 +37,7 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 	function execute( $par ) {
 		global $wgAuth;
 
-		if ( wfReadOnly() ) {
-			throw new ReadOnlyError;
-		}
+		$this->checkReadOnly();
 
 		$request = $this->getRequest();
 		$this->mUserName = trim( $request->getVal( 'wpName' ) );
@@ -54,7 +52,7 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 
 		$user = $this->getUser();
 		if( !$request->wasPosted() && !$user->isLoggedIn() ) {
-			$this->error( wfMsg( 'resetpass-no-info' ) );
+			$this->error( $this->msg( 'resetpass-no-info' )->text() );
 			return;
 		}
 
@@ -70,7 +68,7 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 				}
 				$wgAuth->setDomain( $this->mDomain );
 				if( !$wgAuth->allowPasswordChange() ) {
-					$this->error( wfMsg( 'resetpass_forbidden' ) );
+					$this->error( $this->msg( 'resetpass_forbidden' )->text() );
 					return;
 				}
 
@@ -127,7 +125,7 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 				'<td></td>' .
 				'<td class="mw-input">' .
 					Xml::checkLabel(
-						wfMsgExt( 'remembermypassword', 'parsemag', $this->getLang()->formatNum( ceil( $wgCookieExpiration / ( 3600 * 24 ) ) ) ),
+						$this->msg( 'remembermypassword' )->numParams( ceil( $wgCookieExpiration / ( 3600 * 24 ) ) )->text(),
 						'wpRemember', 'wpRemember',
 						$this->getRequest()->getCheck( 'wpRemember' ) ) .
 				'</td>' .
@@ -139,17 +137,17 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 			$submitMsg = 'resetpass-submit-loggedin';
 		}
 		$this->getOutput()->addHTML(
-			Xml::fieldset( wfMsg( 'resetpass_header' ) ) .
+			Xml::fieldset( $this->msg( 'resetpass_header' )->text() ) .
 			Xml::openElement( 'form',
 				array(
 					'method' => 'post',
 					'action' => $this->getTitle()->getLocalUrl(),
 					'id' => 'mw-resetpass-form' ) ) . "\n" .
-			Html::hidden( 'token', $user->editToken() ) . "\n" .
+			Html::hidden( 'token', $user->getEditToken() ) . "\n" .
 			Html::hidden( 'wpName', $this->mUserName ) . "\n" .
 			Html::hidden( 'wpDomain', $this->mDomain ) . "\n" .
 			Html::hidden( 'returnto', $this->getRequest()->getVal( 'returnto' ) ) . "\n" .
-			wfMsgExt( 'resetpass_text', array( 'parse' ) ) . "\n" .
+			$this->msg( 'resetpass_text' )->parseAsBlock() . "\n" .
 			Xml::openElement( 'table', array( 'id' => 'mw-resetpass-table' ) ) . "\n" .
 			$this->pretty( array(
 				array( 'wpName', 'username', 'text', $this->mUserName ),
@@ -161,8 +159,8 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 			"<tr>\n" .
 				"<td></td>\n" .
 				'<td class="mw-input">' .
-					Xml::submitButton( wfMsg( $submitMsg ) ) .
-					Xml::submitButton( wfMsg( 'resetpass-submit-cancel' ), array( 'name' => 'wpCancel' ) ) .
+					Xml::submitButton( $this->msg( $submitMsg )->text() ) .
+					Xml::submitButton( $this->msg( 'resetpass-submit-cancel' )->text(), array( 'name' => 'wpCancel' ) ) .
 				"</td>\n" .
 			"</tr>\n" .
 			Xml::closeElement( 'table' ) .
@@ -191,9 +189,9 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 			$out .= "<tr>\n";
 			$out .= "\t<td class='mw-label'>";
 			if ( $type != 'text' )
-				$out .= Xml::label( wfMsg( $label ), $name );
+				$out .= Xml::label( $this->msg( $label )->text(), $name );
 			else
-				$out .=  wfMsgHtml( $label );
+				$out .=  $this->msg( $label )->escaped();
 			$out .= "</td>\n";
 			$out .= "\t<td class='mw-input'>";
 			$out .= $field;
@@ -209,22 +207,22 @@ class SpecialChangePassword extends UnlistedSpecialPage {
 	protected function attemptReset( $newpass, $retype ) {
 		$user = User::newFromName( $this->mUserName );
 		if( !$user || $user->isAnon() ) {
-			throw new PasswordError( wfMsg( 'nosuchusershort', $this->mUserName ) );
+			throw new PasswordError( $this->msg( 'nosuchusershort', $this->mUserName )->text() );
 		}
 
 		if( $newpass !== $retype ) {
 			wfRunHooks( 'PrefsPasswordAudit', array( $user, $newpass, 'badretype' ) );
-			throw new PasswordError( wfMsg( 'badretype' ) );
+			throw new PasswordError( $this->msg( 'badretype' )->text() );
 		}
 
 		$throttleCount = LoginForm::incLoginThrottle( $this->mUserName );
 		if ( $throttleCount === true ) {
-			throw new PasswordError( wfMsg( 'login-throttled' ) );
+			throw new PasswordError( $this->msg( 'login-throttled' )->text() );
 		}
 
 		if( !$user->checkTemporaryPassword($this->mOldpass) && !$user->checkPassword($this->mOldpass) ) {
 			wfRunHooks( 'PrefsPasswordAudit', array( $user, $newpass, 'wrongpassword' ) );
-			throw new PasswordError( wfMsg( 'resetpass-wrong-oldpass' ) );
+			throw new PasswordError( $this->msg( 'resetpass-wrong-oldpass' )->text() );
 		}
 
 		// Please reset throttle for successful logins, thanks!

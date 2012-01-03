@@ -2,7 +2,7 @@
 require_once( dirname( __FILE__ ) . '/NewParserTest.php' );
 
 /**
- * The UnitTest must be either a class that inherits from PHPUnit_Framework_TestCase 
+ * The UnitTest must be either a class that inherits from MediaWikiTestCase
  * or a class that provides a public static suite() method which returns 
  * an PHPUnit_Framework_Test object
  * 
@@ -24,7 +24,7 @@ class MediaWikiParserTest {
 			 */
 			$className = str_replace( '.', '_',  ucfirst( basename( $filename, '.txt' ) ) );
 			
-			eval( "/** @group Database\n@group Parser\n*/ class $className extends NewParserTest { protected \$file = \"" . addslashes( $filename ) . "\"; } " );
+			eval( "/** @group Database\n@group Parser\n*/ class $className extends NewParserTest { protected \$file = '" . strtr( $filename, array( "'" => "\\'", '\\' => '\\\\' ) ) . "'; } " );
 
 			$parserTester = new $className( $testsName );
 			$suite->addTestSuite( new ReflectionClass ( $parserTester ) );

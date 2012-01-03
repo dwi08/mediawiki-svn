@@ -9,6 +9,7 @@
  *
  * @author AlefZet
  * @author Atabek
+ * @author Emperyan
  * @author Jiemurat
  * @author Reedy
  * @author Urhixidur
@@ -268,7 +269,7 @@ $messages = array(
 
 'linkprefix' => '/^(.*?)([a-zıA-Zİ\\x80-\\xff]+)$/sDu',
 
-'about'         => 'Proyekt haqqında',
+'about'         => 'Haqqında',
 'article'       => "Mag'lıwmat beti",
 'newwindow'     => "(jan'a aynada)",
 'cancel'        => 'Biykar etiw',
@@ -362,7 +363,7 @@ $messages = array(
 
 # All link text and link target definitions of links into project namespace that get used by other message strings, with the exception of user group pages (see grouppage) and the disambiguation template definition (see disambiguations).
 'aboutsite'            => '{{SITENAME}} haqqında',
-'aboutpage'            => 'Project:Proyekt haqqında',
+'aboutpage'            => 'Project:Haqqında',
 'copyright'            => "Mag'lıwmat $1 boyınsha alıng'an.",
 'copyrightpage'        => '{{ns:project}}:Avtorlıq huquqları',
 'currentevents'        => "Ha'zirgi ha'diyseler",
@@ -489,7 +490,6 @@ Bul jerde keltirilgen mag'lıwmatlar o'zgertilmeydi.",
 Funktsiya: $1<br />
 Soraw: $2',
 'viewsource'           => "Deregin ko'riw",
-'viewsourcefor'        => '$1 ushın',
 'actionthrottled'      => "Ha'reket toqtatıldı",
 'actionthrottledtext'  => "Spamg'a qarsı gu'res esabında, bunday ha'reketti qısqa waqıtta dım ko'p ma'rte bejeriwin'iz sheklenedi, ha'mde siz usı limitten o'tip ketkensiz.
 Birneshe minuttan keyin qaytadan ha'reket qılıp ko'rin'.",
@@ -497,7 +497,7 @@ Birneshe minuttan keyin qaytadan ha'reket qılıp ko'rin'.",
 'viewsourcetext'       => "Bul bettin' deregin qarawın'ızg'a ha'mde ko'shirip alıwın'ızg'a boladı:",
 'editinginterface'     => "'''Esletpe:''' Siz ishinde MediaWiki sistema xabarı bar bolg'an betti o'zgertip atırsız.
 Bul bettin' o'zgeriwi basqa paydalanıwshılardın' sırtqı interfeisine ta'sir etedi.
-Audarıw ushın,  MediaWiki programmasın jersindiriw [http://translatewiki.net/wiki/Main_Page?setlang=kaa translatewiki.net proyektisin] qarap shıg'ın'ız.",
+Audarıw ushın,  MediaWiki programmasın jersindiriw [//translatewiki.net/wiki/Main_Page?setlang=kaa translatewiki.net proyektisin] qarap shıg'ın'ız.",
 'sqlhidden'            => "(SQL sorawı jasırılg'an)",
 'namespaceprotected'   => "'''$1''' isimler ko'pligindegi betlerdi o'zgertiwge ruxsatın'ız joq.",
 'ns-specialprotected'  => '"{{ns:special}}:" isimler ko\'pligindegi betler o\'zgertilmeydi',
@@ -660,10 +660,6 @@ Siz [[Special:Preferences|akkaunt sazlawların'ızda]] haqıyqıy e-mailin'izdı
 Sizin' ha'zirgi IP adresin'iz: \$3, bloklaw IDı: #\$5.
 Usılardın' birewin yamasa ekewinde ha'r bir sorawın'ızg'a qosın'.",
 'blockednoreason'                  => 'hesh sebep keltirilmegen',
-'blockedoriginalsource'            => "'''$1''' degennin' deregi
-to'mende ko'rsetilgen:",
-'blockededitsource'                => "'''$1''' degennin' '''siz ozgertken''' teksti to'mende ko'rsetilgen:",
-'whitelistedittitle'               => "O'zgertiw ushın sistemag'a kiriwin'iz kerek",
 'whitelistedittext'                => "Betterdi o'zgertiw ushın $1 sha'rt.",
 'confirmedittext'                  => "Betlerge o'zgeris kiritiwin'iz ushın aldın E-pochta adresin'izdi tastıyıqlawın'ız kerek.
 E-pochta adresin'izdi [[Special:Preferences|paydalanıwshı sazlawları bo'limi]] arqalı ko'rsetin' ha'm jaramlılıg'ın tekserin'.",
@@ -908,7 +904,6 @@ Barlıq mag'lıwmat tu'rin (sonın' ishinde sa'wbet betlerdi, shablonlardı h.t.
 'prefs-editing'             => "O'zgertiw",
 'prefs-edit-boxsize'        => "O'zgertiw aynasının' o'lshemi.",
 'rows'                      => 'Qatarlar:',
-'columns'                   => "Bag'analar:",
 'searchresultshead'         => 'İzlew',
 'recentchangesdays'         => "Aqırg'ı o'zgerislerde ko'rsetiletug'ın ku'nler:",
 'recentchangesdays-max'     => "(maksimum $1 {{PLURAL:$1|ku'n|ku'n}})",
@@ -1022,7 +1017,6 @@ Siz ja'ne de basqa paydalanıwshılarg'a siz benen (adresin'izdi bilmegen halda)
 'right-import'               => 'Basqa wikilerden betlerdi import qılıw',
 'right-importupload'         => 'Fayldi aploud qılıw arqalı betlerdi import qılıw',
 'right-unwatchedpages'       => "Baqlanbag'an betler dizimin qaraw",
-'right-trackback'            => 'Trackbackti jiberiw',
 'right-mergehistory'         => "Betlerdin' tariyxın birlestiriw",
 'right-userrights'           => "Paydalanıwshılardın' barlıq huquqların o'zgertiw",
 'right-userrights-interwiki' => "Basqa wikilerdegi paydalanıwshının' huquqların o'zgertiw",
@@ -1062,7 +1056,6 @@ Siz ja'ne de basqa paydalanıwshılarg'a siz benen (adresin'izdi bilmegen halda)
 'action-import'               => 'bul betti basqa wikiden import qılıw',
 'action-importupload'         => 'bul betti fayl aploudı arqalı aploud qılıw',
 'action-unwatchedpages'       => "baqlanbaytug'ın betlerdin' dizimin ko'riw",
-'action-trackback'            => '"trackback"tı jiberiw',
 'action-mergehistory'         => "bul bettin' tariyxın birlestiriw",
 'action-userrights'           => "paydalanıwshılardın barlıq huquqların o'zgertiw",
 'action-userrights-interwiki' => "basqa wikilerdegi paydalanıwshılar huquqların o'zgertiw",
@@ -1585,7 +1578,6 @@ Aqırg'ı o'shirilgenlerdin' dizimin ko'riw ushin \$2 ni qaran'",
 # Block/unblock
 'blockip'                     => 'Paydalanıwshını bloklaw',
 'blockip-legend'              => 'Paydalanıwshını bloklaw',
-'ipaddress'                   => 'IP Adres:',
 'ipadressorusername'          => 'IP Adres yamasa paydalanıwshı atı:',
 'ipbexpiry'                   => "Ku'shin joytıw waqtı:",
 'ipbreason'                   => 'Sebep:',
@@ -1697,7 +1689,7 @@ Basqa atama saylan'",
 'allmessagesdefault' => 'Defolt tekst',
 'allmessagescurrent' => "Ha'zirgi tekst",
 'allmessagestext'    => "Bul {{ns:mediawiki}} isimler ko'pligindegi bar bolg'an sistema xabarları dizimi.
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.",
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.",
 
 # Thumbnails
 'thumbnail-more'           => "U'lkeytiw",
@@ -1857,7 +1849,7 @@ Eger fayl jaratılg'anınan keyin o'zgertilgen bolsa, geybir parametrleri o'zger
 
 # External editor support
 'edit-externally'      => "Bul fayldı sırtqı bag'darlama arqalı o'zgertiw",
-'edit-externally-help' => "(Ko'birek mag'lıwmat ushın [http://www.mediawiki.org/wiki/Manual:External_editors ornatıw jolların] qaran')",
+'edit-externally-help' => "(Ko'birek mag'lıwmat ushın [//www.mediawiki.org/wiki/Manual:External_editors ornatıw jolların] qaran')",
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => "ha'mmesin",
@@ -1896,9 +1888,6 @@ e-pochta adresin'izdin' tastıyıqlawın o'shirsen'iz boladı:
 $5
 
 Bul tastıyıqlaw kodının' pitetug'ın waqtı: $4.",
-
-# Trackbacks
-'trackbackremove' => "([$1 O'shir])",
 
 # Delete conflict
 'recreate' => 'Qaytadan jaratıw',

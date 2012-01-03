@@ -287,6 +287,7 @@ $magicWords = array(
 	'localurl'               => array( 0,    'LOCALURL:'              ),
 	'localurle'              => array( 0,    'LOCALURLE:'             ),
 	'articlepath'            => array( 0,	 'ARTICLEPATH'            ),
+	'pageid'                 => array( 0,	 'PAGEID'                 ),
 	'server'                 => array( 0,    'SERVER'                 ),
 	'servername'             => array( 0,    'SERVERNAME'             ),
 	'scriptpath'             => array( 0,    'SCRIPTPATH'             ),
@@ -620,7 +621,7 @@ XHTML id names.
 
 # User preference toggles
 'tog-underline'               => 'Link underlining:',
-'tog-highlightbroken'         => 'Format broken links <a href="" class="new">like this</a> (alternative: like this<a href="" class="internal">?</a>)',
+'tog-highlightbroken'         => 'Format broken links <a href="" class="new">like this</a> (alternative: Like this<a href="" class="internal">?</a>)',
 'tog-justify'                 => 'Justify paragraphs',
 'tog-hideminor'               => 'Hide minor edits in recent changes',
 'tog-hidepatrolled'           => 'Hide patrolled edits in recent changes',
@@ -649,8 +650,8 @@ XHTML id names.
 'tog-shownumberswatching'     => 'Show the number of watching users',
 'tog-oldsig'                  => 'Existing signature:',
 'tog-fancysig'                => 'Treat signature as wikitext (without an automatic link)',
-'tog-externaleditor'          => 'Use external editor by default (for experts only, needs special settings on your computer. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
-'tog-externaldiff'            => 'Use external diff by default (for experts only, needs special settings on your computer. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaleditor'          => 'Use external editor by default (for experts only, needs special settings on your computer. [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaldiff'            => 'Use external diff by default (for experts only, needs special settings on your computer. [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
 'tog-showjumplinks'           => 'Enable "jump to" accessibility links',
 'tog-uselivepreview'          => 'Use live preview (requires JavaScript) (experimental)',
 'tog-forceeditsummary'        => 'Prompt me when entering a blank edit summary',
@@ -890,6 +891,7 @@ See [[Special:Version|version page]].',
 'ok'                           => 'OK',
 'pagetitle'                    => '$1 - {{SITENAME}}', # only translate this message to other languages if you have to change it
 'pagetitle-view-mainpage'      => '{{SITENAME}}', # only translate this message to other languages if you have to change it
+'backlinksubtitle'             => '← $1', # only translate this message to other languages if you have to change it
 'retrievedfrom'                => 'Retrieved from "$1"',
 'youhavenewmessages'           => 'You have $1 ($2).',
 'newmessageslink'              => 'new messages',
@@ -988,12 +990,13 @@ Please report this to an [[Special:ListUsers/sysop|administrator]], making note 
 'filedeleteerror'      => 'Could not delete file "$1".',
 'directorycreateerror' => 'Could not create directory "$1".',
 'filenotfound'         => 'Could not find file "$1".',
-'fileexistserror'      => 'Unable to write to file "$1": file exists',
+'fileexistserror'      => 'Unable to write to file "$1": File exists.',
 'unexpected'           => 'Unexpected value: "$1"="$2".',
-'formerror'            => 'Error: could not submit form',
+'formerror'            => 'Error: Could not submit form.',
 'badarticleerror'      => 'This action cannot be performed on this page.',
 'cannotdelete'         => 'The page or file "$1" could not be deleted.
 It may have already been deleted by someone else.',
+'cannotdelete-title'   => 'Cannot delete page "$1"',
 'badtitle'             => 'Bad title',
 'badtitletext'         => 'The requested page title was invalid, empty, or an incorrectly linked inter-language or inter-wiki title.
 It may contain one or more characters which cannot be used in titles.',
@@ -1005,16 +1008,17 @@ Data here will not presently be refreshed.',
 Function: $1<br />
 Query: $2',
 'viewsource'           => 'View source',
-'viewsourcefor'        => 'for $1',
+'viewsource-title'     => 'View source for $1',
 'actionthrottled'      => 'Action throttled',
 'actionthrottledtext'  => 'As an anti-spam measure, you are limited from performing this action too many times in a short space of time, and you have exceeded this limit.
 Please try again in a few minutes.',
 'protectedpagetext'    => 'This page has been protected to prevent editing.',
 'viewsourcetext'       => 'You can view and copy the source of this page:',
+'viewyourtext'         => "You can view and copy the source of '''your edits''' to this page:",
 'protectedinterface'   => 'This page provides interface text for the software, and is protected to prevent abuse.',
 'editinginterface'     => "'''Warning:''' You are editing a page which is used to provide interface text for the software.
 Changes to this page will affect the appearance of the user interface for other users.
-For translations, please consider using [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], the MediaWiki localisation project.",
+For translations, please consider using [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], the MediaWiki localisation project.",
 'sqlhidden'            => '(SQL query hidden)',
 'cascadeprotected'     => 'This page has been protected from editing, because it is included in the following {{PLURAL:$1|page, which is|pages, which are}} protected with the "cascading" option turned on:
 $2',
@@ -1026,7 +1030,7 @@ $2',
 The reason given is "\'\'$2\'\'".',
 
 # Virus scanner
-'virus-badscanner'     => "Bad configuration: unknown virus scanner: ''$1''",
+'virus-badscanner'     => "Bad configuration: Unknown virus scanner: ''$1''",
 'virus-scanfailed'     => 'scan failed (code $1)',
 'virus-unknownscanner' => 'unknown antivirus:',
 
@@ -1217,14 +1221,14 @@ Temporary password: $2',
 'passwordreset-emailerror-capture' => 'A reminder e-mail was generated, which is shown below, but sending it to the user failed: $1',
 
 # Special:ChangeEmail
-'changeemail'          => 'Change E-mail address',
+'changeemail'          => 'Change e-mail address',
 'changeemail-header'   => 'Change account e-mail address',
 'changeemail-text'     => 'Complete this form to change your e-mail address. You will need to enter your password to confirm this change.',
 'changeemail-no-info'  => 'You must be logged in to access this page directly.',
-'changeemail-oldemail' => 'Current E-mail address:',
-'changeemail-newemail' => 'New E-mail address:',
+'changeemail-oldemail' => 'Current e-mail address:',
+'changeemail-newemail' => 'New e-mail address:',
 'changeemail-none'     => '(none)',
-'changeemail-submit'   => 'Change E-mail',
+'changeemail-submit'   => 'Change e-mail',
 'changeemail-cancel'   => 'Cancel',
 
 # Edit page toolbar
@@ -1297,9 +1301,6 @@ Note that you may not use the "e-mail this user" feature unless you have a valid
 Your current IP address is $3, and the block ID is #$5.
 Please include all above details in any queries you make.',
 'blockednoreason'                  => 'no reason given',
-'blockedoriginalsource'            => "The source of '''$1''' is shown below:",
-'blockededitsource'                => "The text of '''your edits''' to '''$1''' is shown below:",
-'whitelistedittitle'               => 'Login required to edit',
 'whitelistedittext'                => 'You have to $1 to edit pages.',
 'confirmedittext'                  => 'You must confirm your e-mail address before editing pages.
 Please set and validate your e-mail address through your [[Special:Preferences|user preferences]].',
@@ -1337,11 +1338,11 @@ Please check if you want to create/edit this page.',
 'blocked-notice-logextract'        => 'This user is currently blocked.
 The latest block log entry is provided below for reference:',
 'clearyourcache'                   => "'''Note:''' After saving, you may have to bypass your browser's cache to see the changes.
-* '''Firefox / Safari:''' hold ''Shift'' while clicking ''Reload'', or press either ''Ctrl-F5'' or ''Ctrl-R'' (''Command-R'' on a Mac)
-* '''Google Chrome:''' press ''Ctrl-Shift-R'' (''Command-Shift-R'' on a Mac)
-* '''Internet Explorer:''' hold ''Ctrl'' while clicking ''Refresh'', or press ''Ctrl-F5''
-* '''Konqueror:''' click ''Reload'' or press ''F5''
-* '''Opera:''' clear the cache in ''Tools → Preferences''",
+* '''Firefox / Safari:''' Hold ''Shift'' while clicking ''Reload'', or press either ''Ctrl-F5'' or ''Ctrl-R'' (''⌘-R'' on a Mac)
+* '''Google Chrome:''' Press ''Ctrl-Shift-R'' (''⌘-Shift-R'' on a Mac)
+* '''Internet Explorer:''' Hold ''Ctrl'' while clicking ''Refresh'', or press ''Ctrl-F5''
+* '''Konqueror:''' Click ''Reload'' or press ''F5''
+* '''Opera:''' Clear the cache in ''Tools → Preferences''",
 'usercssyoucanpreview'             => "'''Tip:''' Use the \"{{int:showpreview}}\" button to test your new CSS before saving.",
 'userjsyoucanpreview'              => "'''Tip:''' Use the \"{{int:showpreview}}\" button to test your new JavaScript before saving.",
 'usercsspreview'                   => "'''Remember that you are only previewing your user CSS.'''
@@ -1384,7 +1385,7 @@ You will have to merge your changes into the existing text.
 'yourtext'                         => 'Your text',
 'storedversion'                    => 'Stored revision',
 'nonunicodebrowser'                => "'''Warning: Your browser is not unicode compliant.'''
-A workaround is in place to allow you to safely edit pages: non-ASCII characters will appear in the edit box as hexadecimal codes.",
+A workaround is in place to allow you to safely edit pages: Non-ASCII characters will appear in the edit box as hexadecimal codes.",
 'editingold'                       => "'''Warning: You are editing an out-of-date revision of this page.'''
 If you save it, any changes made since this revision will be lost.",
 'yourdiff'                         => 'Differences',
@@ -1491,7 +1492,7 @@ The reason given by $3 is ''$2''",
 'last'                   => 'prev',
 'page_first'             => 'first',
 'page_last'              => 'last',
-'histlegend'             => "Diff selection: mark the radio boxes of the revisions to compare and hit enter or the button at the bottom.<br />
+'histlegend'             => "Diff selection: Mark the radio boxes of the revisions to compare and hit enter or the button at the bottom.<br />
 Legend: '''({{int:cur}})''' = difference with latest revision, '''({{int:last}})''' = difference with preceding revision, '''{{int:minoreditletter}}''' = minor edit.",
 'history-fieldset-title' => 'Browse history',
 'history-show-deleted'   => 'Deleted only',
@@ -1586,17 +1587,17 @@ $1",
 'revdel-restore-visible'      => 'visible revisions',
 'pagehist'                    => 'Page history',
 'deletedhist'                 => 'Deleted history',
-'revdelete-hide-current'      => 'Error hiding the item dated $2, $1: this is the current revision.
+'revdelete-hide-current'      => 'Error hiding the item dated $2, $1: This is the current revision.
 It cannot be hidden.',
-'revdelete-show-no-access'    => 'Error showing the item dated $2, $1: this item has been marked "restricted".
+'revdelete-show-no-access'    => 'Error showing the item dated $2, $1: This item has been marked "restricted".
 You do not have access to it.',
-'revdelete-modify-no-access'  => 'Error modifying the item dated $2, $1: this item has been marked "restricted".
+'revdelete-modify-no-access'  => 'Error modifying the item dated $2, $1: This item has been marked "restricted".
 You do not have access to it.',
-'revdelete-modify-missing'    => 'Error modifying item ID $1: it is missing from the database!',
-'revdelete-no-change'         => "'''Warning:''' the item dated $2, $1 already had the requested visibility settings.",
-'revdelete-concurrent-change' => 'Error modifying the item dated $2, $1: its status appears to have been changed by someone else while you attempted to modify it.
+'revdelete-modify-missing'    => 'Error modifying item ID $1: It is missing from the database!',
+'revdelete-no-change'         => "'''Warning:''' The item dated $2, $1 already had the requested visibility settings.",
+'revdelete-concurrent-change' => 'Error modifying the item dated $2, $1: Its status appears to have been changed by someone else while you attempted to modify it.
 Please check the logs.',
-'revdelete-only-restricted'   => 'Error hiding the item dated $2, $1: you cannot suppress items from view by administrators without also selecting one of the other visibility options.',
+'revdelete-only-restricted'   => 'Error hiding the item dated $2, $1: You cannot suppress items from view by administrators without also selecting one of the other visibility options.',
 'revdelete-reason-dropdown'   => '*Common delete reasons
 ** Copyright violation
 ** Inappropriate personal information
@@ -1723,7 +1724,7 @@ Try prefixing your query with ''all:'' to search all content (including talk pag
 'searchdisabled'                   => '{{SITENAME}} search is disabled.
 You can search via Google in the meantime.
 Note that their indexes of {{SITENAME}} content may be out of date.',
-'googlesearch'                     => '<form method="get" action="http://www.google.com/search" id="googlesearch">
+'googlesearch'                     => '<form method="get" action="//www.google.com/search" id="googlesearch">
 	<input type="hidden" name="domains" value="{{SERVER}}" />
 	<input type="hidden" name="num" value="50" />
 	<input type="hidden" name="ie" value="$2" />
@@ -1767,14 +1768,14 @@ Note that their indexes of {{SITENAME}} content may be out of date.',
 'prefs-rc'                      => 'Recent changes',
 'prefs-watchlist'               => 'Watchlist',
 'prefs-watchlist-days'          => 'Days to show in watchlist:',
-'prefs-watchlist-days-max'      => 'Maximum 7 days',
+'prefs-watchlist-days-max'      => 'Maximum $1 {{PLURAL:$1|day|days}}',
 'prefs-watchlist-edits'         => 'Maximum number of changes to show in expanded watchlist:',
 'prefs-watchlist-edits-max'     => 'Maximum number: 1000',
 'prefs-watchlist-token'         => 'Watchlist token:',
 'prefs-misc'                    => 'Misc',
 'prefs-resetpass'               => 'Change password',
-'prefs-changeemail'             => 'Change E-mail',
-'prefs-setemail'                => 'Set an E-mail address',
+'prefs-changeemail'             => 'Change e-mail address',
+'prefs-setemail'                => 'Set an e-mail address',
 'prefs-email'                   => 'E-mail options',
 'prefs-rendering'               => 'Appearance',
 'saveprefs'                     => 'Save',
@@ -1783,7 +1784,6 @@ Note that their indexes of {{SITENAME}} content may be out of date.',
 'prefs-editing'                 => 'Editing',
 'prefs-edit-boxsize'            => 'Size of the edit window.',
 'rows'                          => 'Rows:',
-'columns'                       => 'Columns:',
 'searchresultshead'             => 'Search',
 'resultsperpage'                => 'Hits per page:',
 'stub-threshold'                => 'Threshold for <a href="#" class="stub">stub link</a> formatting (bytes):',
@@ -1847,7 +1847,7 @@ It must not be more than $1 {{PLURAL:$1|character|characters}} long.',
 'gender-unknown'                => 'Undisclosed',
 'gender-male'                   => 'Male',
 'gender-female'                 => 'Female',
-'prefs-help-gender'             => 'Optional: used for gender-correct addressing by the software.
+'prefs-help-gender'             => 'Optional: Used for gender-correct addressing by the software.
 This information will be public.',
 'email'                         => 'E-mail',
 'prefs-help-realname'           => 'Real name is optional.
@@ -1909,12 +1909,14 @@ Your e-mail address is not revealed when other users contact you.',
 'group-suppress'      => 'Oversights',
 'group-all'           => '(all)',
 
-'group-user-member'          => '{{GENDER:$1|user}}',
-'group-autoconfirmed-member' => '{{GENDER:$1|autoconfirmed user}}',
-'group-bot-member'           => '{{GENDER:$1|bot}}',
-'group-sysop-member'         => '{{GENDER:$1|administrator}}',
-'group-bureaucrat-member'    => '{{GENDER:$1|bureaucrat}}',
-'group-suppress-member'      => '{{GENDER:$1|oversight}}',
+# group names can use {{GENDER}} for language that make a distinction
+# between male and female forms.
+'group-user-member'          => 'user',
+'group-autoconfirmed-member' => 'autoconfirmed user',
+'group-bot-member'           => 'bot',
+'group-sysop-member'         => 'administrator',
+'group-bureaucrat-member'    => 'bureaucrat',
+'group-suppress-member'      => 'oversight',
 
 'grouppage-user'          => '{{ns:project}}:Users',
 'grouppage-autoconfirmed' => '{{ns:project}}:Autoconfirmed users',
@@ -1976,7 +1978,6 @@ Your e-mail address is not revealed when other users contact you.',
 'right-autopatrol'            => "Have one's own edits automatically marked as patrolled",
 'right-patrolmarks'           => 'View recent changes patrol marks',
 'right-unwatchedpages'        => 'View a list of unwatched pages',
-'right-trackback'             => 'Submit a trackback',
 'right-mergehistory'          => 'Merge the history of pages',
 'right-userrights'            => 'Edit all user rights',
 'right-userrights-interwiki'  => 'Edit user rights of users on other wikis',
@@ -2017,16 +2018,17 @@ Your e-mail address is not revealed when other users contact you.',
 'action-suppressionlog'       => 'view this private log',
 'action-block'                => 'block this user from editing',
 'action-protect'              => 'change protection levels for this page',
+'action-rollback'             => 'quickly rollback the edits of the last user who edited a particular page',
 'action-import'               => 'import this page from another wiki',
 'action-importupload'         => 'import this page from a file upload',
 'action-patrol'               => "mark others' edit as patrolled",
 'action-autopatrol'           => 'have your edit marked as patrolled',
 'action-unwatchedpages'       => 'view the list of unwatched pages',
-'action-trackback'            => 'submit a trackback',
 'action-mergehistory'         => 'merge the history of this page',
 'action-userrights'           => 'edit all user rights',
 'action-userrights-interwiki' => 'edit user rights of users on other wikis',
 'action-siteadmin'            => 'lock or unlock the database',
+'action-sendemail'            => 'send e-mails',
 
 # Recent changes
 'nchanges'                          => '$1 {{PLURAL:$1|change|changes}}',
@@ -2057,7 +2059,6 @@ Your e-mail address is not revealed when other users contact you.',
 'newpageletter'                     => 'N',
 'boteditletter'                     => 'b',
 'unpatrolledletter'                 => '!', # only translate this message to other languages if you have to change it
-'sectionlink'                       => '→', # only translate this message to other languages if you have to change it
 'number_of_watching_users_RCview'   => '[$1]', # do not translate or duplicate this message to other languages
 'number_of_watching_users_pageview' => '[$1 watching {{PLURAL:$1|user|users}}]',
 'rc_categories'                     => 'Limit to categories (separate with "|")',
@@ -2072,7 +2073,6 @@ Your e-mail address is not revealed when other users contact you.',
 'recentchangeslinked-feed'     => 'Related changes',
 'recentchangeslinked-toolbox'  => 'Related changes',
 'recentchangeslinked-title'    => 'Changes related to "$1"',
-'recentchangeslinked-backlink' => '← $1', # only translate this message to other languages if you have to change it
 'recentchangeslinked-noresult' => 'No changes on linked pages during the given period.',
 'recentchangeslinked-summary'  => "This is a list of changes made recently to pages linked from a specified page (or to members of a specified category).
 Pages on [[Special:Watchlist|your watchlist]] are '''bold'''.",
@@ -2238,6 +2238,35 @@ If the problem persists, contact an [[Special:ListUsers/sysop|administrator]].',
 'upload-unknown-size'       => 'Unknown size',
 'upload-http-error'         => 'An HTTP error occured: $1',
 
+# File backend
+'backend-fail-stream'        => 'Could not stream file $1.',
+'backend-fail-backup'        => 'Could not backup file $1.',
+'backend-fail-notexists'     => 'The file $1 does not exist.',
+'backend-fail-hashes'        => 'Could not get file hashes for comparison.',
+'backend-fail-notsame'       => 'A non-identical file already exists at $1.',
+'backend-fail-invalidpath'   => '$1 is not a valid storage path.',
+'backend-fail-delete'        => 'Could not delete file $1.',
+'backend-fail-alreadyexists' => 'The file $1 already exists.',
+'backend-fail-store'         => 'Could not store file $1 at $2.',
+'backend-fail-copy'          => 'Could not copy file $1 to $2.',
+'backend-fail-move'          => 'Could not move file $1 to $2.',
+'backend-fail-opentemp'      => 'Could not open temporary file.',
+'backend-fail-writetemp'     => 'Could not write to temporary file.',
+'backend-fail-closetemp'     => 'Could not close temporary file.',
+'backend-fail-read'          => 'Could not read file $1.',
+'backend-fail-create'        => 'Could not create file $1.',
+
+# Lock manager
+'lockmanager-notlocked'        => 'Could not unlock "$1"; it is not locked.',
+'lockmanager-fail-closelock'   => 'Could not close lock file for "$1".',
+'lockmanager-fail-deletelock'  => 'Could not delete lock file for "$1".',
+'lockmanager-fail-acquirelock' => 'Could not acquire lock for "$1".',
+'lockmanager-fail-openlock'    => 'Could not open lock file for "$1".',
+'lockmanager-fail-releaselock' => 'Could not release lock for "$1".',
+'lockmanager-fail-db-bucket'   => 'Could not contact enough lock databases in bucket $1.',
+'lockmanager-fail-db-release'  => 'Could not release locks on database $1.',
+'lockmanager-fail-svr-release' => 'Could not release locks on server $1.',
+
 # ZipDirectoryReader
 'zip-file-open-error' => 'An error was encountered when opening the file for ZIP checks.',
 'zip-wrong-format'    => 'The specified file was not a ZIP file.',
@@ -2254,13 +2283,14 @@ It cannot be properly checked for security.',
 'uploadstash-badtoken' => 'Performing of that action was unsuccessful, perhaps because your editing credentials expired. Try again.',
 'uploadstash-errclear' => 'Clearing the files was unsuccessful.',
 'uploadstash-refresh'  => 'Refresh the list of files',
+'invalid-chunk-offset' => 'Invalid chunk offset',
 
 # img_auth script messages
 'img-auth-accessdenied'     => 'Access denied',
 'img-auth-nopathinfo'       => 'Missing PATH_INFO.
 Your server is not set up to pass this information.
 It may be CGI-based and cannot support img_auth.
-See http://www.mediawiki.org/wiki/Manual:Image_Authorization.',
+[//www.mediawiki.org/wiki/Manual:Image_Authorization See image authorization.]',
 'img-auth-notindir'         => 'Requested path is not in the configured upload directory.',
 'img-auth-badtitle'         => 'Unable to construct a valid title from "$1".',
 'img-auth-nologinnWL'       => 'You are not logged in and "$1" is not in the whitelist.',
@@ -2357,7 +2387,6 @@ The description on its [$2 file description page] there is shown below.',
 
 # File reversion
 'filerevert'                => 'Revert $1',
-'filerevert-backlink'       => '← $1', # only translate this message to other languages if you have to change it
 'filerevert-legend'         => 'Revert file',
 'filerevert-intro'          => "You are about to revert the file '''[[Media:$1|$1]]''' to the [$4 version as of $3, $2].",
 'filerevert-comment'        => 'Reason:',
@@ -2367,24 +2396,24 @@ The description on its [$2 file description page] there is shown below.',
 'filerevert-badversion'     => 'There is no previous local version of this file with the provided timestamp.',
 
 # File deletion
-'filedelete'                  => 'Delete $1',
-'filedelete-backlink'         => '← $1', # only translate this message to other languages if you have to change it
-'filedelete-legend'           => 'Delete file',
-'filedelete-intro'            => "You are about to delete the file '''[[Media:$1|$1]]''' along with all of its history.",
-'filedelete-intro-old'        => "You are deleting the version of '''[[Media:$1|$1]]''' as of [$4 $3, $2].",
-'filedelete-comment'          => 'Reason:',
-'filedelete-submit'           => 'Delete',
-'filedelete-success'          => "'''$1''' has been deleted.",
-'filedelete-success-old'      => "The version of '''[[Media:$1|$1]]''' as of $3, $2 has been deleted.",
-'filedelete-nofile'           => "'''$1''' does not exist.",
-'filedelete-nofile-old'       => "There is no archived version of '''$1''' with the specified attributes.",
-'filedelete-otherreason'      => 'Other/additional reason:',
-'filedelete-reason-otherlist' => 'Other reason',
-'filedelete-reason-dropdown'  => '*Common delete reasons
+'filedelete'                   => 'Delete $1',
+'filedelete-legend'            => 'Delete file',
+'filedelete-intro'             => "You are about to delete the file '''[[Media:$1|$1]]''' along with all of its history.",
+'filedelete-intro-old'         => "You are deleting the version of '''[[Media:$1|$1]]''' as of [$4 $3, $2].",
+'filedelete-comment'           => 'Reason:',
+'filedelete-submit'            => 'Delete',
+'filedelete-success'           => "'''$1''' has been deleted.",
+'filedelete-success-old'       => "The version of '''[[Media:$1|$1]]''' as of $3, $2 has been deleted.",
+'filedelete-nofile'            => "'''$1''' does not exist.",
+'filedelete-nofile-old'        => "There is no archived version of '''$1''' with the specified attributes.",
+'filedelete-otherreason'       => 'Other/additional reason:',
+'filedelete-reason-otherlist'  => 'Other reason',
+'filedelete-reason-dropdown'   => '*Common delete reasons
 ** Copyright violation
 ** Duplicated file',
-'filedelete-edit-reasonlist'  => 'Edit delete reasons',
-'filedelete-maintenance'      => 'Deletion and restoration of files temporarily disabled during maintenance.',
+'filedelete-edit-reasonlist'   => 'Edit delete reasons',
+'filedelete-maintenance'       => 'Deletion and restoration of files temporarily disabled during maintenance.',
+'filedelete-maintenance-title' => 'Cannot delete file',
 
 # MIME search
 'mimesearch'         => 'MIME search',
@@ -2440,7 +2469,7 @@ Remember to check for other links to the templates before deleting them.',
 'statistics-mostpopular'       => 'Most viewed pages',
 'statistics-footer'            => '', # do not translate or duplicate this message to other languages
 
-'disambiguations'         => 'Disambiguation pages',
+'disambiguations'         => 'Pages linking to disambiguation pages',
 'disambiguations-summary' => '', # do not translate or duplicate this message to other languages
 'disambiguationspage'     => 'Template:disambig',
 'disambiguations-text'    => "The following pages link to a '''disambiguation page'''.
@@ -2503,6 +2532,8 @@ It now redirects to [[$2]].',
 'wantedpages-badtitle'            => 'Invalid title in result set: $1',
 'wantedfiles'                     => 'Wanted files',
 'wantedfiles-summary'             => '', # do not translate or duplicate this message to other languages
+'wantedfiletext-cat'              => 'The following files are used but do not exist. Files from foreign repositories may be listed despite existing. Any such false positives will be <del>struck out</del>. Additionally, pages that embed files that do not exist are listed in [[:$1]].',
+'wantedfiletext-nocat'            => 'The following files are used but do not exist. Files from foreign repositories may be listed despite existing. Any such false positives will be <del>struck out</del>.',
 'wantedtemplates'                 => 'Wanted templates',
 'wantedtemplates-summary'         => '', # do not translate or duplicate this message to other languages
 'mostlinked'                      => 'Most linked-to pages',
@@ -2518,6 +2549,7 @@ It now redirects to [[$2]].',
 'mostrevisions'                   => 'Pages with the most revisions',
 'mostrevisions-summary'           => '', # do not translate or duplicate this message to other languages
 'prefixindex'                     => 'All pages with prefix',
+'prefixindex-namespace'           => 'All pages with prefix ($1 namespace)',
 'prefixindex-summary'             => '', # do not translate or duplicate this message to other languages
 'shortpages'                      => 'Short pages',
 'shortpages-summary'              => '', # do not translate or duplicate this message to other languages
@@ -2541,7 +2573,7 @@ It now redirects to [[$2]].',
 'listusers-editsonly'             => 'Show only users with edits',
 'listusers-creationsort'          => 'Sort by creation date',
 'usereditcount'                   => '$1 {{PLURAL:$1|edit|edits}}',
-'usercreated'                     => 'Created on $1 at $2',
+'usercreated'                     => '{{GENDER:$3|Created}} on $1 at $2',
 'newpages'                        => 'New pages',
 'newpages-summary'                => '', # do not translate or duplicate this message to other languages
 'newpages-username'               => 'Username:',
@@ -2571,12 +2603,12 @@ Please note that other web sites may link to a file with a direct URL, and so ma
 'booksources-invalid-isbn'  => 'The given ISBN does not appear to be valid; check for errors copying from the original source.',
 
 # Magic words
-'rfcurl'    => 'http://tools.ietf.org/html/rfc$1', # do not translate or duplicate this message to other languages
-'pubmedurl' => 'http://www.ncbi.nlm.nih.gov/pubmed/$1?dopt=Abstract', # do not translate or duplicate this message to other languages
+'rfcurl'    => '//tools.ietf.org/html/rfc$1', # do not translate or duplicate this message to other languages
+'pubmedurl' => '//www.ncbi.nlm.nih.gov/pubmed/$1?dopt=Abstract', # do not translate or duplicate this message to other languages
 
 # Special:Log
-'specialloguserlabel'  => 'User:',
-'speciallogtitlelabel' => 'Title:',
+'specialloguserlabel'  => 'Performer:',
+'speciallogtitlelabel' => 'Target (title or user):',
 'log'                  => 'Logs',
 'all-logs-page'        => 'All public logs',
 'alllogstext'          => 'Combined display of all available logs of {{SITENAME}}.
@@ -2619,12 +2651,13 @@ Also see [[Special:WantedCategories|wanted categories]].',
 'sp-deletedcontributions-contribs' => 'contributions',
 
 # Special:LinkSearch
-'linksearch'       => 'External links',
+'linksearch'       => 'External links search',
 'linksearch-pat'   => 'Search pattern:',
 'linksearch-ns'    => 'Namespace:',
 'linksearch-ok'    => 'Search',
-'linksearch-text'  => 'Wildcards such as "*.wikipedia.org" may be used.<br />
-Supported protocols: <tt>$1</tt>',
+'linksearch-text'  => 'Wildcards such as "*.wikipedia.org" may be used.
+Needs at least a top-level domain, for example "*.org".<br />
+Supported protocols: <tt>$1</tt> (do not add any of these in your search).',
 'linksearch-line'  => '$1 is linked from $2',
 'linksearch-error' => 'Wildcards may appear only at the start of the hostname.',
 
@@ -2732,7 +2765,7 @@ Future changes to this page and its associated talk page will be listed there, a
 'watchmethod-list'     => 'checking watched pages for recent edits',
 'watchlistcontains'    => 'Your watchlist contains $1 {{PLURAL:$1|page|pages}}.',
 'iteminvalidname'      => "Problem with item '$1', invalid name...",
-'wlnote'               => "Below {{PLURAL:$1|is the last change|are the last '''$1''' changes}} in the last {{PLURAL:$2|hour|'''$2''' hours}}.",
+'wlnote'               => "Below {{PLURAL:$1|is the last change|are the last '''$1''' changes}} in the last {{PLURAL:$2|hour|'''$2''' hours}}, as of $3, $4.",
 'wlshowlast'           => 'Show last $1 hours $2 days $3',
 'watchlist-options'    => 'Watchlist options',
 
@@ -2790,7 +2823,6 @@ Feedback and further assistance:
 'exbeforeblank'          => 'content before blanking was: "$1"',
 'exblank'                => 'page was empty',
 'delete-confirm'         => 'Delete "$1"',
-'delete-backlink'        => '← $1', # only translate this message to other languages if you have to change it
 'delete-legend'          => 'Delete',
 'historywarning'         => "'''Warning:''' The page you are about to delete has a history with approximately $1 {{PLURAL:$1|revision|revisions}}:",
 'confirmdeletetext'      => 'You are about to delete a page along with all of its history.
@@ -2849,8 +2881,10 @@ See the [[Special:ProtectedPages|protected pages list]] for the list of currentl
 'unprotectedarticle'          => 'removed protection from "[[$1]]"',
 'movedarticleprotection'      => 'moved protection settings from "[[$2]]" to "[[$1]]"',
 'protect-title'               => 'Change protection level for "$1"',
+'protect-title-notallowed'    => 'View protection level of "$1"',
 'prot_1movedto2'              => '[[$1]] moved to [[$2]]',
-'protect-backlink'            => '← $1', # only translate this message to other languages if you have to change it
+'protect-badnamespace-title'  => 'Non-protectable namespace',
+'protect-badnamespace-text'   => 'Pages in this namespace cannot be protected.',
 'protect-legend'              => 'Confirm protection',
 'protectcomment'              => 'Reason:',
 'protectexpiry'               => 'Expires:',
@@ -2942,15 +2976,17 @@ someone else may have undeleted the page first.',
 
 Consult the [[Special:Log/delete|deletion log]] for a record of recent deletions and restorations.",
 'undelete-header'              => 'See [[Special:Log/delete|the deletion log]] for recently deleted pages.',
+'undelete-search-title'        => 'Search deleted pages',
 'undelete-search-box'          => 'Search deleted pages',
 'undelete-search-prefix'       => 'Show pages starting with:',
 'undelete-search-submit'       => 'Search',
 'undelete-no-results'          => 'No matching pages found in the deletion archive.',
-'undelete-filename-mismatch'   => 'Cannot undelete file revision with timestamp $1: filename mismatch',
-'undelete-bad-store-key'       => 'Cannot undelete file revision with timestamp $1: file was missing before deletion.',
+'undelete-filename-mismatch'   => 'Cannot undelete file revision with timestamp $1: Filename mismatch.',
+'undelete-bad-store-key'       => 'Cannot undelete file revision with timestamp $1: File was missing before deletion.',
 'undelete-cleanup-error'       => 'Error deleting unused archive file "$1".',
 'undelete-missing-filearchive' => 'Unable to restore file archive ID $1 because it is not in the database.
 It may have already been undeleted.',
+'undelete-error'               => 'Error undeleting page',
 'undelete-error-short'         => 'Error undeleting file: $1',
 'undelete-error-long'          => 'Errors were encountered while undeleting the file:
 
@@ -3002,7 +3038,6 @@ The latest block log entry is provided below for reference:',
 'whatlinkshere-title'      => 'Pages that link to "$1"',
 'whatlinkshere-summary'    => '', # do not translate or duplicate this message to other languages
 'whatlinkshere-page'       => 'Page:',
-'whatlinkshere-backlink'   => '← $1', # only translate this message to other languages if you have to change it
 'linkshere'                => "The following pages link to '''[[:$1]]''':",
 'nolinkshere'              => "No pages link to '''[[:$1]]'''.",
 'nolinkshere-ns'           => "No pages link to '''[[:$1]]''' in the chosen namespace.",
@@ -3028,7 +3063,6 @@ The latest block log entry is provided below for reference:',
 'blockiptext'                     => 'Use the form below to block write access from a specific IP address or username.
 This should be done only to prevent vandalism, and in accordance with [[{{MediaWiki:Policy-url}}|policy]].
 Fill in a specific reason below (for example, citing particular pages that were vandalized).',
-'ipaddress'                       => 'IP address:',
 'ipadressorusername'              => 'IP address or username:',
 'ipbexpiry'                       => 'Expiry:',
 'ipbreason'                       => 'Reason:',
@@ -3140,7 +3174,7 @@ It is, however, blocked as part of the range $2, which can be unblocked.',
 'proxyblocker'                    => 'Proxy blocker',
 'proxyblocker-disabled'           => 'This function is disabled.',
 'proxyblockreason'                => 'Your IP address has been blocked because it is an open proxy.
-Please contact your Internet service provider or technical support of your oranization and inform them of this serious security problem.',
+Please contact your Internet service provider or technical support of your organization and inform them of this serious security problem.',
 'proxyblocksuccess'               => 'Done.',
 'sorbs'                           => 'DNSBL', # only translate this message to other languages if you have to change it
 'sorbsreason'                     => 'Your IP address is listed as an open proxy in the DNSBL used by {{SITENAME}}.',
@@ -3279,6 +3313,7 @@ In the latter case you can also use a link, for example [[{{#Special:Export}}/{{
 'exportcuronly'     => 'Include only the current revision, not the full history',
 'exportnohistory'   => "----
 '''Note:''' Exporting the full history of pages through this form has been disabled due to performance reasons.",
+'exportlistauthors' => 'Include a full list of contributors for each page',
 'export-submit'     => 'Export',
 'export-addcattext' => 'Add pages from category:',
 'export-addcat'     => 'Add',
@@ -3294,7 +3329,7 @@ In the latter case you can also use a link, for example [[{{#Special:Export}}/{{
 'allmessagesdefault'            => 'Default message text',
 'allmessagescurrent'            => 'Current message text',
 'allmessagestext'               => 'This is a list of system messages available in the MediaWiki namespace.
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
 'allmessagesnotsupportedDB'     => "This page cannot be used because '''\$wgUseDatabaseMessages''' has been disabled.",
 'allmessages-filter-legend'     => 'Filter',
 'allmessages-filter'            => 'Filter by customisation state:',
@@ -3311,10 +3346,12 @@ Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation]
 'thumbnail_error'          => 'Error creating thumbnail: $1',
 'djvu_page_error'          => 'DjVu page out of range',
 'djvu_no_xml'              => 'Unable to fetch XML for DjVu file',
+'thumbnail-temp-create'    => 'Unable to create temporary thumbnail file',
+'thumbnail-dest-create'    => 'Unable to save thumbnail to destination',
 'thumbnail_invalid_params' => 'Invalid thumbnail parameters',
 'thumbnail_dest_directory' => 'Unable to create destination directory',
 'thumbnail_image-type'     => 'Image type not supported',
-'thumbnail_gd-library'     => 'Incomplete GD library configuration: missing function $1',
+'thumbnail_gd-library'     => 'Incomplete GD library configuration: Missing function $1',
 'thumbnail_image-missing'  => 'File seems to be missing: $1',
 
 # Special:Import
@@ -4202,7 +4239,7 @@ $8', # only translate this message to other languages if you have to change it
 
 # External editor support
 'edit-externally'      => 'Edit this file using an external application',
-'edit-externally-help' => '(See the [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] for more information)',
+'edit-externally-help' => '(See the [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] for more information)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'all',
@@ -4285,15 +4322,6 @@ This confirmation code will expire at $4.',
 'scarytranscludefailed'   => '[Template fetch failed for $1]',
 'scarytranscludetoolong'  => '[URL is too long]',
 
-# Trackbacks
-'trackbackbox'      => 'Trackbacks for this page:<br />
-$1',
-'trackback'         => '; $4 $5: [$2 $1]', # only translate this message to other languages if you have to change it
-'trackbackexcerpt'  => '; $4 $5: [$2 $1]: <nowiki>$3</nowiki>', # only translate this message to other languages if you have to change it
-'trackbackremove'   => '([$1 Delete])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'The trackback was successfully deleted.',
-
 # Delete conflict
 'deletedwhileediting'      => "'''Warning''': This page was deleted after you started editing!",
 'confirmrecreate'          => "User [[User:$1|$1]] ([[User talk:$1|talk]]) deleted this page after you started editing with reason:
@@ -4375,10 +4403,26 @@ Please confirm that you really want to recreate this page.",
 *207.200.112.0/21', # do not translate or duplicate this message to other languages
 
 # Size units
-'size-bytes'     => '$1 B', # only translate this message to other languages if you have to change it
-'size-kilobytes' => '$1 KB', # only translate this message to other languages if you have to change it
-'size-megabytes' => '$1 MB', # only translate this message to other languages if you have to change it
-'size-gigabytes' => '$1 GB', # only translate this message to other languages if you have to change it
+'size-bytes'      => '$1 B', # only translate this message to other languages if you have to change it
+'size-kilobytes'  => '$1 KB', # only translate this message to other languages if you have to change it
+'size-megabytes'  => '$1 MB', # only translate this message to other languages if you have to change it
+'size-gigabytes'  => '$1 GB', # only translate this message to other languages if you have to change it
+'size-terabytes'  => '$1 TB', # only translate this message to other languages if you have to change it
+'size-petabytes'  => '$1 PB', # only translate this message to other languages if you have to change it
+'size-exabytes'   => '$1 EB', # only translate this message to other languages if you have to change it
+'size-zetabytes'  => '$1 ZB', # only translate this message to other languages if you have to change it
+'size-yottabytes' => '$1 YB', # only translate this message to other languages if you have to change it
+
+# Bitrate units
+'bitrate-bits'      => '$1bps', # only translate this message to other languages if you have to change it
+'bitrate-kilobits'  => '$1kbps', # only translate this message to other languages if you have to change it
+'bitrate-megabits'  => '$1Mbps', # only translate this message to other languages if you have to change it
+'bitrate-gigabits'  => '$1Gbps', # only translate this message to other languages if you have to change it
+'bitrate-terabits'  => '$1Tbps', # only translate this message to other languages if you have to change it
+'bitrate-petabits'  => '$1Pbps', # only translate this message to other languages if you have to change it
+'bitrate-exabits'   => '$1Ebps', # only translate this message to other languages if you have to change it
+'bitrate-zetabits'  => '$1Zbps', # only translate this message to other languages if you have to change it
+'bitrate-yottabits' => '$1Ybps', # only translate this message to other languages if you have to change it
 
 # Live preview
 'livepreview-loading' => 'Loading...',
@@ -4506,13 +4550,13 @@ You can also [[Special:EditWatchlist|use the standard editor]].',
 'version-version'               => '(Version $1)',
 'version-svn-revision'          => '(r$2)', # only translate this message to other languages if you have to change it
 'version-license'               => 'License',
-'version-poweredby-credits'     => "This wiki is powered by '''[http://www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
+'version-poweredby-credits'     => "This wiki is powered by '''[//www.mediawiki.org/ MediaWiki]''', copyright © 2001-$1 $2.",
 'version-poweredby-others'      => 'others',
 'version-license-info'          => 'MediaWiki is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
 MediaWiki is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA or [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html read it online].',
+You should have received [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA or [//www.gnu.org/licenses/old-licenses/gpl-2.0.html read it online].',
 'version-software'              => 'Installed software',
 'version-software-product'      => 'Product',
 'version-software-version'      => 'Version',
@@ -4540,8 +4584,7 @@ Images are shown in full resolution, other file types are started with their ass
 'specialpages-summary'           => '', # do not translate or duplicate this message to other languages
 'specialpages-note'              => '----
 * Normal special pages.
-* <span class="mw-specialpagerestricted">Restricted special pages.</span>
-* <span class="mw-specialpagecached">Cached special pages (might be obsolete).</span>',
+* <span class="mw-specialpagerestricted">Restricted special pages.</span>',
 'specialpages-group-maintenance' => 'Maintenance reports',
 'specialpages-group-other'       => 'Other special pages',
 'specialpages-group-login'       => 'Login / sign up',
@@ -4651,5 +4694,21 @@ This site is experiencing technical difficulties.',
 'logentry-newusers-create2'           => '$1 {{GENDER:$2|created}} {{GENDER:$4|a user account}} $3',
 'logentry-newusers-autocreate'        => 'Account $1 was {{GENDER:$2|created}} automatically',
 'newuserlog-byemail'                  => 'password sent by e-mail',
+
+# Feedback
+'feedback-bugornote' => 'If you are ready to describe a technical problem in detail please [$1 report a bug].
+Otherwise, you can use the easy form below. Your comment will be added to the page "[$3 $2]", along with your username and what browser you are using.',
+'feedback-subject'   => 'Subject:',
+'feedback-message'   => 'Message:',
+'feedback-cancel'    => 'Cancel',
+'feedback-submit'    => 'Submit Feedback',
+'feedback-adding'    => 'Adding feedback to page...',
+'feedback-error1'    => 'Error: Unrecognized result from API',
+'feedback-error2'    => 'Error: Edit failed',
+'feedback-error3'    => 'Error: No response from API',
+'feedback-thanks'    => 'Thanks! Your feedback has been posted to the page "[$2 $1]".',
+'feedback-close'     => 'Done',
+'feedback-bugcheck'  => 'Great! Just check that it is not already one of the [$1 known bugs].',
+'feedback-bugnew'    => 'I checked. Report a new bug',
 
 );

@@ -170,14 +170,14 @@ class ParserCache {
 			$value = $this->mMemc->get( $parserOutputKey );
 		}
 		if ( !$value ) {
-			wfDebug( "Parser cache miss.\n" );
+			wfDebug( "ParserOutput cache miss.\n" );
 			wfIncrStats( "pcache_miss_absent" );
 			wfProfileOut( __METHOD__ );
 			return false;
 		}
 
-		wfDebug( "Found.\n" );
-		
+		wfDebug( "ParserOutput cache found.\n" );
+
 		// The edit section preference may not be the appropiate one in 
 		// the ParserOutput, as we are not storing it in the parsercache 
 		// key. Force it here. See bug 31445.
@@ -220,7 +220,7 @@ class ParserCache {
 				$popts->optionsHash( $optionsKey->mUsedOptions, $article->getTitle() ) );
 
 			// Save the timestamp so that we don't have to load the revision row on view
-			$parserOutput->mTimestamp = $article->getTimestamp();
+			$parserOutput->setTimestamp( $article->getTimestamp() );
 
 			$parserOutput->mText .= "\n<!-- Saved in parser cache with key $parserOutputKey and timestamp $now -->\n";
 			wfDebug( "Saved in parser cache with key $parserOutputKey and timestamp $now\n" );

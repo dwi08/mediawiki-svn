@@ -353,14 +353,13 @@ MySQL جوابِ خطاء پرائے "$3: $4"',
 'querypage-no-updates' => 'ھیہ صفحہو بچے بتاریخات فی الحال ناقابل ساوزینو بیتی شینی. 
 ھمو ڈیٹا ھنیسے تازہ کورونو نو بوئے',
 'viewsource'           => 'مسودو لوڑے',
-'viewsourcefor'        => 'بچے $1',
 'actionthrottledtext'  => 'بطورِ ای ضدسپم تدبیر، تہ مختصار وختہ کئی دفعہ ھیہ کورومو کوریکو وجھین محدود کورونو ہوئے، وا تو ھیہ حدو پار کوری آسوس.
 براہِ کرم، ای کما میلیٹ آچہ کھوشش کورے',
 'protectedpagetext'    => 'ھیہ صفحہو تدویناری محفوظ لاکھیکو بچے قلف لیگینو بیتی شیر',
 'viewsourcetext'       => 'تو صرف مضمونو لوڑیکو بوس وا ھو نقل کوریکو بوس:',
 'protectedinterface'   => 'ھیہ صفحہ مصنع‌لطیفو بچے سطح‌البینی متن فراہم کورویان، وا  ناجائزاستعمالو سدِبابو بچے ھمو قلف لیگینو بیتی شیر',
 'editinginterface'     => "\"'''خبردار:''' تو ای ھش صفحہو تدوینو کوروسان کہ ھیہ مصنع‌لطیفو بچے سطح‌البینی متن فراہم کورویان۔ ھیہ صفحہا کاردو ترمیم، دیگر ممبارانن بچے سطح‌البینو تبدیل کوروی۔
-براہِ کرم، ترجمہ کوریکو بچے  [http://translatewiki.net/wiki/Main_Page?setlang=en '''بیٹاویکی'''] (میڈیاویکی مقامیانی منصوبو) استعمال کورے.\",",
+براہِ کرم، ترجمہ کوریکو بچے  [//translatewiki.net/wiki/Main_Page?setlang=en '''بیٹاویکی'''] (میڈیاویکی مقامیانی منصوبو) استعمال کورے.\",",
 'sqlhidden'            => '(SQL استفسارہ کھوشت)',
 'namespaceprotected'   => "\"تتے '''\$1''' فضائے نامہ صفحاتن تدوینو کوریکو اِجازت نیکی.\",",
 'ns-specialprotected'  => 'خاص صفحاتن تدوین کوریکو اجازت نیکی',
@@ -506,9 +505,6 @@ MySQL جوابِ خطاء پرائے "$3: $4"',
 'subject-preview'                  => 'عنوان/شہ سرخیو پیش منظر:',
 'blockedtitle'                     => 'صارفو بلاک کورونو بیتی شیر',
 'blockednoreason'                  => 'کیہ وجہ دیونو نو ھوی',
-'blockedoriginalsource'            => "'''$1''' مآخذو موڑا دیونو بیتی شیر:",
-'blockededitsource'                => "'''$1''' کورونو بیرو'''تہ  ترمیمان''' متن موڑا دیونو بیتی شیر:",
-'whitelistedittitle'               => 'ترمیم کوریکو بچے داخلِ نوشتہ بیک لازمی شیر',
 'whitelistedittext'                => 'ترمیم کوریکو بچے $1 ضروری شیر.',
 'nosuchsectiontitle'               => 'قطعہ ملاو نو ھوی',
 'loginreqtitle'                    => 'داخلہ / اندراج لازم',
@@ -1049,8 +1045,8 @@ HTML tags لوڑے.',",
 
 # External editor support
 'edit-externally'      => 'ھیہ مسلو ایڈیٹ کورے',
-'edit-externally-help' => '(See the [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] for more information)
-(مزید معلوماتو بچے ھیہ لنکہ بوغے [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] )',
+'edit-externally-help' => '(See the [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] for more information)
+(مزید معلوماتو بچے ھیہ لنکہ بوغے [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] )',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'سف',

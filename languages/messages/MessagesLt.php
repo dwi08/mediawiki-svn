@@ -137,28 +137,28 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#PERADRESAVIMAS', '#REDIRECT' ),
-	'notoc'                 => array( '0', '__BETURIN__', '__NOTOC__' ),
-	'nogallery'             => array( '0', '__BEGALERIJOS__', '__NOGALLERY__' ),
-	'toc'                   => array( '0', '__TURINYS__', '__TOC__' ),
-	'noeditsection'         => array( '0', '__BEREDAGSEKC__', '__NOEDITSECTION__' ),
-	'currentmonth'          => array( '1', 'DABARTINISMĖNESIS', 'CURRENTMONTH', 'CURRENTMONTH2' ),
-	'currentmonthname'      => array( '1', 'DABARTINIOMĖNESIOPAVADINIMAS', 'CURRENTMONTHNAME' ),
-	'currentday'            => array( '1', 'DABARTINĖDIENA', 'CURRENTDAY' ),
-	'currentday2'           => array( '1', 'DABARTINĖDIENA2', 'CURRENTDAY2' ),
-	'currentdayname'        => array( '1', 'DABARTINĖSDIENOSPAVADINIMAS', 'CURRENTDAYNAME' ),
-	'currentyear'           => array( '1', 'DABARTINIAIMETAI', 'CURRENTYEAR' ),
-	'currenttime'           => array( '1', 'DABARTINISLAIKAS', 'CURRENTTIME' ),
-	'currenthour'           => array( '1', 'DABARTINĖVALANDA', 'CURRENTHOUR' ),
-	'numberofpages'         => array( '1', 'PUSLAPIŲSKAIČIUS', 'NUMBEROFPAGES' ),
-	'numberofarticles'      => array( '1', 'STRAIPSNIŲSKAIČIUS', 'NUMBEROFARTICLES' ),
-	'numberoffiles'         => array( '1', 'FAILŲSKAIČIUS', 'NUMBEROFFILES' ),
-	'numberofusers'         => array( '1', 'NAUDOTOJŲSKAIČIUS', 'NUMBEROFUSERS' ),
-	'numberofedits'         => array( '1', 'KEITIMŲSKAIČIUS', 'NUMBEROFEDITS' ),
-	'img_thumbnail'         => array( '1', 'miniatiūra', 'mini', 'thumbnail', 'thumb' ),
-	'img_manualthumb'       => array( '1', 'miniatiūra=$1', 'mini=$1', 'thumbnail=$1', 'thumb=$1' ),
-	'img_right'             => array( '1', 'dešinėje', 'right' ),
-	'img_left'              => array( '1', 'kairėje', 'left' ),
+	'redirect'                => array( '0', '#PERADRESAVIMAS', '#REDIRECT' ),
+	'notoc'                   => array( '0', '__BETURIN__', '__NOTOC__' ),
+	'nogallery'               => array( '0', '__BEGALERIJOS__', '__NOGALLERY__' ),
+	'toc'                     => array( '0', '__TURINYS__', '__TOC__' ),
+	'noeditsection'           => array( '0', '__BEREDAGSEKC__', '__NOEDITSECTION__' ),
+	'currentmonth'            => array( '1', 'DABARTINISMĖNESIS', 'CURRENTMONTH', 'CURRENTMONTH2' ),
+	'currentmonthname'        => array( '1', 'DABARTINIOMĖNESIOPAVADINIMAS', 'CURRENTMONTHNAME' ),
+	'currentday'              => array( '1', 'DABARTINĖDIENA', 'CURRENTDAY' ),
+	'currentday2'             => array( '1', 'DABARTINĖDIENA2', 'CURRENTDAY2' ),
+	'currentdayname'          => array( '1', 'DABARTINĖSDIENOSPAVADINIMAS', 'CURRENTDAYNAME' ),
+	'currentyear'             => array( '1', 'DABARTINIAIMETAI', 'CURRENTYEAR' ),
+	'currenttime'             => array( '1', 'DABARTINISLAIKAS', 'CURRENTTIME' ),
+	'currenthour'             => array( '1', 'DABARTINĖVALANDA', 'CURRENTHOUR' ),
+	'numberofpages'           => array( '1', 'PUSLAPIŲSKAIČIUS', 'NUMBEROFPAGES' ),
+	'numberofarticles'        => array( '1', 'STRAIPSNIŲSKAIČIUS', 'NUMBEROFARTICLES' ),
+	'numberoffiles'           => array( '1', 'FAILŲSKAIČIUS', 'NUMBEROFFILES' ),
+	'numberofusers'           => array( '1', 'NAUDOTOJŲSKAIČIUS', 'NUMBEROFUSERS' ),
+	'numberofedits'           => array( '1', 'KEITIMŲSKAIČIUS', 'NUMBEROFEDITS' ),
+	'img_thumbnail'           => array( '1', 'miniatiūra', 'mini', 'thumbnail', 'thumb' ),
+	'img_manualthumb'         => array( '1', 'miniatiūra=$1', 'mini=$1', 'thumbnail=$1', 'thumb=$1' ),
+	'img_right'               => array( '1', 'dešinėje', 'right' ),
+	'img_left'                => array( '1', 'kairėje', 'left' ),
 );
 
 $fallback8bitEncoding = 'windows-1257';
@@ -206,8 +206,8 @@ $messages = array(
 'tog-shownumberswatching'     => 'Rodyti stebinčių naudotojų skaičių',
 'tog-oldsig'                  => 'Esamo parašo peržiūra:',
 'tog-fancysig'                => 'Laikyti parašą vikitekstu (be automatinių nuorodų)',
-'tog-externaleditor'          => 'Pagal nutylėjimą naudoti išorinį redaktorių (skirta tik ekspertams, nes reikia atitinkamai paruošti jūsų kompiuterį. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
-'tog-externaldiff'            => 'Pagal nutylėjimą naudoti išorinę skirtumų rodymo programą (tik ekspertams, nes reikia atitinkamai  paruošti jūsų kompiuterį. [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaleditor'          => 'Pagal nutylėjimą naudoti išorinį redaktorių (skirta tik ekspertams, nes reikia atitinkamai paruošti jūsų kompiuterį. [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaldiff'            => 'Pagal nutylėjimą naudoti išorinę skirtumų rodymo programą (tik ekspertams, nes reikia atitinkamai  paruošti jūsų kompiuterį. [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
 'tog-showjumplinks'           => 'Įjungti „peršokti į“ pasiekiamumo nuorodas',
 'tog-uselivepreview'          => 'Naudoti tiesioginę peržiūrą (JavaScript) (Eksperimentinis)',
 'tog-forceeditsummary'        => 'Klausti, kai palieku tuščią keitimo komentarą',
@@ -534,6 +534,7 @@ Prašome apie tai pranešti [[Special:ListUsers/sysop|administratoriui]], nepami
 'badarticleerror'      => 'Veiksmas negalimas šiam puslapiui.',
 'cannotdelete'         => 'Nepavyko ištrinti puslapio ar failo „$1“.
 Galbūt jį jau kažkas kitas ištrynė.',
+'cannotdelete-title'   => 'Negalite ištrinti puslapio "$1"',
 'badtitle'             => 'Blogas pavadinimas',
 'badtitletext'         => 'Nurodytas puslapio pavadinimas buvo neleistinas, tuščias arba neteisingai sujungtas tarpkalbinis arba tarpprojektinis pavadinimas. Jame gali būti vienas ar daugiau simbolių, neleistinų pavadinimuose',
 'perfcached'           => 'Rodoma išsaugota duomenų kopija, todėl duomenys gali būti ne patys naujausi.',
@@ -543,13 +544,13 @@ Galbūt jį jau kažkas kitas ištrynė.',
 Funkcija: $1<br />
 Užklausa: $2',
 'viewsource'           => 'Žiūrėti kodą',
-'viewsourcefor'        => 'puslapiui $1',
+'viewsource-title'     => 'Peržiūrėti šaltinį $1',
 'actionthrottled'      => 'Veiksmas apribotas',
 'actionthrottledtext'  => 'Kad būtų apsisaugota nuo reklamų, jums neleidžiama daug kartų atlikti šį veiksmą per trumpą laiko tarpą, bet jūs pasiekėte šį limitą. Prašome vėl pamėginti po kelių minučių.',
 'protectedpagetext'    => 'Šis puslapis yra užrakintas, saugant jį nuo redagavimo.',
 'viewsourcetext'       => 'Jūs galite žiūrėti ir kopijuoti puslapio kodą:',
 'protectedinterface'   => 'Šiame puslapyje yra apsaugotas nuo piktnaudžiavimo programinės įrangos sąsajos tekstas.',
-'editinginterface'     => "'''Dėmesio:''' Jūs redaguojate puslapį, kuris yra naudojamas programinės įrangos sąsajos tekste. Pakeitimai šiame puslapyje taip pat pakeis naudotojo sąsajos išvaizdą ir kitiems naudojams. Jei norite išversti, siūlome pasinaudoti [http://translatewiki.net/wiki/Main_Page?setlang=lt „translatewiki.net“], „MediaWiki“ lokalizacijos projektu.",
+'editinginterface'     => "'''Dėmesio:''' Jūs redaguojate puslapį, kuris yra naudojamas programinės įrangos sąsajos tekste. Pakeitimai šiame puslapyje taip pat pakeis naudotojo sąsajos išvaizdą ir kitiems naudojams. Jei norite išversti, siūlome pasinaudoti [//translatewiki.net/wiki/Main_Page?setlang=lt „translatewiki.net“], „MediaWiki“ lokalizacijos projektu.",
 'sqlhidden'            => '(SQL užklausa paslėpta)',
 'cascadeprotected'     => 'Šis puslapis buvo apsaugotas nuo redagavimo, kadangi jis yra įtrauktas į {{PLURAL:$1|šį puslapį, apsaugotą|šiuos puslapius, apsaugotus}} „pakopinės apsaugos“ pasirinktimi:
 $2',
@@ -693,6 +694,7 @@ Jūs galbūt jau sėkmingai pakeitėte savo slaptažodį ar gavote naują laikin
 'passwordreset-disabled'       => 'Slaptažodžių atstatymai šiame wikyje išjungti.',
 'passwordreset-pretext'        => '{{PLURAL:$1| | Langelyje parašykite vieną duomenų vienetų žemiau}}',
 'passwordreset-username'       => 'Naudotojo vardas:',
+'passwordreset-domain'         => 'Domenas:',
 'passwordreset-email'          => 'E-pašto adresas:',
 'passwordreset-emailtitle'     => 'Paskyros informacija apie {{sitename}}',
 'passwordreset-emailtext-ip'   => 'Kažkas (tikriausiai jūs, IP adresu $1 ) paprašė informacijos priminimas jūsų! N! sąskaitą {{sitename}} ( $4 ). Šis vartotojas {{PLURAL:$3| sąskaita | sąskaitas}} N!! N!, susijusių su šiuo e-pašto adresą!: N!! $2 ! N! N! {{PLURAL:$3| Šis laikinas slaptažodis | Šie laikini slaptažodžiai}} baigsis {{PLURAL:$5| vieną dieną | $5 dienų}} slaptažodis.! N! Jūs turėtumėte prisijungti ir pasirinkti naują. Jei kažkas padarė tai! N! prašymu, arba jūs prisiminėte savo pirminį slaptažodį, ir jums nebereikia! N! nori ją pakeisti, galite ignoruoti šį pranešimą ir toliau naudotis savo senuoju! N! slaptažodį.',
@@ -779,9 +781,6 @@ Jūs negalite naudotis funkcija „Rašyti laišką šiam naudotojui“, jei nes
 Jūsų IP adresas yra $3, blokavimo ID yra $5.
 Prašome nurodyti šiuos duomenis visais atvejais, kai kreipiatės dėl blokavimo.",
 'blockednoreason'                  => 'priežastis nenurodyta',
-'blockedoriginalsource'            => "Žemiau yra rodomas '''$1''' turinys:",
-'blockededitsource'                => "''Jūsų keitimų'' tekstas puslapiui '''$1''' yra rodomas žemiau:",
-'whitelistedittitle'               => 'Norint redaguoti reikia prisijungti',
 'whitelistedittext'                => 'Jūs turite $1, kad redaguotumėte puslapius.',
 'confirmedittext'                  => 'Jums reikia patvirtinti el. pašto adresą, prieš redaguojant puslapius.
 Prašome nurodyti ir patvirtinti jūsų el. pašto adresą per jūsų [[Special:Preferences|naudotojo nustatymus]].',
@@ -1215,7 +1214,6 @@ Prašome patikrinti sąrašus.',
 'prefs-editing'                 => 'Redagavimas',
 'prefs-edit-boxsize'            => 'Redagavimo lango dydis.',
 'rows'                          => 'Eilutės:',
-'columns'                       => 'Stulpeliai:',
 'searchresultshead'             => 'Paieškos nustatymai',
 'resultsperpage'                => 'Rezultatų puslapyje:',
 'stub-threshold'                => 'Puslapį žymėti <a href="#" class="stub">nebaigtu</a>, jei mažesnis nei:',
@@ -1402,7 +1400,6 @@ teisės",
 'right-autopatrol'            => 'Keitimai automatiškai pažymimi kaip patikrinti',
 'right-patrolmarks'           => 'Atžymų apie patikrą peržiūra naujausiuose keitimuose',
 'right-unwatchedpages'        => 'Žiūrėti nestebimų puslapių sąrašą',
-'right-trackback'             => 'Siųsti „Trackback“ nuorodą',
 'right-mergehistory'          => 'Sulieti puslapių istorijas',
 'right-userrights'            => 'Redaguoti visų naudotojų teises',
 'right-userrights-interwiki'  => 'Keisti naudotojų teises kitose wiki svetainėse',
@@ -1447,7 +1444,6 @@ teisės",
 'action-patrol'               => 'pažymėti kitų keitimus kaip patikrintus',
 'action-autopatrol'           => 'savo keitimų pažymėjimas patikrintais',
 'action-unwatchedpages'       => 'žiūrėti nestebimų puslapių sąrašą',
-'action-trackback'            => 'priimti trackback nuorodą',
 'action-mergehistory'         => 'sulieti šio puslapio istoriją',
 'action-userrights'           => 'keisti visų naudotojų teises',
 'action-userrights-interwiki' => 'keisti naudotojų teises kitose wiki svetainėse',
@@ -2336,7 +2332,6 @@ Paskutinis blokavimo įrašas pateikiamas žemiau:',
 'blockip-legend'                  => 'Blokuoti naudotoją',
 'blockiptext'                     => 'Naudokite šią formą norėdami uždrausti rašymo teises nurodytui IP adresui ar naudotojui. Tai turėtų būti atliekama tam, kad sustabdytumėte vandalizmą, ir pagal [[{{MediaWiki:Policy-url}}|politiką]].
 Žemiau nurodykite tikslią priežastį (pavyzdžiui, nurodydami sugadintus puslapius).',
-'ipaddress'                       => 'IP adresas',
 'ipadressorusername'              => 'IP adresas arba naudotojo vardas',
 'ipbexpiry'                       => 'Galiojimo laikas',
 'ipbreason'                       => 'Priežastis:',
@@ -2608,7 +2603,7 @@ Pastaruoju atveju, jūs taip pat galite naudoti nuorodą, pvz. [[{{#Special:Expo
 'allmessagesdefault'            => 'Pradinis tekstas',
 'allmessagescurrent'            => 'Dabartinis tekstas',
 'allmessagestext'               => 'Čia pateikiamas sisteminių pranešimų sąrašas, esančių MediaWiki vardų srityje.
-Aplankykite [http://www.mediawiki.org/wiki/Localisation „MediaWiki“ lokaliziciją] ir [http://translatewiki.net „translatewiki.net“], jei norite prisidėti prie bendrojo „MediaWiki“ lokalizavimo.',
+Aplankykite [//www.mediawiki.org/wiki/Localisation „MediaWiki“ lokaliziciją] ir [//translatewiki.net „translatewiki.net“], jei norite prisidėti prie bendrojo „MediaWiki“ lokalizavimo.',
 'allmessagesnotsupportedDB'     => "Šis puslapis nepalaikomas, nes nuostata '''\$wgUseDatabaseMessages''' yra išjungtas.",
 'allmessages-filter-legend'     => 'Filtras',
 'allmessages-filter'            => 'Filtruoti pagal būseną:',
@@ -2864,6 +2859,9 @@ Jį paleidus jūsų sistema gali būti pažeista.",
 'ilsubmit'              => 'Ieškoti',
 'bydate'                => 'pagal datą',
 'sp-newimages-showfrom' => 'Rodyti naujus failus pradedant nuo $1 $2',
+
+# Video information, used by Language::formatTimePeriod() to format lengths in the above messages
+'ago' => 'prieš $1',
 
 # Bad image list
 'bad_image_list' => 'Formatas yra toks:
@@ -3286,7 +3284,7 @@ Visos kitos nuorodos toje pačioje eilutėje yra laikomos išimtimis, t. y. pusl
 
 # External editor support
 'edit-externally'      => 'Atverti išoriniame redaktoriuje',
-'edit-externally-help' => '(Norėdami gauti daugiau informacijos, žiūrėkite [http://www.mediawiki.org/wiki/Manual:External_editors diegimo instrukcijas])',
+'edit-externally-help' => '(Norėdami gauti daugiau informacijos, žiūrėkite [//www.mediawiki.org/wiki/Manual:External_editors diegimo instrukcijas])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'visus',
@@ -3363,13 +3361,6 @@ $5
 'scarytranscludedisabled' => '[Tarpprojektinis įterpimas yra išjungtas]',
 'scarytranscludefailed'   => '[Šablono gavimas iš $1 nepavyko]',
 'scarytranscludetoolong'  => '[URL per ilgas]',
-
-# Trackbacks
-'trackbackbox'      => 'Šio puslapio „Trackback“ nuorodos:<br />
-$1',
-'trackbackremove'   => '([$1 Trinti])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Trackback buvo sėkmingai ištrintas.',
 
 # Delete conflict
 'deletedwhileediting'      => 'Dėmesio: Šis puslapis ištrintas po to, kai pradėjote redaguoti!',
@@ -3478,13 +3469,13 @@ Jūs taip pat galite [[Special:EditWatchlist|naudoti standartinį redaktorių]].
 'version-hook-subscribedby'     => 'Užsakyta',
 'version-version'               => '(Versija $1)',
 'version-license'               => 'Licencija',
-'version-poweredby-credits'     => "Šis projektas naudoja '''[http://www.mediawiki.org/ MediaWiki]''', autorystės teisės © 2001-$1 $2.",
+'version-poweredby-credits'     => "Šis projektas naudoja '''[//www.mediawiki.org/ MediaWiki]''', autorystės teisės © 2001-$1 $2.",
 'version-poweredby-others'      => 'kiti',
 'version-license-info'          => 'MediaWiki yra nemokama programinė įranga; galite ją platinti ir/arba modifikuoti pagal GNU General Public License, kurią publikuoja Free Software Foundation; taikoma 2-oji licenzijos versija arba (Jūsų pasirinkimu) bet kuri vėlesnė versija. 
 
 MediaWiki yra platinama su viltimi, kad ji bus naudinga, bet BE JOKIOS GARANTIJOS; be jokios numanomos PARDAVIMO arba TINKAMUMO TAM TIKRAM TIKSLUI garantijos. Daugiau informacijos galite sužinoti GNU General Public License. 
 
-Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public License kopiją] kartu su šia programa, jei ne, rašykite Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, JAV arba [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html perskaitykite ją internete].',
+Jūs turėjote gauti [{{SERVER}}{{SCRIPTPATH}}/COPYING GNU General Public License kopiją] kartu su šia programa, jei ne, rašykite Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, JAV arba [//www.gnu.org/licenses/old-licenses/gpl-2.0.html perskaitykite ją internete].',
 'version-software'              => 'Įdiegta programinė įranga',
 'version-software-product'      => 'Produktas',
 'version-software-version'      => 'Versija',
@@ -3594,5 +3585,13 @@ Paveikslėliai yra rodomi pilna raiška, kiti failų tipai paleidžiami tiesiogi
 'revdelete-restricted'   => 'uždėti apribojimai administratoriams',
 'revdelete-unrestricted' => 'pašalinti apribojimai administratoriams',
 'newuserlog-byemail'     => 'slaptažodis nusiųstas elektroniniu paštu',
+
+# Feedback
+'feedback-subject' => 'Tema:',
+'feedback-message' => 'Pranešimas:',
+'feedback-cancel'  => 'Atšaukti',
+'feedback-submit'  => 'Siųsti Atsiliepimą',
+'feedback-adding'  => 'Pridedamas atsiliepimas į puslapį ...',
+'feedback-error2'  => 'Klaida: Redagavimas nepavyko',
 
 );

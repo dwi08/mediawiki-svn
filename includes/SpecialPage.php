@@ -67,6 +67,7 @@ class SpecialPage {
 	 * @deprecated since 1.18
 	 */
 	static function initList() {
+		wfDeprecated( __METHOD__, '1.18' );
 		// Noop
 	}
 
@@ -74,6 +75,7 @@ class SpecialPage {
 	 * @deprecated since 1.18
 	 */
 	static function initAliasList() {
+		wfDeprecated( __METHOD__, '1.18' );
 		// Noop
 	}
 
@@ -86,6 +88,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function resolveAlias( $alias ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		list( $name, /*...*/ ) = SpecialPageFactory::resolveAlias( $alias );
 		return $name;
 	}
@@ -112,7 +115,7 @@ class SpecialPage {
 	 * @deprecated since 1.7, warnings in 1.17, might be removed in 1.20
 	 */
 	static function addPage( &$page ) {
-		wfDeprecated( __METHOD__ );
+		wfDeprecated( __METHOD__, '1.7' );
 		SpecialPageFactory::getList()->{$page->mName} = $page;
 	}
 
@@ -125,6 +128,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function setGroup( $page, $group ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::setGroup( $page, $group );
 	}
 
@@ -136,6 +140,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getGroup( &$page ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getGroup( $page );
 	}
 
@@ -148,6 +153,7 @@ class SpecialPage {
 	 * @param $name String the page to remove
 	 */
 	static function removePage( $name ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		unset( SpecialPageFactory::getList()->$name );
 	}
 
@@ -159,6 +165,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function exists( $name ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::exists( $name );
 	}
 
@@ -170,6 +177,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getPage( $name ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getPage( $name );
 	}
 
@@ -182,6 +190,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getPageByAlias( $alias ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getPage( $alias );
 	}
 
@@ -195,6 +204,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getUsablePages( User $user = null ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getUsablePages( $user );
 	}
 
@@ -205,6 +215,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getRegularPages() {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getRegularPages();
 	}
 
@@ -216,6 +227,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getRestrictedPages() {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getRestrictedPages();
 	}
 
@@ -234,6 +246,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	public static function executePath( &$title, IContextSource &$context, $including = false ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::executePath( $title, $context, $including );
 	}
 
@@ -247,6 +260,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getLocalNameFor( $name, $subpage = false ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getLocalNameFor( $name, $subpage );
 	}
 
@@ -290,6 +304,7 @@ class SpecialPage {
 	 * @deprecated since 1.18 call SpecialPageFactory method directly
 	 */
 	static function getTitleForAlias( $alias ) {
+		wfDeprecated( __METHOD__, '1.18' );
 		return SpecialPageFactory::getTitleForAlias( $alias );
 	}
 
@@ -333,12 +348,12 @@ class SpecialPage {
 		$this->mListed = $listed;
 		$this->mIncludable = $includable;
 		if ( !$function ) {
-			$this->mFunction = 'wfSpecial'.$name;
+			$this->mFunction = 'wfSpecial' . $name;
 		} else {
 			$this->mFunction = $function;
 		}
 		if ( $file === 'default' ) {
-			$this->mFile = dirname(__FILE__) . "/specials/Special$name.php";
+			$this->mFile = dirname( __FILE__ ) . "/specials/Special$name.php";
 		} else {
 			$this->mFile = $file;
 		}
@@ -353,11 +368,11 @@ class SpecialPage {
 	 * @deprecated since 1.17, call parent::__construct()
 	 */
 	public function __call( $fName, $a ) {
-		// Sometimes $fName is SpecialPage, sometimes it's specialpage. <3 PHP
-		if( strtolower( $fName ) == 'specialpage' ) {
-			// Deprecated messages now, remove in 1.19 or 1.20?
-			wfDeprecated( __METHOD__ );
+		// Deprecated messages now, remove in 1.19 or 1.20?
+		wfDeprecated( __METHOD__, '1.17' );
 
+		// Sometimes $fName is SpecialPage, sometimes it's specialpage. <3 PHP
+		if ( strtolower( $fName ) == 'specialpage' ) {
 			$name = isset( $a[0] ) ? $a[0] : '';
 			$restriction = isset( $a[1] ) ? $a[1] : '';
 			$listed = isset( $a[2] ) ? $a[2] : true;
@@ -395,6 +410,7 @@ class SpecialPage {
 	 * @deprecated since 1.18
 	 */
 	function getFile() {
+		wfDeprecated( __METHOD__, '1.18' );
 		return $this->mFile;
 	}
 
@@ -422,7 +438,7 @@ class SpecialPage {
 	 * @param $x Bool
 	 * @return Bool
 	 */
-	function listed( $x = null) {
+	function listed( $x = null ) {
 		return wfSetVar( $this->mListed, $x );
 	}
 
@@ -430,7 +446,7 @@ class SpecialPage {
 	 * Whether it's allowed to transclude the special page via {{Special:Foo/params}}
 	 * @return Bool
 	 */
-	public function isIncludable(){
+	public function isIncludable() {
 		return $this->mIncludable;
 	}
 
@@ -441,11 +457,43 @@ class SpecialPage {
 	 * @return Mixed
 	 * @deprecated since 1.18
 	 */
-	function name( $x = null ) { return wfSetVar( $this->mName, $x ); }
-	function restriction( $x = null) { return wfSetVar( $this->mRestriction, $x ); }
-	function func( $x = null) { return wfSetVar( $this->mFunction, $x ); }
-	function file( $x = null) { return wfSetVar( $this->mFile, $x ); }
-	function includable( $x = null ) { return wfSetVar( $this->mIncludable, $x ); }
+	function name( $x = null ) { wfDeprecated( __METHOD__, '1.18' ); return wfSetVar( $this->mName, $x ); }
+
+	/**
+	 * These mutators are very evil, as the relevant variables should not mutate.  So
+	 * don't use them.
+	 * @param $x Mixed
+	 * @return Mixed
+	 * @deprecated since 1.18
+	 */
+	function restriction( $x = null ) { wfDeprecated( __METHOD__, '1.18' ); return wfSetVar( $this->mRestriction, $x ); }
+
+	/**
+	 * These mutators are very evil, as the relevant variables should not mutate.  So
+	 * don't use them.
+	 * @param $x Mixed
+	 * @return Mixed
+	 * @deprecated since 1.18
+	 */
+	function func( $x = null ) { wfDeprecated( __METHOD__, '1.18' ); return wfSetVar( $this->mFunction, $x ); }
+
+	/**
+	 * These mutators are very evil, as the relevant variables should not mutate.  So
+	 * don't use them.
+	 * @param $x Mixed
+	 * @return Mixed
+	 * @deprecated since 1.18
+	 */
+	function file( $x = null ) { wfDeprecated( __METHOD__, '1.18' ); return wfSetVar( $this->mFile, $x ); }
+
+	/**
+	 * These mutators are very evil, as the relevant variables should not mutate.  So
+	 * don't use them.
+	 * @param $x Mixed
+	 * @return Mixed
+	 * @deprecated since 1.18
+	 */
+	function includable( $x = null ) { wfDeprecated( __METHOD__, '1.18' ); return wfSetVar( $this->mIncludable, $x ); }
 
 	/**
 	 * Whether the special page is being evaluated via transclusion
@@ -488,7 +536,7 @@ class SpecialPage {
 	public function isRestricted() {
 		global $wgGroupPermissions;
 		// DWIM: If all anons can do something, then it is not restricted
-		return $this->mRestriction != '' && empty($wgGroupPermissions['*'][$this->mRestriction]);
+		return $this->mRestriction != '' && empty( $wgGroupPermissions['*'][$this->mRestriction] );
 	}
 
 	/**
@@ -511,6 +559,29 @@ class SpecialPage {
 	}
 
 	/**
+	 * Checks if userCanExecute, and if not throws a PermissionsError
+	 *
+	 * @since 1.19
+	 */
+	public function checkPermissions() {
+		if ( !$this->userCanExecute( $this->getUser() ) ) {
+			$this->displayRestrictionError();
+		}
+	}
+
+	/**
+	 * If the wiki is currently in readonly mode, throws a ReadOnlyError
+	 *
+	 * @since 1.19
+	 * @throws ReadOnlyError
+	 */
+	public function checkReadOnly() {
+		if ( wfReadOnly() ) {
+			throw new ReadOnlyError;
+		}
+	}
+
+	/**
 	 * Sets headers - this should be called from the execute() method of all derived classes!
 	 */
 	function setHeaders() {
@@ -530,18 +601,15 @@ class SpecialPage {
 	 */
 	function execute( $par ) {
 		$this->setHeaders();
+		$this->checkPermissions();
 
-		if ( $this->userCanExecute( $this->getUser() ) ) {
-			$func = $this->mFunction;
-			// only load file if the function does not exist
-			if( !is_callable($func) && $this->mFile ) {
-				require_once( $this->mFile );
-			}
-			$this->outputHeader();
-			call_user_func( $func, $par, $this );
-		} else {
-			$this->displayRestrictionError();
+		$func = $this->mFunction;
+		// only load file if the function does not exist
+		if ( !is_callable( $func ) && $this->mFile ) {
+			require_once( $this->mFile );
 		}
+		$this->outputHeader();
+		call_user_func( $func, $par, $this );
 	}
 
 	/**
@@ -555,7 +623,7 @@ class SpecialPage {
 	function outputHeader( $summaryMessageKey = '' ) {
 		global $wgContLang;
 
-		if( $summaryMessageKey == '' ) {
+		if ( $summaryMessageKey == '' ) {
 			$msg = $wgContLang->lc( $this->getName() ) . '-summary';
 		} else {
 			$msg = $summaryMessageKey;
@@ -604,7 +672,7 @@ class SpecialPage {
 	/**
 	 * Gets the context this SpecialPage is executed in
 	 *
-	 * @return IContextSource
+	 * @return IContextSource|RequestContext
 	 * @since 1.18
 	 */
 	public function getContext() {
@@ -659,11 +727,23 @@ class SpecialPage {
 	/**
 	 * Shortcut to get user's language
 	 *
+	 * @deprecated 1.19 Use getLanguage instead
 	 * @return Language
 	 * @since 1.18
 	 */
 	public function getLang() {
-		return $this->getContext()->getLang();
+		wfDeprecated( __METHOD__, '1.19' );
+		return $this->getLanguage();
+	}
+
+	/**
+	 * Shortcut to get user's language
+	 *
+	 * @return Language
+	 * @since 1.19
+	 */
+	public function getLanguage() {
+		return $this->getContext()->getLanguage();
 	}
 
 	/**
@@ -701,7 +781,7 @@ class SpecialPage {
 
 		$feedTemplate = wfScript( 'api' ) . '?';
 
-		foreach( $wgFeedClasses as $format => $class ) {
+		foreach ( $wgFeedClasses as $format => $class ) {
 			$theseParams = $params + array( 'feedformat' => $format );
 			$url = $feedTemplate . wfArrayToCGI( $theseParams );
 			$this->getOutput()->addFeedLink( $format, $url );
@@ -786,7 +866,7 @@ abstract class FormSpecialPage extends SpecialPage {
 		$this->setHeaders();
 
 		// This will throw exceptions if there's a problem
-		$this->userCanExecute( $this->getUser() );
+		$this->checkExecutePermissions( $this->getUser() );
 
 		$form = $this->getForm();
 		if ( $form->show() ) {
@@ -798,29 +878,25 @@ abstract class FormSpecialPage extends SpecialPage {
 	 * Maybe do something interesting with the subpage parameter
 	 * @param $par String
 	 */
-	protected function setParameter( $par ){}
+	protected function setParameter( $par ) {}
 
 	/**
-	 * Checks if the given user (identified by an object) can perform this action.  Can be
-	 * overridden by sub-classes with more complicated permissions schemes.  Failures here
-	 * must throw subclasses of ErrorPageError
-	 *
-	 * @param $user User: the user to check, or null to use the context user
+	 * Called from execute() to check if the given user can perform this action.
+	 * Failures here must throw subclasses of ErrorPageError.
+	 * @param $user User
 	 * @return Bool true
 	 * @throws ErrorPageError
 	 */
-	public function userCanExecute( User $user ) {
-		if ( $this->requiresWrite() && wfReadOnly() ) {
-			throw new ReadOnlyError();
-		}
-
-		if ( $this->getRestriction() !== null && !$user->isAllowed( $this->getRestriction() ) ) {
-			throw new PermissionsError( $this->getRestriction() );
-		}
+	protected function checkExecutePermissions( User $user ) {
+		$this->checkPermissions();
 
 		if ( $this->requiresUnblock() && $user->isBlocked() ) {
 			$block = $user->mBlock;
 			throw new UserBlockedError( $block );
+		}
+
+		if ( $this->requiresWrite() ) {
+			$this->checkReadOnly();
 		}
 
 		return true;
@@ -852,7 +928,7 @@ class UnlistedSpecialPage extends SpecialPage {
 		parent::__construct( $name, $restriction, false, $function, $file );
 	}
 
-	public function isListed(){
+	public function isListed() {
 		return false;
 	}
 }
@@ -868,7 +944,7 @@ class IncludableSpecialPage extends SpecialPage {
 		parent::__construct( $name, $restriction, $listed, $function, $file, true );
 	}
 
-	public function isIncludable(){
+	public function isIncludable() {
 		return true;
 	}
 }
@@ -885,7 +961,7 @@ abstract class RedirectSpecialPage extends UnlistedSpecialPage {
 	// Query parameteres added by redirects
 	protected $mAddedRedirectParams = array();
 
-	public function execute( $par ){
+	public function execute( $par ) {
 		$redirect = $this->getRedirect( $par );
 		$query = $this->getRedirectQuery();
 		// Redirect to a page title with possible query parameters
@@ -925,13 +1001,13 @@ abstract class RedirectSpecialPage extends UnlistedSpecialPage {
 	public function getRedirectQuery() {
 		$params = array();
 
-		foreach( $this->mAllowedRedirectParams as $arg ) {
-			if( $this->getRequest()->getVal( $arg, null ) !== null ){
+		foreach ( $this->mAllowedRedirectParams as $arg ) {
+			if ( $this->getRequest()->getVal( $arg, null ) !== null ) {
 				$params[$arg] = $this->getRequest()->getVal( $arg );
 			}
 		}
 
-		foreach( $this->mAddedRedirectParams as $arg => $val ) {
+		foreach ( $this->mAddedRedirectParams as $arg => $val ) {
 			$params[$arg] = $val;
 		}
 
@@ -965,20 +1041,20 @@ abstract class SpecialRedirectToSpecial extends RedirectSpecialPage {
 }
 
 /**
- * ListAdmins --> ListUsers/admin
+ * ListAdmins --> ListUsers/sysop
  */
 class SpecialListAdmins extends SpecialRedirectToSpecial {
-	function __construct(){
-		parent::__construct( 'ListAdmins', 'ListUsers', 'sysop' );
+	function __construct() {
+		parent::__construct( 'Listadmins', 'Listusers', 'sysop' );
 	}
 }
 
 /**
- * ListBots --> ListUsers/admin
+ * ListBots --> ListUsers/bot
  */
 class SpecialListBots extends SpecialRedirectToSpecial {
-	function __construct(){
-		parent::__construct( 'ListAdmins', 'ListUsers', 'bot' );
+	function __construct() {
+		parent::__construct( 'Listbots', 'Listusers', 'bot' );
 	}
 }
 
@@ -987,7 +1063,7 @@ class SpecialListBots extends SpecialRedirectToSpecial {
  * @todo FIXME: This (and the rest of the login frontend) needs to die a horrible painful death
  */
 class SpecialCreateAccount extends SpecialRedirectToSpecial {
-	function __construct(){
+	function __construct() {
 		parent::__construct( 'CreateAccount', 'Userlogin', 'signup', array( 'uselang' ) );
 	}
 }
@@ -1082,6 +1158,10 @@ class SpecialPermanentLink extends RedirectSpecialPage {
 
 	function getRedirect( $subpage ) {
 		$subpage = intval( $subpage );
+		if ( $subpage === 0 ) {
+			# throw an error page when no subpage was given
+			throw new ErrorPageError( 'nopagetitle', 'nopagetext' );
+		}
 		$this->mAddedRedirectParams['oldid'] = $subpage;
 		return true;
 	}

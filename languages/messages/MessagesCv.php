@@ -37,6 +37,9 @@ $namespaceNames = array(
 	NS_CATEGORY_TALK    => 'Категорине_сӳтсе_явмалли',
 );
 
+// Remove Russian aliases
+$namespaceGenderAliases = array();
+
 $linkTrail = '/^([a-zа-яĕçăӳ"»]+)(.*)$/sDu';
 
 $messages = array(
@@ -359,7 +362,6 @@ $1',
 Функци: $1<br />
 Ыйту: $2',
 'viewsource'           => 'Курăм',
-'viewsourcefor'        => '«$1» страници',
 'actionthrottled'      => 'Хăвăртлăха чакарнă',
 'actionthrottledtext'  => 'Спампа кĕрешнине пула ку ĕçе пĕчĕк вăхăт хушшинче ытла нумай тума чарнă. Темиçе минутран тепре туса пăхма пултаратăр.',
 'protectedpagetext'    => 'Ку страницăна тӳрлетме май çук, хӳтĕленĕ.',
@@ -487,9 +489,6 @@ $1 хутшăнакан патне, е ытти [[{{MediaWiki:Grouppage-sysop}}|
 
 Сирĕн IP-адрес — $3, чару идентификаторĕ — #$5. Çырусенче, тархасшăн, вĕсене пĕлтерĕр.",
 'blockednoreason'        => 'сăлтавне пĕлтермен',
-'blockedoriginalsource'  => 'Аяларах «$1» страницăн текстне куратăр.',
-'blockededitsource'      => "Аяларах эсир «$1» страницăра '''хăвсамăр тунă''' улшăнусене куратăр.",
-'whitelistedittitle'     => 'Улăштарма сирĕн авторизациленмелле',
 'loginreqtitle'          => 'Сайта кĕмелле',
 'loginreqlink'           => 'сайта кĕр',
 'loginreqpagetext'       => 'Ытти страницăсене курмашкăн сирĕн $1.',
@@ -610,7 +609,6 @@ $1 хутшăнакан патне, е ытти [[{{MediaWiki:Grouppage-sysop}}|
 'saveprefs'                 => 'Çырса хур',
 'prefs-editing'             => 'Тӳрлетни',
 'rows'                      => 'Йěркесем',
-'columns'                   => 'Юпасем:',
 'searchresultshead'         => 'Шыраса тупрăмăр',
 'recentchangesdays'         => 'Çак кунсен хушшинчи юлашки улшăнусене кăтартмалла:',
 'recentchangescount'        => 'Списокра çакăн чухлĕ тӳрлетӳ кăтартмалла:',
@@ -1147,9 +1145,6 @@ Also see [[Special:WantedCategories|wanted categories]].',
 # Scary transclusion
 'scarytranscludefailed'  => '[Шел те, $1 шаблонпа усă кураймарăмăр]',
 'scarytranscludetoolong' => '[Питĕ шел, URL ытла вăрăм]',
-
-# Trackbacks
-'trackbackremove' => '([$1 кăларса пăрах])',
 
 # Delete conflict
 'deletedwhileediting' => 'Асăрхăр: эсир тӳрлетнĕ вăхăтра ку страницăна кăларса парахнă!',

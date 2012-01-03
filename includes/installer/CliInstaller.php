@@ -27,6 +27,7 @@ class CliInstaller extends Installer {
 		'dbport' => 'wgDBport',
 		'dbschema' => 'wgDBmwschema',
 		'dbpath' => 'wgSQLiteDataDir',
+		'server' => 'wgServer',
 		'scriptpath' => 'wgScriptPath',
 	);
 
@@ -82,7 +83,7 @@ class CliInstaller extends Installer {
 			$this->setVar( '_InstallUser',
 				$option['installdbuser'] );
 			$this->setVar( '_InstallPassword',
-				$option['installdbpass'] );
+				isset( $option['installdbpass'] ) ? $option['installdbpass'] : "" );
 
 			// Assume that if we're given the installer user, we'll create the account.
 			$this->setVar( '_CreateDBAccount', true );
@@ -180,6 +181,10 @@ class CliInstaller extends Installer {
 			$this->showMessage( 'config-no-cli-uri', $this->getVar("wgScriptPath") );
 		}
 		return parent::envCheckPath();
+	}
+
+	protected function envGetDefaultServer() {
+		return $this->getVar( 'wgServer' );
 	}
 
 	public function dirIsExecutable( $dir, $url ) {

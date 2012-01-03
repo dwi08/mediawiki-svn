@@ -52,17 +52,6 @@ input[dir="rtl"] {
 	direction: rtl;
 }
 
-/* The scripts of these languages are very hard to read with underlines */
-[lang="ar"] a,
-[lang="ckb"] a,
-[lang="fa"] a,
-[lang="kk-arab"] a,
-[lang="mzn"] a,
-[lang="ps"] a,
-[lang="ur"] a {
-	text-decoration: none;
-}
-
 /* Default style for semantic tags */
 abbr,
 acronym,
@@ -259,7 +248,8 @@ tr.mw-htmlform-vertical-label td.mw-label {
 .mw-htmlform-invalid-input td.mw-input input {
 	border-color: red;
 }
-.mw-htmlform-multiselect-flatlist div.mw-htmlform-multiselect-item {
+
+.mw-htmlform-flatlist div.mw-htmlform-flatlist-item {
 	display: inline;
 	margin-right: 1em;
 	white-space: nowrap;
@@ -282,6 +272,13 @@ input#wpSummary {
 /**
  * Categories
  */
+#catlinks {
+	/**
+	 * Overrides text justification (user preference)
+	 * See bug 31990
+	 */
+	text-align: left;
+}
 .catlinks ul {
 	display: inline;
 	margin: 0;
@@ -294,16 +291,16 @@ input#wpSummary {
 
 .catlinks li {
 	display: inline-block;
-	line-height: 1.35em;
-	padding: 0 .7em;
+	line-height: 1.25em;
 	border-left: 1px solid #AAA;
-	margin: 0.3em 0;
+	margin: 0.125em 0;
+	padding: 0 0.5em;
 	zoom: 1;
 	display: inline !ie;
 }
 
 .catlinks li:first-child {
-	padding-left: .4em;
+	padding-left: 0.25em;
 	border-left: none;
 }
 /**
@@ -478,16 +475,19 @@ table.wikitable {
 	border-collapse: collapse;
 	color: black;
 }
-.wikitable th,
-.wikitable td {
+table.wikitable > tr > th,
+table.wikitable > tr > td,
+table.wikitable > * > tr > th,
+table.wikitable > * > tr > td {
 	border: 1px #aaa solid;
 	padding: 0.2em;
 }
-.wikitable th {
+table.wikitable > tr > th,
+table.wikitable > * > tr > th {
 	background-color: #f2f2f2;
 	text-align: center;
 }
-.wikitable caption {
+table.wikitable > caption {
 	font-weight: bold;
 }
 
@@ -709,13 +709,13 @@ table.mw_metadata ul.metadata-langlist {
 .mw-content-ltr ul,
 .mw-content-rtl .mw-content-ltr ul {
 	/* @noflip */
-	margin: 0.3em 0 0 1.5em;
+	margin: 0.3em 0 0 1.6em;
 	padding: 0;
 }
 .mw-content-rtl ul,
 .mw-content-ltr .mw-content-rtl ul {
 	/* @noflip */
-	margin: 0.3em 1.5em 0 0;
+	margin: 0.3em 1.6em 0 0;
 	padding: 0;
 }
 .mw-content-ltr ol,
@@ -730,6 +730,18 @@ table.mw_metadata ul.metadata-langlist {
 	margin: 0.3em 3.2em 0 0;
 	padding: 0;
 }
+/* @noflip */
+.mw-content-ltr dd,
+.mw-content-rtl .mw-content-ltr dd {
+	margin-left: 1.6em;
+	margin-right: 0;
+}
+/* @noflip */
+.mw-content-rtl dd,
+.mw-content-ltr .mw-content-rtl dd {
+	margin-right: 1.6em;
+	margin-left: 0;
+}
 
 /* Galleries */
 /* These display attributes look nonsensical, but are needed to support IE and FF2 */
@@ -741,16 +753,16 @@ li.gallerybox {
 	display: inline-block;
 }
 
-ul.gallery {
-	margin: 2px;
-	padding: 2px;
-	display: inline-block;
-}
-
 ul.gallery,
 li.gallerybox {
 	zoom: 1;
-	display: inline !ie;
+	*display: inline;
+}
+
+ul.gallery {
+	margin: 2px;
+	padding: 2px;
+	display: block;
 }
 
 li.gallerycaption {
@@ -800,20 +812,32 @@ div.gallerytext {
 
 /* Language specific height correction for titles. Ref Bug 29405 and Bug 30809 */
 /* Languages like hi or ml require slightly more vertical space to show diacritics properly */
+h1:lang(as),
+h1:lang(bn),
+h1:lang(gu),
 h1:lang(hi),
-h1:lang(ml) {
+h1:lang(kn),
+h1:lang(ml),
+h1:lang(mr),
+h1:lang(or),
+h1:lang(pa),
+h1:lang(sa),
+h1:lang(ta),
+h1:lang(te) {
 	line-height: 1.5em;
 }
-h2:lang(hi),
-h2:lang(ml),
-h3:lang(hi),
-h3:lang(ml),
-h4:lang(hi),
-h4:lang(ml),
-h5:lang(hi),
-h5:lang(ml),
-h6:lang(hi),
-h6:lang(ml) {
+h2:lang(as), h3:lang(as), h4:lang(as), h5:lang(as), h6:lang(as),
+h2:lang(bn), h3:lang(bn), h4:lang(bn), h5:lang(bn), h6:lang(bn),
+h2:lang(gu), h3:lang(gu), h4:lang(gu), h5:lang(gu), h6:lang(gu),
+h2:lang(hi), h3:lang(hi), h4:lang(hi), h5:lang(hi), h6:lang(hi),
+h2:lang(kn), h3:lang(kn), h4:lang(kn), h5:lang(kn), h6:lang(kn),
+h2:lang(ml), h3:lang(ml), h4:lang(ml), h5:lang(ml), h6:lang(ml),
+h2:lang(mr), h3:lang(mr), h4:lang(mr), h5:lang(mr), h6:lang(mr),
+h2:lang(or), h3:lang(or), h4:lang(or), h5:lang(or), h6:lang(or),
+h2:lang(pa), h3:lang(pa), h4:lang(pa), h5:lang(pa), h6:lang(pa),
+h2:lang(sa), h3:lang(sa), h4:lang(sa), h5:lang(sa), h6:lang(sa),
+h2:lang(ta), h3:lang(ta), h4:lang(ta), h5:lang(ta), h6:lang(ta),
+h2:lang(te), h3:lang(te), h4:lang(te), h5:lang(te), h6:lang(te) {
 	line-height: 1.2em;
 }
 
@@ -935,13 +959,6 @@ ol:lang(or) li {
 	background-position: 0% 100%;
 }
 
-/* LTR content in RTL layout */
-.ltr {
-	/* @noflip */
-	direction: ltr;
-	unicode-bidi: embed;
-}
-
 #mw-clearyourcache,
 #mw-sitecsspreview,
 #mw-sitejspreview,
@@ -973,8 +990,10 @@ ol:lang(or) li {
 }
 
 #mw-revision-info,
+#mw-revision-info-current,
 #mw-revision-nav {
 	direction: ltr;
+	display: inline;
 }
 
 /* Images */
@@ -1010,3 +1029,8 @@ table.floatleft {
 	zoom: 1; /* http://webaim.org/techniques/skipnav/#iequirk */
 }
 
+/* For developpers */
+.xdebug-error {
+	position: absolute;
+	z-index: 99;
+}

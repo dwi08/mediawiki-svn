@@ -93,12 +93,18 @@ class ExtraParserTest extends MediaWikiTestCase {
 	
 	/**
 	 * cleanSigInSig() just removes tildes
+	 * @dataProvider provideStringsForCleanSigInSig
 	 */
-	function testCleanSigInSig() {
-		$title = Title::newFromText( __FUNCTION__ );
-		$outputText = $this->parser->cleanSigInSig( "{{Foo}} ~~~~" );
-		
-		$this->assertEquals( "{{Foo}} ", $outputText );
+	function testCleanSigInSig( $in, $out ) {
+		$this->assertEquals( Parser::cleanSigInSig( $in), $out );
+	}
+	
+	function provideStringsForCleanSigInSig() {
+		return array(
+			array( "{{Foo}} ~~~~", "{{Foo}} " ),
+			array( "~~~", "" ),
+			array( "~~~~~", "" ),
+		);
 	}
 	
 	function testGetSection() {
@@ -134,6 +140,10 @@ class ExtraParserTest extends MediaWikiTestCase {
 			'finalTitle' => $title,
 			'deps' => $deps );
 	}
+
+	/**
+	 * @group Database
+	 */
 	function testTrackingCategory() {
 		$title = Title::newFromText( __FUNCTION__ );
 		$catName =  wfMsgForContent( 'broken-file-category' );
@@ -143,6 +153,10 @@ class ExtraParserTest extends MediaWikiTestCase {
 		$result = $parserOutput->getCategoryLinks();
 		$this->assertEquals( $expected, $result );
 	}
+
+	/**
+	 * @group Database
+	 */
 	function testTrackingCategorySpecial() {
 		// Special pages shouldn't have tracking cats.
 		$title = SpecialPage::getTitleFor( 'Contributions' );

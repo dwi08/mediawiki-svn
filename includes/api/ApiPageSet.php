@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * This class contains a list of pages that the client has requested.
  * Initially, when the client passes in titles=, pageids=, or revisions=
@@ -57,7 +52,7 @@ class ApiPageSet extends ApiQueryBase {
 
 	/**
 	 * Constructor
-	 * @param $query ApiQuery
+	 * @param $query ApiQueryBase
 	 * @param $resolveRedirects bool Whether redirects should be resolved
 	 * @param $convertTitles bool
 	 */
@@ -645,8 +640,8 @@ class ApiPageSet extends ApiQueryBase {
 			// We found pages that aren't in the redirect table
 			// Add them
 			foreach ( $this->mPendingRedirectIDs as $id => $title ) {
-				$article = new Article( $title );
-				$rt = $article->insertRedirect();
+				$page = WikiPage::factory( $title );
+				$rt = $page->insertRedirect();
 				if ( !$rt ) {
 					// What the hell. Let's just ignore this
 					continue;

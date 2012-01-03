@@ -339,7 +339,6 @@ Meeglicherweise wurde se bereits vu jemand anders entfernt.',
 Funksjonn: $1<br />
 Abfroage: $2',
 'viewsource'           => 'Quelltext oasahn',
-'viewsourcefor'        => 'fier $1',
 'actionthrottled'      => 'Aksjonszoahl limmetiert',
 'actionthrottledtext'  => 'Du host diese Aksjonn zu uffte innerholb annes korza Zeitraums ausgeführt. Bitte woarte a poar Minuta und probiere is doann erneut.',
 'protectedpagetext'    => 'Diese Seyte ies fier doas Beorbeeta gesperrt.',
@@ -347,7 +346,7 @@ Abfroage: $2',
 'protectedinterface'   => 'Diese Seyte enthält Text fier doas Sproach-Interface der Software und ies gesperrt, im Missbrauch zu verhindern.',
 'editinginterface'     => "'''Warnung:''' Diese Seyte enthält vu dar MediaWiki-Software benutzta Text.
 Änderunga wirka siech uff de Benutzeroberfläche aus.
-Fier Iebersetzunga ziehe bitte ei Betracht, diese eim [http://translatewiki.net/wiki/Main_Page?setlang=de Translatewiki], damm MediaWiki-Lokalisierungsprojekt, durchzufiehra.",
+Fier Iebersetzunga ziehe bitte ei Betracht, diese eim [//translatewiki.net/wiki/Main_Page?setlang=de Translatewiki], damm MediaWiki-Lokalisierungsprojekt, durchzufiehra.",
 'sqlhidden'            => '(SQL-Abfroage versteckt)',
 'cascadeprotected'     => 'Diese Seyte ies zur Beoarbeetung gesperrt. Se ies ei de {{PLURAL:$1|folgende Seyte|folgenda Seyta}} eengebunda, de mittels dar Kaskadensperroption geschietzt {{PLURAL:$1|ies|sein}}:
 $2',
@@ -524,9 +523,6 @@ Du koast de „E-Mail oa diesa Nutzer“-Funksjonn ne nutza, sulange keene gilti
 Denne aktuelle IP-Atresse ies $3, und de Sperr-ID ies $5.
 Bitte fiege olle Informationa jeder Oafroage hinzu, de du stallt.",
 'blockednoreason'                  => 'keene Begründung oagegahn',
-'blockedoriginalsource'            => "Dar Quelltext vu '''$1''' werd hier oagezeigt:",
-'blockededitsource'                => "Dar Quelltext '''denner Änderunga''' oa '''$1''':",
-'whitelistedittitle'               => 'Zum Beoarbeeta ies is erforderlich, oagemeldet zu sei',
 'whitelistedittext'                => 'Du mußt diech $1, im Seyta beoarbeeta zu kinna.',
 'confirmedittext'                  => 'Du mußt denne E-Mail-Atresse erscht bestätiga, bevor du Beoarbeetunga durchfiehrn koast. Bitte ergänze und bestätige Denne E-Mail ei dann [[Special:Preferences|Eenstallunga]].',
 'nosuchsectiontitle'               => 'Obschnitt ne vurhanda',
@@ -842,7 +838,6 @@ Stelle secher, doaß de Versionsgeschichte a'r Seyte historisch korrekt ies.",
 'prefs-editing'             => 'Beorbeeta',
 'prefs-edit-boxsize'        => 'Griße des Beoarbeetungsfansters:',
 'rows'                      => 'Zeila:',
-'columns'                   => 'Spalta:',
 'resultsperpage'            => 'Treffer pro Seyte:',
 'stub-threshold'            => 'Linkformatierung <a href="#" class="stub">klenner Seyta</a> (ei Byte):',
 'recentchangesdays'         => 'Oazoahl dar Tage, de de Liste dar „Letzta Änderunga“ standardmäßig imfassa sull:',
@@ -962,7 +957,6 @@ Stelle secher, doaß de Versionsgeschichte a'r Seyte historisch korrekt ies.",
 'right-autopatrol'           => 'Eegene Beoarbeetunga automatisch ols kontrolliert markieren',
 'right-patrolmarks'          => 'Kontrollmarkierungen enn letzta Änderunga sahn',
 'right-unwatchedpages'       => 'Liste dar unbeobachteten Seyta oasahn',
-'right-trackback'            => 'Trackback iebermitteln',
 'right-mergehistory'         => 'Versionsgeschichten vu Seyta vereinen',
 'right-userrights'           => 'Nutzerrechte beoarbeeta',
 'right-userrights-interwiki' => 'Nutzerrechte ei andern Wikis beoarbeeta',
@@ -1003,7 +997,6 @@ Stelle secher, doaß de Versionsgeschichte a'r Seyte historisch korrekt ies.",
 'action-patrol'               => 'de Beoarbeetunga andere Nutzer zu kontrollieren',
 'action-autopatrol'           => 'eegene Beoarbeetunga ols kontrolliert zu markieren',
 'action-unwatchedpages'       => 'de Liste dar unbeobachteten Seyta einzusahn',
-'action-trackback'            => "an'n Trackback zu iebertraga",
 'action-mergehistory'         => 'de Versionengeschichta vu Seyta zu vereinen',
 'action-userrights'           => 'Nutzerrechte zu ändern',
 'action-userrights-interwiki' => 'de Rechte vu Nutzern ei andern Wikis zu ändern',
@@ -1668,7 +1661,6 @@ $1",
 'blockiptext'                 => "Mit diesem Formular sperrst du anne IP-Atresse oder an'n Nutzernoama, su doaß vu dort kenne Änderunga meh vorgenumma waan kinna.
 Dies sullte ock erfolga, im Vandalismus zu verhindern und ei Iebereinstimmung miet dann [[{{MediaWiki:Policy-url}}|Richtlinien]].
 Bitte gib dann Grund fier de Sperre oa.",
-'ipaddress'                   => 'IP-Atresse oder Benutzernoame:',
 'ipadressorusername'          => 'IP-Atresse oder Benutzernoame:',
 'ipbreason'                   => 'Begriendung:',
 'ipbreasonotherlist'          => 'Andere Begrindung',
@@ -1848,7 +1840,7 @@ Alternativ ies dar Export au miet dar Syntax [[{{#Special:Export}}/{{MediaWiki:M
 'allmessagesname'           => 'Noame',
 'allmessagesdefault'        => 'Standardtext',
 'allmessagestext'           => 'Dies ies anne Liste dar MediaWiki-Systemtexte.
-Besiche de Seyta [http://www.mediawiki.org/wiki/Localisation MediaWiki-Lokalisierung] und [http://translatewiki.net translatewiki.net], wenn du diech oa dar Lokalisierung vu MediaWiki beteiliga mechtest.',
+Besiche de Seyta [//www.mediawiki.org/wiki/Localisation MediaWiki-Lokalisierung] und [//translatewiki.net translatewiki.net], wenn du diech oa dar Lokalisierung vu MediaWiki beteiliga mechtest.',
 'allmessagesnotsupportedDB' => 'Diese Spezialseyte stieht ne zur Verfigung, do se ieber dann Parameter <tt>$wgUseDatabaseMessages</tt> deaktiviert wurde.',
 'allmessages-filter-all'    => 'Olle',
 'allmessages-language'      => 'Sproache:',
@@ -2187,7 +2179,7 @@ Weitere werden standardmäßig nicht angezeigt.
 
 # External editor support
 'edit-externally'      => 'Diese Datei miet eenem externen Programm beorbeeta',
-'edit-externally-help' => '(Siehe de [http://www.mediawiki.org/wiki/Manual:External_editors Installationsanweisunga] fier weitere Informationa)',
+'edit-externally-help' => '(Siehe de [//www.mediawiki.org/wiki/Manual:External_editors Installationsanweisunga] fier weitere Informationa)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'olle',
@@ -2236,12 +2228,6 @@ Dieser Bestätigungscode ies giltig bis $6, $7 Seeger.',
 'scarytranscludedisabled' => '[Interwiki-Einbindung ies deaktiviert]',
 'scarytranscludefailed'   => '[Vorloageneinbindung fier $1 ies gescheitert]',
 'scarytranscludetoolong'  => '[URL ies zu lang]',
-
-# Trackbacks
-'trackbackbox'      => 'Trackbacks fier diese Seyte:<br />
-$1',
-'trackbackremove'   => '([$1 läscha])',
-'trackbackdeleteok' => 'Trackback wurde erfolgreich geläscht.',
 
 # Delete conflict
 'deletedwhileediting' => 'Ochtiche: Diese Seyte wurde geläscht, nachdem du oagefanga host se zu beoarbeeta!

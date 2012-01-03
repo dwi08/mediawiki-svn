@@ -146,8 +146,10 @@ class RequestContext implements IContextSource {
 	/**
 	 * Accepts a language code and ensures it's sane. Outputs a cleaned up language
 	 * code and replaces with $wgLanguageCode if not sane.
+	 * @param $code string
+	 * @return string
 	 */
-	private static function sanitizeLangCode( $code ) {
+	public static function sanitizeLangCode( $code ) {
 		global $wgLanguageCode;
 
 		// BCP 47 - letter case MUST NOT carry meaning
@@ -165,9 +167,21 @@ class RequestContext implements IContextSource {
 	/**
 	 * Set the Language object
 	 *
+	 * @deprecated 1.19 Use setLanguage instead
 	 * @param $l Mixed Language instance or language code
 	 */
 	public function setLang( $l ) {
+		wfDeprecated( __METHOD__, '1.19' );
+		$this->setLanguage( $l );
+	}
+
+	/**
+	 * Set the Language object
+	 *
+	 * @param $l Mixed Language instance or language code
+	 * @since 1.19
+	 */
+	public function setLanguage( $l ) {
 		if ( $l instanceof Language ) {
 			$this->lang = $l;
 		} elseif ( is_string( $l ) ) {
@@ -180,11 +194,21 @@ class RequestContext implements IContextSource {
 	}
 
 	/**
-	 * Get the Language object
-	 *
+	 * @deprecated 1.19 Use getLanguage instead
 	 * @return Language
 	 */
 	public function getLang() {
+		wfDeprecated( __METHOD__, '1.19' );
+		return $this->getLanguage();
+	}
+
+	/**
+	 * Get the Language object
+	 *
+	 * @return Language
+	 * @since 1.19
+	 */
+	public function getLanguage() {
 		if ( $this->lang === null ) {
 			global $wgLanguageCode, $wgContLang;
 			$code = $this->getRequest()->getVal(
@@ -224,18 +248,34 @@ class RequestContext implements IContextSource {
 		if ( $this->skin === null ) {
 			wfProfileIn( __METHOD__ . '-createskin' );
 			
-			global $wgHiddenPrefs;
-			if( !in_array( 'skin', $wgHiddenPrefs ) ) {
-				# get the user skin
-				$userSkin = $this->getUser()->getOption( 'skin' );
-				$userSkin = $this->getRequest()->getVal( 'useskin', $userSkin );
-			} else {
-				# if we're not allowing users to override, then use the default
-				global $wgDefaultSkin;
-				$userSkin = $wgDefaultSkin;
+			$skin = null;
+			wfRunHooks( 'RequestContextCreateSkin', array( $this, &$skin ) );
+
+			// If the hook worked try to set a skin from it
+			if ( $skin instanceof Skin ) {
+				$this->skin = $skin;
+			} elseif ( is_string($skin) ) {
+				$this->skin = Skin::newFromKey( $skin );
 			}
 
-			$this->skin = Skin::newFromKey( $userSkin );
+			// If this is still null (the hook didn't run or didn't work)
+			// then go through the normal processing to load a skin
+			if ( $this->skin === null ) {
+				global $wgHiddenPrefs;
+				if( !in_array( 'skin', $wgHiddenPrefs ) ) {
+					# get the user skin
+					$userSkin = $this->getUser()->getOption( 'skin' );
+					$userSkin = $this->getRequest()->getVal( 'useskin', $userSkin );
+				} else {
+					# if we're not allowing users to override, then use the default
+					global $wgDefaultSkin;
+					$userSkin = $wgDefaultSkin;
+				}
+
+				$this->skin = Skin::newFromKey( $userSkin );
+			}
+
+			// After all that set a context on whatever skin got created
 			$this->skin->setContext( $this );
 			wfProfileOut( __METHOD__ . '-createskin' );
 		}
@@ -252,7 +292,7 @@ class RequestContext implements IContextSource {
 	 */
 	public function msg() {
 		$args = func_get_args();
-		return call_user_func_array( 'wfMessage', $args )->inLanguage( $this->getLang() )->title( $this->getTitle() );
+		return call_user_func_array( 'wfMessage', $args )->setContext( $this );
 	}
 
 	/** Static methods **/

@@ -29,7 +29,6 @@ class Preferences {
 	static $defaultPreferences = null;
 	static $saveFilters = array(
 			'timecorrection' => array( 'Preferences', 'filterTimezoneInput' ),
-			'cols' => array( 'Preferences', 'filterIntval' ),
 			'rows' => array( 'Preferences', 'filterIntval' ),
 			'rclimit' => array( 'Preferences', 'filterIntval' ),
 			'wllimit' => array( 'Preferences', 'filterIntval' ),
@@ -171,7 +170,7 @@ class Preferences {
 		asort( $userGroups );
 		asort( $userMembers );
 
-		$lang = $context->getLang();
+		$lang = $context->getLanguage();
 
 		$defaultPreferences['usergroups'] = array(
 			'type' => 'info',
@@ -193,14 +192,16 @@ class Preferences {
 		);
 
 		if ( $user->getRegistration() ) {
+			$displayUser = $context->getUser();
+			$userRegistration = $user->getRegistration();
 			$defaultPreferences['registrationdate'] = array(
 				'type' => 'info',
 				'label-message' => 'prefs-registration',
 				'default' => $context->msg(
 					'prefs-registration-date-time',
-					$lang->timeanddate( $user->getRegistration(), true ),
-					$lang->date( $user->getRegistration(), true ),
-					$lang->time( $user->getRegistration(), true )
+					$lang->userTimeAndDate( $userRegistration, $displayUser ),
+					$lang->userDate( $userRegistration, $displayUser ),
+					$lang->userTime( $userRegistration, $displayUser )
 				)->parse(),
 				'section' => 'personal/info',
 			);
@@ -368,9 +369,11 @@ class Preferences {
 						// date and time are separate parameters to facilitate localisation.
 						// $time is kept for backward compat reasons.
 						// 'emailauthenticated' is also used in SpecialConfirmemail.php
-						$time = $lang->timeAndDate( $user->getEmailAuthenticationTimestamp(), true );
-						$d = $lang->date( $user->getEmailAuthenticationTimestamp(), true );
-						$t = $lang->time( $user->getEmailAuthenticationTimestamp(), true );
+						$displayUser = $context->getUser();
+						$emailTimestamp = $user->getEmailAuthenticationTimestamp();
+						$time = $lang->userTimeAndDate( $emailTimestamp, $displayUser );
+						$d = $lang->userDate( $emailTimestamp, $displayUser );
+						$t = $lang->userTime( $emailTimestamp, $displayUser );
 						$emailauthenticated = $context->msg( 'emailauthenticated',
 							$time, $d, $t )->parse() . '<br />';
 						$disableEmailPrefs = false;
@@ -485,7 +488,7 @@ class Preferences {
 			$defaultPreferences['commoncssjs'] = array(
 				'type' => 'info',
 				'raw' => true,
-				'default' => $context->getLang()->pipeList( $linkTools ),
+				'default' => $context->getLanguage()->pipeList( $linkTools ),
 				'label-message' => 'prefs-common-css-js',
 				'section' => 'rendering/skin',
 			);
@@ -493,7 +496,7 @@ class Preferences {
 
 		$selectedSkin = $user->getOption( 'skin' );
 		if ( in_array( $selectedSkin, array( 'cologneblue', 'standard' ) ) ) {
-			$settings = array_flip( $context->getLang()->getQuickbarSettings() );
+			$settings = array_flip( $context->getLanguage()->getQuickbarSettings() );
 
 			$defaultPreferences['quickbar'] = array(
 				'type' => 'radio',
@@ -545,7 +548,7 @@ class Preferences {
 
 		// Info
 		$now = wfTimestampNow();
-		$lang = $context->getLang();
+		$lang = $context->getLanguage();
 		$nowlocal = Xml::element( 'span', array( 'id' => 'wpLocalTime' ),
 			$lang->time( $now, true ) );
 		$nowserver = $lang->time( $now, false ) .
@@ -685,13 +688,7 @@ class Preferences {
 		global $wgUseExternalEditor, $wgAllowUserCssPrefs;
 
 		## Editing #####################################
-		$defaultPreferences['cols'] = array(
-			'type' => 'int',
-			'label-message' => 'columns',
-			'section' => 'editing/textboxsize',
-			'min' => 4,
-			'max' => 1000,
-		);
+		
 		$defaultPreferences['rows'] = array(
 			'type' => 'int',
 			'label-message' => 'rows',
@@ -845,15 +842,18 @@ class Preferences {
 	 * @param $defaultPreferences
 	 */
 	static function watchlistPreferences( $user, IContextSource $context, &$defaultPreferences ) {
-		global $wgUseRCPatrol, $wgEnableAPI;
+		global $wgUseRCPatrol, $wgEnableAPI, $wgRCMaxAge;
 
+		$watchlistdaysMax = ceil( $wgRCMaxAge / ( 3600 * 24 ) );
+		
 		## Watchlist #####################################
 		$defaultPreferences['watchlistdays'] = array(
 			'type' => 'float',
 			'min' => 0,
-			'max' => 7,
+			'max' => $watchlistdaysMax,
 			'section' => 'watchlist/displaywatchlist',
-			'help' => $context->msg( 'prefs-watchlist-days-max' )->escaped(),
+			'help' => $context->msg( 'prefs-watchlist-days-max' )->numParams(
+				                 $watchlistdaysMax )->text(),
 			'label-message' => 'prefs-watchlist-days',
 		);
 		$defaultPreferences['wllimit'] = array(
@@ -1082,7 +1082,7 @@ class Preferences {
 				$linkTools[] = Linker::link( $jsPage, $context->msg( 'prefs-custom-js' )->escaped() );
 			}
 
-			$display = $sn . ' ' . $context->msg( 'parentheses', $context->getLang()->pipeList( $linkTools ) )->text();
+			$display = $sn . ' ' . $context->msg( 'parentheses', $context->getLanguage()->pipeList( $linkTools ) )->text();
 			$ret[$display] = $skinkey;
 		}
 
@@ -1094,7 +1094,8 @@ class Preferences {
 	 * @return array
 	 */
 	static function getDateOptions( IContextSource $context ) {
-		$dateopts = $context->getLang()->getDatePreferences();
+		$lang = $context->getLanguage();
+		$dateopts = $lang->getDatePreferences();
 
 		$ret = array();
 
@@ -1115,7 +1116,7 @@ class Preferences {
 				if ( $key == 'default' ) {
 					$formatted = $context->msg( 'datedefault' )->escaped();
 				} else {
-					$formatted = htmlspecialchars( $context->getLang()->timeanddate( $epoch, false, $key ) );
+					$formatted = htmlspecialchars( $lang->timeanddate( $epoch, false, $key ) );
 				}
 				$ret[$formatted] = $key;
 			}
@@ -1160,19 +1161,20 @@ class Preferences {
 	}
 
 	/**
-	 * @param $signature
-	 * @param $alldata
+	 * @param $signature string
+	 * @param $alldata array
+	 * @param $form HTMLForm
 	 * @return bool|string
 	 */
-	static function validateSignature( $signature, $alldata ) {
+	static function validateSignature( $signature, $alldata, $form ) {
 		global $wgParser, $wgMaxSigChars;
 		if ( mb_strlen( $signature ) > $wgMaxSigChars ) {
 			return Xml::element( 'span', array( 'class' => 'error' ),
-				wfMessage( 'badsiglength' )->numParams( $wgMaxSigChars )->text() );
+				$form->msg( 'badsiglength' )->numParams( $wgMaxSigChars )->text() );
 		} elseif ( isset( $alldata['fancysig'] ) &&
 				$alldata['fancysig'] &&
 				false === $wgParser->validateSig( $signature ) ) {
-			return Xml::element( 'span', array( 'class' => 'error' ), wfMsg( 'badsig' ) );
+			return Xml::element( 'span', array( 'class' => 'error' ), $form->msg( 'badsig' )->text() );
 		} else {
 			return true;
 		}
@@ -1181,35 +1183,19 @@ class Preferences {
 	/**
 	 * @param $signature string
 	 * @param $alldata array
+	 * @param $form HTMLForm
 	 * @return string
 	 */
-	static function cleanSignature( $signature, $alldata ) {
-		global $wgParser;
+	static function cleanSignature( $signature, $alldata, $form ) {
 		if ( isset( $alldata['fancysig'] ) && $alldata['fancysig'] ) {
+			global $wgParser;
 			$signature = $wgParser->cleanSig( $signature );
 		} else {
 			// When no fancy sig used, make sure ~{3,5} get removed.
-			$signature = $wgParser->cleanSigInSig( $signature );
+			$signature = Parser::cleanSigInSig( $signature );
 		}
 
 		return $signature;
-	}
-
-	/**
-	 * @param $email
-	 * @param $alldata
-	 * @return bool|String
-	 */
-	static function validateEmail( $email, $alldata ) {
-		if ( $email && !Sanitizer::validateEmail( $email ) ) {
-			return wfMsgExt( 'invalidemailaddress', 'parseinline' );
-		}
-
-		global $wgEmailConfirmToEdit;
-		if ( $wgEmailConfirmToEdit && !$email ) {
-			return wfMsgExt( 'noemailtitle', 'parseinline' );
-		}
-		return true;
 	}
 
 	/**
@@ -1229,7 +1215,7 @@ class Preferences {
 
 		$htmlForm->setModifiedUser( $user );
 		$htmlForm->setId( 'mw-prefs-form' );
-		$htmlForm->setSubmitText( wfMsg( 'saveprefs' ) );
+		$htmlForm->setSubmitText( $context->msg( 'saveprefs' )->text() );
 		# Used message keys: 'accesskey-preferences-save', 'tooltip-preferences-save'
 		$htmlForm->setSubmitTooltip( 'preferences-save' );
 		$htmlForm->setSubmitID( 'prefsubmit' );
@@ -1425,7 +1411,7 @@ class Preferences {
 		return Status::newGood();
 	}
 
-	/*
+	/**
 	 * Try to set a user's email address.
 	 * This does *not* try to validate the address.
 	 * Caller is responsible for checking $wgAuth.
@@ -1443,8 +1429,6 @@ class Preferences {
 				# The user has supplied a new email address on the login page
 				# new behaviour: set this new emailaddr from login-page into user database record
 				$user->setEmail( $newaddr );
-				# But flag as "dirty" = unauthenticated
-				$user->invalidateEmail();
 				if ( $wgEmailAuthentication ) {
 					# Mail a temporary password to the dirty address.
 					# User can come back through the confirmation URL to re-enable email.
@@ -1455,7 +1439,7 @@ class Preferences {
 					}
 					$info = 'eauth';
 				}
-			} else {
+			} elseif ( $newaddr != $oldaddr ) { // if the address is the same, don't change it
 				$user->setEmail( $newaddr );
 			}
 			if ( $oldaddr != $newaddr ) {
@@ -1487,6 +1471,9 @@ class Preferences {
 
 /** Some tweaks to allow js prefs to work */
 class PreferencesForm extends HTMLForm {
+	// Override default value from HTMLForm
+	protected $mSubSectionBeforeFields = false;
+
 	private $modifiedUser;
 
 	public function setModifiedUser( $user ) {
@@ -1529,7 +1516,7 @@ class PreferencesForm extends HTMLForm {
 
 		$t = SpecialPage::getTitleFor( 'Preferences', 'reset' );
 
-		$html .= "\n" . Linker::link( $t, wfMsgHtml( 'restoreprefs' ) );
+		$html .= "\n" . Linker::link( $t, $this->msg( 'restoreprefs' )->escaped() );
 
 		$html = Xml::tags( 'div', array( 'class' => 'mw-prefs-buttons' ), $html );
 
@@ -1564,5 +1551,15 @@ class PreferencesForm extends HTMLForm {
 	 */
 	function getBody() {
 		return $this->displaySection( $this->mFieldTree, '', 'mw-prefsection-' );
+	}
+
+	/**
+	 * Get the <legend> for a given section key. Normally this is the
+	 * prefs-$key message but we'll allow extensions to override it.
+	 */
+	function getLegend( $key ) {
+		$legend = parent::getLegend( $key );
+		wfRunHooks( 'PreferencesGetLegend', array( $this, $key, &$legend ) );
+		return $legend;
 	}
 }

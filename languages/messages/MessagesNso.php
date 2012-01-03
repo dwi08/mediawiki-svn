@@ -31,14 +31,14 @@ $namespaceNames = array(
 );
 
 $magicWords = array(
-	'currentmonth'          => array( '1', 'KGWEDI_BJALE', 'CURRENTMONTH', 'CURRENTMONTH2' ),
-	'currentmonthname'      => array( '1', 'LEINA_KGWEDI_BJALE', 'CURRENTMONTHNAME' ),
-	'currentday'            => array( '1', 'LEHONO_LETSATSI', 'CURRENTDAY' ),
-	'currentday2'           => array( '1', 'LEHONO_LETSATSI2', 'CURRENTDAY2' ),
-	'currentdayname'        => array( '1', 'LEHONO_LETSATSILEINA', 'CURRENTDAYNAME' ),
-	'currentyear'           => array( '1', 'NGWAGA_BJALE', 'CURRENTYEAR' ),
-	'currenttime'           => array( '1', 'NAKO_BJALE', 'CURRENTTIME' ),
-	'currenthour'           => array( '1', 'IRI_BJALE', 'CURRENTHOUR' ),
+	'currentmonth'            => array( '1', 'KGWEDI_BJALE', 'CURRENTMONTH', 'CURRENTMONTH2' ),
+	'currentmonthname'        => array( '1', 'LEINA_KGWEDI_BJALE', 'CURRENTMONTHNAME' ),
+	'currentday'              => array( '1', 'LEHONO_LETSATSI', 'CURRENTDAY' ),
+	'currentday2'             => array( '1', 'LEHONO_LETSATSI2', 'CURRENTDAY2' ),
+	'currentdayname'          => array( '1', 'LEHONO_LETSATSILEINA', 'CURRENTDAYNAME' ),
+	'currentyear'             => array( '1', 'NGWAGA_BJALE', 'CURRENTYEAR' ),
+	'currenttime'             => array( '1', 'NAKO_BJALE', 'CURRENTTIME' ),
+	'currenthour'             => array( '1', 'IRI_BJALE', 'CURRENTHOUR' ),
 );
 
 $messages = array(
@@ -66,7 +66,7 @@ $messages = array(
 'tog-enotifrevealaddr'        => 'Bonagatša email atrese go temošo tša poso',
 'tog-shownumberswatching'     => 'Laetša palo bašomiši bao ba tlhapetšego',
 'tog-fancysig'                => 'Tsaeno ya gose fihliwe',
-'tog-externaleditor'          => 'Šomiša sengwadi sa kantle (bašumiši bao banalego botsibi fela.  [http://www.mediawiki.org/wiki/Manual:External_editors More information.])',
+'tog-externaleditor'          => 'Šomiša sengwadi sa kantle (bašumiši bao banalego botsibi fela.  [//www.mediawiki.org/wiki/Manual:External_editors More information.])',
 'tog-forceeditsummary'        => 'Ntaetše ge kesa tsenye mongwalo go kakaretšo ya dithetogo',
 'tog-watchlisthideown'        => 'Fihla diphetogo tšeo di direlego ke nna go lenano la ditlhapetšo.',
 'tog-watchlisthideminor'      => 'Fihla diphetogo tše nyenyane tšeo di direlego ke nna go lenano la ditlhapetšo',
@@ -118,7 +118,7 @@ $messages = array(
 'feb'           => 'Dibokwane',
 'mar'           => 'Hlakola',
 'apr'           => 'Moranang',
-'may'           => 'May',
+'may'           => 'Mopitlo',
 'jun'           => 'Phupu',
 'jul'           => 'Mosegamanye',
 'aug'           => 'Phato',
@@ -156,7 +156,7 @@ $messages = array(
 'qbedit'         => 'Fetola',
 'qbpageoptions'  => 'Letlakala le',
 'qbmyoptions'    => 'Matlakala a ka',
-'qbspecialpages' => 'Matlakala a itšego',
+'qbspecialpages' => 'Matlakala a kgethegilego',
 'faq'            => '"FAQ"',
 
 # Vector skin
@@ -278,7 +278,7 @@ $messages = array(
 # Short words for each namespace, by default used in the namespace tab in monobook
 'nstab-main'      => 'Letlakala',
 'nstab-user'      => 'Letlakala la mošomiši',
-'nstab-special'   => 'Letlakala le itšeng',
+'nstab-special'   => 'Letlakala le le kgethegilego',
 'nstab-project'   => 'Letlakala la tirotherwa',
 'nstab-image'     => 'Faele',
 'nstab-mediawiki' => 'Molaetša',
@@ -312,7 +312,6 @@ Bega se go  [[Special:ListUsers/sysop|administrator]], o fana ka URL.',
 'badtitle'           => 'Taetlile ya bošula',
 'badtitletext'       => 'Letlakala le ga la dumelelwa, ga le na ditlhaka, goba hlomaganyo ya bogare-dipolelo goba bogare-wiki taetlele ga ya loka. Ekaba mohlomong taetlele enale hlaka goba dihlaka tšago sedumelelwe.',
 'viewsource'         => 'Lebelela mothopo',
-'viewsourcefor'      => 'ya $1',
 'protectedpagetext'  => 'Letlakala le le notletšwe go thibela diphetogo.',
 'viewsourcetext'     => 'O ka lebelela goba wa kôpiša mothapo wa letlakala le:',
 'namespaceprotected' => "Ga ona tokelo ya go fetola matlakala  go  '''$1''' .",
@@ -434,8 +433,6 @@ O ka se kgone go šumiša thulusu ya 'romela mošomiši molaetša' ka ntle gage 
 [[Special:Preferences|dikgatlhegelo]] gape ge o sa thibelwa go e šomiša.
 IP atrese ya gago ke $3, ge ID ya go thiba ele #$5. Ka kgopelo šumiša ID le IP go dipoledišano ka moka tšeo dilego mabapi le go go thiba.",
 'blockednoreason'                  => 'gago lebaka leo le filwego',
-'blockedoriginalsource'            => "Mothopo wa '''$1''' oa botšhwa tlase:",
-'whitelistedittitle'               => 'O swanela ke go tsena go fetola',
 'whitelistedittext'                => 'O swanela ke go $1 go fetola matlakala.',
 'confirmedittext'                  => 'E-mail e swanetše ke go tiišetšwa pele ge o ka fetola matlakala. Ka kgopelo, tiišetša e-mail atrese ya gago go [[Special:Preferences|dikgatlhego tša mošomiši]].',
 'nosuchsectiontitle'               => 'Sekgao ga se humanege',
@@ -451,12 +448,9 @@ Se, se ka hlolwa ke ge letlakala le phumulwa goba la hudušwa ge wena o sa le le
 Go tlhola letlakala, thoma go ngwalo lepokising le letelago
 (lebelela [[{{MediaWiki:Helppage}}|letlakala la thušo]] go hwetša šedi).
 Ga eba o le fa ka phošo, o ka boela morago ka go šumiša konopo ya '''back''' go ''browser'' ya gago.",
-'noarticletext'                    => 'Ga gona ditlhaka letlakaleng le, 
-oka [[Special:Search/{{PAGENAME}}|fetleka liena la letlakala]] matlakaleng a mangwe,
-<span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} fetleka "logs"],
- goba [{{fullurl:{{FULLPAGENAME}}|action=edit}} wa fetola letlakala le]</span>.',
+'noarticletext'                    => 'Ga gona ditlhaka letlakaleng le, oka [[Special:Search/{{PAGENAME}}|fetleka leina la letlakala]] matlakaleng a mangwe, <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} fetleka "logs"], goba [{{fullurl:{{FULLPAGENAME}}|action=edit}} wa fetola letlakala le]</span>.',
 'noarticletext-nopermission'       => 'Ga gona ditlhaka letlakaleng le, 
-oka [[Special:Search/{{PAGENAME}}|fetleka liena la letlakala]] matlakaleng a mangwe,
+oka [[Special:Search/{{PAGENAME}}|fetleka leina la letlakala]] matlakaleng a mangwe,
 <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} fetleka "logs"],
  goba [{{fullurl:{{FULLPAGENAME}}|action=edit}} wa fetola letlakala le]</span>.',
 'note'                             => "'''Ela hloko:'''",
@@ -743,7 +737,7 @@ Matlakala ago ba [[Special:Watchlist|lenanong la gago la matlakala ditlhapetšo]
 'filehist-dimensions'       => 'Bogolo',
 'filehist-filesize'         => 'Bogolo ba faele',
 'filehist-comment'          => 'Comment',
-'imagelinks'                => 'Dihlamaganyago tša matlakala',
+'imagelinks'                => 'Tirišo ya Faele',
 'linkstoimage'              => '{{PLURAL:$1|Letlakala le ke |$1 ya matlakala a}} latelago a hlomaganya go faele ye:',
 'nolinkstoimage'            => 'Gago matlakala a hlomaganyago faeleng ye.',
 'sharedupload'              => 'Faele ye e tšwa $1 e bile a kaba  e šumišwa ke ditirotherwa tše dingwe.',
@@ -827,7 +821,7 @@ Matlakala ago ba [[Special:Watchlist|lenanong la gago la matlakala ditlhapetšo]
 'deadendpages'            => "Matlakala a seye felo(''Dead-end'')",
 'protectedpages'          => 'Matlakala a go lotiwa',
 'listusers'               => 'Lanano la mošomiši',
-'usercreated'             => 'Hlodilwe $1 ka $2',
+'usercreated'             => '{{GENDER:$3|Hlodilwe}} ka $1 go $2',
 'newpages'                => 'Matlakala a mampsha',
 'ancientpages'            => 'Matlakala a kgalekgale',
 'move'                    => 'Huduša',
@@ -1142,12 +1136,12 @@ Ka kgopelo, kgetha leina le lengwe.',
 'tooltip-t-contributions'         => 'Lebelela lenano la diabe tša mošomiši yo',
 'tooltip-t-emailuser'             => 'Romela molaetša go mošomiši yo',
 'tooltip-t-upload'                => 'Lokela senepe goba difaele',
-'tooltip-t-specialpages'          => 'Lenano la matlakala kamoka a itšeng',
+'tooltip-t-specialpages'          => 'Lenano la matlakala kamoka a kgethegilego',
 'tooltip-t-print'                 => 'Seemo sa letlakala le seo se ka gatišwago',
 'tooltip-t-permalink'             => 'Hlomaganyo go poeletšo ye ya letlakala',
 'tooltip-ca-nstab-main'           => 'Nyakoretša boteng bja letlakala',
 'tooltip-ca-nstab-user'           => 'Lebelela letlakala la mošomiši',
-'tooltip-ca-nstab-special'        => 'Letlakala le le "special", gago kgonege go le fetola',
+'tooltip-ca-nstab-special'        => 'Letlakala le le kgethegile, gago kgonege go le fetola',
 'tooltip-ca-nstab-project'        => 'Lebelela letlakala la tirotherwa',
 'tooltip-ca-nstab-image'          => 'Lebelela  letlakala',
 'tooltip-ca-nstab-template'       => "Lebelela ''template''",
@@ -1233,7 +1227,7 @@ letlakala la seswantšho ge tafola ya metadata e bulwa. Tše dingwe tša di ''fi
 
 # External editor support
 'edit-externally'      => 'Fetola faele ye o šumiša thulusi ya ka ntle',
-'edit-externally-help' => '(Lebelela [http://www.mediawiki.org/wiki/Manual:External_editors Taelo ya go thoma] go humana sedi)',
+'edit-externally-help' => '(Lebelela [//www.mediawiki.org/wiki/Manual:External_editors Taelo ya go thoma] go humana sedi)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ka moka',
@@ -1267,7 +1261,7 @@ letlakala la seswantšho ge tafola ya metadata e bulwa. Tše dingwe tša di ''fi
 'watchlisttools-raw'  => "Fetola lenano le letala (''raw'') la ditlhapetšo",
 
 # Core parser functions
-'duplicate-defaultsort' => '\'\'\'Hlokomela:\'\'\' Default sort key "$2" e phula ya pele default sort key "$1".',
+'duplicate-defaultsort' => '\'\'\'Hlokomela:\'\'\' Default sort key "$2" e tla phumula ya pele default sort key "$1".',
 
 # Special:Version
 'version' => "''Version''",
@@ -1276,7 +1270,7 @@ letlakala la seswantšho ge tafola ya metadata e bulwa. Tše dingwe tša di ''fi
 'fileduplicatesearch-submit' => 'Fetleka',
 
 # Special:SpecialPages
-'specialpages' => 'Matlakala a itšeng',
+'specialpages' => 'Matlakala a kgethegilego',
 
 # External image whitelist
 'external_image_whitelist' => ' #Tlogela letlakale ka mokgwa wo<pre>

@@ -140,7 +140,7 @@ $messages = array(
 'tog-enotifrevealaddr'        => 'Distapone fûr il gno recapit email tai messaçs di notifiche',
 'tog-shownumberswatching'     => 'Mostre il numar di utents che a stan tignint di voli',
 'tog-fancysig'                => 'Interprete lis firmis come test wiki (cence un leam automatic)',
-'tog-externaleditor'          => 'Dopre un editôr esterni come opzion predeterminade (dome par utents esperts, a coventin impuestazions specifichis, [http://www.mediawiki.org/wiki/Manual:External_editors cjale culì par altris informazions.])',
+'tog-externaleditor'          => 'Dopre un editôr esterni come opzion predeterminade (dome par utents esperts, a coventin impuestazions specifichis, [//www.mediawiki.org/wiki/Manual:External_editors cjale culì par altris informazions.])',
 'tog-externaldiff'            => 'Dopre editôr difarencis esterni come opzion predeterminade',
 'tog-watchlisthideown'        => 'Plate i miei cambiaments inte liste des pagjinis tignudis di voli',
 'tog-ccmeonemails'            => 'Mandimi une copie dai messaçs che o mandi ai altris utents',
@@ -404,7 +404,6 @@ Segnalilu par plasê a un [[Special:ListUsers/sysop|administrator]], notant la U
 'badtitletext'       => 'Il titul de pagjine che tu âs inserît nol è valit, al è vuelit, o al veve un erôr tal colegament tra wiki diviersis o tra versions in altris lenghis.
 Al podarès vê dentri caratars che no podin jessi doprâts tai titui.',
 'viewsource'         => 'Cjale risultive',
-'viewsourcefor'      => 'di $1',
 'viewsourcetext'     => 'Tu puedis viodi e copiâ la risultive di cheste pagjine:',
 
 # Login and logout pages
@@ -534,7 +533,6 @@ Se tu vuelis tu puedis contatâ $1 o un altri [[{{MediaWiki:Grouppage-sysop}}|am
 Visiti che no tu puedis doprâ la funzion 'Messaç di pueste a chest utent' se no tu âs specificât une direzion di pueste eletroniche valide tes [[Special:Preferences|preferencis]] e se no tu sês stât blocât al ûs di cheste funzion.
 
 Par plasê inclût la to direzion IP atuâl ($3) o il numar dal bloc (ID #$5) in ogni richieste di sclariments.",
-'blockedoriginalsource'            => "Ca sot tu puedis viodi la risultive de pagjine '''$1''':",
 'whitelistedittext'                => 'Tu scugnis $1 par cambiâ lis pagjinis.',
 'confirmedittext'                  => 'Prime di cambiâ lis pagjinis tu scugnis confermâ la to direzion di pueste eletroniche. Par impuestâ e confermâ la direzion, dopre lis [[Special:Preferences|preferencis]].',
 'loginreqtitle'                    => 'Si scugne jentrâ',
@@ -734,7 +732,7 @@ Leiende: (cur) = difarencis cun la version atuâl, (prec) = difarencis cun la ve
 'prefs-rc'                    => 'Ultins cambiaments & stubs',
 'prefs-watchlist'             => 'Tignudis di voli',
 'prefs-watchlist-days'        => 'Numar di zornadis di mostrâ inte liste des pagjinis tignudis di voli:',
-'prefs-watchlist-days-max'    => 'Massim 7 zornadis',
+'prefs-watchlist-days-max'    => 'Massim $1 {{PLURAL:$1|zornade|zornadis}}',
 'prefs-watchlist-edits'       => 'Numar di modifichis di mostrâ inte liste slargjade:',
 'prefs-watchlist-edits-max'   => 'Numar massim: 1000',
 'prefs-misc'                  => 'Variis',
@@ -745,7 +743,6 @@ Leiende: (cur) = difarencis cun la version atuâl, (prec) = difarencis cun la ve
 'prefs-editing'               => 'Cambiament',
 'prefs-edit-boxsize'          => 'Dimensions dal barcon pai cambiaments.',
 'rows'                        => 'Riis',
-'columns'                     => 'Colonis:',
 'searchresultshead'           => 'Ricercje',
 'resultsperpage'              => 'Risultâts par pagjine',
 'stub-threshold'              => 'Valôr minim pe formatazion dai <a href="#" class="stub">leams aboç</a> (bytes):',
@@ -1307,7 +1304,6 @@ Tu puedis cambiâ il nivel di protezion di cheste pagjine, ma chest nol varà ef
 'blockip'                  => 'Bloche utent',
 'blockip-title'            => "Bloche l'utent",
 'blockip-legend'           => "Bloche l'utent",
-'ipaddress'                => 'Direzion IP:',
 'ipadressorusername'       => 'Direzion IP o non utent:',
 'ipbexpiry'                => 'Scjadence dal bloc:',
 'ipbreason'                => 'Reson dal bloc:',
@@ -1384,7 +1380,7 @@ Sielç par plasê un altri non.',
 'allmessagesdefault'        => 'Test predeterminât',
 'allmessagescurrent'        => 'Test curint',
 'allmessagestext'           => 'Cheste e je une liste dai messaçs di sisteme disponibii tal non dal spazi MediaWiki.
-Par plasê va su [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] e [http://translatewiki.net translatewiki.net] se tu vuelis contribuî ae traduzion gjeneriche di MediaWiki.',
+Par plasê va su [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] e [//translatewiki.net translatewiki.net] se tu vuelis contribuî ae traduzion gjeneriche di MediaWiki.',
 'allmessages-filter-all'    => 'Ducj',
 'allmessages-language'      => 'Lenghe:',
 'allmessages-filter-submit' => 'Va',
@@ -1571,7 +1567,7 @@ Se il file al è stât cambiât rispiet al so stât origjinâl, cualchi informaz
 
 # External editor support
 'edit-externally'      => 'Modifiche chest file cuntune aplicazion esterne',
-'edit-externally-help' => '(Cjale lis [http://www.mediawiki.org/wiki/Manual:External_editors istruzions] par vê altris informazions)',
+'edit-externally-help' => '(Cjale lis [//www.mediawiki.org/wiki/Manual:External_editors istruzions] par vê altris informazions)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'dutis',

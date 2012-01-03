@@ -38,21 +38,8 @@ class ResourceLoaderStartUpModule extends ResourceLoaderModule {
 			$wgVariantArticlePath, $wgActionPaths, $wgUseAjax, $wgVersion,
 			$wgEnableAPI, $wgEnableWriteAPI, $wgDBname, $wgEnableMWSuggest,
 			$wgSitename, $wgFileExtensions, $wgExtensionAssetsPath,
-			$wgCookiePrefix, $wgResourceLoaderMaxQueryLength, $wgLegacyJavaScriptGlobals;
+			$wgCookiePrefix, $wgResourceLoaderMaxQueryLength;
 
-		// Pre-process information
-		$separatorTransTable = $wgContLang->separatorTransformTable();
-		$separatorTransTable = $separatorTransTable ? $separatorTransTable : array();
-		$compactSeparatorTransTable = array(
-			implode( "\t", array_keys( $separatorTransTable ) ),
-			implode( "\t", $separatorTransTable ),
-		);
-		$digitTransTable = $wgContLang->digitTransformTable();
-		$digitTransTable = $digitTransTable ? $digitTransTable : array();
-		$compactDigitTransTable = array(
-			implode( "\t", array_keys( $digitTransTable ) ),
-			implode( "\t", $digitTransTable ),
-		);
 		$mainPage = Title::newMainPage();
 
 		/**
@@ -91,8 +78,6 @@ class ResourceLoaderStartUpModule extends ResourceLoaderModule {
 			'wgDefaultDateFormat' => $wgContLang->getDefaultDateFormat(),
 			'wgMonthNames' => $wgContLang->getMonthNamesArray(),
 			'wgMonthNamesShort' => $wgContLang->getMonthAbbreviationsArray(),
-			'wgSeparatorTransformTable' => $compactSeparatorTransTable,
-			'wgDigitTransformTable' => $compactDigitTransTable,
 			'wgMainPageTitle' => $mainPage ? $mainPage->getPrefixedText() : null,
 			'wgFormattedNamespaces' => $wgContLang->getFormattedNamespaces(),
 			'wgNamespaceIds' => $namespaceIds,
@@ -107,7 +92,6 @@ class ResourceLoaderStartUpModule extends ResourceLoaderModule {
 			// MediaWiki sets cookies to have this prefix by default
 			'wgCookiePrefix' => $wgCookiePrefix,
 			'wgResourceLoaderMaxQueryLength' => $wgResourceLoaderMaxQueryLength,
-			'wgLegacyJavaScriptGlobals' => $wgLegacyJavaScriptGlobals,
 			'wgCaseSensitiveNamespaces' => $caseSensitiveNamespaces,
 		);
 		if ( $wgUseAjax && $wgEnableMWSuggest ) {
@@ -168,7 +152,7 @@ class ResourceLoaderStartUpModule extends ResourceLoaderModule {
 				}
 				// Modules with a group but no foreign source pass four arguments (name, timestamp, dependencies, group)
 				// to mw.loader.register()
-				else if ( $module->getSource() === 'local' ) {
+				elseif ( $module->getSource() === 'local' ) {
 					$registrations[] = array(
 						$name, $mtime,  $module->getDependencies(), $module->getGroup() );
 				}

@@ -38,7 +38,7 @@ class DoubleRedirectsPage extends PageQueryPage {
 	function sortDescending() { return false; }
 
 	function getPageHeader() {
-		return wfMsgExt( 'doubleredirectstext', array( 'parse' ) );
+		return $this->msg( 'doubleredirectstext' )->parseAsBlock();
 	}
 
 	function reallyGetQueryInfo( $namespace = null, $title = null ) {
@@ -49,6 +49,7 @@ class DoubleRedirectsPage extends PageQueryPage {
 					'pb' => 'page', 'pc' => 'page' ),
 			'fields' => array ( 'pa.page_namespace AS namespace',
 					'pa.page_title AS title',
+					'pa.page_title AS value',
 					'pb.page_namespace AS nsb',
 					'pb.page_title AS tb',
 					'pc.page_namespace AS nsc',
@@ -104,7 +105,7 @@ class DoubleRedirectsPage extends PageQueryPage {
 
 		$edit = Linker::linkKnown(
 			$titleA,
-			wfMsgExt( 'parentheses', array( 'escape' ), wfMsg( 'editlink' ) ),
+			$this->msg( 'parentheses', $this->msg( 'editlink' )->text() )->escaped(),
 			array(),
 			array(
 				'redirect' => 'no',
@@ -121,7 +122,7 @@ class DoubleRedirectsPage extends PageQueryPage {
 
 		$linkC = Linker::linkKnown( $titleC );
 
-		$lang = $this->getLang();
+		$lang = $this->getLanguage();
 		$arr = $lang->getArrow() . $lang->getDirMark();
 
 		return( "{$linkA} {$edit} {$arr} {$linkB} {$arr} {$linkC}" );

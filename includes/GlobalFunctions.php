@@ -81,6 +81,9 @@ if ( !function_exists( 'istainted' ) ) {
 
 /**
  * Like array_diff( $a, $b ) except that it works with two-dimensional arrays.
+ * @param $a array
+ * @param $b array
+ * @return array
  */
 function wfArrayDiff2( $a, $b ) {
 	return array_udiff( $a, $b, 'wfArrayDiff2_cmp' );
@@ -319,7 +322,7 @@ function wfUrlencode( $s ) {
 /**
  * This function takes two arrays as input, and returns a CGI-style string, e.g.
  * "days=7&limit=100". Options in the first array override options in the second.
- * Options set to "" will not be output.
+ * Options set to null or false will not be output.
  *
  * @param $array1 Array ( String|Array )
  * @param $array2 Array ( String|Array )
@@ -333,7 +336,7 @@ function wfArrayToCGI( $array1, $array2 = null, $prefix = '' ) {
 
 	$cgi = '';
 	foreach ( $array1 as $key => $value ) {
-		if ( $value !== '' ) {
+		if ( !is_null($value) && $value !== false ) {
 			if ( $cgi != '' ) {
 				$cgi .= '&';
 			}
@@ -366,8 +369,7 @@ function wfArrayToCGI( $array1, $array2 = null, $prefix = '' ) {
  * This is the logical opposite of wfArrayToCGI(): it accepts a query string as
  * its argument and returns the same string in array form.  This allows compa-
  * tibility with legacy functions that accept raw query strings instead of nice
- * arrays.  Of course, keys and values are urldecode()d.  Don't try passing in-
- * valid query strings, or it will explode.
+ * arrays.  Of course, keys and values are urldecode()d.
  *
  * @param $query String: query string
  * @return array Array version of input
@@ -382,7 +384,13 @@ function wfCgiToArray( $query ) {
 		if ( $bit === '' ) {
 			continue;
 		}
-		list( $key, $value ) = explode( '=', $bit );
+		if ( strpos( $bit, '=' ) === false ) {
+			// Pieces like &qwerty become 'qwerty' => '' (at least this is what php does)
+			$key = $bit;
+			$value = '';
+		} else {
+			list( $key, $value ) = explode( '=', $bit );
+		}
 		$key = urldecode( $key );
 		$value = urldecode( $value );
 		if ( strpos( $key, '[' ) !== false ) {
@@ -444,8 +452,11 @@ function wfAppendQuery( $url, $query ) {
  * like "subdir/foo.html", etc.
  *
  * @param $url String: either fully-qualified or a local path + query
- * @param $defaultProto Mixed: one of the PROTO_* constants. Determines the protocol to use if $url or $wgServer is protocol-relative
- * @return string Fully-qualified URL
+ * @param $defaultProto Mixed: one of the PROTO_* constants. Determines the
+ *                             protocol to use if $url or $wgServer is
+ *                             protocol-relative
+ * @return string Fully-qualified URL, current-path-relative URL or false if
+ *                no valid URL can be constructed
  */
 function wfExpandUrl( $url, $defaultProto = PROTO_CURRENT ) {
 	global $wgServer, $wgCanonicalServer, $wgInternalServer;
@@ -477,21 +488,130 @@ function wfExpandUrl( $url, $defaultProto = PROTO_CURRENT ) {
 
 	$defaultProtoWithoutSlashes = substr( $defaultProto, 0, -2 );
 
-	if( substr( $url, 0, 2 ) == '//' ) {
-		return $defaultProtoWithoutSlashes . $url;
-	} elseif( substr( $url, 0, 1 ) == '/' ) {
+	if ( substr( $url, 0, 2 ) == '//' ) {
+		$url = $defaultProtoWithoutSlashes . $url;
+	} elseif ( substr( $url, 0, 1 ) == '/' ) {
 		// If $serverUrl is protocol-relative, prepend $defaultProtoWithoutSlashes, otherwise leave it alone
-		return ( $serverHasProto ? '' : $defaultProtoWithoutSlashes ) . $serverUrl . $url;
-	} else {
-		return $url;
+		$url = ( $serverHasProto ? '' : $defaultProtoWithoutSlashes ) . $serverUrl . $url;
 	}
+
+	$bits = wfParseUrl( $url );
+	if ( $bits && isset( $bits['path'] ) ) {
+		$bits['path'] = wfRemoveDotSegments( $bits['path'] );
+		return wfAssembleUrl( $bits );
+	} elseif ( $bits ) {
+		# No path to expand
+		return $url;
+	} elseif ( substr( $url, 0, 1 ) != '/' ) {
+		# URL is a relative path
+		return wfRemoveDotSegments( $url );
+	}
+
+	# Expanded URL is not valid.
+	return false;
+}
+
+/**
+ * This function will reassemble a URL parsed with wfParseURL.  This is useful
+ * if you need to edit part of a URL and put it back together.
+ *
+ * This is the basic structure used (brackets contain keys for $urlParts):
+ * [scheme][delimiter][user]:[pass]@[host]:[port][path]?[query]#[fragment]
+ *
+ * @todo Need to integrate this into wfExpandUrl (bug 32168)
+ *
+ * @param $urlParts Array URL parts, as output from wfParseUrl
+ * @return string URL assembled from its component parts
+ */
+function wfAssembleUrl( $urlParts ) {
+	$result = '';
+
+	if ( isset( $urlParts['delimiter'] ) ) {
+		if ( isset( $urlParts['scheme'] ) ) {
+			$result .= $urlParts['scheme'];
+		}
+
+		$result .= $urlParts['delimiter'];
+	}
+
+	if ( isset( $urlParts['host'] ) ) {
+		if ( isset( $urlParts['user'] ) ) {
+			$result .= $urlParts['user'];
+			if ( isset( $urlParts['pass'] ) ) {
+				$result .= ':' . $urlParts['pass'];
+			}
+			$result .= '@';
+		}
+
+		$result .= $urlParts['host'];
+
+		if ( isset( $urlParts['port'] ) ) {
+			$result .= ':' . $urlParts['port'];
+		}
+	}
+
+	if ( isset( $urlParts['path'] ) ) {
+		$result .= $urlParts['path'];
+	}
+
+	if ( isset( $urlParts['query'] ) ) {
+		$result .= '?' . $urlParts['query'];
+	}
+
+	if ( isset( $urlParts['fragment'] ) ) {
+		$result .= '#' . $urlParts['fragment'];
+	}
+
+	return $result;
+}
+
+/**
+ * Remove all dot-segments in the provided URL path.  For example,
+ * '/a/./b/../c/' becomes '/a/c/'.  For details on the algorithm, please see
+ * RFC3986 section 5.2.4.
+ *
+ * @todo Need to integrate this into wfExpandUrl (bug 32168)
+ *
+ * @param $urlPath String URL path, potentially containing dot-segments
+ * @return string URL path with all dot-segments removed
+ */
+function wfRemoveDotSegments( $urlPath ) {
+	$output = '';
+
+	while ( $urlPath ) {
+		$matches = null;
+		if ( preg_match('%^\.\.?/%', $urlPath, $matches) ) {
+			# Step A, remove leading "../" or "./"
+			$urlPath = substr( $urlPath, strlen( $matches[0] ) );
+		} elseif ( preg_match( '%^/\.(/|$)%', $urlPath, $matches ) ) {
+			# Step B, replace leading "/.$" or "/./" with "/"
+			$start = strlen( $matches[0] );
+			$urlPath = '/' . substr( $urlPath, $start );
+		} elseif ( preg_match( '%^/\.\.(/|$)%', $urlPath, $matches ) ) {
+			# Step C, replace leading "/..$" or "/../" with "/" and
+			# remove last path component in output
+			$start = strlen( $matches[0] );
+			$urlPath = '/' . substr( $urlPath, $start );
+			$output = preg_replace('%(^|/)[^/]*$%', '', $output);
+		} elseif ( preg_match( '%^\.\.?$%', $urlPath, $matches ) ) {
+			# Step D, remove "^..$" or "^.$"
+			$urlPath = '';
+		} else {
+			# Step E, move leading path segment to output
+			preg_match( '%^/?[^/]*%', $urlPath, $matches );
+			$urlPath = substr( $urlPath, strlen( $matches[0] ) );
+			$output .= $matches[0];
+		}
+	}
+
+	return $output;
 }
 
 /**
  * Returns a regular expression of url protocols
  *
  * @param $includeProtocolRelative bool If false, remove '//' from the returned protocol list.
- *        DO NOT USE this directy, use wfUrlProtocolsWithoutProtRel() instead
+ *        DO NOT USE this directly, use wfUrlProtocolsWithoutProtRel() instead
  * @return String
  */
 function wfUrlProtocols( $includeProtocolRelative = true ) {
@@ -605,12 +725,12 @@ function wfParseUrl( $url ) {
 }
 
 /**
- * Make a URL index, appropriate for the el_index field of externallinks.
+ * Make URL indexes, appropriate for the el_index field of externallinks.
  *
  * @param $url String
- * @return String
+ * @return array
  */
-function wfMakeUrlIndex( $url ) {
+function wfMakeUrlIndexes( $url ) {
 	$bits = wfParseUrl( $url );
 
 	// Reverse the labels in the hostname, convert to lower case
@@ -650,7 +770,12 @@ function wfMakeUrlIndex( $url ) {
 	if ( isset( $bits['fragment'] ) ) {
 		$index .= '#' . $bits['fragment'];
 	}
-	return $index;
+
+	if ( $prot == '' ) {
+		return array( "http:$index", "https:$index" );
+	} else {
+		return array( $index );
+	}
 }
 
 /**
@@ -715,6 +840,8 @@ function wfDebug( $text, $logonly = false ) {
 			wfErrorLog( $text, $wgDebugLogFile );
 		}
 	}
+
+	MWDebug::debugMsg( $text );
 }
 
 /**
@@ -1026,6 +1153,7 @@ function wfGetLangObj( $langcode = false ) {
  * @return Language
  */
 function wfUILang() {
+	wfDeprecated( __METHOD__, '1.18' );
 	global $wgLang;
 	return $wgLang;
 }
@@ -1582,6 +1710,8 @@ function wfShowingResults( $offset, $limit ) {
  * @deprecated in 1.19; use Language::viewPrevNext() instead
  */
 function wfViewPrevNext( $offset, $limit, $link, $query = '', $atend = false ) {
+	wfDeprecated( __METHOD__, '1.19' );
+	
 	global $wgLang;
 
 	$query = wfCgiToArray( $query );
@@ -1637,7 +1767,7 @@ function wfClientAcceptsGzip( $force = false ) {
 					$result = false;
 					return $result;
 				}
-				wfDebug( " accepts gzip\n" );
+				wfDebug( "wfClientAcceptsGzip: client accepts gzip.\n" );
 				$result = true;
 			}
 		}
@@ -1712,6 +1842,8 @@ function wfSetVar( &$dest, $source, $force = false ) {
  * @param $dest Int
  * @param $bit Int
  * @param $state Bool
+ *
+ * @return bool
  */
 function wfSetBit( &$dest, $bit, $state = true ) {
 	$temp = (bool)( $dest & $bit );
@@ -1723,217 +1855,6 @@ function wfSetBit( &$dest, $bit, $state = true ) {
 		}
 	}
 	return $temp;
-}
-
-/**
- * Windows-compatible version of escapeshellarg()
- * Windows doesn't recognise single-quotes in the shell, but the escapeshellarg()
- * function puts single quotes in regardless of OS.
- *
- * Also fixes the locale problems on Linux in PHP 5.2.6+ (bug backported to
- * earlier distro releases of PHP)
- *
- * @param varargs
- * @return String
- */
-function wfEscapeShellArg( ) {
-	wfInitShellLocale();
-
-	$args = func_get_args();
-	$first = true;
-	$retVal = '';
-	foreach ( $args as $arg ) {
-		if ( !$first ) {
-			$retVal .= ' ';
-		} else {
-			$first = false;
-		}
-
-		if ( wfIsWindows() ) {
-			// Escaping for an MSVC-style command line parser and CMD.EXE
-			// Refs:
-			//  * http://web.archive.org/web/20020708081031/http://mailman.lyra.org/pipermail/scite-interest/2002-March/000436.html
-			//  * http://technet.microsoft.com/en-us/library/cc723564.aspx
-			//  * Bug #13518
-			//  * CR r63214
-			// Double the backslashes before any double quotes. Escape the double quotes.
-			$tokens = preg_split( '/(\\\\*")/', $arg, -1, PREG_SPLIT_DELIM_CAPTURE );
-			$arg = '';
-			$iteration = 0;
-			foreach ( $tokens as $token ) {
-				if ( $iteration % 2 == 1 ) {
-					// Delimiter, a double quote preceded by zero or more slashes
-					$arg .= str_replace( '\\', '\\\\', substr( $token, 0, -1 ) ) . '\\"';
-				} elseif ( $iteration % 4 == 2 ) {
-					// ^ in $token will be outside quotes, need to be escaped
-					$arg .= str_replace( '^', '^^', $token );
-				} else { // $iteration % 4 == 0
-					// ^ in $token will appear inside double quotes, so leave as is
-					$arg .= $token;
-				}
-				$iteration++;
-			}
-			// Double the backslashes before the end of the string, because
-			// we will soon add a quote
-			$m = array();
-			if ( preg_match( '/^(.*?)(\\\\+)$/', $arg, $m ) ) {
-				$arg = $m[1] . str_replace( '\\', '\\\\', $m[2] );
-			}
-
-			// Add surrounding quotes
-			$retVal .= '"' . $arg . '"';
-		} else {
-			$retVal .= escapeshellarg( $arg );
-		}
-	}
-	return $retVal;
-}
-
-/**
- * wfMerge attempts to merge differences between three texts.
- * Returns true for a clean merge and false for failure or a conflict.
- *
- * @param $old String
- * @param $mine String
- * @param $yours String
- * @param $result String
- * @return Bool
- */
-function wfMerge( $old, $mine, $yours, &$result ) {
-	global $wgDiff3;
-
-	# This check may also protect against code injection in
-	# case of broken installations.
-	wfSuppressWarnings();
-	$haveDiff3 = $wgDiff3 && file_exists( $wgDiff3 );
-	wfRestoreWarnings();
-
-	if( !$haveDiff3 ) {
-		wfDebug( "diff3 not found\n" );
-		return false;
-	}
-
-	# Make temporary files
-	$td = wfTempDir();
-	$oldtextFile = fopen( $oldtextName = tempnam( $td, 'merge-old-' ), 'w' );
-	$mytextFile = fopen( $mytextName = tempnam( $td, 'merge-mine-' ), 'w' );
-	$yourtextFile = fopen( $yourtextName = tempnam( $td, 'merge-your-' ), 'w' );
-
-	fwrite( $oldtextFile, $old );
-	fclose( $oldtextFile );
-	fwrite( $mytextFile, $mine );
-	fclose( $mytextFile );
-	fwrite( $yourtextFile, $yours );
-	fclose( $yourtextFile );
-
-	# Check for a conflict
-	$cmd = $wgDiff3 . ' -a --overlap-only ' .
-		wfEscapeShellArg( $mytextName ) . ' ' .
-		wfEscapeShellArg( $oldtextName ) . ' ' .
-		wfEscapeShellArg( $yourtextName );
-	$handle = popen( $cmd, 'r' );
-
-	if( fgets( $handle, 1024 ) ) {
-		$conflict = true;
-	} else {
-		$conflict = false;
-	}
-	pclose( $handle );
-
-	# Merge differences
-	$cmd = $wgDiff3 . ' -a -e --merge ' .
-		wfEscapeShellArg( $mytextName, $oldtextName, $yourtextName );
-	$handle = popen( $cmd, 'r' );
-	$result = '';
-	do {
-		$data = fread( $handle, 8192 );
-		if ( strlen( $data ) == 0 ) {
-			break;
-		}
-		$result .= $data;
-	} while ( true );
-	pclose( $handle );
-	unlink( $mytextName );
-	unlink( $oldtextName );
-	unlink( $yourtextName );
-
-	if ( $result === '' && $old !== '' && !$conflict ) {
-		wfDebug( "Unexpected null result from diff3. Command: $cmd\n" );
-		$conflict = true;
-	}
-	return !$conflict;
-}
-
-/**
- * Returns unified plain-text diff of two texts.
- * Useful for machine processing of diffs.
- *
- * @param $before String: the text before the changes.
- * @param $after String: the text after the changes.
- * @param $params String: command-line options for the diff command.
- * @return String: unified diff of $before and $after
- */
-function wfDiff( $before, $after, $params = '-u' ) {
-	if ( $before == $after ) {
-		return '';
-	}
-
-	global $wgDiff;
-	wfSuppressWarnings();
-	$haveDiff = $wgDiff && file_exists( $wgDiff );
-	wfRestoreWarnings();
-
-	# This check may also protect against code injection in
-	# case of broken installations.
-	if( !$haveDiff ) {
-		wfDebug( "diff executable not found\n" );
-		$diffs = new Diff( explode( "\n", $before ), explode( "\n", $after ) );
-		$format = new UnifiedDiffFormatter();
-		return $format->format( $diffs );
-	}
-
-	# Make temporary files
-	$td = wfTempDir();
-	$oldtextFile = fopen( $oldtextName = tempnam( $td, 'merge-old-' ), 'w' );
-	$newtextFile = fopen( $newtextName = tempnam( $td, 'merge-your-' ), 'w' );
-
-	fwrite( $oldtextFile, $before );
-	fclose( $oldtextFile );
-	fwrite( $newtextFile, $after );
-	fclose( $newtextFile );
-
-	// Get the diff of the two files
-	$cmd = "$wgDiff " . $params . ' ' . wfEscapeShellArg( $oldtextName, $newtextName );
-
-	$h = popen( $cmd, 'r' );
-
-	$diff = '';
-
-	do {
-		$data = fread( $h, 8192 );
-		if ( strlen( $data ) == 0 ) {
-			break;
-		}
-		$diff .= $data;
-	} while ( true );
-
-	// Clean up
-	pclose( $h );
-	unlink( $oldtextName );
-	unlink( $newtextName );
-
-	// Kill the --- and +++ lines. They're not useful.
-	$diff_lines = explode( "\n", $diff );
-	if ( strpos( $diff_lines[0], '---' ) === 0 ) {
-		unset( $diff_lines[0] );
-	}
-	if ( strpos( $diff_lines[1], '+++' ) === 0 ) {
-		unset( $diff_lines[1] );
-	}
-
-	$diff = implode( "\n", $diff_lines );
-
-	return $diff;
 }
 
 /**
@@ -2275,7 +2196,7 @@ function wfTimestamp( $outputtype = TS_UNIX, $ts = 0 ) {
 	} elseif ( preg_match( '/^-?\d{1,13}$/D', $ts ) ) {
 		# TS_UNIX
 		$uts = $ts;
-		$strtime = "@$ts"; // Undocumented?
+		$strtime = "@$ts"; // http://php.net/manual/en/datetime.formats.compound.php
 	} elseif ( preg_match( '/^\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}.\d{6}$/', $ts ) ) {
 		# TS_ORACLE // session altered to DD-MM-YYYY HH24:MI:SS.FF6
 		$strtime = preg_replace( '/(\d\d)\.(\d\d)\.(\d\d)(\.(\d+))?/', "$1:$2:$3",
@@ -2470,8 +2391,12 @@ function wfTempDir() {
 function wfMkdirParents( $dir, $mode = null, $caller = null ) {
 	global $wgDirectoryMode;
 
+	if ( FileBackend::isStoragePath( $dir ) ) { // sanity
+		throw new MWException( __FUNCTION__ . " given storage path `$dir`.");
+	}
+
 	if ( !is_null( $caller ) ) {
-		wfDebug( "$caller: called wfMkdirParents($dir)" );
+		wfDebug( "$caller: called wfMkdirParents($dir)\n" );
 	}
 
 	if( strval( $dir ) === '' || file_exists( $dir ) ) {
@@ -2641,6 +2566,70 @@ function wfDl( $extension, $fileName = null ) {
 }
 
 /**
+ * Windows-compatible version of escapeshellarg()
+ * Windows doesn't recognise single-quotes in the shell, but the escapeshellarg()
+ * function puts single quotes in regardless of OS.
+ *
+ * Also fixes the locale problems on Linux in PHP 5.2.6+ (bug backported to
+ * earlier distro releases of PHP)
+ *
+ * @param varargs
+ * @return String
+ */
+function wfEscapeShellArg( ) {
+	wfInitShellLocale();
+
+	$args = func_get_args();
+	$first = true;
+	$retVal = '';
+	foreach ( $args as $arg ) {
+		if ( !$first ) {
+			$retVal .= ' ';
+		} else {
+			$first = false;
+		}
+
+		if ( wfIsWindows() ) {
+			// Escaping for an MSVC-style command line parser and CMD.EXE
+			// Refs:
+			//  * http://web.archive.org/web/20020708081031/http://mailman.lyra.org/pipermail/scite-interest/2002-March/000436.html
+			//  * http://technet.microsoft.com/en-us/library/cc723564.aspx
+			//  * Bug #13518
+			//  * CR r63214
+			// Double the backslashes before any double quotes. Escape the double quotes.
+			$tokens = preg_split( '/(\\\\*")/', $arg, -1, PREG_SPLIT_DELIM_CAPTURE );
+			$arg = '';
+			$iteration = 0;
+			foreach ( $tokens as $token ) {
+				if ( $iteration % 2 == 1 ) {
+					// Delimiter, a double quote preceded by zero or more slashes
+					$arg .= str_replace( '\\', '\\\\', substr( $token, 0, -1 ) ) . '\\"';
+				} elseif ( $iteration % 4 == 2 ) {
+					// ^ in $token will be outside quotes, need to be escaped
+					$arg .= str_replace( '^', '^^', $token );
+				} else { // $iteration % 4 == 0
+					// ^ in $token will appear inside double quotes, so leave as is
+					$arg .= $token;
+				}
+				$iteration++;
+			}
+			// Double the backslashes before the end of the string, because
+			// we will soon add a quote
+			$m = array();
+			if ( preg_match( '/^(.*?)(\\\\+)$/', $arg, $m ) ) {
+				$arg = $m[1] . str_replace( '\\', '\\\\', $m[2] );
+			}
+
+			// Add surrounding quotes
+			$retVal .= '"' . $arg . '"';
+		} else {
+			$retVal .= escapeshellarg( $arg );
+		}
+	}
+	return $retVal;
+}
+
+/**
  * Execute a shell command, with time and memory limits mirrored from the PHP
  * configuration if supported.
  * @param $cmd String Command line, properly escaped for shell.
@@ -2775,6 +2764,153 @@ function wfShellMaintenanceCmd( $script, array $parameters = array(), array $opt
 }
 
 /**
+ * wfMerge attempts to merge differences between three texts.
+ * Returns true for a clean merge and false for failure or a conflict.
+ *
+ * @param $old String
+ * @param $mine String
+ * @param $yours String
+ * @param $result String
+ * @return Bool
+ */
+function wfMerge( $old, $mine, $yours, &$result ) {
+	global $wgDiff3;
+
+	# This check may also protect against code injection in
+	# case of broken installations.
+	wfSuppressWarnings();
+	$haveDiff3 = $wgDiff3 && file_exists( $wgDiff3 );
+	wfRestoreWarnings();
+
+	if( !$haveDiff3 ) {
+		wfDebug( "diff3 not found\n" );
+		return false;
+	}
+
+	# Make temporary files
+	$td = wfTempDir();
+	$oldtextFile = fopen( $oldtextName = tempnam( $td, 'merge-old-' ), 'w' );
+	$mytextFile = fopen( $mytextName = tempnam( $td, 'merge-mine-' ), 'w' );
+	$yourtextFile = fopen( $yourtextName = tempnam( $td, 'merge-your-' ), 'w' );
+
+	fwrite( $oldtextFile, $old );
+	fclose( $oldtextFile );
+	fwrite( $mytextFile, $mine );
+	fclose( $mytextFile );
+	fwrite( $yourtextFile, $yours );
+	fclose( $yourtextFile );
+
+	# Check for a conflict
+	$cmd = $wgDiff3 . ' -a --overlap-only ' .
+		wfEscapeShellArg( $mytextName ) . ' ' .
+		wfEscapeShellArg( $oldtextName ) . ' ' .
+		wfEscapeShellArg( $yourtextName );
+	$handle = popen( $cmd, 'r' );
+
+	if( fgets( $handle, 1024 ) ) {
+		$conflict = true;
+	} else {
+		$conflict = false;
+	}
+	pclose( $handle );
+
+	# Merge differences
+	$cmd = $wgDiff3 . ' -a -e --merge ' .
+		wfEscapeShellArg( $mytextName, $oldtextName, $yourtextName );
+	$handle = popen( $cmd, 'r' );
+	$result = '';
+	do {
+		$data = fread( $handle, 8192 );
+		if ( strlen( $data ) == 0 ) {
+			break;
+		}
+		$result .= $data;
+	} while ( true );
+	pclose( $handle );
+	unlink( $mytextName );
+	unlink( $oldtextName );
+	unlink( $yourtextName );
+
+	if ( $result === '' && $old !== '' && !$conflict ) {
+		wfDebug( "Unexpected null result from diff3. Command: $cmd\n" );
+		$conflict = true;
+	}
+	return !$conflict;
+}
+
+/**
+ * Returns unified plain-text diff of two texts.
+ * Useful for machine processing of diffs.
+ *
+ * @param $before String: the text before the changes.
+ * @param $after String: the text after the changes.
+ * @param $params String: command-line options for the diff command.
+ * @return String: unified diff of $before and $after
+ */
+function wfDiff( $before, $after, $params = '-u' ) {
+	if ( $before == $after ) {
+		return '';
+	}
+
+	global $wgDiff;
+	wfSuppressWarnings();
+	$haveDiff = $wgDiff && file_exists( $wgDiff );
+	wfRestoreWarnings();
+
+	# This check may also protect against code injection in
+	# case of broken installations.
+	if( !$haveDiff ) {
+		wfDebug( "diff executable not found\n" );
+		$diffs = new Diff( explode( "\n", $before ), explode( "\n", $after ) );
+		$format = new UnifiedDiffFormatter();
+		return $format->format( $diffs );
+	}
+
+	# Make temporary files
+	$td = wfTempDir();
+	$oldtextFile = fopen( $oldtextName = tempnam( $td, 'merge-old-' ), 'w' );
+	$newtextFile = fopen( $newtextName = tempnam( $td, 'merge-your-' ), 'w' );
+
+	fwrite( $oldtextFile, $before );
+	fclose( $oldtextFile );
+	fwrite( $newtextFile, $after );
+	fclose( $newtextFile );
+
+	// Get the diff of the two files
+	$cmd = "$wgDiff " . $params . ' ' . wfEscapeShellArg( $oldtextName, $newtextName );
+
+	$h = popen( $cmd, 'r' );
+
+	$diff = '';
+
+	do {
+		$data = fread( $h, 8192 );
+		if ( strlen( $data ) == 0 ) {
+			break;
+		}
+		$diff .= $data;
+	} while ( true );
+
+	// Clean up
+	pclose( $h );
+	unlink( $oldtextName );
+	unlink( $newtextName );
+
+	// Kill the --- and +++ lines. They're not useful.
+	$diff_lines = explode( "\n", $diff );
+	if ( strpos( $diff_lines[0], '---' ) === 0 ) {
+		unset( $diff_lines[0] );
+	}
+	if ( strpos( $diff_lines[1], '+++' ) === 0 ) {
+		unset( $diff_lines[1] );
+	}
+
+	$diff = implode( "\n", $diff_lines );
+
+	return $diff;
+}
+
+/**
  * This function works like "use VERSION" in Perl, the program will die with a
  * backtrace if the current version of PHP is less than the version provided
  *
@@ -2895,6 +3031,7 @@ function wfRelativePath( $path, $from ) {
  * @param $commit string
  */
 function wfDoUpdates( $commit = '' ) {
+	wfDeprecated( __METHOD__, '1.19' );
 	DeferredUpdates::doUpdates( $commit );
 }
 
@@ -2994,7 +3131,7 @@ function wfBaseConvert( $input, $sourceBase, $destBase, $pad = 1, $lowercase = t
  * @deprecated since 1.18, warnings in 1.18, removal in 1.20
  */
 function wfCreateObject( $name, $p ) {
-	wfDeprecated( __FUNCTION__ );
+	wfDeprecated( __FUNCTION__, '1.18' );
 	return MWFunction::newObj( $name, $p );
 }
 
@@ -3086,8 +3223,10 @@ function wfGetPrecompiledData( $name ) {
  * @return String
  */
 function wfMemcKey( /*... */ ) {
+	global $wgCachePrefix;
+	$prefix = $wgCachePrefix === false ? wfWikiID() : $wgCachePrefix;
 	$args = func_get_args();
-	$key = wfWikiID() . ':' . implode( ':', $args );
+	$key = $prefix . ':' . implode( ':', $args );
 	$key = str_replace( ' ', '_', $key );
 	return $key;
 }
@@ -3117,10 +3256,8 @@ function wfForeignMemcKey( $db, $prefix /*, ... */ ) {
  * @return String
  */
 function wfWikiID() {
-	global $wgDBprefix, $wgDBname, $wgWikiID;
-	if ( $wgWikiID !== false ) {
-		return $wgWikiID;
-	} elseif ( $wgDBprefix ) {
+	global $wgDBprefix, $wgDBname;
+	if ( $wgDBprefix ) {
 		return "$wgDBname-$wgDBprefix";
 	} else {
 		return $wgDBname;
@@ -3216,7 +3353,7 @@ function wfFindFile( $title, $options = array() ) {
  * Returns a valid placeholder object if the file does not exist.
  *
  * @param $title Title or String
- * @return File, or null if passed an invalid Title
+ * @return File|null A File, or null if passed an invalid Title
  */
 function wfLocalFile( $title ) {
 	return RepoGroup::singleton()->getLocalRepo()->newFile( $title );
@@ -3227,6 +3364,7 @@ function wfLocalFile( $title ) {
  * @deprecated since 1.19
  */
 function wfStreamFile( $fname, $headers = array() ) {
+	wfDeprecated( __FUNCTION__, '1.19' );
 	StreamFile::stream( $fname, $headers );
 }
 
@@ -3297,7 +3435,7 @@ function wfBoolToStr( $value ) {
  * @codeCoverageIgnore
  */
 function wfLoadExtensionMessages() {
-	wfDeprecated( __FUNCTION__ );
+	wfDeprecated( __FUNCTION__, '1.16' );
 }
 
 /**
@@ -3315,27 +3453,37 @@ function wfGetNull() {
  * Throws a warning that $function is deprecated
  *
  * @param $function String
- * @param $version String
+ * @param $version String|false: Added in 1.19.
+ * @param $component String|false: Added in 1.19.
+ * 
  * @return null
  */
-function wfDeprecated( $function, $version = false ) {
+function wfDeprecated( $function, $version = false, $component = false ) {
 	static $functionsWarned = array();
-	if ( !isset( $functionsWarned[$function] ) ) {
+
+	MWDebug::deprecated( $function, $version, $component );
+
+	if ( !in_array( $function, $GLOBALS['wgDeprecationWhitelist'] ) && !isset( $functionsWarned[$function] ) ) {
 		$functionsWarned[$function] = true;
+		
 		if ( $version ) {
 			global $wgDeprecationReleaseLimit;
-			if ( $wgDeprecationReleaseLimit ) {
+			
+			if ( $wgDeprecationReleaseLimit && $component === false ) {
 				# Strip -* off the end of $version so that branches can use the
 				# format #.##-branchname to avoid issues if the branch is merged into
 				# a version of MediaWiki later than what it was branched from
 				$comparableVersion = preg_replace( '/-.*$/', '', $version );
+				
 				# If the comparableVersion is larger than our release limit then
 				# skip the warning message for the deprecation
 				if ( version_compare( $wgDeprecationReleaseLimit, $comparableVersion, '<' ) ) {
 					return;
 				}
 			}
-			wfWarn( "Use of $function was deprecated in $version.", 2 );
+			
+			$component = $component === false ? 'MediaWiki' : $component;
+			wfWarn( "Use of $function was deprecated in $component $version.", 2 );
 		} else {
 			wfWarn( "Use of $function is deprecated.", 2 );
 		}
@@ -3354,6 +3502,8 @@ function wfDeprecated( $function, $version = false ) {
  */
 function wfWarn( $msg, $callerOffset = 1, $level = E_USER_NOTICE ) {
 	global $wgDevelopmentWarnings;
+
+	MWDebug::warning( $msg, $callerOffset + 2 );
 
 	$callers = wfDebugBacktrace();
 	if ( isset( $callers[$callerOffset + 1] ) ) {
@@ -3407,7 +3557,7 @@ function wfWaitForSlaves( $maxLag = false, $wiki = false ) {
  * @deprecated since 1.18, warnings in 1.18, remove in 1.20
  */
 function wfOut( $s ) {
-	wfDeprecated( __METHOD__ );
+	wfDeprecated( __FUNCTION__, '1.18' );
 	global $wgCommandLineMode;
 	if ( $wgCommandLineMode ) {
 		echo $s;
@@ -3608,4 +3758,40 @@ function wfGetParserCacheStorage() {
  */
 function wfRunHooks( $event, $args = array() ) {
 	return Hooks::run( $event, $args );
+}
+
+/**
+ * Wrapper around php's unpack.
+ *
+ * @param $format String: The format string (See php's docs)
+ * @param $data: A binary string of binary data
+ * @param $length integer or false: The minimun length of $data. This is to
+ *	prevent reading beyond the end of $data. false to disable the check.
+ *
+ * Also be careful when using this function to read unsigned 32 bit integer
+ * because php might make it negative.
+ *
+ * @throws MWException if $data not long enough, or if unpack fails
+ * @return Associative array of the extracted data
+ */
+function wfUnpack( $format, $data, $length=false ) {
+	if ( $length !== false ) {
+		$realLen = strlen( $data );
+		if ( $realLen < $length ) {
+			throw new MWException( "Tried to use wfUnpack on a "
+				. "string of length $realLen, but needed one "
+				. "of at least length $length."
+			);
+		}
+	}
+
+	wfSuppressWarnings();
+	$result = unpack( $format, $data );
+	wfRestoreWarnings();
+
+	if ( $result === false ) {
+		// If it cannot extract the packed data.
+		throw new MWException( "unpack could not unpack binary data" );
+	}
+	return $result;
 }

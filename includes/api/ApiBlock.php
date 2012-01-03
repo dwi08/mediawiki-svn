@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiBase.php" );
-}
-
 /**
 * API module that facilitates the blocking of users. Requires API write mode
 * to be enabled.
@@ -48,29 +43,29 @@ class ApiBlock extends ApiBase {
 	 * of success. If it fails, the result will specify the nature of the error.
 	 */
 	public function execute() {
-		global $wgUser;
+		$user = $this->getUser();
 		$params = $this->extractRequestParams();
 
 		if ( $params['gettoken'] ) {
-			$res['blocktoken'] = $wgUser->editToken( '', $this->getMain()->getRequest() );
+			$res['blocktoken'] = $user->getEditToken( '', $this->getMain()->getRequest() );
 			$this->getResult()->addValue( null, $this->getModuleName(), $res );
 			return;
 		}
 
-		if ( !$wgUser->isAllowed( 'block' ) ) {
+		if ( !$user->isAllowed( 'block' ) ) {
 			$this->dieUsageMsg( 'cantblock' );
 		}
 		# bug 15810: blocked admins should have limited access here
-		if ( $wgUser->isBlocked() ) {
-			$status = SpecialBlock::checkUnblockSelf( $params['user'] );
+		if ( $user->isBlocked() ) {
+			$status = SpecialBlock::checkUnblockSelf( $params['user'], $user );
 			if ( $status !== true ) {
 				$this->dieUsageMsg( array( $status ) );
 			}
 		}
-		if ( $params['hidename'] && !$wgUser->isAllowed( 'hideuser' ) ) {
+		if ( $params['hidename'] && !$user->isAllowed( 'hideuser' ) ) {
 			$this->dieUsageMsg( 'canthide' );
 		}
-		if ( $params['noemail'] && !SpecialBlock::canBlockEmail( $wgUser ) ) {
+		if ( $params['noemail'] && !SpecialBlock::canBlockEmail( $user ) ) {
 			$this->dieUsageMsg( 'cantblock-email' );
 		}
 
@@ -93,7 +88,7 @@ class ApiBlock extends ApiBase {
 			'Confirm' => true,
 		);
 
-		$retval = SpecialBlock::processForm( $data );
+		$retval = SpecialBlock::processForm( $data, $this->getContext() );
 		if ( $retval !== true ) {
 			// We don't care about multiple errors, just report one of them
 			$this->dieUsageMsg( $retval );
@@ -216,7 +211,7 @@ class ApiBlock extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Block';
+		return 'https://www.mediawiki.org/wiki/API:Block';
 	}
 
 	public function getVersion() {

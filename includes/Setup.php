@@ -115,6 +115,19 @@ $wgNamespaceAliases['Image'] = NS_FILE;
 $wgNamespaceAliases['Image_talk'] = NS_FILE_TALK;
 
 /**
+ * Initialise $wgLockManagers to include basic FS version
+ */
+$wgLockManagers[] = array(
+	'name'          => 'fsLockManager',
+	'class'         => 'FSLockManager',
+	'lockDirectory' => "{$wgUploadDirectory}/lockdir",
+);
+$wgLockManagers[] = array(
+	'name'          => 'nullLockManager',
+	'class'         => 'NullLockManager',
+);
+
+/**
  * Initialise $wgLocalFileRepo from backwards-compatible settings
  */
 if ( !$wgLocalFileRepo ) {
@@ -163,7 +176,7 @@ if ( $wgUseSharedUploads ) {
 		);
 	} else {
 		$wgForeignFileRepos[] = array(
-			'class' => 'FSRepo',
+			'class' => 'FileRepo',
 			'name' => 'shared',
 			'directory' => $wgSharedUploadDirectory,
 			'url' => $wgSharedUploadPath,
@@ -177,15 +190,33 @@ if ( $wgUseSharedUploads ) {
 }
 if ( $wgUseInstantCommons ) {
 	$wgForeignFileRepos[] = array(
-		'class'                   => 'ForeignAPIRepo',
-		'name'                    => 'wikimediacommons',
-		'apibase'                 => 'http://commons.wikimedia.org/w/api.php',
-		'hashLevels'              => 2,
-		'fetchDescription'        => true,
-		'descriptionCacheExpiry'  => 43200,
-		'apiThumbCacheExpiry'     => 86400,
+		'class'                  => 'ForeignAPIRepo',
+		'name'                   => 'wikimediacommons',
+		'apibase'                => WebRequest::detectProtocol() === 'https' ?
+			'https://commons.wikimedia.org/w/api.php' :
+			'http://commons.wikimedia.org/w/api.php',
+		'hashLevels'             => 2,
+		'fetchDescription'       => true,
+		'descriptionCacheExpiry' => 43200,
+		'apiThumbCacheExpiry'    => 86400,
 	);
 }
+/*
+ * Add on default file backend config for file repos.
+ * FileBackendGroup will handle initializing the backends.
+ */
+if ( !isset( $wgLocalFileRepo['backend'] ) ) {
+	$wgLocalFileRepo['backend'] = $wgLocalFileRepo['name'] . '-backend';
+}
+foreach ( $wgForeignFileRepos as &$repo ) {
+	if ( !isset( $repo['directory'] ) && $repo['class'] === 'ForeignAPIRepo' ) {
+		$repo['directory'] = $wgUploadDirectory; // b/c
+	}
+	if ( !isset( $repo['backend'] ) ) {
+		$repo['backend'] = $repo['name'] . '-backend';
+	}
+}
+unset( $repo ); // no global pollution; destroy reference
 
 if ( is_null( $wgEnableAutoRotation ) ) {
 	// Only enable auto-rotation when the bitmap handler can rotate
@@ -328,6 +359,8 @@ if ( $wgCookieSecure === 'detect' ) {
 	$wgCookieSecure = ( substr( $wgServer, 0, 6 ) === 'https:' );
 }
 
+MWDebug::init();
+
 if ( !defined( 'MW_COMPILED' ) ) {
 	if ( !MWInit::classExists( 'AutoLoader' ) ) {
 		require_once( "$IP/includes/AutoLoader.php" );
@@ -392,6 +425,7 @@ if ( $wgCommandLineMode ) {
 		}
 	}
 	wfDebug( "$debug\n" );
+	MWDebug::processRequest( $wgRequest );
 }
 
 wfProfileOut( $fname . '-misc1' );

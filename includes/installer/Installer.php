@@ -107,6 +107,7 @@ abstract class Installer {
 		'envCheckUploadsDirectory',
 		'envCheckLibicu',
 		'envCheckSuhosinMaxValueLength',
+		'envCheckCtype',
 	);
 
 	/**
@@ -205,7 +206,6 @@ abstract class Installer {
 	protected $objectCaches = array(
 		'xcache' => 'xcache_get',
 		'apc' => 'apc_fetch',
-		'eaccel' => 'eaccelerator_get',
 		'wincache' => 'wincache_ucache_get'
 	);
 
@@ -296,11 +296,13 @@ abstract class Installer {
 	 * The parameters are like parameters to wfMsg().
 	 * The messages will be in wikitext format, which will be converted to an
 	 * output format such as HTML or text before being sent to the user.
+	 * @param $msg
 	 */
 	public abstract function showMessage( $msg /*, ... */ );
 
 	/**
 	 * Same as showMessage(), but for displaying errors
+	 * @param $msg
 	 */
 	public abstract function showError( $msg /*, ... */ );
 
@@ -621,6 +623,7 @@ abstract class Installer {
 
 	/**
 	 * Environment check for DB types.
+	 * @return bool
 	 */
 	protected function envCheckDB() {
 		global $wgLang;
@@ -853,13 +856,20 @@ abstract class Installer {
 	 * Environment check for the server hostname.
 	 */
 	protected function envCheckServer() {
-		$server = WebRequest::detectServer();
+		$server = $this->envGetDefaultServer();
 		$this->showMessage( 'config-using-server', $server );
 		$this->setVar( 'wgServer', $server );
 	}
 
 	/**
+	 * Helper function to be called from envCheckServer()
+	 * @return String
+	 */
+	protected abstract function envGetDefaultServer();
+
+	/**
 	 * Environment check for setting $IP and $wgScriptPath.
+	 * @return bool
 	 */
 	protected function envCheckPath() {
 		global $IP;
@@ -885,6 +895,7 @@ abstract class Installer {
 
 	/**
 	 * TODO: document
+	 * @return bool
 	 */
 	protected function envCheckShellLocale() {
 		$os = php_uname( 's' );
@@ -981,7 +992,10 @@ abstract class Installer {
 	protected function envCheckSuhosinMaxValueLength() {
 		$maxValueLength = ini_get( 'suhosin.get.max_value_length' );
 		if ( $maxValueLength > 0 ) {
-			$this->showMessage( 'config-suhosin-max-value-length', $maxValueLength );
+			if( $maxValueLength < 1024 ) {
+				# Only warn if the value is below the sane 1024
+				$this->showMessage( 'config-suhosin-max-value-length', $maxValueLength );
+			}
 		} else {
 			$maxValueLength = -1;
 		}
@@ -1055,6 +1069,13 @@ abstract class Installer {
 			if( $needsUpdate ) {
 				$this->showMessage( 'config-unicode-update-warning' );
 			}
+		}
+	}
+
+	protected function envCheckCtype() {
+		if ( !function_exists( 'ctype_digit' ) ) {
+			$this->showError( 'config-ctype' );
+			return false;
 		}
 	}
 
@@ -1207,7 +1228,7 @@ abstract class Installer {
 
 	/**
 	 * Overridden by WebInstaller to provide lastPage parameters.
-	 * @param $page stirng
+	 * @param $page string
 	 * @return string
 	 */
 	protected function getDocUrl( $page ) {
@@ -1467,6 +1488,9 @@ abstract class Installer {
 		return $status;
 	}
 
+	/**
+	 * @param $s Status
+	 */
 	private function subscribeToMediaWikiAnnounce( Status $s ) {
 		$params = array(
 			'email'    => $this->getVar( '_AdminEmail' ),
@@ -1502,13 +1526,13 @@ abstract class Installer {
 	protected function createMainpage( DatabaseInstaller $installer ) {
 		$status = Status::newGood();
 		try {
-			$article = new Article( Title::newMainPage() );
-			$article->doEdit( wfMsgForContent( 'mainpagetext' ) . "\n\n" .
-								wfMsgForContent( 'mainpagedocfooter' ),
-								'',
-								EDIT_NEW,
-								false,
-								User::newFromName( 'MediaWiki default' ) );
+			$page = WikiPage::factory( Title::newMainPage() );
+			$page->doEdit( wfMsgForContent( 'mainpagetext' ) . "\n\n" .
+							wfMsgForContent( 'mainpagedocfooter' ),
+							'',
+							EDIT_NEW,
+							false,
+							User::newFromName( 'MediaWiki default' ) );
 		} catch (MWException $e) {
 			//using raw, because $wgShowExceptionDetails can not be set yet
 			$status->fatal( 'config-install-mainpage-failed', $e->getMessage() );

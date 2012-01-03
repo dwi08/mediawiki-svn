@@ -119,6 +119,7 @@ class MWException extends Exception {
 	/**
 	 * If $wgShowExceptionDetails is true, return a text message with a
 	 * backtrace to the error.
+	 * @return string
 	 */
 	function getText() {
 		global $wgShowExceptionDetails;
@@ -137,8 +138,7 @@ class MWException extends Exception {
 	 * @return String
 	 */
 	function getPageTitle() {
-		global $wgSitename;
-		return $this->msg( 'internalerror', "$wgSitename error" );
+		return $this->msg( 'internalerror', "Internal error" );
 	}
 
 	/**
@@ -170,12 +170,7 @@ class MWException extends Exception {
 	function reportHTML() {
 		global $wgOut;
 		if ( $this->useOutputPage() ) {
-			$wgOut->setPageTitle( $this->getPageTitle() );
-			$wgOut->setRobotPolicy( "noindex,nofollow" );
-			$wgOut->setArticleRelated( false );
-			$wgOut->enableClientCache( false );
-			$wgOut->redirect( '' );
-			$wgOut->clearHTML();
+			$wgOut->prepareErrorPage( $this->getPageTitle() );
 
 			$hookResult = $this->runHooks( get_class( $this ) );
 			if ( $hookResult ) {
@@ -186,6 +181,7 @@ class MWException extends Exception {
 
 			$wgOut->output();
 		} else {
+			header( "Content-Type: text/html; charset=utf-8" );
 			$hookResult = $this->runHooks( get_class( $this ) . "Raw" );
 			if ( $hookResult ) {
 				die( $hookResult );
@@ -214,6 +210,10 @@ class MWException extends Exception {
 		}
 	}
 
+	/**
+	 * @static
+	 * @return bool
+	 */
 	static function isCommandLine() {
 		return !empty( $GLOBALS['wgCommandLineMode'] );
 	}
@@ -225,10 +225,17 @@ class MWException extends Exception {
  * @ingroup Exception
  */
 class FatalError extends MWException {
+
+	/**
+	 * @return string
+	 */
 	function getHTML() {
 		return $this->getMessage();
 	}
 
+	/**
+	 * @return string
+	 */
 	function getText() {
 		return $this->getMessage();
 	}
@@ -270,33 +277,34 @@ class ErrorPageError extends MWException {
  * @ingroup Exception
  */
 class PermissionsError extends ErrorPageError {
-	public $permission;
+	public $permission, $errors;
 
-	function __construct( $permission ) {
+	function __construct( $permission, $errors = array() ) {
 		global $wgLang;
 
 		$this->permission = $permission;
 
-		$groups = array_map(
-			array( 'User', 'makeGroupLinkWiki' ),
-			User::getGroupsWithPermission( $this->permission )
-		);
+		if ( !count( $errors ) ) {
+			$groups = array_map(
+				array( 'User', 'makeGroupLinkWiki' ),
+				User::getGroupsWithPermission( $this->permission )
+			);
 
-		if( $groups ) {
-			parent::__construct(
-				'badaccess',
-				'badaccess-groups',
-				array(
-					$wgLang->commaList( $groups ),
-					count( $groups )
-				)
-			);
-		} else {
-			parent::__construct(
-				'badaccess',
-				'badaccess-group0'
-			);
+			if ( $groups ) {
+				$errors[] = array( 'badaccess-groups', $wgLang->commaList( $groups ), count( $groups ) );
+			} else {
+				$errors[] = array( 'badaccess-group0' );
+			}
 		}
+
+		$this->errors = $errors;
+	}
+
+	function report() {
+		global $wgOut;
+
+		$wgOut->showPermissionsErrorPage( $this->errors, $this->permission );
+		$wgOut->output();
 	}
 }
 
@@ -326,6 +334,7 @@ class ThrottledError extends ErrorPageError {
 			'actionthrottledtext'
 		);
 	}
+
 	public function report(){
 		global $wgOut;
 		$wgOut->setStatusCode( 503 );
@@ -341,8 +350,13 @@ class UserBlockedError extends ErrorPageError {
 	public function __construct( Block $block ){
 		global $wgLang, $wgRequest;
 
-		$blockerUserpage = $block->getBlocker()->getUserPage();
-		$link = "[[{$blockerUserpage->getPrefixedText()}|{$blockerUserpage->getText()}]]";
+		$blocker = $block->getBlocker();
+		if ( $blocker instanceof User ) { // local user
+			$blockerUserpage = $block->getBlocker()->getUserPage();
+			$link = "[[{$blockerUserpage->getPrefixedText()}|{$blockerUserpage->getText()}]]";
+		} else { // foreign user
+			$link = $blocker;
+		}
 
 		$reason = $block->mReason;
 		if( $reason == '' ) {
@@ -360,7 +374,7 @@ class UserBlockedError extends ErrorPageError {
 				$link,
 				$reason,
 				$wgRequest->getIP(),
-				$block->getBlocker()->getName(),
+				$block->getByName(),
 				$block->getId(),
 				$wgLang->formatExpiry( $block->mExpiry ),
 				$intended,

@@ -158,13 +158,25 @@ class DerivativeContext extends ContextSource {
 	/**
 	 * Set the Language object
 	 *
+	 * @deprecated 1.19 Use setLanguage instead
 	 * @param $l Mixed Language instance or language code
 	 */
 	public function setLang( $l ) {
+		wfDeprecated( __METHOD__, '1.19' );
+		$this->setLanguage( $l );
+	}
+
+	/**
+	 * Set the Language object
+	 *
+	 * @param $l Mixed Language instance or language code
+	 * @since 1.19
+	 */
+	public function setLanguage( $l ) {
 		if ( $l instanceof Language ) {
 			$this->lang = $l;
 		} elseif ( is_string( $l ) ) {
-			$l = self::sanitizeLangCode( $l );
+			$l = RequestContext::sanitizeLangCode( $l );
 			$obj = Language::factory( $l );
 			$this->lang = $obj;
 		} else {
@@ -173,15 +185,25 @@ class DerivativeContext extends ContextSource {
 	}
 
 	/**
-	 * Get the Language object
-	 *
+	 * @deprecated 1.19 Use getLanguage instead
 	 * @return Language
 	 */
 	public function getLang() {
+		wfDeprecated( __METHOD__, '1.19' );
+		$this->getLanguage();
+	}
+
+	/**
+	 * Get the Language object
+	 *
+	 * @return Language
+	 * @since 1.19
+	 */
+	public function getLanguage() {
 		if ( !is_null( $this->lang ) ) {
 			return $this->lang;
 		} else {
-			return $this->getContext()->getLang();
+			return $this->getContext()->getLanguage();
 		}
 	}
 

@@ -6,8 +6,8 @@
  * As of february 2011, it only tests some revisions and date related
  * magic variables.
  *
- * @author Ashar Voultoiz
- * @copyright Copyright © 2011, Ashar Voultoiz
+ * @author Antoine Musso
+ * @copyright Copyright © 2011, Antoine Musso
  * @file
  */
 
@@ -115,6 +115,24 @@ class MagicVariableTest extends MediaWikiTestCase {
 	/** @dataProvider MediaWikiProvide::Months */
 	function testRevisionmonthoneIsUnPadded( $month ) {
 		$this->assertUnPadded( 'revisionmonth1', $month );
+	}
+
+	/**
+	 * Rough tests for {{SERVERNAME}} magic word
+	 * Bug 31176
+	 */
+	function testServernameFromDifferentProtocols() {
+		global $wgServer;
+		$saved_wgServer= $wgServer;
+
+		$wgServer = 'http://localhost/';
+		$this->assertMagic( 'localhost', 'servername' );
+		$wgServer = 'https://localhost/';
+		$this->assertMagic( 'localhost', 'servername' );
+		$wgServer = '//localhost/';  # bug 31176
+		$this->assertMagic( 'localhost', 'servername' );
+
+		$wgServer = $saved_wgServer;
 	}
 
 	############### HELPERS ############################################

@@ -36,6 +36,11 @@ $namespaceNames = array(
 	NS_CATEGORY_TALK    => 'Kategorie_Diskussion',
 );
 
+$namespaceGenderAliases = array(
+	NS_USER => array( 'male' => 'Benutser', 'female' => 'Benutserske' ),
+	NS_USER_TALK => array( 'male' => 'Benutser_Diskussion', 'female' => 'Benutserske_Diskussion' ),
+);
+
 $messages = array(
 # User preference toggles
 'tog-underline'               => 'Ferwiese unnerstriekje:',
@@ -46,7 +51,7 @@ $messages = array(
 'tog-newpageshidepatrolled'   => 'Kontrollierde Sieden ap ju Lieste „Näie Sieden“ ferbierge',
 'tog-extendwatchlist'         => 'Uutgediende Beooboachtengslieste tou Anwiesenge fon aal Annerengen',
 'tog-usenewrc'                => 'Fermeerde Deerstaalenge fon do "Lääste Annerengen" (bruukt Javascript)',
-'tog-numberheadings'          => 'Uurschrifte automatisk nuumerierje',
+'tog-numberheadings'          => 'Uurskrifte automatisk nuumerierje',
 'tog-showtoolbar'             => 'Beoarbaidengs-Reewen anwiese',
 'tog-editondblclick'          => 'Sieden mäd Dubbeldklik beoarbaidje (JavaScript)',
 'tog-editsection'             => 'Links toun Beoarbaidjen fon eenpelde Ousatse anwiese',
@@ -69,9 +74,9 @@ $messages = array(
 'tog-oldsig'                  => 'Foarbekiek fon ju aktuälle Signatuur:',
 'tog-fancysig'                => 'Unnerskrift as Wikitext behonnelje (sunner automatiske Ferlinkenge)',
 'tog-externaleditor'          => 'Externen Editor as Standoard benutsje (bloot foar Experte, der mouten spezielle Ienstaalengen ap dän oaine Computer moaked wäide.
-[http://www.mediawiki.org/wiki/Manual:External_editors Moor Information hiertou.])',
+[//www.mediawiki.org/wiki/Manual:External_editors Moor Information hiertou.])',
 'tog-externaldiff'            => 'Extern Diff-Program as Standoard benutsje (bloot foar Experte, der mouten spezielle Ienstaalengen ap dän oaine Computer moaked wäide.
- [http://www.mediawiki.org/wiki/Manual:External_editors Wiedere Informatione hiertou.])',
+ [//www.mediawiki.org/wiki/Manual:External_editors Wiedere Informatione hiertou.])',
 'tog-showjumplinks'           => '"Wikselje tou"-Links muugelk moakje',
 'tog-uselivepreview'          => 'Live-Foarbekiek nutsje (JavaScript) (experimentell)',
 'tog-forceeditsummary'        => 'Woarskauje, wan bie dät Spiekerjen ju Touhoopefoatenge failt',
@@ -400,7 +405,6 @@ Fielicht is ju al fon uurswál läsked wuuden.',
 Funktion: $1<br />
 Oufroage: $2',
 'viewsource'           => 'Wältext betrachtje',
-'viewsourcefor'        => 'foar $1',
 'actionthrottled'      => 'Aktionsantaal limitierd',
 'actionthrottledtext'  => 'Ju Uutfierenge fon disse Aktion tou oafte in ne kuute Tiedoustand is limitierd. Du hääst dit Limit juust ieuwen beloanged. Fersäik et in eenige Minuten fon näien.',
 'protectedpagetext'    => 'Disse Siede is foar dät Beoarbaidjen speerd.',
@@ -408,7 +412,7 @@ Oufroage: $2',
 'protectedinterface'   => 'Disse Siede änthaalt Text foar dät Sproak-Interface fon ju Software un is speerd, uum Misbruuk tou ferhinnerjen.',
 'editinginterface'     => "'''Woarskauenge:''' Du beoarbaidest ne Siede ju der bruukt wäd, Interface-Text foar ju Software tou lääwerjen.
 Annerengen ap disse Siede wirkje sik uut ap ju Benutseruurfläche foar uur Bruukere.
-Foar Uursättengen koast du fielicht beeter [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net] bruuke, dät is dät MediaWiki Lokalisierengsprojekt.",
+Foar Uursättengen koast du fielicht beeter [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net] bruuke, dät is dät MediaWiki Lokalisierengsprojekt.",
 'sqlhidden'            => '(SQL-Oufroage ferbierged)',
 'cascadeprotected'     => 'Disse Siede is tou Beoarbaidenge speerd. Ju is in do {{PLURAL:$1|foulgjende Siede|foulgjende Sieden}} ienbuunen, do der middels ju Kaskadenspeeroption skutsed {{PLURAL:$1|is|sunt}}:
 $2',
@@ -481,7 +485,7 @@ Uurpröif ju Skrieuwwiese (Groot-/Littekskrieuwenge beoachtje) of [[Special:User
 Ignorier disse E-Mail, in dän Fal du ju nit sälwen anfoarderd hääst of wan du dien oold Paaswoud wier betoanke kuust. Dät oolde Paaswoud blift dan wieders gultich.',
 'noemail'                    => 'Benutser "$1" häd neen Email-Adrässe anroat of häd ju E-Mail-Funktion deaktivierd.',
 'noemailcreate'              => 'Du moast ne gultige E-Mail-Adresse anreeke',
-'passwordsent'               => 'N näi temporär Paaswoud wuude an ju Email-Adrässe fon Benutser "$1" soand. Mäldje die jädden deermäd, soo gau as du dät kriegen hääst. Dät oolde Paaswoud blift uk ätters gultich.',
+'passwordsent'               => 'N näi temporär Paaswoud wuude an ju Email-Adrässe fon Benutser "$1" soand. Mäldje die jädden deermäd, so gau as du dät kriegen hääst. Dät oolde Paaswoud blift uk ätters gultich.',
 'blocked-mailpassword'       => 'Ju fon die ferwoande IP-Adresse is foar dät Annerjen fon Sieden speerd. Uum n Misbruuk tou ferhinnerjen, wuude ju Muugelkhaid tou ju Anfoarderenge fon n näi Paaswoud ieuwenfals speerd.',
 'eauthentsent'               => 'Ne Bestäätigengs-Email wuude an ju anroate Adrässe fersoand. Aleer n Email fon uur
 Benutsere uur ju {{SITENAME}}-Mailfunktion ämpfangd wäide kon, mout ju Adrässe un hiere
@@ -605,9 +609,6 @@ Du koast ju „E-Mail an dissen Benutser“-Funktion nit nutsje, soloange neen g
 Dien aktuelle IP-Adresse is $3, und ju Speer-ID is $5.
 Föich alle Informatione fon älke Anfroage bietou, ju du stoalst.',
 'blockednoreason'                  => 'neen Begründenge ounroat',
-'blockedoriginalsource'            => "Die Wältext fon '''$1''' wäd hier anwiesd:",
-'blockededitsource'                => "Die Wältext '''fon dien Annerengen''' an '''$1''':",
-'whitelistedittitle'               => 'Toun Beoarbaidjen is dät nöödich, anmälded tou weesen',
 'whitelistedittext'                => 'Du moast die $1, uum Artikkele beoarbaidje tou konnen.',
 'confirmedittext'                  => 'Du moast dien E-Mail-Adresse eerste anärkanne, eer du beoarbaidje koast. Fäl dien E-Mail uut un ärkanne ju an in do [[Special:Preferences|Ienstaalengen]].',
 'nosuchsectiontitle'               => 'Kon ju Oudeelenge nit fiende',
@@ -842,7 +843,7 @@ Uur Administratore ap {{SITENAME}} hääbe Tougriep ap dän ferstatte Inhoold un
 'revdelete-radio-set'         => 'Jee',
 'revdelete-radio-unset'       => 'Noa',
 'revdelete-suppress'          => 'Gruund fon ju Läskenge uk foar Administratore ferstopped',
-'revdelete-unsuppress'        => 'Ienschränkengen foar wier häärstoalde Versione aphieuwje',
+'revdelete-unsuppress'        => 'Ienskränkengen foar wier häärstoalde Versione aphieuwje',
 'revdelete-log'               => 'Gruund:',
 'revdelete-submit'            => 'Ap uutwäälde  {{PLURAL:$1|Version|Versione}} anweende',
 'revdelete-success'           => "'''Ju Versionsansicht wuud aktualisierd.'''",
@@ -927,7 +928,7 @@ Staal deertruch sicher, dät ju Versionsgeskichte fon n Artikkel historisk akroa
 'searchsubtitle'                   => 'Dien Säikanfroage: „[[:$1|$1]]“ ([[Special:Prefixindex/$1|aal mäd „$1“ ounfangende Sieden]]{{int:pipe-separator}}[[Special:WhatLinksHere/$1|aal Sieden, do ätter „$1“ ferlinkje]])',
 'searchsubtitleinvalid'            => 'Foar dien Säikanfroage „$1“.',
 'toomanymatches'                   => 'Ju Antaal fon Säikresultoate is tou groot, fersäik ne näie Oufroage.',
-'titlematches'                     => 'Uureenstämmengen mäd Uurschrifte',
+'titlematches'                     => 'Uureenstämmengen mäd Uurskrifte',
 'notitlematches'                   => 'Neen Uureenstimmengen',
 'textmatches'                      => 'Uureenstämmengen mäd Texte',
 'notextmatches'                    => 'Neen Uureenstimmengen',
@@ -1021,7 +1022,6 @@ Staal deertruch sicher, dät ju Versionsgeskichte fon n Artikkel historisk akroa
 'prefs-editing'                 => 'Beoarbaidje',
 'prefs-edit-boxsize'            => 'Grööte fon dät Beoarbaidengsfinster:',
 'rows'                          => 'Riegen',
-'columns'                       => 'Spalten',
 'searchresultshead'             => 'Säike (010)',
 'resultsperpage'                => 'Träffere pro Siede:',
 'stub-threshold'                => '<a href="#" class="stub">Kuute Artikkele</a> markierje bi (in Byte):',
@@ -1204,7 +1204,6 @@ Ju duur maximoal $1 {{PLURAL:$1|Teeken|Teekene}} loang weese.',
 'right-autopatrol'            => 'Markier oaine Beoarbaidengen automatisk as kontrollierd',
 'right-patrolmarks'           => 'Ankiekjen fon do Kontrolmarkierengen in do lääste Annerengen',
 'right-unwatchedpages'        => 'Bekiekje ju Lieste fon nit beooboachtede Sieden',
-'right-trackback'             => 'Trackback fermiddelje',
 'right-mergehistory'          => 'Versionsgeskichten fon Sieden touhoopeföigje',
 'right-userrights'            => 'Benutsergjuchte beoarbaidje',
 'right-userrights-interwiki'  => 'Benutsergjuchte in uur Wikis beoarbaidje',
@@ -1249,7 +1248,6 @@ Ju duur maximoal $1 {{PLURAL:$1|Teeken|Teekene}} loang weese.',
 'action-patrol'               => 'do Beoarbaidengen fon uur Benutsere tou kontrollierjen',
 'action-autopatrol'           => 'oaine Beoarbaidengen as kontrollierd tou markierjen',
 'action-unwatchedpages'       => 'ju Lieste fon uunbeoboachtede Sieden tou bekiekjen',
-'action-trackback'            => 'n Trackback tou uurdreegen',
 'action-mergehistory'         => 'do Versionegeskichten fon Sieden fereenigje',
 'action-userrights'           => 'Benutsergjuchte tou annerjen',
 'action-userrights-interwiki' => 'do Gjuchte fon Benutsere in uur Wikis annerje',
@@ -1310,9 +1308,9 @@ Ju duur maximoal $1 {{PLURAL:$1|Teeken|Teekene}} loang weese.',
 'upload_directory_missing'    => 'Dät Upload-Ferteeknis ($1) failt un kuud truch dän Webserver uk nit moaked wäide.',
 'upload_directory_read_only'  => 'Die Webserver häd neen Skrieuwgjuchte foar dät Upload-Ferteeknis ($1).',
 'uploaderror'                 => 'Failer bie dät Hoochleeden',
-'upload-recreate-warning'     => "'''Woarschauenge: ne Doatäi fon dissen Noome wuud al läsked of ferschäuwen.'''
+'upload-recreate-warning'     => "'''Woarskauenge: ne Doatäi fon dissen Noome wuud al läsked of ferskäuwen.'''
 
-Der foulget n Uutsuch uut dät Läsk- un Ferschuuwengs-Logbouk fon disse Doatäi.",
+Der foulget n Uutsuch uut dät Läsk- un Ferskuuwengs-Logbouk fon disse Doatäi.",
 'uploadtext'                  => "Bruuk dit Formular uum näie Doatäie hoochtouleeden.
 
 Gung tou ju [[Special:FileList|Lieste fon hoochleedene Doatäie]], uum foarhoundene Doatäie tou säiken un antouwiesen. Sjuch uk dät [[Special:Log/upload|Doatäi-]] un [[Special:Log/delete|Läsk-Logbouk]].
@@ -1346,7 +1344,7 @@ Beoachtje, dät, juust as bie normoale Sieden-Inhoolde, uur Benutsere dien Doat�
 'uploadedfiles'               => 'Hoochleedene Doatäie',
 'ignorewarning'               => 'Woarskauenge ignorierje un Doatäi daach spiekerje',
 'ignorewarnings'              => 'Woarskauengen ignorierje',
-'minlength1'                  => 'Bieldedoatäien mouten mindestens tjoo Bouksteeuwen foar dän (eersten) Punkt hääbe.',
+'minlength1'                  => 'Bieldedoatäien mouten mindestens tjo Bouksteeuwen foar dän (eersten) Punkt hääbe.',
 'illegalfilename'             => 'Die Doatäinoome "$1" änthaalt ap minste een nit toulät Teeken. Benaam jädden ju Doatäi uum un fersäik, hier fon näien hoochtouleeden.',
 'badfilename'                 => 'Die Datäi-Noome is automatisk annerd tou "$1".',
 'filetype-mime-mismatch'      => 'Doatäi-Fergratterenge „.$1“  stimt nit mäd dän MIME-Typ ($2) uureen.',
@@ -2127,7 +2125,6 @@ Foar Information foulget die aktuelle Iendraach uut dät Speer-Logbouk:',
 'blockiptext'                     => 'Mäd dit Formular speerst du ne IP-Adresse of n Benutsernoome, so dät fon deer neen Annerengen moor foarnuumen wäide konnen.
 Dit skuul bloot geböäre, uum Vandalismus tou ferhinnerjen un in Uureenstimmenge mäd do [[{{MediaWiki:Policy-url}}|Gjuchtlienjen]].
 Reek dän Gruund foar ju Speere oun.',
-'ipaddress'                       => 'IP-Adrässe:',
 'ipadressorusername'              => 'IP-Adresse of Benutsernoome:',
 'ipbexpiry'                       => 'Oulooptied (Speerduur):',
 'ipbreason'                       => 'Begruundenge:',
@@ -2278,7 +2275,7 @@ Die oolde Tittel wäd deerätter tou dän näie fäärelaitje.
 Staal sicher, dät di in n Anslus aal  [[Special:DoubleRedirects|dubbelde]] of [[Special:BrokenRedirects|breekene Fäärelaitengen]] wröigest.
 Du bäst deerfoar feroantwoudelk, dät Links uk fääre ap dät korrekte Siel ferwiese.
 
-Ju Siede wäd ‘’‘nit’‘’ferschäuwen, sowied et al ne Siede mäd dän foarsäine Tittel rakt, of ju moaste loos weese of ne Fäärelaitenge sunner Versionsgeskichte.
+Ju Siede wäd ‘’‘nit’‘’ferskäuwen, sowied et al ne Siede mäd dän foarsäine Tittel rakt, of ju moaste loos weese of ne Fäärelaitenge sunner Versionsgeskichte.
 Dät betjut, dät du ju Uumenaamenge tourääch traale koast, wan du n Failer moaked hääst. Du koast deerjuun neen Siede uurskrieuwe.
 
 '''WOARSKAUENGE!'''
@@ -2374,7 +2371,7 @@ Alternativ is die Export uk mäd de Syntax [[{{#Special:Export}}/{{MediaWiki:Mai
 'allmessagesdefault'            => 'Standardtext',
 'allmessagescurrent'            => 'Dissen Text',
 'allmessagestext'               => 'Dit is ne Lieste fon aal System-Ättergjuchte do in dän MediaWiki-Noomenruum tou Ferföigenge stounde.
-Besäik jädden [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] un [http://translatewiki.net translatewiki.net], wan du mee-oarbaidje wolt an ju MediaWiki-Sortierenge.',
+Besäik jädden [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] un [//translatewiki.net translatewiki.net], wan du mee-oarbaidje wolt an ju MediaWiki-Sortierenge.',
 'allmessagesnotsupportedDB'     => 'Disse Spezioalsiede stoant nit tou Ferföigenge, deer ju uur dän Parameter <tt>$wgUseDatabaseMessages</tt> deaktivierd wuude.',
 'allmessages-filter-legend'     => 'Sieuwe',
 'allmessages-filter'            => 'Sieuwe foar anpaaseden Toustand:',
@@ -2896,7 +2893,7 @@ wiedere standdoardmäitich "ienklapte" Details konnen anwiesd wäide.
 
 # External editor support
 'edit-externally'      => 'Disse Doatäi mäd n extern Program beoarbaidje',
-'edit-externally-help' => '(Sjuch do [http://www.mediawiki.org/wiki/Manual:External_editors Installationsanwiesengen] foar wiedere Informatione)',
+'edit-externally-help' => '(Sjuch do [//www.mediawiki.org/wiki/Manual:External_editors Installationsanwiesengen] foar wiedere Informatione)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'aal',
@@ -2972,13 +2969,6 @@ Disse Bestäätigengskode is gultich bit $4',
 'scarytranscludedisabled' => '[Interwiki-Ienbiendenge is deaktivierd]',
 'scarytranscludefailed'   => '[Foarloagenienbiendenge foar $1 is misglukked]',
 'scarytranscludetoolong'  => '[URL is tou loang]',
-
-# Trackbacks
-'trackbackbox'      => 'Trackbacks foar disse Siede:<br />
-$1',
-'trackbackremove'   => '([$1 läskje])',
-'trackbacklink'     => 'Trackback',
-'trackbackdeleteok' => 'Trackback wuude mäd Ärfoulch läsked.',
 
 # Delete conflict
 'deletedwhileediting'      => 'Oachtenge: Disse Siede wuude al läsked, ätter dät du anfangd hiedest, hier tou beoarbaidjen!
@@ -3077,13 +3067,13 @@ Du koast dien Beooboachtengslieste uk in dät [[Special:EditWatchlist/raw|Lieste
 'version-hook-subscribedby'     => 'Aproup fon',
 'version-version'               => '(Version $1)',
 'version-license'               => 'Lizenz',
-'version-poweredby-credits'     => "Disse Website nutset '''[http://www.mediawiki.org/wiki/MediaWiki/de MediaWiki]''', Copyright © 2001–$1 $2.",
+'version-poweredby-credits'     => "Disse Website nutset '''[//www.mediawiki.org/wiki/MediaWiki/de MediaWiki]''', Copyright © 2001–$1 $2.",
 'version-poweredby-others'      => 'uur',
 'version-license-info'          => "MediaWiki is fräie Software, dät hat dät ju ätter do Bedingengen fon ju truch de Free Software Foundation fereepenlikede ''GNU General Public License'', fääreferdeeld un/ of modifizierd wäide kon. Deerbie kon ju version 2, of ätter oainen Uurdeel, älke näiere Version fon ju Lizenz ferwoand wäide.
 
 MediaWiki wäd ferdeeld in ju Hoopenge, dät et nutselk weese skäl, man SUNNER EENIGE GARANTIE un sogoar sunner ju implizierde Garantie fon ne MÄÄRKEDGÄNGEGAID of OAINENGE FOAR N BESTIMDEN TSWÄK. Hiertou sunt wiedere Waiwiesengen in ju ''GNU General Public License'' äntheelden.
 
-Ne [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopie fon ju ''GNU General Public License''] skuul touhoope mäd dissen Program ferdeeld wuuden weese. Insofier dät nit dän Fal waas, kon ne Kopie bie ju Free Software Foundation Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA, skriftlek anfoarderd of ap do hiere Website [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html online leesen] wäide.",
+Ne [{{SERVER}}{{SCRIPTPATH}}/COPYING Kopie fon ju ''GNU General Public License''] skuul touhoope mäd dissen Program ferdeeld wuuden weese. Insofier dät nit dän Fal waas, kon ne Kopie bie ju Free Software Foundation Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA, skriftlek anfoarderd of ap do hiere Website [//www.gnu.org/licenses/old-licenses/gpl-2.0.html online leesen] wäide.",
 'version-software'              => 'Installierde Software',
 'version-software-product'      => 'Produkt',
 'version-software-version'      => 'Version',

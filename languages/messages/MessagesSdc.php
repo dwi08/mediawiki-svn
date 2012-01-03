@@ -419,13 +419,12 @@ Si priga di cuntattà un'[[Special:ListUsers/sysop|amministhradore]], ippizzific
 funzioni: $1<br />
 Interrogazioni: $2",
 'viewsource'           => 'Vèdi còdizi',
-'viewsourcefor'        => 'pa $1',
 'actionthrottled'      => 'Azioni limitadda',
 'actionthrottledtext'  => "Cumenti rimédiu anti-spam, v'è un lìmiti a l'azioni ch'è pussìbiri eseguì i'nu tempu isthabiriddu, e abà suparaddu. Pògu tèmpu e pói riprubà.",
 'protectedpagetext'    => 'Chistha pàgina è isthadda prutiggidda pa impidinni la mudìfigga.',
 'viewsourcetext'       => 'È pussìbiri visuarizzà e cupià lu còdizi di chistha pàgina:',
 'protectedinterface'   => "Chistha pàgina cunteni un'erementu chi fazzi parthi di l'interfàccia utenti di lu software; è dunca prutiggidda pa evità pussìbiri abusi.",
-'editinginterface'     => "'''Attinzioni:''' Lu testhu di chistha pàgina fazzi parthi di l'interfàccia utenti di lu situ. Tutti li mudìfigghi arriggaddi a chistha pàgina si rifrèttini i' l'imbasciaddi visuarizzaddi pa tutti l'utenti. Pa li traduzioni, pa piazeri utirizà [http://translatewiki.net/wiki/Main_Page?setlang=sdc translatewiki.net], lu prugettu di lucarizazioni MediaWiki.",
+'editinginterface'     => "'''Attinzioni:''' Lu testhu di chistha pàgina fazzi parthi di l'interfàccia utenti di lu situ. Tutti li mudìfigghi arriggaddi a chistha pàgina si rifrèttini i' l'imbasciaddi visuarizzaddi pa tutti l'utenti. Pa li traduzioni, pa piazeri utirizà [//translatewiki.net/wiki/Main_Page?setlang=sdc translatewiki.net], lu prugettu di lucarizazioni MediaWiki.",
 'sqlhidden'            => "(l'interrogazioni SQL è isthadda cuadda)",
 'cascadeprotected'     => 'In chistha pàgina nò è pussìbiri effettuà mudìfigghi parchí è isthadda incrusa {{PLURAL:$1|i la sighenti pàgina indicadda, ch\'è isthadda prutiggidda|i li sighenti pàgini indicaddi, chi so isthaddi prutiggiddi}} chirriendi la prutizioni "ricussiba":
 $2',
@@ -586,9 +585,6 @@ Attinzioni chi la funzioni '''Ischribì a l'utenti''' nò è attiba si nò è is
 
 Si vói ciaramiddanne, pa piazeri prizzisa sempri lu nùmaru di lu broccu (ID #$5).",
 'blockednoreason'                  => 'nisciuna mutibazioni indicadda',
-'blockedoriginalsource'            => "Inogghi è musthraddu lu codizi di la pagina '''$1''':",
-'blockededitsource'                => "Inogghi so musthraddi li '''mudìfigghi arriggaddi''' a la pagina '''$1''':",
-'whitelistedittitle'               => 'È nezzessariu intrà pa mudifiggà li pagini',
 'whitelistedittext'                => 'Pa mudìfiggà li pàgini è nezzessàriu $1.',
 'confirmedittext'                  => "Pa assé abiritaddi a la mudìfigga di li pàgini è nezzessàriu cunfèimma lu proprio indirizzu di postha erettrònica. Pa impusthà e cunfèimmà l'indirizzu usà li [[Special:Preferences|prifirenzi]].",
 'nosuchsectiontitle'               => 'La sezzioni nò esisthi',
@@ -842,7 +838,6 @@ Cunsulthà lu [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} rigi
 'resetprefs'                => 'Rimpusthà li prifirènzi',
 'prefs-editing'             => 'Casella di mudìfigga',
 'rows'                      => 'Righi:',
-'columns'                   => 'Curonni:',
 'searchresultshead'         => 'Zercha',
 'resultsperpage'            => 'Nùmaru di risulthaddi pa pàgina:',
 'stub-threshold'            => 'Varori mìminu pa i <a href="#" class="stub">cullegamenti a li sàgumi</a>:',
@@ -1505,7 +1500,6 @@ $1",
 
 # Block/unblock
 'blockip'                     => 'Brocca utenti',
-'ipaddress'                   => 'Indirizzu IP:',
 'ipadressorusername'          => 'Indirizzu IP o innòmu utenti:',
 'ipbexpiry'                   => 'Ischadènzia di lu broccu:',
 'ipbreason'                   => 'Mutibu di lu broccu:',
@@ -1649,7 +1643,7 @@ In chisth'ulthimu casu si pó utilizzà puru un cullegamentu, pa esempiu [[{{#Sp
 'allmessagesdefault'            => 'Testhu pridifiniddu',
 'allmessagescurrent'            => 'Testhu attuari',
 'allmessagestext'               => "Chistha è la listha di tutti l'imbasciaddi di sisthema dipunìbiri i' lu tipu di pàgina MediaWiki.
-Pa piazeri utirizà [http://www.mediawiki.org/wiki/Localisation MediaWiki Lucarizazioni] e [http://translatewiki.net translatewiki.net] pa l'althri traduzioni.",
+Pa piazeri utirizà [//www.mediawiki.org/wiki/Localisation MediaWiki Lucarizazioni] e [//translatewiki.net translatewiki.net] pa l'althri traduzioni.",
 'allmessagesnotsupportedDB'     => "Chistha pàgina nò è supporthadda parchí l'indicadori '''\$wgUseDatabaseMessages''' nò è attibuu.",
 'allmessages-filter-unmodified' => 'Nò mudifiggaddi',
 'allmessages-filter-all'        => 'Tutti',
@@ -1923,7 +1917,7 @@ So cunsidaraddi soru l'erenchi puntaddi (righi ch'ischumenzani cu' lu caràtteri
 
 # External editor support
 'edit-externally'      => 'Mudìfigga chistu file usendi un prugramma esthernu',
-'edit-externally-help' => "Pa maggiori infuimmazioni cunsulthà l'[http://www.mediawiki.org/wiki/Manual:External_editors isthruzioni] (in ingresu).",
+'edit-externally-help' => "Pa maggiori infuimmazioni cunsulthà l'[//www.mediawiki.org/wiki/Manual:External_editors isthruzioni] (in ingresu).",
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tutti',
@@ -1964,13 +1958,6 @@ Chistu còdizi di cunfèimma ischadrà automatiggamenti a li \$4.",
 'scarytranscludedisabled' => "[L'incrusioni di pàgini tra siti wiki nò è attiba]",
 'scarytranscludefailed'   => '[Errori: Impussìbiri uttinì lu mudellu $1]',
 'scarytranscludetoolong'  => "[L'URL è troppu longu]",
-
-# Trackbacks
-'trackbackbox'      => 'Infuimmazioni di tracciamentu pa chistha pàgina:<br />
-$1',
-'trackbackremove'   => '([$1 Elimina])',
-'trackbacklink'     => 'Tracciamentu',
-'trackbackdeleteok' => 'Infuimmazioni di tracciamentu eliminaddi.',
 
 # Delete conflict
 'deletedwhileediting' => "Attinzioni: Chistha pàgina è isthadda canzilladda daboi ch'ài ischuminzaddu a mudìfiggarla!",

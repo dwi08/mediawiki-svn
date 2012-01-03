@@ -12,6 +12,27 @@
  * @author Sylvain2803
  */
 
+$fallback = 'qu, es';
+
+$namespaceNames = array(
+	NS_MEDIA            => 'Midya',
+	NS_SPECIAL          => 'Sapak',
+	NS_TALK             => 'Rimanakuy',
+	NS_USER             => 'Rurak',
+	NS_USER_TALK        => 'Rurakpa_rimanakuy',
+	NS_PROJECT_TALK     => '$1-pa_rimanakuy',
+	NS_FILE             => 'Rikcha',
+	NS_FILE_TALK        => 'Rikchapa_rimanakuy',
+	NS_MEDIAWIKI        => 'MediaWiki',
+	NS_MEDIAWIKI_TALK   => 'MediaWikipa_rimanakuy',
+	NS_TEMPLATE         => 'Plantilla',
+	NS_TEMPLATE_TALK    => 'Plantillapa_rimanakuy',
+	NS_HELP             => 'Yanapa',
+	NS_HELP_TALK        => 'Yanapapak_rimanakuy',
+	NS_CATEGORY         => 'Samiyachiy',
+	NS_CATEGORY_TALK    => 'Samiyachiy_rimanakuy',
+);
+
 $messages = array(
 # Dates
 'sunday'        => 'Hawkay',
@@ -432,7 +453,7 @@ Shuk rurakkunaka kikinpa e-chaski ''dirección''ta mana yachankachu.",
 'filehist-user'          => 'Rurak',
 'filehist-dimensions'    => 'Mashna hatun',
 'filehist-comment'       => 'Willana',
-'imagelinks'             => 'Archivuman tinkikuna',
+'imagelinks'             => 'Archivu churapaykuna',
 'linkstoimage'           => 'Kay rikchaman {{PLURAL:$1|pankaka|pankakunaka}}  tinkikunata charin:',
 'nolinkstoimage'         => 'Nima pankaka kay rikchaman tinkikunchu.',
 'sharedupload'           => 'Chay rikchaka $1-mantami kan, icha shuk ruraykamaykunaka paywan llankan',
@@ -450,7 +471,7 @@ Shuk rurakkunaka kikinpa e-chaski ''dirección''ta mana yachankachu.",
 'nbytes'        => '$1 {{PLURAL:$1|byte|byte}}',
 'nmembers'      => '$1 {{PLURAL:$1|panka|pankakuna}}',
 'prefixindex'   => 'Tukuy kallarikshutiyuk pankakunaka',
-'usercreated'   => '$1 punchapi $2 pachapi kamashka',
+'usercreated'   => '{{GENDER:$3|}}$1 punchapi $2 pachapi kamashka',
 'newpages'      => 'Mushuk pankakuna',
 'move'          => 'Apakuy',
 'movethispage'  => 'Kay pankaman shuk mushuk shutita karana',
@@ -478,7 +499,7 @@ Shuk rurakkunaka kikinpa e-chaski ''dirección''ta mana yachankachu.",
 'categories' => 'Katiguriyakuna',
 
 # Special:LinkSearch
-'linksearch'      => 'hawaman tinkikuna',
+'linksearch'      => 'hawaman tinkikunata maskana',
 'linksearch-line' => '$1 pankaka $2-manta tinkishkami kan',
 
 # Special:Log/newusers
@@ -712,7 +733,7 @@ Shuk aspipi, shukniki tinkika ima tinkita wichkashkami kanka nin, kay aspipi shu
 
 # External editor support
 'edit-externally'      => 'Kay archiwuta shuk hawa antanawan llankana',
-'edit-externally-help' => 'Ashtawan yachakunkakak [http://www.mediawiki.org/wiki/Manual:External_editors kay yanapata] (inlish shimipi) killkakatipay',
+'edit-externally-help' => 'Ashtawan yachakunkakak [//www.mediawiki.org/wiki/Manual:External_editors kay yanapata] (inlish shimipi) killkakatipay',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tukuy',

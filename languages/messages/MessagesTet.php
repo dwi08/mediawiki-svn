@@ -273,6 +273,7 @@ $messages = array(
 'nstab-user'      => "Pájina uza-na'in",
 'nstab-special'   => 'Pájina espesiál',
 'nstab-project'   => 'Pájina projetu nian',
+'nstab-image'     => 'Fail',
 'nstab-mediawiki' => 'Mensajen',
 'nstab-help'      => 'Pájina ajuda',
 'nstab-category'  => 'Kategoria',
@@ -288,7 +289,6 @@ Lista ida pájina espesiál nian [[Special:SpecialPages|iha ne'e]].",
 'missingarticle-rev'  => '(version#: $1)',
 'missingarticle-diff' => '(Dif.: $1, $2)',
 'viewsource'          => 'Lee testu',
-'viewsourcefor'       => 'ba $1',
 'viewsourcetext'      => 'Ó bele lee no kopia testu pájina nian:',
 'namespaceprotected'  => "Ó la iha priviléjiu ba edita pájina sira iha espasu '''$1'''.",
 'ns-specialprotected' => 'La ema ida bele edita pájina espesiál sira.',
@@ -449,11 +449,11 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'group-suppress'   => "Oversight-na'in sira",
 'group-all'        => '(hotu)',
 
-'group-user-member'       => "Uza-na'in",
+'group-user-member'       => "{{GENDER:$1|Uza-na'in}}",
 'group-bot-member'        => 'Bot',
-'group-sysop-member'      => 'Administradór',
-'group-bureaucrat-member' => 'Burokrata',
-'group-suppress-member'   => "Oversight-na'in",
+'group-sysop-member'      => '{{GENDER:$1|Administradór|Administradóra}}',
+'group-bureaucrat-member' => '{{GENDER:$1|Burokrata}}',
+'group-suppress-member'   => "{{GENDER:$1|Oversight-na'in}}",
 
 'grouppage-user'       => "{{ns:project}}:Uza-na'in sira",
 'grouppage-bot'        => '{{ns:project}}:Bot sira',
@@ -526,11 +526,13 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'license-header' => 'Lisensa:',
 
 # Special:ListFiles
+'imgfile'        => 'fail',
 'listfiles_date' => 'Tempu',
 'listfiles_name' => 'Naran',
 'listfiles_user' => "Uza-na'in",
 
 # File description page
+'file-anchor-link'   => 'Fail',
 'filehist-deleteall' => 'halakon hotu',
 'filehist-deleteone' => 'halakon',
 'filehist-current'   => 'atuál',
@@ -581,8 +583,8 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'booksources-go' => 'Bá',
 
 # Special:Log
-'specialloguserlabel'  => "Uza-na'in:",
-'speciallogtitlelabel' => 'Títulu:',
+'specialloguserlabel'  => "Uza-na'in ne'ebé halo:",
+'speciallogtitlelabel' => "Objetivu (títulu ka uza-na'in):",
 
 # Special:AllPages
 'allpages'          => 'Pájina hotu',
@@ -731,7 +733,6 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 # Block/unblock
 'blockip'                  => "Blokeiu uza-na'in",
 'blockip-legend'           => "Blokeiu uza-na'in",
-'ipaddress'                => 'Diresaun IP:',
 'ipbreason'                => 'Motivu:',
 'ipbreasonotherlist'       => 'Motivu seluk',
 'ipbsubmit'                => "Blokeiu uza-na'in ne'e",
@@ -883,7 +884,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'exif-urgency-high'   => 'Aas ($1)',
 
 # External editor support
-'edit-externally-help' => "(Haree [http://www.mediawiki.org/wiki/Manual:External_editors iha ne'e] ba informasaun barak liu)",
+'edit-externally-help' => "(Haree [//www.mediawiki.org/wiki/Manual:External_editors iha ne'e] ba informasaun barak liu)",
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'hotu',
@@ -927,6 +928,7 @@ Check your spelling, ka [[Special:UserLogin/signup|kria konta foun]].',
 'version-software-version' => 'Versaun',
 
 # Special:FilePath
+'filepath-page'   => 'Fail:',
 'filepath-submit' => 'Bá',
 
 # Special:FileDuplicateSearch

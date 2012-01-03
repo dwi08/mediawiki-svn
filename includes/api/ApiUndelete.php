@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiBase.php" );
-}
-
 /**
  * @ingroup API
  */
@@ -39,14 +34,13 @@ class ApiUndelete extends ApiBase {
 	}
 
 	public function execute() {
-		global $wgUser;
 		$params = $this->extractRequestParams();
 
-		if ( !$wgUser->isAllowed( 'undelete' ) ) {
+		if ( !$this->getUser()->isAllowed( 'undelete' ) ) {
 			$this->dieUsageMsg( 'permdenied-undelete' );
 		}
 
-		if ( $wgUser->isBlocked() ) {
+		if ( $this->getUser()->isBlocked() ) {
 			$this->dieUsageMsg( 'blockedtext' );
 		}
 
@@ -74,7 +68,7 @@ class ApiUndelete extends ApiBase {
 
 		if ( $retval[1] ) {
 			wfRunHooks( 'FileUndeleteComplete',
-				array( $titleObj, array(), $wgUser, $params['reason'] ) );
+				array( $titleObj, array(), $this->getUser(), $params['reason'] ) );
 		}
 
 		$this->setWatch( $params['watchlist'], $titleObj );
@@ -160,7 +154,7 @@ class ApiUndelete extends ApiBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Undelete';
+		return 'https://www.mediawiki.org/wiki/API:Undelete';
 	}
 
 	public function getVersion() {

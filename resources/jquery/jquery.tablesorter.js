@@ -230,7 +230,7 @@
 	 * @param $table jQuery object for a <table>
 	 */ 
 	function emulateTHeadAndFoot( $table ) {
-		var $rows = $table.find( 'tr' );
+		var $rows = $table.find( '> tbody > tr' );
 		if( !$table.get(0).tHead ) {
 			var $thead = $( '<thead>' );
 			$rows.each( function() {
@@ -241,7 +241,7 @@
 				}
 				$thead.append( this );
 			} );
-			$table.prepend( $thead );
+			$table.children('tbody').before( $thead );
 		}
 		if( !$table.get(0).tFoot ) {
 			var $tfoot = $( '<tfoot>' );
@@ -260,7 +260,7 @@
 		var	maxSeen = 0,
 			longest,
 			realCellIndex = 0,
-			$tableHeaders = $( 'thead:eq(0) tr', table );
+			$tableHeaders = $( 'thead:eq(0) > tr', table );
 		if ( $tableHeaders.length > 1 ) {
 			$tableHeaders.each( function() {
 				if ( this.cells.length > maxSeen ) {
@@ -270,7 +270,7 @@
 			});
 			$tableHeaders = $( longest );
 		}
-		$tableHeaders = $tableHeaders.find( 'th' ).each( function( index ) {
+		$tableHeaders = $tableHeaders.children( 'th' ).each( function( index ) {
 			this.column = realCellIndex;
 
 			var colspan = this.colspan;
@@ -442,13 +442,13 @@
 
 	function explodeRowspans( $table ) {
 		// Split multi row cells into multiple cells with the same content
-		$table.find( 'tbody [rowspan]' ).each(function() {
+		$table.find( '> tbody > tr > [rowspan]' ).each(function() {
 			var rowSpan = this.rowSpan;
 			this.rowSpan = 1;
 			var cell = $( this );
 			var next = cell.parent().nextAll();
 			for ( var i = 0; i < rowSpan - 1; i++ ) {
-				var td = next.eq( i ).find( 'td' );
+				var td = next.eq( i ).children( 'td' );
 				if ( !td.length ) {
 					next.eq( i ).append( cell.clone() );
 				} else if ( this.cellIndex === 0 ) {
@@ -585,8 +585,13 @@
 					cacheRegexs();
 
 					// Apply event handling to headers
-					// this is to big, perhaps break it out?
+					// this is too big, perhaps break it out?
 					$headers.click( function( e ) {
+						if ( e.target.nodeName.toLowerCase() == 'a' ) {
+							// The user clicked on a link inside a table header
+							// Do nothing and let the default link click action continue
+							return true;
+						}
 
 						if ( firstTime ) {
 							firstTime = false;
@@ -594,13 +599,13 @@
 							// Legacy fix of .sortbottoms
 							// Wrap them inside inside a tfoot (because that's what they actually want to be) &
 							// and put the <tfoot> at the end of the <table>
-							var $sortbottoms = $table.find( 'tr.sortbottom' );
+							var $sortbottoms = $table.find( '> tbody > tr.sortbottom' );
 							if ( $sortbottoms.length ) {
-								var $tfoot = $table.find( 'tfoot' );
-								if( $tfoot.length ) {
+								var $tfoot = $table.children( 'tfoot' );
+								if ( $tfoot.length ) {
 									$tfoot.eq(0).prepend( $sortbottoms );
 								} else {
-									$table.append( $( '<tfoot>' ).append( $sortbottoms ) )
+									$table.append( $( '<tfoot>' ).append( $sortbottoms ) );
 								}
 							}
 
@@ -668,12 +673,7 @@
 							};
 							return false;
 						}
-					} )
-					// Allow links in headers to be clicked
-					.find( 'a' ).click( function( e ) {
-						e.stopPropagation();
 					} );
-
 				} );
 			},
 

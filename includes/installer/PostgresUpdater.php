@@ -16,6 +16,11 @@
 class PostgresUpdater extends DatabaseUpdater {
 
 	/**
+	 * @var DatabasePostgres
+	 */
+	protected $db;
+
+	/**
 	 * @todo FIXME: Postgres should use sequential updates like Mysql, Sqlite
 	 * and everybody else. It never got refactored like it should've.
 	 */
@@ -33,6 +38,7 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'renameSequence', 'rc_rc_id_seq',        'recentchanges_rc_id_seq'     ),
 			array( 'renameSequence', 'log_log_id_seq',      'logging_log_id_seq'          ),
 			array( 'renameSequence', 'pr_id_val',           'page_restrictions_pr_id_seq' ),
+			array( 'renameSequence', 'us_id_seq',           'uploadstash_us_id_seq' ),
 
 			# new tables
 			array( 'addTable', 'category',          'patch-category.sql' ),
@@ -54,6 +60,8 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'addTable', 'msg_resource',      'patch-msg_resource.sql' ),
 			array( 'addTable', 'msg_resource_links','patch-msg_resource_links.sql' ),
 			array( 'addTable', 'module_deps',       'patch-module_deps.sql' ),
+			array( 'addTable', 'uploadstash',       'patch-uploadstash.sql' ),
+			array( 'addTable', 'user_former_groups','patch-user_former_groups.sql' ),
 
 			# Needed before new field
 			array( 'convertArchive2' ),
@@ -106,6 +114,8 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'addPgField', 'logging',       'log_page',             'INTEGER' ),
 			array( 'addPgField', 'interwiki',     'iw_api',               "TEXT NOT NULL DEFAULT ''"),
 			array( 'addPgField', 'interwiki',     'iw_wikiid',            "TEXT NOT NULL DEFAULT ''"),
+			array( 'addPgField', 'revision',      'rev_sha1',             "TEXT NOT NULL DEFAULT ''" ),
+			array( 'addPgField', 'archive',       'ar_sha1',              "TEXT NOT NULL DEFAULT ''" ),
 
 			# type changes
 			array( 'changeField', 'archive',       'ar_deleted',      'smallint', '' ),
@@ -206,7 +216,6 @@ class PostgresUpdater extends DatabaseUpdater {
 			array( 'changeFkeyDeferrable', 'revision',         'rev_page',        'page (page_id) ON DELETE CASCADE' ),
 			array( 'changeFkeyDeferrable', 'revision',         'rev_user',        'mwuser(user_id) ON DELETE RESTRICT' ),
 			array( 'changeFkeyDeferrable', 'templatelinks',    'tl_from',         'page(page_id) ON DELETE CASCADE' ),
-			array( 'changeFkeyDeferrable', 'trackbacks',       'tb_page',         'page(page_id) ON DELETE CASCADE' ),
 			array( 'changeFkeyDeferrable', 'user_groups',      'ug_user',         'mwuser(user_id) ON DELETE CASCADE' ),
 			array( 'changeFkeyDeferrable', 'user_newtalk',     'user_id',         'mwuser(user_id) ON DELETE CASCADE' ),
 			array( 'changeFkeyDeferrable', 'user_properties',  'up_user',         'mwuser(user_id) ON DELETE CASCADE' ),
@@ -385,6 +394,10 @@ END;
 	}
 
 	protected function renameSequence( $old, $new ) {
+		if ( $this->db->sequenceExists( $new ) ) {
+			$this->output( "WARNING sequence $new already exists\n" );
+			return;
+		}
 		if ( $this->db->sequenceExists( $old ) ) {
 			$this->output( "Renaming sequence $old to $new\n" );
 			$this->db->query( "ALTER SEQUENCE $old RENAME TO $new" );
@@ -615,12 +628,14 @@ END;
 	protected function tsearchFixes() {
 		# Tweak the page_title tsearch2 trigger to filter out slashes
 		# This is create or replace, so harmless to call if not needed
+		$this->output( "Refreshing ts2_page_title()...\n" );
 		$this->applyPatch( 'patch-ts2pagetitle.sql' );
 
 		# If the server is 8.3 or higher, rewrite the tsearch2 triggers
 		# in case they have the old 'default' versions
 		# Gather version numbers in case we need them
 		if ( $this->db->getServerVersion() >= 8.3 ) {
+			$this->output( "Rewriting tsearch2 triggers...\n" );
 			$this->applyPatch( 'patch-tsearch2funcs.sql' );
 		}
 	}

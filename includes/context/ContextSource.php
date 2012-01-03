@@ -35,9 +35,9 @@ abstract class ContextSource implements IContextSource {
 	private $context;
 
 	/**
-	 * Get the IContextSource object
-	 *
-	 * @return IContextSource
+	 * Get the RequestContext object
+	 * @since 1.18
+	 * @return RequestContext
 	 */
 	public function getContext() {
 		if ( $this->context === null ) {
@@ -51,6 +51,7 @@ abstract class ContextSource implements IContextSource {
 	/**
 	 * Set the IContextSource object
 	 *
+	 * @since 1.18
 	 * @param $context IContextSource
 	 */
 	public function setContext( IContextSource $context ) {
@@ -60,6 +61,7 @@ abstract class ContextSource implements IContextSource {
 	/**
 	 * Get the WebRequest object
 	 *
+	 * @since 1.18
 	 * @return WebRequest
 	 */
 	public function getRequest() {
@@ -69,6 +71,7 @@ abstract class ContextSource implements IContextSource {
 	/**
 	 * Get the Title object
 	 *
+	 * @since 1.18
 	 * @return Title
 	 */
 	public function getTitle() {
@@ -78,6 +81,7 @@ abstract class ContextSource implements IContextSource {
 	/**
 	 * Get the OutputPage object
 	 *
+	 * @since 1.18
 	 * @return OutputPage object
 	 */
 	public function getOutput() {
@@ -87,6 +91,7 @@ abstract class ContextSource implements IContextSource {
 	/**
 	 * Get the User object
 	 *
+	 * @since 1.18
 	 * @return User
 	 */
 	public function getUser() {
@@ -96,15 +101,28 @@ abstract class ContextSource implements IContextSource {
 	/**
 	 * Get the Language object
 	 *
+	 * @deprecated 1.19 Use getLanguage instead
 	 * @return Language
 	 */
 	public function getLang() {
-		return $this->getContext()->getLang();
+		wfDeprecated( __METHOD__, '1.19' );
+		return $this->getLanguage();
+	}
+
+	/**
+	 * Get the Language object
+	 *
+	 * @since 1.19
+	 * @return Language
+	 */
+	public function getLanguage() {
+		return $this->getContext()->getLanguage();
 	}
 
 	/**
 	 * Get the Skin object
 	 *
+	 * @since 1.18
 	 * @return Skin
 	 */
 	public function getSkin() {
@@ -115,10 +133,13 @@ abstract class ContextSource implements IContextSource {
 	 * Get a Message object with context set
 	 * Parameters are the same as wfMessage()
 	 *
+	 * @since 1.18
 	 * @return Message object
 	 */
 	public function msg( /* $args */ ) {
-		return call_user_func_array( array( $this->getContext(), 'msg' ), func_get_args() );
+		$args = func_get_args();
+		return call_user_func_array( array( $this->getContext(), 'msg' ), $args );
 	}
+	
 }
 

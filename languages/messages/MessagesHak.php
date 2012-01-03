@@ -313,7 +313,6 @@ Chhiáng ki-liu̍k hâ URL thi-chí, pin hiong [[Special:ListUsers/sysop|Kón-l�
 Chhṳ-su: $1<br />
 Chhà-khon: $2',
 'viewsource'           => 'Ngièn-sṳ́-tóng',
-'viewsourcefor'        => '$1 ke ngièn-sṳ́-tóng',
 'actionthrottled'      => 'Thung-tsok yí-kîn ap-tsṳ',
 'protectedpagetext'    => 'Pún-chông yí-kîn pûn fûng-só put yún-chún phiên-cho.',
 'viewsourcetext'       => 'Ngì khó-yî chhà-khon pin fuk-chṳ pún vùn-chông ke kîn-ngièn.',
@@ -442,9 +441,6 @@ Ngì khó-yî ki-siu̍k yî ngia̍k-miàng fông-sṳt sṳ́-yung {{SITENAME}},
 
 Liá-chhṳ chhà-fûng he yù $1 só fûng ke. Tông-chûng ke ngièn-yîn he ''$2''. Ngì khó-yî lièn-lo̍k $1 fe̍t-chá khì-thâ ke [[{{MediaWiki:Grouppage-sysop}}|Kón-lî-yèn]], thó-lun liá-chhṳ ke chhà-fûng. Chhù-fî ngì yí-kîn chhai ngì-ke [[Special:Preferences|Chong-ho chhâm-su sat-chṳ]] chûng sat-thin liáu yit-ke yû-háu ke email, féu-chet ngì-he put-nèn sṳ́-yung “email liá-vi yung-fu” ke kûng-yung. Ngì-ke IP thi-tiám he $3, yì-yèn ke chhà-fûng ID he #$5. Chhiáng ngì chhai só-yû chhà-chhìm chûng chu-mìn liá-ke thi-tiám khi̍p／fe̍t-he chhà-fûng ID.",
 'autoblockedtext'                  => 'Ngì-ke IP thi-tiám yí-kîn pûn chhṳ-thung chhà-fûng, lî-yù he siên-chhièn ke nang yit-vi yung-fu pûn $1 só chhà-fûng. Yì-yèn chhà-fûng ke ngièn-yîn he: \'\'$2\'\' liá-chhṳ chhà-fûng ke khì-kiên he: $6 ngì khó-yî lièn-lo̍k $1 fe̍t-chá khì-thâ ke [[{{MediaWiki:Grouppage-sysop}}|kón-lî-yèn]], thó-lun liá-chhṳ chhà-fûng. Chhù-fî ngì yí-kîn chhai ngì-ke [[Special:Preferences|chong-ho chhâm-su sat-chṳ]] chûng sat-thin yit-ke yû-háu ke email thi-tiám, féu-chet ngì-he put-nèn sṳ́-yung "email liá-vi yung-fu" ke kûng-nèn. Ngì-ke chhà-fûng ID he $5. Chhiáng ngì chhai só-yû thiàu-chhà chûng chu-mìn liá-ke chhà-fûng ID.',
-'blockedoriginalsource'            => "Yî-ha he '''$1''' ke ngièn-sṳ́ me̍t:",
-'blockededitsource'                => "Ngì tui '''$1''' chin-hàng '''phiên-siá''' ke vùn-sṳ yì-hâ:",
-'whitelistedittitle'               => 'Tên-ngi̍p heu chhòi hí-khó phiên-siá',
 'whitelistedittext'                => 'Ngì pit-sî siên $1 chhòi-nèn phiên-siá vùn-chông.',
 'confirmedittext'                  => 'Chhai phiên-cho chhṳ́-chông chṳ̂-chhièn pit-sî khok-ngin ngì-ke email thi-tiám. Chhiáng theu-ko [[Special:Preferences|chhâm-su sat-thin]] sat-thin pin ngiam-chṳn ngì-ke email thi-tiám.',
 'nosuchsectiontitle'               => 'Mò-yû liá-ke thon-lo̍k',
@@ -670,7 +666,6 @@ Tông-tsûng pûn $3 fûng-só ke ngièn-yîn he ''$2''",
 'resetprefs'            => 'Sat-thin',
 'prefs-editing'         => 'Phiên-cho',
 'rows'                  => 'Phài-lie̍t',
-'columns'               => 'Lie̍t-su:',
 'searchresultshead'     => 'Chhìm-cháu kiet-kó sat-thin',
 'resultsperpage'        => 'Mî-chông hién-sṳ lièn-kiet su:',
 'stub-threshold'        => 'Tón vùn-chông hién-sṳ kî-pún han-chṳ',
@@ -1234,7 +1229,6 @@ Chhiáng chhâm-kháu [[Special:Log/delete|chhù-hi ngit-ki]] lòi chhà-chhut c
 # Block/unblock
 'blockip'                     => 'chhà-fûng IP thi-tiám',
 'blockiptext'                 => 'Yung ha-mien ke péu-tân kim-chṳ́ lòi-chhṳ mêu-yit thi̍t-thin IP thi-tiám ke kiên-kói hí-khó-khièn. Chṳ́-yû chhai-vi fòng-chṳ́ pho-fái, khi̍p fù-ha̍p [[{{MediaWiki:Policy-url}}|Sú-chet]] ke chhìn-khóng hâ chhòi khó chhái-chhí chhṳ́ hàng-thung. Chhiáng chhai ha-mien sû-ngi̍p yit-ke khí-thí ke lî-yù （chhiong-he yîn-sut yit-ke pûn-ngìn pho-fái ke hong-mien）.',
-'ipaddress'                   => 'IP thi-tiám',
 'ipadressorusername'          => 'IP thi-tiám fe̍t-he yung-fu-miàng',
 'ipbexpiry'                   => 'Khì-han:',
 'ipbreason'                   => 'Ngièn-yîn:',
@@ -1381,7 +1375,7 @@ Nang-ngoi ngì hí-khó li-yung lièn-kiet thô-chhut tóng-on, yì-yi ngì hí-
 'allmessagesdefault'        => 'Yi-sat ke vùn-sṳ',
 'allmessagescurrent'        => 'Tông-chhièn ke vùn-sṳ',
 'allmessagestext'           => 'Liá-piên lie̍t-chhut só-yû hí-khó thin-chṳ ke ne-thúng kie-mien.
-Please visit [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [http://translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
+Please visit [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation] and [//translatewiki.net translatewiki.net] if you wish to contribute to the generic MediaWiki localisation.',
 'allmessagesnotsupportedDB' => 'Ne-thúng kie-mien kûng-yung chhu-yî kôan-pit chong-thai （wgUseDatabaseMessages）。',
 
 # Thumbnails
@@ -1582,7 +1576,7 @@ yèn-heu thùng yit-hòng heu-fông ke lièn-chiap chiông-voi pûn sṳ-vì li-
 
 # External editor support
 'edit-externally'      => 'Yung ngoi-phu chhàng-sṳt phiên-siá chhṳ́ tóng-on',
-'edit-externally-help' => 'Chhiáng chhâm-siòng [http://www.mediawiki.org/wiki/Manual:External_editors sat-thin phu] liáu-kié siòng-se sin-sit.',
+'edit-externally-help' => 'Chhiáng chhâm-siòng [//www.mediawiki.org/wiki/Manual:External_editors sat-thin phu] liáu-kié siòng-se sin-sit.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'chhiòn-phu',
@@ -1617,13 +1611,6 @@ Kó-yèn ngì *mò-yû* thì-chhut liá-ke chhiáng-khiù,  chhiáng put-yeu ti�
 'scarytranscludedisabled' => '[Khiam-wiki chón-von me̍t-me̍t put hí-khó yung]',
 'scarytranscludefailed'   => '[Tui-put-hí, mù-pán $1 thu̍k-chhí sṳt-phai]',
 'scarytranscludetoolong'  => '[Tui-put-hí; URL thi-tiám thai-chhòng]',
-
-# Trackbacks
-'trackbackbox'      => 'Chhṳ́ vùn-chông ke yîn-yung:<br />
-$1',
-'trackbackremove'   => '（[$1 Chhù-me̍t]）',
-'trackbacklink'     => 'Fì-hióng',
-'trackbackdeleteok' => 'Trackback chhù-hi sṳ̀n-kûng.',
 
 # Delete conflict
 'deletedwhileediting' => 'Kín-ko: Chhṳ́-hong chhai ngì khôi-sṳ́ phiên-cho chṳ̂-heu yí-kîn pûn Chhù-thet!',

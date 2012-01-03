@@ -1,5 +1,5 @@
 <?php
-/** Jamaican Creole English (Patios)
+/** Jamaican Creole English (Patois)
  *
  * See MessagesQqq.php for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -379,7 +379,6 @@ Dieta ya no go rifresh fi nou.',
 Fongshan: $1<br />
 Kwieri: $2',
 'viewsource'           => 'Vyuu Suos',
-'viewsourcefor'        => 'fi $1',
 'actionthrottled'      => 'Akshan chratl',
 'actionthrottledtext'  => 'Az anti-spam meja, yu limit frahn pofaam dis akshan tomoch taim ina shaat spies a taim, ahn yu exiid di limit.
 Begyu chrai agen ina fyuu minit.',
@@ -388,7 +387,7 @@ Begyu chrai agen ina fyuu minit.',
 'protectedinterface'   => 'Dis piej provaid intafies tex fi di saafwier, ahn iprotek fi privent abyuus.',
 'editinginterface'     => "'''Waanin:''' Yu de edit page we yuuz fi provaid intafies tex fi di saafwier.
 Chienj tu dis piej wi afek di apierans a di yuuza intafies fi ada yuuzadem.
-Fi chranslieshan, begyu kansida fi yuuz [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], di MediaWiki luokalaizieshan projek.",
+Fi chranslieshan, begyu kansida fi yuuz [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net], di MediaWiki luokalaizieshan projek.",
 'sqlhidden'            => '(SQL kwieri aidwe)',
 'cascadeprotected'     => 'Dis piej protek frahn edit, bikaa i\'inkluud ina di falarin {{PLURAL:$1|piej, ush|piejdem, ush}} protek wid di "kiaskiedn" apshan ton aan:
 $2',
@@ -594,9 +593,6 @@ Nuot se yu kyaahn yuuz di "e-miel dis yuuza" fiicha anles yu gat a valid e-miel 
 Yu korant IP ajress a $3, ahn di blak ID a #$5.
 Begyu inkluud aal abov ditiel ina eni kwieri yu mek.',
 'blockednoreason'                  => 'no riizn no gi',
-'blockedoriginalsource'            => "Di suos a '''$1''' shuo biluo:",
-'blockededitsource'                => "Di tex a '''yu edit''' tu '''$1''' shuo biluo:",
-'whitelistedittitle'               => 'Lagiin rikwaya fi edit',
 'whitelistedittext'                => 'Yu afi $1 fi edit piej',
 'confirmedittext'                  => 'Yu mos kanfoerm yu e-miel ajres bifuo yu edit piej.
 Begyu set ahn validiet yu e-miel ajres chruu yu [[Special:Preferences|yuuza prefransdem]].',
@@ -1091,7 +1087,7 @@ Ada wandem wi aid bai difaalt.
 
 # External editor support
 'edit-externally'      => 'Yuuz extoernal aplikieshan fi edit dis fail',
-'edit-externally-help' => '(Si di [http://www.mediawiki.org/wiki/Manual:External_editors setop inschrokshan] fi muo infamieshan)',
+'edit-externally-help' => '(Si di [//www.mediawiki.org/wiki/Manual:External_editors setop inschrokshan] fi muo infamieshan)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'aal',

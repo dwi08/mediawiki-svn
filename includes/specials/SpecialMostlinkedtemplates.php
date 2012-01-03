@@ -68,7 +68,7 @@ class MostlinkedTemplatesPage extends QueryPage {
 					'tl_title AS title',
 					'COUNT(*) AS value' ),
 			'conds' => array ( 'tl_namespace' => NS_TEMPLATE ),
-			'options' => array( 'GROUP BY' => 'namespace, title' )
+			'options' => array( 'GROUP BY' => 'tl_namespace, tl_title' )
 		);
 	}
 
@@ -98,7 +98,7 @@ class MostlinkedTemplatesPage extends QueryPage {
 	public function formatResult( $skin, $result ) {
 		$title = Title::makeTitle( $result->namespace, $result->title );
 
-		return $this->getLang()->specialList(
+		return $this->getLanguage()->specialList(
 			Linker::link( $title ),
 			$this->makeWlhLink( $title, $result )
 		);

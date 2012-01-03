@@ -329,9 +329,12 @@ abstract class IndexPager extends ContextSource implements Pager {
 		if ( !$this->mQueryDone ) {
 			$this->doQuery();
 		}
-		# Do any special query batches before display
-		$this->doBatchLookups();
-		
+
+		if ( $this->mResult->numRows() ) {
+			# Do any special query batches before display
+			$this->doBatchLookups();
+		}
+
 		# Don't use any extra rows returned by the query
 		$numRows = min( $this->mResult->numRows(), $this->mLimit );
 
@@ -389,8 +392,8 @@ abstract class IndexPager extends ContextSource implements Pager {
 
 	/**
 	 * Called from getBody(), before getStartBody() is called and
-	 * after doQuery() was called. This will be called even if there
-	 * are no rows in the result set.
+	 * after doQuery() was called. This will be called only if there
+	 * are rows in the result set.
 	 *
 	 * @return void
 	 */
@@ -548,7 +551,7 @@ abstract class IndexPager extends ContextSource implements Pager {
 		}
 		foreach ( $this->mLimitsShown as $limit ) {
 			$links[] = $this->makeLink(
-				$this->getLang()->formatNum( $limit ),
+				$this->getLanguage()->formatNum( $limit ),
 				array( 'offset' => $offset, 'limit' => $limit ),
 				'num'
 			);
@@ -654,7 +657,7 @@ abstract class AlphabeticPager extends IndexPager {
 			return $this->mNavigationBar;
 		}
 
-		$lang = $this->getLang();
+		$lang = $this->getLanguage();
 
 		$opts = array( 'parsemag', 'escapenoentities' );
 		$linkTexts = array(
@@ -747,7 +750,7 @@ abstract class ReverseChronologicalPager extends IndexPager {
 			return $this->mNavigationBar;
 		}
 
-		$nicenumber = $this->getLang()->formatNum( $this->mLimit );
+		$nicenumber = $this->getLanguage()->formatNum( $this->mLimit );
 		$linkTexts = array(
 			'prev' => wfMsgExt(
 				'pager-newer-n',
@@ -765,7 +768,7 @@ abstract class ReverseChronologicalPager extends IndexPager {
 
 		$pagingLinks = $this->getPagingLinks( $linkTexts );
 		$limitLinks = $this->getLimitLinks();
-		$limits = $this->getLang()->pipeList( $limitLinks );
+		$limits = $this->getLanguage()->pipeList( $limitLinks );
 
 		$this->mNavigationBar = "({$pagingLinks['first']}" .
 			wfMsgExt( 'pipe-separator' , 'escapenoentities' ) .
@@ -1013,7 +1016,7 @@ abstract class TablePager extends IndexPager {
 			'next' => 'arrow_disabled_right_25.png',
 			'last' => 'arrow_disabled_last_25.png',
 		);
-		if( $this->getLang()->isRTL() ) {
+		if( $this->getLanguage()->isRTL() ) {
 			$keys = array_keys( $labels );
 			$images = array_combine( $keys, array_reverse( $images ) );
 			$disabledImages = array_combine( $keys, array_reverse( $disabledImages ) );
@@ -1057,7 +1060,7 @@ abstract class TablePager extends IndexPager {
 			# will be a string.
 			if( is_int( $value ) ){
 				$limit = $value;
-				$text = $this->getLang()->formatNum( $limit );
+				$text = $this->getLanguage()->formatNum( $limit );
 			} else {
 				$limit = $key;
 				$text = $value;

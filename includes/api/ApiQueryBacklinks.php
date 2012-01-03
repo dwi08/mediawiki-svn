@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( "ApiQueryBase.php" );
-}
-
 /**
  * This is a three-in-one module to query:
  *   * backlinks  - links pointing to the given page,
@@ -64,19 +59,19 @@ class ApiQueryBacklinks extends ApiQueryGeneratorBase {
 			'code' => 'bl',
 			'prefix' => 'pl',
 			'linktbl' => 'pagelinks',
-			'helpurl' => 'http://www.mediawiki.org/wiki/API:Backlinks',
+			'helpurl' => 'https://www.mediawiki.org/wiki/API:Backlinks',
 		),
 		'embeddedin' => array(
 			'code' => 'ei',
 			'prefix' => 'tl',
 			'linktbl' => 'templatelinks',
-			'helpurl' => 'http://www.mediawiki.org/wiki/API:Embeddedin',
+			'helpurl' => 'https://www.mediawiki.org/wiki/API:Embeddedin',
 		),
 		'imageusage' => array(
 			'code' => 'iu',
 			'prefix' => 'il',
 			'linktbl' => 'imagelinks',
-			'helpurl' => 'http://www.mediawiki.org/wiki/API:Imageusage',
+			'helpurl' => 'https://www.mediawiki.org/wiki/API:Imageusage',
 		)
 	);
 

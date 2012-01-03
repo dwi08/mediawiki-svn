@@ -2,6 +2,7 @@
 
 /**
  * @group Database
+ * @group Blocking
  */
 class BlockTest extends MediaWikiLangTestCase {
 
@@ -35,7 +36,7 @@ class BlockTest extends MediaWikiLangTestCase {
 		}
 
 		$this->block = new Block( 'UTBlockee', 1, 0,
-			'Parce que'
+			'Parce que', 0, false, time() + 100500
 		);
 		$this->madeAt = wfTimestamp( TS_MW );
 

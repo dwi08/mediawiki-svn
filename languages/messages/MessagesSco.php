@@ -352,7 +352,6 @@ Please lat an [[Special:ListUsers/sysop|administrator]] ken aboot this, makin no
 Exerce: $1<br />
 Aks: $2',
 'viewsource'           => 'View soorce',
-'viewsourcefor'        => 'for $1',
 'actionthrottled'      => 'Action devalit',
 'actionthrottledtext'  => 'As an anti-spam meisur, ye ar limitit frae daein this action ower mony times in a ower short tid, an ye hae exceedit this limit. Please try again in a wee.',
 'protectedpagetext'    => "Sairy, this page haes been '''lockit''' tae hinder vandalism.",
@@ -528,9 +527,6 @@ registerit in yer [[Special:Preferences|uiser preferences]] an ye hinna been blo
 
 Yer block ID is $5. Please include this ID in ony argies ye mak.',
 'blockednoreason'                  => 'nae grunds put',
-'blockedoriginalsource'            => "The soorce o '''$1''' is shawn ablo:",
-'blockededitsource'                => "The text o '''your edits''' tae '''$1''' is shawn ablo:",
-'whitelistedittitle'               => 'Login needit tae edit',
 'whitelistedittext'                => 'Ye hae tae $1 tae edit pages.',
 'confirmedittext'                  => 'Ye maun confirm yer e-mail address afore editin pages. Please set an validate yer e-mail address throu yer [[Special:Preferences|uiser settins]].',
 'nosuchsectiontitle'               => 'There isnae a section wi that teetle',
@@ -1228,7 +1224,6 @@ afore it wis delete. The actual text o thir deletit reveisions is available tae 
 # Block/unblock
 'blockip'                     => 'Block uiser',
 'blockiptext'                 => 'Uise the form ablo tae block write access frae a specific IP address or uisername. This shuid be duin juist tae prevent vandalism, and in accord wi [[{{MediaWiki:Policy-url}}|policy]]. Fill in a specific raeson ablo (for exemplar, citin parteicular pages that wis damaged).',
-'ipaddress'                   => 'IP Address',
 'ipadressorusername'          => 'IP Address or uisername',
 'ipbreason'                   => 'Raeson:',
 'ipbsubmit'                   => 'Block this uiser',
@@ -1480,7 +1475,7 @@ If th' file haes bin modified frae tis original state, some details kin nae full
 
 # External editor support
 'edit-externally'      => 'Edit this file uisin an external application',
-'edit-externally-help' => '(See the [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] for mair guidance.)',
+'edit-externally-help' => '(See the [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] for mair guidance.)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'aw',

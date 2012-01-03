@@ -485,13 +485,12 @@ Meitsje dêr melding fan by in [[Special:ListUsers/sysop|systeembehearder]] fan 
 Funksje: $1<br />
 Query: $2',
 'viewsource'           => 'Besjoch de boarne',
-'viewsourcefor'        => 'fan $1',
 'actionthrottled'      => 'Hanneling opkeard',
 'actionthrottledtext'  => 'As maatregel tsjin spam is it tal kearen per tiidsienheid beheind dat jo dizze hanneling ferrjochtsje kinne. Jo binne oer de limyt. Besykje it in tal minuten letter wer.',
 'protectedpagetext'    => 'Dizze side is befeilige. Bewurkjen is net mûglik.',
 'viewsourcetext'       => 'Jo kinne de boarnetekst fan dizze side besjen en kopiearje:',
 'protectedinterface'   => "Dizze side befettet tekst foar berjochten fan 'e software en is befeilige om misbrûk tefoaren te kommen.",
-'editinginterface'     => "'''Warskôging;''' Jo bewurkje in side dy't brûkt wurdt troch software. Bewurkings op dizze side beynfloedzje de gebrûksynterface fan elkenien. Oerweagje foar oersettings [http://translatewiki.net/wiki/Main_Page?setlang=fy translatewiki.net] te brûken, it oersetprojekt foar MediaWiki.",
+'editinginterface'     => "'''Warskôging;''' Jo bewurkje in side dy't brûkt wurdt troch software. Bewurkings op dizze side beynfloedzje de gebrûksynterface fan elkenien. Oerweagje foar oersettings [//translatewiki.net/wiki/Main_Page?setlang=fy translatewiki.net] te brûken, it oersetprojekt foar MediaWiki.",
 'sqlhidden'            => '(SQL query ferburgen)',
 'cascadeprotected'     => 'Dizze side is skoattele tsjin wizigjen, om\'t der in ûnderdiel útmakket fan de neikommende {{PLURAL:$1|side|siden}}, dy\'t skoattele {{PLURAL:$1|is|binne}} mei de "ûnderlizzende siden" opsje ynskeakele: $2',
 'namespaceprotected'   => "Jo hawwe gjin rjochten om siden yn'e nammerûmte '''$1''' te bewurkjen.",
@@ -661,9 +660,6 @@ Jo kinne kontakt opnimme mei $1 of in oare [[{{MediaWiki:Grouppage-sysop}}|behea
 Jo kinne gjin gebrûk meitsje fan 'e funksje 'Skriuw meidogger', of jo moatte in jildich e-postadres opjûn hawwe yn jo [[Special:Preferences|foarkarren]] en it gebrûk fan dy funksje moat net útsletten wêze.
 Jo tsjintwurdich e-postadres is $3 en it útsletnûmer is #$5. Neam beide gegevens as jo earne op dizze útsluting reagearje.",
 'blockednoreason'                  => 'gjin reden opjûn',
-'blockedoriginalsource'            => "Hjir ûnder stiet de boarnetekst fan '''$1''':",
-'blockededitsource'                => "Hjir ûnder stiet de tekst fan '''jo bewurkings''' oan '''$1''':",
-'whitelistedittitle'               => 'Foar bewurkjen is oanmelden ferplichte',
 'whitelistedittext'                => 'Jo moatte $1 om siden te bewurkjen.',
 'confirmedittext'                  => "Jo moatte jo e-mailadres befêstichje foar't jo siden feroarje kinne. Fier in e-mailedres yn by jo [[Special:Preferences|ynstellings]] en befêstichje it.",
 'nosuchsectiontitle'               => 'Dizze subkop bestiet net',
@@ -1007,7 +1003,6 @@ Jo kinne ek in nammerûmte as foarheaksel brûke.",
 'prefs-editing'             => 'Siden bewurkje',
 'prefs-edit-boxsize'        => 'Ofmjittings fan it bewurkingsfinster',
 'rows'                      => 'Rigen',
-'columns'                   => 'Kolommen',
 'searchresultshead'         => 'Sykje',
 'resultsperpage'            => 'Treffers de side',
 'stub-threshold'            => 'Drompel foar markearring <a href="#" class="stub">stobbe</a> (bytes):',
@@ -1161,7 +1156,6 @@ Jo kinne ek oaren de mûglikheid jaan kontakt mei jo op te nimmen troch in ferwi
 'right-autopatrol'            => 'Bewurkings wurde automatysk as kontrolearre markearre',
 'right-patrolmarks'           => 'Kontroletekens yn resinte feroarings besjen',
 'right-unwatchedpages'        => "In list mei siden besjen dy't net op in folchlist steane",
-'right-trackback'             => 'In trackback opjaan',
 'right-mergehistory'          => 'De skiednis fan siden gearfoegje',
 'right-userrights'            => 'Alle meidoggerrjochten bywurkje',
 'right-userrights-interwiki'  => "Wizigje meidoggerrjochten fan meidoggers yn oare wiki's",
@@ -1204,7 +1198,6 @@ Jo kinne ek oaren de mûglikheid jaan kontakt mei jo op te nimmen troch in ferwi
 'action-patrol'               => 'bewurkings fan oaren as kontrolearre beskôgje',
 'action-autopatrol'           => 'eigen bewurkings as kontrolearre markearje litte',
 'action-unwatchedpages'       => "de list mei siden dy't net op in folchlist steane besjen",
-'action-trackback'            => 'in trackback opjaan',
 'action-mergehistory'         => 'de skiednis fan dizze side gearfoegje',
 'action-userrights'           => 'alle brûkersrjochten bewurkje',
 'action-userrights-interwiki' => "brûkersrjochten fan brûkers fan oare wiki's bewurkje",
@@ -1919,7 +1912,6 @@ Dit binne de rinnende ynstellings foar de side '''$1''':",
 Dat soe allinnich fanwege fandalisme dien wurde moatte, sa't de
 [[{{MediaWiki:Policy-url}}|útslut-rie]] it oanjout.
 Meld de krekte reden! Neam bygelyks de siden dy't oantaaste waarden.",
-'ipaddress'           => 'Meidochnamme of ynternet-adres',
 'ipadressorusername'  => 'IP Adres of meidoggernamme:',
 'ipbexpiry'           => 'Ferrint nei:',
 'ipbreason'           => 'Reden:',
@@ -2039,7 +2031,7 @@ De doelside "[[:$1]]" is der al. Moat dy wiske wurde om plak te meitsjen foar it
 'allmessagesdefault' => 'Standerttekst',
 'allmessagescurrent' => 'Tekst yn de nijste ferzje',
 'allmessagestext'    => 'Dit is in list fan alle systeemberjochten beskikber yn de MediaWiki-nammeromte.
-Sjoch: [http://www.mediawiki.org/wiki/Localisation MediaWiki Localisation], [http://translatewiki.net translatewiki.net].',
+Sjoch: [//www.mediawiki.org/wiki/Localisation MediaWiki Localisation], [//translatewiki.net translatewiki.net].',
 
 # Thumbnails
 'thumbnail-more'           => 'Fergrutsje',
@@ -2249,7 +2241,7 @@ Alle folgjende links dy't op deselde rigel steane, wurde behannele as útsûnder
 
 # External editor support
 'edit-externally'      => 'Wizigje dizze triem mei in ekstern programma',
-'edit-externally-help' => 'Sjoch de [http://www.mediawiki.org/wiki/Manual:External_editors ynstel-hantlieding] foar mear ynformaasje.',
+'edit-externally-help' => 'Sjoch de [//www.mediawiki.org/wiki/Manual:External_editors ynstel-hantlieding] foar mear ynformaasje.',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'alles',
@@ -2284,9 +2276,6 @@ Dizze befêstigingskoade ferrint dan op $4.',
 
 # Scary transclusion
 'scarytranscludetoolong' => '[URL-adres is te lang]',
-
-# Trackbacks
-'trackbackremove' => '([$1 Wiskje])',
 
 # Delete conflict
 'confirmrecreate' => "Sûnt jo begûn binne dizze side te bewurkjen, hat meidogger [[User:$1|$1]] ([[User talk:$1|oerlis]]) de side wiske. De reden dy't derfoar jûn waard wie:

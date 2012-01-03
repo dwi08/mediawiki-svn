@@ -271,7 +271,6 @@ $messages = array(
 'badtitle'            => 'Titulo es mal',
 'badtitletext'        => 'La titulo de la paje tu ia desira ia es nonlegal, es vacua, o es un titulo intervici o interlingual no liada coreta. Es posable ce es un o plu simboles ce no pote es usada en titulos.',
 'viewsource'          => 'Vide la orijin',
-'viewsourcefor'       => 'per $1',
 'viewsourcetext'      => 'Tu pote vide e copia la orijin de esta paje:',
 
 # Login and logout pages
@@ -456,7 +455,6 @@ La arcivo de sutraes per esta paje es asi per conveni:",
 'skin-preview'              => 'Previde',
 'saveprefs'                 => 'Fisa',
 'rows'                      => 'Linias:',
-'columns'                   => 'Colonas:',
 'searchresultshead'         => 'Xerca',
 'savedprefs'                => 'Tu preferis es fisada',
 'timezoneregion-africa'     => 'Africa',
@@ -941,7 +939,7 @@ Si la fix ia es cambiada de se stato orijinal, alga detalias pote no es clara en
 
 # External editor support
 'edit-externally'      => 'Edita esta fix con un programa esterna',
-'edit-externally-help' => '(Vide la [http://www.mediawiki.org/wiki/Manual:External_editors instruis per comensa] per plu instruis)',
+'edit-externally-help' => '(Vide la [//www.mediawiki.org/wiki/Manual:External_editors instruis per comensa] per plu instruis)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'tota',

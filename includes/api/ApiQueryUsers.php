@@ -24,11 +24,6 @@
  * @file
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	// Eclipse helper - will be ignored in production
-	require_once( 'ApiQueryBase.php' );
-}
-
 /**
  * Query module to get information about a list of users
  *
@@ -74,7 +69,7 @@ class ApiQueryUsers extends ApiQueryBase {
 		global $wgUser;
 		// Since the permissions check for userrights is non-trivial,
 		// don't bother with it here
-		return $wgUser->editToken( $user->getName() );
+		return $wgUser->getEditToken( $user->getName() );
 	}
 
 	public function execute() {
@@ -327,7 +322,7 @@ class ApiQueryUsers extends ApiQueryBase {
 	}
 
 	public function getHelpUrls() {
-		return 'http://www.mediawiki.org/wiki/API:Users';
+		return 'https://www.mediawiki.org/wiki/API:Users';
 	}
 
 	public function getVersion() {

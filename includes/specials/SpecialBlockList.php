@@ -43,7 +43,8 @@ class SpecialBlockList extends SpecialPage {
 		$this->setHeaders();
 		$this->outputHeader();
 		$out = $this->getOutput();
-		$out->setPageTitle( wfMsg( 'ipblocklist' ) );
+		$lang = $this->getLanguage();
+		$out->setPageTitle( $this->msg( 'ipblocklist' ) );
 		$out->addModuleStyles( 'mediawiki.special' );
 
 		$request = $this->getRequest();
@@ -68,22 +69,36 @@ class SpecialBlockList extends SpecialPage {
 				'label-message' => 'ipadressorusername',
 				'tabindex' => '1',
 				'size' => '45',
+				'default' => $this->target,
 			),
 			'Options' => array(
 				'type' => 'multiselect',
 				'options' => array(
-					wfMsg( 'blocklist-userblocks' ) => 'userblocks',
-					wfMsg( 'blocklist-tempblocks' ) => 'tempblocks',
-					wfMsg( 'blocklist-addressblocks' ) => 'addressblocks',
-					wfMsg( 'blocklist-rangeblocks' ) => 'rangeblocks',
+					$this->msg( 'blocklist-userblocks' )->text() => 'userblocks',
+					$this->msg( 'blocklist-tempblocks' )->text() => 'tempblocks',
+					$this->msg( 'blocklist-addressblocks' )->text() => 'addressblocks',
+					$this->msg( 'blocklist-rangeblocks' )->text() => 'rangeblocks',
 				),
 				'flatlist' => true,
+			),
+			'Limit' => array(
+				'class' => 'HTMLBlockedUsersItemSelect',
+				'label-message' => 'table_pager_limit_label',
+				'options' => array(
+					$lang->formatNum( 20 ) => 20,
+					$lang->formatNum( 50 ) => 50,
+					$lang->formatNum( 100 ) => 100,
+					$lang->formatNum( 250 ) => 250,
+					$lang->formatNum( 500 ) => 500,
+				),
+				'name' => 'limit',
+				'default' => 50,
 			),
 		);
 		$form = new HTMLForm( $fields, $this->getContext() );
 		$form->setMethod( 'get' );
-		$form->setWrapperLegend( wfMsg( 'ipblocklist-legend' ) );
-		$form->setSubmitText( wfMsg( 'ipblocklist-submit' ) );
+		$form->setWrapperLegendMsg( 'ipblocklist-legend' );
+		$form->setSubmitTextMsg( 'ipblocklist-submit' );
 		$form->prepareForm();
 
 		$form->displayForm( '' );
@@ -156,7 +171,7 @@ class SpecialBlockList extends SpecialPage {
 		# Not necessary in a standard installation without such extensions enabled
 		if( count( $otherBlockLink ) ) {
 			$out->addHTML(
-				Html::rawElement( 'h2', array(), wfMsg( 'ipblocklist-localblock' ) ) . "\n"
+				Html::element( 'h2', array(), $this->msg( 'ipblocklist-localblock' )->text() ) . "\n"
 			);
 		}
 
@@ -180,11 +195,7 @@ class SpecialBlockList extends SpecialPage {
 				Html::rawElement(
 					'h2',
 					array(),
-					wfMsgExt(
-						'ipblocklist-otherblocks',
-						'parseinline',
-						count( $otherBlockLink )
-					)
+					$this->msg( 'ipblocklist-otherblocks', count( $otherBlockLink ) )->parse()
 				) . "\n"
 			);
 			$list = '';
@@ -223,7 +234,9 @@ class BlockListPager extends TablePager {
 				'ipb_params' => 'blocklist-params',
 				'ipb_reason' => 'blocklist-reason',
 			);
-			$headers = array_map( 'wfMsg', $headers );
+			foreach( $headers as $key => $val ) {
+				$headers[$key] = $this->msg( $val )->text();
+			}
 		}
 
 		return $headers;
@@ -242,7 +255,7 @@ class BlockListPager extends TablePager {
 				'change-blocklink',
 				'infiniteblock',
 			);
-			$msg = array_combine( $msg, array_map( 'wfMessage', $msg ) );
+			$msg = array_combine( $msg, array_map( array( $this, 'msg' ), $msg ) );
 		}
 
 		/** @var $row object */
@@ -252,12 +265,12 @@ class BlockListPager extends TablePager {
 
 		switch( $name ) {
 			case 'ipb_timestamp':
-				$formatted = $this->getLang()->timeanddate( $value, /* User preference timezone */ true );
+				$formatted = $this->getLanguage()->userTimeAndDate( $value, $this->getUser() );
 				break;
 
 			case 'ipb_target':
 				if( $row->ipb_auto ){
-					$formatted = wfMessage( 'autoblockid', $row->ipb_id )->parse();
+					$formatted = $this->msg( 'autoblockid', $row->ipb_id )->parse();
 				} else {
 					list( $target, $type ) = Block::parseTarget( $row->ipb_address );
 					switch( $type ){
@@ -278,7 +291,7 @@ class BlockListPager extends TablePager {
 				break;
 
 			case 'ipb_expiry':
-				$formatted = $this->getLang()->formatExpiry( $value, /* User preference timezone */ true );
+				$formatted = $this->getLanguage()->formatExpiry( $value, /* User preference timezone */ true );
 				if( $this->getUser()->isAllowed( 'block' ) ){
 					if( $row->ipb_auto ){
 						$links[] = Linker::linkKnown(
@@ -300,7 +313,8 @@ class BlockListPager extends TablePager {
 					$formatted .= ' ' . Html::rawElement(
 						'span',
 						array( 'class' => 'mw-blocklist-actions' ),
-						wfMsg( 'parentheses', $this->getLang()->pipeList( $links ) )
+						$this->msg( 'parentheses' )->rawParams(
+							$this->getLanguage()->pipeList( $links ) )->escaped()
 					);
 				}
 				break;
@@ -338,7 +352,7 @@ class BlockListPager extends TablePager {
 					$properties[] = $msg['blocklist-nousertalk'];
 				}
 
-				$formatted = $this->getLang()->commaList( $properties );
+				$formatted = $this->getLanguage()->commaList( $properties );
 				break;
 
 			default:
@@ -432,4 +446,37 @@ class BlockListPager extends TablePager {
 		$lb->execute();
 		wfProfileOut( __METHOD__ );
 	}
+}
+
+/**
+ * Items per page dropdown. Essentially a crap workaround for bug 32603.
+ *
+ * @todo Do not release 1.19 with this.
+ */
+class HTMLBlockedUsersItemSelect extends HTMLSelectField {
+	/**
+	 * Basically don't do any validation. If it's a number that's fine. Also,
+	 * add it to the list if it's not there already
+	 *
+	 * @param $value
+	 * @param $alldata
+	 * @return bool
+	 */
+	function validate( $value, $alldata ) {
+		if ( $value == '' ) {
+			return true;
+		}
+
+		// Let folks pick an explicit limit not from our list, as long as it's a real numbr.
+		if ( !in_array( $value, $this->mParams['options'] ) && $value == intval( $value ) && $value > 0 ) {
+			// This adds the explicitly requested limit value to the drop-down,
+			// then makes sure it's sorted correctly so when we output the list
+			// later, the custom option doesn't just show up last.
+			$this->mParams['options'][ $this->mParent->getLanguage()->formatNum( $value ) ] = intval($value);
+			asort( $this->mParams['options'] );
+		}
+
+		return true;
+	}
+
 }

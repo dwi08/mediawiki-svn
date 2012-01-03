@@ -59,6 +59,9 @@ $namespaceAliases = array(
 	'Категорийын_каҥашымаш'     => NS_CATEGORY_TALK,
 );
 
+// Remove Russian aliases
+$namespaceGenderAliases = array();
+
 $specialPageAliases = array(
 	'Preferences'               => array( 'Келыштарымаш' ),
 	'Recentchanges'             => array( 'Пытартыш_тӧрлатымаш-влак' ),
@@ -68,14 +71,14 @@ $specialPageAliases = array(
 );
 
 $magicWords = array(
-	'img_right'             => array( '1', 'пурла', 'справа', 'right' ),
-	'img_left'              => array( '1', 'шола', 'слева', 'left' ),
-	'img_border'            => array( '1', 'чек', 'граница', 'border' ),
-	'img_sub'               => array( '1', 'йымалне', 'под', 'sub' ),
-	'img_super'             => array( '1', 'ӱмбалне', 'над', 'super', 'sup' ),
-	'img_top'               => array( '1', 'кӱшычын', 'сверху', 'top' ),
-	'img_middle'            => array( '1', 'покшелне', 'посередине', 'middle' ),
-	'img_bottom'            => array( '1', 'ӱлычын', 'снизу', 'bottom' ),
+	'img_right'               => array( '1', 'пурла', 'справа', 'right' ),
+	'img_left'                => array( '1', 'шола', 'слева', 'left' ),
+	'img_border'              => array( '1', 'чек', 'граница', 'border' ),
+	'img_sub'                 => array( '1', 'йымалне', 'под', 'sub' ),
+	'img_super'               => array( '1', 'ӱмбалне', 'над', 'super', 'sup' ),
+	'img_top'                 => array( '1', 'кӱшычын', 'сверху', 'top' ),
+	'img_middle'              => array( '1', 'покшелне', 'посередине', 'middle' ),
+	'img_bottom'              => array( '1', 'ӱлычын', 'снизу', 'bottom' ),
 );
 
 $messages = array(
@@ -328,7 +331,6 @@ $messages = array(
 'badtitle'           => 'Сай огыл лӱм',
 'badtitletext'       => 'Йодмо лаштыкын лӱмжӧ йоҥылыш, але яра, але йылме кокла але интер-вики лӱмжӧ йоҥылыш. Ала лӱмыштӧ кӱлдымӧ тамга улыт.',
 'viewsource'         => 'Тӱҥалтыш текст',
-'viewsourcefor'      => '$1 лан',
 
 # Virus scanner
 'virus-badscanner'     => "Келыштарымаш йоҥылыш: палыдыме вирус сканер: ''$1''",
@@ -1042,7 +1044,7 @@ $messages = array(
 
 # External editor support
 'edit-externally'      => 'Файлым ӧрдыж программыште тӧрлаташ',
-'edit-externally-help' => '(Сайрак палашлан ончал [http://www.mediawiki.org/wiki/Manual:External_editors шындымаш нерген туныктымашым])',
+'edit-externally-help' => '(Сайрак палашлан ончал [//www.mediawiki.org/wiki/Manual:External_editors шындымаш нерген туныктымашым])',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'чыла',

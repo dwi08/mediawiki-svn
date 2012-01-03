@@ -10,12 +10,15 @@
  * @author Alnokta
  * @author Armandaneshjoo
  * @author Asoxor
+ * @author Baqeri
  * @author Behdarvandyani
  * @author Ebraminio
  * @author Huji
  * @author Ibrahim
  * @author Ladsgroup
+ * @author Leyth
  * @author Mardetanha
+ * @author MehranVB
  * @author Meisam
  * @author Meno25
  * @author Mjbmr
@@ -63,12 +66,14 @@ $specialPageAliases = array(
 	'Allmessages'               => array( 'تمام_پیغام‌ها' ),
 	'Allpages'                  => array( 'تمام_صفحه‌ها' ),
 	'Ancientpages'              => array( 'صفحه‌های_قدیمی' ),
+	'Badtitle'                  => array( 'عنوان_بد' ),
 	'Blankpage'                 => array( 'صفحه_خالی' ),
 	'Block'                     => array( 'بستن_نشانی_آی‌پی' ),
 	'Blockme'                   => array( 'بستن_من' ),
 	'Booksources'               => array( 'منابع_کتاب' ),
 	'BrokenRedirects'           => array( 'تغییرمسیرهای_خراب' ),
 	'Categories'                => array( 'رده‌ها' ),
+	'ChangeEmail'               => array( 'تغییر_پست_الکترونیکی' ),
 	'ChangePassword'            => array( 'از_نو_کردن_گذرواژه' ),
 	'ComparePages'              => array( 'مقایسه_صفحات' ),
 	'Confirmemail'              => array( 'تایید_پست_الکترونیکی' ),
@@ -143,6 +148,7 @@ $specialPageAliases = array(
 	'Unusedtemplates'           => array( 'الگوهای_استفاده_نشده' ),
 	'Unwatchedpages'            => array( 'صفحه‌های_پی‌گیری_نشده' ),
 	'Upload'                    => array( 'بارگذاری_پرونده' ),
+	'UploadStash'               => array( 'بارگذاری_انبوه' ),
 	'Userlogin'                 => array( 'ورود_به_سامانه' ),
 	'Userlogout'                => array( 'خروج_از_سامانه' ),
 	'Userrights'                => array( 'اختیارات_کاربر' ),
@@ -254,154 +260,156 @@ $dateFormats = array(
 );
 
 $magicWords = array(
-	'redirect'              => array( '0', '#تغییرمسیر', '#REDIRECT' ),
-	'notoc'                 => array( '0', '__بی‌فهرست__', '__NOTOC__' ),
-	'nogallery'             => array( '0', '__بی‌نگارخانه__', '__NOGALLERY__' ),
-	'forcetoc'              => array( '0', '__بافهرست__', '__FORCETOC__' ),
-	'toc'                   => array( '0', '__فهرست__', '__TOC__' ),
-	'noeditsection'         => array( '0', '__بی‌بخش__', '__NOEDITSECTION__' ),
-	'noheader'              => array( '0', '__بی‌عنوان__', '__NOHEADER__' ),
-	'currentmonth'          => array( '1', 'ماه', 'ماه‌کنونی', 'ماه_کنونی', 'ماه‌کنونی۲', 'ماه_کنونی۲', 'CURRENTMONTH', 'CURRENTMONTH2' ),
-	'currentmonth1'         => array( '1', 'ماه۱', 'ماه‌کنونی۱', 'ماه_کنونی۱', 'CURRENTMONTH1' ),
-	'currentmonthname'      => array( '1', 'نام‌ماه', 'نام_ماه', 'نام‌ماه‌کنونی', 'نام_ماه_کنونی', 'CURRENTMONTHNAME' ),
-	'currentmonthnamegen'   => array( '1', 'نام‌ماه‌اضافه', 'نام_ماه_اضافه', 'نام‌ماه‌کنونی‌اضافه', 'نام_ماه_کنونی_اضافه', 'CURRENTMONTHNAMEGEN' ),
-	'currentmonthabbrev'    => array( '1', 'مخفف‌نام‌ماه', 'مخفف_نام_ماه', 'CURRENTMONTHABBREV' ),
-	'currentday'            => array( '1', 'روز', 'روزکنونی', 'روز_کنونی', 'CURRENTDAY' ),
-	'currentday2'           => array( '1', 'روز۲', 'روز_۲', 'CURRENTDAY2' ),
-	'currentdayname'        => array( '1', 'نام‌روز', 'نام_روز', 'CURRENTDAYNAME' ),
-	'currentyear'           => array( '1', 'سال', 'سال‌کنونی', 'سال_کنونی', 'CURRENTYEAR' ),
-	'currenttime'           => array( '1', 'زمان‌کنونی', 'زمان_کنونی', 'CURRENTTIME' ),
-	'currenthour'           => array( '1', 'ساعت', 'ساعت‌کنونی', 'ساعت_کنونی', 'CURRENTHOUR' ),
-	'localmonth'            => array( '1', 'ماه‌محلی', 'ماه_محلی', 'ماه‌محلی۲', 'ماه_محلی۲', 'LOCALMONTH', 'LOCALMONTH2' ),
-	'localmonth1'           => array( '1', 'ماه‌محلی۱', 'ماه_محلی۱', 'LOCALMONTH1' ),
-	'localmonthname'        => array( '1', 'نام‌ماه‌محلی', 'نام_ماه_محلی', 'LOCALMONTHNAME' ),
-	'localmonthnamegen'     => array( '1', 'نام‌ماه‌محلی‌اضافه', 'نام_ماه_محلی_اضافه', 'LOCALMONTHNAMEGEN' ),
-	'localmonthabbrev'      => array( '1', 'مخفف‌ماه‌محلی', 'مخفف_ماه_محلی', 'LOCALMONTHABBREV' ),
-	'localday'              => array( '1', 'روزمحلی', 'روز_محلی', 'LOCALDAY' ),
-	'localday2'             => array( '1', 'روزمحلی۲', 'روز_محلی_۲', 'LOCALDAY2' ),
-	'localdayname'          => array( '1', 'نام‌روزمحلی', 'نام_روز_محلی', 'LOCALDAYNAME' ),
-	'localyear'             => array( '1', 'سال‌محلی', 'سال_محلی', 'LOCALYEAR' ),
-	'localtime'             => array( '1', 'زمان‌محلی', 'زمان_محلی', 'LOCALTIME' ),
-	'localhour'             => array( '1', 'ساعت‌محلی', 'ساعت_محلی', 'LOCALHOUR' ),
-	'numberofpages'         => array( '1', 'تعدادصفحه‌ها', 'NUMBEROFPAGES' ),
-	'numberofarticles'      => array( '1', 'تعدادمقاله‌ها', 'NUMBEROFARTICLES' ),
-	'numberoffiles'         => array( '1', 'تعدادپرونده‌ها', 'NUMBEROFFILES' ),
-	'numberofusers'         => array( '1', 'تعدادکاربران', 'NUMBEROFUSERS' ),
-	'numberofactiveusers'   => array( '1', 'کاربران‌فعال', 'کاربران_فعال', 'NUMBEROFACTIVEUSERS' ),
-	'numberofedits'         => array( '1', 'تعدادویرایش‌ها', 'NUMBEROFEDITS' ),
-	'numberofviews'         => array( '1', 'تعدادبازدید', 'NUMBEROFVIEWS' ),
-	'pagename'              => array( '1', 'نام‌صفحه', 'نام_صفحه', 'PAGENAME' ),
-	'pagenamee'             => array( '1', 'نام‌صفحه‌کد', 'نام_صفحه_کد', 'PAGENAMEE' ),
-	'namespace'             => array( '1', 'فضای‌نام', 'فضای_نام', 'NAMESPACE' ),
-	'namespacee'            => array( '1', 'فضای‌نام‌کد', 'فضای_نام_کد', 'NAMESPACEE' ),
-	'talkspace'             => array( '1', 'فضای‌بحث', 'فضای_بحث', 'TALKSPACE' ),
-	'talkspacee'            => array( '1', 'فضای‌بحث‌کد', 'فضای_بحث_کد', 'TALKSPACEE' ),
-	'subjectspace'          => array( '1', 'فضای‌موضوع', 'فضای‌مقاله', 'فضای_موضوع', 'فضای_مقاله', 'SUBJECTSPACE', 'ARTICLESPACE' ),
-	'subjectspacee'         => array( '1', 'فضای‌موضوع‌کد', 'فضای‌مقاله‌کد', 'فضای_موضوع_کد', 'فضای_مقاله_کد', 'SUBJECTSPACEE', 'ARTICLESPACEE' ),
-	'fullpagename'          => array( '1', 'نام‌کامل‌صفحه', 'نام_کامل_صفحه', 'FULLPAGENAME' ),
-	'fullpagenamee'         => array( '1', 'نام‌کامل‌صفحه‌کد', 'نام_کامل_صفحه_کد', 'FULLPAGENAMEE' ),
-	'subpagename'           => array( '1', 'نام‌زیرصفحه', 'نام_زیرصفحه', 'SUBPAGENAME' ),
-	'subpagenamee'          => array( '1', 'نام‌زیرصفحه‌کد', 'نام_زیرصفحه_کد', 'SUBPAGENAMEE' ),
-	'basepagename'          => array( '1', 'نام‌صفحه‌مبنا', 'نام_صفحه_مبنا', 'BASEPAGENAME' ),
-	'basepagenamee'         => array( '1', 'نام‌صفحه‌مبناکد', 'نام_صفحه_مبنا_کد', 'BASEPAGENAMEE' ),
-	'talkpagename'          => array( '1', 'نام‌صفحه‌بحث', 'نام_صفحه_بحث', 'TALKPAGENAME' ),
-	'talkpagenamee'         => array( '1', 'نام‌صفحه‌بحث‌کد', 'نام_صفحه_بحث_کد', 'TALKPAGENAMEE' ),
-	'subjectpagename'       => array( '1', 'نام‌صفحه‌موضوع', 'نام‌صفحه‌مقاله', 'نام_صفحه_موضوع', 'نام_صفحه_مقاله', 'SUBJECTPAGENAME', 'ARTICLEPAGENAME' ),
-	'subjectpagenamee'      => array( '1', 'نام‌صفحه‌موضوع‌کد', 'نام‌صفحه‌مقاله‌کد', 'نام_صفحه_موضوع_کد', 'نام_صفحه_مقاله_کد', 'SUBJECTPAGENAMEE', 'ARTICLEPAGENAMEE' ),
-	'msg'                   => array( '0', 'پیغام:', 'پ:', 'MSG:' ),
-	'subst'                 => array( '0', 'جایگزین:', 'جا:', 'SUBST:' ),
-	'safesubst'             => array( '0', 'جایگزین_امن:', 'جام:', 'SAFESUBST:' ),
-	'msgnw'                 => array( '0', 'پیغام‌بی‌بسط:', 'MSGNW:' ),
-	'img_thumbnail'         => array( '1', 'بندانگشتی', 'انگشتدان', 'انگشتی', 'thumbnail', 'thumb' ),
-	'img_manualthumb'       => array( '1', 'بندانگشتی=$1', 'انگشتدان=$1', 'انگشتی=$1', 'thumbnail=$1', 'thumb=$1' ),
-	'img_right'             => array( '1', 'راست', 'right' ),
-	'img_left'              => array( '1', 'چپ', 'left' ),
-	'img_none'              => array( '1', 'هیچ', 'none' ),
-	'img_width'             => array( '1', '$1پیکسل', '$1px' ),
-	'img_center'            => array( '1', 'وسط', 'center', 'centre' ),
-	'img_framed'            => array( '1', 'قاب', 'framed', 'enframed', 'frame' ),
-	'img_frameless'         => array( '1', 'بی‌قاب', 'بیقاب', 'بی_قاب', 'frameless' ),
-	'img_page'              => array( '1', 'صفحه=$1', 'صفحه_$1', 'page=$1', 'page $1' ),
-	'img_upright'           => array( '1', 'ایستاده', 'ایستاده=$1', 'ایستاده_$1', 'upright', 'upright=$1', 'upright $1' ),
-	'img_border'            => array( '1', 'حاشیه', 'border' ),
-	'img_baseline'          => array( '1', 'همکف', 'baseline' ),
-	'img_sub'               => array( '1', 'زیر', 'sub' ),
-	'img_super'             => array( '1', 'زبر', 'super', 'sup' ),
-	'img_top'               => array( '1', 'بالا', 'top' ),
-	'img_text_top'          => array( '1', 'متن-بالا', 'text-top' ),
-	'img_middle'            => array( '1', 'میانه', 'middle' ),
-	'img_bottom'            => array( '1', 'پایین', 'bottom' ),
-	'img_text_bottom'       => array( '1', 'متن-پایین', 'text-bottom' ),
-	'img_link'              => array( '1', 'پیوند=$1', 'link=$1' ),
-	'img_alt'               => array( '1', 'جایگزین=$1', 'alt=$1' ),
-	'int'                   => array( '0', 'ترجمه:', 'INT:' ),
-	'sitename'              => array( '1', 'نام‌وبگاه', 'نام_وبگاه', 'SITENAME' ),
-	'ns'                    => array( '0', 'فن:', 'NS:' ),
-	'nse'                   => array( '0', 'فنک:', 'NSE:' ),
-	'localurl'              => array( '0', 'نشانی:', 'LOCALURL:' ),
-	'localurle'             => array( '0', 'نشانی‌کد:', 'نشانی_کد:', 'LOCALURLE:' ),
-	'articlepath'           => array( '0', 'مسیرمقاله', 'مسیر_مقاله', 'ARTICLEPATH' ),
-	'server'                => array( '0', 'سرور', 'کارساز', 'SERVER' ),
-	'servername'            => array( '0', 'نام‌کارساز', 'نام_کارساز', 'نام‌سرور', 'نام_سرور', 'SERVERNAME' ),
-	'scriptpath'            => array( '0', 'مسیرسند', 'مسیر_سند', 'SCRIPTPATH' ),
-	'stylepath'             => array( '0', 'مسیرسبک', 'مسیر_سبک', 'STYLEPATH' ),
-	'grammar'               => array( '0', 'دستورزبان:', 'دستور_زبان:', 'GRAMMAR:' ),
-	'gender'                => array( '0', 'جنسیت:', 'جنس:', 'GENDER:' ),
-	'notitleconvert'        => array( '0', '__عنوان‌تبدیل‌نشده__', '__NOTITLECONVERT__', '__NOTC__' ),
-	'nocontentconvert'      => array( '0', '__محتواتبدیل‌نشده__', '__NOCONTENTCONVERT__', '__NOCC__' ),
-	'currentweek'           => array( '1', 'هفته', 'CURRENTWEEK' ),
-	'currentdow'            => array( '1', 'روزهفته', 'روز_هفته', 'CURRENTDOW' ),
-	'localweek'             => array( '1', 'هفته‌محلی', 'هفته_محلی', 'LOCALWEEK' ),
-	'localdow'              => array( '1', 'روزهفته‌محلی', 'روز_هفته_محلی', 'LOCALDOW' ),
-	'revisionid'            => array( '1', 'نسخه', 'شماره‌نسخه', 'شماره_نسخه', 'REVISIONID' ),
-	'revisionday'           => array( '1', 'روزنسخه', 'روز_نسخه', 'REVISIONDAY' ),
-	'revisionday2'          => array( '1', 'روزنسخه۲', 'روز_نسخه۲', 'روز_نسخه_۲', 'REVISIONDAY2' ),
-	'revisionmonth'         => array( '1', 'ماه‌نسخه', 'ماه_نسخه', 'REVISIONMONTH' ),
-	'revisionmonth1'        => array( '1', 'ماه‌نسخه۱', 'ماه_نسخه_۱', 'REVISIONMONTH1' ),
-	'revisionyear'          => array( '1', 'سال‌نسخه', 'سال_نسخه', 'REVISIONYEAR' ),
-	'revisiontimestamp'     => array( '1', 'زمان‌یونیسکی‌نسخه', 'زمان‌نسخه', 'زمان_یونیکسی_نسخه', 'زمان_نسخه', 'REVISIONTIMESTAMP' ),
-	'revisionuser'          => array( '1', 'کاربرنسخه', 'کاربر_نسخه', 'REVISIONUSER' ),
-	'plural'                => array( '0', 'جمع:', 'PLURAL:' ),
-	'fullurl'               => array( '0', 'نشانی‌کامل:', 'نشانی_کامل:', 'FULLURL:' ),
-	'fullurle'              => array( '0', 'نشانی‌کامل‌کد:', 'نشانی_کامل_کد:', 'FULLURLE:' ),
-	'lcfirst'               => array( '0', 'ابتداکوچک:', 'ابتدا_کوچک:', 'LCFIRST:' ),
-	'ucfirst'               => array( '0', 'ابتدابزرگ:', 'ابتدا_بزرگ:', 'UCFIRST:' ),
-	'lc'                    => array( '0', 'ک:', 'LC:' ),
-	'uc'                    => array( '0', 'ب:', 'UC:' ),
-	'raw'                   => array( '0', 'خام:', 'RAW:' ),
-	'displaytitle'          => array( '1', 'عنوان‌ظاهری', 'عنوان_ظاهری', 'DISPLAYTITLE' ),
-	'rawsuffix'             => array( '1', 'ن', 'R' ),
-	'newsectionlink'        => array( '1', '__بخش‌جدید__', '__NEWSECTIONLINK__' ),
-	'nonewsectionlink'      => array( '1', '__بی‌پیوندبخش__', '__بی‌پیوند‌بخش‌جدید__', '__NONEWSECTIONLINK__' ),
-	'currentversion'        => array( '1', 'نسخه‌کنونی', 'نسخه_کنونی', 'CURRENTVERSION' ),
-	'urlencode'             => array( '0', 'کدنشانی:', 'URLENCODE:' ),
-	'anchorencode'          => array( '0', 'کدلنگر:', 'ANCHORENCODE' ),
-	'currenttimestamp'      => array( '1', 'زمان‌یونیکسی', 'زمان_یونیکسی', 'CURRENTTIMESTAMP' ),
-	'localtimestamp'        => array( '1', 'زمان‌یونیکسی‌محلی', 'زمان_یونیکسی_محلی', 'LOCALTIMESTAMP' ),
-	'directionmark'         => array( '1', 'علامت‌جهت', 'علامت_جهت', 'DIRECTIONMARK', 'DIRMARK' ),
-	'language'              => array( '0', '#زبان:', '#LANGUAGE:' ),
-	'contentlanguage'       => array( '1', 'زبان‌محتوا', 'زبان_محتوا', 'CONTENTLANGUAGE', 'CONTENTLANG' ),
-	'pagesinnamespace'      => array( '1', 'صفحه‌درفضای‌نام:', 'صفحه_در_فضای_نام:', 'PAGESINNAMESPACE:', 'PAGESINNS:' ),
-	'numberofadmins'        => array( '1', 'تعدادمدیران', 'NUMBEROFADMINS' ),
-	'formatnum'             => array( '0', 'آرایش‌عدد', 'آرایش_عدد', 'FORMATNUM' ),
-	'padleft'               => array( '0', 'لبه‌چپ', 'لبه_چپ', 'PADLEFT' ),
-	'padright'              => array( '0', 'لبه‌راست', 'لبه_راست', 'PADRIGHT' ),
-	'special'               => array( '0', 'ویژه', 'special' ),
-	'defaultsort'           => array( '1', 'ترتیب:', 'ترتیب‌پیش‌فرض:', 'ترتیب_پیش_فرض:', 'DEFAULTSORT:', 'DEFAULTSORTKEY:', 'DEFAULTCATEGORYSORT:' ),
-	'filepath'              => array( '0', 'مسیرپرونده:', 'مسیر_پرونده:', 'FILEPATH:' ),
-	'tag'                   => array( '0', 'برچسب', 'tag' ),
-	'hiddencat'             => array( '1', '__رده‌پنهان__', '__HIDDENCAT__' ),
-	'pagesincategory'       => array( '1', 'صفحه‌دررده', 'صفحه_در_رده', 'PAGESINCATEGORY', 'PAGESINCAT' ),
-	'pagesize'              => array( '1', 'اندازه‌صفحه', 'اندازه_صفحه', 'PAGESIZE' ),
-	'index'                 => array( '1', '__نمایه__', '__INDEX__' ),
-	'noindex'               => array( '1', '__بی‌نمایه__', '__NOINDEX__' ),
-	'numberingroup'         => array( '1', 'تعداددرگروه', 'NUMBERINGROUP', 'NUMINGROUP' ),
-	'staticredirect'        => array( '1', '__تغییرمسیرثابت__', '__STATICREDIRECT__' ),
-	'protectionlevel'       => array( '1', 'سطح‌حغاطت', 'سطح_حفاظت', 'PROTECTIONLEVEL' ),
-	'formatdate'            => array( '0', 'آرایش‌تاریخ', 'آرایش_تاریخ', 'formatdate', 'dateformat' ),
-	'url_path'              => array( '0', 'مسیر', 'PATH' ),
-	'url_wiki'              => array( '0', 'ویکی', 'WIKI' ),
-	'url_query'             => array( '0', 'دستور', 'QUERY' ),
+	'redirect'                => array( '0', '#تغییرمسیر', '#REDIRECT' ),
+	'notoc'                   => array( '0', '__بی‌فهرست__', '__NOTOC__' ),
+	'nogallery'               => array( '0', '__بی‌نگارخانه__', '__NOGALLERY__' ),
+	'forcetoc'                => array( '0', '__بافهرست__', '__FORCETOC__' ),
+	'toc'                     => array( '0', '__فهرست__', '__TOC__' ),
+	'noeditsection'           => array( '0', '__بی‌بخش__', '__NOEDITSECTION__' ),
+	'noheader'                => array( '0', '__بی‌عنوان__', '__NOHEADER__' ),
+	'currentmonth'            => array( '1', 'ماه', 'ماه‌کنونی', 'ماه_کنونی', 'ماه‌کنونی۲', 'ماه_کنونی۲', 'CURRENTMONTH', 'CURRENTMONTH2' ),
+	'currentmonth1'           => array( '1', 'ماه۱', 'ماه‌کنونی۱', 'ماه_کنونی۱', 'CURRENTMONTH1' ),
+	'currentmonthname'        => array( '1', 'نام‌ماه', 'نام_ماه', 'نام‌ماه‌کنونی', 'نام_ماه_کنونی', 'CURRENTMONTHNAME' ),
+	'currentmonthnamegen'     => array( '1', 'نام‌ماه‌اضافه', 'نام_ماه_اضافه', 'نام‌ماه‌کنونی‌اضافه', 'نام_ماه_کنونی_اضافه', 'CURRENTMONTHNAMEGEN' ),
+	'currentmonthabbrev'      => array( '1', 'مخفف‌نام‌ماه', 'مخفف_نام_ماه', 'CURRENTMONTHABBREV' ),
+	'currentday'              => array( '1', 'روز', 'روزکنونی', 'روز_کنونی', 'CURRENTDAY' ),
+	'currentday2'             => array( '1', 'روز۲', 'روز_۲', 'CURRENTDAY2' ),
+	'currentdayname'          => array( '1', 'نام‌روز', 'نام_روز', 'CURRENTDAYNAME' ),
+	'currentyear'             => array( '1', 'سال', 'سال‌کنونی', 'سال_کنونی', 'CURRENTYEAR' ),
+	'currenttime'             => array( '1', 'زمان‌کنونی', 'زمان_کنونی', 'CURRENTTIME' ),
+	'currenthour'             => array( '1', 'ساعت', 'ساعت‌کنونی', 'ساعت_کنونی', 'CURRENTHOUR' ),
+	'localmonth'              => array( '1', 'ماه‌محلی', 'ماه_محلی', 'ماه‌محلی۲', 'ماه_محلی۲', 'LOCALMONTH', 'LOCALMONTH2' ),
+	'localmonth1'             => array( '1', 'ماه‌محلی۱', 'ماه_محلی۱', 'LOCALMONTH1' ),
+	'localmonthname'          => array( '1', 'نام‌ماه‌محلی', 'نام_ماه_محلی', 'LOCALMONTHNAME' ),
+	'localmonthnamegen'       => array( '1', 'نام‌ماه‌محلی‌اضافه', 'نام_ماه_محلی_اضافه', 'LOCALMONTHNAMEGEN' ),
+	'localmonthabbrev'        => array( '1', 'مخفف‌ماه‌محلی', 'مخفف_ماه_محلی', 'LOCALMONTHABBREV' ),
+	'localday'                => array( '1', 'روزمحلی', 'روز_محلی', 'LOCALDAY' ),
+	'localday2'               => array( '1', 'روزمحلی۲', 'روز_محلی_۲', 'LOCALDAY2' ),
+	'localdayname'            => array( '1', 'نام‌روزمحلی', 'نام_روز_محلی', 'LOCALDAYNAME' ),
+	'localyear'               => array( '1', 'سال‌محلی', 'سال_محلی', 'LOCALYEAR' ),
+	'localtime'               => array( '1', 'زمان‌محلی', 'زمان_محلی', 'LOCALTIME' ),
+	'localhour'               => array( '1', 'ساعت‌محلی', 'ساعت_محلی', 'LOCALHOUR' ),
+	'numberofpages'           => array( '1', 'تعدادصفحه‌ها', 'NUMBEROFPAGES' ),
+	'numberofarticles'        => array( '1', 'تعدادمقاله‌ها', 'NUMBEROFARTICLES' ),
+	'numberoffiles'           => array( '1', 'تعدادپرونده‌ها', 'NUMBEROFFILES' ),
+	'numberofusers'           => array( '1', 'تعدادکاربران', 'NUMBEROFUSERS' ),
+	'numberofactiveusers'     => array( '1', 'کاربران‌فعال', 'کاربران_فعال', 'NUMBEROFACTIVEUSERS' ),
+	'numberofedits'           => array( '1', 'تعدادویرایش‌ها', 'NUMBEROFEDITS' ),
+	'numberofviews'           => array( '1', 'تعدادبازدید', 'NUMBEROFVIEWS' ),
+	'pagename'                => array( '1', 'نام‌صفحه', 'نام_صفحه', 'PAGENAME' ),
+	'pagenamee'               => array( '1', 'نام‌صفحه‌کد', 'نام_صفحه_کد', 'PAGENAMEE' ),
+	'namespace'               => array( '1', 'فضای‌نام', 'فضای_نام', 'NAMESPACE' ),
+	'namespacee'              => array( '1', 'فضای‌نام‌کد', 'فضای_نام_کد', 'NAMESPACEE' ),
+	'talkspace'               => array( '1', 'فضای‌بحث', 'فضای_بحث', 'TALKSPACE' ),
+	'talkspacee'              => array( '1', 'فضای‌بحث‌کد', 'فضای_بحث_کد', 'TALKSPACEE' ),
+	'subjectspace'            => array( '1', 'فضای‌موضوع', 'فضای‌مقاله', 'فضای_موضوع', 'فضای_مقاله', 'SUBJECTSPACE', 'ARTICLESPACE' ),
+	'subjectspacee'           => array( '1', 'فضای‌موضوع‌کد', 'فضای‌مقاله‌کد', 'فضای_موضوع_کد', 'فضای_مقاله_کد', 'SUBJECTSPACEE', 'ARTICLESPACEE' ),
+	'fullpagename'            => array( '1', 'نام‌کامل‌صفحه', 'نام_کامل_صفحه', 'FULLPAGENAME' ),
+	'fullpagenamee'           => array( '1', 'نام‌کامل‌صفحه‌کد', 'نام_کامل_صفحه_کد', 'FULLPAGENAMEE' ),
+	'subpagename'             => array( '1', 'نام‌زیرصفحه', 'نام_زیرصفحه', 'SUBPAGENAME' ),
+	'subpagenamee'            => array( '1', 'نام‌زیرصفحه‌کد', 'نام_زیرصفحه_کد', 'SUBPAGENAMEE' ),
+	'basepagename'            => array( '1', 'نام‌صفحه‌مبنا', 'نام_صفحه_مبنا', 'BASEPAGENAME' ),
+	'basepagenamee'           => array( '1', 'نام‌صفحه‌مبناکد', 'نام_صفحه_مبنا_کد', 'BASEPAGENAMEE' ),
+	'talkpagename'            => array( '1', 'نام‌صفحه‌بحث', 'نام_صفحه_بحث', 'TALKPAGENAME' ),
+	'talkpagenamee'           => array( '1', 'نام‌صفحه‌بحث‌کد', 'نام_صفحه_بحث_کد', 'TALKPAGENAMEE' ),
+	'subjectpagename'         => array( '1', 'نام‌صفحه‌موضوع', 'نام‌صفحه‌مقاله', 'نام_صفحه_موضوع', 'نام_صفحه_مقاله', 'SUBJECTPAGENAME', 'ARTICLEPAGENAME' ),
+	'subjectpagenamee'        => array( '1', 'نام‌صفحه‌موضوع‌کد', 'نام‌صفحه‌مقاله‌کد', 'نام_صفحه_موضوع_کد', 'نام_صفحه_مقاله_کد', 'SUBJECTPAGENAMEE', 'ARTICLEPAGENAMEE' ),
+	'msg'                     => array( '0', 'پیغام:', 'پ:', 'MSG:' ),
+	'subst'                   => array( '0', 'جایگزین:', 'جا:', 'SUBST:' ),
+	'safesubst'               => array( '0', 'جایگزین_امن:', 'جام:', 'SAFESUBST:' ),
+	'msgnw'                   => array( '0', 'پیغام‌بی‌بسط:', 'MSGNW:' ),
+	'img_thumbnail'           => array( '1', 'بندانگشتی', 'انگشتدان', 'انگشتی', 'thumbnail', 'thumb' ),
+	'img_manualthumb'         => array( '1', 'بندانگشتی=$1', 'انگشتدان=$1', 'انگشتی=$1', 'thumbnail=$1', 'thumb=$1' ),
+	'img_right'               => array( '1', 'راست', 'right' ),
+	'img_left'                => array( '1', 'چپ', 'left' ),
+	'img_none'                => array( '1', 'هیچ', 'none' ),
+	'img_width'               => array( '1', '$1پیکسل', '$1px' ),
+	'img_center'              => array( '1', 'وسط', 'center', 'centre' ),
+	'img_framed'              => array( '1', 'قاب', 'framed', 'enframed', 'frame' ),
+	'img_frameless'           => array( '1', 'بی‌قاب', 'بیقاب', 'بی_قاب', 'frameless' ),
+	'img_page'                => array( '1', 'صفحه=$1', 'صفحه_$1', 'page=$1', 'page $1' ),
+	'img_upright'             => array( '1', 'ایستاده', 'ایستاده=$1', 'ایستاده_$1', 'upright', 'upright=$1', 'upright $1' ),
+	'img_border'              => array( '1', 'حاشیه', 'border' ),
+	'img_baseline'            => array( '1', 'همکف', 'baseline' ),
+	'img_sub'                 => array( '1', 'زیر', 'sub' ),
+	'img_super'               => array( '1', 'زبر', 'super', 'sup' ),
+	'img_top'                 => array( '1', 'بالا', 'top' ),
+	'img_text_top'            => array( '1', 'متن-بالا', 'text-top' ),
+	'img_middle'              => array( '1', 'میانه', 'middle' ),
+	'img_bottom'              => array( '1', 'پایین', 'bottom' ),
+	'img_text_bottom'         => array( '1', 'متن-پایین', 'text-bottom' ),
+	'img_link'                => array( '1', 'پیوند=$1', 'link=$1' ),
+	'img_alt'                 => array( '1', 'جایگزین=$1', 'alt=$1' ),
+	'int'                     => array( '0', 'ترجمه:', 'INT:' ),
+	'sitename'                => array( '1', 'نام‌وبگاه', 'نام_وبگاه', 'SITENAME' ),
+	'ns'                      => array( '0', 'فن:', 'NS:' ),
+	'nse'                     => array( '0', 'فنک:', 'NSE:' ),
+	'localurl'                => array( '0', 'نشانی:', 'LOCALURL:' ),
+	'localurle'               => array( '0', 'نشانی‌کد:', 'نشانی_کد:', 'LOCALURLE:' ),
+	'articlepath'             => array( '0', 'مسیرمقاله', 'مسیر_مقاله', 'ARTICLEPATH' ),
+	'server'                  => array( '0', 'سرور', 'کارساز', 'SERVER' ),
+	'servername'              => array( '0', 'نام‌کارساز', 'نام_کارساز', 'نام‌سرور', 'نام_سرور', 'SERVERNAME' ),
+	'scriptpath'              => array( '0', 'مسیرسند', 'مسیر_سند', 'SCRIPTPATH' ),
+	'stylepath'               => array( '0', 'مسیرسبک', 'مسیر_سبک', 'STYLEPATH' ),
+	'grammar'                 => array( '0', 'دستورزبان:', 'دستور_زبان:', 'GRAMMAR:' ),
+	'gender'                  => array( '0', 'جنسیت:', 'جنس:', 'GENDER:' ),
+	'notitleconvert'          => array( '0', '__عنوان‌تبدیل‌نشده__', '__NOTITLECONVERT__', '__NOTC__' ),
+	'nocontentconvert'        => array( '0', '__محتواتبدیل‌نشده__', '__NOCONTENTCONVERT__', '__NOCC__' ),
+	'currentweek'             => array( '1', 'هفته', 'CURRENTWEEK' ),
+	'currentdow'              => array( '1', 'روزهفته', 'روز_هفته', 'CURRENTDOW' ),
+	'localweek'               => array( '1', 'هفته‌محلی', 'هفته_محلی', 'LOCALWEEK' ),
+	'localdow'                => array( '1', 'روزهفته‌محلی', 'روز_هفته_محلی', 'LOCALDOW' ),
+	'revisionid'              => array( '1', 'نسخه', 'شماره‌نسخه', 'شماره_نسخه', 'REVISIONID' ),
+	'revisionday'             => array( '1', 'روزنسخه', 'روز_نسخه', 'REVISIONDAY' ),
+	'revisionday2'            => array( '1', 'روزنسخه۲', 'روز_نسخه۲', 'روز_نسخه_۲', 'REVISIONDAY2' ),
+	'revisionmonth'           => array( '1', 'ماه‌نسخه', 'ماه_نسخه', 'REVISIONMONTH' ),
+	'revisionmonth1'          => array( '1', 'ماه‌نسخه۱', 'ماه_نسخه_۱', 'REVISIONMONTH1' ),
+	'revisionyear'            => array( '1', 'سال‌نسخه', 'سال_نسخه', 'REVISIONYEAR' ),
+	'revisiontimestamp'       => array( '1', 'زمان‌یونیکسی‌نسخه', 'زمان‌نسخه', 'زمان_یونیکسی_نسخه', 'زمان_نسخه', 'REVISIONTIMESTAMP' ),
+	'revisionuser'            => array( '1', 'کاربرنسخه', 'کاربر_نسخه', 'REVISIONUSER' ),
+	'plural'                  => array( '0', 'جمع:', 'PLURAL:' ),
+	'fullurl'                 => array( '0', 'نشانی‌کامل:', 'نشانی_کامل:', 'FULLURL:' ),
+	'fullurle'                => array( '0', 'نشانی‌کامل‌کد:', 'نشانی_کامل_کد:', 'FULLURLE:' ),
+	'lcfirst'                 => array( '0', 'ابتداکوچک:', 'ابتدا_کوچک:', 'LCFIRST:' ),
+	'ucfirst'                 => array( '0', 'ابتدابزرگ:', 'ابتدا_بزرگ:', 'UCFIRST:' ),
+	'lc'                      => array( '0', 'ک:', 'LC:' ),
+	'uc'                      => array( '0', 'ب:', 'UC:' ),
+	'raw'                     => array( '0', 'خام:', 'RAW:' ),
+	'displaytitle'            => array( '1', 'عنوان‌ظاهری', 'عنوان_ظاهری', 'DISPLAYTITLE' ),
+	'rawsuffix'               => array( '1', 'ن', 'R' ),
+	'newsectionlink'          => array( '1', '__بخش‌جدید__', '__NEWSECTIONLINK__' ),
+	'nonewsectionlink'        => array( '1', '__بی‌پیوندبخش__', '__بی‌پیوند‌بخش‌جدید__', '__NONEWSECTIONLINK__' ),
+	'currentversion'          => array( '1', 'نسخه‌کنونی', 'نسخه_کنونی', 'CURRENTVERSION' ),
+	'urlencode'               => array( '0', 'کدنشانی:', 'URLENCODE:' ),
+	'anchorencode'            => array( '0', 'کدلنگر:', 'ANCHORENCODE' ),
+	'currenttimestamp'        => array( '1', 'زمان‌یونیکسی', 'زمان_یونیکسی', 'CURRENTTIMESTAMP' ),
+	'localtimestamp'          => array( '1', 'زمان‌یونیکسی‌محلی', 'زمان_یونیکسی_محلی', 'LOCALTIMESTAMP' ),
+	'directionmark'           => array( '1', 'علامت‌جهت', 'علامت_جهت', 'DIRECTIONMARK', 'DIRMARK' ),
+	'language'                => array( '0', '#زبان:', '#LANGUAGE:' ),
+	'contentlanguage'         => array( '1', 'زبان‌محتوا', 'زبان_محتوا', 'CONTENTLANGUAGE', 'CONTENTLANG' ),
+	'pagesinnamespace'        => array( '1', 'صفحه‌درفضای‌نام:', 'صفحه_در_فضای_نام:', 'PAGESINNAMESPACE:', 'PAGESINNS:' ),
+	'numberofadmins'          => array( '1', 'تعدادمدیران', 'NUMBEROFADMINS' ),
+	'formatnum'               => array( '0', 'آرایش‌عدد', 'آرایش_عدد', 'FORMATNUM' ),
+	'padleft'                 => array( '0', 'لبه‌چپ', 'لبه_چپ', 'PADLEFT' ),
+	'padright'                => array( '0', 'لبه‌راست', 'لبه_راست', 'PADRIGHT' ),
+	'special'                 => array( '0', 'ویژه', 'special' ),
+	'defaultsort'             => array( '1', 'ترتیب:', 'ترتیب‌پیش‌فرض:', 'ترتیب_پیش_فرض:', 'DEFAULTSORT:', 'DEFAULTSORTKEY:', 'DEFAULTCATEGORYSORT:' ),
+	'filepath'                => array( '0', 'مسیرپرونده:', 'مسیر_پرونده:', 'FILEPATH:' ),
+	'tag'                     => array( '0', 'برچسب', 'tag' ),
+	'hiddencat'               => array( '1', '__رده‌پنهان__', '__HIDDENCAT__' ),
+	'pagesincategory'         => array( '1', 'صفحه‌دررده', 'صفحه_در_رده', 'PAGESINCATEGORY', 'PAGESINCAT' ),
+	'pagesize'                => array( '1', 'اندازه‌صفحه', 'اندازه_صفحه', 'PAGESIZE' ),
+	'index'                   => array( '1', '__نمایه__', '__INDEX__' ),
+	'noindex'                 => array( '1', '__بی‌نمایه__', '__NOINDEX__' ),
+	'numberingroup'           => array( '1', 'تعداددرگروه', 'NUMBERINGROUP', 'NUMINGROUP' ),
+	'staticredirect'          => array( '1', '__تغییرمسیرثابت__', '__STATICREDIRECT__' ),
+	'protectionlevel'         => array( '1', 'سطح‌حفاطت', 'سطح_حفاظت', 'PROTECTIONLEVEL' ),
+	'formatdate'              => array( '0', 'آرایش‌تاریخ', 'آرایش_تاریخ', 'formatdate', 'dateformat' ),
+	'url_path'                => array( '0', 'مسیر', 'PATH' ),
+	'url_wiki'                => array( '0', 'ویکی', 'WIKI' ),
+	'url_query'               => array( '0', 'دستور', 'QUERY' ),
+	'defaultsort_noerror'     => array( '0', 'بدون‌خطا', 'noerror' ),
+	'defaultsort_noreplace'   => array( '0', 'جایگزین‌نکن', 'noreplace' ),
 );
 
 # Harakat are intentionally not included in the linkTrail. Their addition should
@@ -424,7 +432,7 @@ $messages = array(
 'tog-hideminor'               => 'تغییرات جزئی از فهرست تغییرات اخیر پنهان شوند',
 'tog-hidepatrolled'           => 'ویرایش‌های گشت‌خورده از فهرست تغییرات اخیر پنهان شوند',
 'tog-newpageshidepatrolled'   => 'صفحه‌های نهگبانی‌شده از فهرست صفحه‌های تازه پنهان شوند',
-'tog-extendwatchlist'         => 'فهرست پی‌گیری‌ها گسترش داده شود تا همهٔ تغییرات را نشان دهد، و نه فقط موارد اخیر',
+'tog-extendwatchlist'         => 'گسترش فهرست پی‌گیری‌ها برای نمایش همهٔ تغییرات، نه فقط آخرین‌ها',
 'tog-usenewrc'                => 'از تغییرات اخیر گسترش‌یافته استفاده شود (نیازمند جاوااسکریپت)',
 'tog-numberheadings'          => 'شماره‌گذاری خودکار عنوان‌ها',
 'tog-showtoolbar'             => 'نوار ابزار جعبهٔ ویرایش نمایش یابد (نیازمند جاوااسکریپت)',
@@ -441,15 +449,15 @@ $messages = array(
 'tog-previewontop'            => 'پیش‌نمایش قبل از جعبهٔ ویرایش نمایش یابد',
 'tog-previewonfirst'          => 'پیش‌نمایش هنگام اولین ویرایش نمایش یابد',
 'tog-nocache'                 => 'حافظهٔ نهانی مرورگر از کار انداخته شود',
-'tog-enotifwatchlistpages'    => 'اگر صفحه‌ای که پی‌گیری می‌کنم تغییر کرد به من نامه الکترونیکی فرستاده شود',
+'tog-enotifwatchlistpages'    => 'اگر صفحه‌ای از فهرست پی‌گیری‌هایم ویرایش شد برایم پست الکترونیکی بفرست',
 'tog-enotifusertalkpages'     => 'هنگامی که در صفحهٔ بحث کاربری‌ام تغییری صورت می‌گیرد به من نامه الکترونیکی فرستاده شود',
 'tog-enotifminoredits'        => 'برای تغییرات جزئی در صفحه‌ها هم به من نامه الکترونیکی فرستاده شود',
 'tog-enotifrevealaddr'        => 'نشانی پست الکترونیکی من را در نامه‌های اطلاع‌رسانی نمایش یابد',
 'tog-shownumberswatching'     => 'شمار کاربران پی‌گیری‌کننده نمایش یابد',
 'tog-oldsig'                  => 'امضای کنونی:',
 'tog-fancysig'                => 'امضا به صورت ویکی‌متن در نظر گرفته شود (بدون درج خودکار پیوند)',
-'tog-externaleditor'          => 'استفاده از ویرایشگر خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [http://www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
-'tog-externaldiff'            => 'استفاده از تفاوت‌گیر (diff) خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [http://www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
+'tog-externaleditor'          => 'استفاده از ویرایشگر خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [//www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
+'tog-externaldiff'            => 'استفاده از تفاوت‌گیر (diff) خارجی به‌طور پیش‌فرض (فقط برای کاربران پیشرفته. نیازمند تنظیمات ویژه در رایانهٔ‌تان است. [//www.mediawiki.org/wiki/Manual:External_editors اطلاعات بیشتر].)',
 'tog-showjumplinks'           => 'پیوندهای دسترسی‌پذیری «پرش به» فعال باشد',
 'tog-uselivepreview'          => 'استفاده از پیش‌نمایش زنده (نیازمند جاوااسکریپت) (آزمایشی)',
 'tog-forceeditsummary'        => 'هنگامی که خلاصهٔ ویرایش ننوشته‌ام به من اطلاع داده شود',
@@ -539,13 +547,13 @@ $messages = array(
 'hidden-category-category'       => 'رده‌های پنهان',
 'category-subcat-count'          => '{{PLURAL:$2|این رده تنها حاوی زیرردهٔ زیر است.|{{PLURAL:$1|این زیررده|این $1 زیررده}} در این رده قرار {{PLURAL:$1|دارد|دارند}}؛ این رده در کل حاوی $2 زیررده است.}}',
 'category-subcat-count-limited'  => 'این رده شامل {{PLURAL:$1|یک زیررده|$1 زیررده}} زیر می‌باشد.',
-'category-article-count'         => '{{PLURAL:$2|این رده تنها حاوی صفحهٔ زیر است.|{{PLURAL:$1|این صفحه|این $1 صفحه}} در این رده قرار {{PLURAL:$1|دارد|دارند}}؛ این رده در کل حاوی $2 صفحه است.}}',
+'category-article-count'         => '{{PLURAL:$2|این رده فقط دارای صفحهٔ زیر است.|{{PLURAL:$1|این صفحه|این $1 صفحه}} در این رده قرار {{PLURAL:$1|دارد|دارند}}؛ این رده در کل حاوی $2 صفحه است.}}',
 'category-article-count-limited' => '{{PLURAL:$1|صفحهٔ|$1 صفحهٔ}} زیر در ردهٔ فعلی قرار دارند.',
 'category-file-count'            => '{{PLURAL:$2|این رده تنها حاوی پروندهٔ زیر است.|{{PLURAL:$1|این پرونده|این $1 پرونده}} در این رده قرار {{PLURAL:$1|دارد|دارند}}؛ این رده در کل حاوی $2 پرونده است.}}',
 'category-file-count-limited'    => '{{PLURAL:$1|پروندهٔ|$1 پروندهٔ}} زیر در ردهٔ فعلی قرار دارند.',
 'listingcontinuesabbrev'         => '(ادامه)',
 'index-category'                 => 'صفحه‌های نمایه شده',
-'noindex-category'               => 'صفحه‌های نمایه نشده',
+'noindex-category'               => 'صفحه‌های نمایه‌نشده',
 'broken-file-category'           => 'صفحه‌های دارای پیوندهای پروندهٔ خراب',
 
 'about'         => 'درباره',
@@ -571,7 +579,7 @@ $messages = array(
 'faqpage'        => 'Project:پرسش‌های متداول',
 
 # Vector skin
-'vector-action-addsection'       => 'افزودن عنوان',
+'vector-action-addsection'       => 'ایجاد بخش جدید',
 'vector-action-delete'           => 'حذف',
 'vector-action-move'             => 'انتقال',
 'vector-action-protect'          => 'محافظت',
@@ -660,7 +668,7 @@ $1',
 'currentevents-url'    => 'Project:رویدادهای کنونی',
 'disclaimers'          => 'تکذیب‌نامه‌ها',
 'disclaimerpage'       => 'Project:تکذیب‌نامهٔ عمومی',
-'edithelp'             => 'راهنمای ویرایش کردن',
+'edithelp'             => 'راهنمای ویرایش‌کردن',
 'edithelppage'         => 'Help:چگونه صفحه‌ها را ویرایش کنیم',
 'helppage'             => 'Help:راهنما',
 'mainpage'             => 'صفحهٔ اصلی',
@@ -680,6 +688,7 @@ $1',
 به [[Special:Version|این صفحه]] مراجعه کنید.',
 
 'ok'                      => 'تأیید',
+'backlinksubtitle'        => '← $1',
 'retrievedfrom'           => 'برگرفته از «$1»',
 'youhavenewmessages'      => '$1 دارید ($2).',
 'newmessageslink'         => 'پیام‌های جدید',
@@ -726,9 +735,9 @@ $1',
 
 # Main script and global functions
 'nosuchaction'      => 'چنین عملی وجود ندارد',
-'nosuchactiontext'  => 'عمل مشخص شده در نشانی اینترنتی غیرمجاز است.
-شما ممکن است نشانی اینترنتی را اشتباه وارد کرده باشید یا یک پیوند نادرست را دنبال کرده باشید.
-هم‌چنین ممکن است ایرادی در {{SITENAME}} وجود داشته باشد.',
+'nosuchactiontext'  => 'عمل مشخص‌شده در نشانی اینترنتی غیرمجاز است.
+ممکن است نشانی اینترنتی را اشتباه وارد کرده باشید یا پیوند مشکل‌داری را دنبال کرده باشید.
+همچنین ممکن است ایرادی در نرم‌افزار استفاده‌شده در {{SITENAME}} وجود داشته باشد.',
 'nosuchspecialpage' => 'چنین صفحهٔ ویژه‌ای وجود ندارد',
 'nospecialpagetext' => '<strong>شما صفحهٔ ویژهٔ غیرمجازی را درخواست کرده‌اید.</strong>
 
@@ -756,12 +765,12 @@ $1',
 'readonlytext'         => 'پایگاه داده در حال حاضر در برابر تغییرات و ایجاد مداخل قفل شده است. احتمالاً علت آن بهینه‌سازی و رسیدگی‌های معمول است که بعد از انجام آن وضع به حالت عادی باز خواهد گشت.
 
 مدیری که آن را قفل کرده است این توضیح را ارائه کرده: $1',
-'missing-article'      => 'پایگاه داده متن صفحه‌ای به نام «$1» $2 را که باید می‌یافت، نیافت.
+'missing-article'      => 'پایگاه داده متن صفحهٔ با نام «$1» $2 که باید پیدا می‌کرد را نیافت.
 
-این مشکل معمولاً بر اثر ادامه دادن پیوندهای تاریخ‌گذشتهٔ تفاوت یا تاریخچهٔ صفحه‌هایی رخ می‌دهد که حذف شده‌اند.
+این مشکل معمولاً به علت دنبال کردن یک پیوند تفاوت تاریخ‌گذشته یا تاریخچهٔ صفحه‌ای که حذف شده‌است، رخ می‌دهد.
 
-اگر مورد شما این نیست، ممکن است اشکالی در نرم‌افزار پیدا کرده باشید.
-لطفاً این مسئله را، با ذکر URL، به یکی از مدیران گزارش کنید.',
+در غیر این صورت، شما احتمالاً اشکالی در نرم‌افزار پیدا کرده‌اید.
+لطفاً این موضوع را با ذکر URL به یکی از [[Special:ListUsers/sysop|مدیران]] گزارش دهید.',
 'missingarticle-rev'   => '(نسخهٔ شماره: $1)',
 'missingarticle-diff'  => '(تفاوت: $1، $2)',
 'readonly_lag'         => 'پایگاه داده به طور خودکار قفل شده‌است تا نسخه‌های پشتیبان با نسخهٔ اصلی هماهنگ شوند',
@@ -776,31 +785,33 @@ $1',
 'filenotfound'         => 'پروندهٔ «$1» یافت نشد.',
 'fileexistserror'      => 'امکان نوشتن روی پرونده $1 وجود ندارد: پرونده از قبل وجود دارد.',
 'unexpected'           => 'مقدار غیرمنتظره: «$1»=«$2».',
-'formerror'            => 'خطا: نمی‌توان فرم را فرستاد',
+'formerror'            => 'خطا: نمی‌توان فرم را فرستاد.',
 'badarticleerror'      => 'نمی‌توان این عمل را بر این صفحه انجام داد.',
 'cannotdelete'         => 'امکان حذف صفحه یا تصویر «$1» وجود ندارد.
 ممکن است قبلاً فرد دیگری آن را حذف کرده باشد.',
+'cannotdelete-title'   => 'نمی تواند این " $1 " صفحه را حذف کند.',
 'badtitle'             => 'عنوان بد',
-'badtitletext'         => 'عنوان درخواستی نامعتبر، خالی، یا عنوانی بین زبانی یا بین‌ویکی‌ای با پیوند نادرست بود.
-ممکن است حاوی یک یا چند نویسه باشد که در عنوان‌ها نمی‌توانند استفاده شوند.',
+'badtitletext'         => 'عنوان درخواستی نامعتبر، خالی، یا عنوانی بین‌زبانی یا بین‌ویکی‌ای با پیوند نادرست بود.
+ممکن است حاوی یک یا چند نویسه باشد که نمی‌توانند در عنوان‌ها استفاده شوند.',
 'perfcached'           => 'داده‌های زیر از حافظهٔ موقت فراخوانی شده‌اند و ممکن است کاملاً به‌روز نباشند.',
 'perfcachedts'         => 'داده‌های زیر از حافظهٔ موقت فراخوانی شده‌اند و آخرین بار در $1 به‌روزرسانی شده است.',
 'querypage-no-updates' => 'امکان به‌روزرسانی این صفحه فعلاً غیرفعال شده‌است.
-اطلاعات این صفحه مکن است به‌روز نباشد.',
+اطلاعات این صفحه ممکن است به‌روز نباشد.',
 'wrong_wfQuery_params' => 'پارامترهای wfQuery()‎ نادرست است<br />
 تابع: $1<br />
 پرس‌وجو: $2',
 'viewsource'           => 'نمایش مبدأ',
-'viewsourcefor'        => 'برای $1',
+'viewsource-title'     => 'مشاهده منبع برای $1',
 'actionthrottled'      => 'جلوی عمل شما گرفته شد',
 'actionthrottledtext'  => 'به منظور جلوگیری از هرزنگاری، شما اجازه ندارید که چنین عملی را بیش از چند بار در یک مدت زمان کوتاه انجام بدهید.
 لطفاً پس از چند دقیقه دوباره تلاش کنید.',
 'protectedpagetext'    => 'این صفحه برای جلوگیری از ویرایش قفل شده‌است.',
 'viewsourcetext'       => 'می‌توانید متن مبدأ این صفحه را مشاهده کنید یا از آن نسخه بردارید:',
+'viewyourtext'         => "شما می‌توانید کد مبدأ '''ویرایشهایتان''' در این صفحه را ببینید و کپی کنید:",
 'protectedinterface'   => 'این صفحه ارائه‌دهندهٔ متنی برای واسط کاربر این نرم‌افزار است و به منظور پیشگیری از خرابکاری قفل شده‌است.',
-'editinginterface'     => "'''هشدار:''' شما صفحه‌ای را ویرایش می‌کنید که شامل  متنی است که در واسط کاربر این نرم‌افزار به کار رفته‌است.
+'editinginterface'     => "'''هشدار:''' صفحه‌ای را که ویرایش می‌کنید شامل  متنی‌است که در واسط کاربر این نرم‌افزار به کار رفته‌است.
 تغییر این صفحه منجر به تغییر ظاهر واسط کاربر این نرم‌افزار برای دیگر کاربران خواهد شد.
-برای ترجمه، لطفاً از [http://translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net]، پروژهٔ ترجمهٔ مدیاویکی، استفاده کنید.",
+برای ترجمه لطفاً از [//translatewiki.net/wiki/Main_Page?setlang=en translatewiki.net] (پروژهٔ ترجمهٔ مدیاویکی) استفاده کنید.",
 'sqlhidden'            => '(دستور اس‌کیوال پنهان شده)',
 'cascadeprotected'     => 'این صفحه در مقابل ویرایش محافظت شده‌است برای اینکه در {{PLURAL:$1|صفحهٔ|صفحه‌های}} محافظت‌شدهٔ زیر که گزینهٔ «آبشاری» در {{PLURAL:$1|آن|آنها}} انتخاب شده‌است، قرار گرفته‌است:
 $2',
@@ -819,14 +830,14 @@ $2',
 # Login and logout pages
 'logouttext'                 => "'''اینک از سامانه خارج شدید.'''
 
-شما می‌توانید به استفادهٔ گمنام از {{SITENAME}} ادامه دهید، یا می‌توانید با همین حساب یا حساب دیگری [[Special:UserLogin|به سامانه وارد شوید]].
+شما می‌توانید به استفادهٔ گمنام از {{SITENAME}} ادامه دهید، یا با همین حساب کاربری یا حسابی دیگر [[Special:UserLogin|به سامانه وارد شوید]].
 
-توجه کنید که تا زمانی که میانگیر مرورگرتان را پاک کنید، بعضی صفحه‌ها ممکن است به شکلی نمایش یابند که انگار هنوز وارد سامانه هستید.",
+توجه کنید که تا زمانی که میانگیر مرورگرتان را پاک کنید، بعضی صفحه‌ها ممکن است به گونه‌ای نمایش یابند که انگار هنوز وارد سامانه هستید.",
 'welcomecreation'            => '==$1، خوش آمدید!==
 حساب شما ایجاد شد.
 فراموش نکنید که [[Special:Preferences|ترجیحات {{SITENAME}}]] را برای خود را تغییر دهید.',
-'yourname'                   => 'نام کاربری',
-'yourpassword'               => 'گذرواژهٔ',
+'yourname'                   => 'نام کاربری:',
+'yourpassword'               => 'گذرواژه:',
 'yourpasswordagain'          => 'گذرواژه را دوباره وارد کنید',
 'remembermypassword'         => 'گذرواژه را (تا حداکثر $1 {{PLURAL:$1|روز|روز}}) در این رایانه به خاطر بسپار',
 'securelogin-stick-https'    => 'پس از ورود به سامانه به HTTPS متصل بمان',
@@ -840,8 +851,8 @@ $2',
 'logout'                     => 'خروج از سامانه',
 'userlogout'                 => 'خروج از سامانه',
 'notloggedin'                => 'به سامانه وارد نشده‌اید',
-'nologin'                    => 'نام کاربری ندارید؟ $1.',
-'nologinlink'                => 'یک حساب جدید بسازید',
+'nologin'                    => 'حساب کاربری ندارید؟ $1.',
+'nologinlink'                => 'یک حساب کاربری جدید بسازید',
 'createaccount'              => 'ایجاد حساب کاربری',
 'gotaccount'                 => "حساب کاربری دارید؟ '''$1'''.",
 'gotaccountlink'             => 'وارد شوید',
@@ -896,17 +907,18 @@ $2',
 قبل از اینکه نامهٔ دیگری قابل ارسال به این نشانی باشد، باید دستورهای که در آن نامه آمده است را جهت تأیید این مساله که این نشانی متعلق به شماست، اجرا کنید.',
 'throttled-mailpassword'     => 'یک یادآور گذرواژه در $1 {{PLURAL:$1|ساعت|ساعت}} گذشته برای شما فرستاده شده‌است.
 برای جلوگیری از سوءاستفاده هر  $1 ساعت تنها یک یادآوری فرستاده می‌شود.',
-'mailerror'                  => 'خطا در فرستادن نامه: $1',
+'mailerror'                  => 'خطا در فرستادن پست الکترونیکی: $1',
 'acct_creation_throttle_hit' => 'بازدیدکنندگان این ویکی که از نشانی آی‌پی شما استفاده می‌کنند در روز گذشته {{PLURAL:$1|یک حساب کاربری|$1 حساب کاربری}} ساخته‌اند، که بیشترین تعداد مجاز در آن بازهٔ زمانی است.
 به همین خاطر، بازدیدکنندگانی که از این نشانی آی‌پی استفاده می‌کنند نمی‌توانند در حال حاضر حساب جدیدی بسازند.',
 'emailauthenticated'         => 'نشانی پست الکترونیکی شما در $2 ساعت $3 تصدیق شد.',
 'emailnotauthenticated'      => 'نشانی پست الکترونیکی شما <strong>هنوز تصدیق نشده است.
 برای هیچ یک از ویژگی‌های زیر نامهٔ الکترونیکی ارسال نخواهد شد.',
 'noemailprefs'               => 'برای راه‌اندازی این قابلیت‌ها یک نشانی پست الکترونیکی مشخص کنید.',
-'emailconfirmlink'           => 'نشانی پست الکترونیکی خود را تأیید کنید',
+'emailconfirmlink'           => 'تأیید نشانی پست الکترونیکی',
 'invalidemailaddress'        => 'نشانی واردشدهٔ پست الکترونیک قابل‌قبول نیست، چرا که دارای ساختار نامعتبری است.
 لطفاً نشانی‌ای با ساختار صحیح وارد کنید و یا بخش مربوط را خالی بگذارید.',
-'accountcreated'             => 'حساب ایجاد شد',
+'cannotchangeemail'          => 'نشانی‌های پست الکترونیکی حساب کاربری در این ویکی قابل تغییر نیست.',
+'accountcreated'             => 'حساب کاربری ایجاد شد',
 'accountcreatedtext'         => 'حساب کاربری $1 ایجاد شده‌است.',
 'createaccount-title'        => 'ایجاد حساب کاربری در {{SITENAME}}',
 'createaccount-text'         => 'یک نفر برای پست الکترونیک شما یک حساب کاربری در {{SITENAME}} با نام «$2» ایجاد کرده‌است ($4)، که گذرواژهٔ آن چنین است: $3
@@ -914,9 +926,9 @@ $2',
 
 اگر این حساب اشتباهی ساخته شده است، این پیغام را نادیده بگیرید.',
 'usernamehasherror'          => 'نام کاربری نمی‌تواند شامل نویسه‌های درهم باشد',
-'login-throttled'            => 'شما به تازگی چندین بار برای ورود به سامانه تلاش کرده‌اید.
-لطفاً پیش از آن که دوباره تلاش کنید مدتی صبر کنید.',
-'login-abort-generic'        => 'ورود شما به سیستم ناموفق بود - خاتمه ناگهانی داده شد',
+'login-throttled'            => 'شما چندین‌بار برای ورود به سامانه تلاش کرده‌اید.
+لطفاً پیش از آنکه دوباره تلاش کنید کمی صبر کنید.',
+'login-abort-generic'        => 'ورود شما به سیستم ناموفق بود - خاتمهٔ ناگهانی داده شد',
 'loginlanguagelabel'         => 'زبان: $1',
 'suspicious-userlogout'      => 'درخواست شما برای خروج از سامانه رد شد زیرا به نظر می‌رسد که این درخواست توسط یک مرورگر معیوب یا پروکسی میانگیر ارسال شده باشد.',
 
@@ -945,31 +957,35 @@ $2',
 'resetpass-temp-password'   => 'گذرواژهٔ موقت:',
 
 # Special:PasswordReset
-'passwordreset'                => 'بازنشانی گذرواژه',
-'passwordreset-text'           => 'این فرم را برای دریافت نامهٔ یادآور جزئیات حسابتان کامل کنید.',
-'passwordreset-legend'         => 'بازنشانی گذرواژه',
-'passwordreset-disabled'       => 'بازنشانی گذرواژه در این ویکی غیرفعال شده است.',
-'passwordreset-pretext'        => '{{PLURAL:$1||یکی از قطعه‌های داده را در زیر وارد کنید}}',
-'passwordreset-username'       => 'نام کاربری:',
-'passwordreset-domain'         => 'دامنه:',
-'passwordreset-email'          => 'نشانی پست الکترونیک:',
-'passwordreset-emailtitle'     => 'جزئیات حساب در {{SITENAME}}',
-'passwordreset-emailtext-ip'   => 'یک فرد (احتمالاً شما، از نشانی آی‌پی $1) درخواست یادآور جزئیات حساب شما را برای وبگاه {{SITENAME}} ($4) درخواست کرده است. {{PLURAL:$3|حساب|حساب‌های}} کاربری زیر با این رایانشانی مرتبط هستند:
+'passwordreset'                    => 'بازنشانی گذرواژه',
+'passwordreset-text'               => 'این فرم را برای دریافت نامهٔ یادآور جزئیات حسابتان کامل کنید.',
+'passwordreset-legend'             => 'بازنشانی گذرواژه',
+'passwordreset-disabled'           => 'بازنشانی گذرواژه در این ویکی غیرفعال شده است.',
+'passwordreset-pretext'            => '{{PLURAL:$1||یکی از قطعه‌های داده را در زیر وارد کنید}}',
+'passwordreset-username'           => 'نام کاربری:',
+'passwordreset-domain'             => 'دامنه:',
+'passwordreset-capture'            => 'پست الکترونیکی نهایی نشان داده شود؟',
+'passwordreset-capture-help'       => 'اگر این گزینه را علامت بزنید پست الکترونیکی (حاوی گذرواژهٔ موقت) به شما نشان داده خواهد شد و برای کاربر نیز فرستاده خواهد شد.',
+'passwordreset-email'              => 'نشانی پست الکترونیک:',
+'passwordreset-emailtitle'         => 'جزئیات حساب در {{SITENAME}}',
+'passwordreset-emailtext-ip'       => 'شخصی (احتمالاً شما، با نشانی آی‌پی $1) درخواست یادآوری جزئیات حساب کاربریتان در {{SITENAME}} ($4) را کرده‌است. {{PLURAL:$3|حساب|حساب‌های}} کاربری زیر با این رایانشانی مرتبط هستند:
 
 $2
 
-{{PLURAL:$3|این گذرواژهٔ موقت|این گذرواژه‌های موقت}} تا {{PLURAL:$5|یک روز|$5 روز}} باطل می‌شود.
-شما باید اکنون وارد سایت شده و گذرواژهٔ جدید را برگزینید. اگر شخص دیگری این درخواست را داده است، یا اگر گذرواژهٔ اصلی‌تان را به یاد آوردید، و دیگر نمی‌خواهید که آن را تغییر دهید، می‌توانید این پیغام را نادیده بگیرید و به استفاده از گذرواژهٔ قبلی‌تان ادامه دهید.',
-'passwordreset-emailtext-user' => 'کاربر $1 از {{SITENAME}} درخواست یادآور جزئیات حساب شما را برای {{SITENAME}}
+{{PLURAL:$3|این گذرواژهٔ موقت|این گذرواژه‌های موقت}} پس از {{PLURAL:$5|یک روز|$5 روز}} باطل خواهند شد.
+شما باید اکنون وارد سایت شوید و گذرواژه‌ای جدید برگزینید. اگر فکر می‌کنید شخص دیگری این درخواست را داده‌است یا اگر گذرواژهٔ اصلی‌تان را به یاد آوردید و دیگر نمی‌خواهید آن را تغییر دهید، می‌توانید این پیغام را نادیده بگیرید و به استفاده از گذرواژهٔ قبلی‌تان ادامه دهید.',
+'passwordreset-emailtext-user'     => 'کاربر $1 از {{SITENAME}} درخواست یادآور جزئیات حساب شما را برای {{SITENAME}}
 ($4) کرده است. {{PLURAL:$3|حساب|حساب‌های}} کاربری زیر با این رایانشانی مرتبط است:
 
 $2
 
 {{PLURAL:$3|این گذرواژهٔ موقت|این گذرواژه‌های موقت}} تا {{PLURAL:$5|یک روز|$5 روز}} باطل می‌شود.
 شما باید هم‌اکنون وارد شده و یک گذرواژهٔ جدید برگزینید. اگر شخص دیگری این درخواست را داده است، یا اگر گذرواژهٔ اصلی‌تان را به خاطر آوردید، و دیگر نمی‌خواهید که آن را تغییر دهید، می‌توانید این پیغام را نادیده بگیرید و به استفاده از گذرواژهٔ قبلی‌تان ادامه دهید.',
-'passwordreset-emailelement'   => 'نام کاربری: $1
+'passwordreset-emailelement'       => 'نام کاربری: $1
 گذرواژهٔ موقت: $2',
-'passwordreset-emailsent'      => 'یک نامهٔ یادآور فرستاده شده است.',
+'passwordreset-emailsent'          => 'یک نامهٔ یادآور فرستاده شده است.',
+'passwordreset-emailsent-capture'  => 'پست الکترونیکی یادآور فرستاده شد، که به شرح زیر است.',
+'passwordreset-emailerror-capture' => 'پست الکترونیکی یادآور همانطور که در زیر مشاهده‌ می‌فرمایید ایجاد شد ولی ارسال آن به کاربر موفقیت‌آمیز نبود: $1',
 
 # Special:ChangeEmail
 'changeemail'          => 'تغییر آدرس پست الکترونیک',
@@ -983,18 +999,18 @@ $2
 'changeemail-cancel'   => 'انصراف',
 
 # Edit page toolbar
-'bold_sample'     => 'متن ضخیم',
-'bold_tip'        => 'متن ضخیم',
+'bold_sample'     => 'متن پررنگ',
+'bold_tip'        => 'متن پررنگ',
 'italic_sample'   => 'متن مورب',
 'italic_tip'      => 'متن مورب',
 'link_sample'     => 'عنوان پیوند',
-'link_tip'        => 'پیوند داخلی',
+'link_tip'        => 'پیوند درونی',
 'extlink_sample'  => 'http://www.example.com عنوان پیوند',
 'extlink_tip'     => 'پیوند به بیرون (پیشوند http://‎ را فراموش نکنید)',
 'headline_sample' => 'متن عنوان',
 'headline_tip'    => 'عنوان سطح ۲',
-'nowiki_sample'   => 'اینجا متن قالب‌بندی‌نشده وارد شود',
-'nowiki_tip'      => 'نادیده گرفتن قالب‌بندی ویکی',
+'nowiki_sample'   => 'متن قالب‌بندی‌نشده اینجا وارد شود',
+'nowiki_tip'      => 'نادیده‌گرفتن قالب‌بندی ویکی',
 'image_sample'    => 'Example.jpg',
 'image_tip'       => 'تصویر داخل متن',
 'media_sample'    => 'Example.ogg',
@@ -1005,7 +1021,7 @@ $2
 # Edit pages
 'summary'                          => 'خلاصه:',
 'subject'                          => 'موضوع/عنوان:',
-'minoredit'                        => 'این ویرایش جزئی است',
+'minoredit'                        => 'این ویرایش جزئی‌است',
 'watchthis'                        => 'پی‌گیری این صفحه',
 'savearticle'                      => 'صفحه ذخیره شود',
 'preview'                          => 'پیش‌نمایش',
@@ -1023,14 +1039,14 @@ $2
 'summary-preview'                  => 'پیش‌نمایش خلاصه:',
 'subject-preview'                  => 'پیش‌نمایش موضوع/عنوان:',
 'blockedtitle'                     => 'کاربر بسته شد',
-'blockedtext'                      => "'''دسترسی نام کاربری یا نشانی آی‌پی شما بسته شده است.'''
+'blockedtext'                      => "'''دسترسی حساب کاربری یا نشانی آی‌پی شما بسته شده‌است.'''
 
 این کار توسط $1 انجام شده‌است.
 دلیل داده‌شده این است: $2''
 
 * شروع قطع دسترسی: $8
 * زمان پایان این قطع دسترسی: $6
-* کاربری که قطع دسترسی‌اش مد نظر بوده: $7
+* کاربری که قطع دسترسی‌اش مد نظر بوده‌است: $7
 
 شما می‌توانید با $1 یا یکی از [[{{MediaWiki:Grouppage-sysop}}|مدیران]] تماس بگیرید و در این باره صحبت کنید.
 
@@ -1038,10 +1054,10 @@ $2
 
 نشانی آی‌پی شما $3 و شماره قطع دسترسی شما $5 است. لطفاً این شماره‌ها را در کلیهٔ پرس‌وجوهایتان ذکر کنید.
 
-شما می‌توانید با $1 یا یکی دیگر از [[{{MediaWiki:Grouppage-sysop}}|مدیران]] تماس بگیرید، تا در مورد این قطع دسترسی صحبت کنید.
-توجه کنید که برای ارسال پست الکترونیکی در ویکی، باید پست الکترونیکی خود را از طریق صفحهٔ [[Special:Preferences|تنظیمات]] فعال کرده باشید، و نیز، باید امکان استفاده از این ویژگی برای شما قطع نباشد.
+شما می‌توانید با $1 یا یکی دیگر از [[{{MediaWiki:Grouppage-sysop}}|مدیران]] تماس بگیری، تا دربارهٔ این قطع دسترسی صحبت کنید.
+توجه کنید که برای فرستادن پست الکترونیکی در ویکی باید پست الکترونیکی خود را از طریق صفحهٔ [[Special:Preferences|تنظیمات]] فعال کرده باشید، و نیز باید امکان استفاده از این ویژگی برای شما قطع نباشد.
 نشانی آی‌پی فعلی شما $3 است و شماره قطع دسترسی $5 است.
-لطفاً این شماره را در هر درخواستی که در این باره مطرح می‌کنید قید کنید.",
+لطفاً این شماره را در هر درخواستی که در این باره مطرح می‌کنید ذکر کنید.",
 'autoblockedtext'                  => "دسترسی نشانی آی‌پی شما قطع شده‌است، چرا که این نشانی آی‌پی توسط یک کاربر استفاده می‌شده که دسترسی او توسط $1 قطع گردیده‌است.
 دلیل ذکر شده چنین است:
 
@@ -1058,9 +1074,6 @@ $2
 نشانی آی‌پی فعلی شما $3 است و شماره قطع دسترسی $5 است.
 لطفاً این شماره را در هر درخواستی که در این باره مطرح می‌کنید قید کنید.",
 'blockednoreason'                  => 'دلیلی مشخص نشده‌است',
-'blockedoriginalsource'            => "متن مبدأ '''$1''' در زیر نمایش داده شده است:",
-'blockededitsource'                => "متن '''ویرایش‌های شما''' در '''$1''' در زیر نشان داده شده‌است:",
-'whitelistedittitle'               => 'برای ویرایش باید به سامانه وارد شوید',
 'whitelistedittext'                => 'برای ویرایش مقاله‌ها باید $1.',
 'confirmedittext'                  => 'شما باید، پیش از ویرایش صفحه‌ها، نشانی پست الکترونیکی خود را مشخص و تأیید کنید. لطفاً از طریق [[Special:Preferences|ترجیحات کاربر]] این کار را صورت دهید.',
 'nosuchsectiontitle'               => 'چنین بخشی پیدا نشد',
@@ -1081,43 +1094,44 @@ $2
 بنا بر این برای شناسایی‌اش مجبوریم از نشانی آی‌پی عددی استفاده کنیم.
 چنین نشانی‌های آی‌پی ممکن است توسط چندین کاربر به شکل مشترک استفاده شود.
 اگر شما کاربر گمنامی هستید و تصور می‌کنید اظهار نظرات نامربوط به شما صورت گرفته است، لطفاً برای پیشگیری از اشتباه گرفته شدن با کاربران گمنام دیگر در آینده [[Special:UserLogin/signup|حسابی ایجاد کنید]] یا [[Special:UserLogin|به سامانه وارد شوید]].''",
-'noarticletext'                    => 'در حال حاضر این صفحه متنی ندارد.
-شما می‌توانید [[Special:Search/{{PAGENAME}}|عنوان این صفحه را در صفحه‌های دیگر جستجو کنید]]،
+'noarticletext'                    => 'این صفحه هم‌اکنون دارای هیچ متنی نیست.
+شما می‌توانید در صفحه‌های دیگر [[Special:Search/{{PAGENAME}}|عنوان این صفحه را جستجو کنید]]،
 <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} سیاهه‌های مرتبط را جستجو کنید]،
 یا [{{fullurl:{{FULLPAGENAME}}|action=edit}} این صفحه را ویرایش کنید]</span>.',
-'noarticletext-nopermission'       => 'در حال حاضر این صفحه متنی ندارد.
-شما می‌توانید در دیگر صفحه‌ها [[Special:Search/{{PAGENAME}}|دنبال عنوان این صفحه بگردید]]،
-یا <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} سیاهه‌های مرتبط را جستجو کنید]</span>.',
-'userpage-userdoesnotexist'        => 'حساب کاربر «<nowiki>$1</nowiki>» ثبت نشده است.
-اطمینان حاصلی کنید که می‌خواهید این صفحه را ایجاد یا ویرایش کنید.',
+'noarticletext-nopermission'       => 'این صفحه هم‌اکنون متنی ندارد.
+شما می‌توانید در دیگر صفحه‌ها [[Special:Search/{{PAGENAME}}|این عنوان را جستجو کنید]]،
+یا <span class="plainlinks">[{{fullurl:{{#Special:Log}}|page={{FULLPAGENAMEE}}}} سیاهه‌های مرتبط را بگردید]</span>.',
+'userpage-userdoesnotexist'        => 'حساب کاربر «<nowiki>$1</nowiki>» ثبت نشده‌است.
+لطفاً مطمئن شوید که می‌خواهید این صفحه را ایجاد یا ویرایش کنید.',
 'userpage-userdoesnotexist-view'   => 'حساب کاربری «$1» ثبت نشده‌است.',
 'blocked-notice-logextract'        => 'دسترسی این کاربر در حال حاضر بسته است.
 آخرین مورد سیاهه قطع دسترسی در زیر آمده‌است:',
-'clearyourcache'                   => "'''نکته:''' پس از ذخیره‌سازی ممکن است برای دیدن تغییرات نیاز باشد که حافظهٔ نهانی مرورگر خود را خالی کنید.
-'''فایرفاکس / سافاری:'''  کلید ''Shift'' را نگه‌دارید و روی دکمهٔ ''Reload'' کلیک کنید، یا کلید‌های ''Ctrl-F5'' یا ''Ctrl-R'' را با هم فشار دهید (در رایانه‌های اپل مکینتاش کلید‌های ''Cmd-R'')
+'clearyourcache'                   => "'''نکته:''' پس از ذخیره‌کردن ممکن است برای دیدن تغییرات نیاز باشد که حافظهٔ نهانی مرورگر خود را پاک کنید.
+'''فایرفاکس / سافاری:'''  کلید ''Shift'' را نگه دارید و روی دکمهٔ ''Reload'' کلیک کنید، یا کلید‌های ''Ctrl-F5'' یا ''Ctrl-R'' را با هم فشار دهید (در رایانه‌های اپل مکینتاش کلید‌های ''⌘-R'')
+'''گوگل کروم:'''کلیدهای ''Ctrl+Shift+R'' را با هم فشار دهید. (در رایانه‌های اپل مکینتاش کلید‌های ''⌘-Shift-R'')
 '''اینترنت اکسپلورر:''' کلید ''Ctrl'' را نگه‌دارید و روی دکمهٔ ''Refresh'' کلیک‌ کنید، یا کلید‌های ''Ctrl-F5'' را با هم فشار دهید
 '''کانکوئرر:''' روی دکمهٔ ''Reload'' کلیک کنید و یا کلید ''F5'' را فشار دهید
-'''اپرا:''' حافظهٔ نهانی مرورگر را از طریق منوی ''Tools &rarr; Preferences'' خالی کنید",
-'usercssyoucanpreview'             => "'''نکته:''' قبل از این که فایل CSS یا JS خود را ذخیره کنید، با استفاده از دکمه '''{{int:showpreview}}''' آن را آزمایش کنید.",
-'userjsyoucanpreview'              => "'''نکته:''' قبل از این که فایل CSS یا JS خود را ذخیره کنید، با استفاده از دکمه '''{{int:showpreview}}''' آن را آزمایش کنید.",
+'''اپرا:''' حافظهٔ نهانی مرورگر را از طریق منوی ''Tools &rarr; Preferences'' پاک کنید",
+'usercssyoucanpreview'             => "'''نکته:''' پیش از ذخیه‌کردن فایل CSS یا JS خود، با دکمهٔ '''{{int:showpreview}}''' آن را آزمایش کنید.",
+'userjsyoucanpreview'              => "'''نکته:''' پیش از ذخیره‌کردن فایل CSS یا JS خود، با دکمهٔ '''{{int:showpreview}}''' آن را آزمایش کنید.",
 'usercsspreview'                   => "'''فراموش مکنید که شما فقط دارید پیش‌نمایش سی‌اس‌اس کاربری‌تان را می‌بینید.'''
 '''این سی‌اس‌اس هنوز ذخیره نشده‌است!'''",
 'userjspreview'                    => "'''به یاد داشته باشید که شما فقط دارید جاوااسکریپت کاربری‌تان را امتحان می‌کنید/پیش‌نمایش آن را می‌بینید.'''
 '''این جاوااسکریپت هنوز ذخیره نشده‌است!'''",
-'sitecsspreview'                   => "'''به یاد داشته باشید که شما فقط مشاهده‌گر پیش‌نمایش این سی‌اس‌اس هستید.'''
-'''این سی‌اس‌اس هنوز ذخیره نشده ‌است!'''",
-'sitejspreview'                    => "'''به یاد داشته باشید که شما فقط مشاهده‌گر پیش‌نمایش این جاوااسکریپت هستید.'''
-'''این جاوااسکریپت هنوز ذخیره نشده ‌است!'''",
+'sitecsspreview'                   => "'''به یاد داشته باشید که شما فقط دارید پیش‌نمایش این سی‌اس‌اس را می‌بینید.'''
+'''این سی‌اس‌اس هنوز ذخیره نشده‌است!'''",
+'sitejspreview'                    => "'''به یاد داشته باشید که شما فقط دارید پیش‌نمایش این جاوااسکریپت را می‌بینید.'''
+'''این جاوااسکریپت هنوز ذخیره نشده‌است!'''",
 'userinvalidcssjstitle'            => "'''هشدار:''' پوسته‌ای به نام «$1» وجود ندارد.
 به یاد داشته باشید که صفحه‌های شخصی ‎.css و ‎.js باید عنوانی با حروف کوچک داشته باشند؛ نمونه: {{ns:user}}:فو/vector.css در مقابل {{ns:user}}:فو/Vector.css.",
 'updated'                          => '(به‌روز شد)',
 'note'                             => "'''نکته:'''",
 'previewnote'                      => "'''به یاد داشته باشید که این فقط پیش‌نمایش است.'''
-تغییرات شما هنوز ذخیره نشده است!",
+تغییرات شما هنوز ذخیره نشده‌است!",
 'previewconflict'                  => 'این پیش‌نمایش منعکس‌کنندهٔ متن ناحیهٔ ویرایش متن بالایی است، به شکلی که اگر متن را ذخیره کنید نمایش خواهد یافت.',
-'session_fail_preview'             => "'''شرمنده! به دلیل از دست رفتن اطلاعات نشست کاربری، نمی‌توانیم ویرایش شما را پردازش کنیم.'''
+'session_fail_preview'             => "'''شرمنده! به علت از دست رفتن اطلاعات نشست کاربری نمی‌توانیم ویرایش شما را پردازش کنیم.'''
 لطفاً دوباره سعی کنید.
-در صورتی که باز هم با همین پیام مواجه شدید، از سامانه [[Special:UserLogout|خارج شوید]] و دوباره وارد شوید.",
+اگر دوباره به همین پیام برخوردید از سامانه [[Special:UserLogout|خارج شوید]] و دوباره وارد شوید.",
 'session_fail_preview_html'        => "'''متاسفانه امکان ثبت ویرایش شما به خاطر از دست رفتن اطلاعات نشست کاربری وجود ندارد.'''
 
 ''با توجه به این که در {{SITENAME}} امکان درج اچ‌تی‌ام‌ال خام فعال است، پیش‌نمایش صفحه پنهان شده تا امکان حملات مبتنی بر جاوااسکریپت وجود نداشته باشد.''
@@ -1132,11 +1146,11 @@ $2
 'editingsection'                   => 'در حال ویرایش $1 (بخش)',
 'editingcomment'                   => 'در حال ویرایش $1 (بخش جدید)',
 'editconflict'                     => 'تعارض ویرایشی: $1',
-'explainconflict'                  => "از وقتی شما ویرایش این صفحه را آغاز کرده‌اید شخص دیگری آن را تغییر داده است.
-ناحیهٔ متنی بالایی شامل متن صفحه به شکل فعلی آن است.
-تغییرات شما در ناحیهٔ متنی پایینی نشان داده شده است.
-شما باید تغییراتتان را با متن فعلی ترکیب کنید.
-وقتی دکمهٔ «{{int:savearticle}}» را فشار دهید '''فقط''' متن ناحیهٔ متنی بالایی ذخیره خواهد شد.",
+'explainconflict'                  => "از وقتی ویرایش این صفحه را آغاز کرده‌اید شخص دیگری آن را تغییر داده‌است.
+ناحیهٔ متنی بالایی شامل متن صفحه به شکل کنونی آن است.
+تغییرات شما در ناحیهٔ متنی پایینی نشان داده شده‌است.
+شما باید تغییراتتان را با متن کنونی ترکیب کنید.
+با فشردن دکمهٔ «{{int:savearticle}}» '''فقط''' متن ناحیهٔ متنی بالایی ذخیره خواهد شد.",
 'yourtext'                         => 'متن شما',
 'storedversion'                    => 'نسخهٔ ذخیره شده',
 'nonunicodebrowser'                => "'''هشدار: مرورگر شما با استانداردهای یونیکد سازگار نیست.'''
@@ -1154,10 +1168,10 @@ $2
  '''کارهای دارای حق تکثیر (copyright) را بی‌اجازه نفرستید!'''",
 'longpageerror'                    => "'''خطا: متنی که ارسال کرده‌اید $1 کیلوبایت طول دارد. این مقدار از مقدار بیشینهٔ $2 کیلوبایت بیشتر است.'''
 نمی‌توان آن را ذخیره کرد.",
-'readonlywarning'                  => "'''هشدار: پایگاه داده برای نگهداری قفل شده است، به همین خاطر نمی‌توانید ویرایش‌هایتان را همین الآن ذخیره کنید.'''
+'readonlywarning'                  => "'''هشدار: پایگاه داده برای نگهداری قفل شده‌است، به همین علت هم‌اکنون نمی‌توانید ویرایش‌هایتان را ذخیره کنید.'''
 اگر می‌خواهید متن را در یک پروندهٔ متنی کپی کنید و برای آینده ذخیره‌اش کنید.
 
-مدیری که آن را قفل کرده است این توضیح را ارائه کرده: $1",
+مدیری که آن را قفل کرده این توضیح را ارائه کرده‌است: $1",
 'protectedpagewarning'             => "'''هشدار: این صفحه قفل شده است تا فقط کاربران با امتیاز مدیر بتوانند ویرایشش کنند.'''
 آخرین موارد سیاهه در زیر آمده است:",
 'semiprotectedpagewarning'         => "'''توجه:''' این صفحه قفل شده‌است تا تنها کاربران ثبت‌نام‌کرده قادر به ویرایش آن‌ باشند.
@@ -1165,7 +1179,7 @@ $2
 'cascadeprotectedwarning'          => "'''هشدار:''' این صفحه به علت قرارگرفتن در {{PLURAL:$1|صفحهٔ|صفحه‌های}} آبشاری-محافظت‌شدهٔ زیر قفل شده‌است تا فقط مدیران بتوانند ویرایشش کنند.",
 'titleprotectedwarning'            => "'''هشدار: این صفحه قفل شده‌است به شکلی که برای ایجاد آن [[Special:ListGroupRights|اختیارات خاصی]] لازم است.'''
 ٱحرین موارد سیاهه در زیر آمده است:",
-'templatesused'                    => '{{PLURAL:$1|الگوی|الگوهای}} استفاده شده در این صفحه:',
+'templatesused'                    => '{{PLURAL:$1|الگوی|الگوهای}} به‌کاررفته در این صفحه:',
 'templatesusedpreview'             => '{{PLURAL:$1|الگوی|الگوهای}} استفاده شده در این پیش‌نمایش:',
 'templatesusedsection'             => '{{PLURAL:$1|الگوی|الگوهای}} استفاده شده در این بخش:',
 'template-protected'               => '(حفاظت‌شده)',
@@ -1175,16 +1189,16 @@ $2
 'nocreatetitle'                    => 'ایجاد صفحه محدود شده‌است',
 'nocreatetext'                     => '{{SITENAME}} قابلیت ایجاد صفحه‌های جدید را محدود کرده‌است.
 می‌توانید بازگردید و صفحه‌ای موجود را ویرایش کنید یا اینکه  [[Special:UserLogin|به سامانه وارد شوید یا حساب کاربری ایجاد کنید]].',
-'nocreate-loggedin'                => 'شما اجازه ندارد صفحه‌های جدید بسازید.',
+'nocreate-loggedin'                => 'شما اجازهٔ ایجاد صفحه‌های جدید را ندارید.',
 'sectioneditnotsupported-title'    => 'ویرایش بخش‌ها پشتیبانی نمی‌شود',
 'sectioneditnotsupported-text'     => 'این صفحه از ویرایش بخش‌ها پشتیبانی نمی‌کند.',
 'permissionserrors'                => 'خطای سطح دسترسی',
 'permissionserrorstext'            => 'شما اجازهٔ انجام این کار را به {{PLURAL:$1|دلیل|دلایل}} زیر ندارید:',
 'permissionserrorstext-withaction' => 'شما اجازهٔ $2 را به {{PLURAL:$1|دلیل|دلایل}} زیر ندارید:',
-'recreate-moveddeleted-warn'       => "'''هشدار: شما در حال ایجاد صفحه‌ای هستید که قبلاً حذف شده است.'''
+'recreate-moveddeleted-warn'       => "'''هشدار: شما در حال ایجاد صفحه‌ای هستید که قبلاً حذف شده‌است.'''
 
-در نظر داشته باشید که آیا ادامهٔ ویرایش این صفحه کار درستی است یا نه.
-برای راحتی، سیاههٔ حذف و انتقال برای این صفحه در زیر آمده است:",
+در نظر داشته باشید که آیا ادامهٔ ویرایش این صفحه کار درستی‌است یا نه.
+سیاههٔ حذف و انتقال این صفحه در زیر نشان داده شده‌است:",
 'moveddeleted-notice'              => 'این صفحه حذف شده‌است.
 در زیر سیاههٔ حذف و انتقال این صفحه نمایش داده شده‌است.',
 'log-fulllog'                      => 'مشاهدهٔ سیاههٔ کامل',
@@ -1207,7 +1221,7 @@ $2
 'post-expand-template-inclusion-category' => 'صفحه‌هایی که در آن‌ها تعداد الگوهای به کار رفته بیش از اندازه است',
 'post-expand-template-argument-warning'   => "'''هشدار:''' این صفحه شامل دست کم یک پارامتر الگو است که بیش از اندازه بزرگ است.
 این پارامترها نادیده گرفته شدند.",
-'post-expand-template-argument-category'  => 'صفحه‌های دارای الگوهایی با پارامترهای نادیده گرفته شده',
+'post-expand-template-argument-category'  => 'صفحه‌های حاوی الگوهایی با پارامترهای نادیده‌گرفته‌شده',
 'parser-template-loop-warning'            => 'حلقه در الگو پیدا شد: [[$1]]',
 'parser-template-recursion-depth-warning' => 'محدودیت عمق بازگشت الگو رد شد ($1)',
 'language-converter-depth-warning'        => 'محدودیت عمق مبدل زبانی رد شد ($1)',
@@ -1226,7 +1240,7 @@ $2
 دلیل ارائه شده توسط $3 چنین است: $2",
 
 # History pages
-'viewpagelogs'           => 'نمایش سیاهه‌های مربوط به این صفحه',
+'viewpagelogs'           => 'نمایش سیاهه‌های این صفحه',
 'nohistory'              => 'این صفحه تاریخچهٔ ویرایش ندارد.',
 'currentrev'             => 'نسخهٔ فعلی',
 'currentrev-asof'        => 'نسخهٔ کنونی تا $1',
@@ -1243,7 +1257,7 @@ $2
 'histlegend'             => 'شرح: (فعلی) = تفاوت با نسخهٔ فعلی،
 (قبلی) = تفاوت با نسخهٔ قبلی، جز = ویرایش جزئی',
 'history-fieldset-title' => 'مرور تاریخچه',
-'history-show-deleted'   => 'فقط حذف شده',
+'history-show-deleted'   => 'فقط حذف‌شده',
 'histfirst'              => 'قدیمی‌ترین',
 'histlast'               => 'جدیدترین',
 'historysize'            => '({{PLURAL:$1|۱ بایت|$1 بایت}})',
@@ -1267,7 +1281,7 @@ $2
 'rev-deleted-text-unhide'     => "این ویرایش از این صفحه '''حذف شده‌است'''.
 ممکن است اطلاعات مرتبط با آن در [{{fullurl:{{#Special:Log}}/delete|page={{FULLPAGENAMEE}}}} سیاههٔ حذف] موجود باشد.
 شما به عنوان یک مدیر کماکان می‌توانید در صورت تمایل [$1 این نسخه را ببینید].",
-'rev-suppressed-text-unhide'  => "این ویرایش از این صفحه '''فرونشانی شده‌است'''.
+'rev-suppressed-text-unhide'  => "این ویرایش از این صفحه '''فرونشانده شده‌است'''.
 ممکن است اطلاعات مرتبط با آن در [{{fullurl:{{#Special:Log}}/suppress|page={{FULLPAGENAMEE}}}} سیاههٔ فرونشانی] موجود باشد.
 شما به عنوان یک مدیر کماکان می‌توانید در صورت تمایل [$1 این نسخه را ببینید].",
 'rev-deleted-text-view'       => "این ویرایش از این صفحه '''حذف شده‌است'''.
@@ -1317,7 +1331,7 @@ $2
 'revdelete-hide-restricted'   => 'فرونشانی اطلاعات برای مدیران به همراه دیگران',
 'revdelete-radio-same'        => '(بدون تغییر)',
 'revdelete-radio-set'         => 'بله',
-'revdelete-radio-unset'       => 'نه',
+'revdelete-radio-unset'       => 'خیر',
 'revdelete-suppress'          => 'از دسترسی مدیران به داده نیز مانند سایر کاربران جلوگیری به عمل آید.',
 'revdelete-unsuppress'        => 'خاتمهٔ محدودیت‌ها در مورد نسخه‌های انتخاب شده',
 'revdelete-log'               => 'دلیل:',
@@ -1329,10 +1343,10 @@ $1",
 'logdelete-failure'           => "'''پیدایی سیاهه‌ها قابل تنظیم نیست:'''
 $1",
 'revdel-restore'              => 'تغییر پیدایی',
-'revdel-restore-deleted'      => 'نسخه‌های حذف شده',
+'revdel-restore-deleted'      => 'نسخه‌های حذف‌شده',
 'revdel-restore-visible'      => 'نسخه‌های پیدا',
 'pagehist'                    => 'تاریخچهٔ صفحه',
-'deletedhist'                 => 'تاریخچهٔ حذف شده',
+'deletedhist'                 => 'تاریخچهٔ حذف‌شده',
 'revdelete-hide-current'      => 'خطا در پنهان کردن مورد مورخ $2 ساعت $1: این نسخه، نسخهٔ اخیر می‌باشد و قابل پنهان کردن نیست.',
 'revdelete-show-no-access'    => 'خطا در پنهان کردن مورد مورخ $2 ساعت $1: این نسخه علامت «محدودیت» دارد و شما به آن دسترسی ندارید.',
 'revdelete-modify-no-access'  => 'خطا در پنهان کردن مورد مورخ $2 ساعت $1: این نسخه علامت «محدودیت» دارد و شما به آن دسترسی ندارید.',
@@ -1361,11 +1375,11 @@ $1",
 اطمینان حاصل کنید که این تغییر به توالی زمانی ویرایش‌ها لطمه نخواهد زد.',
 'mergehistory-box'                 => 'ادغام نسخه‌های دو صفحه:',
 'mergehistory-from'                => 'صفحهٔ مبدأ:',
-'mergehistory-into'                => 'صفحه مقصد:',
+'mergehistory-into'                => 'صفحهٔ مقصد:',
 'mergehistory-list'                => 'تاریخچهٔ قابل ادغام',
 'mergehistory-merge'               => 'نسخه‌های زیر از [[:$1]] قابل ادغام با [[:$2]] هستند.
-از ستون دکمه‌های رادیویی استفاده کنید تا نسخه‌هایی که تا قبل از یک زمان مشخص ایجاد شده‌اند را انتخاب کنید.
-توجه کنید که کلیک روی پیوندها باعث می‌شود ستون به حالت اولیه برگردد.',
+از ستون دکمه‌های رادیویی استفاده کنید تا نسخه‌هایی را که تا قبل از زمانی مشخص ایجاد شده‌اند انتخاب کنید.
+توجه کنید که کلیک روی پیوندها سبب بازگشت ستون به حالت اولیه می‌شود.',
 'mergehistory-go'                  => 'نمایش تاریخچه قابل ادغام',
 'mergehistory-submit'              => 'ادغام نسخه‌ها',
 'mergehistory-empty'               => 'هیچ‌یک از نسخه‌ها قابل ادغام نیستند.',
@@ -1387,7 +1401,7 @@ $1",
 'mergelogpagetext'   => 'در زیر سیاهه آخرین موارد ادغام تاریخچه یک صفحه در صفحه‌ای دیگر را می‌بینید.',
 
 # Diffs
-'history-title'            => 'تاریخچه ویرایش‌های «$1»',
+'history-title'            => 'تاریخچهٔ ویرایش‌های «$1»',
 'difference'               => '(تفاوت بین نسخه‌ها)',
 'difference-multipage'     => '(تفاوت بین صفحات)',
 'lineno'                   => 'سطر $1:',
@@ -1458,7 +1472,7 @@ $1",
 'powersearch-field'                => 'جستجو برای',
 'powersearch-togglelabel'          => 'بررسی:',
 'powersearch-toggleall'            => 'همه',
-'powersearch-togglenone'           => 'هیچ کدام',
+'powersearch-togglenone'           => 'هیچ‌کدام',
 'search-external'                  => 'جستجوی خارجی',
 'searchdisabled'                   => 'جستجو در {{SITENAME}} فعال نیست.
 موقتاً می‌توانید از جستجوی Google استفاده کنید.
@@ -1483,15 +1497,15 @@ $1",
 'prefs-skin'                    => 'پوسته',
 'skin-preview'                  => 'پیش‌نمایش',
 'datedefault'                   => 'بدون ترجیح',
-'prefs-beta'                    => 'امکانات بتا',
+'prefs-beta'                    => 'ابزارهای کارآمد',
 'prefs-datetime'                => 'تاریخ و زمان',
 'prefs-labs'                    => 'ویژگی‌های آزمایشی',
 'prefs-personal'                => 'داده‌های کاربر',
 'prefs-rc'                      => 'تغییرات اخیر',
 'prefs-watchlist'               => 'فهرست پی‌گیری‌ها',
 'prefs-watchlist-days'          => 'تعداد روزهایی که باید در فهرست پی‌گیری‌ها نمایش داده شود:',
-'prefs-watchlist-days-max'      => 'حداکثر ۷ روز',
-'prefs-watchlist-edits'         => 'تعداد ویرایشهای نشان‌داده در فهرست پی‌گیری‌های گسترش‌یافته:',
+'prefs-watchlist-days-max'      => '(حداکثر $1 {{PLURAL:$1|روز|روز}})',
+'prefs-watchlist-edits'         => 'تعداد ویرایشهای نشان‌داده‌شده در فهرست پی‌گیری‌های گسترش‌یافته:',
 'prefs-watchlist-edits-max'     => 'حداکثر تعداد: ۱۰۰۰',
 'prefs-watchlist-token'         => 'رمز فهرست پی‌گیری:',
 'prefs-misc'                    => 'تنظیمات متفرقه',
@@ -1501,12 +1515,11 @@ $1",
 'prefs-email'                   => 'گزینه‌های پست الکترونیک',
 'prefs-rendering'               => 'نمایش صفحه',
 'saveprefs'                     => 'ذخیره',
-'resetprefs'                    => 'صفر کردن ترجیحات',
+'resetprefs'                    => 'صفرکردن ترجیحات',
 'restoreprefs'                  => 'برگرداندن تمام تنظیمات پیش‌فرض',
 'prefs-editing'                 => 'در حال ویرایش',
 'prefs-edit-boxsize'            => 'اندازهٔ پنجرهٔ ویرایش.',
 'rows'                          => 'تعداد سطرها:',
-'columns'                       => 'تعداد ستون‌ها:',
 'searchresultshead'             => 'جستجو',
 'resultsperpage'                => 'تعداد نتایج در هر صفحه:',
 'stub-threshold'                => 'آستانهٔ ویرایش پیوندهای <a href="#" class="stub">ناقص</a> (بایت):',
@@ -1515,9 +1528,9 @@ $1",
 'recentchangesdays-max'         => '(حداکثر $1 {{PLURAL:$1|روز|روز}})',
 'recentchangescount'            => 'تعداد پیش‌فرض ویرایش‌های نمایش یافته:',
 'prefs-help-recentchangescount' => 'این گزینه شامل تغییرات اخیر، تاریخچهٔ صفحه‌ها و سیاهه‌ها می‌شود.',
-'prefs-help-watchlist-token'    => 'پر کردن این قسمت با یک کلید رمز باعث می‌شود که یک خوراک آراس‌اس برای فهرست پی‌گیری شما ایجاد شود.
-هر کس که این کلید را بداند می‌تواند فهرست پی‌گیری شما را بخواند، پس یک کلید ایمن انتخاب کنید.
-در اینجا یک مقدار که به صورت تصادفی ایجاد شده برای استفادهٔ شما ارائه می‌شود: $1',
+'prefs-help-watchlist-token'    => 'پرکردن این بخش با یک کلید رمز سبب ایجاد یک خوراک آراس‌اس برای فهرست پی‌گیری شما می‌شود.
+هر کس که این کلید را بداند می‌تواند فهرست پی‌گیری شما را بخواند، پس مقداری ایمن انتخاب کنید.
+مقدار تصادفی که برای شما ایجاد شده‌است: $1',
 'savedprefs'                    => 'ترجیحات شما ذخیره شد.',
 'timezonelegend'                => 'منطقهٔ زمانی:',
 'localtime'                     => 'زمان محلی:',
@@ -1545,7 +1558,7 @@ $1",
 'prefs-custom-css'              => 'سی‌اس‌اس شخصی',
 'prefs-custom-js'               => 'جاوااسکریپت شخصی',
 'prefs-common-css-js'           => 'سی‌اس‌اس/جاوااسکریپت مشترک برای تمام پوسته‌ها:',
-'prefs-reset-intro'             => 'شما می‌توانید از این صفحه برای بازگرداندن تنظیمات خود به پیش‌فرض وب‌گاه استفاده کنید.
+'prefs-reset-intro'             => 'شما می‌توانید از این صفحه برای بازگرداندن تنظیمات خود به پیش‌فرض تارنما استفاده کنید.
 این کار بازگشت‌ناپذیر است.',
 'prefs-emailconfirm-label'      => 'تأیید پست الکترونیکی:',
 'prefs-textboxsize'             => 'اندازهٔ جعبهٔ ویرایش',
@@ -1563,20 +1576,20 @@ $1",
 'badsig'                        => 'امضای خام غیرمجاز.
 لطفاً برچسب‌های اچ‌تی‌ام‌ال را بررسی کنید.',
 'badsiglength'                  => 'امضای شما بیش از اندازه طولانی است.
-امضا باید کمتر از $1 {{PLURAL:$1|نویسه|نویسه}} طول داشته باشد.',
+امضا باید کمتر از $1 نویسه طول داشته باشد.',
 'yourgender'                    => 'جنسیت:',
-'gender-unknown'                => 'مشخص نشده',
+'gender-unknown'                => 'مشخص‌نشده',
 'gender-male'                   => 'مرد',
 'gender-female'                 => 'زن',
-'prefs-help-gender'             => 'اختیاری: به منظور خطاب گرفتن با جنسیت صحیح توسط نرم‌افزار به کار می‌رود.
+'prefs-help-gender'             => 'اختیاری: برای خطاب‌شدن با جنسیت درست توسط نرم‌افزار به کار می‌رود.
 این اطلاعات عمومی خواهد بود.',
 'email'                         => 'پست الکترونیکی',
 'prefs-help-realname'           => 'نام واقعی اختیاری است
-اگر تصمیم بگیرید آن را وارد کنید، هنگام ارجاع به آثارتان و انتساب آنها به شما از نام واقعی‌تان استفاده خواهد شد.',
-'prefs-help-email'              => 'نشانی پست الکترونیکی اختیاری است، اما ارسال یک گذرواژه جدید را در صورتی که گذرواژه خود را فراموش کردید ممکن می‌سازد.',
-'prefs-help-email-others'       => 'شما هم‌چنین می‌توانید انتخاب کنید که کاربران بتوانند از طریق پیوندی در صفحهٔ کاربری یا صفحهٔ بحث کاربری‌تان به شما نامه الکترونیکی بفرستند.
+اگر آن را وارد کنید هنگام ارجاع به آثارتان و انتساب آن‌ها به شما از نام واقعی‌تان استفاده خواهد شد.',
+'prefs-help-email'              => 'نشانی پست الکترونیکی اختیاری‌است، اما فرستادن گذرواژه‌ای جدید را اگر گذرواژهٔ خود را فراموش کنید ممکن می‌کند.',
+'prefs-help-email-others'       => 'شما همچنین می‌توانید انتخاب کنید که کاربران بتوانند از طریق پیوندی در صفحهٔ کاربری یا صفحهٔ بحث کاربری‌تان به شما پست الکترونیکی بفرستند.
 نشانی پست الکترونیکی شما زمانی که دیگران با شما تماس بگیرند فاش نمی‌شود.',
-'prefs-help-email-required'     => 'نشانی پست الکترونیکی الزامی است.',
+'prefs-help-email-required'     => 'نشانی پست الکترونیکی الزامی‌است.',
 'prefs-info'                    => 'اطلاعات اولیه',
 'prefs-i18n'                    => 'بین‌المللی‌سازی',
 'prefs-signature'               => 'امضا',
@@ -1606,13 +1619,13 @@ $1",
 'saveusergroups'               => 'ثبت گروه‌های کاربری',
 'userrights-groupsmember'      => 'عضو:',
 'userrights-groupsmember-auto' => 'عضو ضمنی:',
-'userrights-groups-help'       => 'شما می‌توانید گروه‌هایی که کاربر در آن قرار دارد را تغییر دهید:
-* یک جعبه علامت خورده به این معنی است که کاربر در آن گروه قرار دارد.
-* یک جعبه خالی به این معنی است که کاربر در آن گروه قرار ندارد.
-* علامت * به این معنی است که اگر آن گروه را اضافه کنید نمی‌توانید بعداً برش دارید، یا برعکس.',
+'userrights-groups-help'       => 'شما می‌توانید گروه‌هایی را که کاربر در آن قرار دارد تغییر دهید:
+* جعبهٔ علامت‌خورده نشانهٔ بودن کاربر در آن گروه است.
+* جعبهٔ خالی نشانهٔ نبودن کاربر در آن گروه است.
+* علامت * به این معنی‌است که اگر آن گروه را بیفزایید نمی‌توانید بعداً برش دارید، و برعکس.',
 'userrights-reason'            => 'دلیل:',
-'userrights-no-interwiki'      => 'شما اجازه تغییر اختیارات کاربران دیگر ویکی‌ها را ندارید.',
-'userrights-nodatabase'        => 'پایگاه داده $1 وجود ندارد یا محلی نیست.',
+'userrights-no-interwiki'      => 'شما اجازهٔ تغییر اختیارات کاربران دیگر ویکی‌ها را ندارید.',
+'userrights-nodatabase'        => 'پایگاه دادهٔ $1 وجود ندارد یا محلی نیست.',
 'userrights-nologin'           => 'شما باید با یک حساب کاربری دارای اختیار مدیریتی [[Special:UserLogin|به سامانه وارد شوید]] تا بتوانید اختیارات کاربران را تعیین کنید.',
 'userrights-notallowed'        => 'حساب کاربری شما اجازه افزودن یا حذف کردن اختیارات کاربری را ندارد.',
 'userrights-changeable-col'    => 'گروه‌هایی که می‌توانید تغییر دهید',
@@ -1620,7 +1633,7 @@ $1",
 
 # Groups
 'group'               => 'گروه:',
-'group-user'          => 'کاربرها',
+'group-user'          => 'کاربران',
 'group-autoconfirmed' => 'کاربران تاییدشده',
 'group-bot'           => 'ربات‌ها',
 'group-sysop'         => 'مدیران',
@@ -1636,10 +1649,10 @@ $1",
 'group-suppress-member'      => '{{GENDER:$1|نظارت}}',
 
 'grouppage-user'          => '{{ns:project}}:کاربران',
-'grouppage-autoconfirmed' => '{{ns:project}}:کاربران تاییدشده',
+'grouppage-autoconfirmed' => '{{ns:project}}:کاربران تأییدشده',
 'grouppage-bot'           => '{{ns:project}}:ربات‌ها',
 'grouppage-sysop'         => '{{ns:project}}:مدیران',
-'grouppage-bureaucrat'    => '{{ns:project}}:دیوان‌سالارها',
+'grouppage-bureaucrat'    => '{{ns:project}}:دیوان‌سالاران',
 'grouppage-suppress'      => '{{ns:project}}:نظارت',
 
 # Rights
@@ -1648,19 +1661,19 @@ $1",
 'right-createpage'            => 'ایجاد صفحه (در مورد صفحه‌های غیر بحث)',
 'right-createtalk'            => 'ایجاد صفحهٔ بحث',
 'right-createaccount'         => 'ایجاد حساب کاربری',
-'right-minoredit'             => 'علامت زدن ویرایش‌ها به صورت جزئی',
+'right-minoredit'             => 'علامت‌زدن ویرایش‌ها به عنوان جزئی',
 'right-move'                  => 'انتقال صفحه',
 'right-move-subpages'         => 'انتقال صفحه‌ها به همراه زیر‌صفحه‌هایشان',
 'right-move-rootuserpages'    => 'انتقال صفحه‌های کاربری سرشاخه',
 'right-movefile'              => 'انتقال پرونده‌ها',
 'right-suppressredirect'      => 'انتقال صفحه بدون ایجاد تغییرمسیر از نام قبلی',
 'right-upload'                => 'بارگذاری پرونده',
-'right-reupload'              => 'بارگذاری مجدد پرونده‌ای که از قبل وجود دارد',
-'right-reupload-own'          => 'بارگذاری مجدد پرونده‌ای که پیش از این توسط همان کاربر بارگذاری شده‌است',
-'right-reupload-shared'       => 'باطل ساختن پرونده‌های مشترک به صورت محلی',
+'right-reupload'              => 'بارگذاری دوبارهٔ پرونده‌ای که از قبل وجود دارد',
+'right-reupload-own'          => 'بارگذاری دوبارهٔ پرونده‌ای که پیش از این توسط همان کاربر بارگذاری شده‌است',
+'right-reupload-shared'       => 'باطل‌کردن محلی پرونده‌های مشترک',
 'right-upload_by_url'         => 'بارگذاری پرونده از یک نشانی اینترنتی',
-'right-purge'                 => 'خالی کردن میانگیر صفحه بدون مشاهدهٔ صفحهٔ تأیید',
-'right-autoconfirmed'         => 'ویرایش صفحه‌های نیمه محافظت‌شده',
+'right-purge'                 => 'پاک‌کردن میانگیر صفحه بدون مشاهدهٔ صفحهٔ تأیید',
+'right-autoconfirmed'         => 'ویرایش صفحه‌های نیمه‌محافظت‌شده',
 'right-bot'                   => 'تلقی‌شده به عنوان یک فرآیند خودکار',
 'right-nominornewtalk'        => 'ویرایش جزئی صفحه‌های بحث به شکلی که باعث اعلان پیغام جدید نشود',
 'right-apihighlimits'         => 'سقف بالاتر استفاده از API',
@@ -1668,10 +1681,10 @@ $1",
 'right-delete'                => 'حذف صفحه',
 'right-bigdelete'             => 'حذف صفحه‌هایی که تاریخچهٔ بزرگی دارند',
 'right-deleterevision'        => 'حذف و احیای نسخه‌های خاصی از صفحه',
-'right-deletedhistory'        => 'مشاهدهٔ موارد حذف شده از تاریخچه، بدون دیدن متن آن‌ها',
-'right-deletedtext'           => 'مشاهدهٔ متن حذف شده و تغییرات بین نسخه‌های حذف شده',
-'right-browsearchive'         => 'جستجوی صفحه‌های حذف شده',
-'right-undelete'              => 'احیای صفحهٔ حذف شده',
+'right-deletedhistory'        => 'مشاهدهٔ موارد حذف‌شده از تاریخچه، بدون دیدن متن آن‌ها',
+'right-deletedtext'           => 'مشاهدهٔ متن حذف‌شده و تغییرات بین نسخه‌های حذف‌شده',
+'right-browsearchive'         => 'جستجوی صفحه‌های حذف‌شده',
+'right-undelete'              => 'احیای صفحه‌ای حذف‌شده',
 'right-suppressrevision'      => 'بازبینی و احیای ویرایش‌هایی که از مدیران پنهان شده‌اند',
 'right-suppressionlog'        => 'مشاهدهٔ سیاهه‌های خصوصی',
 'right-block'                 => 'قطع دسترسی ویرایشی دیگر کاربران',
@@ -1695,13 +1708,13 @@ $1",
 'right-autopatrol'            => 'گشن زدن خودکار به ویرایش‌های خودش',
 'right-patrolmarks'           => 'مشاهدهٔ برچسب گشت تغییرات اخیر',
 'right-unwatchedpages'        => 'مشاهدهٔ فهرست صفحه‌هایی که پیگیری نمی‌شوند',
-'right-trackback'             => 'ثبت یک بازتاب',
 'right-mergehistory'          => 'ادغام تاریخچهٔ صفحه‌ها',
 'right-userrights'            => 'ویرایش تمام اختیارات کاربرها',
 'right-userrights-interwiki'  => 'ویرایش اختیارات کاربرهای ویکی‌های دیگر',
 'right-siteadmin'             => 'قفل کردن و باز کردن پایگاه داده',
 'right-override-export-depth' => 'برون‌ریزی صفحه‌ها شامل صفحه‌های پیوند شده تا عمق ۵',
 'right-sendemail'             => 'ارسال نامه الکترونیکی به دیگر کاربران',
+'right-passwordreset'         => 'مشاهده رمز عبور تنظیم مجدد پست‌الکترونیک',
 
 # User rights log
 'rightslog'                  => 'سیاههٔ اختیارات کاربر',
@@ -1735,26 +1748,27 @@ $1",
 'action-suppressionlog'       => 'مشاهدهٔ این سیاههٔ خصوصی',
 'action-block'                => 'قطع دسترسی ویرایش این کاربر',
 'action-protect'              => 'تغییر سطح محافظت این صفحه',
+'action-rollback'             => 'واگردانی سریع ویرایش‌های آخرین کاربری که یک صفحه را ویرایش کرده‌است',
 'action-import'               => 'وارد کردن این صفحه از یک ویکی دیگر',
 'action-importupload'         => 'وارد کردن این صفحه از طریق بارگذاری پرونده',
 'action-patrol'               => 'گشت زدن ویرایش دیگران',
 'action-autopatrol'           => 'گشت زدن ویرایش خودتان',
 'action-unwatchedpages'       => 'مشاهدهٔ صفحه‌های پی‌گیری نشده',
-'action-trackback'            => 'ثبت یک بازتاب',
 'action-mergehistory'         => 'ادغام تاریخچهٔ این صفحه',
 'action-userrights'           => 'ویرایش همهٔ اختیارات کاربری',
 'action-userrights-interwiki' => 'ویرایش اختیارات کاربری کاربران یک ویکی دیگر',
 'action-siteadmin'            => 'قفل کردن و باز کردن پایگاه داده',
+'action-sendemail'            => 'ارسال ایمیل',
 
 # Recent changes
-'nchanges'                          => '$1 {{PLURAL:$1|تغییر|تغییر}}',
+'nchanges'                          => '$1 تغییر',
 'recentchanges'                     => 'تغییرات اخیر',
 'recentchanges-legend'              => 'گزینه‌های تغییرات اخیر',
 'recentchangestext'                 => 'آخرین تغییرات ویکی را در این صفحه پی‌گیری کنید.',
 'recentchanges-feed-description'    => 'آخرین تغییرات ویکی را در این خوراک پی‌گیری کنید.',
-'recentchanges-label-newpage'       => 'این ویرایش یک صفحهٔ جدید ایجاد کرد',
-'recentchanges-label-minor'         => 'این ویرایش جزئی است',
-'recentchanges-label-bot'           => 'این ویرایش توسط یک ربات انجام شده‌است',
+'recentchanges-label-newpage'       => 'این ویرایش صفحه‌ای جدید ایجاد کرد',
+'recentchanges-label-minor'         => 'این ویرایش جزئی‌است',
+'recentchanges-label-bot'           => 'این ویرایش را یک ربات انجام داده‌است',
 'recentchanges-label-unpatrolled'   => 'این ویرایش هنوز گشت‌زنی نشده‌است',
 'rcnote'                            => "در زیر {{PLURAL:$1|'''۱''' تغییر|آخرین '''$1''' تغییر}} در آخرین {{PLURAL:$2|روز|'''$2''' روز}} را، تا $4 ساعت $5 می‌بینید.",
 'rcnotefrom'                        => 'در زیر تغییرات از تاریخ <b>$2</b> آمده‌اند (تا <b>$1</b> مورد نشان داده می‌شود).',
@@ -1773,7 +1787,6 @@ $1",
 'minoreditletter'                   => 'جز',
 'newpageletter'                     => 'نو',
 'boteditletter'                     => 'ر',
-'sectionlink'                       => '←',
 'number_of_watching_users_pageview' => '[$1 {{PLURAL:$1|کاربر|کاربر}} پی‌گیری‌کننده]',
 'rc_categories'                     => 'محدود به این رده‌ها (رده‌ها را با «|» جدا کنید)',
 'rc_categories_any'                 => 'هر کدام',
@@ -1785,13 +1798,12 @@ $1",
 'recentchangeslinked'          => 'تغییرات مرتبط',
 'recentchangeslinked-feed'     => 'تغییرات مرتبط',
 'recentchangeslinked-toolbox'  => 'تغییرات مرتبط',
-'recentchangeslinked-title'    => 'تغییرهای مرتبط با $1',
-'recentchangeslinked-backlink' => '→ $1',
+'recentchangeslinked-title'    => 'تغییرات مرتبط با $1',
 'recentchangeslinked-noresult' => 'در بازهٔ ‌زمانی داده‌شده تغییری در صفحه‌های پیوندداده رخ نداده‌است.',
-'recentchangeslinked-summary'  => "در زیر فهرستی از تغییرات اخیر در صفحه‌های پیوند داده شده به این صفحه (یا اعضای رده مورد نظر) را می‌بینید.
-صفحه‌هایی که در [[Special:Watchlist|فهرست پی‌گیری‌های شما]] باشند به صورت '''ضخیم''' نشان داده می‌شوند.",
+'recentchangeslinked-summary'  => "در زیر فهرستی از تغییرات اخیر صفحه‌های پیوند داده شده به این صفحه (یا اعضای رده مورد نظر) را می‌بینید.
+صفحه‌هایی که در [[Special:Watchlist|فهرست پی‌گیری‌هایتان]] باشند به صورت '''پررنگ''' نشان داده می‌شوند.",
 'recentchangeslinked-page'     => 'نام صفحه:',
-'recentchangeslinked-to'       => 'تغییرات صفحه‌های که به صفحه مورد نظر پیوند‌ دارند را نمایش بده',
+'recentchangeslinked-to'       => 'نمایش تغییرات صفحه‌هایی که به صفحهٔ داده‌شده پیوند‌ دارند',
 
 # Upload
 'upload'                      => 'بارگذاری پرونده',
@@ -1832,6 +1844,7 @@ $1",
 'minlength1'                  => 'نام پرونده دست کم باید یک حرف باشد.',
 'illegalfilename'             => 'نام پرونده «$1» نویسه‌هایی را شامل می‌شود که در نام صفحه‌ها مجاز نیستند.
 لطفاً نام پرونده را تغییر دهید و آن را دوباره بارگذاری کنید.',
+'filename-toolong'            => 'نام پرونده نباید از ۲۴۰ بایت طولانی‌تر باشد.',
 'badfilename'                 => 'نام پرونده به «$1» تغییر کرد.',
 'filetype-mime-mismatch'      => 'پسوند پرونده «$1.‎» با نوع MIME آن ($2) مطابقت ندارد.',
 'filetype-badmime'            => 'پرونده‌هایی که نوع MIME آن‌ها $1 باشد برای بارگذاری مجاز نیستند.',
@@ -1855,8 +1868,8 @@ $1",
 'large-file'                  => 'توصیه می‌شود که پرونده‌ها بزرگتر از $1 نباشند؛
 اندازهٔ این پرونده $2 است.',
 'largefileserver'             => 'این پرونده از اندازه‌ای که سرور پیکربندی شده تا بپذیرد بزرگتر است.',
-'emptyfile'                   => 'پروندهٔ بارشده خالی به نظر می‌رسد.
-این مساله ممکن است به دلیل خطای تایپی در نام پرونده رخ داده باشد.
+'emptyfile'                   => 'پروندهٔ بارگذاری‌شده خالی به نظر می‌رسد.
+این مشکل ممکن است به علت خطای تایپی در نام پرونده باشد.
 لطفاً تأیید کنید که می‌خواهید این پرونده را با همین شرایط بارگذاری کنید.',
 'windows-nonascii-filename'   => 'این ویکی از نام پرونده با نویسه‌های خاص پشتیبانی نمی‌کند.',
 'fileexists'                  => "پرونده‌ای با همین نام از قبل موجود است، اگر مطمئن نیستید که می‌خواهید آن پرونده را تغییر دهید، لطفاً '''<tt>[[:$1]]</tt>''' را بررسی کنید.
@@ -1927,13 +1940,31 @@ $1',
 'upload-file-error'         => 'خطای داخلی',
 'upload-file-error-text'    => 'هنگام تلاش برای ایجاد یک پروندهٔ  موقت در کارگزار یک خطای داخلی رخ داد.
 لطفاً با یک [[Special:ListUsers/sysop|مدیر]] تماس بگیرید.',
-'upload-misc-error'         => 'خطایی نامعلوم در بارگذاری',
+'upload-misc-error'         => 'خطای نامعلوم در بارگذاری',
 'upload-misc-error-text'    => 'هنگام بارگذاری، خطایی نامعلوم رخ داد.
 لطفاً اطمینان حاصل کنید که نشانی اینترنتی معتبر و قابل دسترسی است و بعد دوباره تلاش کنید.
 اگر مشکل همچنان برقرار بود با یکی از [[Special:ListUsers/sysop|مدیران]] تماس بگیرید.',
 'upload-too-many-redirects' => 'نشانی اینترتی حاوی تعداد بیش از اندازه‌ای تغییرمسیر است',
 'upload-unknown-size'       => 'اندازهٔ نامشخص',
 'upload-http-error'         => 'یک خطای اچ‌تی‌تی‌پی رخ داد: $1',
+
+# File backend
+'backend-fail-notexists'     => 'پروندهٔ $1 وجود ندارد.',
+'backend-fail-invalidpath'   => '$1 مسیر ذخیره‌سازی معتبری نیست.',
+'backend-fail-delete'        => 'نمی‌توان پروندهٔ $1 را حذف کرد.',
+'backend-fail-alreadyexists' => 'پروندهٔ $1 از قبل وجود داشت.',
+'backend-fail-store'         => 'نمی‌توان پروندهٔ $1 را در $2 ذخیره کرد.',
+'backend-fail-copy'          => 'نمی‌توان پروندهٔ $1 را به $2 کپی کرد.',
+'backend-fail-move'          => 'نمی‌توان پروندهٔ $1 را به $2 منتقل کرد.',
+'backend-fail-opentemp'      => 'نمی‌توان پروندهٔ موقتی را باز کرد.',
+'backend-fail-closetemp'     => 'نمی‌توان پروندهٔ موقتی را بست.',
+'backend-fail-read'          => 'نمی‌توان پروندهٔ $1 را خواند.',
+'backend-fail-create'        => 'نمی‌توان پروندهٔ $1 را ایجاد کرد.',
+
+# Lock manager
+'lockmanager-notlocked'        => 'نمی‌توان قفل «$1» را گشود؛ چون قفل نشده‌است.',
+'lockmanager-fail-acquirelock' => 'نمی‌توان قفل «$1» را کسب کرد.',
+'lockmanager-fail-releaselock' => 'نمی‌توان قفل «$1» را گشود.',
 
 # ZipDirectoryReader
 'zip-file-open-error' => 'در هنگام باز کردن پرونده زیپ برای بررسی محتوای آن خطایی رخ داد.',
@@ -1955,9 +1986,9 @@ $1',
 # img_auth script messages
 'img-auth-accessdenied'     => 'منع دسترسی',
 'img-auth-nopathinfo'       => 'PATH_INFO موجود نیست.
-سرور شما برای رد کردن این مقدار تنظیم نشده‌است.
-ممکن است کارساز مبتنی بر سی‌جی‌آی باشد و از img_auth پشتیبانی نکند.
-http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
+سرور شما برای ردکردن این مقدار تنظیم نشده‌است.
+ممکن است مبتنی بر سی‌جی‌آی باشد و از img_auth پشتیبانی نکند.
+[http://www.mediawiki.org/wiki/Manual:Image_Authorization اینجا] را ببینید.',
 'img-auth-notindir'         => 'مسیر درخواست شده در شاخهٔ بارگذاری تنظیم‌شده قرار ندارد.',
 'img-auth-badtitle'         => 'امکان ایجاد یک عنوان مجاز از «$1» وجود ندارد.',
 'img-auth-nologinnWL'       => 'شما به سامانه وارد نشده‌اید و «$1» در فهرست سفید قرار ندارد.',
@@ -1984,10 +2015,10 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 # Some likely curl errors. More could be added from <http://curl.haxx.se/libcurl/c/libcurl-errors.html>
 'upload-curl-error6'       => 'دسترسی به نشانی اینترنتی ممکن نشد',
 'upload-curl-error6-text'  => 'نشانی اینترنتی داده شده قابل دسترسی نیست.
-لطفاً درستی آن و اینکه وب‌گاه برقرار است را بررسی کنید.',
+لطفاً درستی آن و اینکه تارنما برقرار است را بررسی کنید.',
 'upload-curl-error28'      => 'مهلت بارگذاری به سر رسید',
-'upload-curl-error28-text' => 'این وب‌گاه بیش از اندازه در پاسخ تعلل کرد.
-لطفاً بررسی کنید که آیا وب‌گاه فعال و برخط است یا نه، سپس لختی درنگ کنید و دوباره تلاش نمایید.
+'upload-curl-error28-text' => 'این تارنما بیش از اندازه در پاسخ تعلل کرد.
+لطفاً بررسی کنید که آیا تارنما فعال و برخط است یا نه، سپس لختی درنگ کنید و دوباره تلاش نمایید.
 شاید بد نباشد که در زمان خلوت‌تری دوباره تلاش کنید.',
 
 'license'            => 'اجازه‌نامه:',
@@ -2014,7 +2045,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 # File description page
 'file-anchor-link'                  => 'پرونده',
 'filehist'                          => 'تاریخچهٔ پرونده',
-'filehist-help'                     => 'روی تاریخ‌ها کلیک کنید تا نسخهٔ مربوط را ببینید.',
+'filehist-help'                     => 'روی تاریخ/زمان‌ها کلیک کنید تا نسخهٔ مربوط به آن هنگام را ببینید.',
 'filehist-deleteall'                => 'حذف همه',
 'filehist-deleteone'                => 'حذف این مورد',
 'filehist-revert'                   => 'واگردانی',
@@ -2028,7 +2059,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'filehist-filesize'                 => 'اندازهٔ پرونده',
 'filehist-comment'                  => 'توضیح',
 'filehist-missing'                  => 'پروندهٔ ناموجود',
-'imagelinks'                        => 'استفاده پرونده',
+'imagelinks'                        => 'به‌کاررفتن پرونده',
 'linkstoimage'                      => '{{PLURAL:$1|صفحهٔ|صفحه‌های}} زیر به این تصویر پیوند {{PLURAL:$1|دارد|دارند}}:',
 'linkstoimage-more'                 => 'بیش از $1 صفحه به این پرونده پیوند {{PLURAL:$1|دارد|دارند}}.
 فهرست زیر تنها {{PLURAL:$1|اولین پیوند|اولین $1 پیوند}} به این صفحه را نشان می‌دهد.
@@ -2040,8 +2071,8 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'sharedupload'                      => 'این پرونده در $1 قرار دارد و ممکن است در دیگر پروژه‌ها هم استفاده شود.',
 'sharedupload-desc-there'           => 'این پرونده در $1 قرار دارد و ممکن است در دیگر پروژه‌ها هم استفاده شود.
 برای اطلاعات بیشتر لطفاً [$2 صفحهٔ توضیحات پرونده] را ببینید.',
-'sharedupload-desc-here'            => 'این پرونده در $1 قرار دارد و ممکن است در دیگر پروژه‌ها هم استفاده شود.
-توضیحات موجود در [$2 صفحهٔ توضیحات پرونده] در آنجا، در زیر نشان داده شده‌است.',
+'sharedupload-desc-here'            => 'این پرونده در $1 قرار دارد و ممکن است در پروژه‌های دیگر هم استفاده شود.
+توضیحات موجود در [$2 صفحهٔ توضیحات پرونده در آنجا]، در زیر نشان داده شده‌است.',
 'filepage-nofile'                   => 'پرونده‌ای با این نام وجود ندارد.',
 'filepage-nofile-link'              => 'پرونده‌ای با این نام وجود ندارد، اما شما می‌توانید آن را [$1 بارگذاری کنید].',
 'uploadnewversion-linktext'         => 'بارگذاری نسخهٔ جدیدی از پرونده',
@@ -2051,7 +2082,6 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 
 # File reversion
 'filerevert'                => 'واگردانی $1',
-'filerevert-backlink'       => '← $1',
 'filerevert-legend'         => 'واگردانی پرونده',
 'filerevert-intro'          => "شما در حال واگردانی '''[[Media:$1|$1]]''' به [$4 نسخهٔ مورخ $2 ساعت $3] هستید.",
 'filerevert-comment'        => 'دلیل:',
@@ -2061,24 +2091,24 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'filerevert-badversion'     => 'نسخهٔ قدیمی‌تری از این پرونده وجود نداشت.',
 
 # File deletion
-'filedelete'                  => 'حذف $1',
-'filedelete-backlink'         => '← $1',
-'filedelete-legend'           => 'حذف پرونده',
-'filedelete-intro'            => "شما در حال حذف کردن پروندهٔ '''[[Media:$1|$1]]''' به همراه تمام تاریخچه‌اش هستید.",
-'filedelete-intro-old'        => "شما در حال حذف نسخه '''[[Media:$1|$1]]''' مورخ [$4 $2 ساعت $3] هستید.",
-'filedelete-comment'          => 'دلیل:',
-'filedelete-submit'           => 'حذف',
-'filedelete-success'          => "'''$1''' حذف شد.",
-'filedelete-success-old'      => "نسخهٔ '''[[Media:$1|$1]]''' مورخ $2 ساعت $3 حذف شد.",
-'filedelete-nofile'           => "'''$1''' وجود ندارد.",
-'filedelete-nofile-old'       => "نسخهٔ بایگانی‌شده‌ای از '''$1''' با مشخصات داده شده، وجود ندارد.",
-'filedelete-otherreason'      => 'دلیل دیگر/اضافی:',
-'filedelete-reason-otherlist' => 'دلیل دیگر',
-'filedelete-reason-dropdown'  => '*دلایل متداول حذف
+'filedelete'                   => 'حذف $1',
+'filedelete-legend'            => 'حذف پرونده',
+'filedelete-intro'             => "شما در حال حذف کردن پروندهٔ '''[[Media:$1|$1]]''' به همراه تمام تاریخچه‌اش هستید.",
+'filedelete-intro-old'         => "شما در حال حذف نسخه '''[[Media:$1|$1]]''' مورخ [$4 $2 ساعت $3] هستید.",
+'filedelete-comment'           => 'دلیل:',
+'filedelete-submit'            => 'حذف',
+'filedelete-success'           => "'''$1''' حذف شد.",
+'filedelete-success-old'       => "نسخهٔ '''[[Media:$1|$1]]''' مورخ $2 ساعت $3 حذف شد.",
+'filedelete-nofile'            => "'''$1''' وجود ندارد.",
+'filedelete-nofile-old'        => "نسخهٔ بایگانی‌شده‌ای از '''$1''' با مشخصات داده شده، وجود ندارد.",
+'filedelete-otherreason'       => 'دلیل دیگر/اضافی:',
+'filedelete-reason-otherlist'  => 'دلیل دیگر',
+'filedelete-reason-dropdown'   => '*دلایل متداول حذف
 ** نقض حق تکثیر
 ** پروندهٔ تکراری',
-'filedelete-edit-reasonlist'  => 'ویرایش دلایل حذف',
-'filedelete-maintenance'      => 'حذف و احیای پرونده‌ها در مدت نگهداری به طور موقت غیرفعال است.',
+'filedelete-edit-reasonlist'   => 'ویرایش دلایل حذف',
+'filedelete-maintenance'       => 'حذف و احیای پرونده‌ها در مدت نگهداری به طور موقت غیرفعال است.',
+'filedelete-maintenance-title' => 'نمی‌تواند پرونده را حذف کند',
 
 # MIME search
 'mimesearch'         => 'جستجوی بر اساس MIME',
@@ -2128,7 +2158,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'statistics-users-active-desc' => 'کاربرانی که در {{PLURAL:$1|روز|$1 روز}} قبل فعالیتی انجام داده‌اند',
 'statistics-mostpopular'       => 'صفحه‌هایی که بیشترین تعداد بازدیدکننده را داشته‌اند',
 
-'disambiguations'      => 'صفحه‌های ابهام‌زدایی',
+'disambiguations'      => 'صفحه‌های دارای پیوند به صفحه‌های ابهام‌زدایی',
 'disambiguationspage'  => 'Template:ابهام‌زدایی',
 'disambiguations-text' => "صفحه‌های زیر پیوندی به یک '''صفحهٔ ابهام‌زدایی''' هستند.
 این صفحه‌ها باید در عوض به موضوعات مرتبط پیوند داده شوند.<br />
@@ -2166,25 +2196,26 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'specialpage-empty'       => 'نتیجه‌ای برای این گزارش وجود ندارد.',
 'lonelypages'             => 'صفحه‌های یتیم',
 'lonelypagestext'         => 'به صفحه‌های زیر از هیچ صفحهٔ دیگری در {{SITENAME}} پیوند داده نشده‌است و در هیچ صفحهٔ دیگری گنجانده نشده‌اند.',
-'uncategorizedpages'      => 'صفحه‌های رده‌بندی نشده',
-'uncategorizedcategories' => 'رده‌های رده‌بندی نشده',
-'uncategorizedimages'     => 'پرونده‌های رده‌بندی نشده',
-'uncategorizedtemplates'  => 'الگوهای رده‌بندی نشده',
-'unusedcategories'        => 'رده‌های استفاده نشده',
-'unusedimages'            => 'پرونده‌های استفاده نشده',
+'uncategorizedpages'      => 'صفحه‌های رده‌بندی‌نشده',
+'uncategorizedcategories' => 'رده‌های رده‌بندی‌نشده',
+'uncategorizedimages'     => 'پرونده‌های رده‌بندی‌نشده',
+'uncategorizedtemplates'  => 'الگوهای رده‌بندی‌نشده',
+'unusedcategories'        => 'رده‌های استفاده‌نشده',
+'unusedimages'            => 'پرونده‌های استفاده‌نشده',
 'popularpages'            => 'صفحه‌های محبوب',
 'wantedcategories'        => 'رده‌های مورد نیاز',
 'wantedpages'             => 'صفحه‌های مورد نیاز',
 'wantedpages-badtitle'    => 'عنوان غیرمجاز در مجموعهٔ نتایج: $1',
 'wantedfiles'             => 'پرونده‌های مورد نیاز',
 'wantedtemplates'         => 'الگوهای مورد نیاز',
-'mostlinked'              => 'صفحه‌هایی که بیشتر از همه به آنها پیوند شده است',
-'mostlinkedcategories'    => 'رده‌هایی که بیشتر از همه به آنها پیوند شده است',
-'mostlinkedtemplates'     => 'الگوهایی که بیشتر از همه به آنها پیوند شده است',
-'mostcategories'          => 'مقاله‌هایی که بیشترین تعداد رده را دارند',
-'mostimages'              => 'پرونده‌هایی که بیشتر از همه به آنها پیوند شده است',
+'mostlinked'              => 'صفحه‌هایی که بیشتر از همه به آن‌ها پیوند داده شده‌است',
+'mostlinkedcategories'    => 'رده‌هایی که بیشتر از همه به آن‌ها پیوند داده شده‌است',
+'mostlinkedtemplates'     => 'الگوهایی که بیشتر از همه به آن‌ها پیوند داده شده‌است',
+'mostcategories'          => 'صفحه‌های دارای بیشترین رده',
+'mostimages'              => 'پرونده‌هایی که بیشتر از همه به آن‌ها پیوند داده شده‌است',
 'mostrevisions'           => 'صفحه‌های دارای بیشترین نسخه',
 'prefixindex'             => 'تمام صفحه‌ها با پیشوند',
+'prefixindex-namespace'   => 'همهٔ صفحه‌های دارای پیشوند (فضای‌نام $1)',
 'shortpages'              => 'صفحه‌های کوتاه',
 'longpages'               => 'صفحه‌های بلند',
 'deadendpages'            => 'صفحه‌های بن‌بست',
@@ -2194,14 +2225,14 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'protectedpages-cascade'  => 'فقط محافظت‌های آبشاری',
 'protectedpagestext'      => 'صفحه‌های زیر در برابر ویرایش یا انتقال محافظت شده‌اند:',
 'protectedpagesempty'     => 'در حال حاضر هیچ‌صفحه‌ای محافظت نشده‌است.',
-'protectedtitles'         => 'عنوان‌های محافظت شده',
+'protectedtitles'         => 'عنوان‌های محافظت‌شده',
 'protectedtitlestext'     => 'عنوان‌های زیر از ایجاد محافظت شده‌اند',
 'protectedtitlesempty'    => 'در حال حاضر هیچ عنوانی با این پارامترها محافظت نشده‌است.',
 'listusers'               => 'فهرست کاربران',
 'listusers-editsonly'     => 'فقط کاربرانی که ویرایش دارند را نشان بده',
 'listusers-creationsort'  => 'مرتب کردن بر اساس تاریخ ایجاد',
 'usereditcount'           => '$1 {{PLURAL:$1|ویرایش|ویرایش}}',
-'usercreated'             => 'ایجاد شده در $1 ساعت $2',
+'usercreated'             => '{{GENDER:$3|ایجادشده}} در تاریخ $1 در ساعت $2',
 'newpages'                => 'صفحه‌های تازه',
 'newpages-username'       => 'نام کاربری:',
 'ancientpages'            => 'قدیمی‌ترین صفحه‌ها',
@@ -2228,8 +2259,8 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'booksources-invalid-isbn'  => 'شابک داده شده مجاز به نظر نمی‌رسد؛ از جهت اشکالات هنگام کپی کردن از منبع اصلی بررسی کنید.',
 
 # Special:Log
-'specialloguserlabel'  => 'کاربر:',
-'speciallogtitlelabel' => 'عنوان:',
+'specialloguserlabel'  => 'مجری:',
+'speciallogtitlelabel' => 'هدف (عنوان یا کاربر):',
 'log'                  => 'سیاهه‌ها',
 'all-logs-page'        => 'تمام سیاهه‌های عمومی',
 'alllogstext'          => 'نمایش یک‌جای تمام سیاهه‌های موجود در {{SITENAME}}.
@@ -2244,7 +2275,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'prevpage'          => 'صفحهٔ قبلی ($1)',
 'allpagesfrom'      => 'نمایش صفحه‌ها با شروع از:',
 'allpagesto'        => 'نمایش صفحه‌ها با پایان در:',
-'allarticles'       => 'همهٔ مقاله‌ها',
+'allarticles'       => 'همهٔ صفحه‌ها',
 'allinnamespace'    => 'همهٔ صفحه‌ها (فضای نام $1)',
 'allnotinnamespace' => 'همهٔ صفحه‌ها (که در فضای نام $1 است)',
 'allpagesprev'      => 'قبلی',
@@ -2256,25 +2287,26 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 
 # Special:Categories
 'categories'                    => 'رده‌ها',
-'categoriespagetext'            => '{{PLURAL:$1|ردهٔ|رده‌های}} زیر حاوی صفحه یا پرونده {{PLURAL:$1|است|هستند}}.
-[[Special:UnusedCategories|رده‌های استفاده نشده]] در اینجا نمایش داده نشده‌اند.
-هم‌چنین [[Special:WantedCategories|رده‌های مورد نیاز]] را ببینید.',
+'categoriespagetext'            => '{{PLURAL:$1|ردهٔ|رده‌های}} زیر دارای صفحه‌ها یا پرونده‌هایی {{PLURAL:$1|است|هستند}}.
+[[Special:UnusedCategories|رده‌های استفاده‌نشده]] در اینجا نمایش داده نشده‌اند.
+همچنین [[Special:WantedCategories|رده‌های مورد نیاز]] را ببینید.',
 'categoriesfrom'                => 'نمایش رده‌ها با شروع از:',
 'special-categories-sort-count' => 'مرتب کردن بر اساس تعداد',
 'special-categories-sort-abc'   => 'مرتب کردن الفبایی',
 
 # Special:DeletedContributions
-'deletedcontributions'             => 'مشارکت‌های حذف شده',
-'deletedcontributions-title'       => 'مشارکت‌های حذف شده',
+'deletedcontributions'             => 'مشارکت‌های حذف‌شده',
+'deletedcontributions-title'       => 'مشارکت‌های حذف‌شده',
 'sp-deletedcontributions-contribs' => 'مشارکت‌ها',
 
 # Special:LinkSearch
-'linksearch'       => 'پیوندهای بیرونی',
+'linksearch'       => 'جستجوی پیوندهای بیرونی',
 'linksearch-pat'   => 'جستجوی الگو:',
 'linksearch-ns'    => 'فضای نام:',
 'linksearch-ok'    => 'جستجو',
-'linksearch-text'  => 'نشانه‌هایی مانند «‎*.wikipedia.org» را می‌توان استفاده کرد.<br />
-پروتکل‌های پشتیبانی‌شده: <tt>$1</tt>',
+'linksearch-text'  => 'نشانه‌هایی مانند «‎*.wikipedia.org» را می‌توان استفاده کرد.
+حداقل یک دامنه سطح بالا ، به عنوان مثال "*.org" نیاز دارد.<br />
+پروتکل‌های پشتیبانی‌شده: <tt>$1</tt> (هیچ یک از این موارد را در جستجوی خود نیافزایید)',
 'linksearch-line'  => '$1 از $2 پیوند دارد',
 'linksearch-error' => 'نشانه‌ها فقط در ابتدای نام میزبان اینترنتی می‌توانند استفاده شوند.',
 
@@ -2319,7 +2351,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 # E-mail user
 'mailnologin'          => 'نشانی‌ای از فرستنده موجود نیست',
 'mailnologintext'      => 'برای فرستادن پست الکترونیکی به کاربران دیگر باید [[Special:UserLogin|به سامانه وارد شوید]] و نشانی پست الکترونیکی معتبری در [[Special:Preferences|ترجیحات]] خود داشته باشید.',
-'emailuser'            => 'نامه به این کاربر',
+'emailuser'            => 'فرستادن نامه به این کاربر',
 'emailpage'            => 'پست الکترونیکی به کاربر',
 'emailpagetext'        => 'شما می‌توانید از فرم زیر برای ارسال یک نامه الکترونیکی به این کاربر استفاده کنید.
 نشانی پست الکترونیکی‌ای که در [[Special:Preferences|ترجیحات کاربریتان]] وارد کرده‌اید در نشانی فرستنده (From) نامه خواهد آمد، تا گیرنده بتواند پاسخ دهد.',
@@ -2340,7 +2372,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'emailto'              => 'به:',
 'emailsubject'         => 'عنوان:',
 'emailmessage'         => 'پیغام:',
-'emailsend'            => 'فرستاده شود',
+'emailsend'            => 'بفرست',
 'emailccme'            => 'رونوشت پیغام را برایم بفرست.',
 'emailccsubject'       => 'رونوشت پیغام شما به $1: $2',
 'emailsent'            => 'پست الکترونیکی فرستاده شد',
@@ -2349,7 +2381,7 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 
 # User Messenger
 'usermessage-summary' => 'گذاشتن پیغام سامانه.',
-'usermessage-editor'  => 'پیغامگیر سامانه',
+'usermessage-editor'  => 'پیغام رسان سامانه',
 
 # Watchlist
 'watchlist'            => 'فهرست پی‌گیری‌های من',
@@ -2371,14 +2403,14 @@ http://www.mediawiki.org/wiki/Manual:Image_Authorization را ببینید.',
 'notanarticle'         => 'صفحه محتوایی نیست',
 'notvisiblerev'        => 'آخرین نسخه توسط کاربری دیگر حذف شده‌است',
 'watchnochange'        => 'هیچ یک از موارد در حال پی‌گیری شما در دورهٔ زمانی نمایش‌یافته ویرایش نشده است.',
-'watchlist-details'    => 'بدون احتساب صفحه‌های بحث، {{PLURAL:$1|$1 صفحه|$1 صفحه}} در فهرست پی‌گیری‌های شما قرار {{PLURAL:$1|دارد|دارتد}}.',
+'watchlist-details'    => 'بدون احتساب صفحه‌های بحث، {{PLURAL:$1|$1 صفحه|$1 صفحه}} در فهرست پی‌گیری‌های شما قرار {{PLURAL:$1|دارد|دارند}}.',
 'wlheader-enotif'      => '*اطلاع‌رسانی از طریق پست الکترونیکی امکان‌پذیر است.',
 'wlheader-showupdated' => "*صفحه‌هایی که پس از آخرین سرزدنتان به آنها تغییر کرده‌اند '''پررنگ''' نشان داده شده‌اند.",
 'watchmethod-recent'   => 'بررسی ویرایش‌های اخیر برای صفحه‌های مورد پی‌گیری',
 'watchmethod-list'     => 'بررسی صفحه‌های مورد پی‌گیری برای ویرایش‌های اخیر',
 'watchlistcontains'    => 'فهرست پی‌گیری‌های شما حاوی $1 {{PLURAL:$1|صفحه|صفحه}} است.',
 'iteminvalidname'      => 'مشکل با مورد «$1»، نام نامعتبر است...',
-'wlnote'               => 'در زیر آخرین $1 تغییر در $2 ساعت آخر {{PLURAL:$1|آمده‌است|آمده‌اند}}.',
+'wlnote'               => "در زیر {{PLURAL:$1|آخرین تغییرات موجود است|آخرین تغییرات  '''$1''' موجود است }} آخرین  {{PLURAL:$2|ساعت|'''$2''' ساعت}}, در تاریخ $3, $4.",
 'wlshowlast'           => 'نمایش آخرین $1 ساعت $2 روز $3',
 'watchlist-options'    => 'گزینه‌های پیگیری',
 
@@ -2432,7 +2464,6 @@ $NEWPAGE
 'exbeforeblank'          => 'محتوای صفحه قبل از خالی‌کردن «$1» بود.',
 'exblank'                => 'صفحه خالی بود',
 'delete-confirm'         => 'حذف «$1»',
-'delete-backlink'        => '← $1',
 'delete-legend'          => 'حذف',
 'historywarning'         => "'''هشدار!''' صفحه‌ای که قصد دارید حذف کنید تاریخچه‌ای شامل حدود $1 {{PLURAL:$1|نسخه|نسخه}} دارد:",
 'confirmdeletetext'      => 'شما در حال حذف کردن یک صفحه یا تصویر از پایگاه‌ داده همراه با تمام تاریخچهٔ آن هستید.
@@ -2492,7 +2523,10 @@ $NEWPAGE
 'unprotectedarticle'          => 'صفحهٔ «[[$1]]» را از محافظت خارج کرد',
 'movedarticleprotection'      => 'تنظیمات محافظت را از «[[$2]]» به «[[$1]]» منتقل کرد',
 'protect-title'               => 'تغییر وضعیت محافظت «$1»',
+'protect-title-notallowed'    => 'مشاهده سطح حفاظت  " $1 "',
 'prot_1movedto2'              => '[[$1]] به [[$2]] منتقل شد',
+'protect-badnamespace-title'  => 'فضای نام بدون محافظت',
+'protect-badnamespace-text'   => 'صفحات موجود در این فضای نام، نمی‌توانند حفاظت شوند.',
 'protect-legend'              => 'تأیید محافظت',
 'protectcomment'              => 'دلیل:',
 'protectexpiry'               => 'زمان سرآمدن:',
@@ -2584,6 +2618,7 @@ $NEWPAGE
 
 برای دیدن سیاههٔ حذف‌ها و احیاهای اخیر به  [[Special:Log/delete|سیاههٔ حذف]] رجوع کنید.",
 'undelete-header'              => 'برای دیدن صفحه‌های حذف‌شدهٔ اخیر [[Special:Log/delete|سیاههٔ حذف]] را ببینید.',
+'undelete-search-title'        => 'جستجوی صفحه‌های حذف شده',
 'undelete-search-box'          => 'جستجوی صفحه‌های حذف‌شده.',
 'undelete-search-prefix'       => 'نمایش صفحه‌ها با شروع از:',
 'undelete-search-submit'       => 'برو',
@@ -2593,6 +2628,7 @@ $NEWPAGE
 'undelete-cleanup-error'       => 'خطا در حذف تاریخچهٔ استفاده نشدهٔ «$1».',
 'undelete-missing-filearchive' => 'امکان احیای تاریخچهٔ شمارهٔ $1 وجود ندارد زیرا اطلاعات در پایگاه داده وجود ندارد.
 ممکن است پیشتر احیا شده باشد.',
+'undelete-error'               => 'خطا صفحه غیرقابل حذف',
 'undelete-error-short'         => 'خطا در احیای پرونده: $1',
 'undelete-error-long'          => 'در زمان احیای پرونده خطا رخ داد:
 
@@ -2633,7 +2669,7 @@ $1',
 آخرین سیاههٔ بسته شدن در زیر آمده‌است:',
 'sp-contributions-search'              => 'جستجوی مشارکت‌ها',
 'sp-contributions-username'            => 'نشانی آی‌پی یا نام کاربری:',
-'sp-contributions-toponly'             => 'تنها ویرایش‌هایی که آخرین نسخه هستند نمایش داده شود',
+'sp-contributions-toponly'             => 'فقط ویرایش‌هایی که آخرین نسخه‌اند نمایش داده شود',
 'sp-contributions-submit'              => 'جستجو',
 
 # What links here
@@ -2644,13 +2680,13 @@ $1',
 'nolinkshere'              => "هیچ صفحه‌ای به '''[[:$1]]''' پیوند ندارد.",
 'nolinkshere-ns'           => "هیچ صفحه‌ای از فضای نام انتخاب شده به '''[[:$1]]''' پیوند ندارد.",
 'isredirect'               => 'صفحهٔ تغییرمسیر',
-'istemplate'               => 'استفاده‌شده در صفحه',
+'istemplate'               => 'تراگنجانش‌ها',
 'isimage'                  => 'پیوند به پرونده',
 'whatlinkshere-prev'       => '{{PLURAL:$1|قبلی|$1 مورد قبلی}}',
 'whatlinkshere-next'       => '{{PLURAL:$1|بعدی|$1 مورد بعدی}}',
-'whatlinkshere-links'      => '← پیوندها',
+'whatlinkshere-links'      => '→ پیوندها',
 'whatlinkshere-hideredirs' => '$1 تغییرمسیر',
-'whatlinkshere-hidetrans'  => '$1 تراگنجانش',
+'whatlinkshere-hidetrans'  => '$1 تراگنجانش‌ها',
 'whatlinkshere-hidelinks'  => '$1 پیوند',
 'whatlinkshere-hideimages' => '$1 پیوند به تصویر',
 'whatlinkshere-filters'    => 'پالایه‌ها',
@@ -2665,7 +2701,6 @@ $1',
 'blockiptext'                     => 'از فرم زیر برای بستن دسترسی ویرایش یک نشانی آی‌پی یا نام کاربری مشخص استفاده کنید.
 این کار فقط فقط باید برای جلوگیری از خرابکاری و بر اساس [[{{MediaWiki:Policy-url}}|سیاست قطع دسترسی]] انجام شود.
 دلیل مشخص این کار را در زیر ذکر کنید (مثلاً با ذکر صفحه‌های به‌خصوصی که مورد خرابکاری واقع شده‌اند).',
-'ipaddress'                       => 'نشانی آی‌پی/نام کاربر',
 'ipadressorusername'              => 'نشانی آی‌پی یا نام کاربری:',
 'ipbexpiry'                       => 'زمان سرآمدن:',
 'ipbreason'                       => 'دلیل:',
@@ -2880,7 +2915,7 @@ $1',
 
 مقالهٔ مقصد «[[:$1]]» وجود دارد. آیا می‌خواهید آن را حذف کنید تا انتقال ممکن شود؟',
 'delete_and_move_confirm'      => 'بله، صفحه حذف شود',
-'delete_and_move_reason'       => 'حذف برای ممکن‌شدن انتقال',
+'delete_and_move_reason'       => 'حذف برای ممکن‌شدن انتقال  «[[$1]]»',
 'selfmove'                     => 'عنوان‌های صفحهٔ مبدأ و مقصد یکی است؛
 انتقال صفحه به خودش ممکن نیست.',
 'immobile-source-namespace'    => 'امکان انتقال صفحه‌ها در فضای نام «$1» وجود ندارد',
@@ -2904,7 +2939,7 @@ $1',
 لطفاً یک نام دیگر برگزینید.',
 
 # Export
-'export'            => 'برون‌بری صفحه‌ها',
+'export'            => 'برون‌ریزی صفحه‌ها',
 'exporttext'        => 'شما می‌توانید متن و تاریخچهٔ ویرایش یک صفحهٔ مشخص یا مجموعه‌ای از صفحه‌ها را به شکل پوشیده در اکس‌ام‌ال برون‌بری کنید.
 این اطلاعات را می‌توان در ویکی دیگری که نرم‌افزار «مدیاویکی» را اجرا می‌کند از طریق [[Special:Import|صفحهٔ درون‌ریزی]] وارد کرد.
 
@@ -2914,6 +2949,7 @@ $1',
 'exportcuronly'     => 'فقط نسخهٔ فعلی شامل شود، نه کل تاریخچه',
 'exportnohistory'   => "----
 '''توجه:''' امکان برون‌بری تاریخچهٔ کامل صفحه‌ها از طریق این صفحه به دلایل اجرایی از کار انداخته شده‌است.",
+'exportlistauthors' => 'محتوی لیست کامل مشارکت‌کنندگان هر صفحه',
 'export-submit'     => 'برون‌بری',
 'export-addcattext' => 'افزودن صفحه‌ها از رده:',
 'export-addcat'     => 'افزودن',
@@ -2929,7 +2965,7 @@ $1',
 'allmessagesdefault'            => 'متن پیش‌فرض پیغام',
 'allmessagescurrent'            => 'متن کنونی پیغام',
 'allmessagestext'               => 'این فهرستی از پیغام‌های سامانه‌ای موجود در فضای نام مدیاویکی است.
-چنان‌چه مایل به مشارکت در محلی‌سازی مدیاویکی هستید لطفاً [http://www.mediawiki.org/wiki/Localisation محلی‌سازی مدیاویکی] و [http://translatewiki.net translatewiki.net] را ببینید.',
+چنان‌چه مایل به مشارکت در محلی‌سازی مدیاویکی هستید لطفاً [//www.mediawiki.org/wiki/Localisation محلی‌سازی مدیاویکی] و [//translatewiki.net translatewiki.net] را ببینید.',
 'allmessagesnotsupportedDB'     => "نمی‌توان از '''{{ns:special}}:همهٔ پیغام‌ها''' استفاده کرد چود '''&lrm;\$wgUseDatabaseMessages''' خاموش شده است.",
 'allmessages-filter-legend'     => 'پالایه',
 'allmessages-filter'            => 'پالودن بر اساس وضعیت شخصی‌سازی:',
@@ -2941,11 +2977,13 @@ $1',
 'allmessages-filter-submit'     => 'برو',
 
 # Thumbnails
-'thumbnail-more'           => 'بزرگ شود',
+'thumbnail-more'           => 'بزرگ‌کردن',
 'filemissing'              => 'پرونده وجود ندارد',
 'thumbnail_error'          => 'خطا در ایجاد بندانگشتی: $1',
 'djvu_page_error'          => 'صفحهٔ DjVu خارج از حدود مجاز',
 'djvu_no_xml'              => 'امکان پیدا کردن پروندهٔ XML برای استفادهٔ DjVu وجود نداشت.',
+'thumbnail-temp-create'    => 'نمی‌توان پروندهٔ بندانگشتی موقت را ساخت',
+'thumbnail-dest-create'    => 'نمی‌توان تصویر بندانگشتی را در مقصد ذخیره کرد',
 'thumbnail_invalid_params' => 'پارامترهای غیرمجاز در تصویر بندانگشتی (thumbnail)',
 'thumbnail_dest_directory' => 'اشکال در ایجاد پوشهٔ مقصد',
 'thumbnail_image-type'     => 'تصویر از نوع پشتیبانی نشده',
@@ -3011,43 +3049,43 @@ $1',
 'tooltip-pt-preferences'          => 'ترجیحات من',
 'tooltip-pt-watchlist'            => 'فهرست صفحه‌هایی که شما تغییرات آن‌ها را پی‌گیری می‌کنید',
 'tooltip-pt-mycontris'            => 'فهرست مشارکت‌های شما',
-'tooltip-pt-login'                => 'توصیه می‌شود که به سامانه وارد شوید، لیکن اجباری نیست',
+'tooltip-pt-login'                => 'توصیه می‌شود که به سامانه وارد شوید، گرچه اجباری نیست',
 'tooltip-pt-anonlogin'            => 'توصیه می‌شود که به سامانه وارد شوید، لیکن اجباری نیست',
 'tooltip-pt-logout'               => 'خروج از سامانه',
 'tooltip-ca-talk'                 => 'گفتگو پیرامون صفحهٔ محتوا',
 'tooltip-ca-edit'                 => 'شما می‌توانید این صفحه را ویرایش کنید. لطفاً پیش از ذخیره از دکمهٔ پیش‌نمایش استفاده کنید.',
-'tooltip-ca-addsection'           => 'یک بخش جدید ایجاد کنید',
-'tooltip-ca-viewsource'           => 'این صفحه محافظت‌شده است.
-می‌توانید متن مبدأ آن را مشاهده کنید',
+'tooltip-ca-addsection'           => 'بخشی جدید ایجاد کنید',
+'tooltip-ca-viewsource'           => 'این صفحه محافظت‌شده‌است.
+می‌توانید متن مبدأ آن را ببینید',
 'tooltip-ca-history'              => 'نسخه‌های پیشین این صفحه',
 'tooltip-ca-protect'              => 'محافظت از این صفحه',
 'tooltip-ca-unprotect'            => 'تغییر محافظت این صفحه',
 'tooltip-ca-delete'               => 'حذف این صفحه',
 'tooltip-ca-undelete'             => 'بازگرداندن نسخه‌های صفحهٔ حذف‌شده',
 'tooltip-ca-move'                 => 'انتقال این صفحه',
-'tooltip-ca-watch'                => 'اضافه کردن این صفحه به فهرست پی‌گیری‌های شما',
-'tooltip-ca-unwatch'              => 'حذف این صفحه از فهرست پی‌گیری‌های شما',
+'tooltip-ca-watch'                => 'افزودن این صفحه به فهرست پی‌گیری‌هایتان',
+'tooltip-ca-unwatch'              => 'حذف این صفحه از فهرست پی‌گیری‌هایتان',
 'tooltip-search'                  => 'جستجو در {{SITENAME}}',
 'tooltip-search-go'               => 'در صورت امکان به صفحه‌ای با همین نام برو',
-'tooltip-search-fulltext'         => 'این عبارت را در صفحه‌ها جستجو کن',
+'tooltip-search-fulltext'         => 'جستجوی این عبارت در صفحه‌ها',
 'tooltip-p-logo'                  => 'مشاهدهٔ صفحهٔ اصلی',
 'tooltip-n-mainpage'              => 'مشاهدهٔ صفحهٔ اصلی',
 'tooltip-n-mainpage-description'  => 'مشاهدهٔ صفحهٔ اصلی',
-'tooltip-n-portal'                => 'پیرامون پروژه، آن‌چه‌ می‌توانید بکنید و این که چه چیز را کجا پیدا می‌کنید',
-'tooltip-n-currentevents'         => 'یافتن اطلاعات پیش‌زمینه پیرامون وقایع کنونی',
-'tooltip-n-recentchanges'         => 'فهرست تغییرات اخیر در ویکی',
+'tooltip-n-portal'                => 'پیرامون پروژه، آنچه‌ می‌توانید انجام دهید و اینکه چه چیز را کجا پیدا کنید',
+'tooltip-n-currentevents'         => 'یافتن اطلاعات پیش‌زمینه پیرامون رویدادهای کنونی',
+'tooltip-n-recentchanges'         => 'فهرستی از تغییرات اخیر در ویکی',
 'tooltip-n-randompage'            => 'آوردن یک صفحهٔ تصادفی',
 'tooltip-n-help'                  => 'مکانی برای دریافتن',
-'tooltip-t-whatlinkshere'         => 'فهرست تمام صفحه‌هایی که به این صفحه پیوند می‌دهند',
-'tooltip-t-recentchangeslinked'   => 'تغییرات اخیر در صفحه‌هایی که این صفحه به آن‌ها پیوند دارد',
+'tooltip-t-whatlinkshere'         => 'فهرست همهٔ صفحه‌هایی که به این صفحه پیوند می‌دهند',
+'tooltip-t-recentchangeslinked'   => 'تغییرات اخیر صفحه‌هایی که این صفحه به آن‌ها پیوند دارد',
 'tooltip-feed-rss'                => 'خبرنامه آراس‌اس برای این صفحه',
 'tooltip-feed-atom'               => 'خبرنامهٔ اتم برای این صفحه',
-'tooltip-t-contributions'         => 'مشاهدهٔ فهرست مشارکت‌های این کاربر',
-'tooltip-t-emailuser'             => 'ارسال پست الکترونیکی به این کاربر',
+'tooltip-t-contributions'         => 'فهرست مشارکت‌های این کاربر',
+'tooltip-t-emailuser'             => 'فرستادن پست الکترونیکی به این کاربر',
 'tooltip-t-upload'                => 'بارگذاری تصاویر و پرونده‌های دیگر',
-'tooltip-t-specialpages'          => 'فهرست تمام صفحه‌های ویژه',
+'tooltip-t-specialpages'          => 'فهرستی از همهٔ صفحه‌های ویژه',
 'tooltip-t-print'                 => 'نسخهٔ قابل چاپ این صفحه',
-'tooltip-t-permalink'             => 'پیوند پایدار به این نسخه از این صفحه',
+'tooltip-t-permalink'             => 'پیوند پایدار به این نسخه از صفحه',
 'tooltip-ca-nstab-main'           => 'دیدن صفحهٔ محتویات',
 'tooltip-ca-nstab-user'           => 'نمایش صفحهٔ کاربر',
 'tooltip-ca-nstab-media'          => 'دیدن صفحهٔ مدیا',
@@ -3058,16 +3096,16 @@ $1',
 'tooltip-ca-nstab-template'       => 'نمایش الگو',
 'tooltip-ca-nstab-help'           => 'دیدن صفحهٔ راهنما',
 'tooltip-ca-nstab-category'       => 'دیدن صفحهٔ رده',
-'tooltip-minoredit'               => 'یک علامت جزئی به این ویرایش اضافه کن',
+'tooltip-minoredit'               => 'این ویرایش را ویرایش جزئی نشانه‌گذاری کن',
 'tooltip-save'                    => 'تغییرات خود را ذخیره کنید',
-'tooltip-preview'                 => 'پیش‌نمایش تغییرات شما، لطفاً قبل از ذخیره‌سازی صفحه از این کلید استفاده کنید.',
+'tooltip-preview'                 => 'پیش‌نمایش تغییرات شما، لطفاً قبل از ذخیره‌کردن صفحه از این کلید استفاده کنید.',
 'tooltip-diff'                    => 'نمایش تغییراتی که شما در متن داده‌اید.',
-'tooltip-compareselectedversions' => 'دیدن تفاوت‌های موجود بین دو نسخهٔ انتخاب شده این صفحه.',
-'tooltip-watch'                   => 'این صفحه را به فهرست پی‌گیری‌های خود بیافزایید.',
+'tooltip-compareselectedversions' => 'دیدن تفاوت‌های دو نسخهٔ انتخاب‌شده از این صفحه',
+'tooltip-watch'                   => 'این صفحه را به فهرست پی‌گیری‌هایتان بیفزایید.',
 'tooltip-recreate'                => 'ایجاد دوبارهٔ صفحه صرف نظر از حذف شدن قبلی آن',
 'tooltip-upload'                  => 'شروع بارگذاری',
-'tooltip-rollback'                => '«واگردانی» ویرایش(های) آخرین ویرایش‌کننده در این صفحه را با یک کلیک باز می‌گرداند.',
-'tooltip-undo'                    => '«خنثی‌سازی» این ویرایش را خنثی می‌کند و فرم ویرایش را در حالت پیش‌نمایش باز می‌کند تا امکان افزودن دلیلی در خلاصه ویرایش را بدهد.',
+'tooltip-rollback'                => '«واگردانی» ویرایش(های) آخرین ویرایش‌کنندهٔ این صفحه را با یک کلیک بازمی‌گرداند.',
+'tooltip-undo'                    => '«خنثی‌سازی» این ویرایش را خنثی می‌کند و جعبهٔ ویرایش را در حالت پیش‌نمایش باز می‌کند تا افزودن دلیل در خلاصهٔ ویرایش ممکن شود.',
 'tooltip-preferences-save'        => 'ذخیره کردن ترجیحات',
 'tooltip-summary'                 => 'خلاصه‌ای وارد کنید',
 
@@ -3189,17 +3227,22 @@ $1',
 'sp-newimages-showfrom' => 'نشان‌دادن تصویرهای جدید از $2، $1 به بعد',
 
 # Video information, used by Language::formatTimePeriod() to format lengths in the above messages
-'ago' => '$1 پیش',
+'seconds' => '{{PLURAL:$1|$1ثانیه| $1  ثانیه}}',
+'minutes' => '{{PLURAL: $1|دقیقه|دقیقه}}',
+'hours'   => '{{PLURAL: $1|ساعت|ساعت}}',
+'days'    => '{{PLURAL: $1|روز|روز}}',
+'ago'     => '$1 پیش',
 
 # Bad image list
-'bad_image_list' => 'اطلاعات را باید به این شکل وارد کنید:
+'bad_image_list' => 'اطلاعات را باید اینگونه وارد کنید:
 
-فقط سطرهایی که با * شروع شوند در نظر گرفته می‌شوند. اولین پیوند در هر سطر، باید پیوندی به یک تصویر بد باشد.
-پیوندهایی بعدی در همان سطر، به عنوان موارد استثنا در نظر گرفته می‌شوند.',
+فقط موارد درون فهرست (سطرهایی که با * شروع می‌شوند) در نظر گرفته می‌شوند.
+نخستین پیوند هر سطر باید پیوندی به یک پروندهٔ معیوب باشد.
+پیوندهایی بعدی در همان سطر استثنا در نظر گرفته می‌شوند.',
 
 # Metadata
 'metadata'          => 'متاداده',
-'metadata-help'     => 'این پرونده حاوی اطلاعات اضافه‌ای است که احتمالاً توسط دوربین دیجیتالی‌ یا پویشگری که در ایجاد یا دیجیتالی‌کردن آن به کار رفته‌است، افزوده شده‌است. اگر پرونده از وضعیت ابتدایی‌اش تغییر داده شده باشد آنگاه ممکن است شرح و تفصیلات موجود اطلاعات عکس را تماماً بازتاب ندهد.',
+'metadata-help'     => 'این پرونده حاوی اطلاعات اضافه‌ای‌است که احتمالاً دوربین دیجیتال‌ یا پویشگری که در ایجاد یا دیجیتالی‌کردن آن به کار رفته آن را افزوده‌است. اگر پرونده از وضعیت ابتدایی‌اش تغییر داده شده باشد آنگاه ممکن است شرح و تفصیلات موجود اطلاعات تصویر را تماماً بازتاب ندهد.',
 'metadata-expand'   => 'نمایش جزئیات تفصیلی',
 'metadata-collapse' => 'نهفتن جزئیات تفصیلی',
 'metadata-fields'   => 'فرادادهٔ تصویر نشان داده شده در این پیغام وقتی جدول فراداده‌های تصویر جمع شده باشد هم نمایش داده می‌شود. بقیهٔ موارد تنها زمانی نشان داده می‌شوند که جدول یاد شده باز شود.
@@ -3244,7 +3287,7 @@ $1',
 'exif-make'                        => 'شرکت سازندهٔ دوربین',
 'exif-model'                       => 'مدل دوربین',
 'exif-software'                    => 'نرم‌افزار استفاده‌شده',
-'exif-artist'                      => 'عکاس/هنرمند',
+'exif-artist'                      => 'تصویربردار/هنرمند',
 'exif-copyright'                   => 'دارندهٔ حق تکثیر',
 'exif-exifversion'                 => 'نسخهٔ exif',
 'exif-flashpixversion'             => 'نسخهٔ پشتیبانی‌شدهٔ Flashpix',
@@ -3612,7 +3655,7 @@ $1',
 
 # External editor support
 'edit-externally'      => 'ویرایش این پرونده با استفاده از ویرایشگر خارجی',
-'edit-externally-help' => '(برای اطلاعات بیشتر [http://www.mediawiki.org/wiki/Manual:External_editors دستورالعمل تنظیم] را ببینید)',
+'edit-externally-help' => '(برای اطلاعات بیشتر [//www.mediawiki.org/wiki/Manual:External_editors دستورالعمل تنظیم] را ببینید)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'همه',
@@ -3684,13 +3727,6 @@ $5
 'scarytranscludefailed'   => '[فراخوانی الگو برای $1 میسر نشد]',
 'scarytranscludetoolong'  => '[نشانی اینترنتی مورد نظر (URL) بیش از اندازه بلند بود]',
 
-# Trackbacks
-'trackbackbox'      => 'بازتاب این صفحه در وب‌نوشت‌ها:<br />
-$1',
-'trackbackremove'   => '([$1 حذف])',
-'trackbacklink'     => 'بازتاب',
-'trackbackdeleteok' => 'بازتاب صفحه با موفقیت حذف شد.',
-
 # Delete conflict
 'deletedwhileediting'      => "'''هشدار''': این صفحه پس از اینکه شما آغاز به ویرایش آن کرده‌اید، حذف شده است!",
 'confirmrecreate'          => "کاربر [[User:$1|$1]] ([[User talk:$1|بحث]]) این مقاله را پس از اینکه شما آغاز به ویرایش آن نموده‌اید به دلیل زیر حذف کرده است :
@@ -3760,8 +3796,8 @@ $1',
 'watchlistedit-normal-title'   => 'ویرایش فهرست پی‌گیری‌ها',
 'watchlistedit-normal-legend'  => 'حذف عنوان‌ها از فهرست پی‌گیری‌ها',
 'watchlistedit-normal-explain' => 'عنوان‌های موجود در فهرست پیگیری شما در زیر نشان داده شده‌اند.
-برای حذف یک عنوان جعبهٔ کنار آن را علامت بزنید و دکمهٔ «{{int:Watchlistedit-normal-submit}}» را بزنید.
-شما هم‌چنین می‌توانید [[Special:EditWatchlist/raw|فهرست خام را ویرایش کنید]].',
+برای حذف هر عنوان جعبهٔ کنار آن را علامت بزنید و دکمهٔ «{{int:Watchlistedit-normal-submit}}» را بفشارید.
+شما همچنین می‌توانید [[Special:EditWatchlist/raw|فهرست خام را ویرایش کنید]].',
 'watchlistedit-normal-submit'  => 'حذف عنوان‌ها',
 'watchlistedit-normal-done'    => '$1 عنوان از فهرست پی‌گیری‌های شما حذف {{PLURAL:$1|شد|شدند}}:',
 'watchlistedit-raw-title'      => 'ویرایش فهرست خام پی‌گیری‌ها',
@@ -3838,9 +3874,12 @@ $1',
 'hebrew-calendar-m11-gen' => 'آب',
 'hebrew-calendar-m12-gen' => 'ایلول',
 
+# Signatures
+'signature' => '[[{{ns:user}}:$1|$2]] ([[{{ns:user_talk}}:$1|بحث]])',
+
 # Core parser functions
 'unknown_extension_tag' => 'برچسب ناشناختهٔ افزونه «$1»',
-'duplicate-defaultsort' => 'هشدار: ترتیب پیش فرض «$2» ترتیب پیش فرض قبلی «$1» را باطل می‌سازد.',
+'duplicate-defaultsort' => 'هشدار: ترتیب پیش‌فرض «$2» ترتیب پیش‌فرض قبلی «$1» را باطل می‌کند.',
 
 # Special:Version
 'version'                       => 'نسخه',
@@ -3861,13 +3900,13 @@ $1',
 'version-version'               => '(نسخه $1)',
 'version-svn-revision'          => '(&رلم;r$2)',
 'version-license'               => 'اجازه‌نامه',
-'version-poweredby-credits'     => "این ویکی توسط '''[http://www.mediawiki.org/ مدیاویکی]''' پشتیبانی می‌شود، کلیهٔ حقوق محفوظ است © 2001-$1 $2.",
+'version-poweredby-credits'     => "این ویکی توسط '''[//www.mediawiki.org/ مدیاویکی]''' پشتیبانی می‌شود، کلیهٔ حقوق محفوظ است © 2001-$1 $2.",
 'version-poweredby-others'      => 'دیگران',
 'version-license-info'          => 'مدیاویکی یک نرم‌افزار رایگان است؛ که شما می‌توانید آن را تحت گنو ال‌جی‌پی‌ال که توسط بنیاد نرم‌افزارهای رایگان منتشر شده‌است، باز نشر کنید؛ یا نسخهٔ ۲ از این محوز، یا (بنا به اختیار) نسخه‌های بعدی.
 
 مدیاویکی منتشر شده‌است به امید اینکه مفید واقع شود، بدون هیچ گونه ضمانتی»؛ بدون ضمانت ضمنی که تجاری یا برای یک کار خاصی مناسب باشد. برای اطلاعات بیشتر مجوز گنو جی‌پی‌ال را مشاهده کنید.
 
-شما می‌بایست یک [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] را همراه این برنامه دریافت کرده باشید؛ اگر نه، بنویسید برای شرکت بنیاد نرم‌افزارهای رایگان، 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA یا آن را [http://www.gnu.org/licenses/old-licenses/gpl-2.0.html به صورت بر خط بخوانید].',
+شما می‌بایست یک [{{SERVER}}{{SCRIPTPATH}}/COPYING a copy of the GNU General Public License] را همراه این برنامه دریافت کرده باشید؛ اگر نه، بنویسید برای شرکت بنیاد نرم‌افزارهای رایگان، 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA یا آن را [//www.gnu.org/licenses/old-licenses/gpl-2.0.html به صورت بر خط بخوانید].',
 'version-software'              => 'نسخهٔ نصب‌شده',
 'version-software-product'      => 'محصول',
 'version-software-version'      => 'نسخه',
@@ -3893,8 +3932,7 @@ $1',
 'specialpages'                   => 'صفحه‌های ویژه',
 'specialpages-note'              => '----
 * صفحه‌های ویژهٔ عادی.
-* <strong class="mw-specialpagerestricted">صفحات ویژهٔ محدود شده.</strong>
-* <strong class="mw-specialpagerestricted">صفحات ویژهٔ دارای میانگیر (ممکن است منسوخ باشند).</strong>',
+* <strong class="mw-specialpagerestricted">صفحات ویژهٔ محدودشده.</strong>',
 'specialpages-group-maintenance' => 'گزارش‌های نگهداری',
 'specialpages-group-other'       => 'صفحه‌های ویژهٔ دیگر',
 'specialpages-group-login'       => 'ورود / ثبت نام',
@@ -3914,13 +3952,13 @@ $1',
 
 # External image whitelist
 'external_image_whitelist' => ' #این سطر را همان‌گونه که هست رها کنید<pre>
-#قطعات regular expression را در زیر قرار دهید (تنها قسمتی که بین // قرار می‌گیرد)
+#عبارت‌های باقاعده (regex) را در زیر قرار دهید (فقط بخشی که بین // قرار می‌گیرد)
 #آن‌ها با نشانی اینترنتی تصاویر خارجی پیوند داده شده تطبیق داده می‌شوند
-#مواردی که مطابقت نشان دهند به صورت تصویر نمایش می‌یابند، و در غیر این صورت تنها یک پیوند به تصویر نمایش می‌یابد
+#مواردی که مطابق باشند به صورت تصویر نمایش می‌یابند، و در غیر این صورت تنها یک پیوند به تصویر نمایش می‌یابد
 #سطرهایی که با # آغاز شوند به عنوان توضیحات در نظر گرفته می‌شوند
 #این سطرها به کوچکی و بزرگی حروف حساس هستند
 
-#قطعات regex را زیر این سطر قرار دهید. این سطر را همان‌گونه که هست رها کنید</pre>',
+#عبارت‌های باقاعده (regex)  را زیر این سطر قرار دهید. این سطر را همان‌گونه که هست رها کنید</pre>',
 
 # Special:Tags
 'tags'                    => 'برچسب‌های تغییر مجاز',
@@ -3950,7 +3988,7 @@ $1',
 # Database error messages
 'dberr-header'      => 'این ویکی یک ایراد دارد',
 'dberr-problems'    => 'شرمنده!
-این وب‌گاه از مشکلات فنی رنج می‌برد.',
+این تارنما از مشکلات فنی رنج می‌برد.',
 'dberr-again'       => 'چند دقیقه صبر کند و دوباره صفحه را بارگیری کنید.',
 'dberr-info'        => '(امکان برقراری ارتباط با کارساز پایگاه داده وجود ندارد: $1)',
 'dberr-usegoogle'   => 'شما در این مدت می‌توانید با استفاده از گوگل جستجو کنید.',
@@ -3999,10 +4037,25 @@ $1',
 'logentry-move-move_redir-noredirect' => '$1 صفحه $3 را بدون بر جا گذاشتن تغییر مسیر به $4 که تغییر مسیر بود {{GENDER:$2|منتقل کرد}}',
 'logentry-patrol-patrol'              => '$1 نسخه $4 صفحه $3 را به عنوان گشت خورده {{GENDER:$2|علامت زد}}',
 'logentry-patrol-patrol-auto'         => '$1 نسخه $4 صفحه $3 را به طور خودکار به عنوان گشت خورده {{GENDER:$2|علامت زد}}',
-'logentry-newusers-newusers'          => '$1 {{GENDER:$2| بساتن}} اتا حساب کاروری',
-'logentry-newusers-create'            => '$1 {{GENDER:$2| بساتن}} اتا حساب کاروری',
+'logentry-newusers-newusers'          => '$1 یک حساب کاربری {{GENDER:$2|ایجاد کرد}}',
+'logentry-newusers-create'            => '$1 یک حساب کاربری {{GENDER:$2|ایجاد کرد}}',
 'logentry-newusers-create2'           => '$1 {{GENDER:$2| بساتن}} {{GENDER:$4| حساب کاروری}} $3',
 'logentry-newusers-autocreate'        => 'کاروری حساب $1 {{GENDER:$2| بساتن}} به شکل خودکار',
 'newuserlog-byemail'                  => 'گذرواژه با پست الکترونیکی ارسال شد',
+
+# Feedback
+'feedback-bugornote' => 'اگر آماده‌اید تا مشکلی فنی را با جزئیاتش شرح دهید لطفاً [$1 یک باگ را گزارش دهید]. در غیر این صورت می‌توانید از فرم سادهٔ زیر استفاده کنید. نظر شما به همراه نام کاربری و مرورگرتان به صفحهٔ «[$2 $3]» افزوده خواهد شد.',
+'feedback-subject'   => 'موضوع:',
+'feedback-message'   => 'پیغام:',
+'feedback-cancel'    => 'لغو',
+'feedback-submit'    => 'ارسال پیشنهادات و انتقادات',
+'feedback-adding'    => 'افزودن پیشنهادات و انتقادات به صفحه...',
+'feedback-error1'    => 'خطا: پاسخ‌های ناشناخته از API',
+'feedback-error2'    => 'خطا: شکست در ویرایش',
+'feedback-error3'    => 'خطا: عدم پاسخ از API',
+'feedback-thanks'    => 'سپاس! بازخورد شما در صفحهٔ «[$1 $2]» ثبت شد.',
+'feedback-close'     => 'انجام شد',
+'feedback-bugcheck'  => 'عالی‌است! فقط بررسی کنید که از [$1 باگ‌های شناخته‌شده] نباشد.',
+'feedback-bugnew'    => 'بررسی کردم. باگی جدید را گزارش بده',
 
 );

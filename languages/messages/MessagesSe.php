@@ -263,7 +263,6 @@ $messages = array(
 'perfcachedts'         => 'Čuovvovaš data lea buktojuvvon gaskabottosašmuittus ja dat lea maŋimusta beaiváduvvon $1.',
 'querypage-no-updates' => 'Dán siiddu dieđut eai beaiváduvvo.',
 'viewsource'           => 'Geahča gáldu',
-'viewsourcefor'        => 'siidui $1',
 'protectedpagetext'    => 'Dát siidu lea suodjaluvvon rievdadusain.',
 'viewsourcetext'       => 'Sáhtát geahčat ja kopieret dán siiddu gáldokoda:',
 'sqlhidden'            => '(SQL-jierahallan lea čihkojuvvon)',
@@ -375,9 +374,6 @@ Du geavaheaddjidovddaldat lea dál anus.
 'summary-preview'          => 'Čoahkkáigeasu ovdalgihtiigeahččan:',
 'subject-preview'          => 'Bajilčállaga ovdalgihtiigeahččan:',
 'blockedtitle'             => 'Geavaheaddji lea cakkastallojuvvon',
-'blockedoriginalsource'    => 'Siiddu ”$1” prográmmagálvu:',
-'blockededitsource'        => 'Du rievdadusat siidui ”$1”:',
-'whitelistedittitle'       => 'Don fertet čálligoahtit sisa ovdalgo sáhtát rievdadit siiddu',
 'whitelistedittext'        => 'Don fertet $1, ovdalgo sáhtát rievdadit siidduid.',
 'confirmedittext'          => 'It sáhte rievdadit siiddu ovdalgo leat sihkarastan iežat e-poastačujuhusa. Sáhtat sihkarastit [[Special:Preferences|ásahussiidduin]].',
 'nosuchsectiontitle'       => 'Diekkár oassi ii gávdno',
@@ -510,7 +506,6 @@ $1 {{int:pipe-separator}} $2',
 'resetprefs'            => 'Máhcat vurkejuvvon ásahusaid',
 'prefs-editing'         => 'Rievdadeapmi',
 'rows'                  => 'Gurgadasat',
-'columns'               => 'Kolumnat',
 'searchresultshead'     => 'Ohcan',
 'resultsperpage'        => 'Bohtosa juohke siiddus',
 'recentchangescount'    => 'Siiddui mearri varas rievdadusain',
@@ -992,7 +987,6 @@ Siiddus $2 lea listu maŋimus sihkomiin.',
 
 # Block/unblock
 'blockip'            => 'Eastte rievdadusaid',
-'ipaddress'          => 'IP-čujuhus',
 'ipadressorusername' => 'IP-čujuhus dahje geavaheaddjidovddaldat',
 'ipbexpiry'          => 'Guhkkodat',
 'ipbreason'          => 'Sivva',
@@ -1222,9 +1216,6 @@ Siiddus $2 lea listu maŋimus sihkomiin.',
 
 # Scary transclusion
 'scarytranscludetoolong' => '[Čujuhus lea menddo guhkki]',
-
-# Trackbacks
-'trackbackremove' => '([$1 sihko])',
 
 # Delete conflict
 'recreate' => 'Álggat ođđasit',

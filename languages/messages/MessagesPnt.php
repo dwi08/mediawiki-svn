@@ -327,7 +327,6 @@ $messages = array(
 'badtitletext'         => "Το ψαλαφεμένον ο τίτλος τη σελίδας εν άκυρον, γιά εύκαιρον γιά τσακωμένον διαγλωσσικόν σύνδεσμος.
 Τερέστεν αν έχ' έναν γιά πολλά γράμματα που 'κ ίνεται να κουλανεύκουνταν απές σε τίτλον.",
 'viewsource'           => 'Τερέστεν κωδικόν',
-'viewsourcefor'        => 'για $1',
 'protectedpagetext'    => "Αβούτη σελίδαν εν ασπαλιγμένον και 'κ αλλάζ'.",
 'viewsourcetext'       => "Επορείτε να τερείτε και ν' αντιγράφετε το κείμενον τ' ατεινές τη σελίδας:",
 'protectedinterface'   => "Αβούτη σελίδαν έχ' απές κείμενον για το interface τη software και για τ' ατό εν ασπαλιγμένον.",
@@ -485,7 +484,6 @@ $messages = array(
 Το IP εσούν εν $3 και το ID τη ασπαλιγματίνεσουν εν #$5.
 Ποδεδίζουμε σας να γράφτατο σο μένεμαν εσούν.",
 'blockednoreason'                  => "'Κ εγράφτεν αιτίαν",
-'whitelistedittitle'               => "Εμπάτε για να φτάτε τ' αλλαγάς",
 'whitelistedittext'                => "Πρέπ να $1 για ν' επορείτε ν' επεξεργάσκεστε τα σελίδας.",
 'nosuchsectiontitle'               => "Αΐκον κομμάτ' 'κ εχ'",
 'loginreqtitle'                    => 'Επρέπ να εσέβειτε',
@@ -1367,15 +1365,12 @@ $messages = array(
 
 # External editor support
 'edit-externally'      => "Αλλαγήν τ' αρχείου με προγράμματα ασα εξ μερέα",
-'edit-externally-help' => '(Τερέστεν τα [http://www.mediawiki.org/wiki/Manual:External_editors setup instructions] και θα ευρίετε κι άλλα πληροφορίας)',
+'edit-externally-help' => '(Τερέστεν τα [//www.mediawiki.org/wiki/Manual:External_editors setup instructions] και θα ευρίετε κι άλλα πληροφορίας)',
 
 # 'all' in various places, this might be different for inflected languages
 'watchlistall2' => 'ούλαι',
 'namespacesall' => 'ούλαι',
 'monthsall'     => 'ούλαι',
-
-# Trackbacks
-'trackbackremove' => '([$1 Σβήσον])',
 
 # Delete conflict
 'recreate' => 'Ποίσον αξάν',
