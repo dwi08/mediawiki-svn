@@ -1,19 +1,48 @@
 package org.wikimedia.lsearch.util;
 
-public class MathFunc {
-	
-	/** Calculate average value starting from start to end (end excluded) */
+/**
+ * this class is used only in its own tests.
+ * 
+ * @deprecated
+ * 
+ *
+ */
+public class MathFunc
+{
+
+	/**
+	 * Calculate arithmetic mean value of an array of doubles.
+	 *  
+	 *  note: only called from MathFuncTest.
+	 *  
+	 * @param val   - array of values to average.
+	 * @param start - array index to start.
+	 * @param end   - array index to end with (excluded).
+	 * @return the average.
+	 * 
+	 */
 	public static double avg(double[] val, int start, int end){
+		
 		double s = 0;
 		for(int i=start;i<end;i++)
 			s+=val[i];
 		return s/(end-start);
 	}
-	
 	/** 
 	 * Approximate the graph of function with num horizontal lines
 	 * (const functions), so to minimize the maximal deviation  
-	 * @return list of discontinuities (begin points of horizontal lines)
+	 * 
+	 * input         output for n =4
+	 *  *            **
+	 *   *    **          ***     
+	 *    *  *  *      ***   **
+	 *     **    *
+	 * 
+	 * 
+	 * 
+	 * @param val	the heights of the function being approximated
+	 * @param num   number of discrete lines
+	 * @return 		list of discontinuities (begin points of horizontal lines)
 	 */
 	public static int[] partitionList(double[] val, int num){
 		//System.out.println("Doing: "+Arrays.toString(val));
@@ -73,6 +102,7 @@ public class MathFunc {
 		
 		return part;
 	}
+	
 	
 	private static void extend(int[] part, int[] newpart, double[] val, int num) {
 		for(int j=0;j<num;j++)
