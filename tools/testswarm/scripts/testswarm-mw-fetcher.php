@@ -479,7 +479,6 @@ class TestSwarmMWFetcher {
 	}
 
 	/**
-	 * @todo FIXME: Implement :-)
 	 * @param $id integer: Revision id to append settings to.
 	 */
 	public function doAppendSettings() {
@@ -510,9 +509,15 @@ class TestSwarmMWFetcher {
 		// Override $wgServer set by the CLI installer and rely on the default autodetection
 		$fh = fopen( $localSettings, 'a' );
 		fwrite( $fh,
-			"\n# /Added by testswarm fetcher/\n"
+			"\n"
+			."/**\n"
+			." * @name Added by TestSwarm fetcher\n"
+			." * @{\n"
+			." */\n\n"
+
 			.'$wgServer = WebRequest::detectServer();'."\n"
-			."\n#End /Added by testswarm fetcher/\n"
+
+			."\n/**@}*/\n\n"
 		);
 		fclose( $fh );
 
@@ -531,43 +536,93 @@ class TestSwarmMWFetcher {
 }
 
 class TestSwarmAPI {
-	public $URL;
+
+	/**
+	 * @var $context TestSwarmMWMain
+	 */
+	public $context;
+
+	public $swarmBaseUrl; // Why public?
 	private $user;
 	private $authToken;
+	private $addJobParams;
 
 	/**
 	 * Initialize a testswarm instance
-	 * @param $user String A testswarm username
-	 * @param $authtoken String associated user authentication token
-	 * @param $URL String URL to the testswarm instance. Default:
-	 * http://localhost/testswarm
+	 * @param $context TestSwarmMWMain
+	 * @param $apiOptions array Options for the API.
+	 * Required:
+	 * - user string: A testswarm username
+	 * - authToken string: Associated user authentication token
+	 * Optional:
+	 * - swarmBaseUrl string: Web root of the testswarm instance. Default: http://localhost/testswarm
+	 * - addJobParams array: Default query parameters for use in self::doAddJob. See there for documentation.
 	 */
-	public function __construct( TestSwarmMWMain $context, $user, $authtoken,
-		$URL = 'http://localhost/testswarm'
-	) {
-		$this->context   = $context;
-		$this->URL       = $URL;
-		$this->user      = $user;
-		$this->authToken = $authtoken;
+	public function __construct( TestSwarmMWMain $context, array $apiOptions ) {
 
-		// FIXME check user auth before continuing.
+		// Required options
+		if ( !isset( $apiOptions['user'] ) || !isset( $apiOptions['authToken'] ) ) {
+			throw new Exception( __METHOD__ . ': Required options "user" and/or "authToken" missing' );
+		}
+
+		$this->context   = $context;
+
+		$apiOptions = array_merge( array(
+			'swarmBaseUrl' => 'http://localhost/testswarm',
+			'addJobParams' => array(),
+		), $apiOptions );
+
+		$this->user = $apiOptions['user'];
+		$this->authToken = $apiOptions['authToken'];
+		$this->swarmBaseUrl = $apiOptions['swarmBaseUrl'];
+		$this->addJobParams = $apiOptions['addJobParams'];
+
+		// @todo FIXME: Check user auth before continuing.
 	}
 
 	/**
 	 * Add a job to the Testswarm instance
-	 * FIXME: lot of hardcoded options there 8-)
+	 * @param $revision int
+	 * @param $params array [optional] We can override some job query parameters:
+	 * - user string:
+	 * - authToken string:
+	 * - max int:
+	 * - job_name string:
+	 * - browsers string:
 	 */
-	public function doAddJob( $revision ) {
-		$params = array(
-			"state"    => "addjob",
-			"output"   => "dump",
-			"user"     => $this->user,
-			"auth"     => $this->authToken,
-			"max"      => 3,
-			"job_name" => "MediaWiki trunk r{$revision}",
-			"browsers" => "popularbeta",
+	public function doAddJob( $revision, $custom = array() ) {
+		if ( !is_int( $revision ) ) {
+			$this->context->log( 'Invalid $revision argument given in ', __METHOD__ );
+			return false;
+		}
+
+		// Filter out bad stuff
+		// @todo: Exit when passing bad stuff ? Silently filtering them out for now
+		// (for backwards compatiblity and flexibility)a.
+		$paramsAllowedKeys = array( 'user', 'auth', 'max', 'job_name', 'browsers' );
+		$customFiltered = array_intersect_key( $custom, array_flip( $paramsAllowedKeys ) );
+
+		$queryParams = array_merge(
+			// defaults
+			array(
+				'user'     => $this->user,
+				'auth'     => $this->authToken,
+				'max'      => 3,
+				'job_name' => 'MediaWiki trunk <a href="//mediawiki.org/wiki/Special:Code/MediaWiki/' . $revision . '">r' . $revision . '"></a>',
+				'browsers' => 'popularbeta',
+			),
+
+			// custom
+			$customFiltered,
+
+			// forced
+			array(
+				'state'    => 'addjob',
+				'output'   => 'dump',
+			)
 		);
-		$query = http_build_query( $params );
+
+		$queryString = http_build_query( $queryParams );
 
 		$localPaths = $this->context->getPathsForRev( $revision );
 
@@ -585,14 +640,11 @@ class TestSwarmAPI {
 					array( rawurlencode($revision), rawurlencode($suiteName) ),
 					$pattern
 				);
-				$query .=
+				$queryString .=
 					'&suites[]=' . rawurlencode( $suiteName ) .
 					'&urls[]=' . $testUrl . "\n";
 			}
 		}
-
-		//print "Testswarm base URL: {$this->URL}\n";
-		//print "Queries: $query\n";
 
 		# Forge curl request and submit it
 		$ch = curl_init();
@@ -602,21 +654,19 @@ class TestSwarmAPI {
 			CURLOPT_SSL_VERIFYHOST => false,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_POST => true,
-			CURLOPT_URL => $this->URL,
-			CURLOPT_POSTFIELDS => $query,
+			CURLOPT_URL => $this->swarmBaseUrl,
+			CURLOPT_POSTFIELDS => $queryString,
 		));
 		$ret = curl_exec( $ch );
 		$err = curl_errno( $ch );
 		$error = curl_error( $ch );
 
 		if( !$ret ) {
-			$this->context->log(
-				"Curl returned an error: #$err, $error\n"
-			);
+			$this->context->log( "Curl returned an error: #$err, $error\n", __METHOD__ );
 			return false;
 		}
 
-		$this->context->log( $ret );
+		$this->context->log( $ret, __METHOD__ );
 		return true;
 	}
 }
