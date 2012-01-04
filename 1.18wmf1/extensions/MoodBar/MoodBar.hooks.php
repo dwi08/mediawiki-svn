@@ -7,7 +7,6 @@ class MoodBarHooks {
 	 * @param $output OutputPage
 	 * @param $skin Skin
 	 */
-
 	public static function onPageDisplay( &$output, &$skin ) {
 		if ( self::shouldShowMoodbar( $output, $skin ) ) {
 			$output->addModules( array( 'ext.moodBar.init', 'ext.moodBar.tooltip', 'ext.moodBar.core' ) );
@@ -19,48 +18,44 @@ class MoodBarHooks {
 	/**
 	 * Determines if this user has right to mark an feedback response as helpful, only the user who wrote the
 	 * feedback can mark the response as helpful
-	 * @param $mahaction string - mark/unmark
 	 * @param $type string - the object type to be marked
 	 * @param $item int - an item of $type to be marked
-	 * @param $User User Object - the User in current session
-	 * @param $isAbleToMark bool - determine whether the user is able to mark the item
+	 * @param $user User Object - the User in current session
+	 * @param $isAbleToMark bool - determine if the user has permission to mark the item
+	 * @param $page Title Object - the page requesting the item
+	 * @param $isAbleToShow bool - determin if the page has permission to request the item
 	 * @return bool
 	 */
-	public static function onMarkItemAsHelpful( $mahaction, $type, $item, $User, &$isAbleToMark ) {
-
-		if ( $User->isAnon() ) {
-			$isAbleToMark = false;
-			return true;
-		}
-
+	public static function onMarkItemAsHelpful( $type, $item, $user, &$isAbleToMark, $page, &$isAbleToShow ) {
 		if ( $type == 'mbresponse' ) {
+			$dbr = wfGetDB( DB_SLAVE );
 
-			switch ( $mahaction ) {
+			$res = $dbr->selectRow( 
+				array( 'moodbar_feedback', 'moodbar_feedback_response' ),
+				array( 'mbf_id', 'mbf_user_id' ),
+				array( 'mbf_id = mbfr_mbf_id',
+					'mbfr_id' => intval( $item )
+				),__METHOD__ );
 
-				case 'mark':
-					$dbr = wfGetDB( DB_SLAVE );
+			if ( $res !== false ) {
 
-					$res = $dbr->selectRow( array( 'moodbar_feedback', 'moodbar_feedback_response' ),
-								array( 'mbf_id' ),
-								array( 'mbf_id = mbfr_mbf_id',
-										'mbfr_id' => intval( $item ),
-										'mbf_user_id' => $User->getId() ),
-								__METHOD__ );
+				$commenter = User::newFromId( $res->mbf_user_id );
 
-					if ( $res === false ) {
-						$isAbleToMark = false;
+				// Make sure that the page requesting 'mark as helpful' item is the 
+				// talk page of the user who wrote the feedback
+				if ( $commenter && $page->isTalkPage() &&
+					$commenter->getTalkPage()->getPrefixedText() == $page->getPrefixedText() ) {
+				
+					$isAbleToShow = true;
+					
+					if ( !$user->isAnon() && $res->mbf_user_id == $user->getId() ) {
+						$isAbleToMark = true;
 					}
-					break;
-
-				case 'unmark':
-				default:
-					//We will leve the MarkAsHelpFul extension to check if the user has unmark right
-					break;
+				}		
 			}
 		}
 
 		return true;
-
 	}
 
 	/**
@@ -78,9 +73,9 @@ class MoodBarHooks {
 		if ( $skin->getSkinName() !== 'vector' ) {
 			return false;
 		}
+
 		global $wgUser;
 		$user = $wgUser;
-
 		if ( $user->isAnon() ) {
 			return false;
 		}
@@ -127,25 +122,30 @@ class MoodBarHooks {
 	 * @param $updater DatabaseUpdater
 	 */
 	public static function onLoadExtensionSchemaUpdates( $updater = null ) {
-		$dir = dirname(__FILE__) . '/sql/';
-		$updater->addExtensionTable( 'moodbar_feedback', $dir . 'MoodBar.sql' );
+		$dir = dirname(__FILE__) . '/sql';
 
-		$updater->addExtensionField( 'moodbar_feedback', 'mbf_user_editcount', $dir . 'mbf_user_editcount.sql' );
+		$updater->addExtensionTable( 'moodbar_feedback', "$dir/MoodBar.sql" );
+		$updater->addExtensionField( 'moodbar_feedback', 'mbf_user_editcount', "$dir/mbf_user_editcount.sql" );
+		$updater->addExtensionIndex( 'moodbar_feedback', 'mbf_type_timestamp_id', "$dir/AddIDToIndexes.sql" );
+		$updater->addExtensionUpdate( array(
+			'dropIndex',
+			'moodbar_feedback',
+			'mbf_userid_ip_timestamp',
+			"$dir/AddIDToIndexes2.sql", true
+		) );
 
-		$updater->addExtensionIndex( 'moodbar_feedback', 'mbf_type_timestamp_id', $dir . 'AddIDToIndexes.sql' );
-
-		$updater->addExtensionUpdate( array( 'dropIndex', 'moodbar_feedback',
-			'mbf_userid_ip_timestamp',  $dir . 'AddIDToIndexes2.sql', true )
-		);
-
-		$updater->addExtensionIndex( 'moodbar_feedback', 'mbfr_timestamp_id',  $dir . 'mbf_timestamp_id.sql' );
-
-		$updater->addExtensionField( 'moodbar_feedback', 'mbf_hidden_state', $dir . 'mbf_hidden_state.sql' );
-
-		$updater->addExtensionTable( 'moodbar_feedback_response', $dir . 'moodbar_feedback_response.sql' );
-
-		$updater->addExtensionIndex( 'moodbar_feedback_response', 'mbfr_timestamp_id',  $dir . 'mbfr_timestamp_id_index.sql' );
-
+		$updater->addExtensionIndex( 'moodbar_feedback', 'mbf_timestamp_id', "$dir/mbf_timestamp_id.sql" );
+		$updater->addExtensionField( 'moodbar_feedback', 'mbf_hidden_state', "$dir/mbf_hidden_state.sql" );
+		$updater->addExtensionTable( 'moodbar_feedback_response', "$dir/moodbar_feedback_response.sql" );
+		$updater->addExtensionUpdate( array(
+			'dropIndex',
+			'moodbar_feedback_response',
+			'mbfr_timestamp_id',
+			"$dir/mbfr_timestamp_id_index.sql", true
+		) );
+		$updater->addExtensionIndex( 'moodbar_feedback_response', 'mbfr_mbf_mbfr_id', "$dir/mbfr_mbf_mbfr_id_index.sql" );
+		$updater->addExtensionField( 'moodbar_feedback_response', 'mbfr_enotif_sent', "$dir/mbfr_enotif_sent.sql" );
+		
 		return true;
 	}
 
@@ -155,12 +155,12 @@ class MoodBarHooks {
 	 * @return array of bucket names
 	 */
 	public static function getUserBuckets( $user ) {
-		$id = $user->getID();
+		//$id = $user->getID();
 		$buckets = array();
 
 		// No show-time bucketing yet. This method is a stub.
 
-		sort($buckets);
+		//sort($buckets);
 		return $buckets;
 	}
 }

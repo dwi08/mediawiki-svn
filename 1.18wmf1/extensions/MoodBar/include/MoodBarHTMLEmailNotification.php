@@ -7,7 +7,7 @@
 class MoodBarHTMLEmailNotification {
 
 	protected $to, $subject, $body, $replyto, $from;
-	protected $timestamp, $composed_common, $response, $feedback;
+	protected $timestamp, $composed_common, $response, $feedback, $type;
 	protected $mime_boundary;
 
 	/**
@@ -36,8 +36,10 @@ class MoodBarHTMLEmailNotification {
 	 * @param $timestamp string Edit timestamp
 	 * @param $response string response text
 	 * @param $feedback integer feedback id
+	 * @param $type string moodbar type
+	 * @param $responseId int response id
 	 */
-	public function notifyOnRespond( $editor, $title, $timestamp, $feedback, $response ) {
+	public function notifyOnRespond( $editor, $title, $timestamp, $feedback, $response, $type, $responseId ) {
 		global $wgEnotifUseJobQ, $wgEnotifUserTalk;
 
 		if ( $title->getNamespace() != NS_USER_TALK || !$wgEnotifUserTalk || 
@@ -51,12 +53,14 @@ class MoodBarHTMLEmailNotification {
 				'editorID' => $editor->getID(),
 				'timestamp' => $timestamp,
 				'response' => $response,
-				'feedback' => $feedback
+				'feedback' => $feedback,
+				'type' => $type,
+				'responseId' => $responseId
 			);
 			$job = new MoodBarHTMLMailerJob( $title, $params );
 			$job->insert();
 		} else {
-			$this->actuallyNotifyOnRespond( $editor, $title, $timestamp, $feedback, $response );
+			$this->actuallyNotifyOnRespond( $editor, $title, $timestamp, $feedback, $response, $type, $responseId );
 		}
 	}
 
@@ -71,8 +75,10 @@ class MoodBarHTMLEmailNotification {
 	 * @param $timestamp string Edit timestamp
 	 * @param $response string response text
 	 * @param $feedabck integer feedback id
+	 * @param $type string moodbar type
+	 * @param $responseId int response id
 	 */
-	public function actuallyNotifyOnRespond( $editor, $title, $timestamp, $feedback, $response ) {
+	public function actuallyNotifyOnRespond( $editor, $title, $timestamp, $feedback, $response, $type, $responseId ) {
 		global $wgEnotifUserTalk;
 
 		wfProfileIn( __METHOD__ );
@@ -87,9 +93,12 @@ class MoodBarHTMLEmailNotification {
 		$this->composed_common = false;
 		$this->response = $response;
 		$this->feedback = $feedback;
+		$this->type = $type;
 
 		if ( $wgEnotifUserTalk && $this->canSendUserTalkEmail( $editor, $title ) ) {
 			$this->compose( $this->targetUser );
+			//update to mark the email as 'sent'
+			MBFeedbackResponseItem::update( $responseId, array( 'mbfr_enotif_sent' => 1 ) );
 		}
 
 		wfProfileOut( __METHOD__ );
@@ -134,8 +143,6 @@ class MoodBarHTMLEmailNotification {
 		global $wgEnotifUseRealName, $wgRequest;
 
 		$this->composed_common = true;
-	
-		$keys = array();
 
 		if ( $this->editor->isAnon() ) {
 			$pageEditor = wfMsgForContent( 'enotif_anon_editor', $this->editor->getName() );
@@ -147,28 +154,25 @@ class MoodBarHTMLEmailNotification {
 		$this->subject = wfMessage( 'moodbar-enotif-subject' )->params( $pageEditor )->escaped();
 
 		// build the body
-		$messageCache		= MessageCache::singleton();
-		$targetUserName		= $this->targetUser->getName();
-		$FeedbackUrl		= SpecialPage::getTitleFor( 'FeedbackDashboard', $this->feedback )->getPrefixedText();
-		$editorTalkPage		= $this->editor->getTalkPage()->getPrefixedText();
-		$targetUserTalkPage	= $this->targetUser->getTalkPage()->getCanonicalUrl();
+		$targetUserName	= $this->targetUser->getName();
+		$links = $this->buildEmailLink();
+			
 		//text version
 		$textBody = wfMessage( 'moodbar-enotif-body' )->params( $targetUserName, 
-			$FeedbackUrl, 
-			$editorTalkPage,
+			$links['feedbackPageUrl'], 
+			$links['editorTalkPageUrl'],
 			$this->response,
-			$targetUserTalkPage,
+			$links['targetUserTalkPageUrl'],
 			$pageEditor )->escaped();
-		$textBody = MessageCache::singleton()->transform( $textBody, false, null, $this->title );
 
-		//html version, this ugly as we have to make wiki link clickable in emails
+		//html version, this is a little bit ugly as we have to make wiki link clickable in emails
 		$action = $wgRequest->getVal( 'action' );
 		$wgRequest->setVal( 'action', 'render' );
 		$htmlBody = wfMsgExt( 'moodbar-enotif-body', array( 'parse' ), $targetUserName, 
-			$FeedbackUrl, 
-			$editorTalkPage,
+			$links['feedbackPageUrl'], 
+			$links['editorTalkPageUrl'],
 			'<div style="margin-left:20px; margin-right:20px;">' .$this->response . '</div>',
-			$targetUserTalkPage,
+			$links['targetUserTalkPageUrl'],
 			$pageEditor );
 		$wgRequest->setVal( 'action', $action );
 
@@ -226,8 +230,51 @@ HTML;
 
 		$to = new MailAddress( $user );
 
-		return UserMailer::send( $to, $this->from, $this->subject, $this->body, $this->replyto, $contentType = 'multipart/alternative; boundary=' . $this->mime_boundary );
+		return UserMailer::send( $to, $this->from, $this->subject, 
+						$this->body, $this->replyto, 
+						$contentType = 'multipart/alternative; boundary=' . $this->mime_boundary );
+	}
+	
+	/**
+	 * Build the link for Email, add clickTracking if available
+	 * @return array - the links to be tracked in email
+	 */
+	protected function buildEmailLink() {
+		$pageObject = array( 'feedbackPage' => array( 'obj' => SpecialPage::getTitleFor( 'FeedbackDashboard', $this->feedback ), 'clicktracking' => false ),
+					'editorTalkPage' => array( 'obj' => $this->editor->getTalkPage(), 'clicktracking' => false ),
+					'targetUserTalkPage' => array( 'obj' => $this->targetUser->getTalkPage(), 'clicktracking' => true ) );
+		
+		$links = array();
+		
+		// if clickTracking is not enabled, return the full canonical url for email  
+		if ( !class_exists( 'ApiClickTracking' ) ) {
+			foreach ( $pageObject as $key => $value ) {
+				$links[$key.'Url'] = $value['obj']->getCanonicalURL();
+			}
+		}
+		else {
+			global $wgMoodBarConfig;
+		
+			$token = wfGenerateToken();
+			$eventid = 'ext.feedbackDashboard@' . $wgMoodBarConfig['bucketConfig']['version'] . 
+					'-email-response_link-' . $this->type;
 
+			$clickTrackingLink = wfAppendQuery( wfScript( 'api' ), 
+								array( 'action' => 'clicktracking', 'eventid' => $eventid, 'token' => $token ) );
+
+			foreach ( $pageObject as $key => $value ) {	
+				if ( $value['clicktracking'] ) {
+					$links[$key.'Url'] = wfExpandUrl( wfAppendQuery( $clickTrackingLink, 
+									array( 'redirectto' => $value['obj']->getLinkURL(), 
+										'namespacenumber' => $value['obj']->getNamespace() ) ), PROTO_CANONICAL );	
+				}
+				else {
+					$links[$key.'Url'] = $value['obj']->getCanonicalURL();	
+				}		
+			}
+		}
+		
+		return $links;
 	}
 
 }

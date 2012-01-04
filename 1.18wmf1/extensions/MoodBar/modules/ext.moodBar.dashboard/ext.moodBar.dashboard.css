@@ -3,7 +3,7 @@
 #fbd-filters {
 	position: absolute;
 	width: 15em;
-	left:0px;  /* needed for ie6 & ie7 */
+	left: 0px;  /* needed for ie6 & ie7 */
 }
 
 #fbd-filters form {
@@ -52,14 +52,14 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	list-style-type:none;
+	list-style-type: none;
 }
 
 #fbd-filters-types li {
 	margin: 0 0 0 0.75em;
 	padding: 0;
 	list-style: none;
-	list-style-image:none; /* ie 7 fix */
+	list-style-image: none; /* ie 7 fix */
 }
 
 #fbd-filters-types label {
@@ -94,7 +94,7 @@
 	padding: 0px;
 	min-height: 20em;
 	list-style: none;
-	list-style-image:none; /* ie 7 fix */
+	list-style-image: none; /* ie 7 fix */
 }
 
 .client-nojs #fbd-list-more {
@@ -145,7 +145,7 @@
 
 .mw-ajax-loader {
 	/* Undo padding due to it destroying the layout for inline response */	
-	padding:8px 16px 0px 16px !important;
+	padding: 8px 16px 0px 16px !important;
 }
 
 /* The images here are named -ltr instead of -left and -rtl instead of -right
@@ -187,9 +187,13 @@
 .fbd-item {
 	border-bottom: solid 1px silver;
 	position: relative;
-	margin-top:0.5em;
-	margin-bottom:0.5em;
-	padding:0;
+	padding-top: 0.5em;
+	padding-right: 1em;
+	cursor: pointer;
+}
+
+.fbd-hover {
+	background-color: #EFEFEF;
 }
 
 .fbd-item-emoticon {
@@ -203,7 +207,7 @@
 
 .fbd-item-emoticon-label {
 	display: block;
-	margin-top: 64px;
+	margin-top: 66px;
 	text-align: center;
 }
 
@@ -224,9 +228,13 @@
 	padding:1.5em 2em;
 }
 
+.fbd-item-response {
+	line-height: 2.1em;
+}
+
 .fbd-item-response-icon {
 	float: left;
-	display: block;
+	display: block;	
 	height: 56px;
 	width: 56px;
 	background-position: center center;
@@ -237,8 +245,9 @@
 }
 
 .fbd-item-response > p {
-	padding:0;
-	margin:0;
+	padding: 0;
+	margin: 0;
+	line-height:2.1em;
 }
 
 .fbd-item-response-success {
@@ -252,18 +261,18 @@
 } 
 
 .fbd-ajax-response > div > .fbd-ajax-heading {
-	font-size:1.5em;
-	font-weight:bold;
-	display:block;
+	font-size: 1.5em;
+	font-weight: bold;
+	display: block;
 }
 
 .fbd-ajax-response > div > .fbd-ajax-text {
-	color:#262626;
-	display:block;
+	color: #262626;
+	display: block;
 }
 
 .fbd-item-response-collapsed {
-	display:inline-block;
+	display: inline-block;
 	/* @embed */
 	background: url(images/respondtothis-collapsed.png) left top no-repeat;
 	width: 10px;
@@ -271,7 +280,7 @@
 }
 
 .fbd-item-response-expanded {
-	display:inline-block;
+	display: inline-block;
 	/* @embed */
 	background: url(images/respondtothis-expanded.png) left top no-repeat;
 	width: 12px;
@@ -279,7 +288,7 @@
 }
 
 .fbd-item-send-response-icon {
-	display:inline-block;
+	display: inline-block;
 	/* @embed */
 	background: url(images/send-response-arrow.png) left top no-repeat;
 	width: 8px;
@@ -290,7 +299,7 @@
 	font-size: 1.2em;
 	margin: 0;
 	padding: 0;
-	display:inline; /* ie7 fix */
+	display: inline; /* ie7 fix */
 }
 
 .fbd-item-userLinks{
@@ -300,28 +309,28 @@
 .fbd-item-time {
 	font-size: 1.2em;
 	float: right;
-	display:inline; /* ie7 fix */
+	display: inline; /* ie7 fix */
 }
 
 .fbd-item-message {
 	font-size: 1.4em;
 	margin-top: 0.25em;
-	margin-left:81px;
-	min-height:40px;
+	margin-left: 81px;
+	min-height: 40px;
 }
 
 .fbd-response-text {
-	height:5em;	
-	overflow:hidden;
+	height: 5em;	
+	overflow: hidden;
 }
 
 .fbd-response-text-invalid {
-	border:2px solid #CC0000;
+	border: 2px solid #CC0000;
 }
 
 .fbd-response-preview-spinner {
-	height:32px;
-	line-height:32px;
+	height: 32px;
+	line-height: 32px;
 }
 
 .fbd-response-preview-block {
@@ -331,7 +340,7 @@
 .fbd-response-wikitext{
 	background-color: #FDFFE7;
     border: 1px solid #FCEB92;
-    padding:5px;
+    padding: 5px;
 }
 
 .fbd-item-permalink,
@@ -342,14 +351,24 @@
 	font-size: 0.8em;
 	margin-left: 0.2em;
 	margin-right: 0.2em;
+	visibility: hidden;
 }
+
+.fbd-hover .fbd-item-permalink,
+.fbd-hover .fbd-item-show,
+.fbd-hover .fbd-item-hide,
+.fbd-hover .fbd-item-reason {
+	visibility: visible;
+}
+
+
 .fbd-respond-link {
-	font-size:1.1em;
-	cursor:pointer;
+	font-size: 1.1em;
+	cursor: pointer;
 	letter-spacing: -0.01em;
 }
 .fbd-respond-link:hover {
-	text-decoration:none;
+	text-decoration: none;
 }
 .fbd-item-restore {
 	font-size: 0.8em;
@@ -362,20 +381,20 @@
 	margin:0em 0px 1em 81px;
 }
 .fbd-response-form b {
-	font-size:1em;
+	font-size: 1em;
 }
 .fbd-response-form small, .fbd-response-form .small{
-	font-size:0.8em;
-	color:#262626;
+	font-size: 0.8em;
+	color: #262626;
 }
 .fbd-response-formNote {
-	float:right;
+	float: right;
 }
 .fbd-response-submit, .fbd-response-preview {
-	float:right;
+	float: right;
 }
 .center {
-	text-align:center;
+	text-align: center;
 }
 .red-bold {
 	font-weight: bold;
