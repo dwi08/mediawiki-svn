@@ -132,8 +132,6 @@ class MessageCollection implements ArrayAccess, Iterator, Countable {
 	 * @return \list{String} List of usernames.
 	 */
 	public function getAuthors() {
-		global $wgTranslateFuzzyBotName;
-
 		$this->loadTranslations();
 
 		$authors = array_flip( $this->authors );
@@ -155,8 +153,9 @@ class MessageCollection implements ArrayAccess, Iterator, Countable {
 
 		# arsort( $authors, SORT_NUMERIC );
 		ksort( $authors );
+		$fuzzyBot = FuzzyBot::getName();
 		foreach ( $authors as $author => $edits ) {
-			if ( $author !== $wgTranslateFuzzyBotName ) {
+			if ( $author !== $fuzzyBot ) {
 				$filteredAuthors[] = $author;
 			}
 		}
