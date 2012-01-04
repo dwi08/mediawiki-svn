@@ -99,15 +99,19 @@ class SpecialSearch extends SpecialPage {
 
 		# Extract manually requested namespaces
 		$nslist = $this->powerSearch( $request );
-		$this->profile = $profile = $request->getVal( 'profile', null );
+		$profile = null;
+		if ( !count( $nslist ) ) {
+			$profile = 'default';
+		}
+		$profile = $request->getVal( 'profile', $profile );
 		$profiles = $this->getSearchProfiles();
-		if ( $profile === null) {
+		if ( $profile === null ) {
 			// BC with old request format
-			$this->profile = 'advanced';
+			$profile = 'advanced';
 			if ( count( $nslist ) ) {
 				foreach( $profiles as $key => $data ) {
 					if ( $nslist === $data['namespaces'] && $key !== 'advanced') {
-						$this->profile = $key;
+						$profile = $key;
 					}
 				}
 				$this->namespaces = $nslist;
@@ -121,7 +125,7 @@ class SpecialSearch extends SpecialPage {
 				$this->namespaces = $profiles[$profile]['namespaces'];
 			} else {
 				// Unknown profile requested
-				$this->profile = 'default';
+				$profile = 'default';
 				$this->namespaces = $profiles['default']['namespaces'];
 			}
 		}
@@ -132,6 +136,7 @@ class SpecialSearch extends SpecialPage {
 		$this->sk = $this->getSkin();
 		$this->didYouMeanHtml = ''; # html of did you mean... link
 		$this->fulltext = $request->getVal('fulltext');
+		$this->profile = $profile;
 	}
 
 	/**
