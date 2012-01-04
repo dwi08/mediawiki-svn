@@ -41,7 +41,7 @@ class SwiftFileBackend extends FileBackend {
 		parent::__construct( $config );
 		// Required settings
 		$this->auth = new CF_Authentication(
-			$config['swiftUser'], $config['swiftKey'], $config['swiftAuthUrl'] );
+			$config['swiftUser'], $config['swiftKey'], NULL, $config['swiftAuthUrl'] );
 		// Optional settings
 		$this->connTTL = isset( $config['connTTL'] )
 			? $config['connTTL']
@@ -82,7 +82,7 @@ class SwiftFileBackend extends FileBackend {
 
 		// (b) Check the destination container
 		try {
-			$dContObj = $conn->get_container( $conn, $dstCont );
+			$dContObj = $conn->get_container( $dstCont );
 		} catch ( NoSuchContainerException $e ) {
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 			return $status;
@@ -156,8 +156,8 @@ class SwiftFileBackend extends FileBackend {
 
 		// (b) Check the source and destination containers
 		try {
-			$sContObj = $this->get_container( $conn, $srcCont );
-			$dContObj = $conn->get_container( $conn, $dstCont );
+			$sContObj = $conn->get_container( $srcCont );
+			$dContObj = $conn->get_container( $dstCont );
 		} catch ( NoSuchContainerException $e ) {
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 			return $status;
@@ -220,7 +220,7 @@ class SwiftFileBackend extends FileBackend {
 
 		// (b) Check the source container
 		try {
-			$sContObj = $this->get_container( $conn, $srcCont );
+			$sContObj = $conn->get_container( $srcCont );
 		} catch ( NoSuchContainerException $e ) {
 			$status->fatal( 'backend-fail-delete', $params['src'] );
 			return $status;
@@ -269,7 +269,7 @@ class SwiftFileBackend extends FileBackend {
 
 		// (b) Check the destination container
 		try {
-			$dContObj = $conn->get_container( $conn, $dstCont );
+			$dContObj = $conn->get_container( $dstCont );
 		} catch ( NoSuchContainerException $e ) {
 			$status->fatal( 'backend-fail-create', $params['dst'] );
 			return $status;
@@ -319,8 +319,28 @@ class SwiftFileBackend extends FileBackend {
 	 */
 	function prepare( array $params ) {
 		$status = Status::newGood();
-		// @TODO: create containers as needed
-		return $status; // badgers? We don't need no steenking badgers!
+
+		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dir'] );
+		if ( $destRel === null ) {
+			$status->fatal( 'backend-fail-invalidpath', $params['dir'] );
+			return $status;
+		}
+
+		// (a) Get a swift proxy connection
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		// (b) Create the destination container
+		try {
+			$conn->create_container( $dstCont );
+		} catch ( Exception $e ) { // some other exception?
+			$status->fatal( 'backend-fail-internal' );
+		}
+
+		return $status;
 	}
 
 	/**
@@ -343,12 +363,11 @@ class SwiftFileBackend extends FileBackend {
 
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
-			return $status;
+			return false; // fail vs not exists?
 		}
 
 		try {
-			$container = $this->get_container( $conn, $srcCont );
+			$container = $conn->get_container( $srcCont );
 			$container->get_object( $srcRel );
 			$exists = true;
 		} catch ( NoSuchContainerException $e ) {
@@ -378,7 +397,7 @@ class SwiftFileBackend extends FileBackend {
 		}
 
 		try {
-			$container = $this->get_container( $conn, $srcCont);
+			$container = $conn->get_container( $srcCont);
 			$obj = $container->get_object( $srcRel );
 		} catch ( NoSuchContainerException $e ) {
 			$obj = NULL;
@@ -389,14 +408,11 @@ class SwiftFileBackend extends FileBackend {
 		}
 
 		if ( $obj ) {
-			$thumbTime = $obj->last_modified;
-			// @FIXME: strptime() UNIX-only (http://php.net/manual/en/function.strptime.php)
-			$tm = strptime( $thumbTime, '%a, %d %b %Y %H:%M:%S GMT' );
-			$thumbGMT = gmmktime( $tm['tm_hour'], $tm['tm_min'], $tm['tm_sec'],
-				$tm['tm_mon'] + 1, $tm['tm_mday'], $tm['tm_year'] + 1900 );
-			return ( gmdate( 'YmdHis', $thumbGMT ) );
+			// Convert "Tue, 03 Jan 2012 22:01:04 GMT" to TS_MW
+			$date = DateTime::createFromFormat( 'D, d F Y G:i:s e', $obj->last_modified );
+			return $date ? $date->format( 'YmdHis' ) : false; // fail vs not exists?
 		} else {
-			return false; // file not found.
+			return false; // file not found
 		}
 	}
 
@@ -416,7 +432,7 @@ class SwiftFileBackend extends FileBackend {
 
 		// @TODO: return an Iterator class that pages via list_objects()
 		try {
-			$container = $this->get_container( $conn, $dirc );
+			$container = $conn->get_container( $dirc );
 			$files = $container->list_objects( 0, NULL, $dir );
 		} catch ( NoSuchContainerException $e ) {
 			$files = array();
@@ -446,7 +462,6 @@ class SwiftFileBackend extends FileBackend {
 		if ( !$tmpFile ) {
 			return null;
 		}
-		$tmpPath = $tmpFile->getPath();
 
 		$conn = $this->getConnection();
 		if ( !$conn ) {
@@ -454,9 +469,9 @@ class SwiftFileBackend extends FileBackend {
 		}
 
 		try {
-			$cont = $this->get_container( $conn, $srcCont );
+			$cont = $conn->get_container( $srcCont );
 			$obj = $cont->get_object( $srcRel );
-			$obj->save_to_filename( $tmpPath );
+			$obj->save_to_filename( $tmpFile->getPath() );
 		} catch ( NoSuchContainerException $e ) {
 			$tmpFile = null;
 		} catch ( NoSuchObjectException $e ) {
