@@ -683,7 +683,7 @@ class SpecialPage {
 	 * @return Language
 	 */
 	public function getLanguage() {
-		return $this->getContext()->getLanguage();
+		return $this->getContext()->getLang();
 	}
 
 	/**
