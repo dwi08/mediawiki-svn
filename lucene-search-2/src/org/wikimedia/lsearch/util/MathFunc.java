@@ -1,8 +1,5 @@
 package org.wikimedia.lsearch.util;
 
-import java.util.Arrays;
-
-
 public class MathFunc {
 	
 	/** Calculate average value starting from start to end (end excluded) */
