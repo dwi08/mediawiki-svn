@@ -791,15 +791,14 @@ class ExtMobileFrontend {
 	private function sendApplicationVersionVaryHeader() {
 		global $wgOut, $wgRequest;
 		wfProfileIn( __METHOD__ );
+		$wgOut->addVaryHeader( 'Application_Version' );
 		if ( isset( $_SERVER['HTTP_APPLICATION_VERSION'] ) ) {
-			$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_APPLICATION_VERSION'] );
-			$wgOut->addVaryHeader( 'Application_Version' );
+			$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_APPLICATION_VERSION'] );	
 		} else {
 			if ( isset( $_SERVER['HTTP_X_DEVICE'] ) ) {
 				if ( stripos( $_SERVER['HTTP_X_DEVICE'], 'iphone' ) !== false ||
 					stripos( $_SERVER['HTTP_X_DEVICE'], 'android' ) !== false ) {
 					$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_X_DEVICE'] );
-					$wgOut->addVaryHeader( 'Application_Version' );
 				}
 			}
 		}
