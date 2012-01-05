@@ -17,7 +17,7 @@ class Metrics(MetricGenerator):
 		self.generators = list(generators)
 	
 	def headers(self):
-		row = ['username', 'timestamp']
+		row = ['recipient_name', 'timestamp']
 		for generator in self.generators:
 			row.extend(generator.headers())
 		

@@ -1,6 +1,7 @@
 import sys, argparse, os
 import logging, types
 import MySQLdb, MySQLdb.cursors
+import traceback
 
 from .generators import GENERATORS, Metrics
 from .util import MWAPI, MWAPIError
@@ -48,6 +49,21 @@ def main():
 		default="http://en.wikipedia.org/w/api.php"
 	)
 	parser.add_argument(
+		'-o', '--old',
+		type=lambda fn: open(fn, 'r'), 
+		help='a previous output file to read from.  When provided, this script will skip all of the complete username/timestamp pairs found in the file.',
+	)
+	parser.add_argument(
+		'--debug',
+		action="store_true",
+		default=False
+	)
+	parser.add_argument(
+		'--headers',
+		action="store_true",
+		default=False
+	)
+	parser.add_argument(
 		'generator',
 		type=lambda g: GENERATORS[g],
 		nargs="+",
@@ -56,8 +72,10 @@ def main():
 	args = parser.parse_args()
 	
 	LOGGING_STREAM = sys.stderr
+	if args.debug: logLevel = logging.DEBUG
+	else:          logLevel = logging.INFO
 	logging.basicConfig(
-		level=logging.DEBUG,
+		level=logLevel,
 		stream=LOGGING_STREAM,
 		format='%(asctime)s %(levelname)-8s %(message)s',
 		datefmt='%b-%d %H:%M:%S'
@@ -65,7 +83,7 @@ def main():
 	
 	if sys.stdin.isatty():
 		logging.error("No data piped to standard in!")
-		return
+		return 1
 	
 	
 	logging.info("Connecting to %s:%s using %s." % (args.host, args.db, args.cnf))
@@ -78,23 +96,49 @@ def main():
 	
 	logging.info("Loading generators...")
 	metrics = Metrics(g(conn, args.api) for g in args.generator)
-	print("\t".join(encode(h) for h in metrics.headers()))
+	
+	
+	oldPairs = set()
+	if args.old != None:
+		logging.info("Loading in old data file...")
+		for line in args.old:
+			username, timestamp = line.strip().split("\t")[0:2]
+			username = unicode(username.decode('string-escape'), 'utf-8')
+			
+			oldPairs.add((username, timestamp))
+			LOGGING_STREAM.write(".")
+		
+		LOGGING_STREAM.write("\n")
+		
+	else: 
+		if args.headers:
+			print("\t".join(encode(h) for h in metrics.headers()))
 	
 	
 	logging.info("Processing users...")
 	for line in sys.stdin:
-		username, timestamp = line.strip().split("\t")[0:2]
-		username = unicode(username, 'utf-8')
-		
-		logging.debug("\t%s at %s:" % (username, timestamp))
-		print("\t".join(encode(v) for v in metrics.values(username, timestamp)))
-		LOGGING_STREAM.write("o")
+		try:
+			username, timestamp = line.strip().split("\t")[0:2]
+			username = unicode(username.decode('string-escape'), 'utf-8')
+			
+			if (username, timestamp) in oldPairs:
+				LOGGING_STREAM.write("s")
+			else:
+				logging.debug("\t%s at %s:" % (username, timestamp))
+				print("\t".join(encode(v) for v in metrics.values(username, timestamp)))
+				sys.stdout.flush()
+				LOGGING_STREAM.write(".")
+		except Exception as e:
+			logging.error("An error occurred while processing %s at %s." % (username, timestamp))
+			LOGGING_STREAM.write(traceback.format_exc())
+			return 1
 		
 	LOGGING_STREAM.write("\n")
+	return 0
 	
 
 
 
 	
 if __name__ == "__main__": 
-	main()
+	sys.exit(main())

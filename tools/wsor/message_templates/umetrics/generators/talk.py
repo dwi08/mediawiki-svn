@@ -22,7 +22,7 @@ class Talk(MetricGenerator):
 		cursor = self.conn.cursor()
 		cursor.execute("""
 				SELECT
-					IF(rev_timestamp > %(timestamp)s, "after", "before") as whense,
+					IF(rev_timestamp > %(timestamp)s, "after", "before") as whence,
 					COUNT(*) as count,
 					MAX(rev_timestamp) as last,
 					MIN(rev_timestamp) as first
@@ -36,14 +36,14 @@ class Talk(MetricGenerator):
 			""",
 			{
 				'timestamp': timestamp,
-				'page_title': username.encode('utf-8').replace(" ", "_"),
+				'page_title': username.replace(" ", "_").encode('utf-8'),
 				'username': username.encode('utf-8')
 			}
 		)
 		for row in cursor:
-			rowValues['other_talk_%(whence)s'] = row['count']
-			rowValues['first_other_talk_%(whence)s'] = row['first']
-			rowValues['last_other_talk_%(whence)s'] = row['last']
+			rowValues['other_talk_%(whence)s' % row] = row['count']
+			rowValues['first_other_talk_%(whence)s' % row] = row['first']
+			rowValues['last_other_talk_%(whence)s' % row] = row['last']
 		
 		rowValues['other_talk_before'] = rowValues.get('other_talk_before', 0)
 		rowValues['other_talk_after']  = rowValues.get('other_talk_after', 0)

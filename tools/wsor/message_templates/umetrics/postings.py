@@ -13,7 +13,7 @@ that match a set of patterns (and optionally, username).
 	- Timestamp - The time at which the posting was made
 	- Revision ID - The identifier of the revision matching the posting
 	- Poster ID - The identifier of the user who made the posting
-	- Poster name - The name of the user who make the posting
+	- Poster name - The name of the user who made the posting
 	- Message match - The portion of the message posting that was matched by the regular expression.
 
 :Example:
@@ -36,19 +36,18 @@ def encode(v):
 	
 	return str(v).encode("string-escape")
 
+HEADERS = [
+	'recipient_name',
+	'timestamp',
+	'rev_id',
+	'poster_id',
+	'poster_name',
+	'message_match'
+]
+
 def emit(rev):
-	
 	print(
-		"\t".join(
-			encode(rev[c]) for c in [
-				'recipient_name',
-				'rev_timestamp',
-				'rev_id',
-				'poster_id',
-				'poster_name',
-				'message_match'
-			]
-		)
+		"\t".join(encode(rev[h]) for h in HEADERS)
 	)
 
 
@@ -130,11 +129,26 @@ def main():
 		help='regular expression to match against message content (required)',
 		required=True
 	)
+	parser.add_argument(
+		'--header',
+		action="store_true",
+		default=False
+	)
+	parser.add_argument(
+		'--debug',
+		action="store_true",
+		default=False
+	)
 	args = parser.parse_args()
 	
 	LOGGING_STREAM = sys.stderr
+	if args.debug:
+		logLevel = logging.DEBUG
+	else:
+		logLevel = logging.INFO
+	
 	logging.basicConfig(
-		level=logging.DEBUG,
+		level=logLevel,
 		stream=LOGGING_STREAM,
 		format='%(asctime)s %(levelname)-8s %(message)s',
 		datefmt='%b-%d %H:%M:%S'
@@ -152,10 +166,25 @@ def main():
 	logging.info("Connecting to API @ %s." % args.api_uri)
 	api = WPAPI(args.api_uri)
 	
+	if args.header:
+		print("\t".join(HEADERS))
+	
 	logging.info("Querying for matching revisions:")
-	count = {"matched": 0, "missed": 0}
+	revs = []
+	count = 0
 	for rev in db.getPostings(args.start, args.end, args.user_name, args.comment):
+		count += 1
+		revs.append(rev)
+		if count % 100 == 0: LOGGING_STREAM.write("|")
+	
+	LOGGING_STREAM.write("\n")
+	
+	logging.info("Checking for message templates")
+	count = {"matched": 0, "missed": 0}
+	for rev in revs:
+		logging.debug("Matching revision %(rev_id)s peformed by %(poster_name)s @ %(rev_timestamp)s: %(rev_comment)s" % rev)
 		message = api.getAdded(rev['rev_id'])
+		
 		match = args.message.search(message)
 		if match != None:
 			rev['message_match'] = match.group(0)
@@ -183,7 +212,7 @@ class Database:
 		if (userName, commentRE) == (None, None):
 			raise TypeError("Must specify at at least one of userName or commentRE.")
 		
-		cursor = self.conn.cursor(MySQLdb.cursors.DictCursor)
+		cursor = self.conn.cursor(MySQLdb.cursors.SSDictCursor)
 		query = """
 			SELECT 
 				r.rev_id,
@@ -212,8 +241,7 @@ class Database:
 			}
 		)
 		
-		for row in cursor:
-			yield row
+		return cursor
 		
 	
 
@@ -223,7 +251,7 @@ class WPAPI:
 	def __init__(self, uri):
 		self.uri = uri
 	
-	def getDiff(self, revId, retries=10):
+	def getDiff(self, revId, retries=20):
 		attempt = 0
 		while attempt < retries:
 			try:
@@ -239,11 +267,17 @@ class WPAPI:
 					})
 				)
 				result = json.load(response)
-				return result['query']['pages'].values()[0]['revisions'][0]['diff']['*']
-			except urllib2.HTTPError as e:
-				time.sleep(attempt*2)
-				attempt += 1
 				
+				diff = result['query']['pages'].values()[0]['revisions'][0]['diff']['*']
+				if type(diff) not in types.StringTypes: diff = ''
+				
+				return diff
+			except urllib2.HTTPError as e:
+				time.sleep(2**attempt)
+				attempt += 1
+				logging.error("HTTP Error: %s.  Retry #%s in %s seconds..." % (e, attempt, 2**attempt))
+				
+		
 			
 	
 	def getAdded(self, revId):

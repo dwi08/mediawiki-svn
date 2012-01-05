@@ -36,17 +36,18 @@ class MWAPI:
 		
 		try:
 			response = urllib2.urlopen(request)
+			
+			self.cookies.extract_cookies(response, request)
+			
+			js = json.load(response)
+			
+			if 'error' in js:
+				raise MWAPIError(js['error']['code'], js['error']['info'])
+			else:
+				return js
+			
 		except urllib2.HTTPError:
 			#wait and try again
 			time.sleep(2**retry)
 			self.request(retry=retry+1, **kwargs)
-			
-		self.cookies.extract_cookies(response, request)
-		
-		js = json.load(response)
-		
-		if 'error' in js:
-			raise MWAPIError(js['error']['code'], js['error']['info'])
-		else:
-			return js
 				

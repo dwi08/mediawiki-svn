@@ -50,23 +50,22 @@ class Warnings(MetricGenerator):
 	def getProcessedRevs(self, username):
 		return self.processRevs(self.getUserPageRevisions(username))
 	
-	def getUserPageRevisions(self, username, rvcontinue=None):
+	def getUserPageRevisions(self, username, rvcontinue={}):
 		js = self.api.request(
 			action="query",
 			prop="revisions",
-			titles="User_talk:%s" % username,
+			titles="User_talk:%s" % username.encode('utf-8'),
 			rvprop="ids|timestamp|content",
 			rvdir="newer",
 			rvlimit=50,
-			rvcontinue=rvcontinue
+			**rvcontinue
 		)
 		
-		for rev in js['query']['pages'].values()[0]['revisions']:
-			rev['timestamp']
+		for rev in js['query']['pages'].values()[0].get('revisions', []):
 			yield rev
 		
 		if 'query-continue' in js:
-			for rev in self.getUserPageRevisions(username, js['query-continue']['revisions']['rvstartid']):
+			for rev in self.getUserPageRevisions(username, js['query-continue']['revisions']):
 				yield rev
 			
 		
@@ -76,7 +75,9 @@ class Warnings(MetricGenerator):
 		previousLines = []
 		for rev in revs:
 			lines = rev.get('*', "").split("\n")
-			del rev['*']
+			
+			try:             del rev['*']
+			except KeyError: pass
 			
 			added = []
 			sm = difflib.SequenceMatcher(None, previousLines, lines)
@@ -94,4 +95,11 @@ class Warnings(MetricGenerator):
 			
 		
 			
-		
+	
+def test():
+	from umetrics.generators import Warnings
+	from umetrics.util import MWAPI
+	w = Warnings(None, MWAPI('http://en.wikipedia.org/w/api.php'))
+	for rev in w.getProcessedRevs('EpochFai'):
+		print(rev[id])
+

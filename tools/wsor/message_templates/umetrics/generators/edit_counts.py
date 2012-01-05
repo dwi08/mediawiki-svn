@@ -9,10 +9,10 @@ class EditCounts(MetricGenerator):
 	def headers(self):
 		return itertools.chain(*[
 			[
+				'ns_%s_revisions_before' % ns,
+				'ns_%s_revisions_after' % ns,
 				'ns_%s_revisions_deleted_before' % ns,
-				'ns_%s_revisions_deleted_after' % ns,
-				'ns_%s_revisions_not_deleted_before' % ns,
-				'ns_%s_revisions_not_deleted_after' % ns
+				'ns_%s_revisions_deleted_after' % ns
 			]
 			for ns in itertools.chain(range(0,16), [100, 101, 108, 109])
 		])
@@ -24,24 +24,24 @@ class EditCounts(MetricGenerator):
 		cursor.execute("""
 			(
 				SELECT
-					False as deleted,
 					page_namespace as ns,
+					IF(rev_timestamp < %(timestamp)s, "before", "after") as whence,
+					"" as deleted,
 					count(*) as revisions
 				FROM enwiki.revision
 				INNER JOIN enwiki.page ON rev_page = page_id
-				WHERE rev_timestamp <= %(timestamp)s
-				AND rev_user_text = %(username)s
-				GROUP BY page_namespace
+				WHERE rev_user_text = %(username)s
+				GROUP BY 1, 2
 			)
 			UNION (
 				SELECT
-					True as deleted,
 					ar_namespace as ns,
+					IF(ar_timestamp < %(timestamp)s, "before", "after") as whence,
+					"_deleted" as deleted,
 					count(*) as revisions
 				FROM enwiki.archive
-				WHERE ar_timestamp <= %(timestamp)s
-				AND ar_user_text = %(username)s
-				GROUP BY ar_namespace
+				WHERE ar_user_text = %(username)s
+				GROUP BY 1, 2
 			)""",
 			{
 				'timestamp': timestamp,
@@ -49,11 +49,6 @@ class EditCounts(MetricGenerator):
 			}
 		)
 		for row in cursor:
-			if(row['deleted']):
-				deleted = "deleted"
-			else:
-				deleted = "not_deleted"
-			
-			rowData['ns_%s_before_revisions_%s' % (row['ns'], deleted)] = row['revisions']
+			rowData['ns_%(ns)s_revisions%(deleted)s_%(whence)s' % row] = row['revisions']
 			
 		return [rowData.get(c, 0) for c in self.headers()]
