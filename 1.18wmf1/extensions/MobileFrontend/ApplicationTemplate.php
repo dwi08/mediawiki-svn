@@ -61,7 +61,7 @@ class ApplicationTemplate extends MobileFrontendTemplate {
 			{$this->data['contentHtml']}
 			</div>
 			{$this->data['footerHtml']}
-			 {$startScriptTag}{$javaScriptPath}{$betaPrefix}application.js?version=12012011120915{$endScriptTag}
+			 {$startScriptTag}{$javaScriptPath}{$betaPrefix}application.js?version=01052011120915{$endScriptTag}
 			 {$openSearchScript}
 			{$filePageScript}
 		  </body>
