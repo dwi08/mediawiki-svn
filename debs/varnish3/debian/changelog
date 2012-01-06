@@ -1,8 +1,9 @@
-varnish3 (3.0.0-1wmf7) lucid; urgency=low
+varnish3 (3.0.2-1wmf1) lucid; urgency=low
 
-  * remove extra whitespace from log lines
+  * uri escape spaces (only) in logged req headers
+  * port udplog patch to varnish 3.0.2
 
- -- Asher Feldman <afledman@wikimedia.org>  Tue, 29 Nov 2011 19:54:00 +0000
+ -- Asher Feldman <afledman@wikimedia.org>  Wed, 22 Dec 2011 12:12:00 +0000
 
 varnish3 (3.0.0-1wmf6) lucid; urgency=low
 
