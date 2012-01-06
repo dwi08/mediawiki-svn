@@ -16,6 +16,7 @@
  * All of the library classes must be registed in $wgAutoloadClasses.
  *
  * @TODO: update MessagesEn for status errors.
+ * @TODO: handle 'latest' param as "X-Newest: true".
  *
  * @ingroup FileBackend
  */
@@ -67,7 +68,7 @@ class SwiftFileBackend extends FileBackend {
 	function doStoreInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dst'] );
+		list( $dstCont, $destRel ) = $this->resolveStoragePathReal( $params['dst'] );
 		if ( $destRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
@@ -91,6 +92,7 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
@@ -109,6 +111,7 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
@@ -124,6 +127,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-connect' );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $status;
@@ -135,13 +139,13 @@ class SwiftFileBackend extends FileBackend {
 	function doCopyInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
 		}
 
-		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dst'] );
+		list( $dstCont, $destRel ) = $this->resolveStoragePathReal( $params['dst'] );
 		if ( $destRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
@@ -166,6 +170,7 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
@@ -184,16 +189,20 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
 		// (d) Actually copy the file to the destination
 		try {
-			$this->swiftcopy( $sContObj, $srcRel, $dContObj, $destRel );
+			$sContObj->copy_object_to( $srcRel, $dContObj, $destRel );
+		} catch ( NoSuchObjectException $e ) { // source object does not exist
+			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 		} catch ( InvalidResponseException $e ) {
 			$status->fatal( 'backend-fail-connect' );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $status;
@@ -205,7 +214,7 @@ class SwiftFileBackend extends FileBackend {
 	function doDeleteInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['src'] );
 			return $status;
@@ -229,6 +238,7 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
@@ -243,6 +253,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-connect' );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $status;
@@ -254,7 +265,7 @@ class SwiftFileBackend extends FileBackend {
 	function doCreateInternal( array $params ) {
 		$status = Status::newGood();
 
-		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dst'] );
+		list( $dstCont, $destRel ) = $this->resolveStoragePathReal( $params['dst'] );
 		if ( $destRel === null ) {
 			$status->fatal( 'backend-fail-invalidpath', $params['dst'] );
 			return $status;
@@ -278,6 +289,7 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
@@ -296,6 +308,7 @@ class SwiftFileBackend extends FileBackend {
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 			return $status;
 		}
 
@@ -309,6 +322,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-connect' );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $status;
@@ -317,14 +331,8 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::prepate()
 	 */
-	function prepare( array $params ) {
+	function doPrepare( $fullCont, $dir, array $params ) {
 		$status = Status::newGood();
-
-		list( $dstCont, $destRel ) = $this->resolveStoragePath( $params['dir'] );
-		if ( $destRel === null ) {
-			$status->fatal( 'backend-fail-invalidpath', $params['dir'] );
-			return $status;
-		}
 
 		// (a) Get a swift proxy connection
 		$conn = $this->getConnection();
@@ -335,9 +343,10 @@ class SwiftFileBackend extends FileBackend {
 
 		// (b) Create the destination container
 		try {
-			$conn->create_container( $dstCont );
+			$conn->create_container( $fullCont );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $status;
@@ -346,17 +355,17 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::secure()
 	 */
-	function secure( array $params ) {
+	function doSecure( $fullCont, $dir, array $params ) {
 		$status = Status::newGood();
 		// @TODO: restrict container from $this->swiftProxyUser
 		return $status; // badgers? We don't need no steenking badgers!
 	}
 
 	/**
-	 * @see FileBackend::fileExists()
+	 * @see FileBackend::doFileExists()
 	 */
-	function fileExists( array $params ) {
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+	function doFileExists( array $params ) {
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
 		}
@@ -376,16 +385,17 @@ class SwiftFileBackend extends FileBackend {
 			$exists = false;
 		} catch ( Exception $e ) { // some other exception?
 			$exists = false; // fail vs not exists?
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $exists;
 	}
 
 	/**
-	 * @see FileBackend::getFileTimestamp()
+	 * @see FileBackend::doGetFileTimestamp()
 	 */
-	function getFileTimestamp( array $params ) {
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+	function doGetFileTimestamp( array $params ) {
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
 		}
@@ -405,6 +415,7 @@ class SwiftFileBackend extends FileBackend {
 			$obj = NULL;
 		} catch ( Exception $e ) { // some other exception?
 			$obj = NULL; // fail vs not exists?
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		if ( $obj ) {
@@ -417,32 +428,70 @@ class SwiftFileBackend extends FileBackend {
 	}
 
 	/**
-	 * @see FileBackend::getFileList()
+	 * @see FileBackendBase::getFileContents()
 	 */
-	function getFileList( array $params ) {
-		list( $dirc, $dir ) = $this->resolveStoragePath( $params['dir'] );
-		if ( $dir === null ) { // invalid storage path
-			return array(); // empty result
+	public function getFileContents( array $params ) {
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
+		if ( $srcRel === null ) {
+			return false; // invalid storage path
 		}
 
+		$conn = $this->getConnection();
+		if ( !$conn ) {
+			$status->fatal( 'backend-fail-connect' );
+			return $status;
+		}
+
+		try {
+			$container = $conn->get_container( $srcCont);
+			$obj = $container->get_object( $srcRel );
+			$data = $obj->read();
+		} catch ( NoSuchContainerException $e ) {
+			$data = false;
+		} catch ( NoSuchObjectException $e ) {
+			$data = false;
+		} catch ( Exception $e ) { // some other exception?
+			$data = false; // fail vs not exists?
+			$this->logException( $e, __METHOD__, $params );
+		}
+
+		return $data;
+	}
+
+	/**
+	 * @see FileBackend::getFileListInternal()
+	 */
+	function getFileListInternal( $fullCont, $dir, array $params ) {
+		return new SwiftFileIterator( $this, $fullCont, $dir );
+	}
+
+	/**
+	 * Do not call this function outside of SwiftFileIterator
+	 * 
+	 * @param $fullCont string Resolved container name
+	 * @param $dir string Resolved storage directory
+	 * @param $after string Storage path of file to list items after
+	 * @param $limit integer Max number of items to list
+	 * @return Array
+	 */
+	public function getFileListPageInternal( $fullCont, $dir, $after, $limit ) {
 		$conn = $this->getConnection();
 		if ( !$conn ) {
 			return null;
 		}
 
-		// @TODO: return an Iterator class that pages via list_objects()
 		try {
-			$container = $conn->get_container( $dirc );
-			$files = $container->list_objects( 0, NULL, $dir );
+			$container = $conn->get_container( $fullCont );
+			$files = $container->list_objects( $limit, $after, $dir );
 		} catch ( NoSuchContainerException $e ) {
 			$files = array();
 		} catch ( NoSuchObjectException $e ) {
 			$files = array();
 		} catch ( Exception $e ) { // some other exception?
-			$files = null;
+			$files = array();
+			$this->logException( $e, __METHOD__, $params );
 		}
 
-		// if there are no files matching the prefix, return empty array
 		return $files;
 	}
 
@@ -450,7 +499,7 @@ class SwiftFileBackend extends FileBackend {
 	 * @see FileBackend::getLocalCopy()
 	 */
 	function getLocalCopy( array $params ) {
-		list( $srcCont, $srcRel ) = $this->resolveStoragePath( $params['src'] );
+		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return null;
 		}
@@ -480,6 +529,7 @@ class SwiftFileBackend extends FileBackend {
 			$tmpFile = null;
 		} catch ( Exception $e ) { // some other exception?
 			$tmpFile = null;
+			$this->logException( $e, __METHOD__, $params );
 		}
 
 		return $tmpFile;
@@ -511,49 +561,83 @@ class SwiftFileBackend extends FileBackend {
 	}
 
 	/**
-	 * Copy a file from one place to another place
-	 *
-	 * @param $srcContainer CF_Container
-	 * @param $srcRel String: relative path to the source file.
-	 * @param $dstContainer CF_Container
-	 * @param $dstRel String: relative path to the destination.
+	 * Log an unexpected exception for this backend
+	 * 
+	 * @param $e Exception
+	 * @param $func string
+	 * @param $params Array
+	 * @return void
 	 */
-	protected function swiftcopy( $srcContainer, $srcRel, $dstContainer, $dstRel ) {
-		// The destination must exist already.
-		$obj = $dstContainer->create_object( $dstRel );
-		$obj->content_type = 'text/plain'; // overwritten by source object.
+	protected function logException( Exception $e, $func, array $params ) {
+		wfDebugLog( 'SwiftBackend',
+			get_class( $e ) . " in '{$this->name}': '{$func}' with " . serialize( $params ) 
+		);
+	}
+}
 
-		try {
-			$obj->write( '.' );
-		} catch ( SyntaxException $e ) {
-			throw new MWException( "Write failed: $e" );
-		} catch ( BadContentTypeException $e ) {
-			throw new MWException( "Missing Content-Type: $e" );
-		} catch ( MisMatchedChecksumException $e ) {
-			throw new MWException( __METHOD__ . "should not happen: '$e'" );
-		}
+/**
+ * SwiftFileBackend helper class to page through object listings.
+ * Swift also has a listing limit of 10,000 objects for sanity.
+ *
+ * @ingroup FileBackend
+ */
+class SwiftFileIterator implements Iterator {
+	/** @var Array */
+	protected $bufferIter = array();
+	protected $bufferAfter = ''; // string; list items *after* this path
+	protected $pos = 0; // integer
 
-		try {
-			$obj = $dstContainer->get_object( $dstRel );
-		} catch ( NoSuchObjectException $e ) {
-			throw new MWException( 'The object we just created does not exist: ' .
-				$dstContainer->name . "/$dstRel: $e" );
-		}
+	/** @var SwiftFileBackend */
+	protected $backend; 
+	protected $container; //
+	protected $dir; // string storage directory
 
-		try {
-			$srcObj = $srcContainer->get_object( $srcRel );
-		} catch ( NoSuchObjectException $e ) {
-			throw new MWException( 'Source file does not exist: ' .
-				$srcContainer->name . "/$srcRel: $e" );
-		}
+	const PAGE_SIZE = 5000; // file listing buffer size
 
-		try {
-			$dstContainer->copy_object_from($srcObj,$srcContainer,$dstRel);
-		} catch ( SyntaxException $e ) {
-			throw new MWException( 'Source file does not exist: ' .
-				$srcContainer->name . "/$srcRel: $e" );
-		} catch ( MisMatchedChecksumException $e ) {
-			throw new MWException( "Checksums do not match: $e" );
+	/**
+	 * Get an FSFileIterator from a file system directory
+	 * 
+	 * @param $backend SwiftFileBackend
+	 * @param $fullCont string Resolved container name
+	 * @param $dir string Resolved relateive path
+	 */
+	public function __construct( SwiftFileBackend $backend, $fullCont, $dir ) {
+		$this->container = $fullCont;
+		$this->dir = $dir;
+		$this->backend = $backend;
+	}
+
+	public function current() {
+		return current( $this->bufferIter );
+	}
+
+	public function key() {
+		return $this->pos;
+	}
+
+	public function next() {
+		// Advance to the next file in the page
+		next( $this->bufferIter );
+		++$this->pos;
+		// Check if there are no files left in this page and
+		// advance to the next page if this page was not empty.
+		if ( !$this->valid() && count( $this->bufferIter ) ) {
+			$this->bufferAfter = end( $this->bufferIter );
+			$this->bufferIter = $this->backend->getFileListPageInternal(
+				$this->container, $this->dir, $this->bufferAfter, self::PAGE_SIZE
+			);
 		}
+	}
+
+	public function rewind() {
+		$this->pos = 0;
+		$this->bufferAfter = '';
+		$this->bufferIter = $this->backend->getFileListPageInternal(
+			$this->container, $this->dir, $this->bufferAfter, self::PAGE_SIZE
+		);
+	}
+
+	public function valid() {
+		return ( current( $this->bufferIter ) !== false ); // no paths can have this value
 	}
 }
