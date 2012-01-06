@@ -42,7 +42,7 @@ class SwiftFileBackend extends FileBackend {
 		parent::__construct( $config );
 		// Required settings
 		$this->auth = new CF_Authentication(
-			$config['swiftUser'], $config['swiftKey'], NULL, $config['swiftAuthUrl'] );
+			$config['swiftUser'], $config['swiftKey'], null, $config['swiftAuthUrl'] );
 		// Optional settings
 		$this->connTTL = isset( $config['connTTL'] )
 			? $config['connTTL']
@@ -410,11 +410,11 @@ class SwiftFileBackend extends FileBackend {
 			$container = $conn->get_container( $srcCont);
 			$obj = $container->get_object( $srcRel );
 		} catch ( NoSuchContainerException $e ) {
-			$obj = NULL;
+			$obj = null;
 		} catch ( NoSuchObjectException $e ) {
-			$obj = NULL;
+			$obj = null;
 		} catch ( Exception $e ) { // some other exception?
-			$obj = NULL; // fail vs not exists?
+			$obj = null; // fail vs not exists?
 			$this->logException( $e, __METHOD__, $params );
 		}
 
