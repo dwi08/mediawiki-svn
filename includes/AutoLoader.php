@@ -43,6 +43,7 @@ $wgAutoloadLocalClasses = array(
 	'ChannelFeed' => 'includes/Feed.php',
 	'Collation' => 'includes/Collation.php',
 	'ConcatenatedGzipHistoryBlob' => 'includes/HistoryBlob.php',
+	'ConcurrencyCheck' => 'includes/ConcurrencyCheck.php',
 	'ConfEditor' => 'includes/ConfEditor.php',
 	'ConfEditorParseError' => 'includes/ConfEditor.php',
 	'ConfEditorToken' => 'includes/ConfEditor.php',
@@ -52,7 +53,6 @@ $wgAutoloadLocalClasses = array(
 	'DeferredUpdates' => 'includes/DeferredUpdates.php',
 	'DerivativeRequest' => 'includes/WebRequest.php',
 	'DiffHistoryBlob' => 'includes/HistoryBlob.php',
-
 	'DoubleReplacer' => 'includes/StringUtils.php',
 	'DummyLinker' => 'includes/Linker.php',
 	'Dump7ZipOutput' => 'includes/Export.php',
