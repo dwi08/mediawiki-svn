@@ -33,10 +33,11 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::__construct()
 	 * Additional $config params include:
-	 *    swiftAuthUrl   : Swift authentication server URL
-	 *    swiftUser      : Swift user used by MediaWiki
-	 *    swiftKey       : Authentication key for the above user (used to get sessions)
-	 *    swiftProxyUser : Swift user used for end-user hits to proxy server
+	 *    swiftAuthUrl       : Swift authentication server URL
+	 *    swiftUser          : Swift user used by MediaWiki
+	 *    swiftKey           : Swift authentication key for the above user
+	 *    swiftProxyUser     : Swift user used for end-user hits to proxy server
+	 *    shardViaHashLevels : Map of container names to the number of hash levels
 	 */
 	public function __construct( array $config ) {
 		parent::__construct( $config );
@@ -49,6 +50,9 @@ class SwiftFileBackend extends FileBackend {
 			: 60; // some sane number
 		$this->swiftProxyUser = isset( $config['swiftProxyUser'] )
 			? $config['swiftProxyUser']
+			: '';
+		$this->shardViaHashLevels = isset( $config['shardViaHashLevels'] )
+			? $config['shardViaHashLevels']
 			: '';
 	}
 
@@ -65,7 +69,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::doStoreInternal()
 	 */
-	function doStoreInternal( array $params ) {
+	protected function doStoreInternal( array $params ) {
 		$status = Status::newGood();
 
 		list( $dstCont, $destRel ) = $this->resolveStoragePathReal( $params['dst'] );
@@ -136,7 +140,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::doCopyInternal()
 	 */
-	function doCopyInternal( array $params ) {
+	protected function doCopyInternal( array $params ) {
 		$status = Status::newGood();
 
 		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
@@ -211,7 +215,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::doDeleteInternal()
 	 */
-	function doDeleteInternal( array $params ) {
+	protected function doDeleteInternal( array $params ) {
 		$status = Status::newGood();
 
 		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
@@ -262,7 +266,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::doCopyInternal()
 	 */
-	function doCreateInternal( array $params ) {
+	protected function doCreateInternal( array $params ) {
 		$status = Status::newGood();
 
 		list( $dstCont, $destRel ) = $this->resolveStoragePathReal( $params['dst'] );
@@ -331,7 +335,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::prepate()
 	 */
-	function doPrepare( $fullCont, $dir, array $params ) {
+	protected function doPrepare( $fullCont, $dir, array $params ) {
 		$status = Status::newGood();
 
 		// (a) Get a swift proxy connection
@@ -355,7 +359,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::secure()
 	 */
-	function doSecure( $fullCont, $dir, array $params ) {
+	protected function doSecure( $fullCont, $dir, array $params ) {
 		$status = Status::newGood();
 		// @TODO: restrict container from $this->swiftProxyUser
 		return $status; // badgers? We don't need no steenking badgers!
@@ -364,7 +368,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::doFileExists()
 	 */
-	function doFileExists( array $params ) {
+	protected function doFileExists( array $params ) {
 		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
@@ -394,7 +398,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::doGetFileTimestamp()
 	 */
-	function doGetFileTimestamp( array $params ) {
+	protected function doGetFileTimestamp( array $params ) {
 		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return false; // invalid storage path
@@ -461,7 +465,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::getFileListInternal()
 	 */
-	function getFileListInternal( $fullCont, $dir, array $params ) {
+	public function getFileListInternal( $fullCont, $dir, array $params ) {
 		return new SwiftFileIterator( $this, $fullCont, $dir );
 	}
 
@@ -498,7 +502,7 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * @see FileBackend::getLocalCopy()
 	 */
-	function getLocalCopy( array $params ) {
+	public function getLocalCopy( array $params ) {
 		list( $srcCont, $srcRel ) = $this->resolveStoragePathReal( $params['src'] );
 		if ( $srcRel === null ) {
 			return null;
