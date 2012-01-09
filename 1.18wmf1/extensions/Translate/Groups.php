@@ -12,9 +12,9 @@
  * Interface for message groups.
  *
  * Message groups are the heart of the Translate extension. They encapsulate
- * a set of messages. Aside from basic information like id, label and
+ * a set of messages each. Aside from basic information like id, label and
  * description, the class defines which mangler, message checker and file
- * system support (FFS), if any, the group uses. Usually this is only thin
+ * system support (FFS), if any, the group uses. Usually this is only a thin
  * wrapper over message configuration files.
  */
 interface MessageGroup {
@@ -106,6 +106,7 @@ interface MessageGroup {
 	/**
 	 * Returns message tags. If type is given, only messages keys with that
 	 * tag is returnted. Otherwise an array[tag => keys] is returnted.
+	 * @param $type string
 	 * @return array
 	 */
 	public function getTags( $type = null );
@@ -135,7 +136,6 @@ interface MessageGroup {
 abstract class MessageGroupBase implements MessageGroup {
 	protected $conf;
 	protected $namespace;
-
 	protected $groups;
 
 	/**
@@ -145,7 +145,7 @@ abstract class MessageGroupBase implements MessageGroup {
 
 	protected function __construct() { }
 
-	/*
+	/**
 	 * @param $conf
 	 *
 	 * @return MessageGroup
@@ -254,7 +254,7 @@ abstract class MessageGroupBase implements MessageGroup {
 			}
 		}
 
-		$definitions = new MessageDefinitions( $namespace, $messages );
+		$definitions = new MessageDefinitions( $messages, $namespace );
 		$collection = MessageCollection::newFromDefinitions( $definitions, $code );
 		$this->setTags( $collection );
 
@@ -398,7 +398,6 @@ abstract class MessageGroupBase implements MessageGroup {
  * custom type of message groups.
  */
 class FileBasedMessageGroup extends MessageGroupBase {
-
 	protected $reverseCodeMap;
 
 	/**
@@ -514,7 +513,6 @@ class FileBasedMessageGroup extends MessageGroupBase {
  * @todo Currently unused?
  */
 class MediaWikiMessageGroup extends FileBasedMessageGroup {
-
 	public function mapCode( $code ) {
 		return ucfirst( str_replace( '-', '_', parent::mapCode( $code ) ) );
 	}
@@ -668,7 +666,7 @@ class AggregateMessageGroup extends MessageGroupBase {
 		}
 
 		$namespace = $this->getNamespace();
-		$definitions = new MessageDefinitions( $namespace, $messages );
+		$definitions = new MessageDefinitions( $messages, $namespace );
 		$collection = MessageCollection::newFromDefinitions( $definitions, $code );
 
 		$this->setTags( $collection );

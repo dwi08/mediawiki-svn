@@ -60,12 +60,13 @@ class TranslationEditPage {
 	 * disabled all other output.
 	 */
 	public function execute() {
-		global $wgOut, $wgServer, $wgScriptPath;
+		global $wgOut, $wgServer, $wgScriptPath, $wgUser, $wgRequest;
 
 		$wgOut->disable();
 
 		$data = $this->getEditInfo();
-		$helpers = new TranslationHelpers( $this->getTitle() );
+		$groupId = $wgRequest->getText( 'loadgroup', '' );
+		$helpers = new TranslationHelpers( $this->getTitle(), $groupId );
 
 		$id = "tm-target-{$helpers->dialogID()}";
 		$helpers->setTextareaId( $id );
@@ -91,6 +92,11 @@ class TranslationEditPage {
 			'lang' => $targetLang->getCode(),
 			'dir' => $targetLang->getDir(),
 		);
+
+		if ( !$wgUser->isAllowed( 'translate' ) ) {
+			$textareaParams['readonly'] = 'readonly';
+		}
+
 		$textarea = Html::element( 'textarea', $textareaParams, $translation );
 
 		$hidden = array();
@@ -125,6 +131,14 @@ class TranslationEditPage {
 
 		$support = $this->getSupportButton( $this->getTitle() );
 
+		if ( $wgUser->isAllowed( 'translate' ) ) {
+			$bottom = "$summary$save$saveAndNext$skip$history$support";
+		} else {
+			$text = wfMessage( 'translate-edit-nopermission' )->escaped();
+			$button = $this->getPermissionPageButton();
+			$bottom = "$text $button$skip$history$support";
+		}
+
 		// Use the api to submit edits
 		$formParams = array(
 			'action' => "{$wgServer}{$wgScriptPath}/api.php",
@@ -134,7 +148,7 @@ class TranslationEditPage {
 		$form = Html::rawElement( 'form', $formParams,
 			implode( "\n", $hidden ) . "\n" .
 			$helpers->getBoxes( $this->suggestions ) . "\n" .
-			"$textarea\n$summary$save$saveAndNext$skip$history$support"
+			"$textarea\n$bottom"
 		);
 
 		echo Html::rawElement( 'div', array( 'class' => 'mw-ajax-dialog' ), $form );
@@ -180,8 +194,8 @@ class TranslationEditPage {
 		}
 
 		return array(
-			'onclick' => TranslateBC::encodeJsCall(
-				'return trlOpenJsEdit', array( $title->getPrefixedDbKey(), $group ) ),
+			'onclick' => Xml::encodeJsCall(
+				'return mw.translate.openDialog', array( $title->getPrefixedDbKey(), $group ) ),
 			'title' => wfMsg( 'translate-edit-title', $title->getPrefixedText() )
 		);
 	}
@@ -209,6 +223,25 @@ class TranslationEditPage {
 			)
 		);
 		return $support;
+	}
+
+	protected function getPermissionPageButton() {
+		global $wgTranslatePermissionUrl;
+		if ( !$wgTranslatePermissionUrl ) return '';
+
+		$title = Title::newFromText( $wgTranslatePermissionUrl );
+		if ( !$title ) return '';
+
+		$button = Html::element(
+			'input',
+			array(
+				'class' => 'mw-translate-askpermission',
+				'type' => 'button',
+				'value' => wfMsg( 'translate-edit-askpermission' ),
+				'data-load-url' => $title->getLocalUrl(),
+			)
+		);
+		return $button;
 	}
 
 }

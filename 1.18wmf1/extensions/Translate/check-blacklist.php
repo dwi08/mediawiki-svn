@@ -205,6 +205,15 @@ array(
 	)
 ),
 array(
+	'group' => 'ext-contest',
+	'check' => 'variable',
+	'message' => array(
+		'group-contestadmin-member', // Optional GENDER parameter
+		'group-contestparticipant-member', // Optional GENDER parameter
+		'group-contestjudge-member', // Optional GENDER parameter
+	)
+),
+array(
 	'group' => 'ext-contributionseditcount',
 	'check' => 'variable',
 	'message' => array(
@@ -428,6 +437,14 @@ array(
 	)
 ),
 array(
+	'group' => 'ext-survey',
+	'check' => 'variable',
+	'message' => array(
+		'group-surveyadmin-member', // Optional GENDER parameter
+		'group-surveysubmit-member', // Optional GENDER parameter
+	)
+),
+array(
 	'group' => 'ext-socialprofile-usergifts',
 	'check' => 'variable',
 	'message' => array(
@@ -585,6 +602,7 @@ array(
 	'check' => 'links',
 	'message' => array(
 		'categoryselect-tooltip', // Contains link parts that may need translation
+		'categoryselect-code-view-placeholder', // Contains link parts that may need translation
 	)
 ),
 array(

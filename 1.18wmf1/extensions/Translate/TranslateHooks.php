@@ -155,6 +155,7 @@ class TranslateHooks {
 	public static function setupParserHooks( $parser ) {
 		// For nice language list in-page
 		$parser->setHook( 'languages', array( 'PageTranslationHooks', 'languages' ) );
+		$parser->setFunctionHook( 'translationdialog', array( 'TranslateHooks', 'translationDialogMagicWord' ) );
 		return true;
 	}
 
@@ -183,6 +184,8 @@ class TranslateHooks {
 		$updater->addExtensionUpdate( array( 'addTable', 'translate_groupstats', "$dir/translate_groupstats.sql", true ) );
 		$updater->addExtensionUpdate( array( 'addIndex', 'translate_sections', 'trs_page_order', "$dir/translate_sections-indexchange.sql", true ) );
 		$updater->addExtensionUpdate( array( 'dropIndex', 'translate_sections', 'trs_page', "$dir/translate_sections-indexchange2.sql", true ) );
+		$updater->addExtensionUpdate( array( 'addTable', 'translate_reviews', "$dir/translate_reviews.sql", true ) );
+		$updater->addExtensionUpdate( array( 'addTable', 'translate_groupreviews', "$dir/translate_groupreviews.sql", true ) );
 
 		return true;
 	}
@@ -246,7 +249,7 @@ class TranslateHooks {
 	/**
 	 * Hook: SpecialSearchProfileForm
 	 */
-	public static function searchProfileForm( $search, &$form, /*string*/ $profile, $term, $opts ) {
+	public static function searchProfileForm( SpecialSearch $search, &$form, /*string*/ $profile, $term, array $opts ) {
 		if ( $profile !== 'translation' ) {
 			return true;
 		}
@@ -261,7 +264,7 @@ class TranslateHooks {
 		}
 
 		$context = $search->getContext();
-		$code = $context->getLang()->getCode();
+		$code = $context->getLanguage()->getCode();
 		$selected = $context->getRequest()->getVal( 'languagefilter' );
 
 		if ( is_callable( array( 'LanguageNames', 'getNames' ) ) ) {
@@ -308,5 +311,78 @@ class TranslateHooks {
 		return true;
 	}
 
+	/// Log action handler
+	public static function formatTranslationreviewLogEntry( $type, $action, $title, $forUI, $params ) {
+		global $wgLang, $wgContLang;
 
+		$language = $forUI === null ? $wgContLang : $wgLang;
+		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker : new Linker;
+
+		if ( $action === 'message' ) {
+			$link = $forUI ?
+				$linker->link( $title, null, array(), array( 'oldid' => $params[0] ) ) :
+				$title->getPrefixedText();
+			return wfMessage( 'logentry-translationreview-message' )->params(
+				'', // User link in the new system
+				'#', // User name for gender in the new system
+				Message::rawParam( $link )
+			)->inLanguage( $language )->text();
+		}
+
+		if ( $action === 'group' ) {
+			$languageCode = $params[0];
+			$languageNames = Language::getTranslatedLanguageNames( $languageCode );
+			$languageName = "$languageNames[$languageCode] ($languageCode)";
+			$groupLabel = $params[1];
+			$oldState = $params[2];
+			$newState = $params[3];
+			$oldStateMessage = wfMessage( "translate-workflow-state-$oldState" );
+			$newStateMessage = wfMessage( "translate-workflow-state-$newState" );
+			$oldState = $oldStateMessage->isBlank() ? $oldState : $oldStateMessage->text();
+			$newState = $newStateMessage->isBlank() ? $newState : $newStateMessage->text();
+
+			$link = $forUI ?
+				$linker->link( $title, $groupLabel, array(), array( 'language' => $languageCode ) ) :
+				$groupLabel;
+
+			return wfMessage( 'logentry-groupreview-message' )->params(
+				'', // User link in the new system
+				'#', // User name for gender in the new system
+				Message::rawParam( $link ),
+				$languageName,
+				$oldState,
+				$newState
+			)->inLanguage( $language )->text();
+		}
+
+		return '';
+	}
+
+	/**
+	 * Parser function hook
+	 */
+	public static function translationDialogMagicWord( Parser $parser, $title = '', $linktext = '' ) {
+		$title = Title::newFromText( $title );
+		if ( !$title ) return '';
+		$handle = new MessageHandle( $title );
+		if ( !$handle->isValid() ) return '';
+		$group = $handle->getGroup();
+		$callParams = array( $title->getPrefixedText(), $group->getId() );
+		$call = Xml::encodeJsCall( 'mw.translate.openDialog', $callParams );
+		$js = <<<JAVASCRIPT
+mw.loader.using( 'ext.translate.quickedit', function() { $call; } ); return false;
+JAVASCRIPT;
+
+		$a = array(
+			'href' => $title->getFullUrl( array( 'action' => 'edit' ) ),
+			'onclick' => $js,
+		);
+
+		if ( $linktext === '' ) {
+			$linktext = wfMessage( 'translate-edit-jsopen' )->text();
+		}
+		$output = Html::element( 'a', $a, $linktext );
+		return $parser->insertStripItem( $output, $parser->mStripState );
+	}
 }
+

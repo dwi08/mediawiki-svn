@@ -20,9 +20,6 @@ abstract class MessageIndex {
 	/// @var MessageIndex
 	protected static $instance;
 
-	/// @var array
-	protected $index;
-
 	/**
 	 * @return MessageIndex
 	 */
@@ -36,15 +33,45 @@ abstract class MessageIndex {
 		return self::$instance;
 	}
 
+
+	/**
+	 * @since 2012-01-04
+	 * @return array
+	 */
+	public static function getGroupIds( MessageHandle $handle ) {
+		$namespace = $handle->getTitle()->getNamespace();
+		$key = $handle->getKey();
+		$normkey = strtr( strtolower( "$namespace:$key" ), " ", "_"  );
+
+		$index = self::singleton()->retrieve();
+		if ( isset( $index[$normkey] ) ) {
+			return (array) $index[$normkey];
+		} else {
+			return array();
+		}
+	}
+
+	/**
+	 * @since 2012-01-04
+	 * @return MessageGroup|null
+	 */
+	public static function getPrimaryGroupId( MessageHandle $handle ) {
+		$groups = self::getGroupIds( $handle );
+		return count( $groups ) ? array_shift( $groups ) : null;
+	}
+
 	/** @return array */
 	abstract public function retrieve();
 	abstract protected function store( array $array );
 
-	public function rebuild() {
+	public function rebuild( /*bool*/ $scratch = false ) {
 		$groups = MessageGroups::singleton()->getGroups();
 
-		$old = $this->retrieve();
-		$new = array();
+		$new = $old = array();
+		if ( !$scratch ) {
+			// To avoid inifinite recursion
+			$old = $this->retrieve();
+		}
 		$postponed = array();
 
 		STDOUT( "Working with ", 'main' );
@@ -69,6 +96,7 @@ abstract class MessageIndex {
 
 		$this->store( $new );
 		$this->clearMessageGroupStats( $old, $new );
+		return $new;
 	}
 
 	/**
@@ -153,6 +181,9 @@ abstract class MessageIndex {
  * Storage on serialized file.
  */
 class FileCachedMessageIndex extends MessageIndex {
+	/// @var array
+	protected $index;
+
 	protected $filename = 'translate_messageindex.ser';
 
 	/** @return array */
@@ -165,7 +196,7 @@ class FileCachedMessageIndex extends MessageIndex {
 		if ( file_exists( $file ) ) {
 			return $this->index = unserialize( file_get_contents( $file ) );
 		} else {
-			return $this->index = array();
+			return $this->index = $this->rebuild( 'empty' );
 		}
 	}
 
@@ -183,6 +214,9 @@ class CachedMessageIndex extends MessageIndex {
 	protected $key = 'translate-messageindex';
 	protected $cache;
 
+	/// @var array
+	protected $index;
+
 	protected function __construct( array $params ) {
 		$this->cache = wfGetCache( CACHE_ANYTHING );
 	}
@@ -198,7 +232,7 @@ class CachedMessageIndex extends MessageIndex {
 		if ( is_array( $data ) ) {
 			return $this->index = $data;
 		} else {
-			return $this->index = array();
+			return $this->index = $this->rebuild( 'empty' );
 		}
 	}
 

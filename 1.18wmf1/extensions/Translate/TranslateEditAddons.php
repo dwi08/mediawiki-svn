@@ -16,7 +16,6 @@
  * Also has code that is still relevant, like the hooks on save.
  */
 class TranslateEditAddons {
-
 	/**
 	 * Add some tabs for navigation for users who do not use Ajax interface.
 	 * Hooks: SkinTemplateNavigation, SkinTemplateTabs
@@ -32,11 +31,16 @@ class TranslateEditAddons {
 		}
 
 		$group = $handle->getGroup();
+		// Happens when translation page move is in progress
+		if ( !$group ) {
+			return true;
+		}
+
 		$key = $handle->getKey();
 		$code = $handle->getCode();
 		$collection = $group->initCollection( $group->getSourceLanguage() );
 		$collection->filter( 'optional' );
-		$keys = array_keys( $collection->keys() );
+		$keys = $collection->getMessageKeys();
 		$count = count( $keys );
 
 		$key = strtolower( strtr( $key, ' ', '_' ) );
@@ -123,10 +127,12 @@ class TranslateEditAddons {
 		$editpage->suppressIntro = true;
 
 		$msg = wfMsgForContent( 'translate-edit-tag-warning' );
+
 		if ( $msg !== '' && $msg !== '-' && TranslatablePage::isSourcePage( $editpage->mTitle ) ) {
 			global $wgOut;
 			$editpage->editFormTextTop .= $wgOut->parse( $msg );
 		}
+
 		return true;
 	}
 
@@ -172,10 +178,14 @@ class TranslateEditAddons {
 		}
 
 		global $wgTranslateSupportUrl;
-		if ( !$wgTranslateSupportUrl ) return true;
+		if ( !$wgTranslateSupportUrl ) {
+			return true;
+		}
 
 		$supportTitle = Title::newFromText( $wgTranslateSupportUrl['page'] );
-		if ( !$supportTitle ) return true;
+		if ( !$supportTitle ) {
+			return true;
+		}
 
 		$supportParams = $wgTranslateSupportUrl['params'];
 		foreach ( $supportParams as &$value ) {
@@ -259,7 +269,8 @@ class TranslateEditAddons {
 	private static function editBoxes( EditPage $object ) {
 		global $wgOut, $wgRequest;
 
-		$th = new TranslationHelpers( $object->mTitle );
+		$groupId = $wgRequest->getText( 'loadgroup', '' );
+		$th = new TranslationHelpers( $object->mTitle, $groupId );
 		if ( $object->firsttime && !$wgRequest->getCheck( 'oldid' ) && !$wgRequest->getCheck( 'undo' ) ) {
 			$object->textbox1 = (string) $th->getTranslation();
 		} else {
@@ -278,7 +289,7 @@ class TranslateEditAddons {
 	 * @return \bool If string contains fuzzy string.
 	 */
 	public static function hasFuzzyString( $text ) {
-		#wfDeprecated( __METHOD__, '1.19' );
+		# wfDeprecated( __METHOD__, '1.19' );
 		return MessageHandle::hasFuzzyString( $text );
 	}
 
@@ -288,7 +299,7 @@ class TranslateEditAddons {
 	 * @return \bool If title is marked fuzzy.
 	 */
 	public static function isFuzzy( Title $title ) {
-		#wfDeprecated( __METHOD__, '1.19' );
+		# wfDeprecated( __METHOD__, '1.19' );
 		$handle = new MessageHandle( $title );
 		return $handle->isFuzzy();
 	}
@@ -383,6 +394,7 @@ class TranslateEditAddons {
 		if ( count( $checks ) ) {
 			$fuzzy = true;
 		}
+
 		return $fuzzy;
 	}
 
@@ -422,6 +434,10 @@ class TranslateEditAddons {
 	 * @return bool
 	 */
 	public static function updateTransverTag( MessageHandle $handle, $revision, $text, User $user ) {
+		if ( $user->isAllowed( 'bot' ) ) {
+			return false;
+		}
+
 		$group = $handle->getGroup();
 		if ( $group instanceof WikiPageMessageGroup ) {
 			// WikiPageMessageGroup has different method
@@ -475,7 +491,7 @@ class TranslateEditAddons {
 		$de->loadNewText();
 		$out->setRevisionId( $de->mNewRev->getId() );
 
-		$th = new TranslationHelpers( $title );
+		$th = new TranslationHelpers( $title, /*group*/false );
 		$th->setEditMode( false );
 		$th->setTranslation( $de->mNewtext );
 		TranslationHelpers::addModules( $out );
@@ -484,9 +500,10 @@ class TranslateEditAddons {
 		$boxes[] = $th->getDocumentationBox();
 		$boxes[] = $th->getDefinitionBox();
 		$boxes[] = $th->getTranslationDisplayBox();
+
 		$output = Html::rawElement( 'div', array( 'class' => 'mw-sp-translate-edit-fields' ), implode( "\n\n", $boxes ) );
 		$out->addHtml( $output );
+
 		return false;
 	}
-
 }

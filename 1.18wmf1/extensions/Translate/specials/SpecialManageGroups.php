@@ -291,7 +291,7 @@ class SpecialManageGroups extends SpecialPage {
 							$this->time = wfTimestamp();
 						}
 
-						$fuzzybot = MessageWebImporter::getFuzzyBot();
+						$fuzzybot = FuzzyBot::getUser();
 						$message = MessageWebImporter::doAction(
 							$action,
 							$group,
@@ -349,7 +349,7 @@ class SpecialManageGroups extends SpecialPage {
 
 		if ( !$process ) {
 			$collection->filter( 'hastranslation', false );
-			$keys = array_keys( $collection->keys() );
+			$keys = $collection->getMessageKeys();
 
 			$diff = array_diff( $keys, array_keys( $messages ) );
 

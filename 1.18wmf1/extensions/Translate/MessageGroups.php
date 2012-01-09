@@ -254,7 +254,7 @@ abstract class MessageGroupOld implements MessageGroup {
 			$definitions = $this->getUniqueDefinitions();
 		}
 
-		$defs = new MessageDefinitions( $this->namespaces[0], $definitions );
+		$defs = new MessageDefinitions( $definitions, $this->namespaces[0] );
 		$collection = MessageCollection::newFromDefinitions( $defs, $code );
 
 		$bools = $this->getBools();
@@ -624,7 +624,7 @@ class AliasMessageGroup extends ExtensionMessageGroup {
 		$this->fill( $collection );
 		$this->fillContents( $collection );
 
-		foreach ( array_keys( $collection->keys() ) as $key ) {
+		foreach ( $collection->getMessageKeys() as $key ) {
 			if ( $collection[$key]->translation() === null ) {
 				unset( $collection[$key] );
 			}
@@ -635,7 +635,7 @@ class AliasMessageGroup extends ExtensionMessageGroup {
 
 	function fill( MessageCollection $messages ) {
 		$cache = $this->load( $messages->code );
-		foreach ( array_keys( $messages->keys() ) as $key ) {
+		foreach ( $messages->getMessageKeys() as $key ) {
 			if ( isset( $cache[$key] ) ) {
 				if ( is_array( $cache[$key] ) ) {
 					$messages[$key]->setInfile( implode( ',', $cache[$key] ) );
@@ -777,9 +777,7 @@ class WikiMessageGroup extends MessageGroupOld {
 	 * @return \types{\string,\null} The translation or null if it doesn't exists.
 	 */
 	public function getMessage( $key, $code ) {
-		global $wgContLang;
-
-		if ( $code && $wgContLang->getCode() !== $code ) {
+		if ( $code && $this->getSourceLanguage() !== $code ) {
 			return TranslateUtils::getMessageContent( $key, $code );
 		} else {
 			return TranslateUtils::getMessageContent( $key, false );
@@ -905,6 +903,136 @@ class WikiPageMessageGroup extends WikiMessageGroup {
 }
 
 /**
+ * @since 2011-11-28
+ */
+class RecentMessageGroup extends WikiMessageGroup {
+	// Ugly
+	public $namespaces = array( false, false );
+
+	protected $code;
+
+	public function __construct() {}
+
+	public function setLanguage( $code ) {
+		$this->language = $code;
+	}
+
+	public function getId() {
+		return '!recent';
+	}
+
+	public function getLabel() {
+		return wfMessage( 'translate-dynagroup-recent-label' )->text();
+	}
+
+	public function getDescription() {
+		return wfMessage( 'translate-dynagroup-recent-desc' )->text();
+	}
+
+	protected function getRCCutoff() {
+		$db = wfGetDB( DB_SLAVE );
+		$tables = 'recentchanges';
+		$max = $db->selectField( $tables, 'MAX(rc_id)', array(), __METHOD__ );
+		return max( 0, $max - 50000 );
+	}
+
+	public function getDefinitions() {
+		global $wgTranslateMessageNamespaces;
+		$db = wfGetDB( DB_SLAVE );
+		$tables = 'recentchanges';
+		$fields = array( 'rc_namespace', 'rc_title' );
+		$conds = array(
+			'rc_title ' . $db->buildLike( $db->anyString(), '/' . $this->language ),
+			'rc_namespace' => $wgTranslateMessageNamespaces,
+			'rc_type != ' . RC_LOG,
+			'rc_id > ' . $this->getRCCutoff(),
+		);
+		$options = array(
+			'ORDER BY' => 'rc_id DESC',
+			'LIMIT' => 1000
+		);
+		$res = $db->select( $tables, $fields, $conds, __METHOD__, $options );
+
+		$defs = array();
+		foreach ( $res as $row ) {
+			$title = Title::makeTitle( $row->rc_namespace, $row->rc_title );
+			$handle = new MessageHandle( $title );
+			if ( !$handle->isValid() ) {
+				continue;
+			}
+
+			$mkey = $row->rc_namespace . ':' . $handle->getKey();
+			if ( !isset( $defs[$mkey] ) ) {
+				$group = $handle->getGroup();
+				$defs[$mkey] = $group->getMessage( $handle->getKey(), $this->getSourceLanguage() );
+			}
+		}
+		return $defs;
+	}
+
+	public function getChecker() {
+		return null;
+	}
+
+	/**
+	 * Subpage language of any in the title is not used.
+	 */
+	public function getMessageContent( MessageHandle $handle, $code ) {
+		$groupId = MessageIndex::getPrimaryGroupId( $handle );
+		$group = MessageGroups::getGroup( $groupId );
+		if ( $group ) {
+			return $group->getMessage( $handle->getKey(), $code );
+		}
+	}
+}
+
+class WorkflowStatesMessageGroup extends WikiMessageGroup {
+	// id and source are not needed
+	public function __construct() {}
+
+	public function getId() {
+		return 'translate-workflow-states';
+	}
+
+	public function getLabel() {
+		return wfMessage( 'translate-workflowgroup-label' )->text();
+	}
+
+	public function getDescription() {
+		return wfMessage( 'translate-workflowgroup-desc' )->plain();
+	}
+
+	public function getDefinitions() {
+		global $wgTranslateWorkflowStates;
+
+		$defs = array();
+
+		foreach ( array_keys( $wgTranslateWorkflowStates ) as $state ) {
+			$titleString = "Translate-workflow-state-$state";
+			$definitionText = $state;
+
+			// Automatically create pages for workflow states in the original language
+			$title = Title::makeTitle( $this->getNamespace(), $titleString );
+			if ( !$title->exists() ) {
+				$page = new WikiPage( $title );
+				$page->doEdit(
+					$state /*content*/,
+					wfMessage( 'translate-workflow-autocreated-summary', $state )->inContentLanguage()->text(),
+					0, /*flags*/
+					false, /* base revision id */
+					FuzzyBot::getUser()
+				);
+			} else {
+				$definitionText = Revision::newFromTitle( $title )->getText();
+			}
+			$defs[$titleString] = $definitionText;
+		}
+
+		return $defs;
+	}
+}
+
+/**
  * Factory class for accessing message groups individually by id or
  * all of them as an list.
  * @todo Clean up the mixed static/member method interface.
@@ -973,6 +1101,7 @@ class MessageGroups {
 		global $wgEnablePageTranslation, $wgTranslateGroupFiles;
 		global $wgTranslateAC, $wgTranslateEC, $wgTranslateCC;
 		global $wgAutoloadClasses;
+		global $wgTranslateWorkflowStates;
 
 		$deps = array();
 		$deps[] = new GlobalDependency( 'wgTranslateAddMWExtensionGroups' );
@@ -982,6 +1111,7 @@ class MessageGroups {
 		$deps[] = new GlobalDependency( 'wgTranslateEC' );
 		$deps[] = new GlobalDependency( 'wgTranslateCC' );
 		$deps[] = new GlobalDependency( 'wgTranslateExtensionDirectory' );
+		$deps[] = new GlobalDependency( 'wgTranslateWorkflowStates' );
 		$deps[] = new FileDependency( dirname( __FILE__ ) . '/groups/mediawiki-defines.txt' );
 		$deps[] = new FileDependency( dirname( __FILE__ ) . '/groups/Wikia/extensions.txt' );
 		$deps[] = new FileDependency( dirname( __FILE__ ) . '/groups/Toolserver/toolserver-textdomains.txt' );
@@ -996,7 +1126,7 @@ class MessageGroups {
 
 			$tables = array( 'page', 'revtag' );
 			$vars   = array( 'page_id', 'page_namespace', 'page_title', );
-			$conds  = array( 'page_id=rt_page', 'rt_type' => RevTag::getType( 'tp:mark') );
+			$conds  = array( 'page_id=rt_page', 'rt_type' => RevTag::getType( 'tp:mark' ) );
 			$options = array( 'GROUP BY' => 'rt_page' );
 			$res = $dbr->select( $tables, $vars, $conds, __METHOD__, $options );
 
@@ -1006,6 +1136,10 @@ class MessageGroups {
 				$wgTranslateCC[$id] = new WikiPageMessageGroup( $id, $title );
 				$wgTranslateCC[$id]->setLabel( $title->getPrefixedText() );
 			}
+		}
+
+		if ( $wgTranslateWorkflowStates ) {
+			$wgTranslateCC['translate-workflow-states'] = new WorkflowStatesMessageGroup();
 		}
 
 		$autoload = array();
@@ -1047,7 +1181,7 @@ class MessageGroups {
 	/**
 	 * Fetch a message group by id.
 	 * @param $id \string Message group id.
-	 * @return MessageGroup or null if it doesn't exist.
+	 * @return MessageGroup|null if it doesn't exist.
 	 */
 	public static function getGroup( $id ) {
 		self::init();
@@ -1065,6 +1199,11 @@ class MessageGroups {
 				return call_user_func( $wgTranslateCC[$id], $id );
 			}
 			return $wgTranslateCC[$id];
+		} elseif ( strval( $id ) !== '' && $id[0] === '!' ) {
+			$dynamic = self::getDynamicGroups();
+			if ( isset( $dynamic[$id] ) ) {
+				return new $dynamic[$id];
+			}
 		}
 	}
 
@@ -1082,6 +1221,60 @@ class MessageGroups {
 	 */
 	public static function getAllGroups() {
 		return self::singleton()->getGroups();
+	}
+
+	/**
+	 * We want to de-emphasize time sensitive groups like news for 2009.
+	 * They can still exist in the system, but should not appear in front
+	 * of translators looking to do some useful work.
+	 * @return string
+	 * @since 2011-12-12
+	 */
+	public static function getPriority( MessageGroup $group ) {
+		static $groups = null;
+		if ( $groups === null ) {
+			$groups = array();
+			// Abusing this table originally intented for other purposes
+			$db = wfGetDB( DB_SLAVE );
+			$table = 'translate_groupreviews';
+			$fields = array( 'tgr_group', 'tgr_state' );
+			$conds = array( 'tgr_lang' => '*priority' );
+			$res = $db->select( $table, $fields, $conds, __METHOD__ );
+			foreach ( $res as $row ) {
+				$groups[$row->tgr_group] = $row->tgr_state;
+			}
+		}
+
+		$id = $group->getId();
+		return isset( $groups[$id] ) ? $groups[$id] : '';
+	}
+
+	/// @since 2011-12-28
+	public static function isDynamic( MessageGroup $group ) {
+		$id = $group->getId();
+		return strval( $id ) !== '' && $id[0] === '!';
+	}
+
+	/**
+	 * Returns the message groups this message group is part of.
+	 * @since 2011-12-25
+	 * @return array
+	 */
+	public static function getParentGroups( MessageGroup $group ) {
+		// Take the first message, get a handle for it and check
+		// if that message belongs to other groups. Those are the
+		// parent aggregate groups. Ideally we loop over all keys,
+		// but this should be enough.
+		$keys = array_keys( $group->getDefinitions() );
+		$title = Title::makeTitle( $group->getNamespace(), $keys[0] );
+		$handle = new MessageHandle( $title );
+		$ids = $handle->getGroupIds();
+		foreach ( $ids as $index => $id ) {
+			if ( $id === $group->getId() ) {
+				unset( $ids[$index] );
+			}
+		}
+		return $ids;
 	}
 
 	/// @todo Make protected.
@@ -1123,6 +1316,16 @@ class MessageGroups {
 	}
 
 	/**
+	 * Contents on these groups changes on a whim.
+	 * @since 2011-12-28
+	 */
+	public static function getDynamicGroups() {
+		return array(
+			'!recent' => 'RecentMessageGroup',
+		);
+	}
+
+	/**
 	 * Returns group strucuted into sub groups. First group in each subgroup is
 	 * considered as the main group.
 	 * @return array
@@ -1152,6 +1355,7 @@ class MessageGroups {
 		}
 
 		// Sort top-level groups according to labels, not ids
+		$labels = array();
 		foreach ( $structure as $id => $data ) {
 			// Either it is a group itself, or the first group of the array
 			$nid = is_array( $data ) ? key( $data ) : $id;

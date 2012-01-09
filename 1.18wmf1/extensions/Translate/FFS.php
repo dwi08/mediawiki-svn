@@ -738,7 +738,6 @@ abstract class JavaScriptFFS extends SimpleFFS {
  * @ingroup FFS
  */
 class OpenLayersFFS extends JavaScriptFFS {
-
 	/**
 	 * @param $key string
 	 * @return string
@@ -847,7 +846,6 @@ EOT;
  * @ingroup FFS
  */
 class YamlFFS extends SimpleFFS {
-
 	/**
 	 * @param $data
 	 * @return array
@@ -1252,6 +1250,9 @@ class PythonSingleFFS extends SimpleFFS {
 	 * @return array
 	 */
 	public function read( $code ) {
+		// Map codes
+		$code = $this->group->mapCode( $code );
+
 		// TODO: Improve this code to not use static variables.
 		if ( !isset( self::$data[$this->group->getId()] ) ) {
 			/* N levels of escaping
@@ -1305,7 +1306,8 @@ class PythonSingleFFS extends SimpleFFS {
 			fwrite( $this->fw, "$authors" );
 		}
 
-		fwrite( $this->fw, "\t'{$collection->code}': {\n" );
+		$code = $this->group->mapCode( $collection->code );
+		fwrite( $this->fw, "\t'{$code}': {\n" );
 		fwrite( $this->fw, $this->writeBlock( $collection ) );
 		fwrite( $this->fw, "\t},\n" );
 	}

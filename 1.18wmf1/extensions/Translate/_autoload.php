@@ -34,6 +34,8 @@ $wgAutoloadClasses['MessageGroupOld'] = $dir . 'MessageGroups.php';
 $wgAutoloadClasses['MessageGroups'] = $dir . 'MessageGroups.php';
 $wgAutoloadClasses['WikiPageMessageGroup'] = $dir . 'MessageGroups.php';
 $wgAutoloadClasses['AliasMessageGroup'] = $dir . 'MessageGroups.php';
+$wgAutoloadClasses['RecentMessageGroup'] = $dir . 'MessageGroups.php';
+$wgAutoloadClasses['WorkflowStatesMessageGroup'] = $dir . 'MessageGroups.php';
 
 $wgAutoloadClasses['MessageCollection'] = $dir . 'MessageCollection.php';
 $wgAutoloadClasses['MessageDefinitions'] = $dir . 'MessageCollection.php';
@@ -116,7 +118,6 @@ $wgAutoloadClasses['TranslationMemoryUpdater'] = $dir . 'utils/TranslationMemory
 
 $wgAutoloadClasses['TranslateYaml'] = $dir . 'utils/TranslateYaml.php';
 
-$wgAutoloadClasses['TranslateBC'] = $dir . 'utils/CompatibilityCode.php';
 $wgAutoloadClasses['RevTag'] = $dir . 'utils/RevTag.php';
 
 $wgAutoloadClasses['MessageHandle'] = $dir . 'utils/MessageHandle.php';
@@ -194,4 +195,6 @@ $wgAutoloadClasses['TagContainer'] = $dir . 'utils/Html.php';
 $wgAutoloadClasses['ApiQueryMessageCollection'] = $dir . 'api/ApiQueryMessageCollection.php';
 $wgAutoloadClasses['ApiQueryMessageGroups'] = $dir . 'api/ApiQueryMessageGroups.php';
 $wgAutoloadClasses['ApiQueryMessageTranslations'] = $dir . 'api/ApiQueryMessageTranslations.php';
+$wgAutoloadClasses['ApiTranslationReview'] = $dir . 'api/ApiTranslationReview.php';
+$wgAutoloadClasses['ApiGroupReview'] = $dir . 'api/ApiGroupReview.php';
 /**@}*/

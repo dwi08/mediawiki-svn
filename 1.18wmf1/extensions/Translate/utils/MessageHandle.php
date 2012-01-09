@@ -35,10 +35,14 @@ class MessageHandle {
 	 */
 	public function figureMessage() {
 		if ( $this->key === null ) {
-			$text = $this->getTitle()->getDBkey();
-			$pos = strrpos( $text, '/' );
+			$title = $this->getTitle();
+			// Check if this is a valid message first
+			$ns = $title->getNamespace();
+			$text = $title->getDBkey();
+			$known = TranslateUtils::messageKeyToGroups( $ns, $text );
 
-			if ( $pos === false ) {
+			$pos = strrpos( $text, '/' );
+			if ( $known || $pos === false ) {
 				$this->code = '';
 				$this->key = $text;
 			} else {

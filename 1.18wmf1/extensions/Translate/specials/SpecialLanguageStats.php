@@ -210,22 +210,58 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 	 * Output something helpful to guide the confused user.
 	 */
 	protected function outputIntroduction() {
-		global $wgOut, $wgLang;
+		global $wgOut, $wgLang, $wgUser;
 
 		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker : new Linker;
 		$languageName = TranslateUtils::getLanguageName( $this->target, false, $wgLang->getCode() );
 		$rcInLangLink = $linker->link(
-			SpecialPage::getTitleFor( 'Recentchanges' ),
+			SpecialPage::getTitleFor( 'Translate', '!recent' ),
 			wfMsgHtml( 'languagestats-recenttranslations' ),
 			array(),
 			array(
-				'translations' => 'only',
-				'trailer' => "/" . $this->target
+				'task' => $wgUser->isAllowed( 'translate-messagereview' ) ? 'acceptqueue' : 'reviewall',
+				'language' => $this->target
 			)
 		);
 
-		$out = wfMsgExt( 'languagestats-stats-for', array( 'parse', 'replaceafter' ), $languageName, $rcInLangLink );
+		$out = wfMessage( 'languagestats-stats-for', $languageName )->rawParams( $rcInLangLink )->parseAsBlock();
 		$wgOut->addHTML( $out );
+	}
+
+	/**
+	 * If workflow states are configured, adds a workflow states column
+	 */
+	function addWorkflowStatesColumn() {
+		global $wgTranslateWorkflowStates;
+		if ( $wgTranslateWorkflowStates ) {
+			$this->states = self::getWorkflowStates();
+			$this->statemap = array_flip( array_keys( $wgTranslateWorkflowStates ) );
+			$this->table->addExtraColumn( wfMessage( 'translate-stats-workflow' ) );
+		}
+
+		return;
+	}
+
+	/**
+	 * If workflow states are configured, adds a cell with the workflow state to the row,
+	 * @param $target Whose workflow state do we want, such as language code or group id.
+	 * @return string
+	 */
+	function getWorkflowStateCell( $target ) {
+		global $wgTranslateWorkflowStates;
+		if ( $wgTranslateWorkflowStates ) {
+			$state = isset( $this->states[$target] ) ? $this->states[$target] : '';
+			$sort = isset( $this->statemap[$state] ) ? $this->statemap[$state] + 1 : -1;
+			$stateMessage = wfMessage( "translate-workflow-state-$state" );
+			$stateText = $stateMessage->isBlank() ? $state : $stateMessage->text();
+			return "\n\t\t" . $this->table->element(
+				$stateText,
+				isset( $wgTranslateWorkflowStates[$state] ) ? $wgTranslateWorkflowStates[$state] : '',
+				$sort
+			);
+		}
+
+		return '';
 	}
 
 	/**
@@ -234,6 +270,8 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 	 */
 	function getTable() {
 		$table = $this->table;
+
+		$this->addWorkflowStatesColumn();
 		$out = '';
 
 		if ( $this->purge ) {
@@ -251,8 +289,12 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 		if ( $out ) {
 			$table->setMainColumnHeader( wfMessage( 'translate-ls-column-group' ) );
 			$out = $table->createHeader() . "\n" . $out;
-			$out .= $table->makeTotalRow( wfMessage( 'translate-languagestats-overall' ), $this->totals );
 			$out .= Html::closeElement( 'tbody' );
+
+			$out .= Html::openElement( 'tfoot' );
+			$out .= $table->makeTotalRow( wfMessage( 'translate-languagestats-overall' ), $this->totals );
+			$out .= Html::closeElement( 'tfoot' );
+
 			$out .= Html::closeElement( 'table' );
 			return $out;
 		} else {
@@ -295,11 +337,19 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 	 * @return string
 	 */
 	protected function makeGroupRow( $group, $cache, $parent = false ) {
-		if ( $this->table->isBlacklisted( $group->getId(), $this->target ) !== null ) {
+		$groupId = $group->getId();
+
+		if ( $this->table->isBlacklisted( $groupId, $this->target ) !== null ) {
 			return '';
 		}
 
-		$stats = $cache[$group->getId()];
+		# These are hidden, and the code in MessageGroupStats makes sure that
+		# these are not counted in the aggregate groups they may belong.
+		if ( MessageGroups::getPriority( $group ) === 'discouraged' ) {
+			return '';
+		}
+
+		$stats = $cache[$groupId];
 
 		list( $total, $translated, $fuzzy ) = $stats;
 		if ( $total === null ) {
@@ -326,7 +376,7 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 		}
 
 		$rowParams = array();
-		$rowParams['data-groupid'] = $group->getId();
+		$rowParams['data-groupid'] = $groupId;
 		if ( is_string( $parent ) ) {
 			$rowParams['data-parentgroups'] = $parent;
 		} elseif ( $parent === true ) {
@@ -337,6 +387,36 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 		$out .= "\n\t\t" . Html::rawElement( 'td', array(),
 			$this->table->makeGroupLink( $group, $this->target, $extra ) );
 		$out .= $this->table->makeNumberColumns( $fuzzy, $translated, $total );
+		$out .= $this->getWorkflowStateCell( $groupId );
+
+		$out .= "\n\t" . Html::closeElement( 'tr' ) . "\n";
 		return $out;
+	}
+
+	protected function getWorkflowStates() {
+		$db = wfGetDB( DB_SLAVE );
+
+		switch ( $this->targetValueName ) {
+			case 'group':
+				$targetCol = 'tgr_group';
+				$selectKey = 'tgr_lang';
+				break;
+			case 'code':
+				$targetCol = 'tgr_lang';
+				$selectKey = 'tgr_group';
+				break;
+		}
+
+		$res = $db->select(
+			'translate_groupreviews',
+			array( 'tgr_state', $selectKey ),
+			array( $targetCol => $this->target ),
+			__METHOD__
+		);
+		$states = array();
+		foreach ( $res as $row ) {
+			$states[$row->$selectKey] = $row->tgr_state;
+		}
+		return $states;
 	}
 }

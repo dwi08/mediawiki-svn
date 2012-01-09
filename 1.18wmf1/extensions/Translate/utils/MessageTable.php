@@ -61,7 +61,11 @@ class MessageTable {
 	public function includeAssets() {
 		global $wgOut;
 		TranslationHelpers::addModules( $wgOut );
-		$vars = array( 'trlKeys' => array_values( $this->collection->keys() ) );
+		$pages = array();
+		foreach ( $this->collection->getTitles() as $title ) {
+			$pages[] = $title->getPrefixedDBKey();
+		}
+		$vars = array( 'trlKeys' => $pages );
 		$wgOut->addScript( Skin::makeVariablesScript( $vars ) );
 		$wgOut->addModules( 'ext.translate.messagetable' );
 	}
@@ -94,33 +98,20 @@ class MessageTable {
 	}
 
 	public function contents() {
-		global $wgUser;
-
-		$sk = $wgUser->getSkin();
-
 		$optional = wfMsgHtml( 'translate-optional' );
 
-		$batch = new LinkBatch();
-		if ( method_exists( $batch, 'setCaller' ) ) {
-			$batch->setCaller( __METHOD__ );
-		}
-
-		$ns = $this->group->getNamespace();
-
-		foreach ( $this->collection->keys() as $key ) {
-			$batch->add( $ns, $key );
-		}
-
-		$batch->execute();
+		$this->doLinkBatch();
 
 		$sourceLang = Language::factory( $this->group->getSourceLanguage() );
 		$targetLang = Language::factory( $this->collection->getLanguage() );
+		$titleMap = $this->collection->keys();
 
 		$output =  '';
+
 		$this->collection->initMessages(); // Just to be sure
 		foreach ( $this->collection as $key => $m ) {
 			$tools = array();
-			$title = $this->keyToTitle( $key );
+			$title = $titleMap[$key];
 
 			$original = $m->definition();
 
@@ -135,13 +126,13 @@ class MessageTable {
 			}
 
 			global $wgLang;
+			$niceTitle = htmlspecialchars( $wgLang->truncate( $title->getPrefixedText(), -35 ) );
 
-			$niceTitle = htmlspecialchars( $wgLang->truncate( $key, - 30 ) );
-
-			$tools['edit'] = $sk->link(
+			$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
+			$tools['edit'] = $linker->link(
 				$title,
 				$niceTitle,
-				TranslationEditPage::jsEdit( $title ),
+				TranslationEditPage::jsEdit( $title, $this->group->getId() ),
 				array( 'action' => 'edit' ) + $this->editLinkParams,
 				'known'
 			);
@@ -154,7 +145,7 @@ class MessageTable {
 				$extra = '<br />' . $optional;
 			}
 
-			$leftColumn = $anchor . $tools['edit'] . $extra;
+			$leftColumn = $this->getReviewButton( $m ) . $anchor . $tools['edit'] . $extra . $this->getReviewStatus( $m );
 
 			if ( $this->reviewMode && $original !== $message ) {
 				$output .= Xml::tags( 'tr', array( 'class' => 'orig' ),
@@ -199,13 +190,6 @@ class MessageTable {
 		}
 	}
 
-	protected function keyToTitle( $key ) {
-		$titleText = TranslateUtils::title( $key, $this->collection->code );
-		$namespace = $this->group->getNamespace();
-
-		return Title::makeTitle( $namespace, $titleText );
-	}
-
 	protected static function getLanguageAttributes( Language $language ) {
 		global $wgTranslateDocumentationLanguageCode;
 		$code = $language->getCode();
@@ -217,4 +201,75 @@ class MessageTable {
 
 		return array( 'lang' => $code, 'dir' => $dir );
 	}
+
+	protected function getReviewButton( TMessage $message ) {
+		global $wgUser;
+		$revision = $message->getProperty( 'revision' );
+		if ( !$this->reviewMode || !$wgUser->isAllowed( 'translate-messagereview' ) || !$revision ) {
+			return '';
+		}
+
+		$attribs = array(
+			'type' => 'button',
+			'class' => 'mw-translate-messagereviewbutton',
+			'data-token' => ApiTranslationReview::getToken( 0, '' ),
+			'data-revision' => $revision,
+			'name' => 'acceptbutton-' . $revision, // Otherwise Firefox disables buttons on page load
+		);
+
+		$reviewers = (array) $message->getProperty( 'reviewers' );
+		if ( in_array( $wgUser->getId(), $reviewers ) ) {
+			$attribs['value'] = wfMessage( 'translate-messagereview-done' )->text();
+			$attribs['disabled'] = 'disabled';
+			$attribs['title'] = wfMessage( 'translate-messagereview-doit' )->text();
+		} elseif ( $message->hasTag( 'fuzzy' ) ) {
+			$attribs['value'] = wfMessage( 'translate-messagereview-submit' )->text();
+			$attribs['disabled'] = 'disabled';
+			$attribs['title'] = wfMessage( 'translate-messagereview-no-fuzzy' )->text();
+		} elseif ( $wgUser->getName() === $message->author() ) {
+			$attribs['value'] = wfMessage( 'translate-messagereview-submit' )->text();
+			$attribs['disabled'] = 'disabled';
+			$attribs['title'] = wfMessage( 'translate-messagereview-no-own' )->text();
+		} else {
+			$attribs['value'] = wfMessage( 'translate-messagereview-submit' )->text();
+		}
+
+
+		$review = Html::element( 'input', $attribs );
+		return $review;
+	}
+
+	protected function getReviewStatus( TMessage $message ) {
+		global $wgUser;
+		if ( !$this->reviewMode ) {
+			return '';
+		}
+
+		$reviewers = (array) $message->getProperty( 'reviewers' );
+		if ( count( $reviewers ) === 0 ) {
+			return '';
+		}
+
+		$you = $wgUser->getId();
+		if ( in_array( $you, $reviewers ) ) {
+			if ( count( $reviewers ) === 1 ) {
+				$msg = wfMessage( 'translate-messagereview-reviewsyou' )->parse();
+			} else {
+				$msg = wfMessage( 'translate-messagereview-reviewswithyou' )->numParams( count( $reviewers ) )->parse();
+			}
+		} else {
+			$msg = wfMessage( 'translate-messagereview-reviews' )->numParams( count( $reviewers ) )->parse();
+		}
+		return Html::rawElement( 'div', array( 'class' => 'mw-translate-messagereviewstatus' ), $msg );
+	}
+
+	protected function doLinkBatch() {
+		$batch = new LinkBatch();
+		$batch->setCaller( __METHOD__ );
+		foreach ( $this->collection->getTitles() as $title ) {
+			$batch->addObj( $title );
+		}
+		$batch->execute();
+	}
+
 }

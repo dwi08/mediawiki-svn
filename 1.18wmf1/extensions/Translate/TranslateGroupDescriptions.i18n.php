@@ -36,7 +36,6 @@ $messages['en'] = array(
 	'translate-group-desc-translatablepages' => 'All translatable pages',
 
 	# Supported product message group descriptions
-	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] enables people to explore the digital cultural resources of Europe',
 	'bw-desc-freecol' => '[[Translating:FreeCol|FreeCol]] is a turn-based strategy game',
 	'bw-desc-fudforum' => '[[Translating:FUDforum|FUDforum]] is web-based discussion forum software',
 	'bw-desc-mantisbt' => '[[Translating:MantisBT|MantisBT]] is web-based issue tracking software',
@@ -59,15 +58,14 @@ $messages['en'] = array(
 	'bw-desc-openlayers' => '[[Translating:OpenLayers|OpenLayers]] is a dynamic map generator in JavaScript',
 	'bw-desc-openstreetmap' => 'All messages related to [[Translating:OpenStreetMap|OpenStreetMap]]',
 	'bw-desc-osm-site' => '[[Translating:OpenStreetMap|OpenStreetMap]] is an editable map of the whole world',
-	'bw-desc-osm-potlatch' => '[[Translating:OpenStreetMap|Potlatch]] is a Flash-based OpenStreetMap editor',
 	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] is a collection of tools to edit Wikipedia',
 	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]] is web-based Question and Answer software',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] is a microblogging server',
 	'translate-group-desc-statusnet-plugin' => 'These messages are part of a plugin for [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'A message group for [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], the i18n system for [http://toolserver.org Toolserver] tools (<span class="plainlinks">[[Translating talk:Toolserver|support]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technical details]</span>)',
-	//'bw-desc-voctrain' => '[[Translating:Voctrain|Voctrain]] is an OmegaWiki-based vocabulary trainer',
 	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] is able to quickly find the authors of a part of a page in a Wikimedia wiki',
-	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] delivers an offline, text-only version of Wikipedia on a mobile device.',
+	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] delivers an offline, text-only version of Wikipedia on a mobile device',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] is a cross-platform mobile and tablet application for reading and contributing to Wikipedia',
 );
 
 /** Message documentation (Message documentation)
@@ -94,9 +92,7 @@ $messages['qqq'] = array(
 	'bw-desc-shapado' => 'Do not translate the link target <code>Translating:Shapado</code>.',
 	'bw-desc-statusnet' => 'Do not translate the link target <code>Translating:StatusNet</code>.',
 	'translate-group-desc-statusnet-plugin' => 'Do not translate the link target <code>Translating:StatusNet</code>.',
-	'bw-desc-voctrain' => 'Do not translate the link target <code>Translating:Voctrain</code>.',
 	'bw-desc-wikiblame' => 'Do not translate the link target <code>Translating:WikiBlame</code>.',
-	'bw-desc-wikimediamobile' => 'Do not translate the link target <code>Translating:Wikimedia_mobile</code>.',
 	'bw-desc-wikireader' => 'Do not translate the link target <code>Translating:WikiReader</code>.',
 );
 
@@ -132,12 +128,7 @@ Sien [[mw:Extension:PDF Writer]] en [http://code.pediapress.com/wiki/wiki/mwlibr
 * Probeer om vertalings nie langer as die oorspronklike Engels te maak nie vanweë beperkings in die "UI-framework". Sien ook die [http://trac.openstreetmap.org/ticket/2067 onopgeloste fout].
 * Gebruik [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] vir die toets van Potlatch. U kan soveel u wil daar toets (in enige area).',
 	'bw-desc-statusnet' => "[[Translating:StatusNet|StatusNet]] is 'n oopbron mikroblog-bediener",
-	'bw-desc-voctrain' => "[http://omegawiki.org OmegaWiki]-gebaseerde woordeskatopleier. Gebruik 'n stelsel van geheuekaarte om die woordeskat van enige taal na enige ander ondersteunde taal aan te leer.
-Ontwikkel vir die Universiteit van Bamberg.
-Lisensie: GPL 2.0 of nuwer.
-Ontwikkel deur [[User:Kim Bruning]].",
 	'bw-desc-wikiblame' => "[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] is in staat om vinnig die outeurs van 'n bladsy in 'n Wikimedia-wiki te vind.",
-	'bw-desc-wikimediamobile' => 'Wikipedia mobiel kan by http://m.wikipedia.org gevind word en het ten doel om Wikipedia op "smartphones" regoor die wêreld te ondersteun.',
 	'bw-desc-wikireader' => "[[Translating:WikiReader|WikiReader]] is 'n projek wat 'n aflyn-weergawe van Wikipedia op 'n mobiele-toestel lewer.",
 );
 
@@ -153,6 +144,7 @@ $messages['aln'] = array(
 
 /** Arabic (العربية)
  * @author OsamaK
+ * @author روخو
  */
 $messages['ar'] = array(
 	'translate-group-desc-nodesc' => 'لا وصف متوفر لمجموعة الرسائل هذه',
@@ -170,6 +162,7 @@ $messages['ar'] = array(
 	'translate-group-desc-ui' => 'مجموعة رسائل علوية تحتوي كل رسائل الامتدادات المتعلقة ب[http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative مبادرة استخدامية ويكيبيديا]',
 	'translate-group-desc-translatablepages' => 'جميع الصفحات التي يمكن ترجمتها',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum] منتدى وب مكتوب بلغة PHP',
+	'translate-group-desc-mediawiki-core-branch' => 'رسائل لنسخة المستقرة من [[Translating:MediaWiki|ميديا ويكي]]',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -233,7 +226,6 @@ $messages['be-tarask'] = array(
 	'translate-group-desc-uniwiki' => 'Мэта-група паведамленьняў, якая ўтрымлівае ўсе паведамленьні для пашырэньняў зьвязаных з [http://unicefinnovation.org/wiki.php Uniwiki]',
 	'translate-group-desc-ui' => 'Група мэта-паведамленьняў, якая ўтрымлівае ўсе паведамленьні для пашырэньняў, якія адносяцца да [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Usability Initiative]',
 	'translate-group-desc-translatablepages' => 'Усе старонкі, якія магчыма перакласьці',
-	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] дае магчымасьць людзям знаёміцца з лічбавымі культурнымі крыніцамі Эўропы',
 	'bw-desc-freecol' => 'Перад тым, як перакладаць FreeCol на Вашую мову, калі ласка, прачытайце [[Translating:FreeCol]]. Freecol выкарыстоўвае ліцэнзію GPL.',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum] — рухавік для вэб-форумаў на PHP.',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] — вольная ўэб-сыстэма сачэньня за памылкамі. Калі ласка, паведамляйце пра любыя праблемы ў [[Support]].',
@@ -259,10 +251,6 @@ $messages['be-tarask'] = array(
 	'bw-desc-openstreetmap' => 'Група паведамленьняў для ўсіх паведамленьняў [[Translating:OpenStreetMap|OpenStreetMap]]',
 	'bw-desc-osm-site' => 'Гэтая група зьмяшчае паведамленьні для [[Translating:Open Street Map|Open Street Map]].
 Глядзіце [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} старонку Unicode CLDR] зь інструкцыяй фармаваньня множнага ліку.',
-	'bw-desc-osm-potlatch' => 'Гэтая група зьмяшчае паведамленьні для [[Translating:OpenStreetMap|Potlatch]]. Калі ласка:
-
-* Пры магчымасьці не рабіце паведамленьні даўжэйшымі за ангельскія; інтэрфэйс мае абмежаваньні па даўжыні радкоў. Глядзіце [http://trac.openstreetmap.org/ticket/2067 адкрытае паведамленьне пра памылку].
-* Выкарыстоўвайце [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] для праверкі Potlatch. Там Вы можаце пратэставаць неабходныя функцыі.',
 	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] — калекцыя інструмэнтаў для рэдагаваньня Вікіпэдыі',
 	'bw-desc-shapado' => 'Група паведамленьняў для вольнай плятформы пытаньняў і адказаў [[Translating:Shapado|Shapado]].',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] — сэрвэр мікраблёгаў з адкрытым кодам',
@@ -270,6 +258,7 @@ $messages['be-tarask'] = array(
 	'translate-group-desc-tsint' => 'Група паведамленьняў [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], сыстэмы перакладаў для [http://tolserver.org сэрвэра інструмэнтаў] (<span class="plainlinks">[[Translating talk:Toolserver|падтрымка]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition тэхнічныя дэталі]</span>)',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] дазваляе хутка знайсьці аўтараў пэўнай старонкі ці выказваньня ў праектах Фундацыі «Вікімэдыя».',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] — праект для аўтаномнага чытаньня тэкставай вэрсіі Вікіпэдыі для мабільных прылад.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] — крос-плятформавае мабільнае і пляншэтнае дастасаваньне для чытаньня і рэдагаваньня Вікіпэдыі',
 );
 
 /** Bulgarian (Български)
@@ -282,10 +271,7 @@ $messages['bg'] = array(
 	'bw-desc-osm-site' => 'Тази група съобщения съдържа интерфейсните съобщения за [[Translating:Open Street Map|Open Street Map]].
 Вижте [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} страницата от сайта на проект Unicode CLDR] за обяснение на ключовете за множествено число в съобщенията.',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] е сървър за микроблогване с отворен код',
-	'bw-desc-voctrain' => 'Система за речниково обучение, базирана на [http://omegawiki.org OmegaWiki]. Използва [http://bg.wikipedia.org/wiki/Флашкарта_(обучение)системата на флашкартите] за учене на думи от и на произволен език, поддържан от Omegawiki.
-Системата е създадена за университета в Бамберг и публикувана под лиценза GPL, версия 2.0 или по-късна. Разработена е от [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] може бързо да намери авторите на страница в уики на Уикимедия.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile се намира на адрес http://m.wikipedia.org и има за цел да улесни достъпа до Уикипедия от смартфони по целия свят.',
 );
 
 /** Breton (Brezhoneg)
@@ -347,10 +333,7 @@ Sellit 'ta [[mw:Extension:PDF_Writer]] hag http://code.pediapress.com/wiki/wiki/
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] zo ur servijer mikroblogiñ frank a wirioù',
 	'translate-group-desc-statusnet-plugin' => "Darn eus un astenn evit [[Translating:StatusNet|StatusNet]] eo ar c'hemennoù-mañ",
 	'translate-group-desc-tsint' => 'Ur strollad kemennadennoù evit [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], ar reizhiad etrebroadelaat ostilhoù an [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|support]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technical details]</span>)',
-	'bw-desc-voctrain' => "Pleustrer gerioù diazezet war [http://omegawiki.org OmegaWiki]. Implijout a ra ur reizhiad flashcard da zeskiñ gerioù adal nep yezh pleustret war Omegawiki.
-Gant skol-veur Bamberg eo bet savet. Aotre GPL 2.0 pe nevesoc'h. Diorroet gant [[User:Kim Bruning|Kim Bruning]].",
 	'bw-desc-wikiblame' => 'Gouest eo [http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] da gavout fonnus aozerien ur bajenn eus ur wiki Wikimedia.',
-	'bw-desc-wikimediamobile' => "Gallout a ra Wikimedia hezoug bezañ kavet war http://m.wikipedia.org hag e bal zo lakaat ar pellgomzerioù ijinek d'ober gant Wikipedia e pep lec'h dre ar bed.",
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] a zo ur raktres gantañ ar pal kinnig ur stumm testenn eus Wikipedia er mod ez linenn war un trobarzhell hezoug.',
 );
 
@@ -411,10 +394,7 @@ Pogledajte [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_p
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] je platforma otvorenog koda za mikro blogiranje',
 	'translate-group-desc-statusnet-plugin' => 'Ove poruke su dio priključka za [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Grupa poruka za [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], i18n sistem za [http://toolserver.org Toolserver] alate (<span class="plainlinks">[[Translating talk:Toolserver|podrška]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition tehnički detalji]</span>)',
-	'bw-desc-voctrain' => 'Riječnički trener zasnovan na Omegawiki. Koristi sistem flashcard za učenje riječi sa bilo kojeg jezika na drugi jezik koji omogućuje Omegawiki.
-Napravljeno na Univerzitetu Bamberg. Licencirano pod GPL 2.0 ili kasnijom. Razvijeno od strane korisnika [[User:Kim Bruning]].',
 	'bw-desc-wikiblame' => 'Putem [http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] je moguće brzo pronaći autore stranica u Wikimedia wikijima.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile se može naći na http://m.wikipedia.org i cilj joj je da dovede Wikipediju na smartfone širom svijeta.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] je projekat koji ima za cilj da omogući vanmrežnu tekstualnu verziju Wikipedije na mobilnim uređajima.',
 );
 
@@ -427,7 +407,6 @@ $messages['ca'] = array(
 	'bw-desc-mantisbt' => "[http://www.mantisbt.org MantisBT] és un sistema de gestió d'errors via web. Si us plau, informeu de qualsevol problema a [[Support]].",
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] és un client de correu electrònic desenvolupat en PHP. Si us plau, informeu de qualsevol problema a [[Support]].',
 	'bw-desc-openlayers' => 'OpenLayers és un programa lliure de generació dinàmica de mapes. Si us plau, informeu de qualsevol incidència a [[support]].',
-	'bw-desc-wikimediamobile' => 'Wikimedia mòbil es pot trobar a http://m.wikipedia.org i pretén portar la Viquipèdia als telèfons mòbils arreu del món.',
 );
 
 /** Czech (Česky)
@@ -486,11 +465,9 @@ Vysvětlení klíčů u funkce PLURAL najdete na [http://unicode.org/repos/cldr-
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] je open-source mikroblovací server',
 	'translate-group-desc-statusnet-plugin' => 'Tyto zprávy jsou částí modulu pro [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Skupina zpráv pro [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], lokalizační systém pro nástroje na [http://toolserver.org Toolserveru] (<span class="plainlinks">[[Translating talk:Toolserver|podpora]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technické podrobnosti]</span>)',
-	'bw-desc-voctrain' => 'Program pro výuku slovíček založený na [http://omegawiki.org OmegaWiki]. Používá systém učebních kartiček k výuce slovíček z libovolného jazyka v libovolném jazyce podporovaném na Omegawiki.
-Vytvořeno pro Univerzitu v Bamberku. Licencováno pod GPL 2.0 nebo novější. Autorem je [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] dokáže rychle zjistit autory libovolné stránky na wiki nadace Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile sídlí na http://m.wikipedia.org a pomáhá dostat Wikipedii do podporovaných smartphonů po celém světě.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] je projekt nabízející offline čistě textovou verzi Wikipedie pro mobilní zařízení.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] je mnohoplatformní mobilní a tabletová aplikace pro čtení Wikipedie a přispívání do ní',
 );
 
 /** Danish (Dansk)
@@ -609,11 +586,9 @@ Hinweis:
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] ist ein Open-Source-Mikroblogging-Server',
 	'translate-group-desc-statusnet-plugin' => 'Diese Nachrichten gehören zu einem Plug-in von [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Nachrichtengruppe für [http://toolserver.org/~krinkle/TsIntuition „Toolserver Intuition“], das I18N-System für die auf dem [http://toolserver.org Toolserver] gehosteten Hilfsprogramme. (<span class="plainlinks">[[Translating talk:Toolserver|Hilfe]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technische Hinweise]</span>)',
-	'bw-desc-voctrain' => 'Omegawiki-basierender Vokabeltrainer. Mithilfe eines Flashkartensystems können Vokabeln zwischen jeder Sprache zu jeder von Omagawiki unterstützten Sprache gelernt werden.
-Erstellt von der Universität Bamberg. Lizenziert unter GPL 2.0 oder später. Entwickelt von [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] ermöglicht das schnelle Finden eines Autoren einer Seite auf Wikis der Wikimedia Foundation.',
-	'bw-desc-wikimediamobile' => 'Die mobile Version von Wikipedia hat das Ziel, Wikipedia auf Smartphones rund um die Welt zu bringen. Du kannst sie unter http://m.wikipedia.org erreichen.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] ist ein Projekt für eine offline, nur-Text-Version der Wikipedia auf Kleingeräte.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] ist eine plattformübergreifende Mobiltelefon- und Tablet-PC-Applikation zum Lesen und Bearbeiten der Wikipedia',
 );
 
 /** Lower Sorbian (Dolnoserbski)
@@ -662,10 +637,7 @@ Pšosym glědaj [[mw:Extension:PDF_Writer]] a http://code.pediapress.com/wiki/wi
 	'bw-desc-shapado' => 'Kupka powěźeńkow za zjawnje k dispoziciji stojecu softwaru Q&A [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] jo serwer za mikroblogowanje ze zjawnym žrědłowym kodom',
 	'translate-group-desc-statusnet-plugin' => 'Toś te powěźeńki su źěl tykaca za [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Treněrowak wokablow na zakłaźe [http://omegawiki.org OmegaWiki]. Wužywa system flashcard za wuknjenje wokablow z někakeje rěcy do rěcy, kótaruž OmegaWiki pódpěrujo.
-Za Uniwersitu Bamberg napórany. Stoj pód licencu GPL 2.0 abo wušej. Wót [[User:Kim Bruning|Kima Bruninga]] wuwity.',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] móžo awtorow boka we wikiju Wikimedije malsnje namakaś.',
-	'bw-desc-wikimediamobile' => 'Mobilna Wikimedija dajo se na http://m.wikipedia.org namakaś a ma zaměr Wikipediju na smartfonach na cełem swěśe pódprěś',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] jo projekt, kótaryž stoj tekstowu wersiju Wikipedije offline na mobilnem rěźe k dispoziciji.',
 );
 
@@ -691,10 +663,7 @@ $messages['el'] = array(
 * Προσπαθήστε να κρατήσετε τις μεταφράσεις σας παρόμοιες όσο το δυνατόν στο μήκος του αγγλικού πρωτότυπου, λόγω περιορισμών πλαισίου UI. Επίσης δείτε το [http://trac.openstreetmap.org/ticket/2067 ανοικτή σφάλμα].
 * Χρησιμοποιήστε το [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] για δοκιμή του Potlatch. Μπορείτε να δοκιμάσετε εκεί όλα όσα θέλετε σε οποιαδήποτε περιοχή.',
 	'bw-desc-statusnet' => 'Το [[Translating:StatusNet|StatusNet]] είναι ένας εξυπηρετητής ανοικτού λογισμικού microblogging',
-	'bw-desc-voctrain' => 'Με βάση το [http://omegawiki.org OmegaWiki] εκπαιδευτής λεξιλογίου. Χρησιμοποιεί ένα σύστημα flashcard για να μάθει λεξιλόγιο από οποιαδήποτε γλώσσα σε οποιαδήποτε από τις γλώσσες που υποστηρίζονται από το Omegawiki.
-Δημιουργήθηκε για το Πανεπιστήμιο του Bamberg. Έχει λάβει άδεια GPL 2.0 ή νεότερη έκδοση. Αναπτυγμένο από το [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => 'Το [http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] είναι σε θέση να βρει γρήγορα τους συντάκτες μιας σελίδας σε ένα wiki Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Το Wikimedia mobile μπορεί να βρεθεί στο http://m.wikipedia.org και αποσκοπεί να φέρει τη Βικιπαίδεια σε θέση να υποστηρίζει smartphones σε όλο τον κόσμο.',
 	'bw-desc-wikireader' => 'Το [[Translating:WikiReader|WikiReader]] είναι ενα εγχείρημα για παράδοση μιας εκτός σύνδεσης, μόνο κειμένου έκδοσης της Βικιπαίδειας σε μια κινητή συσκευή.',
 );
 
@@ -725,6 +694,7 @@ $messages['eo'] = array(
  * @author Locos epraix
  * @author Peter17
  * @author Translationista
+ * @author Vivaelcelta
  */
 $messages['es'] = array(
 	'translategroupdescriptions-desc' => 'Descripciones de los grupos de mensajes de los productos compatibles con la extensión [http://mediawiki.org/wiki/Extension:Translate Translate]',
@@ -735,6 +705,7 @@ $messages['es'] = array(
 	'translate-group-desc-collection' => 'Grupo de mensajes Meta conteniendo todos los mensajes para la extensión MediaWiki [http://www.mediawiki.org/wiki/Extension:Collection Collection]',
 	'translate-group-desc-flaggedrevs' => 'Grupo de mensajes Meta conteniendo todos los mensajes para la extensión MediaWiki [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
 	'translate-group-desc-readerfeedback' => 'Grupo de mensajes Meta conteniendo todos los mensajes para la extensión MediaWiki [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
+	'translate-group-desc-semantic' => 'Grupo de mensajes meta que contienen todos los mensajes de las extensiones de [http://semantic-mediawiki.org/ Semantic MediaWiki]',
 	'translate-group-desc-socialprofile' => 'Grupo de mensajes Meta conteniendo todos los mensajes para extensiones relacionadas a la extensión MediaWiki [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
 	'translate-group-desc-translate' => 'Grupo de mensajes Meta conteniendo todos los mensajes para la extensión MediaWiki [http://www.mediawiki.org/wiki/Extension:Translate Translate]',
 	'translate-group-desc-wikiaextensions' => 'Grupo de mensajes Meta conteniendo todos los mensajes para extensiones MediaWiki soportadas usadas por [http://www.wikia.com Wikia]',
@@ -746,17 +717,18 @@ $messages['es'] = array(
 	'bw-desc-freecol' => 'Antes de traducir FreeCol a tu idioma, por favor lee [[Translating:FreeCol]]. Freecol usa la licencia GPL.',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], un foro web escrito en PHP.',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] es un sistema de corrección de errores libre basado en web. Por favor reporta cualquier problema en [[Support]].',
+	'translate-group-desc-eol' => 'Grupo de mensajes de la [[Translating:EOL|Enciclopedia de la vida]]',
 	'translate-group-desc-mantisbt-plugin-core' => 'Un complemento nuclear para [[Translating:MantisBT|MantisBT]]',
 	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] es un sistema de información de gestión (MIS) para microfinanzas',
 	'bw-desc-mwlibrl' => "'''mwlib.rl''' es una biblioteca python para escribir documentos PDF de artículos MediaWiki los cuales fueron analizados por la biblioteca mwlib.
 
 Por favor mira [[mw:Extension:PDF_Writer]] y http://code.pediapress.com/wiki/wiki/mwlibrl para mayor información.",
-	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] es un cliente de correo basado en web escrito en PHP. Por favor reporta cualquier problema en [[Support]].',
+	'bw-desc-nocc' => '[[Translating:NOCC|NOCC]] es un cliente de correo web escrito en PHP.',
 	'translate-group-desc-okawix' => '[[Translating:Okawix|Okawix]] es un lector de Wikipedia sin conexión',
 	'bw-desc-openlayers' => 'OpenLayers es un generador de mapas dinámico de fuente abierta. Por favor reporta cualquier problema en [[support]].',
 	'bw-desc-openstreetmap' => 'Grupo de mensajes para todos los mensajes de [[Translating:OpenStreetMap|OpenStreetMap]]',
 	'bw-desc-osm-site' => 'Este grupo de mensajes contiene los mensajes de interfaz para [[Translating:Open Street Map|Open Street Map]]',
-	'bw-desc-osm-potlatch' => 'Este grupo de mensajes contiene los mensajes de la interfaz para [[Translating:OpenStreetMap|Potlatch]]. Por favor: 
+	'bw-desc-osm-potlatch' => 'Este grupo de mensajes contiene los mensajes de la interfaz para [[Translating:OpenStreetMap|Potlatch]]. Por favor:
 
 * Trate de mantener sus traducciones similares en longitud al original en inglés tanto como posible a causa de las restricciones de la interfaz de usuario. Véase también este [http://trac.openstreetmap.org/ticket/2067 bug].
 * Utilice [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] para probar Potlatch. Allí puede probar todo lo que desee en cualquier área.',
@@ -764,10 +736,7 @@ Por favor mira [[mw:Extension:PDF_Writer]] y http://code.pediapress.com/wiki/wik
 	'bw-desc-shapado' => 'Grupo de mensajes para el sofware Q&A de fuente libre y abierta [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] es un servidor de microblogueo de fuente abierta',
 	'translate-group-desc-statusnet-plugin' => 'Estos mensajes forman parte de un complemento para [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Entrenador de vocabulario basado en [http://omegawiki.org OmegaWiki]. Usa un sistema flashcard para aprender vocabulario de cualquier idioma soportado por Omegawiki.
-Creado por la Universidad de Bamberg. Licenciado GPL 2.0 o posterior. Desarrollado por [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] es capaz de encontrar rápidamente los autores de una página en una wiki de Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile puede ser encontrada en http://m.wikipedia.org y permite llevar Wikipedia a Smartphones soportados alrededor del mundo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] es un proyecto para proveer una versión offline, sólo texto de Wikipedia para dispositivos móviles.',
 );
 
@@ -811,6 +780,8 @@ $messages['fi'] = array(
 
 /** French (Français)
  * @author Crochet.david
+ * @author DavidL
+ * @author Gomoko
  * @author Houcinee1
  * @author IAlex
  * @author Jean-Frédéric
@@ -823,22 +794,22 @@ $messages['fi'] = array(
  * @author Xapitoun
  */
 $messages['fr'] = array(
-	'translategroupdescriptions-desc' => "Descriptions des groupes de messages pour les produits pris en charge par l'[http://mediawiki.org/wiki/Extension:Translate extension Translate]",
+	'translategroupdescriptions-desc' => "Descriptions des groupes de messages pour les produits pris en charge par l'[//mediawiki.org/wiki/Extension:Translate extension Translate]",
 	'translate-group-desc-nodesc' => 'Aucune description n’est disponible pour ce groupe de messages',
 	'translate-group-desc-mediawikicore' => 'Ce groupe de messages contient les messages utilisés dans la version alpha actuelle de MediaWiki ({{CURRENTVERSION}}).',
-	'translate-group-desc-mediawikimostused' => 'Ce groupe de messages contient les [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 messages les plus souvent utilisés] dans MediaWiki.',
+	'translate-group-desc-mediawikimostused' => 'Ce groupe de messages contient les [//translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 messages les plus souvent utilisés] dans [[Translating:MediaWiki|MediaWiki]].',
 	'translate-group-desc-mediawikiextensions' => 'Ce méta-groupe de messages contient les messages de toutes les extensions pour MediaWiki supportées.',
-	'translate-group-desc-collection' => 'Ce méta-groupe de messages contient tous les messages de l’extension MediaWiki [http://www.mediawiki.org/wiki/Extension:Collection Collection].',
-	'translate-group-desc-flaggedrevs' => 'Groupe des messages Meta contenant tous les messages de l’extension MediaWiki [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
-	'translate-group-desc-readerfeedback' => 'Groupe des messages Meta contenant tous les messages de l’extension MediaWiki [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
+	'translate-group-desc-collection' => 'Ce méta-groupe de messages contient tous les messages de l’extension MediaWiki [//www.mediawiki.org/wiki/Extension:Collection Collection].',
+	'translate-group-desc-flaggedrevs' => 'Groupe des messages Meta contenant tous les messages de l’extension MediaWiki [//www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
+	'translate-group-desc-readerfeedback' => 'Groupe des messages Meta contenant tous les messages de l’extension MediaWiki [//www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
 	'translate-group-desc-semantic' => 'Groupe de message de Meta contenant tous les messages pour toutes les extensions [http://semantic-mediawiki.org/ Semantic MediaWiki]',
-	'translate-group-desc-socialprofile' => 'Groupe des messages Meta contenant tous les messages des extensions liées à l’extension MediaWiki [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
-	'translate-group-desc-translate' => 'Groupe des messages Meta contenant tous les messages de l’extension MediaWiki [http://www.mediawiki.org/wiki/Extension:Translate Translate]',
+	'translate-group-desc-socialprofile' => 'Groupe des messages Meta contenant tous les messages des extensions liées à l’extension MediaWiki [//www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
+	'translate-group-desc-translate' => 'Groupe des messages Meta contenant tous les messages de l’extension MediaWiki [//www.mediawiki.org/wiki/Extension:Translate Translate]',
 	'translate-group-desc-wikiaextensions' => 'Ce méta-groupe de messages contient tous les messages des extensions MediaWiki utilisées par [http://www.wikia.com Wikia].',
-	'translate-group-desc-wikimediaextensions' => 'Ce méta-groupe de messages contient tous les messages des extensions MediaWiki utilisées par la [http://wikimedia.org/ Wikimedia Foundation].',
-	'translate-group-desc-wikimediaextensions-main' => 'Groupe de messages méta comprenant tous les messages pour les extensions MediaWiki supportées et qui doivent être traduits pour le [http://meta.wikimedia.org/wiki/Language_committee Comité des langues] de Wikimedia',
+	'translate-group-desc-wikimediaextensions' => 'Ce méta-groupe de messages contient tous les messages des extensions MediaWiki utilisées par la [//wikimedia.org/ Wikimedia Foundation].',
+	'translate-group-desc-wikimediaextensions-main' => 'Groupe de messages méta comprenant tous les messages pour les extensions MediaWiki supportées et qui doivent être traduits pour le [//meta.wikimedia.org/wiki/Language_committee Comité des langues] de Wikimedia',
 	'translate-group-desc-uniwiki' => 'Meta groupe de messages contenant tous les messages pour les extensions apparentées à [http://unicefinnovation.org/wiki.php Uniwiki]',
-	'translate-group-desc-ui' => 'Groupe de messages Meta contenant tous les messages des extensions liées à [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Usability Initiative]',
+	'translate-group-desc-ui' => 'Groupe de messages Meta contenant tous les messages des extensions liées à [//meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Usability Initiative]',
 	'translate-group-desc-translatablepages' => 'Toutes les pages traductibles',
 	'translate-group-desc-europeana' => "[[Translating:Europeana|Europeana]] offre d'explorer les ressources culturelles numériques de l'Europe",
 	'bw-desc-freecol' => 'Avant de traduire FreeCol dans votre langue, veuillez lire [[Translating:FreeCol]]. Freecol est publié sous licence GPL.',
@@ -873,11 +844,9 @@ Veuillez consulter [[mw:Extension:PDF Writer]] et http://code.pediapress.com/wik
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] est un serveur de microblogging en source ouverte',
 	'translate-group-desc-statusnet-plugin' => 'Les messages font partie d’une extension pour [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Un groupe de messages pour [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], le système d\'internationalisation des outils du [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|support]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition détails techniques]</span>)',
-	'bw-desc-voctrain' => 'Entraîneur de vocabulaire basé sur [http://omegawiki.org OmegaWiki]. Utilise un système à base de cartes flash pour apprendre le vocabulaire de n’importe quel langue vers n’importe quelle langue prise en charge par Omegawiki.
-Créé pour l’Université de Bamberg. Publié sous licence GPL 2.0 ou plus récent. Développé par [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] permet de trouver rapidement les auteurs d’une page dans un wiki de Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia Mobile peut être trouvé à http://m.wikipedia.org et a pour but de faciliter l’accès à Wikipédia sur les téléphones mobiles supportés à travers le monde.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] est un projet visant à offrir une version texte de Wikipedia en mode hors connexion sur un périphérique mobile.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] est une application pour mobile et tablette inter-plateformes pour la lecture et la contribution à Wikipédia',
 );
 
 /** Franco-Provençal (Arpetan)
@@ -900,7 +869,7 @@ $messages['frp'] = array(
 	'translate-group-desc-translatablepages' => 'Totes les pâges a traduire',
 	'bw-desc-freecol' => 'Devant que traduire FreeCol dens voutra lengoua, volyéd liére [[Translating:FreeCol]]. FreeCol utilise la licence GPL.',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], un barjacâjo vouèbe ècrit en PHP.',
-	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] est un sistèmo abado por la survelyence sur lo Malyâjo de les cofieries. Volyéd raportar tôs los problèmos dessus [[Support|Assistance]].',
+	'bw-desc-mantisbt' => '[[Translating:MantisBT|MantisBT]] est una programeria libra por la survelyence sur lo Malyâjo de les cofieries.',
 	'translate-group-desc-eol' => 'Una tropa de mèssâjos por l’[[Translating:EOL|Enciclopèdia de la via]].',
 	'translate-group-desc-ihris' => 'Una tropa de mèssâjos por [[Translating:iHRIS|iHRIS]].',
 	'translate-group-desc-ihris-common' => 'Una tropa de mèssâjos por [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], un modulo de [[Translating:iHRIS|iHRIS]].',
@@ -919,14 +888,11 @@ Vêde [[mw:Extension:PDF_Writer]] et pués http://code.pediapress.com/wiki/wiki/
 Vêde la [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} pâge de l’Unicode CLDR por una èxplicacion de l’usâjo des plurâls].',
 	'bw-desc-osm-potlatch' => 'Ceta tropa de mèssâjos contint los mèssâjos de l’entèrface de [[Translating:OpenStreetMap|Potlatch]]. Volyéd :
 
-* tâchiér de fâre des traduccions de longior pariére a l’originâl anglès, a côsa de rèstriccions de l’entèrface utilisator. Vêde lo [http://trac.openstreetmap.org/ticket/2067 rapôrt de cofierie].
+* tâchiér de fâre des traduccions de longior pariére a l’originâl anglès, a côsa de rèstriccions de l’entèrface usanciér. Vêde lo [http://trac.openstreetmap.org/ticket/2067 rapôrt de cofierie].
 * utilisar [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] por èprovar Potlatch. Vos pouede èprovar tant que vos lo voléd dens una zona quinta que seye.',
-	'bw-desc-shapado' => 'Ceta tropa de mèssâjos contint los mèssâjos de la programeria abada et a sôrsa uvèrta de quèstions / rèponses [[Translating:Shapado|Shapado]].',
+	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]] est una programeria libra de quèstions et rèponses.',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] est un sèrvor de microblogging a sôrsa uvèrta.',
-	'bw-desc-voctrain' => 'Entrênor de vocabulèro basâ dessus [http://omegawiki.org OmegaWiki]. Utilise un sistèmo a bâsa de cârtes flash por aprendre lo vocabulèro d’una lengoua quinta que seye de vers una lengoua recognua per OmegaWiki quinta que seye.
-Fêt por l’Univèrsitât de Bamberg. Publeyê desot licence GPL 2.0 ou ben ples novél. Dèvelopâ per [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] pèrmèt de trovar rêdo los ôtors d’una pâge dens un vouiqui de Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobilo pôt étre trovâ a http://m.wikipedia.org et at por fin de facilitar l’accès a Vouiquipèdia sur los enfatâblos recognus a travèrs lo mondo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] est un projèt visent a semondre una vèrsion tèxto de Vouiquipèdia en defôr de legne sur un pèrifèrico mobilo.',
 );
 
@@ -992,14 +958,13 @@ Por favor, bótelle unha ollada a [[mw:Extension:PDF_Writer]] e a http://code.pe
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] é un servidor de mensaxes de blogue curtas de código aberto',
 	'translate-group-desc-statusnet-plugin' => 'Estas mensaxes forman parte dun complemento do [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Un grupo de mensaxes para o [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], o sistema i18n das ferramentas do [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|axuda]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition detalles técnicos]</span>)',
-	'bw-desc-voctrain' => 'Adestrador de vocabulario baseado en Omegawiki. Usa un sistema de tarxetas para aprender vocabulario de calquera lingua a calquera lingua soportado por Omegawiki.
-Extensión creada pola Universidade de Bamberg. Licenza GPL 2.0 ou posterior. Desenvolvido por [[User:Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php?user_lang=gl Wikiblame] é capaz de atopar rapidamente os autores dunha páxina nun wiki da Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia móbil pódese atopar en http://gl.m.wikipedia.org e pretende que a Wikipedia sexa accesible desde teléfonos móbiles en todo o mundo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] é un proxecto para ollar unha versión da Wikipedia sen conexión e en modo de só lectura nun dispositivo móbil.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] é unha aplicación para dispositivos móbiles e tabletas para ler e colaborar na Wikipedia',
 );
 
 /** Swiss German (Alemannisch)
+ * @author Als-Chlämens
  * @author Als-Holder
  */
 $messages['gsw'] = array(
@@ -1011,6 +976,7 @@ $messages['gsw'] = array(
 	'translate-group-desc-collection' => 'In däre Hauptgruppe het s alli Syschtemnochrichte fir d MediaWiki-Erwyterig [http://www.mediawiki.org/wiki/Extension:Collection Collection]',
 	'translate-group-desc-flaggedrevs' => 'In däre Hauptgruppe het s alli Syschtemnochrichte fir d MediaWiki-Erwyterig [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
 	'translate-group-desc-readerfeedback' => 'Meta-Nochrichte-Gruppe, wu s alli Nochrichte din het fir d MediaWiki-Erwyterig [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
+	'translate-group-desc-semantic' => 'In dere Meta Mäldigsgruppe sin alli Systemmädlige für d MediaWiki-Erwyyterig [http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startsyte Semantic MediaWiki] un de Erwyyterige wo dört yybunde sin',
 	'translate-group-desc-socialprofile' => 'In däre Hauptgruppe het s alli Syschtemnochrichte fir verwandti Erwyterige vu dr MediaWiki-Erwyterig  f[http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
 	'translate-group-desc-translate' => 'In däre Hauptgruppe het s alli Syschtemnochrichte fir d MediaWiki-Erwyterig [http://www.mediawiki.org/wiki/Extension:Translate Translate]',
 	'translate-group-desc-wikiaextensions' => 'In däre Hauptgruppe het s alli Syschtemnochrichte vu dr unterstitzte MediaWiki-Erwyterige, wu vu  [http://www.wikia.com Wikia] brucht wäre',
@@ -1023,12 +989,15 @@ $messages['gsw'] = array(
 	'bw-desc-freecol' => 'Voreb Du aafangsch mit Ibersetze vu FreeCol, liis bitte zerscht [[Translating:FreeCol]]. Freecol nutzt d GPL-Lizänz.',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], e Netzforum, wu in PHP gschriben isch.',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] isch e webbasiert Bug-Tracking-Syschtem. Iber Probläm sott uf [[Support]] berichtet wäre.',
+	'translate-group-desc-eol' => 'Mäldigsgruppe für [[Translating:EOL|Läbens-Enzyklopädi]]',
 	'translate-group-desc-ihris' => 'Nochrichte fir [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-common' => 'Nochrichte fir [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], eme Modul vu [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-i2ce' => 'Nochrichte fir [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], eme Modul vu [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-manage' => 'Nochrichte fir [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], eme Modul vu [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-qualify' => 'Nochrichte fir [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]],, eme Modul vu [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-kiwix' => 'Mäldige fir [[Translating:Kiwix|Kiwix]]',
 	'translate-group-desc-mantisbt-plugin-core' => 'E Haupt-Plugin fir [[Translating:MantisBT|MantisBT]]',
+	'translate-group-desc-mediawiki-core-branch' => 'Nochrichte fir e stabil Version vu [[Translating:MediaWiki|MediaWiki]]',
 	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] isch e Management-Informationssyschtem fir Mikrofinanze',
 	'bw-desc-mwlibrl' => "'''mwlib.rl''' isch e Python-Bibliothek zum Schrybe vu PDF-Dokumänt us MediaWiki-Artikel, wu dur d mwlib-Bibliothek parsed wore sin.
 
@@ -1049,10 +1018,8 @@ Bitte lueg uf [[mw:Extension:PDF_Writer]] un uf http://code.pediapress.com/wiki/
 	'bw-desc-shapado' => 'Syschtemnaochrichte vu [[Translating:Shapado|Shapado]], ere freje Open-Source-Software fir Froge un Antworte',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] isch e Opensource-Mikroblog-Server',
 	'translate-group-desc-statusnet-plugin' => 'Die Noorichte ghere zuen eme Plug-in vu [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Omegawiki-basierte Vokabeltrainer. Mithilf vun eme Flashchartesyschtem chenne Vokable vu jedere Sproch zue jedere vu Omagawiki unterstitzte Sproch glehrt wäre.
-Aagleit vu dr Universität Bamberg. Lizänziert unter GPL 2.0 oder speter. Entwicklet vum [[User:Kim Bruning|Kim Bruning]].',
+	'translate-group-desc-tsint' => 'Mäldigsgruppe für [http://toolserver.org/~krinkle/TsIntuition „Toolserver Intuition“], s I18N-System für d Hilfsprogramm wo uffem [http://toolserver.org Toolserver] ghoschtet sin. (<span class="plainlinks">[[Translating talk:Toolserver|Hilf]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technischi Hywyys]</span>)',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] cha d Autore vun ere Syte im e Wikimedia-Wiki schnäll uusefinde.',
-	'bw-desc-wikimediamobile' => 'Di mobil Version vu dr Wikipedia findsch unter http://m.wikipedia.org. Si het s Ziil, Wikipedia uf Smartphones rund um d Wält z bringe.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] isch e Projäkt, wu ne Offline-Textversion vu dr Wikipedia fir e Mobilservice z Verfiegig stellt.',
 );
 
@@ -1108,10 +1075,9 @@ $messages['he'] = array(
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] הוא שרת מיקרובלוגים.',
 	'translate-group-desc-statusnet-plugin' => 'ההודעות האלו הן חלק מתוסף עבור [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'קבוצת הודעות ל־[http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], מערכת התרגום עבור כלי [http://toolserver.org Toolserver‏ (<span class="plainlinks">[[Translating talk:Toolserver|תמיכה]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition פרטים טכניים]</span>)',
-	'bw-desc-voctrain' => '[[Translating:Voctrain|Voctrain]] הוא מאמן אוצר מילים מבוסס אומגה־ויקי',
 	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] מסוגל לזהות את הכותבים של חלק מדף האתר ויקי של ויקימדיה',
-	'bw-desc-wikimediamobile' => '[[Translating:Wikimedia_mobile|Wikimedia mobile]] הוא ממשק ויקיפדיה עבור מכשירים ניידים',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] מביא גרסת טקסט של ויקיפדיה למכשיר נייד.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] הוא יישום מרובה־פלטפורמות לקריאה ועריכה של ויקיפדיה במכשירים ניידים ובמחשבי לוח',
 );
 
 /** Croatian (Hrvatski)
@@ -1147,6 +1113,7 @@ $messages['hsb'] = array(
 	'translate-group-desc-collection' => 'Hłowna skupina, kotraž wšě zdźělenki za rozšěrjenje MediaWiki [http://www.mediawiki.org/wiki/Extension:Collection Collection] wobsahuje',
 	'translate-group-desc-flaggedrevs' => 'Hłowna skupina, kotraž wšě zdźělenki za rozšěrjenje MediaWiki [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs] wobsahuje',
 	'translate-group-desc-readerfeedback' => 'Metaskupina powěsćow, kotraž wšě powěsće za rozšěrjenje MediaWiki [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback] wobsahuje',
+	'translate-group-desc-semantic' => 'Hłowna zdźělenska skupina, kotraž wšě zdźělenki za wšě rozšěrjenja [http://semantic-mediawiki.org/ Semantic MediaWiki] wobsahuje',
 	'translate-group-desc-socialprofile' => 'Hłowna skupina, kotraž wšě zdźělenki za rozšěrjenja wobsahuje, kotrež su z rozšěrjenjom [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile] přiwuzne',
 	'translate-group-desc-translate' => 'Hłowna skupina, kotraž wšě zdźělenki za rozšěrjenje MediaWiki [http://www.mediawiki.org/wiki/Extension:Translate Translate] wobsahuje',
 	'translate-group-desc-wikiaextensions' => 'Hłowna skupina, kotraž wšě zdźělenki za podpěrowane rozšěrjenja MediaWiki wobsahuje, kotrež so wot [http://www.wikia.com Wikia] wužiwaja',
@@ -1157,14 +1124,17 @@ $messages['hsb'] = array(
 	'translate-group-desc-translatablepages' => 'Wšě přełožujomne strony',
 	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] zmóžnja ludźom digitalne kulturne resursy Europy přeslědźić.',
 	'bw-desc-freecol' => 'Prjedy hač přełožuješ FreeCol do swojeje rěče, přečitaj prošu [[Translating:FreeCol]]. FreeCol wužiwa licencu GPL.',
-	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], webforum, spisany w PHP.',
+	'bw-desc-fudforum' => '[[Translating:FUDforum|FUDforum]] je webforum spisany w PHP.',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] je swobodny system na zakładźe weba za slědowanje programowych zmylkow. Zdźěl prošu problemy na stronje [[Support|Podpěra]].',
+	'translate-group-desc-eol' => 'Zdźělenska skupina za [[Translating:EOL|Encyclopedia of Life]]',
 	'translate-group-desc-ihris' => 'Skupina powěsćow za [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-common' => 'Skupina powěsćow za [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], modul za [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-i2ce' => 'Skupina powěsćow za [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], modul za [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-manage' => 'Skupina powěsćow za [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], modul za [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-qualify' => 'Skupina powěsćow za [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]], modul za [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-kiwix' => 'Zdźělenska skupina za [[Translating:Kiwix|Kiwix]]',
 	'translate-group-desc-mantisbt-plugin-core' => 'Hłowny tykač za [[Translating:MantisBT|MantisBT]]',
+	'translate-group-desc-mediawiki-core-branch' => 'Zdźělenki za stabilnu wersiju [[Translating:MediaWiki|MediaWiki]]',
 	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] je zarjadowanski informaciski system za mikrofinancne institucije',
 	'bw-desc-mwlibrl' => "'''mwlib.rl''' je pythonowa biblioteka za wutworjenje PDF-dokumentow z nastawkow MediaWiki, kotrež buchu přez biblioteku mwlib analyzowane.
 
@@ -1176,7 +1146,7 @@ Prošu hlej [[mw:Extension:PDF_Writer]] a http://code.pediapress.com/wiki/wiki/m
 	'translate-group-desc-openimages-all' => 'Tute zdźělenki su dźěl projekta [[Translating:Open Images|Open Images]]',
 	'bw-desc-openlayers' => 'OpenLayers je dynamiski generator kartow ze zjawnym žórłowym kodom. Prošu zdźěl problemy na stronje [[Support|Podpěra]]',
 	'bw-desc-openstreetmap' => 'Skupina zdźělenkow za wšě zdźělenki z [[Translating:OpenStreetMap|OpenStreetMap]]',
-	'bw-desc-osm-site' => 'Tuta skupina zdźělenkow wobsahuje zdźělenki wužiwarskeho powjercha za [[Translating:Open Street Map|Open Street Map]]',
+	'bw-desc-osm-site' => 'Zdźělenki wužiwarskeho powjercha za [[Translating:OpenStreetMap|OpenStreetMap]], wobdźěłujomnu kartu cyłeho swěta',
 	'bw-desc-osm-potlatch' => 'Tuta skupina zdźělenkow wobsahuje zdźělenki za powjerch programa [[Translating:Open Street Map|Potlatch]]. Prošu:
 
 * Spytaj swoje přełožki tak dołho kaž jendźelski original dźeržeć, dla wobmjezowanjow  za system wužiwarskeho powjercha. Hlej tež [http://trac.openstreetmap.org/ticket/2067 wotewrjeny problem].
@@ -1185,11 +1155,10 @@ Prošu hlej [[mw:Extension:PDF_Writer]] a http://code.pediapress.com/wiki/wiki/m
 	'bw-desc-shapado' => 'Skupina zdźělenkow za zjawnje k dispoziciji stejacu softwaru Q&A [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] je serwer za mikroblogowanje ze zjawnym žórłowym kodom',
 	'translate-group-desc-statusnet-plugin' => 'Tute zdzělenki su dźěl tykača za [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Trenowak wokablow z OmegaWiki. Wužiwa system flashcard za wuknjenje wokablow z někajkeje rěče do rěče, kotruž OmegaWiki podpěruje.
-Za uniwersitu Bamberg wutworjeny. Pod licencu GPL 2.0 abo wyše licencowany. Wot [[User:Kim Bruning|Kima Bruninga]] wuwity.',
+	'translate-group-desc-tsint' => 'Zdźělenska skupina za [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], i18n-system za nastroje [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|podpěra]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition techniske podrobnosće]</span>)',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] móže awtorow nastawka we wikiju Wikimedije spěšnje namakać.',
-	'bw-desc-wikimediamobile' => 'Mobilna Wikipedija hodźi so na http://m.wikipedia.org namakać a ma zaměr Wikipediju na smartfonach na cyłym swěće podpěrać',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] je projekt, kotryž skići tekstowu wersiju Wikipedije offline na mobilnym graće.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] je platformu přesahaca aplikacija za mobilne telefony a tabletowe ličaki za čitanje a wobdźěłowanje Wikipedije',
 );
 
 /** Hungarian (Magyar)
@@ -1232,10 +1201,7 @@ A többesszám formátumáról [http://unicode.org/repos/cldr-tmp/trunk/diff/sup
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]], egy nyílt forrású mikroblogging szerver',
 	'translate-group-desc-statusnet-plugin' => 'Ezek az üzenetek egy [[Translating:StatusNet|StatusNet]]-kiegészítő részei',
 	'translate-group-desc-tsint' => 'Üzenetcsoport a [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition]hez, ami egy i18n-rendszer [http://toolserver.org toolserveres] eszközökhöz (<span class="plainlinks">[[Translating talk:Toolserver|támogatás]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technikai részletek]</span>)',
-	'bw-desc-voctrain' => '[http://omegawiki.org OmegaWiki]-alapú szótanító. Memóriakártya alapú rendszert használ szavak tanulásához bármely nyelvről bármely nyelvre, melyet az OmegaWiki támogat.
-A Bambergi Egyetem részére készült, a GPL licenc 2.0-ás vagy későbbi változata alatt lett közzétéve. Fejlesztette [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => 'A [http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] segítségével könnyen megtalálhatod egy Wikimédia-wikis lap szerkesztőit.',
-	'bw-desc-wikimediamobile' => 'A Wikimedia mobil változata a http://m.wikipedia.org címen található, és célja, hogy eljuttassa a Wikipédiát a támogatott okostelefonokra az egész világon.',
 	'bw-desc-wikireader' => 'A [[Translating:WikiReader|WikiReader]] a Wikipédia csak szöveges, internetkapcsolat nélküli változatát mobil eszközökön elérhetővé tevő projekt.',
 );
 
@@ -1295,11 +1261,9 @@ Vide le [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plur
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] es un servitor open source de microblogging',
 	'translate-group-desc-statusnet-plugin' => 'Iste messages face parte de un plug-in pro [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Un gruppo de messages pro [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], le systema de internationalisation pro le instrumentos de [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|adjuta]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition detalios technic]</span>)',
-	'bw-desc-voctrain' => 'Trainator de vocabulario a base de [http://omegawiki.org OmegaWiki]. Usa un systema de flashcard pro apprender vocabulario de omne lingua a omne lingua supportate per OmegaWiki.
-Create pro le Universitate de Bamberg. Sub licentia GPL 2.0 o plus recente. Disveloppate per [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] pote rapidemente trovar le autores de un pagina in un wiki de Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile se trova a http://m.wikipedia.org e permitte acceder a Wikipedia con le telephonos mobile supportate in tote le mundo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] es un projecto pro facer un version de Wikipedia usabile sin connexion, e con texto solmente, in un apparato mobile.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] es un application multi-platteforma pro apparatos mobile e tablettas pro leger e contribuer a Wikipedia',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -1358,10 +1322,7 @@ Lihat pula [[mw:Extension:PDF Writer]] dan http://code.pediapress.com/wiki/wiki/
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] adalah suatu server mikroblog sumber terbuka',
 	'translate-group-desc-statusnet-plugin' => 'Pesan ini adalah bagian dari sebuah plugin untuk [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Kelompok pesan untuk [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], sistem i18n untuk alat [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|dukungan]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition detail teknis]</span>)',
-	'bw-desc-voctrain' => 'Pelatih kosakata berbasis-[http://omegawiki.org OmegaWiki]. Menggunakan sistem kartu flash untuk mempelajari kosakata dari suatu bahasa ke bahasa lain yang didukung oleh OmegaWiki.
-Diciptakan untuk University of Bamberg. Dilisensikan di bawah GPL 2.0 atau lebih tinggi. Dikembangkan oleh [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] dapat dengan cepat menampilkan daftar penulis suatu halaman wiki Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile dapat ditemukan di http://m.wikipedia.org dan bertujuan untuk membawa Wikipedia yang dapat didukung oleh smartphone di seluruh dunia.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] merupakan sebuah proyek yang memberikan sebuah versi luring, hanya berisi teks dari Wikipedia pada perangkat selular.',
 );
 
@@ -1370,42 +1331,63 @@ Diciptakan untuk University of Bamberg. Dilisensikan di bawah GPL 2.0 atau lebih
  * @author Civvì
  * @author Darth Kule
  * @author Gianfranco
+ * @author Nemo bis
  */
 $messages['it'] = array(
+	'translategroupdescriptions-desc' => 'Descrizioni dei gruppi di messaggi dei progetti supportati dalla [http://mediawiki.org/wiki/Extension:Translate estensione Translate].',
+	'translate-group-desc-nodesc' => 'Nessuna descrizione disponibile per questo gruppo di messaggi',
 	'translate-group-desc-mediawikicore' => "Questo gruppo di messaggi contiene i messaggi usati nell'attuale versione alfa di MediaWiki ({{CURRENTVERSION}})",
 	'translate-group-desc-mediawikimostused' => 'Questo gruppo di messaggi contiene i [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 messaggi più usati] in MediaWiki',
 	'translate-group-desc-mediawikiextensions' => 'Meta gruppo di messaggi contenente tutti i messaggi per le estensioni di MediaWiki supportate',
 	'translate-group-desc-collection' => "Meta gruppo di messaggi contenente tutti i messaggi dell'estensione MediaWiki [http://www.mediawiki.org/wiki/Extension:Collection Collection]",
 	'translate-group-desc-flaggedrevs' => "Meta gruppo di messaggi contenente tutti i messaggi dell'estensione MediaWiki [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]",
 	'translate-group-desc-readerfeedback' => "Meta gruppo di messaggi contenente tutti i messaggi dell'estensione MediaWiki [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]",
+	'translate-group-desc-semantic' => 'Meta gruppo di messaggi contentente tutti i messaggi di tutte le estensioni [http://semantic-mediawiki.org/ Semantic MediaWiki]',
 	'translate-group-desc-socialprofile' => "Meta gruppo di messaggi contenente tutti i messaggi delle estensioni relative all'estensione MediaWiki [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]",
 	'translate-group-desc-translate' => "Meta gruppo di messaggi contenente tutti i messaggi dell'estensione MediaWiki [http://www.mediawiki.org/wiki/Extension:Translate Translate]",
 	'translate-group-desc-wikiaextensions' => 'Meta gruppo di messaggi contenente tutti i messaggi per le estensioni di MediaWiki supportate usate da [http://www.wikia.com Wikia]',
-	'translate-group-desc-wikimediaextensions' => 'Meta gruppo di messaggi contenente tutti i messaggi per le estensioni di MediaWiki supportate utilizzate dalla [http://wikimedia.org/ Wikimedia Foundation]',
+	'translate-group-desc-wikimediaextensions' => 'Meta gruppo di messaggi contenente tutti i messaggi per le estensioni di MediaWiki usate dalla [http://wikimedia.org/ Wikimedia Foundation]',
+	'translate-group-desc-wikimediaextensions-main' => 'Meta gruppo di messaggi contenente tutti i messaggi delle estensioni MediaWiki supportate che devono essere tradotte per il [http://meta.wikimedia.org/wiki/Language_committee Language committee] di Wikimedia',
 	'translate-group-desc-uniwiki' => 'Meta gruppo di messaggi contenente tutti i messaggi delle estensioni relative a [http://unicefinnovation.org/wiki.php Uniwiki]',
-	'translate-group-desc-ui' => 'Meta gruppo di messaggi contenente tutti i messaggi delle estensioni relative alla [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Usability Initiative]',
-	'bw-desc-freecol' => 'Prima di tradurre FreeCol nella tua lingua, leggi [[Translating:FreeCol]]. FreeCol utilizza la licenza GPL.',
-	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], un forum web scritto in PHP.',
-	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] è un sistema gratuito di tracciamento bug web-based. Segnalare gli eventuali problemi in [[Support]].',
-	'bw-desc-mwlibrl' => "'''mwlib.rl''' è una libreria python per scrivere documenti PDF da pagine MediaWiki che sono analizzate dalla libreria mwlib.
-
-Leggere [[mw:Extension:PDF_Writer]] e http://code.pediapress.com/wiki/wiki/mwlibrl per ulteriori informazioni.",
-	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] è un client webmail scritto in PHP. Segnalare gli eventuali problemi in [[Support]].',
+	'translate-group-desc-ui' => 'Meta gruppo di messaggi contenente tutti i messaggi delle estensioni relative al [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Progetto usabilità di Wikipedia]',
+	'translate-group-desc-translatablepages' => 'Tutte le pagine traducibili',
+	'translate-group-desc-europeana' => "[[Translating:Europeana|Europeana]] consente alle persone di esplorare le risorse culturali digitali d'Europa",
+	'bw-desc-freecol' => '[[Translating:FreeCol|FreeCol]] è un gioco strategico a turni.',
+	'bw-desc-fudforum' => '[[Translating:FUDforum|FUDforum]], un forum web scritto in PHP.',
+	'bw-desc-mantisbt' => '[[Translating:MantisBT|MantisBT]] è un sistema gratuito di tracciamento bug web-based.',
+	'translate-group-desc-eol' => 'Un gruppo di messaggi per [[Translating:EOL|Encyclopedia of Life]]',
+	'translate-group-desc-ihris' => 'Un gruppo di messaggi per [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-common' => 'Un gruppo di messaggi per [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], un modulo di [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-i2ce' => 'Un gruppo di messaggi per [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], un modulo di [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-manage' => 'Un gruppo di messaggi per [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], un modulo di [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-qualify' => 'Un gruppo di messaggi per [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]], un modulo di [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-kiwix' => 'Un gruppo di messaggi per [[Translating:Kiwix|Kiwix]]',
+	'translate-group-desc-mantisbt-plugin-core' => "Un'estensione di [[Translating:MantisBT|MantisBT]]",
+	'translate-group-desc-mediawiki-core-branch' => 'Messaggi di una versione stabile di [[Translating:MediaWiki|MediaWiki]]',
+	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] è un sistema di gestione delle informazioni per la microfinanza',
+	'bw-desc-mwlibrl' => '[[Translating:Mwlib.rl|Mwlib.rl]] è una libreria python per scrivere documenti PDF da pagine MediaWiki.',
+	'bw-desc-nocc' => '[[Translating:NOCC|NOCC]] è un client webmail scritto in PHP.',
+	'translate-group-desc-okawix' => '[[Translating:Okawix|Okawix]] è un lettore non in linea di Wikipedia',
+	'bw-desc-openimages' => '[[Translating:Open Images|Open Images]] è una piattaforma di risorse multimediali aperte',
+	'translate-group-desc-openimages-verifyemailtemplate' => 'Questi messaggi sono parte del modello di verifica e-mail di [[Translating:Open Images|Open Images]]',
+	'translate-group-desc-openimages-all' => 'Questi messaggi sono parte del progetto [[Translating:Open Images|Open Images]]',
 	'bw-desc-openlayers' => 'OpenLayers è un generatore di mappe dinamiche open source. Segnalare gli eventuali problemi in [[support]].',
 	'bw-desc-openstreetmap' => 'Questo gruppo contiene tutti i messaggi per [[Translating:OpenStreetMap|OpenStreetMap]]',
 	'bw-desc-osm-site' => "Questo gruppo di messaggi contiene i messaggi dell'interfaccia per tradurre [[Translating:Open Street Map|Open Street Map]].
 Vedi [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} la pagina Unicode CLDR per i criteri sul'uso dei plurali].",
-	'bw-desc-osm-potlatch' => "Questo gruppo di messaggi contiene l'interfaccia per [[Traduzione: OpenStreetMap | Potlatch]]. 
+	'bw-desc-osm-potlatch' => "Questo gruppo di messaggi contiene l'interfaccia per [[Traduzione: OpenStreetMap | Potlatch]].
 
-Per favore: 
-* Cerca di mantenere la lunghezza delle traduzioni più simile possibile alla lunghezza del testo originale inglese, questo a causa delle limitazioni dell'interfaccia utente. Vedi anche [http://trac.openstreetmap.org/ticket/2067 il bug aperto]. 
+Per favore:
+* Cerca di mantenere la lunghezza delle traduzioni più simile possibile alla lunghezza del testo originale inglese, questo a causa delle limitazioni dell'interfaccia utente. Vedi anche [http://trac.openstreetmap.org/ticket/2067 il bug aperto].
 * Per effettuare test su Potlatch usa [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] dove è possibile effettuare tutte le prove in qualsiasi zona.",
-	'bw-desc-shapado' => 'Gruppo di messaggi per il software libero ed open source [[Translating:Shapado|Shapado]], per Q&A',
+	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] è una collezione di strumenti per modificare siti MediaWiki',
+	'bw-desc-shapado' => 'Gruppo di messaggi per la piattaforma di domande e risposte [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] è un server di microblogging open source',
-	'bw-desc-voctrain' => "Trainer di vocaboli basato su [http://omegawiki.org OmegaWiki]. Utilizza un sistema di flashcard per imparare i vocaboli da qualsiasi lingua in qualsiasi lingua supportata da OmegaWiki. Creato per l'Università di Bamberga (Germania). Licenziato con licenza GPL 2.0 o successiva. Sviluppato da [[User:Kim Bruning|Kim Bruning]].",
+	'translate-group-desc-statusnet-plugin' => "Questi messaggi sono parte di un'estensione di [[Translating:StatusNet|StatusNet]]",
+	'translate-group-desc-tsint' => 'Un gruppo di messaggi per [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], il sistema di localizzazione degli strumenti del [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|aiuto]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition dettagli tecnici]</span>)',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] è in grado di trovare velocemente gli autori di una pagina in un sito di Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile si trova al seguente url: http://m.wikipedia.org e mira a portare Wikipedia su tutti gli smartphones compatibili in tutto il mondo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] è un progetto per fornire una versione offline, solo testo di Wikipedia per dispositivi mobili.',
+	'translate-group-desc-wikipediamobile' => "[[Translating:WikipediaMobile|WikipediaMobile]] è un'applicazione multipiattaforma per dispositivi mobili e tavolette per leggere e modificare Wikipedia",
 );
 
 /** Japanese (日本語)
@@ -1460,20 +1442,18 @@ $messages['ja'] = array(
 	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]]は、ウェブ上で動作する質問回答ソフトウェアです',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] はオープンソースのマイクロブログサーバーです',
 	'translate-group-desc-statusnet-plugin' => 'これらのメッセージは、[[Translating:StatusNet|StatusNet]]のプラグインの一部です',
-	'translate-group-desc-tsint' => '[http://toolserver.org Toolserver]にあるツールの国際化システム(<span class="plainlinks">[[Translating talk:Toolserver|サポート]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition 技術的詳細]</span>)である[http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition]のメッセージ群',
+	'translate-group-desc-tsint' => '[http://toolserver.org Toolserver] にあるツールの国際化システム（<span class="plainlinks">[[Translating talk:Toolserver|サポート]]、[https://wiki.toolserver.org/view/Toolserver_Intuition 技術的詳細]</span>）である [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition] のメッセージ群',
 	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]]は、ウィキメディアのウィキ上のページの著者をすばやく検索することができます',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]]は、携帯可能な機器で、オフラインかつ文字のみのウィキペディアを提供します',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]]はウィキペディアを閲覧・編集するためのクロスプラットフォームな携帯・タブレット端末のアプリケーションです',
 );
 
-/** Kabardian (Cyrillic) (Адыгэбзэ (Cyrillic))
+/** Адыгэбзэ (Адыгэбзэ)
  * @author Тамэ Балъкъэрхэ
  */
 $messages['kbd-cyrl'] = array(
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] — микроболдингым и сервер зыIуха къызыхэкIа кодыр игъусэу',
-	'bw-desc-voctrain' => 'Псэлъалъэ тренажор [http://omegawiki.org OmegaWiki] тещIыхьауэ. Къегъэсэбэпыр карточкэ системэ псэлъалъэр хэгъэхъуэным бзэу хъуамкIэ, Omegawiki дэзыIыгъхэм.
-Бамберга университетым щхьа щIащ. Лицензироват щIащ GPL 2.0-мкIэ е нэхъ иужьрей версиекIэ. ЗыщIар [[User:Kim Bruning|Ким Брунинг]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] и сэбэпыр псынщIэу къегъэгъуэт напэкIуэцIхэм я тхакIуэхэр Википедие проектым.',
-	'bw-desc-wikimediamobile' => 'Мобильнэ Википедиер щыIэщ мы адресым: http://m.wikipedia.org, дуней псом къыщыбгъэсэбэп хъунущ Википедием смартфонкIэ удэлэжьэнумэ.',
 );
 
 /** Khmer (ភាសាខ្មែរ)
@@ -1544,13 +1524,14 @@ Jangk op di Sigge „<i lang="en">[[mw:Extension:PDF_Writer]]</i>“ un „<i la
 Opjepaß:
 * Di Bovverfläch hät Probleeme met lange Täxschtöcker, dröm doht versöhke, de Övversäzunge esu koot ze hallde, wi et Ojjinaal (doh drövver jidd-et ene [http://trac.openstreetmap.org/ticket/2067 unjedonn Fählerbereesch]).
 * Jooht op [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] öm <i lang="en">Potlatch</i> ußzeprobeere. doh kam_mer en jeedem Berett alles maache, wat mer löstich es.',
-	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] es n Versammlong vun Projramme un Wärkzüsch för en de Wikipedija un ander WikiMedia Wikis ze ändere.',
+	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] es en Versammlong vun Projramme un Wärkzüsch för en de Wikipedija un ander WikiMedia Wikis ze ändere.',
 	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]] es e Projramm för Froore un Antwoote övver et Internet.',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] es ene ẞööver för et Mini-Blogge met offe Quälltäxt.',
 	'translate-group-desc-statusnet-plugin' => 'Heh di Täxte un Nohreeschte sin Deil vun enem Zohsazprojramm för [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Heh di Jropp vun Täxte un Nohreeschte jehööt zom [http://toolserver.org/~krinkle/TsIntuition Tuulẞööver singem <i lang="en">Intuition</i>], enem Süßteem för et Övversäze vun  Projramme, di om [http://toolserver.org Tuulẞööver] loufe (<span class="plainlinks">[[Translating talk:Toolserver|{{int:bw-mainpage-support-title}}]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition täschnesch Einzelheite]</span>)',
 	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] kann flöck de Schriiver vun enem Stöck vun ener Sigg en enem Wikimedia Wiki fenge.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] es e Projäk för en offlain Version vun de Wikipedia, ävver bloß Täx, op klein Jeräte.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] es a Projramm för ongerscheidlijje Bedriefssyßteeme för de Wikipeedija op draachbaare Jerääte un Tablät-PCs ze lässe un ze schrieve.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -1562,14 +1543,16 @@ $messages['lb'] = array(
 	'translate-group-desc-nodesc' => 'Fir dëse Grupp vu Messagen ass keng Beschreiwung disponibel.',
 	'translate-group-desc-mediawikicore' => "An dëser Grupp mat Message sinn d'Messagen aus der aktueller alpha-Versioun vu MediaWiki ({{CURRENTVERSION}}) dran",
 	'translate-group-desc-mediawikimostused' => 'An dësem Grupp sinn déi [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 am dackste gebrauchte Systemmessagen] vu MediaWiki',
-	'translate-group-desc-mediawikiextensions' => 'An dësem Grupp sinn all Systemmessage vun den ënnerstetzten Erweiderunge vu MediaWiki',
+	'translate-group-desc-mediawikiextensions' => 'An dësem Grupp sinn all Systemmessage vun den ënnerstetzten Erweiderunge vu [[Translating:MediaWiki|MediaWiki]]',
 	'translate-group-desc-collection' => "An dësem Grupp sinn all Systemmessage fir d'MediaWiki-Erweiderung [http://www.mediawiki.org/wiki/Extension:Collection Sammlung]",
 	'translate-group-desc-flaggedrevs' => "An dësem Grupp sinn all Systemmessage fir d'MediaWiki-Erweiderung [http://www.mediawiki.org/wiki/Extension:FlaggedRevs Markéiert Versiounen]",
 	'translate-group-desc-readerfeedback' => "An dësem Grupp sinn all Systemmessage fir d'MediaWiki-Erweiderung [http://www.mediawiki.org/wiki/Extension:ReaderFeedback Feedback vun de Lieser]",
+	'translate-group-desc-semantic' => "An dësem Meta-Grupp sinn all Systemmessage fir d'Erweiderunge vu [http://semantic-mediawiki.org/ Semantic MediaWiki]",
 	'translate-group-desc-socialprofile' => 'An dësem Grupp stinn all Systemmessage fir Erweiderungen a Verbindung mat der MediaWiki-Erweiderung [http://www.mediawiki.org/wiki/Extension:SocialProfile Soziale Profil]',
 	'translate-group-desc-translate' => "An dësem Grupp sinn all Systemmessage fir d'MediaWiki-Erweiderung [http://www.mediawiki.org/wiki/Extension:Translate Iwwersetzen]",
 	'translate-group-desc-wikiaextensions' => 'An dësem Grupp sinn all Systemmessage vun den ënnerstetzte MediaWiki-Erweiderungen, déi vu [http://www.wikia.com Wikia] genotzt ginn',
 	'translate-group-desc-wikimediaextensions' => 'An dësem Grupp sinn all Systemmessage vun den ënnerstëtzte MediaWiki-Erweiderungen, déi vun der [http://wikimedia.org/ Wikimedia Foundation] benotzt ginn',
+	'translate-group-desc-wikimediaextensions-main' => 'An dësem Grupp sinn all Systemmessage vun den ënnerstëtzte MediaWiki-Erweiderungen, déi vum [http://meta.wikimedia.org/wiki/Language_committee Wikimedia Sprooche-Comité] gefrot si fir iwwersat ze ginn',
 	'translate-group-desc-uniwiki' => 'Meta-Grupp vun alle Systemmessagen fir Erweiderungen am Zesummenhang mat [http://unicefinnovation.org/wiki.php Uniwiki]',
 	'translate-group-desc-ui' => 'Grupp vu Systemmessage vun den Erweiderungen déi mat der [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Benotzerfrëndlechkeets-Initiative] a Verbindung stinn',
 	'translate-group-desc-translatablepages' => 'All iwwersetzbar Säiten',
@@ -1580,7 +1563,9 @@ $messages['lb'] = array(
 	'translate-group-desc-eol' => 'Message fir [[Translating:EOL|Encyclopedia of Life]]',
 	'translate-group-desc-ihris' => 'Message fir [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-common' => 'Message fir [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], ee Modul vun [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-i2ce' => 'Message fir [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], ee Modul vun [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-ihris-manage' => 'Message fir [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], ee Modul vun [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-qualify' => 'Message fir [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]], ee Modul vun [[Translating:iHRIS|iHRIS]]',
 	'translate-group-desc-kiwix' => 'Message fir [[Translating:Kiwix|Kiwix]]',
 	'translate-group-desc-mantisbt-plugin-core' => 'En Haapt-Plugin fir [[Translating:MantisBT|MantisBT]]',
 	'translate-group-desc-mediawiki-core-branch' => 'Message fir eng stabil Versioun vu [[Translating:MediaWiki|MediaWiki]]',
@@ -1672,10 +1657,9 @@ $messages['mk'] = array(
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] е отворен опслужувач за микроблогирање',
 	'translate-group-desc-statusnet-plugin' => 'Овие пораки се дел од приклучокот за [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Група пораки за [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition] - i18n-систем за алатки на [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|поддршка]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition технички податоци]</span>)',
-	'bw-desc-voctrain' => '[[Translating:Voctrain|Voctrain]] е програм за учење на зборови од разни јазици врз основа на ОмегаВики',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] за многу кусо време може да ги пронајде авторите на некоја страница на едно вики.',
-	'bw-desc-wikimediamobile' => 'Википедија мобилен се наоѓа на http://m.wikipedia.org и има за цел да ја доведе Википедија на поддржаните „smartphone“ мобилни телефони ширум светот.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|ВикиЧитач]] (WikiReader) е проект за создавање на текстуална верзија на Википедија наменета за мобилен уред.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|ВикипедијаМобилен]] е повеќеподложен додаток за мобилни и таблични уреди наменет за читање и уредување на Википедија',
 );
 
 /** Malayalam (മലയാളം)
@@ -1685,7 +1669,6 @@ $messages['ml'] = array(
 	'translate-group-desc-mediawikicore' => 'ഇപ്പോഴത്തെ മീഡിയവിക്കി ആൽഫാ പതിപ്പ് ({{CURRENTVERSION}}) ഉപയോഗിക്കുന്ന എല്ലാ സന്ദേശങ്ങളുമുൾപ്പെടുന്ന ഗണം',
 	'translate-group-desc-wikimediaextensions' => '[http://wikimedia.org/ വിക്കിമീഡിയ ഫൗണ്ടേഷൻ] ഉപയോഗിക്കുന്ന മീഡിയവിക്കി അനുബന്ധങ്ങളിലെ എല്ലാ സന്ദേശങ്ങളുമുൾപ്പെടുന്ന ഗണം',
 	'translate-group-desc-translatablepages' => 'പരിഭാഷപ്പെടുത്താവുന്ന എല്ലാ താളുകളും',
-	'bw-desc-wikimediamobile' => 'വിക്കിപീഡിയയുടെ മൊബൈൽ സമ്പർക്കമുഖമാണ് [[Translating:Wikimedia_mobile|വിക്കിമീഡിയ മൊബൈൽ]]',
 );
 
 /** Malay (Bahasa Melayu)
@@ -1738,10 +1721,9 @@ $messages['ms'] = array(
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] ialah pelayan mikroblog',
 	'translate-group-desc-statusnet-plugin' => 'Mesej-mesej ini tergolong dalam pemalam untuk [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Kumpulan mesej untuk [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], sistem i18n untuk peralatan [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|bantuan]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition butiran teknikal]</span>)',
-	'bw-desc-voctrain' => '[[Translating:Voctrain|Voctrain]] ialah pelatih kosa kata berasaskan OmegaWiki',
 	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] boleh cepat mencari pengarang sebahagian laman dalam wiki di bawah Wikimedia',
-	'bw-desc-wikimediamobile' => '[[Translating:Wikimedia_mobile|Wikimedia mobile]] ialah antara muka Wikipedia untuk peranti mudah alih',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] menyampaikan versi teks sahaja Wikipedia di luar talian pada peranti mudah alih.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] merupakan aplikasi mudah alih dan tablet merentas platform untuk membaca dan menyumbang kepada Wikipedia',
 );
 
 /** Maltese (Malti)
@@ -1752,89 +1734,12 @@ $messages['mt'] = array(
 	'bw-desc-wikiblame' => "[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] hu kapaċi li jsib veloċement l-awturi ta' paġna fuq sit tal-Wikimedia.",
 );
 
-/** Nepali (नेपाली)
- * @author सरोज कुमार ढकाल
- */
-$messages['ne'] = array(
-	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], PHP मा लेखिएको वेब मञ्च ।',
-);
-
-/** Dutch (Nederlands)
- * @author McDutchie
- * @author SPQRobin
- * @author Siebrand
- */
-$messages['nl'] = array(
-	'translategroupdescriptions-desc' => 'Beschrijvingen voor berichtengroepen die ondersteund worden door de uitbreiding [http://mediawiki.org/wiki/Extension:Translate Translate]',
-	'translate-group-desc-nodesc' => 'Er is geen beschrijving beschikbaar voor deze berichtengroep',
-	'translate-group-desc-mediawikicore' => 'Deze berichtengroep bevat de berichten die in de huidige alpha-versie van [[Translating:MediaWiki|MediaWiki]] gebruikt worden - {{CURRENTVERSION}}',
-	'translate-group-desc-mediawikimostused' => 'Deze berichtengroep bevat de [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 meest gebruikte berichten] in MediaWiki',
-	'translate-group-desc-mediawikiextensions' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde extensies voor MediaWiki',
-	'translate-group-desc-collection' => 'Metaberichtengroep die alle berichten bevat voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:Collection Collection]',
-	'translate-group-desc-flaggedrevs' => 'Metaberichtengroep die alle berichten bevat voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
-	'translate-group-desc-readerfeedback' => 'Metaberichtengroep met alle berichten voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
-	'translate-group-desc-semantic' => 'Metaberichtengroep die alle berichten bevat voor alle [http://http://semantic-mediawiki.org/ Semantische MediaWiki]-extensies',
-	'translate-group-desc-socialprofile' => 'Metaberichtengroep die alle berichten bevat voor uitbreidingen gerelateerd aan [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
-	'translate-group-desc-translate' => 'Metaberichtengroep die alle berichten bevat voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:Translate Translate]',
-	'translate-group-desc-wikiaextensions' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde MediaWiki-uitbreidingen gebruikt door [http://www.wikia.com Wikia]',
-	'translate-group-desc-wikimediaextensions' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde MediaWiki-uitbreidingen gebruikt door de [http://wikimedia.org/ Wikimedia Foundation]',
-	'translate-group-desc-wikimediaextensions-main' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde MediaWiki-uitbreidingen die verplicht vertaald moeten worden voor het [http://meta.wikimedia.org/wiki/Language_committee Taalcomité] van Wikimedia',
-	'translate-group-desc-uniwiki' => 'Metaberichtengroep die alle berichten bevat voor uitbreidingen gerelateerd aan [http://unicefinnovation.org/wiki.php Uniwiki]',
-	'translate-group-desc-ui' => 'Metaberichtengroep die alle berichten bevat voor uitbreidingen gerelateerd aan het [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Bruikbaarheidsinitiatief]',
-	'translate-group-desc-translatablepages' => "Alle te vertalen pagina's",
-	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] maakt het mogelijk het digitale culturele erfgoed van Europa te verkennen',
-	'bw-desc-freecol' => '[[Translating:FreeCol|FreeCol]] is a beurtgebaseerd strategiespel',
-	'bw-desc-fudforum' => '[[Translating:FUDforum|FUDforum]] is webgebaseerde forumsoftware',
-	'bw-desc-mantisbt' => '[[Translating:MantisBT|MantisBT]] is webgebaseerde software voor het volgen van meldingen',
-	'translate-group-desc-eol' => 'Een berichtengroep voor [[Translating:EOL|Encyclopedia of Life]]',
-	'translate-group-desc-ihris' => 'Een berichtengroep voor [[Translating:iHRIS|iHRIS]]',
-	'translate-group-desc-ihris-common' => 'Een berichtengroep voor [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], een module van [[Translating:iHRIS|iHRIS]]',
-	'translate-group-desc-ihris-i2ce' => 'Een berichtengroep voor [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], een module van [[Translating:iHRIS|iHRIS]]',
-	'translate-group-desc-ihris-manage' => 'Een berichtengroep voor [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], een module van [[Translating:iHRIS|iHRIS]]',
-	'translate-group-desc-ihris-qualify' => 'Een berichtengroep voor [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]], een module van [[Translating:iHRIS|iHRIS]]',
-	'translate-group-desc-kiwix' => 'Een berichtengroep voor [[Translating:Kiwix|Kiwix]]',
-	'translate-group-desc-mantisbt-plugin-core' => 'Een core-plugin voor [[Translating:MantisBT|MantisBT]]',
-	'translate-group-desc-mediawiki-core-branch' => 'Berichten voor een stabiele versie van [[Translating:MediaWiki|MediaWiki]]',
-	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] is een beheersysteem voor microfinanciering',
-	'bw-desc-mwlibrl' => "[[Translating:Mwlib.rl|Mwlib.rl]] is een bibliotheek voor het maken van PDF-documenten van MediaWiki-pagina's",
-	'bw-desc-nocc' => '[[Translating:NOCC|NOCC]] is een webmailclient',
-	'translate-group-desc-okawix' => '[[Translating:Okawix|Okawix]] is een programma om offline Wikipedia te lezen',
-	'bw-desc-openimages' => '[[Translating:Open Images|Open Beelden]] is een open mediaplatform',
-	'translate-group-desc-openimages-verifyemailtemplate' => 'Deze berichten zijn onderdeel van het e-mailbevestigingssjabloon van [[Translating:Open Images|Open Beelden]]',
-	'translate-group-desc-openimages-all' => 'Deze berichten zijn onderdeel van het project [[Translating:Open Images|Open Beelden]]',
-	'bw-desc-openlayers' => '[[Translating:OpenLayers|OpenLayers]] is dynamische kaartgenerator in JavaScript',
-	'bw-desc-openstreetmap' => 'Berichtengroep voor alle [[Translating:OpenStreetMap|OpenStreetMap-berichten]]',
-	'bw-desc-osm-site' => '[[Translating:OpenStreetMap|OpenStreetMap]] is een bewerkbare kaart van de hele wereld',
-	'bw-desc-osm-potlatch' => '[[Translating:OpenStreetMap|Potlatch]] is een op Flash gebaseerde tekstverwerker voor OpenStreetMap',
-	'translate-group-desc-pywikipedia' => "[[Translating:Pywikipedia|Pywikipedia]] is een verzameling hulpprogramma's om Wikipedia mee te bewerken",
-	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]] is webgebaseerde Vraag en Antwoordsoftware',
-	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] is een microblogserver',
-	'translate-group-desc-statusnet-plugin' => 'Deze berichten maken onderdeel uit van een plug-in voor [[Translating:StatusNet|StatusNet]]',
-	'translate-group-desc-tsint' => 'Een berichtengroep voor [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], het i18n-systeem voor [http://toolserver.org Toolserverprogramma\'s] (<span class="plainlinks">[[Translating talk:Toolserver|support]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technische gegevens]</span>)',
-	'bw-desc-voctrain' => '[[Translating:Voctrain|Voctrain]] is een op Omegawiki-gebaseerde Vocabulairetrainer',
-	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] is in staat om snel de auteurs van een pagina in een Wikimedia-wiki te vinden',
-	'bw-desc-wikimediamobile' => '[[Translating:Wikimedia_mobile|Wikimedia mobile]] is de mobiele interface voor Wikipedia',
-	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] levert een offlineversie van Wikipedia met alleen tekst op een mobiel apparaat',
-);
-
-/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
- * @author Harald Khan
- */
-$messages['nn'] = array(
-	'bw-desc-freecol' => 'Før du set om FreeCol til språket ditt, les gjennom [[Translating:FreeCol]]. FreeCol nyttar GPL-lisens.',
-	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] er eit gratis nettbasert feilsporingssystem. Meld frå om problem på [[Support]].',
-	'bw-desc-mwlibrl' => "'''mwlib.rl''' er eit Python-bibliotek for skriving av PDF-dokument frå MediaWiki-artiklar som har vorte tolka av mwlib-biblioteket.
-
-Sjå [[mw:Extension:PDF_Writer]] og http://code.pediapress.com/wiki/wiki/mwlibrl for meir informasjon.",
-	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] kan snøgt finna ut kven som har forfatta ei sida i ein Wikimedia-wiki.',
-);
-
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Audun
  * @author Laaknor
  * @author Nghtwlkr
  */
-$messages['no'] = array(
+$messages['nb'] = array(
 	'translategroupdescriptions-desc' => 'Meldingsgruppebeskrivelser for produkt støttet av utvidelsen [http://mediawiki.org/wiki/Extension:Translate Translate]',
 	'translate-group-desc-nodesc' => 'Ingen beskrivelse er tilgjengelig for denne meldingsgruppen',
 	'translate-group-desc-mediawikicore' => 'Denne meldingsgruppen inneholder meldinger brukt i den gjeldende alfaversjonen av MediaWiki ({{CURRENTVERSION}})',
@@ -1883,11 +1788,86 @@ Se [http://unicode.org/repos//cldr-tmp/trunk/diff/supplemental/language_plural_r
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] er en mikrobloggtjener med åpen kildekode',
 	'translate-group-desc-statusnet-plugin' => 'Disse meldingene er en del av en utvidelse for [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'En meldingsgruppe for [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], i18n-systemet for [http://toolserver.org Toolserver]-verktøy (<span class="plainlinks">[[Translating talk:Toolserver|støtte]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition tekniske detaljer]</span>)',
-	'bw-desc-voctrain' => '[http://omegawiki.org OmegaWiki]-basert ordforrådstrener. Bruker et huskekortsystem for å lære ordforråd fra ethvert språk til ethvert språk støttet av OmegaWiki.
-Opprettet for universitetet i Bamberg. Lisensiert under GPL 2.0 eller senere. Utviklet av [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] kan kjapt finne ut hvem som har forfattet en side på en Wikimedia-wiki.',
-	'bw-desc-wikimediamobile' => 'Wikipedia på mobil kan du finne på http://m.wikipedia.org og sikter mot å bringe Wikipedia til støttede mobiltelefoner verden over.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] er et prosjekt for å levere en frakoblet tekstversjon av Wikipedia på en mobil enhet.',
+);
+
+/** Nepali (नेपाली)
+ * @author सरोज कुमार ढकाल
+ */
+$messages['ne'] = array(
+	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum], PHP मा लेखिएको वेब मञ्च ।',
+);
+
+/** Dutch (Nederlands)
+ * @author McDutchie
+ * @author SPQRobin
+ * @author Siebrand
+ */
+$messages['nl'] = array(
+	'translategroupdescriptions-desc' => 'Beschrijvingen voor berichtengroepen die ondersteund worden door de uitbreiding [http://mediawiki.org/wiki/Extension:Translate Translate]',
+	'translate-group-desc-nodesc' => 'Er is geen beschrijving beschikbaar voor deze berichtengroep',
+	'translate-group-desc-mediawikicore' => 'Deze berichtengroep bevat de berichten die in de huidige alpha-versie van [[Translating:MediaWiki|MediaWiki]] gebruikt worden - {{CURRENTVERSION}}',
+	'translate-group-desc-mediawikimostused' => 'Deze berichtengroep bevat de [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 meest gebruikte berichten] in MediaWiki',
+	'translate-group-desc-mediawikiextensions' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde extensies voor MediaWiki',
+	'translate-group-desc-collection' => 'Metaberichtengroep die alle berichten bevat voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:Collection Collection]',
+	'translate-group-desc-flaggedrevs' => 'Metaberichtengroep die alle berichten bevat voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
+	'translate-group-desc-readerfeedback' => 'Metaberichtengroep met alle berichten voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
+	'translate-group-desc-semantic' => 'Metaberichtengroep die alle berichten bevat voor [http://http://semantic-mediawiki.org/ Semantische MediaWiki]-extensies',
+	'translate-group-desc-socialprofile' => 'Metaberichtengroep die alle berichten bevat voor uitbreidingen gerelateerd aan [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
+	'translate-group-desc-translate' => 'Metaberichtengroep die alle berichten bevat voor de MediaWiki-uitbreiding [http://www.mediawiki.org/wiki/Extension:Translate Translate]',
+	'translate-group-desc-wikiaextensions' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde MediaWiki-uitbreidingen gebruikt door [http://www.wikia.com Wikia]',
+	'translate-group-desc-wikimediaextensions' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde MediaWiki-uitbreidingen gebruikt door de [http://wikimedia.org/ Wikimedia Foundation]',
+	'translate-group-desc-wikimediaextensions-main' => 'Metaberichtengroep die alle berichten bevat voor ondersteunde MediaWiki-uitbreidingen die verplicht vertaald moeten worden voor het [http://meta.wikimedia.org/wiki/Language_committee Taalcomité] van Wikimedia',
+	'translate-group-desc-uniwiki' => 'Metaberichtengroep die alle berichten bevat voor uitbreidingen gerelateerd aan [http://unicefinnovation.org/wiki.php Uniwiki]',
+	'translate-group-desc-ui' => 'Metaberichtengroep die alle berichten bevat voor uitbreidingen gerelateerd aan het [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Bruikbaarheidsinitiatief]',
+	'translate-group-desc-translatablepages' => "Alle te vertalen pagina's",
+	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] maakt het mogelijk het digitale culturele erfgoed van Europa te verkennen',
+	'bw-desc-freecol' => '[[Translating:FreeCol|FreeCol]] is a beurtgebaseerd strategiespel',
+	'bw-desc-fudforum' => '[[Translating:FUDforum|FUDforum]] is webgebaseerde forumsoftware',
+	'bw-desc-mantisbt' => '[[Translating:MantisBT|MantisBT]] is webgebaseerde software voor het volgen van meldingen',
+	'translate-group-desc-eol' => 'Een berichtengroep voor [[Translating:EOL|Encyclopedia of Life]]',
+	'translate-group-desc-ihris' => 'Een berichtengroep voor [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-common' => 'Een berichtengroep voor [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], een module van [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-i2ce' => 'Een berichtengroep voor [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], een module van [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-manage' => 'Een berichtengroep voor [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], een module van [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-qualify' => 'Een berichtengroep voor [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]], een module van [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-kiwix' => 'Een berichtengroep voor [[Translating:Kiwix|Kiwix]]',
+	'translate-group-desc-mantisbt-plugin-core' => 'Een core-plugin voor [[Translating:MantisBT|MantisBT]]',
+	'translate-group-desc-mediawiki-core-branch' => 'Berichten voor een stabiele versie van [[Translating:MediaWiki|MediaWiki]]',
+	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] is een beheersysteem voor microfinanciering',
+	'bw-desc-mwlibrl' => "[[Translating:Mwlib.rl|Mwlib.rl]] is een bibliotheek voor het maken van PDF-documenten van MediaWiki-pagina's",
+	'bw-desc-nocc' => '[[Translating:NOCC|NOCC]] is een webmailclient',
+	'translate-group-desc-okawix' => '[[Translating:Okawix|Okawix]] is een programma om offline Wikipedia te lezen',
+	'bw-desc-openimages' => '[[Translating:Open Images|Open Beelden]] is een open mediaplatform',
+	'translate-group-desc-openimages-verifyemailtemplate' => 'Deze berichten zijn onderdeel van het e-mailbevestigingssjabloon van [[Translating:Open Images|Open Beelden]]',
+	'translate-group-desc-openimages-all' => 'Deze berichten zijn onderdeel van het project [[Translating:Open Images|Open Beelden]]',
+	'bw-desc-openlayers' => '[[Translating:OpenLayers|OpenLayers]] is dynamische kaartgenerator in JavaScript',
+	'bw-desc-openstreetmap' => 'Berichtengroep voor alle [[Translating:OpenStreetMap|OpenStreetMap-berichten]]',
+	'bw-desc-osm-site' => '[[Translating:OpenStreetMap|OpenStreetMap]] is een bewerkbare kaart van de hele wereld',
+	'bw-desc-osm-potlatch' => '[[Translating:OpenStreetMap|Potlatch]] is een op Flash gebaseerde tekstverwerker voor OpenStreetMap',
+	'translate-group-desc-pywikipedia' => "[[Translating:Pywikipedia|Pywikipedia]] is een verzameling hulpprogramma's om Wikipedia mee te bewerken",
+	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]] is webgebaseerde Vraag en Antwoordsoftware',
+	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] is een microblogserver',
+	'translate-group-desc-statusnet-plugin' => 'Deze berichten maken onderdeel uit van een plug-in voor [[Translating:StatusNet|StatusNet]]',
+	'translate-group-desc-tsint' => 'Een berichtengroep voor [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], het i18n-systeem voor [http://toolserver.org Toolserverprogramma\'s] (<span class="plainlinks">[[Translating talk:Toolserver|support]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition technische gegevens]</span>)',
+	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] is in staat om snel de auteurs van een pagina in een Wikimedia-wiki te vinden',
+	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] levert een offlineversie van Wikipedia met alleen tekst op een mobiel apparaat',
+	'translate-group-desc-wikipediamobile' => "[[Translating:WikipediaMobile|WikipediaMobile]] is een platformonafhankelijke applicatie voor mobiele telefoons en tablet pc's voor het lezen van en bijdragen aan Wikipedia",
+);
+
+/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
+ * @author Harald Khan
+ * @author Njardarlogar
+ */
+$messages['nn'] = array(
+	'translate-group-desc-nodesc' => 'Inga skildring er tilgjengeleg for denne meldingsgruppa',
+	'bw-desc-freecol' => 'Før du set om FreeCol til språket ditt, les gjennom [[Translating:FreeCol]]. FreeCol nyttar GPL-lisens.',
+	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] er eit gratis nettbasert feilsporingssystem. Meld frå om problem på [[Support]].',
+	'bw-desc-mwlibrl' => "'''mwlib.rl''' er eit Python-bibliotek for skriving av PDF-dokument frå MediaWiki-artiklar som har vorte tolka av mwlib-biblioteket.
+
+Sjå [[mw:Extension:PDF_Writer]] og http://code.pediapress.com/wiki/wiki/mwlibrl for meir informasjon.",
+	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] kan snøgt finna ut kven som har forfatta ei sida i ein Wikimedia-wiki.',
 );
 
 /** Occitan (Occitan)
@@ -1920,10 +1900,7 @@ Vejatz [[mw:Extension:PDF_Writer]] e http://code.pediapress.com/wiki/wiki/mwlibr
 *ensajatz de far de traduccions de longor equivalenta a l’original anglés, en rason de restriccions de l’interfàcia d'utilizaire. Vejatz lo [http://trac.openstreetmap.org/ticket/2067 rapòrt de bug].
 *utilizatz [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] per testar Potlatch. Podètz testar autant coma volètz  dins quin airal que siá.",
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] es un servidor de microblogging en font dobèrta',
-	'bw-desc-voctrain' => "Entraïnador de vocabulari basat sus [http://omegawiki.org OmegaWiki]. Utiliza una carta flash per aprene lo vocabulari d'una lenga quina que siá cap a una lenga presa en carga per Omegawiki quina que siá.
-Creat per l'universitat de Bamberg. Licence : GPL 2.0 o mai recent. Desvolopat per [[User:Kim Bruning|Kim Bruning]].",
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] es en mesura de trobar rapidament los autors d’una pagina dins un wiki Wikimedia.',
-	'bw-desc-wikimediamobile' => "Wikimedia mobil pòt èsser trobat a http://m.wikipedia.org e a per tòca d'aportar Wikimedia als smartphones suportats a travèrs lo monde.",
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] es un projècte que visa a ofrir una version tèxte de Wikipèdia en mòde desconnectat sus un periferic mobil.',
 );
 
@@ -1949,7 +1926,6 @@ $messages['pl'] = array(
 	'translate-group-desc-uniwiki' => 'Metagrupa komunikatów zawierająca wszystkie komunikaty rozszerzeń związanych z [http://unicefinnovation.org/wiki.php Uniwiki]',
 	'translate-group-desc-ui' => 'Metagrupa komunikatów zawierająca wszystkie komunikaty rozszerzeń związanych z [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Inicjatywą użyteczności Wikipedii]',
 	'translate-group-desc-translatablepages' => 'Wszystkie przetłumaczalne strony',
-	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] umożliwia ludziom odkrywanie dorobku kulturowego Europy',
 	'bw-desc-freecol' => 'Zanim rozpoczniesz tłumaczenie FreeCol, zapoznaj się z [[Translating:FreeCol]]. Freecol udostępniane jest na licencji GPL.',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum] – forum internetowe napisane w PHP.',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] jest bezpłatnym internetowym systemem obsługi zgłoszeń usterek. Prosimy o zgłaszanie wszelkich problemów [[Support|obsłudze]].',
@@ -1962,7 +1938,7 @@ $messages['pl'] = array(
 	'translate-group-desc-mantisbt-plugin-core' => 'Główna wtyczka dla [[Translating:MantisBT|MantisBT]]',
 	'translate-group-desc-mediawiki-core-branch' => 'Komunikaty stabilnej wersji oprogramowania [[Translating:MediaWiki|MediaWiki]]',
 	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]] jest systemem zarządzania informacją dla mikrofinansów',
-	'bw-desc-mwlibrl' => "'''mwlib.rl''' jest biblioteką w języku Python zapisującą dokumenty w formacie PDF z artykułami MediaWiki, które zostały przeanalizowane przez bibliotekę mwlib. 
+	'bw-desc-mwlibrl' => "'''mwlib.rl''' jest biblioteką w języku Python zapisującą dokumenty w formacie PDF z artykułami MediaWiki, które zostały przeanalizowane przez bibliotekę mwlib.
 
 Więcej informacji odnajdziesz na stronach [[mw:Extension:PDF_Writer]] oraz http://code.pediapress.com/wiki/wiki/mwlibrl.",
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] jest internetowym klientem poczty napisanym w PHP. Prosimy o zgłaszanie wszelkich problemów [[Support|obsłudze]].',
@@ -1973,18 +1949,11 @@ Więcej informacji odnajdziesz na stronach [[mw:Extension:PDF_Writer]] oraz http
 	'bw-desc-openlayers' => 'OpenLayers jest oprogramowaniem z otwartym kodem generującym dynamiczne mapy. Prosimy o zgłaszanie wszelkich problemów [[support|obsłudze]].',
 	'bw-desc-openstreetmap' => 'Grupa wszystkich komunikatów [[Translating:OpenStreetMap|OpenStreetMap]]',
 	'bw-desc-osm-site' => 'Ta grupa komunikatów zawiera interfejs [[Translating:Open Street Map|Open Street Map]]. Zobacz [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} stronę Unicode CLDR wyjaśniającą zasady tworzenia liczby mnogiej].',
-	'bw-desc-osm-potlatch' => 'Ta grupa zawiera komunikaty interfejsu [[Translate:OpenStreetMap|Potlaczu]].
-
-* Jeśli to możliwe staraj się zachować w swoim tłumaczeniu zbliżoną długość komunikatu do angielskojęzycznego oryginału, ze względu na ograniczenia szablonu interfejsu użytkownika. Zobacz również [http://trac.openstreetmap.org/ticket/2067 nieusunięty błąd].
-* Użyj [http://api06.dev.openstreetmap.org api06.dev.openstreetmap.org] do sprawdzenia Potlaczu. Możesz tam wszystko przetestować.',
 	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] to kolekcja narzędzi służących do edycji Wikipedii',
 	'bw-desc-shapado' => 'Grupa komunikatów darmowego z otwartym kodem oprogramowania zadawania pytań i udzielania odpowiedzi [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] jest opartym na otwartym kodzie serwerem mikroblogów',
 	'translate-group-desc-statusnet-plugin' => 'Te komunikaty są częścią wtyczki do [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Nauczyciel słówek oparty na Omegawiki. Wykorzystuje system plansz do nauki słownictwa w dowolnym języku obsługiwanym przez Omegawiki.
-Utworzony dla Uniwersytetu w Bambergu. Licencja GPL w wersji 2.0 lub nowszej. Opracowane przez [[User:Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] pozwala szybko odnaleźć autorów strony w Wikimedia wiki.',
-	'bw-desc-wikimediamobile' => 'Mobilne Wikimedia można odnaleźć na stronie http://m.wikipedia.org. Umożliwia ono korzystanie z Wikipedii w dowolnym miejscu na świecie poprzez telefony komórkowe.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] jest projektem udostępniania offline, wyłącznie tekstowej wersji Wikipedii dla uradzeń mobilnych.',
 );
 
@@ -2041,18 +2010,8 @@ Për piasì varda [[mw:Extension:PDF_Writer]]  e http://code.pediapress.com/wiki
 	'bw-desc-statusnet' => "[[Translating:StatusNet|StatusNet]] a l'é un servent ëd microscartari a sorgiss duverta",
 	'translate-group-desc-statusnet-plugin' => "Sti mëssagi a fan part ëd n'estension për [[Translating:StatusNet|StatusNet]]",
 	'translate-group-desc-tsint' => 'Na partìa ëd mëssagi për [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], ël sistema i18n për [http://toolserver.org Toolserver] utiss (<span class="plainlinks">[[Translating talk:Toolserver|support]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition detaj técnich]</span>)',
-	'bw-desc-voctrain' => "[http://omegawiki.org OmegaWiki]-based vocabulary trainer. A dòvra un sistema ëd flashcard për amparé ël vocabolari da minca lenga a minca lenga apogià da OmegaWiki.
-Creà da l'Università ëd Bamberg. Licensià GPL 2.0 o pì anans. Svilupà da [[User:Kim Bruning|Kim Bruning]].",
 	'bw-desc-wikiblame' => "[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] a peil trové an pressa j'àutor ëd na pàgina an na wiki ëd Wikimedia.",
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile a peul esse trovà a http://m.wikipedia.org e a veul porté Wikipedia a suporté jë smartphones dël mond.',
 	'bw-desc-wikireader' => "[[Translating:WikiReader|WikiReader]] a l'é un proget për fé na version ëd Wikipedia fòra linia, ëd sol test, dzora a na perifèrica mòbil.",
-);
-
-/** Pashto (پښتو)
- * @author Ahmed-Najib-Biabani-Ibrahimkhel
- */
-$messages['ps'] = array(
-	'bw-desc-wikimediamobile' => 'د ويکيمېډيا موبايل په http://m.wikipedia.org موندلی شی. د ويکيپېډيا يوه موخه دا ده چې د نړۍ په شاوخوا کې د هوښيارټيليفونونو لپاره د ويکيپېډيا ملاتړ وکړي.',
 );
 
 /** Portuguese (Português)
@@ -2114,10 +2073,7 @@ Consulte [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plu
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] é um servidor de microblogues de código aberto',
 	'translate-group-desc-statusnet-plugin' => 'Estas mensagens fazem parte de um plugin para o [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Um grupo de mensagens para o [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], o sistema de internacionalização das ferramentas [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|apoio]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition detalhes técnicos]</span>)',
-	'bw-desc-voctrain' => "Treinador de Vocabulário baseado no [http://omegawiki.org OmegaWiki]. Usa um sistema ''flashcard'' para aprender vocabulário de qualquer língua para qualquer língua suportada pelo Omegawiki.
-Criado para a Universidade de Bamberg. Licenciado GPL 2.0 ou posterior. Desenvolvido por [[User:Kim Bruning]].",
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] consegue encontrar rapidamente os autores de uma página numa wiki da Wikimedia.',
-	'bw-desc-wikimediamobile' => "Wikimedia mobile pode ser encontrado em http://m.wikipedia.org e pretende levar a Wikipédia aos ''smartphones'' suportados de todo o mundo.",
 	'bw-desc-wikireader' => "[[Translating:WikiReader|WikiReader]] é um projecto para apresentar ''offline'' uma versão de texto da Wikipédia num dispositivo móvel.",
 );
 
@@ -2165,10 +2121,7 @@ Consulte [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plu
 	'bw-desc-shapado' => 'Grupo de mensagens do software de perguntas e respostas, livre e de código aberto, [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] é um servidor de microblogues de código aberto',
 	'translate-group-desc-statusnet-plugin' => 'Estas mensagens fazem parte de um plugin para o [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Treinador de Vocabulário baseado no Omegawiki. Utiliza um sistema de flashcard para aprender vocabulário de qualquer idioma para qualquer idioma suportado pelo Omegawiki.
-Created pela Universidade de Bamberg. Licenciado GPL 2.0 ou posterior. Desenvolvido por [[User:Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] é capaz de encontrar rapidamente os autores de uma página em um wiki da Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile pode ser encontrado em http://m.wikipedia.org e pretende trazer a Wikipédia para  smartphones em todo o mundo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] é um projeto para apresentar offline uma versão de texto da Wikipédia num dispositivo móvel.',
 );
 
@@ -2212,13 +2165,12 @@ $messages['ro'] = array(
 	'bw-desc-shapado' => '[[Translating:Shapado|Shapado]] este un software bazat pe web de tip întrebări și răspunsuri',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] este un server pentru microblogging',
 	'translate-group-desc-statusnet-plugin' => 'Aceste mesaje sunt componente ale unui plugin pentru [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => '[[Translating:Voctrain|Voctrain]] este un antrenor de vocabular bazat pe OmegaWiki',
 	'bw-desc-wikiblame' => '[[Translating:WikiBlame|WikiBlame]] este capabil să găsească rapid autorii unei pagini dintr-un site wiki susținut de Wikimedia',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobilă se poate accesa la http://m.wikipedia.org și are ca scop aducerea Wikipediei direct pe telefoanele mobile din întreaga lume.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] este un proiect ce are ca scop furnizarea unei versiuni off-line (care să conțină doar text) a Wikipediei pe un dispozitiv mobil.',
 );
 
 /** Russian (Русский)
+ * @author Eleferen
  * @author Ferrer
  * @author Kaganer
  * @author Lockal
@@ -2280,6 +2232,7 @@ $messages['ru'] = array(
 	'translate-group-desc-tsint' => 'Группа сообщений для [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], системы интернационализации [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|поддержка]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition технические подробности]</span>)',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] позволяет быстро найти авторов страницы в проектах Викимедиа.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] — это проект, предоставляющий автономную текстовую версию Википедии на мобильном устройстве.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] является кросс-платформенным приложением для мобильных и планшетных устройств для чтения и внесения вклада в Википедию.',
 );
 
 /** Slovak (Slovenčina)
@@ -2308,10 +2261,7 @@ $messages['sk'] = array(
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] je webmailový klient napísaný v PHP. Akékoľvek problémy hláste na [[Support|stránke Podpory]].',
 	'bw-desc-openlayers' => 'OpenLayers je open source generátor dynamických máp. Akékoľvek problémy hláste na [[Support|stránke Podpory]].',
 	'bw-desc-osm-site' => 'Táto skupina správ obsahuje správy rozhrania pre  [[Translating:Open Street Map|Open Street Map]].',
-	'bw-desc-voctrain' => 'Tréner slovnej zásoby založený na [http://omegawiki.org OmegaWiki]. Používa systém kartičiek na výuku slovnej zásoby medzi ľubovoľnými dvomi jazykmi, ktoré OmegaWiki podporuje.
-Vytvorené pre University of Bamberg. Licencované za podmienok GPL 2.0 alebo neskoršej. Vyvinul [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] dokáže rýchlo nájsť autorov stránky vo wiki projektov Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile je možné nájsť na http://m.wikipedia.org a pomáha dostať Wikipédiu do podporovaných smartfónov na celom svete.',
 );
 
 /** Slovenian (Slovenščina)
@@ -2368,11 +2318,9 @@ Oglejte si [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_p
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] je odprtokodni strežnik za mikrobloganje',
 	'translate-group-desc-statusnet-plugin' => 'Ta sporočila so del vtičnika za [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Skupina sporočil za [http://toolserver.org/~krinkle/TsIntuition Toolserverjevo Intuicijo], sistem i18n za orodja [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|podpora]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition tehnične podrobnosti]</span>)',
-	'bw-desc-voctrain' => 'Trener besedišča temelječ na [http://omegawiki.org OmegaWiki]. Uporablja sistem kartic za učenje besedišča iz katerega koli jezika v kateri koli jezik, ki ga podpira Omegawiki.
-Ustvarjeno za Univerzo v Bambergu. Pod dovoljenjem GPL 2.0 ali poznejšim. Razvil [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] je zmožen hitro najti avtorje strani na wikiju Wikimedije.',
-	'bw-desc-wikimediamobile' => '[[Translating:Wikimedia_mobile|Mobilna Wikimedia]] je mobilni vmesnik za Wikipedijo.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] je projekt za dostavljanje nepovezane, samo tekstovne različice Wikipedije na mobilne naprave.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] je večplatformni mobilni in tablični program za branje in prispevanje k Wikipediji',
 );
 
 /** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
@@ -2427,6 +2375,56 @@ $messages['sr-ec'] = array(
 	'bw-desc-wikireader' => '[[Translating:WikiReader|Викиридер]] пружа текстуално издање Википедије коме се може приступити ван мреже, и то на мобилном уређају',
 );
 
+/** Serbian (Latin script) (‪Srpski (latinica)‬) */
+$messages['sr-el'] = array(
+	'translategroupdescriptions-desc' => 'Opisi grupa poruka za projekte koji su podržani od strane proširenja [http://mediawiki.org/wiki/Extension:Translate Translate]',
+	'translate-group-desc-nodesc' => 'Opis nije dostupan za ovu grupu poruka',
+	'translate-group-desc-mediawikicore' => 'Ova grupa sadrži poruke koje se koriste u alfa izdanju [[Translating:MediaWiki|Medijavikija]] ({{CURRENTVERSION}})',
+	'translate-group-desc-mediawikimostused' => 'Ova grupa sadrži [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki petsto najčešćih poruka] na [[Translating:MediaWiki|Medijavikiji]]',
+	'translate-group-desc-mediawikiextensions' => 'Meta grupa poruka koja sadrži sve poruke za podržana proširenja [[Translating:MediaWiki|Medijavikija]]',
+	'translate-group-desc-collection' => 'Meta grupa poruka koja sadrži sve poruke proširenja [http://www.mediawiki.org/wiki/Extension:Collection Collection]',
+	'translate-group-desc-flaggedrevs' => 'Meta grupa poruka koja sadrži sve poruke proširenja [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
+	'translate-group-desc-readerfeedback' => 'Meta grupa poruka koja sadrži sve poruke proširenja [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
+	'translate-group-desc-socialprofile' => 'Meta grupa poruka koja sadrži sve poruke proširenja vezane za [http://www.mediawiki.org/wiki/Extension:SocialProfile Social Profile]',
+	'translate-group-desc-translate' => 'Meta grupa poruka koja sadrži sve poruke proširenja [http://www.mediawiki.org/wiki/Extension:Translate Translate]',
+	'translate-group-desc-wikiaextensions' => 'Meta grupa poruka koja sadrži sve poruke za podržana proširenja koje koristi [http://www.wikia.com Vikija]',
+	'translate-group-desc-wikimediaextensions' => 'Meta grupa poruka koja sadrži sve poruke za podržana proširenja koje koristi [http://wikimedia.org/ Zadužbina Vikimedija]',
+	'translate-group-desc-wikimediaextensions-main' => 'Meta grupa poruka koja sadrži sve poruke podržanih proširenja Medijavikija. Poruke je potrebno prevesti za Vikimedijin [http://meta.wikimedia.org/wiki/Language_committee jezički odbor]',
+	'translate-group-desc-uniwiki' => 'Meta grupa poruka koja sadrži sve poruke vezane za [http://unicefinnovation.org/wiki.php Univiki]',
+	'translate-group-desc-ui' => 'Meta grupa poruka koja sadrži sve poruke proširenja vezane za [http://meta.wikimedia.org/wiki/Wikipedia_Usability_Initiative Wikipedia Usability Initiative]',
+	'translate-group-desc-translatablepages' => 'Sve prevodive stranice',
+	'translate-group-desc-europeana' => '[[Translating:Europeana|Evropeana]] omogućava ljudima da pregledaju digitalno kulturno nasleđe Evrope',
+	'bw-desc-freecol' => '[[Translating:FreeCol|Frikol]] je strateška igra',
+	'bw-desc-fudforum' => '[[Translating:FUDforum|FUD-forum]] je mesto za raspravljanje o različitim temama',
+	'bw-desc-mantisbt' => '[[Translating:MantisBT|MantisBT]] je sistem za praćenje grešaka',
+	'translate-group-desc-eol' => 'Grupa poruka za [[Translating:EOL|Enciklopediju života]]',
+	'translate-group-desc-ihris' => 'Grupa poruka za [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-common' => 'Grupa poruka za [[Special:Translate/out-ihris-common-0-all|iHRIS Common]], modul projekta [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-i2ce' => 'Grupa poruka za [[Special:Translate/out-ihris-i2ce-0-all|iHRIS I2CE]], modul projekta [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-manage' => 'Grupa poruka za [[Special:Translate/out-ihris-manage-0-all|iHRIS Manage]], modul projekta [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-ihris-qualify' => 'Grupa poruka za [[Special:Translate/out-ihris-qualify-0-all|iHRIS Qualify]], modul projekta [[Translating:iHRIS|iHRIS]]',
+	'translate-group-desc-mantisbt-plugin-core' => 'Osnovno proširenje za [[Translating:MantisBT|MantisBT]]',
+	'translate-group-desc-mediawiki-core-branch' => 'Poruke za stabilno izdanje [[Translating:MediaWiki|Medijavikija]]',
+	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifoz]] je sistem za upravljanje podacima o mikrofinansiranju',
+	'bw-desc-mwlibrl' => '[[Translating:Mwlib.rl|Mwlib.rl]] je biblioteka za pravljenje PDF dokumenata sa stranica Medijavikija',
+	'bw-desc-nocc' => '[[Translating:NOCC|NOCC]] je klijent za mrežnu poštu',
+	'translate-group-desc-okawix' => '[[Translating:Okawix|Okaviks]] je program za čitanje Vikipedije van mreže',
+	'bw-desc-openimages' => '[[Translating:Open Images|Otvorene slike]] je otvorena platforma za multimediju',
+	'translate-group-desc-openimages-verifyemailtemplate' => 'Ove poruke su deo šablona za potvrdu e-adrese (projekat [[Translating:Open Images|Otvorene slike]])',
+	'translate-group-desc-openimages-all' => 'Ove poruke su deo projekta [[Translating:Open Images|Otvorene slike]]',
+	'bw-desc-openlayers' => '[[Translating:OpenLayers|Openlejers]] je dinamički generator mapi',
+	'bw-desc-openstreetmap' => '[[Translating:OpenStreetMap|Openstritmap]] je besplatna karta celog sveta',
+	'bw-desc-osm-site' => '[[Translating:OpenStreetMap|Openstritmap]] je besplatna karta celog sveta',
+	'bw-desc-osm-potlatch' => '[[Translating:OpenStreetMap|Potlač]] je fleš uređivač Openstritmapa',
+	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pajvikipedija]] je zbirka alatki za uređivanje Vikipedije',
+	'bw-desc-shapado' => '[[Translating:Shapado|Šapado]] je internet okruženje za pitanja i odgovore',
+	'bw-desc-statusnet' => '[[Translating:StatusNet|Statusnet]] je platforma za mikroblogiranje',
+	'translate-group-desc-statusnet-plugin' => 'Ove poruke su deo priključka za [[Translating:StatusNet|Statusnet]]',
+	'translate-group-desc-tsint' => 'Grupa poruka za [http://toolserver.org/~krinkle/TsIntuition Tulserver intuišon], prevodilački sistem za alatke [http://toolserver.org Tulservera] (<span class="plainlinks">[[Translating talk:Toolserver|podrška]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition tehnički detalji]</span>)',
+	'bw-desc-wikiblame' => '[[Translating:WikiBlame|Vikiblejm]] za tren oka pronalazi autore neke stranice na Vikimediji',
+	'bw-desc-wikireader' => '[[Translating:WikiReader|Vikirider]] pruža tekstualno izdanje Vikipedije kome se može pristupiti van mreže, i to na mobilnom uređaju',
+);
+
 /** Swedish (Svenska)
  * @author Boivie
  * @author Fluff
@@ -2440,9 +2438,9 @@ $messages['sr-ec'] = array(
 $messages['sv'] = array(
 	'translategroupdescriptions-desc' => 'Meddelandegruppsbeskrivningar för produkter som stöds av [http://mediawiki.org/wiki/Extension:Translate Translate]-tillägget',
 	'translate-group-desc-nodesc' => 'Det finns ingen beskrivning av denna meddelandegrupp',
-	'translate-group-desc-mediawikicore' => 'Den här gruppen av meddelanden innehåller de meddelanden som används i de nuvarande alfaversionen av MediaWiki ({{CURRENTVERSION}})',
+	'translate-group-desc-mediawikicore' => 'Den här gruppen av meddelanden innehåller de meddelanden som används i den nuvarande alfaversionen av [[Translating:MediaWiki|MediaWiki]] ({{CURRENTVERSION}})',
 	'translate-group-desc-mediawikimostused' => 'Den här gruppen av meddelanden innehåller de [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 mest använda meddelanden] i MediaWiki',
-	'translate-group-desc-mediawikiextensions' => 'Metagrupp som innehåller alla meddelanden för tillägg som stöds av MediaWiki',
+	'translate-group-desc-mediawikiextensions' => 'Metagrupp som innehåller alla meddelanden för tillägg som stöds av [[Translating:MediaWiki|MediaWiki]]',
 	'translate-group-desc-collection' => 'Metagrupp med alla meddelanden för MediaWiki-tillägget [http://www.mediawiki.org/wiki/Extension:Collection Collection]',
 	'translate-group-desc-flaggedrevs' => 'Metagrupp som innehåller alla meddelanden för MediaWiki-tillägget [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]',
 	'translate-group-desc-readerfeedback' => 'Metagrupp som innehåller alla meddelanden för MediaWiki-tillägget [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]',
@@ -2472,14 +2470,14 @@ $messages['sv'] = array(
 Se [[mw:Extension:PDF_Writer]] och http://code.pediapress.com/wiki/wiki/mwlibrl för mer information.",
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] är en e-postklient som är skriven i PHP. Var god att rapportera några problem [[Support|här]].',
 	'translate-group-desc-okawix' => '[[Translating:Okawix|Okawix]] är en offline Wikipedia-läsare',
-	'bw-desc-openimages' => '[[Translating:Open Images|Open Images]] är en plattform för öppna media',
+	'bw-desc-openimages' => '[[Translating:Open Images|Open Images]] är en plattform för öppen media',
 	'translate-group-desc-openimages-verifyemailtemplate' => 'Dessa meddelanden är en del av e-postbekräftelsemallen för [[Translating:Open Images|Open Images]]',
 	'translate-group-desc-openimages-all' => 'Dessa meddelanden är en del av [[Translating:Open Images|Open Images]]-projektet',
 	'bw-desc-openlayers' => 'OpenLayers är en dynamisk kartgenerator med öppen källkod. Vänligen rapportera problem till [[support]].',
 	'bw-desc-openstreetmap' => 'Alla meddelanden som rör [[Translating:OpenStreetMap|OpenStreetMap]]',
 	'bw-desc-osm-site' => 'Den här gruppen av meddelanden innehåller gränssnittet för [[Translating:Open Street Map|Open Street Map]].
 Se [http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} Unicode CLDR sida för förklaring av plural hantering].',
-	'bw-desc-osm-potlatch' => 'Den här gruppen innehåller gränssnitts meddelandena för [[Translating:OpenStreetMap|Potlatch]]. 
+	'bw-desc-osm-potlatch' => 'Den här gruppen innehåller gränssnitts meddelandena för [[Translating:OpenStreetMap|Potlatch]].
 Observera följande:
 
 *Försök att hålla längden på översättningarna så lika de engelska orginal texterna som möjligt, på grund av implementationen av det grafiska gränssnittet. Se även [http://trac.openstreetmap.org/ticket/2067 open bug].
@@ -2569,17 +2567,11 @@ Mangyaring tingnan ang [[mw:Extension:PDF_Writer]] at ang http://code.pediapress
 	'bw-desc-statusnet' => 'Ang [[Translating:StatusNet|StatusNet]] ay isang tagapaghaing pang-mikroblog na may bukas na pinagmumulan',
 	'translate-group-desc-statusnet-plugin' => 'Ang mga mensaheng ito ay bahagi ng isang pamasak para sa [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Isang pangkat ng mensahe para sa [http://toolserver.org/~krinkle/TsIntuition Intuition ng Toolserver], ang sistemang i18n para sa mga kasangkapan ng [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|pagtangkilik]] &middot; [https://wiki.toolserver.org/view/Toolserver_Intuition mga detalyeng teknikal]</span>)',
-	'bw-desc-voctrain' => 'Pangsanay sa bokabularyo na nakabatay sa [http://omegawiki.org OmegaWiki].  Gumagamit na sistemang may lumilitaw na baraha upang matuto ng bokabularyo mula sa anumang wika papunta sa anumang wikang tinatangkilik ng Omegawiki.
-Nilikha para sa Pamantasan ng Bamberg. May lisensyang GPL 2.0 o mas luma.  Pinaunlad ni [[User:Kim Bruning|Kim Bruning]].
-
-[http://omegawiki.org OmegaWiki]-based vocabulary trainer. Uses a flashcard system to learn vocabulary from any language to any language supported by Omegawiki.
-Created for University of Bamberg. Licensed GPL 2.0 or later. Developed by [[User:Kim Bruning|Kim Bruning]].',
 	'bw-desc-wikiblame' => 'Kayang mabilisang hanapin ng [http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] ang mga may-akda ng isang pahinang nasa loob ng isang wiki ng Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Matatagpuan ang mobil na Wikimedia sa http://m.wikipedia.org at may layuning dalhin ang Wikipedia sa tinatangkilik na mga smartphone sa buong mundo.',
 	'bw-desc-wikireader' => 'Ang [[Translating:WikiReader|WikiReader]] ay isang proyekto upang dalhin ang isang bersyon ng Wikipediang hindi nakakunekta sa internet at may bersyong teksto lamang mula sa isang aparatong mobil.',
 );
 
-/** Tatar (Cyrillic) (Татарча/Tatarça (Cyrillic))
+/** Tatar (Cyrillic script) (Татарча)
  * @author March
  * @author Rinatus
  * @author Ильнар
@@ -2589,9 +2581,9 @@ $messages['tt-cyrl'] = array(
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum] —  PHPда язылган веб-форум.',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT — килгән хаталарны карау өчен нигезләнгән веб-система. Зинһар, булган кимчелекләрне [[Support]] битендә әйтегез.',
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] — PHP телендә язылган почта веб-клиенты. Зинхар очен, барлык җитешсезлекләр турында [[Support|ярдәм битенә]] хәбәр итегез.',
+	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]] — Википедияне рәтләү өчен җиһазлар җыентыгы',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] — ачык кодлы микроблогинг үзәге',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] Викимедиа авторларының битен табарга ярдәм итә.',
-	'bw-desc-wikimediamobile' => 'Викимедианең мобиль юрамасы менә бу сылтама буенча урнашкан http://m.wikipedia.org',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] —  Википедиянең кәрәзле телефондагы автаном юрамасы',
 );
 
@@ -2636,10 +2628,7 @@ $messages['uk'] = array(
 	'bw-desc-shapado' => 'Група повідомлень відкритого та вільного програмного забезпечення питань та відповідей [[Translating:Shapado|Shapado]]',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] — сервер мікроблогінгу з відкритим вихідним кодом',
 	'translate-group-desc-statusnet-plugin' => 'Ці повідомлення є частиною плагіна для [[Translating:StatusNet|StatusNet]]',
-	'bw-desc-voctrain' => 'Словниковий тренажер на основі [http://omegawiki.org OmegaWiki]. Використовує систему карток для поповнення словарного запасу на будь-яких мовах, які підтримуються Omegawiki.
-Створений для університету Бамберга. Ліцензований з GPL 2.0 або пізнішими версіями. Розроблений [[User:Kim Bruning|Кімом Брунінгом]].',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] дозволяє швидко знайти авторів сторінки в проектах Вікімедіа.',
-	'bw-desc-wikimediamobile' => 'Мобільна Вікімедіа знаходиться за адресою http://m.wikipedia.org і призначена для роботи з Вікіпедією за допомогою підтримуваних смартфонів по всьому світу.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] є проектом для випуску автономної текстової версії Вікіпедії на мобільному пристрої.',
 );
 
@@ -2656,10 +2645,7 @@ Ližainformacijad sab löuta [[mw:Extension:PDF_Writer]] da http://code.pediapre
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] om PHP-kelel kirjutadud web-klijent. Olgat hüväd, kirjutagat erazvuiččiš petusiš [[Support|Abulehtpolel]].',
 	'bw-desc-openlayers' => "OpenLayers om dinamižiden kartoiden generator avaitud äugotižkodanke. Olgat hüväd, kirjutagat kaikiš vigoiš [[Support|pid'oitelemižen lehtpolel]].",
 	'bw-desc-osm-site' => 'Nece tedotusiden gruppas om [[Translating:Open Street Map|Open Street Map]]-interfeisan tedotusid.',
-	'bw-desc-voctrain' => "[http://omegawiki.org OmegaWiki]-n abul tehtud vajehnik-trenažor. Kävutab kartaižiden sisteman vaihištod täuttes kaikil kelil, kudambid pid'oiteleb Omegawiki.
-Om tehtud Bambergan universitetan täht, om licenziruidud GPL 2.0-licenzijan mödhe vai möhemba. Šingotab [[User:Kim Bruning|Kim Bruning]].",
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] laskeb löuta teravas lehtpolen avtorid Wikimedii-projektoiš.',
-	'bw-desc-wikimediamobile' => "Mobiližen Wikimedijan adres om http://m.wikipedia.org; se abutab rata Wikipedijanke pid'oiteldud smartfonale kaikes mail'mas.",
 );
 
 /** Vietnamese (Tiếng Việt)
@@ -2718,50 +2704,70 @@ Xem thêm chi tiết tại [[MW:Extension:PDF Writer]] và http://code.pediapres
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] là máy chủ tiểu blog nguồn mở',
 	'translate-group-desc-statusnet-plugin' => 'Các thông điệp này thuộc về một phần bổ trợ cho [[Translating:StatusNet|StatusNet]]',
 	'translate-group-desc-tsint' => 'Nhóm thông điệp của [http://toolserver.org/~krinkle/TsIntuition Toolserver Intuition], hệ thống biên dịch các công cụ [http://toolserver.org Toolserver] (<span class="plainlinks">[[Translating talk:Toolserver|trợ giúp]] · [https://wiki.toolserver.org/view/Toolserver_Intuition chi tiết kỹ thuật]</span>)',
-	'bw-desc-voctrain' => "Chương trình dạy từ vựng dựa trên [http://omegawiki.org OmegaWiki]. Sử dụng hệ thống thẻ nhớ (''flashcard'') để tập nói ngôn ngữ nào dùng ngôn ngữ nào tại Omegawiki.
-Được xây dựng bởi [[User:Kim Bruning|Kim Bruning]] cho Đại học Bamberg và cho phép sử dụng theo giấy phép GPL 2.0 hoặc phiên bản mới hơn.",
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] có thể nhanh chóng tìm ra tác giả của trang trong wiki của Wikimedia.',
-	'bw-desc-wikimediamobile' => 'Wikimedia di động có thể xem tại http://m.wikipedia.org với mục tiêu mang Wikipedia đến các điện thoại thông minh trên khắp thế giới.',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] là dự án sản xuất phiên bản Wikipedia ngoại tuyến có văn bản thuần để đọc trên thiết bị di động.',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]] là một ứng dụng đa nền tảng dành cho máy tính di động và bảng để đọc và đóng góp vào Wikipedia',
 );
 
 /** Yiddish (ייִדיש)
  * @author פוילישער
  */
 $messages['yi'] = array(
+	'translategroupdescriptions-desc' => 'מעלדונג גרופע באשרייבונגען פאר פראדוקטן געשטיצט מיטן [http://mediawiki.org/wiki/Extension:Translate איבערזעצונג] פארברייטערונג',
+	'translate-group-desc-nodesc' => 'נישט פֿאראן קיין באשרייבונג פאר דער מעלדונג גרופע',
 	'translate-group-desc-mediawikicore' => 'די מעלדונג גרופע אנטהאלט די מעלגדונגען געניצט אין דער לויפיגער אלפא ווערסיע פון מעדיעוויקי  ({{CURRENTVERSION}})',
 	'translate-group-desc-mediawikimostused' => 'די מעלדונג גרופע אנטהאלט די [http://translatewiki.net/wiki/Most_often_used_messages_in_MediaWiki 500 מערסטע געניצטע מעלגדונגען] אין מעדיעוויקי',
+	'translate-group-desc-mediawikiextensions' => 'מעטא מעלדונג גרופע וואס אנטהאלט אלע מעלדונגען פאר געשטיצטע פארברייטערונגען פאר [[Translating:MediaWiki|מעדיעוויקי]]',
+	'translate-group-desc-translatablepages' => 'אלע איבערזעצבאַרע בלעטער',
+	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] דערמעגלעכט מענטשן אויספארשן די קולטורעלע רעסורסן פון אייראפע',
+	'translate-group-desc-kiwix' => 'א מעלדונג גרופע פאר [[Translating:Kiwix|קיוויקס]]',
 );
 
 /** Simplified Chinese (‪中文(简体)‬)
+ * @author Anakmalaysia
  * @author Bencmq
  * @author Hydra
  * @author PhiLiP
  * @author Tommyang
  * @author Xiaomingyan
+ * @author Yanmiao liu
  */
 $messages['zh-hans'] = array(
 	'translategroupdescriptions-desc' => '消息组说明 [http://mediawiki.org/wiki/Extension:Translate 翻译] 扩展所支持的产品',
 	'translate-group-desc-nodesc' => '没有描述用于此消息组',
 	'translate-group-desc-mediawikicore' => '此界面消息群组包含了当前MediaWiki alpha版本所使用的消息（{{CURRENTVERSION}}）',
+	'translate-group-desc-mediawikiextensions' => '包含[[Translating:MediaWiki|MediaWiki]]支持扩展所有消息的元消息组。',
+	'translate-group-desc-collection' => '包含MediaWiki [http://www.mediawiki.org/wiki/Extension:Collection Collection]扩展所有消息的元消息组。',
+	'translate-group-desc-flaggedrevs' => '包含MediaWiki [http://www.mediawiki.org/wiki/Extension:FlaggedRevs FlaggedRevs]扩展所有消息的元消息组。',
+	'translate-group-desc-readerfeedback' => '包含MediaWiki [http://www.mediawiki.org/wiki/Extension:ReaderFeedback ReaderFeedback]扩展所有消息的元消息组。',
+	'translate-group-desc-semantic' => '包含所有[http://semantic-mediawiki.org/ Semantic MediaWiki]扩展所有消息的元消息组。',
+	'translate-group-desc-translate' => '包含MediaWiki [http://www.mediawiki.org/wiki/Extension:Translate Translate]扩展所有消息的元消息组。',
+	'translate-group-desc-wikiaextensions' => '包含[http://www.wikia.com Wikia]专用MediaWiki扩展所有消息的元消息组。',
 	'translate-group-desc-translatablepages' => '所有翻译网页',
-	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] 使人们能够探索欧洲数字文化资源',
 	'bw-desc-freecol' => '在将FreeCol翻译至你的语言之前，请阅读[[Translating:FreeCol]]。Freecol使用GPL许可协议。',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum]，一个用PHP编写的论坛。',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT]是一个免费的基于Web的Bug追踪系统。请在[[Support|支持]]报告问题。',
+	'translate-group-desc-mediawiki-core-branch' => '用于 [[Translating:MediaWiki|MediaWiki]] 稳定版本的消息。',
+	'translate-group-desc-mifos' => '[[Translating:Mifos|Mifos]]是一种小额信贷管理信息系统。',
 	'bw-desc-mwlibrl' => "'''mwlib.rl'''是一个使用mwlib库解析的python库，用以将MediaWiki条目转化为PDF文件。
 
 更多信息请见[[mw:Extension:PDF_Writer]]和http://code.pediapress.com/wiki/wiki/mwlibrl。",
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] 是一个使用PHP编写的收发邮件客户端。请在[[Support|支持]]报告问题。',
+	'translate-group-desc-okawix' => '[[Translating:Okawix|Okawix]]是一种离线维基百科阅读器。',
+	'bw-desc-openimages' => '[[Translating:Open Images|Open Images]]是一种开放媒体平台。',
+	'translate-group-desc-openimages-verifyemailtemplate' => '这些消息属于[[Translating:Open Images|Open Images]]电子邮件验证模板',
+	'translate-group-desc-openimages-all' => '这些消息属于[[Translating:Open Images|Open Images]]项目',
 	'bw-desc-openlayers' => 'OpenLayers是一个开源的动态地图生成器。请在[[Support|支持]]报告问题。',
 	'bw-desc-openstreetmap' => '本组包含所有[[Translating:OpenStreetMap|OpenStreetMap]]信息',
 	'bw-desc-osm-site' => '本组包含[[Translating:Open Street Map|Open Street Map]]的界面信息。
 请见[http://unicode.org/repos/cldr-tmp/trunk/diff/supplemental/language_plural_rules.html#{{UILANGCODE}} plural keys扩展包的Unicode CLDR页面]。',
+	'translate-group-desc-pywikipedia' => '[[Translating:Pywikipedia|Pywikipedia]]是一个维基百科编辑工具集合。',
 	'bw-desc-shapado' => '本组包含免费开源问答软件[[Translating:Shapado|Shapado]]的信息',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]]是一个开源微博客服务',
+	'translate-group-desc-statusnet-plugin' => '这些消息属于[[Translating:StatusNet|StatusNet]]的插件',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame]可以快速找到某Wikimedia wiki中某页面的作者。',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile可以通过http://m.wikipedia.org进行访问，它旨在将维基百科显示在全世界有支持的智能手机上。',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] 是一个将离线、仅文字版本的维基百科传送到手机上的项目。',
+	'translate-group-desc-wikipediamobile' => '[[Translating:WikipediaMobile|WikipediaMobile]]是一个用于阅读并编辑维基百科的手机、平板跨平台应用程序。',
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
@@ -2769,20 +2775,24 @@ $messages['zh-hans'] = array(
  * @author Mark85296341
  */
 $messages['zh-hant'] = array(
+	'translategroupdescriptions-desc' => '消息組說明 [http://mediawiki.org/wiki/Extension:Translate 翻譯] 擴展所支持的產品',
+	'translate-group-desc-nodesc' => '沒有描述用於此消息組',
 	'translate-group-desc-mediawikicore' => '此介面訊息群組包含了目前 MediaWiki alpha 版本所使用的訊息（{{CURRENTVERSION}}）',
+	'translate-group-desc-translatablepages' => '所有翻譯網頁',
+	'translate-group-desc-europeana' => '[[Translating:Europeana|Europeana]] 使人們能夠探索歐洲數字文化資源',
 	'bw-desc-freecol' => '在翻譯 FreeCol 到您的語言之前，請閱讀 [[Translating:FreeCol]]。Freecol 使用 GPL 協議。',
 	'bw-desc-fudforum' => '[http://fudforum.org/ FUDforum]，一個用 PHP 編寫的論壇。',
 	'bw-desc-mantisbt' => '[http://www.mantisbt.org MantisBT] 是一個基於 Web 的 Bug 追蹤系統。請在[[Support|技術支援頁面]]報告任何問題。',
-	'bw-desc-mwlibrl' => "'''mwlib.rl''' 是一個 python 函式庫，使用 mwlib 函式庫進行解析，用以將 MediaWiki 頁面寫為 PDF 文檔。
+	'bw-desc-mwlibrl' => "'''mwlib.rl'''是一個使用mwlib庫解析的python庫，用以將MediaWiki條目轉化為PDF文件。
 
-更多資訊請參看 [[mw:Extension:PDF_Writer]] 和 http://code.pediapress.com/wiki/wiki/mwlibrl 。",
+更多信息請見[[mw:Extension:PDF_Writer]]和http://code.pediapress.com/wiki/wiki/mwlibrl。",
 	'bw-desc-nocc' => '[http://nocc.sourceforge.net NOCC] 是一個使用 PHP 編寫的 Web 郵件客戶端。請在 [[Support]] 內報告問題。',
 	'bw-desc-openlayers' => 'OpenLayers 是一個開源的動態地圖生成器。請在 [[support]] 頁面內報告問題。',
 	'bw-desc-openstreetmap' => '本群組包含所有 [[Translating:OpenStreetMap|OpenStreetMap]] 的介面訊息',
 	'bw-desc-osm-site' => '本群組包含了 [[Translating:Open Street Map|Open Street Map]] 的介面訊息。',
+	'bw-desc-shapado' => '本組包含免費開源問答軟件[[Translating:Shapado|Shapado]]的信息',
 	'bw-desc-statusnet' => '[[Translating:StatusNet|StatusNet]] 是一個開源微網誌服務',
 	'bw-desc-wikiblame' => '[http://wikipedia.ramselehof.de/wikiblame.php Wikiblame] 可以快速找到 Wikimedia 的維基某一個頁面的作者。',
-	'bw-desc-wikimediamobile' => 'Wikimedia mobile 可以通過 http://m.wikipedia.org 進行訪問，它旨在將 Wikipedia 顯示在全世界受支援的智慧型手機裝置上。',
 	'bw-desc-wikireader' => '[[Translating:WikiReader|WikiReader]] 是一個將離線、僅文字版本的維基百科傳送到手機上的計畫。',
 );
 

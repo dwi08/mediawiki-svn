@@ -167,6 +167,14 @@ abstract class TranslateTask {
 		$callback = $this->options->getPagingCB();
 		call_user_func( $callback, $this->options->getOffset(), $left, $total );
 	}
+
+	/**
+	 * Override this method if the task depends on user rights.
+	 * @return \string
+	 */
+	public function isAllowedFor( User $user ) {
+		return true;
+	}
 }
 
 /**
@@ -196,7 +204,7 @@ class ViewMessagesTask extends TranslateTask {
 }
 
 /**
- * List messages which has been changed since last export.
+ * Basic class for review mode
  */
 class ReviewMessagesTask extends ViewMessagesTask {
 	protected $id = 'review';
@@ -204,17 +212,15 @@ class ReviewMessagesTask extends ViewMessagesTask {
 	protected function preinit() {
 		$code = $this->options->getLanguage();
 		$this->collection = $this->group->initCollection( $code );
+		$this->collection->setReviewMode( true );
 		$this->collection->setInfile( $this->group->load( $code ) );
 		$this->collection->filter( 'ignored' );
-		$this->collection->filter( 'hastranslation', false );
-		$this->collection->filter( 'changed', false );
 	}
 
 	protected function output() {
 		$table = new MessageTable( $this->collection, $this->group );
 		$table->appendEditLinkParams( 'loadtask', $this->getId() );
 		$table->setReviewMode();
-
 		return $table->fullTable();
 	}
 }
@@ -276,7 +282,7 @@ class ViewWithSuggestionsTask extends ViewMessagesTask {
 
 		$start = time();
 
-		foreach ( $this->collection->keys() as $key => $_ ) {
+		foreach ( $this->collection->getMessageKeys() as $key ) {
 			// Allow up to 10 seconds to search for suggestions.
 			if ( time() - $start > 10 || TranslationHelpers::checkTranslationServiceFailure( 'tmserver' ) ) {
 				unset( $this->collection[$key] );
@@ -326,11 +332,28 @@ class ReviewAllMessagesTask extends ReviewMessagesTask {
 	protected $id = 'reviewall';
 
 	protected function preinit() {
-		$code = $this->options->getLanguage();
-		$this->collection = $this->group->initCollection( $code );
-		$this->collection->setInfile( $this->group->load( $code ) );
+		parent::preinit();
 		$this->collection->filter( 'ignored' );
 		$this->collection->filter( 'hastranslation', false );
+	}
+}
+
+/// Lists all translations for accepting.
+class AcceptQueueMessagesTask extends ReviewMessagesTask {
+	protected $id = 'acceptqueue';
+
+	protected function preinit() {
+		global $wgUser;
+		parent::preinit();
+		$this->collection->filter( 'ignored' );
+		$this->collection->filter( 'hastranslation', false );
+		$this->collection->filter( 'fuzzy' );
+		$this->collection->filter( 'reviewer', true, $wgUser->getId() );
+		$this->collection->filter( 'last-translator', true, $wgUser->getId() );
+	}
+
+	public function isAllowedFor( User $user ) {
+		return $user->isAllowed( 'translate-messagereview' );
 	}
 }
 
@@ -413,6 +436,10 @@ class ExportAsPoMessagesTask extends ExportMessagesTask {
 	}
 
 	public function output() {
+		if ( MessageGroups::isDynamic( $this->group ) ) {
+			return 'Not supported';
+		}
+
 		$ffs = null;
 		if ( $this->group instanceof FileBasedMessageGroup ) {
 			$ffs = $this->group->getFFS();
@@ -451,7 +478,6 @@ class TranslateTasks {
 		$filterTasks = array(
 			'optional',
 			'untranslatedoptional',
-			'review',
 			'export-to-file',
 		);
 

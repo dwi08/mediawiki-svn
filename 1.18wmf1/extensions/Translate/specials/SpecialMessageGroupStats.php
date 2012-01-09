@@ -106,6 +106,8 @@ class SpecialMessageGroupStats extends SpecialLanguageStats {
 	 */
 	function getTable() {
 		$table = $this->table;
+
+		$this->addWorkflowStatesColumn();
 		$out = '';
 
 		if ( $this->purge ) {
@@ -128,8 +130,12 @@ class SpecialMessageGroupStats extends SpecialLanguageStats {
 		if ( $out ) {
 			$table->setMainColumnHeader( wfMessage( 'translate-mgs-column-language' ) );
 			$out = $table->createHeader() . "\n" . $out;
-			$out .= $table->makeTotalRow( wfMessage( 'translate-mgs-totals' ), $this->totals );
 			$out .= Html::closeElement( 'tbody' );
+
+			$out .= Html::openElement( 'tfoot' );
+			$out .= $table->makeTotalRow( wfMessage( 'translate-mgs-totals' ), $this->totals );
+			$out .= Html::closeElement( 'tfoot' );
+
 			$out .= Html::closeElement( 'table' );
 			return $out;
 		} else {
@@ -171,6 +177,9 @@ class SpecialMessageGroupStats extends SpecialLanguageStats {
 		$out  = "\t" . Html::openElement( 'tr' );
 		$out .= "\n\t\t" . $this->getMainColumnCell( $code, $extra );
 		$out .= $this->table->makeNumberColumns( $fuzzy, $translated, $total );
+		$out .= $this->getWorkflowStateCell( $code );
+
+		$out .= "\n\t" . Html::closeElement( 'tr' ) . "\n";
 		return $out;
 	}
 
@@ -182,7 +191,7 @@ class SpecialMessageGroupStats extends SpecialLanguageStats {
 	protected function getMainColumnCell( $code, $params ) {
 		if ( !isset( $this->names ) ) {
 			global $wgLang;
-			$this->names = Language::getTranslatedLanguageNames( $wgLang->getCode() );
+			$this->names = TranslateUtils::getLanguageNames( $wgLang->getCode() );
 			$this->translate = SpecialPage::getTitleFor( 'Translate' );
 		}
 
@@ -196,5 +205,4 @@ class SpecialMessageGroupStats extends SpecialLanguageStats {
 		$link = $linker->link( $this->translate, $text, array(), $queryParameters );
 		return Html::rawElement( 'td', array(), $link );
 	}
-
 }

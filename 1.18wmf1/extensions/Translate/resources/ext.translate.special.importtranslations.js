@@ -1,15 +1,26 @@
-/** Call this to enable suggestions on input (id=inputId), on a form (name=formName) */
-function translateImportInit(){
-	os_initHandlers( 'mw-translate-up-wiki-input', 'mw-translate-import', document.getElementById('mw-translate-up-wiki-input') );
+jQuery( function( $ ) {
+	// BC for MW < 1.18
+	if ( !mw.util.wikiScript ) {
+		mw.util.wikiScript = function( str ) {
+			return mw.config.get( 'wgScriptPath' ) + '/' + ( str || 'index' ) + mw.config.get( 'wgScriptExtension' );
+		}
+	}
 
-	jQuery(".mw-translate-import-inputs").each(function(i) {
-		os_hookEvent(this, "focus", function(event) {
-			var srcid = os_getTarget(event).id;
-			var inputid = srcid.replace("-input", "");
+	$(".mw-translate-import-inputs").change( function() {
+		var id = $(this).attr( "id" ).replace( /-input/, "" );
+		$( "input[name=upload-type]:checked" ).attr( "checked", false );
+		$( "#" + id ).attr( "checked", "checked" );
+	} );
 
-			jQuery("#" + inputid).attr("checked", "checked");
-		});
-	});
-}
+	$( "#mw-translate-up-wiki-input" ).autocomplete( {
+		source: function( request, response ) {
+			var api = mw.util.wikiScript( "api" );
+			var data = { action: "opensearch", format: "json", namespace: 6, search: request.term };
+			var success = function( res ) {
+				response( res[1] );
+			};
 
-hookEvent("load", translateImportInit);
+			$.get( api, data, success );
+		}
+	} );
+} );

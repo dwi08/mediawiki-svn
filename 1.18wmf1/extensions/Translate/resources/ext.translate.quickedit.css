@@ -19,6 +19,8 @@
 	line-height: normal;
 	margin: 0px;
 	border: 1px solid #DBDBDB;
+	max-height: 250px;
+	overflow: auto;
 }
 
 .mw-sp-translate-edit-fields legend {
@@ -86,5 +88,8 @@
 .mw-sp-translate-message-documentation { background-color: #EBEBEB; }
 .mw-sp-translate-edit-definition { background-color: #EAF3FC; }
 .mw-sp-translate-edit-warnings { background-color: #FFDBDB; }
-.mw-translate-definition-preview { padding: 3px; }
 .mw-translate-edit-tmsugs { background-color: #C0F9B6; }
+
+.mw-sp-translate-latestchange {
+	padding-bottom: 0px;
+}

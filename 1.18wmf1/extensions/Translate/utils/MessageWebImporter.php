@@ -105,9 +105,6 @@ class MessageWebImporter {
 	 * @return string
 	 */
 	protected function doHeader() {
-		global $wgOut;
-		$wgOut->addModules( 'ext.translate' );
-
 		$formParams = array(
 			'method' => 'post',
 			'action' => $this->getAction(),
@@ -281,7 +278,7 @@ class MessageWebImporter {
 
 		if ( !$process ) {
 			$collection->filter( 'hastranslation', false );
-			$keys = array_keys( $collection->keys() );
+			$keys = $collection->getMessageKeys();
 
 			$diff = array_diff( $keys, array_keys( $messages ) );
 

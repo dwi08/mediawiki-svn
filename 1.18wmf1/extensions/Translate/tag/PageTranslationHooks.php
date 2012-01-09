@@ -16,7 +16,13 @@ class PageTranslationHooks {
 	// Uuugly hack
 	static $allowTargetEdit = false;
 
-	/// Hook: ParserBeforeStrip
+	/**
+	 * Hook: ParserBeforeStrip
+	 * @param $parser Parser
+	 * @param $text
+	 * @param $state
+	 * @return bool
+	 */
 	public static function renderTagPage( $parser, &$text, $state ) {
 		$title = $parser->getTitle();
 
@@ -31,20 +37,16 @@ class PageTranslationHooks {
 
 		// Set display title
 		$page = TranslatablePage::isTranslationPage( $title );
-		if ( $page ) {
-			list( , $code ) = TranslateUtils::figureMessage( $title->getText() );
-			$name = $page->getPageDisplayTitle( $code );
-			if ( $name ) {
-				$realFunction = array( 'MessageCache', 'singleton' );
-				if ( is_callable( $realFunction ) ) {
-					$cache = MessageCache::singleton();
-				} else {
-					global $wgMessageCache;
-					$cache = $wgMessageCache;
-				}
-				$name = $cache->transform( $name, false, Language::factory( $code ) );
-				$parser->getOutput()->setDisplayTitle( $name );
-			}
+		if ( !$page ) {
+			return true;
+		}
+
+		list( , $code ) = TranslateUtils::figureMessage( $title->getText() );
+		$name = $page->getPageDisplayTitle( $code );
+
+		if ( $name ) {
+			$name = $parser->recursivePreprocess( $name );
+			$parser->getOutput()->setDisplayTitle( $name );
 		}
 
 		return true;
@@ -60,12 +62,14 @@ class PageTranslationHooks {
 			list( , $code ) = TranslateUtils::figureMessage( $title->getText() );
 			$pageLang = $code;
 		}
+
 		return true;
 	}
 
 	/// Hook: OutputPageBeforeHTML
 	public static function injectCss( OutputPage $outputpage, /*string*/ $text ) {
 		$outputpage->addModules( 'ext.translate' );
+
 		return true;
 	}
 
@@ -203,11 +207,11 @@ class PageTranslationHooks {
 			/* Percentages are too accurate and take more
 			 * space than simple images */
 			$percent *= 100;
-			if     ( $percent < 20 ) $image = 1;
-			elseif ( $percent < 40 ) $image = 2;
-			elseif ( $percent < 60 ) $image = 3;
-			elseif ( $percent < 80 ) $image = 4;
-			else                     $image = 5;
+			if     ( $percent < 20 ) { $image = 1; }
+			elseif ( $percent < 40 ) { $image = 2; }
+			elseif ( $percent < 60 ) { $image = 3; }
+			elseif ( $percent < 80 ) { $image = 4; }
+			else                     { $image = 5; }
 
 			$percent = Xml::element( 'img', array(
 				'src'   => TranslateUtils::assetPath( "images/prog-$image.png" ),
@@ -330,7 +334,7 @@ FOO;
 	 */
 	public static function preventDirectEditing( Title $title, User $user, $action, &$result ) {
 		$page = TranslatablePage::isTranslationPage( $title );
-		if ( $page !== false && $action !== 'delete' ) {
+		if ( $page !== false && $action !== 'delete' && $action !== 'read' ) {
 			if ( self::$allowTargetEdit ) {
 				return true;
 			}
@@ -515,7 +519,9 @@ FOO;
 		} elseif ( $action === 'unmark' ) {
 			return wfMsgExt( 'pt-log-unmark', $opts, $title->getPrefixedText(), $user );
 		} elseif ( $action === 'moveok' ) {
-			return wfMsgExt( 'pt-log-moveok', $opts, $title->getPrefixedText(), $user );
+			// Old entries are missing the target
+			$target = isset( $_['target'] ) ? $_['target'] : '[[]]';
+			return wfMsgExt( 'pt-log-moveok', $opts, $title->getPrefixedText(), $user, $target );
 		} elseif ( $action === 'movenok' ) {
 			return wfMsgExt( 'pt-log-movenok', $opts, $title->getPrefixedText(), $user, $_['target'] );
 		} elseif ( $action === 'deletefnok' ) {
@@ -539,9 +545,14 @@ FOO;
 
 	/// Hook: getUserPermissionsErrorsExpensive
 	public static function lockedPagesCheck( Title $title, User $user, $action, &$result ) {
-		global $wgMemc;
+		if ( $action == 'read' ) {
+			return true;
+		}
+
+		$cache = wfGetCache( CACHE_ANYTHING );
 		$key = wfMemcKey( 'pt-lock', $title->getPrefixedText() );
-		if ( $wgMemc->get( $key ) === true ) {
+		// At least memcached mangles true to "1"
+		if ( $cache->get( $key ) == true ) {
 			$result = array( 'pt-locked-page' );
 			return false;
 		}
@@ -608,5 +619,4 @@ FOO;
 
 		return true;
 	}
-
 }
