@@ -2105,10 +2105,10 @@ See the [[Special:NewFiles|gallery of new files]] for a more visual overview.',
 'uploadedfiles'               => 'Uploaded files',
 'ignorewarning'               => 'Ignore warning and save file anyway',
 'ignorewarnings'              => 'Ignore any warnings',
-'minlength1'                  => 'File names must be at least one letter.',
+'minlength1'                  => 'Filenames must be at least one letter.',
 'illegalfilename'             => 'The filename "$1" contains characters that are not allowed in page titles.
 Please rename the file and try uploading it again.',
-'badfilename'                 => 'File name has been changed to "$1".',
+'badfilename'                 => 'Filename has been changed to "$1".',
 'filetype-mime-mismatch'      => 'File extension ".$1" does not match the detected MIME type of the file ($2).',
 'filetype-badmime'            => 'Files of the MIME type "$1" are not allowed to be uploaded.',
 'filetype-bad-ie-mime'        => 'Cannot upload this file because Internet Explorer would detect it as "$1", which is a disallowed and potentially dangerous file type.',
@@ -2122,7 +2122,7 @@ Permitted {{PLURAL:$3|file type is|file types are}} $2.',
 'filename-tooshort'           => 'The filename is too short.',
 'filetype-banned'             => 'This type of file is banned.',
 'verification-error'          => 'This file did not pass file verification.',
-'hookaborted'                 => 'The modification you tried to make was aborted by an extension hook.',
+'hookaborted'                 => 'The modification you tried to make was aborted by an extension.',
 'illegal-filename'            => 'The filename is not allowed.',
 'overwrite'                   => 'Overwriting an existing file is not allowed.',
 'unknown-error'               => 'An unknown error occured.',
@@ -2132,7 +2132,7 @@ Permitted {{PLURAL:$3|file type is|file types are}} $2.',
 this file is $2.',
 'largefileserver'             => 'This file is bigger than the server is configured to allow.',
 'emptyfile'                   => 'The file you uploaded seems to be empty.
-This might be due to a typo in the file name.
+This might be due to a typo in the filename.
 Please check whether you really want to upload this file.',
 'windows-nonascii-filename'   => 'This wiki does not support filenames with special characters.',
 'fileexists'                  => "A file with this name exists already, please check '''<tt>[[:$1]]</tt>''' if you are not sure if you want to change it.
@@ -2151,7 +2151,7 @@ Please check the file '''<tt>[[:$1]]</tt>'''.
 If the checked file is the same image of original size it is not necessary to upload an extra thumbnail.",
 'file-thumbnail-no'           => "The filename begins with '''<tt>$1</tt>'''.
 It seems to be an image of reduced size ''(thumbnail)''.
-If you have this image in full resolution upload this one, otherwise change the file name please.",
+If you have this image in full resolution upload this one, otherwise change the filename please.",
 'fileexists-forbidden'        => 'A file with this name already exists, and cannot be overwritten.
 If you still want to upload your file, please go back and use a new name.
 [[File:$1|thumb|center|$1]]',
@@ -2192,7 +2192,7 @@ Please choose a more descriptive name for your file.",
 'filename-prefix-blacklist'   => ' #<!-- leave this line exactly as it is --> <pre>
 # Syntax is as follows:
 #   * Everything from a "#" character to the end of the line is a comment
-#   * Every non-blank line is a prefix for typical file names assigned automatically by digital cameras
+#   * Every non-blank line is a prefix for typical filenames assigned automatically by digital cameras
 CIMG # Casio
 DSC_ # Nikon
 DSCF # Fuji
@@ -3252,7 +3252,7 @@ cannot move a page over itself.',
 'imagenocrossnamespace'        => 'Cannot move file to non-file namespace',
 'nonfile-cannot-move-to-file'  => 'Cannot move non-file to file namespace',
 'imagetypemismatch'            => 'The new file extension does not match its type',
-'imageinvalidfilename'         => 'The target file name is invalid',
+'imageinvalidfilename'         => 'The target filename is invalid',
 'fix-double-redirects'         => 'Update any redirects that point to the original title',
 'move-leave-redirect'          => 'Leave a redirect behind',
 'protectedpagemovewarning'     => "'''Warning:''' This page has been protected so that only users with administrator privileges can move it.
@@ -3261,7 +3261,7 @@ The latest log entry is provided below for reference:",
 The latest log entry is provided below for reference:",
 'move-over-sharedrepo'         => '== File exists ==
 [[:$1]] exists on a shared repository. Moving a file to this title will override the shared file.',
-'file-exists-sharedrepo'       => 'The file name chosen is already in use on a shared repository.
+'file-exists-sharedrepo'       => 'The filename chosen is already in use on a shared repository.
 Please choose another name.',
 
 # Export
@@ -4614,4 +4614,41 @@ This site is experiencing technical difficulties.',
 'feedback-close' => 'Done',
 'feedback-bugcheck' => 'Great! Just check that it is not already one of the [$1 known bugs].',
 'feedback-bugnew' => 'I checked. Report a new bug',
+
+# API errors
+'api-error-badaccess-groups'              => 'You are not permitted to upload files to this wiki.',
+'api-error-badtoken'                      => 'Internal error: Bad token.',
+'api-error-copyuploaddisabled'            => 'Uploading by URL is disabled on this server.',
+'api-error-duplicate'                     => 'There {{PLURAL:$1|is [$2 another file]|are [$2 some other files]}} already on the site with the same content.',
+'api-error-duplicate-archive'             => 'There {{PLURAL:$1|was [$2 another file]|were [$2 some other files]}} already on the site with the same content, but {{PLURAL:$1|it was|they were}} deleted.',
+'api-error-duplicate-archive-popup-title' => 'Duplicate {{PLURAL:$1|file|files}} that have already been deleted',
+'api-error-duplicate-popup-title'         => 'Duplicate {{PLURAL:$1|file|files}}',
+'api-error-empty-file'                    => 'The file you submitted was empty.',
+'api-error-fetchfileerror'                => 'Internal error: Something went wrong while fetching the file.',
+'api-error-file-too-large'                => 'The file you submitted was too large.',
+'api-error-filename-tooshort'             => 'The filename is too short.',
+'api-error-filetype-banned'               => 'This type of file is banned.',
+'api-error-filetype-missing'              => 'The filename is missing an extension.',
+'api-error-hookaborted'                   => 'The modification you tried to make was aborted by an extension.',
+'api-error-http'                          => 'Internal error: Unable to connect to server.',
+'api-error-illegal-filename'              => 'The filename is not allowed.',
+'api-error-internal-error'                => 'Internal error: Something went wrong with processing your upload on the wiki.',
+'api-error-invalid-file-key'              => 'Internal error: File was not found in temporary storage.',
+'api-error-missingparam'                  => 'Internal error: Missing parameters on request.',
+'api-error-missingresult'                 => 'Internal error: Could not determine if the copy succeeded.',
+'api-error-mustbeloggedin'                => 'You must be logged in to upload files.',
+'api-error-mustbeposted'                  => 'Internal error: Request requires HTTP POST.',
+'api-error-noimageinfo'                   => 'The upload succeeded, but the server did not give us any information about the file.',
+'api-error-nomodule'                      => 'Internal error: No upload module set.',
+'api-error-ok-but-empty'                  => 'Internal error: No response from server.',
+'api-error-overwrite'                     => 'Overwriting an existing file is not allowed.',
+'api-error-stashfailed'                   => 'Internal error: Server failed to store temporary file.',
+'api-error-timeout'                       => 'The server did not respond within the expected time.',
+'api-error-unclassified'                  => 'An unknown error occurred.',
+'api-error-unknown-code'                  => 'Unknown error: "$1"',
+'api-error-unknown-error'                 => 'Internal error: Something went wrong when trying to upload your file.',
+'api-error-unknown-warning'               => 'Unknown warning: $1',
+'api-error-uploaddisabled'                => 'Uploading is disabled on this wiki.',
+'api-error-verification-error'            => 'This file might be corrupt, or have the wrong extension.',
+
 );
