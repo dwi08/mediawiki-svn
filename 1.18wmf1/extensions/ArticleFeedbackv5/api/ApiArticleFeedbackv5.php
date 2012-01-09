@@ -41,7 +41,6 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			$this->dieUsage( 'ArticleFeedback is not enabled on this page', 'invalidpage' );
 		}
 
-		$feedbackId   = $this->newFeedback( $params );
 		$dbr          = wfGetDB( DB_SLAVE );
 		$pageId       = $params['pageid'];
 		$bucket       = $params['bucket'];
@@ -68,7 +67,6 @@ class ApiArticleFeedbackv5 extends ApiBase {
 				}
 				if ( $this->validateParam( $value, $type, $field['afi_id'] ) ) {
 					$data = array(
-						'aa_feedback_id' => $feedbackId,
 						'aa_field_id'    => $field['afi_id'],
 					);
 					foreach ( array( 'rating', 'text', 'boolean', 'option_id' ) as $t ) {
@@ -88,8 +86,10 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			);
 			return;
 		}
+		$ratingIds  = $this->saveUserRatings( $user_answers, $bucket, $params );
+		$ctaId      = $ratingIds['cta_id'];
+		$feedbackId = $ratingIds['feedback_id'];
 
-		$ctaId = $this->saveUserRatings( $user_answers, $feedbackId, $bucket );
 		$this->updateRollupTables( $pageId, $revisionId, $user_answers );
 
 		if ( $params['email'] ) {
@@ -116,9 +116,9 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			null,
 			$this->getModuleName(),
 			array(
-				'result' => 'Success',
+				'result'      => 'Success',
 				'feedback_id' => $feedbackId,
-				'cta_id' => $ctaId,
+				'cta_id'      => $ctaId,
 			)
 		);
 	}
@@ -435,14 +435,18 @@ class ApiArticleFeedbackv5 extends ApiBase {
 	}
 
 	/**
-	 * Creates a new feedback row and returns the id
+ 	 * Creates a new feedback record and inserts the user's rating
+	 * for a specific revision
 	 *
-	 * @param  $params array the parameters
-	 * @return int the feedback id
+	 * @param  array $data       the data
+	 * @param  int   $feedbackId the feedback id
+	 * @param  int   $bucket     the bucket id
+	 * @return int   the cta id
 	 */
-	public function newFeedback( $params ) {
+	private function saveUserRatings( $data, $bucket, $params ) {
 		global $wgUser;
 		$dbw       = wfGetDB( DB_MASTER );
+		$ctaId     = $this->getCTAId( $data, $bucket );
 		$revId     = $params['revid'];
 		$bucket    = $params['bucket'];
 		$link      = $params['link'];
@@ -473,6 +477,8 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			$revId = $title->getLatestRevID();
 		}
 
+		$dbw->begin();
+
 		$dbw->insert( 'aft_article_feedback', array(
 			'af_page_id'         => $params['pageid'],
 			'af_revision_id'     => $revId,
@@ -484,22 +490,12 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			'af_link_id'         => $link,
 		) );
 
-		return $dbw->insertID();
-	}
+		$feedbackId = $dbw->insertID();
 
-	/**
-	 * Inserts the user's rating for a specific revision
-	 *
-	 * @param  array $data       the data
-	 * @param  int   $feedbackId the feedback id
-	 * @param  int   $bucket     the bucket id
-	 * @return int   the cta id
-	 */
-	private function saveUserRatings( $data, $feedbackId, $bucket ) {
-		$dbw   = wfGetDB( DB_MASTER );
-		$ctaId = $this->getCTAId( $data, $bucket );
+		foreach($data as $key => $item) {
+			$data[$key]['aa_feedback_id'] = $feedbackId;
+		}
 
-		$dbw->begin();
 		$dbw->insert( 'aft_article_answer', $data, __METHOD__ );
 		$dbw->update(
 			'aft_article_feedback',
@@ -509,7 +505,10 @@ class ApiArticleFeedbackv5 extends ApiBase {
 		);
 		$dbw->commit();
 
-		return $ctaId;
+		return array(
+			'cta_id'      => ($ctaId ? $ctaId : 0),
+			'feedback_id' => ($feedbackId ? $feedbackId : 0)
+		);
 	}
 
 	/**
