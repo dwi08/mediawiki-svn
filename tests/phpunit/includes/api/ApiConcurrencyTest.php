@@ -84,7 +84,7 @@ class ApiConcurrencyTest extends ApiTestCase {
 									'record' => 1,
 									'resourcetype' => 'responding-to-moodbar-feedback'), $sessionArray['one'], self::$users['one']->user );
 
-		$this->assertEquals( "success", $result['concurrency']['status'] );
+		$this->assertEquals( "success", $result['concurrency']['result'] );
 
 		$wgUser = self::$users['two']->user;
 
@@ -94,7 +94,7 @@ class ApiConcurrencyTest extends ApiTestCase {
 									'record' => 1,
 									'resourcetype' => 'responding-to-moodbar-feedback'), $sessionArray['two'], self::$users['two']->user );
 
-		$this->assertEquals( "failure", $result['concurrency']['status'] );
+		$this->assertEquals( "failure", $result['concurrency']['result'] );
 
 		list( $result, , $session ) =  $this->doApiRequestWithToken( array(
 									'action' => 'concurrency',
@@ -102,7 +102,7 @@ class ApiConcurrencyTest extends ApiTestCase {
 									'record' => 2,
 									'resourcetype' => 'responding-to-moodbar-feedback'), $sessionArray['two'], self::$users['two']->user );
 
-		$this->assertEquals( "success", $result['concurrency']['status'] );
+		$this->assertEquals( "success", $result['concurrency']['result'] );
 
 	}
 
@@ -122,7 +122,7 @@ class ApiConcurrencyTest extends ApiTestCase {
 									'record' => 1,
 									'resourcetype' => 'responding-to-moodbar-feedback'), $sessionArray['one'], self::$users['one']->user );
 
-		$this->assertEquals( "success", $result['concurrency']['status'] );
+		$this->assertEquals( "success", $result['concurrency']['result'] );
 
 		list( $result, , $session ) =  $this->doApiRequestWithToken( array(
 									'action' => 'concurrency',
@@ -130,7 +130,7 @@ class ApiConcurrencyTest extends ApiTestCase {
 									'record' => 2,
 									'resourcetype' => 'responding-to-moodbar-feedback'), $sessionArray['one'], self::$users['one']->user );
 
-		$this->assertEquals( "failure", $result['concurrency']['status'] );
+		$this->assertEquals( "failure", $result['concurrency']['result'] );
 
 		$wgUser = self::$users['two']->user;
 
@@ -140,7 +140,7 @@ class ApiConcurrencyTest extends ApiTestCase {
 									'record' => 2,
 									'resourcetype' => 'responding-to-moodbar-feedback'), $sessionArray['two'], self::$users['two']->user );
 
-		$this->assertEquals( "success", $result['concurrency']['status'] );
+		$this->assertEquals( "success", $result['concurrency']['result'] );
 		
 	}
 

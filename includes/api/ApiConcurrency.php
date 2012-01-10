@@ -24,10 +24,10 @@ class ApiConcurrency extends ApiBase {
 			case 'checkout':
 			case 'checkin':
 				if ( $concurrencyCheck->$params['ccaction']( $params['record'] ) ) {
-					$res['status'] = 'success';	
+					$res['result'] = 'success';	
 				}
 				else {
-					$res['status'] = 'failure';	
+					$res['result'] = 'failure';	
 				}
 				break;
 
