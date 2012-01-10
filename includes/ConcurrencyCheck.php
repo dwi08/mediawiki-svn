@@ -32,6 +32,7 @@ class ConcurrencyCheck {
 		$this->dbw = wfGetDb( DB_MASTER );
 
 		$this->user = $user;
+		// TODO: create a registry of all valid resourceTypes that client app can add to.
 		$this->resourceType = $resourceType;
 		$this->setExpirationTime( $expirationTime );
 	}
@@ -85,6 +86,7 @@ class ConcurrencyCheck {
 			return true;
 		}
 
+		// if the insert failed, it's necessary to check the expiration.
 		$dbw->begin();
 		$row = $dbw->selectRow(
 			'concurrencycheck',
@@ -123,24 +125,10 @@ class ConcurrencyCheck {
 		);
 
 		// cache the result.
-		$memc->set( $cacheKey, array( 'userId' => $userId, 'expiration' => $expiration ), $expiration - time() );
+		$memc->set( $cacheKey, array( 'userId' => $userId, 'expiration' => $expiration ), $this->expirationTime );
 		
 		$dbw->commit();
 		return true;
-		
-		// if insert succeeds, delete the cache key.  don't make a new one since they have to be created atomically.
-		//
-		// if insert fails:
-		// begin transaction
-		// select where key=key and expiration > now()
-		// if row is missing or user matches:
-		//   execute a replace()
-		//   overwrite the cache key (might as well, since this is inside a transaction)
-		// commit
-		// if select returned an unexpired row owned by someone else, return failure.
-				
-		// optional: check to see if the current user already has the resource checked out, and if so,
-		// return that checkout information instead. (does anyone want that?)
 	}
 
 	/**
@@ -173,15 +161,7 @@ class ConcurrencyCheck {
 			return true;
 		}
 		
-		return false;
-		
-		// delete the row, specifying the username in the where clause (keeps users from checking in stuff that's not theirs).
-		// if a row was deleted:
-		//   remove the record from memcache.  (removing cache key doesn't require atomicity)
-			//   return true
-		// else
-		//   return false
-		
+		return false;		
 	}
 
 	/**
@@ -229,19 +209,6 @@ class ConcurrencyCheck {
 
 		// return the number of rows removed.
 		return $dbw->affectedRows();
-
-		// grab a unixtime.
-		// select all rows where expiration < time
-		// delete all rows where expiration < time
-		// remove selected rows from memcache
-		//
-		//     previous idea, probably wrong:
-		// select all expired rows.
-		// foreach( expired )
-		//   delete row where id=id and expiration < now()  (accounts for updates)
-		//   if delete succeeded, remove cache key  (txn not required, since removing cache key doesn't require atomicity)
-		//   (sadly, this must be many deletes to coordinate removal from memcache)
-		//   (is it necessary to remove expired cache entries?)
 	}
 	
 	public function status( $keys ) {
@@ -251,9 +218,6 @@ class ConcurrencyCheck {
 
 		$checkouts = array();
 		$toSelect = array();
-
-		// maybe run this here?
-		//$this->expire();
 		
 		// validate keys, attempt to retrieve from cache.
 		foreach( $keys as $key ) {
@@ -276,6 +240,9 @@ class ConcurrencyCheck {
 
 		// if there were cache misses...
 		if( $toSelect ) {
+			// If it's time to go to the database, go ahead and expire old rows.
+			$this->expire();
+			
 			// the transaction seems incongruous, I know, but it's to keep the cache update atomic.
 			$dbw->begin();
 			$res = $dbw->select(
@@ -315,23 +282,10 @@ class ConcurrencyCheck {
 		}
 		
 		return $checkouts;
-		
-		// fetch keys from cache or db (keys are an array)
-		//
-		// for all unexpired keys present in cache, store cached return value for returning later.
-		//
-		// if some keys remain (missing from cache or expired):
-		// execute expire()	to make sure db records are cleared
-		// for all remaining keys:
-		//  begin transaction
-		//  select rows where key in (keys) and expiration > now()
-		//  overwrite any memcache entry
-		//  commit
-		//  return values that were added to cache, plus values pulled from cache
 	}
 	
 	public function listCheckouts() {
-		// fill in the function that lets you get the complete set of checkouts for a given application.
+		// TODO: fill in the function that lets you get the complete set of checkouts for a given application.
 	}
 	
 	public function setUser ( $user ) {
@@ -367,6 +321,8 @@ class ConcurrencyCheck {
 		if( ! preg_match('/^\d+$/', $record) ) {
 			throw new ConcurrencyCheckBadRecordIdException( 'Record ID ' . $record . ' must be a positive integer' );
 		}
+		
+		// TODO: add a hook here for client-side validation.
 		return true;
 	}
 }
