@@ -182,7 +182,7 @@ def main():
 	logging.info("Checking for message templates")
 	count = {"matched": 0, "missed": 0}
 	for rev in revs:
-		logging.debug("Matching revision %(rev_id)s peformed by %(poster_name)s @ %(rev_timestamp)s: %(rev_comment)s" % rev)
+		logging.debug("Matching revision %(rev_id)s peformed by %(poster_name)s @ %(timestamp)s: %(rev_comment)s" % rev)
 		message = api.getAdded(rev['rev_id'])
 		
 		match = args.message.search(message)
@@ -216,7 +216,7 @@ class Database:
 		query = """
 			SELECT 
 				r.rev_id,
-				r.rev_timestamp,
+				r.rev_timestamp as timestamp,
 				r.rev_comment,
 				r.rev_user                      AS poster_id,
 				r.rev_user_text                 AS poster_name,
