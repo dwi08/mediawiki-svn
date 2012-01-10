@@ -25,12 +25,20 @@ class ConcurrencyCheckTest extends MediaWikiTestCase {
 				array()
 			),
 		);
+		
+		// turn on memcached for this test.
+		// if no memcached is present, this still works fine.
+		global $wgMainCacheType;
+		$this->oldcache = $wgMainCacheType;
+		$wgMainCacheType = CACHE_MEMCACHED;
 	}
 	
 	public function tearDown() {
-		parent::tearDown();
+		// turn off caching again.
+		global $wgMainCacheType;
+		$wgMainCacheType = $this->oldcache;
 		
-		// perhaps clean up all the cruft left in the db
+		parent::tearDown();		
 	}
 	
 	// Actual tests from here down
@@ -46,6 +54,7 @@ class ConcurrencyCheckTest extends MediaWikiTestCase {
 		
 		// tests
 		$this->assertTrue( $first->checkout($testKey), "Initial checkout" );
+		$this->assertTrue( $first->checkout($testKey), "Cache hit" );
 		$this->assertFalse( $second->checkout($testKey), "Checkout of locked resource fails as different user" );
 		$this->assertTrue( $first->checkout($testKey), "Checkout of locked resource succeeds as original user" );
 		$this->assertFalse( $second->checkin($testKey), "Checkin of locked resource fails as different user" );

@@ -18,9 +18,13 @@
  * @author Ian Baker <ian@wikimedia.org>
  */
 class ConcurrencyCheck {
-
-
-	// TODO: docblock
+	/**
+	 * Constructor
+	 * 
+	 * @var $resourceType String The calling application or type of resource, conceptually like a namespace
+	 * @var $user User object, the current user
+	 * @var $expirationTime Integer (optional) How long should a checkout last, in seconds
+	 */
 	public function __construct( $resourceType, $user, $expirationTime = null ) {
 
 		// All database calls are to the master, since the whole point of this class is maintaining
@@ -48,16 +52,17 @@ class ConcurrencyCheck {
 		$cacheKey = wfMemcKey( $this->resourceType, $record );
 
 		// when operating with a single memcached cluster, it's reasonable to check the cache here.
-		// TODO: in a muti-datacenter environment with discrete memcache instances, this has to be turned off. make a config var?
-        $cached = $memc->get( $cacheKey );
-
-		if( $cached ) {
-			if( ! $override && $cached['userId'] != $userId && $cached['expiration'] > time() ) {
-				// this is already checked out.
-				return false;
+		global $wgConcurrencyTrustMemc;
+		if( $wgConcurrencyTrustMemc ) {
+	        $cached = $memc->get( $cacheKey );
+			if( $cached ) {
+				if( ! $override && $cached['userId'] != $userId && $cached['expiration'] > time() ) {
+					// this is already checked out.
+					return false;
+				}
 			}
 		}
-
+		
 		// attempt an insert, check success (this is atomic)
 		$insertError = null;
 		$res = $dbw->insert(
@@ -334,13 +339,20 @@ class ConcurrencyCheck {
 	}
 	
 	public function setExpirationTime ( $expirationTime = null ) {
+		global $wgConcurrencyExpirationDefault, $wgConcurrencyExpirationMax, $wgConcurrencyExpirationMin;
+
 		// check to make sure the time is digits only, so it can be used in queries
 		// negative number are allowed, though mostly only used for testing
-		// TODO: define maximum and minimum times in configuration, to prevent DoS
 		if( $expirationTime && preg_match('/^[\d-]+$/', $expirationTime) ) {
-			$this->expirationTime = $expirationTime; // the amount of time before a checkout expires.
+			if( $expirationTime > $wgConcurrencyExpirationMax ) {
+				$this->expirationTime = $wgConcurrencyExpirationMax; // if the number is too high, limit it to the max value.
+			} elseif ( $expirationTime < $wgConcurrencyExpirationMin ) {
+				$this->expirationTime = $wgConcurrencyExpirationMin; // low limit, default -1 min
+			} else {
+				$this->expirationTime = $expirationTime; // the amount of time before a checkout expires.
+			}
 		} else {
-			$this->expirationTime = 60 * 15; // 15 mins. TODO: make a configurable default for this.
+			$this->expirationTime = $wgConcurrencyExpirationDefault; // global default is 15 mins.
 		}
 	}
 
