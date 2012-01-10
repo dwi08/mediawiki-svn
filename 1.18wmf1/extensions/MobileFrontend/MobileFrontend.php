@@ -41,20 +41,20 @@ $wgExtensionMessagesFiles['MobileFrontend'] = $cwd . 'MobileFrontend.i18n.php';
 
 // autoload extension classes
 
-$autoloadClasses = array(
-						'DeviceDetection',
-						'CssDetection',
-						'MobileFrontendTemplate',
-						'ApplicationTemplate',
-						'SearchTemplate',
-						'FooterTemplate',
-						'LeaveFeedbackTemplate',
-						'DisableTemplate',
-						'OptInTemplate',
-						'OptOutTemplate',
-						'ApplicationWmlTemplate',
-						'ThanksNoticeTemplate',
-						);
+$autoloadClasses = array (
+	'DeviceDetection',
+	'CssDetection',
+	'MobileFrontendTemplate',
+	'ApplicationTemplate',
+	'SearchTemplate',
+	'FooterTemplate',
+	'LeaveFeedbackTemplate',
+	'DisableTemplate',
+	'OptInTemplate',
+	'OptOutTemplate',
+	'ApplicationWmlTemplate',
+	'ThanksNoticeTemplate',
+);
 
 foreach ( $autoloadClasses as $class ) {
 	$wgAutoloadClasses[$class] = $cwd . $class . '.php';
@@ -146,12 +146,14 @@ class ExtMobileFrontend {
 	public static $isBetaGroupMember = false;
 	public static $hideSearchBox = false;
 	public static $hideLogo = false;
+	public static $hideFooter = false;
 	public static $languageUrls;
 	public static $wsLoginToken = '';
 	public static $wsLoginFormAction = '';
 	public static $isFilePage;
 	public static $logoutHtml;
 	public static $loginHtml;
+	public static $zeroRatedBanner;
 
 	public static $messageKeys = array(
 		'mobile-frontend-show-button',
@@ -393,9 +395,11 @@ class ExtMobileFrontend {
 
 				$languageUrl = $parsedUrl['scheme'] . $parsedUrl['delimiter'] .	 $parsedUrl['host'] . $parsedUrl['path'];
 				if ( isset( $parsedUrl['query'] ) ) {
-					$languageUrl .= $queryDelimiter . $parsedUrl['query'] . $fragmentDelimiter . $parsedUrl['fragment'];
+					$languageUrl .= $queryDelimiter . $parsedUrl['query'];
 				}
-
+				if ( isset( $parsedUrl['fragment'] ) ) {
+					$languageUrl .= $fragmentDelimiter . $parsedUrl['fragment'];
+				}
 				$languageUrls[] = array(
 					'href' => $languageUrl,
 					'text' => ( $wgContLang->getLanguageName( $nt->getInterwiki() ) != ''
@@ -421,9 +425,16 @@ class ExtMobileFrontend {
 		return true;
 	}
 
+	/**
+	 * @param $out OutputPage
+	 * @param $redirect
+	 * @param $code
+	 * @return bool
+	 */
 	public function beforePageRedirect( $out, &$redirect, &$code ) {
+		global $wgMobileDomain;
+		wfProfileIn( __METHOD__ );
 		if ( $out->getTitle()->isSpecial( 'Userlogin' ) ) {
-			global $wgMobileDomain;
 			$xDevice = isset( $_SERVER['HTTP_X_DEVICE'] ) ? $_SERVER['HTTP_X_DEVICE'] : '';
 			if ( $xDevice ) {
 				$parsedUrl = wfParseUrl( $redirect );
@@ -445,11 +456,12 @@ class ExtMobileFrontend {
 				}
 			}
 		}
+		wfProfileOut( __METHOD__ );
 		return true;
 	}
 
 	/**
-	 * @param $out Outputpage
+	 * @param $out OutputPage
 	 * @param $text String
 	 * @return bool
 	 */
@@ -458,6 +470,7 @@ class ExtMobileFrontend {
 		wfProfileIn( __METHOD__ );
 
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+		$acceptHeader = isset( $_SERVER["HTTP_ACCEPT"] ) ? $_SERVER["HTTP_ACCEPT"] : '';
 		$uAmd5 = md5( $userAgent );
 
 		$key = wfMemcKey( 'mobile', 'ua', $uAmd5 );
@@ -495,163 +508,164 @@ class ExtMobileFrontend {
 		$mobileAction = $wgRequest->getText( 'mobileaction' );
 		$action = $wgRequest->getText( 'action' );
 
-		if ( self::$useFormat === 'mobile' || self::$useFormat === 'mobile-wap' ||
-			$xDevice ) {
-				if ( $action !== 'edit' &&
-					 $mobileAction !== 'view_normal_site' ) {
-
-					self::$title = $out->getTitle();
-
-					if (  Title::newMainPage()->equals( self::$title ) ) {
-						self::$isMainPage = true;
-					}
-					if ( self::$title->getNamespace() == NS_FILE ) {
-						self::$isFilePage = true;
-					}
-
-					self::$htmlTitle = $out->getHTMLTitle();
-					self::$disableImages = $wgRequest->getText( 'disableImages', 0 );
-					self::$enableImages = $wgRequest->getText( 'enableImages', 0 );
-					self::$displayNoticeId = $wgRequest->getText( 'noticeid', '' );
-
-					if ( self::$disableImages == 1 ) {
-						$wgRequest->response()->setcookie( 'disableImages', 1 );
-						$location = str_replace( '?disableImages=1', '', str_replace( '&disableImages=1', '', $wgRequest->getFullRequestURL() ) );
-						$location = str_replace( '&mfi=1', '', str_replace( '&mfi=0', '', $location ) );
-						$location = $this->getRelativeURL( $location );
-						$wgRequest->response()->header( 'Location: ' . $location . '&mfi=0' );
-					}
-
-					if ( self::$disableImages == 0 ) {
-						$disableImages = $wgRequest->getCookie( 'disableImages' );
-						if ( $disableImages ) {
-							self::$disableImages = $disableImages;
-						}
-					}
-
-					if ( self::$enableImages == 1 ) {
-						$disableImages = $wgRequest->getCookie( 'disableImages' );
-						if ( $disableImages ) {
-							$wgRequest->response()->setcookie( 'disableImages', '' );
-						}
-						$location = str_replace( '?enableImages=1', '', str_replace( '&enableImages=1', '', $wgRequest->getFullRequestURL() ) );
-						$location = str_replace( '&mfi=1', '', str_replace( '&mfi=0', '', $location ) );
-						$location = $this->getRelativeURL( $location );
-						$wgRequest->response()->header( 'Location: ' . $location . '&mfi=1' );
-					}
-
-					self::$format = $wgRequest->getText( 'format' );
-					self::$callback = $wgRequest->getText( 'callback' );
-					self::$requestedSegment = $wgRequest->getText( 'seg', 0 );
-					self::$search = $wgRequest->getText( 'search' );
-					self::$searchField = $wgRequest->getText( 'search', '' );
-
-					$acceptHeader = isset( $_SERVER["HTTP_ACCEPT"] ) ? $_SERVER["HTTP_ACCEPT"] : '';
-					$device = new DeviceDetection();
-
-					if ( $xDevice ) {
-						$formatName = $xDevice;
-					} else {
-						$formatName = $device->formatName( $userAgent, $acceptHeader );
-					}
-
-					self::$device = $device->format( $formatName );
-
-					if ( self::$device['view_format'] === 'wml' ) {
-						$this->contentFormat = 'WML';
-					} elseif ( self::$device['view_format'] === 'html' ) {
-						$this->contentFormat = 'XHTML';
-					}
-
-					if ( self::$useFormat === 'mobile-wap' ) {
-						$this->contentFormat = 'WML';
-					}
-
-					if ( $mobileAction == 'leave_feedback' ) {
-						echo $this->renderLeaveFeedbackXHTML();
-						wfProfileOut( __METHOD__ );
-						exit();
-					}
-
-					if ( $mobileAction == 'leave_feedback_post' ) {
-
-						$this->getMsg();
-
-						$subject = $wgRequest->getText( 'subject', '' );
-						$message = $wgRequest->getText( 'message', '' );
-						$token = $wgRequest->getText( 'edittoken', '' );
-
-						$title = Title::newFromText( self::$messages['mobile-frontend-feedback-page'] );
-
-						if ( $title->userCan( 'edit' ) &&
-							!$wgUser->isBlockedFrom( $title ) &&
-							$wgUser->matchEditToken( $token ) ) {
-							$article = new Article( $title, 0 );
-							$rawtext = $article->getRawText();
-							$rawtext .= "\n== {$subject} == \n {$message} ~~~~ \n <small>User agent: {$userAgent}</small> ";
-							$article->doEdit( $rawtext, '' );
-						}
-
-						$location = str_replace( '&mobileaction=leave_feedback_post', '', $wgRequest->getFullRequestURL() . '&noticeid=1&useformat=mobile' );
-						$location = $this->getRelativeURL( $location );
-						$wgRequest->response()->header( 'Location: ' . $location );
-						wfProfileOut( __METHOD__ );
-						exit();
-					}
-
-					if ( $mobileAction == 'disable_mobile_site' && $this->contentFormat == 'XHTML' ) {
-						echo $this->renderDisableMobileSiteXHTML();
-						wfProfileOut( __METHOD__ );
-						exit();
-					}
-
-					if ( $mobileAction == 'opt_in_mobile_site' && $this->contentFormat == 'XHTML' ) {
-						echo $this->renderOptInMobileSiteXHTML();
-						wfProfileOut( __METHOD__ );
-						exit();
-					}
-
-					if ( $mobileAction == 'opt_out_mobile_site' && $this->contentFormat == 'XHTML' ) {
-						echo $this->renderOptOutMobileSiteXHTML();
-						wfProfileOut( __METHOD__ );
-						exit();
-					}
-
-					if ( $mobileAction == 'opt_in_cookie' ) {
-						wfIncrStats( 'mobile.opt_in_cookie_set' );
-						$this->setOptInOutCookie( '1' );
-						$this->disableCaching();
-						$location = wfExpandUrl( Title::newMainPage()->getFullURL(), PROTO_CURRENT );
-						$wgRequest->response()->header( 'Location: ' . $location );
-					}
-
-					if ( $mobileAction == 'opt_out_cookie' ) {
-						$this->setOptInOutCookie( '' );
-					}
-
-					$this->getMsg();
-					$this->disableCaching();
-					$this->sendXDeviceVaryHeader();
-					$this->sendApplicationVersionVaryHeader();
-					$this->checkUserStatus();
-					$this->checkUserLoggedIn();
-
-					if ( self::$title->isSpecial( 'Userlogin' ) && self::$isBetaGroupMember ) {
-						self::$wsLoginToken = $wgRequest->getSessionData( 'wsLoginToken' );
-						$q = array( 'action' => 'submitlogin', 'type' => 'login' );
-						$returnToVal = $wgRequest->getVal( 'returnto' );
-
-						if ( $returnToVal ) {
-							$q['returnto'] = $returnToVal;
-						}
-
-						self::$wsLoginFormAction = self::$title->getLocalURL( $q );
-					}
-
-					$this->setDefaultLogo();
-					ob_start( array( $this, 'DOMParse' ) );
-				}
+		if ( self::$useFormat !== 'mobile' && self::$useFormat !== 'mobile-wap' &&
+			!$xDevice ) {
+			wfProfileOut( __METHOD__ );
+			return true;
 		}
+		if ( $action === 'edit' ||
+			 $mobileAction === 'view_normal_site' ) {
+			wfProfileOut( __METHOD__ );
+			return true;
+		}
+
+		self::$title = $out->getTitle();
+
+		if ( self::$title->isMainPage() ) {
+			self::$isMainPage = true;
+		}
+		if ( self::$title->getNamespace() == NS_FILE ) {
+			self::$isFilePage = true;
+		}
+
+		self::$htmlTitle = $out->getHTMLTitle();
+		self::$disableImages = $wgRequest->getText( 'disableImages', 0 );
+		self::$enableImages = $wgRequest->getText( 'enableImages', 0 );
+		self::$displayNoticeId = $wgRequest->getText( 'noticeid', '' );
+
+		if ( self::$disableImages == 1 ) {
+			$wgRequest->response()->setcookie( 'disableImages', 1 );
+			$location = str_replace( '?disableImages=1', '', str_replace( '&disableImages=1', '', $wgRequest->getFullRequestURL() ) );
+			$location = str_replace( '&mfi=1', '', str_replace( '&mfi=0', '', $location ) );
+			$location = $this->getRelativeURL( $location );
+			$wgRequest->response()->header( 'Location: ' . $location . '&mfi=0' );
+		} elseif ( self::$disableImages == 0 ) {
+			$disableImages = $wgRequest->getCookie( 'disableImages' );
+			if ( $disableImages ) {
+				self::$disableImages = $disableImages;
+			}
+		}
+
+		if ( self::$enableImages == 1 ) {
+			$disableImages = $wgRequest->getCookie( 'disableImages' );
+			if ( $disableImages ) {
+				$wgRequest->response()->setcookie( 'disableImages', '' );
+			}
+			$location = str_replace( '?enableImages=1', '', str_replace( '&enableImages=1', '', $wgRequest->getFullRequestURL() ) );
+			$location = str_replace( '&mfi=1', '', str_replace( '&mfi=0', '', $location ) );
+			$location = $this->getRelativeURL( $location );
+			$wgRequest->response()->header( 'Location: ' . $location . '&mfi=1' );
+		}
+
+		self::$format = $wgRequest->getText( 'format' );
+		self::$callback = $wgRequest->getText( 'callback' );
+		self::$requestedSegment = $wgRequest->getText( 'seg', 0 );
+		self::$search = $wgRequest->getText( 'search' );
+		self::$searchField = $wgRequest->getText( 'search', '' );
+
+		$device = new DeviceDetection();
+
+		if ( $xDevice ) {
+			$formatName = $xDevice;
+		} else {
+			$formatName = $device->formatName( $userAgent, $acceptHeader );
+		}
+
+		self::$device = $device->format( $formatName );
+
+		if ( self::$device['view_format'] === 'wml' ) {
+			$this->contentFormat = 'WML';
+		} elseif ( self::$device['view_format'] === 'html' ) {
+			$this->contentFormat = 'XHTML';
+		}
+
+		if ( self::$useFormat === 'mobile-wap' ) {
+			$this->contentFormat = 'WML';
+		}
+
+		if ( $mobileAction == 'leave_feedback' ) {
+			echo $this->renderLeaveFeedbackXHTML();
+			wfProfileOut( __METHOD__ );
+			exit();
+		}
+
+		if ( $mobileAction == 'leave_feedback_post' ) {
+
+			$this->getMsg();
+
+			$subject = $wgRequest->getText( 'subject', '' );
+			$message = $wgRequest->getText( 'message', '' );
+			$token = $wgRequest->getText( 'edittoken', '' );
+
+			$title = Title::newFromText( self::$messages['mobile-frontend-feedback-page'] );
+
+			if ( $title->userCan( 'edit' ) &&
+				!$wgUser->isBlockedFrom( $title ) &&
+				$wgUser->matchEditToken( $token ) ) {
+				$article = new Article( $title, 0 );
+				$rawtext = $article->getRawText();
+				$rawtext .= "\n== {$subject} == \n {$message} ~~~~ \n <small>User agent: {$userAgent}</small> ";
+				$article->doEdit( $rawtext, '' );
+			}
+
+			$location = str_replace( '&mobileaction=leave_feedback_post', '', $wgRequest->getFullRequestURL() . '&noticeid=1&useformat=mobile' );
+			$location = $this->getRelativeURL( $location );
+			$wgRequest->response()->header( 'Location: ' . $location );
+			wfProfileOut( __METHOD__ );
+			exit();
+		}
+
+		if ( $mobileAction == 'disable_mobile_site' && $this->contentFormat == 'XHTML' ) {
+			echo $this->renderDisableMobileSiteXHTML();
+			wfProfileOut( __METHOD__ );
+			exit();
+		}
+
+		if ( $mobileAction == 'opt_in_mobile_site' && $this->contentFormat == 'XHTML' ) {
+			echo $this->renderOptInMobileSiteXHTML();
+			wfProfileOut( __METHOD__ );
+			exit();
+		}
+
+		if ( $mobileAction == 'opt_out_mobile_site' && $this->contentFormat == 'XHTML' ) {
+			echo $this->renderOptOutMobileSiteXHTML();
+			wfProfileOut( __METHOD__ );
+			exit();
+		}
+
+		if ( $mobileAction == 'opt_in_cookie' ) {
+			wfIncrStats( 'mobile.opt_in_cookie_set' );
+			$this->setOptInOutCookie( '1' );
+			$this->disableCaching();
+			$location = wfExpandUrl( Title::newMainPage()->getFullURL(), PROTO_CURRENT );
+			$wgRequest->response()->header( 'Location: ' . $location );
+		}
+
+		if ( $mobileAction == 'opt_out_cookie' ) {
+			$this->setOptInOutCookie( '' );
+		}
+
+		$this->getMsg();
+		$this->disableCaching();
+		$this->sendXDeviceVaryHeader();
+		$this->sendApplicationVersionVaryHeader();
+		$this->checkUserStatus();
+		$this->checkUserLoggedIn();
+
+		if ( self::$title->isSpecial( 'Userlogin' ) && self::$isBetaGroupMember ) {
+			self::$wsLoginToken = $wgRequest->getSessionData( 'wsLoginToken' );
+			$q = array( 'action' => 'submitlogin', 'type' => 'login' );
+			$returnToVal = $wgRequest->getVal( 'returnto' );
+
+			if ( $returnToVal ) {
+				$q['returnto'] = $returnToVal;
+			}
+
+			self::$wsLoginFormAction = self::$title->getLocalURL( $q );
+		}
+
+		$this->setDefaultLogo();
+		ob_start( array( $this, 'DOMParse' ) );
 
 		wfProfileOut( __METHOD__ );
 		return true;
@@ -684,7 +698,20 @@ class ExtMobileFrontend {
 	}
 
 	private function checkUserStatus() {
+		global $wgRequest;
 		wfProfileIn( __METHOD__ );
+
+		$hideSearchBox = $wgRequest->getInt( 'hidesearchbox' );
+
+		if ( $hideSearchBox === 1 ) {
+			self::$hideSearchBox = true;
+		}
+
+		$hideLogo = $wgRequest->getInt( 'hidelogo' );
+
+		if ( $hideLogo === 1 ) {
+			self::$hideLogo = true;
+		}
 
 		if ( !empty( $_SERVER['HTTP_APPLICATION_VERSION'] ) &&
 			strpos( $_SERVER['HTTP_APPLICATION_VERSION'], 'Wikipedia Mobile' ) !== false ) {
@@ -692,6 +719,10 @@ class ExtMobileFrontend {
 			if (strpos( $_SERVER['HTTP_APPLICATION_VERSION'], 'Android' ) !== false ) {
 				self::$hideLogo = true;
 			}
+		}
+
+		if ( self::$hideLogo == true ) {
+			self::$hideFooter = true;
 		}
 
 		$optInCookie = $this->getOptInOutCookie();
@@ -720,6 +751,9 @@ class ExtMobileFrontend {
 		return true;
 	}
 
+	/**
+	 * @return Mixed
+	 */
 	private function getOptInOutCookie() {
 		global $wgRequest;
 		wfProfileIn( __METHOD__ );
@@ -784,6 +818,7 @@ class ExtMobileFrontend {
 			$wgOut->addVaryHeader( 'X-Device' );
 		}
 		$wgOut->addVaryHeader( 'Cookie' );
+		$wgOut->addVaryHeader( 'X-Carrier' );
 		wfProfileOut( __METHOD__ );
 		return true;
 	}
@@ -793,7 +828,7 @@ class ExtMobileFrontend {
 		wfProfileIn( __METHOD__ );
 		$wgOut->addVaryHeader( 'Application_Version' );
 		if ( isset( $_SERVER['HTTP_APPLICATION_VERSION'] ) ) {
-			$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_APPLICATION_VERSION'] );	
+			$wgRequest->response()->header( 'Application_Version: ' . $_SERVER['HTTP_APPLICATION_VERSION'] );
 		} else {
 			if ( isset( $_SERVER['HTTP_X_DEVICE'] ) ) {
 				if ( stripos( $_SERVER['HTTP_X_DEVICE'], 'iphone' ) !== false ||
@@ -832,10 +867,8 @@ class ExtMobileFrontend {
 			$leaveFeedbackTemplate->setByArray( $options );
 			$leaveFeedbackHtml = $leaveFeedbackTemplate->getHTML();
 			$contentHtml = $leaveFeedbackHtml;
-			$noticeHtml = ( !empty( $noticeHtml ) ) ? $noticeHtml : '';
 			$applicationTemplate = $this->getApplicationTemplate();
 			$options = array(
-							'noticeHtml' => $noticeHtml,
 							'htmlTitle' => self::$messages['mobile-frontend-leave-feedback'],
 							'searchWebkitHtml' => $searchWebkitHtml,
 							'contentHtml' => $contentHtml,
@@ -872,10 +905,8 @@ class ExtMobileFrontend {
 			$optInTemplate->setByArray( $options );
 			$optInHtml = $optInTemplate->getHTML();
 			$contentHtml = $optInHtml;
-			$noticeHtml = ( !empty( $noticeHtml ) ) ? $noticeHtml : '';
 			$applicationTemplate = $this->getApplicationTemplate();
 			$options = array(
-							'noticeHtml' => $noticeHtml,
 							'htmlTitle' => self::$messages['mobile-frontend-opt-in-title'],
 							'searchWebkitHtml' => $searchWebkitHtml,
 							'contentHtml' => $contentHtml,
@@ -901,21 +932,19 @@ class ExtMobileFrontend {
 			$searchWebkitHtml = $searchTemplate->getHTML();
 			$footerTemplate = $this->getFooterTemplate();
 			$footerHtml = $footerTemplate->getHTML();
-				$optOutTemplate = new OptOutTemplate();
-				$options = array(
-								'explainOptOut' => self::$messages['mobile-frontend-opt-out-explain'],
-								'optOutMessage' => self::$messages['mobile-frontend-opt-out-message'],
-								'yesButton' => self::$messages['mobile-frontend-opt-out-yes-button'],
-								'noButton' => self::$messages['mobile-frontend-opt-out-no-button'],
-								'formAction' => wfExpandUrl( Title::newMainPage()->getFullURL(), PROTO_CURRENT ),
-								);
-				$optOutTemplate->setByArray( $options );
-				$optOutHtml = $optOutTemplate->getHTML();
+			$optOutTemplate = new OptOutTemplate();
+			$options = array(
+							'explainOptOut' => self::$messages['mobile-frontend-opt-out-explain'],
+							'optOutMessage' => self::$messages['mobile-frontend-opt-out-message'],
+							'yesButton' => self::$messages['mobile-frontend-opt-out-yes-button'],
+							'noButton' => self::$messages['mobile-frontend-opt-out-no-button'],
+							'formAction' => wfExpandUrl( Title::newMainPage()->getFullURL(), PROTO_CURRENT ),
+							);
+			$optOutTemplate->setByArray( $options );
+			$optOutHtml = $optOutTemplate->getHTML();
 			$contentHtml = $optOutHtml;
-			$noticeHtml = ( !empty( $noticeHtml ) ) ? $noticeHtml : '';
 			$applicationTemplate = $this->getApplicationTemplate();
 			$options = array(
-							'noticeHtml' => $noticeHtml,
 							'htmlTitle' => self::$messages['mobile-frontend-opt-out-title'],
 							'searchWebkitHtml' => $searchWebkitHtml,
 							'contentHtml' => $contentHtml,
@@ -960,12 +989,10 @@ class ExtMobileFrontend {
 							);
 			$disableTemplate->setByArray( $options );
 			$disableHtml = $disableTemplate->getHTML();
-			
+
 			$contentHtml = $disableHtml;
-			$noticeHtml = ( !empty( $noticeHtml ) ) ? $noticeHtml : '';
 			$applicationTemplate = $this->getApplicationTemplate();
 			$options = array(
-							'noticeHtml' => $noticeHtml,
 							'htmlTitle' => $htmlTitle,
 							'searchWebkitHtml' => $searchWebkitHtml,
 							'contentHtml' => $contentHtml,
@@ -1176,6 +1203,7 @@ class ExtMobileFrontend {
 		$this->mainPage->strictErrorChecking = false;
 		$this->mainPage->encoding = 'UTF-8';
 
+		$zeroLandingPage = $this->mainPage->getElementById( 'zero-landing-page' );
 		$featuredArticle = $this->mainPage->getElementById( 'mp-tfa' );
 		$newsItems = $this->mainPage->getElementById( 'mp-itn' );
 
@@ -1186,6 +1214,10 @@ class ExtMobileFrontend {
 
 		$content = $this->mainPage->createElement( 'div' );
 		$content->setAttribute( 'id', 'content' );
+		
+		if ( $zeroLandingPage ) {
+			$content->appendChild( $zeroLandingPage );
+		}
 
 		if ( $featuredArticle ) {
 			$h2FeaturedArticle = $this->mainPage->createElement( 'h2', self::$messages['mobile-frontend-featured-article'] );
@@ -1321,6 +1353,16 @@ class ExtMobileFrontend {
 
 		$itemToRemoveRecords = $this->parseItemsToRemove();
 
+		$zeroRatedBannerElement = $this->doc->getElementById( 'zero-rated-banner' );
+		
+		if ( !$zeroRatedBannerElement ) {
+			$zeroRatedBannerElement = $this->doc->getElementById( 'zero-rated-banner-red' );
+		}
+
+		if ( $zeroRatedBannerElement ) {
+			self::$zeroRatedBanner = $this->doc->saveXML( $zeroRatedBannerElement, LIBXML_NOEMPTYTAG );
+		}
+
 		if ( self::$isBetaGroupMember ) {
 			$ptLogout = $this->doc->getElementById( 'pt-logout' );
 
@@ -1328,9 +1370,8 @@ class ExtMobileFrontend {
 				$ptLogoutLink = $ptLogout->firstChild;
 				self::$logoutHtml = $this->doc->saveXML( $ptLogoutLink, LIBXML_NOEMPTYTAG );
 			}
-
 			$ptAnonLogin = $this->doc->getElementById( 'pt-anonlogin' );
-			
+		
 			if ( !$ptAnonLogin ) {
 				$ptAnonLogin = $this->doc->getElementById( 'pt-login' );
 			}
@@ -1383,14 +1424,22 @@ class ExtMobileFrontend {
 			$itemToRemoveRecords['CLASS'][] = "thumbcaption";
 			$itemToRemoveRecords['CLASS'][] = "gallery";
 		}
+		
+		$tagToRemoveNodeIdAttributeValues = array( 'zero-language-search' );
 
 		$domElemsToRemove = array();
 		foreach ( $itemToRemoveRecords['TAG'] as $tagToRemove ) {
 			$tagToRemoveNodes = $this->doc->getElementsByTagName( $tagToRemove );
-
 			foreach ( $tagToRemoveNodes as $tagToRemoveNode ) {
+				$tagToRemoveNodeIdAttributeValue = '';
 				if ( $tagToRemoveNode ) {
-					$domElemsToRemove[] = $tagToRemoveNode;
+					$tagToRemoveNodeIdAttribute = $tagToRemoveNode->getAttributeNode( 'id' );
+					if ( $tagToRemoveNodeIdAttribute ) {
+						$tagToRemoveNodeIdAttributeValue = $tagToRemoveNodeIdAttribute->value;
+					}
+					if ( !in_array( $tagToRemoveNodeIdAttributeValue, $tagToRemoveNodeIdAttributeValues ) ) {
+						$domElemsToRemove[] = $tagToRemoveNode;
+					}
 				}
 			}
 		}
@@ -1530,7 +1579,7 @@ class ExtMobileFrontend {
 		}
 
 		if ( self::$format === 'json' ) {
-			header( 'Content-Type: application/json' );
+			header( 'Content-Type: application/javascript' );
 			header( 'Content-Disposition: attachment; filename="data.js";' );
 			$json_data = array();
 			$json_data['title'] = htmlspecialchars ( self::$title->getText() );
@@ -1566,6 +1615,7 @@ class ExtMobileFrontend {
 						'logoutHtml' => $logoutHtml,
 						'loginHtml' => $loginHtml,
 						'code' => self::$code,
+						'hideFooter' => self::$hideFooter,
 						'isBetaGroupMember' => self::$isBetaGroupMember,
 						);
 		$footerTemplate->setByArray( $options );
@@ -1608,6 +1658,7 @@ class ExtMobileFrontend {
 						'wgExtensionAssetsPath' => $wgExtensionAssetsPath,
 						'wgScriptPath' => $wgScriptPath,
 						'isFilePage' => self::$isFilePage,
+						'zeroRatedBanner' => self::$zeroRatedBanner,
 						);
 		$applicationTemplate->setByArray( $options );
 		wfProfileOut( __METHOD__ );

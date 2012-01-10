@@ -28,7 +28,7 @@ function resetViewPort() {
 		if ( viewportmeta ) {
 			viewportmeta.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
 			document.body.addEventListener( 'gesturestart', function () {
-				viewportmeta.content = 'width=device-width, minimum-scale=0.25, maximum-scale=1.6';
+				viewportmeta.content = 'width=device-width, initial-scale=1.0';
 			}, false );
 	    }
 	}
@@ -41,6 +41,10 @@ var ol = new Object();
 search.onfocus = function() {
 
 	resetViewPort();
+	
+	if ( zeroRatedBanner ) {
+		zeroRatedBanner.style.display = 'none';
+	}
 
 	if ( !focused ) {
 		content.style.display = 'none';
@@ -126,12 +130,16 @@ function removeResults() {
 	if ( footer ) {
 		footer.style.display = 'block';
 	}
-	
+
 	var pE = document.getElementById( 'placeholder' );
 	if ( pE ) {
 		pE.style.display = 'none';
 	}
 	
+	if ( zeroRatedBanner ) {
+		zeroRatedBanner.style.display = 'block';
+	}
+
 	if ( ol ) {
 		if ( sq ) {
 			logo.style.visibility = 'visible';
