@@ -41,9 +41,22 @@ class ConcurrencyCheck {
 	 * @return boolean
 	 */
 	public function checkout( $record, $override = null ) {
+		$memc = wfGetMainCache();
 		$this->validateId( $record );
 		$dbw = $this->dbw;
 		$userId = $this->user->getId();
+		$cacheKey = wfMemcKey( $this->resourceType, $record );
+
+		// when operating with a single memcached cluster, it's reasonable to check the cache here.
+		// TODO: in a muti-datacenter environment with discrete memcache instances, this has to be turned off. make a config var?
+        $cached = $memc->get( $cacheKey );
+
+		if( $cached ) {
+			if( ! $override && $cached['userId'] != $userId && $cached['expiration'] > time() ) {
+				// this is already checked out.
+				return false;
+			}
+		}
 
 		// attempt an insert, check success (this is atomic)
 		$insertError = null;
@@ -61,7 +74,9 @@ class ConcurrencyCheck {
 
 		// if the insert succeeded, checkout is done.
 		if( $dbw->affectedRows() === 1 ) {
-			//TODO: delete cache key
+			// delete any existing cache key.  can't create a new key here
+			// since the insert didn't happen inside a transaction.
+			$memc->delete( $cacheKey );
 			return true;
 		}
 
@@ -79,9 +94,15 @@ class ConcurrencyCheck {
 		
 		// not checked out by current user, checkout is unexpired, override is unset
 		if( ! ( $override || $row->cc_user == $userId || $row->cc_expiration <= time() ) ) {
+			// this was a cache miss.  populate the cache with data from the db.
+			// cache is set to expire at the same time as the checkout, since it'll become invalid then anyway.
+			// inside this transaction, a row-level lock is established which ensures cache concurrency
+			$memc->set( $cacheKey, array( 'userId' => $row->cc_user, 'expiration' => $row->cc_expiration ), $row->cc_expiration - time() );
 			$dbw->rollback();
 			return false;
 		}
+
+		$expiration = time() + $this->expirationTime;
 
 		// execute a replace
 		$res = $dbw->replace(
@@ -91,12 +112,13 @@ class ConcurrencyCheck {
 				'cc_resource_type' => $this->resourceType,
 				'cc_record' => $record,
 				'cc_user' => $userId,
-				'cc_expiration' => time() + $this->expirationTime,
+				'cc_expiration' => $expiration,
 			),
 			__METHOD__
 		);
 
-		// TODO cache the result.
+		// cache the result.
+		$memc->set( $cacheKey, array( 'userId' => $userId, 'expiration' => $expiration ), $expiration - time() );
 		
 		$dbw->commit();
 		return true;
@@ -123,9 +145,11 @@ class ConcurrencyCheck {
 	 * @return Boolean
 	 */
 	public function checkin( $record ) {
+		$memc = wfGetMainCache();
 		$this->validateId( $record );		
 		$dbw = $this->dbw;
 		$userId = $this->user->getId();
+		$cacheKey = wfMemcKey( $this->resourceType, $record );
 		
 		$dbw->delete(
 			'concurrencycheck',
@@ -140,7 +164,7 @@ class ConcurrencyCheck {
 		
 		// check row count (this is atomic, select would not be)
 		if( $dbw->affectedRows() === 1 ) {
-			// TODO: remove record from cache
+			$memc->delete( $cacheKey );
 			return true;
 		}
 		
@@ -149,7 +173,7 @@ class ConcurrencyCheck {
 		// delete the row, specifying the username in the where clause (keeps users from checking in stuff that's not theirs).
 		// if a row was deleted:
 		//   remove the record from memcache.  (removing cache key doesn't require atomicity)
-		//   return true
+			//   return true
 		// else
 		//   return false
 		
@@ -161,8 +185,8 @@ class ConcurrencyCheck {
 	 * @return Integer describing the number of records expired.
 	 */
 	public function expire() {
-		$dbw = $this->dbw;
-		
+		$memc = wfGetMainCache();
+		$dbw = $this->dbw;		
 		$now = time();
 		
 		// get the rows to remove from cache.
@@ -175,7 +199,13 @@ class ConcurrencyCheck {
 			__METHOD__,
 			array()
 		);
-				
+		
+		// build a list of rows to delete.
+		$toExpire = array();
+		while( $res && $record = $res->fetchRow() ) {
+			$toExpire[] = $record['cc_record'];
+		}
+			
 		// remove the rows from the db
 		$dbw->delete(
 			'concurrencycheck',
@@ -186,7 +216,11 @@ class ConcurrencyCheck {
 			array()
 		);
 		
-		// TODO: fetch the rows here, remove them from cache.
+		// delete all those rows from cache
+		// outside a transaction because deletes don't require atomicity.
+		foreach( $toExpire as $expire ) {
+			$memc->delete( wfMemcKey( $this->resourceType, $expire ) );
+		}
 
 		// return the number of rows removed.
 		return $dbw->affectedRows();
@@ -206,41 +240,65 @@ class ConcurrencyCheck {
 	}
 	
 	public function status( $keys ) {
+		$memc = wfGetMainCache();
 		$dbw = $this->dbw;
-		
-		// validate keys.
-		foreach( $keys as $key ) {
-			$this->validateId( $key );
-		}
+		$now = time();
 
 		$checkouts = array();
+		$toSelect = array();
 
-		// TODO: check cache before selecting
-
-		// check for each of $keys in cache (also check expiration)
-		// build a list of the missing ones.
-		// run the below select with that list.
-		// when finished, re-add any missing keys with the 'invalid' status.
-
-		$this->expire();
-
-		$dbw->begin();
-		$res = $dbw->select(
-			'concurrencycheck',
-			array( '*' ),
-			array(
-				'cc_resource_type' => $this->resourceType,
-				'cc_record IN (' . implode( ',', $keys ) . ')',
-				'cc_expiration > unix_timestamp(now())'
-			),
-			__METHOD__,
-			array()
-		);
+		// maybe run this here?
+		//$this->expire();
 		
-		while( $res && $record = $res->fetchRow() ) {
-			$record['status'] = 'valid';
-			# cache the row.
-			$checkouts[ $record['cc_record'] ] = $record;
+		// validate keys, attempt to retrieve from cache.
+		foreach( $keys as $key ) {
+			$this->validateId( $key );
+			
+			$cached = $memc->get( wfMemcKey( $this->resourceType, $key ) );
+			if( $cached && $cached['expiration'] > $now ) {
+				$checkouts[$key] = array(
+					'status' => 'valid',
+					'cc_resource_type' => $this->resourceType,
+					'cc_record' => $key,
+					'cc_user' => $cached['userId'],
+					'cc_expiration' => $cached['expiration'],
+					'cache' => 'cached',
+				);
+			} else {
+				$toSelect[] = $key;
+			}
+		}
+
+		// if there were cache misses...
+		if( $toSelect ) {
+			// the transaction seems incongruous, I know, but it's to keep the cache update atomic.
+			$dbw->begin();
+			$res = $dbw->select(
+				'concurrencycheck',
+				array( '*' ),
+				array(
+					'cc_resource_type' => $this->resourceType,
+					'cc_record IN (' . implode( ',', $toSelect ) . ')',
+					'cc_expiration > unix_timestamp(now())'
+				),
+				__METHOD__,
+				array()
+			);
+		
+			while( $res && $record = $res->fetchRow() ) {
+				$record['status'] = 'valid';
+				$checkouts[ $record['cc_record'] ] = $record;
+				
+				// safe to store values since this is inside the transaction
+				$memc->set(
+					wfMemcKey( $this->resourceType, $record['cc_record'] ),
+					array( 'userId' => $record['cc_user'], 'expiration' => $record['cc_expiration'] ),
+					$record['cc_expiration'] - time()
+				);
+			}
+
+			// end the transaction.
+			$dbw->rollback();
 		}
 		
 		// if a key was passed in but has no (unexpired) checkout, include it in the
@@ -267,8 +325,8 @@ class ConcurrencyCheck {
 		//  return values that were added to cache, plus values pulled from cache
 	}
 	
-	public function list() {
-		
+	public function listCheckouts() {
+		// fill in the function that lets you get the complete set of checkouts for a given application.
 	}
 	
 	public function setUser ( $user ) {
