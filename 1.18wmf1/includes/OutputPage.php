@@ -2227,8 +2227,7 @@ $templates
 	 * @return String: The doctype, opening <html>, and head element.
 	 */
 	public function headElement( Skin $sk, $includeStyle = true ) {
-		global $wgContLang, $wgUseTrackbacks, $mediaWiki;
-
+		global $wgContLang, $wgUseTrackbacks;
 		$userdir = $this->getLang()->getDir();
 		$sitedir = $wgContLang->getDir();
 
@@ -2292,7 +2291,6 @@ $templates
 		}
 		$bodyAttrs['class'] .= ' ' . $sk->getPageClasses( $this->getTitle() );
 		$bodyAttrs['class'] .= ' skin-' . Sanitizer::escapeClass( $sk->getSkinName() );
-		$bodyAttrs['class'] .= ' action-' . Sanitizer::escapeClass( $mediaWiki->getPerformedAction() );
 
 		$sk->addToBodyAttributes( $this, $bodyAttrs ); // Allow skins to add body attributes they need
 		wfRunHooks( 'OutputPageBodyAttributes', array( $this, $sk, &$bodyAttrs ) );
