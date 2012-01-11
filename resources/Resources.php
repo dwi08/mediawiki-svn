@@ -105,6 +105,10 @@ return array(
 	'jquery.collapsibleTabs' => array(
 		'scripts' => 'resources/jquery/jquery.collapsibleTabs.js',
 	),
+	'jquery.concurrency' => array(
+		'scripts' => 'resources/jquery/jquery.concurrency.js',
+		'dependencies' => array( 'mediawiki.util', 'mediawiki.user' )
+	),
 	'jquery.color' => array(
 		'scripts' => 'resources/jquery/jquery.color.js',
 		'dependencies' => 'jquery.colorUtil',
