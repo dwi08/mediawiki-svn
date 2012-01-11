@@ -222,7 +222,7 @@ namespace wmib
             }
             catch (Exception)
             {
-
+                Console.WriteLine("error in Connect() fc");
             }
         }
 
@@ -364,39 +364,36 @@ namespace wmib
                     }
                 }
             }
-            wikiinfo.Add(new wiki("#cs.wikinews", "https://cs.wikipedia.org/w/index.php", "cs_wikinews"));
-            wikiinfo.Add(new wiki("#en.wikinews", "https://en.wikipedia.org/w/index.php", "en_wikinews"));
-            wikiinfo.Add(new wiki("#de.wikinews", "https://de.wikipedia.org/w/index.php", "de_wikinews"));
-            wikiinfo.Add(new wiki("#fr.wikinews", "https://fr.wikipedia.org/w/index.php", "fr_wikinews"));
-            wikiinfo.Add(new wiki("#pt.wikinews", "https://pt.wikipedia.org/w/index.php", "pt_wikinews"));
-            wikiinfo.Add(new wiki("#zh.wikinews", "https://fr.wikipedia.org/w/index.php", "zh_wikinews"));
-            wikiinfo.Add(new wiki("#es.wikinews", "https://fr.wikipedia.org/w/index.php", "es_wikinews"));
-            wikiinfo.Add(new wiki("#ru.wikinews", "https://fr.wikipedia.org/w/index.php", "ru_wikinews"));
-            wikiinfo.Add(new wiki("#it.wikinews", "https://fr.wikipedia.org/w/index.php", "it_wikinews"));
-            wikiinfo.Add(new wiki("#nl.wikinews", "https://fr.wikipedia.org/w/index.php", "nl_wikinews"));
-            wikiinfo.Add(new wiki("#ja.wikinews", "https://fr.wikipedia.org/w/index.php", "ja_wikinews"));
+            wikiinfo.Add(new wiki("#cs.wikinews", "https://cs.wikinews.org/w/index.php", "cs_wikinews"));
+            wikiinfo.Add(new wiki("#en.wikinews", "https://en.wikinews.org/w/index.php", "en_wikinews"));
+            wikiinfo.Add(new wiki("#de.wikinews", "https://de.wikinews.org/w/index.php", "de_wikinews"));
+            wikiinfo.Add(new wiki("#fr.wikinews", "https://fr.wikinews.org/w/index.php", "fr_wikinews"));
+            wikiinfo.Add(new wiki("#pt.wikinews", "https://pt.wikinews.org/w/index.php", "pt_wikinews"));
+            wikiinfo.Add(new wiki("#zh.wikinews", "https://zh.wikinews.org/w/index.php", "zh_wikinews"));
+            wikiinfo.Add(new wiki("#es.wikinews", "https://es.wikinews.org/w/index.php", "es_wikinews"));
+            wikiinfo.Add(new wiki("#ru.wikinews", "https://ru.wikinews.org/w/index.php", "ru_wikinews"));
+            wikiinfo.Add(new wiki("#it.wikinews", "https://it.wikinews.org/w/index.php", "it_wikinews"));
+            wikiinfo.Add(new wiki("#nl.wikinews", "https://nl.wikinews.org/w/index.php", "nl_wikinews"));
+            wikiinfo.Add(new wiki("#ja.wikinews", "https://ja.wikinews.org/w/index.php", "ja_wikinews"));
             wikiinfo.Add(new wiki("#en.wiktionary", "https://en.wiktionary.org/w/index.php", "en_wiktionary"));
-            wikiinfo.Add(new wiki("#cs.wiktionary", "https://cs.wikipedia.org/w/index.php", "cs_wiktionary"));
-            wikiinfo.Add(new wiki("#de.wiktionary", "https://de.wikipedia.org/w/index.php", "de_wiktionary"));
-            wikiinfo.Add(new wiki("#fr.wiktionary", "https://fr.wikipedia.org/w/index.php", "fr_wiktionary"));
-            wikiinfo.Add(new wiki("#pt.wiktionary", "https://pt.wikipedia.org/w/index.php", "pt_wiktionary"));
-            wikiinfo.Add(new wiki("#zh.wiktionary", "https://fr.wikipedia.org/w/index.php", "zh_wiktionary"));
-            wikiinfo.Add(new wiki("#es.wiktionary", "https://fr.wikipedia.org/w/index.php", "es_wiktionary"));
-            wikiinfo.Add(new wiki("#ru.wiktionary", "https://fr.wikipedia.org/w/index.php", "ru_wiktionary"));
-            wikiinfo.Add(new wiki("#it.wiktionary", "https://fr.wikipedia.org/w/index.php", "it_wiktionary"));
-            wikiinfo.Add(new wiki("#nl.wiktionary", "https://fr.wikipedia.org/w/index.php", "nl_wiktionary"));
-            wikiinfo.Add(new wiki("#ja.wiktionary", "https://fr.wikipedia.org/w/index.php", "ja_wiktionary"));
+            wikiinfo.Add(new wiki("#cs.wiktionary", "https://cs.wiktionary.org/w/index.php", "cs_wiktionary"));
+            wikiinfo.Add(new wiki("#de.wiktionary", "https://de.wiktionary.org/w/index.php", "de_wiktionary"));
+            wikiinfo.Add(new wiki("#fr.wiktionary", "https://fr.wiktionary.org/w/index.php", "fr_wiktionary"));
+            wikiinfo.Add(new wiki("#pt.wiktionary", "https://pt.wiktionary.org/w/index.php", "pt_wiktionary"));
+            wikiinfo.Add(new wiki("#es.wiktionary", "https://es.wiktionary.org/w/index.php", "es_wiktionary"));
+            wikiinfo.Add(new wiki("#ru.wiktionary", "https://ru.wiktionary.org/w/index.php", "ru_wiktionary"));
+            wikiinfo.Add(new wiki("#it.wiktionary", "https://it.wiktionary.org/w/index.php", "it_wiktionary"));
+            wikiinfo.Add(new wiki("#nl.wiktionary", "https://nl.wiktionary.org/w/index.php", "nl_wiktionary"));
+            wikiinfo.Add(new wiki("#ja.wiktionary", "https://ja.wiktionary.org/w/index.php", "ja_wiktionary"));
             wikiinfo.Add(new wiki("#cs.wikipedia", "https://cs.wikipedia.org/w/index.php", "cs_wikipedia"));
             wikiinfo.Add(new wiki("#en.wikipedia", "https://en.wikipedia.org/w/index.php", "en_wikipedia"));
             wikiinfo.Add(new wiki("#de.wikipedia", "https://de.wikipedia.org/w/index.php", "de_wikipedia"));
             wikiinfo.Add(new wiki("#fr.wikipedia", "https://fr.wikipedia.org/w/index.php", "fr_wikipedia"));
             wikiinfo.Add(new wiki("#pt.wikipedia", "https://pt.wikipedia.org/w/index.php", "pt_wikipedia"));
-            wikiinfo.Add(new wiki("#zh.wikipedia", "https://fr.wikipedia.org/w/index.php", "zh_wikipedia"));
-            wikiinfo.Add(new wiki("#es.wikipedia", "https://fr.wikipedia.org/w/index.php", "es_wikipedia"));
-            wikiinfo.Add(new wiki("#ru.wikipedia", "https://fr.wikipedia.org/w/index.php", "ru_wikipedia"));
-            wikiinfo.Add(new wiki("#it.wikipedia", "https://fr.wikipedia.org/w/index.php", "it_wikipedia"));
-            wikiinfo.Add(new wiki("#nl.wikipedia", "https://fr.wikipedia.org/w/index.php", "nl_wikipedia"));
-            wikiinfo.Add(new wiki("#ja.wikipedia", "https://fr.wikipedia.org/w/index.php", "ja_wikipedia"));
+            wikiinfo.Add(new wiki("#zh.wikipedia", "https://zh.wikipedia.org/w/index.php", "zh_wikipedia"));
+            wikiinfo.Add(new wiki("#es.wikipedia", "https://es.wikipedia.org/w/index.php", "es_wikipedia"));
+            wikiinfo.Add(new wiki("#ru.wikipedia", "https://ru.wikipedia.org/w/index.php", "ru_wikipedia"));
+            wikiinfo.Add(new wiki("#ja.wikipedia", "https://ja.wikipedia.org/w/index.php", "ja_wikipedia"));
             wikiinfo.Add(new wiki("#mediawiki.wikipedia", "https://www.mediawiki.org/w/index.php", "mediawiki"));
             wikiinfo.Add(new wiki("#test.wikipedia", "https://test.wikipedia.org/w/index.php", "test_wikipedia"));
             return 0;
@@ -424,6 +421,14 @@ namespace wmib
                         {
                             currpage = iw;
                             break;
+                        }
+                    }
+                    if (Page.Contains("*"))
+                    {
+                        if (!Page.EndsWith("*") || Page.Replace("*", "") == "")
+                        {
+                            irc.SlowQueue.DeliverMessage("Invalid string, you can't use a wildcard like this", channel.name);
+                            return true;
                         }
                     }
                     if (pages.Contains(currpage))
@@ -493,12 +498,26 @@ namespace wmib
                                     {
                                         foreach (IWatch w in curr.pages)
                                         {
-                                            if (w.Channel == _channel && page == w.Page)
+                                            if (w.Channel == _channel)
                                             {
-                                                irc.SlowQueue.DeliverMessage(
-                                                    "Change on 12" + w.URL.name + " a page " + page +
-                                                    " was modified," + " changed by " + username +
-                                                    " link " + w.URL.url + "?diff=" + link + " edit summary: " + summary, curr.channel.name);
+                                                if (page == w.Page)
+                                                {
+                                                    irc.SlowQueue.DeliverMessage(
+                                                        "Change on 12" + w.URL.name + " a page " + page +
+                                                        " was modified," + " changed by " + username +
+                                                        " link " + w.URL.url + "?diff=" + link + " edit summary: " + summary, curr.channel.name);
+                                                }
+                                                else
+                                                    if (w.Page.EndsWith("*"))
+                                                    {
+                                                        if (page.StartsWith(w.Page.Replace("*", "")))
+                                                        {
+                                                            irc.SlowQueue.DeliverMessage(
+                                                            "Change on 12" + w.URL.name + " a page " + page +
+                                                            " was modified," + " changed by " + username +
+                                                            " link " + w.URL.url + "?diff=" + link + " edit summary: " + summary, curr.channel.name);
+                                                        }
+                                                    }
                                             }
                                         }
                                     }

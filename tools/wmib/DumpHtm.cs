@@ -96,6 +96,28 @@ namespace wmib
         }
 
         /// <summary>
+        /// Insert another table row
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string AddLink(string name, string value)
+        {
+            return "<tr><td>" + Encode(name) + "</td><td><a href=\"#" + Encode(value) +"\">" + Encode(value) + "</a></td></tr>\n";
+        }
+
+        /// <summary>
+        /// Insert another table row
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string AddKey(string name, string value)
+        {
+            return "<tr id=\"" + Encode(name) +  "\"><td>" + Encode(name) + "</td><td>" + Encode(value) + "</td></tr>\n";
+        }
+
+        /// <summary>
         /// Generate a dump file
         /// </summary>
         public void Make()
@@ -104,20 +126,20 @@ namespace wmib
             {
                 string text = CreateHeader();
                 text = text + "<h4>Infobot</h4>\n";
-                text = text + "<table border=1 width=100%>\n<tr><td width=10%>Key</td><td>Value</td></tr>\n";
+                text = text + "<table border=1 width=100%>\n<tr><th width=10%>Key</th><th>Value</th></tr>\n";
                 Channel.Keys.locked = true;
                 if (Channel.Keys.text.Count > 0)
                 {
                     foreach (dictionary.item Key in Channel.Keys.text)
                     {
-                        text += AddLine(Key.key, Key.text);
+                        text += AddKey(Key.key, Key.text);
                     }
                 }
                 text = text + "</table>\n";
                 text = text + "<h4>Aliases</h4>\n<table border=1 width=100%>\n";
                 foreach (dictionary.staticalias data in Channel.Keys.Alias)
                 {
-                    text += AddLine(data.Name, data.Key);
+                    text += AddLink(data.Name, data.Key);
                 }
                 text = text + "</table>\n";
                 Channel.Keys.locked = false;
