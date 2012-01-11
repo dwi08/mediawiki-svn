@@ -208,7 +208,10 @@ def makeRelease(version, branch, dir, prevVersion = None, prevBranch = None):
 	export(branch, package)
 
 	# Export extensions for inclusion
-	extensions = ['ConfirmEdit', 'Gadgets', 'Nuke', 'ParserFunctions', 'Renameuser', 'Vector', 'WikiEditor']
+	if dir <= '1.17':
+		extensions = ['ConfirmEdit', 'Gadgets', 'Nuke', 'ParserFunctions', 'Renameuser', 'Vector', 'WikiEditor']
+	else:
+		extensions = []
 	for ext in extensions:
 		exportExtension(branch, ext, package)
 
@@ -267,7 +270,10 @@ def makeRelease(version, branch, dir, prevVersion = None, prevBranch = None):
 	# Write email template
 	print
 	print "Full release notes:"
-	print 'https://svn.wikimedia.org/svnroot/mediawiki/' + branch + '/phase3/RELEASE-NOTES-' + dir
+	if dir <= '1.17':
+		print 'https://svn.wikimedia.org/svnroot/mediawiki/' + branch + '/phase3/RELEASE-NOTES'
+	else:
+		print 'https://svn.wikimedia.org/svnroot/mediawiki/' + branch + '/phase3/RELEASE-NOTES-' + dir
 	print 'https://www.mediawiki.org/wiki/Release_notes/' + dir
 	print
 	print
