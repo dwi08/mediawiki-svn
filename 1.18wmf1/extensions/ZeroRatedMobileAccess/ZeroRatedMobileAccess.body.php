@@ -808,6 +808,6 @@ HTML;
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ZeroRatedMobileAccess.body.php 108586 2012-01-11 01:36:07Z preilly $';
+		return __CLASS__ . ': $Id$';
 	}
 }
