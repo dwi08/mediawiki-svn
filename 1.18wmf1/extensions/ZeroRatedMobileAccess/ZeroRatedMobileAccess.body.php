@@ -398,7 +398,7 @@ class ExtZeroRatedMobileAccess {
 		// Use the revision directly to prevent other hooks to be called
 		$rev = Revision::newFromTitle( $title );
 		if ( $rev ) {
-			$sha1OfRev = $rev->getSha1();
+			$sha1OfRev = $rev->getSize();
 			$key = wfMemcKey( 'zero-rated-mobile-access-carrier-options', $sha1OfRev );
 			$carrierOptions = $wgMemc->get( $key );
 		} else {
@@ -452,7 +452,7 @@ class ExtZeroRatedMobileAccess {
 		// Use the revision directly to prevent other hooks to be called
 		$rev = Revision::newFromTitle( $title );
 		if ( $rev ) {
-			$sha1OfRev = $rev->getSha1();
+			$sha1OfRev = $rev->getSize();
 			$key = wfMemcKey( 'zero-rated-mobile-access-language-options', $sha1OfRev );
 			$languageOptions = $wgMemc->get( $key );
 		} else {
@@ -806,6 +806,6 @@ HTML;
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ZeroRatedMobileAccess.body.php 108565 2012-01-10 23:42:04Z preilly $';
+		return __CLASS__ . ': $Id: ZeroRatedMobileAccess.body.php 108582 2012-01-11 01:03:51Z preilly $';
 	}
 }
