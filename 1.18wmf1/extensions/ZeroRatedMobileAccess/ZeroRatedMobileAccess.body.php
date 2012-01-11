@@ -114,20 +114,22 @@ class ExtZeroRatedMobileAccess {
 			} elseif ( self::$renderZeroRatedBanner === true ) {
 				// a2enmod headers >>> .htaccess >>> RequestHeader set HTTP_CARRIER Verizon
 				self::$carrier = $this->lookupCarrier( $carrier );
-				$html = $out->getHTML();
-				$parsedHtml = $this->parseLinksForZeroQueryString( $html );
-				$out->clearHTML();
-				$out->addHTML( $parsedHtml );
-				$carrierLink = ( isset( self::$carrier['link'] ) ) ? self::$carrier['link'] : '';
-				$bannerText = Html::rawElement( 'h3',
-					array(	'id' => 'zero-rated-banner-text' ),
-						wfMsg( 'zero-rated-mobile-access-banner-text', $carrierLink ) );
-				$banner = Html::rawElement( 'div',
-					array(	'style' => 'display:none;',
-							'id' => 'zero-rated-banner' ),
-						$bannerText
-				);
-				$output .= $banner;
+				if ( isset( self::$carrier['name'] ) ) {
+					$html = $out->getHTML();
+					$parsedHtml = $this->parseLinksForZeroQueryString( $html );
+					$out->clearHTML();
+					$out->addHTML( $parsedHtml );
+					$carrierLink = ( isset( self::$carrier['link'] ) ) ? self::$carrier['link'] : '';
+					$bannerText = Html::rawElement( 'h3',
+						array(	'id' => 'zero-rated-banner-text' ),
+							wfMsg( 'zero-rated-mobile-access-banner-text', $carrierLink ) );
+					$banner = Html::rawElement( 'div',
+						array(	'style' => 'display:none;',
+								'id' => 'zero-rated-banner' ),
+							$bannerText
+					);
+					$output .= $banner;
+				}
 			}
 			if ( self::$renderZeroRatedLandingPage === true ) {
 				$out->clearHTML();
@@ -806,6 +808,6 @@ HTML;
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ZeroRatedMobileAccess.body.php 108582 2012-01-11 01:03:51Z preilly $';
+		return __CLASS__ . ': $Id: ZeroRatedMobileAccess.body.php 108586 2012-01-11 01:36:07Z preilly $';
 	}
 }
