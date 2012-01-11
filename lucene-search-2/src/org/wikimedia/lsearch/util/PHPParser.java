@@ -14,12 +14,16 @@ import java.util.regex.Pattern;
 
 import org.wikimedia.lsearch.search.NamespaceFilter;
 
+
 /** 
  * Extract some variable from MediaWiki MessageXX.php files. In particular,
  * the localized namespace names (needed for proper parsing of wiki code).
  * 
  * One day, make this implementation suck less, and actually parse some PHP,
  * instead of just catch stuff with regexps... 
+ * 
+ * TODO: use the PHP ANTLR grammar to improve
+ * it is at code.google.com/p/phpparser
  *  
  * @author rainman
  *
