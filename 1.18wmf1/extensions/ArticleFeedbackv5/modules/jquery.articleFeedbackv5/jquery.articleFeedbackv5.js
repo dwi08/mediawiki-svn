@@ -59,7 +59,7 @@
 	/**
 	 * Are we in debug mode?
 	 */
-	$.articleFeedbackv5.debug = mw.config.get( 'wgArticleFeedbackv5Debug' ) ? true : false;
+	$.articleFeedbackv5.debug = mw.config.get( 'wgArticleFeedbackv5Debug' ) ? true : ( mw.util.getParamValue( 'debug' ) ? true : false );
 
 	/**
 	 * Are we tracking clicks?
@@ -105,16 +105,12 @@
 
 	/**
 	 * The link ID indicates where the user clicked (or not) to get to the
-	 * feedback form.  Options are:
-	 *  0: No link; user scrolled to the bottom of the page
-	 *  1: Section bars
-	 *  2: Title bar
-	 *  3: Vertical button
-	 *  4: Toolbox (bottom of left nav)
+	 * feedback form.  Options are "-" or A-H
 	 *
-	 * @see http://www.mediawiki.org/wiki/Article_feedback/Version_5/Feature_Requirements#Placement
+	 * @see $wgArticleFeedbackv5LinkBuckets
+	 * @see http://www.mediawiki.org/wiki/Article_feedback/Version_5/Feature_Requirements#Feedback_links_on_article_pages
 	 */
-	$.articleFeedbackv5.linkId = '0';
+	$.articleFeedbackv5.linkId = '-';
 
 	/**
 	 * Use the mediawiki util resource's config method to find the correct url to
@@ -2025,8 +2021,6 @@
 		$.articleFeedbackv5.clickTracking = $.articleFeedbackv5.checkClickTracking();
 		// Has the user already submitted ratings for this page at this revision?
 		$.articleFeedbackv5.alreadySubmitted = $.cookie( $.articleFeedbackv5.prefix( 'submitted' ) ) === 'true';
-		// Are we in debug mode?
-		$.articleFeedbackv5.debug = mw.config.get( 'wgArticleFeedbackv5Debug' ) ? true : false;
 		// Go ahead and bucket right away
 		$.articleFeedbackv5.selectBucket();
 		// Anything the bucket needs to do?
@@ -2358,6 +2352,7 @@
 			$.articleFeedbackv5.showCTA();
 		}
 
+		$.articleFeedbackv5.isLoaded = true;
 	};
 
 	// }}}
@@ -2667,9 +2662,9 @@
 		$.articleFeedbackv5.setDialogDimensions();
 
 		// Track the event
-			$.articleFeedbackv5.trackClick( $.articleFeedbackv5.bucketName() + '-' +
-				$.articleFeedbackv5.ctaName() + '-impression-' +
-				( $.articleFeedbackv5.inDialog ? 'overlay' : 'bottom' ) );
+		$.articleFeedbackv5.trackClick( $.articleFeedbackv5.bucketName() + '-' +
+			$.articleFeedbackv5.ctaName() + '-impression-' +
+			( $.articleFeedbackv5.inDialog ? 'overlay' : 'bottom' ) );
 
 		$.articleFeedbackv5.nowShowing = 'cta';
 	};
@@ -2842,10 +2837,7 @@
 	 * @param int linkId the link ID
 	 */
 	$.articleFeedbackv5.setLinkId = function ( linkId ) {
-		var knownLinks = { '0': true, '1': true, '2': true, '3': true, '4': true };
-		if ( linkId in knownLinks ) {
-			$.articleFeedbackv5.linkId = linkId + '';
-		}
+		$.articleFeedbackv5.linkId = linkId;
 	};
 
 	// }}}
@@ -2944,6 +2936,23 @@
 	};
 
 	// }}}
+	// {{{ toggleModal
+
+	/**
+	 * Toggles the modal state
+	 *
+	 * @param $link Element the feedback link
+	 */
+	$.articleFeedbackv5.toggleModal = function ( $link ) {
+		if ( $.articleFeedbackv5.inDialog ) {
+			$.articleFeedbackv5.closeAsModal();
+			$.articleFeedbackv5.$dialog.dialog( 'close' );
+		} else {
+			$.articleFeedbackv5.openAsModal( $link );
+		}
+	};
+
+	// }}}
 	// {{{ setDialogDimensions
 
 	/**
@@ -2953,7 +2962,19 @@
 		var w = $.articleFeedbackv5.find( '.articleFeedbackv5-ui' ).width();
 		var h = $.articleFeedbackv5.find( '.articleFeedbackv5-ui' ).height();
 		$.articleFeedbackv5.$dialog.dialog( 'option', 'width', w + 25 );
-		$.articleFeedbackv5.$dialog.dialog( 'option', 'height', h + 70 );
+		$.articleFeedbackv5.$dialog.dialog( 'option', 'height', h + 85 );
+	};
+
+	// }}}
+	// {{{ clickTrackingOn
+
+	/**
+	 * Returns whether click tracking is on
+	 *
+	 * @bool whether click tracking is on
+	 */
+	$.articleFeedbackv5.clickTrackingOn = function () {
+		return $.articleFeedbackv5.clickTracking;
 	};
 
 	// }}}
@@ -3001,6 +3022,8 @@ $.fn.articleFeedbackv5 = function ( opts, arg ) {
 		addToRemovalQueue: { args: 1, ret: false },
 		openAsModal: { args: 1, ret: false },
 		closeAsModal: { args: 0, ret: true },
+		toggleModal: { args: 1, ret: false },
+		clickTrackingOn: { args: 0, ret: true },
 		trackClick: { args: 1, ret: false }
 	};
 	if ( opts in public ) {

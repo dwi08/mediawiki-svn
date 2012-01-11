@@ -15,6 +15,10 @@ require_once( dirname( dirname( __FILE__ ) ) . '/SimpleSurvey/SimpleSurvey.php' 
 
 /* Configuration */
 
+// How long text-based feedback is allowed to be before returning an error.
+// Set to 0 to disable length checking entirely.
+$wgArticleFeedbackv5MaxCommentLength =  0;
+
 // How long to keep ratings in the squids (they will also be purged when needed)
 $wgArticleFeedbackv5SMaxage = 2592000;
 
@@ -45,7 +49,7 @@ $wgArticleFeedbackv5LotteryOdds = 0;
 // own bucket by passing it in the url (e.g., ?bucket=1), and the showstopper
 // error mode will have a useful error message, if one exists, rather than the
 // default message.
-$wgArticleFeedbackv5Debug = true;
+$wgArticleFeedbackv5Debug = false;
 
 // The rating categories for bucket 5 -- these MUST match the field names in the database.
 $wgArticleFeedbackv5Bucket5RatingCategories = array( 'trustworthy', 'objective', 'complete', 'wellwritten' );
@@ -119,19 +123,29 @@ $wgArticleFeedbackv5Options = array(
 $wgArticleFeedbackv5LinkBuckets = array(
 	// Users can fall into one of several buckets for links.  These are:
 	//  -: No link; user must scroll to the bottom of the page
-	//  A: Section bars
-	//  B: Title bar
-	//  C: Vertical button (fixed tab)
+	//  A: After the site tagline (below the article title)
+	//  B: Below the titlebar on the right
+	//  C: Button fixed to right side
+	//  D: Button fixed to bottom right
+	//  E: Button fixed to bottom center
+	//  F: Button fixed to left side
+	//  G: Button below logo
+	//  H: Link on each section bar
 	'buckets' => array(
 		'-' => 0,
 		'A' => 0,
 		'B' => 0,
-		'C' => 100,
+		'C' => 0,
+		'D' => 100,
+		'E' => 0,
+		'F' => 0,
+		'G' => 0,
+		'H' => 0,
 	),
 	// This version number is added to all tracking event names, so that
 	// changes in the software don't corrupt the data being collected. Bump
 	// this when you want to start a new "experiment".
-	'version' => 0,
+	'version' => 1,
 	// Let users be tracked for a month, and then rebucket them, allowing some
 	// churn.
 	'expires' => 30,
@@ -150,14 +164,14 @@ $wgArticleFeedbackv5LinkBuckets = array(
  * external link using wikitext, so this must be a full URL.
  * @var string
  */
-$wgArticleFeedbackv5DashboardTalkPage = "http://www.mediawiki.org/wiki/Talk:Article_feedback";
+$wgArticleFeedbackv5DashboardTalkPage = "//www.mediawiki.org/wiki/Talk:Article_feedback";
 
 /**
  * The full URL for the "Learn to Edit" link
  *
  * @var string
  */
-$wgArticleFeedbackv5LearnToEdit = "http://en.wikipedia.org/wiki/Wikipedia:Tutorial";
+$wgArticleFeedbackv5LearnToEdit = "//en.wikipedia.org/wiki/Wikipedia:Tutorial";
 
 // Would ordinarily call this articlefeedback but survey names are 16 chars max
 $wgPrefSwitchSurveys['articlerating'] = array(
@@ -216,7 +230,7 @@ $wgExtensionCredits['other'][] = array(
 	),
 	'version' => '0.0.1',
 	'descriptionmsg' => 'articlefeedbackv5-desc',
-	'url' => 'https://www.mediawiki.org/wiki/Extension:ArticleFeedbackv5'
+	'url' => '//www.mediawiki.org/wiki/Extension:ArticleFeedbackv5'
 );
 
 // Autoloading
@@ -229,7 +243,7 @@ $wgAutoloadClasses['ApiFlagFeedbackArticleFeedbackv5'] = $dir . 'api/ApiFlagFeed
 $wgAutoloadClasses['ArticleFeedbackv5Hooks']           = $dir . 'ArticleFeedbackv5.hooks.php';
 $wgAutoloadClasses['SpecialArticleFeedbackv5']         = $dir . 'SpecialArticleFeedbackv5.php';
 $wgExtensionMessagesFiles['ArticleFeedbackv5']         = $dir . 'ArticleFeedbackv5.i18n.php';
-$wgExtensionAliasesFiles['ArticleFeedbackv5']          = $dir . 'ArticleFeedbackv5.alias.php';
+$wgExtensionMessagesFiles['ArticleFeedbackv5Alias']    = $dir . 'ArticleFeedbackv5.alias.php';
 
 // Hooks
 $wgHooks['LoadExtensionSchemaUpdates'][] = 'ArticleFeedbackv5Hooks::loadExtensionSchemaUpdates';

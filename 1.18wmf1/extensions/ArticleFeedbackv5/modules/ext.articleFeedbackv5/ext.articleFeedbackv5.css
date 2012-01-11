@@ -54,9 +54,39 @@
 	text-align: center;
 	writing-mode: tb-rl;*/	
 	position: absolute;
-	z-index: 100000;
+	z-index: 999;
 }
 .articleFeedbackv5-fixedtablink:hover {
+	text-decoration: none;
+}
+
+.articleFeedbackv5-bottomrighttab {
+	position: fixed;
+	margin: 0;
+	right: 0;
+	bottom: 0;
+	height: 27px;
+	width: 141px;
+}
+.articleFeedbackv5-bottomrighttabbox {
+	position: relative;
+}
+.articleFeedbackv5-bottomrighttablink {
+	border: none;
+	border-top: 1px solid gray;
+	border-left: 1px solid gray;
+	color: #000;
+	background-color: #d0e1f4;
+	min-width: 105px;
+	right: 0;
+	display: block;
+	margin: 0;
+	padding: 5px 10px;
+	text-align: center;
+	position: absolute;
+	z-index: 999;
+}
+.articleFeedbackv5-bottomrighttablink:hover {
 	text-decoration: none;
 }
 

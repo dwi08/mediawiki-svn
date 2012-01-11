@@ -65,7 +65,7 @@ class ApiArticleFeedbackv5 extends ApiBase {
 				if ( $value === '' ) {
 					continue;
 				}
-				if ( $this->validateParam( $value, $type, $field['afi_id'] ) ) {
+				if ( $this->validateParam( $value, $type, $field['afi_id'], $pageId ) ) {
 					$data = array(
 						'aa_field_id'    => $field['afi_id'],
 					);
@@ -90,6 +90,7 @@ class ApiArticleFeedbackv5 extends ApiBase {
 		$ctaId      = $ratingIds['cta_id'];
 		$feedbackId = $ratingIds['feedback_id'];
 
+		$this->saveUserProperties( $feedbackId );
 		$this->updateRollupTables( $pageId, $revisionId, $user_answers );
 
 		if ( $params['email'] ) {
@@ -142,9 +143,10 @@ class ApiArticleFeedbackv5 extends ApiBase {
 	 *                          text for the id)
 	 * @param  $type     string the field type
 	 * @param  $field_id int    the field id
+	 * @param  $pageId   int    the page id  (needed by abuse filter)
 	 * @return bool      whether this is okay
 	 */
-	protected function validateParam( &$value, $type, $field_id ) {
+	protected function validateParam( &$value, $type, $field_id, $pageId ) {
 		# rating: int between 1 and 5 (inclusive)
 		# boolean: 1 or 0
 		# option_id: option exists
@@ -172,11 +174,46 @@ class ApiArticleFeedbackv5 extends ApiBase {
 				}
 				break;
 			case 'text':
-				return true;
+				return $this->validateText( $value, $pageId );
 			default:
 				return false;
 		}
 		return false;
+	}
+
+	/**
+	 * Run the text through the AbuseFilter and SpamBlacklist extensions.
+	 * Should we check length as well? What's a reasonable max length?
+	 *
+	 */
+	private function validateText( &$value, $pageId ) {
+		global $wgArticleFeedbackv5MaxCommentLength;
+		$title = Title::newFromID( $pageId );
+		$filter_error = 0; # TODO
+		$spam_error   = 0; # TODO
+		$length_error = 0;
+
+		# Apparently this returns either true or an error message?
+		# http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/AbuseFilter/AbuseFilter.class.php?view=markup
+		# (line 715-721). So normalize this.
+		$vars  = array(
+		);
+#		$filter_error = AbuseFilter::filterAction( $vars, $title );
+#		$filter_error = ( $filter_error === true ? 1 : 0 );
+
+		# SpamBlacklist filtering goes here. (TODO)
+
+		# Not actually a requirement, but I can see this being a thing,
+		# not letting people post the entire text of 1984 in a comment
+		# or something like that.
+		if( $wgArticleFeedbackv5MaxCommentLength > 0
+		 && strlen( $value ) > $wgArticleFeedbackv5MaxCommentLength ) {
+			$length_error = 1;
+		}
+
+		$has_error = $filter_error + $spam_error + $length_error;
+
+		return $has_error ? false : true;
 	}
 
 	/**
@@ -444,12 +481,12 @@ class ApiArticleFeedbackv5 extends ApiBase {
 	 * @return int   the cta id
 	 */
 	private function saveUserRatings( $data, $bucket, $params ) {
-		global $wgUser;
+		global $wgUser, $wgArticleFeedbackv5LinkBuckets;
 		$dbw       = wfGetDB( DB_MASTER );
 		$ctaId     = $this->getCTAId( $data, $bucket );
 		$revId     = $params['revid'];
 		$bucket    = $params['bucket'];
-		$link      = $params['link'];
+		$linkName  = $params['link'];
 		$token     = $this->getAnonToken( $params );
 		$timestamp = $dbw->timestamp();
 		$ip        = null;
@@ -468,7 +505,7 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			$this->dieUsage( 'Page ID is missing or invalid', 'invalidpageid' );
 		}
 
-		# Fetch this if it wasn't passed in
+		// Fetch this if it wasn't passed in
 		if ( !$revId ) {
 			$title = Title::newFromID( $params['pageid'] );
 			if ( !$title ) {
@@ -476,6 +513,11 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			}
 			$revId = $title->getLatestRevID();
 		}
+
+		// Find the link ID using the order of the link buckets ('-' = 0, 'A' = 1,
+		// 'B' = 2, etc.)
+		$links = array_flip( array_keys( $wgArticleFeedbackv5LinkBuckets['buckets'] ) );
+		$linkId = isset($links[$linkName]) ? $links[$linkName] : 0;
 
 		$dbw->begin();
 
@@ -487,7 +529,7 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			'af_user_ip'         => $ip,
 			'af_user_anon_token' => $token,
 			'af_bucket_id'       => $bucket,
-			'af_link_id'         => $link,
+			'af_link_id'         => $linkId,
 		) );
 
 		$feedbackId = $dbw->insertID();
@@ -510,6 +552,60 @@ class ApiArticleFeedbackv5 extends ApiBase {
 			'feedback_id' => ($feedbackId ? $feedbackId : 0)
 		);
 	}
+
+	/**
+	 * Inserts or updates properties for a specific rating
+	 * @param $revisionId int    Revision ID
+	 */
+	private function saveUserProperties( $feedbackId ) {
+		global $wgUser;
+		$dbw  = wfGetDB( DB_MASTER );
+		$dbr  = wfGetDB( DB_SLAVE );
+		$rows = array();
+
+		// Only save data for logged-in users.
+		if( !$wgUser->isLoggedIn() ) {
+			return null;
+		}
+
+		// Total edits by this user
+		$rows[] = array(
+			'afp_feedback_id' => $feedbackId,
+			'afp_key'         => 'contribs-lifetime',
+			'afp_value_int'   => ( integer ) $wgUser->getEditCount()
+		);
+
+		// Use the UserDailyContribs extension if it's present. Get
+		// edit counts for last 6 months, last 3 months, and last month.
+		if ( function_exists( 'getUserEditCountSince' ) ) {
+			$now = time();
+
+			$rows[] = array(
+				'afp_feedback_id' => $feedbackId,
+				'afp_key'         => 'contribs-6-months',
+				'afp_value_int'   => getUserEditCountSince( $now - ( 60 * 60 * 24 * 365 / 2 ) )
+			);
+
+			$rows[] = array(
+				'afp_feedback_id' => $feedbackId,
+				'afp_key'         => 'contribs-3-months',
+				'afp_value_int'   => getUserEditCountSince( $now - ( 60 * 60 * 24 * 365 / 4 ) )
+			);
+
+			$rows[] = array(
+				'afp_feedback_id' => $feedbackId,
+				'afp_key'         => 'contribs-1-months',
+				'afp_value_int'   => getUserEditCountSince( $now - ( 60 * 60 * 24 * 30 ) )
+			);
+		}
+
+		$dbw->insert(
+			'aft_article_feedback_properties',
+			$rows,
+			__METHOD__
+		);
+	}
+
 
 	/**
 	 * Picks a CTA to send the user to
@@ -566,9 +662,8 @@ class ApiArticleFeedbackv5 extends ApiBase {
 				ApiBase::PARAM_MIN      => 0
 			),
 			'link' => array(
-				ApiBase::PARAM_TYPE     => 'integer',
+				ApiBase::PARAM_TYPE     => 'string',
 				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_MIN      => 0
 			),
 			'email' => array(
 				ApiBase::PARAM_TYPE     => 'string',

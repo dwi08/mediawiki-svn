@@ -8,6 +8,11 @@
 
 class ArticleFeedbackv5Hooks {
 
+	/**
+	 * Resource loader modules
+	 *
+	 * @var array
+	 */
 	protected static $modules = array(
 		'ext.articleFeedbackv5.startup' => array(
 			'scripts' => 'ext.articleFeedbackv5/ext.articleFeedbackv5.startup.js',
@@ -19,9 +24,11 @@ class ArticleFeedbackv5Hooks {
 			'scripts' => 'ext.articleFeedbackv5/ext.articleFeedbackv5.js',
 			'styles' => 'ext.articleFeedbackv5/ext.articleFeedbackv5.css',
 			'messages' => array(
-				'articlefeedbackv5-section-linktext',
+				'articlefeedbackv5-sitesub-linktext',
 				'articlefeedbackv5-titlebar-linktext',
 				'articlefeedbackv5-fixedtab-linktext',
+				'articlefeedbackv5-bottomrighttab-linktext',
+				'articlefeedbackv5-section-linktext',
 				'articlefeedbackv5-toolbox-linktext',
 				'articlefeedbackv5-bucket5-toolbox-linktext',
 			),
@@ -140,7 +147,7 @@ class ArticleFeedbackv5Hooks {
 			),
 		),
 		'jquery.articleFeedbackv5.special' => array(
-			'scripts ' => 'jquery.articleFeedbackv5/jquery.articleFeedbackv5.special.js',
+			'scripts' => 'jquery.articleFeedbackv5/jquery.articleFeedbackv5.special.js',
 			'styles'   => 'jquery.articleFeedbackv5/jquery.articleFeedbackv5.special.css',
 			'messages' => array(
 				'articlefeedbackv5-error-flagging',
@@ -181,6 +188,8 @@ class ArticleFeedbackv5Hooks {
 
 	/**
 	 * BeforePageDisplay hook
+	 * @param $out OutputPage
+	 * @return bool
 	 */
 	public static function beforePageDisplay( $out ) {
 		$out->addModules( 'ext.articleFeedbackv5.startup' );
@@ -189,6 +198,8 @@ class ArticleFeedbackv5Hooks {
 
 	/**
 	 * ResourceLoaderRegisterModules hook
+	 * @param $resourceLoader ResourceLoader
+	 * @return bool
 	 */
 	public static function resourceLoaderRegisterModules( &$resourceLoader ) {
 		global $wgExtensionAssetsPath,
@@ -228,6 +239,8 @@ class ArticleFeedbackv5Hooks {
 
 	/**
 	 * ResourceLoaderGetConfigVars hook
+	 * @param $vars array
+	 * @return bool
 	 */
 	public static function resourceLoaderGetConfigVars( &$vars ) {
 		global $wgArticleFeedbackv5SMaxage,
@@ -265,6 +278,7 @@ class ArticleFeedbackv5Hooks {
 	 * Add the preference in the user preferences with the GetPreferences hook.
 	 * @param $user User
 	 * @param $preferences
+	 * @return bool
 	 */
 	public static function getPreferences( $user, &$preferences ) {
 		// need to check for existing key, if deployed simultaneously with AFTv4
@@ -282,21 +296,25 @@ class ArticleFeedbackv5Hooks {
 	 * Pushes the tracking fields into the edit page
 	 *
 	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:fields
+	 * @param $editPage EditPage
+	 * @param $output OutputPage
+	 * @return bool
 	 */
 	public static function pushTrackingFieldsToEdit( $editPage, $output ) {
-		global $wgRequest;
-
-		$tracking = $wgRequest->getVal( 'articleFeedbackv5_click_tracking' );
-		$bucketId = $wgRequest->getVal( 'articleFeedbackv5_bucket_id' );
-		$ctaId    = $wgRequest->getVal( 'articleFeedbackv5_cta_id' );
-		$location = $wgRequest->getVal( 'articleFeedbackv5_location' );
-		$token    = $wgRequest->getVal( 'articleFeedbackv5_ct_token' );
+		$request = $output->getRequest();
+		$tracking = $request->getVal( 'articleFeedbackv5_click_tracking' );
+		$bucketId = $request->getVal( 'articleFeedbackv5_bucket_id' );
+		$ctaId    = $request->getVal( 'articleFeedbackv5_cta_id' );
+		$location = $request->getVal( 'articleFeedbackv5_location' );
+		$token    = $request->getVal( 'articleFeedbackv5_ct_token' );
+		$ctEvent  = $request->getVal( 'articleFeedbackv5_ct_event' );
 
 		$editPage->editFormTextAfterContent .= Html::hidden( 'articleFeedbackv5_click_tracking', $tracking );
 		$editPage->editFormTextAfterContent .= Html::hidden( 'articleFeedbackv5_bucket_id', $bucketId );
 		$editPage->editFormTextAfterContent .= Html::hidden( 'articleFeedbackv5_cta_id', $ctaId );
 		$editPage->editFormTextAfterContent .= Html::hidden( 'articleFeedbackv5_location', $location );
 		$editPage->editFormTextAfterContent .= Html::hidden( 'articleFeedbackv5_ct_token', $token );
+		$editPage->editFormTextAfterContent .= Html::hidden( 'articleFeedbackv5_ct_event', $ctEvent );
 
 		return true;
 	}
@@ -305,6 +323,8 @@ class ArticleFeedbackv5Hooks {
 	 * Tracks edit attempts
 	 *
 	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/EditPage::attemptSave
+	 * @param $editpage EditPage
+	 * @return bool
 	 */
 	public static function trackEditAttempt( $editpage ) {
 		self::trackEvent( 'edit_attempt', $editpage->getArticle()->getTitle() ); // EditPage::getTitle() doesn't exist in 1.18wmf1
@@ -315,6 +335,18 @@ class ArticleFeedbackv5Hooks {
 	 * Tracks successful edits
 	 *
 	 * @see http://www.mediawiki.org/wiki/Manual:Hooks/ArticleSaveComplete
+	 * @param $article WikiPage
+	 * @param $user
+	 * @param $text
+	 * @param $summary
+	 * @param $minoredit
+	 * @param $watchthis
+	 * @param $sectionanchor
+	 * @param $flags
+	 * @param $revision
+	 * @param $status
+	 * @param $baseRevId
+	 * @return bool
 	 */
 	public static function trackEditSuccess( &$article, &$user, $text,
 			$summary, $minoredit, $watchthis, $sectionanchor, &$flags,
@@ -327,27 +359,36 @@ class ArticleFeedbackv5Hooks {
 	 * Internal use: Tracks an event
 	 *
 	 * @param $event string the event name
+	 * @param $context IContextSource
+	 * @return
 	 */
 	private static function trackEvent( $event, $title ) {
-		global $wgRequest, $wgArticleFeedbackv5Tracking;
+		global $wgArticleFeedbackv5Tracking;
 		$ctas = array( 'none', 'edit', 'learn_more' );
 
-		$tracking = $wgRequest->getVal( 'articleFeedbackv5_click_tracking' );
+		$request = RequestContext::getMain()->getRequest();
+
+		$tracking = $request->getVal( 'articleFeedbackv5_click_tracking' );
 		if ( !$tracking ) {
 			return;
 		}
 
 		$version  = $wgArticleFeedbackv5Tracking['version'];
-		$bucketId = $wgRequest->getVal( 'articleFeedbackv5_bucket_id' );
-		$ctaId    = $wgRequest->getVal( 'articleFeedbackv5_cta_id' );
-		$location = $wgRequest->getVal( 'articleFeedbackv5_location' );
-		$token    = $wgRequest->getVal( 'articleFeedbackv5_ct_token' );
+		$bucketId = $request->getVal( 'articleFeedbackv5_bucket_id' );
+		$ctaId    = $request->getVal( 'articleFeedbackv5_cta_id' );
+		$location = $request->getVal( 'articleFeedbackv5_location' );
+		$token    = $request->getVal( 'articleFeedbackv5_ct_token' );
+		$ctEvent  = $request->getVal( 'articleFeedbackv5_ct_event' );
 
-		$trackingId = 'ext.articleFeedbackv5@' . $version
-			. '-option' . $bucketId
-			. '-cta_' . ( isset( $ctas[$ctaId] ) ? $ctas[$ctaId] : 'unknown' )
-			. '-' . $event
-			. '-' . $location;
+		if ( $ctEvent ) {
+			$trackingId = $ctEvent . '-' . $event;
+		} else {
+			$trackingId = 'ext.articleFeedbackv5@' . $version
+				. '-option' . $bucketId
+				. '-cta_' . ( isset( $ctas[$ctaId] ) ? $ctas[$ctaId] : 'unknown' )
+				. '-' . $event
+				. '-' . $location;
+		}
 
 		$params = new FauxRequest( array(
 			'action' => 'clicktracking',
