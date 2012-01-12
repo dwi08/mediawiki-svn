@@ -2,6 +2,7 @@ import sys, argparse, os
 import logging, types
 import MySQLdb, MySQLdb.cursors
 import traceback
+import settings
 
 from .generators import GENERATORS, Metrics
 from .util import MWAPI, MWAPIError
@@ -69,8 +70,14 @@ def main():
 		nargs="+",
 		help='the metric generators to run (%s)' % ', '.join(GENERATORS.keys())
 	)
+	parser.add_argument(
+		'--outfilename',
+		type=str, 
+		help='the output file name.',
+		default=''
+	)	
 	args = parser.parse_args()
-	
+
 	LOGGING_STREAM = sys.stderr
 	if args.debug: logLevel = logging.DEBUG
 	else:          logLevel = logging.INFO
@@ -91,12 +98,14 @@ def main():
 		host=args.host, 
 		db=args.db, 
 		read_default_file=args.cnf,
-		cursorclass=MySQLdb.cursors.DictCursor
+		cursorclass=MySQLdb.cursors.DictCursor,
 	)
 	
 	logging.info("Loading generators...")
 	metrics = Metrics(g(conn, args.api) for g in args.generator)
 	
+	# Initialize the output File
+	FileHandler(outfilename=args.outfilename)
 	
 	oldPairs = set()
 	if args.old != None:
@@ -112,9 +121,12 @@ def main():
 		
 	else: 
 		if args.headers:
-			print("\t".join(encode(h) for h in metrics.headers()))
+			if use_file:
+				metrics_file.write("\t".join(encode(h) for h in metrics.headers()) + '\n')
+			else:
+				print("\t".join(encode(h) for h in metrics.headers()))				
 	
-	
+		
 	logging.info("Processing users...")
 	for line in sys.stdin:
 		try:
@@ -125,7 +137,12 @@ def main():
 				LOGGING_STREAM.write("s")
 			else:
 				logging.debug("\t%s at %s:" % (username, timestamp))
-				print("\t".join(encode(v) for v in metrics.values(username, timestamp)))
+				
+				if use_file:
+					metrics_file.write("\t".join(encode(v) for v in metrics.values(username, timestamp)) + '\n')
+				else:
+					print("\t".join(encode(v) for v in metrics.values(username, timestamp)))
+				
 				sys.stdout.flush()
 				LOGGING_STREAM.write(".")
 		except Exception as e:
@@ -137,7 +154,24 @@ def main():
 	return 0
 	
 
-
+"""
+	File initialization
+"""
+class FileHandler:
+	
+	def __init__(self, **kwargs):
+		
+		self.kwargs   = kwargs
+		
+		# Open the output file
+		global use_file
+		use_file = False
+		if(kwargs['outfilename']):
+			global metrics_file
+			metrics_file = open(settings.__output_directory__ + kwargs['outfilename'], 'w')
+			
+			global use_file
+			use_file = True
 
 	
 if __name__ == "__main__": 

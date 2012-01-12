@@ -24,7 +24,7 @@ import logging, types, re
 import time, datetime
 import MySQLdb, MySQLdb.cursors
 import urllib, urllib2, json, htmlentitydefs
-import wmf
+import wmf, settings
 
 class MissingRevError(Exception):pass
 
@@ -46,10 +46,10 @@ HEADERS = [
 ]
 
 def emit(rev):
-	print(
-		"\t".join(encode(rev[h]) for h in HEADERS)
-	)
-
+	if use_file:
+		postings_file.write("\t".join(encode(rev[h]) for h in HEADERS) + "\n")
+	else:
+		print("\t".join(encode(rev[h]) for h in HEADERS))
 
 #  MediaWiki Date format
 #
@@ -139,6 +139,12 @@ def main():
 		action="store_true",
 		default=False
 	)
+	parser.add_argument(
+		'--outfilename',
+		type=str, 
+		help='the output file name.',
+		default=''
+	)
 	args = parser.parse_args()
 	
 	LOGGING_STREAM = sys.stderr
@@ -157,17 +163,24 @@ def main():
 	logging.debug("Message pattern is %r." % args.message.pattern)
 	
 	logging.info("Connecting to %s:%s using %s." % (args.host, args.db, args.cnf))
+
 	db = Database(
 		host=args.host, 
 		db=args.db, 
 		read_default_file=args.cnf
 	)
 	
+	# Initialize the output File
+	FileHandler(outfilename=args.outfilename)
+	
 	logging.info("Connecting to API @ %s." % args.api_uri)
 	api = WPAPI(args.api_uri)
-	
+
 	if args.header:
-		print("\t".join(HEADERS))
+		if use_file:
+			postings_file.write("\t".join(HEADERS) + '\n')
+		else:
+			print("\t".join(HEADERS))
 	
 	logging.info("Querying for matching revisions:")
 	revs = []
@@ -195,10 +208,33 @@ def main():
 		else:
 			LOGGING_STREAM.write("o")
 			count['missed'] += 1
-		
+	
+	# Close the output file
+	if use_file:
+		postings_file.close()
+	
 	LOGGING_STREAM.write("\n")
 	logging.info("Process completed. %(matched)s messages matched, %(missed)s messages missed." % count)
 
+
+"""
+	File initialization
+"""
+class FileHandler:
+	
+	def __init__(self, **kwargs):
+		
+		self.kwargs   = kwargs
+		
+		# Open the output file
+		global use_file
+		use_file = False
+		if(kwargs['outfilename']):
+			global postings_file
+			postings_file = open(settings.__output_directory__ + kwargs['outfilename'], 'w')
+			
+			global use_file
+			use_file = True
 
 
 class Database:
