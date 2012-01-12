@@ -592,11 +592,11 @@ class SwiftFileBackend extends FileBackend {
 	/**
 	 * Get a connection to the swift proxy
 	 *
-	 * @return CF_Connection|null
+	 * @return CF_Connection|false
 	 */
 	protected function getConnection() {
 		if ( $this->conn === false ) {
-			return null; // failed last attempt
+			return false; // failed last attempt
 		}
 		// Authenticate with proxy and get a session key.
 		// Session keys expire after a while, so we renew them periodically.
@@ -638,7 +638,7 @@ class SwiftFileBackend extends FileBackend {
 class SwiftFileIterator implements Iterator {
 	/** @var Array */
 	protected $bufferIter = array();
-	protected $bufferAfter = ''; // string; list items *after* this path
+	protected $bufferAfter = null; // string; list items *after* this path
 	protected $pos = 0; // integer
 
 	/** @var SwiftFileBackend */
@@ -685,7 +685,7 @@ class SwiftFileIterator implements Iterator {
 
 	public function rewind() {
 		$this->pos = 0;
-		$this->bufferAfter = '';
+		$this->bufferAfter = null;
 		$this->bufferIter = $this->backend->getFileListPageInternal(
 			$this->container, $this->dir, $this->bufferAfter, self::PAGE_SIZE
 		);
