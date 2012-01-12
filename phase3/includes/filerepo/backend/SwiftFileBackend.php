@@ -81,7 +81,7 @@ class SwiftFileBackend extends FileBackend {
 		// (a) Get a swift proxy connection
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		}
 
@@ -92,7 +92,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-create', $params['dst'] );
 			return $status;
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -111,7 +111,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( NoSuchObjectException $e ) {
 			// NoSuchObjectException thrown: file does not exist
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -131,7 +131,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( BadContentTypeException $e ) {
 			$status->fatal( 'backend-fail-contenttype', $params['dst'] );
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
 			$this->logException( $e, __METHOD__, $params );
@@ -155,7 +155,7 @@ class SwiftFileBackend extends FileBackend {
 		// (a) Get a swift proxy connection
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		}
 
@@ -166,7 +166,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 			return $status;
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -185,7 +185,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( NoSuchObjectException $e ) {
 			// NoSuchObjectException thrown: file does not exist
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -212,7 +212,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( IOException $e ) {
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
 			$this->logException( $e, __METHOD__, $params );
@@ -242,7 +242,7 @@ class SwiftFileBackend extends FileBackend {
 		// (a) Get a swift proxy connection
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		}
 
@@ -254,7 +254,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 			return $status;
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -273,7 +273,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( NoSuchObjectException $e ) {
 			// NoSuchObjectException thrown: file does not exist
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -287,7 +287,7 @@ class SwiftFileBackend extends FileBackend {
 		} catch ( NoSuchObjectException $e ) { // source object does not exist
 			$status->fatal( 'backend-fail-copy', $params['src'], $params['dst'] );
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
 			$this->logException( $e, __METHOD__, $params );
@@ -311,7 +311,7 @@ class SwiftFileBackend extends FileBackend {
 		// (a) Get a swift proxy connection
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		}
 
@@ -322,7 +322,7 @@ class SwiftFileBackend extends FileBackend {
 			$status->fatal( 'backend-fail-delete', $params['src'] );
 			return $status;
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
@@ -338,7 +338,7 @@ class SwiftFileBackend extends FileBackend {
 				$status->fatal( 'backend-fail-delete', $params['src'] );
 			}
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
 			$this->logException( $e, __METHOD__, $params );
@@ -356,7 +356,7 @@ class SwiftFileBackend extends FileBackend {
 		// (a) Get a swift proxy connection
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 			return $status;
 		}
 
@@ -364,7 +364,7 @@ class SwiftFileBackend extends FileBackend {
 		try {
 			$conn->create_container( $fullCont );
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-internal' );
 			$this->logException( $e, __METHOD__, $params );
@@ -513,7 +513,7 @@ class SwiftFileBackend extends FileBackend {
 
 		$conn = $this->getConnection();
 		if ( !$conn ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		}
 
 		try {
@@ -538,7 +538,7 @@ class SwiftFileBackend extends FileBackend {
 			$output = fopen("php://output", "w");
 			$obj->stream( $output );
 		} catch ( InvalidResponseException $e ) {
-			$status->fatal( 'backend-fail-connect' );
+			$status->fatal( 'backend-fail-connect', $this->name );
 		} catch ( Exception $e ) { // some other exception?
 			$status->fatal( 'backend-fail-stream', $params['src'] );
 			$this->logException( $e, __METHOD__, $params );
