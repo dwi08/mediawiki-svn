@@ -226,7 +226,11 @@ class TestSwarmMWMain {
 			$this->debug( 'Checkouts dir empty? Looking up remote repo...', __METHOD__ );
 			$next = $this->minRev;
 		} else {
-			$next = $this->getNextFollowingRevId( $cur );
+			try {
+				$next = $this->getNextFollowingRevId( $cur );
+			} catch ( Exception $e ) {
+				$next = null;
+			}
 		}
 		return $next;
 	}
