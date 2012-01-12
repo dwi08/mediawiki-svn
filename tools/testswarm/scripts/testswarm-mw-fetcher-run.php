@@ -80,7 +80,7 @@ chgrp( $dbFile, $fetcher_conf['TestSwarmAPI']['wwwusergroup'] );
 chmod( $dbFile, 0664 );
 
 $apiOptions = array(
-	'username' => $fetcher_conf['TestSwarmAPI']['username'],
+	'user' => $fetcher_conf['TestSwarmAPI']['user'],
 	'authToken' => $fetcher_conf['TestSwarmAPI']['authtoken'],
 	'swarmBaseUrl' => $fetcher_conf['TestSwarmAPI']['url']
 );
