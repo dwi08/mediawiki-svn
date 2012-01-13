@@ -1,6 +1,6 @@
 <?php
 
-if( !defined( 'MEDIAWIKI' ) ) {
+if ( !defined( 'MEDIAWIKI' ) ) {
 	die( -1 );
 }
 
@@ -13,8 +13,15 @@ class ApplicationTemplate extends MobileFrontendTemplate {
 		} else {
 			$appleTouchIconTag = '';
 		}
-		
+
 		$zeroRatedBanner = ( isset( $this->data['zeroRatedBanner'] ) ) ? str_replace( 'style="display:none;"', '', $this->data['zeroRatedBanner'] ) : '';
+
+		if ( $zeroRatedBanner ) {
+			if ( strstr( $zeroRatedBanner, 'id="zero-rated-banner"><span' ) ) {
+				$dismissNotification = ( isset( $this->data['dismissNotification'] )) ? $this->data['dismissNotification'] : ''; 
+				$zeroRatedBanner = str_replace( 'id="zero-rated-banner"><span', 'id="zero-rated-banner"><span class="notify-close"><a id="dismiss-notification" title="' . $dismissNotification . '">×</a></span><span', $zeroRatedBanner );
+			}
+		}
 
 		$betaPrefix = ( $this->data['isBetaGroupMember'] ) ? 'beta_' : '';
 
