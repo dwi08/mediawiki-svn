@@ -83,15 +83,15 @@ public class Configuration {
 					ETC_FOLDER+filename };
 			} else {	
 				paths = new String[] {
-					home+System.getProperty("file.separator")+ "."  + CONF_FILE_NAME,	//home
-					System.getProperty("user.dir") + filename,							//where invoked
-					ETC_FOLDER+filename, 												//in etc
-					System.getProperty("user.dir") +TEST_DATA_FOLDER + testFilename 										//in test-data
+					home+System.getProperty("file.separator")+ "."  + CONF_FILE_NAME, //home
+					System.getProperty("user.dir") + filename,                        //where invoked
+					ETC_FOLDER+filename,                                              //in etc
+					System.getProperty("user.dir") +TEST_DATA_FOLDER + testFilename   //in test-data
 				};
 			}
-			openPropertieFile(paths);
+			openPropertiesFile(paths);
 		} else {
-			openPropertieFile(new String[] { configFile });
+			openPropertiesFile(new String[] { configFile });
 		}
 		
 		if (getBoolean("Logging", "debug")) {
@@ -135,7 +135,7 @@ public class Configuration {
 	/*
 	 * trys to locate a properties file and open it.
 	 */
-	private void openPropertieFile(String[] paths) 
+	private void openPropertiesFile(String[] paths) 
 	{	
 		props = new Properties();
 		String path="";
