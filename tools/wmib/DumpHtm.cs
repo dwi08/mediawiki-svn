@@ -103,7 +103,7 @@ namespace wmib
         /// <returns></returns>
         public string AddLink(string name, string value)
         {
-            return "<tr><td>" + Encode(name) + "</td><td><a href=\"#" + Encode(value) +"\">" + Encode(value) + "</a></td></tr>\n";
+            return "<tr><td>" + Encode(name) + "</td><td><a href=\"#" + Encode(value) + "\">" + Encode(value) + "</a></td></tr>\n";
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace wmib
         /// <returns></returns>
         public string AddKey(string name, string value)
         {
-            return "<tr id=\"" + Encode(name) +  "\"><td>" + Encode(name) + "</td><td>" + Encode(value) + "</td></tr>\n";
+            return "<tr id=\"" + Encode(name) + "\"><td>" + Encode(name) + "</td><td>" + Encode(value) + "</td></tr>\n";
         }
 
         /// <summary>

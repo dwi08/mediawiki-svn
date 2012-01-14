@@ -287,9 +287,14 @@ namespace wmib
             string User = "";
             if (name.Contains("|"))
             {
-                User = name.Substring(name.IndexOf("|"));
-                User = User.Replace("|", "");
-                User = User.Replace(" ", "");
+                User = name.Substring(name.IndexOf("|") + 1);
+                if (User.StartsWith( " " ))
+                {
+                    while (User.StartsWith(" "))
+                    {
+                        User = User.Substring(1);
+                    }
+                }
                 name = name.Substring(0, name.IndexOf("|"));
             }
             string[] p = name.Split(' ');
@@ -338,7 +343,7 @@ namespace wmib
                         }
                         else
                         {
-                            irc.SlowQueue.DeliverMessage(User + ":" + keyv, Channel);
+                            irc.SlowQueue.DeliverMessage(User + ": " + keyv, Channel);
                         }
                         return true;
                     }
