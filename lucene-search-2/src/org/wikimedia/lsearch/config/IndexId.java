@@ -15,7 +15,7 @@ import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.search.SearcherCache;
 
 /**
- * Encapsulated an index ID in form db.part, e.g. entest.mainpart.
+ * IndexId encapsulate an index ID in form db.part, e.g. entest.mainpart.
  * It identifies each index part in the system. If entest is the name
  * of the database, and it uses mainsplit architecture, there will be
  * three IndexIds: <br/>
@@ -30,14 +30,16 @@ import org.wikimedia.lsearch.search.SearcherCache;
  * @author rainman
  *
  */
-public class IndexId {
+public class IndexId 
+{
 	static org.apache.log4j.Logger log = Logger.getLogger(IndexId.class);
+	
 	/** Where the index is */
 	protected String indexHost;
 	/** Path to index on remote machine */
 	protected String indexRsyncPath; 
 	
-	/** Type (single, mainsplit, split) in string repesentation */
+	/** Type (single, mainsplit, split) in string representation */
 	protected String typeString; 
 	/** Parameters associated with type, e.g. number of split parts */
 	protected Hashtable<String,String> typeParams;
