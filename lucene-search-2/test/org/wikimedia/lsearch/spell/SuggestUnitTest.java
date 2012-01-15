@@ -1,17 +1,17 @@
 package org.wikimedia.lsearch.spell;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.spell.dist.EditDistance;
 import org.wikimedia.lsearch.test.WikiTestCase;
 
-public class SuggestUnitTest extends WikiTestCase {
+public class SuggestUnitTest extends WikiTestCase 
+{
+	
 	public void testMakeNamespaces() throws IOException {
 		IndexId iid = IndexId.get("entest");
 		Suggest sug = new Suggest(iid);
@@ -21,18 +21,37 @@ public class SuggestUnitTest extends WikiTestCase {
 		assertEquals("[0, 100, 2, 4]",sug.makeNamespaces(new NamespaceFilter("0,2,4,100")).namespaces.toString());
 	}
 
-	public Map<Integer,Integer> getSpaceMap(String str1, String str2){
-		EditDistance ed = new EditDistance(str1);
-		int d[][] = ed.getMatrix(str2);
+	private Map<Integer,Integer> getSpaceMap(String str1, String str2){
+		EditDistance editDistance = new EditDistance(str1);
+		int d[][] = editDistance.getMatrix(str2);
+		
 		// map: space -> same space in edited string
 		TreeMap<Integer,Integer> spaceMap = new TreeMap<Integer,Integer>(); 
 		new Suggest().extractSpaceMap(d,str1.length(),str2.length(),spaceMap,str1,str2);
 		return spaceMap;
 	}
-	
-	public void testExtractSpaceMap() throws IOException {
+
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void testExtractSpaceMap1() throws IOException {
 		assertEquals("{}",getSpaceMap(".999","0 999").toString());
+	}
+
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void testExtractSpaceMap2() throws IOException {
 		assertEquals("{4=3}",getSpaceMap("some string","som estring").toString());		
+	}
+
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void testExtractSpaceMap3() throws IOException {
 		assertEquals("",getSpaceMap("               a   ","         b         ").toString());
 	}
 
