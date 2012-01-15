@@ -149,10 +149,17 @@
                 <delete dir="${junit.class.dir}"/>
                 <delete dir="dumps"/>
                 <delete dir="indexes"/>
+        	    <delete dir="docs"/>
                 <delete file="${basedir}/${jar.name}"/>
                 <delete file="lsearch.log4j"/>
                 <delete file="lsearch-global.conf"/>
                 <delete file="lsearch.conf"/>
-                <delete file="config.inc"/>
+                <delete file="config.inc"/>        		
         </target>
+	
+	
+	<target name="javadoc"
+		description="builds Javadoc class cocumentation From the source">
+			<javadoc access="protected" additionalparam=" -encoding UTF-8 -charset UTF-8 -docencoding UTF-8" author="true" classpath="lib/junit-3.8.2.jar;lib/mysql-connector-java-3.0.17-ga-bin.jar;lib/xmlrpc-common-3.0.jar;lib/commons-logging-1.1.jar;lib/mwdumper.jar;lib/lucene-core-2.3.jar;lib/ws-commons-util-1.0.1.jar;lib/lucene-analyzers.jar;lib/snowball.jar;lib/xmlrpc-client-3.0.jar;lib/log4j-1.2.14.jar;lib/xmlrpc-server-3.0.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="org.wikimedia.lsearch.related,org.wikimedia.lsearch.highlight,org.wikimedia.lsearch.spell.dist,org.wikimedia.lsearch.config,org.wikimedia.lsearch.util,org.wikimedia.lsearch.benchmark,org.wikimedia.lsearch.statistics,org.wikimedia.lsearch.oai,org.wikimedia.lsearch.interoperability,org.wikimedia.lsearch.index,org.wikimedia.lsearch.prefix,org.wikimedia.lsearch.analyzers,org.wikimedia.lsearch.spell.api,org.wikimedia.lsearch.spell,org.wikimedia.lsearch.storage,org.apache.lucene.search,org.wikimedia.lsearch.ranks,org.wikimedia.lsearch.search,org.wikimedia.lsearch.beans,org.wikimedia.lsearch.importer,org.wikimedia.lsearch.frontend,org.wikimedia.lsearch.test,org.apache.commons.lang,org.apache.lucene.analysis" source="1.6" sourcepath="src;resources;test" splitindex="true" use="true" version="true"/>
+		</target>
 </project>
