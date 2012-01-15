@@ -52,7 +52,7 @@ Index.maxqueuetimeout=12
 ################################################
 
 # URL to message files, {0} is replaced with language code, i.e. En
-Localization.url=file:///var/www/html/wiki-lucene/phase3/languages/messages/Messages{0}.php
+Localization.url=test-data\\messages\\Messages{0}.php
 
 # suffixes to database name, the rest is assumed to be language code
 Database.suffix=test
