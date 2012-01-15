@@ -56,13 +56,26 @@ public class NamespaceFilter implements Serializable {
 		init();
 		included.set(namespace);
 	}
-	/** filter number of namespaces separated by comma, e.g. 0,2,10 */
+	/** 
+	 * 
+	 * filter number of namespaces separated by comma, e.g. 0,2,10 */
 	public NamespaceFilter(String namespaces) {
 		init();
 		if (namespaces != null && !namespaces.equals("")) {
 			String[] bits = namespaces.split(",");
 			for (int i = 0; i < bits.length; i++) {
+				try{
 				included.set(Integer.parseInt(bits[i].trim()));
+				}
+				catch (NumberFormatException e)
+				{
+					if(bits[i].trim().startsWith("NS"))
+					{
+						System.err.println("bad input found by NamespaceFilter "+ bits[i]);
+						included.set(Integer.parseInt("0"));	
+					}	
+					
+				}
 			}
 		}
 	}
