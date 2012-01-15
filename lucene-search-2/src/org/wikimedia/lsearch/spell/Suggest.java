@@ -3,52 +3,49 @@ package org.wikimedia.lsearch.spell;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermDocs;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
-import org.wikimedia.lsearch.analyzers.Analyzers;
 import org.wikimedia.lsearch.analyzers.FastWikiTokenizerEngine;
-import org.wikimedia.lsearch.analyzers.FieldNameFactory;
 import org.wikimedia.lsearch.analyzers.FilterFactory;
-import org.wikimedia.lsearch.beans.ResultSet;
-import org.wikimedia.lsearch.beans.SearchResults;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
-import org.wikimedia.lsearch.ranks.ObjectCache;
 import org.wikimedia.lsearch.ranks.StringList;
 import org.wikimedia.lsearch.ranks.StringList.LookupSet;
 import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.search.FilterWrapper;
 import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.spell.api.NgramIndexer;
 import org.wikimedia.lsearch.spell.dist.DoubleMetaphone;
 import org.wikimedia.lsearch.spell.dist.EditDistance;
 
-public class Suggest {
+
+/**
+ * The Suggest componnet of spell checking
+ * 
+ * @author rainman
+ *
+ */
+public class Suggest 
+{
 	static Logger log = Logger.getLogger(Suggest.class);
 	protected static GlobalConfiguration global=null;
 	protected IndexId iid;
@@ -74,6 +71,7 @@ public class Suggest {
 		public Metric(String word){
 			this(word,true);
 		}		
+		
 		public Metric(String word, boolean useMetaphones){
 			this.word = word;
 			this.decomposed = FastWikiTokenizerEngine.decompose(word);
@@ -86,17 +84,21 @@ public class Suggest {
 				sdmeta2 = new EditDistance(meta2,false);
 			}
 		}
+		
 		public boolean hasDecomposed(){
 			return decomposed != word; // equals() not necessary since decompose() returns same object 
 		}
+		
 		/** Edit distance */
 		public int distanceWithDecomposition(String w){
 			return sd.getDistance(FastWikiTokenizerEngine.decompose(w));
 		}
+		
 		/** Get distance when input words is already decomposed */
 		public int distance(String w){
 			return sd.getDistance(w);
 		}
+		
 		/* Edit distance to decomposed word (input word is also decomposed) */
 		/*public int decomposedDistance(String w){
 			return sdd.getDistance(FastWikiTokenizerEngine.decompose(w));
@@ -187,6 +189,14 @@ public class Suggest {
 		this(iid,null,true);
 	}
 	
+	/**
+	 *  constructor
+	 *  
+	 * @param iid
+	 * @param searcher
+	 * @param useLogging
+	 * @throws IOException
+	 */
 	public Suggest(IndexId iid, IndexSearcher searcher, boolean useLogging) throws IOException{
 		SearcherCache cache = SearcherCache.getInstance();
 		this.iid = iid;
@@ -250,6 +260,8 @@ public class Suggest {
 	 *
 	 */
 	public static class ExtraInfo implements Serializable {
+
+		private static final long serialVersionUID = 1L;
 		protected HashSet<String> phrases;
 		protected HashSet<String> foundInContext;
 		protected HashSet<String> foundInTitles;
@@ -790,7 +802,6 @@ public class Suggest {
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private HashSet<String> getContext(String w, LookupSet allWords, Namespaces ns) throws IOException{		
 		if(ns == null || ns.additional){ // no context for nondefault namespaces
 			TermDocs td = reader.termDocs(new Term("context_key",w));
