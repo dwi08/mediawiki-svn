@@ -8,14 +8,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.NetworkInterface;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,15 +20,13 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.search.ArticleNamespaceScaling;
-import org.apache.lucene.search.ArticleScaling;
 import org.wikimedia.lsearch.config.IndexId.AgeScaling;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.util.Localization;
@@ -1269,7 +1264,7 @@ public class GlobalConfiguration {
 	 * @return lowercased db type
 	 */
 	protected String getMainDBType(String dbname){
-		Enumeration e = ((Hashtable)database.get(dbname)).keys();
+		Enumeration<String> e = database.get(dbname).keys();
 		while(e.hasMoreElements()){
 			String type = (String)e.nextElement();
 			if(type.equals("single") || type.equals("mainsplit") || type.equals("split"))
@@ -1369,7 +1364,7 @@ public class GlobalConfiguration {
 		return namespacePrefixAll;
 	}
 
-	/** Check wether dbname has some of the suffixes */
+	/** Check if dbname has some of the suffixes */
 	protected boolean checkSuffix(String[] suffixes, String dbname){
 		if(suffixes == null)
 			return false;
@@ -1391,7 +1386,7 @@ public class GlobalConfiguration {
 	 *  the suffixes from the global configuration
 	 *
 	 * @param dbname
-	 * @return
+	 * @return if keyword scoring should be used 
 	 */
 	public boolean useKeywordScoring(String dbname){
 		return checkSuffix(keywordScoringSuffixes,dbname);
@@ -1401,7 +1396,7 @@ public class GlobalConfiguration {
 	 * If this dbname is assigned an exact-case additional index.
 	 *
 	 * @param dbname
-	 * @return
+	 * @return if this dbname is assigned an additional exact-case index
 	 */
 	public boolean exactCaseIndex(String dbname){
 		return checkSuffix(exactCaseSuffix,dbname);
