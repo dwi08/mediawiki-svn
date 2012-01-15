@@ -564,15 +564,34 @@ public class GlobalConfiguration {
 	protected void initializeWmfSettings(String initset) {
 		try {
 			PHPParser parser = new PHPParser();
-			String text = parser.readURL(new URL(initset));
+
+			URL InitialiseSettingsLocation = new URL(null,initset);
+			
+			if(InitialiseSettingsLocation.getProtocol().equals("file"))
+			{
+				URL path = getClass().getClassLoader().getResource(".");
+				//System.out.println("running at "+ path);				
+				System.out.println("looking for "+InitialiseSettingsLocation+" relative to path: "+ path);				
+				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+				InitialiseSettingsLocation  = classLoader.getResource(initset);
+			}else{
+				System.out.println("looking for InitialiseSettings.php at url "+ InitialiseSettingsLocation);				
+			}		
+			
+			String text   = parser.readURL(InitialiseSettingsLocation);
 			wgLanguageCode = parser.getLanguages(text);
 			wgServer = parser.getServer(text);
 			wgDefaultSearch = parser.getDefaultSearch(text);
 			wgNamespacesWithSubpages = parser.getNamespacesWithSubpages(text);
 			wgContentNamespaces = parser.getContentNamespaces(text);
 			Localization.readDBLocalizations(text);
-		} catch (Exception e) {
+
+		} catch (MalformedURLException e) {
 			System.out.println("Error reading InitialiseSettings.php from url "+initset+" : "+e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Error reading InitialiseSettings.php from url "+initset+" : "+e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
