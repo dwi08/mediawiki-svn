@@ -34,8 +34,8 @@ public abstract class WikiTestCase extends TestCase {
 	
 	protected GlobalConfiguration global = null;
 	
-	
-	protected void setUp() throws Exception {
+	@Override
+	protected void setUp()  {
 		if(config == null)
 		{			
 			String winPathFixer; 
