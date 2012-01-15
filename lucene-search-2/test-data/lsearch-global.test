@@ -79,9 +79,10 @@ KeywordScoring.suffix=wiki rutest
 
 # wmf-style init file, attempt to read OAI and lang info from it
 # for sample see http://noc.wikimedia.org/conf/InitialiseSettings.php.html
-WMF.InitialiseSettings=file:///home/rainman/Desktop/InitialiseSettings.php
+//WMF.InitialiseSettings=file://../test-data/InitialiseSettings.php.test
+WMF.InitialiseSettings=http://noc.wikimedia.org/conf/InitialiseSettings.php.txt
 
-# databases can be writen as {file}, where file contains list of dbs
+# databases can be written as {file}, where file contains list of dbs
 
 # Put here you custom namespace prefixes
 # Syntax: <prefix_name> : <coma separated list of namespaces>
