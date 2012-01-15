@@ -8,6 +8,13 @@ import org.wikimedia.lsearch.analyzers.WikiQueryParser;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 
+
+/**
+ * parent class for test that require that the configuration files be initialized
+ * 
+ * @author rainman
+ *
+ */
 public abstract class WikiTestCase extends TestCase {
 	
 	public Configuration getConfig() {
@@ -15,6 +22,7 @@ public abstract class WikiTestCase extends TestCase {
 	}
 
 
+	
 	public void setConfig(final Configuration config) {
 		this.config = config;
 	}
