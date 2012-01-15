@@ -39,7 +39,7 @@ import org.wikimedia.lsearch.spell.dist.EditDistance;
 
 
 /**
- * The Suggest componnet of spell checking
+ * The Suggest component of spell checking
  * 
  * @author rainman
  *
