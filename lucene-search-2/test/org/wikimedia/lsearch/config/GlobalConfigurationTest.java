@@ -4,6 +4,7 @@
  */
 package org.wikimedia.lsearch.config;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -26,48 +27,87 @@ import junit.framework.TestCase;
  *
  */
 public class GlobalConfigurationTest extends WikiTestCase {
+
 	GlobalConfiguration global = null;
+	
+	@Override
 	public void setUp() throws Exception {
+		
 		super.setUp();
 		if(global == null)
 			global = GlobalConfiguration.getInstance();
+		
+		database = global.database;
+		
+	}
+	@Override
+	public void tearDown() throws Exception{
+		
+		database=null;
+		super.tearDown();
 	}
 
 	public void testPreprocessLine(){
+		
+		String winPathFixer; 
+		if(System.getProperty("os.name").startsWith("Windows")){
+			winPathFixer = File.separator;
+		}else{
+			winPathFixer="";
+		}
+		
 		String text = "entest: (mainsplit)";
 		assertEquals(text,global.preprocessLine(text));
 
-		String dburl = "file://"+System.getProperty("user.dir")+"/test-data/dbs.test";
+		StringBuilder dburl = new StringBuilder("file://")
+			.append(winPathFixer)
+			.append(System.getProperty("user.dir"))
+			.append(File.separator)
+			.append("test-data")
+			.append(File.separator)
+			.append("dbs.test");
 		text = "{"+dburl+"}: (mainsplit)";
 		assertEquals("entest,rutest,srtest,kktest: (mainsplit)",global.preprocessLine(text));
 	}
 
-	public void testReadURL(){
+	Hashtable<String, Hashtable<String, Hashtable<String, String>>>  database; 
+	
+	public void testRoles(){
 		// database
-		Hashtable database = global.database;
-		Hashtable roles = (Hashtable) database.get("entest");
+		
+		Hashtable<String, Hashtable<String, String>>  roles = database.get("entest");
+		
 		assertNotNull(roles.get("mainsplit"));
 		assertNotNull(roles.get("mainpart"));
 		assertNotNull(roles.get("restpart"));
 
-		Hashtable mainpart = (Hashtable) roles.get("mainpart");
+		Hashtable<String, String> mainpart = roles.get("mainpart");
 		assertEquals("false",mainpart.get("optimize"));
 		assertEquals("2",mainpart.get("mergeFactor"));
 		assertEquals("10",mainpart.get("maxBufDocs"));
-
-		Hashtable splitroles = (Hashtable) database.get("frtest");
+	}
+	
+	
+	public void testReadURLSplitRoles(){
+		
+		Hashtable<String, Hashtable<String, String>>  splitroles = database.get("frtest");
 		assertNotNull(splitroles.get("split"));
 		assertNotNull(splitroles.get("part1"));
 		assertNotNull(splitroles.get("part2"));
 		assertNotNull(splitroles.get("part3"));
-
-		Hashtable nspart1 = (Hashtable) ((Hashtable) database.get("njawiki")).get("nspart1");
+	}
+	
+	public void testParts(){
+		Hashtable<String, String> nspart1 = database.get("njawiki").get("nspart1");
 		assertEquals("false",nspart1.get("optimize"));
 		assertEquals("5",nspart1.get("mergeFactor"));
 
+	}
+	
+	public void testReadURLAdress(){
 		// search
-		Hashtable search = global.search;
-		ArrayList sr = (ArrayList) search.get("192.168.0.2");
+		Hashtable<String,ArrayList<String>>  search = global.search;
+		ArrayList<String> sr =  search.get("192.168.0.2");
 
 		String[] ssr = (String[]) sr.toArray(new String [] {} );
 
@@ -75,7 +115,9 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals("entest.restpart",ssr[1]);
 		assertEquals("rutest",ssr[2]);
 		assertEquals(6,ssr.length);
-
+	}
+	
+	public void testSearchGroups(){
 		// search groups
 		Hashtable<Integer,Hashtable<String,ArrayList<String>>> sg = global.searchGroup;
 
@@ -83,11 +125,12 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals("{192.168.0.5=[entest.mainpart, entest.restpart], 192.168.0.2=[entest.mainpart]}",g0.toString());
 		Hashtable<String,ArrayList<String>> g1 = sg.get(new Integer(1));
 		assertEquals("{192.168.0.6=[frtest.part3, detest], 192.168.0.4=[frtest.part1, frtest.part2]}",g1.toString());
-
-
+	}
+	
+	public void testIndex(){
 		// index
-		Hashtable index = global.index;
-		ArrayList ir = (ArrayList) index.get("192.168.0.5");
+		Hashtable<String,ArrayList<String>> index = global.index;
+		ArrayList<String> ir =  index.get("192.168.0.5");
 
 		String[] sir = (String[]) ir.toArray(new String [] {} );
 
@@ -101,29 +144,44 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertTrue(ir.contains("entest.mainpart.sub2"));
 		assertTrue(ir.contains("entest.mainpart.sub3"));
 		assertEquals(17,sir.length);
-
+	}
+	
+	public void testIndexLocation(){
 		// indexLocation
-		Hashtable indexLocation = global.indexLocation;
+		Hashtable<String,String> indexLocation = global.indexLocation;
 
 		assertEquals("192.168.0.5",indexLocation.get("entest.mainpart"));
 		assertEquals("192.168.0.2",indexLocation.get("entest.ngram"));
 
-
+	}
+	
+	public void testMyHost(){
 		// this should be the nonloopback address
-		InetAddress host = global.myHost;
+		InetAddress host = GlobalConfiguration.myHost;
 		String hostAddr = host.getHostAddress();
 		String hostName = host.getHostName();
 		System.out.println("Verify internet IP: "+hostAddr+", and hostname: "+hostName);
 
+	}
+	
+	public void testPrefixes(){
+
 		// test prefixes
 		Hashtable<String,NamespaceFilter> p = global.namespacePrefix;
 		assertEquals(17,p.size());
+		
+}
+	
+	public void testGlobalProperties(){
 
 		// check global properties
 		Properties prop = global.globalProperties;
 		assertEquals("wiki wiktionary test",prop.get("Database.suffix"));
 		assertEquals("wiki rutest",prop.get("KeywordScoring.suffix"));
-
+	}
+	
+	public void testLanguages(){
+		
 		// check languages and keyword stuff
 		assertEquals("en",global.getLanguage("entest"));
 		assertEquals("sr",global.getLanguage("srwiki"));
@@ -131,6 +189,10 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertTrue(global.useKeywordScoring("srwiki"));
 		assertTrue(global.useKeywordScoring("rutest"));
 
+}
+	
+	public void testOaiRepository(){
+		
 		// test oai repo stuff
 		Hashtable<String,String> oairepo = global.oaiRepo;
 		assertEquals("http://$lang.wiktionary.org/w/index.php",oairepo.get("wiktionary"));
@@ -139,12 +201,17 @@ public class GlobalConfigurationTest extends WikiTestCase {
 
 		assertEquals("http://sr.wikipedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("srwiki"));
 		assertEquals("http://localhost/wiki-lucene/phase3/index.php?title=Special:OAIRepository",global.getOAIRepo("frtest"));
-
+}
+	
+	public void testInitiazeSettings(){
+		
 		// InitialiseSettings test
 		assertEquals("sr",global.getLanguage("rswikimedia"));
 		assertEquals("http://rs.wikimedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("rswikimedia"));
 		assertEquals("http://commons.wikimedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("commonswiki"));
-
+}
+	
+	public void testSuggestTags(){
 		// test suggest tag
 		Hashtable<String,String> sug = global.getDBParams("entest","spell");
 		assertEquals("1",sug.get("wordsMinFreq"));
