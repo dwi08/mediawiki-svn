@@ -5,46 +5,43 @@
 package org.wikimedia.lsearch.config;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-import org.wikimedia.lsearch.config.GlobalConfiguration;
-import org.wikimedia.lsearch.config.IndexId;
+import org.apache.log4j.Logger;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.test.WikiTestCase;
 import org.wikimedia.lsearch.util.StringUtils;
-
-import junit.framework.TestCase;
 
 /**
  * @author rainman
  *
  */
-public class GlobalConfigurationTest extends WikiTestCase {
-
-	GlobalConfiguration global = null;
+public class GlobalConfigurationTest extends WikiTestCase { // NOPMD by OrenBochman on 1/15/12 3:38 AM
+	
+	private static final Logger LOG = Logger.getLogger(GlobalConfigurationTest.class.getName());
+	private transient GlobalConfiguration global = null;
+	private transient IndexId frTest=null;
+	
+	private transient Hashtable<String, Hashtable<String, Hashtable<String, String>>>  database;
 	
 	@Override
-	public void setUp() throws Exception {
+	public void setUp() {
 		
 		super.setUp();
 		if(global == null)
 			global = GlobalConfiguration.getInstance();
 		
 		database = global.database;
-		
+		frTest = IndexId.get("frtest");		
 	}
 	@Override
-	public void tearDown() throws Exception{
+	public void tearDown() {
 		
 		database=null;
-		super.tearDown();
+		frTest=null;		
 	}
 
 	public void testPreprocessLine(){
@@ -57,9 +54,9 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		}
 		
 		String text = "entest: (mainsplit)";
-		assertEquals(text,global.preprocessLine(text));
+		assertEquals("preprocessLine() failed - ",text,global.preprocessLine(text));
 
-		StringBuilder dburl = new StringBuilder("file://")
+		final StringBuilder dburl = new StringBuilder("file://")
 			.append(winPathFixer)
 			.append(System.getProperty("user.dir"))
 			.append(File.separator)
@@ -67,10 +64,11 @@ public class GlobalConfigurationTest extends WikiTestCase {
 			.append(File.separator)
 			.append("dbs.test");
 		text = "{"+dburl+"}: (mainsplit)";
-		assertEquals("entest,rutest,srtest,kktest: (mainsplit)",global.preprocessLine(text));
+		
+		assertEquals("preprocessLine() failed - ","entest,rutest,srtest,kktest: (mainsplit)",global.preprocessLine(text));
 	}
 
-	Hashtable<String, Hashtable<String, Hashtable<String, String>>>  database; 
+	 
 	
 	public void testRoles(){
 		// database
@@ -119,12 +117,12 @@ public class GlobalConfigurationTest extends WikiTestCase {
 	
 	public void testSearchGroups(){
 		// search groups
-		Hashtable<Integer,Hashtable<String,ArrayList<String>>> sg = global.searchGroup;
+		Hashtable<Integer,Hashtable<String,ArrayList<String>>> searchGroups = global.searchGroup;
 
-		Hashtable<String,ArrayList<String>> g0 = sg.get(new Integer(0));
-		assertEquals("{192.168.0.5=[entest.mainpart, entest.restpart], 192.168.0.2=[entest.mainpart]}",g0.toString());
-		Hashtable<String,ArrayList<String>> g1 = sg.get(new Integer(1));
-		assertEquals("{192.168.0.6=[frtest.part3, detest], 192.168.0.4=[frtest.part1, frtest.part2]}",g1.toString());
+		Hashtable<String,ArrayList<String>> group0 = searchGroups.get(Integer.valueOf(0));
+		assertEquals("{192.168.0.5=[entest.mainpart, entest.restpart], 192.168.0.2=[entest.mainpart]}",group0.toString());
+		Hashtable<String,ArrayList<String>> group1 = searchGroups.get(Integer.valueOf(1));
+		assertEquals("{192.168.0.6=[frtest.part3, detest], 192.168.0.4=[frtest.part1, frtest.part2]}",group1.toString());
 	}
 	
 	public void testIndex(){
@@ -155,20 +153,13 @@ public class GlobalConfigurationTest extends WikiTestCase {
 
 	}
 	
-	public void testMyHost(){
-		// this should be the nonloopback address
-		InetAddress host = GlobalConfiguration.myHost;
-		String hostAddr = host.getHostAddress();
-		String hostName = host.getHostName();
-		System.out.println("Verify internet IP: "+hostAddr+", and hostname: "+hostName);
 
-	}
 	
 	public void testPrefixes(){
 
 		// test prefixes
-		Hashtable<String,NamespaceFilter> p = global.namespacePrefix;
-		assertEquals(17,p.size());
+		Hashtable<String,NamespaceFilter> prefixes = global.namespacePrefix;
+		assertEquals(17,prefixes.size());
 		
 }
 	
@@ -202,9 +193,9 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals("http://sr.wikipedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("srwiki"));
 		assertEquals("http://localhost/wiki-lucene/phase3/index.php?title=Special:OAIRepository",global.getOAIRepo("frtest"));
 }
-	
+
 	public void testInitiazeSettings(){
-		
+		//FIXME: try to add InitialiseSettings.php to testdata/
 		// InitialiseSettings test
 		assertEquals("sr",global.getLanguage("rswikimedia"));
 		assertEquals("http://rs.wikimedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("rswikimedia"));
@@ -220,12 +211,14 @@ public class GlobalConfigurationTest extends WikiTestCase {
 	}
 
 	public void testOrphans() {
+		
 		IndexId enw = IndexId.get("enwiktionary");
+		
 		assertTrue(enw.getSearchHosts().contains("oblak2"));
 		assertEquals("[oblak2]", enw.getSearchHosts().toString());
 
-		IndexId en = IndexId.get("entest.mainpart");
-		assertFalse(en.getSearchHosts().contains("oblak2"));
+		IndexId enIndexId = IndexId.get("entest.mainpart");
+		assertFalse(enIndexId.getSearchHosts().contains("oblak2"));
 	}
 
 	public void testIndexIds(){
@@ -239,8 +232,19 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals("entest",entest.toString());
 		assertEquals("192.168.0.5",entest.getIndexHost());
 		assertFalse(entest.isMyIndex());
+	
+	}
+
+	public void testgetType(){
+		IndexId entest = IndexId.get("entest");	
+		
 		//assertEquals(null,entest.getSnapshotPath());
 		assertEquals("mainsplit",entest.getType());
+	}		
+	
+	public void testgetRsyncSnapshotPath(){
+		IndexId entest = IndexId.get("entest");	
+
 		assertEquals("/mwsearch2/snapshot/entest",entest.getRsyncSnapshotPath());
 
 		IndexId enrest = IndexId.get("entest.restpart");
@@ -255,16 +259,25 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals("mainsplit",enrest.getType());
 		//assertEquals(null,enrest.getIndexPath());
 
-		IndexId frtest = IndexId.get("frtest");
-		assertTrue(frtest.isSplit());
-		assertTrue(frtest.isLogical());
-		assertEquals("frtest",frtest.getDBname());
-		assertEquals("frtest",frtest.toString());
-		assertFalse(frtest.isMyIndex());
-		assertEquals(3,frtest.getSplitFactor());
+	}		
+	
+	public void testGetFrench(){		
+		
+		
+		assertTrue(frTest.isSplit());
+		assertTrue(frTest.isLogical());
+		assertEquals("frtest",frTest.getDBname());
+		assertEquals("frtest",frTest.toString());
+		assertFalse(frTest.isMyIndex());
+		assertEquals(3,frTest.getSplitFactor());
 
+	}		
+	
+	public void testGetFrenchPart(){
+		
+		
 		IndexId frpart2 = IndexId.get("frtest.part2");
-		assertSame(frpart2,frtest.getPart(2));
+		assertSame(frpart2,frTest.getPart(2));
 		assertTrue(frpart2.isSplit());
 		assertFalse(frpart2.isLogical());
 		assertEquals(2,frpart2.getPartNum());
@@ -273,6 +286,11 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		IndexId detest = IndexId.get("detest");
 		assertFalse(detest.isLogical());
 
+	}		
+	
+	public void testGetNjPart(){
+
+		
 		// check nssplit
 		IndexId njawiki = IndexId.get("njawiki");
 		assertTrue(njawiki.isLogical());
@@ -291,11 +309,17 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals(3,njawiki2.getSplitFactor());
 		assertEquals(2,njawiki2.getPartNum());
 		assertEquals("[192.168.0.1]",njawiki2.getSearchHosts().toString());
+	}
+	
+	public void testEnSpell(){
 
 		IndexId sug = IndexId.get("entest.spell");
 		assertTrue(sug.isSpell());
 		assertFalse(sug.isLogical());
 		assertEquals(sug,sug.getSpell());
+	}
+	
+	public void testEnSubdivided(){
 
 		IndexId sub1 = IndexId.get("entest.mainpart.sub1");
 		assertFalse(sub1.isLogical());
@@ -312,6 +336,11 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals(3,enmain.getSubdivisionFactor());
 		//assertNull(enmain.getImportPath());
 
+	}
+	
+	public void testHmSubdivided(){
+
+		
 		IndexId hmpart1 = IndexId.get("hmwiki.nspart1");
 		assertTrue(hmpart1.isFurtherSubdivided());
 		//assertNull(hmpart1.getImportPath());
@@ -331,10 +360,18 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals(hhl1,IndexId.get("hmwiki.nspart1.hl").getSubpart(1));
 		assertEquals("[192.168.0.1]",hhl1.getSearchHosts().toString());
 
+	}
+	
+	public void testEnTitles(){
+
+		
 		IndexId ent = IndexId.get("en-titles");
 		assertTrue(ent.isTitlesBySuffix());
 		assertEquals(2,ent.getSplitFactor());
 		//assertEquals("[en-titles.tspart2, en-titles.tspart1]",ent.getPhysicalIndexes().toString());
+	}
+	
+	public void testEnTitlesParts(){
 
 		IndexId ents1 = IndexId.get("en-titles.tspart1");
 		assertTrue(ents1.isTitlesBySuffix());
@@ -353,7 +390,10 @@ public class GlobalConfigurationTest extends WikiTestCase {
 		assertEquals("mw-titles.tspart1",mw.getTitlesIndex().toString());
 		assertEquals("mw",mwt.getInterwikiBySuffix("mediawikiwiki"));
 		assertEquals("{mediawikiwiki=mediawikiwiki, metawiki=metawiki}",mwt.getSuffixToDbname().toString());
-
+	}
+	
+	public void testEnSpellPrecursor(){
+		
 		IndexId ep = IndexId.get("entest.spell.pre");
 		assertTrue(ep.isPrecursor());
 		assertFalse(ep.isSpell());
