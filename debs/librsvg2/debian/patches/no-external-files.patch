@@ -1,0 +1,58 @@
+diff --git a/rsvg-base-file-util.c b/rsvg-base-file-util.c
+index 902c436..a3cc7c5 100644
+--- a/rsvg-base-file-util.c
++++ b/rsvg-base-file-util.c
+@@ -91,7 +91,7 @@ rsvg_handle_new_from_file (const gchar * file_name, GError ** error)
+     rsvg_return_val_if_fail (file_name != NULL, NULL, error);
+ 
+     base_uri = rsvg_get_base_uri_from_filename (file_name);
+-    f = _rsvg_acquire_xlink_href_resource (file_name, base_uri, error);
++    f = _rsvg_acquire_file_resource (file_name, base_uri, error);
+ 
+     if (f) {
+         handle = rsvg_handle_new ();
+diff --git a/rsvg-image.c b/rsvg-image.c
+index 02882bd..5e74a1e 100644
+--- a/rsvg-image.c
++++ b/rsvg-image.c
+@@ -160,6 +160,26 @@ rsvg_acquire_vfs_resource (const char *filename, const char *base_uri, GError **
+ }
+ 
+ GByteArray *
++_rsvg_acquire_file_resource (const char *href, const char *base_uri, GError ** err)
++{
++    GByteArray *arr = NULL;
++
++    if (!(href && *href))
++        return NULL;
++
++    if (!strncmp (href, "data:", 5))
++        arr = rsvg_acquire_base64_resource (href, NULL);
++
++    if (!arr)
++        arr = rsvg_acquire_file_resource (href, base_uri, NULL);
++
++    if (!arr)
++        arr = rsvg_acquire_vfs_resource (href, base_uri, NULL);
++
++    return arr;
++}
++
++GByteArray *
+ _rsvg_acquire_xlink_href_resource (const char *href, const char *base_uri, GError ** err)
+ {
+     GByteArray *arr = NULL;
+@@ -170,11 +190,13 @@ _rsvg_acquire_xlink_href_resource (const char *href, const char *base_uri, GErro
+     if (!strncmp (href, "data:", 5))
+         arr = rsvg_acquire_base64_resource (href, NULL);
+ 
++#ifdef ALLOW_EXTERNAL
+     if (!arr)
+         arr = rsvg_acquire_file_resource (href, base_uri, NULL);
+ 
+     if (!arr)
+         arr = rsvg_acquire_vfs_resource (href, base_uri, NULL);
++#endif
+ 
+     return arr;
+ }
