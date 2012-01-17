@@ -3,7 +3,7 @@
 #include <string.h>
 
 char * urls[] = {
-    "en.wikipedia.org/wiki/Special:CongressLookup?zip=",
+    "en.wikipedia.org/wiki/Special:CongressLookup",
 };
 
 main() {
