@@ -1,7 +1,6 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -29,7 +28,7 @@ public class Aggregate {
 	 * @throws IOException */
 	public Aggregate(String text, float boost, IndexId iid, Analyzer analyzer, 
 			String field, HashSet<String> stopWords, Flags flags) throws IOException{
-		setTokens(toTokenArray(analyzer.tokenStream(field,new StringReader(text))),stopWords);
+		setTokens(toTokenArray(analyzer.tokenStream(field,text)),stopWords);
 		this.boost = boost;
 		this.flags = flags;
 		
@@ -61,7 +60,7 @@ public class Aggregate {
 	 * @throws IOException */
 	public Aggregate(String text, float boost, IndexId iid, Analyzer analyzer, 
 			String field, Flags flags) throws IOException{		
-		this.tokens = toTokenArray(analyzer.tokenStream(field,new StringReader(text)));
+		this.tokens = toTokenArray(analyzer.tokenStream(field,text));
 		this.boost = boost;
 		this.noStopWordsLength = noAliasLength();
 		this.flags = flags;
