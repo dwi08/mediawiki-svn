@@ -399,4 +399,16 @@
         </dependency>
     </dependencies>
 
+    <organization>
+    	<name>mediawiki</name>
+    	<url>www.mediawiki.org</url>
+    </organization>
+    <name>search lucene 3</name>
+    <description>A search engine extention for MediaWiki</description>
+    <inceptionYear>18/1/2012</inceptionYear>
+    <url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
+    <scm>
+    	<developerConnection>oren</developerConnection>
+    	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
+    </scm>
 </project>
