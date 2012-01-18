@@ -1,0 +1,394 @@
+<?php
+/**
+ * This class creates a page which asks the user for their zip code. It then uses the zip code to
+ * look up information about the user's congressional representatives and presents that information
+ * to the user.
+ */
+class SpecialCongressLookup extends UnlistedSpecialPage {
+	protected $zip = null;
+
+	public function __construct() {
+		// Register special page
+		parent::__construct( 'CongressLookup' );
+	}
+
+	/**
+	 * Handle different types of page requests
+	 */
+	public function execute( $sub ) {
+		global $wgRequest, $wgOut;
+
+		// Pull in query string parameters
+		$zip = $wgRequest->getVal( 'zip' );
+		if ( !is_null( $zip )) $this->setZip( $zip );
+		
+		// Setup
+		$wgOut->disable();
+		$this->sendHeaders();
+
+		$this->buildPage();
+	}
+
+	/**
+	 * Generate the HTTP response headers for the landing page
+	 */
+	private function sendHeaders() {
+		global $wgCongressLookupSharedMaxAge, $wgCongressLookupMaxAge;
+		header( "Content-type: text/html; charset=utf-8" );
+		header( "Cache-Control: public, s-maxage=$wgCongressLookupSharedMaxAge, max-age=$wgCongressLookupMaxAge" );
+	}
+	
+	/**
+	 * Build the HTML for the page
+	 * @return true
+	 */
+	private function buildPage() {
+		$htmlOut = '';
+
+		// Output beginning of the page
+		$htmlOut .= <<<HTML
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<title>Wikipedia, the free encyclopedia</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="generator" content="MediaWiki 1.18wmf1" />
+<style type="text/css">
+body {
+	color: #dedede;
+	margin: 2em;
+	font-family:Times New Roman;
+	background: black url('//upload.wikimedia.org/wikipedia/commons/9/98/WP_SOPA_Splash_Full.jpg') no-repeat 0 0;
+}
+h3{
+    font-size: 1.5em;
+    text-align:center;
+    margin-bottom: 0.5em;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+h4 { 
+  font-weight: bold;
+  color: #ffffff;
+}
+a:link, a:visited {
+	color: #dedede;
+}
+a:hover, a:active {
+	color: #ffffff;
+}
+div#everything {
+	width: 920px;
+	margin: 0 auto;
+}
+div#instructions {
+	position: absolute;
+	top: 67px;
+	left: 440px;
+	text-align: left;
+	width: 500px;
+	padding-bottom: 30px;
+}
+div#instructions p {
+  text-align:justify;
+}
+div#contacts {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	width: 320px;
+	background-color: #161616;
+	padding: 5px 20px 20px 20px;
+	filter:alpha(opacity=90);
+	-moz-opacity:0.90;
+	-khtml-opacity: 0.90;
+	opacity: 0.90;
+}
+div#contacts form {
+	margin-bottom: 1em;
+}
+table.person {
+	margin-bottom: 1em;
+	margin-left: 20px;
+	border: none;
+}
+table.person td.name {
+	font-weight: bold;
+}
+p {
+	margin: 1em 0;
+}
+p.quote {
+	font-family: georgia, serif;
+	font-size: 14px;
+	color: #cccccc;
+	margin-left: 20px;
+}
+h3 {
+	font-weight: normal;
+	font-size: 20px;
+}
+h4 {
+	font-weight: normal;
+	font-size: 17px;
+}
+.sopaBigHeadline {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+.sopaSectionHeadline {
+  font-size: 1.2em;
+  margin-bottom: 0.2em;
+}
+</style>
+</head>
+<body>
+<div id="everything">
+<div id="instructions">
+	<div class="sopaBigHeadline">Call your elected officials.</div>
+	
+	<p>
+	Tell them you are their constituent, and you oppose SOPA and PIPA. 
+	</p>
+	
+	<div class="sopaSectionHeadline">Why?</div>
+	<p>
+	SOPA and PIPA cripple the free and open internet. They put the onus on website owners to police user-contributed material and call for the blocking of entire sites, even if the links are not to infringing material. Small sites will not have the sufficient resources to mount a legal challenge. Without opposition, large media companies may seek to cut off funding sources for small competing foreign sites, even if big media are wrong. Foreign sites will be blacklisted, which means they won't show up in major search engines.
+	</p>
+	
+	<p>
+	In a post SOPA/PIPA world, Wikipedia --and many other useful informational sites-- cannot survive in a world where politicians regulate the Internet based on the influence of big money in Washington. It represents a framework for future restrictions and suppression. Congress says it's trying to protect the rights of copyright owners, but the "cure" that SOPA and PIPA represent is much more destructive than the disease they are trying to fix.
+	</p>
+	
+	<p>
+	If you'd like to learn even more about SOPA/PIPA, <a href="//en.wikipedia.org/wiki/Wikipedia:SOPA_initiative/Learn_more" target="_blank">click here</a>.
+	</p>
+</div>
+<div id="contacts">
+
+	
+HTML;
+
+		if ( $this->getZip() === false ) {
+			$htmlOut .= $this->getZipForm( true );
+		} elseif ( !is_null( $this->getZip() )) {
+			$htmlOut .= $this->getCongressTables();
+		} else {
+			$htmlOut .= $this->getZipForm();
+		}
+
+		// Output end of the page
+		$htmlOut .= "\n</div>\n</div>\n</body>\n</html>\n";
+
+		echo $htmlOut;
+
+		return true;
+	}
+	
+	/**
+	 * Get an HTML table of data for the user's congressional representatives
+	 * @return string HTML for the table
+	 */
+	private function getCongressTables() {
+		global $wgCongressLookupErrorPage;
+		
+		$myRepresentatives = CongressLookupDB::getRepresentative( $this->zip );
+		$mySenators = CongressLookupDB::getSenators( $this->zip );
+
+		$congressTable = '';
+		
+		$congressTable .= Html::element( 'h4', array(), 'Your Representatives:' );
+
+		if ( $myRepresentatives ) {
+			foreach ( $myRepresentatives as $myRepresentative ) {
+				$congressTable .= "\n" . Html::openElement( 'table', array (
+					'class' => 'person',
+				) );
+	
+				$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+					Html::element( 'td',  array ( 'class' => 'name' ), $myRepresentative['name'] )
+			   	);
+	
+				$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+					Html::element( 'td', array(), wfMsg( 'congresslookup-phone', $myRepresentative['phone'] ) )
+			   	);
+	
+				$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+					Html::element( 'td', array(), wfMsg( 'congresslookup-fax', $myRepresentative['fax'] ) )
+				);
+				
+				if ( $myRepresentative['twitter'] ) {
+					$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+						Html::element( 'td', array(), wfMsg( 'congresslookup-twitter', $myRepresentative['twitter'] ) )
+					);
+				}
+	
+				$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+					Html::rawElement( 'td', array(),
+						Html::element( 'a', array (
+							'href' => $myRepresentative['contactform'],
+							'target' => '_blank',
+							),
+							wfMsg( 'congresslookup-contact-form' )
+						)
+					)
+				);
+	
+				$congressTable .= "\n" . Html::closeElement( 'table' );
+			}
+			if ( count( $myRepresentatives ) > 1 ) {
+				$congressTable .= HTML::element( 'p', array( 'class' => 'note' ), wfMsg( 'congresslookup-multiple-house-reps' ));
+			}
+		} else {
+			$congressTable .= Html::element( 'p', array(), wfMsg( 'congresslookup-no-house-rep' ) );
+		}
+		foreach ( $mySenators as $senator ) {
+			$congressTable .= "\n" . Html::openElement( 'table', array (
+				'class' => 'person',
+			) );
+
+			$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+				Html::element( 'td',  array ( 'class' => 'name' ), $senator['name'] )
+			);
+
+			$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+				Html::element( 'td', array(), wfMsg( 'congresslookup-phone', $senator['phone'] ) )
+			);
+
+			$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+				Html::element( 'td', array(), wfMsg( 'congresslookup-fax', $senator['fax'] ) )
+			);
+			
+			if ( $senator['twitter'] ) {
+				$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+					Html::element( 'td', array(), wfMsg( 'congresslookup-twitter', $senator['twitter'] ) )
+				);
+			}
+
+			$congressTable .= "\n" . Html::rawElement( 'tr', array(),
+				Html::rawElement( 'td', array(),
+					Html::element( 'a', array (
+						'href' => $senator['contactform'],
+						'target' => '_blank',
+					),
+					wfMsg( 'congresslookup-contact-form' )
+					)
+				)
+			);
+
+			$congressTable .= "\n" . Html::closeElement( 'table' );
+		}
+		if ( count( $mySenators ) == 0 ) {
+			$congressTable .= Html::element( 'p', array(), wfMsg( 'congresslookup-no-senators' ) );
+		}
+		
+		$congressTable .= Html::openElement( 'p' );
+		$congressTable .= Html::element( 'a', array ( 'href' => $wgCongressLookupErrorPage ),
+			wfMsg( 'congresslookup-report-errors' ) );
+		$congressTable .= Html::closeElement( 'p' );
+		
+		return $congressTable;
+	}
+	
+	/**
+	 * Get HTML for a Zip Code form
+	 * @return string HTML
+	 */
+	private function getZipForm( $isError=false ) {
+		$htmlOut = <<<HTML
+<h4>Contact your representatives</h4>
+<div class="sopaActionDiv">
+HTML;
+		if ( $isError ) {
+			$htmlOut .= Html::element( 'p', array( 'class' => 'error' ), wfMsg( 'congresslookup-zipcode-error' ));
+		}
+		$htmlOut .= <<<HTML
+	<form action="" method="GET">
+		<label for="zip">Your zip code:</label>
+		<input type="text" maxlength="10" size="5" name="zip" id="zip"/>
+		<input type="submit" value="Look up" name="submit"/>
+	</form>
+</div>
+HTML;
+		return $htmlOut;
+	}
+	
+	/**
+	 * Get HTML for social media links
+	 * @return string HTML for social media links
+	 */
+	private function getSocialMedia() {
+		$htmlOut = <<<HTML
+<div class="sopaActionDiv">
+	<div>
+		<div class="sopaSocial">
+			<a style="text-decoration: none;" href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Fexample.com%2F">
+			<img width="33" height="33" src="//upload.wikimedia.org/wikipedia/commons/2/2a/WP_SOPA_sm_icon_facebook_dedede.png">
+			</a>
+			<br/>
+			<a style="text-decoration: none;" href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Fexample.com%2F">Facebook</a>
+		</div>
+		<div class="sopaSocial">
+			<a style="text-decoration: none;" href="https://m.google.com/app/plus/x/?v=compose&content=Google%20Plus%20Post%20Here%20http%3A%2F%2Fexample.com%2F">
+			<img width="33" height="33" src="//upload.wikimedia.org/wikipedia/commons/0/08/WP_SOPA_sm_icon_gplus_dedede.png">
+			</a>
+			<br/>
+			<a style="text-decoration: none; color:" href="https://m.google.com/app/plus/x/?v=compose&content=Google%20Plus%20Post%20Here%20http%3A%2F%2Fexample.com%2F">Google+</a>
+		</div>
+		<div class="sopaSocial">
+			<a style="text-decoration: none;" href="https://twitter.com/intent/tweet?original_referer=http%3A%2F%2Ftest.wikipedia.org%2Fwiki%2FMain_Page%3Fbanner%3Dblackout&text=Tweet%20here%20%23WikipediaBlackout%20http%3A%2F%2Fexample.com%2F">
+			<img width="33" height="33" src="//upload.wikimedia.org/wikipedia/commons/4/45/WP_SOPA_sm_icon_twitter_dedede.png">
+			</a>
+			<br/>
+			<a style="text-decoration: none;" href="https://twitter.com/intent/tweet?original_referer=http%3A%2F%2Ftest.wikipedia.org%2Fwiki%2FMain_Page%3Fbanner%3Dblackout&text=Tweet%20here%20%23WikipediaBlackout%20http%3A%2F%2Fexample.com%2F">Twitter</a>
+		</div>
+	</div>
+	<div style="clear: both;"></div>
+</div>
+HTML;
+		return $htmlOut;
+	}
+	
+	/**
+	 * Setter for $this->zip
+	 * 
+	 * In the event that $zip is invalid, set the value of $this->zip to false.
+	 * @param $zip
+	 */
+	public function setZip( $zip ) {
+		if ( !$this->isValidZip( $zip )) {
+			$this->zip = false;
+		} else { 		
+			$this->zip = $zip;
+		}
+	}
+	
+	public function getZip() {
+		return $this->zip;
+	}
+	
+	/**
+	 * Make sure the zip code entered was valid-ish
+	 * @param $zip
+	 * @return bool
+	 */
+	public function isValidZip( $zip ) {
+		$zipPieces = explode( '-', $zip, 2 );
+		
+		if ( strlen( $zipPieces[0] ) != 5 || !is_numeric( $zipPieces[0] )) {
+			return false;
+		}
+		
+		if ( isset( $zipPieces[1] )) {
+			if ( strlen( $zipPieces[1] ) != 4 || !is_numeric( $zipPieces[1] )) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+}
