@@ -4,6 +4,7 @@
 
 char * urls[] = {
 	"en.wikipedia.org/wiki/Special:CongressLookup",
+	"en.wikipedia.org/wiki/Wikipedia:SOPA_initiative/Learn_more",
 };
 
 main() {
