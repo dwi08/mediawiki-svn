@@ -12,14 +12,14 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.wikimedia.lsearch.search.NamespaceFilter;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 import org.wikimedia.lsearch.util.StringUtils;
 
 /**
  * @author rainman
  *
  */
-public class GlobalConfigurationTest extends WikiTestCase { // NOPMD by OrenBochman on 1/15/12 3:38 AM
+public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by OrenBochman on 1/15/12 3:38 AM
 	
 	private static final Logger LOG = Logger.getLogger(GlobalConfigurationTest.class.getName());
 	private transient GlobalConfiguration global = null;

@@ -7,9 +7,9 @@ import java.util.TreeMap;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.spell.dist.EditDistance;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
-public class SuggestUnitTest extends WikiTestCase 
+public class SuggestUnitTest extends AbstractWikiTestCase 
 {
 	
 	public void testMakeNamespaces() throws IOException {

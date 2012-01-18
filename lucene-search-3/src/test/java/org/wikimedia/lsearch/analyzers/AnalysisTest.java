@@ -17,9 +17,9 @@ import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.ranks.StringList;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
-public class AnalysisTest extends WikiTestCase {
+public class AnalysisTest extends AbstractWikiTestCase {
 	Analyzer a = null;
 	Configuration config = null;
 

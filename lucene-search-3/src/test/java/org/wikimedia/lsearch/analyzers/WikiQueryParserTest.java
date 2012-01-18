@@ -16,11 +16,11 @@ import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.index.WikiIndexModifier;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
 import junit.framework.TestCase;
 
-public class WikiQueryParserTest extends WikiTestCase {
+public class WikiQueryParserTest extends AbstractWikiTestCase {
 	
 	
 

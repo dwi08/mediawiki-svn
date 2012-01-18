@@ -1,11 +1,11 @@
 package org.wikimedia.lsearch.search;
 
 import org.apache.lucene.search.ArticleNamespaceScaling;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.SearchEngine.PrefixMatch;
 
-public class PrefixMatchTest extends WikiTestCase {
+public class PrefixMatchTest extends AbstractWikiTestCase {
 	public void testDeserialization(){
 		IndexId iid = IndexId.get("enwiki");
 		PrefixMatch m = new PrefixMatch("0:Some_title 10 ",iid.getNamespaceScaling());

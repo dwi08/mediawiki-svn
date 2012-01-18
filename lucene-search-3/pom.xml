@@ -410,6 +410,7 @@
     <scm>
     	<developerConnection>oren</developerConnection>
     	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
+    	<connection>svn+ssh</connection>
     </scm>
     <ciManagement>
     	<system>jenkins</system>

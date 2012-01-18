@@ -19,9 +19,9 @@ import org.wikimedia.lsearch.beans.Title;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.ranks.StringList;
 import org.wikimedia.lsearch.related.RelatedTitle;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
-public class WikiIndexModifierTest extends WikiTestCase {
+public class WikiIndexModifierTest extends AbstractWikiTestCase {
 	Document doc = null;
 	Analyzer analyzer = null;
 	Analyzer highlightAnalyzer = null;

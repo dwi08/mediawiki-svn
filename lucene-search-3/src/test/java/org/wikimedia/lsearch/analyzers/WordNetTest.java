@@ -2,9 +2,9 @@ package org.wikimedia.lsearch.analyzers;
 
 import java.util.ArrayList;
 
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
-public class WordNetTest extends WikiTestCase {
+public class WordNetTest extends AbstractWikiTestCase {
 	
 	protected ArrayList<String> list(String[] strs){
 		ArrayList<String> l = new ArrayList<String>();

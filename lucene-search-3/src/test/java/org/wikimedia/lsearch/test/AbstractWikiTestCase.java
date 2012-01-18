@@ -15,7 +15,7 @@ import org.wikimedia.lsearch.config.GlobalConfiguration;
  * @author rainman
  *
  */
-public abstract class WikiTestCase extends TestCase {
+public abstract class AbstractWikiTestCase extends TestCase {
 	
 	public Configuration getConfig() {
 		return config;
@@ -56,16 +56,18 @@ public abstract class WikiTestCase extends TestCase {
 			Configuration.setConfigFile(
 					System.getProperty("user.dir")+
 					winPathFixer+
-					File.separator+
-					"test-data"+
-					File.separator+
-					"lsearch.conf.test");
+					File.separator+"src"+
+					File.separator+"test"+
+					File.separator+"resources"+
+					File.separator+"lsearch.conf.test");
 
 			Configuration.setGlobalConfigUrl(
 					"file://"+
 					winPathFixer+
-					System.getProperty("user.dir")+					
-					File.separator+"test-data"+
+					System.getProperty("user.dir")+
+					File.separator+"src"+
+					File.separator+"test"+
+					File.separator+"resources"+
 					File.separator+"lsearch-global.test");
 			
 			config = Configuration.open();

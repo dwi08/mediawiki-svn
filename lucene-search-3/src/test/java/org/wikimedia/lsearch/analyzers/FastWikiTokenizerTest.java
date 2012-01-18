@@ -21,9 +21,9 @@ import org.wikimedia.lsearch.analyzers.TokenizerOptions;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.index.WikiIndexModifier;
-import org.wikimedia.lsearch.test.WikiTestCase;
+import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
-public class FastWikiTokenizerTest extends WikiTestCase {
+public class FastWikiTokenizerTest extends AbstractWikiTestCase {
 	IndexId iid;
 	TokenizerOptions options;
 
