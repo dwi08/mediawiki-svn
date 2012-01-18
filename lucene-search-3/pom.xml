@@ -411,4 +411,12 @@
     	<developerConnection>oren</developerConnection>
     	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
     </scm>
+    <ciManagement>
+    	<system>jenkins</system>
+    	<url>https://integration.mediawiki.org/ci/</url>
+    </ciManagement>
+    <issueManagement>
+    	<url>https://bugzilla.wikimedia.org</url>
+    	<system>bugzilla</system>
+    </issueManagement>
 </project>
