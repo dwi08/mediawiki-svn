@@ -99,7 +99,7 @@ HTML;
 
 		$congressTable = '';
 		
-		$congressTable .= Html::element( 'h4', array(), 'Your Representatives:' );
+		$congressTable .= Html::element( 'h4', array(), wfMsg( 'congresslookup-your-reps' ) );
 
 		if ( $myRepresentatives ) {
 			foreach ( $myRepresentatives as $myRepresentative ) {
@@ -207,8 +207,8 @@ HTML;
 	private function getZipForm( $isError=false ) {
 		$htmlOut = <<<HTML
 <div id="sopaZipForm" class="sopaActionDiv">
-<h4>Contact your representatives</h4>
 HTML;
+		$htmlOut .= Html::element( 'h4', array(), wfMsg( 'congresslookup-contact-your-reps' ));
 		if ( $isError ) {
 			$htmlOut .= Html::element( 'p', array( 'class' => 'error' ), wfMsg( 'congresslookup-zipcode-error' ));
 		}
@@ -388,11 +388,16 @@ div#everything {
 }
 div#instructions {
 	position: absolute;
-	top: 67px;
-	left: 480px;
+	top: 47px;
+	left: 460px;
 	text-align: left;
 	width: 500px;
-	padding-bottom: 30px;
+	padding: 20px;
+	background-color: #ffffff;
+	filter:alpha(opacity=90);
+	-moz-opacity:0.90;
+	-khtml-opacity: 0.90;
+	opacity: 0.90;
 }
 div#instructions p {
   text-align:justify;
@@ -415,6 +420,12 @@ div#contacts h4 {
 }
 div#contacts form {
 	margin-bottom: 1em;
+}
+div#contacts a:link, div#contacts a:visited {
+	color: #dedede;
+}
+div#contacts a:hover, div#contacts a:active {
+	color: #ffffff;
 }
 table.person {
 	margin-bottom: 1em;
@@ -503,11 +514,11 @@ div#everything {
 }
 div#instructions {
 	position: absolute;
-	top: 67px;
-	left: 480px;
+	top: 47px;
+	left: 460px;
 	text-align: left;
 	width: 500px;
-	padding-bottom: 30px;
+	padding: 20px;
 }
 div#instructions p {
   text-align:justify;
