@@ -2,7 +2,7 @@ from abc import ABCMeta
 import zlib
 import sys
 
-READ_BLOCK_SIZE = 1024*8
+READ_BLOCK_SIZE = 2**20
 
 
 class DataPipeline(object):	
