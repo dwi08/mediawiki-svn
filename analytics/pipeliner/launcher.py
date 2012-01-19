@@ -1,5 +1,6 @@
 import os
-from multiprocessing import Process, Queue, cpu_count
+from multiprocessing import Process, JoinableQueue, cpu_count
+from datetime import datetime
 
 import argparse
 
@@ -19,14 +20,28 @@ def _prepare_target(pipeline):
 	return func
 
 	
+def start_pipeline(queue, target, process_id):
+	while True:
+		filename = queue.get()
+		queue.task_done()
+		if not filename:
+			print '%s files left in the queue' % queue.qsize()
+			break
+		t0 = datetime.now()
+		target(filename, process_id)
+		t1 = datetime.now()
+		print 'Worker %s: Processing of %s took %s' % (process_id, filename, (t1 - t0))
+		print 'There are %s files left in the queue' % (queue.qsize())
 
+		
+		
 def main(args):
 	'''
 	This function initializes the multiprocessor, and loading the queue with
 	files
 	'''
 
-	queue = Queue()
+	queue = JoinableQueue()
 	target = _prepare_target(args.pipeline)
 	
 	files = os.listdir(args.source)
@@ -48,13 +63,14 @@ def main(args):
 		print 'Inserting poison pill %s...' % x
 		queue.put(None)
 
-	pipelines = [Process(target=target, args=[queue])
+	pipelines = [Process(target=start_pipeline, args=[queue, target, process_id])
 				  for process_id in xrange(processors)]
 	
-	queue.close()
+	
 	for pipeline in pipelines:
 		pipeline.start()
-
+	
+	queue.join()
 
 
 if __name__ == '__main__':

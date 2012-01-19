@@ -1,9 +1,7 @@
-from abc import ABCMeta
 from urlparse import urlparse
 from datetime import datetime
 from wurfl import devices
 from pywurfl.algorithms import TwoStepAnalysis
-import sys
 import GeoIP
 
 from pipeline import DataPipeline
@@ -18,11 +16,10 @@ class Variable:
 		self.location = location
 		self.store = store
 
-class UserAgentPipeline:
-	__metaclass__ = ABCMeta
-	
-	def __init__(self, queue, observation_class):
+class UserAgentPipeline(DataPipeline):
+	def __init__(self, observation_class, filename, process_id):
 		self.start = datetime.now()
+		self.output_counter = 0
 		self.variables = {
 					'language_code': ['language_code', '_determine_language_code', 8],
 					'project': ['project', '_determine_project', 8],
@@ -40,20 +37,12 @@ class UserAgentPipeline:
 			
 		self.observations = {}
 		self.observation_class = observation_class
-		self.queue = queue
+		self.filename = filename
 		self.gi = GeoIP.new(GeoIP.GEOIP_MEMORY_CACHE)
-
-
-	def extract(self):
-		while True:
-			line = sys.stdin.readline()
-			if not line:
-				break
-			self.aggregate(line)
+		self.process_id = process_id
 	
 	def _prepare_obs(self, obs):
-		obs = obs.split(' ')
-		return obs
+		return obs.split(' ')
 	
 	def _generate_key(self, vars):
 		value = '_'.join(vars.values())
@@ -100,6 +89,7 @@ class UserAgentPipeline:
 			pageviews += obs.count
 		return pageviews
 
+	
 	def transform(self, obs):
 		vars = {}
 		for key in self.vars.keys():
@@ -123,29 +113,51 @@ class UserAgentPipeline:
 	def post_processing(self):
 		for obs in self.observations.values():
 			obs.device = devices.select_ua(obs.user_agent, search=search_algorithm)
-			
+	
+	def pre_processing(self, line):
+		count = line.count(' ')
+		if count == 14:
+			return line
+		else:
+			return None
 	
 	def load(self):
-		obs = self.observations.values()
-		for o in obs:
-			print o
+		fh = open('output/chunk-%s_process-%s.tsv' % (self.output_counter,self.process_id), 'w')
+		observations = self.observations.values()
+		for obs in observations:
+			try:
+				fh.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\n' % (obs.count, obs.device.brand_name, obs.device.model_name, obs.geography, obs.language_code, obs.project, obs.timestamp))
+			except:
+				pass
+		fh.close()
+		self.output_counter+=1
 		
 	def shutdown(self):
-		print 'Total number of Observation instances: %s' % (len(self.observations.keys()))
+		print 'Total number of observation instances: %s' % (len(self.observations.keys()))
 		print 'Total number of pageviews: %s' % self._total_pageviews()
 		print 'Total processing time: %s' % (datetime.now() - self.start)
 	
 	def run(self):
-		self.extract()
+		for lines in self.decompress():
+			for line in lines:
+				line = self.pre_processing(line)
+				if line:
+					self.aggregate(line)
+	
 		self.post_processing()
 		self.load()
 		self.shutdown()
 
-UserAgentPipeline.register(DataPipeline)
 
-def main(queue):
-	pipeline = UserAgentPipeline(queue, UserAgentObservation)
+def main(filename, process_id):
+	pipeline = UserAgentPipeline(UserAgentObservation, filename, process_id)
 	pipeline.run()
+
+
+def debug():
+	pl = UserAgentPipeline('mobile.log-20110826.gz', UserAgentObservation)
+	pl.run()
 	
 if __name__ == '__main__':
-	main()
+	#main()
+	debug()
