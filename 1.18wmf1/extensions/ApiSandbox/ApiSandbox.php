@@ -7,14 +7,14 @@ $wgExtensionCredits['other'][] = array(
 	'path' => __FILE__,
 	'name' => 'ApiSandbox',
 	'author' => array( 'Max Semenik' ),
-	'url' => 'http://mediawiki.org/wiki/Extension:ApiSandbox',
+	'url' => 'https://mediawiki.org/wiki/Extension:ApiSandbox',
 	'descriptionmsg' => 'apisb-desc',
 );
 
 $dir = dirname(__FILE__) . '/';
 
 $wgExtensionMessagesFiles['ApiSandbox'] = $dir . 'ApiSandbox.i18n.php';
-$wgExtensionAliasesFiles['ApiSandbox']  = $dir . 'ApiSandbox.alias.php';
+$wgExtensionMessagesFiles['ApiSandboxAlias']  = $dir . 'ApiSandbox.alias.php';
 
 $wgAutoloadClasses['SpecialApiSandbox'] = $dir . 'SpecialApiSandbox.php';
 
@@ -33,8 +33,12 @@ $wgResourceModules['ext.apiSandbox'] = array(
 		'apisb-select-value',
 		'apisb-namespaces-error',
 		'apisb-ns-main',
+		'apisb-example',
+		'apisb-examples',
+		'apisb-clear',
 		'parentheses',
 	),
+	'dependencies' => 'mediawiki.util',
 );
 
 $wgHooks['APIGetDescription'][] = 'efASAPIGetDescription';
