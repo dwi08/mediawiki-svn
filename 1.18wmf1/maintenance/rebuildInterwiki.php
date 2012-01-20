@@ -150,7 +150,7 @@ class RebuildInterwiki extends Maintenance {
 				$sql .= "\n--$host\n\n";
 				$sql .= "USE $db;\n" .
 						"TRUNCATE TABLE interwiki;\n" .
-						"INSERT INTO interwiki (iw_prefix, iw_url, iw_local) VALUES \n";
+						"INSERT IGNORE INTO interwiki (iw_prefix, iw_url, iw_local) VALUES \n";
 				$first = true;
 
 				# Intermap links
@@ -192,7 +192,7 @@ class RebuildInterwiki extends Maintenance {
 
 				$sql .= "USE $db;\n" .
 						"TRUNCATE TABLE interwiki;\n" .
-						"INSERT INTO interwiki (iw_prefix,iw_url,iw_local) VALUES\n";
+						"INSERT IGNORE INTO interwiki (iw_prefix,iw_url,iw_local) VALUES\n";
 				$first = true;
 
 				# Intermap links
