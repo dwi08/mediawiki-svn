@@ -14,7 +14,7 @@ class EditCounts(MetricGenerator):
 				'ns_%s_revisions_deleted_before' % ns,
 				'ns_%s_revisions_deleted_after' % ns
 			]
-			for ns in [0,3,30,60]
+			for ns in [0,3]
 			# for ns in itertools.chain(range(0,16), [100, 101, 108, 109])
 		])
 	
