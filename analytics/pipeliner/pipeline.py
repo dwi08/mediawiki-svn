@@ -1,30 +1,14 @@
 from abc import ABCMeta
-import zlib
+import subprocess
 import sys
-
-READ_BLOCK_SIZE = 2**20
-
 
 class DataPipeline(object):	
 	__metaclass__ = ABCMeta
-		
+
 	def decompress(self):
-		fh = open(self.filename, 'rb')
-		d = zlib.decompressobj(16+zlib.MAX_WBITS)
-		data = ''
-		while True:
-			raw_data = fh.read(READ_BLOCK_SIZE)
-			data += d.decompress(raw_data)
-			if not data:
-				break
-			elif not data.endswith('\n'):
-				position = data.rfind('\n') +1
-				lines = data[:position]
-				lines = lines.split('\n')
-				data=data[position:]
-			else:
-				lines = data
-			yield lines
+		p = subprocess.Popen(['gunzip','-c', self.filename], stdout=subprocess.PIPE, shell=False)
+		for line in iter(p.stdout.readline, ""):
+			yield line
 		
 	def extract(self):
 		while True:

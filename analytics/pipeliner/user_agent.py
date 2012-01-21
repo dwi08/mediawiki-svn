@@ -17,7 +17,7 @@ class Variable:
 		self.store = store
 
 class UserAgentPipeline(DataPipeline):
-	def __init__(self, observation_class, filename, process_id):
+	def __init__(self, observation_class, filename, process_id, number_of_fields=144):
 		self.start = datetime.now()
 		self.output_counter = 0
 		self.variables = {
@@ -40,9 +40,10 @@ class UserAgentPipeline(DataPipeline):
 		self.filename = filename
 		self.gi = GeoIP.new(GeoIP.GEOIP_MEMORY_CACHE)
 		self.process_id = process_id
+		self.number_of_fields = number_of_fields
 	
 	def _prepare_obs(self, obs):
-		return obs.split(' ')
+		return obs.strip().split(' ')
 	
 	def _generate_key(self, vars):
 		value = '_'.join(vars.values())
@@ -116,7 +117,7 @@ class UserAgentPipeline(DataPipeline):
 	
 	def pre_processing(self, line):
 		count = line.count(' ')
-		if count == 14:
+		if count == self.number_of_fields:
 			return line
 		else:
 			return None
@@ -138,11 +139,10 @@ class UserAgentPipeline(DataPipeline):
 		print 'Total processing time: %s' % (datetime.now() - self.start)
 	
 	def run(self):
-		for lines in self.decompress():
-			for line in lines:
-				line = self.pre_processing(line)
-				if line:
-					self.aggregate(line)
+		for line in self.decompress():
+			line = self.pre_processing(line)
+			if line:
+				self.aggregate(line)
 	
 		self.post_processing()
 		self.load()
@@ -155,7 +155,7 @@ def main(filename, process_id):
 
 
 def debug():
-	pl = UserAgentPipeline('mobile.log-20110826.gz', UserAgentObservation)
+	pl = UserAgentPipeline(UserAgentObservation, 'mobile.log-20110826.gz', 0, 13)
 	pl.run()
 	
 if __name__ == '__main__':
