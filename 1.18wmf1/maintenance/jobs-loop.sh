@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ulimit -v 400000
+
 trap 'kill %-; exit' SIGTERM
 [ ! -z "$1" ] && {
     echo "starting type-specific job runner: $1"
