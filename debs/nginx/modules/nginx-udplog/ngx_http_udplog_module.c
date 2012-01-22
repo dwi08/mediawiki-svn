@@ -212,29 +212,27 @@ ngx_http_udplog_escaped_user_agent_variable(ngx_http_request_t *r,
     ngx_http_variable_value_t *v, uintptr_t data)
 {
     u_char                    *ua;
-    u_char                    *eua;
     uintptr_t                 escape;
-    size_t                    l;
+    size_t                    l;  
 
     ua = r->headers_in.user_agent->value.data;
-    l = ngx_strlen(ua);
+    l = r->headers_in.user_agent->value.len;
     escape = 2 * ngx_escape_uri(NULL, ua, l, NGX_ESCAPE_URI);
 
-    eua = ngx_pnalloc(r->pool, l + escape);
-    if (eua == NULL) {
+    v->data = ngx_pnalloc(r->pool, l + escape);
+    if (v->data == NULL) {
         return NGX_ERROR;
-    }
+    }   
 
-    ngx_escape_uri(eua, ua, l, NGX_ESCAPE_URI);
+    ngx_escape_uri(v->data, ua, l, NGX_ESCAPE_URI);
 
-    v->data = eua;
-    v->len = ngx_strlen(eua);
-
+    v->len = l + escape;
     v->valid = 1;
     v->no_cacheable = 0;
     v->not_found = 0;
 
     return NGX_OK;
+    
 }
 
 static ngx_int_t
