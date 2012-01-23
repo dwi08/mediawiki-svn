@@ -3,11 +3,16 @@ package org.apache.lucene.search;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermPositions;
+import org.apache.lucene.util.ToStringUtils;
 
 /**
  * MultiPhraseQuery with positional info
@@ -15,7 +20,12 @@ import org.apache.lucene.index.TermPositions;
  * @author rainman
  *
  */
-public class PositionalMultiQuery extends MultiPhraseQuery {
+public class PositionalMultiQuery extends Query {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7768563477711927881L;
+	
 	protected PositionalOptions options; 
 	protected int stopWordCount = 0;
 	protected ArrayList<ArrayList<Float>> boosts = new ArrayList<ArrayList<Float>>();
@@ -29,41 +39,92 @@ public class PositionalMultiQuery extends MultiPhraseQuery {
 	public void addWithBoost(Term[] terms, int pos, ArrayList<Float> boost) {
 		if(terms.length != boost.size())
 			throw new RuntimeException("Mismached boost values for positional multi query");
-		super.add(terms,pos);
+		add(terms,pos);
 		boosts.add(boost);
 	}
 	/** Add with custom boost */
 	public void addWithBoost(Term[] terms, ArrayList<Float> boost){
 		if(terms.length != boost.size())
 			throw new RuntimeException("Mismached boost values for positional multi query");
-		super.add(terms);
+		add(terms);
 		boosts.add(boost);
 	}
 	
-	public String toString(String f) {
-		String s = super.toString(f);
-		return "(P "+s+")";
-	}
 	
+	  /** Prints a user-readable version of this query. */
+	  public final String toString(String f) {
+	    StringBuffer buffer = new StringBuffer();
+	    if (!field.equals(f)) {
+	      buffer.append(field);
+	      buffer.append(":");
+	    }
+
+	    buffer.append("\"");
+	    Iterator<Term[]> i = termArrays.iterator();
+	    while (i.hasNext()) {
+	      Term[] terms = i.next();
+	      if (terms.length > 1) {
+	        buffer.append("(");
+	        for (int j = 0; j < terms.length; j++) {
+	          buffer.append(terms[j].text());
+	          if (j < terms.length-1)
+	            buffer.append(" ");
+	        }
+	        buffer.append(")");
+	      } else {
+	        buffer.append(terms[0].text());
+	      }
+	      if (i.hasNext())
+	        buffer.append(" ");
+	    }
+	    buffer.append("\"");
+
+	    if (slop != 0) {
+	      buffer.append("~");
+	      buffer.append(slop);
+	    }
+
+	    buffer.append(ToStringUtils.boost(getBoost()));
+
+	    
+	    return "(P "+buffer.toString()+")";
+	  }
+	  
 	protected Weight createWeight(Searcher searcher) throws IOException {
 		return new PositionalMultiWeight(searcher);
 	}
+
+	
+	
+	
 	/** 
 	 * Weight 
 	 * 
 	 * @author rainman
 	 *
 	 */
-	protected class PositionalMultiWeight extends MultiPhraseWeight {
+	protected class PositionalMultiWeight  implements Weight {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2888766082285532430L;
+
+
+
 		public PositionalMultiWeight(Searcher searcher) throws IOException {
-			super(searcher);
-			this.similarity = getSimilarity(searcher);
-			this.idf = 0;
+			
+			
+		  this.similarity = getSimilarity(searcher);
+
+
 	      // compute idf - take average when multiple terms
-	      Iterator i = termArrays.iterator();
+
+		  this.idf = 0;
+	      Iterator<Term[]> i = termArrays.iterator();
 	      int count = 0;
 	      while (i.hasNext()) {
-	        Term[] terms = (Term[])i.next();
+	        Term[] terms = i.next();
 	        float av = 0;
 	        float[] idfs = new float[terms.length];
 	        for (int j=0; j<terms.length; j++) {
@@ -91,7 +152,7 @@ public class PositionalMultiQuery extends MultiPhraseQuery {
 
 			TermPositions[] tps = new TermPositions[termArrays.size()];
 			for (int i=0; i<tps.length; i++) {
-				Term[] terms = (Term[])termArrays.get(i);
+				Term[] terms = termArrays.get(i);
 				float[] boost = new float[terms.length];
 				if(terms.length != boosts.get(i).size())
 					throw new RuntimeException("Inconsistent term/boost data: terms="+Arrays.toString(terms)+", boosts="+boosts.get(i)+", in query="+PositionalMultiQuery.this);
@@ -129,6 +190,7 @@ public class PositionalMultiQuery extends MultiPhraseQuery {
 						similarity, slop,	reader.norms(field), options);
 		}
 
+		
 		public Explanation explain(IndexReader reader, int doc) throws IOException {
 			ComplexExplanation result = new ComplexExplanation();
 			result.setDescription("weight("+getQuery()+" in "+doc+"), product of:");
@@ -186,12 +248,38 @@ public class PositionalMultiQuery extends MultiPhraseQuery {
 			return result;
 		}
 
-	}
+	
+		    private Similarity similarity;
+		    private float value;
+		    private float idf;
+		    private float queryNorm;
+		    private float queryWeight;
+
+
+
+		    public Query getQuery() { return PositionalMultiQuery.this; }
+		    public float getValue() { return value; }
+
+		    public float sumOfSquaredWeights() {
+		      queryWeight = idf * getBoost();             // compute query weight
+		      return queryWeight * queryWeight;           // square it
+		    }
+
+		    public void normalize(float queryNorm) {
+		      this.queryNorm = queryNorm;
+		      queryWeight *= queryNorm;                   // normalize query weight
+		      value = queryWeight * idf;                  // idf for document 
+		    }
+
+		  
+		  }
+
+	
 	
 	public Query rewrite(IndexReader reader) {
 		// optimize one-term case
 	    if (termArrays.size() == 1 && (options==null || !options.takeMaxScore)) {                 
-	      Term[] terms = (Term[])termArrays.get(0);
+	      Term[] terms = termArrays.get(0);
 	      ArrayList<Float> boost = boosts.get(0);
 	      if(terms.length == 1){
 	      	PositionalQuery pq = new PositionalQuery(options);
@@ -215,34 +303,145 @@ public class PositionalMultiQuery extends MultiPhraseQuery {
 	  }
 	
 	@Override
+	 /** Returns a hash code value for this object.*/
 	public int hashCode() {
 		final int PRIME = 31;
-		int result = super.hashCode();
+		int result = Float.floatToIntBits(getBoost())
+			      ^ slop
+			      ^ termArrays.hashCode()
+			      ^ positions.hashCode()
+			      ^ 0x4AC65113;
 		result = PRIME * result + ((options == null) ? 0 : options.hashCode());
 		result = PRIME * result + stopWordCount;
 		return result;
 	}
-
-	@Override
+	
+	/** Returns true if <code>o</code> is equal to this. */
+	@Override	
 	public boolean equals(Object obj) {
+		
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final PositionalMultiQuery other = (PositionalMultiQuery) obj;
+		
+		if (!(obj instanceof MultiPhraseQuery)) {
+			return false;		
+		}
+		
+		//safe to cast
+		final PositionalMultiQuery other = (PositionalMultiQuery)obj;
+
+		if ( this.getBoost() != other.getBoost()
+	      || this.slop != other.slop
+	      || !this.termArrays.equals(other.termArrays)
+	      || !this.positions.equals(other.positions)
+	      || stopWordCount != other.stopWordCount
+		  || this.getClass() != obj.getClass()
+  		   )
+		{
+		      return false;
+		}
+		
+		//compare options
 		if (options == null) {
 			if (other.options != null)
 				return false;
-		} else if (!options.equals(other.options))
+		} else if (other.options == null 
+			   || !options.equals(other.options)){
 			return false;
-		if (stopWordCount != other.stopWordCount)
-			return false;
+		}
+	
 		return true;
 	}
+
+
 	
+	/** copy of origian code */
 	
-	
-	
+	  private String field;
+	  private ArrayList<Term[]> termArrays = new ArrayList<Term[]>();
+	  private Vector<Integer> positions = new Vector<Integer>();
+
+	  private int slop = 0;
+
+	  /** Sets the phrase slop for this query.
+	   * @see PhraseQuery#setSlop(int)
+	   */
+	  public void setSlop(int s) { slop = s; }
+
+	  /** Sets the phrase slop for this query.
+	   * @see PhraseQuery#getSlop()
+	   */
+	  public int getSlop() { return slop; }
+
+	  /** Add a single term at the next position in the phrase.
+	   * @see PhraseQuery#add(Term)
+	   */
+	  public void add(Term term) { add(new Term[]{term}); }
+
+	  /** Add multiple terms at the next position in the phrase.  Any of the terms
+	   * may match.
+	   *
+	   * @see PhraseQuery#add(Term)
+	   */
+	  public void add(Term[] terms) {
+	    int position = 0;
+	    if (positions.size() > 0)
+	      position = positions.lastElement().intValue() + 1;
+
+	    add(terms, position);
+	  }
+
+	  /**
+	   * Allows to specify the relative position of terms within the phrase.
+	   * 
+	   * @see PhraseQuery#add(Term, int)
+	   * @param terms
+	   * @param position
+	   */
+	  public void add(Term[] terms, int position) {
+	    if (termArrays.size() == 0)
+	      field = terms[0].field();
+
+	    for (int i = 0; i < terms.length; i++) {
+	      if (terms[i].field() != field) {
+	        throw new IllegalArgumentException(
+	            "All phrase terms must be in the same field (" + field + "): "
+	                + terms[i]);
+	      }
+	    }
+
+	    termArrays.add(terms);
+	    positions.addElement(new Integer(position));
+	  }
+
+	  /**
+	   * Returns a List<Term[]> of the terms in the multiphrase.
+	   * Do not modify the List or its contents.
+	   */
+	  public List<Term[]> getTermArrays() {
+		  return Collections.unmodifiableList(termArrays);
+	  }
+
+	  /**
+	   * Returns the relative positions of terms in this phrase.
+	   */
+	  public int[] getPositions() {
+	    int[] result = new int[positions.size()];
+	    for (int i = 0; i < positions.size(); i++)
+	      result[i] = positions.elementAt(i).intValue();
+	    return result;
+	  }
+
+	  // inherit javadoc
+	  @SuppressWarnings("unchecked")
+	@Override
+	  public void extractTerms(@SuppressWarnings("rawtypes") Set terms) {
+	    for (Iterator<Term[]> iter = termArrays.iterator(); iter.hasNext();) {
+	      Term[] arr = iter.next();
+	      for (int i=0; i<arr.length; i++) {
+	        terms.add(arr[i]);
+	      }
+	    }
+	  }
+	  
 }
