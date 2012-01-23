@@ -61,7 +61,7 @@ class UserAgentPipeline(DataPipeline):
 	This class does all the heavy lifting of aggregating observations, writing output
 	to a file, and do some simple logging 
 	'''
-	def __init__(self, observation_class, filename, process_id, number_of_fields=14):
+	def __init__(self, observation_class, filename, process_id):
 		self.start = datetime.now()
 		self.skipped_records = 0
 		self.http_valid_codes = {'200':1,'304':1, '302':1}
@@ -72,7 +72,7 @@ class UserAgentPipeline(DataPipeline):
 		self.url = None
 		self.filename = filename
 		self.process_id = process_id
-		self.number_of_fields = number_of_fields
+		self.number_of_fields = 14
 		self.observation_class = observation_class
 		self.gi = GeoIP.new(GeoIP.GEOIP_MEMORY_CACHE)
 		self.error_vars = ['http_invalid_codes', 'invalid_user_agents', 'skipped_records']
@@ -275,7 +275,7 @@ def main(filename, process_id):
 
 
 def debug():
-	pipeline = UserAgentPipeline(UserAgentObservation, 'mobile.log-20110826.gz', 0, 14)
+	pipeline = UserAgentPipeline(UserAgentObservation, 'mobile.log-20110826.gz', 0)
 	pipeline.run()
 	
 if __name__ == '__main__':
