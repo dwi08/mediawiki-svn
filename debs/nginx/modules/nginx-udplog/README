@@ -8,3 +8,30 @@ Documentation for this module could be found under following URLs:
   * Russian:
 
     http://www.grid.net.ru/nginx/udplog.ru.html
+
+---------------------------------------------------------------------
+
+Test client usage:
+
+    usage: python test_client.py [-h] [-w W] [-l L] url
+
+    positional arguments:
+      url         URL of the nginx web server to send requests to
+
+    optional arguments:
+      -h, --help  show this help message and exit
+      -n N        Number of random user agent strings to send (default=10)
+      -w W        Seconds to wait between requests (default=0.25)
+      -l L        Length of garbage user agent strings (default=50)
+      
+
+    Note that this is mainly for testing that the User-Agent strings are
+    being properly encoded so before running this you'll need to configure
+    nginx to make use of the "access_updlog" command and add the new 
+    variable $udplog_escaped-user_agent in your "log_format".
+
+    Once configured, the access logs will then be written to the defined
+    host via UDP. To see these you can listen on the port with socat and
+    write the data to stdout:
+
+        socat UDP-LISTEN:<port> STDOUT

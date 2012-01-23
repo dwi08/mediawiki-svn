@@ -215,6 +215,12 @@ ngx_http_udplog_escaped_user_agent_variable(ngx_http_request_t *r,
     uintptr_t                 escape;
     size_t                    l;  
 
+    // Check that the user agent string was processed. NULL seems
+    // to occur when the user agent string is very large (~8K)
+    if(r->headers_in.user_agent == NULL) {
+        return NGX_ERROR;
+    }
+
     ua = r->headers_in.user_agent->value.data;
     l = r->headers_in.user_agent->value.len;
     escape = 2 * ngx_escape_uri(NULL, ua, l, NGX_ESCAPE_URI);
