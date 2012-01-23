@@ -22,6 +22,30 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <organization>
+    	<name>mediawiki</name>
+    	<url>www.mediawiki.org</url>
+    </organization>
+    <name>search lucene 3</name>
+    <description>A search engine extention for MediaWiki</description>
+    <inceptionYear>18/1/2012</inceptionYear>
+    <url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
+    <scm>
+    	<developerConnection>oren</developerConnection>
+    	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
+    	<connection>svn+ssh</connection>
+    </scm>
+    
+    <ciManagement>
+    	<system>jenkins</system>
+    	<url>https://integration.mediawiki.org/ci/</url>
+    </ciManagement>
+    <issueManagement>
+    	<url>https://bugzilla.wikimedia.org</url>
+    	<system>bugzilla</system>
+    </issueManagement>
+
+
     <properties>
         <!--
          | libraries version
@@ -418,25 +442,21 @@
         
     </dependencies>
 
-    <organization>
-    	<name>mediawiki</name>
-    	<url>www.mediawiki.org</url>
-    </organization>
-    <name>search lucene 3</name>
-    <description>A search engine extention for MediaWiki</description>
-    <inceptionYear>18/1/2012</inceptionYear>
-    <url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
-    <scm>
-    	<developerConnection>oren</developerConnection>
-    	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
-    	<connection>svn+ssh</connection>
-    </scm>
-    <ciManagement>
-    	<system>jenkins</system>
-    	<url>https://integration.mediawiki.org/ci/</url>
-    </ciManagement>
-    <issueManagement>
-    	<url>https://bugzilla.wikimedia.org</url>
-    	<system>bugzilla</system>
-    </issueManagement>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<links>
+						<link>http://commons.apache.org/lang/api</link>
+						<link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+						<link>http://this-one-will-not-work</link>
+					</links>
+				<show>protected</show>          		
+          		<linksource>true</linksource>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
