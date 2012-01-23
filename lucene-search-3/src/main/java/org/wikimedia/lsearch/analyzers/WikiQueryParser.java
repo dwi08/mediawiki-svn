@@ -44,6 +44,10 @@ import org.wikimedia.lsearch.search.Wildcards;
  * Parser for wiki query syntax
  * 
  * @author rainman
+ *         note: cutstom queries used imply the need for a special query parser
+ *         however, hand crafted query parsers are notorious for being buggy -
+ *         consider using a grammer based grammar or using one of the built in
+ *         QueryParsers
  */
 public class WikiQueryParser {
 	private static final int MAX_TERM_LEN = 255;
@@ -470,7 +474,7 @@ public class WikiQueryParser {
 	public HashSet<NamespaceFilter> getFieldNamespaces(String queryText) {
 		HashSet<String> fields = getFields(queryText);
 		HashSet<NamespaceFilter> ret = new HashSet<NamespaceFilter>();
-		List ThreadingKeywords = new ArrayList();
+		List<String> ThreadingKeywords = new ArrayList<String>();
 		ThreadingKeywords.add("inthread");
 
 		for (String field : fields) {
@@ -1323,7 +1327,7 @@ public class WikiQueryParser {
 			}
 			// don't returned nested if one query only
 			if (queries.size() == 1) {
-				BooleanQuery q = (BooleanQuery) queries.get(0);
+				BooleanQuery q = queries.get(0);
 				// one nested clause
 				if (q.getClauses().length == 1)
 					return q.getClauses()[0].getQuery();
@@ -1535,7 +1539,6 @@ public class WikiQueryParser {
 	/**
 	 * Construct a full query on all the fields in the index from search text
 	 */
-	@SuppressWarnings("unchecked")
 	public Query parse(String queryText, ParsingOptions options) {
 		this.wildcards = options.wildcards;
 		this.fuzzy = options.fuzzy;
@@ -1689,7 +1692,11 @@ public class WikiQueryParser {
 		return ret;
 	}
 
-	/** Recursively transverse queries and put stop words to SHOULD */
+	/**
+	 * Recursively transverse queries and put stop words to SHOULD
+	 * 
+	 * @deprecated - unused private method
+	 */
 	private void filterStopWords(BooleanQuery bq) {
 		if (stopWords == null && stopWords.size() == 0)
 			return;
@@ -1799,9 +1806,11 @@ public class WikiQueryParser {
 		defaultBoost = olfDefaultBoost;
 		defaultAliasBoost = ALIAS_BOOST;
 
+		// TODO: fix the bug in this logic - either add qt==null || qs==null or
+		// remove return
 		if (qt == qs || qt.equals(qs)) // either null, or category query
 			return qt;
-		if (qt == null)
+		if (qt == null) // this cannot happen
 			return qs;
 		if (qs == null)
 			return qt;
@@ -1811,7 +1820,9 @@ public class WikiQueryParser {
 		return bq;
 	}
 
-	/** Extract MUST_NOT clauses form a query */
+	/**
+	 * Extract MUST_NOT clauses form a query
+	 */
 	protected static BooleanQuery extractForbidden(Query q) {
 		BooleanQuery bq = new BooleanQuery();
 		extractForbiddenRecursive(bq, q);
@@ -1821,7 +1832,9 @@ public class WikiQueryParser {
 		return bq;
 	}
 
-	/** Recursivily extract all MUST_NOT clauses from query */
+	/**
+	 * Recursively extract all MUST_NOT clauses from query
+	 */
 	protected static void extractForbiddenRecursive(BooleanQuery forbidden,
 			Query q) {
 		if (q instanceof BooleanQuery) {
