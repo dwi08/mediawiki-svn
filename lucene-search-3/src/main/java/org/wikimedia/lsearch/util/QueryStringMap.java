@@ -47,20 +47,20 @@ public class QueryStringMap extends LinkedHashMap<String, Object> implements
 
 	public QueryStringMap(URI uri) {
 		super();
-		grabQueryItems(uri.getRawQuery());
+		processQueryItems(uri.getRawQuery());
 	}
 
-	private void grabQueryItems(String query) {
+	private void processQueryItems(String query) {
 		if (query == null)
 			return;
 		for (StringTokenizer tokenizer = new StringTokenizer(query, "&"); tokenizer
 				.hasMoreElements();) {
 			String token = tokenizer.nextToken();
-			slurpItem(token);
+			processItem(token);
 		}
 	}
 
-	private void slurpItem(String token) {
+	private void processItem(String token) {
 		String[] pair = token.split("=", 2);
 		String key = pair[0];
 		if (key.length() > 0) {
