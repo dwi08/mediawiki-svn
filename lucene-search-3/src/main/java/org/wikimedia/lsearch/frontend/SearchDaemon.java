@@ -15,10 +15,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map.Entry;
-
-import javax.xml.bind.annotation.XmlElementDecl.GLOBAL;
-
 import org.wikimedia.lsearch.beans.LocalIndex;
 import org.wikimedia.lsearch.beans.ResultSet;
 import org.wikimedia.lsearch.beans.SearchResults;
@@ -35,7 +31,6 @@ import org.wikimedia.lsearch.search.SearchEngine;
 import org.wikimedia.lsearch.search.SearcherCache;
 import org.wikimedia.lsearch.search.UpdateThread;
 import org.wikimedia.lsearch.search.Warmup;
-import org.wikimedia.lsearch.search.WikiSearcher;
 import org.wikimedia.lsearch.spell.SuggestQuery;
 import org.wikimedia.lsearch.util.FSUtils;
 import org.wikimedia.lsearch.util.QueryStringMap;
