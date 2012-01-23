@@ -1,52 +1,39 @@
-from abc import ABCMeta
+# -*- coding: utf-8 -*-
+
+'''
+Copyright (C) 2012 by Diederik van Liere (dvanliere@wikimedia.org)
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License version 2
+as published by the Free Software Foundation.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details, at
+http://www.fsf.org/licenses/gpl.html
+'''
+
+__author__ = '''\n'''.join(['Diederik van Liere (dvanliere@wikimedia.org)', ])
+__email__ = 'dvanliere at wikimedia dot org'
+__date__ = '2012-01-22'
+__version__ = '0.1'
+
 
 class Observation(object):
 	def __init__(self, *args):
 		self.count = 0
 
-# class Datamodel(object):
-# 	def __init__(self, *args):
-# 		self.obs = {}
-# 	
-# 	def add_observation(self, key, obs):
-# 		return
-		
 
-class UserAgentObservation:
-	__metaclass__ = ABCMeta
-	
+class UserAgentObservation(object):
+
 	def __init__(self, **kwargs):
-		self.count=0
+		self.count = 0
 		for key, value in kwargs.iteritems():
 			setattr(self, key, value)
 	
 	def __str__(self):
 		if self.device:
-			return '%s observations using %s:%s in %s for %s%s on %s' % (self.count, self.device.brand_name, self.device.model_name, self.geography, self.language_code, self.project, self.timestamp)
+			return '%s observations using %s:%s in %s for %s%s on %s' % (self.count, self.device, self.geography, self.language_code, self.project, self.timestamp)
 		else:
 			return '%s observations in %s for %s%s on %s' % (self.count, self.geography, self.language_code, self.project, self.timestamp)
-
-# class UserAgentDatamodel(object):
-# 	__metaclass__ = ABCMeta
-# 	
-# 	def __init__(self, full_string, key):
-# 		self.full_string = full_string
-# 		self.key = key
-# 	
-# 	def __str__(self):
-# 		return self.full_string
-# 	
-# 	def add_observation(self, key, vars):
-# 		'''
-# 		Vars should be a dictionary
-# 		'''
-# 		if not isinstance(vars, dict):
-# 			raise Exception('You have to feed an instance of a Datamodel a dictionary.')
-# 			
-# 		obs = self.obs.get(key, UserAgentObservation(vars))
-# 		obs.count +=1
-# 		self.obs[key] =obs
-
-UserAgentObservation.register(Observation)
 
 		
