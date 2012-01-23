@@ -9,6 +9,8 @@ import org.apache.lucene.index.TermPositions;
 import org.apache.lucene.util.ToStringUtils;
 
 /**
+ * based on lucene's PhraseQuery
+ * 
  * Phrase query with 
  * 1) extra boost for different position ranges within the document 
  * 2) ability to use aggregate positional information if available 
@@ -128,7 +130,7 @@ public class PositionalQuery extends Query {
 	
 
 	
-	protected Weight createWeight(Searcher searcher) throws IOException {
+	public Weight createWeight(Searcher searcher) throws IOException {
 		return new PositionalWeight(searcher);
 	}
 	
@@ -321,5 +323,9 @@ public class PositionalQuery extends Query {
 		return true;
 	}
 	
+	  /** Returns the set of terms in this phrase. */
+	  public Term[] getTerms() {
+	    return (Term[])terms.toArray(new Term[0]);
+	  }
 	
 }

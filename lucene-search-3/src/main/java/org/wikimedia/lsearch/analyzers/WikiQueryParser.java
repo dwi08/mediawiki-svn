@@ -1,6 +1,7 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
@@ -769,8 +770,8 @@ public class WikiQueryParser {
 		String analysisField = defaultField;
 		if (defaultField.equals("contents") && isInTitle)
 			analysisField = "title";
-		tokenStream = analyzer.tokenStream(analysisField, new String(buffer, 0,
-				length));
+		tokenStream = analyzer.tokenStream(analysisField, new StringReader(
+				new String(buffer, 0,length)));
 
 		Token token;
 		tokens.clear();
@@ -788,7 +789,7 @@ public class WikiQueryParser {
 	 * storage attributes)
 	 */
 	private ArrayList<Token> analyzeString(String input) {
-		tokenStream = analyzer.tokenStream("contents", input);
+		tokenStream = analyzer.tokenStream("contents", new StringReader(input));
 
 		ArrayList<Token> ret = new ArrayList<Token>();
 		Token token;

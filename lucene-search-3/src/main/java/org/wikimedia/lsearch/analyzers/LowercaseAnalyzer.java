@@ -31,10 +31,7 @@ public class LowercaseAnalyzer extends Analyzer {
 		
 	}
 	
-	@Override
-	public TokenStream tokenStream(String fieldName, String text) {
-		return new LowercaseTokenizer(text);
-	}
+
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		throw new UnsupportedOperationException("Use tokenStream(String,String)");

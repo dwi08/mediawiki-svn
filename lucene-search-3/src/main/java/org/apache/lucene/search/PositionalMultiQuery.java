@@ -90,7 +90,7 @@ public class PositionalMultiQuery extends Query {
 	    return "(P "+buffer.toString()+")";
 	  }
 	  
-	protected Weight createWeight(Searcher searcher) throws IOException {
+	public Weight createWeight(Searcher searcher) throws IOException {
 		return new PositionalMultiWeight(searcher);
 	}
 

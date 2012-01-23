@@ -65,7 +65,7 @@ public class ArticleQueryWrap extends CustomBoostQuery {
 		return exp;
 	}
 	
-	protected Weight createWeight(Searcher searcher) throws IOException {
+	public Weight createWeight(Searcher searcher) throws IOException {
 	    return new ArticleQueryWeight(searcher);
 	}
 	

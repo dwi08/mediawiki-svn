@@ -2,6 +2,7 @@ package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -92,10 +93,7 @@ public class KeywordsAnalyzer extends Analyzer{
 			return null;
 		}
 	}
-	@Override
-	public TokenStream tokenStream(String fieldName, String text) {
-		return tokenStream(fieldName,(Reader)null);
-	}
+	
 	
 	class KeywordsTokenStream extends TokenStream {
 		protected Analyzer analyzer;
@@ -145,7 +143,7 @@ public class KeywordsAnalyzer extends Analyzer{
 			do{
 				// next keyword title
 				keyword = keywords.get(index++);
-				tokens = analyzer.tokenStream("",keyword);
+				tokens = analyzer.tokenStream("",new StringReader(keyword));
 				// try to tokenize
 				t = tokens.next();
 				if(t == null && index == keywords.size())

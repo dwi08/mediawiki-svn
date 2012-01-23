@@ -63,7 +63,6 @@ public class SplitAnalyzer extends Analyzer {
 		this.splitPhrases = splitPhrases;
 	}
 	
-	@Override
 	public TokenStream tokenStream(String fieldName, String text) {
 		return new SplitTokenStream(text);
 	}

@@ -26,15 +26,6 @@ public class ReusableLanguageAnalyzer extends LanguageAnalyzer {
 	}
 
 	
-	/**
-	 * Used in {@link WikiQueryParser} to parse parts of the query.
-	 */
-	@Override
-	public TokenStream tokenStream(String fieldName, String text) {
-		wikitokenizer = new WikiTokenizer(text,filters.getIndexId(),options); 
-		return super.tokenStream(fieldName,(Reader)null);
-	}
-
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		Thread.dumpStack();

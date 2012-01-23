@@ -6,6 +6,7 @@ package org.wikimedia.lsearch.index;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -743,7 +744,8 @@ public class WikiIndexModifier {
 			Analyzer contentAnalyzer = new LanguageAnalyzer(filters,tokenizer);
 			
 			// contents 
-			doc.add(new Field(fields.contents(),contentAnalyzer.tokenStream(fields.contents(),"")));
+			//TODO: try passing null
+			doc.add(new Field(fields.contents(),contentAnalyzer.tokenStream(fields.contents(),new StringReader("")))); 
 			
 			/*
 			if(contentNamespaces.contains(article.getNamespace())){
@@ -760,7 +762,7 @@ public class WikiIndexModifier {
 			// category
 			if(!bs.isExactCase()){
 				// each token is one category (category names themself are not tokenized)
-				doc.add(new Field("category", new CategoryAnalyzer(tokenizer.getCategories(),false).tokenStream("category","")));
+				doc.add(new Field("category", new CategoryAnalyzer(tokenizer.getCategories(),false).tokenStream("category",new StringReader(""))));
 			}
 			
 			// reverse title for wildcard searches
@@ -826,7 +828,7 @@ public class WikiIndexModifier {
 			
 			Analyzer analyzer = Analyzers.getHighlightAnalyzer(filters,fields,exactCase);
 			ReusableLanguageAnalyzer contentAnalyzer = Analyzers.getReusableHighlightAnalyzer(filters,exactCase);
-			doc.add(new Field(fields.hl_text(),ExtToken.serialize(contentAnalyzer.tokenStream(fields.contents(),article.getContents())),Store.COMPRESS));
+			doc.add(new Field(fields.hl_text(),ExtToken.serialize(contentAnalyzer.tokenStream(fields.contents(),new StringReader(article.getContents()))),Store.COMPRESS));
 			ArrayList<String> sections = contentAnalyzer.getWikiTokenizer().getHeadingText();
 			doc.add(new Field(fields.hl_alttitle(),Alttitles.serializeAltTitle(article,iid,sections,analyzer,fields.alttitle()),Store.COMPRESS));
 		}
@@ -879,7 +881,7 @@ public class WikiIndexModifier {
 			sb.append(" ");
 		}
 		// get individual words
-		TokenStream ts = Analyzers.getIndexerAnalyzer(new FieldBuilder(iid,false)).tokenStream("title",sb.toString());
+		TokenStream ts = Analyzers.getIndexerAnalyzer(new FieldBuilder(iid,false)).tokenStream("title",new StringReader(sb.toString()));
 		Token t;
 		HashSet<String> tokenized = new HashSet<String>();
 		while((t = ts.next()) != null){
@@ -970,7 +972,9 @@ public class WikiIndexModifier {
 	protected static void makeAggregate(Document doc, String prefix, ArrayList<Aggregate> items){
 		if(items.size() == 0)
 			return; // don't add aggregate fields if they are empty
-		doc.add(new Field(prefix,new AggregateAnalyzer(items).tokenStream(prefix,"")));
+		
+		//TODO: try passing null
+		doc.add(new Field(prefix,new AggregateAnalyzer(items).tokenStream(prefix,new StringReader(""))));		
 		doc.add(new Field(prefix+"_meta",Aggregate.serializeAggregate(items),Field.Store.YES));
 	}
 	

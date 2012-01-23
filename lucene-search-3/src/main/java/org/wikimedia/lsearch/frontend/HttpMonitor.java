@@ -68,7 +68,6 @@ public class HttpMonitor extends Thread {
 		Hashtable<HttpHandler,Long> times = (Hashtable<HttpHandler, Long>) startTimes.clone(); // clone to avoid sync
 		ArrayList<Entry<HttpHandler, Long>> sorted = new ArrayList<Entry<HttpHandler,Long>>(times.entrySet()); 
 		Collections.sort(sorted, new Comparator<Entry<HttpHandler,Long>>() {
-			@Override
 			public int compare(Entry<HttpHandler, Long> o1,
 					Entry<HttpHandler, Long> o2) {
 				return (int) (o2.getValue() - o1.getValue());

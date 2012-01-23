@@ -1,6 +1,7 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -89,7 +90,7 @@ public class AnalysisTest extends AbstractWikiTestCase {
 	}
 
 	public static Token[] tokensFromAnalysis(Analyzer analyzer, String text, String field) throws IOException {
-		TokenStream stream = analyzer.tokenStream(field, text);
+		TokenStream stream = analyzer.tokenStream(field, new StringReader(text));
 		ArrayList<Token> tokenList = new ArrayList<Token>();
 		while (true) {
 			Token token = stream.next();
@@ -301,7 +302,7 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		for(int i = 0 ; i<total; i++ ){
 			for(TestArticle article : articles){
 				count++;
-				byte[] b = ExtToken.serialize(analyzer.tokenStream("",article.content));
+				byte[] b = ExtToken.serialize(analyzer.tokenStream("",new StringReader(article.content)));
 				if(i == 0)
 					size += b.length;
 				else

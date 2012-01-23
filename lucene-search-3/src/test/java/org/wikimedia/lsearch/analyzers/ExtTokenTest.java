@@ -1,6 +1,7 @@
 package org.wikimedia.lsearch.analyzers;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ public class ExtTokenTest {
 		Analyzer analyzer = Analyzers.getHighlightAnalyzer(IndexId.get("enwiki"),false);
 		
 		String text = "Some extremely [[simple]] example text. With two sentences, by Šostakovič.";
-		byte[] serialized = ExtToken.serialize(analyzer.tokenStream("",text));
+		byte[] serialized = ExtToken.serialize(analyzer.tokenStream("",new StringReader(text)));
 		HashMap<Integer,Position> posMap = new HashMap<Integer,Position>();
 		for(Position p : Position.values())
 			posMap.put(p.ordinal(),p);
@@ -42,7 +43,7 @@ public class ExtTokenTest {
 				break;
 			}
 		}
-		byte[] serialized = ExtToken.serialize(analyzer.tokenStream("",article.content));
+		byte[] serialized = ExtToken.serialize(analyzer.tokenStream("",new StringReader(article.content)));
 		long start = System.currentTimeMillis();
 		HashMap<Integer,Position> posMap = new HashMap<Integer,Position>();
 		for(Position p : Position.values())

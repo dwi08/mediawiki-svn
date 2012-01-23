@@ -273,7 +273,7 @@ public class RelevanceQuery extends Query {
 	}
 
 	/*(non-Javadoc) @see org.apache.lucene.search.Query#createWeight(org.apache.lucene.search.Searcher) */
-	protected Weight createWeight(Searcher searcher) throws IOException {
+	public Weight createWeight(Searcher searcher) throws IOException {
 		return new RelevanceWeight(searcher);
 	}
 

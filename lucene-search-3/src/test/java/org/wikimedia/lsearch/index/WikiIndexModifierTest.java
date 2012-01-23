@@ -1,6 +1,7 @@
 package org.wikimedia.lsearch.index;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -188,10 +189,10 @@ public class WikiIndexModifierTest extends AbstractWikiTestCase {
 				return t.getPositionIncrement() + " ["+t.termText()+"]";
 			}
 			TokenStream ts = f.tokenStreamValue();
-			if(ts == null && f.stringValue()!=null)
-				ts = analyzer.tokenStream(field, f.stringValue());
 			if(ts == null && f.readerValue()!=null)
 				ts = analyzer.tokenStream(field, f.readerValue());
+			if(ts == null && f.stringValue()!=null)
+				ts = analyzer.tokenStream(field, new StringReader(f.stringValue()));
 			if(ts == null)
 				fail("No token stream for field "+field);
 			Token t = null;
