@@ -34,9 +34,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-/** Extract parameters from an URL */
-public class QueryStringMap extends LinkedHashMap<String, String> implements
-		Map<String, String> {
+/**
+ * Extract parameters from an URL
+ */
+public class QueryStringMap extends LinkedHashMap<String, Object> implements
+		Map<String, Object> {
 
 	/**
 	 * default serial id
