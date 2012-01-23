@@ -40,10 +40,10 @@ public class MultiSearcherBase extends Searcher {
      * the methods necessary to initialize Weights.
      */
   protected static class CachedDfSource extends Searcher {
-    private Map dfMap; // Map from Terms to corresponding doc freqs
+    private Map<Term, Integer> dfMap; // Map from Terms to corresponding doc freqs
     private int maxDoc; // document count
 
-    public CachedDfSource(Map dfMap, int maxDoc, Similarity similarity) {
+    public CachedDfSource(Map<Term, Integer> dfMap, int maxDoc, Similarity similarity) {
       this.dfMap = dfMap;
       this.maxDoc = maxDoc;
       setSimilarity(similarity);
@@ -52,7 +52,7 @@ public class MultiSearcherBase extends Searcher {
     public int docFreq(Term term) {
       int df;
       try {
-        df = ((Integer) dfMap.get(term)).intValue();
+        df = dfMap.get(term).intValue();
       } catch (NullPointerException e) {
         throw new IllegalArgumentException("df for term " + term.text()
             + " not available");
@@ -349,7 +349,7 @@ public class MultiSearcherBase extends Searcher {
       }
     }
 
-    HashMap dfMap = new HashMap();
+    HashMap<Term, Integer> dfMap = new HashMap<Term, Integer>();
     for(int i=0; i<allTermsArray.length; i++) {
       dfMap.put(allTermsArray[i], new Integer(aggregatedDfs[i]));
     }
