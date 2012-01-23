@@ -29,27 +29,23 @@ def ppi_editor_productivity(var, editor, **kwargs):
 
     edits = editor['character_count']
     username = editor['username']
-<<<<<<< .mine
-
-=======
->>>>>>> .r88955
     try:
         added = edits['2010']['11']['0']['added']
     except KeyError:
-<<<<<<< .mine
+
         added = 0
     try:
         removed = edits['2010']['11']['0']['removed']
     except KeyError:
         removed = 0
 
-=======
+
         added = 0
     try:
         removed = edits['2010']['11']['0']['removed']
     except KeyError:
         removed = 0
->>>>>>> .r88955
+
 
     key = datetime(2010, 11, 30)
     if added > 0:
