@@ -526,7 +526,7 @@ abstract public class PositionalScorer extends Scorer {
 			for (PhrasePositionsBoost pp = first; pp != null; pp = pp.next)
 				pp.firstPosition();
 
-			// one time initializatin for this scorer
+			// one time initialization for this scorer
 			if (!checkedRepeats) {
 				checkedRepeats = true;
 				// check for repeats
