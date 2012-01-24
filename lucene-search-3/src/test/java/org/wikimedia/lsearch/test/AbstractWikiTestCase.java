@@ -4,6 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.wikimedia.lsearch.analyzers.WikiQueryParser;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
@@ -43,6 +44,7 @@ public abstract class AbstractWikiTestCase extends TestCase {
 	protected GlobalConfiguration global = null;
 	
 	@Override
+	@Before
 	protected void setUp()  {
 		if(config == null)
 		{			
