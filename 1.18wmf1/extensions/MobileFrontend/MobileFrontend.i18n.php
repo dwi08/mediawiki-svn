@@ -511,6 +511,7 @@ $messages['ast'] = array(
 	'mobile-frontend-password' => 'Contraseña:',
 	'mobile-frontend-login' => 'Entrar',
 	'mobile-frontend-placeholder' => 'Escribi equí la gueta...',
+	'mobile-frontend-dismiss-notification' => 'anubrir esta notificación',
 );
 
 /** Azerbaijani (Azərbaycanca)
@@ -775,8 +776,14 @@ $messages['bg'] = array(
 	'mobile-frontend-opt-in-no-button' => 'не',
 	'mobile-frontend-opt-out-yes-button' => 'да',
 	'mobile-frontend-opt-out-no-button' => 'не',
+	'mobile-frontend-news-items' => 'В новините',
 	'mobile-frontend-leave-feedback-subject' => 'Тема',
 	'mobile-frontend-leave-feedback-message' => 'Съобщение',
+	'mobile-frontend-leave-feedback-cancel' => 'Отказване',
+	'mobile-frontend-language' => 'Език',
+	'mobile-frontend-username' => 'Потребителско име:',
+	'mobile-frontend-password' => 'Парола:',
+	'mobile-frontend-login' => 'Влизане',
 );
 
 /** Bihari (भोजपुरी) */
@@ -2831,6 +2838,9 @@ $messages['id'] = array(
 	'mobile-frontend-leave-feedback' => 'Umpan balik situs seluler',
 	'mobile-frontend-leave-feedback-thanks' => 'Terima kasih, atas umpan balik Anda!',
 	'mobile-frontend-language' => 'Bahasa',
+	'mobile-frontend-username' => 'Nama pengguna:',
+	'mobile-frontend-password' => 'Kata sandi:',
+	'mobile-frontend-placeholder' => 'Ketikkan pencarian Anda di sini...',
 );
 
 /** Igbo (Igbo)
@@ -3614,6 +3624,7 @@ $messages['lb'] = array(
 	'mobile-frontend-password' => 'Passwuert:',
 	'mobile-frontend-login' => 'Aloggen',
 	'mobile-frontend-placeholder' => 'Tippt hei a wat Dir sicht...',
+	'mobile-frontend-dismiss-notification' => 'dës Noriicht zoumaachen',
 );
 
 /** Lezghian (Лезги) */
@@ -4017,6 +4028,7 @@ $messages['ml'] = array(
 	'mobile-frontend-password' => 'രഹസ്യവാക്ക്:',
 	'mobile-frontend-login' => 'പ്രവേശിക്കുക',
 	'mobile-frontend-placeholder' => 'തിരയേണ്ട വാക്ക് നൽകുക...',
+	'mobile-frontend-dismiss-notification' => 'ഈ അറിയിപ്പ് ഒഴിവാക്കുക',
 );
 
 /** Mongolian (Монгол) */
@@ -4344,7 +4356,7 @@ $messages['nds-nl'] = array(
 	'mobile-frontend-search-submit' => 'Artikel',
 	'mobile-frontend-search-results' => 'Zeukresultaoten',
 	'mobile-frontend-no-article-found' => 'Gien artikel evunnen',
-	'mobile-frontend-featured-article' => 'Artikel van vandage',
+	'mobile-frontend-featured-article' => 'Uutekeuzen artikel',
 	'mobile-frontend-in-the-news' => 'In t niejs',
 	'mobile-frontend-home-button' => 'Veurblad',
 	'mobile-frontend-random-button' => 'Zo mer wat',
@@ -4380,6 +4392,7 @@ Vorttemee zie'j hier t resultaot.",
 	'mobile-frontend-opt-out-title' => 'Stoppen mit testen',
 	'mobile-frontend-disable-images' => 'Aofbeeldingen in de mobiele weergave uutzetten',
 	'mobile-frontend-enable-images' => 'Aofbeeldingen in de mobiele weergave anzetten',
+	'mobile-frontend-news-items' => 'In t niejs',
 	'mobile-frontend-leave-feedback-subject' => 'Onderwarp:',
 	'mobile-frontend-leave-feedback-message' => 'Bericht',
 	'mobile-frontend-leave-feedback-cancel' => 'Aofbreken',
@@ -5774,6 +5787,7 @@ $messages['sl'] = array(
 	'mobile-frontend-password' => 'Geslo:',
 	'mobile-frontend-login' => 'Prijava',
 	'mobile-frontend-placeholder' => 'Vnesite svoj iskalni niz tukaj ...',
+	'mobile-frontend-dismiss-notification' => 'skrij obvestilo',
 );
 
 /** Albanian (Shqip)
@@ -6679,6 +6693,7 @@ $messages['vi'] = array(
 	'mobile-frontend-password' => 'Mật khẩu:',
 	'mobile-frontend-login' => 'Đăng nhập',
 	'mobile-frontend-placeholder' => 'Nhập tìm kiếm của bạn tại đây…',
+	'mobile-frontend-dismiss-notification' => 'bỏ qua thông báo này',
 );
 
 /** Volapük (Volapük)
@@ -6825,10 +6840,12 @@ $messages['yi'] = array(
 	'mobile-frontend-opt-in-no-button' => 'ניין',
 	'mobile-frontend-opt-out-yes-button' => 'יא',
 	'mobile-frontend-opt-out-no-button' => 'ניין',
+	'mobile-frontend-leave-feedback-message' => 'מעלדונג',
 	'mobile-frontend-leave-feedback-cancel' => 'אַנולירן',
 	'mobile-frontend-language' => 'שפּראַך',
 	'mobile-frontend-username' => 'באַניצער נאָמען:',
 	'mobile-frontend-password' => 'פאסווארט:',
+	'mobile-frontend-login' => 'אַרײַנלאגירן',
 );
 
 /** Yoruba (Yorùbá)
