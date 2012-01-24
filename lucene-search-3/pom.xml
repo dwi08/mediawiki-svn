@@ -46,8 +46,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <javac.src.version>1.6</javac.src.version>
-        <javac.target.version>1.6</javac.target.version>
+        <!-- >javac.src.version>1.6</javac.src.version>
+        <javac.target.version>1.6</javac.target.version -->
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
         <implementation.build>${maven.build.timestamp}</implementation.build>
     </properties>
@@ -100,7 +100,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8</version>
+        
         <configuration>
 	    	<links>
 				<link>http://commons.apache.org/lang/api</link>
@@ -185,11 +185,7 @@
     	   <version>3.1.11</version>
     </dependency>
     
-    <dependency>
-    	<groupId>commons-logging</groupId>
-    	<artifactId>commons-logging</artifactId>
-    	<version>1.1</version>
-    </dependency>
+
     
     <dependency>
 	    <groupId>MWdumper</groupId>
@@ -199,14 +195,7 @@
 	    <systemPath>${project.basedir}/lib/mwdumper.jar</systemPath>
 	</dependency>
     
-    <dependency>
-    	<groupId>commons-lang</groupId>
-    	<artifactId>commons-lang</artifactId>
-    	<version>2.6</version>
-    </dependency>
-    
-    
-    
+  
   </dependencies>
 
   <reporting>
