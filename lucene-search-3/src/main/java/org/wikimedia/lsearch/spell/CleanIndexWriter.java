@@ -158,9 +158,9 @@ public class CleanIndexWriter {
 	/** Add title/redirect with ranks information only */
 	protected void addTitleOnly(Article article) {
 		Document doc = new Document();
-		doc.add(new Field("key",article.getIndexKey(),Store.NO,Index.UN_TOKENIZED));
-		doc.add(new Field("ns_title",article.getTitle(),Store.YES,Index.TOKENIZED));
-		doc.add(new Field("ns_namespace",article.getNamespace(),Store.YES,Index.UN_TOKENIZED));
+		doc.add(new Field("key",article.getIndexKey(),Store.NO,Index.NOT_ANALYZED));
+		doc.add(new Field("ns_title",article.getTitle(),Store.YES,Index.ANALYZED));
+		doc.add(new Field("ns_namespace",article.getNamespace(),Store.YES,Index.NOT_ANALYZED));
 		doc.add(new Field("ns_rank",Integer.toString(article.getReferences()),Store.YES,Index.NO));
 		if(article.isRedirect())
 			doc.add(new Field("ns_redirect",article.getRedirectTarget(),Store.YES,Index.NO));
@@ -202,7 +202,7 @@ public class CleanIndexWriter {
 			sb.append(val);
 		}
 		Document doc = new Document();
-		doc.add(new Field("metadata_key",key, Field.Store.YES, Field.Index.UN_TOKENIZED));
+		doc.add(new Field("metadata_key",key, Field.Store.YES, Field.Index.NOT_ANALYZED));
 		doc.add(new Field("metadata_value",sb.toString(), Field.Store.YES, Field.Index.NO));
 		
 		try {

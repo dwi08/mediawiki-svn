@@ -246,8 +246,8 @@ public class NgramIndexer {
 			for(int j=0 ; j<ngrams.length ; j++){
 				String ngram = ngrams[j];				
 				if(j==0)
-					doc.add(new Field(startField+i, ngram, Field.Store.NO, Field.Index.UN_TOKENIZED));
-				doc.add(new Field(field, ngram, Field.Store.NO, Field.Index.UN_TOKENIZED));
+					doc.add(new Field(startField+i, ngram, Field.Store.NO, Field.Index.NOT_ANALYZED));
+				doc.add(new Field(field, ngram, Field.Store.NO, Field.Index.NOT_ANALYZED));
 			}
 		}		
 	}

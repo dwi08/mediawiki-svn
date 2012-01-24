@@ -34,7 +34,7 @@ public class RelatedStorage extends LuceneStorage {
 		ensureWrite();
 		StringList sl = new StringList(CompactRelated.convertToStringList(rel));
 		Document doc = new Document();
-		doc.add(new Field("key",key,Field.Store.YES,Field.Index.UN_TOKENIZED));
+		doc.add(new Field("key",key,Field.Store.YES,Field.Index.NOT_ANALYZED));
 		doc.add(new Field("related",sl.toString(),Field.Store.COMPRESS,Field.Index.NO));
 		writer.addDocument(doc);
 	}
@@ -43,7 +43,7 @@ public class RelatedStorage extends LuceneStorage {
 		ensureWrite();
 		StringList sl = new StringList(Related.convertToStringList(rel));
 		Document doc = new Document();
-		doc.add(new Field("key",key,Field.Store.YES,Field.Index.UN_TOKENIZED));
+		doc.add(new Field("key",key,Field.Store.YES,Field.Index.NOT_ANALYZED));
 		doc.add(new Field("related",sl.toString(),Field.Store.COMPRESS,Field.Index.NO));
 		writer.addDocument(doc);
 	}

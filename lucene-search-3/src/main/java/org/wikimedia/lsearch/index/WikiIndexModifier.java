@@ -682,10 +682,10 @@ public class WikiIndexModifier {
 		NamespaceFilter contentNamespaces = iid.getContentNamespaces();
 				
 		// page_id from database, used to look up and replace entries on index updates
-		doc.add(new Field("key", article.getIndexKey(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		doc.add(new Field("key", article.getIndexKey(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 
 		// namespace, returned with results
-		doc.add(new Field("namespace", article.getNamespace(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+		doc.add(new Field("namespace", article.getNamespace(), Field.Store.YES, Field.Index.NOT_ANALYZED));
 				
 		// raw rank value
 		doc.add(new Field("rank",Integer.toString(article.getRank()),
@@ -694,7 +694,7 @@ public class WikiIndexModifier {
 		// redirect namespace
 		if(article.isRedirect()){
 			doc.add(new Field("redirect_namespace",Integer.toString(article.getRedirectTargetNamespace()),
-					Field.Store.NO, Field.Index.UN_TOKENIZED));
+					Field.Store.NO, Field.Index.NOT_ANALYZED));
 		}
 
 		if(contentNamespaces.contains(article.getNamespace())){
@@ -710,7 +710,7 @@ public class WikiIndexModifier {
 		float rankBoost = transformRank(article.getRank());
 		
 		// prefix title for prefix: searches
-		Field prefix = new Field("prefix", article.getNsTitleKey().toLowerCase(), Field.Store.NO, Field.Index.UN_TOKENIZED);				 
+		Field prefix = new Field("prefix", article.getNsTitleKey().toLowerCase(), Field.Store.NO, Field.Index.NOT_ANALYZED);				 
 		prefix.setBoost(rankBoost);
 		doc.add(prefix);
 
@@ -737,7 +737,7 @@ public class WikiIndexModifier {
 			tokenizer.tokenize();
 			
 			// title
-			Field title = new Field(fields.title(), article.getTitle(), Field.Store.YES, Field.Index.TOKENIZED);				 
+			Field title = new Field(fields.title(), article.getTitle(), Field.Store.YES, Field.Index.ANALYZED);				 
 			title.setBoost(rankBoost);
 			doc.add(title);
 			
@@ -766,7 +766,7 @@ public class WikiIndexModifier {
 			}
 			
 			// reverse title for wildcard searches
-			Field rtitle = new Field(fields.reverse_title(), StringUtils.reverseString(article.getTitle()), Field.Store.NO, Field.Index.TOKENIZED);				 
+			Field rtitle = new Field(fields.reverse_title(), StringUtils.reverseString(article.getTitle()), Field.Store.NO, Field.Index.ANALYZED);				 
 			rtitle.setBoost(rankBoost);
 			doc.add(rtitle);
 			
@@ -775,7 +775,7 @@ public class WikiIndexModifier {
 			while (e.hasMoreElements()) {
 				String key = (String)e.nextElement();
 				String value = article.DiscussionThreadingInfo.get(key);
-				doc.add( new Field( key, value, Store.YES, Index.UN_TOKENIZED) );
+				doc.add( new Field( key, value, Store.YES, Index.NOT_ANALYZED) );
 			}
 			
 			// extra info (for spellcheck indexes)
@@ -819,8 +819,8 @@ public class WikiIndexModifier {
 		SimpleDateFormat isoDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		isoDate.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Document doc = new Document();
-		doc.add(new Field("pageid",article.getPageIdStr(),Store.NO,Index.UN_TOKENIZED));
-		doc.add(new Field("key",key,Store.NO,Index.UN_TOKENIZED));
+		doc.add(new Field("pageid",article.getPageIdStr(),Store.NO,Index.NOT_ANALYZED));
+		doc.add(new Field("key",key,Store.NO,Index.NOT_ANALYZED));
 		for(FieldBuilder.BuilderSet bs : builder.getBuilders()){
 			FieldNameFactory fields = bs.getFields();
 			FilterFactory filters = bs.getFilters();
@@ -845,15 +845,15 @@ public class WikiIndexModifier {
 		float rankBoost = transformRank(article.getRank());
 		Document doc = new Document();
 		log.debug("Adding interwiki title pageid="+suffix+":"+article.getPageIdStr()+", key="+suffix+":"+key);
-		doc.add(new Field("pageid",suffix+":"+article.getPageIdStr(),Store.NO,Index.UN_TOKENIZED));
-		doc.add(new Field("key",suffix+":"+key,Store.NO,Index.UN_TOKENIZED));
-		doc.add(new Field("suffix",suffix,Store.YES,Index.UN_TOKENIZED));
-		doc.add(new Field("dbname",dbname,Store.NO,Index.UN_TOKENIZED));
-		doc.add(new Field("namespace",article.getNamespace(),Store.YES,Index.UN_TOKENIZED));
+		doc.add(new Field("pageid",suffix+":"+article.getPageIdStr(),Store.NO,Index.NOT_ANALYZED));
+		doc.add(new Field("key",suffix+":"+key,Store.NO,Index.NOT_ANALYZED));
+		doc.add(new Field("suffix",suffix,Store.YES,Index.NOT_ANALYZED));
+		doc.add(new Field("dbname",dbname,Store.NO,Index.NOT_ANALYZED));
+		doc.add(new Field("namespace",article.getNamespace(),Store.YES,Index.NOT_ANALYZED));
 		// redirect namespace
 		if(article.isRedirect()){
 			doc.add(new Field("redirect_namespace",Integer.toString(article.getRedirectTargetNamespace()),
-					Field.Store.NO, Field.Index.UN_TOKENIZED));
+					Field.Store.NO, Field.Index.NOT_ANALYZED));
 		}
 		Field title = new Field("title",article.getTitle(),Store.YES, Index.NO);
 		title.setBoost(rankBoost);

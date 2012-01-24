@@ -97,9 +97,9 @@ public class TitleNgramIndexer {
 		
 		Document doc = new Document();		
 		// pageId is primary key
-		doc.add(new Field("pageid", pageId, Field.Store.NO, Field.Index.UN_TOKENIZED));
+		doc.add(new Field("pageid", pageId, Field.Store.NO, Field.Index.NOT_ANALYZED));
 		if(!ns.equals("0"))
-			doc.add(new Field("namespace", ns, Field.Store.NO, Field.Index.UN_TOKENIZED));
+			doc.add(new Field("namespace", ns, Field.Store.NO, Field.Index.NOT_ANALYZED));
 		doc.add(new Field("key", ns+":"+title, Field.Store.YES, Field.Index.NO));
 		doc.add(new Field(field, decomposed, Field.Store.YES, Field.Index.NO));
 		if(redirectTo != null)

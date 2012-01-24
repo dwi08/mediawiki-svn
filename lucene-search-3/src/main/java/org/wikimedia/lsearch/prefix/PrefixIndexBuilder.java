@@ -245,7 +245,7 @@ public class PrefixIndexBuilder {
 				}
 			}
 			Document d = new Document();
-			d.add(new Field("prefix",prefix,Field.Store.NO,Field.Index.NO_NORMS));
+			d.add(new Field("prefix",prefix,Field.Store.NO,Field.Index.NOT_ANALYZED_NO_NORMS));
 			d.add(new Field("articles",new StringList(selected).toString(),Field.Store.YES,Field.Index.NO));
 			setOmitNorms(d);
 			writer.addDocument(d);
@@ -268,7 +268,7 @@ public class PrefixIndexBuilder {
 			d.add(new Field("article",serialize(key,ref,redirect),Field.Store.YES,Field.Index.NO));			
 			ArrayList<Token> canonized = canonize(key,iid,filters); 
 			for(Token t : canonized){
-				d.add(new Field("key",t.termText(),Field.Store.NO,Field.Index.TOKENIZED));
+				d.add(new Field("key",t.termText(),Field.Store.NO,Field.Index.ANALYZED));
 			}
 			setOmitNorms(d);
 			writer.addDocument(d);
@@ -387,11 +387,11 @@ public class PrefixIndexBuilder {
 			return; // ignore redirects like byzantine -> byzantine empire
 		// add to index
 		Document d = new Document();
-		d.add(new Field("pageid",pageId,Field.Store.NO,Field.Index.UN_TOKENIZED));
-		d.add(new Field("key",key,Field.Store.YES,Field.Index.UN_TOKENIZED));
+		d.add(new Field("pageid",pageId,Field.Store.NO,Field.Index.NOT_ANALYZED));
+		d.add(new Field("key",key,Field.Store.YES,Field.Index.NOT_ANALYZED));
 		ArrayList<Token> canonized = canonize(key,iid,filters); 
 		for(Token t : canonized){
-			d.add(new Field("key",t.termText(),Field.Store.NO,Field.Index.TOKENIZED));
+			d.add(new Field("key",t.termText(),Field.Store.NO,Field.Index.ANALYZED));
 		}
 		if(redirect!=null && !redirect.equals("")){ // redirect target and its rank
 			d.add(new Field("redirect",redirect,Field.Store.YES,Field.Index.NO));

@@ -361,16 +361,16 @@ public class Links {
 		StringList ak = new StringList(anchors);
 		Analyzer an = new SplitAnalyzer(1,false);
 		Document doc = new Document();
-		doc.add(new Field("article_pageid",pageId,Field.Store.YES,Field.Index.UN_TOKENIZED));
+		doc.add(new Field("article_pageid",pageId,Field.Store.YES,Field.Index.NOT_ANALYZED));
 		// ns:title
-		doc.add(new Field("article_key",t.getKey(),Field.Store.YES,Field.Index.UN_TOKENIZED));
+		doc.add(new Field("article_key",t.getKey(),Field.Store.YES,Field.Index.NOT_ANALYZED));
 		if(redirectsTo != null)
 			// redirect_ns:title|target_ns:title
-			doc.add(new Field("redirect",redirectsTo+"|"+t.getKey(),Field.Store.YES,Field.Index.UN_TOKENIZED));
+			doc.add(new Field("redirect",redirectsTo+"|"+t.getKey(),Field.Store.YES,Field.Index.NOT_ANALYZED));
 		else{
 			// a list of all links/anchors
-			doc.add(new Field("links",lk.toString(),Field.Store.NO,Field.Index.TOKENIZED));
-			doc.add(new Field("anchors",ak.toString(),Field.Store.NO,Field.Index.TOKENIZED));
+			doc.add(new Field("links",lk.toString(),Field.Store.NO,Field.Index.ANALYZED));
+			doc.add(new Field("anchors",ak.toString(),Field.Store.NO,Field.Index.ANALYZED));
 		}
 		
 		writer.addDocument(doc,an);
