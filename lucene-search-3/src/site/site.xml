@@ -17,5 +17,8 @@
     <menu name="Examples">
       <item name="Creating Content" href="/examples/creating-content.html"/>
     </menu>
+    
+    
+     <menu ref="reports"/>
   </body>
 </project>
