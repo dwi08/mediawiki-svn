@@ -93,6 +93,7 @@ public class CleanIndexImporter implements DumpWriter {
 	public void writeSiteinfo(Siteinfo info) throws IOException {
 		Iterator it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
+			
 			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
 			Localization.addCustomMapping(pair.getValue(),pair.getKey(),iid.getDB().getDBname());
 		}
