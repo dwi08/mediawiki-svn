@@ -16,6 +16,10 @@ import org.apache.lucene.search.Filter;
  *
  */
 public class FilterWrapper extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3471396522832993612L;
 	protected NamespaceFilter nsFilter;
 	/** custom filters AND-ed with nsFilter */
 	protected ArrayList<Filter> filters = new ArrayList<Filter>();

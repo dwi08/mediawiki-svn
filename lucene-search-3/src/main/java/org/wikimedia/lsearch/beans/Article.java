@@ -39,6 +39,10 @@ import org.wikimedia.lsearch.related.RelatedTitle;
  *
  */
 public class Article implements Serializable  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6129349087807339628L;
 	private String namespace, title, contents;
 	private long pageId;
 	private int references;

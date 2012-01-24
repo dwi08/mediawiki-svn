@@ -1,6 +1,10 @@
 package org.apache.lucene.search;
 
 public class ConstMinScore extends CustomBoostQuery {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2209798601936292749L;
 	float minScore;
 	public ConstMinScore(Query subQuery, float minScore) {
 		super(subQuery);

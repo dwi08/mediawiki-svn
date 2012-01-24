@@ -15,6 +15,10 @@ import org.apache.lucene.search.Filter;
  *
  */
 public class NamespaceCompositeFilter extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -745670120398519465L;
 	protected ArrayList<Filter> filters;
 	protected ArrayList<Filter> redirects;
 	

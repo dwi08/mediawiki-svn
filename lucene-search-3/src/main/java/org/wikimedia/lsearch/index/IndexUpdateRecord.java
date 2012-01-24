@@ -21,6 +21,10 @@ import org.wikimedia.lsearch.config.IndexId;
  *
  */
 public class IndexUpdateRecord implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6558036612988171250L;
 	protected Article article;	
 	public enum Action { ADD, UPDATE, DELETE };
 	protected Action action;

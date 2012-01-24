@@ -35,6 +35,11 @@ public class NamespaceCache {
 	
 	public static class AllFilter extends Filter {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1054909244285213926L;
+
 		@Override
 		public BitSet bits(IndexReader reader) throws IOException {
 			BitSet bits = new BitSet(reader.maxDoc());

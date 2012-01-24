@@ -9,6 +9,10 @@ import org.wikimedia.lsearch.highlight.HighlightResult;
 
 /** A single search result */
 public class ResultSet implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3980290339174421410L;
 	public double score;	
 	public String namespace;
 	public String title;

@@ -51,7 +51,11 @@ import org.apache.lucene.util.ToStringUtils;
  */
 public class CustomBoostQuery extends Query {
 
-  private Query subQuery;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1934182951954995292L;
+private Query subQuery;
   private Query boostQuery; // optional, can be null
   private boolean strict = false; // if true, boosting part of query does not take part in weights normalization.  
   
@@ -176,7 +180,11 @@ public class CustomBoostQuery extends Query {
   //=========================== W E I G H T ============================
   
   protected class CustomWeight implements Weight {
-    Weight subQueryWeight;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9003307546921937389L;
+	Weight subQueryWeight;
     Weight boostWeight; // optional
     boolean qStrict;
     Similarity similarity;

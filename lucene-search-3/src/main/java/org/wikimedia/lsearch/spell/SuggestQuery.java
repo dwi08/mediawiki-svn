@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 /** Result of suggestion for a query */
 public class SuggestQuery implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2382192421633557329L;
 	protected String searchterm;
 	protected ArrayList<Integer> ranges;
 	protected ArrayList<String> similarTitles;

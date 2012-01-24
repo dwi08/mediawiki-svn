@@ -7,6 +7,10 @@ import org.wikimedia.lsearch.analyzers.FastWikiTokenizerEngine;
 import org.wikimedia.lsearch.ranks.StringList;
 
 public class SuggestResult implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -467799933506179851L;
 	String word;
 	String decomposed;
 	int frequency=0;
@@ -21,6 +25,10 @@ public class SuggestResult implements Serializable {
 	HashSet<String> context = null;
 	
 	public static class SimilarResult extends SuggestResult {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -4990218719182038217L;
 		String key;
 		String redirectTo;
 		public SimilarResult(String word, int frequency, int dist, String key, String redirectTo) {

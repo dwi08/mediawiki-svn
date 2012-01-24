@@ -12,6 +12,10 @@ import org.apache.lucene.search.DefaultSimilarity;
  *
  */
 public class WikiSimilarity extends DefaultSimilarity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2976567527058649924L;
 	static Logger log = Logger.getLogger(WikiSimilarity.class);
 	/**
 	 * For content: 

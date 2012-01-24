@@ -8,6 +8,10 @@ import org.apache.lucene.search.ArticleInfo;
 import org.wikimedia.lsearch.search.ArticleMeta.ArticleMetaSource;
 
 public class ArticleInfoImpl implements ArticleInfo, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6644676683172345759L;
 	protected transient ArticleMetaSource src = null;
 	
 

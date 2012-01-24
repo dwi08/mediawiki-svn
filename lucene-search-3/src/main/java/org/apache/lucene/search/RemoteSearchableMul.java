@@ -12,7 +12,11 @@ import org.apache.lucene.index.Term;
 public class RemoteSearchableMul extends UnicastRemoteObject
 implements SearchableMul {
 	  
-	  private Searchable local;
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1624996715150939881L;
+	private Searchable local;
 	  
 	  /** Constructs and exports a remote searcher. */
 	  public RemoteSearchableMul(Searchable local) throws RemoteException {

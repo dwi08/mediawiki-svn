@@ -15,6 +15,10 @@ import org.apache.lucene.store.Directory;
  *
  */
 public class CachedFilter extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6539066674645937801L;
 	protected Filter filter;
 	protected transient WeakHashMap<Directory,BitSet> cache = new WeakHashMap<Directory,BitSet>();
 	

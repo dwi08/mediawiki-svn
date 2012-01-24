@@ -60,6 +60,10 @@ public class Highlight {
 	
 	/** Results from higlighting multiple articles */
 	public static class ResultSet implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3890215904401087086L;
 		public HashMap<String,HighlightResult> highlighted;
 		/** phrases matched in document, word1_word2 (i.e. separated by underscore) */
 		public HashSet<String> phrases;

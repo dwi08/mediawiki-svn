@@ -6,6 +6,10 @@ import org.wikimedia.lsearch.search.AggregateInfoImpl;
 import org.wikimedia.lsearch.search.AggregateInfoImpl.RankInfo;
 
 public class PositionalOptions implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8133507278162258948L;
 	protected AggregateInfo aggregateMeta = null;
 	protected RankInfo rankMeta = null;
 
@@ -45,6 +49,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options specific for phrases in contents */
 	public static class Sloppy extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6778997372025237713L;
+
 		public Sloppy(){
 			rankMeta = new RankInfo();
 			useBeginBoost = true;
@@ -65,6 +74,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options for alttitle field */
 	public static class Alttitle extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8151439171086838369L;
+
 		public Alttitle(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -74,6 +88,11 @@ public class PositionalOptions implements Serializable {
 	}
 	/** Match only whole entries on an aggregate field */
 	public static class AlttitleWhole extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -44219584478834032L;
+
 		public AlttitleWhole(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -85,6 +104,11 @@ public class PositionalOptions implements Serializable {
 	}
 	
 	public static class AlttitleWholeSloppy extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -543978831961407868L;
+
 		public AlttitleWholeSloppy(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -99,6 +123,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options specific to related fields */
 	public static class Related extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -2602121388756335605L;
+
 		public Related(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -107,6 +136,11 @@ public class PositionalOptions implements Serializable {
 	}
 	
 	public static class RelatedWhole extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6098185842620225695L;
+
 		public RelatedWhole(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -117,6 +151,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options for additional alttitle query */
 	public static class AlttitleSloppy extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1855749973847919484L;
+
 		public AlttitleSloppy(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -127,6 +166,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options for additional alttitle query */
 	public static class AlttitleExact extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1774598698488092771L;
+
 		public AlttitleExact(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -136,6 +180,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** alttitle query to match redirects */
 	public static class RedirectMatch extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1371571685071626823L;
+
 		public RedirectMatch(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -151,6 +200,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** alttitle query to match complete titles */
 	public static class RedirectComplete extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8968024335275647874L;
+
 		public RedirectComplete(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -163,6 +217,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options for sections field */
 	public static class Sections extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8692410614019818270L;
+
 		public Sections(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -172,6 +231,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Options for sections field */
 	public static class SectionsWhole extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1350993858005999931L;
+
 		public SectionsWhole(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -181,6 +245,11 @@ public class PositionalOptions implements Serializable {
 	}
 	/** Fallback to phasequery-type behaviour, no positional info */
 	public static class PhraseQueryFallback extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6589847326296430092L;
+
 		public PhraseQueryFallback(){
 			phraseQueryFallback = true;
 		}
@@ -188,6 +257,11 @@ public class PositionalOptions implements Serializable {
 	
 	/** Near match phrases, when more than 50% of nonstopwords are matched */
 	public static class AlttitleNearMatch extends PositionalOptions {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4735381044510834341L;
+
 		public AlttitleNearMatch(){
 			aggregateMeta = new AggregateInfoImpl();
 			takeMaxScore = true;
@@ -195,9 +269,19 @@ public class PositionalOptions implements Serializable {
 	}
 	
 	public abstract static class NamespaceBoost implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1355534237962528582L;
+
 		public abstract float getBoost(int namespace);
 		
 		public static class DefaultBoost extends NamespaceBoost {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3306348859577417462L;
+
 			public float getBoost(int namespace){
 				if(namespace % 2 == 1) // talk pages
 					return 0.75f;  

@@ -15,6 +15,10 @@ import org.wikimedia.lsearch.spell.SuggestQuery;
  *
  */
 public class SearchResults implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5909734328451839045L;
 	/** false if there is some sort of query-related error */
 	protected boolean success;
 	protected int numHits;

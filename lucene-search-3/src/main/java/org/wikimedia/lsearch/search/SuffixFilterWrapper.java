@@ -12,6 +12,10 @@ import org.apache.lucene.search.Filter;
  *
  */
 public class SuffixFilterWrapper extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3142341770292623568L;
 	protected SuffixFilter filter;	
 	
 	public SuffixFilterWrapper(SuffixFilter filter){

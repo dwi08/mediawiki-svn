@@ -8,6 +8,10 @@ import org.apache.lucene.search.Filter;
 import org.wikimedia.lsearch.config.IndexId;
 
 public class SuffixNamespaceFilter extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5307576223153302254L;
 	protected SuffixFilter suffix;
 	protected NamespaceFilter ns;
 	protected String dbrole;

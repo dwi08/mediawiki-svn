@@ -13,6 +13,10 @@ import org.wikimedia.lsearch.beans.SearchResults;
  *
  */
 public class HighlightPack implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 609396972424664393L;
 	public Term[] terms;
 	public int[] dfs;
 	public int maxDoc;

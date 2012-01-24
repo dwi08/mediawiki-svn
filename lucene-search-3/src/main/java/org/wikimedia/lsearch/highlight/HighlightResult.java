@@ -10,6 +10,10 @@ import java.util.ArrayList;
  *
  */
 public class HighlightResult implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1883566809164096486L;
 	protected Snippet title = null;
 	protected Snippet redirect = null;
 	protected Snippet section = null;

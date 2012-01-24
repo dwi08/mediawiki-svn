@@ -5,7 +5,12 @@ import org.wikimedia.lsearch.util.Localization;
 
 /** Wiki article title */
 public class Title implements java.io.Serializable {
-    public int namespace;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2897016046547702537L;
+
+	public int namespace;
 
     public String title;
 

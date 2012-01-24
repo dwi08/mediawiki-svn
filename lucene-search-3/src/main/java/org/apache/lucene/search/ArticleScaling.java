@@ -11,6 +11,11 @@ import java.io.Serializable;
  */
 abstract public class ArticleScaling implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2170644350907751230L;
+
 	abstract public float score(float score, float diff);
 	public String explain(float score, float diff){
 		return "score="+score+", diff="+diff;
@@ -18,6 +23,10 @@ abstract public class ArticleScaling implements Serializable {
 	
 	/** add to score ~ log(1/diff) between [0,max] */
 	public static class Bonus extends ArticleScaling {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1100709052264451254L;
 		float max;
 		public Bonus(float max){
 			this.max = max;
@@ -30,6 +39,10 @@ abstract public class ArticleScaling implements Serializable {
 	
 	/** Scale score by ~ log(1/diff) between [min,max] */
 	public static class Scaling extends ArticleScaling {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 5974506142878361951L;
 		float max, min;
 		public Scaling(float min, float max){
 			this.max = max;
@@ -43,6 +56,10 @@ abstract public class ArticleScaling implements Serializable {
 	}
 	/** Scale score by ~ sqrt(1/diff) between [min,max] */
 	public static class SqrtScale extends ArticleScaling {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2046408434470271501L;
 		float max, min;
 		public SqrtScale(float min, float max){
 			this.max = max;
@@ -63,6 +80,10 @@ abstract public class ArticleScaling implements Serializable {
 	
 	/** Return scores based on a step function of time */
 	public static class StepScale extends ArticleScaling {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1291538363159806255L;
 		float[] chunks = new float[5];
 		public StepScale(float min, float max){
 			float inc = (max-min)/chunks.length;
@@ -94,6 +115,11 @@ abstract public class ArticleScaling implements Serializable {
 	
 	/** No scaling */
 	public static class None extends ArticleScaling {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -65887438293294573L;
+
 		@Override
 		public final float score(float score, float diff) {
 			return score;

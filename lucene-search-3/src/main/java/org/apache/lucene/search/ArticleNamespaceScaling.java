@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class ArticleNamespaceScaling implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1784906723875795649L;
 	protected float[] nsBoost = null;
 	public static float talkPageScale = 0.25f;
 	

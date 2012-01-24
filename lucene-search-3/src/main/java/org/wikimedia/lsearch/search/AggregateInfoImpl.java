@@ -19,6 +19,10 @@ import org.wikimedia.lsearch.search.AggregateMetaField.AggregateMetaFieldSource;
  *
  */
 public class AggregateInfoImpl implements AggregateInfo, Serializable  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4735219536132923087L;
 	private static final Logger log = Logger.getLogger(AggregateInfoImpl.class);
 	protected transient AggregateMetaFieldSource src = null;
 	protected boolean hasRankingData = false;
@@ -98,6 +102,11 @@ public class AggregateInfoImpl implements AggregateInfo, Serializable  {
 
 	/** Provides ranking information */
 	public static class RankInfo extends AggregateInfoImpl {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 390927371201941688L;
+
 		@Override
 		public void init(IndexReader reader, String field) throws IOException {
 			super.init(reader, "alttitle");

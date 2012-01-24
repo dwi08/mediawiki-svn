@@ -3,6 +3,10 @@ package org.wikimedia.lsearch.beans;
 import java.io.Serializable;
 
 public class Redirect implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3255489631746429906L;
 	int namespace;
 	String title;
 	int references;

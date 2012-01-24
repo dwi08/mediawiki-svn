@@ -7,6 +7,10 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.Filter;
 
 public class SuffixNamespaceWrapper extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -424940152787744368L;
 	SuffixNamespaceFilter filter = null;
 		
 	public SuffixNamespaceWrapper(SuffixNamespaceFilter filter) {

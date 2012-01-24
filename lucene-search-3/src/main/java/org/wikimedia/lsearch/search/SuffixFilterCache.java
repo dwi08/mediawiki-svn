@@ -16,6 +16,10 @@ public class SuffixFilterCache {
 	
 	/** class to create the bitset that is to be cached */
 	protected static class SuffixFilterBuilder extends Filter {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1255620294875782513L;
 		SuffixFilter filter;
 		
 		public SuffixFilterBuilder(SuffixFilter filter) {

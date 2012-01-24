@@ -10,6 +10,10 @@ import java.io.Serializable;
  *
  */
 public class IndexReportCard implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3088690949562091144L;
 	protected boolean succDelete;
 	protected boolean succAdd;
 	protected ReportId id;

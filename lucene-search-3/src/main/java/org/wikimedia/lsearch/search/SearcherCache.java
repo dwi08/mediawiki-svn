@@ -156,6 +156,10 @@ public class SearcherCache {
 	}
 	
 	public static class SearcherPoolStatus implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 292789721313775724L;
 		boolean ok = false;
 		int poolSize = 0;
 		

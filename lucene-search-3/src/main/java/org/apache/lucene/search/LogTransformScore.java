@@ -8,6 +8,11 @@ package org.apache.lucene.search;
  */
 public class LogTransformScore extends CustomBoostQuery {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1132683935546317625L;
+
 	public LogTransformScore(Query subQuery) {
 		super(subQuery);
 	}

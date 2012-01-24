@@ -10,7 +10,16 @@ import java.util.ArrayList;
  *
  */
 public class Snippet implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3541172706793191310L;
+
 	public static class Range implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1747783281795706440L;
 		public int start;
 		public int end;
 		

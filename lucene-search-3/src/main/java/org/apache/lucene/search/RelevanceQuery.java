@@ -20,6 +20,10 @@ import org.apache.lucene.util.ToStringUtils;
  *
  */
 public class RelevanceQuery extends Query {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5784422445218817151L;
 	private Query main;
 	private ArrayList<Query> relevance = new ArrayList<Query>(); 
 	private boolean strict = false; // if true, boosting part of query does not take part in weights normalization.
@@ -118,6 +122,10 @@ public class RelevanceQuery extends Query {
 	 * 
 	 */
 	protected class RelevanceWeight implements Weight {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3207960159834833506L;
 		Weight mainWeight;
 		ArrayList<Weight> relevanceWeight = new ArrayList<Weight>();
 		boolean qStrict;

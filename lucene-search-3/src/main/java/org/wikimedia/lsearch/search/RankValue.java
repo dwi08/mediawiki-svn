@@ -14,6 +14,10 @@ import org.wikimedia.lsearch.search.RankField.RankFieldSource;
  *
  */
 public class RankValue implements ScoreValue, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9177306416695849726L;
 	protected transient RankFieldSource src;
 	protected float coefficient;
 	

@@ -13,6 +13,10 @@ import org.wikimedia.lsearch.index.IndexUpdateRecord;
  *
  */
 public class ReportId implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7461961497310594804L;
 	public long pageId;
 	public long timestamp;
 	/** string repesentation of index id */

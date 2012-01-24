@@ -11,6 +11,10 @@ import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.search.Filter;
 
 public class PrefixFilter extends Filter {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8990422701366201752L;
 	String[] prefixes;
 	
 	public PrefixFilter(String[] prefixes){

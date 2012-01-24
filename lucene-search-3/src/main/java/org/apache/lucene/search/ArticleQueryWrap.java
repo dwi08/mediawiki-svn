@@ -13,6 +13,10 @@ import org.apache.lucene.index.IndexReader;
  *
  */
 public class ArticleQueryWrap extends CustomBoostQuery {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1647356840755233019L;
 	ArticleInfo article;
 	ArticleScaling scale;	
 	AggregateInfo rank;
@@ -70,6 +74,10 @@ public class ArticleQueryWrap extends CustomBoostQuery {
 	}
 	
 	protected class ArticleQueryWeight extends CustomWeight {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6334167925459892278L;
 		public ArticleQueryWeight(Searcher searcher) throws IOException{
 			super(searcher);
 		}

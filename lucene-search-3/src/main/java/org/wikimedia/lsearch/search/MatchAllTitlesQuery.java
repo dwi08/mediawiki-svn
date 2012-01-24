@@ -36,6 +36,10 @@ import java.util.Set;
  * @author John Wang
  */
 public class MatchAllTitlesQuery extends Query {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1601667485818315572L;
 	protected String titleField;
 
 	public MatchAllTitlesQuery(String titleField) {
@@ -91,6 +95,10 @@ public class MatchAllTitlesQuery extends Query {
 	}
 
 	private class MatchAllDocsWeight implements Weight {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3242930691905297732L;
 		private Similarity similarity;
 		private float queryWeight;
 		private float queryNorm;

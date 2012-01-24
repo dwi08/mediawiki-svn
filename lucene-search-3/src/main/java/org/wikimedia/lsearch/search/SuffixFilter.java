@@ -3,6 +3,10 @@ package org.wikimedia.lsearch.search;
 import java.io.Serializable;
 
 public class SuffixFilter implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5870248339797151268L;
 	protected String excludeSuffix;
 
 	public SuffixFilter(String excludeSuffix) {

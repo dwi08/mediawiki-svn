@@ -33,6 +33,10 @@ import java.util.HashSet;
 /** A bean-like class that contains information about what namespaces
  *  to filter  */
 public class NamespaceFilter implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2952008708874152903L;
 	private BitSet included;
 
 	protected void init(){
