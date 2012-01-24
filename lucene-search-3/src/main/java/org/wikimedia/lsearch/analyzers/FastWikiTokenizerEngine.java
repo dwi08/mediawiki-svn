@@ -1,5 +1,7 @@
 package org.wikimedia.lsearch.analyzers;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,25 +16,33 @@ import org.wikimedia.lsearch.util.Localization;
 import org.wikimedia.lsearch.util.UnicodeDecomposer;
 
 /**
- * Wiki Tokenizer. Tokens are words and numbers. All letters are
- * lowercased and diacritics deleted using Unicode compatibility
- * decomposition (i.e. č -> c). Parses some basic wiki syntax,
- * template names are skipped, from images captions are extracted,
- * categories and interwiki links are extracted... 
+ * Wiki Tokenizer. Tokens are words and numbers. All letters are lower cased and
+ * diacritics deleted using Unicode compatibility decomposition (i.e. č -> c).
+ * Parses some basic wiki syntax, template names are skipped, from images
+ * captions are extracted, categories and interwiki links are extracted...
  * 
- * Tokenizer will not take a Reader as input, but a String (for
- * optimal performance)
+ * This Tokenizer's performance is optimized for String input, not Reader as
+ * input.
+ * 
+ * Problems does not use a filter chain does do lots of char level processing on
+ * the char
  * 
  * @author rainman
- *
+ * @author OrenBochman
+ * 
  */
 public class FastWikiTokenizerEngine {
 	private static final int MAX_WORD_LEN = 255;
-	private final char[] buffer = new char[MAX_WORD_LEN]; // buffer of text, e.g. gödel
+    private final char[] buffer = new char[MAX_WORD_LEN]; // buffer of text,
+							  // e.g. gödel
 	private final char[] aliasBuffer = new char[MAX_WORD_LEN]; // buffer for aliases, e.g. goedel
-	private final char[] decompBuffer = new char[MAX_WORD_LEN]; // buffer for dedomposed text e.g. godel
+    private final char[] decompBuffer = new char[MAX_WORD_LEN]; // buffer for
+								// decomposed
+								// text e.g.
+								// godel
 	private final char[] glueBuffer = new char[MAX_WORD_LEN-1]; // buffer of spaces, etc.. that glues tokens together to produce the original (for highlight)
 	private final char[] tempBuffer = new char[MAX_WORD_LEN-1]; // buffer for temp stuff
+    private Reader rdr;
 	private char[] text;
 	private String textString; // original text in string format
 	private int textLength;
@@ -80,7 +90,7 @@ public class FastWikiTokenizerEngine {
 	/** valid protocols for external links */
 	private final static String[] PROTOCOLS = {"http://","https://","ftp://","mailto://","news://","gopher://"};
 	
-	/** This many tokens from begining of text are eligable for keywords */ 
+    /** This many tokens from beginning of text are eligible for keywords */
 	public static int KEYWORD_TOKEN_LIMIT = 250;
 	
 	/** Token gap at first section break */ 
@@ -143,6 +153,37 @@ public class FastWikiTokenizerEngine {
 		init();
 	}
 	
+    public FastWikiTokenizerEngine(Reader rdr, IndexId iid,
+	    TokenizerOptions options) {
+
+	StringBuilder sb = new StringBuilder();
+
+	// use standard Reader-reading techniques to access the Reader
+	int len = -1; // Number of chars read
+	char[] buf = new char[256]; // Characters read from Reader
+	try {
+	    while ((len = rdr.read(buf, 0, 256)) != -1) {
+		// System.out.println("Next chunk from Reader is " + (new
+		// String(buf, 0, len)));
+		sb.append(buf, 0, len);
+
+	    }
+	} catch (IOException ioe) {
+	    System.err
+		    .println("Error reading from Reader :" + ioe.getMessage());
+	}
+
+	this.rdr = rdr;
+	this.text = new char[sb.length()];
+	sb.getChars(0, sb.length(), this.text, 0);
+	this.textString = String.valueOf(text);
+	this.language = iid.getLangCode();
+	this.iid = iid;
+	this.options = options;
+	textLength = sb.length();
+	init();
+    }
+
 	/**
 	 * Strip accents 
 	 * @param c
@@ -1439,6 +1480,9 @@ public class FastWikiTokenizerEngine {
 		return tokens;
 	}
 
+    /**
+     * removes comments from the input.
+     */
 	private void stripComments() {
 		char[] stripped = new char[textLength];
 		int slen = 0;
