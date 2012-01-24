@@ -13,12 +13,6 @@
     <menu name="Configuration">
       <item name="Internationalization" href="i18n.html"/>
     </menu>
-
-    <menu name="Examples">
-      <item name="Creating Content" href="/examples/creating-content.html"/>
-    </menu>
-    
-    
-     <menu ref="reports"/>
+    <menu ref="reports" />
   </body>
 </project>
