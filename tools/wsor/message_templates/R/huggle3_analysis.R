@@ -24,26 +24,40 @@ max_ec_z65_ns_0 = max(append(metrics_ec_z65['ns_0_revisions_before'][[1]], metri
 max_ec_z65_ns_3 = max(append(metrics_ec_z65['ns_3_revisions_before'][[1]], metrics_ec_z65['ns_3_revisions_after'][[1]]))
 
 
-# Compute edit count vectors -- normalize values by the maximum
+# Compute edit count vectors -- normalize values by the maximum, these are effectively representations of relative increase or decrease
+# of edit activity after the template has been placed
 
 z64_ns0 = (metrics_ec_z64['ns_0_revisions_before'][[1]] - metrics_ec_z64['ns_0_revisions_after'][[1]]) / metrics_ec_z64['ns_0_revisions_before'][[1]]
-z64_ns3 = (metrics_ec_z64['ns_3_revisions_before'][[1]] - metrics_ec_z64['ns_3_revisions_after'][[1]]) / metrics_ec_z64['ns_3_revisions_before'][[1]]
 z65_ns0 = (metrics_ec_z65['ns_0_revisions_before'][[1]] - metrics_ec_z65['ns_0_revisions_after'][[1]]) / metrics_ec_z65['ns_0_revisions_before'][[1]]
-z65_ns3 = (metrics_ec_z65['ns_3_revisions_before'][[1]] - metrics_ec_z65['ns_3_revisions_after'][[1]]) / metrics_ec_z65['ns_3_revisions_before'][[1]]
+# z64_ns3 = (metrics_ec_z64['ns_3_revisions_before'][[1]] - metrics_ec_z64['ns_3_revisions_after'][[1]]) / metrics_ec_z64['ns_3_revisions_before'][[1]]
+# z65_ns3 = (metrics_ec_z65['ns_3_revisions_before'][[1]] - metrics_ec_z65['ns_3_revisions_after'][[1]]) / metrics_ec_z65['ns_3_revisions_before'][[1]]
 
-## Generate results:
+# z64_ns0 <- c()
+# z65_ns0 <- c()
+z64_ns3 <- c()
+z65_ns3 <- c()
+
+# Only append non-zero results - do this for just namespace 3 since it has zero entries for 'ns_3_revisions_before' 
+
+for (i in 1:length(metrics_ec_z64['ns_3_revisions_before'][[1]])) 
+	if (metrics_ec_z64['ns_3_revisions_before'][[1]][i] != 0)
+		z64_ns3 <- c(z64_ns3, 
+		(metrics_ec_z64['ns_3_revisions_before'][[1]][i] - metrics_ec_z64['ns_3_revisions_after'][[1]][i]) / metrics_ec_z64['ns_3_revisions_before'][[1]][i])
+
+for (i in 1:length(metrics_ec_z65['ns_3_revisions_before'][[1]])) 
+	if (metrics_ec_z65['ns_3_revisions_before'][[1]][i] != 0)
+		z65_ns3 <- c(z65_ns3, 
+		(metrics_ec_z65['ns_3_revisions_before'][[1]][i] - metrics_ec_z65['ns_3_revisions_after'][[1]][i]) / metrics_ec_z65['ns_3_revisions_before'][[1]][i])
+
+
+# Generate results:
 
 summary(z65_ns0)
 summary(z64_ns0)
 summary(z65_ns3)
 summary(z64_ns3)
 
-t_result_ns0 = t.test(x=z64_ns0, y=z65_ns0, alternative = "two.sided", paired = TRUE, var.equal = FALSE, conf.level = 0.95)
-t_result_ns3 = t.test(x=z64_ns3, y=z65_ns3, alternative = "two.sided", paired = TRUE, var.equal = FALSE, conf.level = 0.95)
-
-# combined = merge(postings, metrics_ec, by=c("recipient_name", "timestamp"))
-# summary(postings)
-# Number of message recipients grouped by previous main namespace edits and order of magnitude
-# table(10^round(log(combined$ns_0_revisions_before, base=10)))
+t_result_ns0 = t.test(x=z64_ns0, y=z65_ns0, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+t_result_ns3 = t.test(x=z64_ns3, y=z65_ns3, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
 
 
