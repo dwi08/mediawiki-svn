@@ -335,7 +335,7 @@ public class MultiSearcherBase extends Searcher {
     Query rewrittenQuery = rewrite(original);
 
     // step 2
-    Set terms = new HashSet();
+    Set<Object> terms = new HashSet<Object>();
     rewrittenQuery.extractTerms(terms);
 
     // step3
