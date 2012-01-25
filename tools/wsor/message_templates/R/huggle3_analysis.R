@@ -6,14 +6,14 @@
 
 # Read aggregated results for z64
 
-metrics_ec_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z64_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-metrics_blocks_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z64_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+metrics_ec_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z70_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+metrics_blocks_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z70_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
 
 
 # Read aggregated results for z65
 
-metrics_ec_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z65_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-metrics_blocks_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z65_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+metrics_ec_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z71_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+metrics_blocks_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z71_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
 
 
 # Compute max edit counts
@@ -24,20 +24,17 @@ max_ec_z65_ns_0 = max(append(metrics_ec_z65['ns_0_revisions_before'][[1]], metri
 max_ec_z65_ns_3 = max(append(metrics_ec_z65['ns_3_revisions_before'][[1]], metrics_ec_z65['ns_3_revisions_after'][[1]]))
 
 
-# Compute edit count vectors -- normalize values by the maximum, these are effectively representations of relative increase or decrease
-# of edit activity after the template has been placed
+# Compute the increase 
 
-z64_ns0 = (metrics_ec_z64['ns_0_revisions_before'][[1]] - metrics_ec_z64['ns_0_revisions_after'][[1]]) / metrics_ec_z64['ns_0_revisions_before'][[1]]
-z65_ns0 = (metrics_ec_z65['ns_0_revisions_before'][[1]] - metrics_ec_z65['ns_0_revisions_after'][[1]]) / metrics_ec_z65['ns_0_revisions_before'][[1]]
-# z64_ns3 = (metrics_ec_z64['ns_3_revisions_before'][[1]] - metrics_ec_z64['ns_3_revisions_after'][[1]]) / metrics_ec_z64['ns_3_revisions_before'][[1]]
-# z65_ns3 = (metrics_ec_z65['ns_3_revisions_before'][[1]] - metrics_ec_z65['ns_3_revisions_after'][[1]]) / metrics_ec_z65['ns_3_revisions_before'][[1]]
+z64_ns0 = (metrics_ec_z64$ns_0_revisions_after - metrics_ec_z64$ns_0_revisions_before) / metrics_ec_z64$ns_0_revisions_before
+z65_ns0 = (metrics_ec_z65$ns_0_revisions_after - metrics_ec_z65$ns_0_revisions_before / metrics_ec_z65$ns_0_revisions_before
 
-# z64_ns0 <- c()
-# z65_ns0 <- c()
+
+# User Talk namespace does not necessarily have edits before - in this case omit the result (it could be the case that templates stimulate user talk edits but that should be tested separately)
+# Only append non-zero results - do this for just namespace 3 since it has zero entries for 'ns_3_revisions_before' 
+
 z64_ns3 <- c()
 z65_ns3 <- c()
-
-# Only append non-zero results - do this for just namespace 3 since it has zero entries for 'ns_3_revisions_before' 
 
 for (i in 1:length(metrics_ec_z64['ns_3_revisions_before'][[1]])) 
 	if (metrics_ec_z64['ns_3_revisions_before'][[1]][i] != 0)
