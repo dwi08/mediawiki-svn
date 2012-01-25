@@ -71,6 +71,9 @@ class ArticleFeedbackv5Hooks {
 				'articlefeedbackv5-cta2-confirmation-title',
 				'articlefeedbackv5-cta2-confirmation-call',
 				'articlefeedbackv5-cta2-button-text',
+				'articlefeedbackv5-cta3-confirmation-title',
+				'articlefeedbackv5-cta3-confirmation-call',
+				'articlefeedbackv5-cta3-button-text',
 				'articlefeedbackv5-bucket1-title',
 				'articlefeedbackv5-bucket1-question-toggle',
 				'articlefeedbackv5-bucket1-toggle-found-yes',
@@ -255,7 +258,8 @@ class ArticleFeedbackv5Hooks {
 			$wgArticleFeedbackv5Options,
 			$wgArticleFeedbackv5LinkBuckets,
 			$wgArticleFeedbackv5Namespaces,
-			$wgArticleFeedbackv5LearnToEdit;
+			$wgArticleFeedbackv5LearnToEdit,
+			$wgArticleFeedbackv5SurveyUrls;
 		$vars['wgArticleFeedbackv5SMaxage'] = $wgArticleFeedbackv5SMaxage;
 		$vars['wgArticleFeedbackv5Categories'] = $wgArticleFeedbackv5Categories;
 		$vars['wgArticleFeedbackv5BlacklistCategories'] = $wgArticleFeedbackv5BlacklistCategories;
@@ -271,6 +275,7 @@ class ArticleFeedbackv5Hooks {
 		$vars['wgArticleFeedbackv5LearnToEdit'] = $wgArticleFeedbackv5LearnToEdit;
 		$vars['wgArticleFeedbackv5WhatsThisPage'] = wfMsgForContent( 'articlefeedbackv5-bucket5-form-panel-explanation-link' );
 		$vars['wgArticleFeedbackv5TermsPage'] = wfMsgForContent( 'articlefeedbackv5-transparency-terms-url' );
+		$vars['wgArticleFeedbackv5SurveyUrls'] = $wgArticleFeedbackv5SurveyUrls;
 		return true;
 	}
 

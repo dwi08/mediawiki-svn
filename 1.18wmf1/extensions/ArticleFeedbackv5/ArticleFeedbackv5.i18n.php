@@ -28,6 +28,9 @@ $messages['en'] = array(
 	'articlefeedbackv5-cta2-confirmation-title' => 'Help improve Wikipedia',
 	'articlefeedbackv5-cta2-confirmation-call' => 'This website is created by people like you. Can you give us a hand?',
 	'articlefeedbackv5-cta2-button-text' => 'Learn more',
+	'articlefeedbackv5-cta3-confirmation-title' => 'Please take a quick survey',
+	'articlefeedbackv5-cta3-confirmation-call' => 'It only takes a minute and will help improve Wikipedia.',
+	'articlefeedbackv5-cta3-button-text' => 'Start the survey',
 
 	// error messages
 	'articlefeedbackv5-error' => 'An error has occured. Please try again later.',
@@ -302,6 +305,9 @@ $messages['qqq'] = array(
 	'articlefeedbackv5-cta2-confirmation-title' => 'The title of the learn more CTA',
 	'articlefeedbackv5-cta2-confirmation-call' => 'The explanatory text of the learn more CTA',
 	'articlefeedbackv5-cta2-button-text' => 'The text for the button on the learn more CTA',
+	'articlefeedbackv5-cta3-confirmation-title' => 'The title of the survey CTA',
+	'articlefeedbackv5-cta3-confirmation-call' => 'The explanatory text of the survey CTA',
+	'articlefeedbackv5-cta3-button-text' => 'The text for the button on the survey CTA',
 	'articlefeedbackv5-error' => 'This error message will be displayed in a grey box replacing the form if there was an unrecoverable error.',
 	'articlefeedbackv5-error-nofeedback' => 'This error message will be displayed above the form (but below the title) if the user has attempted to submit a blank form.',
 	'articlefeedbackv5-special-filter-all' => '{{Identical|All}}',
