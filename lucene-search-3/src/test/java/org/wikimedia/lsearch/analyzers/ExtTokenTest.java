@@ -7,13 +7,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.wikimedia.lsearch.analyzers.Analyzers;
-import org.wikimedia.lsearch.analyzers.ExtToken;
 import org.wikimedia.lsearch.analyzers.ExtToken.Position;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.util.Utf8Set;
 
+/**
+ * performs
+ * 
+ * @author rainman
+ */
 public class ExtTokenTest {
 	public static void main(String[] args) throws Exception {
 		Configuration.open();

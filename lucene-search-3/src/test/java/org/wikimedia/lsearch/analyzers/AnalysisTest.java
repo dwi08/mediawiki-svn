@@ -13,6 +13,8 @@ import org.apache.lucene.analysis.cjk.CJKAnalyzer;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
+import org.junit.Before;
+import org.junit.Test;
 import org.wikimedia.lsearch.analyzers.Aggregate.Flags;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.GlobalConfiguration;
@@ -21,9 +23,11 @@ import org.wikimedia.lsearch.ranks.StringList;
 import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
 public class AnalysisTest extends AbstractWikiTestCase {
+
 	Analyzer a = null;
 	Configuration config = null;
 
+	@Before
 	protected void setUp() {
 		super.setUp();
 		if(config == null){
@@ -32,12 +36,16 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		}
 	}
 
+	@Test
 	public void testCJKAnalyzer(){
 		a = new CJKAnalyzer();
-		assertEquals("[(いわ,0,2,type=double), (わさ,1,3,type=double), (さき,2,4,type=double), (ic,4,6,type=single), (カー,6,8,type=double), (ード,7,9,type=double)]",tokens("いわさきicカード"));
+		assertEquals(
+				"[(いわ,0,2,type=double), (わさ,1,3,type=double), (さき,2,4,type=double), (ic,4,6,type=single), (カー,6,8,type=double), (ード,7,9,type=double)]",
+				tokens("いわさきicカード"));
 	}
 
 	/** Common test for indexer and searcher analyzers */
+	@Test
 	public void commonEnglish(){
 		assertEquals("[(1,0,1), (st,1,3)]",tokens("1st"));
 		assertEquals("[(good-,0,5,type=with_hyphen), (good,0,5,type=with_hyphen,posIncr=0), (goodthomas,0,11,posIncr=0), (thomas,5,11)]",tokens("Good-Thomas"));
@@ -48,10 +56,13 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		assertEquals("[(c++,0,3), (c,0,3,posIncr=0), (c#,4,6), (c,4,6,posIncr=0)]",tokens("c++ C#"));
 		assertEquals("[(hitchhikers,0,11), (hitchhiker,0,11,type=singular,posIncr=0), (hitchhike,0,11,type=stemmed,posIncr=0)]",tokens("hitchhikers"));
 		assertEquals("[(c'est,0,5), (cest,0,5,posIncr=0), (hitchhiker's,6,18), (hitchhiker,6,18,type=singular,posIncr=0), (hitchhikers,6,18,posIncr=0), (hitchhike,6,18,type=stemmed,posIncr=0)]",tokens("c'est hitchhiker's"));
-		assertEquals("[(pokémons,0,8), (pokemons,0,8,posIncr=0), (pokemon,0,8,type=stemmed,posIncr=0)]",tokens("Pokémons"));
+		assertEquals(
+				"[(pokémons,0,8), (pokemons,0,8,posIncr=0), (pokemon,0,8,type=stemmed,posIncr=0)]",
+				tokens("Pokémons"));
 		assertEquals("[(1990,0,4), (s,4,5), (iv,6,8)]",tokens("1990s IV"));
 	}
 
+	@Test
 	public void testEnglishSearch(){
 		a = Analyzers.getSearcherAnalyzer(IndexId.get("enwiki"));
 		commonEnglish();
@@ -59,6 +70,7 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		assertEquals("[(a.k.a,0,5), (aka,0,5,posIncr=0), (www,6,9), (google,10,16), (com,17,20)]",tokens("a.k.a www.google.com"));
 	}
 
+	@Test
 	public void testEnglishIndex(){
 		a = Analyzers.getIndexerAnalyzer(new FieldBuilder(IndexId.get("enwiki")));
 		commonEnglish();
@@ -66,20 +78,26 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		assertEquals("[(a.k.a,0,5), (aka,0,5,posIncr=0), (a,0,5,posIncr=0), (k,2,7,posIncr=0), (a,4,9,posIncr=0), (www,6,9), (google,10,16), (com,17,20)]",tokens("a.k.a www.google.com"));
 	}
 
+	@Test
 	public void commonSerbian(){
-		assertEquals("[(нешто,0,5), (nesto,0,5,type=alias,posIncr=0), (на,6,8), (na,6,8,type=alias,posIncr=0), (ћирилици,9,17), (cirilici,9,17,type=alias,posIncr=0)]",tokens("Нешто на ћирилици"));
+		assertEquals(
+				"[(нешто,0,5), (nesto,0,5,type=alias,posIncr=0), (на,6,8), (na,6,8,type=alias,posIncr=0), (ћирилици,9,17), (cirilici,9,17,type=alias,posIncr=0)]",
+				tokens("Нешто на ћирилици"));
 	}
 
+	@Test
 	public void testSerbianSearch(){
 		a = Analyzers.getSearcherAnalyzer(IndexId.get("srwiki"));
 		commonSerbian();
 	}
 
+	@Test
 	public void testSerbianIndex(){
 		a = Analyzers.getIndexerAnalyzer(new FieldBuilder(IndexId.get("srwiki")));
 		commonSerbian();
 	}
 
+	@Test
 	public String tokens(String text){
 		try{
 			return Arrays.toString(tokensFromAnalysis(a,text,"contents"));
@@ -88,6 +106,7 @@ public class AnalysisTest extends AbstractWikiTestCase {
 			return null;
 		}
 	}
+
 
 	public static Token[] tokensFromAnalysis(Analyzer analyzer, String text, String field) throws IOException {
 		TokenStream stream = analyzer.tokenStream(field, new StringReader(text));
@@ -169,16 +188,17 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		displayTokens(analyzer,text);
 		text = "a8n sli compatible compatibly Thomas c# c++ good-thomas Good-Thomas rats RATS Frame semantics (linguistics) 16th century sixteenth .fr web.fr other";
 		displayTokens(analyzer,text);
-		displayTokens(Analyzers.getSearcherAnalyzer(IndexId.get("zhwiki")),"末朝以來藩鎮割據and some plain english 和宦官亂政的現象 as well");
+		displayTokens(Analyzers.getSearcherAnalyzer(IndexId.get("zhwiki")),
+				"末朝以來藩鎮割據and some plain english 和宦官亂政的現象 as well");
 		displayTokens(analyzer,"Thomas Goode school");
-		displayTokens(analyzer,"Agreement reply readily Gödel;");
+		displayTokens(analyzer, "Agreement reply readily Gödel;");
 		displayTokens(analyzer,"''' This is title ''' <i> italic</i>");
 		displayTokens(analyzer,"{| border = 1\n| foo bar \n|}>");
 		displayTokens(analyzer,"<math> x^2 = \\sin{2x-1}</math>");
 		displayTokens(analyzer,"200000, 200.00, 20cm X2, b10, 10.b10");
 		displayTokens(analyzer,"#REDIRECT [[Blahblah]]");
-		displayTokens(analyzer,"Nešto šđčćžš, itd.. Ћирилично писмо");
-		displayTokens(analyzer,"ضصثقفغعهخحشسيب لاتنمئءؤرﻻى");
+		displayTokens(analyzer, "Nešto šđčćžš, itd.. Ћирилично писмо");
+		displayTokens(analyzer, "ضصثقفغعهخحشسيب لاتنمئءؤرﻻى");
 		displayTokens(analyzer,"[[Image:Lawrence_Brainerd.jpg]], [[Image:Lawrence_Brainerd.jpg|thumb|300px|Lawrence Brainerd]]");
 		displayTokens(analyzer,"{{Otheruses4|the Irish rock band|other uses|U2 (disambiguation)}}");
 		displayTokens(analyzer,"{{Otheruses4|the Irish rock band|other uses|U2<ref>U2-ref</ref> (disambiguation)}} Let's see<ref>Seeing is...</ref> if template extraction works.\n==Some heading==\n And after that some text..\n\nAnd now? Not now. Then when?  ");
@@ -192,32 +212,41 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		displayTokens(new SplitAnalyzer(10,true),new StringList(l).toString());
 
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("viwiki"));
-		displayTokens(analyzer,"ä, ö, ü; Đ đViệt Nam Đ/đ ↔ D/d lastone");
+		displayTokens(analyzer, "ä, ö, ü; Đ đViệt Nam Đ/đ ↔ D/d lastone");
 
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("dewiki"));
-		displayTokens(analyzer,"Gunzen ä, ö, ü; for instance, Ø ÓóÒò Goedel for Gödel; čakšire");
+		displayTokens(analyzer,
+				"Gunzen ä, ö, ü; for instance, Ø ÓóÒò Goedel for Gödel; čakšire");
 
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("enwiki"));
-		displayTokens(analyzer," ä, ö, ü; for instance, Ø ÓóÒò Goedel for Gödel; čakšire");
+		displayTokens(analyzer,
+				" ä, ö, ü; for instance, Ø ÓóÒò Goedel for Gödel; čakšire");
 
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("srwiki"));
-		displayTokens(analyzer," ä, ö, ü; for instance, Ø ÓóÒò Goedel for Gödel; čakšire");
+		displayTokens(analyzer,
+				" ä, ö, ü; for instance, Ø ÓóÒò Goedel for Gödel; čakšire");
 
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("eswiki"));
-		displayTokens(analyzer,"lógico y matemático");
+		displayTokens(analyzer, "lógico y matemático");
 
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("mlwiki"));
-		displayTokens(analyzer,"കൊറിയ,“കൊറിയ”");
+		displayTokens(analyzer, "കൊറിയ,“കൊറിയ”");
 
 		printCodePoints("“കൊറിയ”");
 
 		QueryParser parser = new QueryParser("contents",new CJKAnalyzer());
 		Query q = parser.parse("いわさきicカード プロサッカークラブをつくろう");
 		System.out.println("Japanese in standard analyzer: "+q);
-		displayTokens(new CJKAnalyzer(),"は、工学者、大学教授、工学博士。『パンツぱんくろう』というタイトルは、阪本牙城の漫画『タンクタンクロー』が元ネタになっているといわれる。ただし、このアニメと『タンクタンクロー』に内容的な直接の関係は全く無い。");
-		displayTokens(Analyzers.getHighlightAnalyzer(IndexId.get("jawiki"),false),"鈴木 孝治（すずき こうじ、1954年 - ）『パンツぱんくろう』というタイトルは、阪本牙城の漫画『タンクタンクロー』が元ネタになっているといわれる。ただし、このアニメと『タンクタンクロー』に内容的な直接の関係は全く無い。");
-		displayTokens(Analyzers.getSearcherAnalyzer(IndexId.get("jawiki")),"『パンツぱんくろう』というタjavaイトルはbalaton");
-		displayTokens(Analyzers.getSearcherAnalyzer(IndexId.get("jawiki")),"パ ン");
+		displayTokens(
+				new CJKAnalyzer(),
+				"は、工学者、大学教授、工学博士。『パンツぱんくろう』というタイトルは、阪本牙城の漫画『タンクタンクロー』が元ネタになっているといわれる。ただし、このアニメと『タンクタンクロー』に内容的な直接の関係は全く無い。");
+		displayTokens(
+				Analyzers.getHighlightAnalyzer(IndexId.get("jawiki"), false),
+				"鈴木 孝治（すずき こうじ、1954年 - ）『パンツぱんくろう』というタイトルは、阪本牙城の漫画『タンクタンクロー』が元ネタになっているといわれる。ただし、このアニメと『タンクタンクロー』に内容的な直接の関係は全く無い。");
+		displayTokens(Analyzers.getSearcherAnalyzer(IndexId.get("jawiki")),
+				"『パンツぱんくろう』というタjavaイトルはbalaton");
+		displayTokens(Analyzers.getSearcherAnalyzer(IndexId.get("jawiki")),
+				"パ ン");
 
 		ArrayList<Aggregate> items = new ArrayList<Aggregate>();
 		analyzer = Analyzers.getSearcherAnalyzer(IndexId.get("enwiki"));

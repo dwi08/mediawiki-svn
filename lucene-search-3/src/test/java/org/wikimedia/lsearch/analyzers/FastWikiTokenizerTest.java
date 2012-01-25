@@ -9,17 +9,18 @@ import java.util.Map.Entry;
 import org.apache.lucene.analysis.LowerCaseTokenizer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
-import org.wikimedia.lsearch.analyzers.ExtToken;
-import org.wikimedia.lsearch.analyzers.FastWikiTokenizerEngine;
-import org.wikimedia.lsearch.analyzers.TokenizerOptions;
+import org.junit.Test;
 import org.wikimedia.lsearch.config.Configuration;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
 public class FastWikiTokenizerTest extends AbstractWikiTestCase {
+
 	IndexId iid;
 	TokenizerOptions options;
 
+	// TODO: split up test cases
+	@Test
 	public void testIndex(){
 		this.iid = IndexId.get("enwiki");
 		this.options = new TokenizerOptions.ContentOptions(false);
@@ -51,7 +52,8 @@ public class FastWikiTokenizerTest extends AbstractWikiTestCase {
 		assertEquals("1 [clinton] 1 [comets]",
 				tokens("{| style=\"margin:0px 5px 10px 10px; border:1px solid #8888AA;\" align=right cellpadding=3 cellspacing=3 width=360\n|- align=\"center\" bgcolor=\"#dddddd\"\n|colspan=\"3\"| '''Clinton Comets'''"));
 
-		assertEquals("2 [or] 1 [ا] 500 [lɒs] 1 [ˈændʒəˌlɪs] 0 [ˈaendʒəˌlɪs]",
+		assertEquals(
+				"2 [or] 1 [ا] 500 [lɒs] 1 [ˈændʒəˌlɪs] 0 [ˈaendʒəˌlɪs]",
 				tokens("{{IPA|[l&#594;s &#712;&aelig;nd&#658;&#601;&#716;l&#618;s]}} &lt; or &#60; &copy; &#169;&#1575;"));
 
 		assertEquals("500 [text1] 1 [text2] 1 [text3]",
@@ -84,18 +86,18 @@ public class FastWikiTokenizerTest extends AbstractWikiTestCase {
 		assertEquals("1 [u2] 1 [heading1]",
 				tokens("u2 heading1"));
 
-		assertEquals("1 [test] 1 [apostrophe's] 0 [apostrophes] 1 [and] 1 [other’s] 0 [others]",
+		assertEquals(
+				"1 [test] 1 [apostrophe's] 0 [apostrophes] 1 [and] 1 [other’s] 0 [others]",
 				tokens("Test apostrophe's and other\u2019s."));
 
-		assertEquals("1 [ａｂｃｄｅｆ] 0 [abcdef]",
-				tokens("ＡＢＣＤＥＦ"));
+		assertEquals("1 [ａｂｃｄｅｆ] 0 [abcdef]", tokens("ＡＢＣＤＥＦ"));
 
-		assertEquals("1 [１２３４５６７８９] 0 [123456789]",
-				tokens("１２３４５６７８９"));
+		assertEquals("1 [１２３４５６７８９] 0 [123456789]", tokens("１２３４５６７８９"));
 
 
 	}
 
+	@Test
 	public void testHighlight(){
 		this.iid = IndexId.get("enwiki");
 		this.options = new TokenizerOptions.Highlight(false);
@@ -201,6 +203,7 @@ public class FastWikiTokenizerTest extends AbstractWikiTestCase {
 		System.out.flush();
 	}
 
+	// TODO: convert to junit testcases
 	public static void main(String args[]) throws Exception{
 		Configuration.open();
 		String text = "ATA, [[:link]] [[zh-min-nan:Something]] [[zh-min-nana:Something]] str_replace";
@@ -388,6 +391,7 @@ public class FastWikiTokenizerTest extends AbstractWikiTestCase {
 
 	}
 
+	@Test
 	public void testVowels(){
 		assertEquals("zdrv", FastWikiTokenizerEngine.deleteVowels("zdravo"));
 		assertEquals("v g mlrd", FastWikiTokenizerEngine.deleteVowels("eve ga milorad"));
