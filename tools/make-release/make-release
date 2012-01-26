@@ -210,7 +210,7 @@ def makeRelease(version, branch, dir, prevVersion = None, prevBranch = None):
 	# Export extensions for inclusion
 	extensions = []
 	if dir > '1.17':
-		extensions = ['ConfirmEdit', 'Gadgets', 'Math', 'Nuke', 'ParserFunctions', 'Renameuser', 'Vector', 'WikiEditor']
+		extensions = ['ConfirmEdit', 'Gadgets', 'Nuke', 'ParserFunctions', 'Renameuser', 'Vector', 'WikiEditor']
 
 	for ext in extensions:
 		exportExtension(branch, ext, package)
