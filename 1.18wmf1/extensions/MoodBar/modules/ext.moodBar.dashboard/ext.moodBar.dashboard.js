@@ -2,7 +2,7 @@
  * AJAX code for Special:MoodBarFeedback
  */
 jQuery( document ).ready( function ( $ ) {
-	var formState, filterType, $fbdFiltersCheck;
+	var formState, filterType, $fbdFiltersCheck, concurrencyState = [];
 
 	/**
 	 * Saved form state
@@ -413,7 +413,8 @@ jQuery( document ).ready( function ( $ ) {
 				$( '.fbd-response-preview, .fbd-response-submit' ).removeProp( 'disabled' );
 				$( this ).find( '.fbd-response-form' ).remove();
 			}
-			
+			//remove ConcurrencyToolTip if any
+			$( this ).find( '.fbd-tooltip-overlay-wrap').remove();
 		});
 	}
 
@@ -423,7 +424,7 @@ jQuery( document ).ready( function ( $ ) {
 	 * @param e {jQuery.Event}
 	 */
 	function showResponseForm( e ) {
-		var termsLink, ula, inlineForm, $item;
+		var termsLink, ula, inlineForm, $item, itemId;
 
 		if ( $(this).hasClass( 'responder-expanded' ) ) {
 
@@ -479,7 +480,7 @@ jQuery( document ).ready( function ( $ ) {
 				).append(
 					$( '<button>' ).attr( 'class', 'fbd-response-preview' ).text ( mw.msg( 'response-preview-text' ) ).prop( 'disabled', true )
 				).append(
-					$( '<div>' ).attr( 'style', 'clear:both' )
+					$( '<div>' ).attr( 'style', 'clear: both;' )
 				);
 
 			// Get the feedbackItem
@@ -488,13 +489,14 @@ jQuery( document ).ready( function ( $ ) {
 			// Close any open responders prior to opening this one.
 			closeAllResponders();
 
-			$(this).find( '.fbd-item-response-collapsed' )
-				.addClass( 'fbd-item-response-expanded' )
-				.removeClass( 'fbd-item-response-collapsed' )
+			$(this)
+				.find( '.fbd-item-response-collapsed' )
+					.addClass( 'fbd-item-response-expanded' )
+					.removeClass( 'fbd-item-response-collapsed' )
 				.end()
 				.find( '.fbd-item-response-expanded' )
 				.parent()
-				.addClass( 'responder-expanded' );
+					.addClass( 'responder-expanded' );
 
 			$item.append(inlineForm)
 				.find( '.fbd-response-text' )
@@ -539,6 +541,24 @@ jQuery( document ).ready( function ( $ ) {
 					wikitext = wikitext.replace( /~{3,5}/g, '' ) + "\n\n~~~~"; // Remove and add signature for
 					parseWikiText( $item, wikitext );
 				});
+				
+				//check for concurrency module.
+				if ( $.concurrency !== undefined ) {
+					itemId = $item.data( 'mbccontinue' ).split( '|' )[1];
+					//concurrency module is here, attempt checkout
+					$.concurrency.check( {
+						ccaction: 'checkout',
+						resourcetype: 'moodbar-feedback-response',
+						record: itemId
+					}, function ( result ){
+						//if checkout failed, show tooltip if it hasn't been shown
+						if ( result === 'failure' && $.inArray( itemId, concurrencyState ) === -1  ) { 
+							concurrencyState.push( itemId );
+							loadConcurrencyToolTip( $item );
+						}
+					} );
+				}
+
 		}		
 		e.preventDefault();
 	}
@@ -598,8 +618,8 @@ jQuery( document ).ready( function ( $ ) {
 	function inlineMessage( $el, msg, callback) {
 		$el.empty()
 			.text( msg )
-			.delay(2000)
-			.fadeOut( 'slow', callback);
+			.delay( 2000 )
+			.fadeOut( 'slow', callback );
 	}
 	/**
 	 * Set status message for Send Response
@@ -611,20 +631,56 @@ jQuery( document ).ready( function ( $ ) {
 	function responseMessage( $el, type, head, body ) {
 		$el
 			.find( '.mw-ajax-loader' )
-			.addClass( 'fbd-item-response-' + type )
-			.removeClass( 'mw-ajax-loader' )
+				.addClass( 'fbd-item-response-' + type )
+				.removeClass( 'mw-ajax-loader' )
 			.end()
 			.find( '.fbd-ajax-heading' )
-			.text( head )
+				.text( head )
 			.end()
 			.find( '.fbd-ajax-text' )
-			.html( body )
+				.html( body )
 			.end();
+
 		setTimeout( function () {
 			reloadItem( $el, true );
-		}, 2000);
+		}, 2000 );
 	}
+	
+	/**
+	 * Display tooltip for response concurrency notification
+	 * @param $item Feedback item
+	*/
+	function loadConcurrencyToolTip( $item ) {
+		var $tooltip = $( '<div>' )
+			.attr( 'class', 'fbd-tooltip-overlay-wrap' )
+			.append(
+				$( '<div>' ).attr( 'class', 'fbd-tooltip-overlay' )
+			.append(
+				$( '<div>' ).attr( 'class', 'fbd-tooltip-pointy' )
+			).append(
+				$( '<div>' )
+					.attr( 'class', 'fbd-tooltip-title' )
+					.text( mw.msg( 'response-concurrency-notification' ) ) 
+					.prepend(
+						$( '<span>' ).attr( 'class', 'fbd-tooltip-close' ).text( 'X' )	
+					)
+			)
+		);
+		$item.find( '.fbd-item-response' ).append( $tooltip );
 
+		// Close event, closure remembers object
+		$( '.fbd-tooltip-close' )
+			.live( 'click' , function () {
+				$tooltip.remove();
+			} );
+
+		setTimeout( function () {
+			$tooltip.fadeOut( function (){
+				$tooltip.remove();
+			} );
+		}, 2500 );
+	}
+	
 	// On-load stuff
 	$( '.fbd-item-show a' ).live( 'click', showHiddenItem );
 	$( '.fbd-item-hide a' ).live( 'click', hideItem );

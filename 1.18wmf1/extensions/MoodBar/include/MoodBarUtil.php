@@ -92,8 +92,8 @@ class MoodBarUtil {
 			
 			$topResponders = iterator_to_array( $res );
 
-			// Cache the results in cache for 12 hour
-			$wgMemc->set( $key, $topResponders, 12 * 60 * 60 );
+			// Cache the results in cache for 2 hours
+			$wgMemc->set( $key, $topResponders, 2 * 60 * 60 );
 		}
 
 		return $topResponders;
@@ -135,6 +135,16 @@ class MoodBarUtil {
 
 		return $moodbarStat;
 
+	}
+
+	/**
+	 * Check if MarkAsHelpful extension is enabled
+	 * @return bool
+	 */
+	public static function isMarkAsHelpfulEnabled() {
+		global $wgMarkAsHelpfulType;
+
+		return is_array( $wgMarkAsHelpfulType ) && in_array( 'mbresponse', $wgMarkAsHelpfulType );
 	}
 
 }
