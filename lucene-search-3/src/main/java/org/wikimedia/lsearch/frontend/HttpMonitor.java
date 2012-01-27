@@ -3,24 +3,25 @@ package org.wikimedia.lsearch.frontend;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-public class HttpMonitor extends Thread {
-	static Logger log = Logger.getLogger(HttpMonitor.class);
-	protected static HttpMonitor instance;
-	/** times when http request have been started */
-	protected Hashtable<HttpHandler,Long> startTimes = new Hashtable<HttpHandler,Long>();
+final public class HttpMonitor extends Thread { // NOPMD by oren on 1/27/12 6:58 PM
+	private static final Logger LOGGER = Logger.getLogger(HttpMonitor.class);
+	private static HttpMonitor instance;
+	/** times when HTTP request have been started */
+	private final transient ConcurrentHashMap<HttpHandler,Long> startTimes = new ConcurrentHashMap<HttpHandler,Long>();
 	
 	/** threshold in milliseconds for reporting */
-	protected long threshold = 10000;
+	private final static long THREASHOLD = 10000;
 	
-	private HttpMonitor(){}
+	private HttpMonitor(){ super();}
 	
 	/** Get a running HttpMonitor instance */
-	public synchronized static HttpMonitor getInstance(){
+	public synchronized static HttpMonitor getInstance(){ // NOPMD by oren on 1/27/12 7:09 PM
 		if(instance == null){
 			instance = new HttpMonitor();
 			instance.start();
@@ -30,58 +31,58 @@ public class HttpMonitor extends Thread {
 	}
 	
 	@Override
-	public void run() {
-		log.info("HttpMonitor thread started");
+	public void run() {		
+		LOGGER.info("HttpMonitor thread started");		
+		
 		for(;;){
 			try {				
 				// sleep until next check
-				Thread.sleep(threshold);
-				long cur = System.currentTimeMillis();
+				Thread.sleep(THREASHOLD);
+				final long cur = System.currentTimeMillis();
 				
-				// check for long-running http request
-				Hashtable<HttpHandler,Long> times = (Hashtable<HttpHandler, Long>) startTimes.clone(); // clone to avoid sync
+				// check for long-running HTTP request				
+				final ConcurrentHashMap<HttpHandler,Long> times = (ConcurrentHashMap<HttpHandler, Long>) startTimes; //
 				for(Entry<HttpHandler,Long> e : times.entrySet()){
-					long timeWait = cur - e.getValue();
-					if(timeWait > threshold){					
-						log.warn(e.getKey()+" is waiting for "+timeWait+" ms on "+e.getKey().rawUri);
+					final long timeWait = cur - e.getValue();
+					if(timeWait > THREASHOLD && LOGGER.isEnabledFor(Level.WARN) ){					
+						LOGGER.warn(e.getKey()+" is waiting for "+timeWait+" ms on "+e.getKey().rawUri);
 					}
 				}
 			} catch (InterruptedException e) {
-				log.error("HttpMonitor thread interrupted",e);
+				LOGGER.error("HttpMonitor thread interrupted",e);
 			}
 		}
 	}
 	
-	/** Mark http request start */
-	public void requestStart(HttpHandler thread){
+	/** Mark HTTP request start */
+	public void requestStart(final HttpHandler thread){
 		startTimes.put(thread,System.currentTimeMillis());
 	}
 	
-	/** Mark http request end */
-	public void requestEnd(HttpHandler thread){
+	/** Mark HTTP request end */
+	public void requestEnd(final HttpHandler thread){
 		startTimes.remove(thread);
 	}
 	
 	public String printReport(){
-		StringBuilder sb = new StringBuilder();
-		
-		Hashtable<HttpHandler,Long> times = (Hashtable<HttpHandler, Long>) startTimes.clone(); // clone to avoid sync
-		ArrayList<Entry<HttpHandler, Long>> sorted = new ArrayList<Entry<HttpHandler,Long>>(times.entrySet()); 
+		final StringBuilder stringBuilder = new StringBuilder();	
+		final ConcurrentHashMap<HttpHandler,Long> times = (ConcurrentHashMap<HttpHandler, Long>) startTimes;
+		final ArrayList<Entry<HttpHandler, Long>> sorted = new ArrayList<Entry<HttpHandler,Long>>(times.entrySet()); 
 		Collections.sort(sorted, new Comparator<Entry<HttpHandler,Long>>() {
-			public int compare(Entry<HttpHandler, Long> o1,
-					Entry<HttpHandler, Long> o2) {
-				return (int) (o2.getValue() - o1.getValue());
+			public int compare(final Entry<HttpHandler, Long> originalEntry,
+					final Entry<HttpHandler, Long> otherEntry) {
+				return (int) (otherEntry.getValue() - originalEntry.getValue());
 			}
 		});
 		
-		long cur = System.currentTimeMillis();
+		final long cur = System.currentTimeMillis();
 		
 		for(Entry<HttpHandler,Long> e : sorted){
-			long timeWait = cur - e.getValue();
-			sb.append("[ "+timeWait+" ms ] "+ e.getKey().rawUri +"\n");
+			final long timeWait = cur - e.getValue();
+			stringBuilder.append("[ "+timeWait+" ms ] "+ e.getKey().rawUri +"\n");
 		}
 		
-		return sb.toString();
+		return stringBuilder.toString();
 	}
 	
 }
