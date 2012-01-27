@@ -10,7 +10,9 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 import org.wikimedia.lsearch.util.StringUtils;
@@ -21,13 +23,15 @@ import org.wikimedia.lsearch.util.StringUtils;
  */
 public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by OrenBochman on 1/15/12 3:38 AM
 	
-	private static final Logger LOG = Logger.getLogger(GlobalConfigurationTest.class.getName());
+	// private static final Logger LOGGER =
+	// Logger.getLogger(GlobalConfigurationTest.class.getName());
 	private transient GlobalConfiguration global = null;
 	private transient IndexId frTest=null;
 	
 	private transient Hashtable<String, Hashtable<String, Hashtable<String, String>>>  database;
 	
 	@Override
+	@Before
 	public void setUp() {
 		
 		super.setUp();
@@ -37,18 +41,22 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		database = global.database;
 		frTest = IndexId.get("frtest");		
 	}
+
 	@Override
+	@After
 	public void tearDown() {
+		// XXX: is this method really needed?
 		
 		database=null;
 		frTest=null;		
 	}
 
+	@Test
 	public void testPreprocessLine(){
 		
 		String winPathFixer; 
 		if(System.getProperty("os.name").startsWith("Windows")){
-			winPathFixer = File.separator;
+			winPathFixer = "/";
 		}else{
 			winPathFixer="";
 		}
@@ -57,19 +65,17 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals("preprocessLine() failed - ",text,global.preprocessLine(text));
 
 		final StringBuilder dburl = new StringBuilder("file://")
-			.append(winPathFixer)
-			.append(System.getProperty("user.dir"))
-			.append(File.separator)
-			.append("test-data")
-			.append(File.separator)
-			.append("dbs.test");
+				.append(winPathFixer).append(System.getProperty("user.dir"))
+				.append(File.separator).append("src").append(File.separator)
+				.append("test").append(File.separator)
+				.append("resources").append(File.separator).append("dbs.test");
 		text = "{"+dburl+"}: (mainsplit)";
 		
 		assertEquals("preprocessLine() failed - ","entest,rutest,srtest,kktest: (mainsplit)",global.preprocessLine(text));
 	}
 
 	 
-	
+	@Test
 	public void testRoles(){
 		// database
 		
@@ -85,7 +91,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals("10",mainpart.get("maxBufDocs"));
 	}
 	
-	
+	@Test
 	public void testReadURLSplitRoles(){
 		
 		Hashtable<String, Hashtable<String, String>>  splitroles = database.get("frtest");
@@ -95,6 +101,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertNotNull(splitroles.get("part3"));
 	}
 	
+	@Test
 	public void testParts(){
 		Hashtable<String, String> nspart1 = database.get("njawiki").get("nspart1");
 		assertEquals("false",nspart1.get("optimize"));
@@ -102,6 +109,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 
 	}
 	
+	@Test
 	public void testReadURLAdress(){
 		// search
 		Hashtable<String,ArrayList<String>>  search = global.search;
@@ -115,6 +123,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals(6,ssr.length);
 	}
 	
+	@Test
 	public void testSearchGroups(){
 		// search groups
 		Hashtable<Integer,Hashtable<String,ArrayList<String>>> searchGroups = global.searchGroup;
@@ -124,7 +133,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		Hashtable<String,ArrayList<String>> group1 = searchGroups.get(Integer.valueOf(1));
 		assertEquals("{192.168.0.6=[frtest.part3, detest], 192.168.0.4=[frtest.part1, frtest.part2]}",group1.toString());
 	}
-	
+
+	@Test
 	public void testIndex(){
 		// index
 		Hashtable<String,ArrayList<String>> index = global.index;
@@ -150,10 +160,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 
 		assertEquals("192.168.0.5",indexLocation.get("entest.mainpart"));
 		assertEquals("192.168.0.2",indexLocation.get("entest.ngram"));
-
 	}
 	
-
 	
 	public void testPrefixes(){
 
@@ -161,8 +169,9 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		Hashtable<String,NamespaceFilter> prefixes = global.namespacePrefix;
 		assertEquals(17,prefixes.size());
 		
-}
+	}
 	
+	@Test
 	public void testGlobalProperties(){
 
 		// check global properties
@@ -171,6 +180,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals("wiki rutest",prop.get("KeywordScoring.suffix"));
 	}
 	
+	@Test
 	public void testLanguages(){
 		
 		// check languages and keyword stuff
@@ -179,9 +189,9 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertFalse(global.useKeywordScoring("frtest"));
 		assertTrue(global.useKeywordScoring("srwiki"));
 		assertTrue(global.useKeywordScoring("rutest"));
+	}
 
-}
-	
+	@Test
 	public void testOaiRepository(){
 		
 		// test oai repo stuff
@@ -192,16 +202,18 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 
 		assertEquals("http://sr.wikipedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("srwiki"));
 		assertEquals("http://localhost/wiki-lucene/phase3/index.php?title=Special:OAIRepository",global.getOAIRepo("frtest"));
-}
+	}
 
+	@Test
 	public void testInitiazeSettings(){
 		//FIXME: try to add InitialiseSettings.php to testdata/
 		// InitialiseSettings test
 		assertEquals("sr",global.getLanguage("rswikimedia"));
 		assertEquals("http://rs.wikimedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("rswikimedia"));
 		assertEquals("http://commons.wikimedia.org/w/index.php?title=Special:OAIRepository",global.getOAIRepo("commonswiki"));
-}
-	
+	}
+
+	@Test
 	public void testSuggestTags(){
 		// test suggest tag
 		Hashtable<String,String> sug = global.getDBParams("entest","spell");
@@ -210,6 +222,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 
 	}
 
+	@Test
 	public void testOrphans() {
 		
 		IndexId enw = IndexId.get("enwiktionary");
@@ -221,7 +234,9 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertFalse(enIndexId.getSearchHosts().contains("oblak2"));
 	}
 
+	@Test
 	public void testIndexIds(){
+
 		IndexId entest = IndexId.get("entest");
 
 		assertTrue(entest.isMainsplit());
@@ -235,14 +250,18 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 	
 	}
 
+	@Test
 	public void testgetType(){
+
 		IndexId entest = IndexId.get("entest");	
 		
 		//assertEquals(null,entest.getSnapshotPath());
 		assertEquals("mainsplit",entest.getType());
 	}		
-	
+
+	@Test
 	public void testgetRsyncSnapshotPath(){
+
 		IndexId entest = IndexId.get("entest");	
 
 		assertEquals("/mwsearch2/snapshot/entest",entest.getRsyncSnapshotPath());
@@ -260,7 +279,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		//assertEquals(null,enrest.getIndexPath());
 
 	}		
-	
+
+	@Test
 	public void testGetFrench(){		
 		
 		
@@ -272,7 +292,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals(3,frTest.getSplitFactor());
 
 	}		
-	
+
+	@Test
 	public void testGetFrenchPart(){
 		
 		
@@ -287,11 +308,14 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertFalse(detest.isLogical());
 
 	}		
-	
+
+	/**
+	 * check nssplit configuration option.
+	 * this configuration option should split the index into servral parts
+	 */
+	@Test
 	public void testGetNjPart(){
 
-		
-		// check nssplit
 		IndexId njawiki = IndexId.get("njawiki");
 		assertTrue(njawiki.isLogical());
 		assertFalse(njawiki.isSplit());
@@ -310,7 +334,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals(2,njawiki2.getPartNum());
 		assertEquals("[192.168.0.1]",njawiki2.getSearchHosts().toString());
 	}
-	
+
+	@Test
 	public void testEnSpell(){
 
 		IndexId sug = IndexId.get("entest.spell");
@@ -318,7 +343,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertFalse(sug.isLogical());
 		assertEquals(sug,sug.getSpell());
 	}
-	
+
+	@Test
 	public void testEnSubdivided(){
 
 		IndexId sub1 = IndexId.get("entest.mainpart.sub1");
@@ -337,7 +363,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		//assertNull(enmain.getImportPath());
 
 	}
-	
+
+	@Test
 	public void testHmSubdivided(){
 
 		
@@ -361,7 +388,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals("[192.168.0.1]",hhl1.getSearchHosts().toString());
 
 	}
-	
+
+	@Test
 	public void testEnTitles(){
 
 		
@@ -370,7 +398,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals(2,ent.getSplitFactor());
 		//assertEquals("[en-titles.tspart2, en-titles.tspart1]",ent.getPhysicalIndexes().toString());
 	}
-	
+
+	@Test
 	public void testEnTitlesParts(){
 
 		IndexId ents1 = IndexId.get("en-titles.tspart1");
@@ -391,7 +420,8 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 		assertEquals("mw",mwt.getInterwikiBySuffix("mediawikiwiki"));
 		assertEquals("{mediawikiwiki=mediawikiwiki, metawiki=metawiki}",mwt.getSuffixToDbname().toString());
 	}
-	
+
+	@Test
 	public void testEnSpellPrecursor(){
 		
 		IndexId ep = IndexId.get("entest.spell.pre");
@@ -406,6 +436,7 @@ public class GlobalConfigurationTest extends AbstractWikiTestCase { // NOPMD by 
 
 	}
 
+	@Test
 	public void testComplexWildcard(){
 		Pattern p = Pattern.compile(StringUtils.wildcardToRegexp("(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki|.))*.spell"));
 		assertFalse(p.matcher("enwiki.spell").matches());
