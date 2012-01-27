@@ -14,6 +14,7 @@
     <description>A search engine extension for MediaWiki</description>
     <inceptionYear>18/1/2012</inceptionYear>
     <url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
+    
     <scm>
     	<developerConnection>oren</developerConnection>
     	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
@@ -24,11 +25,11 @@
     	<system>jenkins</system>
     	<url>https://integration.mediawiki.org/ci/</url>
     </ciManagement>
+   
     <issueManagement>
     	<url>https://bugzilla.wikimedia.org</url>
     	<system>bugzilla</system>
     </issueManagement>
-
 
     <properties>
         <!-- libraries versions -->
@@ -40,23 +41,22 @@
          -->
         <junit.version>4.10</junit.version>         
         <lucene.version>2.4.1</lucene.version>
-
+        <antlr.version>3.4</antlr.version>
 
         <!-- misc project properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- >javac.src.version>1.6</javac.src.version>
-        <javac.target.version>1.6</javac.target.version -->
+        <javac.src.version>javac.src.version>1.6</javac.src.version>
+        <javac.target.version>1.6</javac.target.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
         <implementation.build>${maven.build.timestamp}</implementation.build>
     </properties>
 
+    <build>  <defaultGoal>install</defaultGoal>
+  	
+    <pluginManagement>
     
-
-  <build>
-  
-  <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -85,12 +85,25 @@
 				<show>protected</show>          		
           		<linksource>true</linksource>
 				</configuration>
-			</plugin>        
+			</plugin>           
         
         
+           <plugin>
+
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr3-maven-plugin</artifactId>
+                <version>${antlr.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
         
       </plugins>
-      
       
       
       
@@ -102,10 +115,11 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         
         <configuration>
+        <!--  javadocs against which to link our own javadoc -->
 	    	<links>
 				<link>http://commons.apache.org/lang/api</link>
 				<link>http://lucene.apache.org/java/3_5_0/api</link>
-				<link>http://java.sun.com/j2se/1.5.0/docs/api</link>						
+				<link>http://java.sun.com/j2se/1.6.0/docs/api</link>						
 			</links>
 			<show>protected</show>          		
 	    	<linksource>true</linksource>
@@ -115,6 +129,9 @@
 </build>
       
  <dependencies>
+ 
+<!-- JUnit for Unit Testing -->
+ 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -122,23 +139,36 @@
       <scope>test</scope>
     </dependency>
 
+<!-- Hamcrest for assertThat testing format-->
+
+   <dependency>
+    	<groupId>org.hamcrest</groupId>
+    	<artifactId>hamcrest-all</artifactId>
+    	<version>1.1</version>
+    </dependency>
+
+<!-- log4j since java servers should not write to the console -->
+
     <dependency>
     	<groupId>log4j</groupId>
     	<artifactId>log4j</artifactId>
     	<version>1.2.9</version>
     </dependency>
-     
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-analyzers</artifactId>
-    	<version>${lucene.version}</version>
-    </dependency>
+
+<!-- Lucene provides search capabilities -->     
      
     <dependency>
     	<groupId>org.apache.lucene</groupId>
     	<artifactId>lucene-core</artifactId>
     	<version>${lucene.version}</version>
     </dependency>
+
+    <dependency>
+    	<groupId>org.apache.lucene</groupId>
+    	<artifactId>lucene-analyzers</artifactId>
+    	<version>${lucene.version}</version>
+    </dependency>
+
     
     <dependency>
     	<groupId>org.apache.lucene</groupId>
@@ -146,6 +176,7 @@
     	<version>${lucene.version}</version>
     </dependency>
     
+<!-- Lucene integration of Snowball Stemmers  -->
     <dependency>
     	<groupId>org.apache.lucene</groupId>
     	<artifactId>lucene-snowball</artifactId>
@@ -170,6 +201,7 @@
     	<version>3.0</version>
     </dependency>
     
+    <!-- web services
     <dependency>
     	<groupId>ws-commons-util</groupId>
     	<artifactId>ws-commons-util</artifactId>
@@ -179,12 +211,11 @@
     <dependency>
     	<groupId>mysql</groupId>
     	<artifactId>mysql-connector-java</artifactId>
-    	<!--
+   	
     	  <version>5.1.18</version>
-    	 -->
-    	   <version>3.1.11</version>
+    	
     </dependency>
-    
+     -->
 
     
     <dependency>
@@ -194,9 +225,15 @@
 	    <scope>system</scope>
 	    <systemPath>${project.basedir}/lib/mwdumper.jar</systemPath>
 	</dependency>
-    
-  
-  </dependencies>
+	
+     <!-- We need to have the ANTLR runtime jar when running and compiling. -->
+    <dependency>
+    	<groupId>org.antlr</groupId>
+    	<artifactId>antlr-runtime</artifactId>
+    	<version>${antlr.version}</version>
+    	<scope>compile</scope>
+    </dependency>
+ </dependencies>
 
   <reporting>
 		<plugins>
