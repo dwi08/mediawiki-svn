@@ -1,17 +1,15 @@
 grammar wikiTable;
 
 @header {
-package p;
+package org.wikimedia.antlrSpecs;
+//import org.antlr.test;
+} // not auto-copied to lexer
 
-}
 
-@header {
-package org.wikimedia.antlrSpec;
-import org.antlr.test;} // not auto-copied to lexer
 @lexer::header{
-package org.wikimedia.antlrSpec;
+package org.wikimedia.antlrSpecs;
 
-//
+
 }
 
 @lexer::members {
