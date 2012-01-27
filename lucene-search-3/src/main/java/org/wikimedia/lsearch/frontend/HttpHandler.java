@@ -14,11 +14,23 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
  * Simple HTTP 1.1 handler, used for Index and Search daemons
  * for more info about the protocol see handle() method
+ * 
+ * 
+ * NOTE: we are using old JDK 1.1 classes which don't have
+ * a very good unicode support, so extra care needs to be taken
+ * so everything is converted out right. The old classes are used
+ * because they enable better byte-oriented operations.
+ *
+ * $LastChangedDate:$
+ * $LastChangedRevision:$
+ * $LastChangedBy:$ 
  * 
  * @author Brion Vibber
  *
@@ -26,11 +38,7 @@ import org.apache.log4j.Logger;
 abstract public class HttpHandler extends Thread {
 	protected static org.apache.log4j.Logger log = Logger.getLogger(HttpHandler.class);
 
-	/** NOTE: we are using old JDK 1.1 classes which don't have
-	 * a very good unicode support, so extra care needs to be taken
-	 * so everything is converted out right. The old classes are used
-	 * because they enable better byte-oriented operations.  
-	 */
+
 	/** Client input stream */
 	DataInputStream istrm;
 	/** Client output stream */
@@ -52,6 +60,10 @@ abstract public class HttpHandler extends Thread {
 	protected String charset = "none";
 	boolean headersSent;
 
+	/**
+	 * collection of the headers
+	 */
+	@SuppressWarnings("rawtypes")
 	protected HashMap<String, Comparable> headers;
 	
 	protected static HttpMonitor monitor = null; 
@@ -63,7 +75,9 @@ abstract public class HttpHandler extends Thread {
 			istrm = new DataInputStream(new BufferedInputStream(s.getInputStream()));
 			ostrm = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream(),"utf-8")));			
 		} catch (IOException e) {
-			log.error("I/O in opening http socket.",e);
+			if (log.isEnabledFor(Level.ERROR)){
+				log.error("I/O in opening http socket.",e);
+			}
 		}
 	}
 
@@ -91,7 +105,7 @@ abstract public class HttpHandler extends Thread {
 	public boolean isKeepAlive(){
 		if(version.equals("HTTP/1.0")){
 			if(headers.get("Connection")!=null &&
-					((String)headers.get("Connection")).equalsIgnoreCase("Keep-Alive"))
+					((String)headers.get("Connection")).equalsIgnoreCase("keep-alive"))
 				return true;
 			else
 				return false;
@@ -112,12 +126,19 @@ abstract public class HttpHandler extends Thread {
 			do{			
 				headersSent = false;
 				handle();
-				log.debug("request handled.");
+				if (log.isEnabledFor(Level.DEBUG)){
+					log.debug("request handled.");
+				}
+				
 			} while(isKeepAlive());
-			log.debug("No keep-alive, closing connection ... ");
+			if (log.isEnabledFor(Level.DEBUG)){
+				log.debug("No keep-alive, closing connection ... ");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error(e.getMessage(),e);
+			if (log.isEnabledFor(Level.DEBUG)){
+				log.error(e.getMessage(),e);
+			}
 		} finally {
 			if (!headersSent) {
 				sendError(500, "Internal server error", "An internal error occurred: no header sent.");
@@ -133,7 +154,7 @@ abstract public class HttpHandler extends Thread {
 	/** 
 	 * Simple HTTP protocol; Used for search (GET) and indexing (POST) 
 	 * GET requests syntax:
-	 *   URL path format: /operation/database/searchterm
+	 *   URL path format: /operation/database/search-term
 	 *   The path should be URL-encoded UTF-8 (standard IRI).
 	 * 
 	 *   Additional parameters may be specified in a query string:
@@ -148,7 +169,9 @@ abstract public class HttpHandler extends Thread {
 	 *   typically, this means: /updatePage?db=entest&title=Main%20Page
 	 *   and the POST content is article text
 	 */
+	@SuppressWarnings("rawtypes")
 	protected void handle() {
+		
 		headers = new HashMap<String, Comparable>();
 
 		// parse first line		
@@ -176,9 +199,10 @@ abstract public class HttpHandler extends Thread {
 		try {
 			uri = new URI("http://localhost:8123" + rawUri);
 		} catch (URISyntaxException e) {
-			sendError(400, "Bad Request",
-			"Couldn't make sense of the given URI.");
-			log.warn("Bad URI in request: " + rawUri,e);
+			sendError(400, "Bad Request", "Couldn't make sense of the given URI.");
+			if (log.isEnabledFor(Level.WARN)) {
+				log.warn("Bad URI in request: " + rawUri,e);
+			}
 			return;
 		}	
 
@@ -203,7 +227,9 @@ abstract public class HttpHandler extends Thread {
 
 	protected void sendHeaders(int code, String message, int contentLen) {
 		if (headersSent) {
-			log.warn("Asked to send headers, but already sent! ("+code+" "+message+")");
+			if (log.isEnabledFor(Level.WARN)){ 
+				log.warn("Asked to send headers, but already sent! ("+code+" "+message+")");
+			}
 			return;
 		}
 		sendOutputLine("HTTP/1.1 "+code+" "+message);
@@ -232,7 +258,9 @@ abstract public class HttpHandler extends Thread {
 
 	/** Send single line to client. The lines are buffered and sent out in chunks */
 	protected void sendOutputLine(String sout) {
-		log.debug(">>>"+sout);
+		if (log.isEnabledFor(Level.DEBUG)){
+			log.debug(">>>"+sout);
+		}
 		// write to buffer instead directly to stream!
 		char[] s = (sout+"\r\n").toCharArray(); 
 		if(bufLength + s.length >= outputBuffer.length)
@@ -247,7 +275,9 @@ abstract public class HttpHandler extends Thread {
 
 	/** Sending raw data to client */
 	protected void sendBytes(char[] data){
-		log.debug(">>> Writing "+data.length+" bytes of data");
+		if (log.isEnabledFor(Level.DEBUG)){
+			log.debug(">>> Writing "+data.length+" bytes of data");
+		}
 		flushOutput();
 		ostrm.write(data);
 	}
@@ -266,7 +296,9 @@ abstract public class HttpHandler extends Thread {
 			//log.error("Internal error, read "+read+" bytes istead of "+contentLength+" from POST request");
 			return data; 
 		} catch (IOException e) {
-			log.warn("Could not send raw data in bytes to output stream.",e);
+			if (log.isEnabledFor(Level.WARN)){
+				log.warn("Could not send raw data in bytes to output stream.",e);
+			}
 		}
 		return null;
 	}
@@ -278,9 +310,13 @@ abstract public class HttpHandler extends Thread {
 		try {
 			sin = istrm.readLine();
 		} catch (IOException e) {
-			log.warn("I/O problem in reading from stream",e);
+			if (log.isEnabledFor(Level.WARN)){
+				log.warn("I/O problem in reading from stream",e);
+				}
 		}
-		log.debug("<<<"+ sin);
+		if (log.isEnabledFor(Level.DEBUG)){
+			log.debug("<<<"+ sin);
+		}		
 		return sin;
 	}
 
