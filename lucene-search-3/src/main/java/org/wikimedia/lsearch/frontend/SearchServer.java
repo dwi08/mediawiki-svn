@@ -99,9 +99,7 @@ public class SearchServer extends Thread {
 					log.error("accept() error: " + e.getMessage(),e);
 					// be sure to close all sockets
 					if(client != null){
-						try{ client.getInputStream().close(); } catch(Exception e1) {}
-						try{ client.getOutputStream().close(); } catch(Exception e1) {}
-						try{ client.close(); } catch(Exception e1) {}
+						closeQuietly(client, log);
 					}
 					continue;
 				}
@@ -112,9 +110,7 @@ public class SearchServer extends Thread {
 					log.error("too many connections, skipping a request");
 					// be sure to close all sockets
 					if(client != null){
-						try{ client.getInputStream().close(); } catch(Exception e1) {}
-						try{ client.getOutputStream().close(); } catch(Exception e1) {}
-						try{ client.close(); } catch(Exception e1) {}
+						closeQuietly(client, log);
 					}
 					continue;
 				} else {
@@ -123,12 +119,27 @@ public class SearchServer extends Thread {
 				}
 			} catch(Exception e){
 				log.error("Search server exception: "+e.getMessage(),e);
-				try{ client.getInputStream().close(); } catch(Exception e1) {}
-				try{ client.getOutputStream().close(); } catch(Exception e1) {}
-				try{ client.close(); } catch(Exception e1) {}
-			}
-		}
+			} finally {
+				closeQuietly(client,log); 				
+			}			
+		}		
 	}
+	
+	/**
+	 * clean up resources
+	 *  
+	 * @param resource
+	 */
+	protected static void closeQuietly(final Socket resource, final Logger LOGGER ) {
+		  try {
+		    if (resource != null) {
+		      resource.close();
+		    }
+		  } catch( Exception ex ) {
+			  LOGGER.error("Exception during Resource.close()", ex );
+		  }
+	}
+
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
