@@ -4,6 +4,10 @@
 # Comparison of edit counts for Huggle 3 test among templates z64 (http://en.wikipedia.org/wiki/Template:Uw-error1-default) / z65 (http://en.wikipedia.org/wiki/Template:Uw-error1-short)
 #  
 
+
+source('/home/rfaulk/WSOR/message_templates/R/R_helper_functions.R')
+
+
 # Read aggregated results for z64
 
 metrics_ec_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z70_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
@@ -16,15 +20,7 @@ metrics_ec_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_
 metrics_blocks_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z71_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
 
 
-# Compute max edit counts
-
-max_ec_z64_ns_0 = max(append(metrics_ec_z64['ns_0_revisions_before'][[1]], metrics_ec_z64['ns_0_revisions_after'][[1]]))
-max_ec_z64_ns_3 = max(append(metrics_ec_z64['ns_3_revisions_before'][[1]], metrics_ec_z64['ns_3_revisions_after'][[1]]))
-max_ec_z65_ns_0 = max(append(metrics_ec_z65['ns_0_revisions_before'][[1]], metrics_ec_z65['ns_0_revisions_after'][[1]]))
-max_ec_z65_ns_3 = max(append(metrics_ec_z65['ns_3_revisions_before'][[1]], metrics_ec_z65['ns_3_revisions_after'][[1]]))
-
-
-# Compute the increase 
+# Compute the change in edits after the template
 
 z64_ns0 = (metrics_ec_z64$ns_0_revisions_after - metrics_ec_z64$ns_0_revisions_before) / metrics_ec_z64$ns_0_revisions_before
 z65_ns0 = (metrics_ec_z65$ns_0_revisions_after - metrics_ec_z65$ns_0_revisions_before / metrics_ec_z65$ns_0_revisions_before
