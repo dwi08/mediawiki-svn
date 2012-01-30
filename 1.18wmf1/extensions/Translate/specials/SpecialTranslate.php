@@ -60,6 +60,7 @@ class SpecialTranslate extends SpecialPage {
 		$errors = array();
 
 		if ( $this->options['group'] === '' ) {
+			TranslateUtils::addSpecialHelpLink( $wgOut, 'Help:Extension:Translate/Translation_example' );
 			$this->groupInformation();
 			return;
 		}
@@ -81,6 +82,7 @@ class SpecialTranslate extends SpecialPage {
 			$this->options['group'] = $this->defaults['group'];
 		}
 
+		TranslateUtils::addSpecialHelpLink( $wgOut, 'Help:Extension:Translate' );
 		// Show errors nicely.
 		$wgOut->addHTML( $this->settingsForm( $errors ) );
 

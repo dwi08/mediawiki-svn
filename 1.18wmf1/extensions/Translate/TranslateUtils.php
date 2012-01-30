@@ -4,7 +4,7 @@
  *
  * @file
  * @author Niklas Laxström
- * @copyright Copyright © 2007, 2009 Niklas Laxström
+ * @copyright Copyright © 2007, 2012 Niklas Laxström
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
  */
 
@@ -312,4 +312,27 @@ class TranslateUtils {
 		return $selector;
 	}
 
+	/**
+	 * @since 2012-01-12
+	 */
+	public static function addSpecialHelpLink( OutputPage $out, /*string*/$to, $overrideBaseUrl = false ) {
+		$out->addModules( 'ext.translate.helplink' );
+		$text = wfMessage( 'translate-gethelp' )->escaped();
+
+		if( $overrideBaseUrl ) {
+			$helpUrl = $to;
+		} else {
+			$helpUrl = "//www.mediawiki.org/wiki/Special:MyLanguage/$to";
+		}
+
+		$link = Html::rawElement(
+			'a',
+			array(
+				'href' => $helpUrl,
+				'target' => '_blank'
+			),
+			"$text" );
+		$wrapper = Html::rawElement( 'div', array( 'class' => 'mw-translate-helplink' ), $link );
+		$out->addHtml( $wrapper );
+	}
 }
