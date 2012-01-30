@@ -72,6 +72,29 @@ $messages['ar'] = array(
 الرجاء المحاولة مرة أخرى لاحقاً.',
 );
 
+/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
+ * @author EugeneZelenko
+ * @author Wizardist
+ */
+$messages['be-tarask'] = array(
+	'globalcollectgateway' => 'Зрабіце ахвяраваньне зараз',
+	'globalcollect_gateway-desc' => 'Шлюз апрацоўкі плацяжоў GlobalCollect',
+	'globalcollect_gateway-response-9130' => 'Няслушная краіна.',
+	'globalcollect_gateway-response-9140' => 'Няслушная валюта.',
+	'globalcollect_gateway-response-9150' => 'Няслушная мова.',
+	'globalcollect_gateway-response-400530' => 'Няслушны мэтад плацяжу.',
+	'globalcollect_gateway-response-430306' => 'Вашая крэдытная картка пратэрмінаваная. Калі ласка, выкарыстайце іншую картку ці выберыце іншыя мэтады плацяжу.',
+	'globalcollect_gateway-response-430330' => 'Няслушны нумар карткі.',
+	'globalcollect_gateway-response-430421' => 'Вашая картка не прайшла праверку. Калі ласка, упэўніцеся, што ўсе зьвесткі па картцы слушныя, ці скарыстайцеся іншай карткай.',
+	'globalcollect_gateway-response-430360' => 'Немагчыма аўтарызаваць транзакцыю. Калі ласка, скарыстайцеся іншай карткай ці выберыце іншы мэтад плацяжу.',
+	'globalcollect_gateway-response-430285' => 'Немагчыма аўтарызаваць транзакцыю. Калі ласка, скарыстайцеся іншай карткай ці выберыце іншы мэтад плацяжу.',
+	'globalcollect_gateway-response-21000150' => 'Няслушны нумар банкаўскага рахунку.',
+	'globalcollect_gateway-response-21000155' => 'Няслушны код банку.',
+	'globalcollect_gateway-response-21000160' => 'Няслушны нумар рахунку giro.',
+	'globalcollect_gateway-response-default' => 'У час апрацоўкі Вашай транзакцыі ўзьнікла памылка.
+Калі ласка, паспрабуйце зноў пазьней.',
+);
+
 /** Breton (Brezhoneg)
  * @author Fulup
  */
@@ -603,6 +626,21 @@ Por favor tente novamente mais tarde.',
  */
 $messages['ro'] = array(
 	'globalcollectgateway' => 'Faceți o donație acum',
+	'globalcollect_gateway-desc' => 'Procesarea plății prin GlobalCollect',
+	'globalcollect_gateway-response-9130' => 'Țară incorectă.',
+	'globalcollect_gateway-response-9140' => 'Monedă incorectă.',
+	'globalcollect_gateway-response-9150' => 'Limbă incorectă.',
+	'globalcollect_gateway-response-400530' => 'Metodă de plată incorectă.',
+	'globalcollect_gateway-response-430306' => 'Cardul dumneavoastră de credit a expirat. Vă rugăm să încercați cu un alt card sau să alegeți o altă metodă de plată pusă la dispoziție de noi.',
+	'globalcollect_gateway-response-430330' => 'Număr de card incorect.',
+	'globalcollect_gateway-response-430421' => 'Cardul dumneavoastră de credit nu a putut fi validat. Vă rugăm fie să verificați dacă toate informațiile corespund cardului dumneavoastră de credit, fie să încercați cu un alt card.',
+	'globalcollect_gateway-response-430360' => 'Tranzacția nu a putut fi autorizată. Vă rugăm să încercați cu un alt card sau să alegeți o altă metodă de plată pusă la dispoziție de noi.',
+	'globalcollect_gateway-response-430285' => 'Tranzacția nu a putut fi autorizată. Vă rugăm să încercați cu un alt card sau să alegeți o altă metodă de plată pusă la dispoziție de noi.',
+	'globalcollect_gateway-response-21000150' => 'Număr de cont incorect.',
+	'globalcollect_gateway-response-21000155' => 'Cod de bancă incorect.',
+	'globalcollect_gateway-response-21000160' => 'Număr de cont giro incorect.',
+	'globalcollect_gateway-response-default' => 'S-a produs o eroare în timpul procesării tranzacției dumneavoastră.
+Vă rugăm să reîncercați mai târziu.',
 );
 
 /** Russian (Русский)
