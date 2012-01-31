@@ -696,6 +696,9 @@ class LocalFile extends File {
 		$dir = array_shift( $files );
 		$this->purgeThumbList( $dir, $files );
 
+		// Purge any custom thumbnail caches
+		wfRunHooks( 'LocalFilePurgeThumbnails', array( $this, $archiveName ) );
+
 		// Directory should be empty, delete it too. This will probably suck on
 		// something like NFS or if the directory isn't actually empty, so hide
 		// the warnings :D
@@ -725,6 +728,9 @@ class LocalFile extends File {
 		$files = $this->getThumbnails();
 		$dir = array_shift( $files );
 		$this->purgeThumbList( $dir, $files );
+
+		// Purge any custom thumbnail caches
+		wfRunHooks( 'LocalFilePurgeThumbnails', array( $this, false ) );
 
 		// Purge the squid
 		if ( $wgUseSquid ) {
