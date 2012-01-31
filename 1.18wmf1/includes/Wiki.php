@@ -156,7 +156,7 @@ class MediaWiki {
 		{
 			$this->context->setTitle( SpecialPage::getTitleFor( 'Badtitle' ) );
 			// Die now before we mess up $wgArticle and the skin stops working
-			throw new ErrorPageError( 'badtitle', 'badtitletext' );
+			throw new BadTitleError();
 		// If the user is not logged in, the Namespace:title of the article must be in
 		// the Read array in order for the user to see it. (We have to check here to
 		// catch special pages etc. We check again in Article::view())
@@ -191,7 +191,7 @@ class MediaWiki {
 			} else {
 				$this->context->setTitle( SpecialPage::getTitleFor( 'Badtitle' ) );
 				wfProfileOut( __METHOD__ );
-				throw new ErrorPageError( 'badtitle', 'badtitletext' );
+				throw new BadTitleError();
 			}
 		// Redirect loops, no title in URL, $wgUsePathInfo URLs, and URLs with a variant
 		} elseif ( $request->getVal( 'action', 'view' ) == 'view' && !$request->wasPosted()
