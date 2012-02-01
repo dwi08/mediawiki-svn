@@ -217,13 +217,6 @@ class WikiEditorHooks {
 	public static function editPageShowEditFormInitial( &$toolbar ) {
 		global $wgOut;
 
-		if ( isset( $feature['remote'] ) && self::isEnabled( 'remote' ) ) {
-			$params = IdentityApi::getAuthParams();
-			if ( $params !== null ) { 
-				$wgOut->addInlineScript( Skin::makeVariablesScript( $params ) );
-			}
-		}
-	
 		// Add modules for enabled features
 		foreach ( self::$features as $name => $feature ) {
 			if ( isset( $feature['modules'] ) && self::isEnabled( $name ) ) {
@@ -293,6 +286,16 @@ class WikiEditorHooks {
 		}
 		
 		$vars['wgWikiEditorEnabledModules'] = $enabledModules;
+
+		if ( isset( $feature['remote'] ) && self::isEnabled( 'remote' ) ) {
+			$params = IdentityApi::getAuthParams();
+			if ( $params !== null ) {
+				foreach ($params as $key => $val) { 
+					$vars[ 'wgRemoteEditor' + ucfirst( $key ) ] = $val;
+				}
+			}
+		}
+
 		return true;
 	}
 }

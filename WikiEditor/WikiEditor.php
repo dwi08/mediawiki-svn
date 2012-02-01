@@ -152,6 +152,21 @@ $wgResourceModules += array(
 			'jquery.wikiEditor.dialogs',
 		),
 	),
+	'jquery.wikiEditor.remoteEditor' => $wikiEditorTpl + array(
+		'scripts' => 'jquery.wikiEditor.remoteEditor.js',
+		'dependencies' => array(
+			'jquery.wikiEditor',
+			'jquery.wikiEditor.dialogs',
+		)
+	),
+	'jquery.wikiEditor.remoteIframe' => $wikiEditorTpl + array(
+		'scripts' => 'jquery.wikiEditor.remoteIframe.js',
+		'dependencies' => array(
+			'jquery.wikiEditor',
+			'jquery.wikiEditor.dialogs',
+			'jquery.wikiEditor.remoteEditor',
+		)
+	),
 	'jquery.wikiEditor.templateEditor' => $wikiEditorTpl + array(
 		'scripts' => 'jquery.wikiEditor.templateEditor.js',
 		'dependencies' => array(
@@ -513,10 +528,11 @@ $wgResourceModules += array(
 		)
 	),
 	'ext.wikiEditor.remote' => $wikiEditorTpl + array(
-		'scripts' => '',
+		'scripts' => 'ext.wikiEditor.remote.js',
 		'dependencies' => array(
 			'ext.wikiEditor',
 			'ext.wikiEditor.toolbar',
+			'jquery.wikiEditor.remoteIframe',
 			// JSON?
 		)
 	),

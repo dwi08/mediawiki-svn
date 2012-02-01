@@ -722,8 +722,7 @@ context.fn = $.extend( context.fn, {
 	 * Sets up the iframe in place of the textarea to allow more advanced operations
 	 */
 	'setupIframe': function() {
-		var remoteEditor = new remoteEditor( context.$textArea );
-		remoteEditor.launchEditor();
+		var remoteEditor = context.$textArea.remoteEditor();
 /*
 		context.$iframe = $( '<iframe></iframe>' )
 			.attr( {
@@ -1405,6 +1404,7 @@ context.fn = $.extend( context.fn, {
 			range2.select();
 		}
 		return context.$textarea;
+		*/
 	},
 	/**
 	 * Scroll a textarea to the current cursor position. You can set the cursor position with setSelection()
@@ -1445,4 +1445,4 @@ context.fn = $.extend( context.fn, {
 /* Setup the IFrame */
 context.fn.setupIframe();
 
-} } )( jQuery );
+}; } )( jQuery );

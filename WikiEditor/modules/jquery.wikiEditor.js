@@ -271,6 +271,7 @@ if ( !context || typeof context == 'undefined' ) {
 				modules = data;
 			}
 			for ( var module in modules ) {
+				console.log( "module: " + module );
 				// Check for the existance of an available / supported module with a matching name and a create function
 				if ( typeof module == 'string' && typeof $.wikiEditor.modules[module] !== 'undefined' && 
 						$.wikiEditor.isSupported( $.wikiEditor.modules[module] ) )
