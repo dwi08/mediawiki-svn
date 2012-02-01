@@ -187,7 +187,7 @@ class DumpInterwiki extends Maintenance {
 					$lang = $matches[1];
 				}
 
-				$this->makeLink( array( 'iw_prefix' => $db, 'iw_url' => $site->suffix, 'iw_local' => 1 ), "__sites" );
+				$this->makeLink( array( 'iw_prefix' => $db, 'iw_url' => $site->suffix ), "__sites" );
 				if ( !$site ) {
 					$this->error( "Invalid database $db\n" );
 					continue;
@@ -215,8 +215,6 @@ class DumpInterwiki extends Maintenance {
 		}
 	}
 
-	# ------------------------------------------------------------------------------------------
-
 	# Executes part of an INSERT statement, corresponding to all interlanguage links to a particular site
 	function makeLanguageLinks( &$site, $source ) {
 		# Actual languages with their own databases
@@ -242,12 +240,7 @@ class DumpInterwiki extends Maintenance {
 				array_key_exists( $entry['iw_prefix'], $this->prefixRewrites[$source] ) ) {
 			$entry['iw_prefix'] = $this->prefixRewrites[$source][$entry['iw_prefix']];
 		}
-		if ( !array_key_exists( "iw_local", $entry ) ) {
-			$entry["iw_local"] = 0;
-		}
-		if ( !array_key_exists( "iw_url", $entry ) ) {
-			return;
-		}
+
 		if ( $this->dbFile ) {
 			$this->dbFile->set( "{$source}:{$entry['iw_prefix']}", trim( "{$entry['iw_local']} {$entry['iw_url']}" ) );
 		} else {
