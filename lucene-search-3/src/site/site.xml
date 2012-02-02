@@ -5,8 +5,11 @@
     xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <bannerLeft>
 	<name>MediaWiki Bazzar</name>
-	<src>SearchNG.svg</src>    
+	
+	<alt>MediaWiki Bazzar Logo</alt>	    
+    <src>https://integration.mediawiki.org/ci/job/Lucene-Search-3/site/images/SearchNG.svgsrc>
   </bannerLeft>
+  
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
