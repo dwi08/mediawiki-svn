@@ -4,9 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <bannerLeft>
-	<name>MediaWiki Bazzar...</name>
-	<src>...</src>
-    <href>...</href>
+	<name>MediaWiki Bazzar</name>
+	<src>SearchNG.svg</src>    
   </bannerLeft>
   <body>
     <menu name="Overview">
