@@ -1,283 +1,279 @@
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>bazzar</groupId>
-    <artifactId>bazzar</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
- 	<packaging>jar</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>bazzar</groupId>
+	<artifactId>bazzar</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-    <organization>
-    	<name>mediawiki</name>
-    	<url>www.mediawiki.org</url>
-    </organization>
-    <name>search lucene 3</name>
-    <description>A search engine extension for MediaWiki</description>
-    <inceptionYear>18/1/2012</inceptionYear>
-    <url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
-    
-    <scm>
-    	<developerConnection>oren</developerConnection>
-    	<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
-    	<connection>svn+ssh</connection>
-    </scm>
-    
-    <ciManagement>
-    	<system>jenkins</system>
-    	<url>https://integration.mediawiki.org/ci/</url>
-    </ciManagement>
-   
-    <issueManagement>
-    	<url>https://bugzilla.wikimedia.org</url>
-    	<system>bugzilla</system>
-    </issueManagement>
+	<organization>
+		<name>mediawiki</name>
+		<url>www.mediawiki.org</url>
+	</organization>
+	<name>search lucene 3</name>
+	<description>A search engine extension for MediaWiki</description>
+	<inceptionYear>18/1/2012</inceptionYear>
+	<url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
 
-    <properties>
-        <!-- libraries versions -->
-        
-         
-        <tomcat.version>6.0.29</tomcat.version>
-        <solr.version>1.4.1</solr.version>
-        <lucene.version>2.3.0</lucene.version>        
-        <junit.version>4.10</junit.version>         
-        <lucene.version>2.4.1</lucene.version>
-        <antlr.version>3.4</antlr.version>
+	<scm>
+		<developerConnection>oren</developerConnection>
+		<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
+		<connection>svn+ssh</connection>
+	</scm>
 
-        <!-- misc project properties -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <javac.src.version>1.6</javac.src.version>
-        <javac.target.version>1.6</javac.target.version>
-        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
-        <implementation.build>${maven.build.timestamp}</implementation.build>
-    </properties>
+	<ciManagement>
+		<system>jenkins</system>
+		<url>https://integration.mediawiki.org/ci/</url>
+	</ciManagement>
 
-    <build>  <defaultGoal>install</defaultGoal>
-  	
-    <pluginManagement>
-    
-      <plugins>
+	<issueManagement>
+		<url>https://bugzilla.wikimedia.org</url>
+		<system>bugzilla</system>
+	</issueManagement>
 
-	
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>2.3.2</version>
-			<configuration>			
-				<encoding>UTF-8</encoding>		
-				<source>${javac.src.version}</source>
-				<target>${javac.target.version}</target>
-			</configuration>
-		</plugin>
-      
-      
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.11</version>
-            <configuration>
-                <testFailureIgnore>true</testFailureIgnore>
-            </configuration>
-        </plugin>
-            
-        <plugin>
-                <groupId>org.antlr</groupId>
-                <artifactId>antlr3-maven-plugin</artifactId>
-                <version>${antlr.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>antlr</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>        
-      </plugins>     
-    </pluginManagement>
-  
-	<plugins>	
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-site-plugin</artifactId>			
-			<executions>
-				<execution>
-					<id>attach-descriptor</id>
-					<goals>
-						<goal>attach-descriptor</goal>
-					</goals>
-				</execution>
-			</executions>
-			
-		</plugin>
-    </plugins>
-</build>
-      
- <dependencies>
- 
-<!-- JUnit for Unit Testing -->
- 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
+	<properties>
+		<!-- libraries versions -->
 
-<!-- Hamcrest for assertThat testing format-->
+		<tomcat.version>6.0.29</tomcat.version>
+		<solr.version>1.4.1</solr.version>
+		<lucene.version>2.3.0</lucene.version>
+		<junit.version>4.10</junit.version>
+		<lucene.version>2.4.1</lucene.version>
+		<antlr.version>3.4</antlr.version>
 
-   <dependency>
-    	<groupId>org.hamcrest</groupId>
-    	<artifactId>hamcrest-all</artifactId>
-    	<version>1.1</version>
-    </dependency>
+		<!-- misc project properties -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<javac.src.version>1.6</javac.src.version>
+		<javac.target.version>1.6</javac.target.version>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
+		<implementation.build>${maven.build.timestamp}</implementation.build>
+	</properties>
 
-<!-- log4j since java servers should not write to the console -->
+	<build>
+		<defaultGoal>install</defaultGoal>
 
-    <dependency>
-    	<groupId>log4j</groupId>
-    	<artifactId>log4j</artifactId>
-    	<version>1.2.9</version>
-    </dependency>
+		<pluginManagement>
 
-<!-- Lucene provides search capabilities -->     
-     
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-core</artifactId>
-    	<version>${lucene.version}</version>
-    </dependency>
+			<plugins>
 
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-analyzers</artifactId>
-    	<version>${lucene.version}</version>
-    </dependency>
 
-    
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-highlighter</artifactId>
-    	<version>${lucene.version}</version>
-    </dependency>
-    
-<!-- Lucene integration of Snowball Stemmers  -->
-    <dependency>
-    	<groupId>org.apache.lucene</groupId>
-    	<artifactId>lucene-snowball</artifactId>
-    	<version>${lucene.version}</version>
-    </dependency>
-    
-    <dependency>
-    	<groupId>xmlrpc</groupId>
-    	<artifactId>xmlrpc-client</artifactId>
-    	<version>3.0</version>
-    </dependency>
-    
-    <dependency>
-    	<groupId>xmlrpc</groupId>
-    	<artifactId>xmlrpc-server</artifactId>
-    	<version>3.0</version>
-    </dependency>
-    
-    <dependency>
-    	<groupId>xmlrpc</groupId>
-    	<artifactId>xmlrpc-common</artifactId>
-    	<version>3.0</version>
-    </dependency>
-    
-    <!-- web services
-    <dependency>
-    	<groupId>ws-commons-util</groupId>
-    	<artifactId>ws-commons-util</artifactId>
-    	<version>1.0.1</version>
-    </dependency>
-    
-    <dependency>
-    	<groupId>mysql</groupId>
-    	<artifactId>mysql-connector-java</artifactId>
-   	
-    	  <version>5.1.18</version>
-    	
-    </dependency>
-     -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.2</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<source>${javac.src.version}</source>
+						<target>${javac.target.version}</target>
+					</configuration>
+				</plugin>
 
-    
-    <dependency>
-	    <groupId>MWdumper</groupId>
-	    <artifactId>MWdumper</artifactId>
-	    <version>0.9.2</version>
-	    <scope>system</scope>
-	    <systemPath>${project.basedir}/lib/mwdumper.jar</systemPath>
-	</dependency>
-	
-     <!-- We need to have the ANTLR runtime jar when running and compiling. -->
-    <dependency>
-    	<groupId>org.antlr</groupId>
-    	<artifactId>antlr-runtime</artifactId>
-    	<version>${antlr.version}</version>
-    	<scope>compile</scope>
-    </dependency>
- </dependencies>
 
-  <reporting>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.11</version>
+					<configuration>
+						<testFailureIgnore>true</testFailureIgnore>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.antlr</groupId>
+					<artifactId>antlr3-maven-plugin</artifactId>
+					<version>${antlr.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>antlr</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
-		
-      		 <plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-project-info-reports-plugin</artifactId>
-        		<version>2.1.1</version>
-   			</plugin>
-		
 			<plugin>
-        		<groupId>org.codehaus.mojo</groupId>
-        		<artifactId>cobertura-maven-plugin</artifactId>
-        		<version>2.5.1</version>
-      		</plugin>
-      		
-      		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-			</plugin>  		
-    		
-    		<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-pmd-plugin</artifactId>
-		        <version>2.6</version>
-		        <configuration>
-		          <linkXref>true</linkXref>
-		          <sourceEncoding>utf-8</sourceEncoding>
-		          <minimumTokens>100</minimumTokens>
-		          <targetJdk>${javac.src.version}</targetJdk>
-		          <excludes>
-		            <exclude>**/*Bean.java</exclude>
-		            <exclude>**/generated/*.java</exclude>
-		          </excludes>
-		          <excludeRoots>
-		            <excludeRoot>target/generated-sources/stubs</excludeRoot>
-		          </excludeRoots>
-		        </configuration>
-		      </plugin>
-    		
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0-beta-3</version>
+				<executions>
+					<execution>
+						<id>attach-descriptor</id>
+						<goals>
+							<goal>attach-descriptor</goal>
+						</goals>
+					</execution>
+				</executions>
 
-			<plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			   <artifactId>maven-javadoc-plugin</artifactId>
-			     <version>2.8.1</version>
-			     <configuration>			
-				  	<doctitle>API for ${project.name} ${project.version}</doctitle> <!-- Used by javadoc:javadoc goal -->
-    		      	<windowtitle>API for ${project.name} ${project.version}</windowtitle> <!-- Used by javadoc:javadoc goal -->
-		          	<testDoctitle>Test API for ${project.name} ${project.version}</testDoctitle> <!-- Used by javadoc:test-javadoc goal -->
-        		  	<testWindowtitle>Test API for ${project.name} ${project.version}</testWindowtitle> <!-- Used by javadoc:test-javadoc goal -->		
-					<links>
-						<link>http://commons.apache.org/lang/api</link>
-						<link>http://lucene.apache.org/java/3_5_0/api</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api</link>						
-					</links>
-				<show>protected</show>          		
-          		<linksource>true</linksource>          		
+
+				<configuration>
+					<reportPlugins>
+
+
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>2.1.1</version>
+						</plugin>
+
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>cobertura-maven-plugin</artifactId>
+							<version>2.5.1</version>
+						</plugin>
+
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+						</plugin>
+
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-pmd-plugin</artifactId>
+							<version>2.6</version>
+							<configuration>
+								<linkXref>true</linkXref>
+								<sourceEncoding>utf-8</sourceEncoding>
+								<minimumTokens>100</minimumTokens>
+								<targetJdk>${javac.src.version}</targetJdk>
+								<excludes>
+									<exclude>**/*Bean.java</exclude>
+									<exclude>**/generated/*.java</exclude>
+								</excludes>
+								<excludeRoots>
+									<excludeRoot>target/generated-sources/stubs</excludeRoot>
+								</excludeRoots>
+							</configuration>
+						</plugin>
+
+
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.8.1</version>
+							<configuration>
+								<doctitle>API for ${project.name} ${project.version}</doctitle> <!-- Used by javadoc:javadoc goal -->
+								<windowtitle>API for ${project.name} ${project.version}</windowtitle> <!-- Used by javadoc:javadoc goal -->
+								<testDoctitle>Test API for ${project.name} ${project.version}</testDoctitle> <!-- Used by javadoc:test-javadoc goal -->
+								<testWindowtitle>Test API for ${project.name} ${project.version}</testWindowtitle> <!-- Used by javadoc:test-javadoc goal -->
+								<links>
+									<link>http://commons.apache.org/lang/api</link>
+									<link>http://lucene.apache.org/java/3_5_0/api</link>
+									<link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+								</links>
+								<show>protected</show>
+								<linksource>true</linksource>
+							</configuration>
+						</plugin>
+
+					</reportPlugins>
+
 				</configuration>
-			 </plugin>
-      		
+
+			</plugin>
 		</plugins>
-	</reporting>
+	</build>
+
+	<dependencies>
+
+		<!-- JUnit for Unit Testing -->
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Hamcrest for assertThat testing format -->
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<!-- log4j since java servers should not write to the console -->
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.9</version>
+		</dependency>
+
+		<!-- Lucene provides search capabilities -->
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+
+		<!-- Lucene integration of Snowball Stemmers -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-snowball</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xmlrpc</groupId>
+			<artifactId>xmlrpc-client</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xmlrpc</groupId>
+			<artifactId>xmlrpc-server</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>xmlrpc</groupId>
+			<artifactId>xmlrpc-common</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<!-- web services <dependency> <groupId>ws-commons-util</groupId> <artifactId>ws-commons-util</artifactId> 
+			<version>1.0.1</version> </dependency> <dependency> <groupId>mysql</groupId> 
+			<artifactId>mysql-connector-java</artifactId> <version>5.1.18</version> </dependency> -->
+
+
+		<dependency>
+			<groupId>MWdumper</groupId>
+			<artifactId>MWdumper</artifactId>
+			<version>0.9.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/mwdumper.jar</systemPath>
+		</dependency>
+
+		<!-- We need to have the ANTLR runtime jar when running and compiling. -->
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>${antlr.version}</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+
 </project>
