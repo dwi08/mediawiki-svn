@@ -227,8 +227,6 @@
         		<artifactId>maven-project-info-reports-plugin</artifactId>
         		<version>2.1.1</version>
    			</plugin>
-      
-		
 		
 			<plugin>
         		<groupId>org.codehaus.mojo</groupId>
@@ -237,9 +235,18 @@
       		</plugin>
     		
 		      <plugin>
+		      
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-pmd-plugin</artifactId>
-		        <version>2.6</version>
+		        <version>2.6</version>		        
+		        <configuration>		        
+		            <maven.pmd.cpd.enable>true</maven.pmd.cpd.enable>
+		        	<maven.pmd.enable>true</maven.pmd.enable>
+					<linkXref>true</linkXref>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<minimumTokens>30</minimumTokens>
+					<targetJdk>${javac.src.version}</targetJdk>					
+				</configuration>					
 		      </plugin>
 
 			<plugin>
@@ -259,7 +266,6 @@
 				<show>protected</show>          		
           		<linksource>true</linksource>          		
 				</configuration>
-			     
 			 </plugin>
       		
 		</plugins>
