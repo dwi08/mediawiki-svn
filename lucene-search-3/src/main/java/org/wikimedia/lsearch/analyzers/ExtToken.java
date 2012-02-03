@@ -279,9 +279,15 @@ public class ExtToken extends Token {
 	
 	protected static UnicodeDecomposer decomposer = null;
 	
-	enum ParseType { TEXT, NUMBER, GAP};
+	public enum ParseType { TEXT, NUMBER, GAP};
 	
-	/** c - current char, prev - previous char */
+	/**
+	 *
+	 * @param c current char
+	 * @param prev previous char
+	 * @param next
+	 * @return
+	 */
 	private static boolean isText(char c, char prev, char next){
 		return Character.isLetterOrDigit(c) 
 		|| (c=='\'' && Character.isLetter(prev) && Character.isLetter(next))
