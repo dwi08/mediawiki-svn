@@ -6,12 +6,23 @@ Installation
 
 * Indexing
 
+ TODO: instruction on installation here
+
 * Updates
+
+ TODO: instruction on index update
 
 Search
 
+ TODO: how to configure SOLR for search NG
+
 * Search Results
+
+ TODO: instruction on getting search results from solr
+
 * Search Box Auto Complete
+
+ TODO: how to configure SOLR to provide search suggestions (ajax/etc)
 
 Localization
 
@@ -20,3 +31,14 @@ Reporting
 * JMX
 
 * Ganglia
+
+
+Administration
+
+* Document Limits
+
+ TODO: limits on document size etc
+
+* Request Limits
+
+ TODO: request limits
