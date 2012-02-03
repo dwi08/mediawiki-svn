@@ -7,14 +7,22 @@
 
 source('/home/rfaulk/WSOR/message_templates/R/R_helper_functions.R')
 
+# Read aggregated results for the template
+
+template_indices_control <- c(60,62,64,66,68,70,72,74,76)
+template_indices_test <- c(61,63,65,67,69,71,73,75,77)
+
+fname_first_part <- "/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z"
+fname_last_part <- "_editcounts.tsv"
+
 
 # MAIN EXECUTION
 # ==============
 
-# Read aggregated results
+# BUILD THE DATA FRAMES
 
-metrics_test = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z70_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-metrics_control = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z71_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+metrics_test <- build.data.frames(template_indices_test, fname_first_part, fname_last_part)
+metrics_control <- build.data.frames(template_indices_control, fname_first_part, fname_last_part)
 
 
 # Compute the change in edits after the template

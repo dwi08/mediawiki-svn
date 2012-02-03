@@ -17,7 +17,8 @@ get_normal_bins <- function(bins, data) {
 
 	sample_sd <- sd(data)
 	sample_mean <- mean(data)
-
+	df <- length(data) - 1
+	
 	# vector to store bucket probabilities	
 	probs <- c()
 	num_bins <- length(bins)
@@ -39,7 +40,8 @@ get_normal_bins <- function(bins, data) {
 			lower <- bins[i] - ((bins[i] - bins[im1]) / 2)
 		}
 
-		p = pnorm(upper, mean = sample_mean, sd = sample_sd, log = FALSE) - pnorm(lower, mean = sample_mean, sd = sample_sd, log = FALSE)
+		# p = pnorm(upper, mean = sample_mean, sd = sample_sd, log = FALSE) - pnorm(lower, mean = sample_mean, sd = sample_sd, log = FALSE)
+		p = pt(upper - sample_mean, df) - pnorm(lower - sample_mean, df)
 		probs <- c(probs, p)
 	}
 	
@@ -146,4 +148,76 @@ pad_counts <- function(bin_range, samples) {
 	}
 	
 	data.frame(values=new_values, counts=new_counts)
+}
+
+
+# FUNCTION :: append.data.frames
+#
+# Given two data frames append the second to the first
+#
+# Assumes: the two data frames have the same column names
+#
+
+append.data.frames <- function(df_1, df_2) {
+	
+	df_cols <- length(colnames(df_1))
+	df_rows_1 <- length(df_1[[1]])
+	df_rows_2 <- length(df_2[[1]])
+	
+	new_rows <- df_rows_1 + df_rows_2
+	df_return <- data.frame(matrix(nrow=new_rows, ncol=df_cols))
+
+	for (i in 1:df_cols)
+		for (j in 1:df_rows_1)
+			df_return[colnames(df_return)[i]][[1]][j] <- df_1[colnames(df_1)[i]][[1]][j]
+
+	for (i in 1:df_cols)
+		for (j in 1:df_rows_2)
+		{
+			row_index <- j + df_rows_1
+			df_return[colnames(df_return)[i]][[1]][row_index] <- df_2[colnames(df_1)[i]][[1]][j]
+		}
+		
+	# create the new data list
+	for (i in 1:df_cols)
+	{
+		colname <- colnames(df_1)[i]
+		colnames(df_return)[i] <- colname
+	}
+	
+	df_return
+}
+
+
+# FUNCTION :: build.data.frames
+#
+# Constructs a concatenated data.frame from files
+#
+
+build.data.frames <- function(template_indices, fname_first_part, fname_last_part) {
+		
+	# Initialize the data frame
+	
+	filename <- paste(fname_first_part, template_indices[1], fname_last_part, sep="")
+	metrics = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+	
+	output <- paste("Processing data from",filename,"....")
+	print(output)
+	
+	# Extend the data frames
+	
+	for (i in 2:length(template_indices_test))
+	{
+		
+		index <- template_indices[i]		
+		filename <- paste(fname_first_part, index, fname_last_part, sep="")	
+		
+		output <- paste("Processing data from",filename,"....")			
+		print(output)
+		
+		temp_frame = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+		metrics <- append.data.frames(metrics, temp_frame)		
+	}
+		
+	metrics
 }

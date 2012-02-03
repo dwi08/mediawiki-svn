@@ -8,49 +8,45 @@
 source('/home/rfaulk/WSOR/message_templates/R/R_helper_functions.R')
 
 
-# Read aggregated results for z64
+# Read aggregated results for the template
 
-metrics_ec_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z70_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-metrics_blocks_z64 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z70_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+template_indices_control <- c(60,62,64,66,68,70,72,74,76)
+template_indices_test <- c(61,63,65,67,69,71,73,75,77)
 
-
-# Read aggregated results for z65
-
-metrics_ec_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z71_editcounts.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-metrics_blocks_z65 = read.table("/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z71_blocks.tsv", na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+fname_first_part <- "/home/rfaulk/WSOR/message_templates/output/metrics_1018_1119_z"
+fname_last_part <- "_editcounts.tsv"
 
 
-# Compute the change in edits after the template
+# MAIN EXECUTION
+# ==============
 
-z64_ns0 = (metrics_ec_z64$ns_0_revisions_after - metrics_ec_z64$ns_0_revisions_before) / metrics_ec_z64$ns_0_revisions_before
-z65_ns0 = (metrics_ec_z65$ns_0_revisions_after - metrics_ec_z65$ns_0_revisions_before / metrics_ec_z65$ns_0_revisions_before
+# BUILD THE DATA FRAMES
+
+metrics_test <- build.data.frames(template_indices_test, fname_first_part, fname_last_part)
+metrics_control <- build.data.frames(template_indices_control, fname_first_part, fname_last_part)
 
 
+# Compute the change in edits after the template -- default to namespace 0
 # User Talk namespace does not necessarily have edits before - in this case omit the result (it could be the case that templates stimulate user talk edits but that should be tested separately)
 # Only append non-zero results - do this for just namespace 3 since it has zero entries for 'ns_3_revisions_before' 
 
-z64_ns3 <- c()
-z65_ns3 <- c()
+z_test <- c()
+z_control <- c()
 
-for (i in 1:length(metrics_ec_z64['ns_3_revisions_before'][[1]])) 
-	if (metrics_ec_z64['ns_3_revisions_before'][[1]][i] != 0)
-		z64_ns3 <- c(z64_ns3, 
-		(metrics_ec_z64['ns_3_revisions_before'][[1]][i] - metrics_ec_z64['ns_3_revisions_after'][[1]][i]) / metrics_ec_z64['ns_3_revisions_before'][[1]][i])
+for (i in 1:length(metrics_test$ns_0_revisions_before)) 
+	if (metrics_test$ns_0_revisions_before[i] != 0)
+		z_test <- c(z_test, 
+		(metrics_test$ns_0_revisions_before[i] - metrics_test$ns_0_revisions_after[i]) / metrics_test$ns_0_revisions_before[i])
 
-for (i in 1:length(metrics_ec_z65['ns_3_revisions_before'][[1]])) 
-	if (metrics_ec_z65['ns_3_revisions_before'][[1]][i] != 0)
-		z65_ns3 <- c(z65_ns3, 
-		(metrics_ec_z65['ns_3_revisions_before'][[1]][i] - metrics_ec_z65['ns_3_revisions_after'][[1]][i]) / metrics_ec_z65['ns_3_revisions_before'][[1]][i])
+for (i in 1:length(metrics_control['ns_0_revisions_before'][[1]])) 
+	if (metrics_control$ns_0_revisions_before[i] != 0)
+		z_control <- c(z_control, 
+		(metrics_control$ns_0_revisions_before[i] - metrics_control$ns_0_revisions_after[i]) / metrics_control$ns_0_revisions_before[i])
 
 
 # Generate results:
 
-summary(z65_ns0)
-summary(z64_ns0)
-summary(z65_ns3)
-summary(z64_ns3)
-
-t_result_ns0 = t.test(x=z64_ns0, y=z65_ns0, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
-t_result_ns3 = t.test(x=z64_ns3, y=z65_ns3, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+t_result = t.test(x=z_test, y=z_control, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
+# t_result_ns3 = t.test(x=z64_ns3, y=z65_ns3, alternative = "two.sided", paired = FALSE, var.equal = FALSE, conf.level = 0.95)
 
 
