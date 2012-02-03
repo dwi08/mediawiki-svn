@@ -1699,7 +1699,7 @@ public class WikiQueryParser {
 	 * @deprecated - unused private method
 	 */
 	private void filterStopWords(BooleanQuery bq) {
-		if (stopWords == null && stopWords.size() == 0)
+		if (stopWords == null || stopWords.size() == 0)
 			return;
 		for (BooleanClause cl : bq.getClauses()) {
 			Query q = cl.getQuery();
