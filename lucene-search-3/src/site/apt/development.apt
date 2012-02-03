@@ -2,14 +2,12 @@
 Development
 -------------
 
-* Requirements
+Requirements
 
  Java Jdk version 1.6
  Maven 2
 
- 
  To build you need to download the source from the SVN repository.  
-
 
 NLP Data Build
 
@@ -20,42 +18,43 @@ NLP Data Build
 
 * Preliminary Processing
 
-  TODO: describe how convert a Wikipedia dump to a corpus
+ TODO: describe how convert a Wikipedia dump to a corpus
   setting chunker  
-  TODO: describe how convert a Wikitionary to  compatible lexicon format
+ TODO: describe how convert a Wikitionary to  compatible lexicon format
 
 * Phonology
 
-  TODO: describe how to extend text to IPA conversion for "sound like" searching  
+ TODO: describe how to extend text to IPA conversion for "sound like" searching  
 
 * Morphology
 
-  TODO: describe how to generate a Monolingual word list
-  TODO: describe how to generate a N-gram model from a Monolingual lexicon for language detection
-  TODO: describe how to bootstrap a morphology
-  TODO: describe how to induct a morphology from a Monolingual lexicon  
+ TODO: describe how to generate a Monolingual word list
+ TODO: describe how to generate a N-gram model from a Monolingual lexicon for language detection
+ TODO: describe how to bootstrap a morphology
+ TODO: describe how to induct a morphology from a Monolingual lexicon  
   
-  TODO: describe use the morphology for tagging a corpus
-  TODO: describe use the morphology for tagging a corpus 
+ TODO: describe use the morphology for tagging a corpus
+ TODO: describe use the morphology for tagging a corpus 
    
   
 * Semantics
 
-  TODO: describe how to build a lexical thesaurus.
-  TODO: describe how to bootstrap a cross language thesaurus.
-  TODO: describe how to induct a cross language thesaurus. 
+ TODO: describe how to build a lexical thesaurus.
+ TODO: describe how to bootstrap a cross language thesaurus.
+ TODO: describe how to induct a cross language thesaurus. 
   
-  TODO: describe how to import/localize an ontology/merology indexing data.
+ TODO: describe how to import/localize an ontology/merology indexing data.
+ 
 * Cross Language
 
-  TODO: describe how to get and update bi-lingual dictionaries from Apertium.
-  TODO: describe how to specify (Personal) names
-  TODO: describe how to override entries import
-  TODO: describe how to build 
+ TODO: describe how to get and update bi-lingual dictionaries from Apertium.
+ TODO: describe how to specify (Personal) names
+ TODO: describe how to override entries import
+ TODO: describe how to build 
 
 * Named Entities
 
-  TODO: describe how train Named Entity detection model.  
+ TODO: describe how train Named Entity detection model.  
 
 SOLR Build
 
