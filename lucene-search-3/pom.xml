@@ -18,9 +18,9 @@
 	<url>http://www.mediawiki.org/wiki/User:OrenBochman/Search</url>
 
 	<scm>
-		<developerConnection>oren</developerConnection>
-		<url>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</url>
-		<connection>svn+ssh</connection>
+		<connection>http://svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</connection>
+		<developerConnection>svn+ssh://user@svn.wikimedia.org/svnroot/mediawiki/trunk/lucene-search-3</developerConnection>
+		<url>https://svn.wikimedia.org/viewvc/mediawiki/trunk/lucene-search-3/</url>
 	</scm>
 
 	<ciManagement>
