@@ -1,1 +1,21 @@
+-------------
 Project Goals
+-------------
+
+ Mission:
+ 
+  Build a Search engine that will provide excellent search for mediaWiki projects.
+
+ * Goals
+ 
+  Ease of installation, 
+  Distribution of large indexes, 
+  Replication for speed
+  Short edit to search time   
+  Better language support
+  Support for Wiki based meta data  
+  
+  Crowdsource features - Localization etc 
+  Search Knowledge Repository - Allow client projects to share Ontology, NLP, Entity data in specific domains    
+  
+ 

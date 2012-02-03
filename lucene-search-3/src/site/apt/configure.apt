@@ -4,13 +4,23 @@ Configuration
 
 Installation
 
+ TODO: instruction on installation here
+ 
+ * Sharding
+ 
+ how to split the index into shards (multiple machines)
+ 
+ *Replication
+ 
+ how to replicate the distributed search 
+
 * Indexing
 
- TODO: instruction on installation here
+ TODO: building an initial index
 
 * Updates
 
- TODO: instruction on index update
+ TODO: regular index update
 
 Search
 
@@ -28,14 +38,20 @@ Localization
 
 Reporting
 
+  Statistics  in special search page
+  Document, Searches, Edit to Index Time.
+
+* Special Page 
+
 * JMX
 
 * Ganglia
 
+* Search Analytics
 
 Administration
 
-* Document Limits
+* Document Length Limit
 
  TODO: limits on document size etc
 
