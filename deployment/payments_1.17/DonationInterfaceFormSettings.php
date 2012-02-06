@@ -62,6 +62,7 @@ $wgGlobalCollectGatewayAllowedHtmlForms['webitects2nd-amex'] = $wgGlobalCollectG
 
 //Credit Card - misc.
 $wgGlobalCollectGatewayAllowedHtmlForms['cc'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc.html';
+$wgGlobalCollectGatewayAllowedHtmlForms['cc-a'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-a.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vm'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vm.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vma'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vma.html';
 $wgGlobalCollectGatewayAllowedHtmlForms['cc-vmd'] = $wgGlobalCollectGatewayHtmlFormDir .'/cc/cc-vmd.html';
