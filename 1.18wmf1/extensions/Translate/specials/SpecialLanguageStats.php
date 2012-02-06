@@ -5,7 +5,7 @@
  * @file
  * @author Siebrand Mazeland
  * @author Niklas Laxström
- * @copyright Copyright © 2008-2011 Siebrand Mazeland, Niklas Laxström
+ * @copyright Copyright © 2008-2012 Siebrand Mazeland, Niklas Laxström
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
  */
 
@@ -109,23 +109,20 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 			$this->noEmpty = (bool)$params[2];
 		}
 
-		// Whether the form has been submitted
-		$submitted = $request->getVal( 'x' ) === 'D';
+		// Whether the form has been submitted, only relevant if not including
+		$submitted = !$this->including() && $request->getVal( 'x' ) === 'D';
 
 		// Default booleans to false if the form was submitted
-		if ( !$this->including() ) {
-			$this->target = $request->getVal( $this->targetValueName, $this->target );
-			$this->noComplete = $request->getBool( 'suppresscomplete', $this->noComplete && !$submitted );
-			$this->noEmpty = $request->getBool( 'suppressempty', $this->noEmpty && !$submitted );
-		}
+		$this->target = $request->getVal( $this->targetValueName, $this->target );
+		$this->noComplete = $request->getBool( 'suppresscomplete', $this->noComplete && !$submitted );
+		$this->noEmpty = $request->getBool( 'suppressempty', $this->noEmpty && !$submitted );
 
 		if ( !$this->including() ) {
 			TranslateUtils::addSpecialHelpLink( $wgOut, 'Help:Extension:Translate/Statistics_and_reporting' );
 			$wgOut->addHTML( $this->getForm() );
 		}
 
-		$allowedValues = $this->getAllowedValues();
-		if ( in_array( $this->target, $allowedValues, true ) ) {
+		if ( $this->isValidValue( $this->target ) ) {
 			$this->outputIntroduction();
 			$output = $this->getTable();
 			if ( $this->incomplete ) {
@@ -145,9 +142,9 @@ class SpecialLanguageStats extends IncludableSpecialPage {
 	 * Return the list of allowed values for target here.
 	 * @return array
 	 */
-	protected function getAllowedValues() {
+	protected function isValidValue( $value ) {
 		$langs = Language::getLanguageNames( false );
-		return array_keys( $langs );
+		return isset( $langs[$value] );
 	}
 
 	/// Called when the target is unknown.
