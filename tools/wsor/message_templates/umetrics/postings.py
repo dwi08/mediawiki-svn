@@ -99,7 +99,7 @@ def main():
 		'-a', '--api_uri',
 		type=str, 
 		help='the mediawiki API to connect to in order to retrieve message content (defaults to http://en.wikipedia.org/w/api.php)',
-		default="http://en.wikipedia.org/w/api.php"
+		default="http://pt.wikipedia.org/w/api.php"
 	)
 	parser.add_argument(
 		'--start',
@@ -145,6 +145,13 @@ def main():
 		help='the output file name.',
 		default=''
 	)
+	parser.add_argument(
+		'--use_in_file',
+		type=str, 
+		help='indicates that revisions should be read from a file.  Name is to be specified.',
+		default=''
+	)
+
 	args = parser.parse_args()
 	
 	LOGGING_STREAM = sys.stderr
@@ -185,17 +192,45 @@ def main():
 	logging.info("Querying for matching revisions:")
 	revs = []
 	count = 0
-	for rev in db.getPostings(args.start, args.end, args.user_name, args.comment):
-		count += 1
-		revs.append(rev)
-		if count % 100 == 0: LOGGING_STREAM.write("|")
+	
+	# Process input from file if args.use_in_file is not an empty string - otherwise use the enwiki slave
+	if cmp(args.use_in_file,'') != 0:
+		in_file = open(args.use_in_file, 'rb')
+		
+		line = in_file.readline()
+		cols = line.split('\t')
+		cols[len(cols) - 1] = cols[len(cols) - 1][:-1]
+		
+		line = in_file.readline()
+		while(line):			
+			entry = dict()
+	
+			elems = line.split('\t')
+			elems[len(cols) - 1] = elems[len(cols) - 1][:-1]
+			index = 0
+			try:
+				for col_name in cols:
+					entry[col_name] = elems[index]
+					index = index + 1
+				
+				revs.append(entry)
+			except:
+				logging.info('Could not add row: %s' % str(elems))
+				
+			line = in_file.readline()
+	else:
+		for rev in db.getPostings(args.start, args.end, args.user_name, args.comment):
+			count += 1
+			revs.append(rev)
+			if count % 100 == 0: LOGGING_STREAM.write("|")
 	
 	LOGGING_STREAM.write("\n")
-	
+
 	logging.info("Checking for message templates")
 	count = {"matched": 0, "missed": 0}
 	for rev in revs:
 		logging.debug("Matching revision %(rev_id)s peformed by %(poster_name)s @ %(timestamp)s: %(rev_comment)s" % rev)
+
 		message = api.getAdded(rev['rev_id'])
 		
 		match = args.message.search(message)
