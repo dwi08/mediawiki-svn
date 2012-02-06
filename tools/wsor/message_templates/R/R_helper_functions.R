@@ -205,19 +205,20 @@ build.data.frames <- function(template_indices, fname_first_part, fname_last_par
 	print(output)
 	
 	# Extend the data frames
-	
-	for (i in 2:length(template_indices_test))
-	{
-		
-		index <- template_indices[i]		
-		filename <- paste(fname_first_part, index, fname_last_part, sep="")	
-		
-		output <- paste("Processing data from",filename,"....")			
-		print(output)
-		
-		temp_frame = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-		metrics <- append.data.frames(metrics, temp_frame)		
-	}
+
+	if (length(template_indices) > 1)
+		for (i in 2:length(template_indices))
+		{
+			
+			index <- template_indices[i]		
+			filename <- paste(fname_first_part, index, fname_last_part, sep="")	
+			
+			output <- paste("Processing data from",filename,"....")			
+			print(output)
+			
+			temp_frame = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
+			metrics <- append.data.frames(metrics, temp_frame)		
+		}
 		
 	metrics
 }
