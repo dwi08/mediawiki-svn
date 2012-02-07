@@ -17,6 +17,9 @@ package org.wikimedia.lsearch.search;
  * limitations under the License.
  */
 
+import java.io.IOException;
+import java.util.Set;
+
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.ComplexExplanation;
 import org.apache.lucene.search.Explanation;
@@ -26,9 +29,6 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.Similarity;
 import org.apache.lucene.search.Weight;
 import org.apache.lucene.util.ToStringUtils;
-
-import java.io.IOException;
-import java.util.Set;
 
 /**
  * A query that matches all documents, and gets scores from title boost
@@ -94,10 +94,28 @@ public class MatchAllTitlesQuery extends Query {
 
 	}
 
-	private class MatchAllDocsWeight implements Weight {
+	private class MatchAllDocsWeight extends Weight {
+		
+		@Override
+		public Scorer scorer(IndexReader reader, boolean arg1, boolean arg2)
+				throws IOException {
+			
+			return new MatchAllScorer(reader, similarity, this, reader.norms(titleField));
+		}
+		
 		/**
 		 * 
-		 */
+		 * @param reader
+		 * @return
+		 * @throws IOException
+		 * 
+		 * @Deprecated
+		 */		
+		public Scorer scorer(IndexReader reader) throws IOException {
+			return new MatchAllScorer(reader, similarity, this, reader.norms(titleField));
+		}
+		
+		
 		private static final long serialVersionUID = 3242930691905297732L;
 		private Similarity similarity;
 		private float queryWeight;
@@ -107,18 +125,31 @@ public class MatchAllTitlesQuery extends Query {
 			this.similarity = searcher.getSimilarity();
 		}
 
+		/**
+		 * 
+		 */		
+		@Override
 		public String toString() {
 			return "weight(" + MatchAllTitlesQuery.this + ")";
 		}
-
+		/**
+		 * 
+		 */
+		@Override
 		public Query getQuery() {
 			return MatchAllTitlesQuery.this;
 		}
-
+		/**
+		 * 
+		 */
+		@Override
 		public float getValue() {
 			return queryWeight;
 		}
-
+		/**
+		 * 
+		 */
+		@Override
 		public float sumOfSquaredWeights() {
 			queryWeight = getBoost();
 			return queryWeight * queryWeight;
@@ -129,10 +160,9 @@ public class MatchAllTitlesQuery extends Query {
 			queryWeight *= this.queryNorm;
 		}
 
-		public Scorer scorer(IndexReader reader) throws IOException {
-			return new MatchAllScorer(reader, similarity, this, reader.norms(titleField));
-		}
 
+		
+		@Override
 		public Explanation explain(IndexReader reader, int doc) {
 			// explain query weight
 			Explanation queryExpl = new ComplexExplanation
@@ -144,9 +174,13 @@ public class MatchAllTitlesQuery extends Query {
 
 			return queryExpl;
 		}
+		
+		
+
+
 	}
 
-	protected Weight createWeight(Searcher searcher) {
+	public Weight createWeight(Searcher searcher) {
 		return new MatchAllDocsWeight(searcher);
 	}
 
