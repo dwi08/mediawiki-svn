@@ -23,13 +23,6 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.ComplexExplanation;
-import org.apache.lucene.search.Explanation;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Scorer;
-import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.Similarity;
-import org.apache.lucene.search.Weight;
 import org.apache.lucene.util.ToStringUtils;
 
 /**
@@ -91,7 +84,11 @@ private Query subQuery;
     return this;
   }
 
-  /*(non-Javadoc) @see org.apache.lucene.search.Query#extractTerms(java.util.Set) */
+  /**
+   *  @see org.apache.lucene.search.Query#extractTerms(java.util.Set) 
+   * 
+   */
+  @Override
   public void extractTerms(Set terms) {
     subQuery.extractTerms(terms);
     if (boostQuery!=null) {
@@ -179,7 +176,7 @@ private Query subQuery;
   }
   //=========================== W E I G H T ============================
   
-  protected class CustomWeight implements Weight {
+  protected class CustomWeight extends Weight {
     /**
 	 * 
 	 */
@@ -198,17 +195,24 @@ private Query subQuery;
       this.similarity = getSimilarity(searcher);
     }
 
-    /*(non-Javadoc) @see org.apache.lucene.search.Weight#getQuery() */
+    /**
+     *  @see org.apache.lucene.search.Weight#getQuery() 
+     * 
+     */
     public Query getQuery() {
       return CustomBoostQuery.this;
     }
 
-    /*(non-Javadoc) @see org.apache.lucene.search.Weight#getValue() */
+    /**
+     *  @see org.apache.lucene.search.Weight#getValue() 
+     */
     public float getValue() {
       return getBoost();
     }
 
-    /*(non-Javadoc) @see org.apache.lucene.search.Weight#sumOfSquaredWeights() */
+    /**
+     *  @see org.apache.lucene.search.Weight#sumOfSquaredWeights() 
+     */
     public float sumOfSquaredWeights() throws IOException {
       float sum = subQueryWeight.sumOfSquaredWeights();
       if (boostWeight!=null) {
@@ -222,7 +226,10 @@ private Query subQuery;
       return sum ;
     }
 
-    /*(non-Javadoc) @see org.apache.lucene.search.Weight#normalize(float) */
+    /**
+     * @see org.apache.lucene.search.Weight#normalize(float) 
+     * 
+     */
     public void normalize(float norm) {
       norm *= getBoost(); // incorporate boost
       subQueryWeight.normalize(norm);
@@ -234,18 +241,42 @@ private Query subQuery;
         }
       }
     }
-
-    /*(non-Javadoc) @see org.apache.lucene.search.Weight#scorer(org.apache.lucene.index.IndexReader) */
+	/**
+	 *  @see org.apache.lucene.search.Weight#scorer(IndexReader, boolean, boolean)
+	 */
+	@Override
+	public Scorer scorer(IndexReader reader, boolean scoreDocsInOrder,	boolean topScorer) throws IOException {	
+	      Scorer subQueryScorer = subQueryWeight.scorer(reader,scoreDocsInOrder,topScorer);
+	      Scorer boostScorer = (boostWeight==null ? null : boostWeight.scorer(reader,scoreDocsInOrder,topScorer));
+	      return new CustomScorer(similarity, reader, this, subQueryScorer, boostScorer);
+	}
+    
+    /**
+     *  @see org.apache.lucene.search.Weight#scorer(org.apache.lucene.index.IndexReader) 
+     * 
+     * @param reader
+     * @return
+     * @throws IOException
+     * 
+     * @Deprecated 
+     */
     public Scorer scorer(IndexReader reader) throws IOException {
-      Scorer subQueryScorer = subQueryWeight.scorer(reader);
-      Scorer boostScorer = (boostWeight==null ? null : boostWeight.scorer(reader));
+      boolean scoreDocsInOrder=true;
+      boolean topScorer=true;    	
+      Scorer subQueryScorer = subQueryWeight.scorer(reader,scoreDocsInOrder,topScorer);
+      Scorer boostScorer = (boostWeight==null ? null : boostWeight.scorer(reader,scoreDocsInOrder,topScorer));
       return new CustomScorer(similarity, reader, this, subQueryScorer, boostScorer);
     }
 
-    /*(non-Javadoc) @see org.apache.lucene.search.Weight#explain(org.apache.lucene.index.IndexReader, int) */
+    /**
+     * @see org.apache.lucene.search.Weight#explain(org.apache.lucene.index.IndexReader, int)
+     * 
+     */
     public Explanation explain(IndexReader reader, int doc) throws IOException {
       return scorer(reader).explain(doc);
     }
+
+
   }
 
 
