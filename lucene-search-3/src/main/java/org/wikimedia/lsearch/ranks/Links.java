@@ -43,11 +43,12 @@ import org.wikimedia.lsearch.related.CompactArticleLinks;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.search.UpdateThread;
 import org.wikimedia.lsearch.spell.api.Dictionary;
-import org.wikimedia.lsearch.spell.api.LuceneDictionary;
 import org.wikimedia.lsearch.spell.api.Dictionary.Word;
+import org.wikimedia.lsearch.spell.api.LuceneDictionary;
 import org.wikimedia.lsearch.util.Localization;
 
 public class Links {
+	
 	static Logger log = Logger.getLogger(Links.class);
 	protected IndexId iid;
 	protected String langCode;
@@ -69,6 +70,15 @@ public class Links {
 	protected boolean autoOptimize = false;
 	protected FilterFactory filters = null;
 	
+	/**
+	 * 
+	 * @param iid
+	 * @param path
+	 * @param writer
+	 * @param autoOptimize
+	 * @throws CorruptIndexException
+	 * @throws IOException
+	 */
 	private Links(IndexId iid, String path, IndexWriter writer, boolean autoOptimize) throws CorruptIndexException, IOException{
 		this.writer = writer;
 		this.path = path;
@@ -106,7 +116,12 @@ public class Links {
 		}
 	}
 	
-	/** Open the index path for updates */
+	/** Open the index path for updates 
+	 * 
+	 * @param iid
+	 * @return
+	 * @throws IOException
+	 */
 	public static Links openForModification(IndexId iid) throws IOException{
 		iid = iid.getLinks();
 		String path = iid.getIndexPath();
@@ -115,7 +130,12 @@ public class Links {
 		return new Links(iid,path,writer,false);		
 	}
 	
-	/** Open index for old-style batch-delete, batch-add modification */
+	/** Open index for old-style batch-delete, batch-add modification 
+	 * 
+	 * @param iid
+	 * @return
+	 * @throws IOException
+	 */
 	public static Links openForBatchModifiation(IndexId iid) throws IOException{
 		iid = iid.getLinks();
 		String path = iid.getIndexPath();
@@ -132,14 +152,25 @@ public class Links {
 		return openForRead(iid,iid.getSearchPath());
 	}
 	
-	/** Open index at path for reading */
+	/** Open index at path for reading 
+	 * 
+	 * @param iid
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
 	public static Links openForRead(IndexId iid, String path) throws IOException {
 		iid = iid.getLinks();
 		log.info("Opening for read "+path);
 		return new Links(iid,path,null,true);
 	}
 		
-	/** Create new in the import path */
+	/** Create new in the import path 
+	 * 
+	 * @param iid
+	 * @return
+	 * @throws IOException
+	 */
 	public static Links createNew(IndexId iid) throws IOException{
 		iid = iid.getLinks();
 		String path = iid.getImportPath();
@@ -149,7 +180,12 @@ public class Links {
 		return links;
 	}
 	
-	/** Create new index in memory (RAMDirectory) */
+	/** Create new index in memory (RAMDirectory) 
+	 * 
+	 * @param iid
+	 * @return
+	 * @throws IOException
+	 */
 	public static Links createNewInMemory(IndexId iid) throws IOException{
 		iid = iid.getLinks();
 		log.info("Making index in memory");
@@ -158,14 +194,21 @@ public class Links {
 		return links;
 	}
 	
-	/** Add more entries to namespace mapping (ns_name -> ns_index) */
+	/** Add more entries to namespace mapping (ns_name -> ns_index)
+	 * 
+	 * @param map
+	 */
 	public void addToNamespaceMap(HashMap<String,Integer> map){
 		for(Entry<String,Integer> e : map.entrySet()){
 			nsmap.put(e.getKey().toLowerCase(),e.getValue());
 		}
 	}
 	
-	/** Add a custom namespace mapping */
+	/** Add a custom namespace mapping 
+	 * 
+	 * @param namespace
+	 * @param index
+	 */
 	public void addToNamespaceMap(String namespace, int index){
 		nsmap.put(namespace.toLowerCase(),index);
 	}
@@ -493,7 +536,7 @@ public class Links {
 		return ret;
 	}
 	
-	/** Get mapping text -> occurance count (including actual article title) */  
+	/** Get mapping text -> occurrence count (including actual article title) */  
 	public HashMap<String,Integer> getAnchorMap(String key, Integer numInLinks) throws IOException {
 		ensureRead();
 		HashMap<String,Integer> map = getAnchors(key);
@@ -509,7 +552,11 @@ public class Links {
 		return map;
 	}
 	
-	/** Merge the second anchor map into the first */
+	/** Merge the second anchor map into the first 
+	 * 
+	 * @param dest
+	 * @param src
+	 */
 	public static void mergeAnchorMaps(Map<String,Integer> dest, Map<String,Integer> src){
 		for(Entry<String,Integer> e : src.entrySet()){
 			String key = e.getKey();
@@ -520,7 +567,11 @@ public class Links {
 		}
 	}
 	
-	/** Lowercase all anchor keys & merge */
+	/** Lowercase all anchor keys & merge 
+	 * 
+	 * @param src
+	 * @return
+	 */
 	public static HashMap<String,Integer> lowercaseAnchorMap(Map<String,Integer> src){
 		HashMap<String,Integer> dest = new HashMap<String,Integer>();
 		for(Entry<String,Integer> e : src.entrySet()){
@@ -533,7 +584,11 @@ public class Links {
 		return dest;
 	}
 	
-	/** Sort anchors desc according to rank */
+	/** Sort anchors desc according to rank 
+	 * 
+	 * @param anchors
+	 * @return
+	 */
 	public static ArrayList<Entry<String,Integer>> sortAnchors(Map<String,Integer> anchors){
 		// sort by rank
 		ArrayList<Entry<String,Integer>> sorted = new ArrayList<Entry<String,Integer>>();
@@ -547,7 +602,11 @@ public class Links {
 	}
 	
 	/** If an article is a redirect 
-	 * @throws IOException */
+	 * 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	public boolean isRedirect(String key) throws IOException{
 		ensureRead();
 		TermDocs td = reader.termDocs(new Term("article_key",key));
@@ -558,7 +617,12 @@ public class Links {
 		return false;
 	}
 	
-	/** Get page_id for ns:title */
+	/** Get page_id for ns:title 
+	 * 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	public String getPageId(String key) throws IOException {
 		ensureRead();
 		TermDocs td = reader.termDocs(new Term("article_key",key));
@@ -568,7 +632,12 @@ public class Links {
 		return null;
 	}
 	
-	/** Get ns:title for page_id */
+	/** Get ns:title for page_id 
+	 * 
+	 * @param pageid
+	 * @return
+	 * @throws IOException
+	 */
 	public String getKeyFromPageId(String pageid) throws IOException {
 		ensureRead();
 		TermDocs td = reader.termDocs(new Term("article_pageid",pageid));
@@ -578,7 +647,12 @@ public class Links {
 		return null;
 	}
 
-	/** If article is redirect, get target key, else null */
+	/** If article is redirect, get target key, else null 
+	 * 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	public String getRedirectTarget(String key) throws IOException{
 		ensureRead();
 		TermDocs td = reader.termDocs(new Term("article_key",key));
@@ -592,7 +666,12 @@ public class Links {
 	}
 
 	
-	/** Return the namespace of the redirect taget (if any) */
+	/** Return the namespace of the redirect taget (if any) 
+	 * 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	public int getRedirectTargetNamespace(String key) throws IOException{
 		ensureRead();
 		String t = getRedirectTarget(key);
@@ -603,7 +682,12 @@ public class Links {
 	}
 	
 	/** Get all article titles linking to given title 
-	 * @throws IOException */
+	 * 
+	 * @param key
+	 * @param keyCache
+	 * @return
+	 * @throws IOException
+	 */	 
 	public ArrayList<CompactArticleLinks> getInLinks(CompactArticleLinks key, HashMap<Integer,CompactArticleLinks> keyCache) throws IOException{
 		ensureRead();
 		ArrayList<CompactArticleLinks> ret = new ArrayList<CompactArticleLinks>();
@@ -617,7 +701,11 @@ public class Links {
 	}
 	
 	/** Get all article titles linking to given title 
-	 * @throws IOException */
+	 * 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	public ArrayList<String> getInLinks(String key) throws IOException{
 		ensureRead();
 		ArrayList<String> ret = new ArrayList<String>();
@@ -628,7 +716,12 @@ public class Links {
 		return ret;
 	}
 	
-	/** Get links from this article to other articles */
+	/** Get links from this article to other articles 
+	 * 
+	 * @param key
+	 * @return
+	 * @throws IOException
+	 */
 	public StringList getOutLinks(String key) throws IOException{
 		ensureRead();
 		TermDocs td = reader.termDocs(new Term("article_key",key));
@@ -639,9 +732,12 @@ public class Links {
 	}
 	
 	/** Get all contexts in which article <i>to<i/> is linked from <i>from</i>. 
-	 *  Will return null if there is no context, or link is invalid.
-	 * @throws ClassNotFoundException */
-	
+	 * Will return null if there is no context, or link is invalid.
+	 * @param from
+	 * @param to
+	 * @return
+	 * @throws IOException
+	 */	
 	public ArrayList<String> getContext(String from, String to) throws IOException {
 		ensureRead();
 		String cacheKey = "getContext:"+from;
@@ -679,7 +775,13 @@ public class Links {
 		return null;
 	}
 	
-	/** return how many times article key1 and key2 cooccur in same context */ 
+	/** return how many times article key1 and key2 co-occur in same context 
+	 * 
+	 * @param key1
+	 * @param key2
+	 * @return
+	 * @throws IOException
+	 */
 	public int getRelatedCountInContext(String key1, String key2) throws IOException {
 		ensureRead();
 		PhraseQuery pq = new PhraseQuery();
@@ -689,7 +791,13 @@ public class Links {
 		return searcher.search(pq).length();
 	}
 	
-	/** return how many times article key1 and key2 cooccur in any article */ 
+	/** return how many times article key1 and key2 co-occur in any article 
+	 *  
+	 * @param key1
+	 * @param key2
+	 * @return
+	 * @throws IOException
+	 */
 	public int getRelatedCountAll(String key1, String key2) throws IOException {
 		ensureRead();
 		// works as an optimized boolean query on key1, key2
@@ -717,7 +825,14 @@ public class Links {
 		}
 	}
 	
-	/** return how many times article key1 and key2 cooccur in same context */ 
+	/** return how many times article key1 and key2 co-occur in same context 
+	 *  
+	 * @param key1
+	 * @param key2
+	 * @param inLinkCache
+	 * @return
+	 * @throws IOException
+	 */
 	public double getRelatedScore(String key1, String key2, int[] inLinkCache) throws IOException {
 		ensureRead();
 		PhraseQuery pq = new PhraseQuery();
@@ -738,10 +853,13 @@ public class Links {
 	}
 	
 	
-	/** Get all contexts in which article <i>to<i/> is linked from <i>from</i>. 
-	 *  Will return null if there is no context, or link is invalid.
-	 * @throws ClassNotFoundException */
-	
+	/** Get all contexts in which article <i>to<i/> is linked from <i>from</i>.
+	 *   Will return null if there is no context, or link is invalid.
+	 * @param from
+	 * @param to
+	 * @return
+	 * @throws IOException
+	 */
 	public Collection<String> getContextOld(String from, String to) throws IOException {
 		ensureRead();
 		
@@ -753,7 +871,11 @@ public class Links {
 		return null;
 	}
 	
-	/** Get a dictionary of all article keys (ns:title) in this index */
+	/** Get a dictionary of all article keys (ns:title) in this index 
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
 	public LuceneDictionary getKeys() throws IOException{
 		ensureRead();
 		return new LuceneDictionary(reader,"article_key");
@@ -767,7 +889,10 @@ public class Links {
 		return null;
 	}
 
-	/** Close everything */
+	/** Close everything 
+	 * 
+	 * @throws IOException
+	 */
 	public void close() throws IOException {
 		if(writer != null)
 			writer.close();
