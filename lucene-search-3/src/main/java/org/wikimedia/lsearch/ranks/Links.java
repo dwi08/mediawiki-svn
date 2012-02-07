@@ -546,7 +546,7 @@ public class Links {
 		int sum = 0;
 		for(Integer r : map.values())
 			sum += r;
-		// FIXME: numInLinks is document count, while anchors are counted in combined occurance/doc count form
+		// FIXME: numInLinks is document count, while anchors are counted in combined occurrence/doc count form
 		map.put(Title.titleFromKey(key),numInLinks);
 		if(!key.startsWith("0:"))
 			map.put(Title.textualFromKey(key,iid),numInLinks);
@@ -789,10 +789,11 @@ public class Links {
 		pq.add(new Term("links",key1));
 		pq.add(new Term("links",key2));
 		pq.setSlop(SplitAnalyzer.GROUP_GAP/2);
-		return searcher.search(pq).length();
+		return searcher.search(pq,10).totalHits;		
+		
 	}
 	
-	/** return how many times article key1 and key2 co-occur in any article 
+	/** return how many times article key1 and key2 cooccur in any article 
 	 *  
 	 * @param key1
 	 * @param key2
