@@ -148,8 +148,7 @@ public class PositionalMultiQuery extends Query {
 
 		
 		@Override
-		public Scorer scorer(IndexReader reader, boolean scoreDocsInOrder,
-				boolean topScorer) throws IOException {
+		public Scorer scorer(IndexReader reader, boolean scoreDocsInOrder,	boolean topScorer) throws IOException {
 
 			return scorer(reader) ;	
 		}
@@ -188,13 +187,16 @@ public class PositionalMultiQuery extends Query {
 				options.rankMeta.init(reader,field);
 
 			if( tps.length == 1)
-				return new PositionalScorer.TermScorer(this, tps, getPositions(), stopWordCount, 
+				return new PositionalScorer.TermScorer(
+						this, tps, getPositions(), stopWordCount,
 						similarity,reader.norms(field), options);
 			else if( slop == 0 )				 
-				return new PositionalScorer.ExactScorer(this, tps, getPositions(), stopWordCount,
+				return new PositionalScorer.ExactScorer(
+						this, tps, getPositions(), stopWordCount,
 						similarity,	reader.norms(field), options);
 			else
-				return new PositionalScorer.SloppyScorer(this, tps, getPositions(), stopWordCount, 
+				return new PositionalScorer.SloppyScorer(
+						this, tps, getPositions(), stopWordCount, 
 						similarity, slop,	reader.norms(field), options);
 		}
 

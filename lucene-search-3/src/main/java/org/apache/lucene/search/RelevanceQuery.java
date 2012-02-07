@@ -121,7 +121,7 @@ public class RelevanceQuery extends Query {
 	 * Relevance Weight
 	 * 
 	 */
-	protected class RelevanceWeight implements Weight {
+	protected class RelevanceWeight extends Weight {
 		/**
 		 * 
 		 */
@@ -174,19 +174,40 @@ public class RelevanceQuery extends Query {
 			}
 		}
 
-		/*(non-Javadoc) @see org.apache.lucene.search.Weight#scorer(org.apache.lucene.index.IndexReader) */
-		public Scorer scorer(IndexReader reader) throws IOException {
-			Scorer mainScorer = mainWeight.scorer(reader);
+		@Override
+		public Scorer scorer(IndexReader reader, boolean scoreDocsInOrder,
+				boolean topScorer) throws IOException {
+			Scorer mainScorer = mainWeight.scorer(reader,scoreDocsInOrder,topScorer);
 			ArrayList<Scorer> relSc = new ArrayList<Scorer>();
 			for(Weight wr : relevanceWeight)
-				relSc.add(wr.scorer(reader));			
+				relSc.add(wr.scorer(reader,scoreDocsInOrder,topScorer));			
+			return new RelevanceScorer(similarity, reader, this, mainScorer, relSc, relevanceWeight);
+		
+		}
+		
+		
+		/**  @see org.apache.lucene.search.Weight#scorer(org.apache.lucene.index.IndexReader) 
+		 * 
+		 * @param reader
+		 * @return
+		 * @throws IOException
+		 */
+		public Scorer scorer(IndexReader reader) throws IOException {
+			Scorer mainScorer = mainWeight.scorer(reader,true,true);
+			ArrayList<Scorer> relSc = new ArrayList<Scorer>();
+			for(Weight wr : relevanceWeight)
+				relSc.add(wr.scorer(reader,true,true));			
 			return new RelevanceScorer(similarity, reader, this, mainScorer, relSc, relevanceWeight);
 		}
 
-		/*(non-Javadoc) @see org.apache.lucene.search.Weight#explain(org.apache.lucene.index.IndexReader, int) */
+		/** @see org.apache.lucene.search.Weight#explain(org.apache.lucene.index.IndexReader, int) 
+		 * 
+		 */
 		public Explanation explain(IndexReader reader, int doc) throws IOException {
 			return scorer(reader).explain(doc);
 		}
+
+
 	}
 
 
