@@ -711,7 +711,7 @@ class ExtMobileFrontend {
 			$domainParts = array_reverse( $domainParts );
 			// Although some browsers will accept cookies without the initial ., » RFC 2109 requires it to be included.
 			wfProfileOut( __METHOD__ );
-			return '.' . $domainParts[1] . '.' . $domainParts[0];
+			return count( $domainParts ) >= 2 ? '.' . $domainParts[1] . '.' . $domainParts[0] : $_SERVER['HTTP_HOST'];
 		}
 		wfProfileOut( __METHOD__ );
 		return $_SERVER['HTTP_HOST'];
