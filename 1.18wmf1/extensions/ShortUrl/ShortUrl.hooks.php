@@ -22,7 +22,7 @@ class ShortUrlHooks {
 		global $wgOut, $wgShortUrlPrefix;
 
 		if ( !is_string( $wgShortUrlPrefix ) ) {
-			$urlPrefix = SpecialPage::getTitleFor( 'ShortUrl' )->getCanonicalUrl() . '/';
+			$urlPrefix = SpecialPage::getTitleFor( 'ShortUrl' )->getFullUrl() . '/';
 		} else {
 			$urlPrefix = $wgShortUrlPrefix;
 		}
