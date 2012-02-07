@@ -1004,14 +1004,12 @@ class Article extends Page {
 			$editErrors = $this->getTitle()->getUserPermissionsErrors( 'edit', $wgUser );
 			$errors = array_merge( $createErrors, $editErrors );
 
-			wfRunHooks( 'BeforeDisplayNoArticleText', array( $this, &$text, $errors, $wgUser, &$wikiText ) );
-			if ( !$text ) {
-				if ( !count( $errors ) ) {
-					$text = wfMsgNoTrans( 'noarticletext' );
-				} else {
-					$text = wfMsgNoTrans( 'noarticletext-nopermission' );
-				}
+			if ( !count( $errors ) ) {
+				$text = wfMsgNoTrans( 'noarticletext' );
+			} else {
+				$text = wfMsgNoTrans( 'noarticletext-nopermission' );
 			}
+			wfRunHooks( 'BeforeDisplayNoArticleText', array( $this, &$text, $errors, $wgUser, &$wikiText ) );
 		}
 		$text = "<div class='noarticletext'>\n$text\n</div>";
 
