@@ -103,7 +103,7 @@ public class PositionalMultiQuery extends Query {
 	 * @author rainman
 	 *
 	 */
-	protected class PositionalMultiWeight  implements Weight {
+	protected class PositionalMultiWeight  extends Weight {
 		
 		/**
 		 * 
@@ -146,6 +146,14 @@ public class PositionalMultiQuery extends Query {
 	      scaledBoosts = true;
 		}
 
+		
+		@Override
+		public Scorer scorer(IndexReader reader, boolean scoreDocsInOrder,
+				boolean topScorer) throws IOException {
+
+			return scorer(reader) ;	
+		}
+		
 		public Scorer scorer(IndexReader reader) throws IOException {
 			if (termArrays.size() == 0)                  // optimize zero-term case
 				return null;
@@ -270,6 +278,8 @@ public class PositionalMultiQuery extends Query {
 		      queryWeight *= queryNorm;                   // normalize query weight
 		      value = queryWeight * idf;                  // idf for document 
 		    }
+
+
 
 		  
 		  }
