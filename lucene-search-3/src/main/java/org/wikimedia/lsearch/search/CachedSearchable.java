@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Collector;
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.HitCollector;
@@ -43,7 +44,7 @@ public class CachedSearchable implements SearchableMul {
 		this.searchable = searchable;
 		log.debug("New cached searchable for "+searchable);
 	}
-	
+	@Override
 	public void close() throws IOException {
 		log.debug("called close()");
 		try{
@@ -54,7 +55,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-	
+	@Override
 	public Document doc(int i) throws IOException {
 		log.debug("called doc("+i+")");
 		try{
@@ -76,7 +77,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-	
+	@Override
 	public Document[] docs(int[] i) throws IOException {
 		log.debug("called docs("+Arrays.toString(i)+")");
 		try{
@@ -98,7 +99,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	@Override
 	public int docFreq(Term term) throws IOException {
 		log.debug("called docFreq("+term+")");
 		log.warn("Should never call docFreq(Term), but docFreqs(Term[])");
@@ -111,7 +112,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	@Override
 	public int[] docFreqs(Term[] terms) throws IOException {
 		log.debug("called docFreqs("+Arrays.toString(terms)+")");
 		try{
@@ -122,7 +123,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	@Override
 	public Explanation explain(Weight weight, int doc) throws IOException {
 		log.debug("called explaint("+weight+","+doc+")");
 		try{
@@ -133,7 +134,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	@Override
 	public int maxDoc() throws IOException {
 		try{
 			if(maxDocCached == -1){
@@ -148,7 +149,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	@Override
 	public Query rewrite(Query query) throws IOException {
 		log.debug("called rewrite("+query+")");
 		try{
@@ -159,7 +160,8 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	
+	@Override
 	public void search(Weight weight, Filter filter, HitCollector results) throws IOException {
 		log.debug("called search("+weight+","+filter+","+results+")");
 		try{
@@ -170,7 +172,23 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
+	
+	@Override
+	public void search(Weight weight, Filter filter, Collector collector)
+			throws IOException {
+		log.debug("called search("+weight+","+filter+","+collector+")");
+		try{
+			searchable.search(weight,filter,collector);
+		} catch(Exception e){
+			log.error(e.getMessage(), e);
+			SearcherCache.getInstance().reInitializeRemote(iid,host);
+			throw new IOException(e.getMessage());
+		}
+		
+	}
 
+	
+	@Override
 	public TopFieldDocs search(Weight weight, Filter filter, int n, Sort sort) throws IOException {
 		log.debug("called search("+weight+","+filter+","+n+","+sort+")");
 		try{
@@ -181,7 +199,7 @@ public class CachedSearchable implements SearchableMul {
 			throw new IOException(e.getMessage());
 		}
 	}
-
+	@Override
 	public TopDocs search(Weight weight, Filter filter, int n) throws IOException {
 		log.debug("called search("+weight+","+filter+","+n+")");
 		try{
@@ -197,6 +215,4 @@ public class CachedSearchable implements SearchableMul {
 	public String toString() {
 		return searchable.toString();
 	}
-
-	
 }
