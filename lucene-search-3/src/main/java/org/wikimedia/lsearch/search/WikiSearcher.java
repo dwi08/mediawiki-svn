@@ -13,6 +13,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Collector;
 import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.HitCollector;
@@ -28,19 +29,21 @@ import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.interoperability.RMIMessengerClient;
 
 /**
- * A generalized index searcher, supports various index
- * architectures.
+ * A generalized index searcher, supports various index  architectures.
  * 
- * Depending on the structure of the index (single file, 
- * mainsplit, split) makes either a local 
- * <code>IndexSearcher</code>, or a <code>MultiSearcher</code> 
+ * Depending on the structure of the index 
+ * <li>single file</li>
+ * <li>mainsplit</li>
+ * <li>split</li>
+ * makes either a local <code>IndexSearcher</code>, or a <code>MultiSearcher</code> 
  * with <code>SearchableMul</code> objects distributed via RMI.
  * 
- * The local searchers are always preferred (groups are ignored
- * for local searchers to avoid ambiguity).
+ * The local searchers are always preferred.
+ *  
+ * (groups are ignored for local searchers to avoid ambiguity).
  * 
- * 
- *  The actual searchers are pulled from {@link SearcherCache}.
+ *  Actual searchers are pulled from {@link SearcherCache}.
+ *  
  * 
  * @author rainman
  *
@@ -171,13 +174,23 @@ public class WikiSearcher extends Searcher implements SearchableMul {
 	public Query rewrite(Query query) throws IOException {
 		return searcher.rewrite(query);
 	}
-
+	
+	/**
+	* @deprecated
+	*/
 	@Override
 	public void search(Weight weight, Filter filter, HitCollector results)
 			throws IOException {
 		searcher.search(weight,filter,results);
 	}
 
+	@Override
+	public void search(Weight weight, Filter filter, Collector results)
+			throws IOException {
+		searcher.search(weight,filter,results);
+		
+	}
+	
 	@Override
 	public TopDocs search(Weight weight, Filter filter, int n)
 			throws IOException {
@@ -209,14 +222,16 @@ public class WikiSearcher extends Searcher implements SearchableMul {
 		else 
 			return searcher.toString();
 	}
-
+	@Override
 	public Document[] docs(int[] i, FieldSelector sel) throws IOException {
 		return searcher.docs(i,sel);
 	}
-
+	@Override
 	public Document doc(int i, FieldSelector sel) throws CorruptIndexException, IOException {
 		return searcher.doc(i,sel);
 	}
+
+
 	
 	
 }
