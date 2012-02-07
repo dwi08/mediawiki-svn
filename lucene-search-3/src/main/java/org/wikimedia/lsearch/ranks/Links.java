@@ -22,6 +22,7 @@ import org.apache.lucene.document.SetBasedFieldSelector;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermDocs;
 import org.apache.lucene.index.TermEnum;
@@ -188,8 +189,8 @@ public class Links {
 	 */
 	public static Links createNewInMemory(IndexId iid) throws IOException{
 		iid = iid.getLinks();
-		log.info("Making index in memory");
-		IndexWriter writer = new IndexWriter(new RAMDirectory(),new SimpleAnalyzer(),true);
+		log.info("Making index in memory");	
+		IndexWriter writer = new IndexWriter(new RAMDirectory(),new SimpleAnalyzer(),true, MaxFieldLength.UNLIMITED);
 		Links links = new Links(iid,null,writer,true);		
 		return links;
 	}
