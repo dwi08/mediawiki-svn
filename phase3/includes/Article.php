@@ -988,6 +988,8 @@ class Article extends Page {
 				'msgKey' => array( 'moveddeleted-notice' ) )
 		);
 
+		$text = '';
+		$wikiText = true;
 		# Show error message
 		$oldid = $this->getOldID();
 		if ( $oldid ) {
@@ -1002,10 +1004,13 @@ class Article extends Page {
 			$editErrors = $this->getTitle()->getUserPermissionsErrors( 'edit', $wgUser );
 			$errors = array_merge( $createErrors, $editErrors );
 
-			if ( !count( $errors ) ) {
-				$text = wfMsgNoTrans( 'noarticletext' );
-			} else {
-				$text = wfMsgNoTrans( 'noarticletext-nopermission' );
+			wfRunHooks( 'BeforeDisplayNoArticleText', array( $this, &$text, $errors, $wgUser, &$wikiText ) );
+			if ( !$text ) {
+				if ( !count( $errors ) ) {
+					$text = wfMsgNoTrans( 'noarticletext' );
+				} else {
+					$text = wfMsgNoTrans( 'noarticletext-nopermission' );
+				}
 			}
 		}
 		$text = "<div class='noarticletext'>\n$text\n</div>";
@@ -1016,7 +1021,7 @@ class Article extends Page {
 			$wgRequest->response()->header( "HTTP/1.1 404 Not Found" );
 		}
 
-		$wgOut->addWikiText( $text );
+		$wikiText ? $wgOut->addWikiText( $text ) : $wgOut->addHTML( $text );
 	}
 
 	/**
