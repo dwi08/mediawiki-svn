@@ -151,7 +151,7 @@ public class PositionalQuery extends Query {
 	 * @author rainman
 	 *
 	 */
-	protected class PositionalWeight implements Weight//PhraseWeight
+	protected class PositionalWeight extends Weight//PhraseWeight
 	{		
 		
 	    private Similarity similarity;
@@ -177,6 +177,13 @@ public class PositionalQuery extends Query {
 	        queryWeight *= queryNorm;                   // normalize query weight
 	        value = queryWeight * idf;                  // idf for document 
 	      }
+	    
+		@Override
+		public Scorer scorer(IndexReader reader, boolean scoreDocsInOrder,
+				boolean topScorer) throws IOException {
+			
+			return scorer(reader) ;
+		}
 		
 		public Scorer scorer(IndexReader reader) throws IOException {
 			if (terms.size() == 0)			  // optimize zero-term case
@@ -293,6 +300,8 @@ public class PositionalQuery extends Query {
 	      queryWeight = idf * getBoost();             // compute query weight
 	      return queryWeight * queryWeight;           // square it
 	    }
+
+	
 	}
 
 	@Override

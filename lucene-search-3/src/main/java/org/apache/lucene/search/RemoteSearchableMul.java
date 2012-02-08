@@ -47,6 +47,14 @@ implements SearchableMul {
 	    return local.maxDoc();
 	  }
 
+	  
+	@Override
+	public void search(Weight weight, Filter filter, Collector results)
+			throws IOException {
+		local.search(weight, filter, results);
+
+	}
+	  
 	  public TopDocs search(Weight weight, Filter filter, int n) throws IOException {
 	    return local.search(weight, filter, n);
 	  }
@@ -87,5 +95,8 @@ implements SearchableMul {
 	  public Document doc(int n, FieldSelector fieldSelector) throws CorruptIndexException, IOException {
 		  return local.doc(n,fieldSelector);
 	  }
+
+
+
 
 }

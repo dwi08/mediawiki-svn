@@ -17,16 +17,17 @@ package org.apache.lucene.search;
  * limitations under the License.
  */
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.FieldSelector;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.Term;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.FieldSelector;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
 
 /** Implements search over a set of <code>Searchables</code>.
  *
@@ -103,10 +104,20 @@ public class MultiSearcherBase extends Searcher {
     public TopDocs search(Weight weight,Filter filter,int n) {
       throw new UnsupportedOperationException();
     }
+    
+	@Override
+	public void search(Weight weight, Filter filter, Collector results)
+			throws IOException {
+		throw new UnsupportedOperationException();
+		
+	}
+    
 
     public TopFieldDocs search(Weight weight,Filter filter,int n,Sort sort) {
       throw new UnsupportedOperationException();
     }
+
+
   }
 
 
@@ -207,11 +218,11 @@ public class MultiSearcherBase extends Searcher {
   public int maxDoc() throws IOException {
     return maxDoc;
   }
-
+  
   public TopDocs search(Weight weight, Filter filter, int nDocs)
   throws IOException {
 
-    HitQueue hq = new HitQueue(nDocs);
+    HitQueue hq = new HitQueue(nDocs, false);
     int totalHits = 0;
 
     for (int i = 0; i < searchables.length; i++) { // search each searcher
@@ -256,6 +267,8 @@ public class MultiSearcherBase extends Searcher {
           break;                                  // no more scores > minScore
       }
     }
+    
+    
 
     ScoreDoc[] scoreDocs = new ScoreDoc[hq.size()];
     for (int i = hq.size() - 1; i >= 0; i--)	  // put docs in array
@@ -264,7 +277,61 @@ public class MultiSearcherBase extends Searcher {
     return new TopFieldDocs (totalHits, scoreDocs, hq.getFields(), maxScore);
   }
 
+  @Override
+  public void search(Weight weight, Filter filter, final Collector results)
+  		throws IOException {
 
+	    for (int i = 0; i < searchables.length; i++) { // search each searcher
+	      
+	    	final int start=starts[i];
+	    	
+	    	searchables[i].search(weight, filter, new Collector(){
+
+	    		private Scorer scorer;
+				@Override
+				public void setScorer(Scorer scorer) throws IOException {
+					this.scorer=scorer;
+					
+				}
+
+				@Override
+				public void collect(int doc) throws IOException {
+					try{
+						results.collect(doc+start);
+					}catch(IOException e){
+						e.printStackTrace();
+					}
+					
+				}
+
+				@Override
+				public void setNextReader(IndexReader reader, int docBase)
+						throws IOException {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public boolean acceptsDocsOutOfOrder() {
+					// TODO Auto-generated method stub
+					return false;
+				}
+	    		
+	    	});
+	    	/*
+	    	TopDocs docs = searchables[i].search(weight, filter, nDocs);
+	    	totalHits += docs.totalHits;		  // update totalHits
+	    	ScoreDoc[] scoreDocs = docs.scoreDocs;
+	    	for (int j = 0; j < scoreDocs.length; j++) { // merge scoreDocs into hq
+	    		ScoreDoc scoreDoc = scoreDocs[j];
+	    		scoreDoc.doc += starts[i];                // convert doc
+	    		if(!hq.insert(scoreDoc))
+	    			break;                                // no more scores > minScore
+	    	*/
+	      }
+  	
+  }
+  
   // inherit javadoc
   public void search(Weight weight, Filter filter, final HitCollector results)
     throws IOException {
@@ -360,5 +427,6 @@ public class MultiSearcherBase extends Searcher {
 
     return rewrittenQuery.weight(cacheSim);
   }
+
 
 }
