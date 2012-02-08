@@ -309,8 +309,9 @@ class FlaggedRevsStats {
 			array( 'rev_user' => 0, $timeCondition, "(rev_id % $mod) = 0" ),
 			__METHOD__,
 			array(
-				'GROUP BY' 	=> 'rev_id',
-				'USE INDEX' => array( 'p' => 'PRIMARY', 'n' => 'PRIMARY' )
+				'GROUP BY'  => array( 'rev_timestamp', 'rev_id' ), // user_timestamp INDEX used
+				'USE INDEX' => array( 'revision' => 'user_timestamp' ), // sanity; mysql picks this
+				'STRAIGHT_JOIN'
 			),
 			array(
 				'p' => array( 'INNER JOIN', array( // last review
