@@ -40,7 +40,8 @@
 		<solr.version>1.4.1</solr.version>
 		<lucene.version>2.3.0</lucene.version>
 		<junit.version>4.10</junit.version>
-		<lucene.version>2.4.1</lucene.version>
+		<!-- <lucene.version>2.4.1</lucene.version> -->
+		<lucene.version>2.9.4</lucene.version>
 		<antlr.version>3.4</antlr.version>
 
 		<!-- misc project properties -->
