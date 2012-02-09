@@ -67,6 +67,7 @@ header {
 	overflow: hidden;
 	font-size: 13px;
 	padding: 1px 4px;
+	background: white;
 }
 
 .langbar span {
