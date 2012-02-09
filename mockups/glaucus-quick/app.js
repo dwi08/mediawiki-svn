@@ -30,4 +30,5 @@ $(function() {
 	setupMenu('#menu-contribute', '#contribute-menu');
 	setupMenu('#menu-search', '#search-menu');
 
+	$(window).scrollTop(0);
 });
