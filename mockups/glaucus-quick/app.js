@@ -64,10 +64,11 @@ $(function() {
 		var current = $('header').css('top');
 		if (current == '0px') {
 			// simulate click handling for some reason it doesn't work
-			$(document).bind('touchend.menubar', function() {
+			$(document).bind('touchend.menubar', function(e) {
 				$(document).unbind('touchmove.menubar');
 				$(document).unbind('touchend.menubar');
 				showMenuThingy();
+				e.preventDefault();
 			});
 			$(document).bind('touchmove.menubar', function() {
 				// moved too much! cancel
@@ -75,7 +76,7 @@ $(function() {
 				$(document).unbind('touchend.menubar');
 			});
 		} else {
-			// for start of scrolling or touch
+			// for start of scrolling or touch to clear
 			hideMenuBar();
 		}
 	});
