@@ -53,8 +53,13 @@ $(function() {
 		}
 	}
 
+	var alreadyClicked = true;
 	$(document).bind('click', function() {
-		showMenuThingy();
+		if (alreadyClicked) {
+			alreadyClicked = false;
+		} else {
+			showMenuThingy();
+		}
 	});
 	$(document).bind('scroll', function() {
 		hideMenuBar();
@@ -68,7 +73,7 @@ $(function() {
 				$(document).unbind('touchmove.menubar');
 				$(document).unbind('touchend.menubar');
 				showMenuThingy();
-				e.preventDefault();
+				alreadyClicked = true;
 			});
 			$(document).bind('touchmove.menubar', function() {
 				// moved too much! cancel
@@ -78,6 +83,7 @@ $(function() {
 		} else {
 			// for start of scrolling or touch to clear
 			hideMenuBar();
+			alreadyClicked = true;
 		}
 	});
 
