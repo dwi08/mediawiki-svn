@@ -92,7 +92,7 @@ header {
 /* Menu pane contains the popup menus, and takes background click events to clear */
 #menu-pane {
 	position: absolute;
-	top: 45px;
+	top: 44px;
 	bottom: 0;
 	right: 0;
 	left: 0;
@@ -106,10 +106,17 @@ header {
 	top: 0px;
 	
 	background: black;
+	background-image: url(menu-arrow.png);
+	background-repeat: no-repeat;
+	background-position: top center;
 	color: white;
 	
+	border: solid 2px #323232;
+	border-top: none;
 	padding: 12px;
 	margin: 0;
+	
+	box-shadow: 2px 5px 5px #888;
 }
 
 .menu li {

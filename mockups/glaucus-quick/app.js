@@ -8,7 +8,7 @@ $(function() {
 		}
 	}	
 	function setupMenu(button, menu) {
-		$(button).bind('click touchstart', function(e) {
+		$(button).bind('click touchstart mousedown', function(e) {
 			e.preventDefault();
 
 			hideMenus();
@@ -19,7 +19,8 @@ $(function() {
 		});
 	}
 	
-	$('#menu-pane').bind('click touchstart', function(e) {
+	$('#menu-pane').bind('click touchstart mousedown', function(e) {
+		e.preventDefault();
 		hideMenus();
 		$('#menu-pane').hide();
 	});
