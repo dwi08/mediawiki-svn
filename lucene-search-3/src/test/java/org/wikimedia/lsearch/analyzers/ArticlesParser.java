@@ -12,7 +12,20 @@ import java.util.ArrayList;
 
 
 /**
+ * Load articles stored in a single file into memory
+ * 
+ * the format of the file is
+ * <code>
+ * ### namespace = 0
+ * ### title = 1991
+ * ### content
+ * 
+ * article content
+ * </code>
+ * 
  * @author rainman
+ *
+ * used exclusively in tests
  *
  */
 public class ArticlesParser {
