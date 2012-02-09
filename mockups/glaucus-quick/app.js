@@ -16,6 +16,7 @@ $(function() {
 	}
 	
 	setupMenu('#menu-wiki', '#wiki-menu');
+	setupMenu('#menu-article', '#article-menu');
 	setupMenu('#menu-you', '#you-menu');
 
 });
