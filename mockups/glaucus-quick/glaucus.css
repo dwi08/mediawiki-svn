@@ -88,11 +88,21 @@ header {
 }
 
 
+/* Menu pane contains the popup menus, and takes background click events to clear */
+#menu-pane {
+	position: fixed;
+	top: 45px;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0;
+}
+
 .menu {
 	display: none;
 	
 	position: absolute;
-	top: 45px;
+	top: 0px;
 	
 	background: black;
 	color: white;
@@ -117,4 +127,12 @@ header {
 #you-menu {
 	left: 64px;
 }
+#contribute-menu {
+	left: 160px;
+}
+
+#search-menu {
+	left: 212px;
+}
+
 
