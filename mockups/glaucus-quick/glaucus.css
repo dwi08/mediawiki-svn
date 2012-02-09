@@ -3,11 +3,12 @@ html, body {
 	padding: 0;
 	
 	font-family: "Roboto", "Droid Sans", "Helvetica", sans-serif;
+	font-size: 14px;
 }
 
 
 header {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -90,7 +91,7 @@ header {
 
 /* Menu pane contains the popup menus, and takes background click events to clear */
 #menu-pane {
-	position: fixed;
+	position: absolute;
 	top: 45px;
 	bottom: 0;
 	right: 0;
@@ -135,4 +136,11 @@ header {
 	left: 212px;
 }
 
+
+
+
+
+#content {
+	margin-top: 69px;
+}
 
