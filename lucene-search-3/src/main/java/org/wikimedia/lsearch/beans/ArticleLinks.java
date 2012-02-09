@@ -17,25 +17,41 @@ public class ArticleLinks {
 	public ArticleLinks redirectsTo;
 	/** all the pages that get redirected here */
 	public ArrayList<String> redirected;
-	
+	/**
+	 * Constructor for a regular article
+	 * @param links
+	 */
 	public ArticleLinks(int links) {
 		this.links = links;
 		redirectsTo = null;
 	}
 
+	/**
+	 * Constructor for redirect to an article
+	 * @param links
+	 * @param redirect
+	 */
 	public ArticleLinks(int links, ArticleLinks redirect) {
 		this.links = links;
 		this.redirectsTo = redirect;
 	}
 
+	final static int PRIME = 31;
+	
 	@Override
-	public int hashCode() {
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + links;
-		result = PRIME * result + 0;
-		return result;
+	public int hashCode() {				
+		return  PRIME * (PRIME + links);
 	}
 	
 	
+	@Override
+	public boolean equals(Object other) {		
+		if( other instanceof ArticleLinks ) {			
+			ArticleLinks otherArticleLinks = (ArticleLinks)other;			
+			return links == otherArticleLinks.links
+			&& redirectsTo.equals(otherArticleLinks)
+			&& redirected.equals(otherArticleLinks.redirected);			
+		}		
+		return false;	      
+	  }	
 }
