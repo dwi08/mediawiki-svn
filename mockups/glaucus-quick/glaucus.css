@@ -1,0 +1,116 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	
+	font-family: "Roboto", "Droid Sans", "Helvetica", sans-serif;
+}
+
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 69px;
+}
+
+.toolbar {
+	height: 45px;
+	width: 320px;
+	padding: 0;
+	color: white;
+	background: black;
+	/* needed on Android 2.3 */ background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3E3E3E), color-stop(14%,#393939), color-stop(32%,#2E2E2E), color-stop(64%,#151515), color-stop(84%,#080808), color-stop(100%,#000000));
+    background-image: -webkit-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+    background-image: -moz-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+    background-image: -ms-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+    background-image: -o-linear-gradient(top, #3E3E3E 0%,#393939 14%,#2E2E2E 32%,#151515 64%,#080808 84%,#010101 100%);
+}
+
+.toolbar button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+
+	position: relative;
+	padding: 0;
+	margin: 0;
+	
+	width: 19%;
+	height: 44px;
+	
+	border: none;
+	background: none;
+	color: white;
+	
+	overflow: hidden;
+}
+
+.toolbar button.active {
+	background: #0e43b5;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3963c0), color-stop(100%, #0e43b5));
+	background-image: -webkit-linear-gradient(top, 0% #3963c0, 100%, #0e43b5);
+	background-image: -moz-linear-gradient(top, 0% #3963c0, 100%, #0e43b5);
+	background-image: -ms-linear-gradient(top, 0% #3963c0, 100%, #0e43b5);
+	background-image: -o-linear-gradient(top, 0% #3963c0, 100%, #0e43b5);
+}
+
+.toolbar > button > span {
+	position: absolute;
+	text-align: center;
+	left: 0;
+	right: 0;
+	bottom: 2px;
+}
+
+.langbar {
+	overflow: hidden;
+	font-size: 13px;
+	padding: 1px 4px;
+}
+
+.langbar span {
+	color: #0645ad;
+}
+
+.langbar span.selected {
+	color: black;
+	font-weight: bold;
+	background: #e6e8fa !important;
+	border: solid 1px #0645ad !important;
+	border-radius: 2px;
+}
+
+#lang-selector {
+	position: relative;
+	top: -2em;
+	width: 100%;
+	opacity: 0;
+}
+
+
+.menu {
+	display: none;
+	
+	position: absolute;
+	top: 45px;
+	
+	background: black;
+	color: white;
+	
+	padding: 12px;
+	margin: 0;
+}
+
+.menu li {
+	font-size: 13px;
+	height: 48px;
+	list-style: none;
+	padding-left: 40px;
+	padding-right: 12px;
+}
+
+
+
+#you-menu {
+	left: 64px;
+}

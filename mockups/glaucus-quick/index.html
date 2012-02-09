@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Glaucus mockup touch test</title>
+	<link href="glaucus.css" type="text/css" rel="stylesheet">
+	<script src="http://code.jquery.com/jquery-1.7.1.js"></script>
+	<script src="app.js"></script>
+
+<body>
+	<header>
+		<div class="toolbar">
+			<button id="menu-wiki">
+				<span>Wikipedia</span>
+			</button>
+			<button id="menu-article">
+				<span>Article</span>
+			</button>
+			<button id="menu-you">
+				<span>You</span>
+			</button>
+			<button id="menu-contribute">
+				<span>Contribute</span>
+			</button>
+			<button id="menu-search">
+				<span>Search</span>
+			</button>
+		</div>
+		<div class="langbar">
+			<span class="selected">English</span>
+			•
+			<span class="lang">Deutsch</span>
+			•
+			<span class="lang">Español</span>
+			•
+			<span class="lang">Français</span>
+			•
+			<span class="lang">日本語</span>
+			•
+			<span class="lang">…</span>
+		</div>
+		<select id="lang-selector">
+			<option>English</option>
+			<option>Deutsch</option>
+			<option>Español</option>
+			<option>Français</option>
+			<option>日本語</option>
+		</select>
+	</header>
+	<div id="content">
+	</div>
+
+	<ul class="menu" id="wiki-menu">
+		<li id="menu-main-page"><a>Main Page</a>
+		<li id="menu-featured-content"><a>Featured Content</a>
+		<li id="menu-recent-changes"><a>Recent Changes</a>
+		<li id="menu-random-article"><a>Random Article</a>
+		<li><br>
+		<li id="menu-log-out"><a>Log Out</a>
+	</ul>
+
+	<ul class="menu" id="you-menu">
+		<li id="menu-self"><a>Jorm (WMF)</a>
+		<li id="menu-your-notifications"><a>Your notifications</a>
+		<li id="menu-your-talk"><a>Your Talk Page</a>
+		<li id="menu-your-watchlist"><a>Your Watchlist</a>
+		<li id="menu-your-contribs"><a>Your Contributions</a>
+		<li id="menu-your-preferences"><a>Your Preferences</a>
+		<li><br>
+		<li id="menu-log-out"><a>Log Out</a>
+	</ul>
