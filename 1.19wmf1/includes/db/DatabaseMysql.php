@@ -126,7 +126,7 @@ class DatabaseMysql extends DatabaseBase {
 		}
 
 		if ( $success ) {
-			// Tell the server we're communicating with it in UTF-8.
+/*			// Tell the server we're communicating with it in UTF-8.
 			// This may engage various charset conversions.
 			global $wgDBmysql5;
 			if( $wgDBmysql5 ) {
@@ -140,7 +140,7 @@ class DatabaseMysql extends DatabaseBase {
 				$mode = $this->addQuotes( $wgSQLMode );
 				$this->query( "SET sql_mode = $mode", __METHOD__ );
 			}
-
+*/
 			// Turn off strict mode if it is on
 		} else {
 			$this->reportConnectionError( $phpError );

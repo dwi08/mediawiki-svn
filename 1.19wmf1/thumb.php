@@ -99,6 +99,9 @@ function wfStreamThumb( array $params ) {
 	$isOld = ( isset( $params['archived'] ) && $params['archived'] );
 	unset( $params['archived'] );
 
+	// Is this a thumb of a temp file?
+	$isTemp = ( isset( $params['temp'] ) && $params['temp'] );
+
 	// Some basic input validation
 	$fileName = strtr( $fileName, '\\/', '__' );
 
@@ -118,14 +121,32 @@ function wfStreamThumb( array $params ) {
 			return;
 		}
 		$img = RepoGroup::singleton()->getLocalRepo()->newFromArchiveName( $title, $fileName );
+	} else if ( $isTemp ) {
+		// Dirty, horrible, evil hack. We need to create a repo with the right zone paths for this to work
+		$localRepo = RepoGroup::singleton()->getLocalRepo();
+
+		$repo = new FSRepo(
+			array( 'directory' => $localRepo->getZonePath( 'temp' ),
+			'url' => $localRepo->getZoneUrl( 'temp' ),
+			'thumbDir'=> $localRepo->getZonePath( 'thumb' ) . '/temp',
+			'thumbUrl' => $localRepo->getZoneUrl( 'thumb' ) . '/temp'
+			)
+		);
+ 		
+		// $fileName can be like timestamp!name , strip the timestamp! part
+		$parts = explode( '!', $fileName, 2 );
+		$strippedName = isset( $parts[1] ) ? $parts[1] : $fileName;
+		$path = $localRepo->getZonePath( 'temp' ) . '/' . RepoGroup::singleton()->getLocalRepo()->getHashPath( $strippedName ) . $fileName;
+		$img = new UnregisteredLocalFile( false, $repo, $path, false );
 	} else {
 		$img = wfLocalFile( $fileName );
 	}
 
 	// Check permissions if there are read restrictions
 	if ( !in_array( 'read', User::getGroupPermissions( array( '*' ) ), true ) ) {
-		if ( !$img->getTitle()->userCan( 'read' ) ) {
-			wfThumbError( 403, 'Access denied. You do not have permission to access ' .
+		// If we have a title, check that for read access. If not (stashed file), be paranoid and disallow
+		if ( !$img->getTitle() || !$img->getTitle()->userCanRead() ) {
+			wfThumbError( 403, 'Access denied. You do not have permission to access ' . 
 				'the source file.' );
 			wfProfileOut( __METHOD__ );
 			return;

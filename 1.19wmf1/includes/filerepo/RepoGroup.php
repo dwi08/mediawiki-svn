@@ -26,7 +26,7 @@ class RepoGroup {
 	 * @var RepoGroup
 	 */
 	protected static $instance;
-	const MAX_CACHE_SIZE = 1000;
+	const MAX_CACHE_SIZE = 5;
 
 	/**
 	 * Get a RepoGroup instance. At present only one instance of RepoGroup is
