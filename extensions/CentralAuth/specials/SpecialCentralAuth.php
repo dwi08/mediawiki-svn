@@ -464,7 +464,7 @@ class SpecialCentralAuth extends SpecialPage {
 			}
 		}
 
-		$url = $wiki->getFullUrl( $title );
+		$url = $wiki->getUrl( $title );
 		if ( $params )
 			$url .= '?' . $params;
 		return Xml::element( 'a',
