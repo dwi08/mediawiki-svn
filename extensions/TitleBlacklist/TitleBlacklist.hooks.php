@@ -81,8 +81,9 @@ class TitleBlacklistHooks {
 	 * @return bool Acceptable
 	 */
 	private static function acceptNewUserName( $userName, $permissionsUser, &$err, $override = true ) {
+		global $wgTitleBlacklist;
 		$title = Title::makeTitleSafe( NS_USER, $userName );
-		$blacklisted = TitleBlacklist::singleton()->userCannot( $title, $permissionsUser, 
+		$blacklisted = $wgTitleBlacklist->userCannot( $title, $permissionsUser, 
 			'new-account', $override );
 		if( $blacklisted instanceof TitleBlacklistEntry ) {
 			$message = $blacklisted->getErrorMessage( 'new-account' );
