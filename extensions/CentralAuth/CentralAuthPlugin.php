@@ -251,5 +251,4 @@ class CentralAuthPlugin extends AuthPlugin {
 	public function getUserInstance( User &$user ) {
 		return CentralAuthUser::getInstance( $user );
 	}
-	}
 }
