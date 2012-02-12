@@ -2,6 +2,7 @@ package org.wikimedia.lsearch.related;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.mediawiki.importer.DumpWriter;
@@ -55,9 +56,9 @@ public class TitleReader  implements DumpWriter{
 	}
 	public void writeSiteinfo(Siteinfo info) throws IOException {
 		// write siteinfo to localization
-		Iterator it = info.Namespaces.orderedEntries();
+		Iterator<Map.Entry<Integer,String>> it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
-			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
+			Entry<Integer,String> pair = it.next();
 			Localization.addCustomMapping(pair.getValue(),pair.getKey(),iid.getDBname());
 		}
 	}	

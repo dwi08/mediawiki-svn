@@ -3,6 +3,7 @@ package org.wikimedia.lsearch.ranks;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.mediawiki.importer.DumpWriter;
@@ -60,9 +61,9 @@ public class LinkReader implements DumpWriter {
 	public void writeSiteinfo(Siteinfo info) throws IOException {
 		siteinfo = info;
 		// write siteinfo to localization
-		Iterator it = info.Namespaces.orderedEntries();
+		Iterator<Map.Entry<Integer,String>> it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
-			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
+			Entry<Integer,String> pair = it.next();
 			Localization.addCustomMapping(pair.getValue(),pair.getKey(),iid.getDBname());
 			links.addToNamespaceMap(pair.getValue(),pair.getKey());
 		}
