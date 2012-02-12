@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.mediawiki.importer.DumpWriter;
@@ -91,10 +92,10 @@ public class CleanIndexImporter implements DumpWriter {
 		// nop
 	}
 	public void writeSiteinfo(Siteinfo info) throws IOException {
-		Iterator it = info.Namespaces.orderedEntries();
+		Iterator<Map.Entry<Integer,String>> it = info.Namespaces.orderedEntries();
 		while(it.hasNext()){
 			
-			Entry<Integer,String> pair = (Entry<Integer,String>)it.next();
+			Entry<Integer,String> pair = it.next();
 			Localization.addCustomMapping(pair.getValue(),pair.getKey(),iid.getDB().getDBname());
 		}
 	}	
