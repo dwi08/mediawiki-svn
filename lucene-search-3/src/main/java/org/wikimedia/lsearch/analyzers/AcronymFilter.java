@@ -16,21 +16,21 @@ public class AcronymFilter extends TokenFilter {
 		super(input);
 	}
 
-	@Override
-	public Token next() throws IOException {
+	@Override 
+	public Token next(Token nextToken) throws IOException {
 		if(buffered != null){
-			Token t = buffered;
+			nextToken = buffered;
 			buffered = null;
-			return t;
+			return nextToken;
 		}
-		Token t = input.next();
-		if(t == null)
+		nextToken = input.next();
+		if(nextToken == null)
 			return null;
-		if(t.termText().contains(".") && !isNumber(t.termText())){
-			buffered = new Token(t.termText().replace(".",""),t.startOffset(),t.endOffset(),t.type());
+		if(nextToken.termText().contains(".") && !isNumber(nextToken.termText())){
+			buffered = new Token(nextToken.termText().replace(".",""),nextToken.startOffset(),nextToken.endOffset(),nextToken.type());
 			buffered.setPositionIncrement(0);
 		}
-		return t;
+		return nextToken;
 	}
 	
 	protected boolean isNumber(String str){
