@@ -96,7 +96,6 @@ class MakeWmfBranch {
 
 		$this->chdir( 'wmf' );
 
-
 		# Copy in phase3
 		$destRel = $this->newVersion;
 		$this->runCmd( 'svn', 'cp', '--quiet', "{$this->mainSourceUrl}/phase3", $destRel );
