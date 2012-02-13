@@ -24,7 +24,7 @@ import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 
 public class AnalysisTest extends AbstractWikiTestCase {
 
-	Analyzer a = null;
+	
 	Configuration config = null;
 
 	@Before
@@ -35,14 +35,8 @@ public class AnalysisTest extends AbstractWikiTestCase {
 			GlobalConfiguration.getInstance();
 		}
 	}
+	
 
-	@Test
-	public void testCJKAnalyzer(){
-		a = new CJKAnalyzer();
-		assertEquals(
-				"[(いわ,0,2,type=double), (わさ,1,3,type=double), (さき,2,4,type=double), (ic,4,6,type=single), (カー,6,8,type=double), (ード,7,9,type=double)]",
-				tokens("いわさきicカード"));
-	}
 
 	/** Common test for indexer and searcher analyzers */
 	@Test
@@ -97,27 +91,11 @@ public class AnalysisTest extends AbstractWikiTestCase {
 		commonSerbian();
 	}
 
-	@Test
-	public String tokens(String text){
-		try{
-			return Arrays.toString(tokensFromAnalysis(a,text,"contents"));
-		} catch(IOException e){
-			fail(e.getMessage());
-			return null;
-		}
-	}
+	
 
 
-	public static Token[] tokensFromAnalysis(Analyzer analyzer, String text, String field) throws IOException {
-		TokenStream stream = analyzer.tokenStream(field, new StringReader(text));
-		ArrayList<Token> tokenList = new ArrayList<Token>();
-		while (true) {
-			Token token = stream.next();
-			if (token == null) break;
-			tokenList.add(token);
-		}
-		return (Token[]) tokenList.toArray(new Token[0]);
-	}
+
+	
 
 	public static void displayTokens(Analyzer analyzer, String text) throws IOException {
 		Token[] tokens = tokensFromAnalysis(analyzer, text, "contents");

@@ -1,9 +1,16 @@
 package org.wikimedia.lsearch.test;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.Token;
+import org.apache.lucene.analysis.TokenStream;
 import org.junit.Before;
 import org.wikimedia.lsearch.analyzers.WikiQueryParser;
 import org.wikimedia.lsearch.config.Configuration;
@@ -80,4 +87,28 @@ public abstract class AbstractWikiTestCase extends TestCase {
 		}
 	}
 
+	
+	
+	protected Analyzer a = null;
+	
+	public static Token[] tokensFromAnalysis(Analyzer analyzer, String text, String field) throws IOException {
+		TokenStream stream = analyzer.tokenStream(field, new StringReader(text));
+		ArrayList<Token> tokenList = new ArrayList<Token>();
+		while (true) {
+			Token token = stream.next();
+			if (token == null) break;
+			tokenList.add(token);
+		}
+		return (Token[]) tokenList.toArray(new Token[0]);
+	}
+
+	public String tokens(String text){
+		try{
+			return Arrays.toString(tokensFromAnalysis(a,text,"contents"));
+		} catch(IOException e){
+			fail(e.getMessage());
+			return null;
+		}
+	}
+	
 }
