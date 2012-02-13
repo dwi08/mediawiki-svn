@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.junit.Test;
 import org.wikimedia.lsearch.config.IndexId;
 import org.wikimedia.lsearch.search.NamespaceFilter;
 import org.wikimedia.lsearch.spell.dist.EditDistance;
@@ -12,6 +13,7 @@ import org.wikimedia.lsearch.test.AbstractWikiTestCase;
 public class SuggestUnitTest extends AbstractWikiTestCase 
 {
 	
+	@Test
 	public void testMakeNamespaces() throws IOException {
 		IndexId iid = IndexId.get("entest");
 		Suggest sug = new Suggest(iid);
@@ -35,6 +37,7 @@ public class SuggestUnitTest extends AbstractWikiTestCase
 	 * 
 	 * @throws IOException
 	 */
+	@Test
 	public void testExtractSpaceMap1() throws IOException {
 		assertEquals("{}",getSpaceMap(".999","0 999").toString());
 	}
@@ -43,6 +46,7 @@ public class SuggestUnitTest extends AbstractWikiTestCase
 	 * 
 	 * @throws IOException
 	 */
+	@Test
 	public void testExtractSpaceMap2() throws IOException {
 		assertEquals("{4=3}",getSpaceMap("some string","som estring").toString());		
 	}
@@ -51,6 +55,7 @@ public class SuggestUnitTest extends AbstractWikiTestCase
 	 * 
 	 * @throws IOException
 	 */
+	@Test
 	public void testExtractSpaceMap3() throws IOException {
 		assertEquals("",getSpaceMap("               a   ","         b         ").toString());
 	}

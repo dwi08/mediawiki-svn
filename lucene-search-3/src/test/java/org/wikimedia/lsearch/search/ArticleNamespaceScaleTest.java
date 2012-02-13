@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.apache.lucene.search.ArticleNamespaceScaling;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
 public class ArticleNamespaceScaleTest extends TestCase {
+	
+	@Test
 	public void testComplex(){
 		HashMap<Integer,Float> map = new HashMap<Integer,Float>();
 		// (0, 1) (2, 0.005) (3, 0.001) (4, 0.01), (6, 0.02), (10, 0.0005), (12, 0.01), (14, 0.02)
@@ -28,6 +31,7 @@ public class ArticleNamespaceScaleTest extends TestCase {
 		assertEquals(0.0025f,a.scaleNamespace(5));		
 	}
 	
+	@Test
 	public void testDefault(){
 		ArticleNamespaceScaling a = new ArticleNamespaceScaling(new HashMap<Integer,Float>());
 		assertEquals(1f,a.scaleNamespace(0));
