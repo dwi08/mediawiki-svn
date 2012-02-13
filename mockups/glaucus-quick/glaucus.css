@@ -128,6 +128,11 @@ header {
 	padding-right: 12px;
 }
 
+.menu li a {
+	display: inline-block;
+	height: 48px;
+	padding-top: 16px;
+}
 
 
 #article-menu {
@@ -180,4 +185,74 @@ header {
 
 #menu-search {
 	background-image: url(images/xhdpi/magglass.png);
+}
+
+
+/** Site menu */
+
+.menu li {
+	background-size: 32px 32px;
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+
+#menu-main-page {
+	background-image: url(images/xhdpi/wikipedia.png);
+}
+
+#menu-featured-content {
+	background-image: url(images/xhdpi/trophy.png);
+}
+
+#menu-recent-changes {
+	background-image: url(images/xhdpi/hourglass.png);
+}
+
+#menu-random-article {
+	background-image: url(images/xhdpi/die.png);
+}
+
+/** Article menu */
+
+#menu-history {
+	background-image: url(images/xhdpi/history.png);
+}
+
+#menu-discussion {
+	background-image: url(images/xhdpi/discussion.png);
+}
+
+#menu-whatlinkshere {
+	background-image: url(images/xhdpi/discussion.png);
+}
+
+
+/** You menu */
+
+#menu-self {
+	background-image: url(images/xhdpi/user.png);
+}
+
+#menu-your-notifications {
+	background-image: url(images/xhdpi/notifications.png);
+}
+
+#menu-your-talk {
+	background-image: url(images/xhdpi/discussion.png);
+}
+
+#menu-your-watchlist {
+	background-image: url(images/xhdpi/watchlist.png);
+}
+
+#menu-your-contribs {
+	background-image: url(images/xhdpi/pencil.png);
+}
+
+#menu-your-preferences {
+	background-image: url(images/xhdpi/gear.png);
+}
+
+#menu-log-out {
+	background-image: url(images/xhdpi/key.png);
 }
