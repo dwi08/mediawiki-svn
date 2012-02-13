@@ -168,23 +168,23 @@ header {
 }
 
 #menu-wiki {
-	background-image: url(images/xhdpi/wikipedia.png);
+	background-image: url(images/toolbar/wikipedia.png);
 }
 
 #menu-article {
-	background-image: url(images/xhdpi/article.png);
+	background-image: url(images/toolbar/article.png);
 }
 
 #menu-you {
-	background-image: url(images/xhdpi/user.png);
+	background-image: url(images/toolbar/user.png);
 }
 
 #menu-contribute {
-	background-image: url(images/xhdpi/pencil.png);
+	background-image: url(images/toolbar/pencil.png);
 }
 
 #menu-search {
-	background-image: url(images/xhdpi/magglass.png);
+	background-image: url(images/toolbar/magglass.png);
 }
 
 
@@ -197,62 +197,62 @@ header {
 }
 
 #menu-main-page {
-	background-image: url(images/xhdpi/wikipedia.png);
+	background-image: url(images/menu/wikipedia.png);
 }
 
 #menu-featured-content {
-	background-image: url(images/xhdpi/trophy.png);
+	background-image: url(images/menu/trophy.png);
 }
 
 #menu-recent-changes {
-	background-image: url(images/xhdpi/hourglass.png);
+	background-image: url(images/menu/hourglass.png);
 }
 
 #menu-random-article {
-	background-image: url(images/xhdpi/die.png);
+	background-image: url(images/menu/die.png);
 }
 
 /** Article menu */
 
 #menu-history {
-	background-image: url(images/xhdpi/history.png);
+	background-image: url(images/menu/history.png);
 }
 
 #menu-discussion {
-	background-image: url(images/xhdpi/discussion.png);
+	background-image: url(images/menu/discussion.png);
 }
 
 #menu-whatlinkshere {
-	background-image: url(images/xhdpi/discussion.png);
+	background-image: url(images/menu/discussion.png);
 }
 
 
 /** You menu */
 
 #menu-self {
-	background-image: url(images/xhdpi/user.png);
+	background-image: url(images/menu/user.png);
 }
 
 #menu-your-notifications {
-	background-image: url(images/xhdpi/notifications.png);
+	background-image: url(images/menu/notifications.png);
 }
 
 #menu-your-talk {
-	background-image: url(images/xhdpi/discussion.png);
+	background-image: url(images/menu/discussion.png);
 }
 
 #menu-your-watchlist {
-	background-image: url(images/xhdpi/watchlist.png);
+	background-image: url(images/menu/watchlist.png);
 }
 
 #menu-your-contribs {
-	background-image: url(images/xhdpi/pencil.png);
+	background-image: url(images/menu/pencil.png);
 }
 
 #menu-your-preferences {
-	background-image: url(images/xhdpi/gear.png);
+	background-image: url(images/menu/gear.png);
 }
 
 #menu-log-out {
-	background-image: url(images/xhdpi/key.png);
+	background-image: url(images/menu/key.png);
 }
