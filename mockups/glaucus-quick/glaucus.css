@@ -47,7 +47,7 @@ header {
 }
 
 .toolbar button.active {
-	background: #0e43b5;
+	background-color: #0e43b5;
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3963c0), color-stop(100%, #0e43b5));
 	background-image: -webkit-linear-gradient(top, 0% #3963c0, 100%, #0e43b5);
 	background-image: -moz-linear-gradient(top, 0% #3963c0, 100%, #0e43b5);
@@ -152,3 +152,32 @@ header {
 	margin-top: 69px;
 }
 
+
+
+/** Toolbar icons */
+
+.toolbar button {
+	background-size: 32px 32px;
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+
+#menu-wiki {
+	background-image: url(images/xhdpi/wikipedia.png);
+}
+
+#menu-article {
+	background-image: url(images/xhdpi/article.png);
+}
+
+#menu-you {
+	background-image: url(images/xhdpi/user.png);
+}
+
+#menu-contribute {
+	background-image: url(images/xhdpi/pencil.png);
+}
+
+#menu-search {
+	background-image: url(images/xhdpi/magglass.png);
+}
