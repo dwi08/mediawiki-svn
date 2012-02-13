@@ -12,90 +12,69 @@ import org.apache.lucene.analysis.TokenStream;
  */
 public class AcronymFilter extends TokenFilter {
 
-	Token buffered = null;						//TODO: document buffer behavior.
-	
-	public AcronymFilter(TokenStream input) {
+	protected transient Token buffered = null; // TODO: document buffer behavior.
+
+	public AcronymFilter(final TokenStream input) {
 		super(input);
 	}
-	
-	
-	@Override 
-	public Token next(Token reusableToken) throws IOException {
-		
-		if(buffered != null){
+
+	@Override
+	public Token next(Token reusableToken) throws IOException { // NOPMD by oren on 2/13/12 12:41 AM
+
+		if (buffered == null) {
+			reusableToken = input.next(reusableToken);
+			if (reusableToken != null && isAcronym(reusableToken.termBuffer())) {
+				buffered = new Token(filteredBuffer.toString(),
+						reusableToken.startOffset(), reusableToken.endOffset(),
+						reusableToken.type());
+				buffered.setPositionIncrement(0);
+			}
+		}else{
 			reusableToken = buffered;
-			buffered = null;
-			return reusableToken;
-		}
-		reusableToken = input.next(reusableToken);
-		if(reusableToken == null)
-			return null;
-		
-		if(isAcronym(reusableToken.termBuffer())){
-			buffered = new Token(filteredBuffer.toString(),reusableToken.startOffset(),reusableToken.endOffset(),reusableToken.type());
-			buffered.setPositionIncrement(0);
+			buffered = null; // NOPMD by oren on 2/13/12 1:00 AM
+			
 		}
 		return reusableToken;
 	}
-	
-	StringBuffer filteredBuffer = new StringBuffer();
+
+	protected transient StringBuffer filteredBuffer = new StringBuffer(); // NOPMD by oren on 2/13/12 1:00 AM
 
 	/**
-	 * check is a token is an acronym and gen filtered version 
+	 * check is a token is an acronym and gen filtered version
 	 * 
 	 * @param buffer
 	 * @param start
 	 * @param end
 	 * @return
 	 */
-	protected boolean isAcronym(char[] buffer){		
-		
-		boolean isAlpha=false;
-		boolean hasDot=false;
-		//boolean isNumeric=false;
-		
-		filteredBuffer.setLength(0);
-		
-		char c=' ';
-		
-		for (int offset = 0; offset < buffer.length; offset++) {
-			c = buffer[offset];
+	protected boolean isAcronym(final char[] buffer) {
 
-			if (c == '.') {
-				hasDot = true;
+		boolean isAlpha = false;
+		boolean hasDot = false; // NOPMD by oren on 2/13/12 12:53 AM
+		// boolean isNumeric=false;
+
+		filteredBuffer.setLength(0);
+
+		for (int offset = 0; offset < buffer.length; offset++) {
+			final char character = buffer[offset];
+
+			if (character == '.') {
+				hasDot = true; // NOPMD by oren on 2/13/12 12:53 AM
 			} else {
 
 				// side effect - filter the dot
-				filteredBuffer.append(c);				
+				filteredBuffer.append(character);
 
-				if (!isAlpha && c >= '0' && c <= '9') { 
-					//isNumeric = true;
-				} else {
+				if (isAlpha || character < '0' || character > '9') {
 					isAlpha = true;
 				}
-				
-				//process full string 				 
+
+				// process full string
 			}
 		}
 
-		return 	hasDot && isAlpha  ;
+		return hasDot && isAlpha;
 	}
-	
-	protected boolean hasDot(char[] buffer){
-		for(char c: buffer){
-			if (c=='.') return true;
-		}
-		return false;
-	}
-	
-	protected boolean isNumber(char[] buffer){
-		for(char c: buffer){
-			if(! ((c >= '0' && c <='9') || (c=='.') ))
-				return false;
-		}
-		return true;
-	}
-	
-	
-	
+
+
 }
