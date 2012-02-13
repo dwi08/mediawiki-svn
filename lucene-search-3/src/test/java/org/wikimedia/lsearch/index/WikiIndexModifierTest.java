@@ -12,6 +12,7 @@ import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.junit.Test;
 import org.wikimedia.lsearch.analyzers.Analyzers;
 import org.wikimedia.lsearch.analyzers.FieldBuilder;
 import org.wikimedia.lsearch.beans.Article;
@@ -27,6 +28,7 @@ public class WikiIndexModifierTest extends AbstractWikiTestCase {
 	Analyzer analyzer = null;
 	Analyzer highlightAnalyzer = null;
 
+	@Test
 	public void testMakeDocuments(){
 		IndexId iid = IndexId.get("enwiki");
 		String text = "Some very [[simple]] text used for testing\n== Heading 1 ==\nParagraph\n[[Category:Category1]]";
@@ -72,6 +74,7 @@ public class WikiIndexModifierTest extends AbstractWikiTestCase {
 		}
 	}
 	
+	@Test
 	public void testMakeHighlightDocuments(){
 		IndexId iid = IndexId.get("enwiki");
 		String text = "Some very [[simple]] text used for testing\n== Heading 1 ==\nParagraph\n[[Category:Category1]]";
@@ -100,6 +103,7 @@ public class WikiIndexModifierTest extends AbstractWikiTestCase {
 		}
 	}
 	
+	@Test
 	public void testMakeTitleDocument(){
 		IndexId iid = IndexId.get("en-titles");
 		String text = "Some very simple text used for testing\n== Heading 1 ==\nParagraph\n[[Category:Category1]]";
@@ -140,6 +144,7 @@ public class WikiIndexModifierTest extends AbstractWikiTestCase {
 		}
 	}
 	
+	@Test
 	public void testSpellcheck(){
 		IndexId iid = IndexId.get("enwiki");
 		String text = "Some very [[simple]] text used for testing, used for testing of something\n== Heading 1 ==\nParagraph\n[[Category:Category1]]";
@@ -177,6 +182,7 @@ public class WikiIndexModifierTest extends AbstractWikiTestCase {
 			fail(e.getMessage());
 		}
 	}
+	
 	
 	public String tokens(String field){
 		try{
