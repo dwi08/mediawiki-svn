@@ -87,6 +87,8 @@ static ngx_int_t ngx_http_udplog_sequence_variable(ngx_http_request_t *r,
     ngx_http_variable_value_t *v, uintptr_t data);
 static ngx_int_t ngx_http_udplog_escaped_user_agent_variable(ngx_http_request_t *r,
     ngx_http_variable_value_t *v, uintptr_t data);
+static ngx_int_t ngx_http_udplog_escaped_content_type_variable(ngx_http_request_t *r,
+    ngx_http_variable_value_t *v, uintptr_t data);
 
 static ngx_http_variable_t  ngx_http_udplog_variables[] = {
 	{ ngx_string("udplog_time"), NULL, ngx_http_udplog_time_variable, 0,
@@ -94,6 +96,8 @@ static ngx_http_variable_t  ngx_http_udplog_variables[] = {
 	{ ngx_string("udplog_sequence"), NULL, ngx_http_udplog_sequence_variable, 0,
           NGX_HTTP_VAR_NOCACHEABLE|NGX_HTTP_VAR_NOHASH, 0 },
 	{ ngx_string("udplog_escaped_user_agent"), NULL, ngx_http_udplog_escaped_user_agent_variable, 0,
+          NGX_HTTP_VAR_NOCACHEABLE|NGX_HTTP_VAR_NOHASH, 0 },
+	{ ngx_string("udplog_escaped_content_type"), NULL, ngx_http_udplog_escaped_content_type_variable, 0,
           NGX_HTTP_VAR_NOCACHEABLE|NGX_HTTP_VAR_NOHASH, 0 },
 
 	{ ngx_null_string, NULL, NULL, 0, 0, 0 }
@@ -239,6 +243,38 @@ ngx_http_udplog_escaped_user_agent_variable(ngx_http_request_t *r,
 
     return NGX_OK;
     
+}
+
+static ngx_int_t
+ngx_http_udplog_escaped_content_type_variable(ngx_http_request_t *r,
+    ngx_http_variable_value_t *v, uintptr_t data)
+{
+    u_char                    *ct;
+    uintptr_t                 escape;
+    size_t                    l;  
+
+    // Check that the content type string was processed. 
+    if(r->headers_in.content_type == NULL) {
+        return NGX_ERROR;
+    }
+
+    ct = r->headers_in.content_type->value.data;
+    l = r->headers_in.content_type->value.len;
+    escape = 2 * ngx_escape_uri(NULL, ct, l, NGX_ESCAPE_URI);
+
+    v->data = ngx_pnalloc(r->pool, l + escape);
+    if (v->data == NULL) {
+        return NGX_ERROR;
+    }   
+
+    ngx_escape_uri(v->data, ct, l, NGX_ESCAPE_URI);
+
+    v->len = l + escape;
+    v->valid = 1;
+    v->no_cacheable = 0;
+    v->not_found = 0;
+
+    return NGX_OK;
 }
 
 static ngx_int_t
