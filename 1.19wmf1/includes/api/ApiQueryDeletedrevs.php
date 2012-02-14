@@ -102,7 +102,10 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 		$this->addFieldsIf( 'ar_comment', $fld_comment || $fld_parsedcomment );
 		$this->addFieldsIf( 'ar_minor_edit', $fld_minor );
 		$this->addFieldsIf( 'ar_len', $fld_len );
-		$this->addFieldsIf( 'ar_sha1', $fld_sha1 );
+		global $wmfUseRevSha1Columns;
+		if ( !empty( $wmfUseRevSha1Columns ) ) {
+			$this->addFieldsIf( 'ar_sha1', $fld_sha1 );
+		}
 
 		if ( $fld_content ) {
 			$this->addTables( 'text' );
@@ -236,7 +239,7 @@ class ApiQueryDeletedrevs extends ApiQueryBase {
 				$rev['len'] = $row->ar_len;
 			}
 			if ( $fld_sha1 ) {
-				if ( $row->ar_sha1 != '' ) {
+				if ( isset( $row->ar_sha1 ) && $row->ar_sha1 != '' ) {
 					$rev['sha1'] = wfBaseConvert( $row->ar_sha1, 36, 16, 40 );
 				} else {
 					$rev['sha1'] = '';

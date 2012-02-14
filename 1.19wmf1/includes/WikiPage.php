@@ -1993,25 +1993,30 @@ class WikiPage extends Page {
 		//
 		// In the future, we may keep revisions and mark them with
 		// the rev_deleted field, which is reserved for this purpose.
+		$data = array(
+			'ar_namespace'  => 'page_namespace',
+			'ar_title'      => 'page_title',
+			'ar_comment'    => 'rev_comment',
+			'ar_user'       => 'rev_user',
+			'ar_user_text'  => 'rev_user_text',
+			'ar_timestamp'  => 'rev_timestamp',
+			'ar_minor_edit' => 'rev_minor_edit',
+			'ar_rev_id'     => 'rev_id',
+			'ar_parent_id'  => 'rev_parent_id',
+			'ar_text_id'    => 'rev_text_id',
+			'ar_text'       => '\'\'', // Be explicit to appease
+			'ar_flags'      => '\'\'', // MySQL's "strict mode"...
+			'ar_len'        => 'rev_len',
+			'ar_page_id'    => 'page_id',
+			'ar_deleted'    => $bitfield
+		);
+		global $wmfUseRevSha1Columns;
+		if ( !empty( $wmfUseRevSha1Columns ) ) {
+			$data['ar_sha1'] = 'rev_sha1';
+		}
 		$dbw->insertSelect( 'archive', array( 'page', 'revision' ),
+			$data, 
 			array(
-				'ar_namespace'  => 'page_namespace',
-				'ar_title'      => 'page_title',
-				'ar_comment'    => 'rev_comment',
-				'ar_user'       => 'rev_user',
-				'ar_user_text'  => 'rev_user_text',
-				'ar_timestamp'  => 'rev_timestamp',
-				'ar_minor_edit' => 'rev_minor_edit',
-				'ar_rev_id'     => 'rev_id',
-				'ar_parent_id'  => 'rev_parent_id',
-				'ar_text_id'    => 'rev_text_id',
-				'ar_text'       => '\'\'', // Be explicit to appease
-				'ar_flags'      => '\'\'', // MySQL's "strict mode"...
-				'ar_len'        => 'rev_len',
-				'ar_page_id'    => 'page_id',
-				'ar_deleted'    => $bitfield,
-				'ar_sha1'       => 'rev_sha1'
-			), array(
 				'page_id' => $id,
 				'page_id = rev_page'
 			), __METHOD__

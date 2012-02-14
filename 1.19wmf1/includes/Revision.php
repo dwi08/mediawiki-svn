@@ -323,7 +323,7 @@ class Revision {
 	 * a new revision.
 	 */
 	public static function selectFields() {
-		return array(
+		$fields = array(
 			'rev_id',
 			'rev_page',
 			'rev_text_id',
@@ -334,9 +334,13 @@ class Revision {
 			'rev_minor_edit',
 			'rev_deleted',
 			'rev_len',
-			'rev_parent_id',
-			'rev_sha1'
+			'rev_parent_id'
 		);
+		global $wmfUseRevSha1Columns;
+		if ( !empty( $wmfUseRevSha1Columns ) ) {
+			$fields[] = 'rev_sha1';
+		}
+		return $fields;
 	}
 
 	/**
@@ -979,26 +983,29 @@ class Revision {
 		$rev_id = isset( $this->mId )
 			? $this->mId
 			: $dbw->nextSequenceValue( 'revision_rev_id_seq' );
-		$dbw->insert( 'revision',
-			array(
-				'rev_id'         => $rev_id,
-				'rev_page'       => $this->mPage,
-				'rev_text_id'    => $this->mTextId,
-				'rev_comment'    => $this->mComment,
-				'rev_minor_edit' => $this->mMinorEdit ? 1 : 0,
-				'rev_user'       => $this->mUser,
-				'rev_user_text'  => $this->mUserText,
-				'rev_timestamp'  => $dbw->timestamp( $this->mTimestamp ),
-				'rev_deleted'    => $this->mDeleted,
-				'rev_len'        => $this->mSize,
-				'rev_parent_id'  => is_null( $this->mParentId )
-					? $this->getPreviousRevisionId( $dbw )
-					: $this->mParentId,
-				'rev_sha1'       => is_null( $this->mSha1 )
-					? Revision::base36Sha1( $this->mText )
-					: $this->mSha1
-			), __METHOD__
+		$data = array(
+			'rev_id'         => $rev_id,
+			'rev_page'       => $this->mPage,
+			'rev_text_id'    => $this->mTextId,
+			'rev_comment'    => $this->mComment,
+			'rev_minor_edit' => $this->mMinorEdit ? 1 : 0,
+			'rev_user'       => $this->mUser,
+			'rev_user_text'  => $this->mUserText,
+			'rev_timestamp'  => $dbw->timestamp( $this->mTimestamp ),
+			'rev_deleted'    => $this->mDeleted,
+			'rev_len'        => $this->mSize,
+			'rev_parent_id'  => is_null( $this->mParentId )
+				? $this->getPreviousRevisionId( $dbw )
+				: $this->mParentId
 		);
+		
+		global $wmfUseRevSha1Columns;
+		if ( !empty( $wmfUseRevSha1Columns ) ) {
+			$data['rev_sha1'] = is_null( $this->mSha1 )
+				? Revision::base36Sha1( $this->mText )
+				: $this->mSha1;
+		}
+		$dbw->insert( 'revision', $data, __METHOD__ );
 
 		$this->mId = !is_null( $rev_id ) ? $rev_id : $dbw->insertId();
 
@@ -1096,7 +1103,7 @@ class Revision {
 
 		$current = $dbw->selectRow(
 			array( 'page', 'revision' ),
-			array( 'page_latest', 'rev_text_id', 'rev_len', 'rev_sha1' ),
+			self::selectFields(),
 			array(
 				'page_id' => $pageId,
 				'page_latest=rev_id',
@@ -1111,7 +1118,7 @@ class Revision {
 				'text_id'    => $current->rev_text_id,
 				'parent_id'  => $current->page_latest,
 				'len'        => $current->rev_len,
-				'sha1'       => $current->rev_sha1
+				'sha1'       => isset( $current->rev_sha1 ) ? $current->rev_sha1 : null
 				) );
 		} else {
 			$revision = null;

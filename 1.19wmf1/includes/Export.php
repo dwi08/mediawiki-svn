@@ -487,7 +487,7 @@ class XmlDumpWriter {
 			}
 		}
 		
-		if ( $row->rev_sha1 ) {
+		if ( isset( $row->rev_sha1 ) ) {
 			$out .= "      " . Xml::element('sha1', null, strval($row->rev_sha1) ) . "\n";
 		} else {
 			$out .= "      <sha1/>\n";
