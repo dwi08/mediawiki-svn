@@ -58,8 +58,12 @@ class LanguageNames {
 	}
 
 	private static function loadLanguage( $code ) {
-		if ( !isset(self::$cache[$code]) ) {
-			wfProfileIn( __METHOD__.'-recache' );
+		if ( !isset( self::$cache[$code] ) ) {
+			if ( !Language::isValidBuiltInCode( $code ) ) {
+				return array();
+			}
+
+			wfProfileIn( __METHOD__ . '-recache' );
 
 			/* Load override for wrong or missing entries in cldr */
 			$override = dirname(__FILE__) . '/' . self::getOverrideFileName( $code );
