@@ -200,6 +200,8 @@ EOT;
 	header( 'Cache-Control: no-cache' );
 }
 
+header( 'ETag: ' . md5( $text ) ); // for Swift integrity checks
+
 if ( !$contentType ) {
 	header( 'Content-Type:' );
 } else {
