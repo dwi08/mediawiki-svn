@@ -222,3 +222,56 @@ build.data.frames <- function(template_indices, fname_first_part, fname_last_par
 		
 	metrics
 }
+
+
+# FUNCTION :: get.decrease.in.edits.after.template
+#
+# Huggle/Twinkle Experiment metrics --  Build list of edit decrease after postings
+#
+
+get.decrease.in.edits.after.template <- function(revisions_before, revisions_after, lower_bound_rev_before=0, lower_bound_rev_after=-1) {
+	
+	metrics <- c()
+	
+	for (i in 1:length(revisions_before)) 
+		if (revisions_before[i] > lower_bound_rev_before & revisions_after[i] > lower_bound_rev_after)
+			metrics <- c(metrics, 
+			(revisions_before[i] - revisions_after[i]) / revisions_before[i])
+			
+	metrics
+}
+
+
+# FUNCTION :: get.change.in.blocks
+#
+# Huggle/Twinkle Experiment metrics --  Build list of block decrease after postings
+#
+
+get.change.in.blocks <- function(blocks_before, blocks_after, lower_bound_block_before=0, lower_bound_block_after=0) {
+	
+	metrics <- c()
+	
+	for (i in 1:length(blocks_before)) 
+		if (blocks_before[i] > lower_bound_block_before | blocks_after[i] > lower_bound_block_after)
+			# metrics <- c(metrics, blocks_after[i] - blocks_before[i])
+			
+			if (blocks_after[i] > blocks_before[i])
+				metrics <- c(metrics, 1)
+			else
+				metrics <- c(metrics, 0)
+			
+	metrics
+}
+
+
+# FUNCTION :: convert.list.to.binomial.event
+#
+# modify a list of non-negative integers to store binomial values indicating the presence or absence of an event 
+#
+
+convert.list.to.binomial.event <- function(value_list) {
+	value_list[value_list > 0] = 1
+	value_list[value_list == 0] = 0
+	value_list
+}
+
