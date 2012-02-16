@@ -25,6 +25,7 @@ dbs = ('all', 'stats/all')
 delay = 60
 
 invalid = re.compile ( '[^\w\-]+' )
+skips = [ re.compile ( '^Parser.braceSubstitution-title-' ) ]
 prior={}
 
 class SocketSource (socket.socket):
@@ -35,7 +36,8 @@ class SocketSource (socket.socket):
 def BuildStats(db, fullprofile):
 	stats = {}
 	events=fullprofile[db]["-"].items()
-		
+	bad = 0
+
 	for event in events:
 		if "close" in event[0]: continue
 		if "Profiling error" in event[0]: continue
@@ -45,7 +47,19 @@ def BuildStats(db, fullprofile):
 		if (db.startswith('stats')):
 			name = 'stats.'+invalid.sub('_', str(event[0])).rstrip('_')
 		else:
-			name = invalid.sub('_', str(event[0])).rstrip('_').replace('_', '.', 2)
+			try:
+				name = invalid.sub('_', str(event[0])).rstrip('_').replace('_', '.', 2)
+			except:
+				logging.debug("skipping on failed unicode conversion: %s", event[0])
+				continue
+		for skip in skips:
+			if skip.match(name):
+				bad = 1
+				break
+		if bad == 1:
+			bad = 0
+			continue
+
 		stats[name] = {}
 		stats[name]['count'] = event[1]['count']
 		# real = time in ms

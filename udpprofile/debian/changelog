@@ -1,3 +1,9 @@
+udpprofile (1.5) lucid-wikimedia; urgency=low
+
+  * profiler-to-carbon skips non-ascii event keys
+
+ -- Asher Feldman <afeldman@wikimedia.org>  Thu, 16 Feb 2012 22:23:00 +0000
+
 udpprofile (1.4) lucid-wikimedia; urgency=low
 
   * Aggregate stats separately to profiling
