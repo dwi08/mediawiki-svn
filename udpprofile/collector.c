@@ -110,6 +110,7 @@ void handleMessage(char *buf,ssize_t l) {
 	char hostname[128];
 	char dbname[128];
 	char task[1024];
+	char stats[] = "stats/";
 	int r;
 	
 	struct pfstats incoming;
@@ -139,7 +140,11 @@ void handleMessage(char *buf,ssize_t l) {
 		updateEntry(dbname, hostname, task, &incoming);
 
 		// Update the aggregate entry
-		updateEntry("all", "-", task, &incoming);
+		if (!strncmp(dbname, stats, sizeof(stats) - 1)) {
+			updateEntry("stats/all", "-", task, &incoming);
+		} else {
+			updateEntry("all", "-", task, &incoming);
+		}
 	}
 }
 
