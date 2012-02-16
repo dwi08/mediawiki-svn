@@ -407,12 +407,21 @@
 				return result === null ? null : [ result[0], result[2] ];
 			}
 
+			function templateWithOutReplacement() {
+				var result = sequence( [
+					templateName,
+					colon,
+					paramExpression
+				] );
+				return result === null ? null : [ result[0], result[2] ];
+			}
+
 			var colon = makeStringParser(':');
 
 			var templateContents = choice( [
 				function() {
 					var res = sequence( [
-						templateWithReplacement,
+						choice( [ templateWithReplacement, templateWithOutReplacement ] ) ,
 						nOrMore( 0, templateParam )
 					] );
 					return res === null ? null : res[0].concat( res[1] );
