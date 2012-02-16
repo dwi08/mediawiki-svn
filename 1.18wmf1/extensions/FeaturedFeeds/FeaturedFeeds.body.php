@@ -1,24 +1,26 @@
 <?php
 
 class FeaturedFeeds {
+	private static $allInContLang = null;
+
 	/**
 	 * Returns the list of feeds
 	 * 
-	 * @param $langCode string||bool Code of language to use or false if default
+	 * @param $langCode string|bool Code of language to use or false if default
 	 * @return array Feeds in format of 'name' => array of FeedItem
 	 */
 	public static function getFeeds( $langCode ) {
-		global $wgMemc, $wgContLang;
-		
-		if ( !$langCode ) {
-			$langCode = $wgContLang->getCode();
+		global $wgMemc, $wgLangCode;
+
+		if ( !$langCode || self::allInContentLanguage() ) {
+			$langCode = $wgLangCode;
 		}
 		static $cache = array();
 		if ( isset( $cache[$langCode] ) ) {
 			return $cache[$langCode];
 		}
 
-		$key = wfMemcKey( 'featured-feeds', $langCode );
+		$key = self::getCacheKey( $langCode );
 		$feeds = $wgMemc->get( $key );
 		
 		if ( !$feeds ) {
@@ -27,6 +29,51 @@ class FeaturedFeeds {
 		}
 		$cache[$langCode] = $feeds;
 		return $feeds;
+	}
+
+	/**
+	 * Returns cache key for a given language
+	 * @param String $langCode: Feed language code
+	 * @return String
+	 */
+	private static function getCacheKey( $langCode ) {
+		return wfMemcKey( 'featured-feeds', $langCode );
+	}
+
+	/**
+	 * Returns fully prepared feed definitions
+	 * @return Array
+	 */
+	private static function getFeedDefinitions() {
+		global $wgFeaturedFeeds, $wgFeaturedFeedsDefaults;
+		static $feedDefs = false;
+		if ( $feedDefs === false ) {
+			$feedDefs = $wgFeaturedFeeds;
+			wfRunHooks( 'FeaturedFeeds::getFeeds', array( &$feedDefs ) );
+
+			// fill defaults
+			self::$allInContLang = true;
+			foreach ( $feedDefs as $name => $opts ) {
+				foreach ( $wgFeaturedFeedsDefaults as $setting => $value ) {
+					if ( !isset( $opts[$setting] ) ) {
+						$feedDefs[$name][$setting] = $value;
+					}
+				}
+				self::$allInContLang = self::$allInContLang && !$feedDefs[$name]['inUserLanguage'];
+			}
+		}
+		return $feedDefs;
+	}
+
+	/**
+	 * Returns whether all feeds are in content language
+	 * @return Boolean
+	 */
+	public static function allInContentLanguage() {
+		if ( is_null( self::$allInContLang ) ) {
+			self::getFeedDefinitions();
+		}
+		return self::$allInContLang;
 	}
 
 	/**
@@ -61,7 +108,10 @@ class FeaturedFeeds {
 	public static function skinTemplateOutputPageBeforeExec( &$sk, &$tpl ) {
 		global $wgDisplayFeedsInSidebar, $wgAdvertisedFeedTypes;
 
-		if ( $wgDisplayFeedsInSidebar && $sk->getContext()->getTitle()->isMainPage() ) {
+		if ( ( $wgDisplayFeedsInSidebar 
+			|| !wfMessage( 'ffeed-enable-sidebar-links' )->inContentLanguage()->isDisabled() )
+				&& $sk->getContext()->getTitle()->isMainPage() )
+		{
 			$feeds = self::getFeeds( $sk->getContext()->getLanguage()->getCode() );
 			$links = array();
 			$format = $wgAdvertisedFeedTypes[0]; // @fixme:
@@ -80,29 +130,49 @@ class FeaturedFeeds {
 	}
 
 	/**
+	 * Purges cache on message edit
+	 *
+	 * @param Article $article
+	 * @return bool
+	 */
+	public static function articleSaveComplete( $article ) {
+		global $wgFeaturedFeeds, $wgMemc, $wgLanguageCode;
+		$title = $article->getTitle();
+		// Although message names are configurable and can be set not to start with 'Ffeed', we
+		// make a shortcut here to avoid running these checks on every NS_MEDIAWIKI edit
+		if ( $title->getNamespace() == NS_MEDIAWIKI && strpos( $title->getText(), 'Ffeed-' ) === 0 ) {
+			$baseTitle = Title::makeTitle( NS_MEDIAWIKI, $title->getBaseText() );
+			$messages  = array( 'page', 'title', 'short-title', 'description', 'entryName' );
+			foreach ( self::getFeedDefinitions() as $feed ) {
+				foreach ( $messages as $msgType ) {
+					$nt = Title::makeTitleSafe( NS_MEDIAWIKI, $feed[$msgType] );
+					if ( $nt->equals( $baseTitle ) ) {
+						wfDebug( "FeaturedFeeds-related page {$title->getFullText()} edited, purging cache\n" );
+						$wgMemc->delete( self::getCacheKey( $wgLanguageCode ) );
+						$lang = $title->getSubpageText();
+						// Sorry, users of multilingual feeds, we can't purge cache for every possible language
+						if ( $lang != $baseTitle->getText() ) {
+							$wgMemc->delete( $lang );
+						}
+						return true;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * @param $langCode string
 	 * @return array
 	 * @throws MWException
 	 */
 	private static function getFeedsInternal( $langCode ) {
-		global $wgFeaturedFeeds, $wgFeaturedFeedsDefaults, $wgContLang;
-		
 		wfProfileIn( __METHOD__ );
-		$feedDefs = $wgFeaturedFeeds;
-		wfRunHooks( 'FeaturedFeeds::getFeeds', array( &$feedDefs ) );
-
-		// fill defaults
-		foreach ( $feedDefs as $name => $opts ) {
-			foreach ( $wgFeaturedFeedsDefaults as $setting => $value ) {
-				if ( !isset( $opts[$setting] ) ) {
-					$feedDefs[$name][$setting] = $value;
-				}
-			}
-		}
+		$feedDefs = self::getFeedDefinitions();
 		
 		$feeds = array();
 		$requestedLang = Language::factory( $langCode );
-		$parser = new Parser();
 		foreach ( $feedDefs as $name => $opts ) {
 			$feed = new FeaturedFeedChannel( $name, $opts, $requestedLang );
 			if ( !$feed->isOK() ) {
@@ -201,10 +271,17 @@ class FeaturedFeedChannel {
 		}
 	}
 
+	/**
+	 * @param $key string
+	 * @return Message
+	 */
 	private function msg( $key ) {
 		return wfMessage( $key )->inLanguage( $this->language );
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function isOK() {
 		$this->init();
 		return $this->page !== false;
@@ -219,6 +296,7 @@ class FeaturedFeedChannel {
 	}
 
 	public function init() {
+		global $wgLanguageCode;
 		if ( $this->title !== false ) {
 			return;
 		}
@@ -227,12 +305,23 @@ class FeaturedFeedChannel {
 		$this->description = $this->msg( $this->options['description'] )->text();
 		$pageMsg = $this->msg( $this->options['page'] )->params( $this->language->getCode() );
 		if ( $pageMsg->isDisabled() ) {
+			// fall back manually, messages can be existent but empty
+			if ( $this->language->getCode() != $wgLanguageCode ) {
+				$pageMsg = wfMessage( $this->options['page'] )
+					->params( $this->language->getCode() )
+					->inContentLanguage();
+			}
+		}
+		if ( $pageMsg->isDisabled() ) {
 			return;
 		}
 		$this->page = $pageMsg->plain();
 		$this->entryName = $this->msg( $this->options['entryName'] )->plain();
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getFeedItems() {
 		$this->init();
 		if ( $this->items === false ) {
@@ -286,7 +375,7 @@ class FeaturedFeedChannel {
 	/**
 	 * Returns a URL to the feed
 	 * 
-	 * @param type $format: Feed format, 'rss' or 'atom'
+	 * @param $format string Feed format, 'rss' or 'atom'
 	 * @return String 
 	 */
 	public function getURL( $format ) {
