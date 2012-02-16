@@ -1423,7 +1423,7 @@ var mw = ( function ( $, undefined ) {
 					return s;
 				}
 			};
-		}() ),
+		})(),
 
 		// Skeleton user object. mediawiki.user.js extends this
 		user: {
