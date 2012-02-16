@@ -9,6 +9,24 @@
 
 mw.language = {
 	/**
+	* @var data {Object} Langauge related data
+	* Keyed by language, contains instances of mw.Map
+	* @example Set data
+	* <code>
+	* var langCode = 'nl';
+	* var langData = mw.language.data;
+	* if ( langData[langCode] === undefined ) {
+	*     langData[langCode] = new mw.Map();
+	* }
+	* langData[langCode].set( .. ); // Will override, extend or create the data
+	* </code>
+	* @example Get data
+	* <code>
+	* var grammerForms = mw.language.data[langCode].get( 'grammerForms' );
+	* </code>
+	*/
+	data: {},
+	/**
 	 * Process the PLURAL template substitution
 	 *
 	 * @param {object} template Template object
@@ -121,7 +139,23 @@ mw.language = {
 		}
 		return ( forms.length === 3 ) ? forms[2] : forms[0];
 	},
-
+	/**
+	 * Grammatical transformations, needed for inflected languages
+	 * Invoked by putting {{grammar:form|word}} in a message
+	 * The rules can be defined in wgGrammarForms global or grammar 
+	 * forms can be dynamically calculated by overriding this per language
+	 *
+	 * @param word string
+	 * @param form string
+	 * @return string
+	 */
+	'convertGrammar': function( word, form ) {
+		var grammarForms = mw.language.data[ mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
+		if ( grammarForms && grammarForms[form] ) {
+			return grammarForms[form][word] || word ;
+		}
+		return word;
+	},
 	// Digit Transform Table, populated by language classes where applicable
 	'digitTransformTable': null
 };

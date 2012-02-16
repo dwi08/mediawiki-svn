@@ -103,7 +103,9 @@
 	};
 
 	var parserDefaults = { 
-		'magic' : {},
+		'magic' : {
+			'SITENAME' : mw.config.get( 'wgSiteName' ) 
+		},
 		'messages' : mw.messages,
 		'language' : mw.language
 	};
@@ -660,8 +662,18 @@
 			}
 			var forms = nodes.slice(1);
 			return this.language.gender( gender, forms );
+		},
+		/**
+		 * Transform parsed structure into grammar conversion 
+		 * Invoked by putting {{grammar:form|word}} in a message
+		 * @param {Array}  of noders [{Grammar case eg: genitive}, {String word}]
+		 * @return {String} selected gender form according to current language
+		 */
+		grammar: function( nodes ) { 
+			var form = nodes[0];
+			var word = nodes[1];
+			return this.language.convertGrammar( word , form );
 		}
-
 	};
 
 	// TODO figure out a way to make magic work with common globals like wgSiteName, without requiring init from library users...
