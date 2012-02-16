@@ -17,6 +17,8 @@
 #include <db.h>
 #include "collector.h"
 
+DB *db;
+
 void dumpData(FILE *fd) {
 	DBT key,data;
 	DBC *c;

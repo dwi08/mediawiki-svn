@@ -10,9 +10,9 @@ CFLAGS+=-Wall -g
 
 all: collector exporter
 
-collector: collector.h collector.c export.c
+collector: collector.c export.c
 
-exporter: export.c collector.h exporter.c
+exporter: export.c exporter.c
 
 #export: collector.h export.c
 
