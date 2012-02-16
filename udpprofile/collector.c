@@ -31,6 +31,7 @@ void truncatedb();
 
 void handleMessage(char *,ssize_t );
 void handleConnection(int);
+void updateEntry(char *dbname, char *hostname, char *task, struct pfstats *incoming);
 
 int main(int ac, char **av) {
 
@@ -44,7 +45,7 @@ int main(int ac, char **av) {
 	u_int yes=1;
 	int port;
 	struct sockaddr_in me, them;
-	socklen_t sl;
+	socklen_t sl = sizeof(struct sockaddr_in);
 	
 	struct pollfd fds[2];
 	
@@ -109,15 +110,13 @@ void handleMessage(char *buf,ssize_t l) {
 	char hostname[128];
 	char dbname[128];
 	char task[1024];
-	char keytext[1500];
 	int r;
 	
-	struct pfstats incoming,*old;
+	struct pfstats incoming;
 	/* db host count cpu cpusq real realsq eventdescription */
 	const char msgformat[]="%127s %127s %ld %lf %lf %lf %lf %1023[^\n]"; 
 	
 
-	DBT key,data;
 
 	buf[l]=0;	
 	pp=buf;
@@ -135,39 +134,51 @@ void handleMessage(char *buf,ssize_t l) {
 			&incoming.pf_real,&incoming.pf_real_sq, (char *)&task);
 		if (r<7)
 			continue;
-		snprintf(keytext,1499,"%s:%s:%s",dbname,hostname,task);
 
-		bzero(&key,sizeof(key));
-		bzero(&data,sizeof(data));
-		key.data=keytext;
-		key.size=strlen(keytext);
+		// Update the DB-specific entry
+		updateEntry(dbname, hostname, task, &incoming);
 
-		/* Add new values if exists, put in fresh structure if not */
-		if (db->get(db,NULL,&key,&data,0)==0) {
-			/* Update old stuff */
-			old=data.data;
-			old->pf_count   += incoming.pf_count;
-			old->pf_cpu     += incoming.pf_cpu;
-			old->pf_cpu_sq  += incoming.pf_cpu_sq;
-			old->pf_real    += incoming.pf_real;
-			old->pf_real_sq += incoming.pf_real_sq;
-			old->pf_reals[old->pf_real_pointer] = incoming.pf_real;
-			if (old->pf_real_pointer == POINTS-1) {
-				old->pf_real_pointer = 0;
-			} else { 
-				old->pf_real_pointer++;
-			}
-			db->put(db,NULL,&key,&data,0);	
-		} else {
-			/* Put in fresh data */
-			incoming.pf_real_pointer = 1;
-			incoming.pf_reals[0] = incoming.pf_real;
-			data.data=&incoming;
-			data.size=sizeof(incoming);
-			db->put(db,NULL,&key,&data,0);
+		// Update the aggregate entry
+		updateEntry("all", "-", task, &incoming);
+	}
+}
+
+void updateEntry(char *dbname, char *hostname, char *task, struct pfstats *incoming) {
+	char keytext[1500];
+	DBT key,data;
+	struct pfstats *old;
+
+	snprintf(keytext,1499,"%s:%s:%s",dbname,hostname,task);
+
+	bzero(&key,sizeof(key));
+	bzero(&data,sizeof(data));
+	key.data=keytext;
+	key.size=strlen(keytext);
+
+	/* Add new values if exists, put in fresh structure if not */
+	if (db->get(db,NULL,&key,&data,0)==0) {
+		/* Update old stuff */
+		old=data.data;
+		old->pf_count   += incoming->pf_count;
+		old->pf_cpu     += incoming->pf_cpu;
+		old->pf_cpu_sq  += incoming->pf_cpu_sq;
+		old->pf_real    += incoming->pf_real;
+		old->pf_real_sq += incoming->pf_real_sq;
+		old->pf_reals[old->pf_real_pointer] = incoming->pf_real;
+		if (old->pf_real_pointer == POINTS-1) {
+			old->pf_real_pointer = 0;
+		} else { 
+			old->pf_real_pointer++;
 		}
-	}	
-	
+		db->put(db,NULL,&key,&data,0);	
+	} else {
+		/* Put in fresh data */
+		incoming->pf_real_pointer = 1;
+		incoming->pf_reals[0] = incoming->pf_real;
+		data.data=incoming;
+		data.size=sizeof(*incoming);
+		db->put(db,NULL,&key,&data,0);
+	}
 }
 
 void handleConnection(int c) {

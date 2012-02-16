@@ -5,7 +5,7 @@
 #CFLAGS+=-I/sw/include/
 #LDFLAGS+=-L/sw/lib/
 
-LDFLAGS+=-ldb
+LDLIBS+=-ldb
 CFLAGS+=-Wall -g
 
 all: collector exporter
