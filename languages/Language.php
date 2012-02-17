@@ -3239,7 +3239,17 @@ class Language {
 		}
 		return $forms;
 	}
-
+	/**
+	 * Get the grammar forms for the content language 
+	 * @return array of grammar forms
+	 */
+	function getGrammarForms( ) {
+		global $wgGrammarForms;
+		if ( isset( $wgGrammarForms[$this->getCode()] ) && is_array( $wgGrammarForms[$this->getCode()] ) ) {
+			 return $wgGrammarForms[$this->getCode()];
+		}
+		return array();
+	}
 	/**
 	 * @todo Maybe translate block durations.  Note that this function is somewhat misnamed: it
 	 * deals with translating the *duration* ("1 week", "4 days", etc), not the expiry time
