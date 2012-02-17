@@ -16,3 +16,20 @@ mediaWiki.language.convertPlural = function( count, forms ) {
 			return forms[3];
 	}
 };
+
+
+mediaWiki.language.convertGrammar = function( word, form ) {
+	var grammarForms = mw.language.data[ mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
+	if ( grammarForms && grammarForms[form] ) {
+		return grammarForms[form][word] ;
+	}
+	switch ( form ) {
+		case 'instrumental': // instrumental
+			word = 'z ' + word;
+			break;
+		case 'lokatiw': // lokatiw
+			$word = 'wo ' + word;
+			break;
+		}
+	return word;
+};

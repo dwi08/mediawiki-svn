@@ -54,8 +54,16 @@ mw.language.grammartest({
 	language: 'he',
 	test: [
 		{ word: "ויקיפדיה", grammarForm: 'prefixed', expected: "וויקיפדיה", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed' },
-		{ word: "וויקיפדיה", grammarForm: 'prefixed', expected: "וויקיפדיה", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed, but not if it is already duplicated.' },
+		{ word: "וולפגנג", grammarForm: 'prefixed', expected: "וולפגנג", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed, but not if it is already duplicated.' },
 		{ word: "הקובץ", grammarForm: 'prefixed', expected: "קובץ", description: 'Grammar test for Hebrew, Remove the "He" if prefixed' },
 		{ word: 'wikipedia', grammarForm: 'תחילית', expected: '־wikipedia', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) if non-Hebrew letters' }
+	]
+}); 
+
+mw.language.grammartest({
+	language: 'hsb',
+	test: [
+		{ word: 'word', grammarForm: 'instrumental', expected: 'z word', description: 'Grammar test for Upper Sorbian, instrumental case' },
+		{ word: 'word', grammarForm: 'lokatiw', expected: 'wo word', description: 'Grammar test for Upper Sorbian, lokatiw case' }
 	]
 }); 
