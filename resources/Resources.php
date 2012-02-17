@@ -670,6 +670,7 @@ return array(
 			'cu' => 'resources/mediawiki.language/languages/cu.js',
 			'cy' => 'resources/mediawiki.language/languages/cy.js',
 			'dsb' => 'resources/mediawiki.language/languages/dsb.js',
+			'fi' => 'resources/mediawiki.language/languages/fi.js',
 			'fr' => 'resources/mediawiki.language/languages/fr.js',
 			'ga' => 'resources/mediawiki.language/languages/ga.js',
 			'gd' => 'resources/mediawiki.language/languages/gd.js',
