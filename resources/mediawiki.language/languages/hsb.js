@@ -19,7 +19,7 @@ mediaWiki.language.convertPlural = function( count, forms ) {
 
 
 mediaWiki.language.convertGrammar = function( word, form ) {
-	var grammarForms = mw.language.data[ mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
+	var grammarForms = mw.language.data[ 'hsb' ].get( 'grammarForms' );
 	if ( grammarForms && grammarForms[form] ) {
 		return grammarForms[form][word] ;
 	}
@@ -28,7 +28,7 @@ mediaWiki.language.convertGrammar = function( word, form ) {
 			word = 'z ' + word;
 			break;
 		case 'lokatiw': // lokatiw
-			$word = 'wo ' + word;
+			word = 'wo ' + word;
 			break;
 		}
 	return word;

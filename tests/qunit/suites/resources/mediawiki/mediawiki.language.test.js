@@ -17,30 +17,11 @@ mw.language.grammartest = function( options ) {
 		test( "Grammar Test", function() {
 			expect( opt.test.length);
 			for ( var i= 0 ; i < opt.test.length; i++ ) {
-				var langData = mw.language.data;
-				var grammarForms = [];
-				if ( langData[opt.language] === undefined ) {
-					langData[opt.language] = new mw.Map();
-				}else{
-					grammarForms = langData[opt.language].get( 'grammarForms' );
-				}
-				if ( grammarForms[ opt.test[i].grammarForm ] === undefined ) {
-					grammarForms[ opt.test[i].grammarForm ] = [] ;
-				}
-				grammarForms[opt.test[i].grammarForm][opt.test[i].word] = opt.test[i].expected ;
-				langData[opt.language].set( 'grammarForms', grammarForms ); 
 				equal( mw.language.convertGrammar(  opt.test[i].word, opt.test[i].grammarForm ), opt.test[i].expected, opt.test[i].description );
 			}
 		} );
 	}
 }
-
-mw.language.grammartest({
-	language: 'en',
-	test: [ 
-		{ word: 'pen', grammarForm: 'genitive', expected: 'pen\'s', description: 'Grammar test for English' }
-	]
-});
 
 mw.language.grammartest({
 	language: 'bs',
@@ -65,5 +46,15 @@ mw.language.grammartest({
 	test: [
 		{ word: 'word', grammarForm: 'instrumental', expected: 'z word', description: 'Grammar test for Upper Sorbian, instrumental case' },
 		{ word: 'word', grammarForm: 'lokatiw', expected: 'wo word', description: 'Grammar test for Upper Sorbian, lokatiw case' }
+	]
+}); 
+
+mw.language.grammartest({
+	language: 'hy',
+	test: [
+		{ word: 'Մաունա', grammarForm: 'genitive', expected: 'Մաունայի', description: 'Grammar test for Armenian, genitive case' },
+		{ word: 'հետո', grammarForm: 'genitive', expected: 'հետոյի', description: 'Grammar test for Armenian, genitive case' },
+		{ word: 'գիրք', grammarForm: 'genitive', expected: 'գրքի', description: 'Grammar test for Armenian, genitive case' },
+		{ word: 'ժամանակի', grammarForm: 'genitive', expected: 'ժամանակիի', description: 'Grammar test for Armenian, genitive case' }
 	]
 }); 

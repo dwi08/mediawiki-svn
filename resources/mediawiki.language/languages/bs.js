@@ -20,7 +20,7 @@ mediaWiki.language.convertPlural = function( count, forms ) {
 };
 
 mediaWiki.language.convertGrammar = function( word, form ) {
-	var grammarForms = mw.language.data[ mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
+	var grammarForms = mw.language.data[ 'bs' ].get( 'grammarForms' );
 	if ( grammarForms && grammarForms[form] ) {
 		return grammarForms[form][word] ;
 	}

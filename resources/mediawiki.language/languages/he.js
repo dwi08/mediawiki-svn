@@ -14,8 +14,8 @@ mediaWiki.language.convertPlural = function( count, forms ) {
 };
 
 mediaWiki.language.convertGrammar = function( word, form ) {
-	var grammarForms = mw.config.get( 'wgGrammarForms' );
-	if ( grammarForms &&  grammarForms['he'] && grammarForms['he'][form] ) {
+	var grammarForms = mw.language.data[ 'he' ].get( 'grammarForms' );
+	if ( grammarForms && grammarForms[form] ) {
 		return grammarForms[form][word] ;
 	}
 	switch ( form ) {
