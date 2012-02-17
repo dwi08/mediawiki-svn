@@ -664,10 +664,10 @@
 			return this.language.gender( gender, forms );
 		},
 		/**
-		 * Transform parsed structure into grammar conversion 
+		 * Transform parsed structure into grammar conversion.
 		 * Invoked by putting {{grammar:form|word}} in a message
-		 * @param {Array}  of noders [{Grammar case eg: genitive}, {String word}]
-		 * @return {String} selected gender form according to current language
+		 * @param {Array}  of nodes [{Grammar case eg: genitive}, {String word}]
+		 * @return {String} selected grammatical form according to current language
 		 */
 		grammar: function( nodes ) { 
 			var form = nodes[0];

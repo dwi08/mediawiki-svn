@@ -9,7 +9,7 @@
 
 mw.language = {
 	/**
-	* @var data {Object} Langauge related data
+	* @var data {Object} Language related data
 	* Keyed by language, contains instances of mw.Map
 	* @example Set data
 	* <code>
@@ -22,7 +22,7 @@ mw.language = {
 	* </code>
 	* @example Get data
 	* <code>
-	* var grammerForms = mw.language.data[langCode].get( 'grammerForms' );
+	* var grammarForms = mw.language.data[langCode].get( 'grammarForms' );
 	* </code>
 	*/
 	data: {},
@@ -37,7 +37,7 @@ mw.language = {
 	 * 	}
 	 * @example {{Template:title|params}}
 	 */
-	'procPLURAL': function( template ) {
+	procPLURAL: function( template ) {
 		if ( template.title && template.parameters && mw.language.convertPlural ) {
 			// Check if we have forms to replace
 			if ( template.parameters.length === 0 ) {
@@ -61,7 +61,7 @@ mw.language = {
 	 * @param forms array List of plural forms
 	 * @return string Correct form for quantifier in this language
 	 */
-	'convertPlural': function( count, forms ){
+	convertPlural: function( count, forms ){
 		if ( !forms || forms.length === 0 ) {
 			return '';
 		}
@@ -74,7 +74,7 @@ mw.language = {
 	 * @param count integer Number of forms required
 	 * @return array Padded array of forms
 	 */
-	'preConvertPlural': function( forms, count ) {
+	preConvertPlural: function( forms, count ) {
 		while ( forms.length < count ) {
 			forms.push( forms[ forms.length-1 ] );
 		}
@@ -86,7 +86,7 @@ mw.language = {
 	 * @param {num} number Value to be converted
 	 * @param {boolean} integer Convert the return value to an integer
 	 */
-	'convertNumber': function( num, integer ) {
+	convertNumber: function( num, integer ) {
 		if ( !mw.language.digitTransformTable ) {
 			return num;
 		}
@@ -126,7 +126,7 @@ mw.language = {
 	 *
 	 * @return string
 	 */
-	'gender': function( gender, forms ) {
+	gender: function( gender, forms ) {
 		if ( !forms || forms.length === 0 ) {
 			return '';
 		}
@@ -140,7 +140,7 @@ mw.language = {
 		return ( forms.length === 3 ) ? forms[2] : forms[0];
 	},
 	/**
-	 * Grammatical transformations, needed for inflected languages
+	 * Grammatical transformations, needed for inflected languages.
 	 * Invoked by putting {{grammar:form|word}} in a message
 	 * The rules can be defined in wgGrammarForms global or grammar 
 	 * forms can be dynamically calculated by overriding this per language
@@ -149,14 +149,14 @@ mw.language = {
 	 * @param form string
 	 * @return string
 	 */
-	'convertGrammar': function( word, form ) {
-		var grammarForms = mw.language.data[ mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
+	convertGrammar: function( word, form ) {
+		var grammarForms = mw.language.data[mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
 		if ( grammarForms && grammarForms[form] ) {
 			return grammarForms[form][word] || word ;
 		}
 		return word;
 	},
 	// Digit Transform Table, populated by language classes where applicable
-	'digitTransformTable': null
+	digitTransformTable: null
 };
 } )( jQuery, mediaWiki );
