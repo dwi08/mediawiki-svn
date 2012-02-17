@@ -202,6 +202,7 @@ EOT;
 
 header( 'ETag: ' . md5( $text ) ); // for Swift integrity checks
 
+header( 'Content-Length: ' . strlen( $text ) );
 if ( !$contentType ) {
 	header( 'Content-Type:' );
 } else {
