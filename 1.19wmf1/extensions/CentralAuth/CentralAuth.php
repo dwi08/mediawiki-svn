@@ -269,7 +269,9 @@ $wgResourceModules['ext.centralauth.noflash'] = array(
 // If AntiSpoof is installed, we can do some AntiSpoof stuff for CA
 // Though, doing it this way, AntiSpoof has to be loaded/included first
 // I guess this is bug 30234
-if ( MWInit::classExists( 'AntiSpoof' ) ) {
+//
+// Disabled due to site breakage (see dberror log), --aaron
+if ( 0 && MWInit::classExists( 'AntiSpoof' ) ) {
 	$wgExtensionCredits['antispam'][] = array(
 		'path' => __FILE__,
 		'name' => 'AntiSpoof for CentralAuth',
