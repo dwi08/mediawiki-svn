@@ -28,8 +28,8 @@ class LanguageHe extends Language {
 
 		switch ( $case ) {
 			case 'prefixed':
-			case 'תחילית':
-				# Duplicate the "Waw" if prefixed
+			case 'תחילית': // the same word in Hebrew
+				# Duplicate prefixed "Waw", but only if it's not already double
 				if ( substr( $word, 0, 2 ) == "ו" && substr( $word, 0, 4 ) != "וו" ) {
 					$word = "ו" . $word;
 				}
@@ -39,7 +39,7 @@ class LanguageHe extends Language {
 					$word = substr( $word, 2 );
 				}
 
-				# Add a hyphen (maqaf) if non-Hebrew letters
+				# Add a hyphen (maqaf) before numbers and non-Hebrew letters
 				if ( substr( $word, 0, 2 ) < "א" || substr( $word, 0, 2 ) > "ת" ) {
 					$word = "־" . $word;
 				}
