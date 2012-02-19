@@ -12,7 +12,7 @@ mw.language.grammartest = function( options ) {
 		test: [],
 	}, options);
 	// The test works only if the content language is opt.language
-	// because it require [lang].js to be loaded.
+	// because it requires [lang].js to be loaded.
 	if( mw.config.get ( 'wgContentLanguage' ) === opt.language ) {
 		test( "-- Grammar Test for "+ opt.language, function() {
 			expect( opt.test.length);
@@ -37,7 +37,8 @@ mw.language.grammartest({
 		{ word: "ויקיפדיה", grammarForm: 'prefixed', expected: "וויקיפדיה", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed' },
 		{ word: "וולפגנג", grammarForm: 'prefixed', expected: "וולפגנג", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed, but not if it is already duplicated.' },
 		{ word: "הקובץ", grammarForm: 'prefixed', expected: "קובץ", description: 'Grammar test for Hebrew, Remove the "He" if prefixed' },
-		{ word: 'wikipedia', grammarForm: 'תחילית', expected: '־wikipedia', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) if non-Hebrew letters' }
+		{ word: 'Wikipedia', grammarForm: 'תחילית', expected: '־Wikipedia', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before non-Hebrew letters' }
+		{ word: '1995', grammarForm: 'תחילית', expected: '־1995', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before numbers' }
 	]
 }); 
 
@@ -75,11 +76,11 @@ mw.language.grammartest({
 mw.language.grammartest({
 	language: 'ru',
 	test: [
-		{ word: 'честь', grammarForm: 'genitive', expected: 'честя', description: 'Grammar test for Russian, genitive case' },
-		{ word: 'проведения', grammarForm: 'genitive', expected: 'проведении', description: 'Grammar test for Russian, genitive case' },
-		{ word: 'Оснабрюка', grammarForm: 'genitive', expected: 'Оснабрюки', description: 'Grammar test for Russian, genitive case' },
-		{ word: 'почти', grammarForm: 'genitive', expected: 'почтей', description: 'Grammar test for Russian, genitive case' },
-		{ word: 'годы', grammarForm: 'genitive', expected: 'годов', description: 'Grammar test for Russian, genitive case' },
+		{ word: 'тесть', grammarForm: 'genitive', expected: 'тестя', description: 'Grammar test for Russian, genitive case' },
+		{ word: 'привилегия', grammarForm: 'genitive', expected: 'привилегии', description: 'Grammar test for Russian, genitive case' },
+		{ word: 'установка', grammarForm: 'genitive', expected: 'установки', description: 'Grammar test for Russian, genitive case' },
+		{ word: 'похоти', grammarForm: 'genitive', expected: 'похотей', description: 'Grammar test for Russian, genitive case' },
+		{ word: 'доводы', grammarForm: 'genitive', expected: 'доводов', description: 'Grammar test for Russian, genitive case' },
 		{ word: 'песчаник', grammarForm: 'genitive', expected: 'песчаника', description: 'Grammar test for Russian, genitive case' }
 	]
 }); 
