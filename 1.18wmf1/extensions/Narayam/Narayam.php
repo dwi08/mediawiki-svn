@@ -104,8 +104,8 @@ $wgNarayamSchemes = array(
 		'ml-inscript' => 'ext.narayam.rules.ml-inscript',
 	),
 	'mr' => array(
-		'mr' => array( 'ext.narayam.rules.mr', 'beta' ),
-		'mr-inscript' => array( 'ext.narayam.rules.mr', 'beta' ),
+		'mr' => 'ext.narayam.rules.mr',
+		'mr-inscript' => 'ext.narayam.rules.mr',
 	),
 	'ne' => array(
 		'ne' => array( 'ext.narayam.rules.ne', 'beta' ),
