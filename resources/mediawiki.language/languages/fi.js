@@ -11,7 +11,7 @@ mediaWiki.language.convertGrammar = function( word, form ) {
 
 	// vowel harmony flag
 	var aou = word.match( /[aou][^äöy]*$/i );
-
+	var origWord = word;
 	if ( word.match( /wiki$/i ) ) {
 		aou = false;
 	}
@@ -35,6 +35,9 @@ mediaWiki.language.convertGrammar = function( word, form ) {
 			break;
 		case 'inessive':
 			word += ( aou ? 'ssa' : 'ssä' );
+			break;
+		default:
+			word = origWord;
 			break;
 	}
 	return word;
