@@ -45,7 +45,7 @@ mw.language = {
 			}
 			// Restore the count into a Number ( if it got converted earlier )
 			var count = mw.language.convertNumber( template.title, true );
-			// Do convertPlural call 
+			// Do convertPlural call
 			return mw.language.convertPlural( parseInt( count, 10 ), template.parameters );
 		}
 		// Could not process plural return first form or nothing
@@ -118,7 +118,7 @@ mw.language = {
 	 * Provides an alternative text depending on specified gender.
 	 * Usage {{gender:[gender|user object]|masculine|feminine|neutral}}.
 	 * If second or third parameter are not specified, masculine is used.
-	 * 
+	 *
 	 * These details may be overriden per language.
 	 *
 	 * @param gender string male, female, or anything else for neutral.
@@ -142,7 +142,7 @@ mw.language = {
 	/**
 	 * Grammatical transformations, needed for inflected languages.
 	 * Invoked by putting {{grammar:form|word}} in a message
-	 * The rules can be defined in wgGrammarForms global or grammar 
+	 * The rules can be defined in wgGrammarForms global or grammar
 	 * forms can be dynamically calculated by overriding this per language
 	 *
 	 * @param word string
@@ -152,7 +152,7 @@ mw.language = {
 	convertGrammar: function( word, form ) {
 		var grammarForms = mw.language.data[mw.config.get( 'wgContentLanguage' )].get( 'grammarForms' );
 		if ( grammarForms && grammarForms[form] ) {
-			return grammarForms[form][word] || word ;
+			return grammarForms[form][word] || word;
 		}
 		return word;
 	},
