@@ -423,7 +423,7 @@
 			var templateContents = choice( [
 				function() {
 					var res = sequence( [
-						choice( [ templateWithReplacement, templateWithOutReplacement ] ) ,
+						choice( [ templateWithReplacement, templateWithOutReplacement ] ),
 						nOrMore( 0, templateParam )
 					] );
 					return res === null ? null : res[0].concat( res[1] );
@@ -650,7 +650,7 @@
 		/**
 		 * Transform parsed structure into gender
 		 * Usage {{gender:[gender| mw.user object ] | masculine|feminine|neutral}}.
-		 * @param {Array} of nodes, [ {String|mw.User}, {String}, {String} , {String} ]
+		 * @param {Array} of nodes, [ {String|mw.User}, {String}, {String}, {String} ]
 		 * @return {String} selected gender form according to current language
 		 */
 		gender: function( nodes ) {
@@ -672,7 +672,7 @@
 		grammar: function( nodes ) {
 			var form = nodes[0];
 			var word = nodes[1];
-			return this.language.convertGrammar( word , form );
+			return this.language.convertGrammar( word, form );
 		}
 	};
 

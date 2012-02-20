@@ -141,9 +141,9 @@ mw.language = {
 	},
 	/**
 	 * Grammatical transformations, needed for inflected languages.
-	 * Invoked by putting {{grammar:form|word}} in a message
+	 * Invoked by putting {{grammar:form|word}} in a message.
 	 * The rules can be defined in wgGrammarForms global or grammar
-	 * forms can be dynamically calculated by overriding this per language
+	 * forms can be computed dynamically by overriding this method per language
 	 *
 	 * @param word string
 	 * @param form string
