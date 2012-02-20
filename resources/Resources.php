@@ -691,6 +691,7 @@ return array(
 			'mt' => 'resources/mediawiki.language/languages/mt.js',
 			'nl' => 'resources/mediawiki.language/languages/nl.js',
 			'nso' => 'resources/mediawiki.language/languages/nso.js',
+			'os' => 'resources/mediawiki.language/languages/os.js',
 			'pl' => 'resources/mediawiki.language/languages/pl.js',
 			'pt' => 'resources/mediawiki.language/languages/pt.js',
 			'pt-br' => 'resources/mediawiki.language/languages/pt-br.js',

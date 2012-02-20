@@ -1,5 +1,5 @@
 /**
- * Ukrainian (Ð£ÐºÑÐ°ÑÐœÑÑÐºÐ°) language functions
+ * Ukrainian (Українська) language functions
  */
 
 mediaWiki.language.convertPlural = function( count, forms ) {

@@ -122,3 +122,25 @@ mw.language.grammartest({
 		{ word: 'Вікіпедія', grammarForm: 'accusative', expected: 'Вікіпедію', description: 'Grammar test for Ukrainian, accusative case' }
 	]
 });
+
+
+mw.language.grammartest({
+	language: 'sl',
+	test: [
+		{ word: 'word', grammarForm: 'orodnik', expected: 'z word', description: 'Grammar test for Slovenian, orodnik case' },
+		{ word: 'word', grammarForm: 'mestnik', expected: 'o word', description: 'Grammar test for Slovenian, mestnik case' }
+	]
+});
+
+mw.language.grammartest({
+	language: 'os',
+	test: [
+		{ word: 'бæстæ', grammarForm: 'genitive', expected: 'бæсты', description: 'Grammar test for Ossetian, genitive case' },
+		{ word: 'бæстæ', grammarForm: 'allative', expected: 'бæстæм', description: 'Grammar test for Ossetian, allative case' },
+		{ word: 'Тигр', grammarForm: 'dative', expected: 'Тигрæн', description: 'Grammar test for Ossetian, dative case' },
+		{ word: 'цъити', grammarForm: 'dative', expected: 'цъитийæн', description: 'Grammar test for Ossetian, dative case' },
+		{ word: 'лæппу', grammarForm: 'genitive', expected: 'лæппуйы', description: 'Grammar test for Ossetian, genitive case' },
+		{ word: '2011', grammarForm: 'equative', expected: '2011-ау', description: 'Grammar test for Ossetian, equative case' }
+	]
+});
+
