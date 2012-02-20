@@ -1,7 +1,7 @@
 /**
- * Experimental advanced wikitext parser-emitter. 
+ * Experimental advanced wikitext parser-emitter.
  * See: http://www.mediawiki.org/wiki/Extension:UploadWizard/MessageParser for docs
- * 
+ *
  * @author neilk@wikimedia.org
  */
 
@@ -14,9 +14,9 @@
 	 * @param {Object} parser options
 	 * @return {Function} accepting ( String message key, String replacement1, String replacement2 ... ) and returning {jQuery}
 	 */
-	function getFailableParserFn( options ) { 
-		var parser = new mw.jqueryMsg.parser( options ); 
-		/** 
+	function getFailableParserFn( options ) {
+		var parser = new mw.jqueryMsg.parser( options );
+		/**
 		 * Try to parse a key and optional replacements, returning a jQuery object that may be a tree of jQuery nodes.
 		 * If there was an error parsing, return the key and the error message (wrapped in jQuery). This should put the error right into
 		 * the interface, without causing the page to halt script execution, and it hopefully should be clearer how to fix it.
@@ -26,22 +26,22 @@
 		 */
 		return function( args ) {
 			var key = args[0];
-			var argsArray = $.isArray( args[1] ) ? args[1] : $.makeArray( args ).slice( 1 ); 
-			var escapedArgsArray = $.map( argsArray, function( arg ) { 
+			var argsArray = $.isArray( args[1] ) ? args[1] : $.makeArray( args ).slice( 1 );
+			var escapedArgsArray = $.map( argsArray, function( arg ) {
 				return typeof arg === 'string' ? mw.html.escape( arg ) : arg;
 			} );
 			try {
 				return parser.parse( key, escapedArgsArray );
 			} catch ( e ) {
-				return $( '<span></span>' ).append( key + ': ' + e.message );
+				return $( '<span>' ).append( key + ': ' + e.message );
 			}
 		};
 	}
 
 	/**
-	 * Class method. 
+	 * Class method.
 	 * Returns a function suitable for use as a global, to construct strings from the message key (and optional replacements).
-	 * e.g.  
+	 * e.g.
 	 *       window.gM = mediaWiki.parser.getMessageFunction( options );
 	 *       $( 'p#headline' ).html( gM( 'hello-user', username ) );
 	 *
@@ -51,12 +51,12 @@
 	 * @param {Array} parser options
 	 * @return {Function} function suitable for assigning to window.gM
 	 */
-	mw.jqueryMsg.getMessageFunction = function( options ) { 
+	mw.jqueryMsg.getMessageFunction = function( options ) {
 		var failableParserFn = getFailableParserFn( options );
-		/** 
+		/**
 		 * N.B. replacements are variadic arguments or an array in second parameter. In other words:
-		 *    somefunction(a, b, c, d) 
-		 * is equivalent to 
+		 *    somefunction(a, b, c, d)
+		 * is equivalent to
 		 *    somefunction(a, [b, c, d])
 		 *
 		 * @param {String} message key
@@ -69,10 +69,10 @@
 	};
 
 	/**
-	 * Class method. 
-	 * Returns a jQuery plugin which parses the message in the message key, doing replacements optionally, and appends the nodes to 
-	 * the current selector. Bindings to passed-in jquery elements are preserved. Functions become click handlers for [$1 linktext] links.	
-	 * e.g.  
+	 * Class method.
+	 * Returns a jQuery plugin which parses the message in the message key, doing replacements optionally, and appends the nodes to
+	 * the current selector. Bindings to passed-in jquery elements are preserved. Functions become click handlers for [$1 linktext] links.
+	 * e.g.
 	 *        $.fn.msg = mediaWiki.parser.getJqueryPlugin( options );
 	 *        var userlink = $( '<a>' ).click( function() { alert( "hello!!") } );
 	 *        $( 'p#headline' ).msg( 'hello-user', userlink );
@@ -82,12 +82,12 @@
 	 */
 	mw.jqueryMsg.getPlugin = function( options ) {
 		var failableParserFn = getFailableParserFn( options );
-		/** 
+		/**
 		 * N.B. replacements are variadic arguments or an array in second parameter. In other words:
-		 *    somefunction(a, b, c, d) 
-		 * is equivalent to 
+		 *    somefunction(a, b, c, d)
+		 * is equivalent to
 		 *    somefunction(a, [b, c, d])
-		 * 
+		 *
 		 * We append to 'this', which in a jQuery plugin context will be the selected elements.
 		 * @param {String} message key
 		 * @param {Array} optional replacements (can also specify variadically)
@@ -102,9 +102,9 @@
 		};
 	};
 
-	var parserDefaults = { 
+	var parserDefaults = {
 		'magic' : {
-			'SITENAME' : mw.config.get( 'wgSiteName' ) 
+			'SITENAME' : mw.config.get( 'wgSiteName' )
 		},
 		'messages' : mw.messages,
 		'language' : mw.language
@@ -140,19 +140,19 @@
 
 		/**
 	 	 * Fetch the message string associated with a key, return parsed structure. Memoized.
-		 * Note that we pass '[' + key + ']' back for a missing message here. 
+		 * Note that we pass '[' + key + ']' back for a missing message here.
 	 	 * @param {String} key
 		 * @return {String|Array} string of '[key]' if message missing, simple string if possible, array of arrays if needs parsing
 		 */
 		getAst: function( key ) {
-			if ( this.astCache[ key ] === undefined ) { 
+			if ( this.astCache[ key ] === undefined ) {
 				var wikiText = this.settings.messages.get( key );
 				if ( typeof wikiText !== 'string' ) {
 					wikiText = "\\[" + key + "\\]";
 				}
 				this.astCache[ key ] = this.wikiTextToAst( wikiText );
 			}
-			return this.astCache[ key ];	
+			return this.astCache[ key ];
 		},
 
 		/*
@@ -160,15 +160,15 @@
 		 *
 		 * CAVEAT: This does not parse all wikitext. It could be more efficient, but it's pretty good already.
 		 * n.b. We want to move this functionality to the server. Nothing here is required to be on the client.
-		 * 
+		 *
 		 * @param {String} message string wikitext
 		 * @throws Error
 		 * @return {Mixed} abstract syntax tree
 		 */
 		wikiTextToAst: function( input ) {
-			
-			// Indicates current position in input as we parse through it.	
-			// Shared among all parsing functions below. 
+
+			// Indicates current position in input as we parse through it.
+			// Shared among all parsing functions below.
 			var pos = 0;
 
 			// =========================================================
@@ -176,7 +176,7 @@
 			// =========================================================
 
 
-			// Try parsers until one works, if none work return null 
+			// Try parsers until one works, if none work return null
 			function choice( ps ) {
 				return function() {
 					for ( var i = 0; i < ps.length; i++ ) {
@@ -194,12 +194,12 @@
 			function sequence( ps ) {
 				var originalPos = pos;
 				var result = [];
-				for ( var i = 0; i < ps.length; i++ ) { 
+				for ( var i = 0; i < ps.length; i++ ) {
 					var res = ps[i]();
 					if ( res === null ) {
 						pos = originalPos;
 						return null;
-					} 
+					}
 					result.push( res );
 				}
 				return result;
@@ -219,7 +219,7 @@
 					if ( result.length < n ) {
 						pos = originalPos;
 						return null;
-					} 
+					}
 					return result;
 				};
 			}
@@ -228,7 +228,7 @@
 			// But using this as a combinator seems to cause problems when combined with nOrMore().
 			// May be some scoping issue
 			function transform( p, fn ) {
-				return function() { 
+				return function() {
 					var result = p();
 					return result === null ? null : fn( result );
 				};
@@ -236,7 +236,7 @@
 
 			// Helpers -- just make ps out of simpler JS builtin types
 
-			function makeStringParser( s ) { 
+			function makeStringParser( s ) {
 				var len = s.length;
 				return function() {
 					var result = null;
@@ -249,21 +249,21 @@
 			}
 
 			function makeRegexParser( regex ) {
-				return function() { 
+				return function() {
 					var matches = input.substr( pos ).match( regex );
-					if ( matches === null ) { 
+					if ( matches === null ) {
 						return null;
-					} 
+					}
 					pos += matches[0].length;
 					return matches[0];
 				};
 			}
-						 
 
-			/** 
-			 *  =================================================================== 
+
+			/**
+			 *  ===================================================================
 			 *  General patterns above this line -- wikitext specific parsers below
-			 *  =================================================================== 
+			 *  ===================================================================
 			 */
 
 			// Parsing functions follow. All parsing functions work like this:
@@ -288,7 +288,7 @@
 
 			function escapedLiteral() {
 				var result = sequence( [
-					backslash, 
+					backslash,
 					anyCharacter
 				] );
 				return result === null ? null : result[1];
@@ -304,7 +304,7 @@
 				regularLiteralWithoutBar
 			] );
 
-			var escapedOrRegularLiteral = choice( [ 
+			var escapedOrRegularLiteral = choice( [
 				escapedLiteral,
 				regularLiteral
 			] );
@@ -315,7 +315,7 @@
 				 return result === null ? null : result.join('');
 			}
 
-			// Used to define "literals" within template parameters. The pipe character is the parameter delimeter, so by default 
+			// Used to define "literals" within template parameters. The pipe character is the parameter delimeter, so by default
 			// it is not a literal in the parameter
 			function literalWithoutBar() {
 				 var result = nOrMore( 1, escapedOrLiteralWithoutBar )();
@@ -327,16 +327,16 @@
 				 return result === null ? null : result.join('');
 			}
 
-			var whitespace = makeRegexParser( /^\s+/ ); 
+			var whitespace = makeRegexParser( /^\s+/ );
 			var dollar = makeStringParser( '$' );
-			var digits = makeRegexParser( /^\d+/ );   
+			var digits = makeRegexParser( /^\d+/ );
 
 			function replacement() {
 				var result = sequence( [
 					dollar,
 					digits
 				] );
-				if ( result === null ) { 
+				if ( result === null ) {
 					return null;
 				}
 				return [ 'REPLACE', parseInt( result[1], 10 ) - 1 ];
@@ -378,7 +378,7 @@
 				return result;
 			}
 
-			var templateName = transform( 
+			var templateName = transform(
 				// see $wgLegalTitleChars
 				// not allowing : due to the need to catch "PLURAL:$1"
 				makeRegexParser( /^[ !"$&'()*,.\/0-9;=?@A-Z\^_`a-z~\x80-\xFF+-]+/ ),
@@ -386,7 +386,7 @@
 			);
 
 			function templateParam() {
-				var result = sequence( [ 
+				var result = sequence( [
 					pipe,
 					nOrMore( 0, paramExpression )
 				] );
@@ -428,10 +428,10 @@
 					] );
 					return res === null ? null : res[0].concat( res[1] );
 				},
-				function() { 
+				function() {
 					var res = sequence( [
 						templateName,
-						nOrMore( 0, templateParam ) 
+						nOrMore( 0, templateParam )
 					] );
 					if ( res === null ) {
 						return null;
@@ -453,7 +453,7 @@
 			}
 
 			var nonWhitespaceExpression = choice( [
-				template,        
+				template,
 				link,
 				extlink,
 				replacement,
@@ -461,19 +461,19 @@
 			] );
 
 			var paramExpression = choice( [
-				template,        
+				template,
 				link,
 				extlink,
 				replacement,
 				literalWithoutBar
 			] );
 
-			var expression = choice( [ 
+			var expression = choice( [
 				template,
 				link,
 				extlink,
 				replacement,
-				literal 
+				literal
 			] );
 
 			function start() {
@@ -490,9 +490,9 @@
 			// finally let's do some actual work...
 
 			var result = start();
-			
+
 			/*
-			 * For success, the p must have gotten to the end of the input 
+			 * For success, the p must have gotten to the end of the input
 			 * and returned a non-null.
 			 * n.b. This is part of language infrastructure, so we do not throw an internationalizable message.
 			 */
@@ -501,7 +501,7 @@
 			}
 			return result;
 		}
-			
+
 	};
 
 	/**
@@ -511,7 +511,7 @@
 		this.language = language;
 		var _this = this;
 
-		$.each( magic, function( key, val ) { 
+		$.each( magic, function( key, val ) {
 			_this[ key.toLowerCase() ] = function() { return val; };
 		} );
 
@@ -531,11 +531,11 @@
 					ret = node;
 					break;
 				case 'object': // node is an array of nodes
-					var subnodes = $.map( node.slice( 1 ), function( n ) { 
+					var subnodes = $.map( node.slice( 1 ), function( n ) {
 						return _this.emit( n, replacements );
 					} );
 					var operation = node[0].toLowerCase();
-					if ( typeof _this[operation] === 'function' ) { 
+					if ( typeof _this[operation] === 'function' ) {
 						ret = _this[ operation ]( subnodes, replacements );
 					} else {
 						throw new Error( 'unknown operation "' + operation + '"' );
@@ -556,7 +556,7 @@
 	};
 
 	// For everything in input that follows double-open-curly braces, there should be an equivalent parser
-	// function. For instance {{PLURAL ... }} will be processed by 'plural'. 
+	// function. For instance {{PLURAL ... }} will be processed by 'plural'.
 	// If you have 'magic words' then configure the parser to have them upon creation.
 	//
 	// An emitter method takes the parent node, the array of subnodes and the array of replacements (the values that $1, $2... should translate to).
@@ -572,7 +572,7 @@
 		 */
 		concat: function( nodes ) {
 			var span = $( '<span>' ).addClass( 'mediaWiki_htmlEmitter' );
-			$.each( nodes, function( i, node ) { 
+			$.each( nodes, function( i, node ) {
 				if ( node instanceof jQuery && node.hasClass( 'mediaWiki_htmlEmitter' ) ) {
 					$.each( node.contents(), function( j, childNode ) {
 						span.append( childNode );
@@ -596,12 +596,12 @@
 		 */
 		replace: function( nodes, replacements ) {
 			var index = parseInt( nodes[0], 10 );
-			return index < replacements.length ? replacements[index] : '$' + ( index + 1 ); 
+			return index < replacements.length ? replacements[index] : '$' + ( index + 1 );
 		},
 
-		/** 
+		/**
 		 * Transform wiki-link
-		 * TODO unimplemented 
+		 * TODO unimplemented
 		 */
 		wlink: function( nodes ) {
 			return "unimplemented";
@@ -610,16 +610,16 @@
 		/**
 		 * Transform parsed structure into external link
 		 * If the href is a jQuery object, treat it as "enclosing" the link text.
-		 *              ... function, treat it as the click handler
-		 *		... string, treat it as a URI
-		 * TODO: throw an error if nodes.length > 2 ? 
+		 *                     ... function, treat it as the click handler
+		 *                     ... string, treat it as a URI
+		 * TODO: throw an error if nodes.length > 2 ?
 		 * @param {Array} of two elements, {jQuery|Function|String} and {String}
 		 * @return {jQuery}
 		 */
 		link: function( nodes ) {
 			var arg = nodes[0];
 			var contents = nodes[1];
-			var $el; 
+			var $el;
 			if ( arg instanceof jQuery ) {
 				$el = arg;
 			} else {
@@ -630,7 +630,7 @@
 					$el.attr( 'href', arg.toString() );
 				}
 			}
-			$el.append( contents );	
+			$el.append( contents );
 			return $el;
 		},
 
@@ -638,10 +638,10 @@
 		 * Transform parsed structure into pluralization
 		 * n.b. The first node may be a non-integer (for instance, a string representing an Arabic number).
 		 * So convert it back with the current language's convertNumber.
-		 * @param {Array} of nodes, [ {String|Number}, {String}, {String} ... ] 
+		 * @param {Array} of nodes, [ {String|Number}, {String}, {String} ... ]
 		 * @return {String} selected pluralized form according to current language
 		 */
-		plural: function( nodes ) { 
+		plural: function( nodes ) {
 			var count = parseInt( this.language.convertNumber( nodes[0], true ), 10 );
 			var forms = nodes.slice(1);
 			return forms.length ? this.language.convertPlural( count, forms ) : '';
@@ -650,12 +650,12 @@
 		/**
 		 * Transform parsed structure into gender
 		 * Usage {{gender:[gender| mw.user object ] | masculine|feminine|neutral}}.
-		 * @param {Array} of nodes, [ {String|mw.User}, {String}, {String} , {String} ] 
+		 * @param {Array} of nodes, [ {String|mw.User}, {String}, {String} , {String} ]
 		 * @return {String} selected gender form according to current language
 		 */
-		gender: function( nodes ) { 
+		gender: function( nodes ) {
 			var gender;
-			if  ( nodes[0] && nodes[0].options instanceof mw.Map ){
+			if ( nodes[0] && nodes[0].options instanceof mw.Map ){
 				gender = nodes[0].options.get( 'gender' );
 			} else {
 				gender = nodes[0];
@@ -666,10 +666,10 @@
 		/**
 		 * Transform parsed structure into grammar conversion.
 		 * Invoked by putting {{grammar:form|word}} in a message
-		 * @param {Array}  of nodes [{Grammar case eg: genitive}, {String word}]
+		 * @param {Array} of nodes [{Grammar case eg: genitive}, {String word}]
 		 * @return {String} selected grammatical form according to current language
 		 */
-		grammar: function( nodes ) { 
+		grammar: function( nodes ) {
 			var form = nodes[0];
 			var word = nodes[1];
 			return this.language.convertGrammar( word , form );
@@ -682,23 +682,23 @@
 	// deprecated! don't rely on gM existing.
 	// the window.gM ought not to be required - or if required, not required here. But moving it to extensions breaks it (?!)
 	// Need to fix plugin so it could do attributes as well, then will be okay to remove this.
-	window.gM = mw.jqueryMsg.getMessageFunction(); 
+	window.gM = mw.jqueryMsg.getMessageFunction();
 
 	$.fn.msg = mw.jqueryMsg.getPlugin();
-	
+
 	// Replace the default message parser with jqueryMsg
 	var oldParser = mw.Message.prototype.parser;
 	mw.Message.prototype.parser = function() {
 		// TODO: should we cache the message function so we don't create a new one every time? Benchmark this maybe?
 		// Caching is somewhat problematic, because we do need different message functions for different maps, so
 		// we'd have to cache the parser as a member of this.map, which sounds a bit ugly.
-		
+
 		// Do not use mw.jqueryMsg unless required
 		if ( this.map.get( this.key ).indexOf( '{{' ) < 0 ) {
 			// Fall back to mw.msg's simple parser
 			return oldParser.apply( this );
 		}
-		
+
 		var messageFunction = mw.jqueryMsg.getMessageFunction( { 'messages': this.map } );
 		return messageFunction( this.key, this.parameters );
 	};
