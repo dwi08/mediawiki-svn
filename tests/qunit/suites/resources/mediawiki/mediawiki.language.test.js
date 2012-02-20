@@ -97,7 +97,7 @@ mw.language.grammartest({
 	test: [
 		{ word: 'Wikipédiá', grammarForm: 'rol', expected: 'Wikipédiáról', description: 'Grammar test for Hungarian, rol case' },
 		{ word: 'Wikipédiá', grammarForm: 'ba', expected: 'Wikipédiába', description: 'Grammar test for Hungarian, ba case' },
-		{ word: 'Wikipédiá', grammarForm: 'k', expected: 'Wikipédiák', description: 'Grammar test for Hungarian, k case' },
+		{ word: 'Wikipédiá', grammarForm: 'k', expected: 'Wikipédiák', description: 'Grammar test for Hungarian, k case' }
 	]
 });
 
@@ -106,6 +106,19 @@ mw.language.grammartest({
 	test: [
 		{ word: 'an Domhnach', grammarForm: 'ainmlae', expected: 'Dé Domhnaigh', description: 'Grammar test for Irish, ainmlae case' },
 		{ word: 'an Luan', grammarForm: 'ainmlae', expected: 'Dé Luain', description: 'Grammar test for Irish, ainmlae case' },
-		{ word: 'an Satharn', grammarForm: 'ainmlae', expected: 'Dé Sathairn', description: 'Grammar test for Irish, ainmlae case' },
+		{ word: 'an Satharn', grammarForm: 'ainmlae', expected: 'Dé Sathairn', description: 'Grammar test for Irish, ainmlae case' }
+	]
+});
+
+mw.language.grammartest({
+	language: 'uk',
+	test: [
+		{ word: 'тесть', grammarForm: 'genitive', expected: 'тестя', description: 'Grammar test for Ukrainian, genitive case' },
+		{ word: 'Вікіпедія', grammarForm: 'genitive', expected: 'Вікіпедії', description: 'Grammar test for Ukrainian, genitive case' },
+		{ word: 'установка', grammarForm: 'genitive', expected: 'установки', description: 'Grammar test for Ukrainian, genitive case' },
+		{ word: 'похоти', grammarForm: 'genitive', expected: 'похотей', description: 'Grammar test for Ukrainian, genitive case' },
+		{ word: 'доводы', grammarForm: 'genitive', expected: 'доводов', description: 'Grammar test for Ukrainian, genitive case' },
+		{ word: 'песчаник', grammarForm: 'genitive', expected: 'песчаника', description: 'Grammar test for Ukrainian, genitive case' },
+		{ word: 'Вікіпедія', grammarForm: 'accusative', expected: 'Вікіпедію', description: 'Grammar test for Ukrainian, accusative case' }
 	]
 });
