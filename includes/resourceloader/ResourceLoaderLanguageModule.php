@@ -30,9 +30,9 @@ class ResourceLoaderLanguageModule extends ResourceLoaderModule {
 	 *
 	 * @return Array
 	 */
-	protected function getSiteLangGrammarForms( ) {
+	protected function getSiteLangGrammarForms() {
 		global $wgContLang;
-		return  $wgContLang->getGrammarForms();
+		return $wgContLang->getGrammarForms();
 	}
 	/**
 	 * @param $context ResourceLoaderContext

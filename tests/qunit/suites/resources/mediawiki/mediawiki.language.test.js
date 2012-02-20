@@ -8,7 +8,7 @@ test( '-- Initial check', function() {
 mw.language.grammartest = function( options ) {
 	var opt = $.extend({
 		language: '',
-		test: [],
+		test: []
 	}, options);
 	// The test works only if the content language is opt.language
 	// because it requires [lang].js to be loaded.
@@ -65,7 +65,7 @@ mw.language.grammartest({
 		{ word: 'գիրք', grammarForm: 'genitive', expected: 'գրքի', description: 'Grammar test for Armenian, genitive case' },
 		{ word: 'ժամանակի', grammarForm: 'genitive', expected: 'ժամանակիի', description: 'Grammar test for Armenian, genitive case' }
 	]
-}); 
+});
 
 mw.language.grammartest({
 	language: 'fi',
@@ -73,7 +73,7 @@ mw.language.grammartest({
 		{ word: 'talo', grammarForm: 'genitive', expected: 'talon', description: 'Grammar test for Finnish, genitive case' },
 		{ word: 'linux', grammarForm: 'genitive', expected: 'linuxin', description: 'Grammar test for Finnish, genitive case' },
 		{ word: 'talo', grammarForm: 'elative', expected: 'talosta', description: 'Grammar test for Finnish, elative case' },
-		{ word: 'pastöroitu', grammarForm: 'elative', expected: 'pastöroitusta', description: 'Grammar test for Finnish, elative case' },
+		{ word: 'pastöroitu', grammarForm: 'accusative', expected: 'pastöroitua', description: 'Grammar test for Finnish, accusative case' },
 		{ word: 'talo', grammarForm: 'partitive', expected: 'taloa', description: 'Grammar test for Finnish, partitive case' },
 		{ word: 'talo', grammarForm: 'illative', expected: 'taloon', description: 'Grammar test for Finnish, illative case' },
 		{ word: 'linux', grammarForm: 'inessive', expected: 'linuxissa', description: 'Grammar test for Finnish, inessive case' }
