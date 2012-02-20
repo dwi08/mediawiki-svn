@@ -36,19 +36,23 @@ class ResourceLoaderLanguageModule extends ResourceLoaderModule {
 	}
 	/**
 	 * @param $context ResourceLoaderContext
-	 * @return string
+	 * @return string Javascript code
 	 */
 	public function getScript( ResourceLoaderContext $context ) {
 		global $wgContLang;
+		$code = Xml::encodeJsVar( $wgContLang->getCode() );
+		$forms = Xml::encodeJsVar( $this->getSiteLangGrammarForms() );
+
 		$js =
-			'var langCode = ' . FormatJson::encode( $wgContLang->getCode() ) . ', ' .
-			"langData = mw.language.data;\n" .
-			"if ( langData[langCode] === undefined ) {\n" .
-			"	langData[langCode] = new mw.Map();\n" .
-			"}\n" .
-			Xml::encodeJsCall( 'langData[langCode].set',
-				array( 'grammarForms', $this->getSiteLangGrammarForms( ) )
-			);
+<<<JAVASCRIPT
+var langCode = $code,
+langData = mw.language.data;
+if ( langData[langCode] === undefined ) {
+	langData[langCode] = new mw.Map();
+}
+langData[langCode].set( "grammarForms", $forms );
+JAVASCRIPT;
+
 		return $js;
 	}
 	/**
