@@ -679,6 +679,7 @@ return array(
 			'hi' => 'resources/mediawiki.language/languages/hi.js',
 			'hr' => 'resources/mediawiki.language/languages/hr.js',
 			'hsb' => 'resources/mediawiki.language/languages/hsb.js',
+			'hu' => 'resources/mediawiki.language/languages/hu.js',
 			'hy' => 'resources/mediawiki.language/languages/hy.js',
 			'ksh' => 'resources/mediawiki.language/languages/ksh.js',
 			'ln' => 'resources/mediawiki.language/languages/ln.js',

@@ -10,7 +10,7 @@ mediaWiki.language.convertGrammar = function( word, form ) {
 	}
 
 	// vowel harmony flag
-	aou = word.match( /[aou][^äöy]*$/i );
+	var aou = word.match( /[aou][^äöy]*$/i );
 
 	if ( word.match( /wiki$/i ) ) {
 		aou = false;

@@ -5,7 +5,6 @@ test( '-- Initial check', function() {
 	ok( mw.language, 'mw.language defined' );
 } );
 
- 
 mw.language.grammartest = function( options ) {
 	var opt = $.extend({
 		language: '',
@@ -29,7 +28,7 @@ mw.language.grammartest({
 		{ word: 'word', grammarForm: 'instrumental', expected: 's word', description: 'Grammar test for Bosnian, instrumental case' },
 		{ word: 'word', grammarForm: 'lokativ', expected: 'o word', description: 'Grammar test for Bosnian, lokativ case' }
 	]
-}); 
+});
 
 mw.language.grammartest({
 	language: 'he',
@@ -40,7 +39,7 @@ mw.language.grammartest({
 		{ word: 'Wikipedia', grammarForm: 'תחילית', expected: '־Wikipedia', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before non-Hebrew letters' }
 		{ word: '1995', grammarForm: 'תחילית', expected: '־1995', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before numbers' }
 	]
-}); 
+});
 
 mw.language.grammartest({
 	language: 'hsb',
@@ -48,7 +47,15 @@ mw.language.grammartest({
 		{ word: 'word', grammarForm: 'instrumental', expected: 'z word', description: 'Grammar test for Upper Sorbian, instrumental case' },
 		{ word: 'word', grammarForm: 'lokatiw', expected: 'wo word', description: 'Grammar test for Upper Sorbian, lokatiw case' }
 	]
-}); 
+});
+
+mw.language.grammartest({
+	language: 'dsb',
+	test: [
+		{ word: 'word', grammarForm: 'instrumental', expected: 'z word', description: 'Grammar test for Lower Sorbian, instrumental case' },
+		{ word: 'word', grammarForm: 'lokatiw', expected: 'wo word', description: 'Grammar test for Lower Sorbian, lokatiw case' }
+	]
+});
 
 mw.language.grammartest({
 	language: 'hy',
@@ -83,4 +90,22 @@ mw.language.grammartest({
 		{ word: 'доводы', grammarForm: 'genitive', expected: 'доводов', description: 'Grammar test for Russian, genitive case' },
 		{ word: 'песчаник', grammarForm: 'genitive', expected: 'песчаника', description: 'Grammar test for Russian, genitive case' }
 	]
-}); 
+});
+
+mw.language.grammartest({
+	language: 'hu',
+	test: [
+		{ word: 'Wikipédiá', grammarForm: 'rol', expected: 'Wikipédiáról', description: 'Grammar test for Hungarian, rol case' },
+		{ word: 'Wikipédiá', grammarForm: 'ba', expected: 'Wikipédiába', description: 'Grammar test for Hungarian, ba case' },
+		{ word: 'Wikipédiá', grammarForm: 'k', expected: 'Wikipédiák', description: 'Grammar test for Hungarian, k case' },
+	]
+});
+
+mw.language.grammartest({
+	language: 'ga',
+	test: [
+		{ word: 'an Domhnach', grammarForm: 'ainmlae', expected: 'Dé Domhnaigh', description: 'Grammar test for Irish, ainmlae case' },
+		{ word: 'an Luan', grammarForm: 'ainmlae', expected: 'Dé Luain', description: 'Grammar test for Irish, ainmlae case' },
+		{ word: 'an Satharn', grammarForm: 'ainmlae', expected: 'Dé Sathairn', description: 'Grammar test for Irish, ainmlae case' },
+	]
+});
