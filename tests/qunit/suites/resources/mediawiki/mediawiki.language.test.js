@@ -36,7 +36,7 @@ mw.language.grammartest({
 		{ word: "ויקיפדיה", grammarForm: 'prefixed', expected: "וויקיפדיה", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed' },
 		{ word: "וולפגנג", grammarForm: 'prefixed', expected: "וולפגנג", description: 'Grammar test for Hebrew, Duplicate the "Waw" if prefixed, but not if it is already duplicated.' },
 		{ word: "הקובץ", grammarForm: 'prefixed', expected: "קובץ", description: 'Grammar test for Hebrew, Remove the "He" if prefixed' },
-		{ word: 'Wikipedia', grammarForm: 'תחילית', expected: '־Wikipedia', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before non-Hebrew letters' }
+		{ word: 'Wikipedia', grammarForm: 'תחילית', expected: '־Wikipedia', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before non-Hebrew letters' },
 		{ word: '1995', grammarForm: 'תחילית', expected: '־1995', description: 'Grammar test for Hebrew, Add a hyphen (maqaf) before numbers' }
 	]
 });
