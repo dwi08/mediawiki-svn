@@ -144,3 +144,12 @@ mw.language.grammartest({
 	]
 });
 
+mw.language.grammartest({
+	language: 'la',
+	test: [
+		{ word: 'Translatio', grammarForm: 'genitive', expected: 'Translationis', description: 'Grammar test for Latin, genitive case' },
+		{ word: 'Translatio', grammarForm: 'accusative', expected: 'Translationem', description: 'Grammar test for Latin, accusative case' },
+		{ word: 'Translatio', grammarForm: 'ablative', expected: 'Translatione', description: 'Grammar test for Latin, ablative case' }
+	]
+});
+
