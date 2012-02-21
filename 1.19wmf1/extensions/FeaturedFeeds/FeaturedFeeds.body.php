@@ -250,6 +250,7 @@ class FeaturedFeedChannel {
 	private $items = false;
 	private $page = false;
 	private $entryName;
+	private $titleForParse;
 
 	public $title = false;
 	public $shortTitle;
@@ -257,11 +258,8 @@ class FeaturedFeedChannel {
 
 	public function __construct( $name, $options, $lang ) {
 		global $wgContLang;
-		if ( !self::$parserOptions ) {
-			self::$parserOptions = new ParserOptions();
-			self::$parserOptions->setEditSection( false );
-			self::$parser = new Parser();
-		}
+
+		self::staticInit();
 		$this->name = $name;
 		$this->options = $options;
 		if ( $options['inUserLanguage'] ) {
@@ -269,6 +267,18 @@ class FeaturedFeedChannel {
 		} else {
 			$this->language = $wgContLang;
 		}
+	}
+
+	private static function staticInit() {
+		if ( !self::$parserOptions ) {
+			self::$parserOptions = new ParserOptions();
+			self::$parserOptions->setEditSection( false );
+			self::$parser = new Parser();
+		}
+	}
+
+	public function __wakeup() {
+		self::staticInit();
 	}
 
 	/**
@@ -364,8 +374,13 @@ class FeaturedFeedChannel {
 			$this->name . '/' . wfTimestamp( TS_MW, $date ) . '/' . $this->language->getCode()
 		)->getFullURL();
 
+		if ( !isset( $this->titleForParse ) ) {
+			// parsing with such title makes stuff like {{CURRENTMONTH}} localised
+			$this->titleForParse = Title::newFromText( 'MediaWiki:Dummy/' . $this->language->getCode() );
+		}
+
 		return new FeaturedFeedItem(
-			self::$parser->transformMsg( $this->entryName, self::$parserOptions ),
+			self::$parser->transformMsg( $this->entryName, self::$parserOptions, $this->titleForParse ),
 			wfExpandUrl( $url ),
 			$text,
 			$date
