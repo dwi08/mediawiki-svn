@@ -73,7 +73,7 @@ mw.language.grammartest({
 		{ word: 'talo', grammarForm: 'genitive', expected: 'talon', description: 'Grammar test for Finnish, genitive case' },
 		{ word: 'linux', grammarForm: 'genitive', expected: 'linuxin', description: 'Grammar test for Finnish, genitive case' },
 		{ word: 'talo', grammarForm: 'elative', expected: 'talosta', description: 'Grammar test for Finnish, elative case' },
-		{ word: 'pastöroitu', grammarForm: 'accusative', expected: 'pastöroitua', description: 'Grammar test for Finnish, accusative case' },
+		{ word: 'pastöroitu', grammarForm: 'partitive', expected: 'pastöroitua', description: 'Grammar test for Finnish, partitive case' },
 		{ word: 'talo', grammarForm: 'partitive', expected: 'taloa', description: 'Grammar test for Finnish, partitive case' },
 		{ word: 'talo', grammarForm: 'illative', expected: 'taloon', description: 'Grammar test for Finnish, illative case' },
 		{ word: 'linux', grammarForm: 'inessive', expected: 'linuxissa', description: 'Grammar test for Finnish, inessive case' }
