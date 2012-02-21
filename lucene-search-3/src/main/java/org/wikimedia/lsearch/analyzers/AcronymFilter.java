@@ -7,12 +7,23 @@ import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 
 /**
- * Filters acronyms tokens to tokens without internal dots.
+/**
+ * Filters acronyms tokens to normalize with undotted version.
+ *  
+ * It will take N.A.S.A. and will return both N.A.S.A. and NASA .
+ * The undotted token has 0 increment, it is buffered until the next invocation.
+ * 
+ * TODO: support the new filter interface 
+ * TODO: add learning mode - i.e. dumping ACRONYMS into a repository.
+ * TODO: set token type to ACRONYM
+ * TODO: if token is ABCD. it is not an acronym -> remove dot buffer .
  * 
  */
 public class AcronymFilter extends TokenFilter {
 
-	protected transient Token buffered = null; // TODO: document buffer behavior.
+	//if an acronym is detected the normalized version is stored in
+	//this buffer till the next call to next()
+	protected transient Token buffered = null; 
 
 	public AcronymFilter(final TokenStream input) {
 		super(input);
