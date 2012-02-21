@@ -46,7 +46,7 @@ test( 'mw.jqueryMsg Grammar', function() {
 	expect( 5 );
 	var parser = mw.jqueryMsg.getMessageFunction();
 	ok( parser, 'Parser Function initialized' );
-	// Hope the grammar form rammar_case_foo is not valid in any language
+	// Hope the grammar form grammar_case_foo is not valid in any language
 	ok( mw.messages.set( 'grammar-msg', 'Przeszukaj {{GRAMMAR:grammar_case_foo|{{SITENAME}}}}' ), 'mw.messages.set: Register' );
 	equal( parser( 'grammar-msg' ) , 'Przeszukaj ' + mw.config.get( 'wgSiteName' ) , 'Grammar Test with sitename' );
 	ok( mw.messages.set( 'grammar-msg-wrong-syntax', 'Przeszukaj {{GRAMMAR:grammar_case_xyz}}' ), 'mw.messages.set: Register' );

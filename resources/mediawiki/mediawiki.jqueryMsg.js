@@ -672,7 +672,7 @@
 		grammar: function( nodes ) {
 			var form = nodes[0];
 			var word = nodes[1];
-			return  word && form && this.language.convertGrammar( word, form );
+			return word && form && this.language.convertGrammar( word, form );
 		}
 	};
 
