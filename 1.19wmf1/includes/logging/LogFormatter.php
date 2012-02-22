@@ -171,6 +171,7 @@ class LogFormatter {
 	 */
 	public function getIRCActionText() {
 		$this->plaintext = true;
+		$this->irctext = true;
 		$text = $this->getActionText();
 
 		$entry = $this->entry;
@@ -250,6 +251,7 @@ class LogFormatter {
 						break;
 				}
 				break;
+			
 
 			// case 'suppress' --private log -- aaron  (sign your messages so we know who to blame in a few years :-D)
 			// default:
@@ -259,6 +261,7 @@ class LogFormatter {
 		}
 
 		$this->plaintext = false;
+		$this->irctext = false;
 		return $text;
 	}
 
@@ -521,7 +524,11 @@ class LegacyLogFormatter extends LogFormatter {
 		);
 
 		$performer = $this->getPerformerElement();
-		return $performer .  $this->msg( 'word-separator' )->text() . $action;
+		if ( !$this->irctext ) {
+			$action = $performer .  $this->msg( 'word-separator' )->text() . $action;
+		}
+
+		return $action;
 	}
 
 }
