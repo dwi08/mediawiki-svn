@@ -158,7 +158,7 @@ pad_counts <- function(bin_range, samples) {
 # Assumes: the two data frames have the same column names
 #
 
-append.data.frames <- function(df_1, df_2) {
+append.data.frames <- function(df_1, df_2, string_frames=c(0)) {
 	
 	df_cols <- length(colnames(df_1))
 	df_rows_1 <- length(df_1[[1]])
@@ -169,13 +169,22 @@ append.data.frames <- function(df_1, df_2) {
 
 	for (i in 1:df_cols)
 		for (j in 1:df_rows_1)
-			df_return[colnames(df_return)[i]][[1]][j] <- df_1[colnames(df_1)[i]][[1]][j]
-
+		{
+			if (i %in% string_frames)
+				df_return[colnames(df_return)[i]][[1]][j] <- toString(df_1[colnames(df_1)[i]][[1]][j])
+			else
+				df_return[colnames(df_return)[i]][[1]][j] <- df_1[colnames(df_1)[i]][[1]][j]
+		}
+		
 	for (i in 1:df_cols)
 		for (j in 1:df_rows_2)
 		{
 			row_index <- j + df_rows_1
-			df_return[colnames(df_return)[i]][[1]][row_index] <- df_2[colnames(df_1)[i]][[1]][j]
+			
+			if (i %in% string_frames)
+				df_return[colnames(df_return)[i]][[1]][row_index] <- toString(df_2[colnames(df_1)[i]][[1]][j])
+			else
+				df_return[colnames(df_return)[i]][[1]][row_index] <- df_2[colnames(df_1)[i]][[1]][j]
 		}
 		
 	# create the new data list
@@ -194,13 +203,12 @@ append.data.frames <- function(df_1, df_2) {
 # Constructs a concatenated data.frame from files
 #
 
-build.data.frames <- function(template_indices, fname_first_part, fname_last_part) {
+build.data.frames <- function(template_indices, fname_first_part, fname_last_part, string_frames=c(0)) {
 		
 	# Initialize the data frame
 	
 	filename <- paste(fname_first_part, template_indices[1], fname_last_part, sep="")
 	metrics = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-	
 	output <- paste("Processing data from",filename,"....")
 	print(output)
 	
@@ -216,10 +224,10 @@ build.data.frames <- function(template_indices, fname_first_part, fname_last_par
 			output <- paste("Processing data from",filename,"....")			
 			print(output)
 			
-			temp_frame = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)
-			metrics <- append.data.frames(metrics, temp_frame)		
+			temp_frame = read.table(filename, na.strings="\\N", sep="\t", comment.char="", quote="", header=T)			
+			metrics <- append.data.frames(metrics, temp_frame, string_frames=string_frames)		
 		}
-		
+	
 	metrics
 }
 
@@ -273,5 +281,21 @@ convert.list.to.binomial.event <- function(value_list) {
 	value_list[value_list > 0] = 1
 	value_list[value_list == 0] = 0
 	value_list
+}
+
+
+# FUNCTION :: filter.list.by.regex
+#
+# Take a list and filter out elements that don't match the pattern
+#
+
+filter.list.by.regex <- function(pattern, value_list) {	
+	new_list <- c()	
+	for (i in 1:length(value_list)) 
+		if (length(grep(pattern, value_list[i], perl = TRUE)) > 0)
+			new_list <- c(new_list, TRUE)
+		else
+			new_list <- c(new_list, FALSE)
+	new_list
 }
 
