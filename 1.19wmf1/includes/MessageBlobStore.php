@@ -230,6 +230,9 @@ class MessageBlobStore {
 	public static function clear() {
 		// TODO: Give this some more thought
 		// TODO: Is TRUNCATE better?
+		
+		// HACK: disable clear() on WMF servers
+		return;
 		$dbw = wfGetDB( DB_MASTER );
 		$dbw->delete( 'msg_resource', '*', __METHOD__ );
 		$dbw->delete( 'msg_resource_links', '*', __METHOD__ );
