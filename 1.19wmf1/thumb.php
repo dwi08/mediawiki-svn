@@ -125,19 +125,22 @@ function wfStreamThumb( array $params ) {
 		// Dirty, horrible, evil hack. We need to create a repo with the right zone paths for this to work
 		$localRepo = RepoGroup::singleton()->getLocalRepo();
 
+		global $wgLocalFileRepo;
 		$repo = new FSRepo(
-			array( 'directory' => $localRepo->getZonePath( 'temp' ),
-			'url' => $localRepo->getZoneUrl( 'temp' ),
-			'thumbDir'=> $localRepo->getZonePath( 'thumb' ) . '/temp',
-			'thumbUrl' => $localRepo->getZoneUrl( 'thumb' ) . '/temp'
+			array( 'directory' => $wgLocalFileRepo['directory'] . '/temp',
+			'url' => $wgLocalFileRepo['url'] . '/temp',
+			'thumbDir'=> $wgLocalFileRepo['thumbDir'] . '/temp',
+			'thumbUrl' => $wgLocalFileRepo['thumbUrl'] . '/temp',
+			'name' => 'UploadStashHackery',
 			)
 		);
  		
 		// $fileName can be like timestamp!name , strip the timestamp! part
 		$parts = explode( '!', $fileName, 2 );
 		$strippedName = isset( $parts[1] ) ? $parts[1] : $fileName;
-		$path = $localRepo->getZonePath( 'temp' ) . '/' . RepoGroup::singleton()->getLocalRepo()->getHashPath( $strippedName ) . $fileName;
-		$img = new UnregisteredLocalFile( false, $repo, $path, false );
+		$path = $repo->getZonePath( 'public' ) . '/' . RepoGroup::singleton()->getLocalRepo()->getHashPath( $strippedName ) . $fileName;
+		// Need to pass in $strippedName as a Title object so hash paths are computed correctly
+		$img = new UnregisteredLocalFile( Title::makeTitle( NS_FILE, $strippedName ), $repo, $path, false );
 	} else {
 		$img = wfLocalFile( $fileName );
 	}
