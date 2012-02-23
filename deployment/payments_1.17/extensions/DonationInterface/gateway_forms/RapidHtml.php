@@ -68,6 +68,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		// @appeal -> name of the appeal text to load
 		// @appeal_title -> name of the appeal title to load
 		// @verisign_logo -> placeholder to load the secure verisign logo
+		// @select_country -> generates a select containing all country names
 	);
 
 	/**
@@ -214,6 +215,9 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		// handle script path
 		$form = str_replace( "@verisign_logo", $this->getSmallSecureLogo(), $form );
 
+		// handle country drop-down
+		$form = str_replace( "@select_country", $this->getCountryDropdown(), $form );
+
 		$form = $this->fix_dropdowns( $form );
 
 		return $this->add_messages( $form );
@@ -253,9 +257,13 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 						$params[ $k ] .= "language=" . $this->form_data['language']. "&country=" . $this->form_data['country'];
 					}
 				}
+				// TODO: add support for message variations here as well
 				$html = str_replace( $matches[ 0 ][ $i ], wfMsg( $msg_key, $params ), $html );
 			} else {
-				$html = str_replace( '%' . $msg_key . '%', wfMsg( $msg_key ), $html );
+				// look for a country variant of the message and use that if found
+				$msg_text = DataValidator::wfLangSpecificFallback( $this->getEscapedValue( 'language' ),
+					array( $msg_key . '-' . strtolower( $this->getEscapedValue( 'country' ) ), $msg_key ) );
+				$html = str_replace( '%' . $msg_key . '%', $msg_text, $html );
 			}
 		}
 
@@ -428,5 +436,27 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 			return wfEscapeWikiText( htmlspecialchars( $matches[0] ) );
 		}
 		return $default;
+	}
+
+	/**
+	 * Gets a list of the supported countries from the parent class
+	 * and returns an option list representing all of those countries
+	 * in a translatable fashion.
+	 *
+	 * @return string An option list containing all supported countries
+	 */
+	function getCountryDropdown() {
+		# get the list of supported countries
+		$countries = GatewayForm::getCountries();
+
+		$output = "";
+
+		# iterate through the countris, ignoring the value since we
+		# will generate a message key to replace later
+		foreach( $countries as $c => $v ) {
+			$output .= "<option value=\"" . $c . "\">%donate_interface-country-dropdown-" . $c . "%</option>\n";
+		}
+
+		return $output;
 	}
 }
