@@ -51,7 +51,7 @@ mw.UploadWizard.prototype = {
 
 		// load list of languages so we'll have it ready when description interfaces are created
 		// XXX replace this code once any of the following bugs are fixed: 25845, 27535, 27561
-		var languageHandlerUrl = mw.util.wikiScript() + '?' + $.param( { 'title': 'MediaWiki:LanguageHandler.js', 'action': 'raw', 'ctype': 'text/javascript' } );
+		var languageHandlerUrl = mw.config.get( 'wgServer' ) + mw.util.wikiScript() + '?' + $.param( { 'title': 'MediaWiki:LanguageHandler.js', 'action': 'raw', 'ctype': 'text/javascript' } );
 		mw.loader.load( languageHandlerUrl );
 
 		// remove first spinner
@@ -414,10 +414,6 @@ mw.UploadWizard.prototype = {
 
 		// we explicitly move the file input to cover the upload button
 		upload.ui.moveFileInputToCover( '#mwe-upwiz-add-file' );
-		// do it again in case the layout didn't update immediately
-		setTimeout(function() {
-			upload.ui.moveFileInputToCover( '#mwe-upwiz-add-file' );
-		}, 50);
 
 		// we bind to the ui div since unbind doesn't work for non-DOM objects
 
@@ -750,6 +746,7 @@ mw.UploadWizard.prototype = {
 		} else {
 			$j( '#mwe-upwiz-add-file' ).button( 'option', 'disabled', true );
 			$j( _this.uploadToAdd.ui.div ).hide();
+			_this.uploadToAdd.ui.hideFileInput();
 		}
 
 
