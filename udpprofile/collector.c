@@ -72,6 +72,7 @@ int main(int ac, char **av) {
 		fds[1].fd = exp, fds[1].events |= POLLIN;
 
 		db_create(&db,NULL,0);
+		db->set_cachesize(db, 0, 256*1024*1024, 0);
 		db->open(db,NULL,"stats.db",NULL,DB_BTREE,DB_CREATE|DB_TRUNCATE,0);
 		
 		signal(SIGHUP,hup);
