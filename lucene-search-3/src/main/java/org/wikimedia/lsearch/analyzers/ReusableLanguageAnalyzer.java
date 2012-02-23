@@ -25,13 +25,13 @@ public class ReusableLanguageAnalyzer extends LanguageAnalyzer {
 		this.options = options;
 	}
 
-	
+	/*
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		Thread.dumpStack();
 		log.error("Invalid usage of QueryLanguageAnalyzer.tokenStream(String,Reader). Use tokenStream(String,String). Probably bug in the software. ");
 		throw new RuntimeException("Use tokenStream(String,String)");
-	}
+	}*/
 
 	@Override
 	public String toString() {
