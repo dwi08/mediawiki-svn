@@ -8,6 +8,8 @@ import java.util.HashSet;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.wikimedia.lsearch.config.IndexId;
 
 /**
@@ -67,14 +69,40 @@ public class Aggregate {
 		this.flags = flags;
 	}
 	
-	private ArrayList<Token> toTokenArray(TokenStream stream) throws IOException {
+	private ArrayList<Token> toTokenArray(TokenStream tokenStream) throws IOException {
 		ArrayList<Token> tt = new ArrayList<Token>();
-		Token t = null;
-		while( (t = stream.next()) != null && tt.size() < 0xff-1){
-			tt.add(t);
-		}
+		
+		//	TODO: remove 2.9.x api
+		
+		/**	
+			Token reusableToken = new Token();
+			while ((reusableToken = tokenStream.next(reusableToken)) != null
+					&& tt.size() < 0xff - 1) {
+				tt.add(reusableToken);
+			}
+		
+		*/
+			OffsetAttribute offsetAttribute = (OffsetAttribute) tokenStream.getAttribute(OffsetAttribute.class);
+ 
+			TermAttribute termAttribute = (TermAttribute) tokenStream.getAttribute(TermAttribute.class);
+			//TODO: update above to 3.5 api by replacing with
+			//CharTermAttribute charTermAttribute = (CharTermAttribute) tokenStream.getAttribute(CharTermAttribute.class);
+
+
+			while (tokenStream.incrementToken() && tt.size() < 0xff - 1) {
+			   
+				tt.add(new Token(termAttribute.term(),offsetAttribute.startOffset(),offsetAttribute.endOffset()));
+				//TODO: update above to 3.5 api replacing with
+				//tt.add(new Token(charTermAttribute.toString(),offsetAttribute.startOffset(),offsetAttribute.endOffset()));
+				
+
+			}
+		//}
 		return tt;
 	}
+	
+	
+	
 
 	/** Number of tokens */
 	public int length(){
