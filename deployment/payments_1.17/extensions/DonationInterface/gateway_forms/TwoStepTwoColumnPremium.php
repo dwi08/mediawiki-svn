@@ -1,7 +1,7 @@
 <?php
 
 class Gateway_Form_TwoStepTwoColumnPremium extends Gateway_Form_TwoStepTwoColumn {
-	public function __construct( &$gateway, &$form_errors ) {
+	public function __construct( &$gateway ) {
 		global $wgScriptPath;
 
 		// set the path to css, before the parent constructor is called, checking to make sure some child class hasn't already set this
@@ -9,11 +9,11 @@ class Gateway_Form_TwoStepTwoColumnPremium extends Gateway_Form_TwoStepTwoColumn
 			$this->setStylePath( $wgScriptPath . '/extensions/DonationInterface/gateway_forms/css/TwoStepTwoColumnPremium.css' );
 		}
 
-		parent::__construct( $gateway, $form_errors );
+		parent::__construct( $gateway );
 	}
 
 	public function generateFormStart() {
-		global $wgRequest, $wgScriptPath;
+		global $wgScriptPath;
 
 		$form = parent::generateBannerHeader();
 
@@ -26,12 +26,12 @@ class Gateway_Form_TwoStepTwoColumnPremium extends Gateway_Form_TwoStepTwoColumn
 		$form .= Xml::element( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/wikipedia-ten-tshirt-front.png", 'width' => '300', 'height' => '280' ) ) . "<br/>";
 		$form .= Xml::openElement( 'div', array( 'id' => 'premium-values' ) );
 		$form .= Xml::openElement( 'div', array( 'id' => 'premium-size' ) );
-		$sizeDisplay = '<span id="size-display">'.$wgRequest->getText( 'size' ).'</span>';
+		$sizeDisplay = '<span id="size-display">'.$this->getEscapedValue( 'size' ).'</span>';
 		$form .= wfMsg( 'donate_interface-shirt-size-2', $sizeDisplay );
 		$form .= Xml::closeElement( 'div' );  // close div#premium-size
 		$form .= wfMsg( 'donate_interface-on-the-back' ) . "<br/>";
 		$form .= Xml::openElement( 'div', array( 'id' => 'premium-language' ) );
-		$form .= Xml::element( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/wordmarks/".$wgRequest->getText( 'premium_language' )."-wordmark.png", 'width' => '200', 'height' => '92' ) );
+		$form .= Xml::element( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/wordmarks/".$this->getEscapedValue( 'premium_language' )."-wordmark.png", 'width' => '200', 'height' => '92' ) );
 		$form .= Xml::closeElement( 'div' );  // close div#premium-language
 		$form .= Xml::closeElement( 'div' );  // close div#premium-values
 		$form .= Xml::closeElement( 'div' );  // close div#premium-confirmation
@@ -96,16 +96,16 @@ class Gateway_Form_TwoStepTwoColumnPremium extends Gateway_Form_TwoStepTwoColumn
 
 		// amount
 		$form .= '<tr>';
-		$form .= '<td colspan="2"><span class="creditcard-error-msg">' . $this->form_errors['invalidamount'] . '</span></td>';
+		$form .= '<td colspan="2"><span class="creditcard-error-msg">' . $this->form_errors['amount'] . '</span></td>';
 		$form .= '</tr>';
 		$form .= '<tr>';
 		$form .= '<td class="label">' . Xml::label( wfMsg( 'donate_interface-donor-amount' ), 'amount' ) . '</td>';
-		$form .= '<td>' . Xml::input( 'amount', '7', $this->form_data['amount'], array( 'type' => 'text', 'maxlength' => '10', 'id' => 'amount' ) ) .
+		$form .= '<td>' . Xml::input( 'amount', '7', $this->getEscapedValue( 'amount' ), array( 'type' => 'text', 'maxlength' => '10', 'id' => 'amount' ) ) .
 			' ' . $this->generateCurrencyDropdown() . '</td>';
 		$form .= '</tr>';
 
 		// card logos
-		if ( $this->form_data[ 'currency_code' ] == 'USD' ) {
+		if ( $this->getEscapedValue( 'currency_code' ) == 'USD' ) {
 			$form .= '<tr id="four_cards" style="display:table-row;">';
 			$form .= '<td class="label"> </td><td>' . Xml::element( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/credit_card_logos.gif" ) ) . '</td>';
 			$form .= '</tr>';
@@ -142,7 +142,7 @@ class Gateway_Form_TwoStepTwoColumnPremium extends Gateway_Form_TwoStepTwoColumn
 		$form .= $this->getZipField();
 
 		// country
-		$form .= $this->getCountryField( $this->form_data[ 'country2' ] );
+		$form .= $this->getCountryField( $this->getEscapedValue( 'country2' ) );
 
 		/*
 		$form .= '<tr>';
@@ -176,7 +176,7 @@ class Gateway_Form_TwoStepTwoColumnPremium extends Gateway_Form_TwoStepTwoColumn
 		}
 
 		// Temporary
-		$form .= Html::hidden( 'country2', $this->form_data[ 'country2' ] );
+		$form .= Html::hidden( 'country2', $this->getEscapedValue( 'country2' ) );
 
 		$form .= Xml::closeElement( 'form' ); // close form 'payment'
 		$form .= $this->generateDonationFooter();

@@ -1,9 +1,8 @@
 <?php
 
 class Gateway_Form_TwoColumnLetter extends Gateway_Form_OneStepTwoColumn {
-	public $paypal = false; // true for paypal only version
 
-	public function __construct( &$gateway, &$form_errors ) {
+	public function __construct( &$gateway ) {
 		global $wgScriptPath;
 
 		// set the path to css, before the parent constructor is called, checking to make sure some child class hasn't already set this
@@ -11,27 +10,17 @@ class Gateway_Form_TwoColumnLetter extends Gateway_Form_OneStepTwoColumn {
 			$this->setStylePath( $wgScriptPath . '/extensions/DonationInterface/gateway_forms/css/TwoColumnLetter.css' );
 		}
 
-		parent::__construct( $gateway, $form_errors );
+		parent::__construct( $gateway );
 	}
 
 	public function generateFormStart() {
-		global $wgOut, $wgRequest;
-
-		$this->paypal = $wgRequest->getBool( 'paypal', false );
-
 		$form = parent::generateBannerHeader();
 
 		$form .= Xml::openElement( 'table', array( 'width' => '100%', 'cellspacing' => 0, 'cellpadding' => 0, 'border' => 0 ) );
 		$form .= Xml::openElement( 'tr' );
 		$form .= Xml::openElement( 'td', array( 'id' => 'appeal', 'valign' => 'top' ) );
 
-		$text_template = $wgRequest->getText( 'text_template', '2010/JimmyAppealLong' );
-		// if the user has uselang set, honor that, otherwise default to the language set for the form defined by 'language' in the query string
-		if ( $wgRequest->getText( 'language' ) ) $text_template .= '/' . $this->form_data[ 'language' ];
-
-		$template = ( strlen( $text_template ) ) ? $wgOut->parse( '{{' . $text_template . '}}' ) : '';
-		// if the template doesn't exist, prevent the display of the red link
-		if ( preg_match( '/redlink\=1/', $template ) ) $template = NULL;
+		$template = self::generateTextTemplate();
 		$form .= $template;
 
 		$form .= Xml::closeElement( 'td' );

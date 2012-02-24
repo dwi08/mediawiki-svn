@@ -163,16 +163,22 @@ abstract class GatewayAdapter implements GatewayType {
 	protected $staged_vars = array();
 	protected $return_value_map;
 	protected $staged_data;
-	protected $raw_data;
+	protected $unstaged_data;
 	protected $postdatadefaults;
 	protected $xmlDoc;
 	protected $dataObj;
 	protected $transaction_results;
-	protected $form_class;
 	protected $validation_errors;
+	protected $manual_errors = array();
 	protected $current_transaction;
 	protected $action;
 	public $debugarray; 
+	/**
+	 * A boolean that will tell us if we've posted to ourselves. A little more telling than 
+	 * $wgRequest->wasPosted(), as something else could have posted to us. 
+	 * @var boolean
+	 */
+	public $posted = false;
 	protected $batch = false;
 
 	//ALL OF THESE need to be redefined in the children. Much voodoo depends on the accuracy of these constants. 
@@ -221,9 +227,10 @@ abstract class GatewayAdapter implements GatewayType {
 		
 		$this->dataObj = new DonationData( get_called_class(), self::getGlobal( 'Test' ), $external_data );
 
-		$this->raw_data = $this->dataObj->getData();
-		$this->staged_data = $this->raw_data;
+		$this->unstaged_data = $this->dataObj->getDataEscaped();
+		$this->staged_data = $this->unstaged_data;
 		
+		//If we ever put numAttempt in the session, we'll probably want to re-examine which form value we want to use here. 
 		$this->posted = ( $this->dataObj->wasPosted() && ( !is_null( $wgRequest->getVal( 'numAttempt', null ) ) ) );
 
 		$this->setPostDefaults( $postDefaults );
@@ -284,7 +291,7 @@ abstract class GatewayAdapter implements GatewayType {
 		$page = self::getGlobal( "FailPage" );
 		if ( $page ) {
 
-			$language = $this->getData_Raw( 'language' );
+			$language = $this->getData_Unstaged_Escaped( 'language' );
 
 			$page .= '?uselang=' . $language;
 		}
@@ -300,7 +307,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 * @return string A URL  
 	 */
 	protected function appendLanguageAndMakeURL( $url ){
-		$language = $this->getData_Raw( 'language' );
+		$language = $this->getData_Unstaged_Escaped( 'language' );
 		//make sure we don't already have the language in there...
 		$dirs = explode('/', $url);
 		if ( !is_array($dirs) || !in_array( $language, $dirs ) ){
@@ -387,20 +394,24 @@ abstract class GatewayAdapter implements GatewayType {
 	/**
 	 * This is the ONLY getData type function anything should be using 
 	 * outside the adapter. 
-	 * Please note that in this case, raw means it's been normalized and 
-	 * sanitized by DonationData. Mostly, we qualify it as "raw" because it's 
-	 * not been staged for this adapter. 
+	 * Short explanation of the data population up to now: 
+	 *	*) When the gateway adapter is constructed, it constructs a DonationData 
+	 *		object.
+	 *	*) On construction, the DonationData object pulls donation data from an 
+	 *		appropriate source, and normalizes the entire data set for storage.
+	 *	*) The gateway adapter pulls normalized, html escaped data out of the 
+	 *		DonationData object, as the base of its own data set. 
 	 * @param string $val The specific key you're looking for (if any)
 	 * @return mixed An array of all the raw, unstaged (but normalized and 
 	 * sanitized) data sent to the adapter, or if $val was set, either the 
 	 * specific value held for $val, or null if none exists.  
 	 */
-	public function getData_Raw( $val = '' ) {
+	public function getData_Unstaged_Escaped( $val = '' ) {
 		if ( $val === '' ) {
-			return $this->raw_data;
+			return $this->unstaged_data;
 		} else {
-			if ( array_key_exists( $val, $this->raw_data ) ) {
-				return $this->raw_data[$val];
+			if ( array_key_exists( $val, $this->unstaged_data ) ) {
+				return $this->unstaged_data[$val];
 			} else {
 				return null;
 			}
@@ -798,9 +809,7 @@ abstract class GatewayAdapter implements GatewayType {
 		//reset, in case this isn't our first time. 
 		$this->transaction_results = array();
 		$this->setValidationAction('process', true); 
-		
-		$this->log( 'ReferrerHeaderTest (' . $this->getData_Raw( 'contribution_tracking_id' ) . "): Value @ do_transaction = " . $this->getData_Raw( 'referrer' ) );
-		
+				
 		try {
 			$this->setCurrentTransaction( $transaction );
 
@@ -948,7 +957,7 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 
 		// log that the transaction is essentially complete
-		self::log( $this->getData_Raw( 'contribution_tracking_id' ) . " Transaction complete." );
+		self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . " Transaction complete." );
 
 		$this->debugarray[] = 'numAttempt = ' . $this->getData_Staged('numAttempt');
 
@@ -1031,7 +1040,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	public function getPaymentMethod() {
 
-		return $this->getData_Raw('payment_method');
+		return $this->getData_Unstaged_Escaped('payment_method');
 	}
 
 	/**
@@ -1066,7 +1075,7 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	public function getPaymentSubmethod() {
 
-		return $this->getData_Raw('payment_submethod');
+		return $this->getData_Unstaged_Escaped('payment_submethod');
 	}
 
 	/**
@@ -1131,15 +1140,15 @@ abstract class GatewayAdapter implements GatewayType {
 		$results = array();
 
 		while ( $i++ <= 3 ) {
-			self::log( $this->getData_Raw( 'contribution_tracking_id' ) . ' Preparing to send transaction to ' . self::getGatewayName() );
+			self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . ' Preparing to send transaction to ' . self::getGatewayName() );
 			$results['result'] = curl_exec( $ch );
 			$results['headers'] = curl_getinfo( $ch );
 
 			if ( $results['headers']['http_code'] != 200 && $results['headers']['http_code'] != 403 ) {
-				self::log( $this->getData_Raw( 'contribution_tracking_id' ) . ' Failed sending transaction to ' . self::getGatewayName() . ', retrying' );
+				self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . ' Failed sending transaction to ' . self::getGatewayName() . ', retrying' );
 				sleep( 1 );
 			} elseif ( $results['headers']['http_code'] == 200 || $results['headers']['http_code'] == 403 ) {
-				self::log( $this->getData_Raw( 'contribution_tracking_id' ) . ' Finished sending transaction to ' . self::getGatewayName() );
+				self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . ' Finished sending transaction to ' . self::getGatewayName() );
 				break;
 			}
 		}
@@ -1151,7 +1160,7 @@ abstract class GatewayAdapter implements GatewayType {
 			//TODO: i18n here! 
 			//TODO: But also, fire off some kind of "No response from the gateway" thing to somebody so we know right away. 
 			$results['message'] = 'No response from ' . self::getGatewayName() . '.  Please try again later!';
-			self::log( $this->getData_Raw( 'contribution_tracking_id' ) . ' No response from ' . self::getGatewayName() . ': ' . curl_error( $ch ) );
+			self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . ' No response from ' . self::getGatewayName() . ': ' . curl_error( $ch ) );
 			curl_close( $ch );
 			return false;
 		}
@@ -1315,7 +1324,7 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 		
 		$params = array(
-			'contribution_id' => $this->dataObj->getVal( 'contribution_tracking_id' ),
+			'contribution_id' => $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ),
 			'duration' => $this->getStopwatch( $function ),
 			'gateway' => self::getGatewayName(),
 			'function' => $function,
@@ -1510,7 +1519,7 @@ abstract class GatewayAdapter implements GatewayType {
 			'gateway_txn_id' => $this->getTransactionGatewayTxnID(),
 			//'language' => '',
 		);
-		$transaction += $this->getData_Raw();
+		$transaction += $this->getData_Unstaged_Escaped();
 
 		try {
 			wfRunHooks( $hook, array( $transaction ) );
@@ -1532,7 +1541,7 @@ abstract class GatewayAdapter implements GatewayType {
 			return;
 		}
 		
-		if ($this->getData_Raw( 'payment_method' ) === 'cc'){
+		if ($this->getData_Unstaged_Escaped( 'payment_method' ) === 'cc'){
 			global $wgCCLimboStompQueueName;
 			if ( !isset( $wgCCLimboStompQueueName ) || $wgCCLimboStompQueueName === false ){
 				return;
@@ -1554,7 +1563,7 @@ abstract class GatewayAdapter implements GatewayType {
 				'date' => time(),
 				'gateway_txn_id' => $this->getTransactionGatewayTxnID(),
 				'correlation-id' => $this->getCorrelationID(),
-				'payment_method' => $this->getData_Raw( 'payment_method' ),
+				'payment_method' => $this->getData_Unstaged_Escaped( 'payment_method' ),
 				'antimessage' => 'true'
 			);
 		} else {
@@ -1563,14 +1572,14 @@ abstract class GatewayAdapter implements GatewayType {
 				'date' => time(),
 				'gateway_txn_id' => $this->getTransactionGatewayTxnID(),
 				'correlation-id' => $this->getCorrelationID(),
-				'payment_method' => $this->getData_Raw( 'payment_method' ),
+				'payment_method' => $this->getData_Unstaged_Escaped( 'payment_method' ),
 			);
 			
-			$raw_data = array();
+			$unstaged_local = array();
 			foreach ( $stomp_fields as $field ){	
-				$raw_data[$field] = $this->getData_Raw( $field );
+				$unstaged_local[$field] = $this->getData_Unstaged_Escaped( $field );
 			}
-			$transaction = array_merge( $raw_data, $transaction );
+			$transaction = array_merge( $unstaged_local, $transaction );
 		}
 
 		try {
@@ -1581,7 +1590,7 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 	
 	protected function getCorrelationID(){
-		return $this->getIdentifier() . '-' . $this->getData_Raw('order_id');
+		return $this->getIdentifier() . '-' . $this->getData_Unstaged_Escaped('order_id');
 	}
 
 	function smooshVarsForStaging() {
@@ -1670,7 +1679,7 @@ abstract class GatewayAdapter implements GatewayType {
 	}
 	
 	function getPaypalRedirectURL() {
-		$currency = $this->getData_Raw( 'currency_code' );
+		$currency = $this->getData_Unstaged_Escaped( 'currency_code' );
 
 		// update the utm source to set the payment instrument to pp rather than cc
 		$data['payment_method'] = 'pp';
@@ -1720,9 +1729,9 @@ abstract class GatewayAdapter implements GatewayType {
 		);
 		$ret = array();
 		foreach ( $paypalkeys as $key ){
-			$val = $this->getData_Raw( $key );
+			$val = $this->getData_Unstaged_Escaped( $key );
 			if (!is_null( $val )){
-				$ret[$key] = $this->getData_Raw( $key );
+				$ret[$key] = $this->getData_Unstaged_Escaped( $key );
 			}
 		}
 		return $ret;
@@ -1874,14 +1883,10 @@ abstract class GatewayAdapter implements GatewayType {
 		}
 	}
 
-	public function setFormClass( $formClassName ) {
-		//I'm adding this because Captcha needs it, and we're gonna fire the hook inside. Nothing else really needs it as far as I know.
-		$this->form_class = $formClassName;
-	}
-
 	public function getFormClass() {
-		if ( isset( $this->form_class ) && class_exists( $this->form_class ) ) {
-			return $this->form_class;
+		$form_class = $this->getData_Unstaged_Escaped( 'form_class' );
+		if ( ( $form_class ) && class_exists( $form_class ) ) {
+			return $form_class;
 		} else {
 			return false;
 		}
@@ -1891,7 +1896,8 @@ abstract class GatewayAdapter implements GatewayType {
 		return get_called_class();
 	}
 
-	public function setValidationErrors( $errors ) {
+	//only the gateway should be setting validation errors. Everybody else should set manual errors. 
+	protected function setValidationErrors( $errors ) {
 		$this->validation_errors = $errors;
 	}
 
@@ -1901,6 +1907,35 @@ abstract class GatewayAdapter implements GatewayType {
 		} else {
 			return false;
 		}
+	}
+
+	public function addManualError( $errors, $reset = false ) {
+		if ( $reset ){
+			$this->manual_errors = array();
+			return;
+		}
+		$this->manual_errors = array_merge( $this->manual_errors, $errors );
+	}
+
+	public function getManualErrors() {
+		if ( !empty( $this->manual_errors ) ) {
+			return $this->manual_errors;
+		} else {
+			return false;
+		}
+	}
+	
+	public function getAllErrors(){
+		$validation = $this->getValidationErrors();
+		$manual = $this->getManualErrors();
+		$return = array();
+		if ( is_array( $validation ) ){
+			$return = array_merge( $return, $validation );
+		}
+		if ( is_array( $manual ) ){
+			$return = array_merge( $return, $manual );
+		}
+		return $return;
 	}
 
 	public function incrementNumAttempt() {
@@ -1932,9 +1967,9 @@ abstract class GatewayAdapter implements GatewayType {
 	 */
 	function runPreProcessHooks() {
 		// allow any external validators to have their way with the data
-		self::log( $this->getData_Raw( 'contribution_tracking_id' ) . " Preparing to query MaxMind" );
+		self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . " Preparing to query MaxMind" );
 		wfRunHooks( 'GatewayValidate', array( &$this ) );
-		self::log( $this->getData_Raw( 'contribution_tracking_id' ) . ' Finished querying Maxmind' );
+		self::log( $this->getData_Unstaged_Escaped( 'contribution_tracking_id' ) . ' Finished querying Maxmind' );
 
 		//DO NOT set some variable as getValidationAction() here, and keep 
 		//checking that. getValidationAction could change with each one of these 
@@ -2004,7 +2039,7 @@ abstract class GatewayAdapter implements GatewayType {
 	/**
 	 * Instead of pulling all the DonationData back through to update one local 
 	 * value, use this. It updates both staged_data (which is intended to be 
-	 * staged and used _just_ by the gateway) and raw_data, which is actually 
+	 * staged and used _just_ by the gateway) and unstaged_data, which is actually 
 	 * just normalized and sanitized form data as entered by the user. 
 	 * 
 	 * TODO: handle the cases where $val is listed in the gateway adapter's 
@@ -2016,13 +2051,13 @@ abstract class GatewayAdapter implements GatewayType {
 	 * our DonationData object. 
 	 */
 	function refreshGatewayValueFromSource( $val ) {
-		$refreshed = $this->dataObj->getVal( $val );
+		$refreshed = $this->dataObj->getVal_Escaped( $val );
 		if ( !is_null($refreshed) ){
 			$this->staged_data[$val] = $refreshed;
-			$this->raw_data[$val] = $refreshed;
+			$this->unstaged_data[$val] = $refreshed;
 		} else {
 			unset( $this->staged_data[$val] );
-			unset( $this->raw_data[$val] );
+			unset( $this->unstaged_data[$val] );
 		}
 	}
 
@@ -2100,5 +2135,23 @@ abstract class GatewayAdapter implements GatewayType {
 			return $this->batch;
 		}
 	}
+	
+	public function getOriginalValidationErrors( ){
+		return $this->dataObj->getValidationErrors();
+	}
+	
+	//TODO: Maybe validate on $unstaged_data directly? 
+	public function revalidate( $check_not_empty = array() ){
+		$validation_errors = $this->dataObj->getValidationErrors( true, $check_not_empty );
+		$this->setValidationErrors( $validation_errors );
+		return $this->validatedOK();
+	}
 
+	public function validatedOK(){
+		if ( $this->getValidationErrors() === false ){
+			return true;
+		}
+		return false;
+	}
+	
 }

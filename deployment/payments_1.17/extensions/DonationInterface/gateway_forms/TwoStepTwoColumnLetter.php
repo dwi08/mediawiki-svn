@@ -1,7 +1,7 @@
 <?php
 
 class Gateway_Form_TwoStepTwoColumnLetter extends Gateway_Form_TwoStepTwoColumn {
-	public function __construct( &$gateway, &$form_errors ) {
+	public function __construct( &$gateway ) {
 		global $wgScriptPath;
 
 		// set the path to css, before the parent constructor is called, checking to make sure some child class hasn't already set this
@@ -9,11 +9,11 @@ class Gateway_Form_TwoStepTwoColumnLetter extends Gateway_Form_TwoStepTwoColumn 
 			$this->setStylePath( $wgScriptPath . '/extensions/DonationInterface/gateway_forms/css/TwoStepTwoColumnLetter.css' );
 		}
 
-		parent::__construct( $gateway, $form_errors );
+		parent::__construct( $gateway );
 	}
 
 	public function generateFormStart() {
-		global $wgOut, $wgRequest;
+		global $wgOut;
 
 		$form = parent::generateBannerHeader();
 
@@ -21,13 +21,7 @@ class Gateway_Form_TwoStepTwoColumnLetter extends Gateway_Form_TwoStepTwoColumn 
 		$form .= Xml::openElement( 'tr' );
 		$form .= Xml::openElement( 'td', array( 'id' => 'appeal', 'valign' => 'top' ) );
 
-		$text_template = $wgRequest->getText( 'text_template', '2010/JimmyAppealLong' );
-		// if the user has uselang set, honor that, otherwise default to the language set for the form defined by 'language' in the query string
-		if ( $wgRequest->getText( 'language' ) ) $text_template .= '/' . $this->form_data[ 'language' ];
-
-		$template = ( strlen( $text_template ) ) ? $wgOut->parse( '{{' . $text_template . '}}' ) : '';
-		// if the template doesn't exist, prevent the display of the red link
-		if ( preg_match( '/redlink\=1/', $template ) ) $template = NULL;
+		$template = self::generateTextTemplate();
 		$form .= $template;
 
 		$form .= Xml::closeElement( 'td' );
@@ -90,16 +84,16 @@ class Gateway_Form_TwoStepTwoColumnLetter extends Gateway_Form_TwoStepTwoColumn 
 
 		// amount
 		$form .= '<tr>';
-		$form .= '<td colspan="2"><span class="creditcard-error-msg">' . $this->form_errors['invalidamount'] . '</span></td>';
+		$form .= '<td colspan="2"><span class="creditcard-error-msg">' . $this->form_errors['amount'] . '</span></td>';
 		$form .= '</tr>';
 		$form .= '<tr>';
 		$form .= '<td class="label">' . Xml::label( wfMsg( 'donate_interface-donor-amount' ), 'amount' ) . '</td>';
-		$form .= '<td>' . Xml::input( 'amount', '7', $this->form_data['amount'], array( 'type' => 'text', 'maxlength' => '10', 'id' => 'amount' ) ) .
+		$form .= '<td>' . Xml::input( 'amount', '7', $this->getEscapedValue( 'amount' ), array( 'type' => 'text', 'maxlength' => '10', 'id' => 'amount' ) ) .
 			' ' . $this->generateCurrencyDropdown() . '</td>';
 		$form .= '</tr>';
 
 		// card logos
-		if ( $this->form_data[ 'currency_code' ] == 'USD' ) {
+		if ( $this->getEscapedValue( 'currency_code' ) == 'USD' ) {
 			$form .= '<tr id="four_cards" style="display:table-row;">';
 			$form .= '<td class="label"> </td><td>' . Xml::element( 'img', array( 'src' => $wgScriptPath . "/extensions/DonationInterface/gateway_forms/includes/credit_card_logos.gif" ) ) . '</td>';
 			$form .= '</tr>';

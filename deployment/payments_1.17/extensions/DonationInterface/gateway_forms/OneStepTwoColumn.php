@@ -1,10 +1,9 @@
 <?php
 
 class Gateway_Form_OneStepTwoColumn extends Gateway_Form {
-	public $paypal = false; // true for paypal only version
 
-	public function __construct( &$gateway, &$form_errors ) {
-		parent::__construct( $gateway, $form_errors );
+	public function __construct( &$gateway ) {
+		parent::__construct( $gateway );
 
 		// update the list of hidden fields we need to use in this form.
 		$this->updateHiddenFields();
@@ -120,10 +119,6 @@ EOT;
 	}
 
 	public function generateFormStart() {
-		global $wgRequest;
-
-		$this->paypal = $wgRequest->getBool( 'paypal', false );
-
 		$form = $this->generateBannerHeader();
 
 		$form .= Xml::openElement( 'div', array( 'id' => 'mw-creditcard' ) );
@@ -197,34 +192,16 @@ EOT;
 		return $form;
 	}
 
-	protected function generateBannerHeader() {
-		global $wgOut, $wgRequest;
-		$template = '';
-
-		// intro text
-		if ( $wgRequest->getText( 'masthead', false ) ) {
-			$template = $wgOut->parse( '{{' . $wgRequest->getText( 'masthead' ) . '/' . $this->form_data[ 'language' ] . '}}' );
-		} elseif ( $this->gateway->getGlobal( "Header" ) ) {
-			$header = str_replace( '@language', $this->form_data[ 'language' ], $this->gateway->getGlobal( "Header" ) );
-			$template = $wgOut->parse( $header );
-		}
-
-		// make sure that we actually have a matching template to display so we don't display the 'redlink'
-		if ( strlen( $template ) && !preg_match( '/redlink\=1/', $template ) ) {
-			$wgOut->addHtml( $template );
-		}
-	}
-
 	protected function generatePersonalContainer() {
-		global $wgRequest, $wgScriptPath;
+		global $wgScriptPath;
 		$form = '';
 		$form .= Xml::openElement( 'div', array( 'id' => 'payflowpro_gateway-personal-info' ) );
 		$form .= Xml::tags( 'h3', array( 'class' => 'payflow-cc-form-header', 'id' => 'payflow-cc-form-header-personal' ), wfMsg( 'donate_interface-make-your-donation' ) );
 		if ( !$this->paypal ) {
-			$source = htmlspecialchars( $wgRequest->getText( 'utm_source' ) );
-			$medium = htmlspecialchars( $wgRequest->getText( 'utm_medium' ) );
-			$campaign = htmlspecialchars( $wgRequest->getText( 'utm_campaign' ) );
-			$formname = htmlspecialchars( $wgRequest->getText( 'form_name' ) );
+			$source = $this->getEscapedValue( 'utm_source' );
+			$medium = $this->getEscapedValue( 'utm_medium' );
+			$campaign = $this->getEscapedValue( 'utm_campaign' );
+			$formname = $this->getEscapedValue( 'form_name' );
 			$form .= Xml::Tags( 'p', array( 'id' => 'payflowpro_gateway-cc_otherways' ), wfMsg( 'donate_interface-paypal', $wgScriptPath, $formname, $source, $medium, $campaign ) );
 		}
 		$form .= Xml::openElement( 'table', array( 'id' => 'payflow-table-donor' ) );

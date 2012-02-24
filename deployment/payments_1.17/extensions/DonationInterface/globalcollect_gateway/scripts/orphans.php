@@ -125,7 +125,7 @@ class GlobalCollectOrphanRectifier extends Maintenance {
 				$final .= "   Status $status = $count\n";
 			}
 		}
-		
+		$this->adapter->log($final);
 		echo $final;
 	}
 	

@@ -86,12 +86,11 @@ EOT;
 				$payment_submethod = $this->adapter->getPaymentSubmethod();
 
 				// Check form for errors
-				$form_errors = $this->validateForm( $this->errors, $this->adapter->getPaymentSubmethodFormValidation() );
+				$form_errors = $this->validateForm( $this->adapter->getPaymentSubmethodFormValidation() );
 
 				// If there were errors, redisplay form, otherwise proceed to next step
 				if ( $form_errors ) {
-
-					$this->displayForm( $this->errors );
+					$this->displayForm();
 				} else { // The submitted form data is valid, so process it
 					// allow any external validators to have their way with the data
 					// Execute the proper transaction code:
@@ -179,18 +178,20 @@ EOT;
 
 				//TODO: Get rid of $data out here completely, by putting this logic inside the adapter somewhere.
 				//All we seem to be doing with it now, is internal adapter logic outside of the adapter.
-				$data = $this->adapter->getData_Raw();
+				$data = $this->adapter->getData_Unstaged_Escaped();
 
 				// If the result of the previous transaction was failure, set the retry message.
 				if ( $data && array_key_exists( 'response', $data ) && $data['response'] == 'failure' ) {
-					$this->errors['retryMsg'] = wfMsg( 'php-response-declined' );
+					$error['retryMsg'] = wfMsg( 'php-response-declined' );
+					$this->adapter->addManualError( $error );
 				}
 
-				$this->displayForm( $this->errors );
+				$this->displayForm();
 			}
 		} else { //token mismatch
-			$this->errors['general']['token-mismatch'] = wfMsg( 'donate_interface-token-mismatch' );
-			$this->displayForm( $this->errors );
+			$error['general']['token-mismatch'] = wfMsg( 'donate_interface-token-mismatch' );
+			$this->adapter->addManualError( $error );
+			$this->displayForm();
 		}
 	}
 

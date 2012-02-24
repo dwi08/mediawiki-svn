@@ -92,12 +92,14 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		'#emailAdd',
 	);
 
-	public function __construct( &$gateway, &$form_errors ) {
+	public function __construct( &$gateway ) {
 		global $wgRequest;
-		parent::__construct( $gateway, $form_errors );
+		parent::__construct( $gateway );
+		$form_errors = $this->form_errors;
 
 		$this->loadValidateJs();
 		
+		//Not sure if we should be using $wgRequest here. Depends if we want the normalized one or not. 
 		$country = $wgRequest->getText( 'country', '' );
 		// Get error passed via query string
 		$error = $wgRequest->getText( 'error' );
@@ -180,8 +182,8 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		foreach ( $this->data_tokens as $token ) {
 			$key = substr( $token, 1, strlen( $token )); //get the token string w/o the '@'
 			if ( $key == 'emailAdd' ) $key = 'email';
-			if ( array_key_exists( $key, $this->form_data )) {
-				$replace = $this->form_data[ $key ];
+			if ( $this->getEscapedValue( $key ) ) {
+				$replace = $this->getEscapedValue( $key );
 			} else {
 				$replace = '';
 			}
@@ -254,7 +256,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 						} else {
 							$params[ $k ] .= '?';
 						}
-						$params[ $k ] .= "language=" . $this->form_data['language']. "&country=" . $this->form_data['country'];
+						$params[ $k ] .= "language=" . $this->getEscapedValue( 'language' ) . "&country=" . $this->getEscapedValue( 'country' );
 					}
 				}
 				// TODO: add support for message variations here as well
@@ -286,7 +288,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
      * @return string The HTML form containing translated messages
      */
 	public function replace_blocks( $html ){
-		global $wgRequest, $wgGlobalCollectGatewayHtmlFormDir;
+		global $wgRequest;
 		if( $wgRequest->getText( 'debug', 'false' ) == 'true' ){
 			# do not replace tokens
 			return $html;
@@ -300,14 +302,15 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		
 		foreach( $matches[ 1 ] as $i => $key ){
 			# $matches[ 1 ] is specified in the code, not user input
-			$filepath = $wgGlobalCollectGatewayHtmlFormDir . '/_' . $matches[ 1 ][ $i ] . '/';
+			$filepath = $this->gateway->getGlobal('HtmlFormDir') . '/_' . $matches[ 1 ][ $i ] . '/';
 
             $var = 'default';
 
-            # check to see if the parameter is, in fact, an element of form_data
-            if( array_key_exists( $matches[ 2 ][ $i ], $this->form_data ) ){
+            # check to see if the parameter is, in fact, an element in DonationData
+			$param = $this->getEscapedValue( $matches[ 2 ][ $i ] );
+            if( $param ){
                 # get the value of the element and super-escape
-                $var = $this->make_safe( $this->form_data[ $matches[ 2 ][ $i ] ], 'default' );
+                $var = $this->make_safe( $param, 'default' );
             }
 
             # oh, and we only allow with the extension .html
@@ -341,7 +344,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		// currency code
 		$start = strpos( $html, 'name="currency_code"' );
 		if ( $start ) {
-			$currency_code = $this->form_data['currency_code'];
+			$currency_code = $this->getEscapedValue( 'currency_code' );
 			$end = strpos( $html, '</select>', $start );
 			$str = substr( $html, $start, ( $end - $start ) );
 			$str = str_replace( 'value="' . $currency_code . '"', 'value="' . $currency_code . '" selected="selected"', $str );
@@ -349,7 +352,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		}
 
 		// mos
-		$month = substr( $this->form_data['expiration'], 0, 2 );
+		$month = substr( $this->getEscapedValue( 'expiration' ), 0, 2 );
 		$start = strpos( $html, 'name="mos"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
@@ -359,7 +362,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		}
 
 		// year
-		$year = substr( $this->form_data['expiration'], 2, 2 );
+		$year = substr( $this->getEscapedValue( 'expiration' ), 2, 2 );
 		$start = strpos( $html, 'name="year"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
@@ -370,7 +373,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		}
 
 		// state
-		$state = $this->form_data['state'];
+		$state = $this->getEscapedValue( 'state' );
 		$start = strpos( $html, 'name="state"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
@@ -380,7 +383,7 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 		}
 
 		//country
-		$country = $this->form_data['country'];
+		$country = $this->getEscapedValue( 'country' );
 		$start = strpos( $html, 'name="country"' );
 		if ( $start ) {
 			$end = strpos( $html, '</select>', $start );
@@ -414,10 +417,12 @@ class Gateway_Form_RapidHtml extends Gateway_Form {
 	 * Load API js if this form needs to support cacheing
 	 */
 	public function handle_cacheability() {
+		//We may change this from checking one thing in $wgRequest, to a 
+		//reference to $this->gateway->isCaching(). Little more robust. 
 		global $wgRequest;
 		if ( $wgRequest->getText( '_cache_', false )) {
 			$this->loadApiJs();
-}
+		}
 	}
 
 	/**
