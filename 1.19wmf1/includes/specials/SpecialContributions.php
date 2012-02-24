@@ -44,17 +44,17 @@ class SpecialContributions extends SpecialPage {
 		$this->opts = array();
 		$request = $this->getRequest();
 
-		if ( $par == 'newbies' ) {
-			$target = 'newbies';
-			$this->opts['contribs'] = 'newbie';
-		} elseif ( $par !== null ) {
+		if ( $par !== null ) {
 			$target = $par;
 		} else {
 			$target = $request->getVal( 'target' );
 		}
 
 		// check for radiobox
-		if ( $request->getVal( 'contribs' ) == 'newbie' ) {
+		if ( $par == 'newbies' ) { // b/c
+			$target = 'newbies';
+			$this->opts['contribs'] = 'newbie';
+		} elseif ( $request->getVal( 'contribs' ) == 'newbie' ) {
 			$target = 'newbies';
 			$this->opts['contribs'] = 'newbie';
 		} else {
