@@ -353,12 +353,7 @@ class MessageBlobStore {
 		$messages = array();
 
 		foreach ( $module->getMessages() as $key ) {
-			$messages[$key] =
-				Sanitizer::normalizeCharReferences(
-					Sanitizer::removeHTMLtags(
-						wfMsgExt( $key, array( 'language' => $lang ) )
-					)
-				);
+			$messages[$key] = wfMsgExt( $key, array( 'language' => $lang ) );
 		}
 
 		return FormatJson::encode( (object)$messages );
