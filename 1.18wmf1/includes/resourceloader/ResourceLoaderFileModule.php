@@ -377,7 +377,9 @@ class ResourceLoaderFileModule extends ResourceLoaderModule {
 		}
 
 		wfProfileIn( __METHOD__.'-filemtime' );
+		wfSuppressWarnings();
 		$filesMtime = max( array_map( 'filemtime', $files ) );
+		wfRestoreWarnings();
 		wfProfileOut( __METHOD__.'-filemtime' );
 		$this->modifiedTime[$context->getHash()] = max(
 			$filesMtime,
