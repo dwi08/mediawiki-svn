@@ -615,6 +615,7 @@ var mw = ( function ( $, undefined ) {
 							j -= 1;
 						}
 					}
+					throw e;
 				}
 			}
 	
@@ -770,7 +771,6 @@ var mw = ( function ( $, undefined ) {
 						console.log( 'mw.loader::execute> Exception thrown by ' + module + ': ' + e.message );
 					}
 					registry[module].state = 'error';
-					throw e;
 				}
 			}
 	
