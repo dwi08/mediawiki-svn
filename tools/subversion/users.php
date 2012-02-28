@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
 	<title>Wikimedia Subversion user list</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
 </head>
 <body>
 <h1>Wikimedia Subversion user list</h1>
@@ -15,14 +15,14 @@
 <?php
 
 $time = microtime( true );
+$svnUsersDir = '/var/cache/svnusers';
 exec( "getent passwd", $lines );
-exec( "HOME=/tmp /usr/bin/svn up /var/cache/svnusers 2>&1", $output, $retval );
+exec( "HOME=/tmp /usr/bin/svn up $svnUsersDir 2>&1", $output, $retval );
 if ( $retval ) {
 	$error = implode( "\n", $output );
 } else {
 	$error = false;
 }
-$committed = file( '/home/demon/commit' );
 
 foreach ( $lines as $line ) {
 	$parts = explode( ':', trim( $line ) );
@@ -34,7 +34,6 @@ foreach ( $lines as $line ) {
 	$userInfo = array_map( 'htmlspecialchars', $userInfo );
 	$link = $userInfo['url'] ? "<a href=\"{$userInfo['url']}\">$encUsername</a>" : $encUsername;
 	$readyForGit = isset( $userInfo['name'] ) && isset( $userInfo['email'] ) ? 'Y' : 'N';
-	$haveCommitted = in_array( $parts[0], $committed ) ? 'Y' : 'N';
 
 	$rows[$parts[0]] = <<<EOT
 <tr id="$encUsername">
@@ -58,7 +57,7 @@ function getUserInfo( $userName ) {
 		'name' => '',
 		'url' => ''
 	);
-	$userFileLines = @file( "/var/cache/svnusers/$userName" );
+	$userFileLines = @file( "$svnUsersDir/$userName" );
 	if ( $userFileLines ) {
 		foreach ( $userFileLines as $userLine ) {
 			if ( preg_match( '/^([\w-]+):\s*(.*?)\s*$/', $userLine, $m ) ) {
