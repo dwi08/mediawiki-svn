@@ -423,6 +423,7 @@
 			var templateContents = choice( [
 				function() {
 					var res = sequence( [
+						// templates can have placeholders for dynamic replacement or no placeholders
 						choice( [ templateWithReplacement, templateWithOutReplacement ] ),
 						nOrMore( 0, templateParam )
 					] );
