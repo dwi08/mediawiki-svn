@@ -177,7 +177,7 @@ class ApiArticleFeedbackv5Utils {
 
                 $dbw->begin();
 
-		foreach ( $filters as $filter ) {
+		foreach ( (array)$filters as $filter ) {
 			$rows[] = array(
 				'afc_page_id'      => $pageId,
 				'afc_filter_name'  => $filter,
@@ -196,7 +196,7 @@ class ApiArticleFeedbackv5Utils {
 
 		$value = $decrement ? 'afc_filter_count - 1' : 'afc_filter_count + 1';
 
-		foreach ( $filters as $filter ) {
+		foreach ( (array)$filters as $filter ) {
                 	# Update each row with the new count.
 			$dbw->update(
 				'aft_article_filter_count',
