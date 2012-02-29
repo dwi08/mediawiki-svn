@@ -56,11 +56,9 @@ class ApiViewRatingsArticleFeedbackv5 extends ApiQueryBase {
 	 * Pulls a rollup row
 	 *
 	 * @param  $pageId        int    the page id
-	 * @param  $revisionLimit int    go back only to this revision
-	 * @param  $type          string the type of row to fetch ('page' or 'revision')
 	 * @return array          the rollup rows
 	 */
-	private function fetchRollup( $pageId, $revisionLimit, $type ) {
+	private function fetchRollup( $pageId ) {
 		$dbr    = wfGetDB( DB_SLAVE );
 		$where  = array();
 		$table  = 'article_feedback_ratings_rollup';
