@@ -7,7 +7,8 @@
 # Original version by Brion Vibber, 2004-08-02, 2004-08-10 and 2004-08-15
 # Entirely rewritten by Timwi, 2004-09-06
 # Some cleanups and fixes by AzaToth, 2006-12-20
-# The source code was originally edited on the Wikitech wiki at: 
+#
+# The source code was originally edited on the Wikitech wiki at:
 # http://wikitech.wikimedia.org/view/Wikibugs and finally migrated to
 # the subversion repository in 2007.
 
@@ -18,52 +19,58 @@ $/ = undef;
 my $contents = <STDIN>;
 my $output;
 
+# Map each bugzilla severity to an IRC message with colors
 my $shash = {
-  'enhancement' => "\00315enhancement\003",
-  'trivial' => 'trivial',
-  'minor' => "minor",
-  'normal' => "normal",
-  'major' => "major",
+  'enhancement'
+  	=> "\00315enhancement\003",
+  'trivial'  => 'trivial',
+  'minor'    => "minor",
+  'normal'   => "normal",
+  'major'    => "major",
   'critical' => "\00304CRIT\003",
-  'blocker' => "\00304\002BLOCKER\002\003"
+  'blocker'  => "\00304\002BLOCKER\002\003"
 };
 
+# Map each bugzilla resolution status to an IRC message with colors
 my $rhash = {
   'WORKSFORME' => "\00314(WFM)\003",
-  'INVALID' => "\00314(INVALID)\003",
-  'DUPLICATE' => "\00314(DUP)\003",
-  'FIXED' => "\00303(FIXED)\003",
-  'WONTFIX' => "\00303(WONTFIX)\003",
-  'LATER' => "\00306(LATER)\003",
-  'REMIND' => "\00306(REMIND)\003"
+  'INVALID'    => "\00314(INVALID)\003",
+  'DUPLICATE'  => "\00314(DUP)\003",
+  'FIXED'      => "\00303(FIXED)\003",
+  'WONTFIX'    => "\00303(WONTFIX)\003",
+  'LATER'      => "\00306(LATER)\003",
+  'REMIND'     => "\00306(REMIND)\003"
 };
 
+# Parse a received email
 use Email::MIME;
-
 my $mail = Email::MIME->new( $contents );
 
-my $from = $mail->header( 'From' );
-my $body = $mail->body;
+my $from    = $mail->header( 'From' );
+my $body    = $mail->body;
 my $subject = $mail->header( 'Subject' );
 
 # Check that the e-mail is from MediaZilla.
+# TODO exit early to avoid a level of indentation
 if ($from =~ /^bugzilla-daemon/) {
 
   $/ = "";
   # Extract and remove the comment section.
   my ($haschanges, $user);
   my $comment = undef;
+
   for ($body) {
     # Attempt to grab the "real name".
     if ( m{^--- Comment #\d+ from (.*) <\S+\@.*}m ) {
       $haschanges = 1;
-      $user = $1;
-      $comment = 1;
+      $user       = $1;
+      $comment    = 1;
     }
+
     # Re-attempt to grab the "real name".
     if ( m{^(.*) <\S+\@\S+> changed:$}m ) {
       $haschanges = 1;
-      $user = $1 if !$user;
+      $user       = $1 if !$user;
     } else {
       # If "real name" isn't available and we didn't get a user from the
       # comment header, just use the "X-Bugzilla-Who" header.
@@ -74,10 +81,10 @@ if ($from =~ /^bugzilla-daemon/) {
 
   my @changed_fields = split /\s+/, $mail->header( 'X-Bugzilla-Changed-Fields' );
 
-
   # Check if this is a dependency e-mail. If so, ignore it.
   # We have removed the comment section to prevent people from using
   # this by adding the right text to a comment.
+  # TODO move that check to the top to avoid a level of indentation
   if ($body !~ /^Bug \d+ depends on bug \d+, which changed state/m) {
 
     my ($bug, $summary, $st);
@@ -87,7 +94,8 @@ if ($from =~ /^bugzilla-daemon/) {
       ($bug, $summary, $st) = ($1, $2, "\00303(mod)\003");
     }
 
-    ## Set the URL to the URL found in the message body if available, else construct our own URL
+    ## Set the URL to the URL found in the message body if available,
+	## else construct our own URL
     my $url =
       $body =~ /^(http.*\/)show_bug\.cgi\?id=(.*)$/m
         ? "$1$2"                # short URL!
@@ -100,9 +108,10 @@ if ($from =~ /^bugzilla-daemon/) {
     $output = "";
 
     if ($st eq "\00303(NEW)\003") {
-      my $product = $mail->header( 'X-Bugzilla-Product' );
+      my $product   = $mail->header( 'X-Bugzilla-Product' );
       my $component = $mail->header( 'X-Bugzilla-Component' );
-      my $severity = $mail->header( 'X-Bugzilla-Severity' );
+      my $severity  = $mail->header( 'X-Bugzilla-Severity' );
+
       ## Doesn't seem to be sent as a header.
       my $reporter = $1 if $body =~ /ReportedBy: (.*)\@.*$/m;
 
@@ -128,13 +137,15 @@ if ($from =~ /^bugzilla-daemon/) {
           push @outputs, "$shash->{$1}\->$shash->{$2}";
         }
         if ($body =~ /Keywords\|.*$/s) {
-          my @lines = split (/\n/, $&);
-          my $added = '';
+          my @lines  = split (/\n/, $&);
+
+          my $added   = '';
           my $removed = '';
+
           foreach my $a ( @lines ) {
             last unless $a =~ /^(Keywords|\s+)\|(.*?)\s*\|(.*?)\s*$/;
             $removed .= $2;
-            $added .= $3;
+            $added   .= $3;
           }
           push @outputs, join ' ', (
             ($removed =~ /\S/ ? join (' ', map { "-$_" } split (/\s*,\s*/, $removed)) : ''),
