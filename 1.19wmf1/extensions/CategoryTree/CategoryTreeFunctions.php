@@ -166,25 +166,11 @@ class CategoryTree {
 		$outputPage->addModules( 'ext.categoryTree' );
 	}
 
-	/**
-	 * @return Services_JSON
-	 */
-	static function getJsonCodec() {
-		static $json = null;
-
-		if ( !$json ) {
-			$json = new Services_JSON(); # recycle API's JSON codec implementation
-		}
-
-		return $json;
-	}
-
 	static function encodeOptions( $options, $enc ) {
 		if ( $enc == 'mode' || $enc == '' ) {
 			$opt = $options['mode'];
 		} elseif ( $enc == 'json' ) {
-			$json = self::getJsonCodec(); // XXX: this may be a bit heavy...
-			$opt = $json->encode( $options );
+			$opt = FormatJson::encode( $options );
 		} else {
 			throw new MWException( 'Unknown encoding for CategoryTree options: ' . $enc );
 		}
@@ -196,8 +182,7 @@ class CategoryTree {
 		if ( $enc == 'mode' || $enc == '' ) {
 			$opt = array( "mode" => $options );
 		} elseif ( $enc == 'json' ) {
-			$json = self::getJsonCodec(); // XXX: this may be a bit heavy...
-			$opt = $json->decode( $options );
+			$opt = FormatJson::decode( $options );
 			$opt = get_object_vars( $opt );
 		} else {
 			throw new MWException( 'Unknown encoding for CategoryTree options: ' . $enc );
