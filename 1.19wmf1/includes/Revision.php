@@ -1103,7 +1103,10 @@ class Revision {
 
 		$current = $dbw->selectRow(
 			array( 'page', 'revision' ),
-			self::selectFields(),
+			array_merge(
+				self::selectFields(),
+				self::selectPageFields()
+			),
 			array(
 				'page_id' => $pageId,
 				'page_latest=rev_id',
