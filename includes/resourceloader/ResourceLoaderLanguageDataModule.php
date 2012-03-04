@@ -21,53 +21,62 @@
  */
 
 /**
- * ResourceLoader module for generating language specific scripts/css.
+ * ResourceLoader module for populating language specific data.
  */
-class ResourceLoaderLanguageModule extends ResourceLoaderModule {
+class ResourceLoaderLanguageDataModule extends ResourceLoaderModule {
 
 	/**
 	 * Get the grammer forms for the site content language.
 	 *
-	 * @return Array
+	 * @return array
 	 */
 	protected function getSiteLangGrammarForms() {
 		global $wgContLang;
 		return $wgContLang->getGrammarForms();
 	}
+
 	/**
 	 * @param $context ResourceLoaderContext
 	 * @return string Javascript code
 	 */
 	public function getScript( ResourceLoaderContext $context ) {
 		global $wgContLang;
-		$code = Xml::encodeJsVar( $wgContLang->getCode() );
-		$forms = Xml::encodeJsVar( $this->getSiteLangGrammarForms() );
 
-		$js =
-<<<JAVASCRIPT
-var langCode = $code,
-langData = mw.language.data;
-if ( langData[langCode] === undefined ) {
-	langData[langCode] = new mw.Map();
-}
-langData[langCode].set( "grammarForms", $forms );
-JAVASCRIPT;
-
-		return $js;
+		return Xml::encodeJsCall( 'mw.language.setData', array(
+			$wgContLang->getCode(),
+			$this->getSiteLangGrammarForms()
+		) );
 	}
+
 	/**
 	 * @param $context ResourceLoaderContext
 	 * @return array|int|Mixed
 	 */
 	public function getModifiedTime( ResourceLoaderContext $context ) {
 		global $wgCacheEpoch;
-		/*
-		global $wgContLang, $wgCacheEpoch;
-		return max( $wgCacheEpoch, $wgContLang->getLastModified() );
-		*/
+
+		/**
+		 * @todo FIXME: This needs to change whenever the array created by
+		 * $wgContLang->getGrammarForms() changes. Which gets its data from
+		 * $wgGrammarForms, which (for standard installations) comes from LocalSettings
+		 * and $wgCacheEpoch would cover that. However there's two three problems:
+		 *
+		 * 1) $wgCacheEpoch is not meant for this use.
+		 * 2) If $wgInvalidateCacheOnLocalSettingsChange is set to false,
+		 *    $wgCacheEpoch will not be raised if LocalSettings is modified (see #1).
+		 * 3) $wgGrammarForms can be set from anywhere. For example on WMF it is set
+		 *    by the WikimediaMessages extension. Other farms might set it form
+		 *    their 'CommonSettings.php'-like file or something (see #1).
+		 *
+		 * Possible solutions:
+		 * - Store grammarforms in the language object cache instead of directly
+		 *   from the global everytime. Then use $wgContLang->getLastModified().
+		 * - Somehow monitor the value of $wgGrammarForms.
+		 */
 
 		return $wgCacheEpoch;
 	}
+
 	/**
 	 * @return array
 	 */
@@ -75,4 +84,3 @@ JAVASCRIPT;
 		return array( 'mediawiki.language' );
 	}
 }
-
