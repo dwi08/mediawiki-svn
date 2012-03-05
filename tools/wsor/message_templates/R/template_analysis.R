@@ -47,7 +47,7 @@ import.experimental.metrics.data <- function(template_indices_test, template_ind
 # GLOBALS assumed to exist:  warn_test, warn_control, blocks_test, blocks_control, edits_test, edits_control
 #
 
-process.data.frames <- function(min_edits_before=0, min_deleted_edits_before=0, max_edits_before=Inf, max_deleted_edits_before=Inf) {
+process.data.frames <- function(min_edits_before=0, min_deleted_edits_before=0, max_edits_before=Inf, max_deleted_edits_before=Inf, min_revisions_after = 0, registered=TRUE) {
 	
 	# MERGE THE METRICS AND ADD TEMPLATE COLS
 
@@ -69,16 +69,18 @@ process.data.frames <- function(min_edits_before=0, min_deleted_edits_before=0, 
 	
 	maximum_warns_before <- 0
 	
-	IP_regex <- "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
-	IP_regex_not <- '.*[a-zA-z].*'
+	if (!registered)
+		IP_regex <- "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+	else
+		IP_regex <- '.*[a-zA-z].*'
 	
 	condition_1 <- TRUE # merged_test$blocks_before > 0
 	condition_2 <- merged_test$blocks_after == 0
 	condition_3 <- merged_test$ns_0_revisions_before >= min_edits_before & merged_test$ns_0_revisions_before <= max_edits_before 
 	condition_4 <- merged_test$ns_0_revisions_deleted_before >= min_deleted_edits_before & merged_test$ns_0_revisions_deleted_before <= max_deleted_edits_before
 	condition_5 <- merged_test$warns_before <= maximum_warns_before
-	condition_6 <- filter.list.by.regex(IP_regex_not, merged_test$recipient_name)
-	condition_7 <- merged_test$ns_0_revisions_after_0_3 > 0
+	condition_6 <- filter.list.by.regex(IP_regex, merged_test$recipient_name)
+	condition_7 <- merged_test$ns_0_revisions_after_0_3 >= min_revisions_after
 	
 	indices <- condition_1 & condition_2 & condition_3 & condition_4 & condition_5 & condition_6 & condition_7
 	merged_test <<- merged_test[indices,]
@@ -88,8 +90,8 @@ process.data.frames <- function(min_edits_before=0, min_deleted_edits_before=0, 
 	condition_3 <- merged_control$ns_0_revisions_before >= min_edits_before & merged_control$ns_0_revisions_before <= max_edits_before
 	condition_4 <- merged_control$ns_0_revisions_deleted_before >= min_deleted_edits_before & merged_control$ns_0_revisions_deleted_before <= max_deleted_edits_before
 	condition_5 <- merged_control$warns_before <= maximum_warns_before
-	condition_6 <- filter.list.by.regex(IP_regex_not, merged_control$recipient_name)
-	condition_7 <- merged_control$ns_0_revisions_after_0_3 > 0
+	condition_6 <- filter.list.by.regex(IP_regex, merged_control$recipient_name)
+	condition_7 <- merged_control$ns_0_revisions_after_0_3 >= min_revisions_after
 	
 	indices <- condition_1 & condition_2 & condition_3 & condition_4 & condition_5 & condition_6 & condition_7 
 	merged_control <<- merged_control[indices,]
@@ -149,13 +151,13 @@ execute.chi.square.test <- function(test_samples, control_samples) {
 # A pseudo main method to allow the script to be executed as a batch 
 #
 
-execute.main <- function(test_samples, control_samples) {
+execute.main <- function() {
 	
 	# IMPORT DATA
 	
-	template_indices_control <- c(78,81) # c(84, 0) # c(107,109,111,113,115) # c(1,4) # c(84,99,101,103,105) # c(60,62,64,66,68,70,72,74,76) 
-	template_indices_test <- c(79,82) # c(86, 0) # c(108,110,114,116) # c(2,3) # c(85,86,100,102,104,106) # c(61,63,65,67,69,71,73,75,77) 
-	fname_first_part <- paste(home_dir,"output/metrics_1109_1209_z",sep="") # paste(home_dir,"output/metrics_1108_1202_z",sep="") # paste(home_dir,"output/metrics_1122_1222_z",sep="") # paste(home_dir,"output/metrics_pt_z",sep="") #  paste(home_dir,"output/metrics_1018_1119_z",sep="") # "/home/rfaulk/WSOR/message_templates/output/metrics_pt_z"
+	template_indices_control <- c(60,62,66,76) # c(107,109,111,113,115) # c(78,81) # c(84, 0) #  c(1,4) # c(84,99,101,103,105) # c(60,62,64,66,68,70,72,74,76) 
+	template_indices_test <- c(61,63,67,77) # c(108,110,114,116) # c(79,82) # c(86, 0) # c(2,3) # c(85,86,100,102,104,106) # c(61,63,65,67,69,71,73,75,77) 
+	fname_first_part <- paste(home_dir,"output/metrics_1018_1119_z",sep="") # paste(home_dir,"output/metrics_1122_1222_z",sep="") # paste(home_dir,"output/metrics_1109_1209_z",sep="") # paste(home_dir,"output/metrics_1108_1202_z",sep="") # paste(home_dir,"output/metrics_pt_z",sep="") #  paste(home_dir,"output/metrics_1018_1119_z",sep="") 
 	
 	# import.experimental.metrics.data(template_indices_test, template_indices_control, fname_first_part)
 	
@@ -165,7 +167,8 @@ execute.main <- function(test_samples, control_samples) {
 	
 	# print("")
 	# print("Processing data frames.")
-	process.data.frames(1,0,Inf,Inf)
+	registered = TRUE
+	process.data.frames(3,0,Inf,Inf,registered)
 	
 	
 	
@@ -177,7 +180,7 @@ execute.main <- function(test_samples, control_samples) {
 	
 	# LOGISTIC REGRESSION MODELLING:
 	
-	all_data <- append.data.frames(merged_test, merged_control)
+	all_data <<- append.data.frames(merged_test, merged_control)
 	# summary(glm(template ~ edits_decrease, data=all_data, family=binomial(link="logit")))
 	# summary(glm(template ~ edits_del_decrease, data=all_data, family=binomial(link="logit")))
 

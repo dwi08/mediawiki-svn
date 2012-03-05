@@ -13,6 +13,8 @@ source('/home/rfaulkner/trunk/projects/WSOR/message_templates/R/template_analysi
 #
 # Basic plotting for te	st vs. control
 #
+# e.g. call :: plot.control.vs.test("Huggle Short 2 Experiment (reduced) - Decrease in Editor Activity", "Minimum Edits before Template Posting", "Mean % Decrease in Edit Activity", edit_decrease_means_test, edit_decrease_means_control)	
+#
 
 plot.control.vs.test <- function(title, x_label, y_label, test_samples, control_samples) {
 
@@ -62,44 +64,68 @@ plot.control.vs.test.ggplot <- function(test_samples, control_samples) {
 
 # IMPORT DATA
 
-#  c(84, 0) c(107,109,111,113,115) c(78,81) c(1,4) c(84,99,101,103,105) 
-template_indices_control <- c(60,62,64,66,68,70,72,74,76)
-
-#  c(85, 0) c(108,110,114,116) c(79,82) c(2,3) c(85,86,100,102,104,106) 
-template_indices_test <- c(61,63,65,67,69,71,73,75,77)  
-
-# paste(home_dir,"output/metrics_1108_1202_z",sep="") paste(home_dir,"output/metrics_1122_1222_z",sep="") paste(home_dir,"output/metrics_1109_1209_z",sep="") paste(home_dir,"output/metrics_pt_z",sep="")  "/home/rfaulk/WSOR/message_templates/output/metrics_pt_z"
-fname_first_part <- paste(home_dir,"output/metrics_1018_1119_z",sep="") 
-
-import.experimental.metrics.data(template_indices_test, template_indices_control, fname_first_part)
-
-
-
-# PROCESS DATA
-
-edit_count_before_filter <- 1:10
-
-edit_decrease_means_test <- c()
-edit_decrease_means_control <- c()
- 
-for (i in edit_count_before_filter)
+line.plot.results <- function(edit_count_min_lower = 1, edit_count_min_upper = 10, import_metrics = FALSE, save_plot = TRUE, registered = TRUE, error_bars = FALSE)
 {
-	process.data.frames(i,0,Inf,Inf)
+	#  c(78,81) c(1,4)  c(60,62,64,66,68,70,72,74,76) c(60,62,66,76) c(107,109,111,113,115) c(84,99,101,103,105)
+	template_indices_control <- c(84, 0)
 	
-	edit_decrease_means_test <- c(edit_decrease_means_test, mean(merged_test$edits_decrease))
-	edit_decrease_means_control <- c(edit_decrease_means_control, mean(merged_control$edits_decrease))
+	#  c(79,82) c(2,3)  c(61,63,65,67,69,71,73,75,77) c(61,63,67,77)  c(108,110,114,116) c(85,86,100,102,104,106)
+	template_indices_test <- c(85, 0)
+	
+	#   paste(home_dir,"output/metrics_1109_1209_z",sep="") paste(home_dir,"output/metrics_pt_z",sep="")  paste(home_dir,"output/metrics_1018_1119_z",sep="") paste(home_dir,"output/metrics_1122_1222_z",sep="")
+	fname_first_part <- paste(home_dir,"output/metrics_1108_1202_z",sep="")
+	
+	if (import_metrics)
+		import.experimental.metrics.data(template_indices_test, template_indices_control, fname_first_part)
+	
+	
+	
+	# PROCESS DATA
+	
+	edit_count_before_filter <- edit_count_min_lower : edit_count_min_upper
+	
+	data_counts_test <<- c()
+	data_counts_control <<- c()
+	
+	edit_decrease_means_test <<- c()
+	edit_decrease_means_control <<- c()
+	
+	edit_decrease_sd_test <<- c()
+	edit_decrease_sd_control <<- c()	
+	
+	
+	if (registered)
+		reg_str = 'registered'
+	else
+		reg_str = 'non_registered'
+	
+	for (i in edit_count_before_filter)
+	{
+		process.data.frames(i,0,Inf,Inf,registered=registered,min_revisions_after=0)
+		
+		edit_decrease_means_test <<- c(edit_decrease_means_test, mean(merged_test$edits_decrease) * 100)
+		edit_decrease_means_control <<- c(edit_decrease_means_control, mean(merged_control$edits_decrease) * 100)
+		
+		edit_decrease_sd_test <<- c(edit_decrease_sd_test, sd(merged_test$edits_decrease * 100))
+		edit_decrease_sd_control <<- c(edit_decrease_sd_control, sd(merged_control$edits_decrease * 100))
+		
+		data_counts_test <<- c(data_counts_test, length(merged_test$edits_decrease))	
+		data_counts_control <<- c(data_counts_control, length(merged_control$edits_decrease))
+	}
+	
+	# PLOT DATA		
+	
+	plot_title = paste("Huggle Short 1 & 2 Experiment (", reg_str, ") - Decrease in Editor Activity", sep="")
+	
+	df <- data.frame(x=1:length(edit_decrease_means_test), y_test=edit_decrease_means_test, y_ctrl=edit_decrease_means_control, y_test_sd=edit_decrease_sd_test, y_ctrl_sd=edit_decrease_sd_control)	
+	p <- ggplot(df,aes(x)) + geom_line(aes(y=y_test,colour="Test")) + geom_line(aes(y=y_ctrl,colour="Control")) 
+	
+	if (error_bars)
+ 		p <- p + geom_errorbar(aes(ymin = y_test - y_test_sd, ymax = y_test + y_test_sd, colour="Test"), width=0.2) + geom_errorbar(aes(ymin = y_ctrl - y_ctrl_sd, ymax = y_ctrl + y_ctrl_sd, colour="Control"), width=0.2)
+	
+	p <- p + scale_x_continuous('Minimum Edits before Template Posting') + scale_y_continuous('Mean % Decrease in Edit Activity') + opts(title = plot_title, legend.title = theme_blank())
+	
+	if (save_plot)
+		ggsave(paste('/home/rfaulkner/trunk/projects/WSOR/message_templates/R/plots/huggle_short_1_2_',reg_str,'.png',sep=""),width=8)
 }
-
-# PLOT DATA
-
-# plot.control.vs.test("Huggle Short 2 Experiment - Decrease in Editor Activity", "Minimum Edits before Template Posting", "Mean % Decrease in Edit Activity", edit_decrease_means_test, edit_decrease_means_control)
-
-# ggplot 
-
-plot_title = "Huggle 3 - % decrease of Edit Actitivity after Posting"
-
-df <- data.frame(x=1:length(edit_decrease_means_test), y_test=edit_decrease_means_test, y_ctrl=edit_decrease_means_control)	
-p = ggplot(df,aes(x)) + geom_line(aes(y=y_test,colour="Test")) + geom_line(aes(y=y_ctrl,colour="Control")) 
-p + scale_x_continuous('Minimum Edits before Template Posting') + scale_y_continuous('Mean % Decrease in Edit Activity') + opts(title = plot_title, legend.title = theme_blank())
-ggsave('/home/rfaulkner/trunk/projects/WSOR/message_templates/R/plots/huggle_3.png',width=8)
 
