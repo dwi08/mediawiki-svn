@@ -54,25 +54,28 @@ plot.control.vs.test <- function(title, x_label, y_label, test_samples, control_
 }
 
 
-plot.control.vs.test.ggplot <- function(test_samples, control_samples) {
+# FUNCTION :: line.plot.results
+#
+# Generates metrics for the test and control template sets and visualizes the 
+#
+# edit_count_min_lower - lower bound of plotting range for minumum number of editors
+# edit_count_min_upper - upper bound of plotting range for minumum number of editors
+# import_metrics - imports metrics files if TRUE
+# save_plot - saves plot if TRUE
+# registered - look at registered editors if TRUE (non-registered otherwise)
+# error_bars - display error bars if TRUE
+#
 
-	df <- data.frame(x=1:length(test_samples), y_test=test_samples, y_ctrl=control_samples)
-	
-	ggplot(df,aes(x)) + geom_line(aes(y=y_test,colour="Test")) + geom_line(aes(y=y_ctrl,colour="Control"))
-}
-
-
-# IMPORT DATA
-
-line.plot.results <- function(edit_count_min_lower = 1, edit_count_min_upper = 10, import_metrics = FALSE, save_plot = TRUE, registered = TRUE, error_bars = FALSE)
+line.plot.results <- function(edit_count_min_lower = 1, edit_count_min_upper = 10, import_metrics = FALSE, save_plot = TRUE, filename = 'ggplot_out_', registered = TRUE, error_bars = FALSE)
 {
+	# IMPORT DATA 
+	
 	#  c(78,81) c(1,4)  c(60,62,64,66,68,70,72,74,76) c(60,62,66,76) c(107,109,111,113,115) c(84,99,101,103,105)
-	template_indices_control <- c(84, 0)
-	
 	#  c(79,82) c(2,3)  c(61,63,65,67,69,71,73,75,77) c(61,63,67,77)  c(108,110,114,116) c(85,86,100,102,104,106)
-	template_indices_test <- c(85, 0)
-	
 	#   paste(home_dir,"output/metrics_1109_1209_z",sep="") paste(home_dir,"output/metrics_pt_z",sep="")  paste(home_dir,"output/metrics_1018_1119_z",sep="") paste(home_dir,"output/metrics_1122_1222_z",sep="")
+
+	template_indices_control <- c(84, 0)	
+	template_indices_test <- c(85, 0)	
 	fname_first_part <- paste(home_dir,"output/metrics_1108_1202_z",sep="")
 	
 	if (import_metrics)
@@ -126,6 +129,6 @@ line.plot.results <- function(edit_count_min_lower = 1, edit_count_min_upper = 1
 	p <- p + scale_x_continuous('Minimum Edits before Template Posting') + scale_y_continuous('Mean % Decrease in Edit Activity') + opts(title = plot_title, legend.title = theme_blank())
 	
 	if (save_plot)
-		ggsave(paste('/home/rfaulkner/trunk/projects/WSOR/message_templates/R/plots/huggle_short_1_2_',reg_str,'.png',sep=""),width=8)
+		ggsave(paste('/home/rfaulkner/trunk/projects/WSOR/message_templates/R/plots/',filename,reg_str,'.png',sep=""),width=8)
 }
 
