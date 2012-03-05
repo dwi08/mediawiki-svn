@@ -810,7 +810,7 @@ class SpecialCollection extends SpecialPage {
 	 * @return bool
 	 */
 	function saveCollection( $title, $forceOverwrite = false ) {
-		global $wgUser;
+		global $wgRequest, $wgUser;
 
 		$article = new Article( $title );
 		if ( $article->exists() && !$forceOverwrite ) {
@@ -857,12 +857,14 @@ class SpecialCollection extends SpecialPage {
 			}
 		}
 
-		$req = new FauxRequest( array(
-			'action' => 'edit',
-			'title' => $title->getPrefixedText(),
-			'text' => $articleText,
-			'token' => $wgUser->editToken(),
-		), true, $_SESSION );
+		$req = new DerivativeRequest(
+			$wgRequest,
+			array(
+				'action' => 'edit',
+				'title' => $title->getPrefixedText(),
+				'text' => $articleText,
+				'token' => $wgUser->editToken(),
+		), true);
 		$api = new ApiMain( $req, true );
 		$api->execute();
 		return true;
