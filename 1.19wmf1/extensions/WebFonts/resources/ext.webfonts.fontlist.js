@@ -355,6 +355,12 @@
 				ttf: "Bugi/saweri.ttf",
 				woff: "Bugi/saweri.woff",
 				version: "2"
+			},
+			"Akkadian": {
+				eot: "Xsux/Akkadian.eot",
+				ttf: "Xsux/Akkadian.ttf",
+				woff: "Xsux/Akkadian.woff",
+				version: "2.56"
 			}
 			
 
@@ -363,6 +369,7 @@
 		languages: {
 			// en: [ "RufScript", "Perizia", "Ubuntu" ],
 			ahr: [ "Lohit Devanagari" ],
+			akk: [ "Akkadian" ],
 			am:  [ "AbyssinicaSIL" ],
 			as:  [ "Lohit Assamese" ],
 			bh:  [ "Lohit Devanagari" ],
@@ -392,6 +399,7 @@
 			pa:  [ "Lohit Punjabi", "Saab" ],
 			sa:  [ "Lohit Devanagari" ],
 			saz: [ "Pagul" ],
+			sux: [ "Akkadian" ],
 			ta:  [ "Lohit Tamil", "Thendral", "Thenee" ],
 			tcy: [ "Lohit Kannada", "Kedage" ],
 			te:  [ "Lohit Telugu", "Pothana2000", "Vemana2000" ],
