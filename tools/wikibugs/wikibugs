@@ -69,10 +69,13 @@ for ($body) {
 	}
 
 	# Re-attempt to grab the "real name".
-	if ( m{^(.*) <\S+\@\S+> changed:$}m ) {
+	if ( !$user &&  m{^(.*) <\S+\@\S+> changed:$}m ) {
 	  $haschanges = 1;
 	  $user       = $1 if !$user;
-	} else {
+	}
+
+	# Fallback to email address username
+	if( !$user ) {
 	  # If "real name" isn't available and we didn't get a user from the
 	  # comment header, just use the "X-Bugzilla-Who" header.
 	  my @who = split '@', $mail->header( 'X-Bugzilla-Who' );
