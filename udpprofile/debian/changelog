@@ -1,3 +1,10 @@
+udpprofile (1.6) lucid-wikimedia; urgency=low
+
+  * Domas "set in-RAM cache size to 256M instead of 256k - cuts CPU usage in half on busy systems"
+  * Replaced 99.9th percentile calculation with 90th
+
+ -- Asher Feldman <afeldman@wikimedia.org>  Thu, 6 Mar 2012 00:43:00 +0000
+
 udpprofile (1.5) lucid-wikimedia; urgency=low
 
   * profiler-to-carbon skips non-ascii event keys

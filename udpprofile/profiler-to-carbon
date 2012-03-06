@@ -80,9 +80,9 @@ def SendStats(db, current, graph):
 		message = "%s.count %d %d\n" % ( key, count, now )
 		logging.debug("sending: %s", message)
 		graph.send(message)
-					
+
 		if (db.startswith('stats')): continue
-			
+
 		real = current[key]['real'] - prior[db][key]['real']
 		message = "%s.tavg %.3f %d\n" % ( key, real/count, now )
 		logging.debug("sending: %s", message)
@@ -90,18 +90,18 @@ def SendStats(db, current, graph):
 
 		current[key]['samples'].sort()
 		tp50 = int(round(len(current[key]['samples']) * 0.5))-1
+		tp90 = int(round(len(current[key]['samples']) * 0.9))-1
 		tp99 = int(round(len(current[key]['samples']) * 0.99))-1
-		tp999 = int(round(len(current[key]['samples']) * 0.999))-1
 
 		message = "%s.tp50 %.3f %d\n" % ( key, float(current[key]['samples'][tp50])*1000, now )
 		logging.debug("sending: %s", message)
 		graph.send(message)
 
-		message = "%s.tp99 %.3f %d\n" % ( key, float(current[key]['samples'][tp99])*1000, now )
+		message = "%s.tp90 %.3f %d\n" % ( key, float(current[key]['samples'][tp90])*1000, now )
 		logging.debug("sending: %s", message)
 		graph.send(message)
 
-		message = "%s.tp999 %.3f %d\n" % ( key, float(current[key]['samples'][tp999])*1000, now )
+		message = "%s.tp99 %.3f %d\n" % ( key, float(current[key]['samples'][tp99])*1000, now )
 		logging.debug("sending: %s", message)
 		graph.send(message)
 
